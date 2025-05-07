@@ -11,11 +11,28 @@ and VS-Code.
       search for "Dev Containers" by Microsoft and click "Install".
 * **Git:** Installed
 
-## If you are developing on windows it's recommended that you work within WSL (Windows Subsystem for Linux)
+## Optional: If you are developing on windows it's recommended that you work within WSL (Windows Subsystem for Linux)
 
 ### Steps to get started within WSL 
 
-> Continue to the [Opening the Dev-Container Environment in VS Code through WSL](#opening-the-dev-container-environment-in-vs-code-through-wsl) section below.
+1. **Go to the command line and type wsl**
+    ```bash 
+    wsl
+    ```
+2. **Navigate to the home directory** 
+    ```bash
+    cd $HOME
+    ```
+3. **Create a directory**
+    ```bash
+    mkdir softsec
+    ```
+4. **Navigate to the softsec dir**
+    ```bash
+    cd softsec
+    ```
+
+5. **Continue normally from here**
 
 ## Steps
 
@@ -31,6 +48,9 @@ and VS-Code.
 
 3. **Open the project in VS Code:**
     * Open VS Code and navigate to the project directory.
+    ```bash
+    code ./.
+    ```
     * VS Code should automatically detect the `.devcontainer` folder and prompt you to "Reopen in Container".
     * Click "Reopen in Container" to start the development environment.
     * *Note - In case "Reopen in Container" option does not work then:*
@@ -159,7 +179,7 @@ Currently, oscar error logs are sent to console without saving to a log file. If
     ```bash
     cd Open-O
     ```
-7. **Start VS Code**
+7. **Start VS Code.**
     ```bash
     code ./
     ```
