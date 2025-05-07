@@ -11,13 +11,17 @@ and VS-Code.
       search for "Dev Containers" by Microsoft and click "Install".
 * **Git:** Installed
 
-## This process is faster if it's ran within the WSL file system
+## If you are developing on windows it's recommended that you work within WSL (Windows Subsystem for Linux)
+
+### Steps to get started within WSL 
+
+> Continue to the [Opening the Dev-Container Environment in VS Code through WSL](#opening-the-dev-container-environment-in-vs-code-through-wsl) section below.
 
 ## Steps
 
-1. **Clone the repository if not already done:**
+1. **Clone the repository:**
    ```bash
-   git clone https://github.com/MagentaHealth/open-osp.git
+   git clone https://github.com/cc-ar-emr/Open-O.git
    cd open-osp
    ```
 
