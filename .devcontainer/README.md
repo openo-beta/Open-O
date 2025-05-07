@@ -190,4 +190,3 @@ Currently, oscar error logs are sent to console without saving to a log file. If
 
 ### Checksum locks
 
-*TODO: Add a note about updating the checksum on libraries when they've been changed*
