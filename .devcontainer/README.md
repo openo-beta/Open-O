@@ -79,14 +79,14 @@ minutes on Windows, as we'll have managed to cache a bunch of Maven compilation 
 Once the compilation is successful, a `target/oscar` directory full of artifacts will be created. This is a so-called "
 Exploded WAR".
 
-## Access the application:
+## Access the application
 
-    * Open your web browser and navigate to `http://localhost:8080`.
-    * You should see the Open-OSP EMR application running.
-    * Login credentials for local development are: 
-        Username: oscardoc
-        Password: mac2002
-        PIN     : 1117
+* Open your web browser and navigate to `http://localhost:8080`.
+* You should see the Open-OSP EMR application running.
+* Login credentials for local development are: 
+    * Username: oscardoc
+    * Password: mac2002
+    * PIN     : 1117
 
 ### Subsequent Compilations
 
