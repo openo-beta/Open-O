@@ -186,36 +186,11 @@ Currently, oscar error logs are sent to console without saving to a log file. If
 
 * This should open the Open-O repo in VS Code and prompt you to reopen the folder in the dev container environment.
 
-## Enjoy developing with Open-OSP!
-
 ### Checksum locks
 
-This project uses SHA-512 checksums to lock dependency artifacts in your .deps manifest. Whenever you update, add, or remove a library:
-
-1. **Clean and rebuild:**
-   ```bash
-   rm -rf ~/.m2/repository
-   mvn clean verify
-   ```
-
-2. **Regenerate checksum entries:**
-   After build, you need to export updated checksums into your JSON manifest.
-   
-   You can automate this via a script (e.g., update-checksums.sh) that:
-   - Reads the current pom.xml or manifest
-   - Computes fresh SHA-512 sums for each JAR in your local Maven repo
-   - Overwrites the integrity fields in your dependencies file
-   
-   Alternatively, you can use the dependency-lock-maven-plugin:
-   ```bash
-   mvn se.vandmo:dependency-lock-maven-plugin:lock
-   ```
-
-3. **Commit changes:**
-   ```bash
-   git add pom.xml dependency-lock.json
-   git commit -m "Update dependency checksums"
-   ```
+This project uses SHA-512 checksums to lock dependency artifacts. Whenever you update, add, or remove a library
+ensure you are updating the SHA-512 value within the dependencies-lock.json
 
 Keeping these locks in sync ensures reproducible builds and guards against tampered artifacts.
 
+## Enjoy developing with Open-OSP!
