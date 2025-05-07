@@ -123,7 +123,7 @@ Currently, oscar error logs are sent to console without saving to a log file. If
   
 ## Build Issues 
 
-* Ensure prior to every build you run
+* Ensure prior to a build with changes or switching branches you run
 
     ```zsh 
     make clean
