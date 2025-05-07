@@ -190,3 +190,32 @@ Currently, oscar error logs are sent to console without saving to a log file. If
 
 ### Checksum locks
 
+This project uses SHA-512 checksums to lock dependency artifacts in your .deps manifest. Whenever you update, add, or remove a library:
+
+1. **Clean and rebuild:**
+   ```bash
+   rm -rf ~/.m2/repository
+   mvn clean verify
+   ```
+
+2. **Regenerate checksum entries:**
+   After build, you need to export updated checksums into your JSON manifest.
+   
+   You can automate this via a script (e.g., update-checksums.sh) that:
+   - Reads the current pom.xml or manifest
+   - Computes fresh SHA-512 sums for each JAR in your local Maven repo
+   - Overwrites the integrity fields in your dependencies file
+   
+   Alternatively, you can use the dependency-lock-maven-plugin:
+   ```bash
+   mvn se.vandmo:dependency-lock-maven-plugin:lock
+   ```
+
+3. **Commit changes:**
+   ```bash
+   git add pom.xml dependency-lock.json
+   git commit -m "Update dependency checksums"
+   ```
+
+Keeping these locks in sync ensures reproducible builds and guards against tampered artifacts.
+
