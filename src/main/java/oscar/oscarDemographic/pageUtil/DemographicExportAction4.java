@@ -145,6 +145,7 @@ import cds.MedicationsAndTreatmentsDocument.MedicationsAndTreatments;
 import cds.OmdCdsDocument;
 import cds.PastHealthDocument.PastHealth;
 import cds.PatientRecordDocument.PatientRecord;
+import cds.PersonalHistoryDocument;
 import cds.ProblemListDocument.ProblemList;
 import cds.ReportsDocument.Reports;
 import cds.ReportsDocument.Reports.OBRContent;
@@ -800,7 +801,11 @@ public class DemographicExportAction4 extends Action {
 							}
 						}
 						summary = Util.addSummary(summary, "Notes", annotation);
-					//	patientRec.addNewPersonalHistory().setCategorySummaryLine(summary);
+						PersonalHistoryDocument.PersonalHistory personalHistory = patientRec.addNewPersonalHistory();
+						ResidualInformation residualInformation = Util.fillResidualInfoSummary(summary);
+						if (residualInformation != null) {
+							personalHistory.addNewResidualInfo().set(residualInformation);
+						}
 					}
 				}
 				if (exFamilyHistory) {
