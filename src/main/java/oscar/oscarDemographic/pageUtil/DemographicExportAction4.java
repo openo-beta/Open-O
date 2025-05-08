@@ -1231,7 +1231,8 @@ public class DemographicExportAction4 extends Action {
 						String code = dx.getCodingSystem().equalsIgnoreCase("icd9") ? Util.formatIcd9(dx.getDxresearchCode()) : dx.getDxresearchCode();
 						diagnosis.setStandardCode(code);
 
-						AbstractCodeSystemDao dao = (AbstractCodeSystemDao)SpringUtils.getBean(WordUtils.uncapitalize(dx.getCodingSystem()) + "Dao");
+						String className = "org.oscarehr.common.dao." + org.apache.commons.lang3.StringUtils.capitalize(dx.getCodingSystem()) + "Dao";
+						AbstractCodeSystemDao dao = (AbstractCodeSystemDao)SpringUtils.getBean(Class.forName(className));
 						if(dao != null) {
 							 AbstractCodeSystemModel result = dao.findByCode(dx.getDxresearchCode());
 							 if(result != null) {
