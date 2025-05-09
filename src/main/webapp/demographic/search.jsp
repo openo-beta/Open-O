@@ -48,6 +48,7 @@
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/js/dateFormatUtils.js"></script>
     <title><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.title"/></title>
 
     <script type="text/javascript">
@@ -71,15 +72,10 @@
                 document.titlesearch.keyword.value = keywordLowerCase;
             }
 
-            if (document.titlesearch.search_mode[2].checked) {
-                if (dob.value.length == 8) {
-                    dob.value = dob.value.substring(0, 4) + "-" + dob.value.substring(4, 6) + "-" + dob.value.substring(6, 8);
-                }
-                if (dob.value.length != 10) {
-                    alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.msgWrongDOB"/>');
-                    typeInOK = false;
-                }
-                return typeInOK;
+            // Use the shared date validation function for DOB search mode
+            if (document.titlesearch.search_mode.value === 'search_dob' || 
+                (document.titlesearch.search_mode[2] && document.titlesearch.search_mode[2].checked)) {
+                return validateDateFormat(dob);
             } else {
                 return true;
             }
@@ -106,38 +102,33 @@
         Auto‐hyphenate DOB as you type: inserts dashes after yyyy and MM 
     --%>
     <script type="text/javascript">
-    (function() {
-        var input     = document.getElementById('keyword');
-        var modeSelect = document.getElementById('search_mode');
-
-        function autoHyphenateDOB() {
-            // only run when DOB mode is selected
-            if (modeSelect.value !== 'search_dob') return;
-
-            // strip out anything but digits
-            var digits = input.value.replace(/\D/g, '');
-
-            // build yyyy-MM-dd
-            if (digits.length > 4) {
-                digits = digits.slice(0,4) + '-' + digits.slice(4);
-            }
-            if (digits.length > 7) {
-                digits = digits.slice(0,7) + '-' + digits.slice(7,9);
-            }
-
-            input.value = digits;
+    // This script will run after the page is fully loaded to ensure all elements exist
+    document.addEventListener('DOMContentLoaded', function() {
+        // Find the keyword input and search mode select elements
+        var keywordInputs = document.getElementsByName('keyword');
+        var modeSelects = document.getElementsByName('search_mode');
+        
+        if (keywordInputs.length > 0 && modeSelects.length > 0) {
+            var input = keywordInputs[0];
+            var modeSelect = modeSelects[0];
+            
+            // Use the shared formatDateInput function when in DOB mode
+            input.addEventListener('input', function() {
+                if (modeSelect.value === 'search_dob') {
+                    formatDateInput(this);
+                }
+            });
+            
+            // Clear input and remove hyphens when switching modes
+            modeSelect.addEventListener('change', function() {
+                if (modeSelect.value === 'search_dob') {
+                    input.value = '';
+                } else {
+                    input.value = input.value.replace(/-/g, '');
+                }
+            });
         }
-
-        // attach listener to the keyword field
-        input.addEventListener('input', autoHyphenateDOB);
-
-        // when switching modes, remove hyphens if not in DOB mode
-        modeSelect.addEventListener('change', function() {
-            if (modeSelect.value !== 'search_dob') {
-                input.value = input.value.replace(/-/g, '');
-            }
-        });
-    })();
+    });
     </script>
 
     <script src="${pageContext.request.contextPath}/library/jquery/jquery-3.6.4.min.js" type="text/javascript"></script>
