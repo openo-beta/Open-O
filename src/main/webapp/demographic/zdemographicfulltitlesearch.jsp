@@ -105,10 +105,9 @@
                 return false;
             }
             
-            // More detailed validation
-            if (year < 1900 || year > new Date().getFullYear() ||
-                month < 1 || month > 12 ||
-                day < 1 || day > 31) {
+            // Only validate that the date format is correct and values are in valid ranges
+            // Don't restrict by year - allow any year including historical dates like 1111-11-11
+            if (month < 1 || month > 12 || day < 1 || day > 31) {
                 alert("Please enter a valid date in format YYYY-MM-DD");
                 return false;
             }
