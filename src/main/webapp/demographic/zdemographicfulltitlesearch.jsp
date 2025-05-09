@@ -67,16 +67,17 @@
         var value = input.value.replace(/\D/g, '');
         
         // Format as YYYY-MM-DD
-        if (value.length > 4) {
-            value = value.substring(0, 4) + '-' + value.substring(4);
-        }
-        if (value.length > 7) {
-            value = value.substring(0, 7) + '-' + value.substring(7);
-        }
-        
-        // Limit to 10 characters (YYYY-MM-DD)
-        if (value.length > 10) {
-            value = value.substring(0, 10);
+        if (value.length > 0) {
+            // Ensure we only take the first 8 digits
+            value = value.substring(0, Math.min(8, value.length));
+            
+            // Add hyphens
+            if (value.length > 4) {
+                value = value.substring(0, 4) + '-' + value.substring(4);
+            }
+            if (value.length > 7) {
+                value = value.substring(0, 7) + '-' + value.substring(7);
+            }
         }
         
         input.value = value;
@@ -95,12 +96,27 @@
             }
             
             // Basic validation
-            var year = dobValue.substring(0, 4);
-            var month = dobValue.substring(4, 6);
-            var day = dobValue.substring(6, 8);
+            var year = parseInt(dobValue.substring(0, 4), 10);
+            var month = parseInt(dobValue.substring(4, 6), 10);
+            var day = parseInt(dobValue.substring(6, 8), 10);
             
             if (isNaN(year) || isNaN(month) || isNaN(day)) {
                 alert("Date must contain only numbers in format YYYY-MM-DD");
+                return false;
+            }
+            
+            // More detailed validation
+            if (year < 1900 || year > new Date().getFullYear() ||
+                month < 1 || month > 12 ||
+                day < 1 || day > 31) {
+                alert("Please enter a valid date in format YYYY-MM-DD");
+                return false;
+            }
+            
+            // Check for valid days in month
+            var daysInMonth = new Date(year, month, 0).getDate();
+            if (day > daysInMonth) {
+                alert("Invalid day for the selected month. Please enter a valid date.");
                 return false;
             }
         }
@@ -153,7 +169,8 @@
 
             <input class="wideInput form-control" type="search" placeholder="Search Patient" NAME="keyword"
                    VALUE="<%=StringEscapeUtils.escapeHtml(keyWord)%>" SIZE="17" MAXLENGTH="100"
-                   oninput="if(document.titlesearch.search_mode.value === 'search_dob') formatDateInput(this);">
+                   oninput="if(document.titlesearch.search_mode.value === 'search_dob') formatDateInput(this);"
+                   onkeyup="if(document.titlesearch.search_mode.value === 'search_dob') formatDateInput(this);">
 
 
             <INPUT TYPE="hidden" NAME="orderby" VALUE="last_name, first_name">
