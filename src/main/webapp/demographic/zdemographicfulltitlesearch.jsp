@@ -81,6 +81,46 @@
         
         input.value = value;
     }
+    
+    function checkTypeIn() {
+        var dob = document.titlesearch.keyword;
+        if (document.titlesearch.search_mode.value == "search_dob") {
+            // Remove hyphens for validation
+            var dobValue = dob.value.replace(/-/g, '');
+            
+            // Check if we have enough digits
+            if (dobValue.length < 8) {
+                alert("Date format must be YYYY-MM-DD");
+                return false;
+            }
+            
+            // Basic validation
+            var year = dobValue.substring(0, 4);
+            var month = dobValue.substring(4, 6);
+            var day = dobValue.substring(6, 8);
+            
+            if (isNaN(year) || isNaN(month) || isNaN(day)) {
+                alert("Date must contain only numbers in format YYYY-MM-DD");
+                return false;
+            }
+            
+            if (year < 1900 || year > 2100) {
+                alert("Year must be between 1900 and 2100");
+                return false;
+            }
+            
+            if (month < 1 || month > 12) {
+                alert("Month must be between 01 and 12");
+                return false;
+            }
+            
+            if (day < 1 || day > 31) {
+                alert("Day must be between 01 and 31");
+                return false;
+            }
+        }
+        return true;
+    }
 
 </script>
 <div class="searchBox">
