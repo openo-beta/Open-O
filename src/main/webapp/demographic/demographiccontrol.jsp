@@ -104,25 +104,14 @@
                     String month = cleanKeyword.substring(4, 6);
                     String day = cleanKeyword.substring(6);
                     
-                    // Validate date components before creating calendar
+                    // Parse date components
                     int yearInt = Integer.parseInt(year);
                     int monthInt = Integer.parseInt(month) - 1; // Calendar months are 0-based
                     int dayInt = Integer.parseInt(day);
                     
-                    // Basic validation to prevent obvious errors
-                    if (yearInt > 1900 && yearInt < 2100 && 
-                        monthInt >= 0 && monthInt <= 11 && 
-                        dayInt >= 1 && dayInt <= 31) {
-                        
-                        GregorianCalendar cal = new GregorianCalendar(yearInt, monthInt, dayInt);
-                        matchingDemographicParameters = new MatchingDemographicParameters();
-                        matchingDemographicParameters.setBirthDate(cal);
-                        // No alert needed in production
-                    } else {
-                        // Invalid date components, set to empty search that will return no results
-                        fieldname = "demographic_no";
-                        keyword = "-1"; // This will match no patients
-                    }
+                    GregorianCalendar cal = new GregorianCalendar(yearInt, monthInt, dayInt);
+                    matchingDemographicParameters = new MatchingDemographicParameters();
+                    matchingDemographicParameters.setBirthDate(cal);
                 } else {
                     // Not enough digits, set to empty search that will return no results
                     fieldname = "demographic_no";

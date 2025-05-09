@@ -103,21 +103,6 @@
                 alert("Date must contain only numbers in format YYYY-MM-DD");
                 return false;
             }
-            
-            if (year < 1900 || year > 2100) {
-                alert("Year must be between 1900 and 2100");
-                return false;
-            }
-            
-            if (month < 1 || month > 12) {
-                alert("Month must be between 01 and 12");
-                return false;
-            }
-            
-            if (day < 1 || day > 31) {
-                alert("Day must be between 01 and 31");
-                return false;
-            }
         }
         return true;
     }
