@@ -102,7 +102,7 @@
                 if (cleanKeyword.length() >= 8) {
                     String year = cleanKeyword.substring(0, 4);
                     String month = cleanKeyword.substring(4, 6);
-                    String day = cleanKeyword.substring(6);
+                    String day = cleanKeyword.substring(6, 8);
                     
                     // Parse date components
                     int yearInt = Integer.parseInt(year);
