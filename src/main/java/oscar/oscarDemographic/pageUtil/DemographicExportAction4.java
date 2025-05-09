@@ -1506,6 +1506,11 @@ public class DemographicExportAction4 extends Action {
 					if (StringUtils.empty(imSummary)) {
 						exportError.add("Error! No Category Summary Line (Immunization) for Patient "+demoNo+" ("+(cnt)+")");
 					}
+
+					ResidualInformation residualInformation = Util.fillResidualInfoSummary(imSummary);
+					if (residualInformation != null) {
+						immu.addNewResidualInfo().set(residualInformation);
+					}
 				//	immu.setCategorySummaryLine(StringUtils.noNull(imSummary));
 				}
 			}
