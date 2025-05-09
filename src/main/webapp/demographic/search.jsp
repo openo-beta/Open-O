@@ -42,94 +42,125 @@
 <!DOCTYPE HTML>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
-
 <% Boolean isMobileOptimized = session.getAttribute("mobileOptimized") != null; %>
 
 <html>
-    <head>
-        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.title"/></title>
-        <script type="text/javascript">
+<head>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.title"/></title>
 
-            function setfocus() {
-                document.titlesearch.keyword.focus();
-                document.titlesearch.keyword.select();
-            }
+    <script type="text/javascript">
 
-            function checkTypeIn() {
-                var form = document.titlesearch;
-                var mode = form.search_mode.value;
-                var dob  = form.keyword;
+        function setfocus() {
+            document.titlesearch.keyword.focus();
+            document.titlesearch.keyword.select();
+        }
 
-                // only care when “DOB” mode is selected
-                if (mode === "search_dob") {
-                    // ensure exact format yyyy-mm-dd
-                    var re = /^\d{4}-\d{2}-\d{2}$/;
-                    if (! re.test(dob.value)) {
-                        alert("Bad date format - please enter DOB as yyyy-mm-dd");
-                        dob.focus();
-                        return false;    // block the submit
-                    }
-                }
+        function checkTypeIn() {
+            var form = document.titlesearch;
+            var mode = form.search_mode.value;
+            var dob  = form.keyword;
 
-                var dob = document.titlesearch.keyword;
-                typeInOK = true;
-                if (dob.value.indexOf('%b610054') == 0 && dob.value.length > 18) {
-                    document.titlesearch.keyword.value = dob.value.substring(8, 18);
-                    document.titlesearch.search_mode[4].checked = true;
-                }
-
-                if (document.titlesearch.search_mode[0].checked) {
-                    var keyword = document.titlesearch.keyword.value;
-                    var keywordLowerCase = keyword.toLowerCase();
-                    document.titlesearch.keyword.value = keywordLowerCase;
-                }
-
-                if (document.titlesearch.search_mode[2].checked) {
-                    if (dob.value.length == 8) {
-                        dob.value = dob.value.substring(0, 4) + "-" + dob.value.substring(4, 6) + "-" + dob.value.substring(6, 8);
-                    }
-                    if (dob.value.length != 10) {
-                        alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.msgWrongDOB"/>');
-                        typeInOK = false;
-                    }
-                    return typeInOK;
-                } else {
-                    return true;
+            // only care when “DOB” mode is selected
+            if (mode === "search_dob") {
+                // ensure exact format yyyy-mm-dd
+                var re = /^\d{4}-\d{2}-\d{2}$/;
+                if (! re.test(dob.value)) {
+                    alert("Bad date format - please enter DOB as yyyy-mm-dd");
+                    dob.focus();
+                    return false;    // block the submit
                 }
             }
 
-            function searchInactive() {
-                document.titlesearch.ptstatus.value = "inactive";
-                if (checkTypeIn()) document.titlesearch.submit();
+            var dob = document.titlesearch.keyword;
+            typeInOK = true;
+            if (dob.value.indexOf('%b610054') == 0 && dob.value.length > 18) {
+                document.titlesearch.keyword.value = dob.value.substring(8, 18);
+                document.titlesearch.search_mode[4].checked = true;
             }
 
-            function searchAll() {
-                document.titlesearch.ptstatus.value = "";
-                if (checkTypeIn()) document.titlesearch.submit();
+            if (document.titlesearch.search_mode[0].checked) {
+                var keyword = document.titlesearch.keyword.value;
+                var keywordLowerCase = keyword.toLowerCase();
+                document.titlesearch.keyword.value = keywordLowerCase;
             }
 
-            function searchOutOfDomain() {
-                document.titlesearch.outofdomain.value = "true";
-                if (checkTypeIn()) document.titlesearch.submit();
+            if (document.titlesearch.search_mode[2].checked) {
+                if (dob.value.length == 8) {
+                    dob.value = dob.value.substring(0, 4) + "-" + dob.value.substring(4, 6) + "-" + dob.value.substring(6, 8);
+                }
+                if (dob.value.length != 10) {
+                    alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.msgWrongDOB"/>');
+                    typeInOK = false;
+                }
+                return typeInOK;
+            } else {
+                return true;
+            }
+        }
+
+        function searchInactive() {
+            document.titlesearch.ptstatus.value = "inactive";
+            if (checkTypeIn()) document.titlesearch.submit();
+        }
+
+        function searchAll() {
+            document.titlesearch.ptstatus.value = "";
+            if (checkTypeIn()) document.titlesearch.submit();
+        }
+
+        function searchOutOfDomain() {
+            document.titlesearch.outofdomain.value = "true";
+            if (checkTypeIn()) document.titlesearch.submit();
+        }
+
+    </script>
+
+    <%-- 
+        Auto‐hyphenate DOB as you type: inserts dashes after yyyy and MM 
+    --%>
+    <script type="text/javascript">
+    (function() {
+        var input     = document.getElementById('keyword');
+        var modeSelect = document.getElementById('search_mode');
+
+        function autoHyphenateDOB() {
+            // only run when DOB mode is selected
+            if (modeSelect.value !== 'search_dob') return;
+
+            // strip out anything but digits
+            var digits = input.value.replace(/\D/g, '');
+
+            // build yyyy-MM-dd
+            if (digits.length > 4) {
+                digits = digits.slice(0,4) + '-' + digits.slice(4);
+            }
+            if (digits.length > 7) {
+                digits = digits.slice(0,7) + '-' + digits.slice(7,9);
             }
 
-        </script>
+            input.value = digits;
+        }
 
-            <%-- <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/demographic/searchdemographicstyle.css"  />--%>
-        <script src="${pageContext.request.contextPath}/library/jquery/jquery-3.6.4.min.js"
-                type="text/javascript"></script>
-        <script src="${pageContext.request.contextPath}/library/bootstrap/3.0.0/js/bootstrap.min.js"
-                type="text/javascript"></script>
-        <link rel="stylesheet" type="text/css"
-              href="${pageContext.request.contextPath}/library/jquery/jquery-ui-1.12.1.min.css"/>
-        <link href="${pageContext.request.contextPath}/library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet"
-              type="text/css"/>
-        <link rel="stylesheet" type="text/css" media="all"
-              href="${pageContext.request.contextPath}/share/css/searchBox.css"/>
-    </head>
+        // attach listener to the keyword field
+        input.addEventListener('input', autoHyphenateDOB);
+
+        // when switching modes, remove hyphens if not in DOB mode
+        modeSelect.addEventListener('change', function() {
+            if (modeSelect.value !== 'search_dob') {
+                input.value = input.value.replace(/-/g, '');
+            }
+        });
+    })();
+    </script>
+
+    <script src="${pageContext.request.contextPath}/library/jquery/jquery-3.6.4.min.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/library/bootstrap/3.0.0/js/bootstrap.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/library/jquery/jquery-ui-1.12.1.min.css"/>
+    <link href="${pageContext.request.contextPath}/library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/share/css/searchBox.css"/>
+</head>
     <body onload="setfocus()">
     <div class="container">
         <h2 style="margin:auto 15px;">
