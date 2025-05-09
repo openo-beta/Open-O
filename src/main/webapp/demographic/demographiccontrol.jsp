@@ -117,6 +117,7 @@
                         GregorianCalendar cal = new GregorianCalendar(yearInt, monthInt, dayInt);
                         matchingDemographicParameters = new MatchingDemographicParameters();
                         matchingDemographicParameters.setBirthDate(cal);
+                        // No alert needed in production
                     } else {
                         // Invalid date components, set to empty search that will return no results
                         fieldname = "demographic_no";
