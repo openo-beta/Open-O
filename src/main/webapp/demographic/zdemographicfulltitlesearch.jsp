@@ -94,30 +94,6 @@
                 alert("Date format must be YYYY-MM-DD");
                 return false;
             }
-            
-            // Basic validation
-            var year = parseInt(dobValue.substring(0, 4), 10);
-            var month = parseInt(dobValue.substring(4, 6), 10);
-            var day = parseInt(dobValue.substring(6, 8), 10);
-            
-            if (isNaN(year) || isNaN(month) || isNaN(day)) {
-                alert("Date must contain only numbers in format YYYY-MM-DD");
-                return false;
-            }
-            
-            // Only validate that the date format is correct and values are in valid ranges
-            // Don't restrict by year - allow any year including historical dates like 1111-11-11
-            if (month < 1 || month > 12 || day < 1 || day > 31) {
-                alert("Please enter a valid date in format YYYY-MM-DD");
-                return false;
-            }
-            
-            // Check for valid days in month
-            var daysInMonth = new Date(year, month, 0).getDate();
-            if (day > daysInMonth) {
-                alert("Invalid day for the selected month. Please enter a valid date.");
-                return false;
-            }
         }
         return true;
     }
