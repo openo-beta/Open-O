@@ -61,6 +61,26 @@
         document.titlesearch.outofdomain.value = "true";
         if (checkTypeIn()) document.titlesearch.submit();
     }
+    
+    function formatDateInput(input) {
+        // Remove any non-digit characters
+        var value = input.value.replace(/\D/g, '');
+        
+        // Format as YYYY-MM-DD
+        if (value.length > 4) {
+            value = value.substring(0, 4) + '-' + value.substring(4);
+        }
+        if (value.length > 7) {
+            value = value.substring(0, 7) + '-' + value.substring(7);
+        }
+        
+        // Limit to 10 characters (YYYY-MM-DD)
+        if (value.length > 10) {
+            value = value.substring(0, 10);
+        }
+        
+        input.value = value;
+    }
 
 </script>
 <div class="searchBox">
@@ -107,7 +127,8 @@
             </select>
 
             <input class="wideInput form-control" type="search" placeholder="Search Patient" NAME="keyword"
-                   VALUE="<%=StringEscapeUtils.escapeHtml(keyWord)%>" SIZE="17" MAXLENGTH="100">
+                   VALUE="<%=StringEscapeUtils.escapeHtml(keyWord)%>" SIZE="17" MAXLENGTH="100"
+                   oninput="if(document.titlesearch.search_mode.value === 'search_dob') formatDateInput(this);">
 
 
             <INPUT TYPE="hidden" NAME="orderby" VALUE="last_name, first_name">

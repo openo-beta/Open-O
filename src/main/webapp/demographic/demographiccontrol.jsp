@@ -95,10 +95,15 @@
             fieldname = "year_of_birth " + regularexp + " ?" + " and month_of_birth " + regularexp + " ?" + " and date_of_birth ";
 
             try {
-                String year = keyword.substring(0, 4);
-                String month = keyword.substring(4, 6);
-                String day = keyword.substring(6);
-
+                // Remove any hyphens from the keyword to handle formatted input
+                String cleanKeyword = keyword.replace("-", "");
+                
+                String year = cleanKeyword.substring(0, 4);
+                String month = cleanKeyword.substring(4, 6);
+                String day = cleanKeyword.substring(6);
+                
+                alert("Testing changes: Try to parse the date format");
+                
                 GregorianCalendar cal = new GregorianCalendar(Integer.parseInt(year), Integer.parseInt(month) - 1, Integer.parseInt(day));
                 matchingDemographicParameters = new MatchingDemographicParameters();
                 matchingDemographicParameters.setBirthDate(cal);
