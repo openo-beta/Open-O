@@ -99,6 +99,10 @@ public class Security extends AbstractModel<Integer> {
 	private Date lastUpdateDate;
 	
 	private String lastUpdateUser;
+
+	private boolean usingMfa;
+
+	private String mfaSecret;
 	
 	
 	/** default constructor */
@@ -218,6 +222,7 @@ public class Security extends AbstractModel<Integer> {
 	/**
 	 * @return true if inputed password equals password in the DB, false otherwise.
 	 */
+	@Deprecated
 	public boolean checkPassword(String inputedPassword) {
 		if (password == null) return (false);
 
@@ -303,5 +308,25 @@ public class Security extends AbstractModel<Integer> {
 	}
 	public void setDelagateOneIdEmail(String delagateOneIdEmail) {
 		this.delagateOneIdEmail = delagateOneIdEmail;
+	}
+
+	public boolean isUsingMfa() {
+		return usingMfa;
+	}
+
+	public void setUsingMfa(boolean mfaEnabled) {
+		this.usingMfa = mfaEnabled;
+	}
+
+	public void setMfaSecret(String secret) {
+		this.mfaSecret = secret;
+	}
+
+	public String getMfaSecret() {
+		return this.mfaSecret;
+	}
+
+	public boolean isMfaRegistrationNeeded() {
+		return this.mfaSecret == null || this.mfaSecret.isEmpty();
 	}
 }
