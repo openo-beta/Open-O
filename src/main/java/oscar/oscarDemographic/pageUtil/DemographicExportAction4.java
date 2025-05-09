@@ -1104,6 +1104,11 @@ public class DemographicExportAction4 extends Action {
 								summary = Util.addSummary(summary, "Diagnosis", isu.getIssue().getDescription());
 							}
 						}
+
+						ResidualInformation residualInformation = Util.fillResidualInfoSummary(summary);
+						if (residualInformation != null) {
+							rFact.addNewResidualInfo().set(residualInformation);
+						}
 					//	rFact.setCategorySummaryLine(summary);
 					}
 				}
