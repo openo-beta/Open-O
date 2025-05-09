@@ -58,21 +58,6 @@
         }
 
         function checkTypeIn() {
-            var form = document.titlesearch;
-            var mode = form.search_mode.value;
-            var dob  = form.keyword;
-
-            // only care when “DOB” mode is selected
-            if (mode === "search_dob") {
-                // ensure exact format yyyy-mm-dd
-                var re = /^\d{4}-\d{2}-\d{2}$/;
-                if (! re.test(dob.value)) {
-                    alert("Bad date format - please enter DOB as yyyy-mm-dd");
-                    dob.focus();
-                    return false;    // block the submit
-                }
-            }
-
             var dob = document.titlesearch.keyword;
             typeInOK = true;
             if (dob.value.indexOf('%b610054') == 0 && dob.value.length > 18) {
