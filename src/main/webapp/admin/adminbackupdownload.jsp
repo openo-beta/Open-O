@@ -27,13 +27,15 @@
 
 <%@ page contentType="text/html; charset=UTF-8" errorPage="/errorpage.jsp" %>
 <%@ page import="
-    java.io.File,
-    java.net.URLEncoder,
-    java.util.Arrays,
-    oscar.util.FileSortByDate,
-    oscar.util.OscarProperties,
-    org.apache.commons.io.FileUtils
-" %>
+    java.util.*,
+    oscar.*,
+    java.io.*,
+    java.net.*,
+    oscar.util.*,
+    org.apache.commons.io.FileUtils"
+    errorPage="/errorpage.jsp" 
+%>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
