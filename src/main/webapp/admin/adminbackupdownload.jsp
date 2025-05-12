@@ -33,25 +33,29 @@
     java.net.*,
     oscar.util.*,
     org.apache.commons.io.FileUtils"
-    errorPage="/errorpage.jsp" 
+    errorPage="/errorpage.jsp"
 %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%
-    // Security check
-    String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
+    // --- Security check with null-safe session attributes ---
+    String userRole = String.valueOf(session.getAttribute("userrole"));
+    String userName = String.valueOf(session.getAttribute("user"));
+    String roleName$ = userRole + "," + userName;
     boolean authed = true;
 %>
 <security:oscarSec
     roleName="<%= roleName$ %>"
     objectName="_admin,_admin.backup"
-    rights="r" reverse="true">
-    <% 
-        authed = false;
-        response.sendRedirect("../securityError.jsp?type=_admin&type=_admin.backup");
-    %>
+    rights="r"
+    reverse="true">
+  <% 
+      authed = false;
+      response.sendRedirect("../securityError.jsp?type=_admin&type=_admin.backup");
+  %>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -60,8 +64,8 @@
 %>
 
 <%
-    // Load backup path
-    java.util.Properties oscarVariables = OscarProperties.getInstance();
+    // --- Load backup_path from OscarProperties singleton ---
+    Properties oscarVariables = OscarProperties.getInstance();
     String backuppath = oscarVariables.getProperty("backup_path");
     session.setAttribute("backupfilepath", backuppath);
 
@@ -70,83 +74,84 @@
 %>
 
 <html>
-<head>
+  <head>
     <title>Admin Backup Download</title>
     <link href="<%= request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
     <link href="<%= request.getContextPath() %>/css/font-awesome.min.css" rel="stylesheet">
-</head>
-<body>
+  </head>
+  <body>
     <h3>
       <fmt:setBundle basename="oscarResources"/>
       <fmt:message key="admin.admin.btnAdminBackupDownload"/>
     </h3>
 
-<% if (exists) { %>
-    <div class="well">
-      <table class="table table-striped table-condensed">
-        <thead>
-          <tr>
-            <th>File Name</th>
-            <th>Size</th>
-          </tr>
-        </thead>
-        <tbody>
-<%
-    // Validate backup_path
-    if (backuppath == null || backuppath.isEmpty()) {
-        String errorMessage = "Unable to find the key backup_path in the properties file. " +
-                              "Please check the value of this key or add it if it is missing.";
-        request.setAttribute("errorMessage", errorMessage);
-        request.getRequestDispatcher("/error.jsp").forward(request, response);
-        return;
-    }
+    <% if (exists) { %>
+      <div class="well">
+        <table class="table table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>File Name</th>
+              <th>Size</th>
+            </tr>
+          </thead>
+          <tbody>
+          <%
+              // Validate backup_path
+              if (backuppath == null || backuppath.isEmpty()) {
+                  request.setAttribute("errorMessage",
+                      "backup_path is missing in properties; please configure it.");
+                  request.getRequestDispatcher("/error.jsp").forward(request, response);
+                  return;
+              }
 
-    // List and sort
-    File[] contents = dir.listFiles();
-    if (contents == null || contents.length == 0) {
-        throw new Exception(
-          "Unable to find any files in the directory " + backuppath +
-          ". Please modify backup_path in your properties file if this is incorrect."
-        );
-    }
-    Arrays.sort(contents, new FileSortByDate());
+              // List, sort & display
+              File[] contents = dir.listFiles();
+              if (contents == null || contents.length == 0) {
+                  throw new Exception(
+                    "No files found in directory " + backuppath +
+                    ". Please correct backup_path if necessary."
+                  );
+              }
+              Arrays.sort(contents, new FileSortByDate());
 
-    // Output rows
-    for (File f : contents) {
-        String name = f.getName();
-        if (f.isDirectory() || name.equals("BackupClient.class") || name.startsWith(".")) {
-            continue;
-        }
+              for (File f : contents) {
+                  String name = f.getName();
+                  if (f.isDirectory() ||
+                      name.equals("BackupClient.class") ||
+                      name.startsWith(".")) {
+                      continue;
+                  }
 
-        String encoded = URLEncoder.encode(name, "UTF-8");
-        long bytes = f.length();
-        String displaySize = FileUtils.byteCountToDisplaySize(bytes);
+                  String encoded = URLEncoder.encode(name, "UTF-8");
+                  long bytes = f.length();
+                  String displaySize = FileUtils.byteCountToDisplaySize(bytes);
 
-        out.println(
-          "<tr>" +
-            "<td>" +
-              "<a href=\"" + request.getContextPath() +
-                "/servlet/BackupDownload?filename=" + encoded + "\">" +
-                name +
-              "</a>" +
-            "</td>" +
-            "<td align=\"right\" title=\"" + bytes + " bytes\">" +
-              displaySize +
-            "</td>" +
-          "</tr>"
-        );
-    }
-%>
-        </tbody>
-      </table>
-    </div>
-<% } else { %>
-    <div class="alert alert-error">
-      <strong>Warning!</strong>
-      It appears that your backup directory does not exist or the path is invalid.
-      Please check <i>backup_path</i> in your properties file.
-    </div>
-<% } %>
+                  out.println(
+                    "<tr>" +
+                      "<td>" +
+                        "<a href=\"" + request.getContextPath() +
+                          "/servlet/BackupDownload?filename=" + encoded + "\">" +
+                          name +
+                        "</a>" +
+                      "</td>" +
+                      "<td align=\"right\" title=\"" + bytes + " bytes\">" +
+                        displaySize +
+                      "</td>" +
+                    "</tr>"
+                  );
+              }
+          %>
+          </tbody>
+        </table>
+      </div>
 
-</body>
+    <% } else { %>
+      <div class="alert alert-error">
+        <strong>Warning!</strong>
+        Your backup directory does not exist or path is invalid.
+        Please check <i>backup_path</i> in your properties file.
+      </div>
+    <% } %>
+
+  </body>
 </html>
