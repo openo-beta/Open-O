@@ -103,9 +103,9 @@ public final class LoginCheckLoginBean {
 			sPin = "";
 		}
 
-		if (isWAN() && security.getBRemotelockset() != null && security.getBRemotelockset().intValue() == 1 && (!sPin.equals(security.getPin()) || pin.length() < 3)) {
+		if (!security.isUsingMfa() && isWAN() && security.getBRemotelockset() != null && security.getBRemotelockset().intValue() == 1 && (!sPin.equals(security.getPin()) || pin.length() < 3)) {
 			return cleanNullObj(LOG_PRE + "Pin-remote needed: " + username);
-		} else if (!isWAN() && security.getBLocallockset() != null && security.getBLocallockset().intValue() == 1 && (!sPin.equals(security.getPin()) || pin.length() < 3)) {
+		} else if (!security.isUsingMfa() && !isWAN() && security.getBLocallockset() != null && security.getBLocallockset().intValue() == 1 && (!sPin.equals(security.getPin()) || pin.length() < 3)) {
 			return cleanNullObj(LOG_PRE + "Pin-local needed: " + username);
 		}
 

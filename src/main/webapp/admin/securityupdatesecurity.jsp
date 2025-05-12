@@ -143,6 +143,19 @@
 	 */
 	function handleMfaChange(checkbox) {
 		updateMfaElementsVisibility(checkbox.checked, checkbox.checked);
+		updatePinComponentsAccess(checkbox.checked);
+	}
+
+	function updatePinComponentsAccess(checked) {
+		let pinCheckbox = document.getElementsByName('b_RemoteLockSet')
+		let pinConfCheckbox = document.getElementsByName('b_LocalLockSet')
+		let pinInput = document.getElementsByName('pin')
+		let pinConfInput = document.getElementsByName('conPin')
+
+		pinCheckbox[0].disabled = checked;
+		pinConfCheckbox[0].disabled = checked;
+		pinInput[0].disabled = checked;
+		pinConfInput[0].disabled = checked;
 	}
 
 	/**
@@ -258,18 +271,18 @@
 	<tr>
 		<td align="right" nowrap><bean:message
 			key="admin.securityrecord.formRemotePIN" />:</td>
-		<td><input type="checkbox" name="b_RemoteLockSet" value="1"
+		<td><input type="checkbox" name="b_RemoteLockSet" value="1" <%=security.isUsingMfa() ? "disabled" : ""%>
 			<%= security.getBRemotelockset()==0?"":"checked" %>>
 		<bean:message
-			key="admin.securityrecord.formLocalPIN" />: <input type="checkbox" name="b_LocalLockSet"
-			value="1" <%= security.getBLocallockset()==0?"":"checked" %>>
+			key="admin.securityrecord.formLocalPIN" />: <input type="checkbox" name="b_LocalLockSet" <%=security.isUsingMfa() ? "disabled" : ""%>
+															   value="1" <%= security.getBLocallockset()==0?"":"checked" %>>
 		</td>
 	</tr>
 	<!-- new security -->
 	<tr>
 		<td align="right" nowrap><bean:message
 			key="admin.securityrecord.formPIN" />:</td>
-		<td><input type="password" name="pin" value="****" size="6" maxlength="6"> <font size="-2">(<bean:message
+		<td><input type="password" name="pin" value="****" <%=security.isUsingMfa() ? "disabled" : ""%> size="6" maxlength="6"> <font size="-2">(<bean:message
 			key="admin.securityrecord.msgAtLeast" />
 			<%=op.getProperty("password_pin_min_length")%> <bean:message
 			key="admin.securityrecord.msgDigits" />)</font>
@@ -278,7 +291,7 @@
 	<tr>
 		<td align="right"><bean:message
 			key="admin.securityrecord.formConfirm" />:</td>
-		<td><input type="password" name="conPin" value="****" size="6" maxlength="6" /></td>
+		<td><input type="password" name="conPin" value="****" <%=security.isUsingMfa() ? "disabled" : ""%> size="6" maxlength="6" /></td>
 	</tr>
 	
 	<%

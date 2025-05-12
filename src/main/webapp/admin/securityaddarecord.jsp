@@ -193,6 +193,20 @@
 		} else {
 			mfaNote.style.display = 'none';
 		}
+
+		updatePinComponentsAccess(checkbox.checked);
+	}
+
+	function updatePinComponentsAccess(checked) {
+		let pinCheckbox = document.getElementsByName('b_RemoteLockSet')
+		let pinConfCheckbox = document.getElementsByName('b_LocalLockSet')
+		let pinInput = document.getElementsByName('pin')
+		let pinConfInput = document.getElementsByName('conPin')
+
+		pinCheckbox[0].disabled = checked;
+		pinConfCheckbox[0].disabled = checked;
+		pinInput[0].disabled = checked;
+		pinConfInput[0].disabled = checked;
 	}
 
 //-->
