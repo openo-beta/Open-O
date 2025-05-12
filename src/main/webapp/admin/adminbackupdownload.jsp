@@ -94,10 +94,11 @@
 <%
     // Validate backup_path
     if (backuppath == null || backuppath.isEmpty()) {
-        throw new Exception(
-          "Unable to find the key backup_path in the properties file. " +
-          "Please check the value of this key or add it if it is missing."
-        );
+        String errorMessage = "Unable to find the key backup_path in the properties file. " +
+                              "Please check the value of this key or add it if it is missing.";
+        request.setAttribute("errorMessage", errorMessage);
+        request.getRequestDispatcher("/error.jsp").forward(request, response);
+        return;
     }
 
     // List and sort
