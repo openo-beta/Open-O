@@ -159,7 +159,7 @@
                 $("#next").bind('click', function (event) {
                     var page = $("#pageEl").val();
                     var nextPage = parseInt(page) + 1;
-                    location.href = encodeURIComponent('<%=reloadUrl%>') + '&page=' + nextPage + '&pageSize=' + encodeURIComponent($("#pageSize").val());
+                    location.href = '<%=reloadUrl%>' + '&page=' + nextPage + '&pageSize=' + encodeURIComponent($("#pageSize").val());
                 });
 
                 $("#pageSize").bind('change', function (event) {
