@@ -47,12 +47,21 @@
 			<param-name>actionPackages</param-name>
 			<param-value>org.oscarehr,oscar</param-value>
 		</init-param>
+		<init-param>
+			<param-name>struts.devMode</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<init-param>
+			<param-name>struts.configuration.files</param-name>
+			<param-value>struts-default.xml,struts-plugin.xml,struts.xml</param-value>
+		</init-param>
 	</filter>
 	<filter-mapping>
 		<filter-name>struts2</filter-name>
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
 	</filter-mapping>
     <filter>
             <filter-name>WebServiceSessionInvalidatingFilter</filter-name>
