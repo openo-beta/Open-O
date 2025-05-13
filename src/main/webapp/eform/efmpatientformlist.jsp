@@ -153,7 +153,7 @@
                     if (prevPage < 1) {
                         return false;
                     }
-                    location.href = encodeURIComponent('<%=reloadUrl%>') + '&page=' + prevPage + '&pageSize=' + encodeURIComponent($("#pageSize").val());
+                    location.href = '<%=reloadUrl%>' + '&page=' + prevPage + '&pageSize=' + encodeURIComponent($("#pageSize").val());
                 });
 
                 $("#next").bind('click', function (event) {
