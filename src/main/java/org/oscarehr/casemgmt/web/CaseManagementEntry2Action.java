@@ -110,6 +110,17 @@ public class CaseManagementEntry2Action extends ActionSupport {
             return null;
         }
         String method = request.getParameter("method");
+        // Check for alternate parameter names used by Struts 2
+        if (method == null) {
+            method = request.getParameter("action");
+        }
+        if (method == null) {
+            method = request.getParameter("dispatch");
+        }
+        if (method == null) {
+            method = request.getParameter("parameterValue");
+        }
+        
         if ("setUpMainEncounter".equals(method)) {
             return setUpMainEncounter();
         } else if ("isNoteEdited".equals(method)) {
@@ -3243,6 +3254,7 @@ public class CaseManagementEntry2Action extends ActionSupport {
         String separator = "\n-----[[" + d + "]]-----\n";
         for (CaseManagementIssue issue : issueSet) {
             String code = issue.getIssue().getCode();
+            text = new StringBuilder(); // Reset text for each issue
             if (code.equals("OMeds")) {
                 text.append(cpp.getFamilyHistory());
                 text.append(separator);
