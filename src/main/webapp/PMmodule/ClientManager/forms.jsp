@@ -110,7 +110,7 @@
         else
             methodName = "printPreview_survey";
 
-        location.href = "<%=request.getContextPath() %>/PMmodule/Forms/SurveyExecute.do?method=" + methodName + "&formId=" + formId + "&formInstanceId=" + sanitizedId + "&clientId=" + '<c:out value="${client.demographicNo}"/>';
+        location.href = "<%=request.getContextPath() %>/PMmodule/Forms/SurveyExecute.do?method=" + methodName + "&formId=" + encodeURIComponent(formId) + "&formInstanceId=" + sanitizedId + "&clientId=" + '<c:out value="${client.demographicNo}"/>';
     }
 
     function createIntake(clientId, nodeId) {
