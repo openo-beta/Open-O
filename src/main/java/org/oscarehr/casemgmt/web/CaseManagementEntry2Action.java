@@ -946,13 +946,22 @@ public class CaseManagementEntry2Action extends ActionSupport {
         Set<CaseManagementIssue> issueSet = new HashSet<CaseManagementIssue>();
         Set<CaseManagementNote> noteSet = new HashSet<CaseManagementNote>();
         String[] issue_id = request.getParameterValues("issue_id");
-        CheckBoxBean[] existingCaseIssueList = sessionFrm.getIssueCheckList();
         ArrayList<CheckBoxBean> caseIssueList = new ArrayList<CheckBoxBean>();
-
-        // copy existing issues for sessionfrm
-        for (int idx = 0; idx < existingCaseIssueList.length; ++idx) {
-            caseIssueList.add(existingCaseIssueList[idx]);
+        CheckBoxBean[] existingCaseIssueList = null;
+        
+        if (sessionFrm != null) {
+           existingCaseIssueList = sessionFrm.getIssueCheckList();
         }
+
+
+if (existingCaseIssueList != null) {
+    // copy existing issues for sessionfrm
+    for (CheckBoxBean bean : existingCaseIssueList) {
+        caseIssueList.add(bean);
+    }
+} else {
+    logger.info("No existingCaseIssueList found in session form — proceeding with empty list.");
+}     
 
         // first we check if any notes have been removed
         Set<CaseManagementIssue> noteIssues = note.getIssues();

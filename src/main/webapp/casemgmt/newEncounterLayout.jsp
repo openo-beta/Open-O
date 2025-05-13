@@ -762,6 +762,19 @@
                     src="<c:out value="${ctx}/oscarEncounter/graphics/busy.gif"/>"
                     alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnWorking"/>"></span>
             </div>
+<fmt:setBundle basename="oscarResources"/>
+
+<c:set var="formKey" value="caseManagementEntryForm${demographicNo}" />
+<c:set var="sessionFrm" value="${sessionScope[formKey]}" />
+
+<c:forEach var="checkbox" items="${sessionFrm.issueCheckList}">
+    <input type="checkbox"
+           name="issue_id"
+           value="${checkbox.issue.issue_id}"
+           <c:if test="${checkbox.checked == 'on'}">checked</c:if> />
+    ${checkbox.issue.description}
+</c:forEach>
+
         </form>
     </div>
     <div id="printOps" class="printOps">
