@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Computer Science
  * LeadLab
@@ -305,7 +305,7 @@ public class RxWebServiceTest {
         assertEquals((String) resp.getDrugs().get(0).getBrandName(), "foobar");
 
         assertNotNull(resp.getPrescription());
-        assertEquals((int)resp.getPrescription().getProviderNo(), 1);
+        assertEquals((int) resp.getPrescription().getProviderNo(), 1);
         assertEquals((int) resp.getPrescription().getDemographicNo(), 1);
         assertEquals(resp.getPrescription().getTextView(), "SOME TEXT");
     }
@@ -323,7 +323,7 @@ public class RxWebServiceTest {
         assertEquals(resp.getDrugs().size(), 2);
 
         assertNotNull(resp.getPrescription());
-        assertEquals((int)resp.getPrescription().getProviderNo(), 1);
+        assertEquals((int) resp.getPrescription().getProviderNo(), 1);
         assertEquals((int) resp.getPrescription().getDemographicNo(), 1);
         assertEquals(resp.getPrescription().getTextView(), "SOME TEXT");
     }
@@ -353,7 +353,7 @@ public class RxWebServiceTest {
     }
 
     @Test(expected = AccessDeniedException.class)
-    public void testShouldDenyAccess(){
+    public void testShouldDenyAccess() {
 
         // demographic no of 20 will cause access denied in test classes
         this.service.prescribe(null, 20);
@@ -361,7 +361,7 @@ public class RxWebServiceTest {
     }
 
     @Test
-    public void testItShouldHandleNullDrugListParameter(){
+    public void testItShouldHandleNullDrugListParameter() {
 
         PrescriptionResponse resp = this.service.prescribe(null, 1);
 
@@ -370,7 +370,7 @@ public class RxWebServiceTest {
     }
 
     @Test
-    public void testItShouldHandleInvalidDemographicParametert(){
+    public void testItShouldHandleInvalidDemographicParametert() {
 
         List<DrugTo1> toPrescribe = new ArrayList<DrugTo1>();
         toPrescribe.add(this.getTestTransferObject());
@@ -382,7 +382,7 @@ public class RxWebServiceTest {
     }
 
     @Test
-    public void testItShouldHandeFailureToCreatePrescription(){
+    public void testItShouldHandeFailureToCreatePrescription() {
 
         List<DrugTo1> toPrescribe = new ArrayList<DrugTo1>();
         toPrescribe.add(this.getTestTransferObject());
@@ -396,7 +396,7 @@ public class RxWebServiceTest {
     }
 
     @Test
-    public void testBasicHistory(){
+    public void testBasicHistory() {
 
         DrugSearchResponse resp = this.service.history(1, 1);
         assertNotNull(resp);
@@ -405,7 +405,7 @@ public class RxWebServiceTest {
     }
 
     @Test
-    public void testEmptyHistory(){
+    public void testEmptyHistory() {
 
         DrugSearchResponse resp = this.service.history(6, 1); //id > 5 will trigger empty list.
 
@@ -415,12 +415,11 @@ public class RxWebServiceTest {
     }
 
     @Test(expected = AccessDeniedException.class)
-    public void testShouldHandleAccessDenied(){
+    public void testShouldHandleAccessDenied() {
 
         DrugSearchResponse resp = this.service.history(1, 6); //demo > 5 will trigger access denied
 
     }
-
 
 
     // ============ HELPER TEST METHODS ==============
@@ -614,9 +613,9 @@ public class RxWebServiceTest {
             return drugId == 1 && demo == 1;
         }
 
-        public PrescriptionDrugs prescribe(LoggedInInfo info, List<Drug> drugs, Integer demoNo){
+        public PrescriptionDrugs prescribe(LoggedInInfo info, List<Drug> drugs, Integer demoNo) {
 
-            if(drugs.get(0).getId() > 1) return null;
+            if (drugs.get(0).getId() > 1) return null;
 
             Prescription p = new Prescription();
 
@@ -629,15 +628,15 @@ public class RxWebServiceTest {
 
         }
 
-        public List<Drug> getHistory(Integer id, LoggedInInfo info, Integer demographicNo){
+        public List<Drug> getHistory(Integer id, LoggedInInfo info, Integer demographicNo) {
 
             // case for supporting tests, only return an empty list if demo > 5.
 
-            if(id > 5) {
+            if (id > 5) {
 
                 return new ArrayList<Drug>();
 
-            } else{
+            } else {
 
                 List<Drug> toReturn = new ArrayList<Drug>();
 

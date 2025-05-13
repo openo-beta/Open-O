@@ -1,20 +1,21 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -41,7 +42,6 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import oscar.util.StringUtils;
 
 /**
- *
  * @author jaygallagher
  */
 @Entity
@@ -52,118 +52,118 @@ public class WCB {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;//  | int(1)           ||
     private //      | int(10)          ||
-            int billing_no;
+    int billing_no;
     private //      | int(10) unsigned ||
-            int demographic_no;
+    int demographic_no;
     private //    | int(10) unsigned ||
-            String provider_no;
+    String provider_no;
     @Temporal(value = javax.persistence.TemporalType.TIMESTAMP)
     private //    | int(10) unsigned ||
-            Date formCreated;
+    Date formCreated;
     @Temporal(value = javax.persistence.TemporalType.TIMESTAMP)
     private //   | datetime         ||
-            Date formEdited;
+    Date formEdited;
     private //  | datetime         ||
-            String w_reporttype;
+    String w_reporttype;
     private //    | char(1)          ||
-            String bill_amount;
+    String bill_amount;
     private //       | varchar(10)      ||
-            String w_fname;
+    String w_fname;
     private //           | varchar(12)      ||
-            String w_lname;
+    String w_lname;
     private //        | varchar(18)      ||
-            String w_mname;
+    String w_mname;
     private //         | char(1)          ||
-            String w_gender;
+    String w_gender;
     @Temporal(value = javax.persistence.TemporalType.DATE)
     private //         | char(1)          ||
-            Date w_dob;
+    Date w_dob;
     private //       | date             ||
-            String w_address;
+    String w_address;
     private //        | varchar(25)      ||
-            String w_city;
+    String w_city;
     private //         | varchar(20)      ||
-            String w_postal;
+    String w_postal;
     private //      | varchar(6)       ||
-            String w_area;
+    String w_area;
     private //      | char(3)          ||
-            String w_phone;
+    String w_phone;
     private //      | varchar(7)       ||
-            String w_phn;
+    String w_phn;
     private //      | varchar(12)      ||
-            String w_empname;
+    String w_empname;
     private //      | varchar(25)      ||
-            String w_emparea;
+    String w_emparea;
     private //      | char(3)          ||
-            String w_empphone;
+    String w_empphone;
     private //      | varchar(7)       ||
-            String w_wcbno;
+    String w_wcbno;
     private //      | varchar(25)      ||
-            String w_opaddress;
+    String w_opaddress;
     private //      | varchar(25)      ||
-            String w_opcity;
+    String w_opcity;
     private //   | varchar(25)      ||
-            String w_rphysician;
+    String w_rphysician;
     private //   | char(1)          ||
-            int w_duration;
+    int w_duration;
     private //  | int(1)           || 
-            String w_problem;
+    String w_problem;
     @Temporal(value = javax.persistence.TemporalType.TIMESTAMP)
     private //   | varchar(160)     ||
-            Date w_servicedate;
+    Date w_servicedate;
     private //    | date             ||
-            String w_diagnosis;
+    String w_diagnosis;
     private //     | varchar(120)     ||
-            String w_icd9;
+    String w_icd9;
     private //     | varchar(5)       ||
-            String w_bp;
+    String w_bp;
     private //     | varchar(5)       ||
-            String w_side;
+    String w_side;
     private //     | char(2)          ||
-            String w_noi;
+    String w_noi;
     private //     | varchar(5)       ||
-            String w_work;
+    String w_work;
     @Temporal(value = javax.persistence.TemporalType.DATE)
     private //     | char(1)          ||
-            Date w_workdate;
+    Date w_workdate;
     private //   | date             ||
-            String w_clinicinfo;
+    String w_clinicinfo;
     private //    | text             ||
-            String w_capability;
+    String w_capability;
     private //   | char(1)          ||
-            String w_capreason;
+    String w_capreason;
     private // | varchar(240)     ||
-            String w_estimate;
+    String w_estimate;
     private //  | char(1)          ||
-            String w_rehab;
+    String w_rehab;
     private //  | char(1)          ||
-            String w_rehabtype;
+    String w_rehabtype;
     private //  | char(1)          ||
-            String w_wcbadvisor;
+    String w_wcbadvisor;
     private //  | char(1)          ||
-            String w_ftreatment;
+    String w_ftreatment;
     @Temporal(value = javax.persistence.TemporalType.TIMESTAMP)
     private //  | varchar(25)      ||
-            Date w_estimatedate;
+    Date w_estimatedate;
     private // | date             ||
-            String w_tofollow;
+    String w_tofollow;
     private //   | char(1)          ||
-            String w_payeeno;
+    String w_payeeno;
     private //   | varchar(10)      ||
-            String w_pracno;
+    String w_pracno;
     @Temporal(value = javax.persistence.TemporalType.DATE)
     private //   | varchar(10)      ||
-            Date w_doi;
+    Date w_doi;
     private // | date             ||
-            String status;
+    String status;
     private //  | char(1)          ||
-            String w_feeitem;
+    String w_feeitem;
     private //  | varchar(5)       ||
-            String w_extrafeeitem;
+    String w_extrafeeitem;
     private // | varchar(5)       ||
-            String w_servicelocation;
+    String w_servicelocation;
     private //| char(1)          ||
-            int formNeeded;
+    int formNeeded;
 
     public int getId() {
         return id;
@@ -657,8 +657,6 @@ public class WCB {
         if ((w_bp != null && w_bp.length() > 0) && !StringUtils.isNumeric(w_bp)) {
             errors.add("oscar.billing.CA.BC.billingBC.wcb.error.w_bp.numeric");
         }
-
-
 
 
         if ("1".equals(formNeeded)) {

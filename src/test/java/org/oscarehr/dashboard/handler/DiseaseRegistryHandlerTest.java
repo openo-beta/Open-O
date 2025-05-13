@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Computer Science
  * LeadLab
@@ -44,49 +44,49 @@ import org.oscarehr.util.SpringUtils;
 
 public class DiseaseRegistryHandlerTest {
 
-//	private static Logger logger = MiscUtils.getLogger();
-	private static DemographicDao demographicDao = (DemographicDao)SpringUtils.getBean(DemographicDao.class);
-	private DxresearchDAO dXdao = (DxresearchDAO)SpringUtils.getBean(DxresearchDAO.class);
-	Date now = new java.util.Date();
-	static Demographic demographic;
-	static String providerNo = "999998";
-	static List<Integer> demoNos = new ArrayList<Integer>();
-	private static DiseaseRegistryHandler diseaseRegistryHandler;
-	
+    //	private static Logger logger = MiscUtils.getLogger();
+    private static DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
+    private DxresearchDAO dXdao = (DxresearchDAO) SpringUtils.getBean(DxresearchDAO.class);
+    Date now = new java.util.Date();
+    static Demographic demographic;
+    static String providerNo = "999998";
+    static List<Integer> demoNos = new ArrayList<Integer>();
+    private static DiseaseRegistryHandler diseaseRegistryHandler;
+
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         SchemaUtils.restoreTable("dxresearch", "demographic", "lst_gender", "admission", "demographic_merged",
-        		"program", "health_safety", "provider", "providersite", "site", "program_team",
-        		"log", "Facility", "demographicExt", "measurements", "measurementType", "measurementsExt",
-        		"quickList", "icd9","ichppccode", "billing", "billingdetail");
-    	LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoAsCurrentClassAndMethod();
+                "program", "health_safety", "provider", "providersite", "site", "program_team",
+                "log", "Facility", "demographicExt", "measurements", "measurementType", "measurementsExt",
+                "quickList", "icd9", "ichppccode", "billing", "billingdetail");
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoAsCurrentClassAndMethod();
         Provider provider = new Provider();
         provider.setProviderNo(providerNo);
         for (int i = 0; i < 12; i++) {
-        	demographic = new Demographic();
-        	EntityDataGenerator.generateTestDataForModelClass(demographic);
-        	demographic.setDemographicNo(null);
-        	demographic.setProvider(provider);
-        	demographicDao.save(demographic);
-        	demoNos.add(demographic.getDemographicNo());
+            demographic = new Demographic();
+            EntityDataGenerator.generateTestDataForModelClass(demographic);
+            demographic.setDemographicNo(null);
+            demographic.setProvider(provider);
+            demographicDao.save(demographic);
+            demoNos.add(demographic.getDemographicNo());
         }
-        loggedInInfo.setLoggedInProvider( provider );
+        loggedInInfo.setLoggedInProvider(provider);
         diseaseRegistryHandler = new DiseaseRegistryHandler();
         diseaseRegistryHandler.setLoggedInInfo(loggedInInfo);
     }
-    
+
     @Test
     public void addDx() {
-    	String icd9code = "338.2";
-    	String icd9codesys = "icd9";
-    	for (Integer demoNo: demoNos) {
-    		diseaseRegistryHandler.addToDiseaseRegistry(demoNo, icd9code);
-    	}
-    	for (Integer demoNo: demoNos) {
-    		List<Dxresearch> list = dXdao.findByDemographicNoResearchCodeAndCodingSystem(demoNo, icd9code, icd9codesys);
-    		assertNotNull(list);
-    	}
+        String icd9code = "338.2";
+        String icd9codesys = "icd9";
+        for (Integer demoNo : demoNos) {
+            diseaseRegistryHandler.addToDiseaseRegistry(demoNo, icd9code);
+        }
+        for (Integer demoNo : demoNos) {
+            List<Dxresearch> list = dXdao.findByDemographicNoResearchCodeAndCodingSystem(demoNo, icd9code, icd9codesys);
+            assertNotNull(list);
+        }
     }
-    
+
 
 }

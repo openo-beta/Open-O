@@ -1,21 +1,21 @@
+//CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -40,9 +40,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -54,12 +54,10 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "answerGroup"
+        "answerGroup"
 })
 @XmlRootElement(name = "C9__Psychological_distress__Have_you_recently_felt_very_sad_or_low__")
 public class C9PsychologicalDistressHaveYouRecentlyFeltVerySadOrLow {
@@ -69,11 +67,9 @@ public class C9PsychologicalDistressHaveYouRecentlyFeltVerySadOrLow {
 
     /**
      * Gets the value of the answerGroup property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link AnswerGroup }
-     *     
+     *
+     * @return possible object is
+     * {@link AnswerGroup }
      */
     public AnswerGroup getAnswerGroup() {
         return answerGroup;
@@ -81,11 +77,9 @@ public class C9PsychologicalDistressHaveYouRecentlyFeltVerySadOrLow {
 
     /**
      * Sets the value of the answerGroup property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link AnswerGroup }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link AnswerGroup }
      */
     public void setAnswerGroup(AnswerGroup value) {
         this.answerGroup = value;

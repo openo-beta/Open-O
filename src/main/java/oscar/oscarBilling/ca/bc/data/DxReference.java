@@ -1,20 +1,21 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -46,14 +47,15 @@ import org.oscarehr.util.SpringUtils;
 import oscar.util.UtilDateUtilities;
 
 /**
- *
  * @author jay
  */
 public class DxReference {
     private static final Logger _log = MiscUtils.getLogger();
     DiagnosticCodeDao diagnosticCodeDao = SpringUtils.getBean(DiagnosticCodeDao.class);
 
-    /** Creates a new instance of DxReference */
+    /**
+     * Creates a new instance of DxReference
+     */
     public DxReference() {
     }
     //select dx_code1, dx_code2, dx_code3,service_date from billingmaster order by service_date desc;
@@ -69,29 +71,29 @@ public class DxReference {
      * method looks in a paitnest
      */
     @SuppressWarnings("unchecked")
-    public List<DxCode> getLatestDxCodes(String demo){
-       ArrayList<DxCode> list = new ArrayList<DxCode>();
-       String nsql ="select dx_code1, dx_code2, dx_code3,service_date from billingmaster where demographic_no = ? and billingstatus != 'D' order by service_date desc limit 10";
-       try {
+    public List<DxCode> getLatestDxCodes(String demo) {
+        ArrayList<DxCode> list = new ArrayList<DxCode>();
+        String nsql = "select dx_code1, dx_code2, dx_code3,service_date from billingmaster where demographic_no = ? and billingstatus != 'D' order by service_date desc limit 10";
+        try {
 
             PreparedStatement pstmt = DbConnectionFilter.getThreadLocalDbConnection().prepareStatement(nsql);
-            pstmt.setString(1,demo);
+            pstmt.setString(1, demo);
             ResultSet rs = pstmt.executeQuery();
-            Map<String,String> m = new HashMap<String,String>();
-            while (rs.next()){
+            Map<String, String> m = new HashMap<String, String>();
+            while (rs.next()) {
                 String sDate = rs.getString("service_date");
                 String[] dx = new String[3];
                 dx[0] = rs.getString("dx_code1");
                 dx[1] = rs.getString("dx_code2");
                 dx[2] = rs.getString("dx_code3");
-                Date sD = UtilDateUtilities.StringToDate(sDate,"yyyyMMdd") ;
-                _log.debug("THIS IS THE DATE: "+sDate +" DATE PARSED "+sD);
+                Date sD = UtilDateUtilities.StringToDate(sDate, "yyyyMMdd");
+                _log.debug("THIS IS THE DATE: " + sDate + " DATE PARSED " + sD);
 
-                for (int i = 0; i < dx.length; i++){
-                    if (dx[i] != null && !dx[i].trim().equals("")){
-                        DxCode code = new DxCode(sD,dx[i]);
-                        if (!m.containsKey(dx[i])){
-                            m.put(dx[i],dx[i]);
+                for (int i = 0; i < dx.length; i++) {
+                    if (dx[i] != null && !dx[i].trim().equals("")) {
+                        DxCode code = new DxCode(sD, dx[i]);
+                        if (!m.containsKey(dx[i])) {
+                            m.put(dx[i], dx[i]);
                             fillDxCodeDescrition(code);
                             list.add(code);
                         }
@@ -99,26 +101,25 @@ public class DxReference {
                 }
             }
             pstmt.close();
-       }catch (SQLException e) {
-          MiscUtils.getLogger().error("Error", e);
-       }
-       Collections.sort(list,Collections.reverseOrder());
+        } catch (SQLException e) {
+            MiscUtils.getLogger().error("Error", e);
+        }
+        Collections.sort(list, Collections.reverseOrder());
 
-       return list;
+        return list;
     }
 
-    private void fillDxCodeDescrition(DxCode code){
-         DiagnosticCode dxCode = diagnosticCodeDao.findByCode(code.getDx());
-         if(dxCode != null)
-         {
-        	 code.setDesc(dxCode.getDescription());
-         }
+    private void fillDxCodeDescrition(DxCode code) {
+        DiagnosticCode dxCode = diagnosticCodeDao.findByCode(code.getDx());
+        if (dxCode != null) {
+            code.setDesc(dxCode.getDescription());
+        }
     }
 
 
-    public class DxCode implements Comparable{
+    public class DxCode implements Comparable {
 
-        public DxCode(Date d, String dx){
+        public DxCode(Date d, String dx) {
             this.setDx(dx);
             this.setDate(d);
         }
@@ -143,26 +144,27 @@ public class DxReference {
             this.date = date;
         }
 
-        public void setDesc(String desc){
+        public void setDesc(String desc) {
             this.desc = desc;
         }
 
-        public String getDesc(){
+        public String getDesc() {
             return this.desc;
         }
 
 
-        public int getNumMonthSinceDate(){
-            return getNumMonths(date,Calendar.getInstance().getTime());
+        public int getNumMonthSinceDate() {
+            return getNumMonths(date, Calendar.getInstance().getTime());
         }
-        public int getNumMonthsSinceDate(Date d){
-            return getNumMonths(date,d);
+
+        public int getNumMonthsSinceDate(Date d) {
+            return getNumMonths(date, d);
         }
 
         private int getNumMonths(Date dStart, Date dEnd) {
             int i = 0;
-            try{
-                _log.debug("Getting the number of months between "+dStart.toString()+ " and "+dEnd.toString() );
+            try {
+                _log.debug("Getting the number of months between " + dStart.toString() + " and " + dEnd.toString());
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(dStart);
                 while (calendar.getTime().before(dEnd) || calendar.getTime().equals(dEnd)) {
@@ -170,8 +172,10 @@ public class DxReference {
                     i++;
                 }
                 i--;
-                if (i < 0) { i = 0; }
-            }catch (Exception e){
+                if (i < 0) {
+                    i = 0;
+                }
+            } catch (Exception e) {
                 _log.warn("Date was NULL in DxReference");
             }
             return i;
@@ -183,9 +187,9 @@ public class DxReference {
             if (d == null && date != null) return -1;
             if (d != null && date == null) return 1;
 
-            if (date.after(d)){
+            if (date.after(d)) {
                 return 1;
-            }else if (date.before(d)){
+            } else if (date.before(d)) {
                 return -1;
             }
             return 0;

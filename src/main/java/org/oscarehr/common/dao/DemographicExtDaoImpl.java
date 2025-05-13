@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -5,23 +6,23 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -54,8 +55,8 @@ public class DemographicExtDaoImpl extends AbstractDaoImpl<DemographicExt> imple
         }
 
         Query query = entityManager
-                .createQuery("SELECT d from DemographicExt d where d.demographicNo=? order by d.dateCreated DESC");
-        query.setParameter(0, demographicNo);
+                .createQuery("SELECT d from DemographicExt d where d.demographicNo=?1 order by d.dateCreated");
+        query.setParameter(1, demographicNo);
 
         @SuppressWarnings("unchecked")
         List<DemographicExt> results = query.getResultList();
@@ -84,9 +85,9 @@ public class DemographicExtDaoImpl extends AbstractDaoImpl<DemographicExt> imple
         }
 
         Query query = entityManager.createQuery(
-                "SELECT d from DemographicExt d where d.demographicNo=? and d.key = ? order by d.dateCreated DESC");
-        query.setParameter(0, demographicNo);
-        query.setParameter(1, key);
+                "SELECT d from DemographicExt d where d.demographicNo=?1 and d.key = ?2 order by d.dateCreated DESC");
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, key);
 
         @SuppressWarnings("unchecked")
         List<DemographicExt> results = query.getResultList();
@@ -111,9 +112,9 @@ public class DemographicExtDaoImpl extends AbstractDaoImpl<DemographicExt> imple
     public List<DemographicExt> getDemographicExtByKeyAndValue(String key, String value) {
 
         Query query = entityManager.createQuery(
-                "SELECT d from DemographicExt d where d.key = ? and d.value=? order by d.dateCreated DESC");
-        query.setParameter(0, key);
-        query.setParameter(1, value);
+                "SELECT d from DemographicExt d where d.key = ?1 and d.value=?2 order by d.dateCreated DESC");
+        query.setParameter(1, key);
+        query.setParameter(2, value);
         return query.getResultList();
     }
 
@@ -129,9 +130,9 @@ public class DemographicExtDaoImpl extends AbstractDaoImpl<DemographicExt> imple
         }
 
         Query query = entityManager.createQuery(
-                "SELECT d from DemographicExt d where d.demographicNo=? and d.key = ? order by d.dateCreated DESC, d.id DESC");
-        query.setParameter(0, demographicNo);
-        query.setParameter(1, key);
+                "SELECT d from DemographicExt d where d.demographicNo=?1 and d.key = ?2 order by d.dateCreated DESC, d.id DESC");
+        query.setParameter(1, demographicNo);
+        query.setParameter(2, key);
 
         @SuppressWarnings("unchecked")
         List<DemographicExt> results = query.getResultList();
@@ -216,8 +217,8 @@ public class DemographicExtDaoImpl extends AbstractDaoImpl<DemographicExt> imple
     public Map<String, String> getAllValuesForDemo(Integer demo) {
         Map<String, String> retval = new HashMap<String, String>();
         Query query = entityManager
-                .createQuery("SELECT d from DemographicExt d where d.demographicNo=? order by d.dateCreated");
-        query.setParameter(0, demo);
+                .createQuery("SELECT d from DemographicExt d where d.demographicNo=?1 order by d.dateCreated");
+        query.setParameter(1, demo);
 
         @SuppressWarnings("unchecked")
         List<DemographicExt> demographicExts = query.getResultList();
@@ -232,7 +233,7 @@ public class DemographicExtDaoImpl extends AbstractDaoImpl<DemographicExt> imple
 
     /**
      * This Method is used to add a key value pair for a patient
-     * 
+     *
      * @param providerNo providers Number entering the key value pair
      * @param demo       Demographic number of the patient that the key/value pair
      *                   is for
@@ -272,7 +273,7 @@ public class DemographicExtDaoImpl extends AbstractDaoImpl<DemographicExt> imple
         while (e.hasNext()) {
             String key = e.next();
             String val = h.get(key);
-            String[] sArr = new String[] { key, val };
+            String[] sArr = new String[]{key, val};
             arr.add(sArr);
         }
 
@@ -299,18 +300,18 @@ public class DemographicExtDaoImpl extends AbstractDaoImpl<DemographicExt> imple
     }
 
     /**
-     * @Deprecated: use alternate method with DemographicExtKey parameter
      * @param key
      * @param val
      * @return
+     * @Deprecated: use alternate method with DemographicExtKey parameter
      */
     @Deprecated
     @Override
     public List<Integer> findDemographicIdsByKeyVal(String key, String val) {
         Query query = entityManager
-                .createQuery("SELECT distinct d.demographicNo from DemographicExt d where d.key=? and d.value=?");
-        query.setParameter(0, key);
-        query.setParameter(1, val);
+                .createQuery("SELECT distinct d.demographicNo from DemographicExt d where d.key=?1 and d.value=?2");
+        query.setParameter(1, key);
+        query.setParameter(2, val);
 
         return query.getResultList();
     }
@@ -337,10 +338,10 @@ public class DemographicExtDaoImpl extends AbstractDaoImpl<DemographicExt> imple
             final String providerNumber,
             final String lastNameRegex) {
         String sql = "select d.demographic_no from demographic d, demographicExt e "
-                + "where e.key_val = ? "
-                + "and e.value = ? "
+                + "where e.key_val = ?1 "
+                + "and e.value = ?2 "
                 + "and d.demographic_no = e.demographic_no "
-                + "and d.last_name REGEXP ?";
+                + "and d.last_name REGEXP ?3";
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter(1, key.getKey());
         query.setParameter(2, providerNumber);

@@ -1,20 +1,21 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -74,8 +75,8 @@ import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfImportedPage;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfWriter;
+
 /**
- *
  * @author wrighd
  */
 public class EctConsultationFormRequestPrintPdf {
@@ -92,28 +93,36 @@ public class EctConsultationFormRequestPrintPdf {
     private final float LINEHEIGHT = 14;
     private final float FONTSIZE = 10;
 
-    /** Creates a new instance of EctConsultationFormRequestPrintPdf */
-    public EctConsultationFormRequestPrintPdf(HttpServletRequest request,HttpServletResponse response) {
+    /**
+     * Creates a new instance of EctConsultationFormRequestPrintPdf
+     */
+    public EctConsultationFormRequestPrintPdf(HttpServletRequest request, HttpServletResponse response) {
         this.request = request;
         this.response = response;
     }
 
-    public void printPdf(LoggedInInfo loggedInInfo) throws IOException, DocumentException{
+    public void printPdf(LoggedInInfo loggedInInfo) throws IOException, DocumentException {
 
         EctConsultationFormRequestUtil reqForm = new EctConsultationFormRequestUtil();
         reqForm.estRequestFromId(loggedInInfo, (String) request.getAttribute("reqId"));
 
         // init req form info
         reqForm.specAddr = request.getParameter("address");
-        if (reqForm.specAddr == null){reqForm.specAddr = new String(); }
+        if (reqForm.specAddr == null) {
+            reqForm.specAddr = new String();
+        }
         reqForm.specPhone = request.getParameter("phone");
-        if (reqForm.specPhone == null){ reqForm.specPhone = ""; }
+        if (reqForm.specPhone == null) {
+            reqForm.specPhone = "";
+        }
         reqForm.specFax = request.getParameter("fax");
-        if (reqForm.specFax == null){ reqForm.specFax = ""; }
+        if (reqForm.specFax == null) {
+            reqForm.specFax = "";
+        }
 
         //Create new file to save form to
         String path = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
-        String fileName = path + "ConsultationRequestForm-"+UtilDateUtilities.getToday("yyyy-MM-dd.hh.mm.ss")+".pdf";
+        String fileName = path + "ConsultationRequestForm-" + UtilDateUtilities.getToday("yyyy-MM-dd.hh.mm.ss") + ".pdf";
         FileOutputStream out = new FileOutputStream(fileName);
 
         //Create the document we are going to write to
@@ -136,7 +145,7 @@ public class EctConsultationFormRequestPrintPdf {
 
         cb = writer.getDirectContent();
         ct = new ColumnText(cb);
-        cb.setColorStroke(new Color(0,0,0));
+        cb.setColorStroke(new Color(0, 0, 0));
 
         // start writing the pdf document
         PdfImportedPage page1 = writer.getImportedPage(reader, 1);
@@ -163,30 +172,29 @@ public class EctConsultationFormRequestPrintPdf {
     }
 
 
-
     private float addDynamicPositionedText(String name, String text, float dynamicHeight, EctConsultationFormRequestUtil reqForm) throws DocumentException {
-        if (text != null && text.length() > 0){
+        if (text != null && text.length() > 0) {
             Font boldFont = new Font(bf, FONTSIZE, Font.BOLD);
             Font font = new Font(bf, FONTSIZE, Font.NORMAL);
             float lineCount = (name.length() + text.length()) / 100;
 
             // if there is not enough room on the page for the text start on the next page
-            if ( (height - 264 - dynamicHeight - lineCount*LINEHEIGHT) < LINEHEIGHT*3 ){
+            if ((height - 264 - dynamicHeight - lineCount * LINEHEIGHT) < LINEHEIGHT * 3) {
                 nextPage(reqForm);
                 dynamicHeight = LINEHEIGHT - 152;
             }
 
-            ct.setSimpleColumn(new Float(85), height - 264 - dynamicHeight - lineCount*LINEHEIGHT, new Float(526), height - 250 - dynamicHeight, LINEHEIGHT, Element.ALIGN_LEFT);
+            ct.setSimpleColumn(new Float(85), height - 264 - dynamicHeight - lineCount * LINEHEIGHT, new Float(526), height - 250 - dynamicHeight, LINEHEIGHT, Element.ALIGN_LEFT);
             ct.addText(new Phrase(name, boldFont));
             ct.addText(new Phrase(text, font));
             ct.go();
-            dynamicHeight += lineCount*LINEHEIGHT + LINEHEIGHT*2;
+            dynamicHeight += lineCount * LINEHEIGHT + LINEHEIGHT * 2;
         }
 
         return dynamicHeight;
     }
 
-    private void setAppointmentInfo(EctConsultationFormRequestUtil reqForm) throws DocumentException{
+    private void setAppointmentInfo(EctConsultationFormRequestUtil reqForm) throws DocumentException {
 
         printClinicData();
         Font font = new Font(bf, FONTSIZE, Font.NORMAL);
@@ -218,8 +226,8 @@ public class EctConsultationFormRequestPrintPdf {
         cb.setFontAndSize(bf, FONTSIZE);
         cb.showTextAligned(PdfContentByte.ALIGN_LEFT, reqForm.patientPhone, 385, height - 166, 0);
         cb.showTextAligned(PdfContentByte.ALIGN_LEFT, reqForm.patientDOB, 385, height - 181, 0);
-        cb.showTextAligned(PdfContentByte.ALIGN_LEFT, (reqForm.patientHealthCardType+" "+reqForm.patientHealthNum+" "+reqForm.patientHealthCardVersionCode).trim(), 440, height - 195, 0);
-        cb.showTextAligned(PdfContentByte.ALIGN_LEFT, reqForm.appointmentHour+":"+reqForm.appointmentMinute+" "+reqForm.appointmentPm+" " + reqForm.appointmentDate, 440, height - 208, 0);
+        cb.showTextAligned(PdfContentByte.ALIGN_LEFT, (reqForm.patientHealthCardType + " " + reqForm.patientHealthNum + " " + reqForm.patientHealthCardVersionCode).trim(), 440, height - 195, 0);
+        cb.showTextAligned(PdfContentByte.ALIGN_LEFT, reqForm.appointmentHour + ":" + reqForm.appointmentMinute + " " + reqForm.appointmentPm + " " + reqForm.appointmentDate, 440, height - 208, 0);
         cb.showTextAligned(PdfContentByte.ALIGN_LEFT, reqForm.patientChartNo, 385, height - 222, 0);
         cb.endText();
     }
@@ -236,7 +244,7 @@ public class EctConsultationFormRequestPrintPdf {
         cb.endText();
     }
 
-    private void printClinicData(){
+    private void printClinicData() {
         ClinicData clinic = new ClinicData();
         clinic.refreshClinicData();
 
@@ -246,14 +254,14 @@ public class EctConsultationFormRequestPrintPdf {
         cb.showTextAligned(PdfContentByte.ALIGN_LEFT, clinic.getClinicName(), 90, height - 70, 0);
 
         cb.setFontAndSize(bf, FONTSIZE);
-        cb.showTextAligned(PdfContentByte.ALIGN_RIGHT, clinic.getClinicAddress()+", "+clinic.getClinicCity()+", "+clinic.getClinicProvince()+", "+clinic.getClinicPostal(), 533, height - 70, 0);
+        cb.showTextAligned(PdfContentByte.ALIGN_RIGHT, clinic.getClinicAddress() + ", " + clinic.getClinicCity() + ", " + clinic.getClinicProvince() + ", " + clinic.getClinicPostal(), 533, height - 70, 0);
         cb.showTextAligned(PdfContentByte.ALIGN_LEFT, clinic.getClinicPhone(), 360, height - 82, 0);
         cb.showTextAligned(PdfContentByte.ALIGN_LEFT, clinic.getClinicFax(), 471, height - 82, 0);
 
         cb.endText();
     }
 
-    private void combinePDFs(LoggedInInfo loggedInInfo, String currentFileName) throws IOException{
+    private void combinePDFs(LoggedInInfo loggedInInfo, String currentFileName) throws IOException {
 
         String demoNo = (String) request.getAttribute("demo");
         String reqId = (String) request.getAttribute("reqId");
@@ -263,24 +271,24 @@ public class EctConsultationFormRequestPrintPdf {
         // add recently created pdf to the list
         pdfDocs.add(currentFileName);
 
-        for (int i=0; i < consultdocs.size(); i++){
-            EDoc curDoc =  consultdocs.get(i);
-            if ( curDoc.isPDF() )
+        for (int i = 0; i < consultdocs.size(); i++) {
+            EDoc curDoc = consultdocs.get(i);
+            if (curDoc.isPDF())
                 pdfDocs.add(curDoc.getFilePath());
         }
         // TODO:need to do something about the docs that are not PDFs
         // create pdfs from attached labs
         PatientLabRoutingDao dao = SpringUtils.getBean(PatientLabRoutingDao.class);
 
-        for(Object[] i : dao.findRoutingsAndConsultDocsByRequestId(ConversionUtils.fromIntString(reqId), "L")) {
+        for (Object[] i : dao.findRoutingsAndConsultDocsByRequestId(ConversionUtils.fromIntString(reqId), "L")) {
             PatientLabRouting p = (PatientLabRouting) i[0];
 
             String segmentId = "" + p.getLabNo();
             request.setAttribute("segmentID", segmentId);
             MessageHandler handler = Factory.getHandler(segmentId);
-            String fileName = OscarProperties.getInstance().getProperty("DOCUMENT_DIR")+"//"+handler.getPatientName().replaceAll("\\s", "_")+"_"+handler.getMsgDate()+"_LabReport.pdf";
+            String fileName = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "//" + handler.getPatientName().replaceAll("\\s", "_") + "_" + handler.getMsgDate() + "_LabReport.pdf";
 
-            try(OutputStream os = new FileOutputStream(fileName)) {
+            try (OutputStream os = new FileOutputStream(fileName)) {
                 LabPDFCreator pdf = new LabPDFCreator(request, os);
                 pdf.printPdf();
                 pdfDocs.add(fileName);
@@ -293,7 +301,7 @@ public class EctConsultationFormRequestPrintPdf {
 
         response.setContentType("application/pdf");  //octet-stream
         response.setHeader("Content-Disposition", "attachment; filename=\"ConsultationFormRequest.pdf\"");
-        ConcatPDF.concat(pdfDocs,response.getOutputStream());
+        ConcatPDF.concat(pdfDocs, response.getOutputStream());
 
     }
 }

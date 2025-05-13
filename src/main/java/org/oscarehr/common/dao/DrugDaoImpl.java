@@ -1,26 +1,27 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
- *
+ * <p>
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
@@ -106,9 +107,9 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
     }
 
     /**
-     * @deprecated ordering should be done after in java not on the db when all
-     *             items are returns, use the findByDemographicId() instead.
      * @param archived can be null for both archived and non archived entries
+     * @deprecated ordering should be done after in java not on the db when all
+     * items are returns, use the findByDemographicId() instead.
      */
     @Override
     public List<Drug> findByDemographicIdOrderByDate(Integer demographicId, Boolean archived) {
@@ -132,7 +133,7 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
     /**
      * deprecated ordering should be done after in java not on the db when all items
      * are returns, use the findByDemographicId() instead.
-     * 
+     * <p>
      * undeprecated Sorting on multiple fields in the java adds complexity unless
      * special tools are used for sorting
      */
@@ -177,7 +178,7 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
 
     @Override
     public List<Drug> findByDemographicIdSimilarDrugOrderByDate(Integer demographicId, String regionalIdentifier,
-            String customName) {
+                                                                String customName) {
         // build sql string
         String sqlCommand = "select x from Drug x where x.demographicId=?1 and x."
                 + (regionalIdentifier != null ? "regionalIdentifier" : "customName")
@@ -200,14 +201,14 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
 
     @Override
     public List<Drug> findByDemographicIdSimilarDrugOrderByDate(Integer demographicId, String regionalIdentifier,
-            String customName, String brandName) {
+                                                                String customName, String brandName) {
         return findByDemographicIdSimilarDrugOrderByDate(demographicId, regionalIdentifier, customName, brandName,
                 null);
     }
 
     @Override
     public List<Drug> findByDemographicIdSimilarDrugOrderByDate(Integer demographicId, String regionalIdentifier,
-            String customName, String brandName, String atc) {
+                                                                String customName, String brandName, String atc) {
         // build sql string
         String sqlCommand = "";
         if (atc != null && !atc.equalsIgnoreCase("null") && atc.trim().length() != 0)
@@ -293,7 +294,7 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
 
     @Override
     public int getNumberOfDemographicsWithRxForProvider(String providerNo, Date startDate, Date endDate,
-            boolean distinct) {
+                                                        boolean distinct) {
         String distinctStr = "distinct";
         if (distinct == false) {
             distinctStr = StringUtils.EMPTY;
@@ -370,12 +371,10 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
 
     /**
      * Finds all drugs and prescriptions for the specified demographic number
-     * 
-     * @param demographicNo
-     *                      Demographic number to search entities for
-     * @return
-     *         Returns the list of arrays, where first element is of type Drug and
-     *         the second is of type Prescription
+     *
+     * @param demographicNo Demographic number to search entities for
+     * @return Returns the list of arrays, where first element is of type Drug and
+     * the second is of type Prescription
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -388,12 +387,10 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
 
     /**
      * Finds all drugs and prescriptions for the specified id
-     * 
-     * @param scriptNumber
-     *                     Script number of a prescription to be found
-     * @return
-     *         Returns the list of arrays, where first element is of type Drug and
-     *         the second is of type Prescription.
+     *
+     * @param scriptNumber Script number of a prescription to be found
+     * @return Returns the list of arrays, where first element is of type Drug and
+     * the second is of type Prescription.
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -417,11 +414,11 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
 
     @Override
     public Drug findByEverything(String providerNo, int demographicNo, Date rxDate, Date endDate, Date writtenDate,
-            String brandName, int gcn_SEQNO, String customName, float takeMin, float takeMax, String frequencyCode,
-            String duration, String durationUnit, String quantity, String unitName, int repeat, Date lastRefillDate,
-            boolean nosubs, boolean prn, String escapedSpecial, String outsideProviderName, String outsideProviderOhip,
-            boolean customInstr, Boolean longTerm, boolean customNote, Boolean pastMed,
-            Boolean patientCompliance, String specialInstruction, String comment, boolean startDateUnknown) {
+                                 String brandName, int gcn_SEQNO, String customName, float takeMin, float takeMax, String frequencyCode,
+                                 String duration, String durationUnit, String quantity, String unitName, int repeat, Date lastRefillDate,
+                                 boolean nosubs, boolean prn, String escapedSpecial, String outsideProviderName, String outsideProviderOhip,
+                                 boolean customInstr, Boolean longTerm, boolean customNote, Boolean pastMed,
+                                 Boolean patientCompliance, String specialInstruction, String comment, boolean startDateUnknown) {
 
         Query query = entityManager.createQuery("FROM " + modelClass.getSimpleName()
                 + " d WHERE (d.archived = 0 OR d.archived IS NULL) AND "
@@ -468,13 +465,10 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
     /**
      * Selects special and special_instruction fields from drugs table ordered by
      * grugid.
-     * 
-     * @param parameter
-     *                  Name of the column to be queried
-     * @param value
-     *                  Value of the column to be queried
-     * @return
-     *         Returns the drugs found
+     *
+     * @param parameter Name of the column to be queried
+     * @param value     Value of the column to be queried
+     * @return Returns the drugs found
      */
     @NativeSql("drugs")
     @SuppressWarnings("unchecked")
@@ -489,7 +483,7 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
     @SuppressWarnings("unchecked")
     @Override
     public List<Drug> findByRegionBrandDemographicAndProvider(String regionalIdentifier, String brandName,
-            int demographicNo, String providerNo) {
+                                                              int demographicNo, String providerNo) {
         Query query = createQuery("d",
                 "d.regionalIdentifier = :ri and d.brandName = :bn and d.demographicId = :dn and d.providerNo = :pn order by drugid desc");
         query.setParameter("ri", regionalIdentifier);
@@ -501,22 +495,18 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
 
     /**
      * Finds drug by the specified brand name, demographic id and provider number.
-     * 
-     * @param brandName
-     *                      Brand name to look for
-     * @param demographicNo
-     *                      Demographic ID to look for
-     * @param providerNo
-     *                      Provider number to look for
-     * @return
-     *         Returns the drug or null if it's not found.
+     *
+     * @param brandName     Brand name to look for
+     * @param demographicNo Demographic ID to look for
+     * @param providerNo    Provider number to look for
+     * @return Returns the drug or null if it's not found.
      */
     @Override
     public Drug findByBrandNameDemographicAndProvider(String brandName, int demographicNo, String providerNo) {
         Query query = createQuery("d",
                 "d.brandName = :bn AND d.demographicId = :dn AND d.providerNo = :pn order by d.id desc"); // most recent
-                                                                                                          // is the
-                                                                                                          // first.);
+        // is the
+        // first.);
         query.setParameter("bn", brandName);
         query.setParameter("dn", demographicNo);
         query.setParameter("pn", providerNo);
@@ -527,22 +517,18 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
     /**
      * Finds drug by the specified custom drug name, demographic id and provider
      * number.
-     * 
-     * @param customName
-     *                      Custom drug name to look for
-     * @param demographicNo
-     *                      Demographic ID to look for
-     * @param providerNo
-     *                      Provider number to look for
-     * @return
-     *         Returns the drug or null if it's not found.
+     *
+     * @param customName    Custom drug name to look for
+     * @param demographicNo Demographic ID to look for
+     * @param providerNo    Provider number to look for
+     * @return Returns the drug or null if it's not found.
      */
     @Override
     public Drug findByCustomNameDemographicIdAndProviderNo(String customName, int demographicNo, String providerNo) {
         Query query = createQuery("d",
                 "d.customName = :cn AND d.demographicId = :dn AND d.providerNo = :pn order by d.id desc"); // most
-                                                                                                           // recent is
-                                                                                                           // the first.
+        // recent is
+        // the first.
         query.setParameter("cn", customName);
         query.setParameter("dn", demographicNo);
         query.setParameter("pn", providerNo);
@@ -566,7 +552,7 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
 
     @Override
     public Drug findByDemographicIdRegionalIdentifierAndAtcCode(String atcCode, String regionalIdentifier,
-            int demographicNo) {
+                                                                int demographicNo) {
         Query query = createQuery("d",
                 "d.archived = 1 AND d.archivedReason != '' AND d.regionalIdentifier = :rid AND d.demographicId = :dn AND d.atc = :atc ORDER BY d.id DESC");
         query.setParameter("dn", demographicNo);

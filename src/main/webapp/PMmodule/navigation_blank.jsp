@@ -1,4 +1,3 @@
-
 <%--
 
 
@@ -25,23 +24,23 @@
 --%>
 
 
-<%@ include file="/taglibs.jsp"%>
-<%@ page import="java.util.*"%>
-<%@ page import="org.springframework.web.context.WebApplicationContext"%>
+<%@ include file="/taglibs.jsp" %>
+<%@ page import="java.util.*" %>
+<%@ page import="org.springframework.web.context.WebApplicationContext" %>
 <%@ page
-	import="org.springframework.web.context.support.WebApplicationContextUtils"%>
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+        import="org.springframework.web.context.support.WebApplicationContextUtils" %>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
 
 <%
-//	WebApplicationContext ctx=null;
+    //	WebApplicationContext ctx=null;
 %>
 
 <script type="text/javascript">
     function popupPage2(varpage, windowname) {
         var page = "" + varpage;
         windowprops = "height=700,width=1000,location=no,"
-                + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=10,left=0";
+            + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=10,left=0";
         var popup = window.open(page, windowname, windowprops);
         if (popup != null) {
             if (popup.opener == null) {
@@ -53,5 +52,5 @@
 </script>
 
 <div id="projecttools" class="toolgroup">
-<div class="label"><strong>Navigator</strong></div>
-<div class="body">&nbsp; &nbsp;</div>
+    <div class="label"><strong>Navigator</strong></div>
+    <div class="body">&nbsp; &nbsp;</div>

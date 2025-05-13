@@ -1,21 +1,21 @@
+//CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -48,159 +48,165 @@ public class ProgramProvider implements Serializable {
     private Program program;
 
     // constructors
-	public ProgramProvider () {
-		initialize();
-	}
+    public ProgramProvider() {
+        initialize();
+    }
 
     /**
-	 * Constructor for primary key
-	 */
-	public ProgramProvider (Long _id) {
-		this.setId(_id);
-		initialize();
-	}
+     * Constructor for primary key
+     */
+    public ProgramProvider(Long _id) {
+        this.setId(_id);
+        initialize();
+    }
 
     /**
-	 * @return Returns the programName.
-	 */
-	public String getProgramName() {
-		return programName;
-	}
-
-	/**
-	 * @param programName The programName to set.
-	 */
-	public void setProgramName(String programName) {
-		this.programName = programName;
-	}
-
-	public Program getProgram() {
-		return program;
-	}
-
-	public void setProgram(Program program) {
-		this.program = program;
-	}
-
-    protected void initialize () {}
+     * @return Returns the programName.
+     */
+    public String getProgramName() {
+        return programName;
+    }
 
     /**
-	 * Return the unique identifier of this class
-* 
-*  generator-class="native"
-*  column="id"
-*/
-    public Long getId () {
+     * @param programName The programName to set.
+     */
+    public void setProgramName(String programName) {
+        this.programName = programName;
+    }
+
+    public Program getProgram() {
+        return program;
+    }
+
+    public void setProgram(Program program) {
+        this.program = program;
+    }
+
+    protected void initialize() {
+    }
+
+    /**
+     * Return the unique identifier of this class
+     * <p>
+     * generator-class="native"
+     * column="id"
+     */
+    public Long getId() {
         return _id;
     }
 
     /**
-	 * Set the unique identifier of this class
+     * Set the unique identifier of this class
+     *
      * @param _id the new ID
      */
-    public void setId (Long _id) {
+    public void setId(Long _id) {
         this._id = _id;
         this.hashCode = Integer.MIN_VALUE;
     }
 
     /**
-	 * Return the value associated with the column: program_id
+     * Return the value associated with the column: program_id
      */
-    public Long getProgramId () {
+    public Long getProgramId() {
         return _programId;
     }
 
     /**
-	 * Set the value related to the column: program_id
+     * Set the value related to the column: program_id
+     *
      * @param _programId the program_id value
      */
-    public void setProgramId (Long _programId) {
+    public void setProgramId(Long _programId) {
         this._programId = _programId;
     }
 
     /**
-	 * Return the value associated with the column: provider_no
+     * Return the value associated with the column: provider_no
      */
-    public String getProviderNo () {
+    public String getProviderNo() {
         return _providerNo;
     }
 
     /**
-	 * Set the value related to the column: provider_no
+     * Set the value related to the column: provider_no
+     *
      * @param _providerNo the provider_no value
      */
-    public void setProviderNo (String _providerNo) {
+    public void setProviderNo(String _providerNo) {
         this._providerNo = _providerNo;
     }
 
     /**
-	 * Return the value associated with the column: role_id
+     * Return the value associated with the column: role_id
      */
-    public Long getRoleId () {
+    public Long getRoleId() {
         return _roleId;
     }
 
     /**
-	 * Set the value related to the column: role_id
+     * Set the value related to the column: role_id
+     *
      * @param _roleId the role_id value
      */
-    public void setRoleId (Long _roleId) {
+    public void setRoleId(Long _roleId) {
         this._roleId = _roleId;
     }
 
     /**
-     * 
-*  column=role_id
+     * column=role_id
      */
-    public Secrole getRole () {
+    public Secrole getRole() {
         return this._role;
     }
 
     /**
-	 * Set the value related to the column: role_id
+     * Set the value related to the column: role_id
+     *
      * @param _role the role_id value
      */
-    public void setRole (Secrole _role) {
+    public void setRole(Secrole _role) {
         this._role = _role;
     }
 
     /**
-     * 
-*  column=provider_no
+     * column=provider_no
      */
-    public Provider getProvider () {
+    public Provider getProvider() {
         return this._provider;
     }
 
     /**
-	 * Set the value related to the column: provider_no
+     * Set the value related to the column: provider_no
+     *
      * @param _provider the provider_no value
      */
-    public void setProvider (Provider _provider) {
+    public void setProvider(Provider _provider) {
         this._provider = _provider;
     }
 
     /**
-	 * Return the value associated with the column: teams
+     * Return the value associated with the column: teams
      */
-    public java.util.Set<org.oscarehr.PMmodule.model.ProgramTeam> getTeams () {
+    public java.util.Set<org.oscarehr.PMmodule.model.ProgramTeam> getTeams() {
         return this._teams;
     }
 
     /**
-	 * Set the value related to the column: teams
+     * Set the value related to the column: teams
+     *
      * @param _teams the teams value
      */
-    public void setTeams (java.util.Set<org.oscarehr.PMmodule.model.ProgramTeam> _teams) {
+    public void setTeams(java.util.Set<org.oscarehr.PMmodule.model.ProgramTeam> _teams) {
         this._teams = _teams;
     }
 
-    public void addToTeams (Object obj) {
+    public void addToTeams(Object obj) {
         if (null == this._teams) this._teams = new java.util.HashSet<org.oscarehr.PMmodule.model.ProgramTeam>();
-        this._teams.add((org.oscarehr.PMmodule.model.ProgramTeam)obj);
+        this._teams.add((org.oscarehr.PMmodule.model.ProgramTeam) obj);
     }
 
-    public boolean equals (Object obj) {
+    public boolean equals(Object obj) {
         if (null == obj) return false;
         if (!(obj instanceof ProgramProvider)) return false;
         else {
@@ -210,7 +216,7 @@ public class ProgramProvider implements Serializable {
         }
     }
 
-    public int hashCode () {
+    public int hashCode() {
         if (Integer.MIN_VALUE == this.hashCode) {
             if (null == this.getId()) return super.hashCode();
             else {
@@ -221,18 +227,18 @@ public class ProgramProvider implements Serializable {
         return this.hashCode;
     }
 
-    public String toString () {
+    public String toString() {
         return super.toString();
     }
 
-	public static String getIdsAsStringList(List<ProgramProvider> results) {
-		StringBuilder sb = new StringBuilder();
+    public static String getIdsAsStringList(List<ProgramProvider> results) {
+        StringBuilder sb = new StringBuilder();
 
-		for (ProgramProvider model : results) {
-			sb.append(model.getId().toString());
-			sb.append(',');
-		}
+        for (ProgramProvider model : results) {
+            sb.append(model.getId().toString());
+            sb.append(',');
+        }
 
-		return (sb.toString());
-	}
+        return (sb.toString());
+    }
 }

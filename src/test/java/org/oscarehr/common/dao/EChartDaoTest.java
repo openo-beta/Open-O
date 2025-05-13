@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -34,39 +34,39 @@ import org.oscarehr.util.SpringUtils;
 
 public class EChartDaoTest extends DaoTestFixtures {
 
-	protected EChartDao dao = SpringUtils.getBean(EChartDao.class);
+    protected EChartDao dao = SpringUtils.getBean(EChartDao.class);
 
-	@Before
-	public void before() throws Exception {
-		SchemaUtils.restoreTable("eChart");
-	}
+    @Before
+    public void before() throws Exception {
+        SchemaUtils.restoreTable("eChart");
+    }
 
-	@Test
-	public void testCreate() throws Exception {
-		EChart entity = new EChart();
-		EntityDataGenerator.generateTestDataForModelClass(entity);
-		dao.persist(entity);
-		assertNotNull(entity.getId());
-	}
+    @Test
+    public void testCreate() throws Exception {
+        EChart entity = new EChart();
+        EntityDataGenerator.generateTestDataForModelClass(entity);
+        dao.persist(entity);
+        assertNotNull(entity.getId());
+    }
 
-	@Test
-	public void testGetMaxId() throws Exception {
-		EChart entity = new EChart();
-		EntityDataGenerator.generateTestDataForModelClass(entity);
-		dao.persist(entity);
+    @Test
+    public void testGetMaxId() throws Exception {
+        EChart entity = new EChart();
+        EntityDataGenerator.generateTestDataForModelClass(entity);
+        dao.persist(entity);
 
-		Integer id = dao.getMaxIdForDemographic(entity.getDemographicNo());
-		assertNotNull(id);
-	}
+        Integer id = dao.getMaxIdForDemographic(entity.getDemographicNo());
+        assertNotNull(id);
+    }
 
-	@Test
-	public void testGetChartsForDemographic() {
-		assertNotNull(dao.getChartsForDemographic(100));
-	}
-	
-	@Test
-	public void testFindByDemoIdAndSubject() {
-		assertNotNull(dao.findByDemoIdAndSubject(100, "SUBJ"));
-	}
-	
+    @Test
+    public void testGetChartsForDemographic() {
+        assertNotNull(dao.getChartsForDemographic(100));
+    }
+
+    @Test
+    public void testFindByDemoIdAndSubject() {
+        assertNotNull(dao.findByDemoIdAndSubject(100, "SUBJ"));
+    }
+
 }

@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -6,28 +7,29 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
 
 import java.util.List;
 import javax.persistence.Query;
+
 import org.oscarehr.decisionSupport.model.DSGuideline;
 import org.springframework.stereotype.Repository;
 
@@ -40,15 +42,15 @@ public class DSGuidelineDaoImpl extends AbstractDaoImpl<DSGuideline> implements 
 
     @Override
     public DSGuideline findByUUID(String uuid) {
-        String sql = "select c from DSGuideline c where c.uuid = ? and c.status = 'A' order by c.dateStart desc";
+        String sql = "select c from DSGuideline c where c.uuid = ?1 and c.status = 'A' order by c.dateStart desc";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, uuid);
+        query.setParameter(1, uuid);
 
         @SuppressWarnings("unchecked")
         List<DSGuideline> list = query.getResultList();
 
-        if (list == null || list.size() == 0){
+        if (list == null || list.size() == 0) {
             return null;
         }
 
@@ -57,10 +59,10 @@ public class DSGuidelineDaoImpl extends AbstractDaoImpl<DSGuideline> implements 
 
     @Override
     public List<DSGuideline> getDSGuidelinesByProvider(String providerNo) {
-        String sql ="select c from DSGuideline c, DSGuidelineProviderMapping m where c.uuid = m.guidelineUUID and m.providerNo = ? and c.status = 'A'";
+        String sql = "select c from DSGuideline c, DSGuidelineProviderMapping m where c.uuid = m.guidelineUUID and m.providerNo = ?1 and c.status = 'A'";
 
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, providerNo);
+        query.setParameter(1, providerNo);
 
         @SuppressWarnings("unchecked")
         List<DSGuideline> list = query.getResultList();

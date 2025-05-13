@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -5,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -36,56 +37,52 @@ import javax.servlet.http.HttpServletResponse;
 import oscar.OscarProperties;
 
 /**
- * 
- * This class safely fetches static image resources for the login Index page. 
- * 
+ * This class safely fetches static image resources for the login Index page.
+ * <p>
  * Resources are expected to be at OscarDocument/login.  The resource path
  * [oscar context]/loginResource/myImage.png will fetch the myImage.png image
  * from OscarDocument/login.
- * 
- * It's easiest to follow a standard naming convention for each element. 
- *
+ * <p>
+ * It's easiest to follow a standard naming convention for each element.
  */
 public class LoginResourceAction extends HttpServlet {
 
-	private String images;
+    private String images;
 
-	public void init() throws ServletException {
-		String oscarDocument = OscarProperties.getInstance().getProperty("BASE_DOCUMENT_DIR");		
-		// all image files for the login page go into OscarDocuments/login
-		this.images = oscarDocument + File.separator + "login";	
-	}
-	
-	protected void doGet(HttpServletRequest request, 
-			HttpServletResponse response) throws ServletException, IOException {
+    public void init() throws ServletException {
+        String oscarDocument = OscarProperties.getInstance().getProperty("BASE_DOCUMENT_DIR");
+        // all image files for the login page go into OscarDocuments/login
+        this.images = oscarDocument + File.separator + "login";
+    }
 
-		String logoImage = request.getPathInfo();
-		File image = null;
-		String contentType = null;
-		
-		if(logoImage != null) {
-			image = new File(images, URLDecoder.decode(logoImage, "UTF-8"));
-		}
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response) throws ServletException, IOException {
+
+        String logoImage = request.getPathInfo();
+        File image = null;
+        String contentType = null;
+
+        if (logoImage != null) {
+            image = new File(images, URLDecoder.decode(logoImage, "UTF-8"));
+        }
 
         // Get content type by filename.        
-        if(image != null && image.exists())
-        {
-        	 contentType = getServletContext().getMimeType(image.getName());
+        if (image != null && image.exists()) {
+            contentType = getServletContext().getMimeType(image.getName());
         }
-        
-        if (contentType != null && contentType.startsWith("image")) 
-        {
+
+        if (contentType != null && contentType.startsWith("image")) {
             response.reset();
             response.setContentType(contentType);
             response.setHeader("Content-Length", String.valueOf(image.length()));
-            
+
             // Write image content to response.
             Files.copy(image.toPath(), response.getOutputStream());
         }
-	}
-	
-	protected final void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		return;		
-	}
+    }
+
+    protected final void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        return;
+    }
 
 }

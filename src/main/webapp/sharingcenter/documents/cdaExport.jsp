@@ -24,34 +24,34 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName2$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-    boolean authed=true;
+    String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName2$%>" objectName="_edoc" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../../securityError.jsp?type=_edoc");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../../securityError.jsp?type=_edoc");%>
 </security:oscarSec>
 <%
-	if(!authed) {
-		return;
-	}
+    if (!authed) {
+        return;
+    }
 %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 <%@page import="org.oscarehr.sharingcenter.dao.DemographicExportDao" %>
 <%@page import="org.oscarehr.sharingcenter.model.DemographicExport" %>
-<%@page import="javax.xml.transform.Transformer"%>
-<%@page import="javax.xml.transform.TransformerException"%>
-<%@page import="javax.xml.transform.TransformerFactory"%>
-<%@page import="javax.xml.transform.stream.StreamResult"%>
-<%@page import="javax.xml.transform.stream.StreamSource"%>
-<%@page import="java.io.StringReader"%>
-<%@page import="java.io.StringWriter"%>
-<%@page import="oscar.OscarProperties"%>
-<%@page import="org.oscarehr.util.SpringUtils"%>
+<%@page import="javax.xml.transform.Transformer" %>
+<%@page import="javax.xml.transform.TransformerException" %>
+<%@page import="javax.xml.transform.TransformerFactory" %>
+<%@page import="javax.xml.transform.stream.StreamResult" %>
+<%@page import="javax.xml.transform.stream.StreamSource" %>
+<%@page import="java.io.StringReader" %>
+<%@page import="java.io.StringWriter" %>
+<%@page import="oscar.OscarProperties" %>
+<%@page import="org.oscarehr.util.SpringUtils" %>
 <%
     String htmlResult = "No result";
     String demographic_no = request.getParameter("document_no");

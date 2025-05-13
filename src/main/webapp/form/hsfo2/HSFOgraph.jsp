@@ -31,58 +31,58 @@
 <%@ page import="org.jfree.chart.JFreeChart" %>
 <%@ page import="org.jfree.chart.ChartFactory" %>
 <%@ page import="org.jfree.chart.ChartUtils" %>
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName2$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-    boolean authed=true;
+    String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName2$%>" objectName="_form" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../../securityError.jsp?type=_form");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../../securityError.jsp?type=_form");%>
 </security:oscarSec>
 <%
-	if(!authed) {
-		return;
-	}
+    if (!authed) {
+        return;
+    }
 %>
 
 <%
-OutputStream o = response.getOutputStream();
+    OutputStream o = response.getOutputStream();
 
-org.jfree.data.time.TimeSeriesCollection dataset = new org.jfree.data.time.TimeSeriesCollection();
+    org.jfree.data.time.TimeSeriesCollection dataset = new org.jfree.data.time.TimeSeriesCollection();
 
-String id = (String) request.getParameter("id");
-HashMap[] harray = (HashMap[]) session.getAttribute(id);
+    String id = (String) request.getParameter("id");
+    HashMap[] harray = (HashMap[]) session.getAttribute(id);
 
 
-for (HashMap dat : harray){
-    String name = (String) dat.get("name");
-    
-    HashMap[] setData = (HashMap[]) dat.get("data");
-    TimeSeries s1 = new TimeSeries(name);
-    for(HashMap d : setData){
-       
-        if(d !=null){
-           s1.addOrUpdate(new Day( (Date) d.get("date")) ,
-                Double.parseDouble(""+d.get("data")) );
+    for (HashMap dat : harray) {
+        String name = (String) dat.get("name");
+
+        HashMap[] setData = (HashMap[]) dat.get("data");
+        TimeSeries s1 = new TimeSeries(name);
+        for (HashMap d : setData) {
+
+            if (d != null) {
+                s1.addOrUpdate(new Day((Date) d.get("date")),
+                        Double.parseDouble("" + d.get("data")));
+            }
         }
+        dataset.addSeries(s1);
     }
-    dataset.addSeries(s1);
-}
-String chartTitle = "";
+    String chartTitle = "";
 
-JFreeChart chart = ChartFactory.createTimeSeriesChart(
-chartTitle, 
-"Date", "", 
-dataset, 
-true, 
-true, 
-false 
-); 
+    JFreeChart chart = ChartFactory.createTimeSeriesChart(
+            chartTitle,
+            "Date", "",
+            dataset,
+            true,
+            true,
+            false
+    );
 
 
-response.setContentType("image/png"); 
-ChartUtils.writeChartAsPNG(o, chart, 350, 275);
-session.removeAttribute(id);
-out.close(); 
+    response.setContentType("image/png");
+    ChartUtils.writeChartAsPNG(o, chart, 350, 275);
+    session.removeAttribute(id);
+    out.close();
 %>

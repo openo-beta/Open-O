@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -5,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -32,16 +33,16 @@ import ca.uhn.hl7v2.parser.ModelClassFactory;
 
 public class ORU_R01 extends ca.uhn.hl7v2.model.v23.message.ORU_R01 {
 
- 	/**
-	 * Constructor
-     *
+    /**
+     * Constructor
+     * <p>
      * We always have to have a constructor with this one argument
-	 */
-	public ORU_R01(ModelClassFactory factory) throws HL7Exception {
-	   super(factory);
-	   
-       this.add(ZDS.class, false, true);
-	}
+     */
+    public ORU_R01(ModelClassFactory factory) throws HL7Exception {
+        super(factory);
+
+        this.add(ZDS.class, false, true);
+    }
 
 
     /**
@@ -50,19 +51,19 @@ public class ORU_R01 extends ca.uhn.hl7v2.model.v23.message.ORU_R01 {
     public ZDS getZDS(int rep) throws HL7Exception {
         return (ZDS) get("ZDS", rep);
     }
-    
+
     public ZDS[] getZDSList() throws HL7Exception {
         Structure[] list = getAll("ZDS");
         ZDS[] zdsSegments = new ZDS[list.length];
-        
-        for (int i=0; i < list.length; i++)
-			zdsSegments[i] = (ZDS) list[i];
-			
-		return zdsSegments;
+
+        for (int i = 0; i < list.length; i++)
+            zdsSegments[i] = (ZDS) list[i];
+
+        return zdsSegments;
     }
-    
+
     public int getNumZDSSegments() throws HL7Exception {
-		return currentReps("ZDS");
-	}
+        return currentReps("ZDS");
+    }
 
 }

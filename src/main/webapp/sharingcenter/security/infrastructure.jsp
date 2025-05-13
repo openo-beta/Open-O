@@ -24,19 +24,19 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    String roleName2$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-    boolean authed=true;
+    String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName2$%>" objectName="_admin" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../../securityError.jsp?type=_form");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../../securityError.jsp?type=_form");%>
 </security:oscarSec>
 <%
-	if(!authed) {
-		return;
-	}
+    if (!authed) {
+        return;
+    }
 %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -53,89 +53,92 @@
 
 %>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <link rel="shortcut icon" href="${ctx}/assets/ico/favicon.png">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="${ctx}/assets/ico/favicon.png">
 
-        <title>Sharing Center - Security Infrastructures</title>
+    <title>Sharing Center - Security Infrastructures</title>
 
-        <link rel="stylesheet" href="${ctx}/library/bootstrap/3.0.0/css/bootstrap.min.css">
-        <script src="${ctx}/js/jquery-1.9.1.min.js"></script>
-        <script src="${ctx}/library/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="${ctx}/library/bootstrap/3.0.0/css/bootstrap.min.css">
+    <script src="${ctx}/js/jquery-1.9.1.min.js"></script>
+    <script src="${ctx}/library/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
-        <script>
-            $(document).ready(function() {
+    <script>
+        $(document).ready(function () {
 
-                $("#navBar").load("${ctx}/sharingcenter/globaltemplates/NavBar.jsp");
+            $("#navBar").load("${ctx}/sharingcenter/globaltemplates/NavBar.jsp");
 
             <%                            if (request.getParameter("success") != null) {
             %>
-                alert("Successful submission");
-                window.location = window.location.pathname; //removes the get parameter by reloading
+            alert("Successful submission");
+            window.location = window.location.pathname; //removes the get parameter by reloading
             <%
             } else if (request.getParameter("update") != null) {
             %>
-                alert("Successful update");
-                window.location = window.location.pathname; //removes the get parameter by reloading
+            alert("Successful update");
+            window.location = window.location.pathname; //removes the get parameter by reloading
             <%
             } else if (request.getParameter("delete") != null) {
             %>
-                alert("Successful deletion");
-                window.location = window.location.pathname;//removes the get parameter by reloading
+            alert("Successful deletion");
+            window.location = window.location.pathname;//removes the get parameter by reloading
             <%
                 }
             %>
 
-            });
-        </script>
+        });
+    </script>
 
-    </head>
+</head>
 
-    <body>
+<body>
 
-        <!-- Wrap all page content here -->
-        <div id="wrap">
+<!-- Wrap all page content here -->
+<div id="wrap">
 
-            <!-- Begin page content -->
-            <div class="container">
+    <!-- Begin page content -->
+    <div class="container">
 
-                <div id="navBar">
+        <div id="navBar">
 
-                </div>
-
-                <div id="infrastructuresPanel" class="panel panel-info">
-                    <div class="panel-heading">
-                        <span class="panel-title">Infrastuctures</span>
-                    </div>
-                    <div class="panel-body">
-                        The following is a list of aliases representing health care networks (affinity domains) that configured their SSL Security.
-
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Alias</th>
-                                </tr>
-
-                                <%
-                                    for (InfrastructureDataObject infr : infrastructureList) {
-                                %>
-                                <tr>
-                                    <td><%=infr.getId()%></td>
-                                    <td><a href="${ctx}/sharingcenter/security/import.jsp?id=<%=infr.getId()%>"><%=infr.getAlias()%></a></td>
-                                </tr>
-                                <%
-                                    }
-                                %>
-                            </tbody>
-                        </table>
-                        <a href="${ctx}/sharingcenter/security/new.jsp" class="btn btn-primary">Create</a>
-                    </div>
-                </div>
-            </div> 
         </div>
-    </body>
+
+        <div id="infrastructuresPanel" class="panel panel-info">
+            <div class="panel-heading">
+                <span class="panel-title">Infrastuctures</span>
+            </div>
+            <div class="panel-body">
+                The following is a list of aliases representing health care networks (affinity domains) that configured
+                their SSL Security.
+
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th>#</th>
+                        <th>Alias</th>
+                    </tr>
+
+                    <%
+                        for (InfrastructureDataObject infr : infrastructureList) {
+                    %>
+                    <tr>
+                        <td><%=infr.getId()%>
+                        </td>
+                        <td><a href="${ctx}/sharingcenter/security/import.jsp?id=<%=infr.getId()%>"><%=infr.getAlias()%>
+                        </a></td>
+                    </tr>
+                    <%
+                        }
+                    %>
+                    </tbody>
+                </table>
+                <a href="${ctx}/sharingcenter/security/new.jsp" class="btn btn-primary">Create</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
 </html>

@@ -25,108 +25,115 @@
 --%>
 
 
-<%@ page import="java.util.*,oscar.oscarReport.pageUtil.*"%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
-
-<html:html lang="en">
-<head>
-
-<title><bean:message key="admin.admin.btnSelectForm" /></title>
-
-
-</head>
-
-<body>
-
-<h3><bean:message key="admin.admin.btnSelectForm" /></h3>
-
-<div class="well">
-
-<html:form action="/form/select.do" styleId="selectForm">
-	<table id="scrollNumber1" name="encounterTable">
-		<tr>
-			<td class="MainTableLeftColumn"></td>
-			<td class="MainTableRightColumn">
-			<table border=0 cellspacing=4 width=400>
-				<tr>
-					<td>
-					<table>
-						<tr>
-							<th align="left"><bean:message
-								key="oscarEncounter.form.msgAllAvailableForms" /></th>
-							<th></th>
-							<th align="left"><bean:message
-								key="oscarEncounter.form.msgSelectedForms" /></th>
-						</tr>
-						<td><html:select multiple="true" property="selectedAddTypes"
-							size="10" style="width:150">
-							<html:options collection="formHiddenVector" property="formName"
-								labelProperty="formName" />
-						</html:select></td>
-						<td>
-						<table>
-							<tr>
-								<td><input type="button" name="button" id="add" class="btn function" style="width:80px"
-									value="<bean:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.addBtn"/> >>"
-									/></td>
-							</tr>
-							<tr>
-								<td>
-<input type="button" name="button" class="btn function" id="delete" style="width:80px" value="<< <bean:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.deleteBtn"/>"/>
-								</td>
-							</tr>
-						</table>
-						</td>
-						<td><html:select multiple="true"
-							property="selectedDeleteTypes" size="10" style="width:150">
-							<html:options collection="formShownVector" property="formName"
-								labelProperty="formName" />
-						</html:select></td>
-						</tr>
-						<tr>
-							
-						</tr>
-						<tr>
-							<td></td>
-							<td></td>
-						</tr>
-					</table>
-					</td>
-					<td>
-					<input type="button" name="button" class="btn function" value="Move Up" style="width:100px" id="up"/> <br>
-					<input type="button" name="button" class="btn function" value="Move Down" style="width:100px" id="down" /></td>
-				</tr>
-			</table>
-			</td>
-		</tr>
-
-	</table>
-
-<input type="hidden" name="forward" id="forward" value="error" />
-</html:form>
-
-</div>
-
-<script>
-registerFormSubmit('selectForm', 'dynamic-content');
-
-$( document ).ready(function() {
-
-$(".function").click(function() {
-$("#forward").val($(this).attr("id"));
-
-
-$("#selectForm").submit();
-});
-
-});
+<%@ page import="java.util.*,oscar.oscarReport.pageUtil.*" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
 
+<html>
+    <head>
 
-</script>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnSelectForm"/></title>
 
-</body>
-</html:html>
+
+    </head>
+
+    <body>
+
+    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnSelectForm"/></h3>
+
+    <div class="well">
+
+        <form action="${pageContext.request.contextPath}/form/select.do" method="post" styleId="selectForm">
+            <table id="scrollNumber1" name="encounterTable">
+                <tr>
+                    <td class="MainTableLeftColumn"></td>
+                    <td class="MainTableRightColumn">
+                        <table border=0 cellspacing=4 width=400>
+                            <tr>
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <th align="left"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.form.msgAllAvailableForms"/></th>
+                                            <th></th>
+                                            <th align="left"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.form.msgSelectedForms"/></th>
+                                        </tr>
+                                        <td><select multiple="true" name="selectedAddTypes"
+                                                         size="10" style="width:150">
+                                            <c:forEach var="f" items="${formHiddenVector}">
+                                                <option value="${f.formName}">
+                                                        ${f.formName}
+                                                </option>
+                                            </c:forEach>
+                                        </select></td>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td><input type="button" name="button" id="add" class="btn function"
+                                                               style="width:80px"
+                                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.addBtn"/> >>"
+                                                    /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input type="button" name="button" class="btn function"
+                                                               id="delete" style="width:80px"
+                                                               value="<< <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.MeasurementsAction.deleteBtn"/>"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td><select multiple="true"
+                                                         name="selectedDeleteTypes" size="10" style="width:150">
+                                            <c:forEach var="f" items="${formShownVector}">
+                                                <option value="${f.formName}">
+                                                        ${f.formName}
+                                                </option>
+                                            </c:forEach>
+                                        </select></td>
+                            </tr>
+                            <tr>
+
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <input type="button" name="button" class="btn function" value="Move Up" style="width:100px"
+                               id="up"/> <br>
+                        <input type="button" name="button" class="btn function" value="Move Down" style="width:100px"
+                               id="down"/></td>
+                </tr>
+            </table>
+            </td>
+            </tr>
+
+            </table>
+
+            <input type="hidden" name="forward" id="forward" value="error"/>
+        </form>
+
+    </div>
+
+    <script>
+        registerFormSubmit('selectForm', 'dynamic-content');
+
+        $(document).ready(function () {
+
+            $(".function").click(function () {
+                $("#forward").val($(this).attr("id"));
+
+
+                $("#selectForm").submit();
+            });
+
+        });
+
+
+    </script>
+
+    </body>
+</html>

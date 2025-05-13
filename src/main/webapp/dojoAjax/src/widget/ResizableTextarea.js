@@ -14,73 +14,73 @@ dojo.require("dojo.widget.LayoutContainer");
 dojo.require("dojo.widget.ResizeHandle");
 
 dojo.widget.defineWidget(
-	"dojo.widget.ResizableTextarea",
-	dojo.widget.HtmlWidget,
-{
-	// summary
-	//	A resizable textarea.
-	//	Takes all the parameters (name, value, etc.) that a vanilla textarea takes.
-	// usage
-	//	<textarea dojoType="ResizableTextArea">...</textarea>
+    "dojo.widget.ResizableTextarea",
+    dojo.widget.HtmlWidget,
+    {
+        // summary
+        //	A resizable textarea.
+        //	Takes all the parameters (name, value, etc.) that a vanilla textarea takes.
+        // usage
+        //	<textarea dojoType="ResizableTextArea">...</textarea>
 
-	templatePath: dojo.uri.dojoUri("src/widget/templates/ResizableTextarea.html"),
-	templateCssPath: dojo.uri.dojoUri("src/widget/templates/ResizableTextarea.css"),
+        templatePath: dojo.uri.dojoUri("src/widget/templates/ResizableTextarea.html"),
+        templateCssPath: dojo.uri.dojoUri("src/widget/templates/ResizableTextarea.css"),
 
-	fillInTemplate: function(args, frag){
-		this.textAreaNode = this.getFragNodeRef(frag).cloneNode(true);
+        fillInTemplate: function (args, frag) {
+            this.textAreaNode = this.getFragNodeRef(frag).cloneNode(true);
 
-		// FIXME: Safari apparently needs this!
-		dojo.body().appendChild(this.domNode);
+            // FIXME: Safari apparently needs this!
+            dojo.body().appendChild(this.domNode);
 
-		this.rootLayout = dojo.widget.createWidget(
-			"LayoutContainer",
-			{
-				minHeight: 50,
-				minWidth: 100
-			},
-			this.rootLayoutNode
-		);
+            this.rootLayout = dojo.widget.createWidget(
+                "LayoutContainer",
+                {
+                    minHeight: 50,
+                    minWidth: 100
+                },
+                this.rootLayoutNode
+            );
 
-		// TODO: all this code should be replaced with a template
-		// (especially now that templates can contain subwidgets)
-		this.textAreaContainer = dojo.widget.createWidget(
-			"LayoutContainer",
-			{ layoutAlign: "client" },
-			this.textAreaContainerNode
-		);
-		this.rootLayout.addChild(this.textAreaContainer);
+            // TODO: all this code should be replaced with a template
+            // (especially now that templates can contain subwidgets)
+            this.textAreaContainer = dojo.widget.createWidget(
+                "LayoutContainer",
+                {layoutAlign: "client"},
+                this.textAreaContainerNode
+            );
+            this.rootLayout.addChild(this.textAreaContainer);
 
-		this.textAreaContainer.domNode.appendChild(this.textAreaNode);
-		with(this.textAreaNode.style){
-			width="100%";
-			height="100%";
-		}
+            this.textAreaContainer.domNode.appendChild(this.textAreaNode);
+            with (this.textAreaNode.style) {
+                width = "100%";
+                height = "100%";
+            }
 
-		this.statusBar = dojo.widget.createWidget(
-			"LayoutContainer",
-			{ 
-				layoutAlign: "bottom", 
-				minHeight: 28
-			},
-			this.statusBarContainerNode
-		);
-		this.rootLayout.addChild(this.statusBar);
+            this.statusBar = dojo.widget.createWidget(
+                "LayoutContainer",
+                {
+                    layoutAlign: "bottom",
+                    minHeight: 28
+                },
+                this.statusBarContainerNode
+            );
+            this.rootLayout.addChild(this.statusBar);
 
-		this.statusLabel = dojo.widget.createWidget(
-			"LayoutContainer",
-			{ 
-				layoutAlign: "client", 
-				minWidth: 50
-			},
-			this.statusLabelNode
-		);
-		this.statusBar.addChild(this.statusLabel);
+            this.statusLabel = dojo.widget.createWidget(
+                "LayoutContainer",
+                {
+                    layoutAlign: "client",
+                    minWidth: 50
+                },
+                this.statusLabelNode
+            );
+            this.statusBar.addChild(this.statusLabel);
 
-		this.resizeHandle = dojo.widget.createWidget(
-			"ResizeHandle", 
-			{ targetElmId: this.rootLayout.widgetId },
-			this.resizeHandleNode
-		);
-		this.statusBar.addChild(this.resizeHandle);
-	}
-});
+            this.resizeHandle = dojo.widget.createWidget(
+                "ResizeHandle",
+                {targetElmId: this.rootLayout.widgetId},
+                this.resizeHandleNode
+            );
+            this.statusBar.addChild(this.resizeHandle);
+        }
+    });

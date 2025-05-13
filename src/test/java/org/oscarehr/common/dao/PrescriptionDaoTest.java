@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -39,32 +39,31 @@ import org.oscarehr.util.SpringUtils;
 
 public class PrescriptionDaoTest extends DaoTestFixtures {
 
-	protected PrescriptionDao dao = SpringUtils.getBean(PrescriptionDao.class);
+    protected PrescriptionDao dao = SpringUtils.getBean(PrescriptionDao.class);
 
-	@Before
-	public void before() throws Exception {
-		SchemaUtils.restoreTable("prescription");
-	}
-	
-	@Test
-	public void testAll() {
-		dao.findByDemographicIdUpdatedAfterDate(999, new Date());
-		dao.updatePrescriptionsByScriptNo(100, "comment");
-	}
-	
-	@Test
-	public void testFind()
-	{
-		Prescription prescription=new Prescription();
-		dao.persist(prescription);
-		
-		Calendar cal=new GregorianCalendar();
-		cal.add(Calendar.DAY_OF_YEAR, -1);
-		List<Prescription> results=dao.findByUpdateDate(cal.getTime(), 99);
-		assertTrue(results.size()>0);
+    @Before
+    public void before() throws Exception {
+        SchemaUtils.restoreTable("prescription");
+    }
 
-		cal.add(Calendar.DAY_OF_YEAR, 2);
-		results=dao.findByUpdateDate(cal.getTime(), 99);
-		assertEquals(0, results.size());
-	}
+    @Test
+    public void testAll() {
+        dao.findByDemographicIdUpdatedAfterDate(999, new Date());
+        dao.updatePrescriptionsByScriptNo(100, "comment");
+    }
+
+    @Test
+    public void testFind() {
+        Prescription prescription = new Prescription();
+        dao.persist(prescription);
+
+        Calendar cal = new GregorianCalendar();
+        cal.add(Calendar.DAY_OF_YEAR, -1);
+        List<Prescription> results = dao.findByUpdateDate(cal.getTime(), 99);
+        assertTrue(results.size() > 0);
+
+        cal.add(Calendar.DAY_OF_YEAR, 2);
+        results = dao.findByUpdateDate(cal.getTime(), 99);
+        assertEquals(0, results.size());
+    }
 }

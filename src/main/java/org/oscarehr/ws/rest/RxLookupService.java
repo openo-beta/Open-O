@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2013-2015. Department of Computer Science, University of Victoria. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -5,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Computer Science
  * LeadLab
@@ -102,6 +103,7 @@ public class RxLookupService extends AbstractServiceImpl {
 
     /**
      * Gets details of a specific drug product
+     *
      * @param s the id of the drug product
      * @return a response object with a single drug search object represented the details.
      */
@@ -145,7 +147,7 @@ public class RxLookupService extends AbstractServiceImpl {
 
     /**
      * Extracts medication instruction details (frequency, dose, etc...) from an instruction string.
-     *
+     * <p>
      * Uses the same parser as the old Rx2 interface did.
      *
      * @param instructions the string to parse
@@ -154,7 +156,7 @@ public class RxLookupService extends AbstractServiceImpl {
     @POST
     @Path("/parse")
     @Produces
-    public DrugResponse parseInstructions(@QueryParam("input")String instructions){
+    public DrugResponse parseInstructions(@QueryParam("input") String instructions) {
 
         // the provider no, demographic no, etc... for this drug do not matter.
         // all we care about are the instruction fields.

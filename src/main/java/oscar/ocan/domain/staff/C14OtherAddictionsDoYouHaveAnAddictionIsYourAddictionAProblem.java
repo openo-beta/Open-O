@@ -1,21 +1,21 @@
+//CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -42,9 +42,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -66,22 +66,20 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "c1DoesThePersonHaveProblemsWithAddictionsIfRated0Or9GoToTheNextDomain",
-    "c2HowMuchHelpWithAddictionsDoesThePersonReceiveFromFriendsOrRelatives",
-    "c3AHowMuchHelpWithAddictionsDoesThePersonReceiveFromLocalServices",
-    "c3BHowMucHelpWithAddictionsDoesThePersonNeedFromLocalServices",
-    "cComments",
-    "cActions",
-    "cByWhom",
-    "cReviewDate",
-    "cTypeOfAddictionCheckAllThatApply",
-    "cIndicateTheStageOfChangeClientIsAtOptionalSelectOne",
-    "cHowHasTheAddictionHadAnImpactOnYourLife"
+        "c1DoesThePersonHaveProblemsWithAddictionsIfRated0Or9GoToTheNextDomain",
+        "c2HowMuchHelpWithAddictionsDoesThePersonReceiveFromFriendsOrRelatives",
+        "c3AHowMuchHelpWithAddictionsDoesThePersonReceiveFromLocalServices",
+        "c3BHowMucHelpWithAddictionsDoesThePersonNeedFromLocalServices",
+        "cComments",
+        "cActions",
+        "cByWhom",
+        "cReviewDate",
+        "cTypeOfAddictionCheckAllThatApply",
+        "cIndicateTheStageOfChangeClientIsAtOptionalSelectOne",
+        "cHowHasTheAddictionHadAnImpactOnYourLife"
 })
 @XmlRootElement(name = "C14__Other_addictions__Do_you_have_an_addiction__Is_your_addiction_a_problem_")
 public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
@@ -111,11 +109,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Gets the value of the c1DoesThePersonHaveProblemsWithAddictionsIfRated0Or9GoToTheNextDomain property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getC1DoesThePersonHaveProblemsWithAddictionsIfRated0Or9GoToTheNextDomain() {
         return c1DoesThePersonHaveProblemsWithAddictionsIfRated0Or9GoToTheNextDomain;
@@ -123,11 +119,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Sets the value of the c1DoesThePersonHaveProblemsWithAddictionsIfRated0Or9GoToTheNextDomain property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setC1DoesThePersonHaveProblemsWithAddictionsIfRated0Or9GoToTheNextDomain(BigInteger value) {
         this.c1DoesThePersonHaveProblemsWithAddictionsIfRated0Or9GoToTheNextDomain = value;
@@ -135,11 +129,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Gets the value of the c2HowMuchHelpWithAddictionsDoesThePersonReceiveFromFriendsOrRelatives property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getC2HowMuchHelpWithAddictionsDoesThePersonReceiveFromFriendsOrRelatives() {
         return c2HowMuchHelpWithAddictionsDoesThePersonReceiveFromFriendsOrRelatives;
@@ -147,11 +139,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Sets the value of the c2HowMuchHelpWithAddictionsDoesThePersonReceiveFromFriendsOrRelatives property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setC2HowMuchHelpWithAddictionsDoesThePersonReceiveFromFriendsOrRelatives(BigInteger value) {
         this.c2HowMuchHelpWithAddictionsDoesThePersonReceiveFromFriendsOrRelatives = value;
@@ -159,11 +149,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Gets the value of the c3AHowMuchHelpWithAddictionsDoesThePersonReceiveFromLocalServices property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getC3AHowMuchHelpWithAddictionsDoesThePersonReceiveFromLocalServices() {
         return c3AHowMuchHelpWithAddictionsDoesThePersonReceiveFromLocalServices;
@@ -171,11 +159,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Sets the value of the c3AHowMuchHelpWithAddictionsDoesThePersonReceiveFromLocalServices property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setC3AHowMuchHelpWithAddictionsDoesThePersonReceiveFromLocalServices(BigInteger value) {
         this.c3AHowMuchHelpWithAddictionsDoesThePersonReceiveFromLocalServices = value;
@@ -183,11 +169,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Gets the value of the c3BHowMucHelpWithAddictionsDoesThePersonNeedFromLocalServices property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @return possible object is
+     * {@link BigInteger }
      */
     public BigInteger getC3BHowMucHelpWithAddictionsDoesThePersonNeedFromLocalServices() {
         return c3BHowMucHelpWithAddictionsDoesThePersonNeedFromLocalServices;
@@ -195,11 +179,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Sets the value of the c3BHowMucHelpWithAddictionsDoesThePersonNeedFromLocalServices property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link BigInteger }
      */
     public void setC3BHowMucHelpWithAddictionsDoesThePersonNeedFromLocalServices(BigInteger value) {
         this.c3BHowMucHelpWithAddictionsDoesThePersonNeedFromLocalServices = value;
@@ -207,11 +189,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Gets the value of the cComments property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CComments }
-     *     
+     *
+     * @return possible object is
+     * {@link CComments }
      */
     public CComments getCComments() {
         return cComments;
@@ -219,11 +199,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Sets the value of the cComments property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CComments }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CComments }
      */
     public void setCComments(CComments value) {
         this.cComments = value;
@@ -231,11 +209,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Gets the value of the cActions property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCActions() {
         return cActions;
@@ -243,11 +219,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Sets the value of the cActions property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCActions(String value) {
         this.cActions = value;
@@ -255,11 +229,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Gets the value of the cByWhom property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCByWhom() {
         return cByWhom;
@@ -267,11 +239,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Sets the value of the cByWhom property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCByWhom(String value) {
         this.cByWhom = value;
@@ -279,11 +249,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Gets the value of the cReviewDate property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCReviewDate() {
         return cReviewDate;
@@ -291,11 +259,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Sets the value of the cReviewDate property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCReviewDate(String value) {
         this.cReviewDate = value;
@@ -303,11 +269,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Gets the value of the cTypeOfAddictionCheckAllThatApply property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CTypeOfAddictionCheckAllThatApply }
-     *     
+     *
+     * @return possible object is
+     * {@link CTypeOfAddictionCheckAllThatApply }
      */
     public CTypeOfAddictionCheckAllThatApply getCTypeOfAddictionCheckAllThatApply() {
         return cTypeOfAddictionCheckAllThatApply;
@@ -315,11 +279,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Sets the value of the cTypeOfAddictionCheckAllThatApply property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CTypeOfAddictionCheckAllThatApply }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CTypeOfAddictionCheckAllThatApply }
      */
     public void setCTypeOfAddictionCheckAllThatApply(CTypeOfAddictionCheckAllThatApply value) {
         this.cTypeOfAddictionCheckAllThatApply = value;
@@ -327,11 +289,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Gets the value of the cIndicateTheStageOfChangeClientIsAtOptionalSelectOne property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CIndicateTheStageOfChangeClientIsAtOptionalSelectOne }
-     *     
+     *
+     * @return possible object is
+     * {@link CIndicateTheStageOfChangeClientIsAtOptionalSelectOne }
      */
     public CIndicateTheStageOfChangeClientIsAtOptionalSelectOne getCIndicateTheStageOfChangeClientIsAtOptionalSelectOne() {
         return cIndicateTheStageOfChangeClientIsAtOptionalSelectOne;
@@ -339,11 +299,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Sets the value of the cIndicateTheStageOfChangeClientIsAtOptionalSelectOne property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CIndicateTheStageOfChangeClientIsAtOptionalSelectOne }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CIndicateTheStageOfChangeClientIsAtOptionalSelectOne }
      */
     public void setCIndicateTheStageOfChangeClientIsAtOptionalSelectOne(CIndicateTheStageOfChangeClientIsAtOptionalSelectOne value) {
         this.cIndicateTheStageOfChangeClientIsAtOptionalSelectOne = value;
@@ -351,11 +309,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Gets the value of the cHowHasTheAddictionHadAnImpactOnYourLife property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CHowHasTheAddictionHadAnImpactOnYourLife }
-     *     
+     *
+     * @return possible object is
+     * {@link CHowHasTheAddictionHadAnImpactOnYourLife }
      */
     public CHowHasTheAddictionHadAnImpactOnYourLife getCHowHasTheAddictionHadAnImpactOnYourLife() {
         return cHowHasTheAddictionHadAnImpactOnYourLife;
@@ -363,11 +319,9 @@ public class C14OtherAddictionsDoYouHaveAnAddictionIsYourAddictionAProblem {
 
     /**
      * Sets the value of the cHowHasTheAddictionHadAnImpactOnYourLife property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CHowHasTheAddictionHadAnImpactOnYourLife }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CHowHasTheAddictionHadAnImpactOnYourLife }
      */
     public void setCHowHasTheAddictionHadAnImpactOnYourLife(CHowHasTheAddictionHadAnImpactOnYourLife value) {
         this.cHowHasTheAddictionHadAnImpactOnYourLife = value;

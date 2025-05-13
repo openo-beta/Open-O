@@ -41,17 +41,17 @@ public class DownloadEDTTest extends EDTBaseTest {
         try {
             obecFileDetailList = edtDelegate.list(ResourceType.DOWNLOAD_BATCH_EDIT.getType(), ResourceStatus.DOWNLOADABLE, BigInteger.valueOf(1));
             remittanceAdviceFileDetailList = edtDelegate.list(ResourceType.DOWNLOAD_REMITTANCE_ADVICE.getType(), ResourceStatus.DOWNLOADABLE, BigInteger.valueOf(1));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
 
-        if (obecFileDetailList != null && obecFileDetailList.getResultSize().intValue() != 0) { 
-            resourceIds.add(obecFileDetailList.getData().get(0).getResourceID()); 
+        if (obecFileDetailList != null && obecFileDetailList.getResultSize().intValue() != 0) {
+            resourceIds.add(obecFileDetailList.getData().get(0).getResourceID());
         }
 
-        if (remittanceAdviceFileDetailList != null && remittanceAdviceFileDetailList.getResultSize().intValue() != 0) { 
-            resourceIds.add(remittanceAdviceFileDetailList.getData().get(0).getResourceID()); 
+        if (remittanceAdviceFileDetailList != null && remittanceAdviceFileDetailList.getResultSize().intValue() != 0) {
+            resourceIds.add(remittanceAdviceFileDetailList.getData().get(0).getResourceID());
         }
 
         // Downloading files using resourceIds
@@ -77,7 +77,7 @@ public class DownloadEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(null, ResourceStatus.DOWNLOADABLE, BigInteger.valueOf(1));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
@@ -103,9 +103,9 @@ public class DownloadEDTTest extends EDTBaseTest {
     }
 
     /*
-     * Oscar dependency is throwing an error: javax.xml.ws.soap.SOAPFaultException: https://204.41.14.200:1443/EDTService/EDTService: cvc-complex-type 2.4: in element {http://edt.health.ontario.ca/}download of type {http://edt.health.ontario.ca/}download, 
+     * Oscar dependency is throwing an error: javax.xml.ws.soap.SOAPFaultException: https://204.41.14.200:1443/EDTService/EDTService: cvc-complex-type 2.4: in element {http://edt.health.ontario.ca/}download of type {http://edt.health.ontario.ca/}download,
      * found <resourceIDs> (in default namespace), but the next item should be an end-element.
-     * 
+     *
      * Note: Due to the current implementation of the dependency, we are not catching the exact error 'Rejected By Policy'.
      * This has been confirmed with the MOH MCEDT Conformance Testing team, who stated that "catching exceptions isn’t possible is fine here".
      */
@@ -118,7 +118,7 @@ public class DownloadEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(null, null, BigInteger.valueOf(1));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
@@ -135,8 +135,12 @@ public class DownloadEDTTest extends EDTBaseTest {
         try {
             downloadResult = edtDelegate.download(resourceIds);
         } catch (Faultexception | SOAPFaultException e) {
-            if (e instanceof Faultexception) { printFaultException((Faultexception) e); }
-            if (e instanceof SOAPFaultException) { logger.error(e); }
+            if (e instanceof Faultexception) {
+                printFaultException((Faultexception) e);
+            }
+            if (e instanceof SOAPFaultException) {
+                logger.error(e);
+            }
             return;
         }
 
@@ -153,7 +157,7 @@ public class DownloadEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(ResourceType.UPLOAD_CLAIM_FILE.getType(), null, BigInteger.valueOf(1));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
@@ -184,7 +188,7 @@ public class DownloadEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(ResourceType.UPLOAD_CLAIM_FILE.getType(), null, BigInteger.valueOf(1));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
@@ -232,7 +236,7 @@ public class DownloadEDTTest extends EDTBaseTest {
 
     /*
      * $$: The Submit method expects a BigInteger for the resourceID parameter, so I am getting an error: NumberFormat for input string: "$$".
-     * 
+     *
      * Note: Due to the current implementation of the dependency, we are not catching the exact error 'Rejected By Policy'.
      * This has been confirmed with the MOH MCEDT Conformance Testing team, who stated that "catching exceptions isn’t possible is fine here".
      */
@@ -260,9 +264,9 @@ public class DownloadEDTTest extends EDTBaseTest {
     }
 
     /*
-     * Oscar dependency is throwing an error: javax.xml.ws.soap.SOAPFaultException: javax.xml.ws.soap.SOAPFaultException: https://204.41.14.200:1443/EDTService/EDTService: cvc-particle 3.1: in element {http://edt.health.ontario.ca/}download of type {http://edt.health.ontario.ca/}download, 
+     * Oscar dependency is throwing an error: javax.xml.ws.soap.SOAPFaultException: javax.xml.ws.soap.SOAPFaultException: https://204.41.14.200:1443/EDTService/EDTService: cvc-particle 3.1: in element {http://edt.health.ontario.ca/}download of type {http://edt.health.ontario.ca/}download,
      * found </ns5:download> (in namespace http://edt.health.ontario.ca/), but next item should be resourceIDs
-     * 
+     *
      * Note: Due to the current implementation of the dependency, we are not catching the exact error 'Rejected By Policy'.
      * This has been confirmed with the MOH MCEDT Conformance Testing team, who stated that "catching exceptions isn’t possible is fine here".
      */
@@ -278,8 +282,12 @@ public class DownloadEDTTest extends EDTBaseTest {
         try {
             downloadResult = edtDelegate.download(resourceIds);
         } catch (Faultexception | SOAPFaultException e) {
-            if (e instanceof Faultexception) { printFaultException((Faultexception) e); }
-            if (e instanceof SOAPFaultException) { logger.error(e); }
+            if (e instanceof Faultexception) {
+                printFaultException((Faultexception) e);
+            }
+            if (e instanceof SOAPFaultException) {
+                logger.error(e);
+            }
             return;
         }
 
@@ -296,7 +304,7 @@ public class DownloadEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(ResourceType.DOWNLOAD_GENERAL_COMMUNICATIONS.getType(), ResourceStatus.DOWNLOADABLE, BigInteger.valueOf(1));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }

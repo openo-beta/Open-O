@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2005, 2009 IBM Corporation and others.
@@ -6,19 +7,19 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * Contributors:
- *     <Quatro Group Software Systems inc.>  <OSCAR Team>
- *
+ * <Quatro Group Software Systems inc.>  <OSCAR Team>
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -238,13 +239,9 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
 
     @Override
     public LookupTableDefValue GetLookupTableDef(String tableId) {
-        ArrayList<String> paramList = new ArrayList<String>();
-
-        String sSQL = "from LookupTableDefValue s where s.tableId= ?";
-        paramList.add(tableId);
-        Object params[] = paramList.toArray(new Object[paramList.size()]);
+        String sSQL = "from LookupTableDefValue s where s.tableId= ?0";
         try {
-            return (LookupTableDefValue) getHibernateTemplate().find(sSQL, params).get(0);
+            return (LookupTableDefValue) getHibernateTemplate().find(sSQL, new Object[]{tableId}).get(0);
         } catch (Exception ex) {
             MiscUtils.getLogger().error("Error", ex);
             return null;
@@ -253,7 +250,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
 
     @Override
     public List LoadFieldDefList(String tableId) {
-        String sSql = "from FieldDefValue s where s.tableId=? order by s.fieldIndex ";
+        String sSql = "from FieldDefValue s where s.tableId=?0 order by s.fieldIndex ";
         ArrayList<String> paramList = new ArrayList<String>();
         paramList.add(tableId);
         Object params[] = paramList.toArray(new Object[paramList.size()]);
@@ -351,9 +348,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         return codes;
     }
 
-    private int GetNextId(String idFieldName, String tableName) throws SQLException
-
-    {
+    private int GetNextId(String idFieldName, String tableName) throws SQLException {
         String sql = "select max(" + idFieldName + ")";
         sql += " from " + tableName;
         DBPreparedHandler db = new DBPreparedHandler();
@@ -606,10 +601,10 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
     private void updateOrgStatus(String orgCd, LookupCodeValue newCd) {
         LookupCodeValue oldCd = GetCode("ORG", orgCd);
         if (!newCd.isActive()) {
-            String oldCsv = oldCd.getCodecsv();
+            String oldCsv = oldCd.getCodecsv() + "_%";
 
             List<LstOrgcd> o = (List<LstOrgcd>) this.getHibernateTemplate()
-                    .find("FROM LstOrgcd o WHERE o.codecsv like ?", oldCsv + "_%");
+                    .find("FROM LstOrgcd o WHERE o.codecsv like ?0", oldCsv);
             for (LstOrgcd l : o) {
                 l.setActiveyn(0);
                 this.getHibernateTemplate().update(l);
@@ -620,10 +615,10 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
     @Override
     public boolean inOrg(String org1, String org2) {
         boolean isInString = false;
-        String sql = "From LstOrgcd a where  a.fullcode like '%" + "?'  ";
+        String sql = "From LstOrgcd a where  a.fullcode like %?0";
 
-        LstOrgcd orgObj1 = (LstOrgcd) getHibernateTemplate().find(sql, new Object[] { org1 });
-        LstOrgcd orgObj2 = (LstOrgcd) getHibernateTemplate().find(sql, new Object[] { org2 });
+        LstOrgcd orgObj1 = (LstOrgcd) getHibernateTemplate().find(sql, new Object[]{org1});
+        LstOrgcd orgObj2 = (LstOrgcd) getHibernateTemplate().find(sql, new Object[]{org2});
         if (orgObj2.getFullcode().indexOf(orgObj1.getFullcode()) > 0)
             isInString = true;
         return isInString;

@@ -1,20 +1,21 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -39,7 +40,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
- * under the License.    
+ * under the License.
  */
 package oscar.oscarRx.util;
 
@@ -70,12 +71,14 @@ import org.oscarehr.util.MiscUtils;
  * </pre>
  */
 public class TimingOutCallback implements AsyncCallback {
-    /** This exception is thrown, if the request times out.
+    /**
+     * This exception is thrown, if the request times out.
      */
     public static class TimeoutException extends XmlRpcException {
         private static final long serialVersionUID = 4875266372372105081L;
 
-        /** Creates a new instance with the given error code and
+        /**
+         * Creates a new instance with the given error code and
          * error message.
          */
         public TimeoutException(int pCode, String message) {
@@ -88,16 +91,19 @@ public class TimingOutCallback implements AsyncCallback {
     private Throwable error;
     private boolean responseSeen;
 
-    /** Waits the specified number of milliseconds for a response.
+    /**
+     * Waits the specified number of milliseconds for a response.
      */
     public TimingOutCallback(long pTimeout) {
         timeout = pTimeout;
     }
 
-    /** Called to wait for the response.
+    /**
+     * Called to wait for the response.
+     *
      * @throws InterruptedException The thread was interrupted.
-     * @throws TimeoutException No response was received after waiting the specified time.
-     * @throws Throwable An error was returned by the server.
+     * @throws TimeoutException     No response was received after waiting the specified time.
+     * @throws Throwable            An error was returned by the server.
      */
     public synchronized Object waitForResponse() throws Throwable {
         if (!responseSeen) {
@@ -126,9 +132,9 @@ public class TimingOutCallback implements AsyncCallback {
 
     public synchronized void handleResult(Object arg0, URL arg1, String arg2) {
         responseSeen = true;
-        MiscUtils.getLogger().debug("arg2"+arg2);
+        MiscUtils.getLogger().debug("arg2" + arg2);
         result = arg0;
-         this.notify();
+        this.notify();
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 

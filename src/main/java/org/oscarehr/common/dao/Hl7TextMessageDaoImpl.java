@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -5,23 +6,23 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -45,7 +46,7 @@ public class Hl7TextMessageDaoImpl extends AbstractDaoImpl<Hl7TextMessage> imple
     @Override
     public void updateIfFillerOrderNumberMatches(String base64EncodedeMessage, int fileUploadCheckId, Integer id) {
         Query query = entityManager.createQuery("update " + modelClass.getName()
-                + " x set x.base64EncodedeMessage=?, fileUploadCheckId=? where x.type='TDIS' and x.id=?");
+                + " x set x.base64EncodedeMessage=?1, fileUploadCheckId=?2 where x.type='TDIS' and x.id=?3");
         query.setParameter(1, base64EncodedeMessage);
         query.setParameter(2, fileUploadCheckId);
         query.setParameter(3, id);
@@ -55,8 +56,8 @@ public class Hl7TextMessageDaoImpl extends AbstractDaoImpl<Hl7TextMessage> imple
 
     @Override
     public List<Hl7TextMessage> findByFileUploadCheckId(int id) {
-        Query query = entityManager.createQuery("select x from Hl7TextMessage x where x.fileUploadCheckId = ?");
-        query.setParameter(0, id);
+        Query query = entityManager.createQuery("select x from Hl7TextMessage x where x.fileUploadCheckId = ?1");
+        query.setParameter(1, id);
 
         @SuppressWarnings("unchecked")
         List<Hl7TextMessage> results = query.getResultList();

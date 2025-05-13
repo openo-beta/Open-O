@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,50 +38,50 @@ import org.oscarehr.util.SpringUtils;
 
 public class SentToPHRTrackingDaoTest extends DaoTestFixtures {
 
-	protected SentToPHRTrackingDao dao = SpringUtils.getBean(SentToPHRTrackingDao.class);
+    protected SentToPHRTrackingDao dao = SpringUtils.getBean(SentToPHRTrackingDao.class);
 
-	@Before
-	public void before() throws Exception {
-		SchemaUtils.restoreTable("SentToPHRTracking");
-	}
+    @Before
+    public void before() throws Exception {
+        SchemaUtils.restoreTable("SentToPHRTracking");
+    }
 
-	@Test
-	public void testCreate() throws Exception {
-		SentToPHRTracking entity = new SentToPHRTracking();
-		EntityDataGenerator.generateTestDataForModelClass(entity);
-		dao.persist(entity);
-		assertNotNull(entity.getId());
-	}
-	
-	@Test
-	public void testFindByDemographicObjectServer() throws Exception {
-		
-		int demoNo1 = 100;
-		String objName1 = "alpha";
-		String server1 = "server1";
-		
-		int demoNo2 = 200;
-		String objName2 = "bravo";
-		String server2 = "server2";
-		
-		SentToPHRTracking PHRTracking1 = new SentToPHRTracking();
-		EntityDataGenerator.generateTestDataForModelClass(PHRTracking1);
-		PHRTracking1.setDemographicNo(demoNo1);
-		PHRTracking1.setObjectName(objName1);
-		PHRTracking1.setSentToServer(server1);
-		dao.persist(PHRTracking1);
-		
-		SentToPHRTracking PHRTracking2 = new SentToPHRTracking();
-		EntityDataGenerator.generateTestDataForModelClass(PHRTracking2);
-		PHRTracking2.setDemographicNo(demoNo2);
-		PHRTracking2.setObjectName(objName2);
-		PHRTracking2.setSentToServer(server2);
-		dao.persist(PHRTracking2);
-		
-		SentToPHRTracking expcetedResult = PHRTracking1;
-		SentToPHRTracking result = dao.findByDemographicObjectServer(demoNo1, objName1, server1);
-		
-		assertEquals(expcetedResult, result);		
-	}
+    @Test
+    public void testCreate() throws Exception {
+        SentToPHRTracking entity = new SentToPHRTracking();
+        EntityDataGenerator.generateTestDataForModelClass(entity);
+        dao.persist(entity);
+        assertNotNull(entity.getId());
+    }
+
+    @Test
+    public void testFindByDemographicObjectServer() throws Exception {
+
+        int demoNo1 = 100;
+        String objName1 = "alpha";
+        String server1 = "server1";
+
+        int demoNo2 = 200;
+        String objName2 = "bravo";
+        String server2 = "server2";
+
+        SentToPHRTracking PHRTracking1 = new SentToPHRTracking();
+        EntityDataGenerator.generateTestDataForModelClass(PHRTracking1);
+        PHRTracking1.setDemographicNo(demoNo1);
+        PHRTracking1.setObjectName(objName1);
+        PHRTracking1.setSentToServer(server1);
+        dao.persist(PHRTracking1);
+
+        SentToPHRTracking PHRTracking2 = new SentToPHRTracking();
+        EntityDataGenerator.generateTestDataForModelClass(PHRTracking2);
+        PHRTracking2.setDemographicNo(demoNo2);
+        PHRTracking2.setObjectName(objName2);
+        PHRTracking2.setSentToServer(server2);
+        dao.persist(PHRTracking2);
+
+        SentToPHRTracking expcetedResult = PHRTracking1;
+        SentToPHRTracking result = dao.findByDemographicObjectServer(demoNo1, objName1, server1);
+
+        assertEquals(expcetedResult, result);
+    }
 
 }

@@ -37,7 +37,7 @@ public class InfoEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(ResourceType.UPLOAD_CLAIM_FILE.getType(), ResourceStatus.SUBMITTED, BigInteger.valueOf(1));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
@@ -68,7 +68,7 @@ public class InfoEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(ResourceType.DOWNLOAD_BATCH_EDIT.getType(), ResourceStatus.DOWNLOADABLE, BigInteger.valueOf(1));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
@@ -103,7 +103,7 @@ public class InfoEDTTest extends EDTBaseTest {
             claimFileDetailList = edtDelegate.list(ResourceType.UPLOAD_CLAIM_FILE.getType(), ResourceStatus.SUBMITTED, BigInteger.valueOf(1));
             obecFileDetailList = edtDelegate.list(ResourceType.UPLOAD_OBEC_INBOUND_FILE.getType(), ResourceStatus.SUBMITTED, BigInteger.valueOf(1));
             batchEditReportDetailList = edtDelegate.list(ResourceType.DOWNLOAD_BATCH_EDIT.getType(), ResourceStatus.DOWNLOADABLE, BigInteger.valueOf(1));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
@@ -134,9 +134,9 @@ public class InfoEDTTest extends EDTBaseTest {
     }
 
     /*
-     * Oscar dependency is throwing an error: javax.xml.ws.soap.SOAPFaultException: javax.xml.ws.soap.SOAPFaultException: https://204.41.14.200:1443/EDTService/EDTService: cvc-particle 3.1: in element {http://edt.health.ontario.ca/}info of type {http://edt.health.ontario.ca/}info, 
+     * Oscar dependency is throwing an error: javax.xml.ws.soap.SOAPFaultException: javax.xml.ws.soap.SOAPFaultException: https://204.41.14.200:1443/EDTService/EDTService: cvc-particle 3.1: in element {http://edt.health.ontario.ca/}info of type {http://edt.health.ontario.ca/}info,
      * found </ns5:info> (in namespace http://edt.health.ontario.ca/), but next item should be resourceIDs
-     * 
+     *
      * Note: Due to the current implementation of the dependency, we are not catching the exact error 'Rejected By Policy'.
      * This has been confirmed with the MOH MCEDT Conformance Testing team, who stated that "catching exceptions isn’t possible is fine here".
      */
@@ -150,8 +150,12 @@ public class InfoEDTTest extends EDTBaseTest {
         try {
             edtDelegate.info(resourceIds);
         } catch (Faultexception | SOAPFaultException e) {
-            if (e instanceof Faultexception) { printFaultException((Faultexception) e); }
-            if (e instanceof SOAPFaultException) { logger.error(e); }
+            if (e instanceof Faultexception) {
+                printFaultException((Faultexception) e);
+            }
+            if (e instanceof SOAPFaultException) {
+                logger.error(e);
+            }
         }
     }
 
@@ -168,7 +172,7 @@ public class InfoEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(ResourceType.UPLOAD_OBEC_INBOUND_FILE.getType(), ResourceStatus.SUBMITTED, BigInteger.valueOf(1));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
@@ -217,7 +221,7 @@ public class InfoEDTTest extends EDTBaseTest {
 
     /*
      * $$: The Info method expects a BigInteger for the resourceID parameter, so I am getting an error: NumberFormat for input string: "$$".
-     * 
+     *
      * Note: Due to the current implementation of the dependency, we are not catching the exact error 'Rejected By Policy'.
      * This has been confirmed with the MOH MCEDT Conformance Testing team, who stated that "catching exceptions isn’t possible is fine here".
      */
@@ -246,9 +250,9 @@ public class InfoEDTTest extends EDTBaseTest {
     }
 
     /*
-     * Oscar dependency is throwing an error: javax.xml.ws.soap.SOAPFaultException: https://204.41.14.200:1443/EDTService/EDTService: cvc-particle 3.1: in element {http://edt.health.ontario.ca/}info of type {http://edt.health.ontario.ca/}info, 
+     * Oscar dependency is throwing an error: javax.xml.ws.soap.SOAPFaultException: https://204.41.14.200:1443/EDTService/EDTService: cvc-particle 3.1: in element {http://edt.health.ontario.ca/}info of type {http://edt.health.ontario.ca/}info,
      * found </ns5:info> (in namespace http://edt.health.ontario.ca/), but next item should be resourceIDs
-     * 
+     *
      * Note: Due to the current implementation of the dependency, we are not catching the exact error 'Rejected By Policy'.
      * This has been confirmed with the MOH MCEDT Conformance Testing team, who stated that "catching exceptions isn’t possible is fine here".
      */
@@ -264,8 +268,12 @@ public class InfoEDTTest extends EDTBaseTest {
         try {
             edtDelegate.info(resourceIds);
         } catch (Faultexception | SOAPFaultException e) {
-            if (e instanceof Faultexception) { printFaultException((Faultexception) e); }
-            if (e instanceof SOAPFaultException) { logger.error(e); }
+            if (e instanceof Faultexception) {
+                printFaultException((Faultexception) e);
+            }
+            if (e instanceof SOAPFaultException) {
+                logger.error(e);
+            }
         }
     }
 }

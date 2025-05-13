@@ -5,9 +5,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+      - "18000:8000"
     volumes:
-      - ../.:/workspace            # Mapping the project root to /workspace inside the container
-      - ~/.m2:/root/.m2            # Persistent Maven cache
+      - m2-volume:/root/.m2
+      - ..:/workspace:cached 
     env_file:
       - ./development/config/shared/local.env
     environment:

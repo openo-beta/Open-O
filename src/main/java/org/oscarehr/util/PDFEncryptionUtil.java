@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.util;
 
 import java.io.IOException;
@@ -20,5 +21,5 @@ public class PDFEncryptionUtil {
         } catch (IOException e) {
             throw new IOException("Failed to encrypt document", e);
         }
-    } 
+    }
 }

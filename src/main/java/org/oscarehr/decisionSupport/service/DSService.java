@@ -1,20 +1,21 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -44,7 +45,6 @@ import org.oscarehr.util.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- *
  * @author apavel
  */
 public abstract class DSService {
@@ -55,7 +55,7 @@ public abstract class DSService {
     protected DSGuidelineProviderMappingDao dSGuidelineProviderMappingDao;
 
     public DSService() {
-  
+
     }
 
     public List<DSConsequence> evaluateAndGetConsequences(LoggedInInfo loggedInInfo, String demographicNo, String providerNo) {
@@ -63,7 +63,7 @@ public abstract class DSService {
         List<DSGuideline> dsGuidelines = this.dSGuidelineDao.getDSGuidelinesByProvider(providerNo);
         logger.info("Decision Support 'evaluateAndGetConsequences' has been called, reading " + dsGuidelines.size() + " for this provider");
         ArrayList<DSConsequence> allResultingConsequences = new ArrayList<DSConsequence>();
-        for (DSGuideline dsGuideline: dsGuidelines) {
+        for (DSGuideline dsGuideline : dsGuidelines) {
             try {
                 List<DSConsequence> newConsequences = dsGuideline.evaluate(loggedInInfo, demographicNo);
                 if (newConsequences != null) {
@@ -81,6 +81,7 @@ public abstract class DSService {
         DSServiceThread dsServiceThread = new DSServiceThread(this, loggedInInfo);
         dsServiceThread.start();
     }
+
     public abstract void fetchGuidelinesFromService(LoggedInInfo loggedInInfo);
 
     public List<DSGuideline> getDsGuidelinesByProvider(String provider) {
@@ -88,6 +89,6 @@ public abstract class DSService {
     }
 
     public DSGuideline findGuideline(Integer guidelineId) {
-    	return dSGuidelineDao.find(guidelineId);
+        return dSGuidelineDao.find(guidelineId);
     }
 }

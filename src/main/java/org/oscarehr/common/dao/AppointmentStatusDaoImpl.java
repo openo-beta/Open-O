@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -6,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
@@ -65,8 +66,8 @@ public class AppointmentStatusDaoImpl extends AbstractDaoImpl<AppointmentStatus>
             return null;
         }
 
-        Query q = entityManager.createQuery("select a from AppointmentStatus a where a.status like ?");
-        q.setParameter(0, status.substring(0, 1) + "%");
+        Query q = entityManager.createQuery("select a from AppointmentStatus a where a.status like ?1");
+        q.setParameter(1, status.substring(0, 1) + "%");
 
         @SuppressWarnings("unchecked")
         List<AppointmentStatus> results = q.getResultList();
@@ -99,7 +100,7 @@ public class AppointmentStatusDaoImpl extends AbstractDaoImpl<AppointmentStatus>
     /**
      * I don't know about this one...but i'm just converting it to a JPA entity for
      * now.
-     * 
+     *
      * @param allStatus
      * @return int
      */
@@ -112,7 +113,7 @@ public class AppointmentStatusDaoImpl extends AbstractDaoImpl<AppointmentStatus>
             apptStatus = allStatus.get(i);
             if (apptStatus.getActive() == 1)
                 continue;
-            sql = "select count(*) as total from appointment a where a.status like ? ";
+            sql = "select count(*) as total from appointment a where a.status like ?1 ";
             // sql = sql + "collate latin1_general_cs";
 
             Query q = entityManager.createNativeQuery(sql);

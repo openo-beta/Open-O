@@ -26,15 +26,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 <div class="page-header">
-        <h1><a href="#">Oscar Sharing Center</a></h1>
-      </div>
-      <nav class="navbar navbar-default" role="navigation">
-                <div class="navbar-collapse">
-                    <ul class="nav navbar-nav">
-                      <li><a href="${ctx}/administration">Administration</a></li>
-                      <li><a href="${ctx}/sharingcenter/affinitydomain/manage.jsp">Manage Affinity Domains</a></li>
-                      <li><a href="${ctx}/sharingcenter/security/infrastructure.jsp">Security</a></li>
-                      <li><a href="${ctx}/sharingcenter/affinitydomain/clinic.jsp">Clinic Info</a></li>
-                    </ul>
-                </div>
-            </nav>
+    <h1><a href="#">Oscar Sharing Center</a></h1>
+</div>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li><a href="${ctx}/administration">Administration</a></li>
+            <li><a href="${ctx}/sharingcenter/affinitydomain/manage.jsp">Manage Affinity Domains</a></li>
+            <li><a href="${ctx}/sharingcenter/security/infrastructure.jsp">Security</a></li>
+            <li><a href="${ctx}/sharingcenter/affinitydomain/clinic.jsp">Clinic Info</a></li>
+        </ul>
+    </div>
+</nav>

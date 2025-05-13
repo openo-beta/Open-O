@@ -1,26 +1,27 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
- *
+ * <p>
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -36,11 +37,12 @@ import org.hibernate.type.StandardBasicTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.hibernate.SessionFactory;
 import org.hibernate.Session;
-public class BedProgramDaoImpl extends HibernateDaoSupport implements BedProgramDao{
+
+public class BedProgramDaoImpl extends HibernateDaoSupport implements BedProgramDao {
     private String bedType = "Geographical";
 
 
-	@Autowired
+    @Autowired
     public void setSessionFactoryOverride(SessionFactory sessionFactory) {
         super.setSessionFactory(sessionFactory);
     }
@@ -54,7 +56,7 @@ public class BedProgramDaoImpl extends HibernateDaoSupport implements BedProgram
     }
 
     public List getAllBedProgram() {
-        String qr = "FROM Program p where p.type = ?";
+        String qr = "FROM Program p where p.type = ?0";
         List rs = getProgramResultList(qr, bedType);
         return rs;
     }
@@ -78,7 +80,7 @@ public class BedProgramDaoImpl extends HibernateDaoSupport implements BedProgram
     }
 
     public List getProgramIdByName(String name) {
-        String q = "SELECT p.id FROM Program p WHERE p.name = ?";
+        String q = "SELECT p.id FROM Program p WHERE p.name = ?0";
         List rs = getProgramResultList(q, name);
         return rs;
     }
@@ -91,11 +93,11 @@ public class BedProgramDaoImpl extends HibernateDaoSupport implements BedProgram
         query.addScalar("address", StandardBasicTypes.STRING);
         query.addScalar("phone", StandardBasicTypes.STRING);
         query.addScalar("fax", StandardBasicTypes.STRING);
-        Object[] o = (Object[])query.uniqueResult();
+        Object[] o = (Object[]) query.uniqueResult();
         if (o != null) {
             result[0] = new String(o[0] + "\n" + o[1]);
-            result[1] = (String)o[2];
-            result[2] = (String)o[3];
+            result[1] = (String) o[2];
+            result[2] = (String) o[3];
         }
         return result;
     }

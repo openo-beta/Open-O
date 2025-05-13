@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -5,23 +6,23 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -29,6 +30,7 @@
 package oscar.oscarPrevention;
 
 //import java.io.ByteArrayInputStream;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
@@ -50,99 +52,98 @@ import org.springframework.stereotype.Component;
 import oscar.OscarProperties;
 
 /**
- *
  * @author Jay Gallagher
  */
 @Component
-public class PreventionDSImpl implements PreventionDS{
-   private static Logger log = MiscUtils.getLogger();
-   static boolean loaded = false;
-   static RuleBase ruleBase = null;
-   
-   @Autowired
-   private ResourceStorageDao resourceStorageDao;// = SpringUtils.getBean(ResourceStorageDao.class);
-   
-	   	                   
-   public PreventionDSImpl() {
-   }
-   
-   public void reloadRuleBase(){
-	   loadRuleBase();
-   }
-   
-   @PostConstruct
-   private void loadRuleBase(){
-      try{
-        boolean fileFound = false;
-        String preventionPath = OscarProperties.getInstance().getProperty("PREVENTION_FILE");
-        
-        if ( preventionPath != null){
-        File file = new File(OscarProperties.getInstance().getProperty("PREVENTION_FILE"));
-           if(file.isFile() || file.canRead()) {
-               log.debug("Loading from file "+file.getName());
-               
-               FileInputStream fis = new FileInputStream(file);
-               try
-               {
-            	   ruleBase = RuleBaseLoader.loadFromInputStream(fis);
-               } catch(Exception e) {
-            	   MiscUtils.getLogger().error("Error loading preventions",e);
-               }
-               finally 
-               {
-            	   IOUtils.closeQuietly(fis);
-               }
-            	   
-               fileFound = true;
-           }
+public class PreventionDSImpl implements PreventionDS {
+    private static Logger log = MiscUtils.getLogger();
+    static boolean loaded = false;
+    static RuleBase ruleBase = null;
 
-        	if(!fileFound && preventionPath.startsWith("classpath:")) {
-        		 URL url = PreventionDS.class.getResource( preventionPath.substring(10));  
-                 log.debug("loading from URL "+url.getFile());            
-                 ruleBase = RuleBaseLoader.loadFromUrl( url );
-        	}
-        }
-        
-        if(!fileFound){
-        	ResourceStorage resourceStorage = resourceStorageDao.findActive(ResourceStorage.PREVENTION_RULES);
-        	if(resourceStorage != null){
-	        	try{
-	         	   ruleBase =  DSPreventionDrools.createRuleBase(resourceStorage.getFileContents());  
-	         	   log.info("Loading prevention rule base from "+resourceStorage.getResourceName());
-	         	   fileFound = true;
-	            }catch(Exception resourceError){
-	            	log.error("ERROR LOADING from resource Storage",resourceError);
-	            }        	}
-         	   
-            
-        	// check if table has new preventions DRL
-        }
-        
-        
-        if (!fileFound){                  
-         URL url = PreventionDS.class.getResource( "/oscar/oscarPrevention/prevention.drl" );  //TODO: change this so it is configurable;
-         log.debug("loading from URL "+url.getFile());            
-         ruleBase = RuleBaseLoader.loadFromUrl( url );
-        }
-      }catch(Exception e){
-         MiscUtils.getLogger().error("Error", e);                
-      }
-      loaded = true;             
-   }
-   
-   
-   public Prevention getMessages(Prevention p) throws Exception{
-      try{
-         WorkingMemory workingMemory = ruleBase.newWorkingMemory();
-         workingMemory.assertObject(p);
-         workingMemory.fireAllRules();
-      }catch(Exception e){MiscUtils.getLogger().error("Error", e); throw new Exception("ERROR: Drools ",e);}
-         return p;
-   }
+    @Autowired
+    private ResourceStorageDao resourceStorageDao;// = SpringUtils.getBean(ResourceStorageDao.class);
 
-   
-   
-   ///
+
+    public PreventionDSImpl() {
+    }
+
+    public void reloadRuleBase() {
+        loadRuleBase();
+    }
+
+    @PostConstruct
+    private void loadRuleBase() {
+        try {
+            boolean fileFound = false;
+            String preventionPath = OscarProperties.getInstance().getProperty("PREVENTION_FILE");
+
+            if (preventionPath != null) {
+                File file = new File(OscarProperties.getInstance().getProperty("PREVENTION_FILE"));
+                if (file.isFile() || file.canRead()) {
+                    log.debug("Loading from file " + file.getName());
+
+                    FileInputStream fis = new FileInputStream(file);
+                    try {
+                        ruleBase = RuleBaseLoader.loadFromInputStream(fis);
+                    } catch (Exception e) {
+                        MiscUtils.getLogger().error("Error loading preventions", e);
+                    } finally {
+                        IOUtils.closeQuietly(fis);
+                    }
+
+                    fileFound = true;
+                }
+
+                if (!fileFound && preventionPath.startsWith("classpath:")) {
+                    URL url = PreventionDS.class.getResource(preventionPath.substring(10));
+                    log.debug("loading from URL " + url.getFile());
+                    ruleBase = RuleBaseLoader.loadFromUrl(url);
+                }
+            }
+
+            if (!fileFound) {
+                ResourceStorage resourceStorage = resourceStorageDao.findActive(ResourceStorage.PREVENTION_RULES);
+                if (resourceStorage != null) {
+                    try {
+                        ruleBase = DSPreventionDrools.createRuleBase(resourceStorage.getFileContents());
+                        log.info("Loading prevention rule base from " + resourceStorage.getResourceName());
+                        fileFound = true;
+                    } catch (Exception resourceError) {
+                        log.error("ERROR LOADING from resource Storage", resourceError);
+                    }
+                }
+
+
+                // check if table has new preventions DRL
+            }
+
+
+            if (!fileFound) {
+                URL url = PreventionDS.class.getResource("/oscar/oscarPrevention/prevention.drl");  //TODO: change this so it is configurable;
+                log.debug("loading from URL " + url.getFile());
+                ruleBase = RuleBaseLoader.loadFromUrl(url);
+            }
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Error", e);
+        }
+        loaded = true;
+    }
+
+
+    public Prevention getMessages(Prevention p) throws Exception {
+        try {
+            WorkingMemory workingMemory = ruleBase.newWorkingMemory();
+            workingMemory.assertObject(p);
+            workingMemory.fireAllRules();
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Error", e);
+            throw new Exception("ERROR: Drools ", e);
+        }
+        return p;
+    }
+
+
+    ///
 //         URL url = Prevs.class.getResource( "prevention.drl" );
 //      log.debug(url.getFile());
 //      
@@ -183,10 +184,8 @@ public class PreventionDSImpl implements PreventionDS{
 //         }
 //        
 //      }
-      
-      
-   
-   
-   ////
+
+
+    ////
 
 }

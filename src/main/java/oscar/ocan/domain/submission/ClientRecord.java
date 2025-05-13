@@ -1,21 +1,21 @@
+//CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -41,9 +41,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -80,37 +80,35 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "clientID",
-    "clientName",
-    "clientAddress",
-    "clientPhone",
-    "clientOHIP",
-    "clientCulture",
-    "reasonForAssessment",
-    "clientContact",
-    "serviceRecipientLocation",
-    "serviceRecipientLHIN",
-    "serviceDeliveryLHIN",
-    "clientDOB",
-    "gender",
-    "maritalStatus",
-    "clientCapacity",
-    "referralSource",
-    "aboriginalOrigin",
-    "citizenshipStatus",
-    "timeLivedInCanada",
-    "immigExpList",
-    "discrimExpList",
-    "prefLang",
-    "serviceLang",
-    "legalIssues",
-    "legalStatusList",
-    "exitDisposition"
+        "clientID",
+        "clientName",
+        "clientAddress",
+        "clientPhone",
+        "clientOHIP",
+        "clientCulture",
+        "reasonForAssessment",
+        "clientContact",
+        "serviceRecipientLocation",
+        "serviceRecipientLHIN",
+        "serviceDeliveryLHIN",
+        "clientDOB",
+        "gender",
+        "maritalStatus",
+        "clientCapacity",
+        "referralSource",
+        "aboriginalOrigin",
+        "citizenshipStatus",
+        "timeLivedInCanada",
+        "immigExpList",
+        "discrimExpList",
+        "prefLang",
+        "serviceLang",
+        "legalIssues",
+        "legalStatusList",
+        "exitDisposition"
 })
 @XmlRootElement(name = "clientRecord")
 public class ClientRecord {
@@ -165,11 +163,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the clientID property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ClientID }
-     *     
+     *
+     * @return possible object is
+     * {@link ClientID }
      */
     public ClientID getClientID() {
         return clientID;
@@ -177,11 +173,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the clientID property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ClientID }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link ClientID }
      */
     public void setClientID(ClientID value) {
         this.clientID = value;
@@ -189,11 +183,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the clientName property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ClientName }
-     *     
+     *
+     * @return possible object is
+     * {@link ClientName }
      */
     public ClientName getClientName() {
         return clientName;
@@ -201,11 +193,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the clientName property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ClientName }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link ClientName }
      */
     public void setClientName(ClientName value) {
         this.clientName = value;
@@ -213,11 +203,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the clientAddress property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ClientAddress }
-     *     
+     *
+     * @return possible object is
+     * {@link ClientAddress }
      */
     public ClientAddress getClientAddress() {
         return clientAddress;
@@ -225,11 +213,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the clientAddress property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ClientAddress }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link ClientAddress }
      */
     public void setClientAddress(ClientAddress value) {
         this.clientAddress = value;
@@ -237,11 +223,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the clientPhone property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getClientPhone() {
         return clientPhone;
@@ -249,11 +233,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the clientPhone property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setClientPhone(String value) {
         this.clientPhone = value;
@@ -261,11 +243,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the clientOHIP property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ClientOHIP }
-     *     
+     *
+     * @return possible object is
+     * {@link ClientOHIP }
      */
     public ClientOHIP getClientOHIP() {
         return clientOHIP;
@@ -273,11 +253,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the clientOHIP property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ClientOHIP }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link ClientOHIP }
      */
     public void setClientOHIP(ClientOHIP value) {
         this.clientOHIP = value;
@@ -285,11 +263,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the clientCulture property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getClientCulture() {
         return clientCulture;
@@ -297,11 +273,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the clientCulture property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setClientCulture(String value) {
         this.clientCulture = value;
@@ -309,11 +283,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the reasonForAssessment property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ReasonForAssessment }
-     *     
+     *
+     * @return possible object is
+     * {@link ReasonForAssessment }
      */
     public ReasonForAssessment getReasonForAssessment() {
         return reasonForAssessment;
@@ -321,11 +293,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the reasonForAssessment property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ReasonForAssessment }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link ReasonForAssessment }
      */
     public void setReasonForAssessment(ReasonForAssessment value) {
         this.reasonForAssessment = value;
@@ -333,11 +303,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the clientContact property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ClientContact }
-     *     
+     *
+     * @return possible object is
+     * {@link ClientContact }
      */
     public ClientContact getClientContact() {
         return clientContact;
@@ -345,11 +313,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the clientContact property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ClientContact }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link ClientContact }
      */
     public void setClientContact(ClientContact value) {
         this.clientContact = value;
@@ -357,11 +323,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the serviceRecipientLocation property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getServiceRecipientLocation() {
         return serviceRecipientLocation;
@@ -369,11 +333,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the serviceRecipientLocation property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setServiceRecipientLocation(String value) {
         this.serviceRecipientLocation = value;
@@ -381,7 +343,6 @@ public class ClientRecord {
 
     /**
      * Gets the value of the serviceRecipientLHIN property.
-     * 
      */
     public int getServiceRecipientLHIN() {
         return serviceRecipientLHIN;
@@ -389,7 +350,6 @@ public class ClientRecord {
 
     /**
      * Sets the value of the serviceRecipientLHIN property.
-     * 
      */
     public void setServiceRecipientLHIN(int value) {
         this.serviceRecipientLHIN = value;
@@ -397,7 +357,6 @@ public class ClientRecord {
 
     /**
      * Gets the value of the serviceDeliveryLHIN property.
-     * 
      */
     public int getServiceDeliveryLHIN() {
         return serviceDeliveryLHIN;
@@ -405,7 +364,6 @@ public class ClientRecord {
 
     /**
      * Sets the value of the serviceDeliveryLHIN property.
-     * 
      */
     public void setServiceDeliveryLHIN(int value) {
         this.serviceDeliveryLHIN = value;
@@ -413,11 +371,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the clientDOB property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @return possible object is
+     * {@link XMLGregorianCalendar }
      */
     public XMLGregorianCalendar getClientDOB() {
         return clientDOB;
@@ -425,11 +381,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the clientDOB property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link XMLGregorianCalendar }
      */
     public void setClientDOB(XMLGregorianCalendar value) {
         this.clientDOB = value;
@@ -437,11 +391,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the gender property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getGender() {
         return gender;
@@ -449,11 +401,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the gender property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setGender(String value) {
         this.gender = value;
@@ -461,11 +411,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the maritalStatus property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getMaritalStatus() {
         return maritalStatus;
@@ -473,11 +421,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the maritalStatus property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setMaritalStatus(String value) {
         this.maritalStatus = value;
@@ -485,11 +431,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the clientCapacity property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ClientCapacity }
-     *     
+     *
+     * @return possible object is
+     * {@link ClientCapacity }
      */
     public ClientCapacity getClientCapacity() {
         return clientCapacity;
@@ -497,11 +441,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the clientCapacity property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ClientCapacity }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link ClientCapacity }
      */
     public void setClientCapacity(ClientCapacity value) {
         this.clientCapacity = value;
@@ -509,11 +451,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the referralSource property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getReferralSource() {
         return referralSource;
@@ -521,11 +461,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the referralSource property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setReferralSource(String value) {
         this.referralSource = value;
@@ -533,11 +471,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the aboriginalOrigin property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getAboriginalOrigin() {
         return aboriginalOrigin;
@@ -545,11 +481,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the aboriginalOrigin property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setAboriginalOrigin(String value) {
         this.aboriginalOrigin = value;
@@ -557,11 +491,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the citizenshipStatus property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCitizenshipStatus() {
         return citizenshipStatus;
@@ -569,11 +501,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the citizenshipStatus property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCitizenshipStatus(String value) {
         this.citizenshipStatus = value;
@@ -581,11 +511,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the timeLivedInCanada property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link TimeLivedInCanada }
-     *     
+     *
+     * @return possible object is
+     * {@link TimeLivedInCanada }
      */
     public TimeLivedInCanada getTimeLivedInCanada() {
         return timeLivedInCanada;
@@ -593,11 +521,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the timeLivedInCanada property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link TimeLivedInCanada }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link TimeLivedInCanada }
      */
     public void setTimeLivedInCanada(TimeLivedInCanada value) {
         this.timeLivedInCanada = value;
@@ -605,11 +531,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the immigExpList property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ImmigExpList }
-     *     
+     *
+     * @return possible object is
+     * {@link ImmigExpList }
      */
     public ImmigExpList getImmigExpList() {
         return immigExpList;
@@ -617,11 +541,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the immigExpList property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ImmigExpList }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link ImmigExpList }
      */
     public void setImmigExpList(ImmigExpList value) {
         this.immigExpList = value;
@@ -629,11 +551,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the discrimExpList property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link DiscrimExpList }
-     *     
+     *
+     * @return possible object is
+     * {@link DiscrimExpList }
      */
     public DiscrimExpList getDiscrimExpList() {
         return discrimExpList;
@@ -641,11 +561,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the discrimExpList property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link DiscrimExpList }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link DiscrimExpList }
      */
     public void setDiscrimExpList(DiscrimExpList value) {
         this.discrimExpList = value;
@@ -653,11 +571,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the prefLang property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getPrefLang() {
         return prefLang;
@@ -665,11 +581,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the prefLang property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setPrefLang(String value) {
         this.prefLang = value;
@@ -677,11 +591,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the serviceLang property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getServiceLang() {
         return serviceLang;
@@ -689,11 +601,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the serviceLang property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setServiceLang(String value) {
         this.serviceLang = value;
@@ -701,11 +611,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the legalIssues property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getLegalIssues() {
         return legalIssues;
@@ -713,11 +621,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the legalIssues property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setLegalIssues(String value) {
         this.legalIssues = value;
@@ -725,11 +631,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the legalStatusList property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link LegalStatusList }
-     *     
+     *
+     * @return possible object is
+     * {@link LegalStatusList }
      */
     public LegalStatusList getLegalStatusList() {
         return legalStatusList;
@@ -737,11 +641,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the legalStatusList property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link LegalStatusList }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link LegalStatusList }
      */
     public void setLegalStatusList(LegalStatusList value) {
         this.legalStatusList = value;
@@ -749,11 +651,9 @@ public class ClientRecord {
 
     /**
      * Gets the value of the exitDisposition property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getExitDisposition() {
         return exitDisposition;
@@ -761,11 +661,9 @@ public class ClientRecord {
 
     /**
      * Sets the value of the exitDisposition property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setExitDisposition(String value) {
         this.exitDisposition = value;

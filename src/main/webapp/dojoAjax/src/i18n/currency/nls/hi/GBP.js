@@ -8,4 +8,4 @@
 		http://dojotoolkit.org/community/licensing.shtml
 */
 
-({"displayName":"ब्रितन का पौन्ड स्टर्लिग","symbol":"£"})
+({"displayName": "ब्रितन का पौन्ड स्टर्लिग", "symbol": "£"})

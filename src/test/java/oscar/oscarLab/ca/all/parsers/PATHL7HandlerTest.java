@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -66,176 +66,178 @@ import junit.framework.Assert;
 @RunWith(Parameterized.class)
 public class PATHL7HandlerTest {
 
-	private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
-	
-	private static PATHL7Handler handler;
-	private static ZipFile zipFile;
-	private static Document hl7XML;
-	
-	@Parameterized.Parameters
-	public static Collection<String[]> hl7BodyArray() {
-		
-		logger.info( "Creating test parameters" );
-	
-		URL url = Thread.currentThread().getContextClassLoader().getResource("EXCELLERIS_test_data.zip");
-		
-		try {
-			zipFile = new ZipFile(url.getPath());
+    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+
+    private static PATHL7Handler handler;
+    private static ZipFile zipFile;
+    private static Document hl7XML;
+
+    @Parameterized.Parameters
+    public static Collection<String[]> hl7BodyArray() {
+
+        logger.info("Creating test parameters");
+
+        URL url = Thread.currentThread().getContextClassLoader().getResource("EXCELLERIS_test_data.zip");
+
+        try {
+            zipFile = new ZipFile(url.getPath());
         } catch (IOException e) {
-        	 logger.error("Test Failed ", e);
+            logger.error("Test Failed ", e);
         }
-		
-		Enumeration<? extends ZipEntry> enumeration = zipFile.entries();		
-		StringWriter writer = null;
-		InputStream is = null;
-		List<String[]> hl7BodyArray = new ArrayList<String[]>();
-		String hl7Body = "";
 
-		while( enumeration.hasMoreElements() ) {
-			
-			ZipEntry zipEntry = enumeration.nextElement();
-						
-			if(zipEntry.getName().endsWith(".txt")) {
-				
-				logger.debug( zipEntry.getName() );
-				
-				writer = new StringWriter();
-				
-				try {					
-					is = zipFile.getInputStream( zipEntry );					
-					IOUtils.copy(is, writer, "UTF-8");														 
-	            } catch (IOException e) {
-	            	if( zipFile != null ) {
-	            		try {
-	                        zipFile.close();
-	                        zipFile = null;
+        Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
+        StringWriter writer = null;
+        InputStream is = null;
+        List<String[]> hl7BodyArray = new ArrayList<String[]>();
+        String hl7Body = "";
+
+        while (enumeration.hasMoreElements()) {
+
+            ZipEntry zipEntry = enumeration.nextElement();
+
+            if (zipEntry.getName().endsWith(".txt")) {
+
+                logger.debug(zipEntry.getName());
+
+                writer = new StringWriter();
+
+                try {
+                    is = zipFile.getInputStream(zipEntry);
+                    IOUtils.copy(is, writer, "UTF-8");
+                } catch (IOException e) {
+                    if (zipFile != null) {
+                        try {
+                            zipFile.close();
+                            zipFile = null;
                         } catch (IOException e1) {
-                        	 logger.error("Test Failed ", e);
-                        }	            		
-	            	}
-	            	logger.error("Test Failed ", e);
-	            }finally {
-	            	if( is != null ) {
-	            		try {
-	    	                is.close();
-	    	                is = null;
-	                    } catch (IOException e) {
-	                    	 logger.error("Test Failed ", e);
-	                    }
-	            	}	            	
-	            }
-				
-				hl7Body = writer.toString();
-				hl7BodyArray.add(new String[]{hl7Body});
-			}
-		}	
+                            logger.error("Test Failed ", e);
+                        }
+                    }
+                    logger.error("Test Failed ", e);
+                } finally {
+                    if (is != null) {
+                        try {
+                            is.close();
+                            is = null;
+                        } catch (IOException e) {
+                            logger.error("Test Failed ", e);
+                        }
+                    }
+                }
 
-		return hl7BodyArray;
-	}
-	
-	@AfterClass
-	public static void close() {
-		if( zipFile != null) {
-			try {
-	            zipFile.close();
-	            zipFile = null;
-            } catch (IOException e) {
-	            logger.error("Test Failed ", e);
-            }			
-		}
-	}
-	
-	public PATHL7HandlerTest(String hl7Body) {
-		handler = null;
-		hl7XML = null;
-		handler = new PATHL7Handler();
-		try {
-	        handler.init( hl7Body );
-	        hl7XML = buildDocumentObject( handler.getXML() );
-        } catch (HL7Exception e) {
-	        logger.error("Test Failed ", e);
+                hl7Body = writer.toString();
+                hl7BodyArray.add(new String[]{hl7Body});
+            }
         }
-	}
-	public Document buildDocumentObject( String xml ) {
-		Document document = null;
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
-	    try {
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			
-			document = builder.parse( new ByteArrayInputStream( xml.getBytes() ) );
-			document.getDocumentElement().normalize();
+        return hl7BodyArray;
+    }
 
-		} catch (Exception e) {
-			logger.error("",e);
-		} 
-	    
-	    return document;
-	}
-	
-	private String getElement( String elementName ) {
-		return getElement( elementName, null, null );
-	}
-	
-	private String getElement( String elementName, String elementChild ) {
-		return getElement( elementName, elementChild, null );
-	}
-	
-	private String getElement( String elementName, String elementChild, String elementChild2 ) {
-		
-		NodeList nodeList = hl7XML.getElementsByTagName( elementName );
-		StringBuilder stringBuilder = new StringBuilder("");
+    @AfterClass
+    public static void close() {
+        if (zipFile != null) {
+            try {
+                zipFile.close();
+                zipFile = null;
+            } catch (IOException e) {
+                logger.error("Test Failed ", e);
+            }
+        }
+    }
 
-		if( nodeList != null ) {
-			for( int i = 0; i < nodeList.getLength(); i++ ) {
+    public PATHL7HandlerTest(String hl7Body) {
+        handler = null;
+        hl7XML = null;
+        handler = new PATHL7Handler();
+        try {
+            handler.init(hl7Body);
+            hl7XML = buildDocumentObject(handler.getXML());
+        } catch (HL7Exception e) {
+            logger.error("Test Failed ", e);
+        }
+    }
 
-				stringBuilder.append( getElement( nodeList.item(i), elementChild ) );
-				if( elementChild2 != null ) {
-					stringBuilder.append( " " + getElement( nodeList.item(i), elementChild2 ) );
-				}
-				
-				stringBuilder.append( " " );
-			}
-		}
+    public Document buildDocumentObject(String xml) {
+        Document document = null;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
-		return stringBuilder.toString().trim();
-	}
-	
-	private String getElement( Node nNode, String elementChild ) {
-		
-		String string = "";
-		Element element = null;
-		
-		if( elementChild == null ) {
-			string = nNode.getTextContent().trim();
-			nNode = null;
-		}
+        try {
+            DocumentBuilder builder = factory.newDocumentBuilder();
 
-		if( nNode != null && nNode.getNodeType() == Node.ELEMENT_NODE) {
-			element = (Element) nNode;
-			nNode = element.getElementsByTagName( elementChild ).item(0);
-		}
+            document = builder.parse(new ByteArrayInputStream(xml.getBytes()));
+            document.getDocumentElement().normalize();
 
-		if( nNode != null ) {
-			string = nNode.getTextContent().trim();
-		}
-		
-		return string;
-	}
-	
-	/**
-	 * Converts a space delimited string into an ArrayList 
-	 * Also eliminates duplicates and sorts alpha numerically.
-	 * @return
-	 */
-	private static ArrayList<String> sortStringToList( String stringList ) {
-		
-		TreeSet<String> idSet = new TreeSet<String>( Arrays.asList( stringList.trim().split(" ") ) );		
-		ArrayList<String> idList = new ArrayList<String>(  idSet );		
-		Collections.sort(idList);
+        } catch (Exception e) {
+            logger.error("", e);
+        }
 
-		return idList;
-	}
+        return document;
+    }
+
+    private String getElement(String elementName) {
+        return getElement(elementName, null, null);
+    }
+
+    private String getElement(String elementName, String elementChild) {
+        return getElement(elementName, elementChild, null);
+    }
+
+    private String getElement(String elementName, String elementChild, String elementChild2) {
+
+        NodeList nodeList = hl7XML.getElementsByTagName(elementName);
+        StringBuilder stringBuilder = new StringBuilder("");
+
+        if (nodeList != null) {
+            for (int i = 0; i < nodeList.getLength(); i++) {
+
+                stringBuilder.append(getElement(nodeList.item(i), elementChild));
+                if (elementChild2 != null) {
+                    stringBuilder.append(" " + getElement(nodeList.item(i), elementChild2));
+                }
+
+                stringBuilder.append(" ");
+            }
+        }
+
+        return stringBuilder.toString().trim();
+    }
+
+    private String getElement(Node nNode, String elementChild) {
+
+        String string = "";
+        Element element = null;
+
+        if (elementChild == null) {
+            string = nNode.getTextContent().trim();
+            nNode = null;
+        }
+
+        if (nNode != null && nNode.getNodeType() == Node.ELEMENT_NODE) {
+            element = (Element) nNode;
+            nNode = element.getElementsByTagName(elementChild).item(0);
+        }
+
+        if (nNode != null) {
+            string = nNode.getTextContent().trim();
+        }
+
+        return string;
+    }
+
+    /**
+     * Converts a space delimited string into an ArrayList
+     * Also eliminates duplicates and sorts alpha numerically.
+     *
+     * @return
+     */
+    private static ArrayList<String> sortStringToList(String stringList) {
+
+        TreeSet<String> idSet = new TreeSet<String>(Arrays.asList(stringList.trim().split(" ")));
+        ArrayList<String> idList = new ArrayList<String>(idSet);
+        Collections.sort(idList);
+
+        return idList;
+    }
 
 //	@Test
 //	public void testGetSpecimenSource() {
@@ -247,7 +249,7 @@ public class PATHL7HandlerTest {
 //		result = result.trim();
 //		Assert.assertEquals( getElement("OBR.15", "CM_SPS.2" ), result );
 //	}
-	
+
 //	@Test
 //	public void testGetSpecimenDescription() {
 //		logger.info("testGetSpecimenDescription() " + handler.getSpecimenDescription(0) );
@@ -258,7 +260,7 @@ public class PATHL7HandlerTest {
 //		result = result.trim();
 //		Assert.assertEquals( getElement("OBR.15", "CM_SPS.3"), result );
 //	}
-	
+
 //	@Test
 //	public void testGetDiscipline() {
 //		logger.info("testGetDiscipline() " + handler.getDiscipline() );
@@ -288,13 +290,13 @@ public class PATHL7HandlerTest {
 //
 //		Assert.assertEquals( sortStringToList( expected ), sortStringToList( discipline ) );
 //	}
-	
+
 //	@Test
 //	public void testIsReportData() {
 //		logger.info("testIsReportData() " + handler.isReportData()  + " " + getElement("OBX.2").split(" ")[0] + " " + handler.isReportData() );
 //		Assert.assertEquals( OBX_DATA_TYPES.TX.name().equalsIgnoreCase( getElement("OBX.2").split(" ")[0] ) , handler.isReportData() );
 //	}
-	
+
 //	@Test
 //	public void testIsUnstructured() {
 //		logger.info("testIsUnstructured() " + handler.unstructuredDocCheck(handler.getHeaders().get(0)) );
@@ -308,50 +310,50 @@ public class PATHL7HandlerTest {
 //		
 //		Assert.assertEquals( expected, handler.unstructuredDocCheck(handler.getHeaders().get(0)) );
 //	}
-	
+
 //	@Test
 //	public void testGetSendingApplication() {
 //		logger.info("testGetSendingApplication() " + handler.getSendingApplication());
 //		Assert.assertEquals( getElement("MSH.3"), handler.getSendingApplication() );
 //	}
 
-	@Test
-	public void testGetMsgType() {
-		logger.info("testGetMsgType() " + handler.getMsgType());
-		Assert.assertEquals( "PATHL7", handler.getMsgType() );
-	}
+    @Test
+    public void testGetMsgType() {
+        logger.info("testGetMsgType() " + handler.getMsgType());
+        Assert.assertEquals("PATHL7", handler.getMsgType());
+    }
 
-	@Test
-	public void testGetMsgDate() {
-		logger.info("testGetMsgDate() " + handler.getMsgDate());
-		Assert.assertEquals( PATHL7Handler.formatDateTime( getElement("MSH.7") ), handler.getMsgDate() );
-	}
+    @Test
+    public void testGetMsgDate() {
+        logger.info("testGetMsgDate() " + handler.getMsgDate());
+        Assert.assertEquals(PATHL7Handler.formatDateTime(getElement("MSH.7")), handler.getMsgDate());
+    }
 
-	@Test
-	public void testGetMsgPriority() {
-		logger.info("testGetMsgPriority() " + handler.getMsgPriority());
-		Assert.assertEquals( "", handler.getMsgPriority() );
-	}
+    @Test
+    public void testGetMsgPriority() {
+        logger.info("testGetMsgPriority() " + handler.getMsgPriority());
+        Assert.assertEquals("", handler.getMsgPriority());
+    }
 
-	@Test
-	public void testGetOBRCount() {
-		logger.info("testGetOBRCount() " + handler.getOBRCount());
-		Assert.assertEquals( hl7XML.getElementsByTagName( "OBR" ).getLength(), handler.getOBRCount() );
-	}
+    @Test
+    public void testGetOBRCount() {
+        logger.info("testGetOBRCount() " + handler.getOBRCount());
+        Assert.assertEquals(hl7XML.getElementsByTagName("OBR").getLength(), handler.getOBRCount());
+    }
 
-	@Test
-	public void testGetOBXCount() {
+    @Test
+    public void testGetOBXCount() {
 
-		int obrCount = handler.getOBRCount();
-		int count = 0; 
-		for( int i = 0; i < obrCount; i++ ) {
-			count += handler.getOBXCount(i);
-		}
+        int obrCount = handler.getOBRCount();
+        int count = 0;
+        for (int i = 0; i < obrCount; i++) {
+            count += handler.getOBXCount(i);
+        }
 
-		logger.info("testGetOBXCount() " + count );
+        logger.info("testGetOBXCount() " + count);
 
-		Assert.assertEquals( hl7XML.getElementsByTagName( "OBX" ).getLength(), count );
-	}
+        Assert.assertEquals(hl7XML.getElementsByTagName("OBX").getLength(), count);
+    }
 
 //	@Test
 //	public void testGetTimeStamp() {
@@ -359,62 +361,62 @@ public class PATHL7HandlerTest {
 //		Assert.assertEquals( PATHL7Handler.formatDateTime( sortStringToList( getElement("OBX.14") ).get(0) ), handler.getTimeStamp(0, 0) );
 //	}
 
-	/**
-	 * OBR count is *almost* always 1 in these tests. Therefore the OBR row index will
-	 * always be zero.
-	 */
-	@Test
-	public void testIsOBXAbnormal() {
+    /**
+     * OBR count is *almost* always 1 in these tests. Therefore the OBR row index will
+     * always be zero.
+     */
+    @Test
+    public void testIsOBXAbnormal() {
 
-		boolean result = Boolean.FALSE;
-		int obxCount = 0;		
-		for( int i = 0; i < handler.getOBRCount(); i++ ) {
-			obxCount = handler.getOBXCount(i);
-			for( int j = 0; j < obxCount; j++ ) {
-				 if( handler.isOBXAbnormal(i, j) ) {
-					 result = Boolean.TRUE;
-					 break;
-				 }
-			}
-		}
-		
-		logger.info("testIsOBXAbnormal() " + result );
+        boolean result = Boolean.FALSE;
+        int obxCount = 0;
+        for (int i = 0; i < handler.getOBRCount(); i++) {
+            obxCount = handler.getOBXCount(i);
+            for (int j = 0; j < obxCount; j++) {
+                if (handler.isOBXAbnormal(i, j)) {
+                    result = Boolean.TRUE;
+                    break;
+                }
+            }
+        }
 
-		ArrayList<String> labresultList = sortStringToList( getElement("OBX.8") );
-		String resultExpected = "N";
-		if( ! labresultList.get(0).isEmpty() ) {
-			for( String resultItem : labresultList ) {
-				if( ! "N".equalsIgnoreCase( resultItem ) ) {
-					resultExpected = "A";
-					break;
-				}
-			}
-		}
+        logger.info("testIsOBXAbnormal() " + result);
 
-		Assert.assertEquals( "A".equals( resultExpected ), result);
+        ArrayList<String> labresultList = sortStringToList(getElement("OBX.8"));
+        String resultExpected = "N";
+        if (!labresultList.get(0).isEmpty()) {
+            for (String resultItem : labresultList) {
+                if (!"N".equalsIgnoreCase(resultItem)) {
+                    resultExpected = "A";
+                    break;
+                }
+            }
+        }
 
-	}
+        Assert.assertEquals("A".equals(resultExpected), result);
 
-	@Test
-	public void testGetOBXAbnormalFlag() {
+    }
 
-		StringBuilder stringBuilder = new StringBuilder();
-		int obrCount = handler.getOBRCount();
-		int obxCount = 0;
-		for( int j = 0; j < obrCount; j++ ) {
-			obxCount = handler.getOBXCount( j );
-			for( int i = 0; i < obxCount; i++ ) {
-				
-				if( ! handler.getOBXAbnormalFlag(j, i).trim().isEmpty()) {
-					stringBuilder.append(" ");
-				}
-				stringBuilder.append( handler.getOBXAbnormalFlag(j, i).trim() );
-			}
-		}
-		logger.info( "testGetOBXAbnormalFlag() " + stringBuilder.toString() );
-		
-		Assert.assertEquals( getElement("OBX.8").trim(), stringBuilder.toString().trim() );
-	}
+    @Test
+    public void testGetOBXAbnormalFlag() {
+
+        StringBuilder stringBuilder = new StringBuilder();
+        int obrCount = handler.getOBRCount();
+        int obxCount = 0;
+        for (int j = 0; j < obrCount; j++) {
+            obxCount = handler.getOBXCount(j);
+            for (int i = 0; i < obxCount; i++) {
+
+                if (!handler.getOBXAbnormalFlag(j, i).trim().isEmpty()) {
+                    stringBuilder.append(" ");
+                }
+                stringBuilder.append(handler.getOBXAbnormalFlag(j, i).trim());
+            }
+        }
+        logger.info("testGetOBXAbnormalFlag() " + stringBuilder.toString());
+
+        Assert.assertEquals(getElement("OBX.8").trim(), stringBuilder.toString().trim());
+    }
 
 //	@Test
 //	public void testGetObservationHeader() {
@@ -443,63 +445,63 @@ public class PATHL7HandlerTest {
 //		Assert.assertEquals( sortStringToList( header ), sortStringToList( stringBuilder.toString() ) );
 //	}
 
-	@Test
-	public void testGetOBXIdentifier() {
-		
-		StringBuilder stringBuilder = new StringBuilder("");
-		int obxCount = 0;
-	
-		for(int i = 0; i < handler.getOBRCount(); i++) {
-			obxCount = handler.getOBXCount(i);
-		
-			for(int j = 0; j < obxCount; j++) {
-				String id = handler.getOBXIdentifier( i, j );
-				if( ! id.isEmpty() ) {
-					stringBuilder.append( " " + handler.getOBXIdentifier( i, j ) );
-				}
-			}
-		}
+    @Test
+    public void testGetOBXIdentifier() {
 
-		logger.info("testGetOBXIdentifier() " + stringBuilder.toString());
+        StringBuilder stringBuilder = new StringBuilder("");
+        int obxCount = 0;
 
-		Assert.assertEquals( sortStringToList( getElement("OBX.3", "CE.1").trim() ), sortStringToList( stringBuilder.toString() ) );
-	}
+        for (int i = 0; i < handler.getOBRCount(); i++) {
+            obxCount = handler.getOBXCount(i);
 
-	@Test
-	public void testGetOBXValueType() {
-		
-		StringBuilder stringBuilder = new StringBuilder("");
-		int obxCount = 0;
+            for (int j = 0; j < obxCount; j++) {
+                String id = handler.getOBXIdentifier(i, j);
+                if (!id.isEmpty()) {
+                    stringBuilder.append(" " + handler.getOBXIdentifier(i, j));
+                }
+            }
+        }
 
-		for(int i = 0; i < handler.getOBRCount(); i++) {
-			obxCount = handler.getOBXCount(i);
-		
-			for(int j = 0; j < obxCount; j++) {
-				stringBuilder.append( " " + handler.getOBXValueType( i, j ) );  				
-			}
-		}
+        logger.info("testGetOBXIdentifier() " + stringBuilder.toString());
 
-		logger.info( "testGetOBXValueType() " + stringBuilder.toString());
-		Assert.assertEquals( getElement("OBX.2"), stringBuilder.toString().trim() );
-	}
+        Assert.assertEquals(sortStringToList(getElement("OBX.3", "CE.1").trim()), sortStringToList(stringBuilder.toString()));
+    }
 
-	@Test
-	public void testGetOBXName() {
+    @Test
+    public void testGetOBXValueType() {
 
-		StringBuilder stringBuilder = new StringBuilder("");		
-		int obxCount = 0;
+        StringBuilder stringBuilder = new StringBuilder("");
+        int obxCount = 0;
 
-		for(int i = 0; i < handler.getOBRCount(); i++) {
-			obxCount = handler.getOBXCount(i);
-		
-			for(int j = 0; j < obxCount; j++) {
-				stringBuilder.append( " " +handler.getOBXName( i, j ) );  				
-			}
-		}
+        for (int i = 0; i < handler.getOBRCount(); i++) {
+            obxCount = handler.getOBXCount(i);
 
-		logger.info( "testGetOBXName() " + stringBuilder.toString());
-		Assert.assertEquals( getElement("OBX.3", "CE.2"), stringBuilder.toString().trim() );
-	}
+            for (int j = 0; j < obxCount; j++) {
+                stringBuilder.append(" " + handler.getOBXValueType(i, j));
+            }
+        }
+
+        logger.info("testGetOBXValueType() " + stringBuilder.toString());
+        Assert.assertEquals(getElement("OBX.2"), stringBuilder.toString().trim());
+    }
+
+    @Test
+    public void testGetOBXName() {
+
+        StringBuilder stringBuilder = new StringBuilder("");
+        int obxCount = 0;
+
+        for (int i = 0; i < handler.getOBRCount(); i++) {
+            obxCount = handler.getOBXCount(i);
+
+            for (int j = 0; j < obxCount; j++) {
+                stringBuilder.append(" " + handler.getOBXName(i, j));
+            }
+        }
+
+        logger.info("testGetOBXName() " + stringBuilder.toString());
+        Assert.assertEquals(getElement("OBX.3", "CE.2"), stringBuilder.toString().trim());
+    }
 
 //	@Test
 //	public void testGetOBXResult() {
@@ -539,65 +541,65 @@ public class PATHL7HandlerTest {
 //		Assert.assertEquals( sortStringToList( getElement("OBX.7") ), sortStringToList( stringBuilder.toString().trim() ) );
 //	}
 
-	@Test
-	public void testGetOBXUnits() {
-		
-		StringBuilder stringBuilder = new StringBuilder("");
-		int obxCount = 0;
-		for(int i = 0; i < handler.getOBRCount(); i++) {
-			obxCount = handler.getOBXCount(i);		
-			for(int j = 0; j < obxCount; j++) {
-				String unit = handler.getOBXUnits( i, j );
-				if( unit != null && ! unit.isEmpty() ) {
-					stringBuilder.append( " " + unit ); 
-				}
-			}
-		}
+    @Test
+    public void testGetOBXUnits() {
 
-		logger.info( "testGetOBXUnits() " + stringBuilder.toString() );
-		
-		Assert.assertEquals( sortStringToList( getElement("OBX.6", "CE.1") ), sortStringToList( stringBuilder.toString().trim() ) );
-	}
+        StringBuilder stringBuilder = new StringBuilder("");
+        int obxCount = 0;
+        for (int i = 0; i < handler.getOBRCount(); i++) {
+            obxCount = handler.getOBXCount(i);
+            for (int j = 0; j < obxCount; j++) {
+                String unit = handler.getOBXUnits(i, j);
+                if (unit != null && !unit.isEmpty()) {
+                    stringBuilder.append(" " + unit);
+                }
+            }
+        }
 
-	@Test
-	public void testGetOBXResultStatus() {
-		
-		StringBuilder stringBuilder = new StringBuilder("");
-		
-		int obxCount = 0;
-		for(int i = 0; i < handler.getOBRCount() ; i++) {
-			obxCount = handler.getOBXCount(i);		
-			for(int j = 0; j < obxCount; j++) {
-				stringBuilder.append( " " + handler.getOBXResultStatus( i, j ) ); 
-			}
-		}
+        logger.info("testGetOBXUnits() " + stringBuilder.toString());
 
-		logger.info( "testGetOBXResultStatus() " + stringBuilder.toString());
-		Assert.assertEquals( getElement( "OBX.11" ), stringBuilder.toString().trim() );
-	}
+        Assert.assertEquals(sortStringToList(getElement("OBX.6", "CE.1")), sortStringToList(stringBuilder.toString().trim()));
+    }
 
-	@Test
-	public void testGetCommentCount() {
-		
-		int count = 0;
-		int obxCount = 0;
-		int obrCount = handler.getOBRCount();
-		for(int i = 0; i < obrCount; i++) {
-			obxCount = handler.getOBXCount(i);
-			for(int j = 0; j < obxCount; j++) {
-				count += handler.getOBXCommentCount( i, j ); 
-			}
-		}
-		
-		for(int i = 0; i < obrCount; i++) {
-			 count += handler.getOBRCommentCount( i );
-		}
-		
-		logger.info("testGetOBXCommentCount() " + count );
-		
-		
-		Assert.assertEquals( hl7XML.getElementsByTagName( "NTE" ).getLength(), count );
-	}
+    @Test
+    public void testGetOBXResultStatus() {
+
+        StringBuilder stringBuilder = new StringBuilder("");
+
+        int obxCount = 0;
+        for (int i = 0; i < handler.getOBRCount(); i++) {
+            obxCount = handler.getOBXCount(i);
+            for (int j = 0; j < obxCount; j++) {
+                stringBuilder.append(" " + handler.getOBXResultStatus(i, j));
+            }
+        }
+
+        logger.info("testGetOBXResultStatus() " + stringBuilder.toString());
+        Assert.assertEquals(getElement("OBX.11"), stringBuilder.toString().trim());
+    }
+
+    @Test
+    public void testGetCommentCount() {
+
+        int count = 0;
+        int obxCount = 0;
+        int obrCount = handler.getOBRCount();
+        for (int i = 0; i < obrCount; i++) {
+            obxCount = handler.getOBXCount(i);
+            for (int j = 0; j < obxCount; j++) {
+                count += handler.getOBXCommentCount(i, j);
+            }
+        }
+
+        for (int i = 0; i < obrCount; i++) {
+            count += handler.getOBRCommentCount(i);
+        }
+
+        logger.info("testGetOBXCommentCount() " + count);
+
+
+        Assert.assertEquals(hl7XML.getElementsByTagName("NTE").getLength(), count);
+    }
 
 //	@Test
 //	public void testGetComments() {
@@ -629,125 +631,125 @@ public class PATHL7HandlerTest {
 //		Assert.assertEquals( getElement("NTE", "NTE.3"), stringBuilder.toString().trim() );
 //	}
 
-	@Test
-	public void testGetMiddleName() {
-		logger.info("testGetMiddleName() " + handler.getMiddleName() );
+    @Test
+    public void testGetMiddleName() {
+        logger.info("testGetMiddleName() " + handler.getMiddleName());
 
-		String middle = getElement( "PID.5", "XPN.3" );
-		if( middle == null ) {
-			middle = "";
-		}
-		Assert.assertEquals(  middle, handler.getMiddleName() );
-	}
+        String middle = getElement("PID.5", "XPN.3");
+        if (middle == null) {
+            middle = "";
+        }
+        Assert.assertEquals(middle, handler.getMiddleName());
+    }
 
-	@Test
-	public void testGetFirstName() {
-		logger.info("testGetFirstName() " + handler.getFirstName());
-		Assert.assertEquals( getElement( "PID.5", "XPN.2" ), handler.getFirstName() );
-	}
+    @Test
+    public void testGetFirstName() {
+        logger.info("testGetFirstName() " + handler.getFirstName());
+        Assert.assertEquals(getElement("PID.5", "XPN.2"), handler.getFirstName());
+    }
 
-	@Test
-	public void testGetLastName() {
-		logger.info("testGetLastName() " + handler.getLastName());
-		Assert.assertEquals( getElement( "PID.5", "XPN.1" ), handler.getLastName() );
-	}
+    @Test
+    public void testGetLastName() {
+        logger.info("testGetLastName() " + handler.getLastName());
+        Assert.assertEquals(getElement("PID.5", "XPN.1"), handler.getLastName());
+    }
 
-	@Test
-	public void testGetDOB() {
-		logger.info("testGetDOB() " + handler.getDOB());
-		Assert.assertEquals( PATHL7Handler.formatDate( sortStringToList( getElement( "PID.7", "TS.1" ) ).get(0) ), handler.getDOB() );
-	}
+    @Test
+    public void testGetDOB() {
+        logger.info("testGetDOB() " + handler.getDOB());
+        Assert.assertEquals(PATHL7Handler.formatDate(sortStringToList(getElement("PID.7", "TS.1")).get(0)), handler.getDOB());
+    }
 
-	@Test
-	public void testGetAge() {
-		logger.info("testGetAge() " + handler.getAge());
+    @Test
+    public void testGetAge() {
+        logger.info("testGetAge() " + handler.getAge());
 
-		String dob = PATHL7Handler.formatDateTime( sortStringToList( getElement( "PID.7", "TS.1" ) ).get(0) );
-		String service = PATHL7Handler.formatDateTime( sortStringToList( getElement( "OBR.7", "TS.1" ) ).get(0) );
-		
-		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		Calendar a = Calendar.getInstance();
-		Calendar b = Calendar.getInstance();
-		
-		try {
-			java.util.Date birthDate = formatter.parse(dob);
-					a.setTime(birthDate);
-			java.util.Date serviceDate = formatter.parse(service);			
-					b.setTime(serviceDate);
-		} catch (ParseException e) {
-			logger.error("error",e);
-		}
+        String dob = PATHL7Handler.formatDateTime(sortStringToList(getElement("PID.7", "TS.1")).get(0));
+        String service = PATHL7Handler.formatDateTime(sortStringToList(getElement("OBR.7", "TS.1")).get(0));
 
-		int age = b.get(Calendar.YEAR) - a.get(Calendar.YEAR);
-	    if (a.get(Calendar.MONTH) > b.get(Calendar.MONTH) || 
-            (a.get(Calendar.MONTH) == b.get(Calendar.MONTH) && a.get(Calendar.DATE) > b.get(Calendar.DATE))) {
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar a = Calendar.getInstance();
+        Calendar b = Calendar.getInstance();
+
+        try {
+            java.util.Date birthDate = formatter.parse(dob);
+            a.setTime(birthDate);
+            java.util.Date serviceDate = formatter.parse(service);
+            b.setTime(serviceDate);
+        } catch (ParseException e) {
+            logger.error("error", e);
+        }
+
+        int age = b.get(Calendar.YEAR) - a.get(Calendar.YEAR);
+        if (a.get(Calendar.MONTH) > b.get(Calendar.MONTH) ||
+                (a.get(Calendar.MONTH) == b.get(Calendar.MONTH) && a.get(Calendar.DATE) > b.get(Calendar.DATE))) {
             age--;
         }
-	    
-	    Assert.assertEquals( age + " years", handler.getAge() );
-	}
 
-	@Test
-	public void testGetSex() {
-		logger.info("testGetSex() " + handler.getSex());
-		Assert.assertEquals( getElement( "PID.8"), handler.getSex() );
-	}
+        Assert.assertEquals(age + " years", handler.getAge());
+    }
 
-	@Test
-	public void testGetHealthNum() {
-		logger.info("testGetHealthNum() " + handler.getHealthNum());
-		String healthnumber = getElement( "PID.2", "CX.1" );
-		if( healthnumber.isEmpty() ) {
-			 healthnumber = null;
-		}
-		Assert.assertEquals(  healthnumber, handler.getHealthNum() );
-	}
+    @Test
+    public void testGetSex() {
+        logger.info("testGetSex() " + handler.getSex());
+        Assert.assertEquals(getElement("PID.8"), handler.getSex());
+    }
+
+    @Test
+    public void testGetHealthNum() {
+        logger.info("testGetHealthNum() " + handler.getHealthNum());
+        String healthnumber = getElement("PID.2", "CX.1");
+        if (healthnumber.isEmpty()) {
+            healthnumber = null;
+        }
+        Assert.assertEquals(healthnumber, handler.getHealthNum());
+    }
 
 //	@Test
 //	public void testGetFirstNationsBandNumber() {
 //		logger.info( "testGetFirstNationsBandNumber() " + handler.getFirstNationsBandNumber() );
 //		Assert.assertEquals( getElement( "PID.2", "CX.5" ), handler.getFirstNationsBandNumber() );
 //	}
-	
-	@Test
-	public void testGetHomePhone() {
-		logger.info("testGetHomePhone() " + handler.getHomePhone());
 
-		String homephone = getElement( "PID.13", "XTN.1" );
-		if( homephone == null ) {
-			homephone = "";
-		}
-		Assert.assertEquals( homephone, handler.getHomePhone() );
-	}
+    @Test
+    public void testGetHomePhone() {
+        logger.info("testGetHomePhone() " + handler.getHomePhone());
 
-	@Test
-	public void testGetWorkPhone() {
-		logger.info("testGetWorkPhone() " + handler.getWorkPhone());
-		
-		String workphone = getElement( "PID.14", "XTN.1" );
-		if( workphone == null ) {
-			workphone = "";
-		}
-		Assert.assertEquals( workphone, handler.getWorkPhone() );
-	}
+        String homephone = getElement("PID.13", "XTN.1");
+        if (homephone == null) {
+            homephone = "";
+        }
+        Assert.assertEquals(homephone, handler.getHomePhone());
+    }
 
-	@Test
-	public void testGetPatientLocation() {
-		logger.info("testGetPatientLocation() " + handler.getPatientLocation());		
-		Assert.assertEquals( getElement( "MSH.4" ), handler.getPatientLocation() );
-	}
+    @Test
+    public void testGetWorkPhone() {
+        logger.info("testGetWorkPhone() " + handler.getWorkPhone());
 
-	@Test
-	public void testGetServiceDate() {
-		logger.info("testGetServiceDate() " + handler.getServiceDate());
-		Assert.assertEquals( PATHL7Handler.formatDateTime( sortStringToList( getElement( "OBR.7", "TS.1" ) ).get(0) ), handler.getServiceDate() );
-	}
+        String workphone = getElement("PID.14", "XTN.1");
+        if (workphone == null) {
+            workphone = "";
+        }
+        Assert.assertEquals(workphone, handler.getWorkPhone());
+    }
 
-	@Test
-	public void testGetRequestDate() {
-		logger.info("testGetRequestDate() " + handler.getRequestDate(0));
-		Assert.assertEquals( PATHL7Handler.formatDateTime( sortStringToList( getElement("OBR.6", "TS.1") ).get(0) ), handler.getRequestDate(0) );
-	}
+    @Test
+    public void testGetPatientLocation() {
+        logger.info("testGetPatientLocation() " + handler.getPatientLocation());
+        Assert.assertEquals(getElement("MSH.4"), handler.getPatientLocation());
+    }
+
+    @Test
+    public void testGetServiceDate() {
+        logger.info("testGetServiceDate() " + handler.getServiceDate());
+        Assert.assertEquals(PATHL7Handler.formatDateTime(sortStringToList(getElement("OBR.7", "TS.1")).get(0)), handler.getServiceDate());
+    }
+
+    @Test
+    public void testGetRequestDate() {
+        logger.info("testGetRequestDate() " + handler.getRequestDate(0));
+        Assert.assertEquals(PATHL7Handler.formatDateTime(sortStringToList(getElement("OBR.6", "TS.1")).get(0)), handler.getRequestDate(0));
+    }
 
 //	@Test
 //	public void testGetOrderStatus() {
@@ -755,34 +757,34 @@ public class PATHL7HandlerTest {
 //		Assert.assertEquals( sortStringToList( getElement("OBR.25") ), sortStringToList( handler.getOrderStatus() ) );
 //	}
 
-	@Test
-	public void testGetOBXFinalResultCount() {
-		logger.info("testGetOBXFinalResultCount() " + handler.getOBXFinalResultCount());
+    @Test
+    public void testGetOBXFinalResultCount() {
+        logger.info("testGetOBXFinalResultCount() " + handler.getOBXFinalResultCount());
 
-		String status = sortStringToList( getElement("OBR.25") ).get(0);
-		int count = hl7XML.getElementsByTagName( "OBX.11" ).getLength();
-		
-		if( "C".equalsIgnoreCase( status ) ) {
-			count = count + 150;
-		} else if ( "F".equals( status ) ) {
-			count = count + 100;
-		}
-		
-		Assert.assertEquals( count, handler.getOBXFinalResultCount() );
-	}
+        String status = sortStringToList(getElement("OBR.25")).get(0);
+        int count = hl7XML.getElementsByTagName("OBX.11").getLength();
 
-	@Test
-	public void testGetClientRef() {
-		logger.info("testGetClientRef() " + handler.getClientRef());
-		Assert.assertEquals( sortStringToList( getElement("OBR.16", "XCN.1") ), sortStringToList( handler.getClientRef() ) );
-	}
+        if ("C".equalsIgnoreCase(status)) {
+            count = count + 150;
+        } else if ("F".equals(status)) {
+            count = count + 100;
+        }
+
+        Assert.assertEquals(count, handler.getOBXFinalResultCount());
+    }
+
+    @Test
+    public void testGetClientRef() {
+        logger.info("testGetClientRef() " + handler.getClientRef());
+        Assert.assertEquals(sortStringToList(getElement("OBR.16", "XCN.1")), sortStringToList(handler.getClientRef()));
+    }
 
 //	@Test
 //	public void testGetAccessionNum() {
 //		logger.info("testGetAccessionNum() " + handler.getAccessionNum());
 //		Assert.assertEquals( sortStringToList( getElement("OBR.3", "EI.1") ), sortStringToList( handler.getAccessionNum() ) );
 //	}
-	
+
 //	@Test
 //	public void testGetOtherHealthcareProviders() {
 //		logger.info("testGetOtherHealthcareProviders() " + handler.getOtherHealthcareProviders() );
@@ -803,92 +805,92 @@ public class PATHL7HandlerTest {
 //
 //		Assert.assertEquals( otherProvidersListXML, otherProvidersList );
 //	}
-	
+
 //	@Test
 //	public void testGetAttendingPhysician() {
 //		logger.info("testGetAttendingPhysician() " + handler.getAttendingPhysician() );
 //		Assert.assertEquals( getElement("PV1.7", "XCN.3", "XCN.2"), handler.getAttendingPhysician() );
 //	}
-	
+
 //	@Test
 //	public void testGetAdmittingPhysician() {
 //		logger.info("testGetAdmittingPhysician() " + handler.getAdmittingPhysician());		
 //		Assert.assertEquals( getElement("PV1.17", "XCN.3", "XCN.2"), handler.getAdmittingPhysician() );
 //	}
 
-	@Test
-	public void testGetDocName() {
-		logger.info("testGetDocName() " + handler.getDocName());
-		
-		String docname = getElement("OBR.16", "XCN.3", "XCN.2");
-		
-		if( docname.isEmpty() ) {
-			docname = getElement("PV1.7", "XCN.3", "XCN.2");
-		}
-		
-		Assert.assertEquals( sortStringToList( docname ), sortStringToList( handler.getDocName() ) );
-	}
+    @Test
+    public void testGetDocName() {
+        logger.info("testGetDocName() " + handler.getDocName());
 
-	@Test
-	public void testGetCCDocs() {
-		logger.info("testGetCCDocs() " + handler.getCCDocs());
-		String otherproviders =  handler.getCCDocs();
-		if( otherproviders.contains(",") ) {
-			otherproviders = otherproviders.replaceAll(",", "");
-		}
-		Assert.assertEquals( sortStringToList( getElement("OBR.28", "XCN.3", "XCN.2") ), sortStringToList( otherproviders ) );
-	}
-	
-	/**
-	 * Also indirectly tests the getProviderMap method.
-	 * Is a very bad sign if this method fails. 
-	 */
-	@Test
-	public void testGetDocNums() {
-		logger.info("testGetDocNums() " + handler.getDocNums());
-		
-		HashSet<String> providerNumberSet = new HashSet<String>();
+        String docname = getElement("OBR.16", "XCN.3", "XCN.2");
 
-		String[] admitting = getElement( "PV1.17", "XCN.1" ).split(" ");
-		String[] attending = getElement( "PV1.7", "XCN.1" ).split(" ");
-		String[] other = getElement( "PV1.52", "XCN.1" ).split(" ");
-		String[] ordering = getElement( "OBR.16", "XCN.1" ).split(" ");
-		String[] copies = getElement( "OBR.28", "XCN.1" ).split(" ");
-		
-		if( ! admitting[0].isEmpty() ) {
-			providerNumberSet.addAll( Arrays.asList(admitting) );
-		}
-		
-		if( ! attending[0].isEmpty() ) {
-			providerNumberSet.addAll( Arrays.asList(attending) );
-		}
-		
-		if( ! other[0].isEmpty() ) {
-			providerNumberSet.addAll( Arrays.asList(other) );
-		}
-		
-		if( ! ordering[0].isEmpty() ) {
-			providerNumberSet.addAll( Arrays.asList(ordering) );
-		}
-		
-		if( ! copies[0].isEmpty() ) {
-			providerNumberSet.addAll( Arrays.asList(copies) );
-		}
-		
-		ArrayList<String> expectedProviderNumberList = new ArrayList<String>( providerNumberSet );
-		ArrayList<String> providerNumberList = handler.getDocNums();
-		
-		Collections.sort(expectedProviderNumberList);
-		Collections.sort(providerNumberList);
+        if (docname.isEmpty()) {
+            docname = getElement("PV1.7", "XCN.3", "XCN.2");
+        }
 
-		Assert.assertEquals( expectedProviderNumberList, providerNumberList );
-	}
+        Assert.assertEquals(sortStringToList(docname), sortStringToList(handler.getDocName()));
+    }
 
-	@Test
-	public void testAudit() {
-		logger.info("testAudit() " + handler.audit());
-		Assert.assertEquals("", handler.audit());
-	}
+    @Test
+    public void testGetCCDocs() {
+        logger.info("testGetCCDocs() " + handler.getCCDocs());
+        String otherproviders = handler.getCCDocs();
+        if (otherproviders.contains(",")) {
+            otherproviders = otherproviders.replaceAll(",", "");
+        }
+        Assert.assertEquals(sortStringToList(getElement("OBR.28", "XCN.3", "XCN.2")), sortStringToList(otherproviders));
+    }
+
+    /**
+     * Also indirectly tests the getProviderMap method.
+     * Is a very bad sign if this method fails.
+     */
+    @Test
+    public void testGetDocNums() {
+        logger.info("testGetDocNums() " + handler.getDocNums());
+
+        HashSet<String> providerNumberSet = new HashSet<String>();
+
+        String[] admitting = getElement("PV1.17", "XCN.1").split(" ");
+        String[] attending = getElement("PV1.7", "XCN.1").split(" ");
+        String[] other = getElement("PV1.52", "XCN.1").split(" ");
+        String[] ordering = getElement("OBR.16", "XCN.1").split(" ");
+        String[] copies = getElement("OBR.28", "XCN.1").split(" ");
+
+        if (!admitting[0].isEmpty()) {
+            providerNumberSet.addAll(Arrays.asList(admitting));
+        }
+
+        if (!attending[0].isEmpty()) {
+            providerNumberSet.addAll(Arrays.asList(attending));
+        }
+
+        if (!other[0].isEmpty()) {
+            providerNumberSet.addAll(Arrays.asList(other));
+        }
+
+        if (!ordering[0].isEmpty()) {
+            providerNumberSet.addAll(Arrays.asList(ordering));
+        }
+
+        if (!copies[0].isEmpty()) {
+            providerNumberSet.addAll(Arrays.asList(copies));
+        }
+
+        ArrayList<String> expectedProviderNumberList = new ArrayList<String>(providerNumberSet);
+        ArrayList<String> providerNumberList = handler.getDocNums();
+
+        Collections.sort(expectedProviderNumberList);
+        Collections.sort(providerNumberList);
+
+        Assert.assertEquals(expectedProviderNumberList, providerNumberList);
+    }
+
+    @Test
+    public void testAudit() {
+        logger.info("testAudit() " + handler.audit());
+        Assert.assertEquals("", handler.audit());
+    }
 
 //	@Test
 //	public void testGetFillerOrderNumber() {

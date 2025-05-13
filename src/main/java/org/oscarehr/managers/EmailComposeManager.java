@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.managers;
 
 import java.io.IOException;
@@ -36,8 +37,8 @@ import org.springframework.stereotype.Service;
 import oscar.util.StringUtils;
 
 /*
-* The purpose of the EmailComposeManager is to help prepare all necessary data to display on the emailCompose.jsp page.
-*/
+ * The purpose of the EmailComposeManager is to help prepare all necessary data to display on the emailCompose.jsp page.
+ */
 @Service
 public class EmailComposeManager {
     private final Logger logger = MiscUtils.getLogger();
@@ -58,29 +59,33 @@ public class EmailComposeManager {
     @Autowired
     private PatientConsentManager patientConsentManager;
     @Autowired
-	private SecurityInfoManager securityInfoManager;
+    private SecurityInfoManager securityInfoManager;
 
     public EmailLog prepareEmailForResend(LoggedInInfo loggedInInfo, Integer emailLogId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_email", SecurityInfoManager.READ, null)) {
-			throw new RuntimeException("missing required security object (_email)");
-		}
+            throw new RuntimeException("missing required security object (_email)");
+        }
 
         EmailLog emailLog = emailLogDao.find(emailLogId);
         return emailLog;
     }
-    
+
     public List<EmailAttachment> prepareEFormAttachments(LoggedInInfo loggedInInfo, String fdid, String[] attachedEForms) throws PDFGenerationException {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_eform", SecurityInfoManager.READ, null)) {
-			throw new RuntimeException("missing required security object (_eform)");
-		}
+            throw new RuntimeException("missing required security object (_eform)");
+        }
 
         List<String> attachedEFormIds = convertToList(attachedEForms);
-        if (!StringUtils.isNullOrEmpty(fdid)) { attachedEFormIds.add(0, fdid); }
+        if (!StringUtils.isNullOrEmpty(fdid)) {
+            attachedEFormIds.add(0, fdid);
+        }
 
         List<EmailAttachment> emailAttachments = new ArrayList<>();
         for (String eFormId : attachedEFormIds) {
             Path eFormPDFPath = documentAttachmentManager.renderDocument(loggedInInfo, DocumentType.EFORM, Integer.parseInt(eFormId));
-            if (eFormPDFPath != null) { emailAttachments.add(new EmailAttachment(eFormPDFPath.getFileName().toString(), eFormPDFPath.toString(), DocumentType.EFORM, Integer.parseInt(eFormId), getFileSize(eFormPDFPath))); }
+            if (eFormPDFPath != null) {
+                emailAttachments.add(new EmailAttachment(eFormPDFPath.getFileName().toString(), eFormPDFPath.toString(), DocumentType.EFORM, Integer.parseInt(eFormId), getFileSize(eFormPDFPath)));
+            }
         }
 
         return emailAttachments;
@@ -88,15 +93,17 @@ public class EmailComposeManager {
 
     public List<EmailAttachment> prepareEDocAttachments(LoggedInInfo loggedInInfo, String[] attachedDocuments) throws PDFGenerationException {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_edoc", SecurityInfoManager.READ, null)) {
-			throw new RuntimeException("missing required security object (_edoc)");
-		}
+            throw new RuntimeException("missing required security object (_edoc)");
+        }
 
         List<String> attachedEDocIds = convertToList(attachedDocuments);
 
         List<EmailAttachment> emailAttachments = new ArrayList<>();
         for (String eDocId : attachedEDocIds) {
             Path eDocPDFPath = documentAttachmentManager.renderDocument(loggedInInfo, DocumentType.DOC, Integer.parseInt(eDocId));
-            if (eDocPDFPath != null) { emailAttachments.add(new EmailAttachment(eDocPDFPath.getFileName().toString(), eDocPDFPath.toString(), DocumentType.DOC, Integer.parseInt(eDocId), getFileSize(eDocPDFPath))); }
+            if (eDocPDFPath != null) {
+                emailAttachments.add(new EmailAttachment(eDocPDFPath.getFileName().toString(), eDocPDFPath.toString(), DocumentType.DOC, Integer.parseInt(eDocId), getFileSize(eDocPDFPath)));
+            }
         }
 
         return emailAttachments;
@@ -104,15 +111,17 @@ public class EmailComposeManager {
 
     public List<EmailAttachment> prepareLabAttachments(LoggedInInfo loggedInInfo, String[] attachedLabs) throws PDFGenerationException {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", SecurityInfoManager.READ, null)) {
-			throw new RuntimeException("missing required security object (_lab)");
-		}
+            throw new RuntimeException("missing required security object (_lab)");
+        }
 
         List<String> attachedLabIds = convertToList(attachedLabs);
 
         List<EmailAttachment> emailAttachments = new ArrayList<>();
         for (String labId : attachedLabIds) {
             Path labPDFPath = documentAttachmentManager.renderDocument(loggedInInfo, DocumentType.LAB, Integer.parseInt(labId));
-            if (labPDFPath != null) { emailAttachments.add(new EmailAttachment(labPDFPath.getFileName().toString(), labPDFPath.toString(), DocumentType.LAB, Integer.parseInt(labId), getFileSize(labPDFPath))); }
+            if (labPDFPath != null) {
+                emailAttachments.add(new EmailAttachment(labPDFPath.getFileName().toString(), labPDFPath.toString(), DocumentType.LAB, Integer.parseInt(labId), getFileSize(labPDFPath)));
+            }
         }
 
         return emailAttachments;
@@ -120,15 +129,17 @@ public class EmailComposeManager {
 
     public List<EmailAttachment> prepareHRMAttachments(LoggedInInfo loggedInInfo, String[] attachedHRMDocuments) throws PDFGenerationException {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_hrm", SecurityInfoManager.READ, null)) {
-			throw new RuntimeException("missing required security object (_hrm)");
-		}
+            throw new RuntimeException("missing required security object (_hrm)");
+        }
 
         List<String> attachedHRMIds = convertToList(attachedHRMDocuments);
 
         List<EmailAttachment> emailAttachments = new ArrayList<>();
         for (String hrmId : attachedHRMIds) {
             Path hrmPDFPath = documentAttachmentManager.renderDocument(loggedInInfo, DocumentType.HRM, Integer.parseInt(hrmId));
-            if (hrmPDFPath != null) { emailAttachments.add(new EmailAttachment(hrmPDFPath.getFileName().toString(), hrmPDFPath.toString(), DocumentType.HRM, Integer.parseInt(hrmId), getFileSize(hrmPDFPath))); }
+            if (hrmPDFPath != null) {
+                emailAttachments.add(new EmailAttachment(hrmPDFPath.getFileName().toString(), hrmPDFPath.toString(), DocumentType.HRM, Integer.parseInt(hrmId), getFileSize(hrmPDFPath)));
+            }
         }
 
         return emailAttachments;
@@ -137,15 +148,17 @@ public class EmailComposeManager {
     public List<EmailAttachment> prepareFormAttachments(HttpServletRequest request, HttpServletResponse response, String[] attachedForms, Integer demographicId) throws PDFGenerationException {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, String.valueOf(demographicId))) {
-			throw new RuntimeException("missing required security object (_form)");
-		}
+            throw new RuntimeException("missing required security object (_form)");
+        }
 
         List<String> attachedFormIds = convertToList(attachedForms);
 
         List<EmailAttachment> emailAttachments = new ArrayList<>();
         for (String formId : attachedFormIds) {
             Path formPDFPath = formsManager.renderForm(request, response, Integer.parseInt(formId), demographicId);
-            if (formPDFPath != null) { emailAttachments.add(new EmailAttachment(formPDFPath.getFileName().toString(), formPDFPath.toString(), DocumentType.FORM, Integer.parseInt(formId), getFileSize(formPDFPath))); }
+            if (formPDFPath != null) {
+                emailAttachments.add(new EmailAttachment(formPDFPath.getFileName().toString(), formPDFPath.toString(), DocumentType.FORM, Integer.parseInt(formId), getFileSize(formPDFPath)));
+            }
         }
 
         return emailAttachments;
@@ -162,30 +175,40 @@ public class EmailComposeManager {
 
     public String[] getEmailConsentStatus(LoggedInInfo loggedInInfo, Integer demographicId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_email", SecurityInfoManager.READ, null)) {
-			throw new RuntimeException("missing required security object (_email)");
-		}
+            throw new RuntimeException("missing required security object (_email)");
+        }
 
         String UNKNOWN = "Unknown", OPTIN = "Explicit Opt-In", OPTOUT = "Explicit Opt-Out";
         UserProperty userProperty = userPropertyDAO.getProp(UserProperty.EMAIL_COMMUNICATION);
-        if (userProperty == null || StringUtils.isNullOrEmpty(userProperty.getValue())) { return new String[]{"", UNKNOWN}; }
+        if (userProperty == null || StringUtils.isNullOrEmpty(userProperty.getValue())) {
+            return new String[]{"", UNKNOWN};
+        }
 
         String property = userProperty.getValue().split("[,;\\s()]+")[0];
         ConsentType consentType = patientConsentManager.getConsentType(property);
-        if (consentType == null || !consentType.isActive()) { return new String[]{"", UNKNOWN}; }
-        
-        Consent consent = patientConsentManager.getConsentByDemographicAndConsentType(loggedInInfo, demographicId, consentType);
-        if (consent == null) { return new String[]{consentType.getName(), UNKNOWN}; }
+        if (consentType == null || !consentType.isActive()) {
+            return new String[]{"", UNKNOWN};
+        }
 
-        return consent.getPatientConsented() ? new String[] {consentType.getName(), OPTIN} : new String[] {consentType.getName(), OPTOUT};
+        Consent consent = patientConsentManager.getConsentByDemographicAndConsentType(loggedInInfo, demographicId, consentType);
+        if (consent == null) {
+            return new String[]{consentType.getName(), UNKNOWN};
+        }
+
+        return consent.getPatientConsented() ? new String[]{consentType.getName(), OPTIN} : new String[]{consentType.getName(), OPTOUT};
     }
 
     public Boolean isEmailConsentConfigured() {
         UserProperty userProperty = userPropertyDAO.getProp(UserProperty.EMAIL_COMMUNICATION);
-        if (userProperty == null || StringUtils.isNullOrEmpty(userProperty.getValue())) { return Boolean.FALSE; }
+        if (userProperty == null || StringUtils.isNullOrEmpty(userProperty.getValue())) {
+            return Boolean.FALSE;
+        }
 
         String property = userProperty.getValue().split("[,;\\s()]+")[0];
         ConsentType consentType = patientConsentManager.getConsentType(property);
-        if (consentType == null || !consentType.isActive()) { return Boolean.FALSE; }
+        if (consentType == null || !consentType.isActive()) {
+            return Boolean.FALSE;
+        }
 
         return Boolean.TRUE;
     }
@@ -195,18 +218,24 @@ public class EmailComposeManager {
     }
 
     public Boolean hasActiveSenderAccount() {
-        if (getAllSenderAccounts().isEmpty()) { return false; }
+        if (getAllSenderAccounts().isEmpty()) {
+            return false;
+        }
         return true;
     }
 
     public Boolean hasValidRecipient(LoggedInInfo loggedInInfo, Integer demographicId) {
         List<String> validRecipients = (List<String>) getRecipients(loggedInInfo, demographicId)[0];
-        if (validRecipients.isEmpty()) { return false; }
+        if (validRecipients.isEmpty()) {
+            return false;
+        }
         return true;
     }
 
     public Boolean isEmailEnabled() {
-        if (isEmailConsentConfigured() && !getAllSenderAccounts().isEmpty()) { return Boolean.TRUE; }
+        if (isEmailConsentConfigured() && !getAllSenderAccounts().isEmpty()) {
+            return Boolean.TRUE;
+        }
         return Boolean.FALSE;
     }
 
@@ -214,7 +243,9 @@ public class EmailComposeManager {
         String recipientsString = demographicManager.getDemographicEmail(loggedInInfo, demographicId);
         List<String> validRecipients = new ArrayList<>();
         List<String> invalidRecipients = new ArrayList<>();
-        if (StringUtils.isNullOrEmpty(recipientsString)) { return new List<?>[] {validRecipients, invalidRecipients}; }
+        if (StringUtils.isNullOrEmpty(recipientsString)) {
+            return new List<?>[]{validRecipients, invalidRecipients};
+        }
 
         String[] recipients = recipientsString.split("[,;\\s()]+");
         for (String recipient : recipients) {
@@ -225,7 +256,7 @@ public class EmailComposeManager {
             }
         }
 
-        return new List<?>[] {validRecipients, invalidRecipients};
+        return new List<?>[]{validRecipients, invalidRecipients};
     }
 
     public String createEmailPDFPassword(LoggedInInfo loggedInInfo, Integer demographicId) {
@@ -245,7 +276,9 @@ public class EmailComposeManager {
 
     private List<String> convertToList(String[] stringArray) {
         List<String> stringList = new ArrayList<>();
-        if (stringArray != null) { Collections.addAll(stringList, stringArray); }
+        if (stringArray != null) {
+            Collections.addAll(stringList, stringArray);
+        }
         return stringList;
     }
 

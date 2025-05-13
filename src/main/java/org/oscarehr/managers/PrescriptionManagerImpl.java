@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -6,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.managers;
@@ -80,7 +81,7 @@ public class PrescriptionManagerImpl implements PrescriptionManager {
 
     @Override
     public List<Prescription> getPrescriptionUpdatedAfterDate(LoggedInInfo loggedInInfo,
-            Date updatedAfterThisDateExclusive, int itemsToReturn) {
+                                                              Date updatedAfterThisDateExclusive, int itemsToReturn) {
         List<Prescription> results = prescriptionDao.findByUpdateDate(updatedAfterThisDateExclusive, itemsToReturn);
         patientConsentManager.filterProviderSpecificConsent(loggedInInfo, results);
         LogAction.addLogSynchronous(loggedInInfo, "PrescriptionManager.getPrescriptionUpdatedAfterDate",
@@ -91,7 +92,7 @@ public class PrescriptionManagerImpl implements PrescriptionManager {
 
     @Override
     public List<Prescription> getPrescriptionByDemographicIdUpdatedAfterDate(LoggedInInfo loggedInInfo,
-            Integer demographicId, Date updatedAfterThisDateExclusive) {
+                                                                             Integer demographicId, Date updatedAfterThisDateExclusive) {
         List<Prescription> results = new ArrayList<Prescription>();
         ConsentType consentType = patientConsentManager.getProviderSpecificConsent(loggedInInfo);
         if (patientConsentManager.hasPatientConsented(demographicId, consentType)) {
@@ -206,8 +207,8 @@ public class PrescriptionManagerImpl implements PrescriptionManager {
      */
     @Override
     public List<Prescription> getPrescriptionsByProgramProviderDemographicDate(LoggedInInfo loggedInInfo,
-            Integer programId, String providerNo, Integer demographicId, Calendar updatedAfterThisDateExclusive,
-            int itemsToReturn) {
+                                                                               Integer programId, String providerNo, Integer demographicId, Calendar updatedAfterThisDateExclusive,
+                                                                               int itemsToReturn) {
         List<Prescription> results = prescriptionDao.findByProviderDemographicLastUpdateDate(providerNo, demographicId,
                 updatedAfterThisDateExclusive.getTime(), itemsToReturn);
 
@@ -227,9 +228,7 @@ public class PrescriptionManagerImpl implements PrescriptionManager {
      * @param info          regarding the current user/session.
      * @param drugs         that are associated with this prescription.
      * @param demographicNo the demographic this prescription is for.
-     *
      * @return the Prescription object that was created.
-     *
      * @throws AccessDeniedException if the user is not allowed to write
      *                               to the demographic's record.
      */
@@ -265,7 +264,6 @@ public class PrescriptionManagerImpl implements PrescriptionManager {
      * @param info  represents the logged in user
      * @param demo  the current demographic
      * @param drugs a list of drugs to add to the prescription textView
-     *
      * @return a string for the text view
      */
     private String getPrescriptionTextView(LoggedInInfo info, Integer demo, List<Drug> drugs) {
@@ -327,7 +325,7 @@ public class PrescriptionManagerImpl implements PrescriptionManager {
 
     @Override
     public List<Drug> getMedicationsByDemographicNo(LoggedInInfo loggedInInfo, Integer demographicNo,
-            Boolean archived) {
+                                                    Boolean archived) {
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_demographic", "r", demographicNo)) {
             LogAction.addLogSynchronous(loggedInInfo, "PrescriptionManager.getMedicationsByDemographicNo",

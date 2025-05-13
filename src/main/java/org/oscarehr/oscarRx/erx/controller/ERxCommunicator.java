@@ -1,20 +1,21 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (C) 2011-2012  PeaceWorks Technology Solutions
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- * 
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- * 
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -56,11 +57,11 @@ import org.w3c.dom.DOMException;
 
 /**
  * Facilitates all communications with the External Prescriber servers.
- * 
+ *
  * @author mattp
  */
 public class ERxCommunicator {
-	private static Logger logger = MiscUtils.getLogger();
+    private static Logger logger = MiscUtils.getLogger();
     /**
      * The URL to send data to.
      */
@@ -88,32 +89,28 @@ public class ERxCommunicator {
 
     /**
      * Creates an instance of a ERxCommunicator.
-     * 
-     * @param remoteURL
-     *            The URL to connect to
-     * @param username
-     *            The username to use when connecting
-     * @param password
-     *            The password to use when connecting
+     *
+     * @param remoteURL The URL to connect to
+     * @param username  The username to use when connecting
+     * @param password  The password to use when connecting
      * @param locale
      */
     public ERxCommunicator(URL remoteURL, String username, String password,
-            String locale) {
+                           String locale) {
         super();
         this.remoteURL = remoteURL;
         this.username = username;
         this.password = password;
         this.locale = locale;
-       
+
         this.soapConnectionProtocol = SOAPConstants.SOAP_1_2_PROTOCOL;
     }
 
     /**
      * Open a connection to the remote URL so we can send data.
-     * 
-     * @throws SOAPException
-     *             Throws a SOAPException if there was a problem when
-     *             connecting.
+     *
+     * @throws SOAPException Throws a SOAPException if there was a problem when
+     *                       connecting.
      */
     protected void connect() throws SOAPException {
         this.socket = SOAPConnectionFactory.newInstance().createConnection();
@@ -127,16 +124,16 @@ public class ERxCommunicator {
             this.socket.close();
         } catch (SOAPException e) {
             logger.error("Attempted to close the connection to the remote prescription provider at "
-                            + this.remoteURL.toString()
-                            + ", but got the following SOAP error:\n"
-                            + e.getMessage()
-                            + "\nThe state of the connection is now unknown and may be unstable.");
+                    + this.remoteURL.toString()
+                    + ", but got the following SOAP error:\n"
+                    + e.getMessage()
+                    + "\nThe state of the connection is now unknown and may be unstable.");
         }
     }
 
     /**
      * Returns the locale.
-     * 
+     *
      * @return The current value of locale.
      */
     public String getLocale() {
@@ -145,7 +142,7 @@ public class ERxCommunicator {
 
     /**
      * Get the password that this communicator will use when connecting.
-     * 
+     *
      * @return the password
      */
     public String getPassword() {
@@ -154,7 +151,7 @@ public class ERxCommunicator {
 
     /**
      * Get the URL that this communicator will connect to.
-     * 
+     *
      * @return the remoteURL
      */
     public URL getRemoteURL() {
@@ -170,7 +167,7 @@ public class ERxCommunicator {
 
     /**
      * Returns the soapConnectionProtocol.
-     * 
+     *
      * @return The current value of soapConnectionProtocol.
      */
     public String getSoapConnectionProtocol() {
@@ -179,7 +176,7 @@ public class ERxCommunicator {
 
     /**
      * Returns the socket.
-     * 
+     *
      * @return The current value of socket.
      */
     public SOAPConnection getSocket() {
@@ -188,7 +185,7 @@ public class ERxCommunicator {
 
     /**
      * Get the username that this communicator will use when connecting.
-     * 
+     *
      * @return the username
      */
     public String getUsername() {
@@ -197,16 +194,13 @@ public class ERxCommunicator {
 
     /**
      * Parse a SOAPFault returned in a message.
-     * 
-     * @param fault
-     *            The fault to parse.
-     * @param request
-     *            The request that caused the fault
-     * @param response
-     *            The full response returned by the server
+     *
+     * @param fault    The fault to parse.
+     * @param request  The request that caused the fault
+     * @param response The full response returned by the server
      */
     private void parseFault(SOAPFault responseFault, SOAPMessage request,
-            SOAPMessage response) {
+                            SOAPMessage response) {
         String requestString = this.transformSOAPMessageToString(request);
         String responseString = this.transformSOAPMessageToString(response);
 
@@ -221,16 +215,14 @@ public class ERxCommunicator {
 
     /**
      * Request a list of prescriptions from External Prescriber.
-     * 
-     * @param facilityId
-     *            A unique identifier for the facility requesting the data.
-     * @param patientId
-     *            A unique identifier for the patient whose data is being
-     *            requested.
+     *
+     * @param facilityId A unique identifier for the facility requesting the data.
+     * @param patientId  A unique identifier for the patient whose data is being
+     *                   requested.
      */
     @SuppressWarnings("unchecked")
     public List<ERxPrescription> requestPrescriptionData(String facilityId,
-            String patientId, Date dateToSync) throws SecurityException {
+                                                         String patientId, Date dateToSync) throws SecurityException {
         // The list of external prescriptions to return
         List<ERxPrescription> answer = new LinkedList<ERxPrescription>();
         // The outgoing and incoming messages
@@ -275,15 +267,15 @@ public class ERxCommunicator {
                                                     .next()));
                         } catch (DOMException e) {
                             logger.error("Failed to parse response because it was not well-formed. The full response was:"
-                                            + this.transformSOAPMessageToString(response));
+                                    + this.transformSOAPMessageToString(response));
                         } catch (IllegalArgumentException e) {
                             logger.error("Failed to parse response because the remote web service reported that one of the parameters in the request was invalid.\n\nThe request was...\n"
-                                            + this.transformSOAPMessageToString(request)
-                                            + "\n...and the response was...\n"
-                                            + this.transformSOAPMessageToString(response));
+                                    + this.transformSOAPMessageToString(request)
+                                    + "\n...and the response was...\n"
+                                    + this.transformSOAPMessageToString(response));
                         } catch (ServiceUnavailableException e) {
                             logger.error("Failed to request prescription data because the remote web service was unavailable: "
-                                            + e.getMessage());
+                                    + e.getMessage());
 
                         }
                     }
@@ -315,13 +307,13 @@ public class ERxCommunicator {
 
     /**
      * Send patient data to External Prescriber.
-     * 
+     * <p>
      * This should happen when the Patient checks in, before they get to see the
      * Provider.
      */
     @SuppressWarnings("unchecked")
     public void sendPatientData(ERxPatientData dataToSend, String clientNumber,
-            boolean isTraining, Transaction3 transaction)
+                                boolean isTraining, Transaction3 transaction)
             throws SecurityException {
         // The request and response objects
         SOAPMessage request;
@@ -363,15 +355,15 @@ public class ERxCommunicator {
                                             .next());
                         } catch (DOMException e) {
                             logger.error("Failed to parse response because it was not well-formed. The full response was:"
-                                            + this.transformSOAPMessageToString(response));
+                                    + this.transformSOAPMessageToString(response));
                         } catch (IllegalArgumentException e) {
                             logger.error("Failed to parse response because the remote web service reported that one of the parameters in the request was invalid.\n\nThe request was...\n"
-                                            + this.transformSOAPMessageToString(request)
-                                            + "\n...and the response was...\n"
-                                            + this.transformSOAPMessageToString(response));
+                                    + this.transformSOAPMessageToString(request)
+                                    + "\n...and the response was...\n"
+                                    + this.transformSOAPMessageToString(response));
                         } catch (ServiceUnavailableException e) {
                             logger.error("Failed to send patient data because the remote web service was unavailable: "
-                                            + e.getMessage());
+                                    + e.getMessage());
 
                         }
                     }
@@ -392,9 +384,8 @@ public class ERxCommunicator {
 
     /**
      * Changes the value of locale.
-     * 
-     * @param locale
-     *            The new locale.
+     *
+     * @param locale The new locale.
      */
     public void setLocale(String locale) {
         this.locale = locale;
@@ -402,9 +393,8 @@ public class ERxCommunicator {
 
     /**
      * Change the password that this communicator will use when connecting.
-     * 
-     * @param password
-     *            the password to set
+     *
+     * @param password the password to set
      */
     public void setPassword(String password) {
         this.password = password;
@@ -412,17 +402,15 @@ public class ERxCommunicator {
 
     /**
      * Change the URL that this communicator will connect to.
-     * 
-     * @param remoteURL
-     *            the remoteURL to set
+     *
+     * @param remoteURL the remoteURL to set
      */
     public void setRemoteURL(URL remoteURL) {
         this.remoteURL = remoteURL;
     }
 
     /**
-     * @param soapConnectionMethod
-     *            the soapConnectionMethod to set
+     * @param soapConnectionMethod the soapConnectionMethod to set
      */
     public void setSoapConnectionMethod(String soapConnectionMethod) {
         this.soapConnectionProtocol = soapConnectionMethod;
@@ -430,9 +418,8 @@ public class ERxCommunicator {
 
     /**
      * Changes the value of soapConnectionProtocol.
-     * 
-     * @param soapConnectionProtocol
-     *            The new soapConnectionProtocol.
+     *
+     * @param soapConnectionProtocol The new soapConnectionProtocol.
      */
     public void setSoapConnectionProtocol(String soapConnectionProtocol) {
         this.soapConnectionProtocol = soapConnectionProtocol;
@@ -440,9 +427,8 @@ public class ERxCommunicator {
 
     /**
      * Changes the value of socket.
-     * 
-     * @param socket
-     *            The new socket.
+     *
+     * @param socket The new socket.
      */
     public void setSocket(SOAPConnection socket) {
         this.socket = socket;
@@ -450,9 +436,8 @@ public class ERxCommunicator {
 
     /**
      * Change the username that this communicator will use when connecting.
-     * 
-     * @param username
-     *            the username to set
+     *
+     * @param username the username to set
      */
     public void setUsername(String username) {
         this.username = username;
@@ -461,12 +446,11 @@ public class ERxCommunicator {
     /**
      * A helper function to transform a SOAPMessage to a string. Primarily used
      * for constructing helpful errors.
-     * 
-     * @param message
-     *            The message to translate.
+     *
+     * @param message The message to translate.
      * @return The message in String form, or
-     *         "[Unable to convert SOAPMessage message.toString() to string]" if
-     *         there was a problem during conversion.
+     * "[Unable to convert SOAPMessage message.toString() to string]" if
+     * there was a problem during conversion.
      */
     private String transformSOAPMessageToString(SOAPMessage message) {
         StringBuilder answer = new StringBuilder();

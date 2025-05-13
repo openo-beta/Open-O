@@ -39,9 +39,9 @@
     }
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 
 <%@ page import="java.util.*" %>
 <%@ page import="org.oscarehr.managers.MeasurementManager" %>
@@ -67,7 +67,7 @@
 <html>
 <head>
 
-    <title><bean:message key="oscarEncounter.Measurements.msgEditMeasurementGroup"/> - <%=groupName%>
+    <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgEditMeasurementGroup"/> - <%=groupName%>
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -77,7 +77,7 @@
 <body>
 <div class="container">
 
-    <h3><bean:message key="oscarEncounter.Measurements.msgEditMeasurementGroup"/> - Remove Decision Support from
+    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Measurements.msgEditMeasurementGroup"/> - Remove Decision Support from
         Group </h3>
     <%
         propValue = MeasurementManager.getPropertyValue(propKey);

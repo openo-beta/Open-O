@@ -130,8 +130,6 @@
             self.opener.document
         .<%=formName%>.<%=formElement%>.
             value = File0;
-            //    self.opener.document.BillingCreateBillingForm.xml_refer2.value ='';
-            //    self.opener.document.BillingCreateBillingForm.xml_refer3.value ='';
         }
 
     </script>

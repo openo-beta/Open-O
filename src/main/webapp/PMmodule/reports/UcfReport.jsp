@@ -22,80 +22,75 @@
     Toronto, Ontario, Canada
 
 --%>
-<%@page import="java.util.*"%>
-<%@page import="org.springframework.web.context.WebApplicationContext"%>
+<%@page import="java.util.*" %>
+<%@page import="org.springframework.web.context.WebApplicationContext" %>
 <%@page
-	import="org.springframework.web.context.support.WebApplicationContextUtils"%>
-<%@page import="org.caisi.dao.*"%>
-<%@page import="org.caisi.model.*"%>
-<%@page import="org.oscarehr.PMmodule.model.*"%>
-<%@page import="org.oscarehr.PMmodule.dao.*"%>
-<%@page import="org.oscarehr.PMmodule.web.*"%>
-<%@page import="org.oscarehr.util.*"%>
-<%@page import="java.text.*"%>
-<%@page import="org.oscarehr.common.model.CaisiForm"%>
-<%@page import="org.oscarehr.common.dao.CaisiFormDao"%>
+        import="org.springframework.web.context.support.WebApplicationContextUtils" %>
+<%@page import="org.caisi.dao.*" %>
+<%@page import="org.caisi.model.*" %>
+<%@page import="org.oscarehr.PMmodule.model.*" %>
+<%@page import="org.oscarehr.PMmodule.dao.*" %>
+<%@page import="org.oscarehr.PMmodule.web.*" %>
+<%@page import="org.oscarehr.util.*" %>
+<%@page import="java.text.*" %>
+<%@page import="org.oscarehr.common.model.CaisiForm" %>
+<%@page import="org.oscarehr.common.dao.CaisiFormDao" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.survey.service.OscarFormManager" %>
 
 <%
-	Long formId=Long.parseLong(request.getParameter("formId"));
-	String startDateString=request.getParameter("startDate");
-	String endDateString=request.getParameter("endDate");
-	if(startDateString==null || "".equals(startDateString))
-		startDateString = "1900-01-01";
-	if(endDateString==null || "".equals(endDateString)) 
-		endDateString = "9998-12-31";
-	SimpleDateFormat dateFormatter=new SimpleDateFormat("yyyy-MM-dd");
-	Date startDate=null;
-	Date endDate=null;
-	try
-	{
-		startDate=dateFormatter.parse(startDateString);
-	}
-	catch (Exception e)
-	{
-		// do nothing, bad input
-	}
-	try
-	{
-		endDate=dateFormatter.parse(endDateString);
-	}
-	catch (Exception e)
-	{
-		// do nothing, bad input
-	}
-	
-	CaisiFormDao caisiFormDao = SpringUtils.getBean(CaisiFormDao.class);	
-	
-	OscarFormManager oscarFormManager = (OscarFormManager)SpringUtils.getBean(OscarFormManager.class);
-	
-	Map data = oscarFormManager.getFormReport(formId.intValue(),startDate,endDate);
-	CaisiForm form = caisiFormDao.find(formId.intValue());	
+    Long formId = Long.parseLong(request.getParameter("formId"));
+    String startDateString = request.getParameter("startDate");
+    String endDateString = request.getParameter("endDate");
+    if (startDateString == null || "".equals(startDateString))
+        startDateString = "1900-01-01";
+    if (endDateString == null || "".equals(endDateString))
+        endDateString = "9998-12-31";
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+    Date startDate = null;
+    Date endDate = null;
+    try {
+        startDate = dateFormatter.parse(startDateString);
+    } catch (Exception e) {
+        // do nothing, bad input
+    }
+    try {
+        endDate = dateFormatter.parse(endDateString);
+    } catch (Exception e) {
+        // do nothing, bad input
+    }
+
+    CaisiFormDao caisiFormDao = SpringUtils.getBean(CaisiFormDao.class);
+
+    OscarFormManager oscarFormManager = (OscarFormManager) SpringUtils.getBean(OscarFormManager.class);
+
+    Map data = oscarFormManager.getFormReport(formId.intValue(), startDate, endDate);
+    CaisiForm form = caisiFormDao.find(formId.intValue());
 %>
 
-<%@include file="/layouts/caisi_html_top.jspf"%>
+<%@include file="/layouts/caisi_html_top.jspf" %>
 
 <h1>User Created Report : <%=form.getDescription()%> from <%=startDateString%>
-to <%=endDateString%></h1>
+    to <%=endDateString%>
+</h1>
 
 <input type="button" value="Back"
-	onclick="document.location='<%=request.getContextPath()%>/PMmodule/ProviderInfo.do'" />
+       onclick="document.location='<%=request.getContextPath()%>/PMmodule/ProviderInfo.do'"/>
 
 <table class="genericTable">
-	<tr class="genericTableRow">
-		<td class="genericTableHeader">Questions</td>
-		<td class="genericTableHeader">Answer</td>
-		<td class="genericTableHeader">Total</td>
-	</tr>
-	<% 
-		Iterator keyValues = data.entrySet().iterator();
-		for(int i=0; i<data.size();i++) {
-			Map.Entry entry = (Map.Entry)keyValues.next();
-			String[] questionAnswer = (String[])entry.getKey();
-			String count = (String)entry.getValue();
-			String question = questionAnswer[0];
-			String answer = questionAnswer[1];
+    <tr class="genericTableRow">
+        <td class="genericTableHeader">Questions</td>
+        <td class="genericTableHeader">Answer</td>
+        <td class="genericTableHeader">Total</td>
+    </tr>
+    <%
+        Iterator keyValues = data.entrySet().iterator();
+        for (int i = 0; i < data.size(); i++) {
+            Map.Entry entry = (Map.Entry) keyValues.next();
+            String[] questionAnswer = (String[]) entry.getKey();
+            String count = (String) entry.getValue();
+            String question = questionAnswer[0];
+            String answer = questionAnswer[1];
 		
 		/*
 		for (Map.Entry<String, String[]> dd : data.entrySet().iterator())
@@ -105,22 +100,25 @@ to <%=endDateString%></h1>
 			String answer = values[0];
 			String count = values[1];	
 			*/
-	%>
-	<tr class="genericTableRow">
-		<td class="genericTableHeader"><%=question%></td>
-		<td class="genericTableData"><%=answer%></td>
+    %>
+    <tr class="genericTableRow">
+        <td class="genericTableHeader"><%=question%>
+        </td>
+        <td class="genericTableData"><%=answer%>
+        </td>
 
-		<td class="genericTableData"><%=count%></td>
+        <td class="genericTableData"><%=count%>
+        </td>
 
-	</tr>
-	<%
-	}
-	%>
+    </tr>
+    <%
+        }
+    %>
 
 </table>
 
 <input type="button" value="Back"
-	onclick="document.location='<%=request.getContextPath()%>/PMmodule/ProviderInfo.do'" />
+       onclick="document.location='<%=request.getContextPath()%>/PMmodule/ProviderInfo.do'"/>
 
 
-<%@include file="/layouts/caisi_html_bottom.jspf"%>
+<%@include file="/layouts/caisi_html_bottom.jspf" %>

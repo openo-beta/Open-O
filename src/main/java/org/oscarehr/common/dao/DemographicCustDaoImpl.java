@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -5,23 +6,23 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -80,9 +81,9 @@ public class DemographicCustDaoImpl extends AbstractDaoImpl<DemographicCust> imp
 
     @Override
     public List<DemographicCust> findByResident(String resident) {
-        String sql = "select x from DemographicCust x where x.resident like ?";
+        String sql = "select x from DemographicCust x where x.resident like ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, resident);
+        query.setParameter(1, resident);
 
         @SuppressWarnings("unchecked")
         List<DemographicCust> results = query.getResultList();
@@ -91,7 +92,7 @@ public class DemographicCustDaoImpl extends AbstractDaoImpl<DemographicCust> imp
 
     @Override
     public Integer select_demoname(String resident, String lastNameRegExp) {
-        String sql = "select d.demographic_no from demographic d, demographiccust c where c.cust2=? and d.demographic_no=c.demographic_no and d.last_name REGEXP ?";
+        String sql = "select d.demographic_no from demographic d, demographiccust c where c.cust2=?1 and d.demographic_no=c.demographic_no and d.last_name REGEXP ?2";
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter(1, resident);
         query.setParameter(2, lastNameRegExp);
@@ -106,7 +107,7 @@ public class DemographicCustDaoImpl extends AbstractDaoImpl<DemographicCust> imp
 
     @Override
     public Integer select_demoname1(String nurse, String lastNameRegExp) {
-        String sql = "select d.demographic_no from demographic d, demographiccust c where c.cust2=? and d.demographic_no=c.demographic_no and d.last_name REGEXP ?";
+        String sql = "select d.demographic_no from demographic d, demographiccust c where c.cust2=?1 and d.demographic_no=c.demographic_no and d.last_name REGEXP ?2";
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter(1, nurse);
         query.setParameter(2, lastNameRegExp);
@@ -121,7 +122,7 @@ public class DemographicCustDaoImpl extends AbstractDaoImpl<DemographicCust> imp
 
     @Override
     public Integer select_demoname2(String midwife, String lastNameRegExp) {
-        String sql = "select d.demographic_no from demographic d, demographiccust c where c.cust2=? and d.demographic_no=c.demographic_no and d.last_name REGEXP ?";
+        String sql = "select d.demographic_no from demographic d, demographiccust c where c.cust2=?1 and d.demographic_no=c.demographic_no and d.last_name REGEXP ?2";
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter(1, midwife);
         query.setParameter(2, lastNameRegExp);
@@ -136,9 +137,9 @@ public class DemographicCustDaoImpl extends AbstractDaoImpl<DemographicCust> imp
 
     @Override
     public List<DemographicCust> findAllByDemographicNumber(int demographic_no) {
-        String sql = "select x from DemographicCust x where x.id = ?";
+        String sql = "select x from DemographicCust x where x.id = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, demographic_no);
+        query.setParameter(1, demographic_no);
 
         @SuppressWarnings("unchecked")
         List<DemographicCust> results = query.getResultList();

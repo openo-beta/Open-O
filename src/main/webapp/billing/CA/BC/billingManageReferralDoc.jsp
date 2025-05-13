@@ -40,8 +40,8 @@
     }
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page
         import="java.util.*,oscar.oscarBilling.ca.bc.data.*,oscar.oscarBilling.ca.bc.pageUtil.*" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
@@ -50,10 +50,10 @@
 <%
     BillingreferralDao billingReferralDao = (BillingreferralDao) SpringUtils.getBean(BillingreferralDao.class);
 %>
-<html:html lang="en">
+<html>
 
     <head>
-        <title><bean:message key="admin.admin.ManageReferralDoc"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.ManageReferralDoc"/></title>
 
         <script type="text/javascript">
 
@@ -88,7 +88,7 @@
         </style>
 
     <body>
-    <h3><bean:message key="admin.admin.ManageReferralDoc"/></h3>
+    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.ManageReferralDoc"/></h3>
     <div class="container-fluid">
 
         <%
@@ -215,7 +215,7 @@
         });
     </script>
     </body>
-</html:html>
+</html>
 <%!
     String selected(String var, String constant) {
         if (var != null && var.equals(constant)) {

@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * The Pharmacists Clinic
  * Faculty of Pharmaceutical Sciences
@@ -27,6 +27,7 @@ package org.oscarehr.fax.util;
 import org.junit.Test;
 import org.oscarehr.fax.core.FaxAccount;
 import org.oscarehr.fax.core.FaxRecipient;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -53,7 +54,7 @@ public class PdfCoverPageCreatorTest extends PdfCoverPageCreator {
                     setName("Test Recipient Clinic");
                     setFax("778-998-0876");
                 }},
-                new FaxAccount(){{
+                new FaxAccount() {{
                     setName("The MOA Name");
                     setPhone("604-555-1212");
                     setFax("604-234-2345");
@@ -69,7 +70,7 @@ public class PdfCoverPageCreatorTest extends PdfCoverPageCreator {
         byte[] bytearray = createCoverPage();
 
         File tempFile = null;
-        try{
+        try {
             tempFile = File.createTempFile("testCoverPage", ".pdf");
             System.out.println(tempFile);
         } catch (IOException e) {

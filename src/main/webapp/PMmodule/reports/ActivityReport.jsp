@@ -1,4 +1,3 @@
-
 <%--
 
 
@@ -24,26 +23,26 @@
 
 --%>
 
-<%@ include file="/taglibs.jsp"%>
+<%@ include file="/taglibs.jsp" %>
 
 <h4>Summary</h4>
 
 <table class="table table-bordered table-striped table-condensed table-hover">
-	<thead>
-	<tr>
-		<th>Program</th>
-		<th>Total Admissions</th>
-		<th>Total Referrals</th>
-	</tr>
-	</thead>
-	<tbody>
-	<c:forEach var="stat" items="${summary}">
-		<tr>
-			<td><c:out value="${stat.key}" /></td>
-			<c:forEach var="value" items="${stat.value }">
-				<td><c:out value="${value}" /></td>
-			</c:forEach>
-		</tr>
-	</c:forEach>
-	</tbody>
+    <thead>
+    <tr>
+        <th>Program</th>
+        <th>Total Admissions</th>
+        <th>Total Referrals</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach var="stat" items="${summary}">
+        <tr>
+            <td><c:out value="${stat.key}"/></td>
+            <c:forEach var="value" items="${stat.value }">
+                <td><c:out value="${value}"/></td>
+            </c:forEach>
+        </tr>
+    </c:forEach>
+    </tbody>
 </table>

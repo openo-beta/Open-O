@@ -24,7 +24,7 @@
 --%>
 
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="oscar.oscarEncounter.data.*, oscar.oscarProvider.data.*, oscar.util.UtilDateUtilities" %>
@@ -87,8 +87,6 @@
     String patientSex = pd.getSex();
     String pAge = Integer.toString(UtilDateUtilities.calcAge(bean.yearOfBirth, bean.monthOfBirth, bean.dateOfBirth));
 
-    java.util.Locale vLocale = (java.util.Locale) session.getAttribute(org.apache.struts.Globals.LOCALE_KEY);
-
     //referring doctor
     org.oscarehr.common.dao.DemographicDao dao = (org.oscarehr.common.dao.DemographicDao) org.oscarehr.util.SpringUtils.getBean(DemographicDao.class);
     org.oscarehr.common.model.Demographic d = dao.getDemographic(demoNo);
@@ -121,9 +119,9 @@
         	<a href="#" onClick="popupPage(700,1000,'<%=winName%>','
             <c:out value="${ctx}"/>
                 <%=url%>'); return false;"
-               title="<bean:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>"><%=bean.patientLastName %>, <%=bean.patientFirstName%></a> <%=bean.patientSex%> <%=bean.patientAge%>
+               title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgMasterFile"/>"><%=bean.patientLastName %>, <%=bean.patientFirstName%></a> <%=bean.patientSex%> <%=bean.patientAge%>
        	</span>  
-	<bean:message key="oscarEncounter.Index.msgMRP"/>:&nbsp;<span
+	<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgMRP"/>:&nbsp;<span
         style="font-weight:bold;"><%=famDocName%> <%=famDocSurname%></span>
 	REF:&nbsp;<span style="font-weight:bold;"><%=rd%></span>  
  	REASON:&nbsp;<span style="font-weight:bold;"><%=reason%></span>

@@ -22,31 +22,32 @@
     Toronto, Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.util.MiscUtils"%><%@page import="java.io.FileInputStream"%>
-<%@page import="java.io.OutputStream"%>
-<%@page import="java.io.File"%>
+<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="java.io.FileInputStream" %>
+<%@page import="java.io.OutputStream" %>
+<%@page import="java.io.File" %>
 <%
-	String root = getServletContext().getRealPath(File.separator) + File.separator;
-	String name = "IntakeCReport1.csv";
+    String root = getServletContext().getRealPath(File.separator) + File.separator;
+    String name = "IntakeCReport1.csv";
 
-	response.setContentType("unknown");
-	response.addHeader("Content-Disposition", "filename=\"" + name + "\"");
+    response.setContentType("unknown");
+    response.addHeader("Content-Disposition", "filename=\"" + name + "\"");
 
-	try {
-		OutputStream os = response.getOutputStream();
-		FileInputStream fis = new FileInputStream(root + name);
+    try {
+        OutputStream os = response.getOutputStream();
+        FileInputStream fis = new FileInputStream(root + name);
 
-		byte[] b = new byte[1024];
-		int i = 0;
+        byte[] b = new byte[1024];
+        int i = 0;
 
-		while ((i = fis.read(b)) > 0) {
-			os.write(b, 0, i);
-		}
+        while ((i = fis.read(b)) > 0) {
+            os.write(b, 0, i);
+        }
 
-		fis.close();
-		os.flush();
-		os.close();
-	} catch (Exception e) {
-		MiscUtils.getLogger().error("Error", e);
-	}
+        fis.close();
+        os.flush();
+        os.close();
+    } catch (Exception e) {
+        MiscUtils.getLogger().error("Error", e);
+    }
 %>

@@ -24,52 +24,52 @@
 
 --%>
 
-<%@ include file="/taglibs.jsp"%>
-<%@page import="org.oscarehr.util.SpringUtils"%>
-<%@page import="org.oscarehr.PMmodule.dao.ProviderDao"%>
+<%@ include file="/taglibs.jsp" %>
+<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%
-	String id = request.getParameter("id");
-	ProviderDao providerDao = (ProviderDao)SpringUtils.getBean(ProviderDao.class);
-	request.setAttribute("providers",providerDao.getActiveProviders());
+    String id = request.getParameter("id");
+    ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
+    request.setAttribute("providers", providerDao.getActiveProviders());
 %>
 
 <div id="procedure_<%=id%>">
 
-				<input type="hidden" name="procedure_<%=id%>.id" value=""/>
-					
-				<a href="#" onclick="deleteProcedure(<%=id%>);">[Delete]</a>
-				
-				&nbsp;
-		
-				<select name="procedure_<%=id%>.eye">
-					<option value="OU">OU</option>
-					<option value="OD">OD</option>
-					<option value="OS">OS</option>
-					<option value="OD then OS">OD then OS</option>
-					<option value="OS then OD">OS then OD</option>
-				</select>
-			
-				&nbsp;
-				Proc:
-				<input type="text" name="procedure_<%=id%>.procedureName" size="30"/>			
-				
-				&nbsp;
-				Loc:
-				<input type="text" name="procedure_<%=id%>.location" size="5"/>
-						
-				&nbsp;
-				
-				
-				<select name="procedure_<%=id%>.urgency">
-					<option value="routine">routine</option>
-					<option value="ASAP">ASAP</option>
-					<option value="URGENT">URGENT</option>					
-				</select>
-				
-				&nbsp;	
-								
-				Comment:	
-				<input type="text" name="procedure_<%=id%>.comment" size="40"/>
-				
+    <input type="hidden" name="procedure_<%=id%>.id" value=""/>
+
+    <a href="#" onclick="deleteProcedure(<%=id%>);">[Delete]</a>
+
+    &nbsp;
+
+    <select name="procedure_<%=id%>.eye">
+        <option value="OU">OU</option>
+        <option value="OD">OD</option>
+        <option value="OS">OS</option>
+        <option value="OD then OS">OD then OS</option>
+        <option value="OS then OD">OS then OD</option>
+    </select>
+
+    &nbsp;
+    Proc:
+    <input type="text" name="procedure_<%=id%>.procedureName" size="30"/>
+
+    &nbsp;
+    Loc:
+    <input type="text" name="procedure_<%=id%>.location" size="5"/>
+
+    &nbsp;
+
+
+    <select name="procedure_<%=id%>.urgency">
+        <option value="routine">routine</option>
+        <option value="ASAP">ASAP</option>
+        <option value="URGENT">URGENT</option>
+    </select>
+
+    &nbsp;
+
+    Comment:
+    <input type="text" name="procedure_<%=id%>.comment" size="40"/>
+
 
 </div>

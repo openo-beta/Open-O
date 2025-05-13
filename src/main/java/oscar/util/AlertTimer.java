@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -5,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,19 +39,19 @@ import org.oscarehr.util.ShutdownException;
 import org.oscarehr.util.SpringUtils;
 
 /**
- *
  * <p>Title:AlertTimer </p>
  *
  * <p>Description: </p>
  * AlertTimer is responsible for managing the execution Schedule of the CDM Reminders(or any other future alerts)
  * at regular intervals.
+ *
  * @author not Joel Legris
  * @version 1.0
  */
 public class AlertTimer {
-	private static Logger logger=MiscUtils.getLogger();
-	
-	private static AlertTimer alerts = null;
+    private static Logger logger = MiscUtils.getLogger();
+
+    private static AlertTimer alerts = null;
     private static Timer timer;
     String alertCodes[] = null;
     oscar.oscarBilling.ca.bc.MSP.CDMReminderHlp hlp = null;
@@ -75,26 +76,23 @@ public class AlertTimer {
      */
     class ReminderClass extends TimerTask {
         public void run() {
-    		// LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoAsCurrentClassAndMethod();
-        	// work around for the security object.
-        	String providerNo = "-1";
-        	ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
-        	LoggedInInfo loggedInInfo = new LoggedInInfo();
-        	Security security = new Security();
+            // LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoAsCurrentClassAndMethod();
+            // work around for the security object.
+            String providerNo = "-1";
+            ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
+            LoggedInInfo loggedInInfo = new LoggedInInfo();
+            Security security = new Security();
             security.setSecurityNo(0);
-            Provider provider = providerDao.getProvider( providerNo) ;
+            Provider provider = providerDao.getProvider(providerNo);
             loggedInInfo.setLoggedInSecurity(security);
             loggedInInfo.setLoggedInProvider(provider);
             try {
                 hlp.manageCDMTicklers(loggedInInfo, providerNo, alertCodes);
-            }
-            catch (ShutdownException e) {
-            	logger.debug("AlertTimer noticed shutdown signaled.");
-            }
-            catch (Exception e) {
+            } catch (ShutdownException e) {
+                logger.debug("AlertTimer noticed shutdown signaled.");
+            } catch (Exception e) {
                 logger.error("unexpected error", e);
-            }
-            finally {
+            } finally {
                 DbConnectionFilter.releaseAllThreadDbResources();
             }
         }

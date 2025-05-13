@@ -11,7 +11,7 @@
    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
 */
 
-root { 
+root {
     display: block;
 }
 
@@ -46,6 +46,7 @@ font.announcementGreen {
     text-align: center;
     font-weight: bold;
 }
+
 div.objectRedHeader {
     background: #a3341a none repeat scroll 0%;
     border: medium none;

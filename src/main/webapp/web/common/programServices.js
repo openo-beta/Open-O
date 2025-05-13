@@ -24,24 +24,27 @@
 
 */
 angular.module("programServices", [])
-	.service("programService", function ($http,$q,$log) {
-		return {
-		apiPath:'../ws/rs/',
-		configHeaders: {headers: {"Content-Type": "application/json","Accept":"application/json"}},
-		configHeadersWithCache: {headers: {"Content-Type": "application/json","Accept":"application/json"},cache: true},
-		
-        getPrograms: function () {
-            var deferred = $q.defer();
-            $http.get(this.apiPath+'program/programList',this.configHeadersWithCache).then(function (response){
-            	console.log(response.data);
-            	deferred.resolve(response.data.content);
-            },function(){
-            	console.log("error fetching program list");
-            	deferred.reject("An error occured while fetching program list");
-            });
-     
-          return deferred.promise;
-            
-        }
-    };
-});
+    .service("programService", function ($http, $q, $log) {
+        return {
+            apiPath: '../ws/rs/',
+            configHeaders: {headers: {"Content-Type": "application/json", "Accept": "application/json"}},
+            configHeadersWithCache: {
+                headers: {"Content-Type": "application/json", "Accept": "application/json"},
+                cache: true
+            },
+
+            getPrograms: function () {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + 'program/programList', this.configHeadersWithCache).then(function (response) {
+                    console.log(response.data);
+                    deferred.resolve(response.data.content);
+                }, function () {
+                    console.log("error fetching program list");
+                    deferred.reject("An error occured while fetching program list");
+                });
+
+                return deferred.promise;
+
+            }
+        };
+    });

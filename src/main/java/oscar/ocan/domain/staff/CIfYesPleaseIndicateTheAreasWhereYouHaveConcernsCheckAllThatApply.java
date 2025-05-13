@@ -1,21 +1,21 @@
+//CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -40,9 +40,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -65,23 +65,21 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cHeadAndNeck",
-    "cChest",
-    "cAbdomen",
-    "cExtremitiesArmsLegsHandsFeet",
-    "cGenitalUrinary",
-    "cSkin",
-    "cJoints",
-    "cMobility",
-    "cNeurological",
-    "cHearing",
-    "cVision",
-    "cOther"
+        "cHeadAndNeck",
+        "cChest",
+        "cAbdomen",
+        "cExtremitiesArmsLegsHandsFeet",
+        "cGenitalUrinary",
+        "cSkin",
+        "cJoints",
+        "cMobility",
+        "cNeurological",
+        "cHearing",
+        "cVision",
+        "cOther"
 })
 @XmlRootElement(name = "CIf_yes__please_indicate_the_areas_where_you_have_concerns__check_all_that_apply_")
 public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
@@ -113,11 +111,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Gets the value of the cHeadAndNeck property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCHeadAndNeck() {
         return cHeadAndNeck;
@@ -125,11 +121,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Sets the value of the cHeadAndNeck property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCHeadAndNeck(String value) {
         this.cHeadAndNeck = value;
@@ -137,11 +131,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Gets the value of the cChest property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCChest() {
         return cChest;
@@ -149,11 +141,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Sets the value of the cChest property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCChest(String value) {
         this.cChest = value;
@@ -161,11 +151,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Gets the value of the cAbdomen property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCAbdomen() {
         return cAbdomen;
@@ -173,11 +161,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Sets the value of the cAbdomen property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCAbdomen(String value) {
         this.cAbdomen = value;
@@ -185,11 +171,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Gets the value of the cExtremitiesArmsLegsHandsFeet property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCExtremitiesArmsLegsHandsFeet() {
         return cExtremitiesArmsLegsHandsFeet;
@@ -197,11 +181,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Sets the value of the cExtremitiesArmsLegsHandsFeet property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCExtremitiesArmsLegsHandsFeet(String value) {
         this.cExtremitiesArmsLegsHandsFeet = value;
@@ -209,11 +191,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Gets the value of the cGenitalUrinary property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCGenitalUrinary() {
         return cGenitalUrinary;
@@ -221,11 +201,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Sets the value of the cGenitalUrinary property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCGenitalUrinary(String value) {
         this.cGenitalUrinary = value;
@@ -233,11 +211,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Gets the value of the cSkin property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCSkin() {
         return cSkin;
@@ -245,11 +221,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Sets the value of the cSkin property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCSkin(String value) {
         this.cSkin = value;
@@ -257,11 +231,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Gets the value of the cJoints property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCJoints() {
         return cJoints;
@@ -269,11 +241,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Sets the value of the cJoints property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCJoints(String value) {
         this.cJoints = value;
@@ -281,11 +251,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Gets the value of the cMobility property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCMobility() {
         return cMobility;
@@ -293,11 +261,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Sets the value of the cMobility property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCMobility(String value) {
         this.cMobility = value;
@@ -305,11 +271,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Gets the value of the cNeurological property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCNeurological() {
         return cNeurological;
@@ -317,11 +281,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Sets the value of the cNeurological property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCNeurological(String value) {
         this.cNeurological = value;
@@ -329,11 +291,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Gets the value of the cHearing property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCHearing() {
         return cHearing;
@@ -341,11 +301,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Sets the value of the cHearing property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCHearing(String value) {
         this.cHearing = value;
@@ -353,11 +311,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Gets the value of the cVision property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCVision() {
         return cVision;
@@ -365,11 +321,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Sets the value of the cVision property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCVision(String value) {
         this.cVision = value;
@@ -377,11 +331,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Gets the value of the cOther property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link COther }
-     *     
+     *
+     * @return possible object is
+     * {@link COther }
      */
     public COther getCOther() {
         return cOther;
@@ -389,11 +341,9 @@ public class CIfYesPleaseIndicateTheAreasWhereYouHaveConcernsCheckAllThatApply {
 
     /**
      * Sets the value of the cOther property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link COther }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link COther }
      */
     public void setCOther(COther value) {
         this.cOther = value;

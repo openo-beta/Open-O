@@ -24,51 +24,54 @@
 
 */
 angular.module("consentServices", [])
-	.service("consentService", function ($http,$q,$log) {
-		return {
-		apiPath:'../ws/rs/consentService',
-		configHeaders: {headers: {"Content-Type": "application/json","Accept":"application/json"}},
-		configHeadersWithCache: {headers: {"Content-Type": "application/json","Accept":"application/json"},cache: true},
-        getConsentTypes: function(){
-        	var deferred = $q.defer();
-        	 $http.get(this.apiPath+'/consentTypes',this.configHeaders).then(function(response){
-            	console.log("me "+response.data);
-            	deferred.resolve(response.data);
-            },function(){
-            	console.log("error fetching myself");
-            	deferred.reject("An error occured while getting user data");
-            });
-     
-          return deferred.promise;
-        },
-        saveConsentType: function (cType) {
-        	var deferred = $q.defer();
-            
-            $http({
-                url: this.apiPath+'/consentType',
-                method: "POST",
-                data: cType,
-                headers: {'Content-Type': 'application/json'}
-             }).then(function (response){
-            	 deferred.resolve(response.data.content);
-             },function (data, status, headers, config) {
-            	 deferred.reject("An error occured while fetching provider list");
-             });
+    .service("consentService", function ($http, $q, $log) {
+        return {
+            apiPath: '../ws/rs/consentService',
+            configHeaders: {headers: {"Content-Type": "application/json", "Accept": "application/json"}},
+            configHeadersWithCache: {
+                headers: {"Content-Type": "application/json", "Accept": "application/json"},
+                cache: true
+            },
+            getConsentTypes: function () {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/consentTypes', this.configHeaders).then(function (response) {
+                    console.log("me " + response.data);
+                    deferred.resolve(response.data);
+                }, function () {
+                    console.log("error fetching myself");
+                    deferred.reject("An error occured while getting user data");
+                });
 
-          return deferred.promise;
-        },
-        getConsentType: function(id){
-        	var deferred = $q.defer();
-        	 $http.get(this.apiPath+'/consentType/'+id,this.configHeaders).then(function(response){
-            	console.log("me "+response.data);
-            	deferred.resolve(response.data);
-            },function(){
-            	console.log("error fetching myself");
-            	deferred.reject("An error occured while getting user data");
-            });
-     
-          return deferred.promise;
-        }
-       
-    };
-});
+                return deferred.promise;
+            },
+            saveConsentType: function (cType) {
+                var deferred = $q.defer();
+
+                $http({
+                    url: this.apiPath + '/consentType',
+                    method: "POST",
+                    data: cType,
+                    headers: {'Content-Type': 'application/json'}
+                }).then(function (response) {
+                    deferred.resolve(response.data.content);
+                }, function (data, status, headers, config) {
+                    deferred.reject("An error occured while fetching provider list");
+                });
+
+                return deferred.promise;
+            },
+            getConsentType: function (id) {
+                var deferred = $q.defer();
+                $http.get(this.apiPath + '/consentType/' + id, this.configHeaders).then(function (response) {
+                    console.log("me " + response.data);
+                    deferred.resolve(response.data);
+                }, function () {
+                    console.log("error fetching myself");
+                    deferred.reject("An error occured while getting user data");
+                });
+
+                return deferred.promise;
+            }
+
+        };
+    });

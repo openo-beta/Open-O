@@ -24,7 +24,8 @@
 --%>
 <%@ include file="/taglibs.jsp" %>
 <%@ page import="org.oscarehr.PMmodule.model.Intake" %>
-<%@ page import="org.oscarehr.PMmodule.web.formbean.GenericIntakeEditFormBean" %>
+<%@ page
+        import="org.oscarehr.PMmodule.web.formbean.GenericIntakeEditFormBean" %>
 <%
     GenericIntakeEditFormBean intakeEditForm = (GenericIntakeEditFormBean) session.getAttribute("genericIntakeEditForm");
     Intake intake = intakeEditForm.getIntake();
@@ -33,7 +34,7 @@
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Generic Intake Print</title>
-        <link rel="stylesheet" type="text/css" media="all" href="../share/css/extractedFromPages.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
         <script type="text/javascript">
             <!--
             var djConfig = {
@@ -44,14 +45,14 @@
             // -->
         </script>
         <script type="text/javascript"
-                src="<html:rewrite page="/dojoAjax/dojo.js" />"></script>
+                src="${request.contextPath}/dojoAjax/dojo.js"></script>
         <script type="text/javascript">
             <!--
             dojo.require("dojo.widget.*");
             dojo.require("dojo.validate.*");
             // -->
         </script>
-        <html:base/>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     </head>
     <body>
     <table class="intakeTable">

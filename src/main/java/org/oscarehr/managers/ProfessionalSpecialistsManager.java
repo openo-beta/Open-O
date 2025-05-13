@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.managers;
 
 import org.oscarehr.common.dao.ProfessionalSpecialistDao;
@@ -12,27 +13,27 @@ import java.util.List;
 @Service
 public class ProfessionalSpecialistsManager implements Serializable {
 
-	@Autowired
-	private ProfessionalSpecialistDao professionalSpecialistDao;
+    @Autowired
+    private ProfessionalSpecialistDao professionalSpecialistDao;
 
-	@Autowired
-	private SecurityInfoManager securityInfoManager;
+    @Autowired
+    private SecurityInfoManager securityInfoManager;
 
-	public ProfessionalSpecialistsManager() {
-		// default
-	}
+    public ProfessionalSpecialistsManager() {
+        // default
+    }
 
-	public ProfessionalSpecialist getProfessionalSpecialist(LoggedInInfo loggedInInfo, int id) {
-		if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", SecurityInfoManager.READ, null)) {
-			throw new RuntimeException("missing required security object (_con)");
-		}
-		return professionalSpecialistDao.find(id);
-	}
+    public ProfessionalSpecialist getProfessionalSpecialist(LoggedInInfo loggedInInfo, int id) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", SecurityInfoManager.READ, null)) {
+            throw new RuntimeException("missing required security object (_con)");
+        }
+        return professionalSpecialistDao.find(id);
+    }
 
-	public List<ProfessionalSpecialist> searchProfessionalSpecialist(LoggedInInfo loggedInInfo, String keyword) {
-		if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", SecurityInfoManager.READ, null)) {
-			throw new RuntimeException("missing required security object (_con)");
-		}
-		return professionalSpecialistDao.search(keyword);
-	}
+    public List<ProfessionalSpecialist> searchProfessionalSpecialist(LoggedInInfo loggedInInfo, String keyword) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", SecurityInfoManager.READ, null)) {
+            throw new RuntimeException("missing required security object (_con)");
+        }
+        return professionalSpecialistDao.search(keyword);
+    }
 }

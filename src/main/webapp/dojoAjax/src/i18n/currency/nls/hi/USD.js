@@ -8,4 +8,4 @@
 		http://dojotoolkit.org/community/licensing.shtml
 */
 
-({"displayName":"अमरीकी डालर","symbol":"$"})
+({"displayName": "अमरीकी डालर", "symbol": "$"})

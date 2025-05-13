@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -6,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
@@ -42,8 +43,8 @@ public class CtlDocumentDaoImpl extends AbstractDaoImpl<CtlDocument> implements 
 
     @Override
     public CtlDocument getCtrlDocument(Integer docId) {
-        Query query = entityManager.createQuery("select x from CtlDocument x where x.id.documentNo=?");
-        query.setParameter(0, docId);
+        Query query = entityManager.createQuery("select x from CtlDocument x where x.id.documentNo=?1");
+        query.setParameter(1, docId);
 
         return (getSingleResultOrNull(query));
     }
@@ -51,9 +52,9 @@ public class CtlDocumentDaoImpl extends AbstractDaoImpl<CtlDocument> implements 
     @Override
     public List<CtlDocument> findByDocumentNoAndModule(Integer ctlDocNo, String module) {
         Query query = entityManager
-                .createQuery("select x from CtlDocument x where x.id.documentNo=? and x.id.module = ?");
-        query.setParameter(0, ctlDocNo);
-        query.setParameter(1, module);
+                .createQuery("select x from CtlDocument x where x.id.documentNo=?1 and x.id.module = ?2");
+        query.setParameter(1, ctlDocNo);
+        query.setParameter(2, module);
 
         @SuppressWarnings("unchecked")
         List<CtlDocument> cList = query.getResultList();

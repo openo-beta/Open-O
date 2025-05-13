@@ -24,134 +24,145 @@
 
 --%>
 
-<%@page import="org.oscarehr.eyeform.model.EyeformSpecsHistory"%>
+<%@page import="org.oscarehr.eyeform.model.EyeformSpecsHistory" %>
 
 
-<%@ include file="/taglibs.jsp"%>
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ include file="/taglibs.jsp" %>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-      String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-      boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_eChart" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../securityError.jsp?type=_eChart");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../securityError.jsp?type=_eChart");%>
 </security:oscarSec>
 <%
-if(!authed) {
-	return;
-}
+    if (!authed) {
+        return;
+    }
 %>
 
 
 <html>
 <head>
-	<title></title>
-	<link rel="stylesheet" type="text/css" href='<html:rewrite page="/jsCalendar/skins/aqua/theme.css" />' />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href='${request.contextPath}/jsCalendar/skins/aqua/theme.css'/>
 
-		<link rel="stylesheet" type="text/css" media="all" href="<%=request.getContextPath()%>/share/calendar/calendar.css" title="win2k-cold-1" />
-		<script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/calendar.js"></script>
-		<script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
-		<script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/calendar-setup.js"></script>
-		
+    <link rel="stylesheet" type="text/css" media="all" href="<%=request.getContextPath()%>/share/calendar/calendar.css"
+          title="win2k-cold-1"/>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/calendar.js"></script>
+    <script type="text/javascript"
+            src="<%=request.getContextPath()%>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/calendar-setup.js"></script>
+
 </head>
 <body>
 Specs History
-<br />
+<br/>
 
-<html:form action="/eyeform/SpecsHistory.do">
- <table border="0" cellspacing="5" width="100%">
-  	   <tbody><tr>
-	   <td>Date:</td>
+<form action="${pageContext.request.contextPath}/eyeform/SpecsHistory.do" method="post">
+    <table border="0" cellspacing="5" width="100%">
+        <tbody>
+        <tr>
+            <td>Date:</td>
 
-	   <td>
-	   <html:text property="specs.dateStr" size="10" styleId="pdate"/> <img src="<%=request.getContextPath()%>/images/cal.gif" id="pdate_cal">	  
-	   </td>
-	   <script type="text/javascript">
-				Calendar.setup({ inputField : "pdate", ifFormat : "%Y-%m-%d", showsTime :false, button : "pdate_cal", singleClick : true, step : 1 });
-	   </script>	
-	   </tr>
-	   
-	   <tr>
-	   <td>Doctor Name:</td>
-	   <td>
-	   <html:text property="specs.doctor"/>
-	   
-	   </td>
+            <td>
+                <input type="text" name="specs.dateStr" size="10" id="pdate"/> <img
+                    src="<%=request.getContextPath()%>/images/cal.gif" id="pdate_cal">
+            </td>
+            <script type="text/javascript">
+                Calendar.setup({
+                    inputField: "pdate",
+                    ifFormat: "%Y-%m-%d",
+                    showsTime: false,
+                    button: "pdate_cal",
+                    singleClick: true,
+                    step: 1
+                });
+            </script>
+        </tr>
 
-	   </tr>
-	   
-	   <tr>
-	   <td>Specs Type:</td>
-	   <td>
-	   <html:select property="specs.type">
-	   	<html:option value="distance">distance</html:option>
-	   	<html:option value="bifocal">bifocal</html:option>
-	   	<html:option value="invisible bifocal">invisible bifocal</html:option>
-	    <html:option value="reading">reading</html:option>
-	   </html:select>
-	   </td>
-	   </tr>
+        <tr>
+            <td>Doctor Name:</td>
+            <td>
+                <input type="text" name="specs.doctor" id="specs.doctor" />
 
-	   <tr>
-	   <td colspan="2" rowspan="3">
-	   <table border="1" width="80%">
-	   <tbody><tr>
-	   <td width="10%"></td>
+            </td>
 
-	   <td width="18%">Sph</td>
-	   <td width="18%">Cyl</td>
-	   <td width="18%">Axis</td>
-	   <td width="18%">Add</td>
-	   <td width="18%">Prism</td>
-	   </tr>
+        </tr>
 
-	   <tr>
-	   <td width="10%">OD</td>
-	   <td width="18%"><html:text property="specs.odSph" size="8"   /></td>
-	   <td width="18%"><html:text property="specs.odCyl" size="8"   /></td>
-	   <td width="18%"><html:text property="specs.odAxis" size="8"   /></td>
-	   <td width="18%"><html:text property="specs.odAdd" size="8"   /></td>
-	   <td width="18%"><html:text property="specs.odPrism" size="8"   /></td>
-	   </tr>
+        <tr>
+            <td>Specs Type:</td>
+            <td>
+                <select name="type">
+                    <option value="distance">distance</option>
+                    <option value="bifocal">bifocal</option>
+                    <option value="invisible bifocal">invisible bifocal</option>
+                    <option value="reading">reading</option>
+                </select>
+            </td>
+        </tr>
 
-	   <tr>
-	   <td width="10%">OS</td>
-	   <td width="18%"><html:text property="specs.osSph" size="8"   /></td>
-	   <td width="18%"><html:text property="specs.osCyl" size="8"   /></td>
-	   <td width="18%"><html:text property="specs.osAxis" size="8"   /></td>
-	   <td width="18%"><html:text property="specs.osAdd" size="8"   /></td>
-	   <td width="18%"><html:text property="specs.osPrism" size="8"   /></td>
-	   </tr>
-	   
-	   </tbody></table>
-	   </td>
-	   </tr>
-	   
-	   
-  </tbody></table>
-  <table width="80%">
-  <tbody><tr>
-	   <td colspan="2" align="right">
-	   
-	   <html:submit value="save" onclick="this.form.method.value='save'; return validate(this);" />
-	   
-	   
-	   </td>
+        <tr>
+            <td colspan="2" rowspan="3">
+                <table border="1" width="80%">
+                    <tbody>
+                    <tr>
+                        <td width="10%"></td>
 
-	   </tr>
-  </tbody></table>
+                        <td width="18%">Sph</td>
+                        <td width="18%">Cyl</td>
+                        <td width="18%">Axis</td>
+                        <td width="18%">Add</td>
+                        <td width="18%">Prism</td>
+                    </tr>
+
+                    <tr>
+                        <td width="10%">OD</td>
+                        <td width="18%"><input type="checkbox" name="specs.odSph" size="8" /></td>
+                        <td width="18%"><input type="checkbox" name="specs.odCyl" size="8" /></td>
+                        <td width="18%"><input type="checkbox" name="specs.odAxis" size="8" /></td>
+                        <td width="18%"><input type="checkbox" name="specs.odAdd" size="8" /></td>
+                        <td width="18%"><input type="checkbox" name="specs.odPrism" size="8" /></td>
+                    </tr>
+
+                    <tr>
+                        <td width="10%">OS</td>
+                        <td width="18%"><input type="checkbox" name="specs.osSph" size="8" /></td>
+                        <td width="18%"><input type="checkbox" name="specs.osCyl" size="8" /></td>
+                        <td width="18%"><input type="checkbox" name="specs.osAxis" size="8" /></td>
+                        <td width="18%"><input type="checkbox" name="specs.osAdd" size="8" /></td>
+                        <td width="18%"><input type="checkbox" name="specs.osPrism" size="8" /></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </td>
+        </tr>
 
 
-		<input type="hidden" name="method" value="save"/>
-		
-		<html:hidden property="specs.demographicNo"/>
-		<html:hidden property="specs.appointmentNo"/>
-		<html:hidden property="specs.id"/>
-		
-	
+        </tbody>
+    </table>
+    <table width="80%">
+        <tbody>
+        <tr>
+            <td colspan="2" align="right">
+                <input type="submit" name="submit" value="save" onclick="this.form.method.value='save'; return validate(this);"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-</html:form>
+
+    <input type="hidden" name="method" value="save"/>
+
+    <input type="hidden" name="demographicNo" id="demographicNo"/>
+    <input type="hidden" name="appointmentNo" id="appointmentNo"/>
+    <input type="hidden" name="id" id="id"/>
+
+
+</form>
 
 </body>
 </html>

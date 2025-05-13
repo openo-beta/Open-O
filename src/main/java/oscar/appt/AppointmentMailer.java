@@ -1,20 +1,21 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -42,42 +43,42 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.utility.DateUtils;
 import org.oscarehr.common.dao.ClinicDAO;
 import org.oscarehr.common.dao.OscarAppointmentDao;
-import  org.oscarehr.PMmodule.dao.ProviderDao;
+import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.model.Appointment;
 import org.oscarehr.common.model.Clinic;
 import org.oscarehr.common.model.Demographic;
-import  org.oscarehr.common.model.Provider;
+import org.oscarehr.common.model.Provider;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 
 import oscar.service.MessageMailer;
+
 /**
- *
  * @author mweston4
  */
 
 /*
  * New emailing feature (EmailManager) is in production, utilizing JavaMailSender.
  * This method will be updated to use EmailManager for sending emails in the future.
- * 
+ *
  * TODO: Update the deprecated code to use the EmailManager once the new emailing feature is fully implemented.
  */
 @Deprecated
-public class AppointmentMailer implements MessageMailer{
-    
-    private static final Logger logger=MiscUtils.getLogger();
-    
+public class AppointmentMailer implements MessageMailer {
+
+    private static final Logger logger = MiscUtils.getLogger();
+
     private MailSender mailSender;
     private SimpleMailMessage message;
     private StringBuilder msgTextTemplate;
     private Integer apptNo;
     private Demographic demographic;
-    
-    OscarAppointmentDao dao=(OscarAppointmentDao)SpringUtils.getBean(OscarAppointmentDao.class);
 
-    
+    OscarAppointmentDao dao = (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class);
+
+
     public AppointmentMailer(Integer apptNo, Demographic demographic) {
         this.mailSender = (MailSender) SpringUtils.getBean(MailSender.class);
         this.message = null;
@@ -85,60 +86,50 @@ public class AppointmentMailer implements MessageMailer{
         this.apptNo = apptNo;
         this.demographic = demographic;
     }
-    
+
     public void setMailSender(MailSender mailSender) {
         this.mailSender = mailSender;
     }
-    
+
     public void setApptNo(Integer apptNo) {
         this.apptNo = apptNo;
     }
-    
+
     public void setDemographic(Demographic demographic) {
         this.demographic = demographic;
     }
-    
-    private void setMessageHeader()
-    {
-        if (this.message == null)
-        {
+
+    private void setMessageHeader() {
+        if (this.message == null) {
             Properties op = oscar.OscarProperties.getInstance();
 
             String msgTemplatePath = "";
             Appointment appt = dao.find(this.apptNo);
 
-            if(appt != null)
-            {
+            if (appt != null) {
                 ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
 
                 Provider apptProvider = providerDao.getProvider(appt.getProviderNo());
 
-                if (apptProvider != null)
-                {
+                if (apptProvider != null) {
                     String providerTeam = apptProvider.getTeam();
 
-                    if (providerTeam != null && !providerTeam.isEmpty())
-                    {
+                    if (providerTeam != null && !providerTeam.isEmpty()) {
                         msgTemplatePath = op.getProperty("appt_reminder_template." + providerTeam.toLowerCase());
                     }
                 }
             }
 
-            if (msgTemplatePath == null || msgTemplatePath.isEmpty())
-            {
-               msgTemplatePath = op.getProperty("appt_reminder_template");
+            if (msgTemplatePath == null || msgTemplatePath.isEmpty()) {
+                msgTemplatePath = op.getProperty("appt_reminder_template");
             }
 
-            if (msgTemplatePath != null)
-            {
+            if (msgTemplatePath != null) {
                 String msgMime = op.getProperty("appt_reminder_mime");
 
-                if ((msgMime == null) || msgMime.equalsIgnoreCase("no"))
-                {
+                if ((msgMime == null) || msgMime.equalsIgnoreCase("no")) {
                     this.message = new SimpleMailMessage();
-                }
-                else
-                {
+                } else {
                     //TODO
                 }
 
@@ -146,7 +137,7 @@ public class AppointmentMailer implements MessageMailer{
                 InputStream fstream = null;
                 DataInputStream instream = null;
 
-                try {   
+                try {
                     InternetAddress emailAddress = new InternetAddress(demographic.getEmail(), true);
                     this.message.setTo(emailAddress.toString());
 
@@ -156,102 +147,93 @@ public class AppointmentMailer implements MessageMailer{
 
                     BufferedReader bufreader = new BufferedReader(new InputStreamReader(instream));
                     String strLine;
-                
+
                     //read in message template and header information
-                    int lineIndex = 0;                 
-                    while ((strLine = bufreader.readLine()) != null)  {
+                    int lineIndex = 0;
+                    while ((strLine = bufreader.readLine()) != null) {
                         if (lineIndex < 2) {
                             String[] msgConfig = strLine.split(":");
-                            if (msgConfig[0].equalsIgnoreCase("From")){
+                            if (msgConfig[0].equalsIgnoreCase("From")) {
                                 this.message.setFrom(msgConfig[1]);
-                            }
-                            else if (msgConfig[0].equalsIgnoreCase("Subject")) {
+                            } else if (msgConfig[0].equalsIgnoreCase("Subject")) {
                                 this.message.setSubject(msgConfig[1]);
                             }
-                        }
-                        else {
+                        } else {
                             this.msgTextTemplate.append(strLine).append("\n");
                         }
                         lineIndex++;
                     }
-                }
-                catch(FileNotFoundException fnf) {
-                  logger.error("No Appointment Reminder Template found", fnf);
-                }
-                catch(IOException io) {
-                  logger.error("IOException occurred", io);
-                }
-                catch(AddressException addr) {
+                } catch (FileNotFoundException fnf) {
+                    logger.error("No Appointment Reminder Template found", fnf);
+                } catch (IOException io) {
+                    logger.error("IOException occurred", io);
+                } catch (AddressException addr) {
                     logger.error("To Address not valid:" + demographic.getEmail());
-                }
-
-                finally {
+                } finally {
                     try {
                         if (instream != null) {
                             instream.close();
                         }
-                        
-                        if ( fstream != null) {
+
+                        if (fstream != null) {
                             fstream.close();
                         }
-                    }
-                    catch(IOException io) {
+                    } catch (IOException io) {
                         logger.error("IOException occurred", io);
                     }
                 }
-            }  
+            }
         }
     }
-    
+
     private void fillMessageText() {
-        
+
         if ((this.message != null) && (this.msgTextTemplate.length() > 0)) {
-                 
+
             Date today = new Date();
 
             Appointment a = dao.find(this.apptNo);
-           
-            ClinicDAO clinicDao = (ClinicDAO)SpringUtils.getBean(ClinicDAO.class);
+
+            ClinicDAO clinicDao = (ClinicDAO) SpringUtils.getBean(ClinicDAO.class);
             Clinic clinic = clinicDao.getClinic();
-            
+
             if (a == null) {
-              logger.error("Appointment ("+this.apptNo+") not found for demographic no (" + this.demographic.getDemographicNo() +") on Date: " + today);
+                logger.error("Appointment (" + this.apptNo + ") not found for demographic no (" + this.demographic.getDemographicNo() + ") on Date: " + today);
             } else {
-               
+
                 String msgText = msgTextTemplate.toString();
                 msgText = msgText.replaceAll("<today>", DateUtils.getDate());
                 msgText = msgText.replaceAll("<appointment_date>", a.getAppointmentDate().toString());
                 msgText = msgText.replaceAll("<appointment_time>", a.getStartTime().toString());
                 msgText = msgText.replaceAll("<first_name>", this.demographic.getFirstName());
                 msgText = msgText.replaceAll("<last_name>", this.demographic.getLastName());
-                
-                msgText = msgText.replaceAll("<clinic_name>", clinic.getClinicName());                
+
+                msgText = msgText.replaceAll("<clinic_name>", clinic.getClinicName());
                 msgText = msgText.replaceAll("<clinic_addressLine>", clinic.getClinicAddress());
                 msgText = msgText.replaceAll("<clinic_phone>", clinic.getClinicPhone());
-                 
+
                 msgText = msgText.replaceAll("<appt_reason>", a.getReason());
-                
+
                 this.message.setText(msgText);
             }
-        }
-        else {
+        } else {
             logger.error("Cannot populate message text - no message or message template available");
         }
     }
-    
+
     public void prepareMessage() {
         setMessageHeader();
         fillMessageText();
     }
-    
+
     @Override
     public void send() throws Exception {
         throw new UnsupportedOperationException("This method is no longer supported.");
         // try {
         //     boolean doSend = false;
-            
+
         //     if ((mailSender != null) && (this.message != null)) {
-                   
+
         //         if ((this.message.getText() != null) && (this.message.getFrom() != null) && (this.message.getSubject() != null)) {
         //             String[] toAddrs = this.message.getTo();
         //             if (toAddrs.length > 0) {
@@ -267,10 +249,10 @@ public class AppointmentMailer implements MessageMailer{
         //             }        
         //         }
         //     }
-            
+
         //     if (doSend) {
         //         mailSender.send(this.message);
-                
+
         //         //Update appt history accordingly      
         //         Appointment appt = dao.find(this.apptNo);
         //         if(appt != null) {

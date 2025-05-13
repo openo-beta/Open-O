@@ -24,7 +24,7 @@
 
 --%>
 
-<%@ page import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, java.net.*,oscar.MyDateFormat"%>
+<%@ page import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, java.net.*,oscar.MyDateFormat" %>
 
 <%@page import="org.oscarehr.common.model.CtlBillingService" %>
 <%@page import="org.oscarehr.common.dao.CtlBillingServiceDao" %>
@@ -34,21 +34,21 @@
 
 
 <%
-	CtlBillingServiceDao billingServiceDao = SpringUtils.getBean(CtlBillingServiceDao.class);
-	CtlDiagCodeDao diagCodeDao = SpringUtils.getBean(CtlDiagCodeDao.class);
+    CtlBillingServiceDao billingServiceDao = SpringUtils.getBean(CtlBillingServiceDao.class);
+    CtlDiagCodeDao diagCodeDao = SpringUtils.getBean(CtlDiagCodeDao.class);
 
-	String typeid = request.getParameter("servicetype");
-	
-	for(CtlBillingService b : billingServiceDao.findByServiceType(typeid)) {
-		billingServiceDao.remove(b.getId());
-	}
-	
-	for(CtlDiagCode d: diagCodeDao.findByServiceType(typeid)) {
-		diagCodeDao.remove(d.getId());
-	}
+    String typeid = request.getParameter("servicetype");
+
+    for (CtlBillingService b : billingServiceDao.findByServiceType(typeid)) {
+        billingServiceDao.remove(b.getId());
+    }
+
+    for (CtlDiagCode d : diagCodeDao.findByServiceType(typeid)) {
+        diagCodeDao.remove(d.getId());
+    }
 %>
 <script LANGUAGE="JavaScript">
-      self.close();
- 	self.opener.refresh();
+    self.close();
+    self.opener.refresh();
 </script>
 

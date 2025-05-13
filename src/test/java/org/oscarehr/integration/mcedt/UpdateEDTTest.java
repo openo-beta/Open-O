@@ -38,7 +38,7 @@ public class UpdateEDTTest extends EDTBaseTest {
 
         // Upload file(s) and get resource id(s)
         List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
+        uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         ResourceResult uploadResourceResult = null;
@@ -71,7 +71,7 @@ public class UpdateEDTTest extends EDTBaseTest {
 
         // Upload file(s) and get resource id(s)
         List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_OBEC_FILE, ResourceType.UPLOAD_OBEC_INBOUND_FILE));
+        uploads.add(createUploadData(FilePath.MCEDT_OBEC_FILE, ResourceType.UPLOAD_OBEC_INBOUND_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         ResourceResult uploadResourceResult = null;
@@ -104,7 +104,7 @@ public class UpdateEDTTest extends EDTBaseTest {
 
         // Upload file(s) and get resource id(s)
         List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_STALE_DATED_CLAIMS_FILE, ResourceType.UPLOAD_STALE_DATED_CLAIM_FILE));
+        uploads.add(createUploadData(FilePath.MCEDT_STALE_DATED_CLAIMS_FILE, ResourceType.UPLOAD_STALE_DATED_CLAIM_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         ResourceResult uploadResourceResult = null;
@@ -169,7 +169,7 @@ public class UpdateEDTTest extends EDTBaseTest {
 
     /*
      * OSCAR dependency seems to not allow 6 files to be sent at all.
-     * 
+     *
      * Note: Due to the current implementation of the dependency, we are not catching the exact error 'Rejected By Policy'.
      * This has been confirmed with the MOH MCEDT Conformance Testing team, who stated that "catching exceptions isn’t possible is fine here".
      */
@@ -206,8 +206,12 @@ public class UpdateEDTTest extends EDTBaseTest {
             if (updateRequestList.size() > 5) { return; }
             edtDelegate.update(updateRequestList);
         } catch (Exception e) {
-            if (e instanceof Faultexception) { printFaultException((Faultexception) e); }
-            if (e instanceof SOAPFaultException) { logger.error(e); }
+            if (e instanceof Faultexception) {
+                printFaultException((Faultexception) e);
+            }
+            if (e instanceof SOAPFaultException) {
+                logger.error(e);
+            }
             return;
         }
     }
@@ -218,7 +222,7 @@ public class UpdateEDTTest extends EDTBaseTest {
 
         // Upload file(s) and get resource id(s)
         List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
+        uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         ResourceResult uploadResourceResult = null;
@@ -256,7 +260,7 @@ public class UpdateEDTTest extends EDTBaseTest {
         Detail detailList = null;
         try {
             detailList = edtDelegate.list(ResourceType.UPLOAD_OBEC_INBOUND_FILE.getType(), ResourceStatus.SUBMITTED, BigInteger.valueOf(1));
-        } catch(Faultexception e) {
+        } catch (Faultexception e) {
             printFaultException(e);
             fail();
         }
@@ -264,7 +268,7 @@ public class UpdateEDTTest extends EDTBaseTest {
         assertNotNull(detailList);
         assertTrue(detailList.getData().size() > 0);
         resourceIds.add(detailList.getData().get(0).getResourceID());
- 
+
         // Update files using resourceIds
         ResourceResult resourceResult = null;
         List<UpdateRequest> updateRequests = createUpdateRequestList(FilePath.UPDATED_MCEDT_OBEC_FILE, resourceIds);
@@ -306,7 +310,7 @@ public class UpdateEDTTest extends EDTBaseTest {
 
     /*
      * $$: The Update method expects a BigInteger for the resourceID parameter, so I am getting an error: NumberFormat for input string: "$$".
-     * 
+     *
      * Note: Due to the current implementation of the dependency, we are not catching the exact error 'Rejected By Policy'.
      * This has been confirmed with the MOH MCEDT Conformance Testing team, who stated that "catching exceptions isn’t possible is fine here".
      */
@@ -346,7 +350,7 @@ public class UpdateEDTTest extends EDTBaseTest {
 
         // Upload file(s) and get resource id(s)
         List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
+        uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         ResourceResult uploadResourceResult = null;
@@ -379,7 +383,7 @@ public class UpdateEDTTest extends EDTBaseTest {
 
         // Upload file(s) and get resource id(s)
         List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
+        uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         ResourceResult uploadResourceResult = null;
@@ -411,7 +415,7 @@ public class UpdateEDTTest extends EDTBaseTest {
 
         // Upload file(s) and get resource id(s)
         List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
+        uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         ResourceResult uploadResourceResult = null;
@@ -443,7 +447,7 @@ public class UpdateEDTTest extends EDTBaseTest {
 
         // Upload file(s) and get resource id(s)
         List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
+        uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         ResourceResult uploadResourceResult = null;
@@ -475,7 +479,7 @@ public class UpdateEDTTest extends EDTBaseTest {
 
         // Upload file(s) and get resource id(s)
         List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
+        uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         ResourceResult uploadResourceResult = null;
@@ -507,7 +511,7 @@ public class UpdateEDTTest extends EDTBaseTest {
 
         // Upload file(s) and get resource id(s)
         List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
+        uploads.add(createUploadData(FilePath.MCEDT_CLAIMS_FILE, ResourceType.UPLOAD_CLAIM_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         ResourceResult uploadResourceResult = null;
@@ -539,7 +543,7 @@ public class UpdateEDTTest extends EDTBaseTest {
 
         // Upload file(s) and get resource id(s)
         List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_OBEC_FILE, ResourceType.UPLOAD_OBEC_INBOUND_FILE));
+        uploads.add(createUploadData(FilePath.MCEDT_OBEC_FILE, ResourceType.UPLOAD_OBEC_INBOUND_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         ResourceResult uploadResourceResult = null;
@@ -571,7 +575,7 @@ public class UpdateEDTTest extends EDTBaseTest {
 
         // Upload file(s) and get resource id(s)
         List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_OBEC_FILE, ResourceType.UPLOAD_OBEC_INBOUND_FILE));
+        uploads.add(createUploadData(FilePath.MCEDT_OBEC_FILE, ResourceType.UPLOAD_OBEC_INBOUND_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         ResourceResult uploadResourceResult = null;
@@ -603,7 +607,7 @@ public class UpdateEDTTest extends EDTBaseTest {
 
         // Upload file(s) and get resource id(s)
         List<UploadData> uploads = new ArrayList<UploadData>();
-		uploads.add(createUploadData(FilePath.MCEDT_OBEC_FILE, ResourceType.UPLOAD_OBEC_INBOUND_FILE));
+        uploads.add(createUploadData(FilePath.MCEDT_OBEC_FILE, ResourceType.UPLOAD_OBEC_INBOUND_FILE));
         edtDelegate = DelegateFactory.getEDTDelegateInstance(ActionUtils.getServiceId(uploads.get(0).getDescription()));
 
         ResourceResult uploadResourceResult = null;

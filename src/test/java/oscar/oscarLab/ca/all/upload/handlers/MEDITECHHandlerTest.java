@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -39,6 +39,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
@@ -48,90 +49,90 @@ import org.junit.runners.Parameterized;
 @RunWith(Parameterized.class)
 public class MEDITECHHandlerTest extends MEDITECHHandler {
 
-	private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
-	private static String hl7Body;
-	private static ZipFile zipFile;
-	private static int TEST_COUNT = 0;
-	
-	@Parameterized.Parameters
-	public static Collection<String[]> hl7BodyArray() {
-		
-		logger.info( "Creating MEDITECHHandlerTest test parameters" );
-	
-		URL url = Thread.currentThread().getContextClassLoader().getResource("MEDITECH_test_data.zip");
-		
-		try {
-			zipFile = new ZipFile(url.getPath());
+    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static String hl7Body;
+    private static ZipFile zipFile;
+    private static int TEST_COUNT = 0;
+
+    @Parameterized.Parameters
+    public static Collection<String[]> hl7BodyArray() {
+
+        logger.info("Creating MEDITECHHandlerTest test parameters");
+
+        URL url = Thread.currentThread().getContextClassLoader().getResource("MEDITECH_test_data.zip");
+
+        try {
+            zipFile = new ZipFile(url.getPath());
         } catch (IOException e) {
-        	 logger.error("Test Failed ", e);
+            logger.error("Test Failed ", e);
         }
-		
-		Enumeration<? extends ZipEntry> enumeration = zipFile.entries();		
-		StringWriter writer = null;
-		InputStream is = null;
-		List<String[]> hl7BodyArray = new ArrayList<String[]>();
-		String hl7Body = "";
 
-		while( enumeration.hasMoreElements() ) {
-			
-			ZipEntry zipEntry = enumeration.nextElement();
-						
-			if(zipEntry.getName().endsWith(".txt")) {
-				
-				logger.debug( zipEntry.getName() );
-				
-				writer = new StringWriter();
-				
-				try {					
-					is = zipFile.getInputStream( zipEntry );					
-					IOUtils.copy(is, writer, StandardCharsets.UTF_8);														 
-	            } catch (IOException e) {
+        Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
+        StringWriter writer = null;
+        InputStream is = null;
+        List<String[]> hl7BodyArray = new ArrayList<String[]>();
+        String hl7Body = "";
 
-	            	if( zipFile != null ) {
-	            		try {
-	                        zipFile.close();
-	                        zipFile = null;
+        while (enumeration.hasMoreElements()) {
+
+            ZipEntry zipEntry = enumeration.nextElement();
+
+            if (zipEntry.getName().endsWith(".txt")) {
+
+                logger.debug(zipEntry.getName());
+
+                writer = new StringWriter();
+
+                try {
+                    is = zipFile.getInputStream(zipEntry);
+                    IOUtils.copy(is, writer, StandardCharsets.UTF_8);
+                } catch (IOException e) {
+
+                    if (zipFile != null) {
+                        try {
+                            zipFile.close();
+                            zipFile = null;
                         } catch (IOException e1) {
-                        	 logger.error("Test Failed ", e);
-                        }	            		
-	            	}
-	            	 logger.error("Test Failed ", e);
-	            }finally {
-	            	if( is != null ) {
-	            		try {
-	    	                is.close();
-	    	                is = null;
-	                    } catch (IOException e) {
-	                    	 logger.error("Test Failed ", e);
-	                    }
-	            	}
-	            	
-	            	
-	            }
-				
-				hl7Body = writer.toString();
-				hl7BodyArray.add(new String[]{hl7Body});
-			}
-		}		
-		return hl7BodyArray;
-	}
-	
-	public MEDITECHHandlerTest(String hl7Body) {
-		MEDITECHHandlerTest.hl7Body = hl7Body;
-	}
+                            logger.error("Test Failed ", e);
+                        }
+                    }
+                    logger.error("Test Failed ", e);
+                } finally {
+                    if (is != null) {
+                        try {
+                            is.close();
+                            is = null;
+                        } catch (IOException e) {
+                            logger.error("Test Failed ", e);
+                        }
+                    }
 
-	@Test
-	public void testParse() {
 
-		TEST_COUNT += 1;
+                }
 
-		logger.info("#------------>>  Testing MEDITECHHandler Uploader for file: (" + TEST_COUNT + ")");
+                hl7Body = writer.toString();
+                hl7BodyArray.add(new String[]{hl7Body});
+            }
+        }
+        return hl7BodyArray;
+    }
 
-	    try {
-	        assertNotNull(parse( new ByteArrayInputStream( hl7Body.getBytes(StandardCharsets.UTF_8) ) ) );
+    public MEDITECHHandlerTest(String hl7Body) {
+        MEDITECHHandlerTest.hl7Body = hl7Body;
+    }
+
+    @Test
+    public void testParse() {
+
+        TEST_COUNT += 1;
+
+        logger.info("#------------>>  Testing MEDITECHHandler Uploader for file: (" + TEST_COUNT + ")");
+
+        try {
+            assertNotNull(parse(new ByteArrayInputStream(hl7Body.getBytes(StandardCharsets.UTF_8))));
         } catch (Exception e) {
-        	 fail("Test Failed " + e.getCause());
-        } 
-	}
+            fail("Test Failed " + e.getCause());
+        }
+    }
 
 }

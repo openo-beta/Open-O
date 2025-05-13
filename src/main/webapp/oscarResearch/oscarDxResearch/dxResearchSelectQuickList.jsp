@@ -25,79 +25,73 @@
 --%>
 
 
-<%@ page import="java.util.*,oscar.oscarReport.pageUtil.*"%>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
+<%@ page import="java.util.*,oscar.oscarReport.pageUtil.*" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link rel="stylesheet" type="text/css" href="dxResearch.css">
-<html:html lang="en">
-<head>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-<title><bean:message
-	key="oscarResearch.oscarDxResearch.dxCustomization.selectQuickList" />
-</title>
+<html>
+    <head>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxCustomization.selectQuickList"/>
+        </title>
 
-<script type="text/javascript">
+        <script type="text/javascript">
 
-function setfocus(){
-    window.focus();
-    window.resizeTo(450,220);
-}
-</script>
+            function setfocus() {
+                window.focus();
+                window.resizeTo(450, 220);
+            }
+        </script>
 
-</head>
+    </head>
 
-<body class="BodyStyle" vlink="#0000FF" rightmargin="0" leftmargin="0"
-	topmargin="0" marginwidth="0" marginheight="0" onload="setfocus()">
-<!--  -->
-<html:form
-	action="/oscarResearch/oscarDxResearch/dxResearchLoadQuickListItems.do">
-	<table width="100%" border="0" cellspacing="0" cellpadding="0">
-		<tr>
-			<td>
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<tr bgcolor="#000000">
-					<td class="subject" colspan="2">&nbsp;&nbsp;&nbsp;<bean:message
-						key="oscarResearch.oscarDxResearch.dxResearch.msgDxResearch" /></td>
-				</tr>
-			</table>
-			</td>
-		</tr>
-		<tr>
-			<td>
-			<table width="100%" border="0" cellpadding="0" cellspacing="1"
-				bgcolor="#EEEEFF" height="125">
-				<tr>
-					<td align="left"><bean:message
-						key="oscarResearch.oscarDxResearch.dxCustomization.pleaseSelectAQuickList" />
-					<html:select property="quickListName" style="width:200px">
-						<logic:iterate id="quickLists" name="allQuickLists"
-							property="dxQuickListBeanVector">
-							<option
-								value="<bean:write name="quickLists" property="quickListName" />"
-								<bean:write name="quickLists" property="lastUsed" />><bean:write
-								name="quickLists" property="quickListName" /></option>
-						</logic:iterate>
-					</html:select></td>
-				</tr>
-				<tr>
-					<td>
-					<table>
-						<tr>
-							<input type="hidden" name="forward" value="error" />
-							<td><input type="button" class="mbttn" name="Button"
-								value="<bean:message key="global.btnClose"/>"
-								onClick="window.close()"></td>
-							<td><input type="submit" class="mbttn" name="Button"
-								value="Continue" /></td>
-						</tr>
-					</table>
-					</td>
-				</tr>
-			</table>
-			</td>
-		</tr>
-	</table>
-</html:form>
-</body>
-</html:html>
+    <body class="BodyStyle" vlink="#0000FF" rightmargin="0" leftmargin="0"
+          topmargin="0" marginwidth="0" marginheight="0" onload="setfocus()">
+    <!--  -->
+    <form action="${pageContext.request.contextPath}/oscarResearch/oscarDxResearch/dxResearchLoadQuickListItems.do" method="post">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr bgcolor="#000000">
+                            <td class="subject" colspan="2">&nbsp;&nbsp;&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxResearch.msgDxResearch"/></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table width="100%" border="0" cellpadding="0" cellspacing="1"
+                           bgcolor="#EEEEFF" height="125">
+                        <tr>
+                            <td align="left"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxCustomization.pleaseSelectAQuickList"/>
+                                <select name="quickListName" style="width:200px">
+                                    <c:forEach var="quickLists" items="${allQuickLists.dxQuickListBeanVector}">
+                                        <option value="${quickLists.quickListName}" ${quickLists.lastUsed == 'true' ? 'selected' : ''}>
+                                            <c:out value="${quickLists.quickListName}"/>
+                                        </option>
+                                    </c:forEach>
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <input type="hidden" name="forward" value="error"/>
+                                        <td><input type="button" class="mbttn" name="Button"
+                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>"
+                                                   onClick="window.close()"></td>
+                                        <td><input type="submit" class="mbttn" name="Button"
+                                                   value="Continue"/></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </form>
+    </body>
+</html>

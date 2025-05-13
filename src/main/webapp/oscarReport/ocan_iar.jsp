@@ -23,194 +23,205 @@
 
 --%>
 
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-      String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-      boolean authed=true;
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+    boolean authed = true;
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_report,_admin.reporting" rights="r" reverse="<%=true%>">
-	<%authed=false; %>
-	<%response.sendRedirect("../securityError.jsp?type=_report&type=_admin.reporting");%>
+    <%authed = false; %>
+    <%response.sendRedirect("../securityError.jsp?type=_report&type=_admin.reporting");%>
 </security:oscarSec>
 <%
-if(!authed) {
-	return;
-}
+    if (!authed) {
+        return;
+    }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo"%>
-<%@page import="java.util.*"%>
-<%@page import="org.caisi.dao.*"%>
-<%@page import="org.caisi.model.*"%>
-<%@page import="org.oscarehr.common.dao.SecRoleDao"%>
-<%@page import="org.oscarehr.common.model.*"%>
-<%@page import="org.oscarehr.PMmodule.model.*"%>
-<%@page import="org.oscarehr.PMmodule.dao.*"%>
-<%@page import="org.oscarehr.util.SpringUtils"%>
-<%@page import="java.text.DateFormatSymbols"%>
-<%@page import="org.apache.commons.lang.StringEscapeUtils"%>
-<%@page import="org.oscarehr.web.*"%>
+<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="java.util.*" %>
+<%@page import="org.caisi.dao.*" %>
+<%@page import="org.caisi.model.*" %>
+<%@page import="org.oscarehr.common.dao.SecRoleDao" %>
+<%@page import="org.oscarehr.common.model.*" %>
+<%@page import="org.oscarehr.PMmodule.model.*" %>
+<%@page import="org.oscarehr.PMmodule.dao.*" %>
+<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="java.text.DateFormatSymbols" %>
+<%@page import="org.apache.commons.lang.StringEscapeUtils" %>
+<%@page import="org.oscarehr.web.*" %>
 
-<%@ include file="/taglibs.jsp"%>
+<%@ include file="/taglibs.jsp" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"
-	scope="request" />
+       scope="request"/>
 
 
 <%
-	LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-	Integer facilityId=loggedInInfo.getCurrentFacility().getId();
+    LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+    Integer facilityId = loggedInInfo.getCurrentFacility().getId();
 
-	List<OcanSubmissionLog> submissions = OcanReportUIBean.getAllOcanSubmissions(facilityId);
-	List<OcanStaffForm> unsentForms = OcanReportUIBean.getAllUnsubmittedOcanForms(facilityId);
-	
-	java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm");
-	java.text.SimpleDateFormat formatter2 = new java.text.SimpleDateFormat("yyyy-MM-dd");
+    List<OcanSubmissionLog> submissions = OcanReportUIBean.getAllOcanSubmissions(facilityId);
+    List<OcanStaffForm> unsentForms = OcanReportUIBean.getAllUnsubmittedOcanForms(facilityId);
+
+    java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm");
+    java.text.SimpleDateFormat formatter2 = new java.text.SimpleDateFormat("yyyy-MM-dd");
 %>
 
 <div class="page-header">
-	<h4>OCAN IAR Report - v2.0.6</h4>
+    <h4>OCAN IAR Report - v2.0.6</h4>
 </div>
 
 
 <form method="post" id="ocanForm" action="${ctx}/oscarReport/ocan_report_export_iar.jsp">
-	<h5>IAR Submissions</h5>
-	<table class="table table-bordered table-striped table-hover">
-		<thead>
-			<tr>
-				<th>Submission Id</th>
-				<th>Submission Date</th>
-				<th># of Records</th>
-				<th>Result</th>
-			</tr>
-		</thead>
-		<%
-			for(OcanSubmissionLog submission:submissions) {
-		%>
-		<tr>
-			<td><a href="#"
-				onclick="popup('ocan_iar_detail.jsp?submissionId=<%=submission.getId()%>');return false;"><%=submission.getId()%></a></td>
-			<td><%=formatter.format(submission.getSubmitDateTime())%></td>
-			<td><%=submission.getRecords().size()%></td>
-			<td><%=submission.getResult()%></td>
-		</tr>
-		<%
-			}
-		%>
-	</table>
+    <h5>IAR Submissions</h5>
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Submission Id</th>
+            <th>Submission Date</th>
+            <th># of Records</th>
+            <th>Result</th>
+        </tr>
+        </thead>
+        <%
+            for (OcanSubmissionLog submission : submissions) {
+        %>
+        <tr>
+            <td><a href="#"
+                   onclick="popup('ocan_iar_detail.jsp?submissionId=<%=submission.getId()%>');return false;"><%=submission.getId()%>
+            </a></td>
+            <td><%=formatter.format(submission.getSubmitDateTime())%>
+            </td>
+            <td><%=submission.getRecords().size()%>
+            </td>
+            <td><%=submission.getResult()%>
+            </td>
+        </tr>
+        <%
+            }
+        %>
+    </table>
 
-	<h5>Pending OCAN Forms</h5>
-	<table class="table table-bordered table-striped table-hover">
-		<thead>
-			<tr>
-				<th>
-					<label class="checkbox inline">
-						<input type="checkbox" name="checkAll2" id="checkA" />All
-					</label>
-				</th>
-				<th>Form Id</th>
-				<th>Date Started</th>
-				<th>Date Completed</th>
-				<th>Client</th>
-				<th>Provider</th>
-			</tr>
-		</thead>
-		<%
-			for(OcanStaffForm form:unsentForms) {
-		%>
-		<tr>
-			<td>
-				<label class="checkbox inline">
-				<input type="checkbox" name="test1"
-				value="<%=form.getAssessmentId()%>">
-				</label>
-				</td>
-			<td><%=form.getId()%></td>
-			<td><%=formatter2.format(form.getStartDate())%></td>
-			<td><%=formatter2.format(form.getCompletionDate())%></td>
-			<td><%=form.getClientId()%></td>
-			<td><%=form.getProviderName()%></td>
-		</tr>
-		<%
-			}
-		%>
-	</table>
-	<div class="control-group">
-	<div class="controls">
-		<button id="subPending" onclick="submitPending();return false;"
-			class="btn btn-primary">Submit Pending Records</button>
-		<button id="subPending" onclick="submitManual();return false;"
-			class="btn">Generate Manual File</button>
-	</div>
-	</div>
+    <h5>Pending OCAN Forms</h5>
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+        <tr>
+            <th>
+                <label class="checkbox inline">
+                    <input type="checkbox" name="checkAll2" id="checkA"/>All
+                </label>
+            </th>
+            <th>Form Id</th>
+            <th>Date Started</th>
+            <th>Date Completed</th>
+            <th>Client</th>
+            <th>Provider</th>
+        </tr>
+        </thead>
+        <%
+            for (OcanStaffForm form : unsentForms) {
+        %>
+        <tr>
+            <td>
+                <label class="checkbox inline">
+                    <input type="checkbox" name="test1"
+                           value="<%=form.getAssessmentId()%>">
+                </label>
+            </td>
+            <td><%=form.getId()%>
+            </td>
+            <td><%=formatter2.format(form.getStartDate())%>
+            </td>
+            <td><%=formatter2.format(form.getCompletionDate())%>
+            </td>
+            <td><%=form.getClientId()%>
+            </td>
+            <td><%=form.getProviderName()%>
+            </td>
+        </tr>
+        <%
+            }
+        %>
+    </table>
+    <div class="control-group">
+        <div class="controls">
+            <button id="subPending" onclick="submitPending();return false;"
+                    class="btn btn-primary">Submit Pending Records
+            </button>
+            <button id="subPending" onclick="submitManual();return false;"
+                    class="btn">Generate Manual File
+            </button>
+        </div>
+    </div>
 </form>
 
 <script>
-	$(function() {
+    $(function () {
 
-		$("#checkA").bind("click", function() {
-			$("[name = test1]:checkbox").attr("checked", this.checked);
+        $("#checkA").bind("click", function () {
+            $("[name = test1]:checkbox").attr("checked", this.checked);
 
-		});
+        });
 
-		$("[name = test1]:checkbox").bind(
-				"click",
-				function() {
-					var $chk = $("[name = test1]:checkbox");
-					$("#checkA").attr("checked",
-							$chk.length == $chk.filter(":checked").length);
-					if ($(this).attr("checked")) {
-						$(this).attr("checked", true);
-					} else {
-						$(this).attr("checked", false);
-					}
+        $("[name = test1]:checkbox").bind(
+            "click",
+            function () {
+                var $chk = $("[name = test1]:checkbox");
+                $("#checkA").attr("checked",
+                    $chk.length == $chk.filter(":checked").length);
+                if ($(this).attr("checked")) {
+                    $(this).attr("checked", true);
+                } else {
+                    $(this).attr("checked", false);
+                }
 
-				})
-	});
+            })
+    });
 
-	function submitPending() {
-		$("#subPending").val("Please Wait");
-		$("#SubPending").attr('disabled', 'true');
+    function submitPending() {
+        $("#subPending").val("Please Wait");
+        $("#SubPending").attr('disabled', 'true');
 
-		var arrChk1 = $("input[name=test1][checked]");
+        var arrChk1 = $("input[name=test1][checked]");
 
-		var fieldList = [];
-		for ( var i = 0; i < arrChk1.length; i++) {
+        var fieldList = [];
+        for (var i = 0; i < arrChk1.length; i++) {
 
-			fieldList.push(arrChk1[i].value);
+            fieldList.push(arrChk1[i].value);
 
-		}
-		jQuery
-				.ajax({
-					url : "${ctx}/OcanIarSubmit.do?method=submit&account="
-							+ fieldList + "",
-					dataType : "html",
-					success : function(data) {
-						$('#ocanForm').action = '${ctx}/oscarReport/ocan_iar.jsp?assessmentIds='
-								+ fieldList;
-						submitForm('ocanForm', 'dynamic-content');
-					},
-					error : function() {
-						alert('An error occurred');
-						$("#subPending").val("Submit Pending Records");
-						$("#SubPending").attr('disabled', 'false');
+        }
+        jQuery
+            .ajax({
+                url: "${ctx}/OcanIarSubmit.do?method=submit&account="
+                    + fieldList + "",
+                dataType: "html",
+                success: function (data) {
+                    $('#ocanForm').action = '${ctx}/oscarReport/ocan_iar.jsp?assessmentIds='
+                        + fieldList;
+                    submitForm('ocanForm', 'dynamic-content');
+                },
+                error: function () {
+                    alert('An error occurred');
+                    $("#subPending").val("Submit Pending Records");
+                    $("#SubPending").attr('disabled', 'false');
 
-					}
-				});
+                }
+            });
 
-	}
+    }
 
-	function submitManual() {
-		var arrChk1 = $("input[name=test1][checked]");
-		//checkbox value1
-		var fieldList = [];
-		for ( var i = 0; i < arrChk1.length; i++) {
+    function submitManual() {
+        var arrChk1 = $("input[name=test1][checked]");
+        //checkbox value1
+        var fieldList = [];
+        for (var i = 0; i < arrChk1.length; i++) {
 
-			fieldList.push(arrChk1[i].value);
+            fieldList.push(arrChk1[i].value);
 
-		}
-		$('#ocanForm').action = '${ctx}/oscarReport/ocan_report_export_iar_manual.jsp?assessmentIds='
-				+ fieldList;
-		$('#ocanForm').submit();
+        }
+        $('#ocanForm').action = '${ctx}/oscarReport/ocan_report_export_iar_manual.jsp?assessmentIds='
+            + fieldList;
+        $('#ocanForm').submit();
 
-	}
+    }
 </script>

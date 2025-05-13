@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.common.model.enumerator;
 
 import java.util.ArrayList;

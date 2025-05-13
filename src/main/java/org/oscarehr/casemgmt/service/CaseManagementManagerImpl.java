@@ -1,26 +1,27 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
- *
+ * <p>
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -30,7 +31,6 @@ import com.quatro.model.security.Secrole;
 import com.quatro.service.security.RolesManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.apache.struts.util.LabelValueBean;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
 import org.oscarehr.PMmodule.dao.ProgramAccessDAO;
@@ -61,6 +61,7 @@ import oscar.log.LogAction;
 import oscar.log.LogConst;
 import oscar.util.ConversionUtils;
 import oscar.util.DateUtils;
+import oscar.util.LabelValueBean;
 
 import java.net.MalformedURLException;
 import java.nio.file.ProviderNotFoundException;
@@ -198,11 +199,11 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
         return this.encounterWindowDao.find(provider);
     }
 
-	@Override
-	public SecRole getSecRoleByRoleName(String roleName) {
-		return secRoleDao.findByName(roleName);
-	}
-	
+    @Override
+    public SecRole getSecRoleByRoleName(String roleName) {
+        return secRoleDao.findByName(roleName);
+    }
+
     @Override
     public void saveNoteExt(CaseManagementNoteExt cExt) {
         caseManagementNoteExtDAO.save(cExt);
@@ -225,9 +226,9 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
     @Override
     public String saveNote(CaseManagementCPP cpp, CaseManagementNote note, String cproviderNo, String userName,
-            String lastStr, String roleName) {
+                           String lastStr, String roleName) {
 
-        try{
+        try {
             if (note == null) {
                 throw new NullPointerException("Note is null");
             }
@@ -242,7 +243,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
             noteStr = noteStr.replaceAll("\r\n", "\n");
             noteStr = noteStr.replaceAll("\r", "\n");
 
-            if (noteHistory == null){
+            if (noteHistory == null) {
                 noteHistory = noteStr;
             } else {
                 noteHistory = noteStr + "\n" + "   ----------------History Record----------------   \n" + noteHistory + "\n";
@@ -324,9 +325,8 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     }
 
     /**
-     * @deprecated
-     *             Use authenticated method getNotes( LoggedInInfo loggedInInfo,
-     *             String demographic_no, String[] issues, UserProperty prop)
+     * @deprecated Use authenticated method getNotes( LoggedInInfo loggedInInfo,
+     * String demographic_no, String[] issues, UserProperty prop)
      */
     @Deprecated
     @Override
@@ -344,7 +344,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
      */
     @Override
     public List<CaseManagementNote> getNotes(LoggedInInfo loggedInInfo, String demographic_no, String[] issues,
-            UserProperty prop) {
+                                             UserProperty prop) {
         if (prop == null) {
             return getNotes(loggedInInfo, demographic_no, issues);
         }
@@ -364,9 +364,8 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     }
 
     /**
-     * @deprecated
-     *             Use the authenticated method: getNotes(LoggedInInfo loggedInInfo,
-     *             String demographic_no, String[] issues)
+     * @deprecated Use the authenticated method: getNotes(LoggedInInfo loggedInInfo,
+     * String demographic_no, String[] issues)
      */
     @Deprecated
     @Override
@@ -391,9 +390,8 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     }
 
     /**
-     * @deprecated
-     *             Use the authenticated method: getNotes(LoggedInInfo loggedInInfo,
-     *             String demographic_no, String[] issues)
+     * @deprecated Use the authenticated method: getNotes(LoggedInInfo loggedInInfo,
+     * String demographic_no, String[] issues)
      */
     @Deprecated
     @Override
@@ -413,10 +411,9 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     }
 
     /**
-     * @deprecated
-     *             Use the authenticated method: getActiveNotes(LoggedInInfo
-     *             loggedInInfo, String demographic_no, String[] issues)
-     *             Return only those notes with archived set to zero
+     * @deprecated Use the authenticated method: getActiveNotes(LoggedInInfo
+     * loggedInInfo, String demographic_no, String[] issues)
+     * Return only those notes with archived set to zero
      */
     @Deprecated
     @Override
@@ -684,7 +681,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     }
 
     private void addIntegratorDrugs(LoggedInInfo loggedInInfo, List<Drug> prescriptions, boolean viewAll,
-            int demographicId) {
+                                    int demographicId) {
 
         if (prescriptions == null) {
             logger.warn(
@@ -721,7 +718,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
                     } else {
                         if (pd.getRxDate().before(DateUtils.toDate(cachedDrug.getRxDate()))
                                 || (pd.getRxDate().equals(cachedDrug.getRxDate())
-                                        && pd.getCreateDate().before(DateUtils.toDate(cachedDrug.getCreateDate())))) {
+                                && pd.getCreateDate().before(DateUtils.toDate(cachedDrug.getCreateDate())))) {
                             prescriptions.remove(pd);
                             prescriptions.add(getPrescriptDrug(loggedInInfo, cachedDrug));
                         }
@@ -819,7 +816,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     @Override
     public void saveCPP(CaseManagementCPP cpp, String providerNo) {
         cpp.setProviderNo(providerNo); // added because nothing else was setting providerNo; not sure this is the right
-                                       // place to do this -- rwd
+        // place to do this -- rwd
         caseManagementCPPDAO.saveCPP(cpp);
 
         OscarProperties properties = OscarProperties.getInstance();
@@ -835,7 +832,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
     @Override
     public List<Issue> getIssueInfoByCode(String providerNo, String code) {
-        String[] codes = { code };
+        String[] codes = {code};
         return issueDAO.findIssueByCode(codes);
     }
 
@@ -1030,7 +1027,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
      * @param issid  the desired issue ID to find
      * @param demoNo the desired demographic ID to find issues for
      * @return true if some note for this demographic is attached to this issue,
-     *         false otherwise
+     * false otherwise
      */
     @Override
     public boolean haveIssue(Long issid, String demoNo) {
@@ -1249,7 +1246,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     @Override
     public List<CaseManagementNote> filterNotesByAccess(List<CaseManagementNote> notes, String providerNo) {
         List<CaseManagementNote> filteredNotes = new ArrayList<CaseManagementNote>();
-        for (Iterator<CaseManagementNote> iter = notes.iterator(); iter.hasNext();) {
+        for (Iterator<CaseManagementNote> iter = notes.iterator(); iter.hasNext(); ) {
             CaseManagementNote note = iter.next();
             if (hasAccessRight(removeFirstSpace(getCaisiRoleById(note.getReporter_caisi_role())) + "notes", "access",
                     providerNo, note.getDemographic_no(), note.getProgram_no())) {
@@ -1357,7 +1354,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
     @Override
     public List<CaseManagementNote> filterNotes(LoggedInInfo loggedInInfo, String providerNo,
-            Collection<CaseManagementNote> notes, String programId) {
+                                                Collection<CaseManagementNote> notes, String programId) {
 
         List<CaseManagementNote> filteredNotes = new ArrayList<CaseManagementNote>();
         if (notes.isEmpty()) {
@@ -1596,7 +1593,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     public boolean isRoleIncludedInAccess(ProgramAccess pa, Secrole role) {
         boolean result = false;
 
-        for (Iterator iter = pa.getRoles().iterator(); iter.hasNext();) {
+        for (Iterator iter = pa.getRoles().iterator(); iter.hasNext(); ) {
             Secrole accessRole = (Secrole) iter.next();
             if (role.getId().longValue() == accessRole.getId().longValue()) {
                 return true;
@@ -1611,7 +1608,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
         if (paList == null) {
             return map;
         }
-        for (Iterator<ProgramAccess> iter = paList.iterator(); iter.hasNext();) {
+        for (Iterator<ProgramAccess> iter = paList.iterator(); iter.hasNext(); ) {
             ProgramAccess pa = iter.next();
             map.put(pa.getAccessType().getName().toLowerCase(), pa);
         }
@@ -1638,7 +1635,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
         List<Secrole> allRoles = this.roleManager.getRoles();
 
         List<Secrole> allowableSearchRoles = new ArrayList<Secrole>();
-        for (Iterator<Secrole> iter = allRoles.iterator(); iter.hasNext();) {
+        for (Iterator<Secrole> iter = allRoles.iterator(); iter.hasNext(); ) {
             Secrole r = iter.next();
             String key = "write " + r.getName().toLowerCase() + " issues";
             ProgramAccess pa = paMap.get(key);
@@ -1672,7 +1669,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
      */
     @Override
     public List<Issue> searchIssues(String providerNo, String programId, String search, int startIndex,
-            int numToReturn) {
+                                    int numToReturn) {
 
         if (numToReturn > AbstractDao.MAX_LIST_RETURN_SIZE) {
             throw new IllegalArgumentException(
@@ -1697,7 +1694,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
         List<Secrole> allRoles = this.roleManager.getRoles();
 
         List<Secrole> allowableSearchRoles = new ArrayList<Secrole>();
-        for (Iterator<Secrole> iter = allRoles.iterator(); iter.hasNext();) {
+        for (Iterator<Secrole> iter = allRoles.iterator(); iter.hasNext(); ) {
             Secrole r = iter.next();
             String key = "write " + r.getName().toLowerCase() + " issues";
             ProgramAccess pa = paMap.get(key);
@@ -1734,7 +1731,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
      */
     @Override
     public List<CaseManagementIssue> filterIssues(LoggedInInfo loggedInInfo, String providerNo,
-            List<CaseManagementIssue> issues, String programId) {
+                                                  List<CaseManagementIssue> issues, String programId) {
 
         List<CaseManagementIssue> filteredIssues = new ArrayList<CaseManagementIssue>();
 
@@ -1757,7 +1754,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
         Map<String, ProgramAccess> programAccessMap = convertProgramAccessListToMap(programAccessList);
 
         // iterate through the issue list
-        for (Iterator<CaseManagementIssue> iter = issues.iterator(); iter.hasNext();) {
+        for (Iterator<CaseManagementIssue> iter = issues.iterator(); iter.hasNext(); ) {
             CaseManagementIssue cmIssue = iter.next();
             String issueRole = cmIssue.getIssue().getRole().toLowerCase();
             ProgramAccess pa = null;
@@ -1824,7 +1821,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     }
 
     private List<CaseManagementIssue> issuesFacilityFiltering(LoggedInInfo loggedInInfo,
-            List<CaseManagementIssue> issues) {
+                                                              List<CaseManagementIssue> issues) {
         ArrayList<CaseManagementIssue> results = new ArrayList<CaseManagementIssue>();
 
         for (CaseManagementIssue caseManagementIssue : issues) {
@@ -1872,7 +1869,6 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
     @Override
     public boolean isClientInProgramDomain(String providerNo, String demographicNo) {
-
         List providerPrograms = programProviderDao.getProgramProviderByProviderNo(providerNo);
 
         List allAdmissions = this.admissionManager.getAdmissions(Integer.valueOf(demographicNo));
@@ -2094,7 +2090,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
     @Override
     public void saveToDx(LoggedInInfo loggedInInfo, String demographicNo, String code, String codingSystem,
-            boolean association) {
+                         boolean association) {
         if (codingSystem == null) {
             codingSystem = "icd10";
         }
@@ -2132,8 +2128,8 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
      * to be i18n compliant). If nothing is found in the resource bundle the value
      * is added as a blank in the returned formatted string. This is the default
      * signing line.
-     * ECHART_SIGN_LINE=[${oscarEncounter.class.EctSaveEncounterAction.msgSigned}
-     * ${DATE} ${oscarEncounter.class.EctSaveEncounterAction.msgSigBy}
+     * ECHART_SIGN_LINE=[${oscarEncounter.class.EctSaveEncounter2Action.msgSigned}
+     * ${DATE} ${oscarEncounter.class.EctSaveEncounter2Action.msgSigBy}
      * ${USERSIGNATURE}]\n
      *
      * @param template string with template values used to create the String that is
@@ -2324,7 +2320,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
     @Override
     public CaseManagementNote makeNewNote(String providerNo, String demographicNo, String encType, String appointmentNo,
-            Locale locale) {
+                                          Locale locale) {
         CaseManagementNote note = new CaseManagementNote();
         note.setProviderNo(providerNo);
         note.setDemographic_no(demographicNo);
@@ -2411,9 +2407,9 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
     @Override
     public CaseManagementNote saveCaseManagementNote(LoggedInInfo loggedInInfo, CaseManagementNote note,
-            List<CaseManagementIssue> issuelist, CaseManagementCPP cpp, String ongoing, boolean verify, Locale locale,
-            Date now, CaseManagementNote annotationNote, String userName, String user, String remoteAddr,
-            String lastSavedNoteString) throws Exception {
+                                                     List<CaseManagementIssue> issuelist, CaseManagementCPP cpp, String ongoing, boolean verify, Locale locale,
+                                                     Date now, CaseManagementNote annotationNote, String userName, String user, String remoteAddr,
+                                                     String lastSavedNoteString) throws Exception {
         ProgramManager programManager = (ProgramManager) SpringUtils.getBean(ProgramManager.class);
         AdmissionManager admissionManager = (AdmissionManager) SpringUtils.getBean(AdmissionManager.class);
 
@@ -2499,7 +2495,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
                     String message = getSignature(note.getProviderNo(), userName, roleName, locale, SIGNATURE_SIGNED);
                     String n = note.getNote() + "\n" + message;
                     note.setNote(n);
-        
+
                     // only update appt if there is one
                     if (appointment != null) {
                         appointment.setStatus(updateApptStatus(appointment.getStatus(), "sign"));

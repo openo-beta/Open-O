@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -5,23 +6,23 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -44,7 +45,6 @@ import org.oscarehr.util.SpringUtils;
 import org.springframework.stereotype.Repository;
 
 /**
- *
  * @author mweston4
  */
 @Repository
@@ -65,18 +65,18 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
 
     @Override
     public List<BillingONExt> find(String key, String value) {
-        Query q = createQuery("q", "q.keyVal = :key AND q.value = :value");
-        q.setParameter("key", key);
-        q.setParameter("value", value);
+        Query q = createQuery("q", "q.keyVal = ?1 AND q.value = ?2");
+        q.setParameter(1, key);
+        q.setParameter(2, value);
         return q.getResultList();
     }
 
     @Override
     public List<BillingONExt> findByBillingNoAndKey(Integer billingNo, String key) {
-        String sql = "select bExt from BillingONExt bExt where bExt.billingNo=? and bExt.keyVal=? order by bExt.id DESC";
+        String sql = "select bExt from BillingONExt bExt where bExt.billingNo=?1 and bExt.keyVal=?2 order by bExt.id DESC";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, billingNo);
-        query.setParameter(1, key);
+        query.setParameter(1, billingNo);
+        query.setParameter(2, key);
 
         List<BillingONExt> results = query.getResultList();
 
@@ -85,11 +85,11 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
 
     @Override
     public List<BillingONExt> findByBillingNoAndPaymentIdAndKey(Integer billingNo, Integer paymentId, String key) {
-        String sql = "select bExt from BillingONExt bExt where bExt.billingNo=? and bExt.paymentId=? and bExt.keyVal=? order by bExt.id DESC";
+        String sql = "select bExt from BillingONExt bExt where bExt.billingNo=?1 and bExt.paymentId=?2 and bExt.keyVal=?3 order by bExt.id DESC";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, billingNo);
-        query.setParameter(1, paymentId);
-        query.setParameter(2, key);
+        query.setParameter(1, billingNo);
+        query.setParameter(2, paymentId);
+        query.setParameter(3, key);
         List<BillingONExt> results = query.getResultList();
 
         return results;
@@ -106,11 +106,11 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
     @Override
     public BigDecimal getPayment(BillingONPayment paymentRecord) {
 
-        String sql = "select bExt from BillingONExt bExt where billingNo=? and keyVal=?";
+        String sql = "select bExt from BillingONExt bExt where billingNo=?1 and keyVal=?2";
         Query query = entityManager.createQuery(sql);
 
-        query.setParameter(0, paymentRecord.getBillingNo());
-        query.setParameter(1, "payment");
+        query.setParameter(1, paymentRecord.getBillingNo());
+        query.setParameter(2, "payment");
 
         List<BillingONExt> results = query.getResultList();
 
@@ -136,11 +136,11 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
 
     @Override
     public BigDecimal getRefund(BillingONPayment paymentRecord) {
-        String sql = "select bExt from BillingONExt bExt where paymentId=? and billingNo=? and keyVal=?";
+        String sql = "select bExt from BillingONExt bExt where paymentId=?1 and billingNo=?2 and keyVal=?3";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, paymentRecord.getId());
-        query.setParameter(1, paymentRecord.getBillingNo());
-        query.setParameter(2, "refund");
+        query.setParameter(1, paymentRecord.getId());
+        query.setParameter(2, paymentRecord.getBillingNo());
+        query.setParameter(3, "refund");
 
         List<BillingONExt> results = query.getResultList();
 
@@ -168,11 +168,11 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
     public BillingONExt getRemitTo(BillingONCHeader1 bCh1) {
         BillingONExt bExt = null;
 
-        String sql = "select bExt from BillingONExt bExt where billingNo=? and status=? and keyVal=?";
+        String sql = "select bExt from BillingONExt bExt where billingNo=?1 and status=?2 and keyVal=?3";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, bCh1.getId());
-        query.setParameter(1, '1');
-        query.setParameter(2, "remitTo");
+        query.setParameter(1, bCh1.getId());
+        query.setParameter(2, '1');
+        query.setParameter(3, "remitTo");
 
         List<BillingONExt> results = query.getResultList();
 
@@ -189,11 +189,11 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
     public BillingONExt getBillTo(BillingONCHeader1 bCh1) {
         BillingONExt bExt = null;
 
-        String sql = "select bExt from BillingONExt bExt where billingNo=? and status=? and keyVal=?";
+        String sql = "select bExt from BillingONExt bExt where billingNo=?1 and status=?2 and keyVal=?3";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, bCh1.getId());
-        query.setParameter(1, '1');
-        query.setParameter(2, "billTo");
+        query.setParameter(1, bCh1.getId());
+        query.setParameter(2, '1');
+        query.setParameter(3, "billTo");
 
         List<BillingONExt> results = query.getResultList();
 
@@ -210,11 +210,11 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
     public BillingONExt getBillToInactive(BillingONCHeader1 bCh1) {
         BillingONExt bExt = null;
 
-        String sql = "select bExt from BillingONExt bExt where billingNo=? and status=? and keyVal=?";
+        String sql = "select bExt from BillingONExt bExt where billingNo=?1 and status=?2 and keyVal=?3";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, bCh1.getId());
-        query.setParameter(1, '0');
-        query.setParameter(2, "billTo");
+        query.setParameter(1, bCh1.getId());
+        query.setParameter(2, '0');
+        query.setParameter(3, "billTo");
 
         List<BillingONExt> results = query.getResultList();
 
@@ -231,11 +231,11 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
     public BillingONExt getDueDate(BillingONCHeader1 bCh1) {
         BillingONExt bExt = null;
 
-        String sql = "select bExt from BillingONExt bExt where billingNo=? and status=? and keyVal=?";
+        String sql = "select bExt from BillingONExt bExt where billingNo=?1 and status=?2 and keyVal=?3";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, bCh1.getId());
-        query.setParameter(1, '1');
-        query.setParameter(2, "dueDate");
+        query.setParameter(1, bCh1.getId());
+        query.setParameter(2, '1');
+        query.setParameter(3, "dueDate");
 
         List<BillingONExt> results = query.getResultList();
 
@@ -254,11 +254,11 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
     public BillingONExt getUseBillTo(BillingONCHeader1 bCh1) {
         BillingONExt bExt = null;
 
-        String sql = "select bExt from BillingONExt bExt where billingNo=? and status=? and keyVal=?";
+        String sql = "select bExt from BillingONExt bExt where billingNo=?1 and status=?2 and keyVal=?3";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, bCh1.getId());
-        query.setParameter(1, '1');
-        query.setParameter(2, "useBillTo");
+        query.setParameter(1, bCh1.getId());
+        query.setParameter(2, '1');
+        query.setParameter(3, "useBillTo");
 
         List<BillingONExt> results = query.getResultList();
 
@@ -276,21 +276,21 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
     @Override
     public List<BillingONExt> find(Integer billingNo, String key, Date start, Date end) {
         Query q = createQuery("b",
-                "b.billingNo = :bNo AND b.keyVal = :key AND b.dateTime >= :start AND b.dateTime <= :end");
-        q.setParameter("bNo", billingNo);
-        q.setParameter("key", key);
-        q.setParameter("start", start);
-        q.setParameter("end", end);
+                "b.billingNo = ?1 AND b.keyVal = ?2 AND b.dateTime >= ?3 AND b.dateTime <= ?4");
+        q.setParameter(1, billingNo);
+        q.setParameter(2, key);
+        q.setParameter(3, start);
+        q.setParameter(4, end);
         return q.getResultList();
     }
 
     @Override
     public List<BillingONExt> findByBillingNoAndPaymentNo(int billingNo, int paymentId) {
 
-        String sql = "select bExt from BillingONExt bExt where bExt.paymentId=? and bExt.billingNo=?";
+        String sql = "select bExt from BillingONExt bExt where bExt.paymentId=?1 and bExt.billingNo=?2";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, paymentId);
-        query.setParameter(1, billingNo);
+        query.setParameter(1, paymentId);
+        query.setParameter(2, billingNo);
 
         List<BillingONExt> results = query.getResultList();
 
@@ -299,17 +299,17 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
 
     @Override
     public List<BillingONExt> getClaimExtItems(int billingNo) {
-        Query query = entityManager.createQuery("select ext from BillingONExt ext where ext.billingNo = :billingNo");
-        query.setParameter("billingNo", billingNo);
+        Query query = entityManager.createQuery("select ext from BillingONExt ext where ext.billingNo = ?1");
+        query.setParameter(1, billingNo);
         return query.getResultList();
     }
 
     @Override
     public List<BillingONExt> getBillingExtItems(String billingNo) {
         Query query = entityManager
-                .createQuery("select ext from BillingONExt ext where ext.billingNo = :billingNo and ext.status='1' ");
+                .createQuery("select ext from BillingONExt ext where ext.billingNo = ?1 and ext.status='1' ");
         try {
-            query.setParameter("billingNo", Integer.parseInt(billingNo));
+            query.setParameter(1, Integer.parseInt(billingNo));
             return query.getResultList();
         } catch (Exception e) {
             return null;
@@ -319,9 +319,9 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
     @Override
     public List<BillingONExt> getInactiveBillingExtItems(String billingNo) {
         Query query = entityManager
-                .createQuery("select ext from BillingONExt ext where ext.billingNo = :billingNo and ext.status='0' ");
+                .createQuery("select ext from BillingONExt ext where ext.billingNo = ?1 and ext.status='0' ");
         try {
-            query.setParameter("billingNo", Integer.parseInt(billingNo));
+            query.setParameter(1, Integer.parseInt(billingNo));
             return query.getResultList();
         } catch (Exception e) {
             return null;
@@ -353,38 +353,38 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
     @Override
     public BillingONExt getClaimExtItem(Integer billingNo, Integer demographicNo, String keyVal)
             throws NonUniqueResultException {
-        String filter1 = (billingNo == null ? "" : "ext.billingNo = :billingNo");
-        String filter2 = (demographicNo == null ? "" : "ext.demographicNo = :demographicNo");
-        String filter3 = (keyVal == null ? "" : "ext.keyVal = :keyVal");
+        String filter1 = (billingNo == null ? "" : "ext.billingNo = ?1");
+        String filter2 = (demographicNo == null ? "" : "ext.demographicNo = ?2");
+        String filter3 = (keyVal == null ? "" : "ext.keyVal = ?3");
         String sql = "select ext from BillingONExt ext";
         boolean isWhere = false;
         if (filter1 != null) {
-            sql += " where ext.billingNo = :billingNo";
+            sql += " where ext.billingNo = ?1";
             isWhere = true;
         }
         if (filter2 != null) {
             if (isWhere)
-                sql += " and demographicNo = :demographicNo";
+                sql += " and demographicNo = ?2";
             else {
-                sql += "where demographicNo = :demographicNo";
+                sql += "where demographicNo = ?2";
                 isWhere = true;
             }
         }
         if (filter3 != null) {
             if (isWhere)
-                sql += " and keyVal = :keyVal";
+                sql += " and keyVal = ?3";
             else {
-                sql += "where keyVal = :keyVal";
+                sql += "where keyVal = ?3";
                 isWhere = true;
             }
         }
         Query query = entityManager.createQuery(sql);
         if (filter1 != null)
-            query.setParameter("billingNo", billingNo);
+            query.setParameter(1, billingNo);
         if (filter1 != null)
-            query.setParameter("demographicNo", demographicNo);
+            query.setParameter(2, demographicNo);
         if (filter3 != null)
-            query.setParameter("keyVal", keyVal);
+            query.setParameter(3, keyVal);
         BillingONExt res = null;
         try {
             res = (BillingONExt) query.getSingleResult();

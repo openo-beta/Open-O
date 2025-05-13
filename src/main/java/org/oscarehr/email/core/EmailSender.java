@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.email.core;
 
 import java.security.NoSuchAlgorithmException;
@@ -29,7 +30,8 @@ public class EmailSender {
     private String additionalParams;
     private List<EmailAttachment> attachments;
 
-    private EmailSender() { }
+    private EmailSender() {
+    }
 
     public EmailSender(LoggedInInfo loggedInInfo, EmailConfig emailConfig, EmailData emailData) {
         this.loggedInInfo = loggedInInfo;
@@ -59,11 +61,11 @@ public class EmailSender {
         this.attachments = attachments;
         this.additionalParams = additionalParams;
     }
-    
+
     public void send() throws EmailSendingException {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_email", SecurityInfoManager.WRITE, null)) {
-			throw new RuntimeException("missing required security object (_email)");
-		}
+            throw new RuntimeException("missing required security object (_email)");
+        }
 
         switch (emailConfig.getEmailType()) {
             case SMTP:

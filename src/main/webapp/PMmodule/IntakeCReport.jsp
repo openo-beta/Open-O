@@ -43,15 +43,15 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title>Street Health Mental Health Report</title>
         <link rel="stylesheet" type="text/css"
-              href="<html:rewrite page="/css/intakeC.css" />"/>
+              href="${request.contextPath}/css/intakeC.css"/>
         <script language="JavaScript"
-                src="<html:rewrite page="/js/ClientSearch.js" />"></script>
-        <html:base/>
+                src="${request.contextPath}/js/ClientSearch.js"></script>
+        <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
     </head>
     <body>
     <script type="text/javascript">
         function download() {
-            location.href = "<html:rewrite page="/PMmodule/do_download.jsp" />";
+            location.href = "${request.contextPath}/PMmodule/do_download.jsp";
         }
     </script>
     <table height="15" align="center">

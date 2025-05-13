@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -5,23 +6,23 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -45,13 +46,13 @@ public class DemographicPharmacyDaoImpl extends AbstractDaoImpl<DemographicPharm
 
     @Override
     public DemographicPharmacy addPharmacyToDemographic(Integer pharmacyId, Integer demographicNo,
-            Integer preferredOrder) {
+                                                        Integer preferredOrder) {
 
-        String sql = "select x from DemographicPharmacy x where x.status = ? and x.demographicNo = ? and x.pharmacyId = ?";
+        String sql = "select x from DemographicPharmacy x where x.status = ?1 and x.demographicNo = ?2 and x.pharmacyId = ?3";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, DemographicPharmacy.ACTIVE);
-        query.setParameter(1, demographicNo);
-        query.setParameter(2, pharmacyId);
+        query.setParameter(1, DemographicPharmacy.ACTIVE);
+        query.setParameter(2, demographicNo);
+        query.setParameter(3, pharmacyId);
         DemographicPharmacy demographicPharmacy = getSingleResultOrNull(query);
         int currentOrder;
         if (demographicPharmacy != null) {
@@ -68,11 +69,11 @@ public class DemographicPharmacyDaoImpl extends AbstractDaoImpl<DemographicPharm
             query.setParameter(3, min);
             query.setParameter(4, max);
         } else {
-            sql = "select x from DemographicPharmacy x where x.status = ? and x.demographicNo = ? and x.preferredOrder >= ?";
+            sql = "select x from DemographicPharmacy x where x.status = ?1 and x.demographicNo = ?2 and x.preferredOrder >= ?3";
             query = entityManager.createQuery(sql);
-            query.setParameter(0, DemographicPharmacy.ACTIVE);
-            query.setParameter(1, demographicNo);
-            query.setParameter(2, preferredOrder);
+            query.setParameter(1, DemographicPharmacy.ACTIVE);
+            query.setParameter(2, demographicNo);
+            query.setParameter(3, preferredOrder);
         }
 
         @SuppressWarnings("unchecked")
@@ -111,11 +112,11 @@ public class DemographicPharmacyDaoImpl extends AbstractDaoImpl<DemographicPharm
     @Override
     public void unlinkPharmacy(Integer pharmacyId, Integer demographicNo) {
 
-        String sql = "select x from DemographicPharmacy x where x.status = ? and x.demographicNo = ? and x.pharmacyId = ?";
+        String sql = "select x from DemographicPharmacy x where x.status = ?1 and x.demographicNo = ?2 and x.pharmacyId = ?3";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, DemographicPharmacy.ACTIVE);
-        query.setParameter(1, demographicNo);
-        query.setParameter(2, pharmacyId);
+        query.setParameter(1, DemographicPharmacy.ACTIVE);
+        query.setParameter(2, demographicNo);
+        query.setParameter(3, pharmacyId);
         DemographicPharmacy demographicPharmacy = getSingleResultOrNull(query);
 
         if (demographicPharmacy != null) {
@@ -123,11 +124,11 @@ public class DemographicPharmacyDaoImpl extends AbstractDaoImpl<DemographicPharm
             demographicPharmacy.setStatus("0");
             merge(demographicPharmacy);
 
-            sql = "select x from DemographicPharmacy x where x.status = ? and x.demographicNo = ? and x.preferredOrder > ?";
+            sql = "select x from DemographicPharmacy x where x.status = ?1 and x.demographicNo = ?2 and x.preferredOrder > ?3";
             query = entityManager.createQuery(sql);
-            query.setParameter(0, DemographicPharmacy.ACTIVE);
-            query.setParameter(1, demographicNo);
-            query.setParameter(2, demographicPharmacy.getPreferredOrder());
+            query.setParameter(1, DemographicPharmacy.ACTIVE);
+            query.setParameter(2, demographicNo);
+            query.setParameter(3, demographicPharmacy.getPreferredOrder());
 
             @SuppressWarnings("unchecked")
             List<DemographicPharmacy> demographicPharmacies = query.getResultList();
@@ -147,10 +148,10 @@ public class DemographicPharmacyDaoImpl extends AbstractDaoImpl<DemographicPharm
 
     @Override
     public List<DemographicPharmacy> findByDemographicId(Integer demographicNo) {
-        String sql = "select x from DemographicPharmacy x where x.status=? and x.demographicNo=? order by x.preferredOrder";
+        String sql = "select x from DemographicPharmacy x where x.status=?1 and x.demographicNo=?2 order by x.preferredOrder";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, DemographicPharmacy.ACTIVE);
-        query.setParameter(1, demographicNo);
+        query.setParameter(1, DemographicPharmacy.ACTIVE);
+        query.setParameter(2, demographicNo);
         @SuppressWarnings("unchecked")
         List<DemographicPharmacy> results = query.getResultList();
         return results;
@@ -159,8 +160,8 @@ public class DemographicPharmacyDaoImpl extends AbstractDaoImpl<DemographicPharm
     @SuppressWarnings("unchecked")
     @Override
     public List<DemographicPharmacy> findAllByDemographicId(Integer demographicNo) {
-        Query query = createQuery("dp", "dp.demographicNo = :demoNo AND dp.status = 1");
-        query.setParameter("demoNo", demographicNo);
+        Query query = createQuery("dp", "dp.demographicNo = ?1 AND dp.status = 1");
+        query.setParameter(1, demographicNo);
         return query.getResultList();
     }
 
@@ -168,9 +169,9 @@ public class DemographicPharmacyDaoImpl extends AbstractDaoImpl<DemographicPharm
     @Override
     public List<DemographicPharmacy> findAllByPharmacyId(Integer pharmacyId) {
 
-        String sql = "select x from DemographicPharmacy x where x.pharmacyId = ?";
+        String sql = "select x from DemographicPharmacy x where x.pharmacyId = ?1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(0, pharmacyId);
+        query.setParameter(1, pharmacyId);
 
         return query.getResultList();
 
@@ -178,9 +179,9 @@ public class DemographicPharmacyDaoImpl extends AbstractDaoImpl<DemographicPharm
 
     @Override
     public Long getTotalDemographicsPreferedToPharmacyByPharmacyId(Integer pharmacyId) {
-        String sql = "SELECT COUNT(*) FROM DemographicPharmacy x WHERE x.pharmacyId = :pharmacyId AND x.status = 1";
+        String sql = "SELECT COUNT(*) FROM DemographicPharmacy x WHERE x.pharmacyId = ?1 AND x.status = 1";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("pharmacyId", pharmacyId);
+        query.setParameter(1, pharmacyId);
 
         return (Long) query.getSingleResult();
     }

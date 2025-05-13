@@ -1,4 +1,12 @@
-FROM tomcat:9.0.56-jdk8-openjdk
+FROM tomcat:9.0.97-jdk21-temurin
+
+# Set environment variables for Tomcat
+ENV CATALINA_HOME /usr/local/tomcat
+ENV PATH $CATALINA_HOME/bin:$PATH
+ENV CATALINA_OPTS="--add-opens java.base/java.net=ALL-UNNAMED -Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
+
+# Copy Tomcat installation from the official Tomcat image
+COPY --from=tomcat:9.0.97 /usr/local/tomcat $CATALINA_HOME
 
 # Labels
 LABEL author="OpenOSP" \
@@ -15,9 +23,9 @@ WORKDIR /workspace
 # Install required packages and clean up apt lists
 RUN apt-get update && apt-get install -y --no-install-recommends \
     dos2unix curl git wget apt-transport-https ca-certificates gnupg lsb-release \
-    locales iputils-ping gettext fontconfig libc6 libfreetype6 libjpeg62-turbo \
-    libpng16-16 libssl1.1 libstdc++6 libx11-6 libxcb1 libxext6 libxtst6 \
-    libxrender1 xfonts-75dpi xfonts-base zlib1g maven mariadb-client \
+    locales iputils-ping gettext fontconfig libc6 libfreetype6 \
+    libpng16-16 libssl-dev libstdc++6 libx11-6 libxcb1 libxext6 libxtst6 libjpeg62 \
+    libxrender1 libxi6 xfonts-75dpi xfonts-base zlib1g maven mariadb-client \
     nano openssh-client vim-tiny \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 

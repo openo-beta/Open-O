@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -6,28 +7,29 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package org.oscarehr.common.dao;
 
 import java.util.List;
 import javax.persistence.Query;
+
 import org.oscarehr.common.model.ProfessionalSpecialist;
 import org.oscarehr.common.model.ServiceSpecialists;
 import org.springframework.stereotype.Repository;
@@ -36,17 +38,17 @@ import org.springframework.stereotype.Repository;
 public class ServiceSpecialistsDaoImpl extends AbstractDaoImpl<ServiceSpecialists> implements ServiceSpecialistsDao {
 
     public ServiceSpecialistsDaoImpl() {
-        super(ServiceSpecialists.class);    
+        super(ServiceSpecialists.class);
     }
-    
+
     @Override
     public List<ServiceSpecialists> findByServiceId(int serviceId) {
-        Query q = entityManager.createQuery("select x from ServiceSpecialists x where x.id.serviceId = ?");
-        q.setParameter(0, serviceId);
-        
+        Query q = entityManager.createQuery("select x from ServiceSpecialists x where x.id.serviceId = ?1");
+        q.setParameter(1, serviceId);
+
         @SuppressWarnings("unchecked")
         List<ServiceSpecialists> results = q.getResultList();
-        
+
         return results;
     }
 
@@ -54,10 +56,10 @@ public class ServiceSpecialistsDaoImpl extends AbstractDaoImpl<ServiceSpecialist
     @Override
     public List<Object[]> findSpecialists(Integer servId) {
         String sql = "FROM ServiceSpecialists ser, " + ProfessionalSpecialist.class.getSimpleName() + " pro " +
-                "WHERE pro.id = ser.id.specId and ser.id.serviceId = :serviceId " +
+                "WHERE pro.id = ser.id.specId and ser.id.serviceId = ?1 " +
                 "ORDER BY pro.lastName";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("serviceId", servId);
+        query.setParameter(1, servId);
         return query.getResultList();
     }
 }

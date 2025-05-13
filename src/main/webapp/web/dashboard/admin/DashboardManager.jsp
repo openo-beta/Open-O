@@ -24,8 +24,7 @@
 
 --%>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <security:oscarSec roleName='${ sessionScope[userrole] }, ${ sessionScope[user] }' rights="w"
@@ -40,7 +39,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>
-            <bean:message key="dashboard.dashboardmanager.title"/>
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="dashboard.dashboardmanager.title"/>
         </title>
         <link rel="stylesheet" type="text/css"
               href="${ pageContext.request.contextPath }/library/DataTables/DataTables-1.13.4/css/jquery.dataTables.min.css"/>
@@ -67,8 +66,8 @@
             <nav class="navbar navbar-default navbar-fixed-top">
                 <div class="container">
 
-                    <html:form styleClass="form-inline" styleId="importForm"
-                               method="POST" action="/web/dashboard/admin/DashboardManager.do"
+                    <form style="form-inline" id="importForm"
+                               method="POST" action="${pageContext.request.contextPath}/web/dashboard/admin/DashboardManager.do"
                                enctype="multipart/form-data">
 
                         <c:if test="${ not empty param.dashboardId }">
@@ -91,16 +90,16 @@
                                 <div class="input-group-btn">
                                     <button class="btn btn-default" type="button" id="importbutton">
                                         <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
-                                        <bean:message key="dashboard.dashboardmanager.import.button"/>
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="dashboard.dashboardmanager.import.button"/>
                                     </button>
                                 </div>
 
                                 <input type="text" class="form-control" id="importxmltemplate"
-                                       placeholder="<bean:message key='dashboard.dashboardmanager.import.title' />"/>
+                                       placeholder="<fmt:setBundle basename='oscarResources'/><fmt:message key='dashboard.dashboardmanager.import.title'/>"/>
 
                                 <div class="input-group-btn">
                                     <label class="btn btn-default btn-file" id="browsebutton">
-                                        <bean:message key="dashboard.dashboardmanager.import.browse"/>
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="dashboard.dashboardmanager.import.browse"/>
                                         <input style="display:none;" type="file" name="indicatorTemplateFile"/>
                                     </label>
                                 </div>
@@ -114,7 +113,7 @@
                                 <button type="button" class="btn btn-default btn-md" data-toggle="modal"
                                         data-target="#newDashboard" id="createDashboard">
                                     <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
-                                    <bean:message key="dashboard.dashboardmanager.dashboard.create"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="dashboard.dashboardmanager.dashboard.create"/>
                                 </button>
                             </div>
                         </div>
@@ -126,7 +125,7 @@
                                         id="editDashboardMenu" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="true">
                                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                    <bean:message key="dashboard.dashboardmanager.dashboard.edit"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="dashboard.dashboardmanager.dashboard.edit"/>
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="editDashboardMenu">
@@ -147,7 +146,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </html:form>
+                    </form>
                     <span ${ message['status'] eq 'success' ? 'style="color: green;"' : 'style="color: red;"' } >
 			<c:out value="${ message['message'] }"/>
 		</span>
@@ -257,7 +256,7 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">
-                                <bean:message key="dashboard.dashboardmanager.dashboard.create"/>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="dashboard.dashboardmanager.dashboard.create"/>
                             </h4>
                         </div>
 
@@ -270,13 +269,12 @@
                             <div class="modal-body">
 
                                 <div class="row">
-                                    <label><bean:message key="dashboard.dashboardmanager.dashboard.name"/></label>
+                                    <label><fmt:setBundle basename="oscarResources"/><fmt:message key="dashboard.dashboardmanager.dashboard.name"/></label>
                                     <input class="form-control editDashboard" type="text" name="dashboardName"/>
                                 </div>
 
                                 <div class="row">
-                                    <label><bean:message
-                                            key="dashboard.dashboardmanager.dashboard.description"/></label>
+                                    <label><fmt:setBundle basename="oscarResources"/><fmt:message key="dashboard.dashboardmanager.dashboard.description"/></label>
                                     <textarea class="form-control editDashboard" name="dashboardDescription"></textarea>
                                 </div>
 
@@ -285,16 +283,16 @@
                                         <input type="checkbox" class="editDashboard" name="dashboardActive"
                                                id="dashboardActive"/>
 
-                                        <bean:message key="dashboard.dashboardmanager.dashboard.active"/></label>
+                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="dashboard.dashboardmanager.dashboard.active"/></label>
                                 </div>
 
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-default btn-success" id="saveDashboard">
-                                    <bean:message key="dashboard.dashboardmanager.dashboard.save"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="dashboard.dashboardmanager.dashboard.save"/>
                                 </button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">
-                                    <bean:message key="dashboard.dashboardmanager.dashboard.close"/>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="dashboard.dashboardmanager.dashboard.close"/>
                                 </button>
                             </div>
                         </form>

@@ -1,21 +1,21 @@
+//CHECKSTYLE:OFF
 /**
- *
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
@@ -40,9 +40,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -58,16 +58,14 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cWhatAreYourHopesForTheFuture",
-    "cWhatDoYouThinkYouNeedInOrderToGetThere",
-    "cHowDoYouViewYourMentalHealth",
-    "cIsSpiritualityAnImportantPartOfYourLife",
-    "cIsCultureHeritageAnImportantPartOfYourLife"
+        "cWhatAreYourHopesForTheFuture",
+        "cWhatDoYouThinkYouNeedInOrderToGetThere",
+        "cHowDoYouViewYourMentalHealth",
+        "cIsSpiritualityAnImportantPartOfYourLife",
+        "cIsCultureHeritageAnImportantPartOfYourLife"
 })
 @XmlRootElement(name = "CPlease_write_a_few_sentences_to_answer_the_following_questions_")
 public class CPleaseWriteAFewSentencesToAnswerTheFollowingQuestions {
@@ -85,11 +83,9 @@ public class CPleaseWriteAFewSentencesToAnswerTheFollowingQuestions {
 
     /**
      * Gets the value of the cWhatAreYourHopesForTheFuture property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCWhatAreYourHopesForTheFuture() {
         return cWhatAreYourHopesForTheFuture;
@@ -97,11 +93,9 @@ public class CPleaseWriteAFewSentencesToAnswerTheFollowingQuestions {
 
     /**
      * Sets the value of the cWhatAreYourHopesForTheFuture property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCWhatAreYourHopesForTheFuture(String value) {
         this.cWhatAreYourHopesForTheFuture = value;
@@ -109,11 +103,9 @@ public class CPleaseWriteAFewSentencesToAnswerTheFollowingQuestions {
 
     /**
      * Gets the value of the cWhatDoYouThinkYouNeedInOrderToGetThere property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCWhatDoYouThinkYouNeedInOrderToGetThere() {
         return cWhatDoYouThinkYouNeedInOrderToGetThere;
@@ -121,11 +113,9 @@ public class CPleaseWriteAFewSentencesToAnswerTheFollowingQuestions {
 
     /**
      * Sets the value of the cWhatDoYouThinkYouNeedInOrderToGetThere property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCWhatDoYouThinkYouNeedInOrderToGetThere(String value) {
         this.cWhatDoYouThinkYouNeedInOrderToGetThere = value;
@@ -133,11 +123,9 @@ public class CPleaseWriteAFewSentencesToAnswerTheFollowingQuestions {
 
     /**
      * Gets the value of the cHowDoYouViewYourMentalHealth property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCHowDoYouViewYourMentalHealth() {
         return cHowDoYouViewYourMentalHealth;
@@ -145,11 +133,9 @@ public class CPleaseWriteAFewSentencesToAnswerTheFollowingQuestions {
 
     /**
      * Sets the value of the cHowDoYouViewYourMentalHealth property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCHowDoYouViewYourMentalHealth(String value) {
         this.cHowDoYouViewYourMentalHealth = value;
@@ -157,11 +143,9 @@ public class CPleaseWriteAFewSentencesToAnswerTheFollowingQuestions {
 
     /**
      * Gets the value of the cIsSpiritualityAnImportantPartOfYourLife property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCIsSpiritualityAnImportantPartOfYourLife() {
         return cIsSpiritualityAnImportantPartOfYourLife;
@@ -169,11 +153,9 @@ public class CPleaseWriteAFewSentencesToAnswerTheFollowingQuestions {
 
     /**
      * Sets the value of the cIsSpiritualityAnImportantPartOfYourLife property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCIsSpiritualityAnImportantPartOfYourLife(String value) {
         this.cIsSpiritualityAnImportantPartOfYourLife = value;
@@ -181,11 +163,9 @@ public class CPleaseWriteAFewSentencesToAnswerTheFollowingQuestions {
 
     /**
      * Gets the value of the cIsCultureHeritageAnImportantPartOfYourLife property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCIsCultureHeritageAnImportantPartOfYourLife() {
         return cIsCultureHeritageAnImportantPartOfYourLife;
@@ -193,11 +173,9 @@ public class CPleaseWriteAFewSentencesToAnswerTheFollowingQuestions {
 
     /**
      * Sets the value of the cIsCultureHeritageAnImportantPartOfYourLife property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCIsCultureHeritageAnImportantPartOfYourLife(String value) {
         this.cIsCultureHeritageAnImportantPartOfYourLife = value;

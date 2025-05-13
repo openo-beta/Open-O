@@ -150,37 +150,6 @@
 
 
 <tag>
-  <name>help</name>
-  <tagclass>org.oscarehr.util.HelpTag</tagclass>
-  <bodycontent>empty</bodycontent>
-  <attribute>
-    <name>keywords</name>
-    <required>false</required>
-    <rtexprvalue>true</rtexprvalue>
-  </attribute>
-  <attribute>
-    <name>classString</name>
-    <required>false</required>
-    <rtexprvalue>true</rtexprvalue>
-  </attribute>
-  <attribute>
-    <name>searchLink</name>
-    <required>false</required>
-    <rtexprvalue>true</rtexprvalue>
-  </attribute>
-  <attribute>
-    <name>key</name>
-    <required>false</required>
-    <rtexprvalue>true</rtexprvalue>
-  </attribute>
-  <attribute>
-    <name>style</name>
-    <required>false</required>
-    <rtexprvalue>true</rtexprvalue>
-  </attribute>
-</tag>
-
-<tag>
   <name>customInterface</name>
   <tagclass>org.oscarehr.util.CustomInterfaceTag</tagclass>
   <bodycontent>empty</bodycontent>

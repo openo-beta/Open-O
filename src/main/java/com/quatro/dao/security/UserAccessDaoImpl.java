@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2005, 2009 IBM Corporation and others.
@@ -6,19 +7,19 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * Contributors:
- *     <Quatro Group Software Systems inc.>  <OSCAR Team>
- *
+ * <Quatro Group Software Systems inc.>  <OSCAR Team>
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 package com.quatro.dao.security;
@@ -34,10 +35,10 @@ public class UserAccessDaoImpl extends HibernateDaoSupport implements UserAccess
         String sSQL = "";
         if (shelterId != null && shelterId.intValue() > 0) {
             String s = "'%S" + shelterId.toString() + ",%'";
-            sSQL = "from UserAccessValue s where s.providerNo= ? " +
+            sSQL = "from UserAccessValue s where s.providerNo= ?0 " +
                     " and s.orgCdcsv like " + s + " order by s.functionCd, s.privilege desc, s.orgCd";
         } else {
-            sSQL = "from UserAccessValue s where s.providerNo= ? " +
+            sSQL = "from UserAccessValue s where s.providerNo= ?0 " +
                     " order by s.functionCd, s.privilege desc, s.orgCd";
         }
         return getHibernateTemplate().find(sSQL, providerNo);
@@ -48,12 +49,12 @@ public class UserAccessDaoImpl extends HibernateDaoSupport implements UserAccess
         String sSQL = "";
         if (shelterId != null && shelterId.intValue() > 0) {
             sSQL = "select distinct o.codecsv from UserAccessValue s, LstOrgcd o " +
-                    "where s.providerNo= ? and s.privilege>='r' and s.orgCd=o.code " +
+                    "where s.providerNo= ?0 and s.privilege>='r' and s.orgCd=o.code " +
                     " and o.codecsv like '%S" + shelterId.toString() + ",%'" +
                     " order by o.codecsv";
             return getHibernateTemplate().find(sSQL, providerNo);
         } else {
-            sSQL = "select distinct o.codecsv from UserAccessValue s, LstOrgcd o where s.providerNo= ? and s.privilege>='r' and s.orgCd=o.code order by o.codecsv";
+            sSQL = "select distinct o.codecsv from UserAccessValue s, LstOrgcd o where s.providerNo= ?0 and s.privilege>='r' and s.orgCd=o.code order by o.codecsv";
             return getHibernateTemplate().find(sSQL, providerNo);
         }
     }

@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 package org.oscarehr.integration.fhir.model;
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -6,16 +7,16 @@ package org.oscarehr.integration.fhir.model;
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -56,144 +57,143 @@ import org.oscarehr.common.model.Clinic;
 /**
  * A class that references a message senders header information.
  * This Object builds a FHIR MessageSourceComponent
- *
- * Future intentions of this class is for it to auto populate specific data 
+ * <p>
+ * Future intentions of this class is for it to auto populate specific data
  * according to its environment. For instance grabbing data from the OscarProperties settings.
- *
  */
 public class Sender {
 
-	private MessageSourceComponent messageSourceComponent;
-	private String vendorName;
-	private String softwareName;
-	private String versionSignature;
-	private String endpoint;
-	private String senderName;
-	private AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.Organization, Clinic> oscarFhirResource;
-	private org.hl7.fhir.dstu3.model.Organization organization;
-	private Clinic clinic;
-	
-	public Sender() {
-		setMessageSourceComponent( new MessageSourceComponent() );
-	}
-	
-	public Sender( String vendorName, String softwareName, String versionSignature ) {
-		setMessageSourceComponent( new MessageSourceComponent() );
-		setVendorName(vendorName);
-		setSoftwareName(softwareName);
-		setVersionSignature(versionSignature);
-	}
-	
-	public Sender( String vendorName, String softwareName, String versionSignature, String endpoint ) {
-		setMessageSourceComponent( new MessageSourceComponent() );
-		setVendorName(vendorName);
-		setSoftwareName(softwareName);
-		setVersionSignature(versionSignature);
-		setEndpoint(endpoint);
-	}
+    private MessageSourceComponent messageSourceComponent;
+    private String vendorName;
+    private String softwareName;
+    private String versionSignature;
+    private String endpoint;
+    private String senderName;
+    private AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.Organization, Clinic> oscarFhirResource;
+    private org.hl7.fhir.dstu3.model.Organization organization;
+    private Clinic clinic;
 
-	public MessageSourceComponent getMessageSourceComponent() {
-		return messageSourceComponent;
-	}
+    public Sender() {
+        setMessageSourceComponent(new MessageSourceComponent());
+    }
 
-	/**
-	 * Returns a component object that can be used inside FHIR resources.
-	 */
-	private void setMessageSourceComponent( MessageSourceComponent messageSourceComponent ) {
-		this.messageSourceComponent = messageSourceComponent;
-	}
+    public Sender(String vendorName, String softwareName, String versionSignature) {
+        setMessageSourceComponent(new MessageSourceComponent());
+        setVendorName(vendorName);
+        setSoftwareName(softwareName);
+        setVersionSignature(versionSignature);
+    }
 
-	public String getVendorName() {
-		return vendorName;
-	}
+    public Sender(String vendorName, String softwareName, String versionSignature, String endpoint) {
+        setMessageSourceComponent(new MessageSourceComponent());
+        setVendorName(vendorName);
+        setSoftwareName(softwareName);
+        setVersionSignature(versionSignature);
+        setEndpoint(endpoint);
+    }
 
-	/**
-	 * The vendor name for this Oscar Software product 
-	 * ie: Oscar EMR or Oscar Service Provider name.
-	 */
-	public void setVendorName(String vendorName) {
-		getMessageSourceComponent().setName( vendorName );
-		this.vendorName = vendorName;
-	}
+    public MessageSourceComponent getMessageSourceComponent() {
+        return messageSourceComponent;
+    }
 
-	public String getSoftwareName() {
-		return softwareName;
-	}
+    /**
+     * Returns a component object that can be used inside FHIR resources.
+     */
+    private void setMessageSourceComponent(MessageSourceComponent messageSourceComponent) {
+        this.messageSourceComponent = messageSourceComponent;
+    }
 
-	/**
-	 * The name of this Oscar software product
-	 * ie: CAISI, Oscar 12, Oscar 15.
-	 */
-	public void setSoftwareName(String softwareName) {
-		getMessageSourceComponent().setSoftware(softwareName);
-		this.softwareName = softwareName;
-	}
+    public String getVendorName() {
+        return vendorName;
+    }
 
-	public String getVersionSignature() {
-		return versionSignature;
-	}
+    /**
+     * The vendor name for this Oscar Software product
+     * ie: Oscar EMR or Oscar Service Provider name.
+     */
+    public void setVendorName(String vendorName) {
+        getMessageSourceComponent().setName(vendorName);
+        this.vendorName = vendorName;
+    }
 
-	/**
-	 * The version signature of this Oscar Software
-	 * ie: version 15 build 657 2017
-	 */
-	public void setVersionSignature(String versionSignature) {
-		getMessageSourceComponent().setVersion(versionSignature);
-		this.versionSignature = versionSignature;
-	}
+    public String getSoftwareName() {
+        return softwareName;
+    }
 
-	public String getEndpoint() {
-		return endpoint;
-	}
+    /**
+     * The name of this Oscar software product
+     * ie: CAISI, Oscar 12, Oscar 15.
+     */
+    public void setSoftwareName(String softwareName) {
+        getMessageSourceComponent().setSoftware(softwareName);
+        this.softwareName = softwareName;
+    }
 
-	/**
-	 * The end point connection to this Oscar server.
-	 * ie: https://my.oscarserver.ca/oscar/ws/etc
-	 */
-	public void setEndpoint(String endpoint) {
-		getMessageSourceComponent().setEndpoint(endpoint);
-		this.endpoint = endpoint;
-	}
+    public String getVersionSignature() {
+        return versionSignature;
+    }
 
-	public org.hl7.fhir.dstu3.model.Organization getOrganization() {
-		return this.organization;
-	}
+    /**
+     * The version signature of this Oscar Software
+     * ie: version 15 build 657 2017
+     */
+    public void setVersionSignature(String versionSignature) {
+        getMessageSourceComponent().setVersion(versionSignature);
+        this.versionSignature = versionSignature;
+    }
 
-	public void setOrganization( org.hl7.fhir.dstu3.model.Organization organization ) {
-		this.organization = organization;
-	}
+    public String getEndpoint() {
+        return endpoint;
+    }
 
-	public org.oscarehr.common.model.Clinic getClinic() {
-		return this.clinic;
-	}
+    /**
+     * The end point connection to this Oscar server.
+     * ie: https://my.oscarserver.ca/oscar/ws/etc
+     */
+    public void setEndpoint(String endpoint) {
+        getMessageSourceComponent().setEndpoint(endpoint);
+        this.endpoint = endpoint;
+    }
 
-	public void setClinic( org.oscarehr.common.model.Clinic clinic ) {
-		if(clinic != null) {
-			setSenderName( clinic.getClinicName() );
-			setOscarFhirResource(new Organization<Clinic>(clinic));
-		}
-		this.clinic = clinic;
-	}
-	
-	public AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.Organization, Clinic> getOscarFhirResource() {
-		return oscarFhirResource;
-	}
+    public org.hl7.fhir.dstu3.model.Organization getOrganization() {
+        return this.organization;
+    }
 
-	public void setOscarFhirResource( AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.Organization, Clinic> oscarFhirResource ) {
-		this.organization = oscarFhirResource.getFhirResource();
-		this.clinic = oscarFhirResource.getOscarResource();
-		this.oscarFhirResource = oscarFhirResource;
-	}
+    public void setOrganization(org.hl7.fhir.dstu3.model.Organization organization) {
+        this.organization = organization;
+    }
 
-	public String getSenderName() {
-		return senderName;
-	}
+    public org.oscarehr.common.model.Clinic getClinic() {
+        return this.clinic;
+    }
 
-	public void setSenderName(String senderName) {
-		this.senderName = senderName;
-	}
+    public void setClinic(org.oscarehr.common.model.Clinic clinic) {
+        if (clinic != null) {
+            setSenderName(clinic.getClinicName());
+            setOscarFhirResource(new Organization<Clinic>(clinic));
+        }
+        this.clinic = clinic;
+    }
 
-	 public String toString() {
-	     return ReflectionToStringBuilder.toString(this);
-	 }
+    public AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.Organization, Clinic> getOscarFhirResource() {
+        return oscarFhirResource;
+    }
+
+    public void setOscarFhirResource(AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.Organization, Clinic> oscarFhirResource) {
+        this.organization = oscarFhirResource.getFhirResource();
+        this.clinic = oscarFhirResource.getOscarResource();
+        this.oscarFhirResource = oscarFhirResource;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
 }

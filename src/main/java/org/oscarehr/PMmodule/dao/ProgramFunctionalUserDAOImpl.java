@@ -1,26 +1,27 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
- *
+ * <p>
  * Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for
  * Centre for Research on Inner City Health, St. Michael's Hospital,
  * Toronto, Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -51,8 +52,8 @@ public class ProgramFunctionalUserDAOImpl extends HibernateDaoSupport implements
 
     @Override
     public List<FunctionalUserType> getFunctionalUserTypes() {
-        List<FunctionalUserType> results = (List<FunctionalUserType>) this.getHibernateTemplate()
-                .find("from FunctionalUserType");
+        String sSQL = "from FunctionalUserType";
+        List<FunctionalUserType> results = (List<FunctionalUserType>) this.getHibernateTemplate().find(sSQL);
 
         if (log.isDebugEnabled()) {
             log.debug("getFunctionalUserTypes: # of results=" + results.size());
@@ -107,8 +108,8 @@ public class ProgramFunctionalUserDAOImpl extends HibernateDaoSupport implements
             throw new IllegalArgumentException();
         }
 
-        List<FunctionalUserType> results = (List<FunctionalUserType>) this.getHibernateTemplate()
-                .find("from ProgramFunctionalUser pfu where pfu.ProgramId = ?", programId);
+        String sSQL = "from ProgramFunctionalUser pfu where pfu.ProgramId = ?0";
+        List<FunctionalUserType> results = (List<FunctionalUserType>) this.getHibernateTemplate().find(sSQL, programId);
 
         if (log.isDebugEnabled()) {
             log.debug("getFunctionalUsers: programId=" + programId + ",# of results=" + results.size());
@@ -168,12 +169,11 @@ public class ProgramFunctionalUserDAOImpl extends HibernateDaoSupport implements
 
         Long result = null;
 
-        // Session session = getSession();
+        String query = "select pfu.ProgramId from ProgramFunctionalUser pfu where pfu.ProgramId = ?0 and pfu.UserTypeId = ?1";
         Session session = sessionFactory.getCurrentSession();
-        Query q = session.createQuery(
-                "select pfu.ProgramId from ProgramFunctionalUser pfu where pfu.ProgramId = ? and pfu.UserTypeId = ?");
-        q.setLong(0, programId.longValue());
-        q.setLong(1, userTypeId.longValue());
+        Query q = session.createQuery(query);
+        q.setLong(1, programId.longValue());
+        q.setLong(2, userTypeId.longValue());
         List results = new ArrayList();
         try {
             results = q.list();

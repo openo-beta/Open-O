@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -38,104 +38,104 @@ import org.oscarehr.util.SpringUtils;
 
 public class AllergyDaoTest extends DaoTestFixtures {
 
-	protected AllergyDao dao = (AllergyDao) SpringUtils.getBean(AllergyDao.class);
+    protected AllergyDao dao = (AllergyDao) SpringUtils.getBean(AllergyDao.class);
 
-	public AllergyDaoTest() {
-	}
+    public AllergyDaoTest() {
+    }
 
-	@Before
-	public void before() throws Exception {
-		SchemaUtils.restoreTable(new String[] { "allergies", "demographic_merged" });
-	}
+    @Before
+    public void before() throws Exception {
+        SchemaUtils.restoreTable(new String[]{"allergies", "demographic_merged"});
+    }
 
-	@Test
-	public void testCreate() throws Exception {
-		Allergy allergy = new Allergy();
-		EntityDataGenerator.generateTestDataForModelClass(allergy);
-		dao.persist(allergy);
-		assertNotNull(allergy.getId());
-	}
+    @Test
+    public void testCreate() throws Exception {
+        Allergy allergy = new Allergy();
+        EntityDataGenerator.generateTestDataForModelClass(allergy);
+        dao.persist(allergy);
+        assertNotNull(allergy.getId());
+    }
 
-	@Test
-	public void testCount() throws Exception {
-		Allergy allergy = new Allergy();
-		EntityDataGenerator.generateTestDataForModelClass(allergy);
-		dao.persist(allergy);
-		assertEquals(dao.getCountAll(), 1);
+    @Test
+    public void testCount() throws Exception {
+        Allergy allergy = new Allergy();
+        EntityDataGenerator.generateTestDataForModelClass(allergy);
+        dao.persist(allergy);
+        assertEquals(dao.getCountAll(), 1);
 
-	}
+    }
 
-	@Test
-	public void testFindAllergies() throws Exception {
-		Allergy allergy = new Allergy();
-		EntityDataGenerator.generateTestDataForModelClass(allergy);
-		allergy.setDemographicNo(1);
-		dao.persist(allergy);
+    @Test
+    public void testFindAllergies() throws Exception {
+        Allergy allergy = new Allergy();
+        EntityDataGenerator.generateTestDataForModelClass(allergy);
+        allergy.setDemographicNo(1);
+        dao.persist(allergy);
 
-		allergy = new Allergy();
-		EntityDataGenerator.generateTestDataForModelClass(allergy);
-		allergy.setDemographicNo(1);
-		dao.persist(allergy);
+        allergy = new Allergy();
+        EntityDataGenerator.generateTestDataForModelClass(allergy);
+        allergy.setDemographicNo(1);
+        dao.persist(allergy);
 
-		allergy = new Allergy();
-		EntityDataGenerator.generateTestDataForModelClass(allergy);
-		allergy.setDemographicNo(2);
-		dao.persist(allergy);
+        allergy = new Allergy();
+        EntityDataGenerator.generateTestDataForModelClass(allergy);
+        allergy.setDemographicNo(2);
+        dao.persist(allergy);
 
-		assertEquals(dao.findAllergies(1).size(), 2);
-		assertEquals(dao.findAllergies(2).size(), 1);
-		
-		Calendar cal=new GregorianCalendar();
-		cal.add(Calendar.DAY_OF_YEAR, -1);
-		List<Allergy> results=dao.findByUpdateDate(cal.getTime(), 99);
-		assertTrue(results.size()>0);
+        assertEquals(dao.findAllergies(1).size(), 2);
+        assertEquals(dao.findAllergies(2).size(), 1);
 
-		cal.add(Calendar.DAY_OF_YEAR, 2);
-		results=dao.findByUpdateDate(cal.getTime(), 99);
-		assertEquals(0, results.size());
-	}
+        Calendar cal = new GregorianCalendar();
+        cal.add(Calendar.DAY_OF_YEAR, -1);
+        List<Allergy> results = dao.findByUpdateDate(cal.getTime(), 99);
+        assertTrue(results.size() > 0);
 
-	@Test
-	public void testFindActive() throws Exception {
-		Allergy allergy = new Allergy();
-		EntityDataGenerator.generateTestDataForModelClass(allergy);
-		allergy.setDemographicNo(3);
-		allergy.setArchived(false);
-		dao.persist(allergy);
+        cal.add(Calendar.DAY_OF_YEAR, 2);
+        results = dao.findByUpdateDate(cal.getTime(), 99);
+        assertEquals(0, results.size());
+    }
 
-		allergy = new Allergy();
-		EntityDataGenerator.generateTestDataForModelClass(allergy);
-		allergy.setDemographicNo(3);
-		allergy.setArchived(false);
-		dao.persist(allergy);
+    @Test
+    public void testFindActive() throws Exception {
+        Allergy allergy = new Allergy();
+        EntityDataGenerator.generateTestDataForModelClass(allergy);
+        allergy.setDemographicNo(3);
+        allergy.setArchived(false);
+        dao.persist(allergy);
 
-		allergy = new Allergy();
-		EntityDataGenerator.generateTestDataForModelClass(allergy);
-		allergy.setDemographicNo(3);
-		allergy.setArchived(true);
-		dao.persist(allergy);
+        allergy = new Allergy();
+        EntityDataGenerator.generateTestDataForModelClass(allergy);
+        allergy.setDemographicNo(3);
+        allergy.setArchived(false);
+        dao.persist(allergy);
 
-		assertEquals(dao.findActiveAllergies(3).size(), 2);
+        allergy = new Allergy();
+        EntityDataGenerator.generateTestDataForModelClass(allergy);
+        allergy.setDemographicNo(3);
+        allergy.setArchived(true);
+        dao.persist(allergy);
 
-	}
+        assertEquals(dao.findActiveAllergies(3).size(), 2);
 
-	public void testFind() throws Exception {
-		Allergy allergy = new Allergy();
-		EntityDataGenerator.generateTestDataForModelClass(allergy);
-		dao.persist(allergy);
-		Integer id = allergy.getId();
-		allergy = dao.find(allergy.getId());
-		assertNotNull(allergy);
-		assertEquals(id, allergy.getId());
-	}
+    }
 
-	@Test
-	public void testDelete() throws Exception {
-		Allergy allergy = new Allergy();
-		EntityDataGenerator.generateTestDataForModelClass(allergy);
-		dao.persist(allergy);
-		dao.remove(allergy.getId());
-		assertEquals(dao.getCountAll(), 0);
+    public void testFind() throws Exception {
+        Allergy allergy = new Allergy();
+        EntityDataGenerator.generateTestDataForModelClass(allergy);
+        dao.persist(allergy);
+        Integer id = allergy.getId();
+        allergy = dao.find(allergy.getId());
+        assertNotNull(allergy);
+        assertEquals(id, allergy.getId());
+    }
 
-	}
+    @Test
+    public void testDelete() throws Exception {
+        Allergy allergy = new Allergy();
+        EntityDataGenerator.generateTestDataForModelClass(allergy);
+        dao.persist(allergy);
+        dao.remove(allergy.getId());
+        assertEquals(dao.getCountAll(), 0);
+
+    }
 }

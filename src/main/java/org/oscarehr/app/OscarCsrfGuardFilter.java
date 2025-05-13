@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -5,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -50,50 +51,50 @@ import java.util.Set;
 
 /**
  * Oscar OscarCsrfGuardFilter
- * A CsrfGuardFilter implementation that supports detecting and paring multipart/form-data requests in addition to 
+ * A CsrfGuardFilter implementation that supports detecting and paring multipart/form-data requests in addition to
  * the existing support
  */
 public class OscarCsrfGuardFilter implements Filter {
 
-	private FilterConfig filterConfig = null;
+    private FilterConfig filterConfig = null;
 
-	@Override
-	public void destroy() {
-		filterConfig = null;
-	}
+    @Override
+    public void destroy() {
+        filterConfig = null;
+    }
 
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
-		CsrfGuard csrfGuard = CsrfGuard.getInstance();
+        CsrfGuard csrfGuard = CsrfGuard.getInstance();
 
-		//maybe the short circuit to disable is set
-		if (!csrfGuard.isEnabled()) {
-			filterChain.doFilter(request, response);
-			return;
-		}
+        //maybe the short circuit to disable is set
+        if (!csrfGuard.isEnabled()) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-		/* only work with HttpServletRequest objects */
-		if (request instanceof HttpServletRequest && response instanceof HttpServletResponse) {
+        /* only work with HttpServletRequest objects */
+        if (request instanceof HttpServletRequest && response instanceof HttpServletResponse) {
 
-			HttpServletRequest httpRequest = (HttpServletRequest) request;
-			HttpSession session = httpRequest.getSession(false);
+            HttpServletRequest httpRequest = (HttpServletRequest) request;
+            HttpSession session = httpRequest.getSession(false);
 
-			/*
-			 * if there is no session and we aren't validating when no session exists.
-			 * OR if this page request is indicated as unprotected in the CsrfGuard properties.
-			 * This mainly applies to uploads coming through the authenticated SOAP or REST API.
-			 * If true: short circuit the process.
-			 */
-			if ( (session == null && !csrfGuard.isValidateWhenNoSessionExists())
-					|| ! csrfGuard.isProtectedPage(httpRequest.getRequestURI()) )  {
-				filterChain.doFilter(httpRequest, response);
-				return;
-			}
+            /*
+             * if there is no session and we aren't validating when no session exists.
+             * OR if this page request is indicated as unprotected in the CsrfGuard properties.
+             * This mainly applies to uploads coming through the authenticated SOAP or REST API.
+             * If true: short circuit the process.
+             */
+            if ((session == null && !csrfGuard.isValidateWhenNoSessionExists())
+                    || !csrfGuard.isProtectedPage(httpRequest.getRequestURI())) {
+                filterChain.doFilter(httpRequest, response);
+                return;
+            }
 
-			MiscUtils.getLogger().debug(String.format("CsrfGuard Filter analyzing request %s", httpRequest.getRequestURI()));
+            MiscUtils.getLogger().debug(String.format("CsrfGuard Filter analyzing request %s", httpRequest.getRequestURI()));
 
-			// Default to not redirect unless csrf_do_redirect is set 
+            // Default to not redirect unless csrf_do_redirect is set
             // TODO: reverse this when there are more pages by csrf covered 
             boolean doRedirect = false;
             if (OscarProperties.getInstance().getProperty("csrf_do_redirect") != null) {
@@ -110,9 +111,9 @@ public class OscarCsrfGuardFilter implements Filter {
                 csrfGuard.getActions().remove(redirectActionToRemove);
             }
 
-			InterceptRedirectResponse httpResponse = new InterceptRedirectResponse((HttpServletResponse) response, httpRequest, csrfGuard);
+            InterceptRedirectResponse httpResponse = new InterceptRedirectResponse((HttpServletResponse) response, httpRequest, csrfGuard);
 
-			if ((session != null && session.isNew()) && csrfGuard.isUseNewTokenLandingPage()) {
+            if ((session != null && session.isNew()) && csrfGuard.isUseNewTokenLandingPage()) {
                 csrfGuard.writeLandingPage(httpRequest, httpResponse);
             } else if (ServletFileUpload.isMultipartContent(httpRequest)) {
                 MultiReadHttpServletRequest multiReadHttpRequest = new MultiReadHttpServletRequest(httpRequest);
@@ -121,26 +122,26 @@ public class OscarCsrfGuardFilter implements Filter {
                 } else if (!doRedirect) {
                     filterChain.doFilter(multiReadHttpRequest, httpResponse);
                 }
-			} else if (csrfGuard.isValidRequest(httpRequest, httpResponse)) {
-				filterChain.doFilter(httpRequest, httpResponse);
-			} else if (!doRedirect) {
+            } else if (csrfGuard.isValidRequest(httpRequest, httpResponse)) {
                 filterChain.doFilter(httpRequest, httpResponse);
-			}
+            } else if (!doRedirect) {
+                filterChain.doFilter(httpRequest, httpResponse);
+            }
 
-			/* update tokens */
-			csrfGuard.updateTokens(httpRequest);
+            /* update tokens */
+            csrfGuard.updateTokens(httpRequest);
 
-		} else {
-			filterConfig.getServletContext().log(String.format("[WARNING] CsrfGuard does not know how to work with requests of class %s ", request.getClass().getName()));
+        } else {
+            filterConfig.getServletContext().log(String.format("[WARNING] CsrfGuard does not know how to work with requests of class %s ", request.getClass().getName()));
 
-			filterChain.doFilter(request, response);
-		}
-	}
+            filterChain.doFilter(request, response);
+        }
+    }
 
-	@Override
-	public void init(@SuppressWarnings("hiding") FilterConfig filterConfig) throws ServletException {
-		this.filterConfig = filterConfig;
-	}
+    @Override
+    public void init(@SuppressWarnings("hiding") FilterConfig filterConfig) throws ServletException {
+        this.filterConfig = filterConfig;
+    }
 
     private boolean isValidMultipartRequest(MultiReadHttpServletRequest request, HttpServletResponse response) {
         CsrfGuard csrfGuard = CsrfGuard.getInstance();
@@ -197,7 +198,7 @@ public class OscarCsrfGuardFilter implements Filter {
 
         return valid;
     }
-    
+
     private boolean isAjaxRequest(MultiReadHttpServletRequest request) {
         return request.getHeader("X-Requested-With") != null;
     }
@@ -254,6 +255,7 @@ public class OscarCsrfGuardFilter implements Filter {
             }
         }
     }
+
     private void rotateTokens(MultiReadHttpServletRequest request) {
         CsrfGuard csrfGuard = CsrfGuard.getInstance();
         HttpSession session = request.getSession(true);

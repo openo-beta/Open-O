@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
@@ -5,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -89,10 +90,10 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
 
     Hashtable<String, MeasurementFlowSheet> flowsheets = null;
 
-    HashMap<String,Flowsheet> flowsheetSettings = null;
+    HashMap<String, Flowsheet> flowsheetSettings = null;
 
-    public Hashtable<String,File> getFileMap() {
-    	return flowsheetFiles;
+    public Hashtable<String, File> getFileMap() {
+        return flowsheetFiles;
     }
 
     public void afterPropertiesSet() throws Exception {
@@ -186,54 +187,54 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
         return flowsheetDisplayNames.get(name);
     }
 
-    public Hashtable<String, String> getFlowsheetDisplayNames(){
+    public Hashtable<String, String> getFlowsheetDisplayNames() {
         return flowsheetDisplayNames;
     }
-    
-  
-    public String addFlowsheet(MeasurementFlowSheet m ){
-        if( m.getName() == null || m.getName().equals("")){
-            m.setName("U"+(flowsheets.size()+1));
+
+
+    public String addFlowsheet(MeasurementFlowSheet m) {
+        if (m.getName() == null || m.getName().equals("")) {
+            m.setName("U" + (flowsheets.size() + 1));
         }
 
-        flowsheets.put(m.getName(),m);
+        flowsheets.put(m.getName(), m);
         flowsheetDisplayNames.put(m.getName(), m.getDisplayName());
-        addTriggers(m.getDxTriggers(),m.getName());
+        addTriggers(m.getDxTriggers(), m.getName());
         return m.getName();
     }
 
-    public void enableFlowsheet(String name)  {
-    	FlowsheetDao flowsheetDao = (FlowsheetDao)SpringUtils.getBean(FlowsheetDao.class);
-    	Flowsheet fs = flowsheetDao.findByName(name);
-    	if(fs != null) {
-    		fs.setEnabled(true);
-    		flowsheetDao.merge(fs);
-    	} else {
-    		fs = new Flowsheet();
-    		fs.setCreatedDate(new Date());
-    		fs.setEnabled(false);
-    		fs.setExternal(true);
-    		fs.setName(name);
-    		flowsheetDao.persist(fs);
-    	}
-    	reloadFlowsheets();
+    public void enableFlowsheet(String name) {
+        FlowsheetDao flowsheetDao = (FlowsheetDao) SpringUtils.getBean(FlowsheetDao.class);
+        Flowsheet fs = flowsheetDao.findByName(name);
+        if (fs != null) {
+            fs.setEnabled(true);
+            flowsheetDao.merge(fs);
+        } else {
+            fs = new Flowsheet();
+            fs.setCreatedDate(new Date());
+            fs.setEnabled(false);
+            fs.setExternal(true);
+            fs.setName(name);
+            flowsheetDao.persist(fs);
+        }
+        reloadFlowsheets();
     }
 
-    public void disableFlowsheet(String name)  {
-    	FlowsheetDao flowsheetDao = (FlowsheetDao)SpringUtils.getBean(FlowsheetDao.class);
-    	Flowsheet fs = flowsheetDao.findByName(name);
-    	if(fs != null) {
-    		fs.setEnabled(false);
-    		flowsheetDao.merge(fs);
-    	} else {
-    		fs = new Flowsheet();
-    		fs.setCreatedDate(new Date());
-    		fs.setEnabled(false);
-    		fs.setExternal(true);
-    		fs.setName(name);
-    		flowsheetDao.persist(fs);
-    	}
-    	reloadFlowsheets();
+    public void disableFlowsheet(String name) {
+        FlowsheetDao flowsheetDao = (FlowsheetDao) SpringUtils.getBean(FlowsheetDao.class);
+        Flowsheet fs = flowsheetDao.findByName(name);
+        if (fs != null) {
+            fs.setEnabled(false);
+            flowsheetDao.merge(fs);
+        } else {
+            fs = new Flowsheet();
+            fs.setCreatedDate(new Date());
+            fs.setEnabled(false);
+            fs.setExternal(true);
+            fs.setName(name);
+            flowsheetDao.persist(fs);
+        }
+        reloadFlowsheets();
     }
 
     public void reloadFlowsheets() {
@@ -249,53 +250,53 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
     }
 
     void loadFlowsheets() {
-    	FlowsheetDao flowsheetDao = (FlowsheetDao)SpringUtils.getBean(FlowsheetDao.class);
-    	FlowSheetUserCreatedDao flowSheetUserCreatedDao = (FlowSheetUserCreatedDao) SpringUtils.getBean(FlowSheetUserCreatedDao.class);
+        FlowsheetDao flowsheetDao = (FlowsheetDao) SpringUtils.getBean(FlowsheetDao.class);
+        FlowSheetUserCreatedDao flowSheetUserCreatedDao = (FlowSheetUserCreatedDao) SpringUtils.getBean(FlowSheetUserCreatedDao.class);
 
         flowsheets = new Hashtable<String, MeasurementFlowSheet>();
-        flowsheetSettings = new HashMap<String,Flowsheet>();
+        flowsheetSettings = new HashMap<String, Flowsheet>();
 
         EctMeasurementTypeBeanHandler mType = new EctMeasurementTypeBeanHandler();
         //TODO: Will change this when there are more flowsheets
         log.debug("LOADING FLOWSSHEETS");
         for (File flowSheet : flowSheets) {
-        	InputStream is = null;
-        	try {
-	            is = new FileInputStream(flowSheet);
-	            MeasurementFlowSheet d = createflowsheet(mType, is);
-	            flowsheets.put(d.getName(), d);
-	            if (d.isUniversal())
-	                universalFlowSheets.add(d.getName());
-	            else if(d.getDxTriggers()!=null && d.getDxTriggers().length>0){
-	                String[] dxTrig = d.getDxTriggers();
-	                addTriggers(dxTrig, d.getName());
-	            } else if(d.getProgramTriggers()!=null && d.getProgramTriggers().length>0) {
-	            	String[] programTrig = d.getProgramTriggers();
-	            	addProgramTriggers(programTrig,d.getName());
-	            }
+            InputStream is = null;
+            try {
+                is = new FileInputStream(flowSheet);
+                MeasurementFlowSheet d = createflowsheet(mType, is);
+                flowsheets.put(d.getName(), d);
+                if (d.isUniversal())
+                    universalFlowSheets.add(d.getName());
+                else if (d.getDxTriggers() != null && d.getDxTriggers().length > 0) {
+                    String[] dxTrig = d.getDxTriggers();
+                    addTriggers(dxTrig, d.getName());
+                } else if (d.getProgramTriggers() != null && d.getProgramTriggers().length > 0) {
+                    String[] programTrig = d.getProgramTriggers();
+                    addProgramTriggers(programTrig, d.getName());
+                }
 
-	            flowsheetDisplayNames.put(d.getName(), d.getDisplayName());
-	            Flowsheet tmp = flowsheetDao.findByName(d.getName());
-	            if(tmp!=null) {
-	            	flowsheetSettings.put(d.getName(), tmp);
-	            }
-        	}catch(Exception e) {
-        		MiscUtils.getLogger().error("error",e);
-        	} finally {
-        		if(is != null) {
-        			try {
-        				is.close();
-        			}catch(IOException e) {
-        				MiscUtils.getLogger().error("error",e);
-        			}
-        		}
-        	}
+                flowsheetDisplayNames.put(d.getName(), d.getDisplayName());
+                Flowsheet tmp = flowsheetDao.findByName(d.getName());
+                if (tmp != null) {
+                    flowsheetSettings.put(d.getName(), tmp);
+                }
+            } catch (Exception e) {
+                MiscUtils.getLogger().error("error", e);
+            } finally {
+                if (is != null) {
+                    try {
+                        is.close();
+                    } catch (IOException e) {
+                        MiscUtils.getLogger().error("error", e);
+                    }
+                }
+            }
         }
         List<FlowSheetUserCreated> flowSheetUserCreateds = flowSheetUserCreatedDao.getAllUserCreatedFlowSheets();
-        for(FlowSheetUserCreated flowSheetUserCreated: flowSheetUserCreateds){
+        for (FlowSheetUserCreated flowSheetUserCreated : flowSheetUserCreateds) {
 
-        	MeasurementFlowSheet m = new MeasurementFlowSheet();
-        	m.setName(flowSheetUserCreated.getName());
+            MeasurementFlowSheet m = new MeasurementFlowSheet();
+            m.setName(flowSheetUserCreated.getName());
             m.parseDxTriggers(flowSheetUserCreated.getDxcodeTriggers());
             m.setDisplayName(flowSheetUserCreated.getDisplayName());
             m.setWarningColour(flowSheetUserCreated.getWarningColour());
@@ -306,42 +307,42 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
             addTriggers(dxTrig, m.getName());
             flowsheetDisplayNames.put(m.getName(), m.getDisplayName());
             Flowsheet tmp = flowsheetDao.findByName(m.getName());
-            if(tmp!=null) {
-            	flowsheetSettings.put(m.getName(), tmp);
+            if (tmp != null) {
+                flowsheetSettings.put(m.getName(), tmp);
             }
         }
 
-        for(Flowsheet fs:flowsheetDao.findAll()) {
-        	if(fs.isExternal()){
-        		continue;
-        	}
-        	String data = fs.getContent();
-        	InputStream is = null;
-        	try {
-                 is = new ByteArrayInputStream(data.getBytes("UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                MiscUtils.getLogger().error("error",e);
+        for (Flowsheet fs : flowsheetDao.findAll()) {
+            if (fs.isExternal()) {
                 continue;
             }
-        	MeasurementFlowSheet d = createflowsheet(mType, is);
-        	flowsheets.put(d.getName(), d);
+            String data = fs.getContent();
+            InputStream is = null;
+            try {
+                is = new ByteArrayInputStream(data.getBytes("UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                MiscUtils.getLogger().error("error", e);
+                continue;
+            }
+            MeasurementFlowSheet d = createflowsheet(mType, is);
+            flowsheets.put(d.getName(), d);
             if (d.isUniversal())
                 universalFlowSheets.add(d.getName());
-            else if(d.getDxTriggers()!=null && d.getDxTriggers().length>0){
+            else if (d.getDxTriggers() != null && d.getDxTriggers().length > 0) {
                 String[] dxTrig = d.getDxTriggers();
                 addTriggers(dxTrig, d.getName());
-            } else if(d.getProgramTriggers()!=null && d.getProgramTriggers().length>0) {
-            	String[] programTrig = d.getProgramTriggers();
-            	addProgramTriggers(programTrig,d.getName());
+            } else if (d.getProgramTriggers() != null && d.getProgramTriggers().length > 0) {
+                String[] programTrig = d.getProgramTriggers();
+                addProgramTriggers(programTrig, d.getName());
             }
             flowsheetDisplayNames.put(d.getName(), d.getDisplayName());
-            flowsheetSettings.put(d.getName(),fs);
+            flowsheetSettings.put(d.getName(), fs);
         }
 
     }
 
-    public HashMap<String,Flowsheet> getFlowsheetSettings() {
-    	return flowsheetSettings;
+    public HashMap<String, Flowsheet> getFlowsheetSettings() {
+        return flowsheetSettings;
     }
 
     public ArrayList<String> getFlowsheetForDxCode(String code) {
@@ -393,18 +394,18 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
     }
 
 
-    public MeasurementFlowSheet createflowsheet(InputStream is ){
-         EctMeasurementTypeBeanHandler mType = new EctMeasurementTypeBeanHandler();
-         MeasurementFlowSheet d = createflowsheet(mType,is);
+    public MeasurementFlowSheet createflowsheet(InputStream is) {
+        EctMeasurementTypeBeanHandler mType = new EctMeasurementTypeBeanHandler();
+        MeasurementFlowSheet d = createflowsheet(mType, is);
 
 
-            flowsheets.put(d.getName(), d);
-            flowsheetDisplayNames.put(d.getName(), d.getDisplayName());
-            return d;
+        flowsheets.put(d.getName(), d);
+        flowsheetDisplayNames.put(d.getName(), d.getDisplayName());
+        return d;
     }
 
-    private void processItems(List<Element> elements, List<Node> aLevels, Node parent, MeasurementFlowSheet mFlowSheet ) {
-        for( Element e: elements) {
+    private void processItems(List<Element> elements, List<Node> aLevels, Node parent, MeasurementFlowSheet mFlowSheet) {
+        for (Element e : elements) {
             Hashtable<String, String> h = new Hashtable<String, String>();
             List<Attribute> attr = e.getAttributes();
             for (Attribute att : attr) {
@@ -414,32 +415,31 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
             Node node = new Node();
             node.flowSheetItem = item;
             node.parent = parent;
-            if( e.getName().equalsIgnoreCase("header") ) {
-                List<Element>children = e.getChildren();
+            if (e.getName().equalsIgnoreCase("header")) {
+                List<Element> children = e.getChildren();
                 node.children = new ArrayList<Node>();
                 aLevels.add(node);
-                processItems(children,node.children, node, mFlowSheet);
-            }
-            else if( e.getName().equalsIgnoreCase("item") ) {
+                processItems(children, node.children, node, mFlowSheet);
+            } else if (e.getName().equalsIgnoreCase("item")) {
 
-            	String item_type = h.get("measurement_type");
-            	if (item_type==null) item_type = h.get("prevention_type");
-            	
+                String item_type = h.get("measurement_type");
+                if (item_type == null) item_type = h.get("prevention_type");
+
                 if (item_type != null) {
 
                     log.debug("ADDING " + item_type);
 
                     int ruleCount = 0;
-                    Element rules  = e.getChild("rules");
-                    if (rules !=null){
-                       List<Element> recomends = rules.getChildren("recommendation");
-                       List<Recommendation> ds = new ArrayList<Recommendation>();
-                       for(Element reco: recomends){
-                           ruleCount++;
-                            ds.add(new Recommendation(reco, item_type+ruleCount, item_type));
-                       }
-                       MiscUtils.getLogger().debug(""+ item_type+ " adding ds  "+ds);
-                       item.setRecommendations(ds);
+                    Element rules = e.getChild("rules");
+                    if (rules != null) {
+                        List<Element> recomends = rules.getChildren("recommendation");
+                        List<Recommendation> ds = new ArrayList<Recommendation>();
+                        for (Element reco : recomends) {
+                            ruleCount++;
+                            ds.add(new Recommendation(reco, item_type + ruleCount, item_type));
+                        }
+                        MiscUtils.getLogger().debug("" + item_type + " adding ds  " + ds);
+                        item.setRecommendations(ds);
                     }
                     //<rules>
                     //  <recommendation between="3m-6m">Blood Glucose hasn't been reviewed in $NUMMONTHS months"</recommendation>
@@ -460,10 +460,10 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
                      */
                     Element rulesets = e.getChild("ruleset");
                     List<TargetColour> rs = new ArrayList<TargetColour>();
-                    if (rulesets != null){
+                    if (rulesets != null) {
                         List<Element> rulez = rulesets.getChildren("rule");
-                        if (rulez != null){
-                            for(Element r: rulez){
+                        if (rulez != null) {
+                            for (Element r : rulez) {
                                 rs.add(new TargetColour(r));
                                 //r.getAttributeValue("indicatorColour");
                             }
@@ -471,9 +471,9 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
 
                     }
 
-                    log.debug(" meas "+item_type+"  size "+rs.size());
+                    log.debug(" meas " + item_type + "  size " + rs.size());
 
-                    if (rs.size() > 0){
+                    if (rs.size() > 0) {
                         item.setTargetColour(rs);
                     }
 
@@ -495,7 +495,7 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
         public int numSibling = -1;
 
         public Node getFirstChild() {
-            if( children != null && children.size() > 0 ) {
+            if (children != null && children.size() > 0) {
                 numSibling = 0;
                 return children.get(numSibling);
             }
@@ -505,9 +505,9 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
 
         public Node getNextSibling() {
 
-            if( parent != null) {
+            if (parent != null) {
                 ++parent.numSibling;
-                if( parent.numSibling < parent.children.size() ) {
+                if (parent.numSibling < parent.children.size()) {
                     return parent.children.get(parent.numSibling);
                 }
             }
@@ -516,11 +516,11 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
         }
 
         public boolean hasNextSibling() {
-            if( parent == null ) {
+            if (parent == null) {
                 return false;
             }
 
-            return (parent.numSibling < parent.children.size()-1);
+            return (parent.numSibling < parent.children.size() - 1);
         }
     }
 
@@ -564,7 +564,7 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
                 d.setTopHTMLFileName(root.getAttribute("top_HTML").getValue());
             }
 
-            if (root.getAttribute("ds_rules") != null && root.getAttribute("ds_rules").getValue().length()>0 ) {
+            if (root.getAttribute("ds_rules") != null && root.getAttribute("ds_rules").getValue().length() > 0) {
                 d.loadRuleBase(root.getAttribute("ds_rules").getValue());
             }
             if (root.getAttribute("dxcode_triggers") != null) {
@@ -597,11 +597,11 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
     }
 
     public MeasurementFlowSheet validateFlowsheet(String data) {
-    	InputStream is = null;
-    	try {
-             is = new ByteArrayInputStream(data.getBytes("UTF-8"));
+        InputStream is = null;
+        try {
+            is = new ByteArrayInputStream(data.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            MiscUtils.getLogger().error("error",e);
+            MiscUtils.getLogger().error("error", e);
             return null;
         }
 
@@ -627,8 +627,8 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
             List<Element> items = root.getChildren("item");
             List<Node> aItems = new ArrayList<Node>();
 
-                processItems(elements, aItems, null, d);
-                d.setItemHeirarchy(aItems);
+            processItems(elements, aItems, null, d);
+            d.setItemHeirarchy(aItems);
 
             if (root.getAttribute("name") != null) {
                 d.setName(root.getAttribute("name").getValue());
@@ -666,7 +666,7 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
             }
 
         } catch (Exception e) {
-            MiscUtils.getLogger().error("error",e);
+            MiscUtils.getLogger().error("error", e);
             return null;
         }
 
@@ -694,118 +694,117 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
         return h;
     }
 */
-    protected Element getRuleBaseElement(String ruleName,String measurement,Hashtable<String,String> recowarn){
+    protected Element getRuleBaseElement(String ruleName, String measurement, Hashtable<String, String> recowarn) {
 
         log.debug("LOADING RULES - getRuleBaseElement");
-                    ArrayList<DSCondition> list = new ArrayList<DSCondition>();
+        ArrayList<DSCondition> list = new ArrayList<DSCondition>();
         String toParse = recowarn.get("monthrange");
         String consequenceType = "Recommendation";
-        if( recowarn.get("strength") != null){
-            if (recowarn.get("strength").equals("warning")){
+        if (recowarn.get("strength") != null) {
+            if (recowarn.get("strength").equals("warning")) {
                 consequenceType = "Warning";
             }
         }
         String consequence = "";
 
-        String NUMMONTHS = "\"+m.getLastDateRecordedInMonths(\""+measurement+"\")+\"";
+        String NUMMONTHS = "\"+m.getLastDateRecordedInMonths(\"" + measurement + "\")+\"";
 
 
-            if (toParse.indexOf("-") != -1 && toParse.indexOf("-") != 0 ){ //between style
-                String[] betweenVals = toParse.split("-");
-                if (betweenVals.length == 2 ){
-                    //int lower = Integer.parseInt(betweenVals[0]);
-                    //int upper = Integer.parseInt(betweenVals[1]);
-                    list.add(new DSCondition("getLastDateRecordedInMonths", measurement, ">=", betweenVals[0]));
-                    list.add(new DSCondition("getLastDateRecordedInMonths", measurement, "<=", betweenVals[1]));
-                    if ( recowarn.get("text") == null){
-                         consequence ="m.add"+consequenceType+"(\""+measurement+"\",\""+measurement+"\" 1 hasn't been reviewed in \"+m.getLastDateRecordedInMonths(\""+measurement+"\")+\" months\";";
-                    }
+        if (toParse.indexOf("-") != -1 && toParse.indexOf("-") != 0) { //between style
+            String[] betweenVals = toParse.split("-");
+            if (betweenVals.length == 2) {
+                //int lower = Integer.parseInt(betweenVals[0]);
+                //int upper = Integer.parseInt(betweenVals[1]);
+                list.add(new DSCondition("getLastDateRecordedInMonths", measurement, ">=", betweenVals[0]));
+                list.add(new DSCondition("getLastDateRecordedInMonths", measurement, "<=", betweenVals[1]));
+                if (recowarn.get("text") == null) {
+                    consequence = "m.add" + consequenceType + "(\"" + measurement + "\",\"" + measurement + "\" 1 hasn't been reviewed in \"+m.getLastDateRecordedInMonths(\"" + measurement + "\")+\" months\";";
                 }
-
-            }else if (toParse.indexOf("&gt;") != -1 ||  toParse.indexOf(">") != -1 ){ // greater than style
-                toParse = toParse.replaceFirst("&gt;","");
-                toParse = toParse.replaceFirst(">","");
-
-                int gt = Integer.parseInt(toParse);
-
-                list.add(new DSCondition("getLastDateRecordedInMonths", measurement, ">", ""+gt));
-                if ( recowarn.get("text") == null){
-                         consequence ="m.add"+consequenceType+"(\""+measurement+"\",\""+measurement+"\" 2 hasn't been reviewed in \"+m.getLastDateRecordedInMonths(\""+measurement+"\")+\" months\";";
-                }
-            }else if (toParse.indexOf("&lt;") != -1  ||  toParse.indexOf("<") != -1 ){ // less than style
-                toParse = toParse.replaceFirst("&lt;","");
-                toParse = toParse.replaceFirst("<","");
-
-                int lt = Integer.parseInt(toParse);
-                list.add(new DSCondition("getLastDateRecordedInMonths", measurement, "<=", ""+lt));
-                if ( recowarn.get("text") == null){
-                         consequence ="m.add"+consequenceType+"(\""+measurement+"\",\""+measurement+"\" 3 hasn't been reviewed in \"+m.getLastDateRecordedInMonths(\""+measurement+"\")+\" months\";";
-                    }
-
-            }else if (!toParse.equals("")){ // less than style
-                int eq = Integer.parseInt(toParse);
-                list.add(new DSCondition("getLastDateRecordedInMonths", measurement, "==", ""+eq));
-                if ( recowarn.get("text") == null){
-                         consequence ="m.add"+consequenceType+"(\""+measurement+"\",\""+measurement+"\" 4 hasn'taaaaa been reviewed in \"+m.getLastDateRecordedInMonths(\""+measurement+"\")+\" months\";";
-                    }
             }
 
-        if ( recowarn.get("text") != null){
+        } else if (toParse.indexOf("&gt;") != -1 || toParse.indexOf(">") != -1) { // greater than style
+            toParse = toParse.replaceFirst("&gt;", "");
+            toParse = toParse.replaceFirst(">", "");
+
+            int gt = Integer.parseInt(toParse);
+
+            list.add(new DSCondition("getLastDateRecordedInMonths", measurement, ">", "" + gt));
+            if (recowarn.get("text") == null) {
+                consequence = "m.add" + consequenceType + "(\"" + measurement + "\",\"" + measurement + "\" 2 hasn't been reviewed in \"+m.getLastDateRecordedInMonths(\"" + measurement + "\")+\" months\";";
+            }
+        } else if (toParse.indexOf("&lt;") != -1 || toParse.indexOf("<") != -1) { // less than style
+            toParse = toParse.replaceFirst("&lt;", "");
+            toParse = toParse.replaceFirst("<", "");
+
+            int lt = Integer.parseInt(toParse);
+            list.add(new DSCondition("getLastDateRecordedInMonths", measurement, "<=", "" + lt));
+            if (recowarn.get("text") == null) {
+                consequence = "m.add" + consequenceType + "(\"" + measurement + "\",\"" + measurement + "\" 3 hasn't been reviewed in \"+m.getLastDateRecordedInMonths(\"" + measurement + "\")+\" months\";";
+            }
+
+        } else if (!toParse.equals("")) { // less than style
+            int eq = Integer.parseInt(toParse);
+            list.add(new DSCondition("getLastDateRecordedInMonths", measurement, "==", "" + eq));
+            if (recowarn.get("text") == null) {
+                consequence = "m.add" + consequenceType + "(\"" + measurement + "\",\"" + measurement + "\" 4 hasn'taaaaa been reviewed in \"+m.getLastDateRecordedInMonths(\"" + measurement + "\")+\" months\";";
+            }
+        }
+
+        if (recowarn.get("text") != null) {
             String txt = recowarn.get("text");
-            log.debug("TRY TO REPLACE $NUMMONTHS:"+txt.indexOf("$NUMMONTHS")+" WITH "+NUMMONTHS+  " "+txt);
+            log.debug("TRY TO REPLACE $NUMMONTHS:" + txt.indexOf("$NUMMONTHS") + " WITH " + NUMMONTHS + " " + txt);
 
             txt = txt.replaceAll("\\$NUMMONTHS", NUMMONTHS);
-            log.debug("TEXT "+txt);
-            consequence ="m.add"+consequenceType+"(\""+measurement+"\",\""+txt+"\");";
+            log.debug("TEXT " + txt);
+            consequence = "m.add" + consequenceType + "(\"" + measurement + "\",\"" + txt + "\");";
             //consequence ="MiscUtils.getLogger().debug(\"HAPPY TO BE WORKING\");";
 
         }
 
         RuleBaseCreator rcb = new RuleBaseCreator();
-        Element ruleElement = rcb.getRule(ruleName, "oscar.oscarEncounter.oscarMeasurements.MeasurementInfo", list,  consequence) ;
+        Element ruleElement = rcb.getRule(ruleName, "oscar.oscarEncounter.oscarMeasurements.MeasurementInfo", list, consequence);
 
 
         return ruleElement;
     }
 
 
-
-    public MeasurementFlowSheet getFlowSheet(String flowsheetName,List<FlowSheetCustomization> list) {
+    public MeasurementFlowSheet getFlowSheet(String flowsheetName, List<FlowSheetCustomization> list) {
         log.debug("IN CUSTOMIZED FLOWSHEET ");
-        if (list.size() > 0){
-            log.debug("IN CUSTOMIZED FLOWSHEET "+list.size());
-            try{
-            MeasurementFlowSheet personalizedFlowsheet =  makeNewFlowsheet(getFlowSheet(flowsheetName) );
+        if (list.size() > 0) {
+            log.debug("IN CUSTOMIZED FLOWSHEET " + list.size());
+            try {
+                MeasurementFlowSheet personalizedFlowsheet = makeNewFlowsheet(getFlowSheet(flowsheetName));
 
-            for (FlowSheetCustomization cust:list){
-                if (FlowSheetCustomization.ADD.equals(cust.getAction())){
-                    log.debug(" CUST ADDING");
-                    FlowSheetItem item =getItemFromString(cust.getPayload());
-                    if (item.getTargetColour() != null && item.getTargetColour().size()>0){
-                        RuleBase rb = personalizedFlowsheet.loadMeasuremntRuleBase(item.getTargetColour());
-                        item.setRuleBase(rb);
+                for (FlowSheetCustomization cust : list) {
+                    if (FlowSheetCustomization.ADD.equals(cust.getAction())) {
+                        log.debug(" CUST ADDING");
+                        FlowSheetItem item = getItemFromString(cust.getPayload());
+                        if (item.getTargetColour() != null && item.getTargetColour().size() > 0) {
+                            RuleBase rb = personalizedFlowsheet.loadMeasuremntRuleBase(item.getTargetColour());
+                            item.setRuleBase(rb);
+                        }
+                        personalizedFlowsheet.addAfter(cust.getMeasurement(), item);
+                    } else if (FlowSheetCustomization.UPDATE.equals(cust.getAction())) {
+                        log.debug(" CUST UPDATING");
+                        FlowSheetItem item = getItemFromString(cust.getPayload());
+                        if (item.getTargetColour() != null && item.getTargetColour().size() > 0) {
+                            RuleBase rb = personalizedFlowsheet.loadMeasuremntRuleBase(item.getTargetColour());
+                            item.setRuleBase(rb);
+                        }
+                        personalizedFlowsheet.updateMeasurementFlowSheetInfo(cust.getMeasurement(), item);
+
+
+                    } else if (FlowSheetCustomization.DELETE.equals(cust.getAction())) {
+                        personalizedFlowsheet.setToHidden(cust.getMeasurement());
+                        log.debug(" CUST DELETE");
+                    } else {
+                        log.debug("ERR" + cust);
                     }
-                    personalizedFlowsheet.addAfter(cust.getMeasurement(), item);
-                }else if(FlowSheetCustomization.UPDATE.equals(cust.getAction())){
-                    log.debug(" CUST UPDATING");
-                    FlowSheetItem item =getItemFromString(cust.getPayload());
-                    if (item.getTargetColour() != null && item.getTargetColour().size()>0){
-                        RuleBase rb = personalizedFlowsheet.loadMeasuremntRuleBase(item.getTargetColour());
-                        item.setRuleBase(rb);
-                    }
-                    personalizedFlowsheet.updateMeasurementFlowSheetInfo(cust.getMeasurement(),item);
-
-
-                }else if(FlowSheetCustomization.DELETE.equals(cust.getAction())){
-                    personalizedFlowsheet.setToHidden(cust.getMeasurement());
-                    log.debug(" CUST DELETE");
-                }else{
-                    log.debug("ERR"+cust);
                 }
-            }
-            personalizedFlowsheet.loadRuleBase();
-            return personalizedFlowsheet;
-            }catch(Exception e){
+                personalizedFlowsheet.loadRuleBase();
+                return personalizedFlowsheet;
+            } catch (Exception e) {
                 MiscUtils.getLogger().error("Error", e);
             }
         }
@@ -814,54 +813,54 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
     }
 
     public MeasurementFlowSheet getFlowSheet(String flowsheetName, String providerNo, Integer demographicNo) {
-    	//flowsheetName is the out-of-the-box name,
+        //flowsheetName is the out-of-the-box name,
         FlowSheetUserCreatedDao flowSheetUserCreatedDao = (FlowSheetUserCreatedDao) SpringUtils.getBean(FlowSheetUserCreatedDao.class);
 
         MeasurementFlowSheet m = null;
         FlowSheetUserCreated fsuc = null;
 
-        if(demographicNo != null) {
-        	fsuc = flowSheetUserCreatedDao.findByPatientScope(flowsheetName,demographicNo);
-        	if(fsuc == null) {
-        		fsuc = flowSheetUserCreatedDao.findByProviderScope(flowsheetName, providerNo);
-        		if(fsuc == null) {
-        			fsuc = flowSheetUserCreatedDao.findByClinicScope(flowsheetName);
-        		}
-        	}
+        if (demographicNo != null) {
+            fsuc = flowSheetUserCreatedDao.findByPatientScope(flowsheetName, demographicNo);
+            if (fsuc == null) {
+                fsuc = flowSheetUserCreatedDao.findByProviderScope(flowsheetName, providerNo);
+                if (fsuc == null) {
+                    fsuc = flowSheetUserCreatedDao.findByClinicScope(flowsheetName);
+                }
+            }
         }
 
-        if(fsuc != null) {
-        	//use custom flowsheet
+        if (fsuc != null) {
+            //use custom flowsheet
             InputStream targetStream = IOUtils.toInputStream(fsuc.getXmlContent().replaceAll("<flowsheet xmlns=\"flowsheets.oscarehr.org\"", "<flowsheet"));
             EctMeasurementTypeBeanHandler mType = new EctMeasurementTypeBeanHandler();
             m = createflowsheet(mType, targetStream);
 
         } else {
-        	//use out of the box flowsheet
-        	m = getFlowSheet(flowsheetName);
+            //use out of the box flowsheet
+            m = getFlowSheet(flowsheetName);
         }
 
         return m;
     }
 
     public MeasurementFlowSheet getFlowSheetByName(String flowsheetName, String providerNo, Integer demographicNo) {
-    	FlowSheetUserCreatedDao flowSheetUserCreatedDao = (FlowSheetUserCreatedDao) SpringUtils.getBean(FlowSheetUserCreatedDao.class);
+        FlowSheetUserCreatedDao flowSheetUserCreatedDao = (FlowSheetUserCreatedDao) SpringUtils.getBean(FlowSheetUserCreatedDao.class);
 
         MeasurementFlowSheet m = null;
         FlowSheetUserCreated fsuc = null;
 
-        if(demographicNo != null) {
-        	fsuc = flowSheetUserCreatedDao.findByPatientScopeName(flowsheetName,demographicNo);
-        	if(fsuc == null) {
-        		fsuc = flowSheetUserCreatedDao.findByProviderScopeName(flowsheetName, providerNo);
-        		if(fsuc == null) {
-        			fsuc = flowSheetUserCreatedDao.findByClinicScopeName(flowsheetName);
-        		}
-        	}
+        if (demographicNo != null) {
+            fsuc = flowSheetUserCreatedDao.findByPatientScopeName(flowsheetName, demographicNo);
+            if (fsuc == null) {
+                fsuc = flowSheetUserCreatedDao.findByProviderScopeName(flowsheetName, providerNo);
+                if (fsuc == null) {
+                    fsuc = flowSheetUserCreatedDao.findByClinicScopeName(flowsheetName);
+                }
+            }
         }
 
-        if(fsuc != null) {
-        	//use custom flowsheet
+        if (fsuc != null) {
+            //use custom flowsheet
             InputStream targetStream = IOUtils.toInputStream(fsuc.getXmlContent().replaceAll("<flowsheet xmlns=\"flowsheets.oscarehr.org\"", "<flowsheet"));
             EctMeasurementTypeBeanHandler mType = new EctMeasurementTypeBeanHandler();
             m = createflowsheet(mType, targetStream);
@@ -872,7 +871,7 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
     }
 
     public MeasurementFlowSheet getFlowSheet(String flowsheetName) {
-        log.debug("GET FLOWSHEET "+flowsheetName+"  "+flowsheets.get(flowsheetName));
+        log.debug("GET FLOWSHEET " + flowsheetName + "  " + flowsheets.get(flowsheetName));
         return flowsheets.get(flowsheetName);
     }
 
@@ -886,26 +885,25 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
     }
 
 
-
     //This could be used to create the custom on the file flowsheet
-    public MeasurementFlowSheet makeNewFlowsheet(MeasurementFlowSheet mFlowsheet ) throws Exception{
-            XMLOutputter outp = new XMLOutputter();
-            Element va = getExportFlowsheet( mFlowsheet);
+    public MeasurementFlowSheet makeNewFlowsheet(MeasurementFlowSheet mFlowsheet) throws Exception {
+        XMLOutputter outp = new XMLOutputter();
+        Element va = getExportFlowsheet(mFlowsheet);
 
-            ByteArrayOutputStream byteArrayout = new ByteArrayOutputStream();
-            outp.output(va, byteArrayout);
+        ByteArrayOutputStream byteArrayout = new ByteArrayOutputStream();
+        outp.output(va, byteArrayout);
 
-            InputStream is = new ByteArrayInputStream(byteArrayout.toByteArray());
+        InputStream is = new ByteArrayInputStream(byteArrayout.toByteArray());
 
-            EctMeasurementTypeBeanHandler mType = new EctMeasurementTypeBeanHandler();
-            MeasurementFlowSheet d = createflowsheet(mType,is);
+        EctMeasurementTypeBeanHandler mType = new EctMeasurementTypeBeanHandler();
+        MeasurementFlowSheet d = createflowsheet(mType, is);
 
-            return d;
+        return d;
 
     }
 
-    public FlowSheetItem getItemFromString(String s){
-        log.debug("->>>"+s);
+    public FlowSheetItem getItemFromString(String s) {
+        log.debug("->>>" + s);
         FlowSheetItem item = null;
         try {
             SAXBuilder parser = new SAXBuilder();
@@ -913,199 +911,195 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
             Element root = doc.getRootElement();
 
             List<Attribute> attr = root.getAttributes();
-                Hashtable<String, String> h = new Hashtable<String, String>();
-                for (Attribute att : attr) {
-                    h.put(att.getName(), att.getValue());
+            Hashtable<String, String> h = new Hashtable<String, String>();
+            for (Attribute att : attr) {
+                h.put(att.getName(), att.getValue());
+            }
+            item = new FlowSheetItem(h);
+
+            int ruleCount = 0;
+            Element rules = root.getChild("rules");
+
+            if (rules != null) {
+                List<Element> recomends = rules.getChildren("recommendation");
+                List<Recommendation> ds = new ArrayList<Recommendation>();
+                for (Element reco : recomends) {
+                    ruleCount++;
+                    ds.add(new Recommendation(reco, "" + h.get("measurement_type") + ruleCount, "" + h.get("measurement_type")));
                 }
-                item = new FlowSheetItem(h);
+                log.debug("" + h.get("measurement_type") + " adding ds  " + ds);
+                item.setRecommendations(ds);
+            }
 
-                int ruleCount = 0;
-                    Element rules  = root.getChild("rules");
 
-                    if (rules !=null){
-                       List<Element> recomends = rules.getChildren("recommendation");
-                       List<Recommendation> ds = new ArrayList<Recommendation>();
-                       for(Element reco: recomends){
-                           ruleCount++;
-                           ds.add(new Recommendation(reco,"" + h.get("measurement_type")+ruleCount,"" + h.get("measurement_type")));
-                       }
-                       log.debug(""+ h.get("measurement_type")+ " adding ds  "+ds);
-                       item.setRecommendations(ds);
+            Element rulesets = root.getChild("ruleset");
+            List<TargetColour> rs = new ArrayList<TargetColour>();
+            if (rulesets != null) {
+                List<Element> rulez = rulesets.getChildren("rule");
+                if (rulez != null) {
+                    for (Element r : rulez) {
+                        rs.add(new TargetColour(r));
+                        //r.getAttributeValue("indicatorColour");
                     }
+                }
+
+            }
+
+            log.debug(" meas " + h.get("measurement_type") + "  size " + rs.size());
+
+            if (rs.size() > 0) {
+                item.setTargetColour(rs);
+
+            }
 
 
-                    Element rulesets = root.getChild("ruleset");
-                    List<TargetColour> rs = new ArrayList<TargetColour>();
-                    if (rulesets != null){
-                        List<Element> rulez = rulesets.getChildren("rule");
-                        if (rulez != null){
-                            for(Element r: rulez){
-                                rs.add(new TargetColour(r));
-                                //r.getAttributeValue("indicatorColour");
-                            }
-                        }
-
-                    }
-
-                    log.debug(" meas "+h.get("measurement_type")+"  size "+rs.size());
-
-                    if (rs.size() > 0){
-                        item.setTargetColour(rs);
-
-                    }
-
-
-
-
-        }catch(Exception e){
+        } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         }
-         return item;
+        return item;
     }
 
 
-    public Element getItemFromObject(FlowSheetItem fsi){
+    public Element getItemFromObject(FlowSheetItem fsi) {
         Element item = new Element("item");
 
-                    Map h2 = fsi.getAllFields();
+        Map h2 = fsi.getAllFields();
 
-                    addAttributeifValueNotNull(item, "prevention_type", fsi.getPreventionType());
-                    addAttributeifValueNotNull(item, "measurement_type", fsi.getMeasurementType());
-                    addAttributeifValueNotNull(item, "display_name", fsi.getDisplayName());
-                    addAttributeifValueNotNull(item, "guideline", fsi.getGuideline());
-                    addAttributeifValueNotNull(item, "graphable", (String) h2.get("graphable"));
-                    addAttributeifValueNotNull(item, "ds_rules", (String) h2.get("ds_rules"));
-                    addAttributeifValueNotNull(item, "value_name", fsi.getValueName());
+        addAttributeifValueNotNull(item, "prevention_type", fsi.getPreventionType());
+        addAttributeifValueNotNull(item, "measurement_type", fsi.getMeasurementType());
+        addAttributeifValueNotNull(item, "display_name", fsi.getDisplayName());
+        addAttributeifValueNotNull(item, "guideline", fsi.getGuideline());
+        addAttributeifValueNotNull(item, "graphable", (String) h2.get("graphable"));
+        addAttributeifValueNotNull(item, "ds_rules", (String) h2.get("ds_rules"));
+        addAttributeifValueNotNull(item, "value_name", fsi.getValueName());
 
-                    if (h2.get("measurement_type") != null) {
-                        log.debug("MEASUREMENT TYPE " + (String) h2.get("measurement_type"));
+        if (h2.get("measurement_type") != null) {
+            log.debug("MEASUREMENT TYPE " + (String) h2.get("measurement_type"));
 
-                        List<Recommendation> dsR = fsi.getRecommendations();
-                        log.debug(h2.get("measurement_type") + " LIST DSR " + dsR);
-                        if (dsR != null) {
-                            Element rules = new Element("rules");
-                            for (Recommendation e : dsR) {
-                                log.debug("BEFORE ADDING ");
-                                rules.addContent(e.getFlowsheetXML());
-                                log.debug(rules);
-                            }
-                            item.addContent(rules);
-                        }
+            List<Recommendation> dsR = fsi.getRecommendations();
+            log.debug(h2.get("measurement_type") + " LIST DSR " + dsR);
+            if (dsR != null) {
+                Element rules = new Element("rules");
+                for (Recommendation e : dsR) {
+                    log.debug("BEFORE ADDING ");
+                    rules.addContent(e.getFlowsheetXML());
+                    log.debug(rules);
+                }
+                item.addContent(rules);
+            }
 
 
-                        List<TargetColour> targetColour =fsi.getTargetColour();
-                        log.debug("TARGET COLOURS"+targetColour);
+            List<TargetColour> targetColour = fsi.getTargetColour();
+            log.debug("TARGET COLOURS" + targetColour);
 
-                        if (targetColour != null){
-                           Element ruleset = new Element("ruleset");
+            if (targetColour != null) {
+                Element ruleset = new Element("ruleset");
 
-                           for(TargetColour t : targetColour){
-                               ruleset.addContent(t.getFlowsheetXML());
-                           }
-                           item.addContent(ruleset);
-                        }
-                    }
-                    return item;
+                for (TargetColour t : targetColour) {
+                    ruleset.addContent(t.getFlowsheetXML());
+                }
+                item.addContent(ruleset);
+            }
+        }
+        return item;
     }
 
 
+    public Element getExportFlowsheet(MeasurementFlowSheet mFlowsheet) {
+        EctMeasurementTypeBeanHandler mType = new EctMeasurementTypeBeanHandler();
+        Element va = new Element("flowsheet");
 
 
-    public Element getExportFlowsheet(MeasurementFlowSheet mFlowsheet){
-            EctMeasurementTypeBeanHandler mType = new EctMeasurementTypeBeanHandler();
-            Element va = new Element("flowsheet");
+        addAttributeifValueNotNull(va, "name", mFlowsheet.getName());
+        addAttributeifValueNotNull(va, "display_name", mFlowsheet.getDisplayName());
+        //addAttributeifValueNotNull(va,"ds_rules",mFlowsheet.get);
+        addAttributeifValueNotNull(va, "warning_colour", mFlowsheet.getWarningColour());
+        addAttributeifValueNotNull(va, "recommendation_colour", mFlowsheet.getRecommendationColour());
+        addAttributeifValueNotNull(va, "top_HTML", mFlowsheet.getTopHTMLStream());
+        addAttributeifValueNotNull(va, "dxcode_triggers", mFlowsheet.getDxTriggersString());
+        addAttributeifValueNotNull(va, "program_triggers", mFlowsheet.getProgramTriggersString());
+
+        Hashtable indicatorHash = mFlowsheet.getIndicatorHashtable();
+        Enumeration enu = indicatorHash.keys();
+        while (enu.hasMoreElements()) {
+            String key = (String) enu.nextElement();
+            Element ind = new Element("indicator");
+            addAttributeifValueNotNull(ind, "key", key);
+            addAttributeifValueNotNull(ind, "colour", (String) indicatorHash.get(key));
+            va.addContent(ind);
+        }
+
+        List<String> measurements = mFlowsheet.getMeasurementList();
+
+        log.debug("SET HAS MEASUREMENTS" + measurements);
+        int count = 0;
+        if (measurements != null) {
+            for (String mstring : measurements) {
+                //java.util.List ruleList = mFlowsheet.getRules(mstring);
+
+                EctMeasurementTypesBean measurementTypesBean = mType.getMeasurementType(mstring);
+
+                Map h2 = mFlowsheet.getMeasurementFlowSheetInfo(mstring);
+
+                Element item = new Element("item");
 
 
-            addAttributeifValueNotNull(va, "name", mFlowsheet.getName());
-            addAttributeifValueNotNull(va, "display_name", mFlowsheet.getDisplayName());
-            //addAttributeifValueNotNull(va,"ds_rules",mFlowsheet.get);
-            addAttributeifValueNotNull(va, "warning_colour", mFlowsheet.getWarningColour());
-            addAttributeifValueNotNull(va, "recommendation_colour", mFlowsheet.getRecommendationColour());
-            addAttributeifValueNotNull(va, "top_HTML", mFlowsheet.getTopHTMLStream());
-            addAttributeifValueNotNull(va,"dxcode_triggers",mFlowsheet.getDxTriggersString());
-            addAttributeifValueNotNull(va,"program_triggers",mFlowsheet.getProgramTriggersString());
+                addAttributeifValueNotNull(item, "prevention_type", (String) h2.get("prevention_type"));
+                addAttributeifValueNotNull(item, "measurement_type", (String) h2.get("measurement_type"));
+                addAttributeifValueNotNull(item, "display_name", (String) h2.get("display_name"));
+                addAttributeifValueNotNull(item, "guideline", (String) h2.get("guideline"));
+                addAttributeifValueNotNull(item, "graphable", (String) h2.get("graphable"));
+                addAttributeifValueNotNull(item, "value_name", (String) h2.get("value_name"));
+                addAttributeifValueNotNull(item, "ds_rules", (String) h2.get("ds_rules"));
+                if (h2.get("measurement_type") != null) {
+                    log.debug("MEASUREMENT TYPE " + (String) h2.get("measurement_type"));
 
-            Hashtable indicatorHash = mFlowsheet.getIndicatorHashtable();
-            Enumeration enu = indicatorHash.keys();
-            while (enu.hasMoreElements()) {
-                String key = (String) enu.nextElement();
-                Element ind = new Element("indicator");
-                addAttributeifValueNotNull(ind, "key", key);
-                addAttributeifValueNotNull(ind, "colour", (String) indicatorHash.get(key));
-                va.addContent(ind);
-            }
-
-            List<String> measurements = mFlowsheet.getMeasurementList();
-
-            log.debug("SET HAS MEASUREMENTS" + measurements);
-            int count = 0;
-            if (measurements != null) {
-                for (String mstring : measurements) {
-                    //java.util.List ruleList = mFlowsheet.getRules(mstring);
-
-                    EctMeasurementTypesBean measurementTypesBean = mType.getMeasurementType(mstring);
-
-                    Map h2 = mFlowsheet.getMeasurementFlowSheetInfo(mstring);
-
-                    Element item = new Element("item");
-
-
-                    addAttributeifValueNotNull(item, "prevention_type", (String) h2.get("prevention_type"));
-                    addAttributeifValueNotNull(item, "measurement_type", (String) h2.get("measurement_type"));
-                    addAttributeifValueNotNull(item, "display_name", (String) h2.get("display_name"));
-                    addAttributeifValueNotNull(item, "guideline", (String) h2.get("guideline"));
-                    addAttributeifValueNotNull(item, "graphable", (String) h2.get("graphable"));
-                    addAttributeifValueNotNull(item, "value_name", (String) h2.get("value_name"));
-                    addAttributeifValueNotNull(item, "ds_rules", (String) h2.get("ds_rules"));
-                    if (h2.get("measurement_type") != null) {
-                        log.debug("MEASUREMENT TYPE " + (String) h2.get("measurement_type"));
-
-                        List<Recommendation> dsR = mFlowsheet.getDSElements((String) h2.get("measurement_type"));
-                        log.debug(h2.get("measurement_type") + " LIST DSR " + dsR);
-                        if (dsR != null) {
-                            Element rules = new Element("rules");
-                            for (Recommendation e : dsR) {
-                                log.debug("BEFORE ADDING ");
-                                rules.addContent(e.getFlowsheetXML());
-                                log.debug(rules);
-                            }
-                            item.addContent(rules);
+                    List<Recommendation> dsR = mFlowsheet.getDSElements((String) h2.get("measurement_type"));
+                    log.debug(h2.get("measurement_type") + " LIST DSR " + dsR);
+                    if (dsR != null) {
+                        Element rules = new Element("rules");
+                        for (Recommendation e : dsR) {
+                            log.debug("BEFORE ADDING ");
+                            rules.addContent(e.getFlowsheetXML());
+                            log.debug(rules);
                         }
-
-                        FlowSheetItem fsi = mFlowsheet.getFlowSheetItem(mstring);  //TODO: MOVE THIS UP AND REPLACE THE CODE ABOVE
-                        List<TargetColour> targetColour =fsi.getTargetColour();
-                        log.debug("TARGET COLOURS"+targetColour);
-
-                        if (targetColour != null){
-                           Element ruleset = new Element("ruleset");
-
-                           for(TargetColour t : targetColour){
-                               ruleset.addContent(t.getFlowsheetXML());
-                           }
-                           item.addContent(ruleset);
-                        }
-
+                        item.addContent(rules);
                     }
 
-                    va.addContent(item);
-                    count++;
+                    FlowSheetItem fsi = mFlowsheet.getFlowSheetItem(mstring);  //TODO: MOVE THIS UP AND REPLACE THE CODE ABOVE
+                    List<TargetColour> targetColour = fsi.getTargetColour();
+                    log.debug("TARGET COLOURS" + targetColour);
 
+                    if (targetColour != null) {
+                        Element ruleset = new Element("ruleset");
 
-                    if (measurementTypesBean != null) {
-                        ExportMeasurementType emt = new ExportMeasurementType();
-                        Element export = emt.exportElement(measurementTypesBean);
-                        va.addContent(export);
-                    } else {
-                        log.debug("--- not loaded --- " + mstring);
+                        for (TargetColour t : targetColour) {
+                            ruleset.addContent(t.getFlowsheetXML());
+                        }
+                        item.addContent(ruleset);
                     }
+
+                }
+
+                va.addContent(item);
+                count++;
+
+
+                if (measurementTypesBean != null) {
+                    ExportMeasurementType emt = new ExportMeasurementType();
+                    Element export = emt.exportElement(measurementTypesBean);
+                    va.addContent(export);
+                } else {
+                    log.debug("--- not loaded --- " + mstring);
                 }
             }
-            return va;
-            //XMLOutputter outp = new XMLOutputter();
-            //outp.setFormat(Format.getPrettyFormat());
+        }
+        return va;
+        //XMLOutputter outp = new XMLOutputter();
+        //outp.setFormat(Format.getPrettyFormat());
     }
 
-       private void addAttributeifValueNotNull(Element element, String attr, String value) {
+    private void addAttributeifValueNotNull(Element element, String attr, String value) {
         if (value != null) {
             element.setAttribute(attr, value);
         }

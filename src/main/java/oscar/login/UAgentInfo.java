@@ -1,7 +1,8 @@
+//CHECKSTYLE:OFF
 /*
  * Copyright 2010, Anthony Hand
  *
- * LICENSE INFORMATION 
+ * LICENSE INFORMATION
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,13 +18,13 @@ package oscar.login;
 
 /**
  * The DetectSmartPhone class encapsulates information about
- *   a browser's connection to your web site.
- *   You can use it to find out whether the browser asking for
- *   your site's content is probably running on a mobile device.
- *   The methods were written so you can be as granular as you want.
- *   For example, enquiring whether it's as specific as an iPod Touch or
- *   as general as a smartphone class device.
- *   The object's methods return true, or false.
+ * a browser's connection to your web site.
+ * You can use it to find out whether the browser asking for
+ * your site's content is probably running on a mobile device.
+ * The methods were written so you can be as granular as you want.
+ * For example, enquiring whether it's as specific as an iPod Touch or
+ * as general as a smartphone class device.
+ * The object's methods return true, or false.
  */
 public class UAgentInfo {
     // User-Agent and Accept HTTP request headers
@@ -123,7 +124,7 @@ public class UAgentInfo {
     /**
      * Initialize the userAgent and httpAccept variables
      *
-     * @param userAgent the User-Agent header
+     * @param userAgent  the User-Agent header
      * @param httpAccept the Accept header
      */
     public UAgentInfo(String userAgent, String httpAccept) {
@@ -282,10 +283,9 @@ public class UAgentInfo {
     }
 
     /**
-     *
      * Detects if the current device is any Symbian OS-based device,
-     *   including older S60, Series 70, Series 80, Series 90, and UIQ,
-     *   or other browsers running on these devices.
+     * including older S60, Series 70, Series 80, Series 90, and UIQ,
+     * or other browsers running on these devices.
      */
     public boolean detectSymbianOS() {
         if (userAgent.indexOf(deviceSymbian) != -1
@@ -339,8 +339,8 @@ public class UAgentInfo {
 
     /**
      * Detects if the current browser is a BlackBerry device AND
-     *   has a more capable recent browser.
-     *   Examples, Storm, Bold, Tour, Curve2
+     * has a more capable recent browser.
+     * Examples, Storm, Bold, Tour, Curve2
      */
     public boolean detectBlackBerryHigh() {
         if (detectBlackBerry()) {
@@ -359,8 +359,8 @@ public class UAgentInfo {
 
     /**
      * Detects if the current browser is a BlackBerry device AND
-     *   has an older, less capable browser.
-     *   Examples: Pearl, 8800, Curve1
+     * has an older, less capable browser.
+     * Examples: Pearl, 8800, Curve1
      */
     public boolean detectBlackBerryLow() {
         if (detectBlackBerry()) {
@@ -396,7 +396,7 @@ public class UAgentInfo {
 
     /**
      * Detects if the current browser is on a Palm device
-     *    running the new WebOS.
+     * running the new WebOS.
      */
     public boolean detectPalmWebOS() {
         if (userAgent.indexOf(deviceWebOS) != -1) {
@@ -407,7 +407,7 @@ public class UAgentInfo {
 
     /**
      * Detects if the current browser is a
-     *    Garmin Nuvifone.
+     * Garmin Nuvifone.
      */
     public boolean detectGarminNuvifone() {
         if (userAgent.indexOf(deviceNuvifone) != -1) {
@@ -418,7 +418,7 @@ public class UAgentInfo {
 
     /**
      * Check to see whether the device is any device
-     *   in the 'smartphone' category.
+     * in the 'smartphone' category.
      */
     public boolean detectSmartphone() {
         return (detectIphoneOrIpod()
@@ -480,7 +480,7 @@ public class UAgentInfo {
      * Detects if the current device is an Amazon Kindle.
      */
     public boolean detectKindle() {
-        if (userAgent.indexOf(deviceKindle)!= -1) {
+        if (userAgent.indexOf(deviceKindle) != -1) {
             return true;
         }
         return false;
@@ -488,8 +488,8 @@ public class UAgentInfo {
 
     /**
      * The quick way to detect for a mobile device.
-     *  Will probably detect most recent/current mid-tier Feature Phones
-     *  as well as smartphone-class devices. Excludes Apple iPads.
+     * Will probably detect most recent/current mid-tier Feature Phones
+     * as well as smartphone-class devices. Excludes Apple iPads.
      */
     public boolean detectMobileQuick() {
         //Let's say no if it's an iPad, which contains 'mobile' in its user agent
@@ -639,11 +639,11 @@ public class UAgentInfo {
 
     /**
      * The longer and more thorough way to detect for a mobile device.
-     *   Will probably detect most feature phones,
-     *   smartphone-class devices, Internet Tablets,
-     *   Internet-enabled game consoles, etc.
-     *   This ought to catch a lot of the more obscure and older devices, also --
-     *   but no promises on thoroughness!
+     * Will probably detect most feature phones,
+     * smartphone-class devices, Internet Tablets,
+     * Internet-enabled game consoles, etc.
+     * This ought to catch a lot of the more obscure and older devices, also --
+     * but no promises on thoroughness!
      */
     public boolean detectMobileLong() {
         if (detectMobileQuick()
@@ -682,11 +682,12 @@ public class UAgentInfo {
     //*****************************
     // For Mobile Web Site Design
     //*****************************
+
     /**
      * The quick way to detect for a tier of devices.
-     *   This method detects for devices which can
-     *   display iPhone-optimized web content.
-     *   Includes iPhone, iPod Touch, Android, Palm WebOS, etc.
+     * This method detects for devices which can
+     * display iPhone-optimized web content.
+     * Includes iPhone, iPod Touch, Android, Palm WebOS, etc.
      */
     public boolean detectTierIphone() {
         if (detectIphoneOrIpod()
@@ -702,10 +703,10 @@ public class UAgentInfo {
 
     /**
      * The quick way to detect for a tier of devices.
-     *   This method detects for devices which are likely to be capable
-     *   of viewing CSS content optimized for the iPhone,
-     *   but may not necessarily support JavaScript.
-     *   Excludes all iPhone Tier devices.
+     * This method detects for devices which are likely to be capable
+     * of viewing CSS content optimized for the iPhone,
+     * but may not necessarily support JavaScript.
+     * Excludes all iPhone Tier devices.
      */
     public boolean detectTierRichCss() {
         //The following devices are explicitly ok.
@@ -724,8 +725,8 @@ public class UAgentInfo {
 
     /**
      * The quick way to detect for a tier of devices.
-     *   This method detects for all other types of phones,
-     *   but excludes the iPhone and RichCSS Tier devices.
+     * This method detects for all other types of phones,
+     * but excludes the iPhone and RichCSS Tier devices.
      */
     public boolean detectTierOtherPhones() {
         if (detectMobileQuick() && (!detectTierIphone()) && (!detectTierRichCss())) {

@@ -1,20 +1,21 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
  * This software is published under the GPL GNU General Public License.
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -43,6 +44,7 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.tika.mime.MimeType;
 import org.apache.commons.io.IOUtils;
 
@@ -167,20 +169,20 @@ public class SharingCenterUtil {
 
     public static CodeValue generateCodeValue(MappingCodeType codeType, Integer domainId, String docType, String mappedEntity) {
         CodeValue retVal = null;
-        
+
         if (docType.equalsIgnoreCase(DocumentType.XPHR.name()) || docType.equalsIgnoreCase(DocumentType.NEXJ.name()) || docType.equalsIgnoreCase(DocumentType.CDS.name())) {
             retVal = miscMappingDao.findMiscMapping(domainId, docType).getCode(codeType);
         } else if (docType.equalsIgnoreCase("eforms")) {
             EFormData eformData = retrieveEform(mappedEntity);
             retVal = eFormMappingDao.findEFormMapping(domainId, eformData.getFormId()).getCode(codeType);
-        }  else if (docType.equalsIgnoreCase("edocs")) {
+        } else if (docType.equalsIgnoreCase("edocs")) {
             Document edoc = retrieveEdoc(mappedEntity);
             retVal = eDocMappingDao.findEDocMapping(domainId, edoc.getDoctype()).getCode(codeType);
         } else {
             MiscUtils.getLogger().warn("Could not determine the code value. Unknown Document Type " + docType);
             retVal = new CodeValue("Unknown Type " + docType, "Unknown CodeSystem", "Unknown");
         }
-        
+
         return retVal;
     }
 
@@ -304,7 +306,7 @@ public class SharingCenterUtil {
 
         try {
             metaData = communicator.retrieveDocumentSet(metaData);
-            
+
             // proper way to find extension for mimetype (using Apache Tika)
             String ext = "";
             try {
@@ -547,8 +549,8 @@ public class SharingCenterUtil {
         // Store all of the folder unique ids in a string array.
         String[] rawFolderIds = new String[folders.length];
         for (int i = 0;
-                i < folders.length;
-                i++) {
+             i < folders.length;
+             i++) {
             rawFolderIds[i] = folders[i].getId();
         }
         // Pass the folder ids to parameter.
@@ -862,7 +864,7 @@ public class SharingCenterUtil {
         } catch (IllegalArgumentException e) {
             LOGGER.warn("Problem passing gender", e);
             retVal.setGender(Gender.O);
-         
+
         } catch (NullPointerException e) {
             LOGGER.warn("Problem passing gender", e);
             retVal.setGender(Gender.O);
@@ -901,7 +903,7 @@ public class SharingCenterUtil {
         FolderMetaData[] folders = {};
 
         try {
-            folders = storedQuery.getFolders(new XdsFolderUniqueId(new String[] {folderUniqueId}));
+            folders = storedQuery.getFolders(new XdsFolderUniqueId(new String[]{folderUniqueId}));
         } catch (CommunicationsException e) {
             MiscUtils.getLogger().debug("Exception: " + e.getMessage());
         }
@@ -1104,10 +1106,10 @@ public class SharingCenterUtil {
      * Creates a document from an OntarioMD's CDS Export document.
      *
      * @param demographicId The demographic id.
-     * @param authorId The author id.
+     * @param authorId      The author id.
      * @param authenticator The authenticator.
-     * @param domain The domain to send the document to.
-     * @param documents A list of documents.
+     * @param domain        The domain to send the document to.
+     * @param documents     A list of documents.
      * @return Returns a list of document meta data.
      */
     public static List<DocumentMetaData> createDocumentsFromCDSExport(int demographicId, int authorId, int authenticator, AffinityDomainDataObject domain, String[] documents, String[] policies) {
@@ -1194,10 +1196,10 @@ public class SharingCenterUtil {
      * Creates a document from an xPHR export.
      *
      * @param demographicId The demographic id.
-     * @param authorId The author id.
+     * @param authorId      The author id.
      * @param authenticator The authenticator.
-     * @param domain The domain to send the document to.
-     * @param documents A list of documents.
+     * @param domain        The domain to send the document to.
+     * @param documents     A list of documents.
      * @return Returns a list of document meta data.
      */
     public static List<DocumentMetaData> createDocumentsFromXPHR(int demographicId, int authorId, int authenticator, AffinityDomainDataObject domain, String[] documents, String[] policies) {
@@ -1284,7 +1286,7 @@ public class SharingCenterUtil {
     }
 
     private static void attachCDAConsent(DocumentMetaData document, DemographicExport export, int demographicId, int providerId, String[] policies) {
-    	DocumentTemplate cdaDocument = CDADocumentUtil.createDoc(String.valueOf(demographicId), String.valueOf(providerId));
+        DocumentTemplate cdaDocument = CDADocumentUtil.createDoc(String.valueOf(demographicId), String.valueOf(providerId));
 
         List<String> policyList = Arrays.asList(policies);
         for (String policyId : policyList) {
@@ -1303,10 +1305,10 @@ public class SharingCenterUtil {
      * Create a document from a NEXJ export.
      *
      * @param demographicId The demographic id.
-     * @param authorId The author id.
+     * @param authorId      The author id.
      * @param authenticator The authenticator.
-     * @param domain The domain to send the document to.
-     * @param documents A list of documents.
+     * @param domain        The domain to send the document to.
+     * @param documents     A list of documents.
      * @return Returns a list of document meta data.
      */
     public static List<DocumentMetaData> createDocumentsFromNEXJ(int demographicId, int authorId, int authenticator, AffinityDomainDataObject domain, String[] documents, String[] policies) {
@@ -1606,7 +1608,7 @@ public class SharingCenterUtil {
 
     private static BppcDocument generateBppcDocument(PersonDemographic patient, PersonDemographic author, PersonDemographic legalAuthenticator, int policyId) {
         BppcDocument retVal = CDAFactory.createBPPCDocument(true);
-        
+
         // title
         retVal.getRoot().setTitle("Consent to Share Information");
 
@@ -1642,7 +1644,7 @@ public class SharingCenterUtil {
 
         // legal authenticator (the patient/consent giver is legally responsible for their consent)
         retVal.setLegalAuthenticator(legalAuthenticator);
-        
+
 
         // custodian
         retVal.setCustodian(location);
@@ -1654,7 +1656,7 @@ public class SharingCenterUtil {
         if (policy != null) {
             CodeValue consent = new CodeValue(policy.getCode(), policy.getCodeSystem(), policy.getDisplayName());
             retVal.addConsentPolicy(consent, Calendar.getInstance(), null); // no end time
-            
+
             // non-structured
             retVal.setNonXmlBody(downloadFile(policy.getPolicyDocUrl()), "application/pdf");
         }
@@ -1674,7 +1676,7 @@ public class SharingCenterUtil {
 
     private static byte[] downloadFile(URL url) {
         byte[] retVal = null;
-        
+
         InputStream in = null;
         ByteArrayOutputStream out = null;
         try {
@@ -1690,9 +1692,9 @@ public class SharingCenterUtil {
                 out.write(buffer, 0, len);
             }
             retVal = out.toByteArray();
-            
+
         } catch (IOException e) {
-            MiscUtils.getLogger().error("Unable to download file from url: " + url.toString() , e);
+            MiscUtils.getLogger().error("Unable to download file from url: " + url.toString(), e);
         } finally {
             IOUtils.closeQuietly(out);
             IOUtils.closeQuietly(in);

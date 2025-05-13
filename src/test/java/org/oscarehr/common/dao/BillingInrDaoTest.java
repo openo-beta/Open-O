@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -22,6 +22,7 @@
  * Ontario, Canada
  */
 package org.oscarehr.common.dao;
+
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
@@ -34,26 +35,26 @@ import org.oscarehr.util.SpringUtils;
 
 public class BillingInrDaoTest extends DaoTestFixtures {
 
-	protected BillingInrDao dao = SpringUtils.getBean(BillingInrDao.class);
+    protected BillingInrDao dao = SpringUtils.getBean(BillingInrDao.class);
 
-	public BillingInrDaoTest() {
-	}
+    public BillingInrDaoTest() {
+    }
 
-	@Before
-	public void before() throws Exception {
-		SchemaUtils.restoreTable("billinginr","demographic","lst_gender","demographic_merged","admission","health_safety","provider","program");
-	}
+    @Before
+    public void before() throws Exception {
+        SchemaUtils.restoreTable("billinginr", "demographic", "lst_gender", "demographic_merged", "admission", "health_safety", "provider", "program");
+    }
 
-	@Test
-	public void testCreate() throws Exception {
-		BillingInr entity = new BillingInr();
-		EntityDataGenerator.generateTestDataForModelClass(entity);
-		dao.persist(entity);
-		assertNotNull(entity.getId());
-	}
-	
-	@Test
-	public void testSearch_inrbilling_dt_billno() {
-		assertNotNull(dao.search_inrbilling_dt_billno(1));
-	}
+    @Test
+    public void testCreate() throws Exception {
+        BillingInr entity = new BillingInr();
+        EntityDataGenerator.generateTestDataForModelClass(entity);
+        dao.persist(entity);
+        assertNotNull(entity.getId());
+    }
+
+    @Test
+    public void testSearch_inrbilling_dt_billno() {
+        assertNotNull(dao.search_inrbilling_dt_billno(1));
+    }
 }

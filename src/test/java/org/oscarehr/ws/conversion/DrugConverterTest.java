@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Computer Science
  * LeadLab
@@ -46,12 +46,12 @@ import static org.junit.Assert.assertFalse;
 public class DrugConverterTest extends DrugConverterImpl {
 
     @Before
-    public void before(){
+    public void before() {
         this.drugLookUpManager = new MockDrugLookUpManager();
     }
 
     @After
-    public void after(){
+    public void after() {
         this.drugLookUpManager = null;
     }
 
@@ -92,7 +92,7 @@ public class DrugConverterTest extends DrugConverterImpl {
 
         DrugTo1 t = this.getAsTransferObject(info, d);
 
-        assertEquals(1, (int)t.getDrugId());
+        assertEquals(1, (int) t.getDrugId());
         assertEquals(1, (int) t.getDemographicNo());
         assertEquals("1", t.getProviderNo());
         assertEquals("Foobar", t.getBrandName());
@@ -158,7 +158,6 @@ public class DrugConverterTest extends DrugConverterImpl {
         DrugTo1 t = this.getAsTransferObject(info, d);
     }
 
-    
 
     @Test
     public void testTransferToDomainObject() {
@@ -229,7 +228,7 @@ public class DrugConverterTest extends DrugConverterImpl {
     }
 
     @Test
-    public void testPopulateDrugStrengthNormalInput(){
+    public void testPopulateDrugStrengthNormalInput() {
         Drug d = new Drug();
         DrugTo1 t = new DrugTo1();
         t.setStrengthUnit("mg");
@@ -241,7 +240,7 @@ public class DrugConverterTest extends DrugConverterImpl {
     }
 
     @Test
-    public void testPopulateDrugStrengthNoStrengthInfo(){
+    public void testPopulateDrugStrengthNoStrengthInfo() {
         Drug d = new Drug();
         d.setBrandName("aspirin");
 
@@ -255,7 +254,7 @@ public class DrugConverterTest extends DrugConverterImpl {
     }
 
     @Test
-    public void testPopulateDrugStrengthNoValidStrength(){
+    public void testPopulateDrugStrengthNoValidStrength() {
         Drug d = new Drug();
         DrugTo1 t = new DrugTo1();
         t.setStrengthUnit("mg");
@@ -267,7 +266,7 @@ public class DrugConverterTest extends DrugConverterImpl {
     }
 
     @Test
-    public void testPopulateDrugStrengthNoValidStrengthUnit(){
+    public void testPopulateDrugStrengthNoValidStrengthUnit() {
         Drug d = new Drug();
         DrugTo1 t = new DrugTo1();
         t.setStrengthUnit(null);
@@ -279,7 +278,7 @@ public class DrugConverterTest extends DrugConverterImpl {
     }
 
     @Test
-    public void testPopulateTo1StrengthNormal(){
+    public void testPopulateTo1StrengthNormal() {
 
         DrugTo1 t = new DrugTo1();
         Drug d = new Drug();
@@ -296,7 +295,7 @@ public class DrugConverterTest extends DrugConverterImpl {
     }
 
     @Test
-    public void testPopulateTo1StrengthNonNullStrength(){
+    public void testPopulateTo1StrengthNonNullStrength() {
 
         DrugTo1 t = new DrugTo1();
         Drug d = new Drug();
@@ -314,7 +313,7 @@ public class DrugConverterTest extends DrugConverterImpl {
     }
 
     @Test
-    public void testPopulateTo1StrengthNonNullStrengthUnit(){
+    public void testPopulateTo1StrengthNonNullStrengthUnit() {
 
         DrugTo1 t = new DrugTo1();
         Drug d = new Drug();
@@ -332,7 +331,7 @@ public class DrugConverterTest extends DrugConverterImpl {
     }
 
     @Test
-    public void testPopulateTo1StrengthNullBrandName(){
+    public void testPopulateTo1StrengthNullBrandName() {
 
         DrugTo1 t = new DrugTo1();
         Drug d = new Drug();
@@ -356,18 +355,18 @@ public class DrugConverterTest extends DrugConverterImpl {
     }
 
 
-    private class MockDrugLookUpManager extends DrugLookUpManager{
+    private class MockDrugLookUpManager extends DrugLookUpManager {
 
-        public MockDrugLookUpManager(){
+        public MockDrugLookUpManager() {
 
         }
 
-        public List<DrugSearchTo1> search(String name){
+        public List<DrugSearchTo1> search(String name) {
 
             List<DrugSearchTo1> toReturn = new ArrayList<DrugSearchTo1>();
 
             // we treat aspirin as a special case for testing purposes.
-            if(name.equals("aspirin")){
+            if (name.equals("aspirin")) {
                 DrugSearchTo1 d = new DrugSearchTo1();
                 d.setName("aspirin");
                 d.setId(1);
@@ -378,11 +377,11 @@ public class DrugConverterTest extends DrugConverterImpl {
 
         }
 
-        public DrugSearchTo1 details(String id){
+        public DrugSearchTo1 details(String id) {
 
             DrugSearchTo1 s = new DrugSearchTo1();
 
-            if(id.equals("1")){
+            if (id.equals("1")) {
                 List<DrugSearchTo1.DrugComponentTo1> components = new ArrayList<DrugSearchTo1.DrugComponentTo1>();
                 DrugSearchTo1.DrugComponentTo1 c = new DrugSearchTo1.DrugComponentTo1();
                 c.setStrength(1.0);

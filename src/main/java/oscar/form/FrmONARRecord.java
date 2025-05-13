@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 
 package oscar.form;
 
@@ -82,7 +83,7 @@ public class FrmONARRecord extends FrmRecord {
         if ("yes".equalsIgnoreCase(OscarProperties.getInstance().getProperty("PHR", ""))) {
 
             String demographic_no = demoNo;
-            
+
             String sql = "select email from demographic where demographic_no=" + demographic_no;
             ResultSet rs = DBHandler.GetSQL(sql);
             if (rs.next()) {

@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
@@ -5,23 +6,23 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version. 
- *
+ * of the License, or (at your option) any later version.
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
  * Hamilton
  * Ontario, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -49,9 +50,9 @@ public class TicklerLinkDaoImpl extends AbstractDaoImpl<TicklerLink> implements 
     @Override
     public List<TicklerLink> getLinkByTableId(String tableName, Long tableId) {
         Query query = entityManager.createQuery(
-                "SELECT tLink from TicklerLink tLink WHERE tLink.tableName = ? and tLink.tableId = ? order by tLink.id");
-        query.setParameter(0, tableName);
-        query.setParameter(1, tableId);
+                "SELECT tLink from TicklerLink tLink WHERE tLink.tableName = ?1 and tLink.tableId = ?2 order by tLink.id");
+        query.setParameter(1, tableName);
+        query.setParameter(2, tableId);
 
         @SuppressWarnings("unchecked")
         List<TicklerLink> results = query.getResultList();
@@ -61,9 +62,8 @@ public class TicklerLinkDaoImpl extends AbstractDaoImpl<TicklerLink> implements 
 
     @Override
     public List<TicklerLink> getLinkByTickler(Integer ticklerNo) {
-        Query query = entityManager
-                .createQuery("SELECT tLink from TicklerLink tLink WHERE tLink.ticklerNo = ? order by tLink.id");
-        query.setParameter(0, ticklerNo);
+        Query query = entityManager.createQuery("SELECT tLink from TicklerLink tLink WHERE tLink.ticklerNo = ?1 order by tLink.id");
+        query.setParameter(1, ticklerNo);
 
         @SuppressWarnings("unchecked")
         List<TicklerLink> results = query.getResultList();

@@ -23,42 +23,41 @@
     Ontario, Canada
 
 --%>
-<%@page import="java.io.OutputStream"%>
-<%@page import="org.apache.commons.codec.binary.Base64"%>
-<%@page import="org.w3c.dom.Node"%>
-<%@page import="org.w3c.dom.Document"%>
-<%@page import="org.oscarehr.util.XmlUtils"%>
-<%@page import="org.oscarehr.myoscar_server.ws.Message2DataTransfer"%>
-<%@page import="org.oscarehr.phr.web.MyOscarMessagesHelper"%>
-<%@page import="org.oscarehr.myoscar_server.ws.MessageTransfer3"%>
+<%@page import="java.io.OutputStream" %>
+<%@page import="org.apache.commons.codec.binary.Base64" %>
+<%@page import="org.w3c.dom.Node" %>
+<%@page import="org.w3c.dom.Document" %>
+<%@page import="org.oscarehr.util.XmlUtils" %>
+<%@page import="org.oscarehr.myoscar_server.ws.Message2DataTransfer" %>
+<%@page import="org.oscarehr.phr.web.MyOscarMessagesHelper" %>
+<%@page import="org.oscarehr.myoscar_server.ws.MessageTransfer3" %>
 <%
-	boolean download=new Boolean(request.getParameter("download"));
-	Long messageId=new Long(request.getParameter("messageId"));
+    boolean download = new Boolean(request.getParameter("download"));
+    Long messageId = new Long(request.getParameter("messageId"));
 
-	MessageTransfer3 messageTransfer=MyOscarMessagesHelper.readMessage(session, messageId);
+    MessageTransfer3 messageTransfer = MyOscarMessagesHelper.readMessage(session, messageId);
 
-	Message2DataTransfer messageDataTransfer=MyOscarMessagesHelper.getFileAttachment(messageTransfer);
-	String filename=null;
-	String mimeType=null;
-	byte[] dataBytes=null;
-	if (messageDataTransfer!=null)
-	{
-		// filename / mimeType / bytes
-		
-		Document doc=XmlUtils.toDocument(messageDataTransfer.getContents());
-		Node rootNode=doc.getFirstChild();
-		filename=XmlUtils.getChildNodeTextContents(rootNode, "filename");
-		mimeType=XmlUtils.getChildNodeTextContents(rootNode, "mimeType");
-		String tempString=XmlUtils.getChildNodeTextContents(rootNode, "bytes");
-		dataBytes=Base64.decodeBase64(tempString);
-	}
+    Message2DataTransfer messageDataTransfer = MyOscarMessagesHelper.getFileAttachment(messageTransfer);
+    String filename = null;
+    String mimeType = null;
+    byte[] dataBytes = null;
+    if (messageDataTransfer != null) {
+        // filename / mimeType / bytes
 
-	if (download) response.setContentType("application/octet-stream");
-	else response.setContentType(mimeType);
-	
-	response.setContentLength(dataBytes.length);
-	OutputStream os = response.getOutputStream();
-	os.write(dataBytes);
-	os.flush();
-	return;
+        Document doc = XmlUtils.toDocument(messageDataTransfer.getContents());
+        Node rootNode = doc.getFirstChild();
+        filename = XmlUtils.getChildNodeTextContents(rootNode, "filename");
+        mimeType = XmlUtils.getChildNodeTextContents(rootNode, "mimeType");
+        String tempString = XmlUtils.getChildNodeTextContents(rootNode, "bytes");
+        dataBytes = Base64.decodeBase64(tempString);
+    }
+
+    if (download) response.setContentType("application/octet-stream");
+    else response.setContentType(mimeType);
+
+    response.setContentLength(dataBytes.length);
+    OutputStream os = response.getOutputStream();
+    os.write(dataBytes);
+    os.flush();
+    return;
 %>

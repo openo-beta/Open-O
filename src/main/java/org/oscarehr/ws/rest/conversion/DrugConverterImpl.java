@@ -1,3 +1,4 @@
+//CHECKSTYLE:OFF
 /**
  * Copyright (c) 2024. Magenta Health. All Rights Reserved.
  * Copyright (c) 2013-2015. Department of Computer Science, University of Victoria. All Rights Reserved.
@@ -6,22 +7,22 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Computer Science
  * LeadLab
  * University of Victoria
  * Victoria, Canada
- *
+ * <p>
  * Modifications made by Magenta Health in 2024.
  */
 
@@ -43,7 +44,7 @@ import java.util.regex.Pattern;
 
 /**
  * Converts between domain Drug object and transfer Drug objects.
- *
+ * <p>
  * This class represents the transformation between a the SQL schema
  * and the data model that is presented to a client.
  */
@@ -259,7 +260,6 @@ public class DrugConverterImpl extends AbstractConverter<Drug, DrugTo1> implemen
      *
      * @param t a transfer object to populated.
      * @param d a drug object to use as a reference.
-     *
      * @return true if populated successfully, false otherwise.
      */
     protected Boolean populateTo1Strength(DrugTo1 t, Drug d) {
@@ -306,7 +306,6 @@ public class DrugConverterImpl extends AbstractConverter<Drug, DrugTo1> implemen
      *
      * @param d the drug to populate
      * @param t the transfer object to use as a reference.
-     *
      * @return true if successful, false otherwise.
      */
     protected boolean populateDrugStrength(Drug d, DrugTo1 t) {

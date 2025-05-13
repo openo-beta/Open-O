@@ -5,16 +5,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * <p>
  * This software was written for the
  * Department of Family Medicine
  * McMaster University
@@ -50,117 +50,117 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
 public class DefaultNoteServiceTest extends DaoTestFixtures {
-	private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
 
-	private NoteService service = SpringUtils.getBean(DefaultNoteService.class);
+    private NoteService service = SpringUtils.getBean(DefaultNoteService.class);
 
-	private CaseManagementManager caseManagementMgr = SpringUtils.getBean(CaseManagementManager.class);
+    private CaseManagementManager caseManagementMgr = SpringUtils.getBean(CaseManagementManager.class);
 
-	private ProgramProviderDAO programProviderDao = SpringUtils.getBean(ProgramProviderDAO.class);
+    private ProgramProviderDAO programProviderDao = SpringUtils.getBean(ProgramProviderDAO.class);
 
-	@BeforeClass
-	public static void beforeClass() throws Exception {
-		SchemaUtils.restoreAllTables();
-	}
+    @BeforeClass
+    public static void beforeClass() throws Exception {
+        SchemaUtils.restoreAllTables();
+    }
 
-	@Test
-	public void testFindNotes() {
-		NoteSelectionCriteria c = new NoteSelectionCriteria();
-		c.setDemographicId(1);
-		c.setUserRole("doctor,admin");
-		c.setUserName("999998");
-		c.setProgramId("10016");
+    @Test
+    public void testFindNotes() {
+        NoteSelectionCriteria c = new NoteSelectionCriteria();
+        c.setDemographicId(1);
+        c.setUserRole("doctor,admin");
+        c.setUserName("999998");
+        c.setProgramId("10016");
 
-		LoggedInInfo loggedInInfo = AuthUtils.initLoginContext();
-		loggedInInfo.getCurrentFacility().setIntegratorEnabled(false);
+        LoggedInInfo loggedInInfo = AuthUtils.initLoginContext();
+        loggedInInfo.getCurrentFacility().setIntegratorEnabled(false);
 
-		NoteSelectionResult result = service.findNotes(loggedInInfo, c);
-		assertNotNull(result);
-		logger.error("Num results " + result.getNotes().size());
-	}
+        NoteSelectionResult result = service.findNotes(loggedInInfo, c);
+        assertNotNull(result);
+        logger.error("Num results " + result.getNotes().size());
+    }
 
-	public void createNote(String noteText, Date obsDate, String demographicNo, Provider provider, String providerNo, String programId) {
+    public void createNote(String noteText, Date obsDate, String demographicNo, Provider provider, String providerNo, String programId) {
 
-		CaseManagementNote cmn = new CaseManagementNote();
-		cmn.setNote(noteText);
-		cmn.setObservation_date(obsDate);
+        CaseManagementNote cmn = new CaseManagementNote();
+        cmn.setNote(noteText);
+        cmn.setObservation_date(obsDate);
 
-		cmn.setDemographic_no(demographicNo);
-		cmn.setProvider(provider);
-		cmn.setProviderNo(providerNo);
-		cmn.setSigning_provider_no(providerNo);
-		cmn.setProgram_no(programId);
+        cmn.setDemographic_no(demographicNo);
+        cmn.setProvider(provider);
+        cmn.setProviderNo(providerNo);
+        cmn.setSigning_provider_no(providerNo);
+        cmn.setProgram_no(programId);
 
-		cmn.setReporter_caisi_role("1");
+        cmn.setReporter_caisi_role("1");
 
-		//reporter_program_team
-		cmn.setReporter_program_team("0");
-		cmn.setHistory(noteText);
-		caseManagementMgr.saveNoteSimple(cmn);
-	}
+        //reporter_program_team
+        cmn.setReporter_program_team("0");
+        cmn.setHistory(noteText);
+        caseManagementMgr.saveNoteSimple(cmn);
+    }
 
-	@Test
-	public void testNoteReturnOrder() {
+    @Test
+    public void testNoteReturnOrder() {
 
-		LoggedInInfo loggedInInfo = AuthUtils.initLoginContext();
-		loggedInInfo.getCurrentFacility().setIntegratorEnabled(false);
+        LoggedInInfo loggedInInfo = AuthUtils.initLoginContext();
+        loggedInInfo.getCurrentFacility().setIntegratorEnabled(false);
 
-		String demographicNo = "1";
-		String programId = "10016";
-		Provider provider = loggedInInfo.getLoggedInProvider();
-		String providerNo = loggedInInfo.getLoggedInProviderNo();
+        String demographicNo = "1";
+        String programId = "10016";
+        Provider provider = loggedInInfo.getLoggedInProvider();
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-		//Add this provider to the program
-		ProgramProvider pp = new ProgramProvider();
-		pp.setProgramId((long) 10016);
-		pp.setProviderNo(loggedInInfo.getLoggedInProviderNo());
-		pp.setRoleId((long) 1);
-		programProviderDao.saveProgramProvider(pp);
+        //Add this provider to the program
+        ProgramProvider pp = new ProgramProvider();
+        pp.setProgramId((long) 10016);
+        pp.setProviderNo(loggedInInfo.getLoggedInProviderNo());
+        pp.setRoleId((long) 1);
+        programProviderDao.saveProgramProvider(pp);
 
-		//These are used by the CaseManagementManager so they need to be initialized
-		RoleCache.reload();
-		ProgramAccessCache.setAccessMap(10016);
+        //These are used by the CaseManagementManager so they need to be initialized
+        RoleCache.reload();
+        ProgramAccessCache.setAccessMap(10016);
 
-		//Add 40 notes to the same patient advancing the day by 1 for each note. 
-		Calendar calendar = new GregorianCalendar(2011, 11, 9);
-		int i = 0;
+        //Add 40 notes to the same patient advancing the day by 1 for each note.
+        Calendar calendar = new GregorianCalendar(2011, 11, 9);
+        int i = 0;
 
-		for (i = 0; i < 40; i++) {
-			String noteText = "note #" + i;
-			Date obsDate = calendar.getTime();
-			createNote(noteText, obsDate, demographicNo, provider, providerNo, programId);
-			calendar.add(Calendar.DAY_OF_YEAR, 1);
-		}
+        for (i = 0; i < 40; i++) {
+            String noteText = "note #" + i;
+            Date obsDate = calendar.getTime();
+            createNote(noteText, obsDate, demographicNo, provider, providerNo, programId);
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+        }
 
-		int maxResultSize = 15;
-		NoteSelectionCriteria c = new NoteSelectionCriteria();
-		c.setDemographicId(1);
-		c.setUserRole("doctor,admin");
-		c.setUserName("999998");
-		c.setProgramId("10016");
-		c.setMaxResults(maxResultSize);
+        int maxResultSize = 15;
+        NoteSelectionCriteria c = new NoteSelectionCriteria();
+        c.setDemographicId(1);
+        c.setUserRole("doctor,admin");
+        c.setUserName("999998");
+        c.setProgramId("10016");
+        c.setMaxResults(maxResultSize);
 
-		NoteSelectionResult result = service.findNotes(loggedInInfo, c);
+        NoteSelectionResult result = service.findNotes(loggedInInfo, c);
 
-		List<NoteDisplay> list = result.getNotes();
+        List<NoteDisplay> list = result.getNotes();
 
-		//The latest note should be "note #39" from the loop above.  Slicing from the end should have that as the last note, and the first note should be that minus maxResultSize (if there is that many notes.)
-		assertEquals(list.get(0).getNote(), "note #" + (i - maxResultSize));
-		assertEquals(list.get(list.size() - 1).getNote(), "note #" + (i - 1));
+        //The latest note should be "note #39" from the loop above.  Slicing from the end should have that as the last note, and the first note should be that minus maxResultSize (if there is that many notes.)
+        assertEquals(list.get(0).getNote(), "note #" + (i - maxResultSize));
+        assertEquals(list.get(list.size() - 1).getNote(), "note #" + (i - 1));
 
-		c.setSliceFromEndOfList(false);
-		c.setNoteSort("observation_date_desc");
-		result = service.findNotes(loggedInInfo, c);
+        c.setSliceFromEndOfList(false);
+        c.setNoteSort("observation_date_desc");
+        result = service.findNotes(loggedInInfo, c);
 
-		list = result.getNotes();
-		//for(NoteDisplay noteDisplay: list){
-		//	logger.debug(noteDisplay.getNote());
-		//}
+        list = result.getNotes();
+        //for(NoteDisplay noteDisplay: list){
+        //	logger.debug(noteDisplay.getNote());
+        //}
 
-		//The latest note should be "note #39" from the loop above.  Slicing from the start should have that as the first note, and the last note should be that minus maxResultSize (if there is that many notes.)
-		assertEquals(list.get(0).getNote(), "note #" + (i - 1));
-		assertEquals(list.get(list.size() - 1).getNote(), "note #" + (i - maxResultSize));
+        //The latest note should be "note #39" from the loop above.  Slicing from the start should have that as the first note, and the last note should be that minus maxResultSize (if there is that many notes.)
+        assertEquals(list.get(0).getNote(), "note #" + (i - 1));
+        assertEquals(list.get(list.size() - 1).getNote(), "note #" + (i - maxResultSize));
 
-	}
+    }
 
 }
