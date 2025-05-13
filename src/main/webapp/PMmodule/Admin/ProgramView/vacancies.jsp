@@ -126,8 +126,8 @@
 
     function filterByStatus() {
         var status = $("#statusFilter").val();
-        var id = $("#id").val();
-        var programId = $("#programId").val();
+        var id = encodeURIComponent($("#id").val());
+        var programId = encodeURIComponent($("#programId").val());
         var encodedStatus = encodeURIComponent(status);
         location.href = '<%=request.getContextPath()%>/PMmodule/ProgramManagerView.do?method=view&tab=Vacancies&subtab=Vacancies&status=Active&vacancyOrTemplateId=&id=' + id + "&programId=" + programId + "&statusFilter=" + encodedStatus;
     }
