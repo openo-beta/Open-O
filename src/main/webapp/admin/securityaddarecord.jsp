@@ -193,8 +193,6 @@
 		} else {
 			mfaNote.style.display = 'none';
 		}
-
-		updatePinComponentsAccess(checkbox.checked);
 	}
 
 	function updatePinComponentsAccess(checked) {
@@ -293,6 +291,7 @@
 			id="date_ExpireDate_cal" /></td>
 	</tr>
 <%
+	if (MfaManager.isOscarLegacyPinEnabled()) {
 	if (op.getBooleanProperty("NEW_USER_PIN_CONTROL","yes")) {
 %>
 	<input type="hidden" name="pinIsRequired" value="0" />
@@ -335,6 +334,7 @@
 	</tr>
 	
 	<%
+		}
 		if (!OscarProperties.getInstance().getBooleanProperty("mandatory_password_reset", "false")) {
 	%>		  
 			<tr>		
@@ -357,7 +357,12 @@
 		</td>
 		<td style="">
 			<label>
-				<input type="checkbox" name="enableMfa" value="1" onchange="handleMfaChange(this)"/>
+				<input type="checkbox" name="enableMfa" value="1"
+					   onchange="handleMfaChange(this);
+							   <%if (MfaManager.isOscarLegacyPinEnabled()) { %>
+							   updatePinComponentsAccess(this.checked);
+							   <% } %>"
+				/>
 				<bean:message key="admin.securityAddRecord.mfa.description"/>
 			</label>
 		</td>

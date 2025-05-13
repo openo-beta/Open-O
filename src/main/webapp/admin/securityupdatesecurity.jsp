@@ -143,7 +143,6 @@
 	 */
 	function handleMfaChange(checkbox) {
 		updateMfaElementsVisibility(checkbox.checked, checkbox.checked);
-		updatePinComponentsAccess(checkbox.checked);
 	}
 
 	function updatePinComponentsAccess(checked) {
@@ -268,6 +267,9 @@
 			size="10" readonly /> <img src="../images/cal.gif"
 			id="date_ExpireDate_cal" /></td>
 	</tr>
+
+		<% if (MfaManager.isOscarLegacyPinEnabled()) { %>
+
 	<tr>
 		<td align="right" nowrap><bean:message
 			key="admin.securityrecord.formRemotePIN" />:</td>
@@ -293,6 +295,8 @@
 			key="admin.securityrecord.formConfirm" />:</td>
 		<td><input type="password" name="conPin" value="****" <%=security.isUsingMfa() ? "disabled" : ""%> size="6" maxlength="6" /></td>
 	</tr>
+
+		<% } %>
 	
 	<%
 		if (!OscarProperties.getInstance().getBooleanProperty("mandatory_password_reset", "false")) {
@@ -319,7 +323,11 @@
 			</td>
 			<td style="">
 				<label>
-					<input type="checkbox" name="enableMfa" value="1" onchange="handleMfaChange(this)"
+					<input type="checkbox" name="enableMfa" value="1"
+						   onchange="handleMfaChange(this);
+								   <%if (MfaManager.isOscarLegacyPinEnabled()) { %>
+								   updatePinComponentsAccess(this.checked);
+								   <% } %>"
 							<%= security.isUsingMfa() ? "checked" : "" %>/>
 					<bean:message key="admin.securityAddRecord.mfa.description"/>
 				</label>
