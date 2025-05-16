@@ -77,8 +77,10 @@
     </div>
     <div class="nav-menu-title">
         <h3>
-            <a href="javascript:void(0)" onclick="return showIssueHistory('<c:out
-                    value="${param.demographicNo}"/>','<%=request.getAttribute("issueIds")%>');"><%=titleMsg%></a>
+            <%-- <a href="javascript:void(0)" onclick="return showIssueHistory('<c:out
+
+                    value="${param.demographicNo}"/>','<%=request.getAttribute("issueIds")%>');"><%=titleMsg%></a> --%>
+                    <button type="submit" title="Add Note">+</button>
         </h3>
     </div>
 </div>

@@ -692,6 +692,21 @@
         //Event.extend(e);
         //e.stop();
 
+        console.log("showEdit parameters:", {
+            title: title,
+            noteId: noteId,
+            editors: editors,
+            date: date,
+            revision: revision,
+            note: note,
+            url: url,
+            containerDiv: containerDiv,
+            reloadUrl: reloadUrl,
+            noteIssues: noteIssues,
+            noteExts: noteExts,
+            demoNo: demoNo
+        });
+
         var limit = containerDiv + "threshold";
         var editElem = "showEditNote";
         var pgHeight = pageHeight();
