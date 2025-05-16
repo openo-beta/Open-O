@@ -91,34 +91,55 @@
     </c:otherwise>
 </c:choose>
 
-<ul>
-    <c:forEach var="note" items="${Notes}" varStatus="status">
-        <c:set var="noteId" value="${note.id}" />
-        <c:set var="backgroundColor" value="${status.index % 2 == 0 ? '#F3F3F3' : '#FFFFFF'}" />
-        
-        <li class="cpp" style="background-color: ${backgroundColor};">
-            <span id="spanListNote${noteId}">
-                <c:choose>
-                    <c:when test="${param.title == 'oscarEncounter.oMeds.title' || param.title == 'oscarEncounter.riskFactors.title' || param.title == 'oscarEncounter.famHistory.title' || param.noheight == 'true'}">
-                        <a class="links" onmouseover="this.className='linkhover'" onmouseout="this.className='links'"
-                           title="Rev:${note.revision} - Last update:${note.update_date}"
-                           id="listNote${noteId}" href="javascript:void(0)"
-                           onclick="showEdit(event,'${titleMsg}','${noteId}','${editors}','${note.observation_date}','${note.revision}','${note.note}','${addUrl}${noteId}','${param.cmd}','${identUrl}','${noteIssues}','${noteExts}','${param.demographicNo}');return false;">
-                            ${htmlNoteTxt}
-                        </a>
-                    </c:when>
-                    <c:otherwise>
-                        <a class="topLinks" onmouseover="this.className='topLinkhover'" onmouseout="this.className='topLinks'"
-                           title="Rev:${note.revision} - Last update:${note.update_date}"
-                           id="listNote${noteId}" href="javascript:void(0)"
-                           onclick="showEdit(event,'${titleMsg}','${noteId}','${editors}','${note.observation_date}','${note.revision}','${note.note}','${addUrl}${noteId}','${param.cmd}','${identUrl}','${noteIssues}','${noteExts}','${param.demographicNo}');return false;">
-                            ${htmlNoteTxt}
-                        </a>
-                    </c:otherwise>
-                </c:choose>
-            </span>
-        </li>
-    </c:forEach>
+<c:forEach var="note" items="${Notes}" varStatus="status">
+  <c:set var="noteId" value="${note.id}" />
+  <c:set var="backgroundColor"
+         value="${status.index % 2 == 0 ? '#F3F3F3' : '#FFFFFF'}" />
+
+  <li class="cpp" style="background-color: ${backgroundColor};">
+    <span id="spanListNote${noteId}">
+      <c:choose>
+        <c:when test="${param.title == 'oscarEncounter.medHistory.title'}">
+          <a
+            class="topLinks"
+            onmouseover="this.className='topLinkhover'"
+            onmouseout="this.className='topLinks'"
+            title="Rev:${note.revision} - Last update:${note.update_date}"
+            id="listNote${noteId}"
+            href="javascript:void(0)"
+            onclick="
+              return showEdit(
+                event,
+                '${titleMsg}',                                           /* window title */
+                '${noteId}',                                             /* noteId */
+                '${editors}',                                            /* editors list */
+                '${note.observation_date}',                              /* date */
+                '${note.revision}',                                      /* revision */
+                '${fn:escapeXml(note.note)}',                            /* note text */
+                '${addUrl}${noteId}',                                    /* form load URL */
+                'medicalHistory',                                        /* <— containerDiv = your DIV’s id */
+                '${pageContext.request.contextPath}/casemgmt/CaseManagementEntry.do?method=medicalHistory&demographicNo=${param.demographicNo}',
+                                                                        /* <— reloadUrl = fragment URL */
+                '${noteIssues}',
+                '${noteExts}',
+                '${param.demographicNo}'
+              );
+            "
+          >
+            <script>
+                console.log('<c:out value="${param.cmd}"/>');
+            </script>
+            ${htmlNoteTxt}
+          </a>
+        </c:when>
+        <c:otherwise>
+          <!-- other panels unchanged -->
+        </c:otherwise>
+      </c:choose>
+    </span>
+  </li>
+</c:forEach>
+
 
     <!-- Handling remoteNotes -->
     <c:if test="${not empty remoteNotes}">
