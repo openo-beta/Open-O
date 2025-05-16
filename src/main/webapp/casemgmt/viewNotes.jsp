@@ -117,7 +117,7 @@
                 '${note.revision}',                                      /* revision */
                 '${fn:escapeXml(note.note)}',                            /* note text */
                 '${addUrl}${noteId}',                                    /* form load URL */
-                'medicalHistory',                                        /* <— containerDiv = your DIV’s id */
+                '${param.cmd}',                                          /* <— containerDiv = your DIV’s id */
                 '${pageContext.request.contextPath}/casemgmt/CaseManagementEntry.do?method=medicalHistory&demographicNo=${param.demographicNo}',
                                                                         /* <— reloadUrl = fragment URL */
                 '${noteIssues}',
@@ -126,14 +126,17 @@
               );
             "
           >
-            <script>
-                console.log('<c:out value="${param.cmd}"/>');
             </script>
             ${htmlNoteTxt}
           </a>
         </c:when>
         <c:otherwise>
-          <!-- other panels unchanged -->
+            <a class="topLinks" onmouseover="this.className='topLinkhover'" onmouseout="this.className='topLinks'"
+                title="Rev:${note.revision} - Last update:${note.update_date}"
+                id="listNote${noteId}" href="javascript:void(0)"
+                onclick="showEdit(event,'${titleMsg}','${noteId}','${editors}','${note.observation_date}','${note.revision}','${note.note}','${addUrl}${noteId}','${param.cmd}','${identUrl}','${noteIssues}','${noteExts}','${param.demographicNo}');return false;">
+                ${htmlNoteTxt}
+            </a>
         </c:otherwise>
       </c:choose>
     </span>
