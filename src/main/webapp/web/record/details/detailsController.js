@@ -791,7 +791,7 @@ oscarApp.controller('DetailsCtrl', function ($scope, $http, $location, $statePar
 
     //upload photo
     $scope.launchPhoto = function () {
-        var url = "../casemgmt/uploadimage.jsp?demographicNo=" + demo.demographicNo;
+        var url = "../ClientImage?demographicNo=" + demo.demographicNo;
         window.open(url, "uploadWin", "width=500, height=300");
     }
 

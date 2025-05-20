@@ -317,7 +317,7 @@
                          OnMouseOver="document.getElementById('ci').src='../imageRenderingServlet?source=local_client&clientId=
                              <c:out value="${clientId}"/>'"
                          OnMouseOut="delay(5000)" window.status='Click to upload new photo' ; return true;"
-                    onClick="popupUploadPage('<%=request.getContextPath() %>/casemgmt/uploadimage.jsp',<%=demo%>);return false;" />
+                    onClick="popupUploadPage('${pageContext.request.contextPath}/ClientImage',<%=demo%>);return false;" />
                 </c:when>
                 <c:otherwise>
                     <img style="cursor: pointer;"
