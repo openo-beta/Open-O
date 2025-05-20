@@ -77,10 +77,9 @@
     </div>
     <div class="nav-menu-title">
         <h3>
-            <%-- <a href="javascript:void(0)" onclick="return showIssueHistory('<c:out
-
-                    value="${param.demographicNo}"/>','<%=request.getAttribute("issueIds")%>');"><%=titleMsg%></a> --%>
-                    <button type="submit" title="Add Note">+</button>
+            <!-- this is where the title is build and the button url is set --> 
+            <a href="javascript:void(0)" onclick="return showIssueHistory('<c:out
+                    value="${param.demographicNo}"/>','<%=request.getAttribute("issueIds")%>');"><%=titleMsg%></a>
         </h3>
     </div>
 </div>
