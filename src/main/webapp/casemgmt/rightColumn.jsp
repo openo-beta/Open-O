@@ -27,7 +27,7 @@
 <%@page import="org.oscarehr.sharingcenter.SharingCenterUtil" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
-<%@taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
+<%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="org.oscarehr.casemgmt.model.*" %>
 
@@ -52,7 +52,6 @@
             + "scrollbars=no,menubars=no,toolbars=no,resizable=yes,top=50,left=50";
         var popup = window.open(page, "", windowprops);
         popup.focus();
-
     }
 
     // Sets a timer before reseting the client image back to the default, this is only done if a client image is set
@@ -62,7 +61,7 @@
     }
 </script>
 
-<!-- Sets the profile picture of a loaded case encounter-->
+<!-- Sets the profile picture of a loaded case -->
 <security:oscarSec roleName="<%=roleName$%>" objectName="_newCasemgmt.photo" rights="r">
     <c:choose>
         <c:when test="${not empty requestScope.image_exists}">
@@ -72,13 +71,13 @@
                  title="Click to upload a new photo."
                  OnMouseOver="document.getElementById('ci').src='${pageContext.request.contextPath}/imageRenderingServlet?source=local_client&clientId=${demographicNo}'"
                  OnMouseOut="delay(5000)" window.status='Click to upload a new photo.'; return true;"
-            onClick="popupUploadPage('${pageContext.request.contextPath}/uploadimage.jsp', ${demographicNo}); return false;"/>
+            onClick="popupUploadPage('${pageContext.request.contextPath}/casemgmt/uploadimage.jsp', ${demographicNo}); return false;"/>
         </c:when>
         <c:otherwise>
             <img style="cursor: pointer;" src="${pageContext.request.contextPath}/${ClientImage.imageMissingPlaceholderUrl}"
                  alt="No_Id_Photo" height="100" title="Click to upload a new photo."
-                 OnMouseOver="window.status='Click to upload a new photo.'; return true"
-                 onClick="popupUploadPage('${pageContext.request.contextPath}/uploadimage.jsp', ${demographicNo}); return false;"/>
+                 OnMouseOver="window.status='Click to upload a new photo.'; return true;"
+                 onClick="popupUploadPage('${pageContext.request.contextPath}/casemgmt/uploadimage.jsp', ${demographicNo}); return false;"/>
         </c:otherwise>
     </c:choose>
 </security:oscarSec>
