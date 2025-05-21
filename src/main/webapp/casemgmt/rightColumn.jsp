@@ -45,6 +45,7 @@
     // and the value -> URL of the action class
     <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 
+    // Creates a popup upload window to upload a profile picture with a set URL
     function popupUploadPage(varpage, dn) {
         var page = varpage + "?demographicNo=" + dn;
         windowprops = "height=500,width=500,location=no,"
@@ -54,14 +55,14 @@
 
     }
 
+    // Sets a timer before reseting the client image back to the default, this is only done if a client image is set
     function delay(time) {
         var string = "document.getElementById('ci').src='${pageContext.request.contextPath}${ClientImage.imagePresentPlaceholderUrl}'";
         setTimeout(string, time);
     }
-
 </script>
 
-<!--dummmy div to force browser to allocate space -->
+<!-- Sets the profile picture of a loaded case encounter-->
 <security:oscarSec roleName="<%=roleName$%>" objectName="_newCasemgmt.photo" rights="r">
     <c:choose>
         <c:when test="${not empty requestScope.image_exists}">
@@ -71,14 +72,13 @@
                  title="Click to upload a new photo."
                  OnMouseOver="document.getElementById('ci').src='${pageContext.request.contextPath}/imageRenderingServlet?source=local_client&clientId=${demographicNo}'"
                  OnMouseOut="delay(5000)" window.status='Click to upload a new photo.'; return true;"
-            onClick="popupUploadPage('uploadimage.jsp', <%=demo%>); return false;"/>
-
+            onClick="popupUploadPage('${pageContext.request.contextPath}/uploadimage.jsp', ${demographicNo}); return false;"/>
         </c:when>
         <c:otherwise>
             <img style="cursor: pointer;" src="${pageContext.request.contextPath}/${ClientImage.imageMissingPlaceholderUrl}"
                  alt="No_Id_Photo" height="100" title="Click to upload a new photo."
                  OnMouseOver="window.status='Click to upload a new photo.'; return true"
-                 onClick="popupUploadPage('uploadimage.jsp', <%=demo%>); return false;"/>
+                 onClick="popupUploadPage('${pageContext.request.contextPath}/uploadimage.jsp', ${demographicNo}); return false;"/>
         </c:otherwise>
     </c:choose>
 </security:oscarSec>
