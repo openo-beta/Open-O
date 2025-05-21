@@ -146,7 +146,7 @@
         }
 
         function delay(time) {
-            string = "document.getElementById('ci').src='${pageContext.request.contextPath} + ${ClientImage.imagePresentPlaceholderUrl}'";
+        var string = "document.getElementById('ci').src='${pageContext.request.contextPath}${ClientImage.imagePresentPlaceholderUrl}'";
             setTimeout(string, time);
         }
 
