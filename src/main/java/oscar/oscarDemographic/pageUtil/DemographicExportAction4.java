@@ -671,8 +671,14 @@ public class DemographicExportAction4 extends Action {
 				if(pi != null) {
 					PreferredPharmacy preferredPharmacy = demo.addNewPreferredPharmacy();
 					PhoneNumber pn =  preferredPharmacy.addNewPhoneNumber();
-					if(!StringUtils.isNullOrEmpty(pi.getFax())) {
-						addPhone(pi.getFax(), "", cdsDt.PhoneNumberType.W,pn);
+					if(!StringUtils.isNullOrEmpty(pi.getPhone1())) {
+						addPhone(pi.getPhone1(), "", cdsDt.PhoneNumberType.W,pn);
+					}
+
+					if (StringUtils.filled(pi.getFax())) {
+						cdsDt.PhoneNumber pharmacyFax = preferredPharmacy.addNewFaxNumber();
+						pharmacyFax.setPhoneNumberType(cdsDt.PhoneNumberType.W);
+						pharmacyFax.setPhoneNumber(pi.getFax());
 					}
 
 
