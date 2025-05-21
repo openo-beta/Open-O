@@ -186,7 +186,7 @@
 
                     if (clientImage != null) {
                         imagePlaceholder = ClientImage.imagePresentPlaceholderUrl;
-                        imageUrl = "/imageRenderingServlet?source=" + ImageRenderingServlet.Source.local_client.name() + "&clientId=" + currentDemographic.getDemographicNo();
+                        imageUrl = "${pageContext.request.contextPath}/imageRenderingServlet?source=" + ImageRenderingServlet.Source.local_client.name() + "&clientId=" + currentDemographic.getDemographicNo();
                     }
                 %>
                 <img style="height:96px; width:96px" src="${pageContext.request.contextPath + imagePlaceholder}"

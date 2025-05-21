@@ -137,7 +137,7 @@
         }
 
         function popupUploadPage(varpage, dn) {
-            var page = "" + varpage + "?demographicNo=" + dn;
+            var page = varpage + "?demographicNo=" + dn;
             windowprops = "height=500,width=500,location=no,"
                 + "scrollbars=no,menubars=no,toolbars=no,resizable=yes,top=50,left=50";
             var popup = window.open(page, "", windowprops);
@@ -146,7 +146,7 @@
         }
 
         function delay(time) {
-            string = "document.getElementById('ci').src='<%=request.getContextPath()+ClientImage.imagePresentPlaceholderUrl%>'";
+            string = "document.getElementById('ci').src='${pageContext.request.contextPath} + ${ClientImage.imagePresentPlaceholderUrl}'";
             setTimeout(string, time);
         }
 
@@ -311,20 +311,19 @@
                 %> <c:choose>
                 <c:when test="${not empty requestScope.image_exists}">
                     <c:set var="clientId" value="${demographicNo}"></c:set>
-                    <img style="cursor: pointer;" id="ci"
-                         src="<c:out value="${ctx}"/><%=ClientImage.imagePresentPlaceholderUrl%>" alt="id_photo"
-                         height="100" title="Click to upload new photo."
-                         OnMouseOver="document.getElementById('ci').src='../imageRenderingServlet?source=local_client&clientId=
-                             <c:out value="${clientId}"/>'"
-                         OnMouseOut="delay(5000)" window.status='Click to upload new photo' ; return true;"
-                    onClick="popupUploadPage('${pageContext.request.contextPath}/ClientImage',<%=demo%>);return false;" />
+                    <img id="ci"
+                         src="${pageContext.request.contextPath}/${ClientImage.imagePresentPlaceholderUrl}" alt="id_photo"
+                         height="100" title="Click to upload a new photo."
+                         OnMouseOver="document.getElementById('ci').src='${pageContext.request.contextPath}/imageRenderingServlet?source=local_client&clientId=${demographicNo}'"
+                         OnMouseOut="delay(5000)" window.status='Click to upload new photo'; return true;"
+                    onClick="popupUploadPage('uploadimage.jsp',<%=demo%>); return false;" />
                 </c:when>
                 <c:otherwise>
-                    <img style="cursor: pointer;"
-                         src="<c:out value="${ctx}"/><%=ClientImage.imageMissingPlaceholderUrl%>" alt="No_Id_Photo"
-                         height="100" title="Click to upload new photo."
-                         OnMouseOver="window.status='Click to upload new photo';return true"
-                         onClick="popupUploadPage('uploadimage.jsp',<%=demo%>);return false;"/>
+                    <img
+                         src="${pageContext.request.contextPath}/${ClientImage.imageMissingPlaceholderUrl}" alt="No_Id_Photo"
+                         height="100" title="Click to upload a new photo."
+                         OnMouseOver="window.status='Click to upload a new photo'; return true"
+                         onClick="popupUploadPage('uploadimage.jsp',<%=demo%>); return false;"/>
                 </c:otherwise>
             </c:choose></td>
 
