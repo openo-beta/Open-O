@@ -1814,51 +1814,28 @@ public class DemographicExportAction4 extends Action {
 					MessageHandler h = Factory.getHandler(hl7TextMessage.getType(), hl7Body);
 					if (h==null) continue;
 					
+					String testNameReportedByLab = null;
+					String comments = null;
 					for (int i=0; i<h.getOBRCount(); i++) {
 						for (int j=0; j<h.getOBXCount(i); j++) {
 							String result = h.getOBXResult(i, j);
-							String comments = null;
+							comments = null;
+							testNameReportedByLab = h.getOBXName(i, j);
 							for (int k=0; k<h.getOBXCommentCount(i, j); k++) {
 								comments = Util.addLine(comments, h.getOBXComment(i, j, k));
 							}
-							
-							if (StringUtils.filled(result) || StringUtils.filled(comments)) {
-								HashMap<String,String> labMeaValues = new HashMap<String,String>();
-								labMeaValues.put("labType", hl7TextMessage.getType());
-								labMeaValues.put("identifier", h.getOBXIdentifier(i, j));
-								labMeaValues.put("name", h.getOBXName(i, j));
-								labMeaValues.put("labname", h.getPatientLocation());
-								labMeaValues.put("datetime", h.getTimeStamp(i, j));
-								labMeaValues.put("abnormal", h.getOBXAbnormalFlag(i, j));
-								labMeaValues.put("unit", h.getOBXUnits(i, j));
-								labMeaValues.put("accession", h.getAccessionNum());
-								if ( !"-".equals(h.getOBXReferenceRange(i, j)) ) {
-									labMeaValues.put("range", h.getOBXReferenceRange(i, j));
-								}
-								labMeaValues.put("request_datetime", h.getRequestDate(i));
-								labMeaValues.put("olis_status", h.getOBXResultStatus(i, j));
-								labMeaValues.put("lab_no", String.valueOf(hl7TxtInfo.getLabNumber()));
-								labMeaValues.put("blocked", h.isTestResultBlocked(i, j) ? "BLOCKED" : "");
-								labMeaValues.put("other_id", i+"-"+j);
-								
-								if (StringUtils.filled(result)) {
-									labMeaValues.put("measureData", result);
-									labMeaValues.put("comments", comments);
-								} else {
-									labMeaValues.put("measureData", comments);
-								}
-								
-	                    		String range = labMeaValues.get("range");
-	                    		if( StringUtils.filled(range)) {
-	                    			String rangeLimits[] = range.split("-");
-	                    			if( rangeLimits.length == 2 ) {
-	                    				labMeaValues.put("minimum", rangeLimits[0]);
-	                        			labMeaValues.put("maximum", rangeLimits[1]);
-	                    			}
-	                    		}
 
-								LaboratoryResults labResults2 = patientRec.addNewLaboratoryResults();
-								exportLabResult(labMeaValues, labResults2, demoNo);
+							if (StringUtils.filled(result) || StringUtils.filled(comments)) {
+								exportLabResult(patientRec, hl7TextMessage, hl7TxtInfo, h, testNameReportedByLab, result, comments, demoNo, i, j);
+							}
+						}
+
+						if (!h.getMsgType().equals("PFHT")) {
+							testNameReportedByLab = null;
+							for (int k=0; k < h.getOBRCommentCount(i); k++) {
+								if (h.getOBXName(i, 0).equals("")) { testNameReportedByLab = h.getOBRName(i); }
+								comments = h.getOBRComment(i, k);
+								exportLabResult(patientRec, hl7TextMessage, hl7TxtInfo, h, testNameReportedByLab, null, comments, demoNo, i, 0);
 							}
 						}
 					}
@@ -3252,6 +3229,45 @@ public class DemographicExportAction4 extends Action {
 		exportLabResult(labMeaValues, labResults, demoNo);
 	}
 	*/
+
+	private void exportLabResult(PatientRecord patientRec, Hl7TextMessage hl7TextMessage, Hl7TextInfo hl7TxtInfo, MessageHandler h, String name, String result, String comments, String demoNo, int i, int j) {
+		HashMap<String,String> labMeaValues = new HashMap<String,String>();
+		labMeaValues.put("labType", hl7TextMessage.getType());
+		labMeaValues.put("identifier", h.getOBXIdentifier(i, j));
+		labMeaValues.put("name", name);
+		labMeaValues.put("labname", h.getPatientLocation());
+		labMeaValues.put("datetime", h.getTimeStamp(i, j));
+		labMeaValues.put("abnormal", h.getOBXAbnormalFlag(i, j));
+		labMeaValues.put("unit", h.getOBXUnits(i, j));
+		labMeaValues.put("accession", h.getAccessionNum());
+		if ( !"-".equals(h.getOBXReferenceRange(i, j)) ) {
+			labMeaValues.put("range", h.getOBXReferenceRange(i, j));
+		}
+		labMeaValues.put("request_datetime", h.getRequestDate(i));
+		labMeaValues.put("olis_status", h.getOBXResultStatus(i, j));
+		labMeaValues.put("lab_no", String.valueOf(hl7TxtInfo.getLabNumber()));
+		labMeaValues.put("blocked", h.isTestResultBlocked(i, j) ? "BLOCKED" : "");
+		labMeaValues.put("other_id", i+"-"+j);
+		
+		if (StringUtils.filled(result)) {
+			labMeaValues.put("measureData", result);
+			labMeaValues.put("comments", comments);
+		} else {
+			labMeaValues.put("measureData", comments);
+		}
+		
+		String range = labMeaValues.get("range");
+		if( StringUtils.filled(range)) {
+			String rangeLimits[] = range.split("-");
+			if( rangeLimits.length == 2 ) {
+				labMeaValues.put("minimum", rangeLimits[0]);
+				labMeaValues.put("maximum", rangeLimits[1]);
+			}
+		}
+
+		LaboratoryResults labResults = patientRec.addNewLaboratoryResults();
+		exportLabResult(labMeaValues, labResults, demoNo);
+	}
 	
 	private void exportLabResult(HashMap<String,String> labMea, LaboratoryResults labResults, String demoNo) {
 
