@@ -2522,7 +2522,7 @@ public class DemographicExportAction4 extends Action {
 				// Sharing Center - Skip download if sharing with affinity domain
 				if (request.getParameter("SendToAffinityDomain") == null) {
 					Util.downloadFile(zipName+".pgp", tmpDir, response);
-					Util.cleanFile(zipName+".pgp", tmpDir);
+					// Util.cleanFile(zipName+".pgp", tmpDir);
 					ffwd = "success";
 				} else {
 					// Sharing Center - Change the forward (redirect) to the affinity domain export page
@@ -2572,9 +2572,9 @@ public class DemographicExportAction4 extends Action {
 		}
 
 		//Remove zip & export files from temp dir
-		Util.cleanFile(zipName, tmpDir);
-		Util.cleanFiles(files);
-		Util.cleanFile(tmpDir);
+		// Util.cleanFile(zipName, tmpDir);
+		// Util.cleanFiles(files);
+		// Util.cleanFile(tmpDir);
 	}
 			break;
 
