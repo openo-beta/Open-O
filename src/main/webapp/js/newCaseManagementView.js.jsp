@@ -374,6 +374,17 @@
 	Loads issue notes: Social History, Medical History, Ongoing Concerns, Reminders
 */
     function showIssueNotes() {
+
+        var urlString = ctx + "/CaseManagementView.do?hc=996633&method=listNotes&providerNo=" + providerNo + "&demographicNo=" + demographicNo + "&issue_code=SocHistory&title=" + socHistoryLabel + "&cmd=divR1I1"
+        
+        console.log("divR1T2 variables:", {
+            ctx: ctx,
+            providerNo: providerNo,
+            demographicNo: demographicNo,
+            socHistoryLabel: socHistoryLabel,
+            fullURL: urlString
+        });  
+
         issueNoteUrls = {
             divR1I1: ctx + "/CaseManagementView.do?hc=996633&method=listNotes&providerNo=" + providerNo + "&demographicNo=" + demographicNo + "&issue_code=SocHistory&title=" + socHistoryLabel + "&cmd=divR1I1",
             divR1I2: ctx + "/CaseManagementView.do?hc=996633&method=listNotes&providerNo=" + providerNo + "&demographicNo=" + demographicNo + "&issue_code=MedHistory&title=" + medHistoryLabel + "&cmd=divR1I2",
@@ -435,6 +446,7 @@
     }
 
     function notesLoadAll() {
+        console.log("notesLoadAll executed");
         notesOffset += notesIncrement;
         notesRetrieveOk = false;
         notesCurrentTop = $("encMainDiv").children[0].id;
@@ -3869,6 +3881,7 @@ function autoSave(async) {
     <%
 	UserPropertyDAO userPropertyDAO = SpringUtils.getBean(UserPropertyDAO.class);
 	UserProperty prop = userPropertyDAO.getProp(LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo(), "clinicalConnectDisableCloseWindow");
+    //providerNo = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo();
 	if(prop != null && "true".equals(prop.getValue()) ) {
 
 	} else {
