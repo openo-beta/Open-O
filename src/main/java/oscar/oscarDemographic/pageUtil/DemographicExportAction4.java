@@ -670,8 +670,8 @@ public class DemographicExportAction4 extends Action {
 				PharmacyInfo pi = pharmacyInfoDao.find(dp.getPharmacyId());
 				if(pi != null) {
 					PreferredPharmacy preferredPharmacy = demo.addNewPreferredPharmacy();
-					PhoneNumber pn =  preferredPharmacy.addNewPhoneNumber();
 					if(!StringUtils.isNullOrEmpty(pi.getPhone1())) {
+						PhoneNumber pn =  preferredPharmacy.addNewPhoneNumber();
 						addPhone(pi.getPhone1(), "", cdsDt.PhoneNumberType.W,pn);
 					}
 
