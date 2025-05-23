@@ -580,7 +580,21 @@ public class DemographicExportAction4 extends Action {
 			if (StringUtils.filled(chartNo)) demo.setChartNumber(chartNo);
 
 			String email = demographic.getEmail();
-			if (StringUtils.filled(email)) demo.setEmail(email);
+			String remainingEmails = "";
+			if (StringUtils.filled(email)) {
+				String[] emails = email.split("[,;\\s]+");
+				if (emails.length > 0) {
+					demo.setEmail(emails[0].trim());
+					if (emails.length > 1) {
+						remainingEmails = String.join(", ", Arrays.copyOfRange(emails, 1, emails.length));
+					}
+				}
+			}
+
+			String existingNote = StringUtils.filled(demo.getNoteAboutPatient()) ? demo.getNoteAboutPatient() + "\n" : "";
+			if (StringUtils.filled(remainingEmails)) {
+				demo.setNoteAboutPatient(existingNote + "\nEmail: " + remainingEmails);
+			}
 
 			String providerNo = demographic.getProviderNo();
 			if (StringUtils.filled(providerNo)) {
@@ -3037,7 +3051,11 @@ public class DemographicExportAction4 extends Action {
 				}
 				if (StringUtils.filled(contactNote)) contact.setNote(contactNote);
 
-				fillContactInfo(loggedInInfo, contact, contactId[j], demoNo, j, demoContact.getType());
+				String remainingEmails = fillContactInfo(loggedInInfo, contact, contactId[j], demoNo, j, demoContact.getType());
+				if (StringUtils.filled(remainingEmails)) {
+					String existingNote = StringUtils.filled(contact.getNote()) ? contact.getNote() + "\n" : "";
+					contact.setNote(existingNote + "\nEmail: " + remainingEmails);
+				}
 			}
 		}
 	}
@@ -3093,13 +3111,17 @@ public class DemographicExportAction4 extends Action {
 				}
 				if (StringUtils.filled(contactNote)) contact.setNote(contactNote);
 
-				fillContactInfo(loggedInInfo, contact, contactId[j], demoNo, j, DemographicContact.TYPE_DEMOGRAPHIC);
+				String remainingEmails = fillContactInfo(loggedInInfo, contact, contactId[j], demoNo, j, DemographicContact.TYPE_DEMOGRAPHIC);
+				if (StringUtils.filled(remainingEmails)) {
+					String existingNote = StringUtils.filled(contact.getNote()) ? contact.getNote() + "\n" : "";
+					contact.setNote(existingNote + "\nEmails: " + remainingEmails);
+				}
 			}
 		}
 	}
 
-	private void fillContactInfo(LoggedInInfo loggedInInfo, Demographics.Contact contact, String contactId, String demoNo, int index, int type) {
-
+	private String fillContactInfo(LoggedInInfo loggedInInfo, Demographics.Contact contact, String contactId, String demoNo, int index, int type) {
+		String remainingEmails = "";
 		if(type == DemographicContact.TYPE_DEMOGRAPHIC) {
 			org.oscarehr.common.model.Demographic relDemo = new DemographicData().getDemographic(loggedInInfo, contactId);
 			HashMap<String,String> relDemoExt = new HashMap<String,String>();
@@ -3113,7 +3135,16 @@ public class DemographicExportAction4 extends Action {
 				exportError.add("Error! No Last Name for contact ("+index+") for Patient "+demoNo);
 			}
 
-			if (StringUtils.filled(relDemo.getEmail())) contact.setEmailAddress(relDemo.getEmail());
+			String email = relDemo.getEmail();
+			if (StringUtils.filled(email)) {
+				String[] emails = email.split("[,;\\s]+");
+				if (emails.length > 0) {
+					contact.setEmailAddress(emails[0].trim());
+					if (emails.length > 1) {
+						remainingEmails = String.join(", ", Arrays.copyOfRange(emails, 1, emails.length));
+					}
+				}
+			}
 
 			boolean phoneExtTooLong = false;
 			if (phoneNoValid(relDemo.getPhone())) {
@@ -3147,7 +3178,16 @@ public class DemographicExportAction4 extends Action {
 					exportError.add("Error! No Last Name for contact ("+index+") for Patient "+demoNo);
 				}
 
-				if (StringUtils.filled(c.getEmail())) contact.setEmailAddress(c.getEmail());
+				String email = c.getEmail();
+				if (StringUtils.filled(email)) {
+					String[] emails = email.split("[,;\\s]+");
+					if (emails.length > 0) {
+						contact.setEmailAddress(emails[0].trim());
+						if (emails.length > 1) {
+							remainingEmails = String.join(", ", Arrays.copyOfRange(emails, 1, emails.length));
+						}
+					}
+				}
 
 				boolean phoneExtTooLong = false;
 				if (phoneNoValid(c.getPhone())) {
@@ -3172,6 +3212,7 @@ public class DemographicExportAction4 extends Action {
 			}
 
 		}
+		return remainingEmails;
 	}
 
 	private void fillContactPurpose(String rel, Demographics.Contact contact) {
