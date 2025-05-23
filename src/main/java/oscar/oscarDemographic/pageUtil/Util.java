@@ -206,18 +206,28 @@ public class Util {
             dirName = fixDirName(dirName);
             if (rsp==null) return;
 
+            File file = new File(dirName + fileName);
+            if (!file.exists()) {
+                logger.error("Error during file download: file does not exist - {}", fileName);
+                rsp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+
             rsp.setContentType("application/octet-stream");
             rsp.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-            InputStream in = new FileInputStream(dirName + fileName);
-            OutputStream out = rsp.getOutputStream();
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0) {
-                out.write(buf, 0, len);
+            rsp.setContentLengthLong(file.length());
+
+            try (InputStream in = new FileInputStream(file);
+                OutputStream out = rsp.getOutputStream()) {
+
+                byte[] buf = new byte[8192];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
             }
-            in.close();
-            out.close();
-        } catch (IOException ex) {logger.error("Error", ex);
+        } catch (IOException ex) {
+            logger.error("Error during file download: {}", fileName, ex);
         }
     }
 
