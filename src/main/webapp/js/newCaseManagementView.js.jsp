@@ -31,7 +31,7 @@
     <%@page import="org.oscarehr.casemgmt.common.Colour"%>
 
     var numNotes = 0;   //How many saved notes do we have?
-    var ctx;        //url context
+    var ctx;            //url context
     var providerNo;
     var demographicNo;
     var case_program_id;
@@ -376,6 +376,15 @@
     function showIssueNotes() {
 
         var urlString = ctx + "/CaseManagementView.do?hc=996633&method=listNotes&providerNo=" + providerNo + "&demographicNo=" + demographicNo + "&issue_code=SocHistory&title=" + socHistoryLabel + "&cmd=divR1I1"
+        
+        <% 
+        String pNo = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo(); 
+            if (pNo == null) {
+                pNo = "0";
+            } 
+        %>
+
+        providerNo = '<%= pNo %>';
         
         console.log("divR1T2 variables:", {
             ctx: ctx,
@@ -3881,7 +3890,6 @@ function autoSave(async) {
     <%
 	UserPropertyDAO userPropertyDAO = SpringUtils.getBean(UserPropertyDAO.class);
 	UserProperty prop = userPropertyDAO.getProp(LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo(), "clinicalConnectDisableCloseWindow");
-    //providerNo = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo();
 	if(prop != null && "true".equals(prop.getValue()) ) {
 
 	} else {
