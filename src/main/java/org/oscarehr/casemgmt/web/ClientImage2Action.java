@@ -41,6 +41,8 @@ public class ClientImage2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
+    private File clientImage;
+    private String clientImageFileName;
 
     private static Logger log = MiscUtils.getLogger();
 
@@ -51,45 +53,44 @@ public class ClientImage2Action extends ActionSupport {
     }
 
     public String saveImage() {
-
         HttpSession session = request.getSession(true);
-        String id = (String) (session.getAttribute("clientId"));
+        String id = (String) session.getAttribute("clientId");
 
         log.info("client image upload: id=" + id);
 
-        File formFile = this.getClientImage();
-        String type = formFile.getName().substring(formFile.getName().lastIndexOf(".") + 1);
-        if (type != null) type = type.toLowerCase();
+        // Get file extension from original filename
+        String type = null;
+        if (clientImageFileName != null && clientImageFileName.contains(".")) {
+            type = clientImageFileName.substring(clientImageFileName.lastIndexOf('.') + 1).toLowerCase();
+        }
 
         log.info("extension = " + type);
 
         try {
-            byte[] imageData = Files.readAllBytes(formFile.toPath());
+            byte[] imageData = Files.readAllBytes(clientImage.toPath());
 
-            ClientImage clientImage = new ClientImage();
-            clientImage.setDemographic_no(Integer.parseInt(id));
-            clientImage.setImage_data(imageData);
-            clientImage.setImage_type(type);
+            ClientImage clientImageObj = new ClientImage();
+            clientImageObj.setDemographic_no(Integer.parseInt(id));
+            clientImageObj.setImage_data(imageData);
+            clientImageObj.setImage_type(type);
 
-            clientImageManager.saveClientImage(clientImage);
+            clientImageManager.saveClientImage(clientImageObj);
 
         } catch (Exception e) {
-            log.error("Error", e);
-            //post error to page
+            log.error("Error saving image", e);
+            addActionError("Error saving image.");
+            return ERROR;
         }
 
-        request.setAttribute("success", new Boolean(true));
-
+        request.setAttribute("success", true);
         return SUCCESS;
     }
 
-    private File clientImage;
-
-    public File getClientImage() {
-        return clientImage;
+    public void setClientImage(File clientImage) { 
+        this.clientImage = clientImage; 
     }
 
-    public void setClientImage(File clientImage) {
-        this.clientImage = clientImage;
+    public void setClientImageFileName(String name) { 
+        this.clientImageFileName = name; 
     }
 }

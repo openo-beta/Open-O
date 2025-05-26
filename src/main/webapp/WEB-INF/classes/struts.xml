@@ -2160,6 +2160,10 @@
         </action>
         <action name="OscarChartPrint" class="org.oscarehr.casemgmt.web.EChartPrint2Action"/>
         <action name="ClientImage" class="org.oscarehr.casemgmt.web.ClientImage2Action" method="execute">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="fileUpload">
+                <param name="allowedTypes">image/jpeg,image/gif</param>
+            </interceptor-ref>
             <result name="success">/casemgmt/uploadimage.jsp</result>
         </action>
         <action name="OnCallQuestionnaire" class="org.oscarehr.casemgmt.web.OnCallQuestionnaire2Action">

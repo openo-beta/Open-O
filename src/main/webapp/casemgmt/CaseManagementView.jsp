@@ -306,14 +306,14 @@
                             height="100" title="Click to upload a new photo."
                             OnMouseOver="document.getElementById('ci').src='${pageContext.request.contextPath}/imageRenderingServlet?source=local_client&clientId=${demographicNo}'"
                             OnMouseOut="delay(5000, '${pageContext.request.contextPath}${ClientImage.imagePresentPlaceholderUrl}')" window.status='Click to upload new photo.'; return true;"
-                        onClick="popupUploadPage('${pageContext.request.contextPath}/uploadimage.jsp', ${demographicNo}); return false;" />
+                        onClick="popupUploadPage('${pageContext.request.contextPath}/casemgmt/uploadimage.jsp', ${demographicNo}); return false;" />
                     </c:when>
                     <c:otherwise>
                         <img
                             src="${pageContext.request.contextPath}/${ClientImage.imageMissingPlaceholderUrl}" alt="No_Id_Photo"
                             height="100" title="Click to upload a new photo."
                             OnMouseOver="window.status='Click to upload a new photo.'; return true"
-                            onClick="popupUploadPage('${pageContext.request.contextPath}/uploadimage.jsp', ${demographicNo}); return false;"/>
+                            onClick="popupUploadPage('${pageContext.request.contextPath}/casemgmt/uploadimage.jsp', ${demographicNo}); return false;"/>
                     </c:otherwise>
                 </c:choose></td>
 
