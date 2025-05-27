@@ -383,14 +383,18 @@ public class OscarProperties extends Properties {
         return oscarProperties.getProperty("DOCUMENT_CACHE_DIR");
     }
 
+    public String getEformUploadImageDirectory() {
+        return oscarProperties.getProperty("upload_eform_image");
+    }
+
     public String getEformImageDirectory() {
         String eform_images = oscarProperties.getProperty("eform_image");
+
         if (eform_images == null) {
             eform_images = Paths.get(oscarProperties.getProperty("BASE_DOCUMENT_DIR"), "eform", "images").toString();
         }
         return eform_images;
     }
-
 
 	/**
 	 * Saves property to the specified properties file.

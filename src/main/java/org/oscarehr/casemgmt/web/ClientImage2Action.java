@@ -24,6 +24,9 @@
 package org.oscarehr.casemgmt.web;
 
 import com.opensymphony.xwork2.ActionSupport;
+
+import oscar.OscarProperties;
+
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.oscarehr.casemgmt.model.ClientImage;
@@ -44,8 +47,8 @@ public class ClientImage2Action extends ActionSupport {
     private File clientImage;
     private String clientImageFileName;
 
-    // Change the upload path based on path set where the uploaded image is supposed to be sent when uploaded
-    private String uploadPath = "/usr/local/tomcat/work/Catalina/localhost/oscar/";
+    // path from "oscar.properties" as "upload_eform_image"
+    private String IMG_UPLOAD_DIR = OscarProperties.getInstance().getEformUploadImageDirectory();
 
     private static Logger log = MiscUtils.getLogger();
 
@@ -72,8 +75,7 @@ public class ClientImage2Action extends ActionSupport {
 
         // Ensure that the upload directory is correcnt and create a new image object that will be saved to the client
         try {
-            // Define a safe directory for uploaded files
-            File safeDirectory = new File(uploadPath).getCanonicalFile();
+            File safeDirectory = new File(IMG_UPLOAD_DIR).getCanonicalFile();
             File resolvedFile = clientImage.getCanonicalFile();
 
             // Ensure the file is within the safe directory
