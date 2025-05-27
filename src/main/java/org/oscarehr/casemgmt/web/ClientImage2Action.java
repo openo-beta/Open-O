@@ -69,7 +69,16 @@ public class ClientImage2Action extends ActionSupport {
 
         // Create new image object that will be saved to the client
         try {
-            byte[] imageData = Files.readAllBytes(clientImage.toPath());
+            // Define a safe directory for uploaded files
+            File safeDirectory = new File("/safe/upload/directory").getCanonicalFile();
+            File resolvedFile = clientImage.getCanonicalFile();
+
+            // Ensure the file is within the safe directory
+            if (!resolvedFile.toPath().startsWith(safeDirectory.toPath())) {
+                throw new IllegalArgumentException("Invalid file path: " + resolvedFile);
+            }
+
+            byte[] imageData = Files.readAllBytes(resolvedFile.toPath());
 
             ClientImage clientImageObj = new ClientImage();
             clientImageObj.setDemographic_no(Integer.parseInt(id));
