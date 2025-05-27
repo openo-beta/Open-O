@@ -1668,11 +1668,16 @@
                                                 <c:out value='<%=curProviderName[nProvider]  + " (" + appointmentCount + ") " %>'/>
                                             </a>
 
-                                                    <oscar:oscarPropertiesCheck value="yes" property="TOGGLE_REASON_BY_PROVIDER" defaultVal="yes">
-                                                        <a id="expandReason" href="#"
-                                                           onclick="return toggleReason('${curProvider_no[nProvider]}');"
-                                                           title="<fmt:setBundle basename='oscarResources'/><fmt:message key='provider.appointmentProviderAdminDay.expandreason'/>">*</a>
-                                                    </oscar:oscarPropertiesCheck>
+                                                <oscar:oscarPropertiesCheck value="yes" property="TOGGLE_REASON_BY_PROVIDER" defaultVal="yes">
+                                                    <a 
+                                                        href="#"
+                                                        class="expand-reason-btn"
+                                                        data-provider="<%= curProvider_no[nProvider] %>"
+                                                        onclick="return toggleReason('<%= curProvider_no[nProvider] %>');"
+                                                        title="Expand/Collapse Reason"
+                                                    >*</a>
+                                                </oscar:oscarPropertiesCheck>
+
                                             <% } %>
 
                                             <%
@@ -2493,6 +2498,11 @@
         }
 
     </script>
+    <script language="JavaScript">
+        function toggleReason(providerNo) {
+            jQuery('.reason_' + providerNo).toggle();
+            return false;
+        }
     <script>
         jQuery(document).ready(function () {
             jQuery('.ds-btn').click(function () {
