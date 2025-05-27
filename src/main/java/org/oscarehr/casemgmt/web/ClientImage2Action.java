@@ -48,6 +48,7 @@ public class ClientImage2Action extends ActionSupport {
 
     private ClientImageManager clientImageManager = SpringUtils.getBean(ClientImageManager.class);
 
+    // Execute on struts action call
     public String execute() {
         return saveImage();
     }
@@ -66,6 +67,7 @@ public class ClientImage2Action extends ActionSupport {
 
         log.info("extension = " + type);
 
+        // Create new image object that will be saved to the client
         try {
             byte[] imageData = Files.readAllBytes(clientImage.toPath());
 

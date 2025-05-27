@@ -54,6 +54,7 @@
     <title>Client Image Manager</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/web.css"/>
     <script>
+        // If page is successful, reload the client E-Chart and close the profile picture upload page
         function init_page() {
             <%
                 if(request.getAttribute("success") != null)
@@ -66,6 +67,7 @@
     %>
         }
 
+        // Makes sure that a picture has been uploaded to the submission box
         function onPicUpload() {
             var file = document.getElementById("clientImage").files[0];
             if (!file) {
