@@ -2498,11 +2498,6 @@
         }
 
     </script>
-    <script language="JavaScript">
-        function toggleReason(providerNo) {
-            jQuery('.reason_' + providerNo).toggle();
-            return false;
-        }
     <script>
         jQuery(document).ready(function () {
             jQuery('.ds-btn').click(function () {

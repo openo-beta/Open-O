@@ -96,11 +96,11 @@ jQuery(".hideReason").hide();
 }
 
 function toggleReason( providerNo ) {
-var id = ".reason_" + providerNo;
-jQuery( id ).toggle();
-var isVisible = jQuery( id ).is( ":visible" );
-console.log("ID: " + id + " Is Visible: " + isVisible);
-localStorage.setItem( id, isVisible);
+    var id = ".reason_" + providerNo;
+    jQuery( id ).toggle();
+    var isVisible = jQuery( id ).is( ":visible" );
+    console.log("ID: " + id + " Is Visible: " + isVisible);
+    localStorage.setItem( id, isVisible);
 }
 
 
