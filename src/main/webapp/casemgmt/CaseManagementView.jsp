@@ -90,13 +90,18 @@
                 }
 
                 for (var r = 1; r < table.rows.length; r++) {
-                    var ele = table.rows[r].cells[cellNr].innerHTML.replace(/<[^>]+>/g, "");
+                    var ele = sanitizeHTML(table.rows[r].cells[cellNr].innerHTML);
 
                     if (ele.toLowerCase().indexOf(suche) >= 0) {
                         table.rows[r].style.display = '';
                     } else {
                         table.rows[r].style.display = 'none';
                     }
+                }
+
+                function sanitizeHTML(html) {
+                    var doc = new DOMParser().parseFromString(html, 'text/html');
+                    return doc.body.textContent || "";
                 }
             }
 
