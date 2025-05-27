@@ -44,6 +44,9 @@ public class ClientImage2Action extends ActionSupport {
     private File clientImage;
     private String clientImageFileName;
 
+    // Change the upload path based on path set where the uploaded image is supposed to be sent when uploaded
+    private String uploadPath = "/usr/local/tomcat/work/Catalina/localhost/oscar/";
+
     private static Logger log = MiscUtils.getLogger();
 
     private ClientImageManager clientImageManager = SpringUtils.getBean(ClientImageManager.class);
@@ -67,14 +70,14 @@ public class ClientImage2Action extends ActionSupport {
 
         log.info("extension = " + type);
 
-        // Create new image object that will be saved to the client
+        // Ensure that the upload directory is correcnt and create a new image object that will be saved to the client
         try {
             // Define a safe directory for uploaded files
-            File safeDirectory = new File("/safe/upload/directory").getCanonicalFile();
+            File safeDirectory = new File(uploadPath).getCanonicalFile();
             File resolvedFile = clientImage.getCanonicalFile();
 
             // Ensure the file is within the safe directory
-            if (!resolvedFile.toPath().startsWith(safeDirectory.toPath())) {
+            if (!resolvedFile.getPath().startsWith(safeDirectory.getPath())) {
                 throw new IllegalArgumentException("Invalid file path: " + resolvedFile);
             }
 
