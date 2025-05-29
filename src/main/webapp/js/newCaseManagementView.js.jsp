@@ -2369,9 +2369,16 @@ function updateCPPNote() {
 
         var demoNo = demographicNo;
         var encType = "encTypeSelect" + noteId;
+        var encTypeValue = "";
+        if ($(encType)) {
+            encTypeValue = $F(encType);
+        } else if ($("encType")) {
+            // Fall back to the main hidden encType field
+            encTypeValue = $F("encType");
+        }
         var caseMgtEntryfrm = document.forms["caseManagementEntryForm"];
         var url = ctx + "/CaseManagementEntry.do";
-        var params = "nId=" + noteId + issueParams + "&demographicNo=" + demographicNo + "&providerNo=" + providerNo + "&numIssues=" + idx + "&obsDate=" + $F("observationDate") + "&encType=" + encodeURI($F(encType)) + "&noteTxt=" + encodeURI(noteTxt);
+        var params = "nId=" + noteId + issueParams + "&demographicNo=" + demographicNo + "&providerNo=" + providerNo + "&numIssues=" + idx + "&obsDate=" + $F("observationDate") + "&encType=" + encodeURI(encTypeValue) + "&noteTxt=" + encodeURI(noteTxt);
         params += "&" + Form.serialize(caseMgtEntryfrm);
 
         var objAjax = new Ajax.Updater(
