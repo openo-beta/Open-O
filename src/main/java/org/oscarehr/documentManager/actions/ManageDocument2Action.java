@@ -95,6 +95,7 @@ import java.util.*;
  */
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
+import org.oscarehr.managers.DemographicManager;
 
 public class ManageDocument2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
@@ -121,10 +122,10 @@ public class ManageDocument2Action extends ActionSupport {
     public void documentUpdateAjax() {
 
         String observationDate = request.getParameter("observationDate");// :2008-08-22<
-        String documentDescription = request.getParameter("documentDescription");// :test2<
-        String documentId = request.getParameter("documentId");// :29<
+        String documentDescription = request.getParameter("doc_desc");// :test2<
+        String documentId = request.getParameter("doc_no");// :29<
         String docType = request.getParameter("docType");// :consult<
-        String demog = request.getParameter("demog");
+        String demog = request.getParameter("demo_id");
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
             throw new SecurityException("missing required security object (_edoc)");
@@ -223,6 +224,9 @@ public class ManageDocument2Action extends ActionSupport {
             throw new SecurityException("missing required security object (_demographic)");
         }
 
+        log.info("get demographic name ajax message:" + dn);
+        System.out.println("get demo name ajax message:" + dn);
+
         HashMap hm = new HashMap();
         hm.put("demoName", getDemoName(LoggedInInfo.getLoggedInInfoFromSession(request), dn));
         JSONObject jsonObject = JSONObject.fromObject(hm);
@@ -275,9 +279,12 @@ public class ManageDocument2Action extends ActionSupport {
     public String documentUpdate() {
 
         String observationDate = request.getParameter("observationDate");// :2008-08-22<
-        String documentDescription = request.getParameter("documentDescription");// :test2<
-        String documentId = request.getParameter("documentId");// :29<
+        String documentDescription = request.getParameter("doc_desc");// :test2<
+        String documentId = request.getParameter("doc_no");// :29<
         String docType = request.getParameter("docType");// :consult<
+
+        log.info("get doc description from document update:" + documentDescription);
+        System.out.println("get doc descriptio from document update:" + documentDescription);
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
             throw new SecurityException("missing required security object (_edoc)");
@@ -285,7 +292,7 @@ public class ManageDocument2Action extends ActionSupport {
 
         LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ADD, LogConst.CON_DOCUMENT, documentId, request.getRemoteAddr());
 
-        String demog = request.getParameter("demog");
+        String demog = request.getParameter("demo_id");
 
         String[] flagproviders = request.getParameterValues("flagproviders");
         // String demoLink=request.getParameter("demoLink");
@@ -318,6 +325,8 @@ public class ManageDocument2Action extends ActionSupport {
 
         try {
 
+            log.info("get document id from document update:" + documentId);
+            System.out.println("get document id from document update:" + documentId);
             CtlDocument ctlDocument = ctlDocumentDao.getCtrlDocument(Integer.parseInt(documentId));
             if (ctlDocument != null) {
                 ctlDocument.getId().setModuleId(Integer.parseInt(demog));
@@ -335,6 +344,10 @@ public class ManageDocument2Action extends ActionSupport {
         String providerNo = request.getParameter("providerNo");
         String searchProviderNo = request.getParameter("searchProviderNo");
         String ackStatus = request.getParameter("status");
+
+        log.info("get demographic id from document update:" + demog);
+        System.out.println("get demo id from document update:" + demog);
+
         String demoName = getDemoName(LoggedInInfo.getLoggedInInfoFromSession(request), demog);
         request.setAttribute("demoName", demoName);
         request.setAttribute("segmentID", documentId);
@@ -347,10 +360,14 @@ public class ManageDocument2Action extends ActionSupport {
     }
 
     private String getDemoName(LoggedInInfo loggedInInfo, String demog) {
-        DemographicData demoD = new DemographicData();
-        org.oscarehr.common.model.Demographic demo = demoD.getDemographic(loggedInInfo, demog);
-        String demoName = demo.getLastName() + ", " + demo.getFirstName();
-        return demoName;
+        if (!demog.equals(request.getParameter("providerNo"))) {
+            DemographicManager demographic = SpringUtils.getBean(DemographicManager.class);
+            Demographic demographicName = demographic.getDemographic(loggedInInfo, Integer.parseInt(demog));
+
+            String demoName = demographicName.getLastName() + ", " + demographicName.getFirstName();
+            return demoName;
+        }
+        return "N/A";
     }
 
     private void saveDocNote(final HttpServletRequest request, String docDesc, String demog, String documentId) {
@@ -902,9 +919,9 @@ public class ManageDocument2Action extends ActionSupport {
 
         String pdfDir = request.getParameter("pdfDir");
         String pdfName = request.getParameter("pdfName");
-        String demographic_no = request.getParameter("demog");
+        String demographic_no = request.getParameter("demo_id");
         String observationDate = request.getParameter("observationDate");
-        String documentDescription = request.getParameter("documentDescription");
+        String documentDescription = request.getParameter("doc_desc");
         String docType = request.getParameter("docType");
         String docClass = request.getParameter("docClass");
         String docSubClass = request.getParameter("docSubClass");

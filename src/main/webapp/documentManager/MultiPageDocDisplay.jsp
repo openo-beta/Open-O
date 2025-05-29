@@ -108,8 +108,11 @@
         numOfPageStr = "unknown";
     else
         numOfPageStr = (new Integer(numOfPage)).toString();
-    String url = request.getContextPath() + "/documentManager/ManageDocument.do?method=viewDocPage&doc_no=" + docId + "&curPage=1";
-    String url2 = request.getContextPath() + "/documentManager/ManageDocument.do?method=display&doc_no=" + docId;
+
+    String docDesc = curdoc.getDescription();
+
+    String url = request.getContextPath() + "/documentManager/ManageDocument.do?method=viewDocPage&doc_no=" + docId + "&doc_desc=" + docDesc + "&curPage=1";
+    String url2 = request.getContextPath() + "/documentManager/ManageDocument.do?method=display&doc_no=" + docId + "&doc_desc=" + docDesc;
 %>
 
 <html>
@@ -252,12 +255,23 @@
                                     <select tabindex="<%=tabindex++%>" name="docType" id="docType">
                                         <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formSelect"/></option>
                                         <%
-                                            for (int j = 0; j < doctypes.size(); j++) {
-                                                String doctype = (String) doctypes.get(j);
+                                            if (doctypes != null && !doctypes.isEmpty()) {
+                                                for (int j = 0; j < doctypes.size(); j++) {
+                                                    String doctype = (String) doctypes.get(j);
+                                                    boolean isSelected = false;
+                                                    if (curdoc != null && curdoc.getType() != null) {
+                                                        isSelected = curdoc.getType().equals(doctype);
+                                                    }
                                         %>
-                                        <option value="<%= doctype%>" <%=(curdoc.getType().equals(doctype)) ? " selected" : ""%>><%= doctype%>
-                                        </option>
-                                        <%}%>
+                                                    <option value="<%=doctype%>" <%= isSelected ? "selected" : "" %>><%= doctype %></option>
+                                        <%
+                                                }
+                                            } else {
+                                        %>
+                                                <option disabled>No document types available</option>
+                                        <%
+                                            }
+                                        %>
                                     </select>
                                 </td>
                             </tr>

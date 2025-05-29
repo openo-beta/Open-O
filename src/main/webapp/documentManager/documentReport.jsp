@@ -538,7 +538,7 @@
 
                                 <td>
                                     <%
-                                        String url = "ManageDocument.do?method=display&doc_no=" + curdoc.getDocId() + "&providerNo=" + user_no + (curdoc.getRemoteFacilityId() != null ? "&remoteFacilityId=" + curdoc.getRemoteFacilityId() : "");
+                                        String url = "ManageDocument.do?method=display&doc_no=" + curdoc.getDocId() + "&doc_desc=" + curdoc.getDescription() + "&demo_id=" + demographicNo + "&providerNo=" + user_no + (curdoc.getRemoteFacilityId() != null ? "&remoteFacilityId=" + curdoc.getRemoteFacilityId() : "");
                                     %>
                                     <a <%=curdoc.getStatus() == 'D' ? "style='text-decoration:line-through'" : ""%>
                                             href="javascript:void(0);"
