@@ -997,6 +997,11 @@ function updateCPPNote() {
 
         var params = $("frmIssueNotes").serialize();
         var sigId = "sig" + caseNote.substr(13);
+        
+        console.log("Updating CPP Note for div: " + div);
+        console.log("Form action URL: " + url);
+        console.log("Form parameters: " + params);
+        
         var objAjax = new Ajax.Request(
             url,
             {
@@ -1004,17 +1009,66 @@ function updateCPPNote() {
                 evalScripts: true,
                 postBody: params,
                 onSuccess: function (request) {
+                    console.log("CPP Note update successful. Response length: " + request.responseText.length);
+                    
                     if (request.responseText.length > 0) {
                         $(div).update(request.responseText);
+                        console.log("Updated div content: " + $(div).innerHTML.substring(0, 100) + "...");
+                    } else {
+                        console.warn("Empty response received for CPP Note update");
                     }
+                    
                     if ($("issueChange").value == "true") {
                         ajaxUpdateIssues("edit", sigId);
                         $("issueChange").value = false;
                     }
 
                     notifyDivLoaded($(div).id);
+                    
+                    // After updating the div, reload the specific section to ensure content is displayed
+                    var sectionCode = "";
+                    if (div.indexOf("R1I1") > -1) {
+                        sectionCode = "SocHistory";
+                    } else if (div.indexOf("R1I2") > -1) {
+                        sectionCode = "MedHistory";
+                    } else if (div.indexOf("R2I1") > -1) {
+                        sectionCode = "Concerns";
+                    } else if (div.indexOf("R2I2") > -1) {
+                        sectionCode = "Reminders";
+                    }
+                    
+                    if (sectionCode !== "") {
+                        var reloadSectionUrl = ctx + "/CaseManagementView.do?hc=996633&method=listNotes&providerNo=" + 
+                            providerNo + "&demographicNo=" + demographicNo + 
+                            "&issue_code=" + sectionCode + "&cmd=" + div;
+                        
+                        console.log("Reloading section: " + sectionCode + " with URL: " + reloadSectionUrl);
+                        
+                        new Ajax.Request(
+                            reloadSectionUrl,
+                            {
+                                method: 'post',
+                                evalScripts: true,
+                                onSuccess: function(innerRequest) {
+                                    if (innerRequest.responseText.length > 0) {
+                                        $(div).update(innerRequest.responseText);
+                                        console.log("Section reload successful");
+                                    }
+                                },
+                                onFailure: function(innerRequest) {
+                                    console.error("Section reload failed: " + innerRequest.status);
+                                }
+                            }
+                        );
+                    }
+                    
+                    // Prevent default form submission behavior that might cause page reload
+                    if (window.event) {
+                        window.event.preventDefault();
+                    }
                 },
                 onFailure: function (request) {
+                    console.error("CPP Note update failed: " + request.status);
                     $(div).innerHTML = "<h3>" + div + "<\/h3>Error: " + request.status;
                 }
             }
@@ -2848,9 +2902,57 @@ function updateCPPNote() {
         var url = ctx + "/CaseManagementEntry.do";
         var p = Form.serialize(frm);
         p.note_edit = '';
+        
+        console.log("Updating issues with method: " + method + " for div: " + div);
+        console.log("Form parameters: " + p);
+        
         ajaxRequest = new Ajax.Updater({success: div}, url, {
-            evalScripts: true, parameters: p, onSuccess: onIssueUpdate,
+            evalScripts: true, 
+            parameters: p, 
+            onSuccess: function(response) {
+                console.log("Issue update successful");
+                onIssueUpdate();
+                
+                // Determine which CPP section we're dealing with
+                var sectionCode = "";
+                var targetDiv = "";
+                
+                if (div.indexOf("MedHistory") > -1 || frm.action.indexOf("MedHistory") > -1) {
+                    sectionCode = "MedHistory";
+                    targetDiv = "divR1I2";
+                } else if (div.indexOf("SocHistory") > -1 || frm.action.indexOf("SocHistory") > -1) {
+                    sectionCode = "SocHistory";
+                    targetDiv = "divR1I1";
+                } else if (div.indexOf("Concerns") > -1 || frm.action.indexOf("Concerns") > -1) {
+                    sectionCode = "Concerns";
+                    targetDiv = "divR2I1";
+                } else if (div.indexOf("Reminders") > -1 || frm.action.indexOf("Reminders") > -1) {
+                    sectionCode = "Reminders";
+                    targetDiv = "divR2I2";
+                }
+                
+                // If this is a CPP note, make sure we only update that specific tab
+                if (sectionCode !== "") {
+                    console.log("Reloading " + sectionCode + " section in div: " + targetDiv);
+                    
+                    // Reload the specific tab with a slight delay to ensure server-side processing is complete
+                    setTimeout(function() {
+                        var sectionUrl = ctx + "/CaseManagementView.do?hc=996633&method=listNotes&providerNo=" + 
+                            providerNo + "&demographicNo=" + demographicNo + 
+                            "&issue_code=" + sectionCode + "&title=" + eval(sectionCode.toLowerCase() + "Label") + "&cmd=" + targetDiv;
+                        
+                        console.log("Reloading URL: " + sectionUrl);
+                        loadDiv(targetDiv, sectionUrl, 5);
+                    }, 500);
+                }
+                
+                // Prevent any form submission that might cause page reload
+                if (window.event) {
+                    window.event.preventDefault();
+                }
+            },
             onFailure: function (response) {
+                console.error("Issue update failed: " + response.status);
                 alert(response.status + " " + updateIssueError);
             }
         });
