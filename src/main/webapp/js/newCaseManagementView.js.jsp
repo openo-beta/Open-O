@@ -3088,6 +3088,7 @@ function autoSave(async) {
  *Pop up window for Showing all notes that have linked to an issue
  */
     function showIssueHistory(demoNo, issueIds) {
+        console.log("showIssueHistory parameters:", { demoNo: demoNo, issueIds: issueIds });
         var rnd = Math.round(Math.random() * 1000);
         win = "win" + rnd;
         var url = ctx + "/CaseManagementEntry.do?method=issuehistory&demographicNo=" + demoNo + "&issueIds=" + issueIds;
