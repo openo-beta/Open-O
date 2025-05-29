@@ -711,7 +711,9 @@
 // display in place editor
     function showEdit(e, title, noteId, editors, date, revision, note, url, containerDiv, reloadUrl, noteIssues, noteExts, demoNo) {
         //Event.extend(e);
-        //e.stop();
+        if (e) {
+            Event.stop(e);
+        }
 
         console.log("showEdit parameters:", {
             title: title,
@@ -1046,10 +1048,21 @@ function updateCPPNote() {
                     $(div).update(request.responseText);
                     //listDisplay(div,100);
                     notifyDivLoaded($(div).id);
-
+                    
+                    // Ensure all forms in this div don't cause page reloads
+                    jQuery('#' + div + ' form').each(function() {
+                        jQuery(this).submit(function(e) {
+                            e.preventDefault();
+                            return false;
+                        });
+                    });
+                    
+                    // Log the content to verify it's being loaded correctly
+                    console.log("Loaded content for " + div + ": " + $(div).innerHTML.substring(0, 100) + "...");
                 },
                 onFailure: function (request) {
                     $(div).innerHTML = "<h3>" + div + "<\/h3>Error: " + request.status + "<br>" + request.responseText;
+                    console.error("Failed to load " + div + ": " + request.status);
                 }
             }
         );
