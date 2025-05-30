@@ -335,7 +335,7 @@ public class ManageDocument2Action extends ActionSupport {
         String providerNo = request.getParameter("providerNo");
         String searchProviderNo = request.getParameter("searchProviderNo");
         String ackStatus = request.getParameter("status");
-        String demoName = getDemoName(LoggedInInfo.getLoggedInInfoFromSession(request), demog);
+        String demoName = request.getParameter("demoName");
         request.setAttribute("demoName", demoName);
         request.setAttribute("segmentID", documentId);
         request.setAttribute("providerNo", providerNo);
