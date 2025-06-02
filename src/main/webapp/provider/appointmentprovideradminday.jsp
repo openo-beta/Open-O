@@ -1673,7 +1673,8 @@
                                                         class="expand-reason-btn"
                                                         data-provider="<%= curProvider_no[nProvider] %>"
                                                         onclick="return toggleReason('<%= curProvider_no[nProvider] %>');"
-                                                        title="Expand/Collapse Reason"
+                                                        title="<fmt:setBundle basename='oscarResources'/>
+                                                        <fmt:message key='provider.appointmentProviderAdminDay.expandreason'/>"
                                                     >*</a>
                                                 </oscar:oscarPropertiesCheck>
 
