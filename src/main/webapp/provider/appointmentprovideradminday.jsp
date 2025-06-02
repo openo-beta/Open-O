@@ -1672,7 +1672,7 @@
                                                         href="#"
                                                         class="expand-reason-btn"
                                                         data-provider="<%= curProvider_no[nProvider] %>"
-                                                        onclick="return toggleReason('<%= curProvider_no[nProvider] %>');"
+                                                        onclick="return toggleReason(event, '<%= curProvider_no[nProvider] %>');"
                                                         title="<fmt:setBundle basename='oscarResources'/>
                                                         <fmt:message key='provider.appointmentProviderAdminDay.expandreason'/>"
                                                     >*</a>

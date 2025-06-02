@@ -95,11 +95,13 @@ jQuery(key).removeClass("hideReason");
 jQuery(".hideReason").hide();
 }
 
-function toggleReason( providerNo ) {
+function toggleReason(event, providerNo) {
+    event.preventDefault();
     var id = ".reason_" + providerNo;
-    jQuery( id ).toggle();
-    var isVisible = jQuery( id ).is( ":visible" );
-    localStorage.setItem( id, isVisible);
+    jQuery(id).toggle();
+    var isVisible = jQuery(id).is(":visible");
+    var storageKey = "reason_" + providerNo;
+    localStorage.setItem(id, isVisible);
 }
 
 
