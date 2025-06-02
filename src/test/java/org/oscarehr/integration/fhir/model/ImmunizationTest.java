@@ -59,6 +59,7 @@ public class ImmunizationTest {
         immunization.setName("HPV Vaccine");
 
         oscarFhirResource = new org.oscarehr.integration.fhir.model.Immunization<Prevention>(immunization);
+        
     }
 
     @AfterClass
