@@ -317,7 +317,6 @@ public class ManageDocument2Action extends ActionSupport {
         }
 
         try {
-
             CtlDocument ctlDocument = ctlDocumentDao.getCtrlDocument(Integer.parseInt(documentId));
             if (ctlDocument != null) {
                 ctlDocument.getId().setModuleId(Integer.parseInt(demog));

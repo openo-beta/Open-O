@@ -159,7 +159,7 @@ public class AddEditDocument2Action extends ActionSupport {
     public static int countNumOfPages(String fileName) {// count number of pages in a local pdf file
 
         int numOfPage = 0;
-        String docdownload = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docdownload = oscar.OscarProperties.getInstance().getDocumentDirectory();
         if (!docdownload.endsWith(File.separator)) {
             docdownload += File.separator;
         }
@@ -482,8 +482,12 @@ this.getSource(), 'A', this.getObservationDate(), reviewerId, reviewDateTime, th
         FileOutputStream fos = null;
         File file = null;
         try {
-            String savePath = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "/" + fileName;
+            String savePath = oscar.OscarProperties.getInstance().getDocumentDirectory() + "/" + fileName;
             file = new File(savePath);
+            File parentDir = file.getParentFile();
+            if (!parentDir.exists()) {
+                parentDir.mkdirs();
+            }
             fos = new FileOutputStream(savePath);
             byte[] buf = new byte[128 * 1024];
             int i = 0;

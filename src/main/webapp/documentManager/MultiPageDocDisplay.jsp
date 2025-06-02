@@ -108,8 +108,8 @@
         numOfPageStr = "unknown";
     else
         numOfPageStr = (new Integer(numOfPage)).toString();
-    String url = request.getContextPath() + "/documentManager/ManageDocument.do?method=viewDocPage&doc_no=" + docId + "&curPage=1";
-    String url2 = request.getContextPath() + "/documentManager/ManageDocument.do?method=display&doc_no=" + docId;
+    String url = request.getContextPath() + "/documentManager/ManageDocument.do?method=viewDocPage&documentId=" + curdoc.getDocId() + "&documentDescription=" + curdoc.getDescription() + "&demog=" + demographicID + "&demoName=" + demoName + "&docType=" + curdoc.getType() + "&observationDate=" + curdoc.getObservationDate() + "&providerNo=" + providerNo + "&status=" + curdoc.getStatus() + (curdoc.getRemoteFacilityId() != null ? "&remoteFacilityId=" + curdoc.getRemoteFacilityId() : "") + "&curPage=1";
+    String url2 = request.getContextPath() + "/documentManager/ManageDocument.do?method=display&documentId=" + curdoc.getDocId() + "&documentDescription=" + curdoc.getDescription() + "&demog=" + demographicID + "&demoName=" + demoName + "&docType=" + curdoc.getType() + "&observationDate=" + curdoc.getObservationDate() + "&providerNo=" + providerNo + "&status=" + curdoc.getStatus() + (curdoc.getRemoteFacilityId() != null ? "&remoteFacilityId=" + curdoc.getRemoteFacilityId() : "");
 %>
 
 <html>
@@ -338,8 +338,8 @@
                                         showPageImg = function (docid, pn) {
                                             if (docid && pn) {
                                                 var e = $('docImg_' + docid);
-                                                var url = '<%=request.getContextPath()%>' + '/documentManager/ManageDocument.do?method=viewDocPage&doc_no='
-                                                    + docid + '&curPage=' + pn;
+                                                var url = '<%=request.getContextPath()%>' + '<%=url2%>' 
+                                                + '&curPage=' + pn;
                                                 e.setAttribute('src', url);
                                             }
                                         }
