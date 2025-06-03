@@ -125,8 +125,7 @@ public class DmsInboxManage2Action extends ActionSupport {
 //	}
 
     public String previewPatientDocLab() {
-        // possibly change to demog or demographicNo param name
-        String demographicNo = request.getParameter("demographicNo");
+        String demographicNo = request.getParameter("demog");
         String docs = request.getParameter("docs");
         String labs = request.getParameter("labs");
         String providerNo = request.getParameter("providerNo");
