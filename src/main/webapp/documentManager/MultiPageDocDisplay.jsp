@@ -216,7 +216,7 @@
             </td>
             <td align="left" valign="top" class="docTable">
                 <fieldset>
-                    <legend>Patient:<%=demoName%>
+                    <legend>Patient: <%=demoName%>
                     </legend>
                     <table border="0">
                         <tr>

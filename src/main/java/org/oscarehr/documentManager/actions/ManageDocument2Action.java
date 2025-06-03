@@ -218,13 +218,14 @@ public class ManageDocument2Action extends ActionSupport {
 
     public void getDemoNameAjax() {
         String dn = request.getParameter("demo_no");
+        String providerNo = request.getParameter("providerNo");
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "r", dn)) {
             throw new SecurityException("missing required security object (_demographic)");
         }
 
         HashMap hm = new HashMap();
-        hm.put("demoName", getDemoName(LoggedInInfo.getLoggedInInfoFromSession(request), dn));
+        hm.put("demoName", getDemoName(LoggedInInfo.getLoggedInInfoFromSession(request), dn, providerNo));
         JSONObject jsonObject = JSONObject.fromObject(hm);
         try {
             response.getOutputStream().write(jsonObject.toString().getBytes());
@@ -318,7 +319,7 @@ public class ManageDocument2Action extends ActionSupport {
 
         try {
             System.out.println("------------------------ documentId: " + documentId);
-            System.out.println("------------------------ documentId: " + demog);
+            System.out.println("------------------------ demog: " + demog);
 
             CtlDocument ctlDocument = ctlDocumentDao.getCtrlDocument(Integer.parseInt(documentId));
             if (ctlDocument != null) {
@@ -337,7 +338,7 @@ public class ManageDocument2Action extends ActionSupport {
         String providerNo = request.getParameter("providerNo");
         String searchProviderNo = request.getParameter("searchProviderNo");
         String ackStatus = request.getParameter("status");
-        String demoName = request.getParameter("demoName");
+        String demoName = getDemoName(LoggedInInfo.getLoggedInInfoFromSession(request), demog, providerNo);
         request.setAttribute("demoName", demoName);
         request.setAttribute("segmentID", documentId);
         request.setAttribute("providerNo", providerNo);
@@ -348,11 +349,12 @@ public class ManageDocument2Action extends ActionSupport {
 
     }
 
-    private String getDemoName(LoggedInInfo loggedInInfo, String demog) {
-        DemographicData demoD = new DemographicData();
-        org.oscarehr.common.model.Demographic demo = demoD.getDemographic(loggedInInfo, demog);
-        String demoName = demo.getLastName() + ", " + demo.getFirstName();
-        return demoName;
+    private String getDemoName(LoggedInInfo loggedInInfo, String demog, String providerNo) {
+        if (!demog.equals(providerNo)) {
+            return EDocUtil.getDemographicName(loggedInInfo, demog);
+        } else {
+            return EDocUtil.getProviderName(providerNo);
+        }
     }
 
     private void saveDocNote(final HttpServletRequest request, String docDesc, String demog, String documentId) {

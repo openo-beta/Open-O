@@ -305,8 +305,6 @@
         String windowName, divReloadInfo = "";
         if (url.startsWith("popupPage")) {
             Matcher matcher = pattern.matcher(url);
-            System.out.println("URL -----------------: " + url);
-            System.out.println("URL MATCHER -----------------: " + matcher);
             if (matcher.find()) {
                 windowName = matcher.group(1);
                 reloadUrl += "&numToDisplay=6&cmd=" + cmd;
