@@ -235,7 +235,7 @@ public class ManageDocument2Action extends ActionSupport {
 
     public void removeLinkFromDocument() {
         String docType = request.getParameter("docType");
-        String docId = request.getParameter("docId");
+        String docId = request.getParameter("documentId");
         String providerNo = request.getParameter("providerNo");
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
@@ -317,6 +317,9 @@ public class ManageDocument2Action extends ActionSupport {
         }
 
         try {
+            System.out.println("------------------------ documentId: " + documentId);
+            System.out.println("------------------------ documentId: " + demog);
+
             CtlDocument ctlDocument = ctlDocumentDao.getCtrlDocument(Integer.parseInt(documentId));
             if (ctlDocument != null) {
                 ctlDocument.getId().setModuleId(Integer.parseInt(demog));
