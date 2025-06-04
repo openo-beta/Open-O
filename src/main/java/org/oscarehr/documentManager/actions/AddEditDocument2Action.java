@@ -250,6 +250,7 @@ public class AddEditDocument2Action extends ActionSupport {
             }
             // original file name
             String fileName1 = this.docFileFileName;
+
             EDoc newDoc = new EDoc(this.getDocDesc(), this.getDocType(), fileName1, "", this.getDocCreator(), this.getResponsibleId(), this.getSource(), 'A', this.getObservationDate(), "", "", this.getFunction(), this.getFunctionId());
             newDoc.setDocPublic(this.getDocPublic());
 

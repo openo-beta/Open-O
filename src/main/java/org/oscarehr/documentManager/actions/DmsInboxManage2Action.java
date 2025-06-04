@@ -125,7 +125,7 @@ public class DmsInboxManage2Action extends ActionSupport {
 //	}
 
     public String previewPatientDocLab() {
-        String demographicNo = request.getParameter("demog");
+        String demographicNo = request.getParameter("demographicNo");
         String docs = request.getParameter("docs");
         String labs = request.getParameter("labs");
         String providerNo = request.getParameter("providerNo");
@@ -269,7 +269,7 @@ public class DmsInboxManage2Action extends ActionSupport {
         String providerNo = (String) session.getAttribute("user");
         String searchProviderNo = StringEscapeUtils.escapeSql(request.getParameter("searchProviderNo"));
         String ackStatus = StringEscapeUtils.escapeSql(request.getParameter("status"));
-        String demographicNo = StringEscapeUtils.escapeSql(request.getParameter("demog")); // used when searching for labs by patient instead of provider
+        String demographicNo = StringEscapeUtils.escapeSql(request.getParameter("demographicNo")); // used when searching for labs by patient instead of provider
         String scannedDocStatus = StringEscapeUtils.escapeSql(request.getParameter("scannedDocument"));
         Integer page = 0;
         try {
