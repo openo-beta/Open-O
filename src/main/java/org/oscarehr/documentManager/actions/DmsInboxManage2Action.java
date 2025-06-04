@@ -125,7 +125,7 @@ public class DmsInboxManage2Action extends ActionSupport {
 //	}
 
     public String previewPatientDocLab() {
-        String demographicNo = request.getParameter("demographicNo");
+        String demographicNo = request.getParameter("demog");
         String docs = request.getParameter("docs");
         String labs = request.getParameter("labs");
         String providerNo = request.getParameter("providerNo");
@@ -629,7 +629,7 @@ public class DmsInboxManage2Action extends ActionSupport {
         boolean success = false;
         String demoId = null;
         try {
-            String docId = request.getParameter("documentId");
+            String docId = request.getParameter("docId");
             logger.debug("DocId:" + docId);
             if (docId != null) {
                 docId = docId.trim();
