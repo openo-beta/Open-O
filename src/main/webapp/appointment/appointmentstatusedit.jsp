@@ -74,7 +74,7 @@
         <tr>
             <td class="tdLabel"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appt.status.mgr.label.desc"/>:
             </td>
-            <td><input type="checkbox" name="apptDesc" value="${apptDesc}" size="40" /></td>
+            <td><input type="text" name="apptDesc" value="${apptDesc}" size="40" /></td>
         </tr>
         <tr>
             <td class="tdLabel"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appt.status.mgr.label.oldcolor"/>:
