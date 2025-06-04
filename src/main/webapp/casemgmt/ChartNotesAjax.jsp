@@ -522,7 +522,7 @@
 
                 String winName = "docs" + demographicNo;
                 int hash = Math.abs(winName.hashCode());
-
+                
                 url = "popupPage(1000,1200,'" + hash + "', '" + request.getContextPath() + "/documentManager/ManageDocument.do?method=display&documentId=" + doc.getDocId() + "&documentDescription=" + doc.getDescription() + "&demog=" + doc.getModuleId() + "&docType=" + doc.getType() + "&observationDate=" + doc.getObservationDate() + "&providerNo=" + provNo + "&status=" + doc.getStatus() + "');";
                 url = url + "return false;";
 

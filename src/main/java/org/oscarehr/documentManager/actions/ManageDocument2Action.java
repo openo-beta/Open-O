@@ -115,6 +115,16 @@ public class ManageDocument2Action extends ActionSupport {
         if ("refileDocumentAjax".equals(request.getParameter("method"))) {
             return refileDocumentAjax();
         }
+        if ("viewDocPage".equals(request.getParameter("method"))) {
+            viewDocPage();
+        }
+        if ("display".equals(request.getParameter("method"))) {
+            try {
+                display();
+            } catch (Exception e) {
+                log.error("Error while displaying document ", e);
+            }
+        }
         return documentUpdate();
     }
 
@@ -274,7 +284,6 @@ public class ManageDocument2Action extends ActionSupport {
     }
 
     public String documentUpdate() {
-
         String observationDate = request.getParameter("observationDate");// :2008-08-22<
         String documentDescription = request.getParameter("documentDescription");// :test2<
         String documentId = request.getParameter("documentId");// :29<
@@ -318,9 +327,6 @@ public class ManageDocument2Action extends ActionSupport {
         }
 
         try {
-            System.out.println("------------------------ documentId: " + documentId);
-            System.out.println("------------------------ demog: " + demog);
-
             CtlDocument ctlDocument = ctlDocumentDao.getCtrlDocument(Integer.parseInt(documentId));
             if (ctlDocument != null) {
                 ctlDocument.getId().setModuleId(Integer.parseInt(demog));
@@ -566,14 +572,13 @@ public class ManageDocument2Action extends ActionSupport {
     }
 
     public void viewDocPage() {
-
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "r", null)) {
             throw new SecurityException("missing required security object (_edoc)");
         }
 
         log.debug("in viewDocPage");
 
-        String doc_no = request.getParameter("doc_no");
+        String doc_no = request.getParameter("documentId");
         String pageNum = request.getParameter("curPage");
         if (pageNum == null) {
             pageNum = "1";
@@ -716,6 +721,8 @@ public class ManageDocument2Action extends ActionSupport {
 
     public void display() throws Exception {
 
+        System.out.println("------------------------ viewing display page: ");
+
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "r", null)) {
@@ -728,9 +735,9 @@ public class ManageDocument2Action extends ActionSupport {
             remoteFacilityId = Integer.parseInt(temp);
         }
 
-        String doc_no = request.getParameter("doc_no");
+        String doc_no = request.getParameter("documentId");
         log.debug("Document No :" + doc_no);
-        String demoNo = request.getParameter("demoNo");
+        String demoNo = request.getParameter("demog");
 
         String docxml = null;
         String contentType = null;

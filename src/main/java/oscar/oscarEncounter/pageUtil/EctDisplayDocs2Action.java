@@ -159,7 +159,7 @@ public class EctDisplayDocs2Action extends EctDisplayAction {
                     url = "popupPage(window.screen.width,window.screen.height,'" + hash + "','" + request.getContextPath() + "/documentManager/ManageDocument.do?method=display&documentId=" + curDoc.getDocId() + "&documentDescription=" + curDoc.getDescription() + "&demog=" + curDoc.getModuleId() + "&docType=" + curDoc.getType() + "&observationDate=" + curDoc.getObservationDate() + "&providerNo=" + user + "&status=" + curDoc.getStatus() + "'); return false;";
                     isURLjavaScript = true;
                 } else {
-                    url = "popupPage(700,800,'" + hash + "', '" + request.getContextPath() + "/documentManager/ManageDocument.do?method=display&doc_no=" + dispDocNo + "&providerNo=" + user + (curDoc.getRemoteFacilityId() != null ? "&remoteFacilityId=" + curDoc.getRemoteFacilityId() : "") + "'); return false;";
+                    url = "popupPage(700,800,'" + hash + "', '" + request.getContextPath() + "/documentManager/ManageDocument.do?method=display&documentId=" + curDoc.getDocId() + "&documentDescription=" + curDoc.getDescription() + "&demog=" + curDoc.getModuleId() + "&docType=" + curDoc.getType() + "&observationDate=" + curDoc.getObservationDate() + "&providerNo=" + user + "&status=" + curDoc.getStatus() + "'); return false;";
                 }
 
                 item.setLinkTitle(title + serviceDateStr);

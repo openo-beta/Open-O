@@ -108,8 +108,9 @@
         numOfPageStr = "unknown";
     else
         numOfPageStr = (new Integer(numOfPage)).toString();
-    String url = request.getContextPath() + "/documentManager/ManageDocument.do?method=viewDocPage&documentId=" + curdoc.getDocId() + "&documentDescription=" + curdoc.getDescription() + "&demog=" + demographicID + "&demoName=" + demoName + "&docType=" + curdoc.getType() + "&observationDate=" + curdoc.getObservationDate() + "&providerNo=" + providerNo + "&status=" + curdoc.getStatus() + (curdoc.getRemoteFacilityId() != null ? "&remoteFacilityId=" + curdoc.getRemoteFacilityId() : "") + "&curPage=1";
-    String url2 = request.getContextPath() + "/documentManager/ManageDocument.do?method=display&documentId=" + curdoc.getDocId() + "&documentDescription=" + curdoc.getDescription() + "&demog=" + demographicID + "&demoName=" + demoName + "&docType=" + curdoc.getType() + "&observationDate=" + curdoc.getObservationDate() + "&providerNo=" + providerNo + "&status=" + curdoc.getStatus() + (curdoc.getRemoteFacilityId() != null ? "&remoteFacilityId=" + curdoc.getRemoteFacilityId() : "");
+
+    String url = request.getContextPath() + "/documentManager/ManageDocument.do?method=viewDocPage&documentId=" + curdoc.getDocId() + "&documentDescription=" + curdoc.getDescription() + "&demog=" + demographicID + "&docType=" + curdoc.getType() + "&observationDate=" + curdoc.getObservationDate() + "&providerNo=" + providerNo + "&status=" + curdoc.getStatus() + (curdoc.getRemoteFacilityId() != null ? "&remoteFacilityId=" + curdoc.getRemoteFacilityId() : "") + "&curPage=1";
+    String url2 = request.getContextPath() + "/documentManager/ManageDocument.do?method=display&documentId=" + curdoc.getDocId() + "&documentDescription=" + curdoc.getDescription() + "&demog=" + demographicID + "&docType=" + curdoc.getType() + "&observationDate=" + curdoc.getObservationDate() + "&providerNo=" + providerNo + "&status=" + curdoc.getStatus() + (curdoc.getRemoteFacilityId() != null ? "&remoteFacilityId=" + curdoc.getRemoteFacilityId() : "");
 %>
 
 <html>
@@ -332,15 +333,24 @@
 
                                         }
 
+                                        function updateQueryParam(url, key, value) {
+                                            let baseUrl = url.split('?')[0];
+                                            let params = new URLSearchParams(url.split('?')[1] || '');
+                                            params.set(key, value);
+                                            return baseUrl + '?' + params.toString();
+                                        }
+
 
                                         var curPage = 1;
                                         var totalPage =<%=numOfPage%>;
                                         showPageImg = function (docid, pn) {
                                             if (docid && pn) {
                                                 var e = $('docImg_' + docid);
-                                                var url = '<%=request.getContextPath()%>' + '<%=url2%>' 
-                                                + '&curPage=' + pn;
-                                                e.setAttribute('src', url);
+                                                if (e) {
+                                                    var url = e.getAttribute('src');
+                                                    url = updateQueryParam(url, 'curPage', pn);
+                                                    e.setAttribute('src', url);
+                                                }
                                             }
                                         }
                                         nextPage = function (docid) {
