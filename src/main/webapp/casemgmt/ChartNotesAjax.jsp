@@ -65,6 +65,7 @@
 <%@page import="org.oscarehr.common.model.CasemgmtNoteLock" %>
 <%@page import="org.oscarehr.common.model.EmailLog" %>
 <%@page import="org.oscarehr.managers.EmailManager" %>
+<%@page import="oscar.util.StringUtils" %>
 
 <%
     String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -265,6 +266,9 @@
             String docType = "";
             String dateStr = "";
             String title = "";
+            String ELLIPSES = "...";
+            int MAX_LEN_TITLE = 48;
+            int CROP_LEN_TITLE = 45;
 
             if (note.getRemoteFacilityId() != null) {
                 globalNoteId = "UUID" + note.getUuid();
@@ -284,7 +288,7 @@
                         Character status = doc.getStatus();
                         docType = doc.getType();
                         dateStr = doc.getObservationDate();
-                        title = doc.getDescription();
+                        title = StringUtils.maxLenString(doc.getDescription(), MAX_LEN_TITLE, CROP_LEN_TITLE, ELLIPSES);
 
                         if (status == 'A') {
                             dispStatus = "active";

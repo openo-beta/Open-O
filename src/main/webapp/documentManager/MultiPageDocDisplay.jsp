@@ -77,10 +77,17 @@
 
     Provider provider = providerDao.getProvider(providerNo);
     String creator = (String) session.getAttribute("user");
-    ArrayList doctypes = EDocUtil.getActiveDocTypes("demographic");
+
     EDoc curdoc = EDocUtil.getDoc(documentNo);
 
     String demographicID = request.getParameter("demog");
+
+    ArrayList doctypes;
+    if (!demographicID.equals(providerNo)) {
+        doctypes = EDocUtil.getActiveDocTypes("demographic");
+    } else {
+        doctypes = EDocUtil.getActiveDocTypes("provider");
+    }
 
     if (demoName == null || "".equals(demoName)) {
         Demographic d = demographicDao.getDemographic(demographicID);
