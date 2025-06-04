@@ -262,6 +262,9 @@
             String dispFilename = "";
             String dispStatus = " ";
             String globalNoteId = "";
+            String docType = "";
+            String dateStr = "";
+            String title = "";
 
             if (note.getRemoteFacilityId() != null) {
                 globalNoteId = "UUID" + note.getUuid();
@@ -279,6 +282,9 @@
                         dispDocNo = doc.getDocId();
                         dispFilename = doc.getFileName();
                         Character status = doc.getStatus();
+                        docType = doc.getType();
+                        dateStr = doc.getObservationDate();
+                        title = doc.getDescription();
 
                         if (status == 'A') {
                             dispStatus = "active";
@@ -523,7 +529,7 @@
                 String winName = "docs" + demographicNo;
                 int hash = Math.abs(winName.hashCode());
                 
-                url = "popupPage(1000,1200,'" + hash + "', '" + request.getContextPath() + "/documentManager/ManageDocument.do?method=display&documentId=" + doc.getDocId() + "&documentDescription=" + doc.getDescription() + "&demog=" + doc.getModuleId() + "&docType=" + doc.getType() + "&observationDate=" + doc.getObservationDate() + "&providerNo=" + provNo + "&status=" + doc.getStatus() + "');";
+                url = "popupPage(1000,1200,'" + hash + "', '" + request.getContextPath() + "/documentManager/ManageDocument.do?method=execute&documentId=" + dispDocNo + "&documentDescription=" + title + "&demog=" + demographicNo + "&docType=" + docType + "&observationDate=" + dateStr + "&providerNo=" + provNo + "&status=" + dispStatus + "');";
                 url = url + "return false;";
 
                 if (note.getRemoteFacilityId() == null) // only allow editing for local notes
@@ -554,7 +560,7 @@
                 String winName = "docs" + demographicNo;
                 int hash = Math.abs(winName.hashCode());
 
-                url = "popupPage(1000,1200,'" + hash + "', '" + request.getContextPath() + "/documentManager/ManageDocument.do?method=display&documentId=" + doc.getDocId() + "&documentDescription=" + doc.getDescription() + "&demog=" + doc.getModuleId() + "&docType=" + doc.getType() + "&observationDate=" + doc.getObservationDate() + "&providerNo=" + provNo + "&status=" + doc.getStatus() + "');";
+                url = "popupPage(1000,1200,'" + hash + "', '" + request.getContextPath() + "/documentManager/ManageDocument.do?method=execute&documentId=" + dispDocNo + "&documentDescription=" + title + "&demog=" + demographicNo + "&docType=" + docType + "&observationDate=" + dateStr + "&providerNo=" + provNo + "&status=" + dispStatus + "');";
                 url = url + "return false;";
             %>
             <div class="view-links"

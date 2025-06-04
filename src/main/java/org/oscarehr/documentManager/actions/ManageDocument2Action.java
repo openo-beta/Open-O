@@ -720,9 +720,6 @@ public class ManageDocument2Action extends ActionSupport {
     }
 
     public void display() throws Exception {
-
-        System.out.println("------------------------ viewing display page: ");
-
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "r", null)) {

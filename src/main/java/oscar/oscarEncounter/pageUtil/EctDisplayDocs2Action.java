@@ -130,6 +130,7 @@ public class EctDisplayDocs2Action extends EctDisplayAction {
                 else if (dispStatus.equals("H")) dispStatus = "html";
 
                 String dispDocNo = curDoc.getDocId();
+                String docType = curDoc.getType();
                 title = StringUtils.maxLenString(curDoc.getDescription(), MAX_LEN_TITLE, CROP_LEN_TITLE, ELLIPSES);
 
                 if (EDocUtil.getDocUrgentFlag(dispDocNo))
@@ -137,6 +138,7 @@ public class EctDisplayDocs2Action extends EctDisplayAction {
 
                 DateFormat formatter = new SimpleDateFormat(dbFormat);
                 String dateStr = curDoc.getObservationDate();
+                Character status = curDoc.getStatus();
                 NavBarDisplayDAO.Item item = NavBarDisplayDAO.Item();
                 try {
                     date = formatter.parse(dateStr);
@@ -156,10 +158,10 @@ public class EctDisplayDocs2Action extends EctDisplayAction {
                     url = "popupPage(700,800,'" + hash + "', '" + request.getContextPath() + "/mod/docmgmtComp/FillARForm.do?method=showInboxDocDetails&path=" + path + "&demoNo=" + bean.demographicNo + "&name=" + StringEscapeUtils.escapeHtml(dispFilename) + "'); return false;";
                     isURLjavaScript = true;
                 } else if (curDoc.getRemoteFacilityId() == null && curDoc.isPDF()) {
-                    url = "popupPage(window.screen.width,window.screen.height,'" + hash + "','" + request.getContextPath() + "/documentManager/ManageDocument.do?method=display&documentId=" + curDoc.getDocId() + "&documentDescription=" + curDoc.getDescription() + "&demog=" + curDoc.getModuleId() + "&docType=" + curDoc.getType() + "&observationDate=" + curDoc.getObservationDate() + "&providerNo=" + user + "&status=" + curDoc.getStatus() + "'); return false;";
+                    url = "popupPage(window.screen.width,window.screen.height,'" + hash + "','" + request.getContextPath() + "/documentManager/ManageDocument.do?method=execute&documentId=" + dispDocNo + "&documentDescription=" + title + "&demog=" + bean.demographicNo + "&docType=" + docType + "&observationDate=" + dateStr + "&providerNo=" + user + "&status=" + status + "'); return false;";
                     isURLjavaScript = true;
                 } else {
-                    url = "popupPage(700,800,'" + hash + "', '" + request.getContextPath() + "/documentManager/ManageDocument.do?method=display&documentId=" + curDoc.getDocId() + "&documentDescription=" + curDoc.getDescription() + "&demog=" + curDoc.getModuleId() + "&docType=" + curDoc.getType() + "&observationDate=" + curDoc.getObservationDate() + "&providerNo=" + user + "&status=" + curDoc.getStatus() + "'); return false;";
+                    url = "popupPage(700,800,'" + hash + "', '" + request.getContextPath() + "/documentManager/ManageDocument.do?method=execute&documentId=" + dispDocNo + "&documentDescription=" + title + "&demog=" + bean.demographicNo + "&docType=" + docType + "&observationDate=" + dateStr + "&providerNo=" + user + "&status=" + status + "'); return false;";
                 }
 
                 item.setLinkTitle(title + serviceDateStr);

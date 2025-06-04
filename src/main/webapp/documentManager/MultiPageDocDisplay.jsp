@@ -80,7 +80,7 @@
     ArrayList doctypes = EDocUtil.getActiveDocTypes("demographic");
     EDoc curdoc = EDocUtil.getDoc(documentNo);
 
-    String demographicID = curdoc.getModuleId();
+    String demographicID = request.getParameter("demog");
 
     if (demoName == null || "".equals(demoName)) {
         Demographic d = demographicDao.getDemographic(demographicID);
