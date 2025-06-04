@@ -136,8 +136,8 @@
             <a class="topLinks" onmouseover="this.className='topLinkhover'" onmouseout="this.className='topLinks'"
                 title="Rev:${note.revision} - Last update:${note.update_date}"
                 id="listNote${noteId}" href="javascript:void(0)"
-                onclick="showEdit(event,'${titleMsg}','${noteId}','${editors}','${note.observation_date}','${note.revision}','${note.note}','${addUrl}${noteId}','${param.cmd}','${identUrl}','${noteIssues}','${noteExts}','${param.demographicNo}');return false;">
-                ${htmlNoteTxt}
+                onclick="showEdit(event,'${titleMsg}','${noteId}','${editors != null ? editors : ""}','${note.observation_date}','${note.revision}','${fn:escapeXml(note.note)}','${addUrl}${noteId}','${param.cmd}','${identUrl}','${noteIssues != null ? noteIssues : ""}','${noteExts != null ? noteExts : ""}','${param.demographicNo}');return false;">
+                ${fn:escapeXml(note.note)}
             </a>
         </c:otherwise>
       </c:choose>
