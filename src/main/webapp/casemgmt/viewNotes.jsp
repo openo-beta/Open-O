@@ -129,7 +129,7 @@
             "
           >
             </script>
-            ${htmlNoteTxt}
+            ${fn:escapeXml(note.note)}                                                                                                                          
           </a>
         </c:when>
         <c:otherwise>
