@@ -33,6 +33,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.ResourceBundle;
@@ -483,13 +485,22 @@ this.getSource(), 'A', this.getObservationDate(), reviewerId, reviewDateTime, th
         FileOutputStream fos = null;
         File file = null;
         try {
-            String savePath = oscar.OscarProperties.getInstance().getDocumentDirectory() + "/" + fileName;
-            file = new File(savePath);
-            File parentDir = file.getParentFile();
-            if (!parentDir.exists()) {
-                parentDir.mkdirs();
+            // Get the base directory from properties
+            String docDir = oscar.OscarProperties.getInstance().getDocumentDirectory();
+            Path baseDir = Paths.get(docDir).normalize().toAbsolutePath();
+
+            // Resolve the full path
+            Path savePath = baseDir.resolve(fileName).normalize();
+
+            // Verify the path is still inside the base directory
+            if (!savePath.startsWith(baseDir)) {
+                throw new SecurityException("Path is no longer in the base directory");
             }
-            fos = new FileOutputStream(savePath);
+
+            // Create the parent directory
+            Files.createDirectories(savePath.getParent());
+
+            fos = new FileOutputStream(savePath.toString());
             byte[] buf = new byte[128 * 1024];
             int i = 0;
             while ((i = is.read(buf)) != -1) {

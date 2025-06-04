@@ -117,14 +117,17 @@ public class ManageDocument2Action extends ActionSupport {
         }
         if ("viewDocPage".equals(request.getParameter("method"))) {
             viewDocPage();
+            return "viewDocPage";
         }
         if ("display".equals(request.getParameter("method"))) {
             try {
                 display();
+                return "display";
             } catch (Exception e) {
                 log.error("Error while displaying document ", e);
             }
         }
+
         return documentUpdate();
     }
 

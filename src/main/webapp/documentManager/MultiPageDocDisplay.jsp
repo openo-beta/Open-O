@@ -42,6 +42,7 @@
 
 <%@page import="oscar.util.UtilDateUtilities" %>
 <%@ page import="java.util.*" %>
+<%@page import = "java.net.URLEncoder" %>
 <%@ page
         import="org.oscarehr.phr.util.MyOscarUtils,org.oscarehr.myoscar.utils.MyOscarLoggedInInfo,org.oscarehr.util.WebUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -116,8 +117,31 @@
     else
         numOfPageStr = (new Integer(numOfPage)).toString();
 
-    String url = request.getContextPath() + "/documentManager/ManageDocument.do?method=viewDocPage&documentId=" + curdoc.getDocId() + "&documentDescription=" + curdoc.getDescription() + "&demog=" + demographicID + "&docType=" + curdoc.getType() + "&observationDate=" + curdoc.getObservationDate() + "&providerNo=" + providerNo + "&status=" + curdoc.getStatus() + (curdoc.getRemoteFacilityId() != null ? "&remoteFacilityId=" + curdoc.getRemoteFacilityId() : "") + "&curPage=1";
-    String url2 = request.getContextPath() + "/documentManager/ManageDocument.do?method=display&documentId=" + curdoc.getDocId() + "&documentDescription=" + curdoc.getDescription() + "&demog=" + demographicID + "&docType=" + curdoc.getType() + "&observationDate=" + curdoc.getObservationDate() + "&providerNo=" + providerNo + "&status=" + curdoc.getStatus() + (curdoc.getRemoteFacilityId() != null ? "&remoteFacilityId=" + curdoc.getRemoteFacilityId() : "");
+    String url = null;
+    String url2 = null;
+
+    try {
+        String encodedDocId = URLEncoder.encode(curdoc.getDocId(), "UTF-8");
+        String encodedDocDescription = URLEncoder.encode(curdoc.getDescription(), "UTF-8");
+        String encodedDemog = URLEncoder.encode(demographicID, "UTF-8");
+        String encodedDocType = URLEncoder.encode(curdoc.getType(), "UTF-8");
+        String encodedObservationDate = URLEncoder.encode(curdoc.getObservationDate(), "UTF-8");
+        String encodedProvider = URLEncoder.encode(providerNo, "UTF-8");
+        String statusStr = Character.toString(curdoc.getStatus());
+        String encodedStatus = URLEncoder.encode(statusStr, "UTF-8");
+        String encodedRemoteFacilityId = "";
+        
+        if (curdoc.getRemoteFacilityId() != null) {
+            String facilityIdStr = Integer.toString(curdoc.getRemoteFacilityId());
+            encodedRemoteFacilityId =  URLEncoder.encode(facilityIdStr, "UTF-8");
+        }
+
+        url = request.getContextPath() + "/documentManager/ManageDocument.do?method=viewDocPage" + "&documentId=" + encodedDocId + "&documentDescription=" + encodedDocDescription + "&demog=" + encodedDemog + "&docType=" + encodedDocType + "&observationDate=" + encodedObservationDate + "&providerNo=" + encodedProvider + "&status=" + encodedStatus + "&remoteFacilityId=" + encodedRemoteFacilityId + "&curPage=1";
+        url2 = request.getContextPath() + "/documentManager/ManageDocument.do?method=display" + "&documentId=" + encodedDocId + "&documentDescription=" + encodedDocDescription + "&demog=" + encodedDemog + "&docType=" + encodedDocType + "&observationDate=" + encodedObservationDate + "&providerNo=" + encodedProvider + "&status=" + encodedStatus + "&remoteFacilityId=" + encodedRemoteFacilityId;
+    } catch (java.io.UnsupportedEncodingException e) {
+        // Handle encoding exception
+        throw new RuntimeException(e);
+    }
 %>
 
 <html>
@@ -907,7 +931,7 @@
                                                 <input type="button" tabindex="<%=tabindex++%>" value="Msg"
                                                        onclick="popup(700,960,'../oscarMessenger/SendDemoMessage.do?demographic_no=<%=demographicID%>','msg')"/>
                                                 <input type="button" tabindex="<%=tabindex++%>" value="Tickler"
-                                                       onclick="popup(450,600,'../tickler/ForwardDemographicTickler.do?docType=DOC&docId=<%=docId%>&demographic_no=<%=demographicID%>&providerNo<%=providerNo%>','tickler')"/>
+                                                       onclick="popup(450,600,'../tickler/ForwardDemographicTickler.do?docType=DOC&docId=<%=docId%>&demographic_no=<%=demographicID%>&providerNo=<%=providerNo%>','tickler')"/>
                                                 <input type="button" tabindex="<%=tabindex++%>" value="eChart"
                                                        onclick="popup(710,1024,'<%=eURL%>','encounter')"/>
                                                 <%
