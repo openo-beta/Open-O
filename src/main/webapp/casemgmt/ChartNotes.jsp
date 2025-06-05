@@ -187,7 +187,15 @@
 
 </script>
 <div id="topContent">
-    <form action="${pageContext.request.contextPath}/CaseManagementView.do" method="post">
+
+    <form name="caseManagementEntryForm" id="caseManagementEntryForm" style="display:none;">
+        <input type="hidden" name="method" value="edit">
+        <input type="hidden" name="note_edit" value="new">
+        <input type="hidden" name="noteId" value="0">
+        <input type="hidden" name="ajax" value="false">
+        <input type="hidden" name="chain" value="list">
+    </form>
+    <form name="caseManagementViewForm" action="${pageContext.request.contextPath}/CaseManagementView.do" method="post">
         <input type="hidden" name="demographicNo" value="<%=demographicNo%>"/>
         <input type="hidden" name="providerNo" value="<%=provNo%>"/>
         <input type="hidden" name="tab" value="Current Issues"/>
@@ -199,6 +207,11 @@
         <input type="hidden" id="check_issue" name="check_issue">
         <input type="hidden" id="serverDate" value="<%=strToday%>">
         <input type="hidden" id="resetFilter" name="resetFilter" value="false">
+
+        <input type="hidden" name="filter_providers" value="">
+        <input type="hidden" name="filter_roles" value="">
+        <input type="hidden" name="note_sort" value="">
+        <input type="hidden" name="issues" value="">
         <div id="filteredresults">
             <c:if test="${not empty caseManagementViewForm.filter_providers}">
                 <fieldset class="filterresult">
