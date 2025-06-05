@@ -54,8 +54,14 @@
         return;
     }
     ResourceBundle bundle = ResourceBundle.getBundle("oscarResources", request.getLocale());
-    String titleParam = request.getParameter("title");
-    String titleMsg = bundle.getString(titleParam);
+    String titleParam    = request.getParameter("title");
+    String titleMsg      = bundle.getString(titleParam);
+    String editors       = (String) request.getAttribute("editors");
+    String addUrl        = (String) request.getAttribute("addUrl");
+    String identUrl      = (String) request.getAttribute("identUrl");
+    String noteIssues    = (String) request.getAttribute("noteIssues");
+    String noteExts      = (String) request.getAttribute("noteExts");
+    String cmd           = request.getParameter("cmd");
 %>
 
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
@@ -122,7 +128,7 @@
                 '${param.cmd}',                                          /* <— containerDiv = your DIV’s id */
                 '${pageContext.request.contextPath}/casemgmt/CaseManagementEntry.do?method=medicalHistory&demographicNo=${param.demographicNo}',
                                                                         /* <— reloadUrl = fragment URL */
-                '${noteIssues}',
+                '${noteIssues}',                                        /* <— noteIssues = issues */
                 '${noteExts}',
                 '${param.demographicNo}'
               );
@@ -136,7 +142,7 @@
             <a class="topLinks" onmouseover="this.className='topLinkhover'" onmouseout="this.className='topLinks'"
                 title="Rev:${note.revision} - Last update:${note.update_date}"
                 id="listNote${noteId}" href="javascript:void(0)"
-                onclick="showEdit(event,'${titleMsg}','${noteId}','${editors != null ? editors : ""}','${note.observation_date}','${note.revision}','${fn:escapeXml(note.note)}','${addUrl}${noteId}','${param.cmd}','${identUrl}','${noteIssues != null ? noteIssues : ""}','${noteExts != null ? noteExts : ""}','${param.demographicNo}');return false;">
+                onclick="showEdit(event,'${titleMsg}','${noteId}','${editors}','${note.observation_date}','${note.revision}','${note.note}','${addUrl}${noteId}','${param.cmd}','${identUrl}','${noteIssues}','${noteExts}','${param.demographicNo}');return false;">
                 ${fn:escapeXml(note.note)}
             </a>
         </c:otherwise>
