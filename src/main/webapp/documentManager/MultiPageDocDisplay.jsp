@@ -133,11 +133,11 @@
         
         if (curdoc.getRemoteFacilityId() != null) {
             String facilityIdStr = Integer.toString(curdoc.getRemoteFacilityId());
-            encodedRemoteFacilityId =  URLEncoder.encode(facilityIdStr, "UTF-8");
+            encodedRemoteFacilityId =  "&remoteFacilityId=" + URLEncoder.encode(facilityIdStr, "UTF-8");
         }
 
-        url = request.getContextPath() + "/documentManager/ManageDocument.do?method=viewDocPage" + "&documentId=" + encodedDocId + "&documentDescription=" + encodedDocDescription + "&demog=" + encodedDemog + "&docType=" + encodedDocType + "&observationDate=" + encodedObservationDate + "&providerNo=" + encodedProvider + "&status=" + encodedStatus + "&remoteFacilityId=" + encodedRemoteFacilityId + "&curPage=1";
-        url2 = request.getContextPath() + "/documentManager/ManageDocument.do?method=display" + "&documentId=" + encodedDocId + "&documentDescription=" + encodedDocDescription + "&demog=" + encodedDemog + "&docType=" + encodedDocType + "&observationDate=" + encodedObservationDate + "&providerNo=" + encodedProvider + "&status=" + encodedStatus + "&remoteFacilityId=" + encodedRemoteFacilityId;
+        url = request.getContextPath() + "/documentManager/ManageDocument.do?method=viewDocPage" + "&documentId=" + encodedDocId + "&documentDescription=" + encodedDocDescription + "&demog=" + encodedDemog + "&docType=" + encodedDocType + "&observationDate=" + encodedObservationDate + "&providerNo=" + encodedProvider + "&status=" + encodedStatus + encodedRemoteFacilityId + "&curPage=1";
+        url2 = request.getContextPath() + "/documentManager/ManageDocument.do?method=display" + "&documentId=" + encodedDocId + "&documentDescription=" + encodedDocDescription + "&demog=" + encodedDemog + "&docType=" + encodedDocType + "&observationDate=" + encodedObservationDate + "&providerNo=" + encodedProvider + "&status=" + encodedStatus + encodedRemoteFacilityId;
     } catch (java.io.UnsupportedEncodingException e) {
         // Handle encoding exception
         throw new RuntimeException(e);
