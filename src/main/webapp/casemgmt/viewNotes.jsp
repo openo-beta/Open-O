@@ -74,7 +74,7 @@
                 com.quatro.service.security.SecurityManager securityManager = new com.quatro.service.security.SecurityManager();
                 if (securityManager.hasWriteAccess("_" + request.getParameter("issue_code"), roleName$)) {
             %>
-            <a href="javascript:void(0)" title='Add Item' onclick="return showEdit(event,'<%=titleMsg%>','',0,'','','','<%=request.getAttribute("addUrl")%>0', 
+            <a href="javascript:void(0)" title='Add Item' onclick="return showEdit(event,'<%=StringEscapeUtils.escapeJavaScript(titleMsg)%>','',0,'','','','<%=request.getAttribute("addUrl")%>0', 
                 '<c:out value="${param.cmd}"/>','<%=request.getAttribute("identUrl")%>','<%=request.getAttribute("cppIssue")%>','','<c:out value="${param.demographicNo}"/>');">+</a>
             <% } else { %>
             &nbsp;
@@ -118,7 +118,7 @@
             onclick="
               return showEdit(
                 event,
-                '${titleMsg}',                                           /* window title */
+                '<%=StringEscapeUtils.escapeJavaScript(titleMsg)%>',     /* window title */
                 '${noteId}',                                             /* noteId */
                 '${editors}',                                            /* editors list */
                 '${note.observation_date}',                              /* date */
@@ -142,7 +142,7 @@
             <a class="topLinks" onmouseover="this.className='topLinkhover'" onmouseout="this.className='topLinks'"
                 title="Rev:${note.revision} - Last update:${note.update_date}"
                 id="listNote${noteId}" href="javascript:void(0)"
-                onclick="showEdit(event,'${titleMsg}','${noteId}','${editors}','${note.observation_date}','${note.revision}','${note.note}','${addUrl}${noteId}','${param.cmd}','${identUrl}','${noteIssues}','${noteExts}','${param.demographicNo}');return false;">
+                onclick="showEdit(event,'<%=StringEscapeUtils.escapeJavaScript(titleMsg)%>','${noteId}','${editors}','${note.observation_date}','${note.revision}','${note.note}','${addUrl}${noteId}','${param.cmd}','${identUrl}','${noteIssues}','${noteExts}','${param.demographicNo}');return false;">
                 ${fn:escapeXml(note.note)}
             </a>
         </c:otherwise>
@@ -160,7 +160,7 @@
                 <a class="links" onmouseover="this.className='linkhover'" onmouseout="this.className='links'"
                    title="${remoteNote.location} by ${remoteNote.providerName} on ${remoteNote.observationDate}"
                    href="javascript:void(0)"
-                   onclick="showIntegratedNote('${titleMsg}', '${remoteNote.note}', '${remoteNote.location}', '${remoteNote.providerName}', '${remoteNote.observationDate}');">
+                   onclick="showIntegratedNote('<%=StringEscapeUtils.escapeJavaScript(titleMsg)%>', '${remoteNote.note}', '${remoteNote.location}', '${remoteNote.providerName}', '${remoteNote.observationDate}');">
                     ${remoteNote.note}
                 </a>
             </li>
