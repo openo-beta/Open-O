@@ -75,7 +75,7 @@
                 if (securityManager.hasWriteAccess("_" + request.getParameter("issue_code"), roleName$)) {
             %>
             <a href="javascript:void(0)" title='Add Item' onclick="return showEdit(event,'<%=StringEscapeUtils.escapeJavaScript(titleMsg)%>','',0,'','','','<%=request.getAttribute("addUrl")%>0', 
-                '<c:out value="${param.cmd}"/>','<%=request.getAttribute("identUrl")%>','<%=request.getAttribute("cppIssue")%>','','<c:out value="${param.demographicNo}"/>');">+</a>
+                '<c:out value="${param.cmd}"/>','<%=request.getAttribute("identUrl")%>','<%=StringEscapeUtils.escapeJavaScript(request.getAttribute("cppIssue").toString())%>','','<c:out value="${param.demographicNo}"/>');">+</a>
             <% } else { %>
             &nbsp;
             <% } %>
@@ -142,7 +142,7 @@
             <a class="topLinks" onmouseover="this.className='topLinkhover'" onmouseout="this.className='topLinks'"
                 title="Rev:${note.revision} - Last update:${note.update_date}"
                 id="listNote${noteId}" href="javascript:void(0)"
-                onclick="showEdit(event,'<%=StringEscapeUtils.escapeJavaScript(titleMsg)%>','${noteId}','${editors}','${note.observation_date}','${note.revision}','${note.note}','${addUrl}${noteId}','${param.cmd}','${identUrl}','${noteIssues}','${noteExts}','${param.demographicNo}');return false;">
+                onclick="showEdit(event,'<%=StringEscapeUtils.escapeJavaScript(titleMsg)%>','${noteId}','<%=StringEscapeUtils.escapeJavaScript(editors)%>','${note.observation_date}','${note.revision}','${note.note}','${addUrl}${noteId}','${param.cmd}','<%=StringEscapeUtils.escapeJavaScript(identUrl)%>','<%=StringEscapeUtils.escapeJavaScript(noteIssues)%>','<%=StringEscapeUtils.escapeJavaScript(noteExts)%>','${param.demographicNo}');return false;">
                 ${fn:escapeXml(note.note)}
             </a>
         </c:otherwise>
