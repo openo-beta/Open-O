@@ -40,7 +40,7 @@
 <%@page import="org.oscarehr.common.model.PartialDate" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="java.util.ResourceBundle"%>
+<%@page import="java.util.ResourceBundle"%>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
@@ -56,12 +56,6 @@
     ResourceBundle bundle = ResourceBundle.getBundle("oscarResources", request.getLocale());
     String titleParam    = request.getParameter("title");
     String titleMsg      = bundle.getString(titleParam);
-    String editors       = (String) request.getAttribute("editors");
-    String addUrl        = (String) request.getAttribute("addUrl");
-    String identUrl      = (String) request.getAttribute("identUrl");
-    String noteIssues    = (String) request.getAttribute("noteIssues");
-    String noteExts      = (String) request.getAttribute("noteExts");
-    String cmd           = request.getParameter("cmd");
 %>
 
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
@@ -99,57 +93,60 @@
     </c:otherwise>
 </c:choose>
 
-<c:forEach var="note" items="${Notes}" varStatus="status">
-  <c:set var="noteId" value="${note.id}" />
-  <c:set var="backgroundColor"
-         value="${status.index % 2 == 0 ? '#F3F3F3' : '#FFFFFF'}" />
-
-  <li class="cpp" style="background-color: ${backgroundColor};">
-    <span id="spanListNote${noteId}">
-      <c:choose>
-        <c:when test="${param.title == 'oscarEncounter.medHistory.title'}">
-          <a
-            class="topLinks"
-            onmouseover="this.className='topLinkhover'"
-            onmouseout="this.className='topLinks'"
-            title="Rev:${note.revision} - Last update:${note.update_date}"
-            id="listNote${noteId}"
-            href="javascript:void(0)"
-            onclick="
-              return showEdit(
-                event,
-                '<%=StringEscapeUtils.escapeJavaScript(titleMsg)%>',     /* window title */
-                '${noteId}',                                             /* noteId */
-                '${editors}',                                            /* editors list */
-                '${note.observation_date}',                              /* date */
-                '${note.revision}',                                      /* revision */
-                '${fn:escapeXml(note.note)}',                            /* note text */
-                '${addUrl}${noteId}',                                    /* form load URL */
-                '${param.cmd}',                                          /* <— containerDiv = your DIV’s id */
-                '${pageContext.request.contextPath}/casemgmt/CaseManagementEntry.do?method=medicalHistory&demographicNo=${param.demographicNo}',
-                                                                        /* <— reloadUrl = fragment URL */
-                '${noteIssues}',                                        /* <— noteIssues = issues */
-                '${noteExts}',
-                '${param.demographicNo}'
-              );
-            "
-          >
-            </script>
-            ${fn:escapeXml(note.note)}                                                                                                                          
-          </a>
-        </c:when>
-        <c:otherwise>
-            <a class="topLinks" onmouseover="this.className='topLinkhover'" onmouseout="this.className='topLinks'"
-                title="Rev:${note.revision} - Last update:${note.update_date}"
-                id="listNote${noteId}" href="javascript:void(0)"
-                onclick="showEdit(event,'<%=StringEscapeUtils.escapeJavaScript(titleMsg)%>','${noteId}','<%=StringEscapeUtils.escapeJavaScript(editors)%>','${note.observation_date}','${note.revision}','${note.note}','${addUrl}${noteId}','${param.cmd}','<%=StringEscapeUtils.escapeJavaScript(identUrl)%>','<%=StringEscapeUtils.escapeJavaScript(noteIssues)%>','<%=StringEscapeUtils.escapeJavaScript(noteExts)%>','${param.demographicNo}');return false;">
-                ${fn:escapeXml(note.note)}
-            </a>
-        </c:otherwise>
-      </c:choose>
-    </span>
-  </li>
-</c:forEach>
+<ul>
+    <c:forEach var="note" items="${Notes}" varStatus="status">
+        <c:set var="noteId" value="${note.id}"/>
+        <c:set var="backgroundColor" value="${status.index % 2 == 0 ? '#F3F3F3' : '#FFFFFF'}" />
+        
+        <li class="cpp" style="background-color: ${backgroundColor};">
+            <span id="spanListNote${noteId}">
+                <c:choose>
+                    <c:when test="${param.title == 'oscarEncounter.oMeds.title' || param.title == 'oscarEncounter.riskFactors.title' || param.title == 'oscarEncounter.famHistory.title' || param.noheight == 'true'}">
+                        <a class="links" onmouseover="this.className='linkhover'" onmouseout="this.className='links'"
+                           title="Rev:${note.revision} - Last update:${note.update_date}"
+                           id="listNote${noteId}" href="javascript:void(0)"
+                           onclick="showEdit(
+                           event,
+                           '${titleMsg}',
+                           '${noteId}',
+                           '${editors}',
+                           '${note.observation_date}',
+                           '${note.revision}',
+                           '${note.note}',
+                           '${addUrl}${noteId}',
+                           '${param.cmd}',
+                           '${identUrl}',
+                           '${noteIssues}',
+                           '${noteExts}',
+                           '${param.demographicNo}');return false;">
+                            ${fn:escapeXml(note.note)}
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="topLinks" onmouseover="this.className='topLinkhover'" onmouseout="this.className='topLinks'"
+                           title="Rev:${note.revision} - Last update:${note.update_date}"
+                           id="listNote${noteId}" href="javascript:void(0)"
+                           onclick="showEdit(
+                           event,
+                           '${titleMsg}',
+                           '${noteId}',
+                           '${editors}',
+                           '${note.observation_date}',
+                           '${note.revision}',
+                           '${note.note}',
+                           '${addUrl}${noteId}',
+                           '${param.cmd}',
+                           '${identUrl}',
+                           '${noteIssues}',
+                           '${noteExts}',
+                           '${param.demographicNo}');return false;">
+                            ${fn:escapeXml(note.note)}
+                        </a>
+                    </c:otherwise>
+                </c:choose>
+            </span>
+        </li>
+    </c:forEach>
 
 
     <!-- Handling remoteNotes -->
