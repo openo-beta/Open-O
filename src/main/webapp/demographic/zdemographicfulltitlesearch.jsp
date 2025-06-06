@@ -84,14 +84,23 @@
     }
     
     function checkTypeIn() {
-        var dob = document.titlesearch.keyword;
-        if (document.titlesearch.search_mode.value == "search_dob") {
+        var searchMode = document.titlesearch.search_mode;
+        var keyword = document.titlesearch.keyword;
+
+        if (searchMode.value == "search_dob") {
             // Remove hyphens for validation
-            var dobValue = dob.value.replace(/-/g, '');
+            var dobValue = keyword.value.replace(/-/g, '');
             
             // Check if we have enough digits
             if (dobValue.length < 8) {
                 alert("Date format must be YYYY-MM-DD");
+                return false;
+            }
+        }
+        if (searchMode.value == "search_demographic_no") {
+            // Check to see if demographic number is not an integer
+            if (!Number.isInteger(parseInt(keyword.value))) {
+                alert("Demographic No must be a number");
                 return false;
             }
         }
@@ -103,7 +112,8 @@
     <form method="get" name="titlesearch" action="<%=request.getContextPath()%>/demographic/demographiccontrol.jsp"
           onsubmit="return checkTypeIn()">
 
-        <% String searchMode = request.getParameter("search_mode");
+        <% 
+            String searchMode = request.getParameter("search_mode");
             String keyWord = request.getParameter("keyword");
             if (searchMode == null || searchMode.equals("")) {
                 searchMode = OscarProperties.getInstance().getProperty("default_search_mode", "search_name");
