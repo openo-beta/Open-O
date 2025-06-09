@@ -711,9 +711,9 @@
 // display in place editor
     function showEdit(e, title, noteId, editors, date, revision, note, url, containerDiv, reloadUrl, noteIssues, noteExts, demoNo) {
         //Event.extend(e);
-        if (e) {
+        <%-- if (e) {
             Event.stop(e);
-        }
+        } --%>
 
         console.log("showEdit parameters:", {
             title: title,
@@ -727,7 +727,7 @@
             reloadUrl: reloadUrl,
             noteIssues: noteIssues,
             noteExts: noteExts,
-            demoNo: demoNo
+            demoNo: demoNo 
         });
 
         var limit = containerDiv + "threshold";
