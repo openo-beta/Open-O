@@ -98,13 +98,8 @@
         <c:set var="noteId" value="${note.id}"/>
         <c:set var="backgroundColor" value="${status.index % 2 == 0 ? '#F3F3F3' : '#FFFFFF'}" />
         <script>
-            console.log('Note ${status.index}:', {
-                id: '${noteId}',
-                note: '${fn:escapeXml(note.note)}',
-                revision: '${note.revision}',
-                observation_date: '${note.observation_date}',
-                update_date: '${note.update_date}'
-            });
+            console.log('Note ${status.index} - Full Object:', ${note});
+            console.log('Note ${status.index} - Stringified:', JSON.stringify(${note}, null, 2));
         </script>
         <li class="cpp" style="background-color: ${backgroundColor};">
             <span id="spanListNote${noteId}">
