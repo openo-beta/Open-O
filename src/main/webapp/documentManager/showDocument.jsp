@@ -336,8 +336,7 @@
 
         <input type="button" id="mainEchart_<%=docId%>"
                value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
-               onClick="popupPatient(710, 1024,'${pageContext.servletContext.contextPath}/oscarEncounter/IncomingEncounter.do?reason=
-               <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.labResults"/>&curDate=<%=currentDate%>>&appointmentNo=&appointmentDate=&startTime=&status=&demographicNo=', 'encounter', '<%=docId%>')" <%=btnDisabled %>>
+               onClick="popupPatient(710, 1024,'${pageContext.servletContext.contextPath}/oscarEncounter/IncomingEncounter.do?reason=<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.labResults"/>&curDate=<%=currentDate%>>&appointmentNo=&appointmentDate=&startTime=&status=&demographicNo=', 'encounter', '<%=docId%>')" <%=btnDisabled %>>
         <input type="button" id="mainMaster_<%=docId%>" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnMaster"/>"
                onClick="popupPatient(710,1024,'${pageContext.servletContext.contextPath}/demographic/demographiccontrol.jsp?displaymode=edit&dboperation=search_detail&demographic_no=','master','<%=docId%>')" <%=btnDisabled %>>
         <input type="button" id="mainApptHistory_<%=docId%>"
