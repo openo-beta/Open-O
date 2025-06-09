@@ -1217,9 +1217,19 @@
                     <span class="glyphicon glyphicon-step-forward"
                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewNextDay"/>"></span>
                 </a>
-                <a id="calendarLink" href=#
-                   onClick="popupPage(425,430,'../share/CalendarPopup.jsp?urlfrom=../provider/providercontrol.jsp&year=<%=strYear%>&month=<%=strMonth%>&param=<%=URLEncoder.encode("&view=0&displaymode=day&dboperation=searchappointmentday&viewall="+viewall,"UTF-8")%>
-                           <%=isWeekView?URLEncoder.encode("&provider_no="+provNum, "UTF-8"):""%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.calendar"/></a>
+
+                <%
+                    String calendarUrl = "../share/CalendarPopup.jsp?urlfrom=../provider/providercontrol.jsp" + "&year=" + strYear + "&month=" + strMonth + "&param=" + URLEncoder.encode("&view=0&displaymode=day&dboperation=searchappointmentday&viewall=" + viewall, "UTF-8");
+
+                    if (isWeekView) {
+                        calendarUrl += URLEncoder.encode("&provider_no=" + provNum, "UTF-8");
+                    }
+                %>
+
+                <a id="calendarLink" href="#" onClick="popupPage(425,430,'<%=calendarUrl%>')">
+                    <fmt:setBundle basename="oscarResources"/>
+                    <fmt:message key="global.calendar"/>
+                </a>
 
                 <c:if test="${infirmaryView_isOscar != 'false'}">
                     <% if (request.getParameter("viewall") != null && request.getParameter("viewall").equals("1")) { %>
