@@ -97,7 +97,6 @@
     <c:forEach var="note" items="${Notes}" varStatus="status">
         <c:set var="noteId" value="${note.id}"/>
         <c:set var="backgroundColor" value="${status.index % 2 == 0 ? '#F3F3F3' : '#FFFFFF'}" />
-        
         <li class="cpp" style="background-color: ${backgroundColor};">
             <span id="spanListNote${noteId}">
                 <c:choose>
