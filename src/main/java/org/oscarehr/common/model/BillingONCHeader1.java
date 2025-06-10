@@ -23,6 +23,11 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -385,28 +390,32 @@ public class BillingONCHeader1 extends AbstractModel<Integer> implements Seriali
 
     public Date getBillingDate() {
         try {
-            return (new SimpleDateFormat("yyyy-MM-dd")).parse(this.billingDate);
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
+            LocalDate localDate = LocalDate.parse(this.billingDate);
+            return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        } catch (DateTimeParseException e) {
+            System.out.println("Error getting billing date: " + e);
             return null;
         }
     }
 
     public void setBillingDate(Date billingDate) {
-        this.billingDate = (new SimpleDateFormat("yyyy-MM-dd")).format(billingDate);
+        this.billingDate = LocalDate.ofInstant(billingDate.toInstant(), ZoneId.systemDefault()).toString();
     }
 
     public Date getBillingTime() {
         try {
-            return (new SimpleDateFormat("HH:mm:ss")).parse(this.billingTime);
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
+            LocalTime localTime = LocalTime.parse(this.billingTime);
+            LocalDate today = LocalDate.now();
+            ZonedDateTime zonedDateTime = ZonedDateTime.of(today, localTime, ZoneId.systemDefault());
+            return Date.from(zonedDateTime.toInstant());
+        } catch (DateTimeParseException e) {
+            System.out.println("Error getting billing time: " + e);
             return null;
         }
     }
 
     public void setBillingTime(Date billingTime) {
-        this.billingTime = (new SimpleDateFormat("HH:mm:ss")).format(billingTime);
+        this.billingTime = LocalTime.ofInstant(billingTime.toInstant(), ZoneId.systemDefault()).toString();
     }
 
     public BigDecimal getTotal() {
@@ -532,5 +541,4 @@ public class BillingONCHeader1 extends AbstractModel<Integer> implements Seriali
     public int hashCode() {
         return (id != null ? id.hashCode() : 0);
     }
-
 }

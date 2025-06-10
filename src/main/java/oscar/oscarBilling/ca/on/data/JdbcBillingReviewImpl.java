@@ -389,6 +389,12 @@ public class JdbcBillingReviewImpl {
 
     // billing page
     public List<Object> getBillingHist(String demoNo, int iPageSize, int iOffSet, DateRange dateRange) {
+
+        // System.out.println("---------- demoNo:" + demoNo);
+        // System.out.println("---------- iPageSize:" + iPageSize);
+        // System.out.println("---------- iOffSet:" + iOffSet);
+        // System.out.println("---------- dateRange:" + dateRange);
+
         List<Object> retval = new ArrayList<Object>();
         int iRow = 0;
 
@@ -405,6 +411,8 @@ public class JdbcBillingReviewImpl {
             hs = dao.findByDemoNoAndDates(ConversionUtils.fromIntString(demoNo), dateRange, iOffSet, iPageSize);
         }
 
+        //System.out.println("---------- hs:" + hs);
+
         try {
             for (BillingONCHeader1 h : hs) {
                 iRow++;
@@ -414,7 +422,7 @@ public class JdbcBillingReviewImpl {
                 ch1Obj = new BillingClaimHeader1Data();
                 ch1Obj.setId("" + h.getId());
                 ch1Obj.setBilling_date(ConversionUtils.toDateString(h.getBillingDate()));
-                ch1Obj.setBilling_time(ConversionUtils.toDateString(h.getBillingTime()));
+                ch1Obj.setBilling_time(ConversionUtils.toTimeString(h.getBillingTime()));
                 ch1Obj.setStatus(h.getStatus());
                 ch1Obj.setProviderNo(h.getProviderNo());
                 ch1Obj.setApptProvider_no(h.getApptProviderNo());
@@ -451,6 +459,8 @@ public class JdbcBillingReviewImpl {
 
                     serviceCodeSet.add(strService);
                 }
+
+                System.out.println("---------- size of service code set:" + serviceCodeSet.size());
 
                 BillingItemData itObj = new BillingItemData();
                 StringBuffer codeBuf = new StringBuffer();

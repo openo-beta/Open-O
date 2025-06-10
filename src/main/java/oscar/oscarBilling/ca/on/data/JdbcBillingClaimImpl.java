@@ -136,10 +136,14 @@ public class JdbcBillingClaimImpl {
         b.setProvince(val.province);
         if (val.billing_date.length() > 0)
             try {
+                System.out.println(val.billing_date);
                 b.setBillingDate(dateformatter.parse(val.billing_date));
-            } catch (ParseException e) {/*empty*/}
+            } catch (ParseException e) {
+                MiscUtils.getLogger().error("Invalid date", e);
+            }
         if (val.billing_time.length() > 0)
             try {
+                System.out.println(val.billing_time);
                 b.setBillingTime(timeFormatter.parse(val.billing_time));
             } catch (ParseException e) {
                 MiscUtils.getLogger().error("Invalid time", e);
