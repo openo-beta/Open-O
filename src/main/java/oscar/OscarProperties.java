@@ -378,7 +378,7 @@ public class OscarProperties extends Properties {
     public String getDocumentDirectory() {
        String documents = oscarProperties.getProperty("DOCUMENT_DIR");
        if (documents == null) {
-            documents = Paths.get(oscarProperties.getProperty("BASE_DOCUMENT_DIR"), "oscar", "document").toString();
+            documents = Paths.get(oscarProperties.getProperty("BASE_DOCUMENT_DIR"), "document").toString();
        }
        return documents;
     }
