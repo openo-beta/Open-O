@@ -34,6 +34,7 @@ import org.oscarehr.casemgmt.service.ClientImageManager;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -46,9 +47,6 @@ public class ClientImage2Action extends ActionSupport {
 
     private File clientImage;
     private String clientImageFileName;
-
-    // path from "oscar.properties" as "upload_eform_image"
-    private String IMG_UPLOAD_DIR = OscarProperties.getInstance().getEformUploadImageDirectory();
 
     private static Logger log = MiscUtils.getLogger();
 
@@ -75,7 +73,12 @@ public class ClientImage2Action extends ActionSupport {
 
         // Ensure that the upload directory is correcnt and create a new image object that will be saved to the client
         try {
-            File safeDirectory = new File(IMG_UPLOAD_DIR).getCanonicalFile();
+            // Get context of the temp directory, get the file path to the the temp directory
+            ServletContext servletContext = ServletActionContext.getServletContext();
+            File tmpdirAttribute = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+            String tmpdir = tmpdirAttribute.toString();
+
+            File safeDirectory = new File(tmpdir).getCanonicalFile();
             File resolvedFile = clientImage.getCanonicalFile();
 
             // Ensure the file is within the safe directory

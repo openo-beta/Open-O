@@ -31,15 +31,9 @@
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="org.oscarehr.casemgmt.model.*" %>
 
-<!-- This object stores the key -> cmd value passed to action class and the id of the created div and the value -> URL of the action class -->
-<c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
-
 <%
     String demo = request.getParameter("demographicNo");
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-
-// MARC-HI's Sharing Center
-    boolean isSharingCenterEnabled = SharingCenterUtil.isEnabled();
 %>
 
 <html>
@@ -68,16 +62,6 @@
             </c:otherwise>
         </c:choose>
     </security:oscarSec>
-
-    <!-- MARC-HI's Sharing Center -->
-    <% if (isSharingCenterEnabled) { %>
-    <div>
-        <button type="button"
-                onclick="window.open('${ctx}/sharingcenter/documents/demographicExport.jsp?demographic_no=<%=demo%>');">
-            Export Patient Demographic
-        </button>
-    </div>
-    <% } %>
 
     <div id="rightColLoader" style="width: 100%;">
         <h3 style="width: 100%; background-color: #CCCCFF;">
