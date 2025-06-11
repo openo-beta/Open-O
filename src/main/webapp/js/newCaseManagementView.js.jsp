@@ -373,10 +373,7 @@
     /*
 	Loads issue notes: Social History, Medical History, Ongoing Concerns, Reminders
 */
-    function showIssueNotes() {
-
-        var urlString = ctx + "/CaseManagementView.do?hc=996633&method=listNotes&providerNo=" + providerNo + "&demographicNo=" + demographicNo + "&issue_code=SocHistory&title=" + socHistoryLabel + "&cmd=divR1I1"
-        
+    function showIssueNotes() {        
         <% 
         String pNo = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo(); 
             if (pNo == null) {
@@ -385,14 +382,6 @@
         %>
 
         providerNo = '<%= pNo %>';
-        
-        console.log("divR1T2 variables:", {
-            ctx: ctx,
-            providerNo: providerNo,
-            demographicNo: demographicNo,
-            socHistoryLabel: socHistoryLabel,
-            fullURL: urlString
-        });  
 
         issueNoteUrls = {
             divR1I1: ctx + "/CaseManagementView.do?hc=996633&method=listNotes&providerNo=" + providerNo + "&demographicNo=" + demographicNo + "&issue_code=SocHistory&title=" + socHistoryLabel + "&cmd=divR1I1",
@@ -403,6 +392,7 @@
         var limit = 5;
 
         for (idx in issueNoteUrls) {
+            console.log("showIssueNotes URLs:", issueNoteUrls[idx])
             loadDiv(idx, issueNoteUrls[idx], limit);
         }
     }
@@ -428,6 +418,8 @@
         }
 
         var limit = 5;
+
+        console.log("showCustomIssueNotes URLs:", issueNoteUrls);   
 
         for (idx in issueNoteUrls) {
             loadDiv('div' + idx, issueNoteUrls[idx], limit);
