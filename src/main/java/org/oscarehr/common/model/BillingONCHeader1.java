@@ -389,7 +389,11 @@ public class BillingONCHeader1 extends AbstractModel<Integer> implements Seriali
     }
 
     public Date getBillingDate() {
-         try {
+        if (billingDate == null || billingDate.trim().isEmpty()) {
+            return null;
+        }
+
+        try {
             return (new SimpleDateFormat("yyyy-MM-dd")).parse(this.billingDate);
         } catch (ParseException e) {
             System.out.println("Error getting billing date: " + e);
@@ -402,7 +406,11 @@ public class BillingONCHeader1 extends AbstractModel<Integer> implements Seriali
     }
 
     public Date getBillingTime() {
-         try {
+        if (billingTime == null || billingTime.trim().isEmpty()) {
+            return null;
+        }
+
+        try {
             return (new SimpleDateFormat("HH:mm:ss")).parse(this.billingTime);
         } catch (ParseException e) {
             System.out.println("Error getting billing time: " + e);
