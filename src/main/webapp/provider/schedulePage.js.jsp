@@ -101,7 +101,7 @@ function toggleReason(event, providerNo) {
     jQuery(id).toggle();
     var isVisible = jQuery(id).is(":visible");
     var storageKey = "reason_" + providerNo;
-    localStorage.setItem(id, isVisible);
+    localStorage.setItem(storageKey, isVisible);
 }
 
 
