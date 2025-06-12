@@ -42,11 +42,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.apache.cxf.common.util.StringUtils;
+import org.apache.logging.log4j.Logger;
+import org.oscarehr.util.MiscUtils;
 
 @Entity
 @Table(name = "billing_on_cheader1")
 public class BillingONCHeader1 extends AbstractModel<Integer> implements Serializable {
 
+    private static final Logger logger = MiscUtils.getLogger();
     private static final long serialVersionUID = 1L;
 
     public static final String SETTLED = "S";
@@ -391,7 +394,7 @@ public class BillingONCHeader1 extends AbstractModel<Integer> implements Seriali
         try {
             return (new SimpleDateFormat("yyyy-MM-dd")).parse(this.billingDate);
         } catch (ParseException e) {
-            System.out.println("Error getting billing date: " + e);
+            logger.error("Error getting billing date:", e);
             return null;
         }
     }
@@ -408,7 +411,7 @@ public class BillingONCHeader1 extends AbstractModel<Integer> implements Seriali
         try {
             return (new SimpleDateFormat("HH:mm:ss")).parse(this.billingTime);
         } catch (ParseException e) {
-            System.out.println("Error getting billing time: " + e);
+            logger.error("Error getting billing time:", e);
             return null;
         }
     }
