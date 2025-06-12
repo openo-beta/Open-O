@@ -244,7 +244,7 @@ public class EctSessionBean implements java.io.Serializable {
      */
     public void setUpEncounterPage(LoggedInInfo loggedInInfo, String appointmentNo) {
         resetAll();
-        System.out.println("------------------- TESTING FROM SETUP ENCOUNTER PAGE: ");
+        
         appointmentsIdArray = new ArrayList<String>();
         appointmentsNamesArray = new ArrayList<String>();
         templateNames = new ArrayList<String>();
@@ -257,7 +257,6 @@ public class EctSessionBean implements java.io.Serializable {
         encType = new String("face to face encounter with client");
         appointmentDate = ConversionUtils.toDateString(appt.getAppointmentDate());
         startTime = ConversionUtils.toDateString(appt.getStartTime());
-        System.out.println("------------------- START TIME: " + startTime);
         status = appt.getStatus();
 
         for (Appointment a : apptDao.findByProviderAndDate(curProviderNo, appt.getAppointmentDate())) {

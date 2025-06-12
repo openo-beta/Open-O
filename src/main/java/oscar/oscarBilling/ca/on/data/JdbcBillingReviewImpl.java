@@ -389,12 +389,6 @@ public class JdbcBillingReviewImpl {
 
     // billing page
     public List<Object> getBillingHist(String demoNo, int iPageSize, int iOffSet, DateRange dateRange) {
-
-        // System.out.println("---------- demoNo:" + demoNo);
-        // System.out.println("---------- iPageSize:" + iPageSize);
-        // System.out.println("---------- iOffSet:" + iOffSet);
-        // System.out.println("---------- dateRange:" + dateRange);
-
         List<Object> retval = new ArrayList<Object>();
         int iRow = 0;
 
@@ -410,8 +404,6 @@ public class JdbcBillingReviewImpl {
         } else {
             hs = dao.findByDemoNoAndDates(ConversionUtils.fromIntString(demoNo), dateRange, iOffSet, iPageSize);
         }
-
-        //System.out.println("---------- hs:" + hs);
 
         try {
             for (BillingONCHeader1 h : hs) {

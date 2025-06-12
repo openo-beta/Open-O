@@ -389,33 +389,29 @@ public class BillingONCHeader1 extends AbstractModel<Integer> implements Seriali
     }
 
     public Date getBillingDate() {
-        try {
-            LocalDate localDate = LocalDate.parse(this.billingDate);
-            return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        } catch (DateTimeParseException e) {
+         try {
+            return (new SimpleDateFormat("yyyy-MM-dd")).parse(this.billingDate);
+        } catch (ParseException e) {
             System.out.println("Error getting billing date: " + e);
             return null;
         }
     }
 
     public void setBillingDate(Date billingDate) {
-        this.billingDate = LocalDate.ofInstant(billingDate.toInstant(), ZoneId.systemDefault()).toString();
+        this.billingDate = (new SimpleDateFormat("yyyy-MM-dd")).format(billingDate);
     }
 
     public Date getBillingTime() {
-        try {
-            LocalTime localTime = LocalTime.parse(this.billingTime);
-            LocalDate today = LocalDate.now();
-            ZonedDateTime zonedDateTime = ZonedDateTime.of(today, localTime, ZoneId.systemDefault());
-            return Date.from(zonedDateTime.toInstant());
-        } catch (DateTimeParseException e) {
+         try {
+            return (new SimpleDateFormat("HH:mm:ss")).parse(this.billingTime);
+        } catch (ParseException e) {
             System.out.println("Error getting billing time: " + e);
             return null;
         }
     }
 
     public void setBillingTime(Date billingTime) {
-        this.billingTime = LocalTime.ofInstant(billingTime.toInstant(), ZoneId.systemDefault()).toString();
+        this.billingTime = (new SimpleDateFormat("HH:mm:ss")).format(billingTime);
     }
 
     public BigDecimal getTotal() {

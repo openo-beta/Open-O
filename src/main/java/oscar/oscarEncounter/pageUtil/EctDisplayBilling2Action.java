@@ -94,10 +94,9 @@ public class EctDisplayBilling2Action extends EctDisplayAction {
                 Appointment appt = appointmentDao.find(Integer.parseInt(appointmentNo));
                 String billform = OscarProperties.getInstance().getProperty("default_view");
                 SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
+                SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
                 Provider p = loggedInInfo.getLoggedInProvider();
                 if (appt != null) {
-                    System.out.println("APPT IS NOT NULLL YESSSSSSSS!!!!!!!!!!!!!!!!!!!");
                     url = "popupPage(755,1200,'" + winName + "','../billing.do?billRegion=ON&billForm=" + billform + "&hotclick=&appointment_no=" + appointmentNo + "&demographic_name=" + d.getFormattedName() + "&status=" + appt.getStatus() + "&demographic_no=" + bean.demographicNo + "&providerview=" + p.getProviderNo() + "&user_no=" + p.getProviderNo() + "&apptProvider_no=" + appt.getProviderNo() + "&appointment_date=" + dateFormatter.format(appt.getAppointmentDate()) + "&start_time=" + timeFormatter.format(appt.getStartTime()) + "&bNewForm=1');return false;";
                     Dao.setRightURL(url);
                 }
