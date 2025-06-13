@@ -1024,9 +1024,6 @@ public final class EDocUtil {
                 doc.setDocId("" + d.getDocumentNo());
                 doc.setFileName(d.getDocfilename());
                 doc.setStatus(d.getStatus());
-                doc.setDescription(d.getDocdesc());
-                doc.setType(d.getDoctype());
-                doc.setObservationDate(d.getObservationdate());
             }
 
         }

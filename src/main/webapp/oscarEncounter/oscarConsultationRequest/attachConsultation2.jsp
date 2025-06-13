@@ -321,7 +321,7 @@
                                 if ((curDoc.getStatus() + "").compareTo("A") == 0) dStatus = "active";
                                 else if ((curDoc.getStatus() + "").compareTo("H") == 0) dStatus = "html";
                                 url = request.getContextPath() + "/documentManager/"
-                                        + "/ManageDocument.do?method=display&documentId=" + curDoc.getDocId() + "&documentDescription=" + curDoc.getDescription() + "&demog=" + curDoc.getModuleId() + "&docType=" + curDoc.getType() + "&observationDate=" + curDoc.getObservationDate() + "&providerNo=" + user_no + "&status=" + curDoc.getStatus()
+                                    + "showDocument.jsp?inWindow=true&segmentID=" + curDoc.getDocId() + "&providerNo=" + providerNo;
                                 String onClick = "";
 
                                 if (curDoc.isPDF()) {

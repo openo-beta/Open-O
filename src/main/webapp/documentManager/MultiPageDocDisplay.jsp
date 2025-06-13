@@ -42,7 +42,6 @@
 
 <%@page import="oscar.util.UtilDateUtilities" %>
 <%@ page import="java.util.*" %>
-<%@page import = "java.net.URLEncoder" %>
 <%@ page
         import="org.oscarehr.phr.util.MyOscarUtils,org.oscarehr.myoscar.utils.MyOscarLoggedInInfo,org.oscarehr.util.WebUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -78,17 +77,11 @@
 
     Provider provider = providerDao.getProvider(providerNo);
     String creator = (String) session.getAttribute("user");
+    ArrayList doctypes = EDocUtil.getActiveDocTypes("demographic");
 
     EDoc curdoc = EDocUtil.getDoc(documentNo);
 
-    String demographicID = request.getParameter("demog");
-
-    ArrayList doctypes;
-    if (!demographicID.equals(providerNo)) {
-        doctypes = EDocUtil.getActiveDocTypes("demographic");
-    } else {
-        doctypes = EDocUtil.getActiveDocTypes("provider");
-    }
+    String demographicID = curdoc.getModuleId();
 
     if (demoName == null || "".equals(demoName)) {
         Demographic d = demographicDao.getDemographic(demographicID);
@@ -117,31 +110,8 @@
     else
         numOfPageStr = (new Integer(numOfPage)).toString();
 
-    String url = null;
-    String url2 = null;
-
-    try {
-        String encodedDocId = URLEncoder.encode(curdoc.getDocId(), "UTF-8");
-        String encodedDocDescription = URLEncoder.encode(curdoc.getDescription(), "UTF-8");
-        String encodedDemog = URLEncoder.encode(demographicID, "UTF-8");
-        String encodedDocType = URLEncoder.encode(curdoc.getType(), "UTF-8");
-        String encodedObservationDate = URLEncoder.encode(curdoc.getObservationDate(), "UTF-8");
-        String encodedProvider = URLEncoder.encode(providerNo, "UTF-8");
-        String statusStr = Character.toString(curdoc.getStatus());
-        String encodedStatus = URLEncoder.encode(statusStr, "UTF-8");
-        String encodedRemoteFacilityId = "";
-        
-        if (curdoc.getRemoteFacilityId() != null) {
-            String facilityIdStr = Integer.toString(curdoc.getRemoteFacilityId());
-            encodedRemoteFacilityId =  "&remoteFacilityId=" + URLEncoder.encode(facilityIdStr, "UTF-8");
-        }
-
-        url = request.getContextPath() + "/documentManager/ManageDocument.do?method=viewDocPage" + "&documentId=" + encodedDocId + "&documentDescription=" + encodedDocDescription + "&demog=" + encodedDemog + "&docType=" + encodedDocType + "&observationDate=" + encodedObservationDate + "&providerNo=" + encodedProvider + "&status=" + encodedStatus + encodedRemoteFacilityId + "&curPage=1";
-        url2 = request.getContextPath() + "/documentManager/ManageDocument.do?method=display" + "&documentId=" + encodedDocId + "&documentDescription=" + encodedDocDescription + "&demog=" + encodedDemog + "&docType=" + encodedDocType + "&observationDate=" + encodedObservationDate + "&providerNo=" + encodedProvider + "&status=" + encodedStatus + encodedRemoteFacilityId;
-    } catch (java.io.UnsupportedEncodingException e) {
-        // Handle encoding exception
-        throw new RuntimeException(e);
-    }
+    String url = request.getContextPath() + "/documentManager/ManageDocument.do?method=viewDocPage&doc_no=" + docId + "&curPage=1";
+    String url2 = request.getContextPath() + "/documentManager/ManageDocument.do?method=display&doc_no=" + docId;
 %>
 
 <html>

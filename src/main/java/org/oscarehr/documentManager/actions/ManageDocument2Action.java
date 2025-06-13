@@ -132,7 +132,6 @@ public class ManageDocument2Action extends ActionSupport {
     }
 
     public void documentUpdateAjax() {
-
         String observationDate = request.getParameter("observationDate");// :2008-08-22<
         String documentDescription = request.getParameter("documentDescription");// :test2<
         String documentId = request.getParameter("documentId");// :29<
@@ -231,14 +230,13 @@ public class ManageDocument2Action extends ActionSupport {
 
     public void getDemoNameAjax() {
         String dn = request.getParameter("demo_no");
-        String providerNo = request.getParameter("providerNo");
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "r", dn)) {
             throw new SecurityException("missing required security object (_demographic)");
         }
 
         HashMap hm = new HashMap();
-        hm.put("demoName", getDemoName(LoggedInInfo.getLoggedInInfoFromSession(request), dn, providerNo));
+        hm.put("demoName", getDemoName(LoggedInInfo.getLoggedInInfoFromSession(request), dn));
         JSONObject jsonObject = JSONObject.fromObject(hm);
         try {
             response.getOutputStream().write(jsonObject.toString().getBytes());
@@ -249,7 +247,7 @@ public class ManageDocument2Action extends ActionSupport {
 
     public void removeLinkFromDocument() {
         String docType = request.getParameter("docType");
-        String docId = request.getParameter("documentId");
+        String docId = request.getParameter("docId");
         String providerNo = request.getParameter("providerNo");
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
@@ -347,7 +345,7 @@ public class ManageDocument2Action extends ActionSupport {
         String providerNo = request.getParameter("providerNo");
         String searchProviderNo = request.getParameter("searchProviderNo");
         String ackStatus = request.getParameter("status");
-        String demoName = getDemoName(LoggedInInfo.getLoggedInInfoFromSession(request), demog, providerNo);
+        String demoName = getDemoName(LoggedInInfo.getLoggedInInfoFromSession(request), demog);
         request.setAttribute("demoName", demoName);
         request.setAttribute("segmentID", documentId);
         request.setAttribute("providerNo", providerNo);
@@ -358,12 +356,8 @@ public class ManageDocument2Action extends ActionSupport {
 
     }
 
-    private String getDemoName(LoggedInInfo loggedInInfo, String demog, String providerNo) {
-        if (!demog.equals(providerNo)) {
-            return EDocUtil.getDemographicName(loggedInInfo, demog);
-        } else {
-            return EDocUtil.getProviderName(providerNo);
-        }
+    private String getDemoName(LoggedInInfo loggedInInfo, String demog) {
+        return EDocUtil.getDemographicName(loggedInInfo, demog);
     }
 
     private void saveDocNote(final HttpServletRequest request, String docDesc, String demog, String documentId) {
@@ -581,7 +575,7 @@ public class ManageDocument2Action extends ActionSupport {
 
         log.debug("in viewDocPage");
 
-        String doc_no = request.getParameter("documentId");
+        String doc_no = request.getParameter("doc_no");
         String pageNum = request.getParameter("curPage");
         if (pageNum == null) {
             pageNum = "1";
@@ -735,9 +729,9 @@ public class ManageDocument2Action extends ActionSupport {
             remoteFacilityId = Integer.parseInt(temp);
         }
 
-        String doc_no = request.getParameter("documentId");
+        String doc_no = request.getParameter("doc_no");
         log.debug("Document No :" + doc_no);
-        String demoNo = request.getParameter("demog");
+        String demoNo = request.getParameter("demoNo");
 
         String docxml = null;
         String contentType = null;
