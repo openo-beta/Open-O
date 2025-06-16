@@ -2510,12 +2510,11 @@ public class ProviderProperty2Action extends ActionSupport {
     }
 
     public String viewAppointmentCardPrefs() {
-
         String provider = (String) request.getSession().getAttribute("user");
 
-        UserProperty name = this.userPropertyDAO.getProp(provider, "APPT_CARD_NAME");
-        UserProperty phone = this.userPropertyDAO.getProp(provider, "APPT_CARD_PHONE");
-        UserProperty fax = this.userPropertyDAO.getProp(provider, "APPT_CARD_FAX");
+        UserProperty name = this.userPropertyDAO.getProp(provider, "appointmentCardName");
+        UserProperty phone = this.userPropertyDAO.getProp(provider, "appointmentCardPhone");
+        UserProperty fax = this.userPropertyDAO.getProp(provider, "appointmentCardFax");
 
         if (name == null) {
             name = new UserProperty();
@@ -2527,10 +2526,9 @@ public class ProviderProperty2Action extends ActionSupport {
             fax = new UserProperty();
         }
 
-        request.setAttribute("appointmentCardName", name);
-        request.setAttribute("appointmentCardPhone", phone);
-        request.setAttribute("appointmentCardFax", fax);
-
+        request.setAttribute("name", name);
+        request.setAttribute("phone", phone);
+        request.setAttribute("fax", fax);
 
         request.setAttribute("providertitle", "provider.appointmentCardPrefs.title"); //=Set myDrugref ID
         request.setAttribute("providermsgPrefs", "provider.appointmentCardPrefs.msgPrefs"); //=Preferences"); //
@@ -2548,7 +2546,6 @@ public class ProviderProperty2Action extends ActionSupport {
     }
 
     public String saveAppointmentCardPrefs() {
-
         UserProperty n = this.getAppointmentCardName();
         UserProperty p = this.getAppointmentCardPhone();
         UserProperty f = this.getAppointmentCardFax();
@@ -2559,34 +2556,33 @@ public class ProviderProperty2Action extends ActionSupport {
 
         String provider = (String) request.getSession().getAttribute("user");
 
-        UserProperty wProperty = this.userPropertyDAO.getProp(provider, "APPT_CARD_NAME");
+        UserProperty wProperty = this.userPropertyDAO.getProp(provider, "appointmentCardName");
         if (wProperty == null) {
             wProperty = new UserProperty();
             wProperty.setProviderNo(provider);
-            wProperty.setName("APPT_CARD_NAME");
+            wProperty.setName("appointmentCardName");
         }
         wProperty.setValue(name);
 
         userPropertyDAO.saveProp(wProperty);
 
-        UserProperty hProperty = this.userPropertyDAO.getProp(provider, "APPT_CARD_PHONE");
+        UserProperty hProperty = this.userPropertyDAO.getProp(provider, "appointmentCardPhone");
         if (hProperty == null) {
             hProperty = new UserProperty();
             hProperty.setProviderNo(provider);
-            hProperty.setName("APPT_CARD_PHONE");
+            hProperty.setName("appointmentCardPhone");
         }
         hProperty.setValue(phone);
         userPropertyDAO.saveProp(hProperty);
 
-        UserProperty mProperty = this.userPropertyDAO.getProp(provider, "APPT_CARD_FAX");
+        UserProperty mProperty = this.userPropertyDAO.getProp(provider, "appointmentCardFax");
         if (mProperty == null) {
             mProperty = new UserProperty();
             mProperty.setProviderNo(provider);
-            mProperty.setName("APPT_CARD_FAX");
+            mProperty.setName("appointmentCardFax");
         }
         mProperty.setValue(fax);
         userPropertyDAO.saveProp(mProperty);
-
 
         request.setAttribute("status", "success");
         request.setAttribute("providertitle", "provider.appointmentCardPrefs.title"); //=Set myDrugref ID
