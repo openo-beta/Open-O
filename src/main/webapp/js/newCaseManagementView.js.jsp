@@ -984,6 +984,8 @@ function openAnnotation() {
 function updateCPPNote() {
     // Sanitize the note edit text field to remove any disallowed control characters.
     sanitizeElementByPattern(document.forms["frmIssueNotes"].elements["noteEditTxt"], CONTROL_CHAR_PATTERN_2);
+
+    console.log("updateCPPNote called with form data:", $("frmIssueNotes").serialize());
     
     // Get the form action URL and parameters required for reloading.
     var url = $("frmIssueNotes").action;
