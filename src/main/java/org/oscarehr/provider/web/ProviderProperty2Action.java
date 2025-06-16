@@ -2457,7 +2457,7 @@ public class ProviderProperty2Action extends ActionSupport {
         }
 
         boolean checked;
-        if (propValue.equals("true"))
+        if (propValue.equals("yes"))
             checked = true;
         else
             checked = false;
@@ -2476,21 +2476,21 @@ public class ProviderProperty2Action extends ActionSupport {
     }
 
     public String saveDashboardPrefs() {
+        String checkboxValue = request.getParameter("dashboardShareProperty.checked");
+
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
         UserProperty Uprop = this.getDashboardShareProperty();
 
-        boolean checked = false;
-        if (Uprop != null)
-            checked = Uprop.isChecked();
         UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.DASHBOARD_SHARE);
         if (prop == null) {
             prop = new UserProperty();
             prop.setName(UserProperty.DASHBOARD_SHARE);
             prop.setProviderNo(providerNo);
         }
-        String propValue = "false";
-        if (checked) propValue = "true";
+        boolean checked = checkboxValue != null;
+        String propValue = "no";
+        if (checked) propValue = "yes";
 
         prop.setValue(propValue);
         this.userPropertyDAO.saveProp(prop);
