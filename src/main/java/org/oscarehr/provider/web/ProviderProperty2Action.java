@@ -2248,10 +2248,10 @@ public class ProviderProperty2Action extends ActionSupport {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.DISPLAY_DOCUMENT_AS);
+        UserProperty fmt = this.userPropertyDAO.getProp(providerNo, "displayDocumentAsProperty");
 
-        if (prop == null) {
-            prop = new UserProperty();
+        if (fmt == null) {
+            fmt = new UserProperty();
         }
 
         ArrayList<LabelValueBean> serviceList = new ArrayList<LabelValueBean>();
@@ -2260,7 +2260,7 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("dropOpts", serviceList);
 
-        request.setAttribute("displayDocumentAsProperty", prop);
+        request.setAttribute("fmt", fmt);
 
         request.setAttribute("providertitle", "provider.displayDocumentAs.title");
         request.setAttribute("providermsgPrefs", "provider.displayDocumentAs.msgPrefs");
@@ -2270,7 +2270,7 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("providermsgSuccess", "provider.displayDocumentAs.msgSuccess");
         request.setAttribute("method", "saveDisplayDocumentAs");
 
-        this.setDisplayDocumentAsProperty(prop);
+        this.setDisplayDocumentAsProperty(fmt);
         return "genDisplayDocumentAs";
     }
 
@@ -2281,12 +2281,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
         UserProperty prop = this.getDisplayDocumentAsProperty();
         String fmt = prop != null ? prop.getValue() : "";
-        UserProperty saveProperty = this.userPropertyDAO.getProp(providerNo, UserProperty.DISPLAY_DOCUMENT_AS);
+        UserProperty saveProperty = this.userPropertyDAO.getProp(providerNo, "displayDocumentAsProperty");
 
         if (saveProperty == null) {
             saveProperty = new UserProperty();
             saveProperty.setProviderNo(providerNo);
-            saveProperty.setName(UserProperty.DISPLAY_DOCUMENT_AS);
+            saveProperty.setName("displayDocumentAsProperty");
         }
 
         saveProperty.setValue(fmt);
