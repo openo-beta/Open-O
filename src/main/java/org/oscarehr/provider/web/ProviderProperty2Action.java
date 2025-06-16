@@ -1563,20 +1563,20 @@ public class ProviderProperty2Action extends ActionSupport {
 
 
     public String saveEDocBrowserInMasterFile() {
+        String checkboxValue = request.getParameter("eDocBrowserInMasterFileProperty.checked");
+
         UserProperty Uprop = this.geteDocBrowserInMasterFileProperty();
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-        boolean checked = false;
-        if (Uprop != null)
-            checked = Uprop.isChecked();
         UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.EDOC_BROWSER_IN_MASTER_FILE);
         if (prop == null) {
             prop = new UserProperty();
             prop.setName(UserProperty.EDOC_BROWSER_IN_MASTER_FILE);
             prop.setProviderNo(providerNo);
         }
+        boolean checked = checkboxValue != null;
         String propValue = "no";
         if (checked)
             propValue = "yes";
