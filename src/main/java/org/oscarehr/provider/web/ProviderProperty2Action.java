@@ -2079,9 +2079,7 @@ public class ProviderProperty2Action extends ActionSupport {
             size = new UserProperty();
         }
 
-
         request.setAttribute("size", size);
-
 
         request.setAttribute("providertitle", "provider.quickChartSize.title"); //=Set myDrugref ID
         request.setAttribute("providermsgPrefs", "provider.quickChartSize.msgPrefs"); //=Preferences"); //
@@ -2109,11 +2107,10 @@ public class ProviderProperty2Action extends ActionSupport {
         if (wProperty == null) {
             wProperty = new UserProperty();
             wProperty.setProviderNo(providerNo);
-            wProperty.setName("quickChartsize");
+            wProperty.setName("quickChartSize");
         }
         wProperty.setValue(size);
         userPropertyDAO.saveProp(wProperty);
-
 
         request.setAttribute("status", "success");
         request.setAttribute("providertitle", "provider.quickChartSize.title"); //=Set myDrugref ID
