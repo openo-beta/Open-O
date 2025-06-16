@@ -2340,19 +2340,19 @@ public class ProviderProperty2Action extends ActionSupport {
 
 
     public String saveCobalt() {
+        String checkboxValue = request.getParameter("cobaltProperty.checked");
+
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
         UserProperty Uprop = this.getCobaltProperty();
 
-        boolean checked = false;
-        if (Uprop != null)
-            checked = Uprop.isChecked();
         UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.COBALT);
         if (prop == null) {
             prop = new UserProperty();
             prop.setName(UserProperty.COBALT);
             prop.setProviderNo(providerNo);
         }
+        boolean checked = checkboxValue != null;
         String propValue = "no";
         if (checked)
             propValue = "yes";
