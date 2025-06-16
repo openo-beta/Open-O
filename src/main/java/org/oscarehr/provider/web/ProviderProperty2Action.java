@@ -40,9 +40,11 @@ import oscar.eform.EFormUtil;
 import oscar.log.LogAction;
 import oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * @author rjonasz
@@ -59,20 +61,7 @@ public class ProviderProperty2Action extends ActionSupport {
 
     public String execute() {
         String method = request.getParameter("method");
-        if ("OscarMsgRecvd".equals(method)) {
-            return OscarMsgRecvd();
-        } else if ("remove".equals(method)) {
-            return remove();
-        } else if ("save".equals(method)) {
-            return save();
-        } else if ("viewDefaultSex".equals(method)) {
-            return viewDefaultSex();
-        } else if ("saveDefaultSex".equals(method)) {
-            return saveDefaultSex();
-        } else if ("viewHCType".equals(method)) {
-            return viewHCType();
-        }
-        return view();
+        return methodMap.getOrDefault(method, this::view).get();
     }
 
     public String OscarMsgRecvd() {
@@ -1648,24 +1637,23 @@ public class ProviderProperty2Action extends ActionSupport {
     }
 
     public String saveCommentLab() {
+        String checkboxValue = request.getParameter("labAckCommentProperty.checked");
+
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
         UserProperty Uprop = this.getLabAckCommentProperty();
-
-        boolean checked = false;
-        if (Uprop != null)
-            checked = Uprop.isChecked();
         UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_ACK_COMMENT);
         if (prop == null) {
             prop = new UserProperty();
             prop.setName(UserProperty.LAB_ACK_COMMENT);
             prop.setProviderNo(providerNo);
         }
+        boolean checked = checkboxValue != null;
         String disableComment = "no";
         if (checked)
             disableComment = "yes";
-
+        
         prop.setValue(disableComment);
         this.userPropertyDAO.saveProp(prop);
 
@@ -1683,7 +1671,6 @@ public class ProviderProperty2Action extends ActionSupport {
             request.setAttribute("providermsgSuccess", "provider.setAckComment.msgSuccess_selected");
         else
             request.setAttribute("providermsgSuccess", "provider.setAckComment.msgSuccess_unselected");
-
 
         return "genAckCommentLab";
     }
@@ -2866,6 +2853,49 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("method", "saveLabMacroPrefs");
 
         return "genLabMacroPrefs";
+    }
+
+    private static final Map<String, Supplier<String>> methodMap = new HashMap<>();
+
+    @PostConstruct
+    public void init() {
+        methodMap.put("OscarMsgRecvd", this::OscarMsgRecvd);
+        methodMap.put("remove", this::remove);
+        methodMap.put("save", this::save);
+        methodMap.put("viewDefaultSex", this::viewDefaultSex);
+        methodMap.put("saveDefaultSex", this::saveDefaultSex);
+        methodMap.put("viewCommentLab", this::viewCommentLab);
+        methodMap.put("saveCommentLab", this::saveCommentLab);
+        methodMap.put("viewLabRecall", this::viewLabRecall);
+        methodMap.put("saveLabRecallPrefs", this::saveLabRecallPrefs);
+        methodMap.put("viewEncounterWindowSize", this::viewEncounterWindowSize);
+        methodMap.put("saveEncounterWindowSize", this::saveEncounterWindowSize);
+        methodMap.put("viewQuickChartSize", this::viewQuickChartSize);
+        methodMap.put("saveQuickChartSize", this::saveQuickChartSize);
+        methodMap.put("viewEDocBrowserInDocumentReport", this::viewEDocBrowserInDocumentReport);
+        methodMap.put("saveEDocBrowserInDocumentReport", this::saveEDocBrowserInDocumentReport);
+        methodMap.put("viewEDocBrowserInMasterFile", this::viewEDocBrowserInMasterFile);
+        methodMap.put("saveEDocBrowserInMasterFile", this::saveEDocBrowserInMasterFile);
+        methodMap.put("viewPatientNameLength", this::viewPatientNameLength);
+        methodMap.put("savePatientNameLength", this::savePatientNameLength);
+        methodMap.put("viewDisplayDocumentAs", this::viewDisplayDocumentAs);
+        methodMap.put("saveDisplayDocumentAs", this::saveDisplayDocumentAs);
+        methodMap.put("viewCobalt", this::viewCobalt);
+        methodMap.put("saveCobalt", this::saveCobalt);
+        methodMap.put("viewBornPrefs", this::viewBornPrefs);
+        methodMap.put("saveBornPrefs", this::saveBornPrefs);
+        methodMap.put("viewAppointmentCardPrefs", this::viewAppointmentCardPrefs);
+        methodMap.put("saveAppointmentCardPrefs", this::saveAppointmentCardPrefs);
+        methodMap.put("viewDashboardPrefs", this::viewDashboardPrefs);
+        methodMap.put("saveDashboardPrefs", this::saveDashboardPrefs);
+        methodMap.put("viewPreventionPrefs", this::viewPreventionPrefs);
+        methodMap.put("savePreventionPrefs", this::savePreventionPrefs);
+        methodMap.put("viewClinicalConnectPrefs", this::viewClinicalConnectPrefs);
+        methodMap.put("saveClinicalConnectPrefs", this::saveClinicalConnectPrefs);
+        methodMap.put("viewLabMacroPrefs", this::viewLabMacroPrefs);
+        methodMap.put("saveLabMacroPrefs", this::saveLabMacroPrefs);
+        methodMap.put("viewTicklerTaskAssignee", this::viewTicklerTaskAssignee);
+        methodMap.put("saveTicklerTaskAssignee", this::saveTicklerTaskAssignee);
     }
 
     private UserProperty dateProperty;
