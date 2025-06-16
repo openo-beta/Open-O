@@ -2013,6 +2013,7 @@ public class ProviderProperty2Action extends ActionSupport {
     }
 
     public String saveEncounterWindowSize() {
+        String checkboxValue = request.getParameter("encounterWindowMaximize.checked");
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
@@ -2023,7 +2024,6 @@ public class ProviderProperty2Action extends ActionSupport {
 
         String width = w != null ? w.getValue() : "";
         String height = h != null ? h.getValue() : "";
-        boolean maximize = m != null ? m.isChecked() : false;
 
         UserProperty wProperty = this.userPropertyDAO.getProp(providerNo, "encounterWindowWidth");
         if (wProperty == null) {
@@ -2049,7 +2049,11 @@ public class ProviderProperty2Action extends ActionSupport {
             mProperty.setProviderNo(providerNo);
             mProperty.setName("encounterWindowMaximize");
         }
-        mProperty.setValue(maximize ? "yes" : "no");
+        boolean checked = checkboxValue != null;
+        String maximizeSetting = "no";
+        if (checked)
+            maximizeSetting = "yes";
+        mProperty.setValue(maximizeSetting);
         userPropertyDAO.saveProp(mProperty);
 
         request.setAttribute("status", "success");
