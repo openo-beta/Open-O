@@ -2632,22 +2632,21 @@ public class ProviderProperty2Action extends ActionSupport {
     }
 
     public String saveBornPrefs() {
+        String checkboxValue = request.getParameter("bornPromptsProperty.checked");
+
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
         UserProperty Uprop = this.getBornPromptsProperty();
 
-        boolean checked = false;
-        if (Uprop != null)
-            checked = Uprop.isChecked();
         UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.DISABLE_BORN_PROMPTS);
         if (prop == null) {
             prop = new UserProperty();
             prop.setName(UserProperty.DISABLE_BORN_PROMPTS);
             prop.setProviderNo(providerNo);
         }
+        boolean checked = checkboxValue != null;
         String propValue = "N";
         if (checked) propValue = "Y";
-
         prop.setValue(propValue);
         this.userPropertyDAO.saveProp(prop);
 
