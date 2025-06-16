@@ -2754,8 +2754,14 @@ public class ProviderProperty2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-        UserProperty prop = loadProperty(providerNo, UserProperty.CLINICALCONNECT_DISABLE_CLOSE_WINDOW);
-        UserProperty prop2 = loadProperty(providerNo, UserProperty.CLINICALCONNECT_DISABLE_LOGOUT_WARNING);
+        UserProperty prop = loadProperty(providerNo, "clinicalConnectDisableCloseWindow");
+        UserProperty prop2 = loadProperty(providerNo, "clinicalConnectDisableLogoutWarning");
+
+        if (prop == null) prop = new UserProperty();
+        if (prop2 == null) prop2 = new UserProperty();
+
+        prop.setChecked("yes".equals(prop.getValue()));
+        prop2.setChecked("yes".equals(prop2.getValue()));
 
         request.setAttribute("clinicalConnectDisableCloseWindow", prop);
         request.setAttribute("clinicalConnectDisableLogoutWarning", prop2);
@@ -2774,14 +2780,43 @@ public class ProviderProperty2Action extends ActionSupport {
 
 
     public String saveClinicalConnectPrefs() {
+        String checkboxValue1 = request.getParameter("clinicalConnectDisableCloseWindow.checked");
+        String checkboxValue2 = request.getParameter("clinicalConnectDisableLogoutWarning.checked");
+
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-        UserProperty prop = saveProperty(providerNo, getClinicalConnectDisableCloseWindow(), UserProperty.CLINICALCONNECT_DISABLE_CLOSE_WINDOW);
-        UserProperty prop2 = saveProperty(providerNo, getClinicalConnectDisableLogoutWarning(), UserProperty.CLINICALCONNECT_DISABLE_LOGOUT_WARNING);
+        boolean checked1 = checkboxValue1 != null;
+        boolean checked2 = checkboxValue2 != null;
 
-        LogAction.addLog(LoggedInInfo.getLoggedInInfoFromSession(request), "ClinicalConnectPreferences", "clinicalConnectDisableCloseWindow", "", null, prop.getValue());
-        LogAction.addLog(LoggedInInfo.getLoggedInInfoFromSession(request), "ClinicalConnectPreferences", "clinicalConnectDisableLogoutWarning", "", null, prop.getValue());
+        String value1 = checked1 ? "yes" : "no";
+        String value2 = checked2 ? "yes" : "no";
+
+        // Disable Close Window setting
+        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.CLINICALCONNECT_DISABLE_CLOSE_WINDOW);
+        if (prop == null) {
+            prop = new UserProperty();
+            prop.setProviderNo(providerNo);
+            prop.setName(UserProperty.CLINICALCONNECT_DISABLE_CLOSE_WINDOW);
+        }
+        prop.setValue(value1);
+        this.userPropertyDAO.saveProp(prop);
+
+        // Disable Logout Warning setting
+        UserProperty prop2 = this.userPropertyDAO.getProp(providerNo, UserProperty.CLINICALCONNECT_DISABLE_LOGOUT_WARNING);
+        if (prop2 == null) {
+            prop2 = new UserProperty();
+            prop2.setProviderNo(providerNo);
+            prop2.setName(UserProperty.CLINICALCONNECT_DISABLE_LOGOUT_WARNING);
+        }
+        prop2.setValue(value2);
+        this.userPropertyDAO.saveProp(prop2);
+
+        LogAction.addLog(loggedInInfo, "ClinicalConnectPreferences", "clinicalConnectDisableCloseWindow", "", null, value1);
+        LogAction.addLog(loggedInInfo, "ClinicalConnectPreferences", "clinicalConnectDisableLogoutWarning", "", null, value2);
+
+        prop.setChecked(checked1);
+        prop2.setChecked(checked2);
 
         request.setAttribute("status", "success");
         request.setAttribute("clinicalConnectDisableCloseWindow", prop);
