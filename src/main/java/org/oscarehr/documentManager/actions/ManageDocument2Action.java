@@ -124,7 +124,23 @@ public class ManageDocument2Action extends ActionSupport {
                 display();
                 return "display";
             } catch (Exception e) {
-                log.error("Error while displaying document ", e);
+                log.error("Error while displaying document: ", e);
+            }
+        }
+        if ("viewAnnotationAcknowledgementTickler".equals(request.getParameter("method"))) {
+            try {
+                viewAnnotationAcknowledgementTickler();
+                return "viewAnnotationAcknowledgementTickler";
+            } catch (Exception e) {
+                log.error("Error while displaying annotation acknowledgement tickler: ", e);
+            }
+        }
+        if ("viewDocumentDescription".equals(request.getParameter("method"))) {
+            try {
+                viewDocumentDescription();
+                return "viewDocumentDescription";
+            } catch (Exception e) {
+                log.error("Error while displaying document description: ", e);
             }
         }
 

@@ -108,9 +108,13 @@
 
     String demographicID = curdoc.getModuleId();
     if ((demographicID != null) && !demographicID.isEmpty() && !demographicID.equals("-1")) {
-        DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
-        Demographic demographic = demographicDao.getDemographic(demographicID);
-        demoName = demographic.getLastName() + "," + demographic.getFirstName();
+        if (!demographicID.equals(providerNo)) {
+            DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
+            Demographic demographic = demographicDao.getDemographic(demographicID);
+            demoName = demographic.getLastName() + "," + demographic.getFirstName();
+        } else {
+            demoName = EDocUtil.getProviderName(providerNo);
+        }
         LogAction.addLog((String) session.getAttribute("user"), LogConst.READ, LogConst.CON_DOCUMENT, documentNo, request.getRemoteAddr(), demographicID);
     }
 
