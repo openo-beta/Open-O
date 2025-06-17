@@ -387,6 +387,7 @@ public class BillingONCHeader1 extends AbstractModel<Integer> implements Seriali
     }
 
     public Date getBillingDate() {
+        // Return null if billing date is null or empty to avoid unecessary parse exception call
         if (billingDate == null || billingDate.trim().isEmpty()) {
             return null;
         }
@@ -404,6 +405,7 @@ public class BillingONCHeader1 extends AbstractModel<Integer> implements Seriali
     }
 
     public Date getBillingTime() {
+        // Return null if billing date is null or empty to avoid unecessary parse exception call
         if (billingTime == null || billingTime.trim().isEmpty()) {
             return null;
         }
