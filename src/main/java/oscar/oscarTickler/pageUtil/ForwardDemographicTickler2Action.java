@@ -65,7 +65,11 @@ public class ForwardDemographicTickler2Action extends ActionSupport {
 
         String demoNo = request.getParameter("demographic_no");
         String providerNo = request.getParameter("providerNo");
+        
+        // Ensure that both demographic number of patient and provier number are both not null
         if (demoNo != null && providerNo != null) {
+            // If demographic number does not equal to provider number (only for patient tickler), get the patient name
+            // Else get the provider name (only for doctor tickler)
             if (!demoNo.equals(providerNo)) {
                 Hashtable h = DemographicNameAgeString.getInstance().getNameAgeSexHashtable(LoggedInInfo.getLoggedInInfoFromSession(request), demoNo);
                 request.setAttribute("demographic_no", demoNo);

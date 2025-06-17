@@ -502,7 +502,10 @@ this.getSource(), 'A', this.getObservationDate(), reviewerId, reviewDateTime, th
 
             String savePathStr = savePath.toString();
             file = new File(savePathStr);
+
+            // Set file output stream to the save path 
             fos = new FileOutputStream(savePathStr);
+            
             byte[] buf = new byte[128 * 1024];
             int i = 0;
             while ((i = is.read(buf)) != -1) {

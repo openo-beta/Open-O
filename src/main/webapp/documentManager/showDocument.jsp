@@ -107,7 +107,11 @@
     EDoc curdoc = EDocUtil.getDoc(documentNo);
 
     String demographicID = curdoc.getModuleId();
+
+    // Ensure that demographic id is not null, empty, or negative default value of "-1"
     if ((demographicID != null) && !demographicID.isEmpty() && !demographicID.equals("-1")) {
+        // If demographic number does not equal to provider number (only for patient tickler), get the patient name
+        // Else get the provider name (only for doctor tickler)
         if (!demographicID.equals(providerNo)) {
             DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
             Demographic demographic = demographicDao.getDemographic(demographicID);

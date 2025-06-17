@@ -111,6 +111,7 @@ public class ManageDocument2Action extends ActionSupport {
     private static final String DOCUMENT_DIR = OscarProperties.getInstance().getDocumentDirectory();
     private static final String DOCUMENT_CACHE_DIR = OscarProperties.getInstance().getDocumentCacheDirectory();
 
+    // Called on default by struts.xml, finds the correct method to use by finding what the URL "method" param is equal to
     public String execute() {
         if ("refileDocumentAjax".equals(request.getParameter("method"))) {
             return refileDocumentAjax();
@@ -373,6 +374,7 @@ public class ManageDocument2Action extends ActionSupport {
     }
 
     private String getDemoName(LoggedInInfo loggedInInfo, String demog) {
+        // Get demographic name based on login info and the demographic number of patient
         return EDocUtil.getDemographicName(loggedInInfo, demog);
     }
 

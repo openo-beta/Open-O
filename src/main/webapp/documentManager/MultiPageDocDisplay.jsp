@@ -336,7 +336,9 @@
 
                                         function updateQueryParam(url, key, value) {
                                             let baseUrl = url.split('?')[0];
+                                            // Ensure that the query does not have multiple repeated params
                                             let params = new URLSearchParams(url.split('?')[1] || '');
+                                            // Set params to new key and value
                                             params.set(key, value);
                                             return baseUrl + '?' + params.toString();
                                         }
@@ -348,8 +350,11 @@
                                             if (docid && pn) {
                                                 var e = $('docImg_' + docid);
                                                 if (e) {
+                                                    // Find URl from src of image
                                                     var url = e.getAttribute('src');
+                                                    // Update query parameters based on URL, current page, and page number
                                                     url = updateQueryParam(url, 'curPage', pn);
+                                                    // Set attribute to newly updated URL
                                                     e.setAttribute('src', url);
                                                 }
                                             }
