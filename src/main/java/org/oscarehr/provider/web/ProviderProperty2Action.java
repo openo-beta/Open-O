@@ -157,7 +157,6 @@ public class ProviderProperty2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-
         UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.DEFAULT_SEX);
 
         if (prop == null) {
@@ -315,7 +314,6 @@ public class ProviderProperty2Action extends ActionSupport {
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
         UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.RX_PAGE_SIZE);
-
 
         if (prop == null) {
             prop = new UserProperty();
@@ -615,12 +613,19 @@ public class ProviderProperty2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-
         UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.USE_MYMEDS);
-        if (prop == null) prop = new UserProperty();
+        String propValue = "";
+        if (prop == null) {
+            prop = new UserProperty();
+        } else {
+            propValue = prop.getValue();
+        }
 
-        String propValue = prop.getValue();
-        boolean checked = Boolean.parseBoolean(propValue);
+        boolean checked;
+        if (propValue.equalsIgnoreCase("yes"))
+            checked = true;
+        else
+            checked = false;
 
         prop.setChecked(checked);
         request.setAttribute("useMyMedsProperty", prop);
@@ -637,23 +642,25 @@ public class ProviderProperty2Action extends ActionSupport {
     }
 
     public String saveUseMyMeds() {
+        String checkboxValue = request.getParameter("useMyMedsProperty.checked");
 
         UserProperty UUseMyMeds = this.getUseMyMedsProperty();
-        //UserProperty UUseRx3=(UserProperty)request.getAttribute("rxUseRx3Property");
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-        boolean checked = false;
-        if (UUseMyMeds != null)
-            checked = UUseMyMeds.isChecked();
         UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.USE_MYMEDS);
         if (prop == null) {
             prop = new UserProperty();
             prop.setName(UserProperty.USE_MYMEDS);
             prop.setProviderNo(providerNo);
         }
-        prop.setValue(String.valueOf(checked));
+        boolean checked = checkboxValue != null;
+        String propValue = "no";
+        if (checked)
+            propValue = "yes";
+
+        prop.setValue(propValue);
         this.userPropertyDAO.saveProp(prop);
 
         request.setAttribute("status", "success");
@@ -676,7 +683,6 @@ public class ProviderProperty2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-
         UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.RX_USE_RX3);
 
         String propValue = "";
@@ -686,7 +692,6 @@ public class ProviderProperty2Action extends ActionSupport {
             propValue = prop.getValue();
         }
 
-        //String [] propertyArray= new String[7];
         boolean checked;
         if (propValue.equalsIgnoreCase("yes"))
             checked = true;
@@ -708,21 +713,20 @@ public class ProviderProperty2Action extends ActionSupport {
     }
 
     public String saveUseRx3() {
+        String checkboxValue = request.getParameter("rxUseRx3Property.checked");
+
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-
         UserProperty UUseRx3 = this.getRxUseRx3Property();
 
-        boolean checked = false;
-        if (UUseRx3 != null)
-            checked = UUseRx3.isChecked();
         UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.RX_USE_RX3);
         if (prop == null) {
             prop = new UserProperty();
             prop.setName(UserProperty.RX_USE_RX3);
             prop.setProviderNo(providerNo);
         }
+        boolean checked = checkboxValue != null;
         String useRx3 = "no";
         if (checked)
             useRx3 = "yes";
@@ -749,16 +753,14 @@ public class ProviderProperty2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
+        UserProperty quantity = this.userPropertyDAO.getProp(providerNo, "rxDefaultQuantityProperty");
 
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.RX_DEFAULT_QUANTITY);
-
-
-        if (prop == null) {
-            prop = new UserProperty();
+        if (quantity == null) {
+            quantity = new UserProperty();
         }
 
         //request.setAttribute("propert",propertyToSet);
-        request.setAttribute("rxDefaultQuantityProperty", prop);
+        request.setAttribute("quantity", quantity);
         request.setAttribute("providertitle", "provider.setRxDefaultQuantity.title"); //=Set Rx Default Quantity
         request.setAttribute("providermsgPrefs", "provider.setRxDefaultQuantity.msgPrefs"); //=Preferences"); //
         request.setAttribute("providermsgProvider", "provider.setRxDefaultQuantity.msgDefaultQuantity"); //=Rx Default Quantity
@@ -767,7 +769,7 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("providermsgSuccess", "provider.setRxDefaultQuantity.msgSuccess"); //=Rx Default Quantity saved
         request.setAttribute("method", "saveDefaultQuantity");
 
-        this.setRxDefaultQuantityProperty(prop);
+        this.setRxDefaultQuantityProperty(quantity);
 
         return "genRxDefaultQuantity";
     }
@@ -776,22 +778,20 @@ public class ProviderProperty2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-
         UserProperty UDefaultQuantity = this.getRxDefaultQuantityProperty();
-        String rxDefaultQuantity = "";
-        if (UDefaultQuantity != null)
-            rxDefaultQuantity = UDefaultQuantity.getValue();
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.RX_DEFAULT_QUANTITY);
+        String quantity = UDefaultQuantity != null ? UDefaultQuantity.getValue() : "";
+
+        UserProperty prop = this.userPropertyDAO.getProp(providerNo, "rxDefaultQuantityProperty");
         if (prop == null) {
             prop = new UserProperty();
-            prop.setName(UserProperty.RX_DEFAULT_QUANTITY);
+            prop.setName("rxDefaultQuantityProperty");
             prop.setProviderNo(providerNo);
         }
-        prop.setValue(rxDefaultQuantity);
+        prop.setValue(quantity);
         this.userPropertyDAO.saveProp(prop);
 
         request.setAttribute("status", "success");
-        request.setAttribute("rxDefaultQuantityProperty", prop);
+        request.setAttribute("quantity", quantity);
         request.setAttribute("providertitle", "provider.setRxDefaultQuantity.title"); //=Set Rx Default Quantity
         request.setAttribute("providermsgPrefs", "provider.setRxDefaultQuantity.msgPrefs"); //=Preferences"); //
         request.setAttribute("providermsgProvider", "provider.setRxDefaultQuantity.msgDefaultQuantity"); //=Rx Default Quantity
@@ -800,7 +800,6 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("providermsgSuccess", "provider.setRxDefaultQuantity.msgSuccess"); //=Rx Default Quantity saved
         request.setAttribute("method", "saveDefaultQuantity");
         return "genRxDefaultQuantity";
-
     }
 
     public String saveMyDrugrefId() {
@@ -1091,14 +1090,13 @@ public class ProviderProperty2Action extends ActionSupport {
 
     //WORKLOAD MANAGEMENT SCREEN PROPERTY
     public String viewWorkLoadManagement() {
-
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.WORKLOAD_MANAGEMENT);
+        UserProperty UdrugrefId = this.userPropertyDAO.getProp(providerNo,"dateProperty");
 
-        if (prop == null)
-            prop = new UserProperty();
+        if (UdrugrefId == null)
+            UdrugrefId = new UserProperty();
 
         ArrayList<LabelValueBean> serviceList = new ArrayList<LabelValueBean>();
         CtlBillingServiceDao dao = SpringUtils.getBean(CtlBillingServiceDao.class);
@@ -1108,7 +1106,7 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("dropOpts", serviceList);
 
-        request.setAttribute("dateProperty", prop);
+        request.setAttribute("UdrugrefId", UdrugrefId);
 
         request.setAttribute("providertitle", "provider.setWorkLoadManagement.title"); //=Set myDrugref ID
         request.setAttribute("providermsgPrefs", "provider.setWorkLoadManagement.msgPrefs"); //=Preferences"); //
@@ -1118,33 +1116,26 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("providermsgSuccess", "provider.setWorkLoadManagement.msgSuccess"); //=myDrugref Id saved
         request.setAttribute("method", "saveWorkLoadManagement");
 
-        this.setDateProperty(prop);
+        this.setDateProperty(UdrugrefId);
         return "gen";
     }
-
 
     public String saveWorkLoadManagement() {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-        UserProperty UdrugrefId = this.getDateProperty();
-        String drugrefId = "";
+        UserProperty prop = this.getDateProperty();
+        String UdrugrefId = prop != null ? prop.getValue() : "";
+        UserProperty saveProperty = this.userPropertyDAO.getProp(providerNo, "dateProperty");
 
-        if (UdrugrefId != null) {
-            drugrefId = UdrugrefId.getValue();
+        if (saveProperty == null) {
+            saveProperty = new UserProperty();
+            saveProperty.setName("dateProperty");
+            saveProperty.setProviderNo(providerNo);
         }
-
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.WORKLOAD_MANAGEMENT);
-
-        if (prop == null) {
-            prop = new UserProperty();
-            prop.setName(UserProperty.WORKLOAD_MANAGEMENT);
-            prop.setProviderNo(providerNo);
-        }
-        prop.setValue(drugrefId);
-
-        this.userPropertyDAO.saveProp(prop);
+        saveProperty.setValue(UdrugrefId);
+        this.userPropertyDAO.saveProp(saveProperty);
 
         ArrayList<LabelValueBean> serviceList = new ArrayList<LabelValueBean>();
         CtlBillingServiceDao dao = SpringUtils.getBean(CtlBillingServiceDao.class);
@@ -1560,7 +1551,6 @@ public class ProviderProperty2Action extends ActionSupport {
 
         return "genEDocBrowserInMasterFile";
     }
-
 
     public String saveEDocBrowserInMasterFile() {
         String checkboxValue = request.getParameter("eDocBrowserInMasterFileProperty.checked");
@@ -2303,7 +2293,6 @@ public class ProviderProperty2Action extends ActionSupport {
 
         return "genDisplayDocumentAs";
     }
-
 
     public String viewCobalt() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
