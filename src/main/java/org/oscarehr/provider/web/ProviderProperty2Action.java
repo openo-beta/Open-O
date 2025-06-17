@@ -568,25 +568,24 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("method", "saveShowPatientDOB");
 
         this.setRxShowPatientDOBProperty(prop);
-        return "genSho";
+        return "genShowPatientDOB";
     }
 
     public String saveShowPatientDOB() {
+        String checkboxValue = request.getParameter("rxShowPatientDOBProperty.checked");
 
         UserProperty UShowPatientDOB = this.getRxShowPatientDOBProperty();
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-        boolean checked = false;
-        if (UShowPatientDOB != null)
-            checked = UShowPatientDOB.isChecked();
         UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.RX_SHOW_PATIENT_DOB);
         if (prop == null) {
             prop = new UserProperty();
             prop.setName(UserProperty.RX_SHOW_PATIENT_DOB);
             prop.setProviderNo(providerNo);
         }
+        boolean checked = checkboxValue != null;
         String showPatientDOB = "no";
         if (checked)
             showPatientDOB = "yes";
@@ -605,7 +604,7 @@ public class ProviderProperty2Action extends ActionSupport {
         else
             request.setAttribute("providermsgSuccess", "provider.setShowPatientDOB.msgSuccess_unselected"); //=Rx3 is unselected
         request.setAttribute("method", "saveShowPatientDOB");
-        return "genSho";
+        return "genShowPatientDOB";
     }
 
     public String viewUseMyMeds() {
