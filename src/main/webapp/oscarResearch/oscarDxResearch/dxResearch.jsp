@@ -234,7 +234,7 @@
 								</span>
 
                                                 <select class="form-control" name="selectedCodingSystem"
-                                                             disabled="<%=disable%>">
+                                                            <%= disable ? "disabled" : "" %>>
                                                     <c:forEach var="codingSys" items="${codingSystem.codingSystems}">
                                                         <option value="${codingSys}">
                                                             <c:out value="${codingSys}"/>
@@ -246,7 +246,7 @@
                                     </tr>
                                     <tr>
                                         <td><input type="text" class="form-control" name="xml_research1"
-                                                       disabled="<%=disable%>"/>
+                                                    <%= disable ? "disabled" : "" %> />
                                             <input type="hidden" name="demographicNo"
                                                    value="<c:out value="${demographicNo}"/>">
                                             <input type="hidden" name="providerNo"
@@ -254,19 +254,19 @@
                                     </tr>
                                     <tr>
                                         <td><input type="text" class="form-control" name="xml_research2"
-                                                       disabled="<%=disable%>"/></td>
+                                                       <%= disable ? "disabled" : "" %>/></td>
                                     </tr>
                                     <tr>
                                         <td><input type="text" class="form-control" name="xml_research3"
-                                                       disabled="<%=disable%>"/></td>
+                                                       <%= disable ? "disabled" : "" %>/></td>
                                     </tr>
                                     <tr>
                                         <td><input type="text" class="form-control" name="xml_research4"
-                                                       disabled="<%=disable%>"/></td>
+                                                       <%= disable ? "disabled" : "" %>/></td>
                                     </tr>
                                     <tr>
                                         <td><input type="text" class="form-control" name="xml_research5"
-                                                       disabled="<%=disable%>"/></td>
+                                                       <%= disable ? "disabled" : "" %>/></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -285,11 +285,11 @@
                                             <input type="button" name="button" class="btn btn-primary"
                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.btnCodeSearch"/>"
                                                    onClick="javascript: ResearchScriptAttach();" )
-                                                   disabled="<%=disable%>">
+                                                   <%= disable ? "disabled" : "" %>">
 
                                             <input type="button" name="button" class="btn btn-primary"
                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ADD"/>"
-                                                   onClick="javascript: submitform('','');" disabled="<%=disable%>">
+                                                   onClick="javascript: submitform('','');" <%= disable ? "disabled" : "" %>">
                                             <% } %>
                                         </td>
                                     </tr>
