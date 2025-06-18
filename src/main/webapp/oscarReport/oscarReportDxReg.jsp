@@ -17,6 +17,7 @@
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 --%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="org.oscarehr.util.SessionConstants" %>
 <%@ page import="org.oscarehr.common.model.ProviderPreference" %>
 <%@ include file="/taglibs.jsp" %>
@@ -58,6 +59,8 @@
 <html>
     <head>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.DiseaseRegistry"/></title>
+
+        <meta charset="UTF-8">
 
         <link rel="stylesheet" type="text/css" media="all"
               href="${pageContext.servletContext.contextPath}/library/jquery/jquery-ui.theme-1.12.1.min.css"/>
@@ -124,9 +127,9 @@
         String mygroupno = providerPreference.getMyGroupNo();
         pageContext.setAttribute("mygroupno", mygroupno);
         String radiostatus = (String) session.getAttribute("radiovaluestatus");
-        if (radiostatus == null || radiostatus == "")
+        if (radiostatus == null || radiostatus.isEmpty())
             radiostatus = "patientRegistedAll";
-        String formAction = "/report/DxresearchReport?method=" + radiostatus;
+        String formAction = request.getContextPath() + "/report/DxresearchReport.do?method=" + radiostatus;
         request.setAttribute("listview", request.getSession().getAttribute("listview"));
         request.setAttribute("codeSearch", request.getSession().getAttribute("codeSearch"));
         //request.setAttribute("editingCode", request.getSession().getAttribute("editingCode"));
@@ -145,7 +148,7 @@
         </div>
 
         <div class="well well-small">
-            <form action="${pageContext.request.contextPath}/report/DxresearchReport?method=addSearchCode.do" method="post">
+            <form action="${pageContext.request.contextPath}/report/DxresearchReport.do?method=addSearchCode" method="post" accept-charset="UTF-8">
                 <div class="row-fluid">
                     <input type="hidden" name="action" value="NA"/>
                     <select name="quicklistname" class="sel">
@@ -178,7 +181,7 @@
             <strong>Search all patients with disease codes:</strong>
         </div>
 
-        <form action='<%=formAction%>' class="form-inline">
+        <form action="<%=formAction%>" method="post" class="form-inline" accept-charset="UTF-8">
 
             <div class="row-fluid">
                 <display:table name="codeSearch" id="codeSearch" class="table table-condensed table-striped">
