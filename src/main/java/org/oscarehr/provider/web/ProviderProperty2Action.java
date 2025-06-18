@@ -1407,20 +1407,20 @@ public class ProviderProperty2Action extends ActionSupport {
 
 
     public String saveUseCppSingleLine() {
+        String checkboxValue = request.getParameter("cppSingleLineProperty.checked");
+
         UserProperty UUseRx3 = this.getCppSingleLineProperty();
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-        boolean checked = false;
-        if (UUseRx3 != null)
-            checked = UUseRx3.isChecked();
         UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.CPP_SINGLE_LINE);
         if (prop == null) {
             prop = new UserProperty();
             prop.setName(UserProperty.CPP_SINGLE_LINE);
             prop.setProviderNo(providerNo);
         }
+        boolean checked = checkboxValue != null;
         String useRx3 = "no";
         if (checked)
             useRx3 = "yes";
@@ -2887,6 +2887,7 @@ public class ProviderProperty2Action extends ActionSupport {
         methodMap.put("viewUseRx3", this::viewUseRx3);
         methodMap.put("saveUseRx3", this::saveUseRx3);
         methodMap.put("viewCppSingleLine", this::viewCppSingleLine);
+        methodMap.put("saveUseCppSingleLine", this::saveUseCppSingleLine);
         methodMap.put("viewShowPatientDOB", this::viewShowPatientDOB);
         methodMap.put("saveShowPatientDOB", this::saveShowPatientDOB);
         methodMap.put("viewDefaultQuantity", this::viewDefaultQuantity);
