@@ -112,7 +112,7 @@ public class ManageDocument2Action extends ActionSupport {
 
     private static final Map<String, ActionHandler> ACTIONS = new HashMap<>();
 
-    // Static initilizer used to set the actions of the map for the execute function
+    // Static initializer used to set the actions of the map for the execute function
     static {
         ACTIONS.put("refileDocumentAjax", ctx -> ctx.refileDocumentAjax());
         ACTIONS.put("viewDocPage", ctx -> { ctx.viewDocPage(); return "viewDocPage"; });
