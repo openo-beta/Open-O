@@ -100,7 +100,6 @@ public class ManageDocument2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-
     private final Logger log = MiscUtils.getLogger();
 
     private final DocumentDao documentDao = SpringUtils.getBean(DocumentDao.class);
@@ -111,41 +110,37 @@ public class ManageDocument2Action extends ActionSupport {
     private static final String DOCUMENT_DIR = OscarProperties.getInstance().getDocumentDirectory();
     private static final String DOCUMENT_CACHE_DIR = OscarProperties.getInstance().getDocumentCacheDirectory();
 
+    private static final Map<String, ActionHandler> ACTIONS = new HashMap<>();
+
+    // Static initilizer used to set the actions of the map for the execute function
+    static {
+        ACTIONS.put("refileDocumentAjax", ctx -> ctx.refileDocumentAjax());
+        ACTIONS.put("viewDocPage", ctx -> { ctx.viewDocPage(); return "viewDocPage"; });
+        ACTIONS.put("display", ctx -> { ctx.display(); return "display"; });
+        ACTIONS.put("viewAnnotationAcknowledgementTickler", ctx -> { ctx.viewAnnotationAcknowledgementTickler(); return "viewAnnotationAcknowledgementTickler"; });
+        ACTIONS.put("viewDocumentDescription", ctx -> { ctx.viewDocumentDescription(); return "viewDocumentDescription"; });
+    }
+
     // Called on default by struts.xml, finds the correct method to use by finding what the URL "method" param is equal to
     public String execute() {
-        if ("refileDocumentAjax".equals(request.getParameter("method"))) {
-            return refileDocumentAjax();
-        }
-        if ("viewDocPage".equals(request.getParameter("method"))) {
-            viewDocPage();
-            return "viewDocPage";
-        }
-        if ("display".equals(request.getParameter("method"))) {
+        String method = request.getParameter("method");
+        ActionHandler handler = ACTIONS.get(method);
+
+        if (handler != null) {
             try {
-                display();
-                return "display";
+                return handler.handle(this);
             } catch (Exception e) {
-                log.error("Error while displaying document: ", e);
-            }
-        }
-        if ("viewAnnotationAcknowledgementTickler".equals(request.getParameter("method"))) {
-            try {
-                viewAnnotationAcknowledgementTickler();
-                return "viewAnnotationAcknowledgementTickler";
-            } catch (Exception e) {
-                log.error("Error while displaying annotation acknowledgement tickler: ", e);
-            }
-        }
-        if ("viewDocumentDescription".equals(request.getParameter("method"))) {
-            try {
-                viewDocumentDescription();
-                return "viewDocumentDescription";
-            } catch (Exception e) {
-                log.error("Error while displaying document description: ", e);
+                log.error("Error in " + method + "():", e);
             }
         }
 
         return documentUpdate();
+    }
+
+    // Functional interface for our handlers.
+    @FunctionalInterface
+    private interface ActionHandler {
+        String handle(ManageDocument2Action ctx) throws Exception;
     }
 
     public void documentUpdateAjax() {
