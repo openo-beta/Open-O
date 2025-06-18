@@ -2825,9 +2825,9 @@ public class ProviderProperty2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-        UserProperty prop = loadProperty(providerNo, UserProperty.LAB_MACRO_JSON);
+        UserProperty prefs = loadProperty(providerNo, "labMacroJSON");
 
-        request.setAttribute("labMacroJSON", prop);
+        request.setAttribute("prefs", prefs);
 
         request.setAttribute("providertitle", "provider.labMacroPrefs.title");
         request.setAttribute("providermsgPrefs", "provider.labMacroPrefs.msgPrefs"); //=Preferences
@@ -2835,7 +2835,7 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("providerbtnCancel", "provider.labMacroPrefs.btnCancel"); //=Cancel
         request.setAttribute("method", "saveLabMacroPrefs");
 
-        this.setLabMacroJSON(prop);
+        this.setLabMacroJSON(prefs);
 
         return "genLabMacroPrefs";
     }
@@ -2847,27 +2847,25 @@ public class ProviderProperty2Action extends ActionSupport {
 
         UserProperty s = this.getLabMacroJSON();
 
-        String length = s != null ? s.getValue() : "";
+        String prefs = s != null ? s.getValue() : "";
 
-        UserProperty wProperty = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_MACRO_JSON);
+        UserProperty wProperty = this.userPropertyDAO.getProp(providerNo, "labMacroJSON");
         if (wProperty == null) {
             wProperty = new UserProperty();
             wProperty.setProviderNo(providerNo);
-            wProperty.setName(UserProperty.LAB_MACRO_JSON);
+            wProperty.setName("labMacroJSON");
         }
-        wProperty.setValue(length);
+        wProperty.setValue(prefs);
         userPropertyDAO.saveProp(wProperty);
 
         LogAction.addLog(LoggedInInfo.getLoggedInInfoFromSession(request), "LabMacroPreferences", "labMacroJSON", "", null, wProperty.getValue());
 
         request.setAttribute("status", "success");
-        request.setAttribute("labMacroJSON", wProperty);
-
+        // request.setAttribute("labMacroJSON", wProperty);
         request.setAttribute("providertitle", "provider.labMacroPrefs.title");
         request.setAttribute("providermsgPrefs", "provider.labMacroPrefs.msgPrefs"); //=Preferences
         request.setAttribute("providerbtnClose", "provider.labMacroPrefs.btnClose"); //=Close
         request.setAttribute("providermsgSuccess", "provider.labMacroPrefs.msgSuccess");
-
         request.setAttribute("method", "saveLabMacroPrefs");
 
         return "genLabMacroPrefs";
