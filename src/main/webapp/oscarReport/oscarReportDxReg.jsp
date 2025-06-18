@@ -127,9 +127,12 @@
         String mygroupno = providerPreference.getMyGroupNo();
         pageContext.setAttribute("mygroupno", mygroupno);
         String radiostatus = (String) session.getAttribute("radiovaluestatus");
-        if (radiostatus == null || radiostatus.isEmpty())
+        if (radiostatus == null || radiostatus.isEmpty()) {
             radiostatus = "patientRegistedAll";
+            session.setAttribute("radiovaluestatus", radiostatus);
+        }
         String formAction = request.getContextPath() + "/report/DxresearchReport.do?method=" + radiostatus;
+        request.setAttribute("radiostatus", radiostatus);
         request.setAttribute("listview", request.getSession().getAttribute("listview"));
         request.setAttribute("codeSearch", request.getSession().getAttribute("codeSearch"));
         //request.setAttribute("editingCode", request.getSession().getAttribute("editingCode"));
@@ -192,28 +195,28 @@
             </div>
             <div class="row-fluid">
                 <label class="radio">
-                    <input type="radio" name="SearchBy" value="radio"
-                           id="SearchBy_0" <c:if test="${radiostatus == 'patientRegistedDistincted'}">checked</c:if>
+                    <input type="radio" name="SearchBy" value="patientRegistedDistincted"
+                           id="SearchBy_Distincted" <c:if test="${radiostatus == 'patientRegistedDistincted'}">checked</c:if>
                            onclick="javascript:this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedDistincted'">
                     ALL(distincted)</label>
                 <label class="radio">
-                    <input type="radio" name="SearchBy" value="radio"
-                           id="SearchBy_1" <c:if test="${radiostatus == 'patientRegistedAll'}">checked</c:if>
+                    <input type="radio" name="SearchBy" value="patientRegistedAll"
+                           id="SearchBy_All" <c:if test="${radiostatus == 'patientRegistedAll'}">checked</c:if>
                            onclick="javascript:this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedAll'">
                     ALL</label>
                 <label class="radio">
-                    <input type="radio" name="SearchBy" value="radio"
-                           id="SearchBy_0" <c:if test="${radiostatus == 'patientRegistedActive'}">checked</c:if>
+                    <input type="radio" name="SearchBy" value="patientRegistedActive"
+                           id="SearchBy_Active" <c:if test="${radiostatus == 'patientRegistedActive'}">checked</c:if>
                            onclick="javascript:this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedActive'">
                     Active</label>
                 <label class="radio">
-                    <input type="radio" name="SearchBy" value="radio"
-                           id="SearchBy_0" <c:if test="${radiostatus == 'patientRegistedDeleted'}">checked</c:if>
+                    <input type="radio" name="SearchBy" value="patientRegistedDeleted"
+                           id="SearchBy_Deleted" <c:if test="${radiostatus == 'patientRegistedDeleted'}">checked</c:if>
                            onclick="javascript:this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedDeleted'">
                     Deleted</label>
                 <label class="radio">
-                    <input type="radio" name="SearchBy" value="radio"
-                           id="SearchBy_1" <c:if test="${radiostatus == 'patientRegistedResolve'}">checked</c:if>
+                    <input type="radio" name="SearchBy" value="patientRegistedResolve"
+                           id="SearchBy_Resolved" <c:if test="${radiostatus == 'patientRegistedResolve'}">checked</c:if>
                            onclick="javascript:this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedResolve'">
                     Resolved</label>
 
