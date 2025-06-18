@@ -23,6 +23,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
@@ -166,7 +167,7 @@
                            class="span4 jsonDxSearch"/>
                 </div>
                 <div class="row-fluid">
-                    <nested:submit styleClass="btn btn-primary">Add</nested:submit>
+                    <input type="submit" class="btn btn-primary" value="Add" />
                     <input type="button" class="btn btn-danger" value="Clear"
                            onclick="javascript:this.form.action='${pageContext.servletContext.contextPath}/report/DxresearchReport.do?method=clearSearchCode';this.form.submit()"/>
                 </div>
@@ -177,7 +178,7 @@
             <strong>Search all patients with disease codes:</strong>
         </div>
 
-        <nested:form action='<%=formAction%>' styleClass="form-inline">
+        <form action='<%=formAction%>' class="form-inline">
 
             <div class="row-fluid">
                 <display:table name="codeSearch" id="codeSearch" class="table table-condensed table-striped">
@@ -255,7 +256,7 @@
                 </select>
 
 
-                <nested:submit styleClass="btn btn-primary">Search</nested:submit>
+                <input type="submit" class="btn btn-primary" value="Search" />
             </div>
 
             <h3>Results</h3>
@@ -281,7 +282,7 @@
                        onclick="javascript:this.form.action='${pageContext.servletContext.contextPath}/report/DxresearchReport.do?method=patientExcelReport';this.form.submit()">
             </c:if>
 
-        </nested:form>
+        </form>
     </div>
     </body>
 </html>
