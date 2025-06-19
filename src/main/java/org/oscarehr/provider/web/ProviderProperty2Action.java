@@ -1893,6 +1893,7 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("taskAssigneeSelection", ticklerTaskAssignee);
         this.setTaskAssigneeSelection(ticklerTaskAssignee);
+        this.setTaskAssigneeMRP(ticklerTaskAssignee);
 
         request.setAttribute("providerMsg", "");
 
