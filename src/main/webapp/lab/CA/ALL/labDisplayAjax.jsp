@@ -248,12 +248,12 @@
                         } else if (action == 'msgLab') {
                             demoid = json.demoId;
                             if (demoid != null && demoid.length > 0)
-                                window.popup(700, 960, '../oscarMessenger/SendDemoMessage.do?demographic_no=' + demoid, 'msg');
+                                window.popup(700, 960, '${pageContext.request.contextPath}/oscarMessenger/SendDemoMessage.do?demographic_no=' + demoid, 'msg');
                         } else if (action == 'msgLabRecall') {
                             demoid = json.demoId;
                             if (demoid != null && demoid.length > 0)
-                                window.popup(700, 980, '../oscarMessenger/SendDemoMessage.do?demographic_no=' + demoid + "&recall", 'msgRecall');
-                            window.popup(450, 600, '../tickler/ForwardDemographicTickler.do?docType=HL7&docId=' + labid + '&demographic_no=' + demoid + '<%=ticklerAssignee%>&priority=<%=recallTicklerPriority%>&recall', 'ticklerRecall');
+                                window.popup(700, 980, '${pageContext.request.contextPath}/oscarMessenger/SendDemoMessage.do?demographic_no=' + demoid + "&recall", 'msgRecall');
+                            window.popup(450, 600, '${pageContext.request.contextPath}/tickler/ForwardDemographicTickler.do?docType=HL7&docId=' + labid + '&demographic_no=' + demoid + '<%=ticklerAssignee%>&priority=<%=recallTicklerPriority%>&recall', 'ticklerRecall');
                         } else if (action == 'ticklerLab') {
                             demoid = json.demoId;
                             if (demoid != null && demoid.length > 0)
@@ -269,13 +269,13 @@
                                 updateStatus(formid);
                             } else {
                                 var pn = $("demoName" + labid).value;
-                                if (pn) popupStart(360, 680, '../oscarMDS/SearchPatient.do?labType=HL7&segmentID=' + labid + '&name=' + pn, 'searchPatientWindow');
+                                if (pn) popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=' + labid + '&name=' + pn, 'searchPatientWindow');
                             }
                         } else {
                             alert("Please relate lab to a demographic.");
                             //pop up relate demo window
                             var pn = $("demoName" + labid).value;
-                            if (pn) popupStart(360, 680, '../oscarMDS/SearchPatient.do?labType=HL7&segmentID=' + labid + '&name=' + pn, 'searchPatientWindow');
+                            if (pn) popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=' + labid + '&name=' + pn, 'searchPatientWindow');
                         }
                     }
                 }
@@ -404,7 +404,7 @@
 
                                 <% if (searchProviderNo != null) { // null if we were called from e-chart%>
                                 <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
-                                       onClick="popupStart(360, 680, '../oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= segmentID %>&name=<%=java.net.URLEncoder.encode(handler.getLastName()+", "+handler.getFirstName())%>', 'searchPatientWindow')">
+                                       onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= segmentID %>&name=<%=java.net.URLEncoder.encode(handler.getLastName()+", "+handler.getFirstName())%>', 'searchPatientWindow')">
                                 <% } %>
                                 <input type="button" value="Req# <%=reqTableID%>" title="Link to Requisition"
                                        onclick="linkreq('<%=segmentID%>','<%=reqID%>');"/>
@@ -520,7 +520,7 @@
                                                                         %>
                                                                         <a href="javascript:window.close()"><% } else { // we were called from lab module
                                                                         %></a>
-                                                                        <a href="javascript:popupStart(360, 680, '../oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= segmentID %>&name=<%=java.net.URLEncoder.encode(handler.getLastName()+", "+handler.getFirstName())%>', 'searchPatientWindow')">
+                                                                        <a href="javascript:popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= segmentID %>&name=<%=java.net.URLEncoder.encode(handler.getLastName()+", "+handler.getFirstName())%>', 'searchPatientWindow')">
                                                                             <% } %>
                                                                             <%=handler.getPatientName()%>
                                                                         </a>
@@ -1294,7 +1294,7 @@
                         </indivo:indivoRegistered>
                         <% if (searchProviderNo != null) { // we were called from e-chart %>
                         <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
-                               onClick="popupStart(360, 680, '../oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= segmentID %>&name=<%=java.net.URLEncoder.encode(handler.getLastName()+", "+handler.getFirstName())%>', 'searchPatientWindow')">
+                               onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= segmentID %>&name=<%=java.net.URLEncoder.encode(handler.getLastName()+", "+handler.getFirstName())%>', 'searchPatientWindow')">
 
                         <% } %>
                     </td>

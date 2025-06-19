@@ -1007,7 +1007,7 @@
                         <tr class="Header">
                             <td style="font-weight: bold">oscarMessenger <a
                                     href="javascript: function myFunction() {return false; }"
-                                    onClick="popup(700,960,'../oscarMessenger/SendDemoMessage.do?demographic_no=<%=demoNo%>','msg')">Send
+                                    onClick="popup(700,960,'${pageContext.request.contextPath}/oscarMessenger/SendDemoMessage.do?demographic_no=<%=demoNo%>','msg')">Send
                                 Msg</a></td>
                         </tr>
                         <tr>

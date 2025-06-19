@@ -249,7 +249,7 @@ if ( request.getParameter("searchProviderNo") == null || request.getParameter("s
                                                                     <a href="javascript:window.close()"> <% } else { // we were called from lab module %>
 
                                                                         <a
-                                                                                href="javascript:popupStart(360, 680, 'SearchPatient.do?labType=MDS&segmentID=<%= request.getParameter("segmentID")%>&name=<%=java.net.URLEncoder.encode(pd.getPatientName() )%>', 'searchPatientWindow')">
+                                                                                href="javascript:popupStart(360, 680, '${pageContext.request.contextPath}/SearchPatient.do?labType=MDS&segmentID=<%= request.getParameter("segmentID")%>&name=<%=java.net.URLEncoder.encode(pd.getPatientName() )%>', 'searchPatientWindow')">
                                                                             <% } %> <%=pd.getPatientName()%>
                                                                         </a></div>
                                                             </td>
