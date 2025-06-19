@@ -3426,6 +3426,14 @@
     "optional" : false,
     "integrity" : "sha512:nYKlrF2wKm0zGaoP6W0snVqzxznHnNj9EbQDlJk9h0ijYcmQ5x+hYLt41EAx9vFRtV3llxNGjjZD5LxKV0GdUg=="
   }, {
+    "groupId" : "oro",
+    "artifactId" : "oro",
+    "version" : "2.0.8",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:mpjkk8TXcTIrEzHsBasONjqD2Kwq+AGNlqRN8r9b/JfTPr5vb5PkarEL8VNvDCnp2VaTGO1JvBi06Wsai0dtNw=="
+  }, {
     "groupId" : "patientSiteVisit",
     "artifactId" : "patientSiteVisit",
     "version" : "0.0-SNAPSHOT",
