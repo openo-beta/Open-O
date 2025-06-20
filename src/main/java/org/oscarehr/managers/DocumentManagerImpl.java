@@ -160,8 +160,11 @@ public class DocumentManagerImpl implements  DocumentManager{
 		// Gets the number of pages for the document
 		int numberOfPages = 1;
 		if (fileName.toLowerCase().endsWith("pdf")) {
-			PDDocument pdDocument = PDDocument.load(file);
-			numberOfPages = pdDocument.getNumberOfPages();
+			try (PDDocument pdDocument = PDDocument.load(file)) {
+				numberOfPages = pdDocument.getNumberOfPages();
+			} catch (IOException e) {
+				numberOfPages = 0;
+			}
 		} else if (fileName.toLowerCase().endsWith("html")) {
 			numberOfPages = 0;
 		}
