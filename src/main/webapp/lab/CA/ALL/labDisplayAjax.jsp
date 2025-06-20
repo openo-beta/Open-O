@@ -230,7 +230,8 @@
         var popup = window.open(varpage, windowname, windowprops);
     }
     handleLab = function (formid, labid, action) {
-        var url = '../documentManager/inboxManage.do';
+        var contextPath = '${pageContext.request.contextPath}';
+        var url = contextPath + '/documentManager/inboxManage.do';
         var data = 'method=isLabLinkedToDemographic&labid=' + labid;
         new Ajax.Request(url, {
             method: 'post', parameters: data, onSuccess: function (transport) {
@@ -248,16 +249,16 @@
                         } else if (action == 'msgLab') {
                             demoid = json.demoId;
                             if (demoid != null && demoid.length > 0)
-                                window.popup(700, 960, '${pageContext.request.contextPath}/oscarMessenger/SendDemoMessage.do?demographic_no=' + demoid, 'msg');
+                                window.popup(700, 960, contextPath + '/oscarMessenger/SendDemoMessage.do?demographic_no=' + demoid, 'msg');
                         } else if (action == 'msgLabRecall') {
                             demoid = json.demoId;
                             if (demoid != null && demoid.length > 0)
-                                window.popup(700, 980, '${pageContext.request.contextPath}/oscarMessenger/SendDemoMessage.do?demographic_no=' + demoid + "&recall", 'msgRecall');
-                            window.popup(450, 600, '${pageContext.request.contextPath}/tickler/ForwardDemographicTickler.do?docType=HL7&docId=' + labid + '&demographic_no=' + demoid + '<%=ticklerAssignee%>&priority=<%=recallTicklerPriority%>&recall', 'ticklerRecall');
+                                window.popup(700, 980, contextPath + '/oscarMessenger/SendDemoMessage.do?demographic_no=' + demoid + "&recall", 'msgRecall');
+                            window.popup(450, 600, contextPath + '/tickler/ForwardDemographicTickler.do?docType=HL7&docId=' + labid + '&demographic_no=' + demoid + '<%=ticklerAssignee%>&priority=<%=recallTicklerPriority%>&recall', 'ticklerRecall');
                         } else if (action == 'ticklerLab') {
                             demoid = json.demoId;
                             if (demoid != null && demoid.length > 0)
-                                window.popup(450, 600, '${pageContext.request.contextPath}/tickler/ForwardDemographicTickler.do?docType=HL7&docId=' + labid + '&demographic_no=' + demoid, 'tickler')
+                                window.popup(450, 600, contextPath + '/tickler/ForwardDemographicTickler.do?docType=HL7&docId=' + labid + '&demographic_no=' + demoid, 'tickler')
                         } else if (action == 'addComment') {
                             addComment(formid, labid);
                         }
@@ -269,13 +270,13 @@
                                 updateStatus(formid);
                             } else {
                                 var pn = $("demoName" + labid).value;
-                                if (pn) popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=' + labid + '&name=' + pn, 'searchPatientWindow');
+                                if (pn) popupStart(360, 680, contextPath + '/oscarMDS/SearchPatient.do?labType=HL7&segmentID=' + labid + '&name=' + pn, 'searchPatientWindow');
                             }
                         } else {
                             alert("Please relate lab to a demographic.");
                             //pop up relate demo window
                             var pn = $("demoName" + labid).value;
-                            if (pn) popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=' + labid + '&name=' + pn, 'searchPatientWindow');
+                            if (pn) popupStart(360, 680, contextPath + '/oscarMDS/SearchPatient.do?labType=HL7&segmentID=' + labid + '&name=' + pn, 'searchPatientWindow');
                         }
                     }
                 }
