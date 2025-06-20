@@ -78,12 +78,17 @@ public class ClientImage2Action extends ActionSupport {
             File tmpdirAttribute = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
             String tmpdir = tmpdirAttribute.toString();
 
+            // Set safe directory and client image canonical files
             File safeDirectory = new File(tmpdir).getCanonicalFile();
             File resolvedFile = clientImage.getCanonicalFile();
 
+            // Get safe path and resolved canonical paths
+            String safePath = safeDirectory.getCanonicalPath();
+            String resolvedPath = resolvedFile.getCanonicalPath();
+
             // Ensure the file is within the safe directory
-            if (!resolvedFile.getPath().startsWith(safeDirectory.getPath())) {
-                throw new IllegalArgumentException("Invalid file path: " + resolvedFile);
+            if (!resolvedPath.startsWith(safePath + File.separator)) {
+                throw new IllegalArgumentException("Invalid file path: " + resolvedPath);
             }
 
             byte[] imageData = Files.readAllBytes(resolvedFile.toPath());
