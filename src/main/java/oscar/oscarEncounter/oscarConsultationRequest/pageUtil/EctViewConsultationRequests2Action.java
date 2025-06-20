@@ -62,22 +62,14 @@ public class EctViewConsultationRequests2Action extends ActionSupport {
     private Integer offset;
     private Integer limit = ConsultationRequestDaoImpl.DEFAULT_CONSULT_REQUEST_RESULTS_LIMIT;
 
-    public String execute()
-            throws ServletException, IOException {
-
+    public String execute() throws ServletException, IOException {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_con", "r", null)) {
             throw new SecurityException("missing required security object (_con)");
         }
 
         String defaultPattern = "yyyy-MM-dd";
-        //String sendTo = null;
         String includeCompleted = null;
-        //String startDate = frm.getStartDate();
-        //String endDate = frm.getEndDate();
         boolean includedComp = false;
-
-        //sendTo = frm.getSendTo();
-        //includeCompleted = frm.getIncludeCompleted();
 
         if (includeCompleted != null && includeCompleted.equals("include")) {
             includedComp = true;
