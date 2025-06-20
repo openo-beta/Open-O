@@ -52,6 +52,7 @@
 
 <%@taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <% if (session.getAttribute("user") == null)
     response.sendRedirect("../../../logout.htm");
