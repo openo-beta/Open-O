@@ -376,7 +376,14 @@ public class OscarProperties extends Properties {
     }
 
     public String getDocumentDirectory() {
-        return oscarProperties.getProperty("DOCUMENT_DIR");
+       String documents = oscarProperties.getProperty("DOCUMENT_DIR");
+
+        // String value will equal null if property is not found
+        if (documents == null) {
+            // Setting derived path for documents incase starting path is not found
+            documents = Paths.get(oscarProperties.getProperty("BASE_DOCUMENT_DIR"), "document").toString();
+        }
+       return documents;
     }
 
     public String getDocumentCacheDirectory() {
