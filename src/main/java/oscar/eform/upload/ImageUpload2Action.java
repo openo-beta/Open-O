@@ -58,11 +58,16 @@ public class ImageUpload2Action extends ActionSupport {
         }
 
         try {
+            if (!imageFileName.matches("^[a-zA-Z0-9._-]+$")) {
+                throw new IllegalArgumentException("Invalid image file name");
+            }
+            
             OutputStream fos = ImageUpload2Action.getEFormImageOutputStream(imageFileName);
             InputStream fis = Files.newInputStream(image.toPath());
             byte[] buffer = new byte[4096]; 
-            while (fis.read(buffer) != -1) {
-                fos.write(buffer);
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                fos.write(buffer, 0, bytesRead);
             }
             fos.flush();
         } catch (Exception e) {
