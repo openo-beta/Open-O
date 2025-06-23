@@ -142,7 +142,7 @@
         Boolean includeBool = (Boolean) request.getAttribute("includeCompleted");
         boolean includeCompleted = false;
         if (includeBool != null) {
-            includeCompleted = includeBool.booleanValue();
+            includeCompleted = "on".equals(request.getParameter("includeCompleted"));
         }
 
         // Getting startDate attribute of the consultation request and ensuring that it is of type "Date" before casting
@@ -363,13 +363,13 @@
                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.btnConsReq"/>"/>
                                 <div style="margin: 0; padding: 0; ">
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgStart"/>:
-                                    <input type="text" name="startDate" size="8" id="startDate"/><a id="SCal"><img
+                                    <input type="text" name="startDate" size="8" id="startDate" value="<%= startDate != null ? startDate : "" %>" /><a id="SCal"><img
                                         title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgEnd"/>:
-                                    <input type="text" name="endDate" size="8" id="endDate"/><a id="ECal"><img
+                                    <input type="text" name="endDate" size="8" id="endDate" value="<%= endDate != null ? endDate : "" %>" /><a id="ECal"><img
                                         title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgIncludeCompleted"/>:
-                                    <input type="checkbox" name="includeCompleted" value="include"/>
+                                    <input type="checkbox" name="includeCompleted" <%= includeCompleted ? "checked" : "" %> />
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgSearchon"/>
                                     <input type="radio" name="searchDate" value="0" titleKey="Search on Referal Date"
                                         <%= "0".equals(searchDate) ? "checked" : "" %> />
@@ -379,7 +379,7 @@
                                     <input type="hidden" name="currentTeam" id="currentTeam"/>
                                     <input type="hidden" name="orderby" id="orderby"/>
                                     <input type="hidden" name="desc" id="desc"/>
-                                    <input type="hidden" name="offset" id="offset"/>
+                                    <input type="hidden" name="offset" id="offset" value="<%= offset %>"/>
                                     <input type="hidden" name="limit" id="limit" value="<%= limit %>"/>
                                 </div>
                             </form>
