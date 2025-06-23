@@ -147,8 +147,21 @@
             includeCompleted = includeBool.booleanValue();
         }
 
-        Date startDate = (Date) request.getAttribute("startDate");
-        Date endDate = (Date) request.getAttribute("endDate");
+        // Getting startDate attribute of the consultation request and ensuring that it is of type "Date" before casting
+        Object startObj = request.getAttribute("startDate");
+        Date startDate = null;
+        if (startObj instanceof Date) {
+            startDate = (Date) startObj;
+        }
+    
+        // Getting endDate attribute of the consultation request and ensuring that it is of type "Date" before casting
+        Object endObj = request.getAttribute("endDate");
+        Date endDate = null;
+        if (endObj instanceof Date) {
+            endDate = (Date) endObj;
+        }
+
+        // Getting orderby, description, and searchDate attributes of the consultation request
         String orderby = (String) request.getAttribute("orderby");
         String desc = (String) request.getAttribute("desc");
         String searchDate = (String) request.getAttribute("searchDate");
