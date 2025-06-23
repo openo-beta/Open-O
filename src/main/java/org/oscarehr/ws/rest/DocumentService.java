@@ -146,8 +146,13 @@ public class DocumentService extends AbstractServiceImpl{
             return true;
         }
     
-        if (StringUtils.isEmpty(doc.getProviderNo()) || !doc.getProviderNo().matches("\\d+")) {
+        String providerNo = doc.getProviderNo();
+        if (StringUtils.isEmpty(providerNo)) {
             doc.setProviderNo("0");
+        } else {
+            // Keep only alphanumeric characters (A–Z, a–z, 0–9)
+            providerNo = providerNo.replaceAll("[^A-Za-z0-9]", "");
+            doc.setProviderNo(providerNo.isEmpty() ? "0" : providerNo);
         }
     
         return false;
