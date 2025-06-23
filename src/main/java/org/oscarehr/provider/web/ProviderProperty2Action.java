@@ -1670,7 +1670,7 @@ public class ProviderProperty2Action extends ActionSupport {
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
         UserProperty delegate = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_DELEGATE);
-        UserProperty subject = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_MSG_SUBJECT);
+        UserProperty subject = this.userPropertyDAO.getProp(providerNo, "labRecallMsgSubject");
         UserProperty ticklerAssignee = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_TICKLER_ASSIGNEE);
         UserProperty priority = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_TICKLER_PRIORITY);
 
@@ -1689,16 +1689,11 @@ public class ProviderProperty2Action extends ActionSupport {
             defaultToDelegate = ticklerAssignee.getValue();
         }
 
-        boolean checked;
-        if (defaultToDelegate.equalsIgnoreCase("yes")) {
-            checked = true;
-        } else {
-            checked = false;
-        }
-
         if (priority == null) {
             priority = new UserProperty();
         }
+
+        ticklerAssignee.setChecked("yes".equalsIgnoreCase(ticklerAssignee.getValue()));
 
         ArrayList<LabelValueBean> providerList = new ArrayList<LabelValueBean>();
         providerList.add(new LabelValueBean("Select", "")); //key , value
@@ -1707,14 +1702,11 @@ public class ProviderProperty2Action extends ActionSupport {
         List<Provider> ps = dao.getProviders();
         Collections.sort(ps, new BeanComparator("lastName"));
         try {
-
             for (Provider p : ps) {
                 if (!p.getProviderNo().equals("-1")) {
                     providerList.add(new LabelValueBean(p.getLastName() + ", " + p.getFirstName(), p.getProviderNo()));
                 }
             }
-
-
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         }
@@ -1729,11 +1721,8 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("prioritySelect", priorityList);
 
         request.setAttribute("labRecallDelegate", delegate);
-        request.setAttribute("labRecallMsgSubject", subject);
-
-        ticklerAssignee.setChecked(checked);
+        request.setAttribute("subject", subject);
         request.setAttribute("labRecallTicklerAssignee", ticklerAssignee);
-
         request.setAttribute("labRecallTicklerPriority", priority);
 
         request.setAttribute("providertitle", "provider.setLabRecall.title");
@@ -1756,30 +1745,26 @@ public class ProviderProperty2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-        UserProperty d = this.getLabRecallDelegate();
         UserProperty s = this.getLabRecallMsgSubject();
-        UserProperty a = this.getLabRecallTicklerAssignee();
-        UserProperty p = this.getLabRecallTicklerPriority();
-
-        String delegate = d != null ? d.getValue() : "";
         String subject = s != null ? s.getValue() : "";
 
-        boolean checked = a != null ? a.isChecked() : false;
+        String delegate = request.getParameter("labRecallDelegate.value"); 
+        String priority = request.getParameter("labRecallTicklerPriority.value");
 
-        String priority = p != null ? p.getValue() : "";
+        boolean assignee = request.getParameter("labRecallTicklerAssignee.checked") != null;
 
         boolean delete = false;
         if (delegate.equals("")) {
             delete = true;
         }
 
+        // Save delegate (dropdown)
         UserProperty dProperty = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_DELEGATE);
         if (dProperty == null) {
             dProperty = new UserProperty();
             dProperty.setProviderNo(providerNo);
             dProperty.setName(UserProperty.LAB_RECALL_DELEGATE);
         }
-
         if (delete) {
             userPropertyDAO.delete(dProperty);
         } else {
@@ -1787,11 +1772,12 @@ public class ProviderProperty2Action extends ActionSupport {
             userPropertyDAO.saveProp(dProperty);
         }
 
-        UserProperty sProperty = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_MSG_SUBJECT);
+        // Save subject text field
+        UserProperty sProperty = this.userPropertyDAO.getProp(providerNo, "labRecallMsgSubject");
         if (sProperty == null) {
             sProperty = new UserProperty();
             sProperty.setProviderNo(providerNo);
-            sProperty.setName(UserProperty.LAB_RECALL_MSG_SUBJECT);
+            sProperty.setName("labRecallMsgSubject");
         }
         if (delete) {
             userPropertyDAO.delete(sProperty);
@@ -1800,6 +1786,7 @@ public class ProviderProperty2Action extends ActionSupport {
             userPropertyDAO.saveProp(sProperty);
         }
 
+        // Save tickler assignee checkbox
         String defaultToDelegate = "no";
         UserProperty aProperty = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_TICKLER_ASSIGNEE);
         if (aProperty == null) {
@@ -1810,14 +1797,11 @@ public class ProviderProperty2Action extends ActionSupport {
         if (delete) {
             userPropertyDAO.delete(aProperty);
         } else {
-            if (checked) {
-                defaultToDelegate = "yes";
-            }
-
-            aProperty.setValue(defaultToDelegate);
+            aProperty.setValue(assignee ? "yes" : "no");
             userPropertyDAO.saveProp(aProperty);
         }
 
+        // Save tickler priority (dropdown)
         UserProperty pProperty = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_TICKLER_PRIORITY);
         if (pProperty == null) {
             pProperty = new UserProperty();
@@ -1830,6 +1814,8 @@ public class ProviderProperty2Action extends ActionSupport {
             pProperty.setValue(priority);
             userPropertyDAO.saveProp(pProperty);
         }
+        
+        aProperty.setChecked(assignee);
 
         request.setAttribute("status", "success");
         request.setAttribute("providertitle", "provider.setLabRecall.title");
@@ -1843,7 +1829,6 @@ public class ProviderProperty2Action extends ActionSupport {
             msgSuccess = "provider.setLabRecall.msgDeleted";
         }
         request.setAttribute("providermsgSuccess", msgSuccess);
-
         request.setAttribute("method", "saveLabRecallPrefs");
 
         return "genLabRecallPrefs";
