@@ -124,13 +124,15 @@ public class Utilities {
             OscarProperties props = OscarProperties.getInstance();
             String place = props.getProperty("DOCUMENT_DIR");
 
-            if (!place.endsWith("/")) { place += "/"; }
+            String cleanedFilename = filename.replaceAll(".enc", "");
+            String finalFilename = "LabUpload." + cleanedFilename + "." + System.currentTimeMillis();
 
-            retVal = place + "LabUpload." + filename.replaceAll(".enc", "") + "." + System.currentTimeMillis();
+            Path filePath = Paths.get(place, finalFilename);
+            retVal = filePath.toString();
 
             logger.debug("saveFile place=" + place + ", retVal=" + retVal);
 
-            try (OutputStream os = new FileOutputStream(retVal);
+            try (OutputStream os = Files.newOutputStream(filePath);
                 BufferedInputStream bis = new BufferedInputStream(stream)) {
 
                 byte[] buffer = new byte[8192]; // 8KB buffer
