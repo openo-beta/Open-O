@@ -86,8 +86,6 @@
     } catch (NumberFormatException e) {
         limit = 100;
     }
-
-
 %>
 <security:oscarSec objectName="_site_access_privacy" roleName="<%=roleName$%>" rights="r"
                    reverse="false"><%isSiteAccessPrivacy = true; %></security:oscarSec>
@@ -165,6 +163,11 @@
         String orderby = (String) request.getAttribute("orderby");
         String desc = (String) request.getAttribute("desc");
         String searchDate = (String) request.getAttribute("searchDate");
+
+        // Setting defaults to match consultation request in struts 1
+        if (searchDate == null) {
+            searchDate = "0";
+        }
 
         oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil consultUtil;
         consultUtil = new oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil();
@@ -368,14 +371,16 @@
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgIncludeCompleted"/>:
                                     <input type="checkbox" name="includeCompleted" value="include"/>
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgSearchon"/>
-                                    <input type="radio" name="searchDate" value="0" titleKey="Search on Referal Date"/>
+                                    <input type="radio" name="searchDate" value="0" titleKey="Search on Referal Date"
+                                        <%= "0".equals(searchDate) ? "checked" : "" %> />
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgApptDate"/>
-                                    <input type="radio" name="searchDate" value="1" titleKey="Search on Appt. Date"/>
+                                    <input type="radio" name="searchDate" value="1" titleKey="Search on Appt. Date"
+                                        <%= "1".equals(searchDate) ? "checked" : "" %> />
                                     <input type="hidden" name="currentTeam" id="currentTeam"/>
                                     <input type="hidden" name="orderby" id="orderby"/>
                                     <input type="hidden" name="desc" id="desc"/>
                                     <input type="hidden" name="offset" id="offset"/>
-                                    <input type="hidden" name="limit" id="limit"/>
+                                    <input type="hidden" name="limit" id="limit" value="<%= limit %>"/>
                                 </div>
                             </form>
                         </td>
