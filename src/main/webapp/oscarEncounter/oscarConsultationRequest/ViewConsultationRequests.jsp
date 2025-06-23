@@ -54,10 +54,10 @@
 <%@ page import="org.oscarehr.common.model.ProviderData" %>
 <%@ page import="org.oscarehr.common.dao.ProviderDataDao" %>
 
+<%@ page import="java.text.SimpleDateFormat" %>
+
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
-
 
 <%
     String curProvider_no = (String) session.getAttribute("user");
@@ -145,18 +145,24 @@
             includeCompleted = "on".equals(request.getParameter("includeCompleted"));
         }
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
         // Getting startDate attribute of the consultation request and ensuring that it is of type "Date" before casting
-        Object startObj = request.getAttribute("startDate");
+        Object startDateObj = request.getAttribute("startDate");
         Date startDate = null;
-        if (startObj instanceof Date) {
-            startDate = (Date) startObj;
+        String formattedStartDate = "";
+        if (startDateObj instanceof Date) {
+            startDate = (Date) startDateObj;
+            formattedStartDate = sdf.format(startDateObj);
         }
     
         // Getting endDate attribute of the consultation request and ensuring that it is of type "Date" before casting
-        Object endObj = request.getAttribute("endDate");
+        Object endDateObj = request.getAttribute("endDate");
         Date endDate = null;
-        if (endObj instanceof Date) {
-            endDate = (Date) endObj;
+        String formattedEndDate = "";
+        if (endDateObj instanceof Date) {
+            endDate = (Date) endDateObj;
+            formattedEndDate = sdf.format(endDateObj);
         }
 
         // Getting orderby, description, and searchDate attributes of the consultation request
@@ -363,10 +369,10 @@
                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.btnConsReq"/>"/>
                                 <div style="margin: 0; padding: 0; ">
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgStart"/>:
-                                    <input type="text" name="startDate" size="8" id="startDate" value="<%= startDate != null ? startDate : "" %>" /><a id="SCal"><img
+                                    <input type="text" name="startDate" size="8" id="startDate" value="<%= formattedStartDate %>" /><a id="SCal"><img
                                         title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgEnd"/>:
-                                    <input type="text" name="endDate" size="8" id="endDate" value="<%= endDate != null ? endDate : "" %>" /><a id="ECal"><img
+                                    <input type="text" name="endDate" size="8" id="endDate" value="<%= formattedEndDate %>" /><a id="ECal"><img
                                         title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgIncludeCompleted"/>:
                                     <input type="checkbox" name="includeCompleted" <%= includeCompleted ? "checked" : "" %> />
