@@ -73,54 +73,82 @@ public class ProviderProperty2Action extends ActionSupport {
     }
 
     public String remove() {
-        
-        UserProperty prop = this.getDateProperty();
-        UserProperty prop2 = this.getSingleViewProperty();
+        String provider = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo();
 
-        this.userPropertyDAO.delete(prop);
-        this.userPropertyDAO.delete(prop2);
+        UserProperty prop = this.userPropertyDAO.getProp(provider, UserProperty.STALE_NOTEDATE);
+        if (prop != null) {
+            this.userPropertyDAO.delete(prop);
+        }
+
+        UserProperty prop2 = this.userPropertyDAO.getProp(provider, UserProperty.STALE_FORMAT);
+        if (prop2 != null) {
+            this.userPropertyDAO.delete(prop2);
+        }
 
         request.setAttribute("status", "success");
-
         return SUCCESS;
     }
 
     public String view() {
-        
         String provider = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo();
-        UserProperty prop = this.userPropertyDAO.getProp(provider, UserProperty.STALE_NOTEDATE);
+        request.setAttribute("providerNo", provider);
 
+        UserProperty prop = this.userPropertyDAO.getProp(provider, UserProperty.STALE_NOTEDATE);
         if (prop == null) {
             prop = new UserProperty();
             prop.setProviderNo(provider);
             prop.setName(UserProperty.STALE_NOTEDATE);
         }
-        
         this.setDateProperty(prop);
 
         UserProperty prop2 = this.userPropertyDAO.getProp(provider, UserProperty.STALE_FORMAT);
-
         if (prop2 == null) {
             prop2 = new UserProperty();
             prop2.setProviderNo(provider);
             prop2.setName(UserProperty.STALE_FORMAT);
         }
-
         this.setSingleViewProperty(prop2);
+
+        // dropdown menus
+        List<LabelValueBean> staleOptions = new ArrayList<>();
+        staleOptions.add(new LabelValueBean("All", "A"));
+        for (int i = 0; i <= 36; i++) {
+            staleOptions.add(new LabelValueBean(String.valueOf(i), "-" + i));
+        }
+        request.setAttribute("staleDateOptions", staleOptions);
+
+        List<LabelValueBean> viewOptions = new ArrayList<>();
+        viewOptions.add(new LabelValueBean("No", "no"));
+        viewOptions.add(new LabelValueBean("Yes", "yes"));
+        request.setAttribute("viewOptions", viewOptions);
 
         return SUCCESS;
     }
 
 
     public String save() {
+        String provider = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo();
 
-        UserProperty prop = this.getDateProperty();
+        String staleDateValue = request.getParameter("dateProperty.value");
+        String singleViewValue = request.getParameter("singleViewProperty.value");
 
-        this.userPropertyDAO.saveProp(prop);
+        UserProperty prop = this.userPropertyDAO.getProp(provider, UserProperty.STALE_NOTEDATE);
+        if (prop == null) {
+            prop = new UserProperty();
+            prop.setProviderNo(provider);
+            prop.setName(UserProperty.STALE_NOTEDATE);
+        }
+        prop.setValue(staleDateValue);
+        userPropertyDAO.saveProp(prop);
 
-        UserProperty prop2 = this.getSingleViewProperty();
-
-        this.userPropertyDAO.saveProp(prop2);
+        UserProperty prop2 = this.userPropertyDAO.getProp(provider, UserProperty.STALE_FORMAT);
+        if (prop2 == null) {
+            prop2 = new UserProperty();
+            prop2.setProviderNo(provider);
+            prop2.setName(UserProperty.STALE_FORMAT);
+        }
+        prop2.setValue(singleViewValue);
+        userPropertyDAO.saveProp(prop2);
 
         request.setAttribute("status", "success");
         return SUCCESS;
