@@ -104,7 +104,7 @@
                            title="Rev:${note.revision} - Last update:${note.update_date}"
                            id="listNote${noteId}" href="javascript:void(0)"
                            onclick="showEdit(event,'${titleMsg}','${noteId}','${editors}','${note.observation_date}','${note.revision}','${note.note}','${addUrl}${noteId}','${param.cmd}','${identUrl}','${noteIssues}','${noteExts}','${param.demographicNo}');return false;">
-                            ${htmlNoteTxt}
+                            ${fn:escapeXml(note.note)}
                         </a>
                     </c:when>
                     <c:otherwise>
@@ -112,7 +112,7 @@
                            title="Rev:${note.revision} - Last update:${note.update_date}"
                            id="listNote${noteId}" href="javascript:void(0)"
                            onclick="showEdit(event,'${titleMsg}','${noteId}','${editors}','${note.observation_date}','${note.revision}','${note.note}','${addUrl}${noteId}','${param.cmd}','${identUrl}','${noteIssues}','${noteExts}','${param.demographicNo}');return false;">
-                            ${htmlNoteTxt}
+                            ${fn:escapeXml(note.note)}
                         </a>
                     </c:otherwise>
                 </c:choose>

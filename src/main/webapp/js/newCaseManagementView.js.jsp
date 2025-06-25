@@ -374,6 +374,15 @@
 	Loads issue notes: Social History, Medical History, Ongoing Concerns, Reminders
 */
     function showIssueNotes() {
+        <% 
+        String pNo = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo(); 
+            if (pNo == null) {
+                pNo = "0";
+            } 
+        %>
+
+        providerNo = '<%= pNo %>';
+        
         issueNoteUrls = {
             divR1I1: ctx + "/CaseManagementView.do?hc=996633&method=listNotes&providerNo=" + providerNo + "&demographicNo=" + demographicNo + "&issue_code=SocHistory&title=" + socHistoryLabel + "&cmd=divR1I1",
             divR1I2: ctx + "/CaseManagementView.do?hc=996633&method=listNotes&providerNo=" + providerNo + "&demographicNo=" + demographicNo + "&issue_code=MedHistory&title=" + medHistoryLabel + "&cmd=divR1I2",
