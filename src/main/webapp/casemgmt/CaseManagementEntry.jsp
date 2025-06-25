@@ -47,17 +47,24 @@
     <title>Case Management</title>
     <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
     <link rel="stylesheet" href="<c:out value="${ctx}"/>/css/casemgmt.css" type="text/css">
-    <script type="text/javascript">
-        var flag =<%=request.getAttribute("change_flag")%>;
+<script type="text/javascript">
+    var flag =<%=request.getAttribute("change_flag")%>;
 
-        <%
+    <%
+        String demographicNo = request.getParameter("demographicNo");
+        String sessionFrmName = "caseManagementEntryForm" + demographicNo;
+        org.oscarehr.casemgmt.web.formbeans.CaseManagementEntryFormBean form = 
+            (org.oscarehr.casemgmt.web.formbeans.CaseManagementEntryFormBean) session.getAttribute(sessionFrmName);
+        request.setAttribute("caseManagementEntryForm", form);
 
-            String demographicNo = request.getParameter("demographicNo");
-            String sessionFrmName = "caseManagementEntryForm" + demographicNo;
-            org.oscarehr.casemgmt.web.formbeans.CaseManagementEntryFormBean form=(org.oscarehr.casemgmt.web.formbeans.CaseManagementEntryFormBean) session.getAttribute(sessionFrmName);
-            request.setAttribute("caseManagementEntryForm", form);
+        // Add null check for form and issueCheckList
+        int size = 0;
+        if (form != null && form.getIssueCheckList() != null) {
+            size = form.getIssueCheckList().length;
+        }
 
-        int size=form.getIssueCheckList().length;
+        // Update count_issues_display
+        count_issues_display = size;
 
         if (session.getAttribute("newNote")!=null && "true".equalsIgnoreCase((String)session.getAttribute("newNote")))
         {%>
@@ -71,150 +78,155 @@
         var issueChanged = true;
         <%}else{%>
         var issueChanged = false;
-        <%}%>
+        <%}    
+    %>
 
-        var issueSize =<%=size%>;
+    var issueSize =<%=size%>;
 
-        function setChangeFlag(change) {
-            flag = change;
-            document.getElementById("spanMsg").innerHTML = "This note has not been saved yet!";
-            document.getElementById("spanMsg").style.color = "red";
-        }
+    function setChangeFlag(change) {
+        flag = change;
+        document.getElementById("spanMsg").innerHTML = "This note has not been saved yet!";
+        document.getElementById("spanMsg").style.color = "red";
+    }
 
-        function validateChange() {
-            var str = "You haven't saved the change yet. Please save first.";
-            if (flag == true) {
-                alert(str);
-                return false;
-            }
-            return true;
-        }
-
-        function validateBack() {
-            var str = "You haven't saved the change yet. Please save first.";
-            if (flag == true) {
-                alert(str);
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        function validateIssuecheck(issueSize) {
-            for (let i = 0; i < issueSize; i++) {
-                //alert("checked="+document.caseManagementEntryForm.elements["issueCheckList["+i+"].checked"].checked);
-                if (document.caseManagementEntryForm.elements["issueCheckList[" + i + "].checked"].checked) {
-                    //alert("issue check return true");
-                    return true;
-                }
-            }
+    function validateChange() {
+        var str = "You haven't saved the change yet. Please save first.";
+        if (flag == true) {
+            alert(str);
             return false;
+        }
+        return true;
+    }
 
+    function validateBack() {
+        var str = "You haven't saved the change yet. Please save first.";
+        if (flag == true) {
+            alert(str);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function validateIssuecheck(issueSize) {
+        // If no issues are loaded in the form (issueSize is 0), 
+        // assume this is an existing note with issues already saved
+        // and allow the save to proceed
+        if (issueSize == 0) {
+            return true;  // Allow save when no issues are loaded
         }
 
-        function validateEnounter() {
-            if (document.caseManagementEntryForm.elements["caseNote.encounter_type"].value == "" || document.caseManagementEntryForm.elements["caseNote.encounter_type"].value == " ") {
-                return false;
-            } else {
+        // If issues ARE loaded, then at least one must be checked
+        for (let i = 0; i < issueSize; i++) {
+            if (document.caseManagementEntryForm.elements["issueCheckList[" + i + "].checked"].checked) {
                 return true;
             }
         }
+        return false;
+    }
 
-        function validateIssueStatus() {
-            var signed = false;
-
-            if (document.caseManagementEntryForm.sign.checked) signed = true;
-
-            if (newNote == true && signed == true) {
-
-                if (issueChanged == true) return true;
-                else return false;
-            }
+    function validateEnounter() {
+        if (document.caseManagementEntryForm.elements["caseNote.encounter_type"].value == "" || document.caseManagementEntryForm.elements["caseNote.encounter_type"].value == " ") {
+            return false;
+        } else {
             return true;
         }
+    }
 
-        function validateSignStatus() {
-            if (document.caseManagementEntryForm.sign.checked)
-                return true;
-            else
-                return false;
+    function validateIssueStatus() {
+        var signed = false;
+
+        if (document.caseManagementEntryForm.sign.checked) signed = true;
+
+        if (newNote == true && signed == true) {
+            if (issueChanged == true) return true;
+            else return false;
         }
+        return true;
+    }
 
-        function validateSave(count_issues_display) {
-
-            var str1 = "You cannot save a note when there is no issue checked, please add an issue or check a currently available issue before save.";
-            var str2 = "Are you sure that you want to sign and save without changing the status of any of the issues?";
-            var str3 = "Please choose encounter type before saving the note."
-            var str4 = "Are you sure that you want to save without signing?";
-            if (!validateEnounter()) {
-                alert(str3);
-                return false;
-            }
-            if (!validateIssuecheck(count_issues_display)) {
-                alert(str1);
-                return false;
-            }
-            if (!validateSignStatus()) {
-                if (!confirm(str4)) return false;
-            }
-
-
-            <oscarProp:oscarPropertiesCheck property="oncall" value="yes">
-            var s = document.caseManagementEntryForm.elements['caseNote.encounter_type'];
-            if (s.options[s.selectedIndex].value == 'telephone encounter weekdays 8am-6pm' || s.options[s.selectedIndex].value == 'telephone encounter weekends or 6pm-8am') {
-                document.caseManagementEntryForm.elements['chain'].value = '/OnCallQuestionnaire.do?method=form&providerNo=' + document.caseManagementEntryForm.providerNo.value + '&type=' + s.options[s.selectedIndex].value;
-            }
-            </oscarProp:oscarPropertiesCheck>
+    function validateSignStatus() {
+        if (document.caseManagementEntryForm.sign.checked)
             return true;
+        else
+            return false;
+    }
+
+    function validateSave(count_issues_display) {
+        var str1 = "You cannot save a note when there is no issue checked, please add an issue or check a currently available issue before save.";
+        var str2 = "Are you sure that you want to sign and save without changing the status of any of the issues?";
+        var str3 = "Please choose encounter type before saving the note."
+        var str4 = "Are you sure that you want to save without signing?";
+        
+        if (!validateEnounter()) {
+            alert(str3);
+            return false;
+        }
+        
+        if (!validateIssuecheck(count_issues_display)) {
+            alert(str1);
+            return false;
+        }
+        
+        if (!validateSignStatus()) {
+            if (!confirm(str4)) return false;
         }
 
-        function toggleGroupNote(el) {
-            var checked = el.checked;
-            if (checked == true) {
-                alert('show group dialog');
-            }
+        <oscarProp:oscarPropertiesCheck property="oncall" value="yes">
+        var s = document.caseManagementEntryForm.elements['caseNote.encounter_type'];
+        if (s.options[s.selectedIndex].value == 'telephone encounter weekdays 8am-6pm' || s.options[s.selectedIndex].value == 'telephone encounter weekends or 6pm-8am') {
+            document.caseManagementEntryForm.elements['chain'].value = '/OnCallQuestionnaire.do?method=form&providerNo=' + document.caseManagementEntryForm.providerNo.value + '&type=' + s.options[s.selectedIndex].value;
+        }
+        </oscarProp:oscarPropertiesCheck>
+        return true;
+    }
+
+    function toggleGroupNote(el) {
+        var checked = el.checked;
+        if (checked == true) {
+            alert('show group dialog');
+        }
+    }
+
+    var XMLHttpRequestObject = false;
+
+    if (window.XMLHttpRequest) {
+        XMLHttpRequestObject = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    function autoSave() {
+        if (XMLHttpRequestObject) {
+            var obj = document.getElementById('caseNote_note');
+            XMLHttpRequestObject.open("POST", '<%=request.getContextPath() %>/CaseManagementEntry.do', true);
+            XMLHttpRequestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            var demographicNo = '<c:out value="${param.demographicNo}"/>';
+            var noteId = '<%=request.getParameter("noteId") != null ? request.getParameter("noteId") : request.getAttribute("noteId") != null ? request.getAttribute("noteId") : ""%>';
+            var programId = '<c:out value="${case_program_id}"/>';
+            XMLHttpRequestObject.send("method=autosave&demographicNo=" + demographicNo + "&programId=" + programId + "&note_id=" + noteId + "&note=" + escape(obj.value));
         }
 
-        var XMLHttpRequestObject = false;
+        setTimer();
+    }
 
-        if (window.XMLHttpRequest) {
-            XMLHttpRequestObject = new XMLHttpRequest();
-        } else if (window.ActiveXObject) {
-            XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
+    function setTimer() {
+        setTimeout("autoSave()", 60000);
+    }
+
+    function init() {
+        setTimer();
+        window.opener.location.reload(true);
+    }
+
+    function restore() {
+        if (confirm('You have an unsaved note from a previous session.  Click ok to retrieve note.')) {
+            document.caseManagementEntryForm.method.value = 'restore';
+            document.caseManagementEntryForm.submit();
         }
-
-        function autoSave() {
-            if (XMLHttpRequestObject) {
-                var obj = document.getElementById('caseNote_note');
-                XMLHttpRequestObject.open("POST", '<%=request.getContextPath() %>/CaseManagementEntry.do', true);
-                XMLHttpRequestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-                var demographicNo = '<c:out value="${param.demographicNo}"/>';
-                var noteId = '<%=request.getParameter("noteId") != null ? request.getParameter("noteId") : request.getAttribute("noteId") != null ? request.getAttribute("noteId") : ""%>';
-                var programId = '<c:out value="${case_program_id}"/>';
-                XMLHttpRequestObject.send("method=autosave&demographicNo=" + demographicNo + "&programId=" + programId + "&note_id=" + noteId + "&note=" + escape(obj.value));
-            }
-
-            setTimer();
-        }
-
-        function setTimer() {
-            setTimeout("autoSave()", 60000);
-        }
-
-        function init() {
-            setTimer();
-            window.opener.location.reload(true);
-        }
-
-        function restore() {
-            if (confirm('You have an unsaved note from a previous session.  Click ok to retrieve note.')) {
-                document.caseManagementEntryForm.method.value = 'restore';
-                document.caseManagementEntryForm.submit();
-            }
-        }
-    </script>
-
+    }
+</script>
 </head>
 <body onload="init()">
 <security:oscarSec roleName="<%=roleName$%>" objectName="_casemgmt.notes" rights="u">
@@ -286,77 +298,83 @@
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="casemanagementEntry.Type"/></td>
                 <td></td>
             </tr>
+<c:if test="${not empty caseManagementEntryForm.issueCheckList}">
+    <c:forEach var="issueCheckList" items="${caseManagementEntryForm.issueCheckList}" varStatus="status">
+        <c:set var="cbb" value="${issueCheckList}" />
+        <c:set var="writeAccess" value="${cbb.issueDisplay.writeAccess}" />
+        <c:set var="disabled" value="${cbb.issueDisplay.location ne 'local' ? true : !writeAccess}" />
+        <c:set var="checkBoxDisabled" value="${cbb.issueDisplay.location ne 'local' ? false : disabled}" />
+        <c:set var="resolved" value="${cbb.issueDisplay.resolved eq 'resolved'}" />
 
-            <c:forEach var="issueCheckList" items="${caseManagementEntryForm.issueCheckList}" varStatus="status">
-    <c:set var="cbb" value="${issueCheckList}" />
-    <c:set var="writeAccess" value="${cbb.issueDisplay.writeAccess}" />
-    <c:set var="disabled" value="${cbb.issueDisplay.location ne 'local' ? true : !writeAccess}" />
-    <c:set var="checkBoxDisabled" value="${cbb.issueDisplay.location ne 'local' ? false : disabled}" />
-    <c:set var="resolved" value="${cbb.issueDisplay.resolved eq 'resolved'}" />
+        <c:if test="${!resolved or showResolved}">
+            <c:set var="countIssuesDisplay" value="${countIssuesDisplay + 1}" />
+            <c:set var="counter" value="${status.count}" />
 
-    <c:if test="${!resolved or showResolved}">
-        <c:set var="countIssuesDisplay" value="${countIssuesDisplay + 1}" />
-        <c:set var="counter" value="${status.count}" />
-
-        <tr style="background-color: ${counter % 2 == 0 ? '#EEEEFF' : 'white'}; text-align: center;">
-            <td>
-                <input type="checkbox" name="issueCheckList[${status.index}].checked"
-                       onchange="setChangeFlag(true);"
-                       ${checkBoxDisabled ? 'disabled' : ''} />
-            </td>
-            <td style="${cbb.issueDisplay.priority eq 'allergy' ? 'background-color: yellow;' : ''}">
-                ${cbb.issueDisplay.description}
-            </td>
-            <td>
-                <select name="issueCheckList[${status.index}].issueDisplay.acute" ${disabled ? 'disabled' : ''}>
-                    <option value="acute" ${cbb.issueDisplay.acute eq 'acute' ? 'selected' : ''}>acute</option>
-                    <option value="chronic" ${cbb.issueDisplay.acute eq 'chronic' ? 'selected' : ''}>chronic</option>
-                </select>
-            </td>
-            <td>
-                <select name="issueCheckList[${status.index}].issueDisplay.certain" ${disabled ? 'disabled' : ''}>
-                    <option value="certain" ${cbb.issueDisplay.certain eq 'certain' ? 'selected' : ''}>certain</option>
-                    <option value="uncertain" ${cbb.issueDisplay.certain eq 'uncertain' ? 'selected' : ''}>uncertain</option>
-                </select>
-            </td>
-            <td>
-                <select name="issueCheckList[${status.index}].issueDisplay.major" ${disabled ? 'disabled' : ''}>
-                    <option value="major" ${cbb.issueDisplay.major eq 'major' ? 'selected' : ''}>major</option>
-                    <option value="not major" ${cbb.issueDisplay.major eq 'not major' ? 'selected' : ''}>not major</option>
-                </select>
-            </td>
-            <td>
-                <select name="issueCheckList[${status.index}].issueDisplay.resolved" ${disabled ? 'disabled' : ''}>
-                    <option value="resolved" ${cbb.issueDisplay.resolved eq 'resolved' ? 'selected' : ''}>resolved</option>
-                    <option value="unresolved" ${cbb.issueDisplay.resolved eq 'unresolved' ? 'selected' : ''}>unresolved</option>
-                </select>
-            </td>
-            <td>
-                <input type="text" name="issueCheckList[${status.index}].issueDisplay.role" 
-                       value="${cbb.issueDisplay.role}" ${disabled ? 'disabled' : ''} />
-            </td>
-            <td>
-                <c:if test="${cbb.issueDisplay.location eq 'local'}">
-                    <c:if test="${!cbb.used}">
-                        <button type="submit" 
+            <tr style="background-color: ${counter % 2 == 0 ? '#EEEEFF' : 'white'}; text-align: center;">
+                <td>
+                    <input type="checkbox" name="issueCheckList[${status.index}].checked"
+                        onchange="setChangeFlag(true);" ${checkBoxDisabled ? 'disabled' : '' } />
+                </td>
+                <td style="${cbb.issueDisplay.priority eq 'allergy' ? 'background-color: yellow;' : ''}">
+                    ${cbb.issueDisplay.description}
+                </td>
+                <td>
+                    <select name="issueCheckList[${status.index}].issueDisplay.acute" ${disabled ? 'disabled' : '' }>
+                        <option value="acute" ${cbb.issueDisplay.acute eq 'acute' ? 'selected' : '' }>acute</option>
+                        <option value="chronic" ${cbb.issueDisplay.acute eq 'chronic' ? 'selected' : '' }>chronic
+                        </option>
+                    </select>
+                </td>
+                <td>
+                    <select name="issueCheckList[${status.index}].issueDisplay.certain" ${disabled ? 'disabled' : '' }>
+                        <option value="certain" ${cbb.issueDisplay.certain eq 'certain' ? 'selected' : '' }>certain
+                        </option>
+                        <option value="uncertain" ${cbb.issueDisplay.certain eq 'uncertain' ? 'selected' : '' }>
+                            uncertain</option>
+                    </select>
+                </td>
+                <td>
+                    <select name="issueCheckList[${status.index}].issueDisplay.major" ${disabled ? 'disabled' : '' }>
+                        <option value="major" ${cbb.issueDisplay.major eq 'major' ? 'selected' : '' }>major</option>
+                        <option value="not major" ${cbb.issueDisplay.major eq 'not major' ? 'selected' : '' }>not major
+                        </option>
+                    </select>
+                </td>
+                <td>
+                    <select name="issueCheckList[${status.index}].issueDisplay.resolved" ${disabled ? 'disabled' : '' }>
+                        <option value="resolved" ${cbb.issueDisplay.resolved eq 'resolved' ? 'selected' : '' }>resolved
+                        </option>
+                        <option value="unresolved" ${cbb.issueDisplay.resolved eq 'unresolved' ? 'selected' : '' }>
+                            unresolved</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" name="issueCheckList[${status.index}].issueDisplay.role"
+                        value="${cbb.issueDisplay.role}" ${disabled ? 'disabled' : '' } />
+                </td>
+                <td>
+                    <c:if test="${cbb.issueDisplay.location eq 'local'}">
+                        <c:if test="${!cbb.used}">
+                            <button type="submit"
                                 onclick="this.form.method.value='issueDelete'; this.form.deleteId.value='${status.index}';">
-                            Delete
+                                Delete
+                            </button>
+                        </c:if>
+                        <button type="submit"
+                            onclick="this.form.method.value='changeDiagnosis'; this.form.deleteId.value='${status.index}';">
+                            Change Issue
                         </button>
                     </c:if>
-                    <button type="submit" 
-                            onclick="this.form.method.value='changeDiagnosis'; this.form.deleteId.value='${status.index}';">
-                        Change Issue
-                    </button>
-                </c:if>
-                <c:if test="${cbb.issueDisplay.location ne 'local'}">
-                    <fmt:setBundle basename="oscarResources" />
-                    <fmt:message key="casemanagementEntry.activecommunityissue" />
-                </c:if>
-            </td>
-        </tr>
-    </c:if>
-</c:forEach>
+                    <c:if test="${cbb.issueDisplay.location ne 'local'}">
+                        <fmt:setBundle basename="oscarResources" />
+                        <fmt:message key="casemanagementEntry.activecommunityissue" />
+                    </c:if>
+                </td>
+            </tr>
+        </c:if>
 
+    </c:forEach>
+</c:if>
 
         </table>
         <br>
