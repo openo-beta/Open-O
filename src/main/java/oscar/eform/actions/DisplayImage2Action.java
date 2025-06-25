@@ -84,7 +84,7 @@ public class DisplayImage2Action extends ActionSupport {
         if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
             throw new IllegalArgumentException("Invalid filename");
         }
-        String home_dir = OscarProperties.getInstance().getProperty("eform_image");
+        String home_dir = OscarProperties.getInstance().getEformImageDirectory();
 
         File file = null;
         try {
@@ -184,7 +184,7 @@ public class DisplayImage2Action extends ActionSupport {
     }
 
     public static File getImageFile(String imageFileName) throws Exception {
-        String home_dir = OscarProperties.getInstance().getProperty("eform_image");
+        String home_dir = OscarProperties.getInstance().getEformImageDirectory();
 
         File file = null;
         try {

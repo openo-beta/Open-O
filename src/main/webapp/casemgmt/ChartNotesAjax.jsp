@@ -262,7 +262,7 @@
             String dispFilename = "";
             String dispStatus = " ";
             String globalNoteId = "";
-
+            
             if (note.getRemoteFacilityId() != null) {
                 globalNoteId = "UUID" + note.getUuid();
             }
@@ -522,7 +522,7 @@
 
                 String winName = "docs" + demographicNo;
                 int hash = Math.abs(winName.hashCode());
-
+                
                 url = "popupPage(1000,1200,'" + hash + "', '" + request.getContextPath() + "/documentManager/showDocument.jsp?inWindow=true&segmentID=" + dispDocNo + "&providerNo=" + provNo + "');";
                 url = url + "return false;";
 

@@ -134,8 +134,9 @@
                 <% } else { %>
                 <select name="dateProperty.value" id="dateProperty.value">
                     <c:forEach var="dropOpt" items="${dropOpts}">
-                        <option value="${dropOpt.value}">
-                                ${dropOpt.label}
+                        <option value="${dropOpt.value}" 
+                            <c:if test="${dropOpt.value == UdrugrefId.value}">selected</c:if>>
+                            ${dropOpt.label}
                         </option>
                     </c:forEach>
                 </select>

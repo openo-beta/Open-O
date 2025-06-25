@@ -83,9 +83,9 @@ public class ImageUpload2Action extends ActionSupport {
     }
 
     public static File getImageFolder() throws IOException {
-        File imageFolder = new File(OscarProperties.getInstance().getProperty("eform_image") + "/");
+        File imageFolder = new File(OscarProperties.getInstance().getEformImageDirectory() + "/");
         if (!imageFolder.exists() && !imageFolder.mkdirs())
-            throw new IOException("Could not create directory " + imageFolder.getAbsolutePath() + " check permissions and ensure the correct eform_image property is set in the properties file");
+            throw new IOException("Could not create directory " + imageFolder.getAbsolutePath() + " check permissions and ensure the correct EFORM_IMAGES_DIR property is set in the properties file");
         return imageFolder;
     }
 
