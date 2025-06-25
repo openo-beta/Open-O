@@ -203,7 +203,7 @@ public class EFormUtil {
     }
 
     public static ArrayList<String> listImages() {
-        String imagePath = OscarProperties.getInstance().getProperty("eform_image");
+        String imagePath = OscarProperties.getInstance().getEformImageDirectory();
         logger.debug("Img Path: " + imagePath);
         File dir = new File(imagePath);
         String[] files = dir.list();
@@ -1162,7 +1162,7 @@ public class EFormUtil {
     }
 
     public static ArrayList<String> listRichTextLetterTemplates() {
-        String imagePath = OscarProperties.getInstance().getProperty("eform_image");
+        String imagePath = OscarProperties.getInstance().getEformImageDirectory();
         MiscUtils.getLogger().debug("Img Path: " + imagePath);
         File dir = new File(imagePath);
         String[] files = getRichTextLetterTemplates(dir);

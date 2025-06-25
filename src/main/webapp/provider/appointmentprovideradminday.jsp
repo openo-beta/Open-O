@@ -1677,12 +1677,17 @@
                                                title='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.zoomView"/>'>
                                                 <c:out value='<%=curProviderName[nProvider]  + " (" + appointmentCount + ") " %>'/>
                                             </a>
+                                                <oscar:oscarPropertiesCheck value="yes" property="TOGGLE_REASON_BY_PROVIDER" defaultVal="yes">
+                                                    <a 
+                                                        href="#"
+                                                        class="expand-reason-btn"
+                                                        data-provider="<%= curProvider_no[nProvider] %>"
+                                                        onclick="toggleReason(event, '<%= curProvider_no[nProvider] %>');"
+                                                        title="<fmt:setBundle basename='oscarResources'/>
+                                                        <fmt:message key='provider.appointmentProviderAdminDay.expandreason'/>"
+                                                    >*</a>
+                                                </oscar:oscarPropertiesCheck>
 
-                                                    <oscar:oscarPropertiesCheck value="yes" property="TOGGLE_REASON_BY_PROVIDER" defaultVal="yes">
-                                                        <a id="expandReason" href="#"
-                                                           onclick="return toggleReason('${curProvider_no[nProvider]}');"
-                                                           title="<fmt:setBundle basename='oscarResources'/><fmt:message key='provider.appointmentProviderAdminDay.expandreason'/>">*</a>
-                                                    </oscar:oscarPropertiesCheck>
                                             <% } %>
 
                                             <%
