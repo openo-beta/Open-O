@@ -5,6 +5,7 @@
     "workspaceFolder": "/workspace",
     "shutdownAction": "stopCompose",
     "postCreateCommand": "cd /workspace && mvn -B dependency:go-offline dependency:sources dependency:resolve -Dclassifier=javadoc",
+    "postStartCommand": "ls -l /var/lib/OscarDocument/oscar/document/initial",
 
     "customizations": {
         "vscode": {
