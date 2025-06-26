@@ -67,6 +67,9 @@ RUN mkdir -p $OSCAR_DOCUMENT/oscar/document \
     $OSCAR_DOCUMENT/oscar/onEDTDocs/archive \
     $OSCAR_DOCUMENT/oscar/oscarEncounter/oscarMeasurements/styles \
     $OSCAR_DOCUMENT/oscar/incomingdocs
+	
+# Copy initial documents into the container
+COPY ./initial_files/ $OSCAR_DOCUMENT/oscar/document/
 
 # Convert script files from DOS to Unix format (if necessary)
 RUN dos2unix /scripts/* \
