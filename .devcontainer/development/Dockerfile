@@ -67,6 +67,7 @@ RUN mkdir -p $OSCAR_DOCUMENT/oscar/document \
     $OSCAR_DOCUMENT/oscar/onEDTDocs/archive \
     $OSCAR_DOCUMENT/oscar/oscarEncounter/oscarMeasurements/styles \
     $OSCAR_DOCUMENT/oscar/incomingdocs
+    /db-seed-data/documents
 
 # Convert script files from DOS to Unix format (if necessary)
 RUN dos2unix /scripts/* \

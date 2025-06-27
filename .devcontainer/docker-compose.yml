@@ -9,7 +9,7 @@ services:
     volumes:
       - m2-volume:/root/.m2
       - ..:/workspace:cached 
-      - ./src/main/resources/documents/initial_data:/var/lib/OscarDocument/oscar/document
+      - ./src/main/resources/documents/initial_data:/db-seed-data/documents:ro
     env_file:
       - ./development/config/shared/local.env
     environment:
