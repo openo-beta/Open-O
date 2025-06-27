@@ -1,2 +1,2 @@
 echo "[Bootstrap] Copying Documents..."
-cp -n /db-seed-data/documents/*.pdf /var/lib/OscarDocument/oscar/document/
+cp -vn /db-seed-data/documents/* /var/lib/OscarDocument/oscar/document/
