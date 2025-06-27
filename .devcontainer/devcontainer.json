@@ -4,8 +4,8 @@
     "service": "open-o",
     "workspaceFolder": "/workspace",
     "shutdownAction": "stopCompose",
-    "postCreateCommand": "cd /workspace && mvn -B dependency:go-offline dependency:sources dependency:resolve -Dclassifier=javadoc || echo '[WARNING] postCreateCommand failed but continuing...'",
-    "postStartCommand": "sh .devcontainer/development/seed_db_data/seed_data.sh",
+    "postCreateCommand": "cd /workspace && mvn -B dependency:go-offline dependency:sources dependency:resolve -Dclassifier=javadoc",
+    "postStartCommand": "sh .devcontainer/development/setup/seed_data.sh",
 
     "customizations": {
         "vscode": {
