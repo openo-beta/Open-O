@@ -57,7 +57,7 @@ COPY ./openosp_files/logging.properties $TOMCAT_PATH/conf/logging.properties
 COPY ./openosp_files/logging-servlet.properties $TOMCAT_PATH/conf/logging-servlet.properties
 COPY ./openosp_files/tomcat-users.xml $TOMCAT_PATH/conf/tomcat-users.xml
 
-# Set up document directories, including seeded document data for the database and the destiniation
+# Set up document directories, including seeded document data for the database and the destination
 # of all documents
 RUN mkdir -p $OSCAR_DOCUMENT/oscar/document \
     $OSCAR_DOCUMENT/oscar/billing/download \
