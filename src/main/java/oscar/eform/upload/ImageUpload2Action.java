@@ -70,6 +70,8 @@ public class ImageUpload2Action extends ActionSupport {
                 fos.write(buffer, 0, bytesRead);
             }
             fos.flush();
+
+            request.setAttribute("status", "uploaded");
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         }
