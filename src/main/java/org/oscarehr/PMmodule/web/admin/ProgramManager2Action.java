@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-
+import org.apache.commons.text.StringEscapeUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.WebServiceException;
@@ -474,7 +474,8 @@ public class ProgramManager2Action extends ActionSupport {
 
         admissionManager.saveAdmission(ad);
         if (isValidProgramName(program.getName())) {
-            addActionMessage(getText("program.saved", program.getName()));
+            String safeProgramName = StringEscapeUtils.escapeHtml4(program.getName());
+            addActionMessage(getText("program.saved", safeProgramName));
         } else {
             addActionMessage(getText("program.saved", "Invalid Program Name"));
         }
