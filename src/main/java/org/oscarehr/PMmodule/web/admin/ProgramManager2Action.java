@@ -473,7 +473,11 @@ public class ProgramManager2Action extends ActionSupport {
         ad.setTeamId(admission.getTeamId());
 
         admissionManager.saveAdmission(ad);
-        addActionMessage(getText("program.saved", program.getName()));
+        if (isValidProgramName(program.getName())) {
+            addActionMessage(getText("program.saved", program.getName()));
+        } else {
+            addActionMessage(getText("program.saved", "Invalid Program Name"));
+        }
 
         LogAction.log("write", "edit program - assign client to team", String.valueOf(program.getId()), request);
 
@@ -1717,4 +1721,10 @@ public class ProgramManager2Action extends ActionSupport {
     public void setVacancyOrTemplateId(String vacancyOrTemplateId) {
         this.vacancyOrTemplateId = vacancyOrTemplateId;
     }
+private boolean isValidProgramName(String programName) {
+    // Custom validation logic to ensure programName is safe
+    // For example, check for forbidden characters or patterns
+    return programName != null && programName.matches("^[a-zA-Z0-9 _-]+$");
+}
+
 }
