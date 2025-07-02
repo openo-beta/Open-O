@@ -953,14 +953,6 @@
     "optional" : false,
     "integrity" : "sha512:q5F3iyYB6gsABiSPQ2q1eojfMQKzVFtF7sZ1+trz0kBZDQhVnLeBOfAa5jCHr9yz3SOvBgqO0nRG6aJfezCDGA=="
   }, {
-    "groupId" : "commons-httpclient",
-    "artifactId" : "commons-httpclient",
-    "version" : "3.1",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:heedT9smaGGRDvlbzW6Cp/CRyb+8Y9viESOD6k1TpbejeLVOfEcvvf3pI/MMctnK1ib4+rsLnHDR37CVrdczWQ=="
-  }, {
     "groupId" : "commons-io",
     "artifactId" : "commons-io",
     "version" : "2.18.0",
