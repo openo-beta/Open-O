@@ -25,16 +25,14 @@ import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.cxf.helpers.FileUtils;
+import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.dao.DemographicCustDao;
@@ -92,65 +90,56 @@ public class HRMReportParser {
 
         String fileData = null;
         if (hrmReportFileLocation != null) {
-
             try {
-                //a lot of the parsers need to refer to a file and even when they provide functions like parse(String text)
-                //it will not parse the same way because it will treat the text as a URL
-                //so we take the lab and store them temporarily in a random filename in /tmp/oscar-sftp/
+                // a lot of the parsers need to refer to a file and even when they provide
+                // parse(String text) it treats the text as a URL, so we load from disk
                 File tmpXMLholder = new File(hrmReportFileLocation);
 
-                //check the DOCUMENT_DIR
+                // check DOCUMENT_DIR if not found
                 if (!tmpXMLholder.exists()) {
                     String place = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
                     tmpXMLholder = new File(place + File.separator + hrmReportFileLocation);
                 }
 
                 if (!tmpXMLholder.exists()) {
-                    logger.warn("unable to find the HRM report. checked " + hrmReportFileLocation + ", and in the document_dir");
-                    return null;
+                    logger.warn("unable to find the HRM report. checked "
+                        + hrmReportFileLocation + ", and in the document_dir");
                 }
-                if (tmpXMLholder.exists()) fileData = FileUtils.getStringFromFile(tmpXMLholder);
-                // Parse an XML document into a DOM tree.
-                DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-                // Create a SchemaFactory capable of understanding WXS schemas.
 
+                // read file into UTF-8 String using NIO
+                if (tmpXMLholder.exists()) {
+                    fileData = Files.readString(
+                        tmpXMLholder.toPath(),
+                        StandardCharsets.UTF_8
+                    );
+                }
 
-                //SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");//XMLConstants.W3C_XML_SCHEMA_NS_URI);
-                SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-
-                // Load a WXS schema, represented by a Schema instance.
+                // Load and compile the XSD schema
+                SchemaFactory factory = SchemaFactory
+                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
                 File schemaFile = new ClassPathResource("/xsd/hrm/1.1.2/ontariomd_hrm.xsd").getFile();
                 Source schemaSource = new StreamSource(schemaFile);
                 Schema schema = factory.newSchema(schemaSource);
 
+                // Unmarshal into JAXB model
                 JAXBContext jc = JAXBContext.newInstance("omd.hrm");
                 Unmarshaller u = jc.createUnmarshaller();
                 u.setSchema(schema);
-
                 root = (OmdCds) u.unmarshal(new FileInputStream(tmpXMLholder));
 
                 tmpXMLholder = null;
             } catch (FileNotFoundException e) {
                 logger.error("File Not Found " + e);
-                if (errors != null) {
-                    errors.add(e);
-                }
+                if (errors != null) errors.add(e);
             } catch (SAXException e) {
                 logger.error("SAX ERROR PARSING XML " + e);
-                if (errors != null) {
-                    errors.add(e);
-                }
-            } catch (ParserConfigurationException e) {
-                logger.error("PARSER ERROR PARSING XML " + e);
-
+                if (errors != null) errors.add(e);
             } catch (JAXBException e) {
-                // TODO Auto-generated catch block
                 logger.error("error", e);
-                if (e.getLinkedException() != null) {
-                    SFTPConnector.notifyHrmError(loggedInInfo, e.getLinkedException().getMessage());
-                } else {
-                    SFTPConnector.notifyHrmError(loggedInInfo, e.getMessage());
-                }
+                String msg = (e.getLinkedException() != null)
+                    ? e.getLinkedException().getMessage()
+                    : e.getMessage();
+                SFTPConnector.notifyHrmError(loggedInInfo, msg);
             } catch (IOException e) {
                 logger.error("ERROR READING report_manager_cds.xsd RESOURCE" + e);
             }
