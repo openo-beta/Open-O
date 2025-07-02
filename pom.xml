@@ -993,6 +993,11 @@
             <artifactId>cxf-rt-transports-http</artifactId>
             <version>3.2.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-core</artifactId>
+            <version>3.5.10</version>
+        </dependency>
 
         <dependency>
             <groupId>org.oscarehr</groupId>

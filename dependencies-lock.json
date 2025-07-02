@@ -1412,11 +1412,11 @@
   }, {
     "groupId" : "org.apache.cxf",
     "artifactId" : "cxf-core",
-    "version" : "3.2.0",
+    "version" : "3.5.10",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:Gz3toNuv4h63QS+dYF1Ccn2aPtOsTY/xr/k9l7fqx64dNC7c+x18eB3ZNcw4RvDIzLxX83Qd+m5m1SPxThDokw=="
+    "integrity" : "sha512:y9YSGKHiVI2drooRU46C75XgJTL2cCCR/U+SXklhwmY0wrmKpdX8NZ5QsqfD6yrXSx/kgc+XENUXz6RssRG15g=="
   }, {
     "groupId" : "org.apache.cxf",
     "artifactId" : "cxf-rt-bindings-coloc",
@@ -2116,11 +2116,11 @@
   }, {
     "groupId" : "org.apache.ws.xmlschema",
     "artifactId" : "xmlschema-core",
-    "version" : "2.2.2",
+    "version" : "2.3.1",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:+nOW/0ZsZtWcs+UVWbXYCMFjpHRVbDOkJah6khOIQyNqF79Afj9GwGDsdhjCV9P/YaOn9evwfG55Z2dJ/NwnsA=="
+    "integrity" : "sha512:4IYw5vb74rlgp8Fh3f9G4TVWa8sd0qrzcHrAGoQ/tGKsHH7rgwrKf8iMvj/63CNa2sB+wBnhZgUIYO1z0knCHw=="
   }, {
     "groupId" : "org.apache.wss4j",
     "artifactId" : "wss4j-bindings",
