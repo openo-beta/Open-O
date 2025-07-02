@@ -222,6 +222,12 @@
             <artifactId>commons-net</artifactId>
             <version>3.11.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-httpclient/commons-httpclient -->
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
@@ -940,21 +946,30 @@
             <version>1.78.1</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-client -->
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>2.39.1</version>
+        </dependency>
+
         <!-- AXIS2 (for OLIS) -->
         <!-- 
             Suggestted to upgrade to 1.8.0 or later by GitHub Dependabot, but got 
             100+ compliation errors after upgrading, will stay at 1.5.4 now 
         -->
+        <!-- https://mvnrepository.com/artifact/org.apache.axis2/axis2 -->
         <dependency>
             <groupId>org.apache.axis2</groupId>
             <artifactId>axis2</artifactId>
-            <version>1.5.4</version>
+            <version>1.8.0</version>
+            <type>pom</type>
         </dependency>
         <!-- Detected as "Unused dependency" but don't remove it, caused 404 error after removing -->
         <dependency>
             <groupId>org.apache.axis2</groupId>
             <artifactId>axis2-transport-http</artifactId>
-            <version>1.5.4</version>
+            <version>1.8.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.ws.commons.schema</groupId>
@@ -969,6 +984,12 @@
                     <artifactId>ant</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.axis2/axis2-adb -->
+        <dependency>
+            <groupId>org.apache.axis2</groupId>
+            <artifactId>axis2-adb</artifactId>
+            <version>1.8.0</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.ant/ant -->
@@ -1493,6 +1514,13 @@
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
             <version>1.3.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/javax.servlet.jsp/javax.servlet.jsp-api -->
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>javax.servlet.jsp-api</artifactId>
+            <version>2.3.3</version>
+            <scope>provided</scope>
         </dependency>
         
         <!-- Added for Tomcat 9.0.97 -->
