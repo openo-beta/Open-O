@@ -2235,10 +2235,9 @@ public class ProviderProperty2Action extends ActionSupport {
     }
 
     public String viewDisplayDocumentAs() {
-
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
-        UserProperty fmt = this.userPropertyDAO.getProp(providerNo, "displayDocumentAsProperty");
+        UserProperty fmt = this.userPropertyDAO.getProp(providerNo, "display_document_as");
 
         if (fmt == null) {
             fmt = new UserProperty();
@@ -2265,18 +2264,17 @@ public class ProviderProperty2Action extends ActionSupport {
     }
 
     public String saveDisplayDocumentAs() {
-
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
         UserProperty prop = this.getDisplayDocumentAsProperty();
         String fmt = prop != null ? prop.getValue() : "";
-        UserProperty saveProperty = this.userPropertyDAO.getProp(providerNo, "displayDocumentAsProperty");
+        UserProperty saveProperty = this.userPropertyDAO.getProp(providerNo, "display_document_as");
 
         if (saveProperty == null) {
             saveProperty = new UserProperty();
             saveProperty.setProviderNo(providerNo);
-            saveProperty.setName("displayDocumentAsProperty");
+            saveProperty.setName("display_document_as");
         }
 
         saveProperty.setValue(fmt);
