@@ -73,54 +73,82 @@ public class ProviderProperty2Action extends ActionSupport {
     }
 
     public String remove() {
-        
-        UserProperty prop = this.getDateProperty();
-        UserProperty prop2 = this.getSingleViewProperty();
+        String provider = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo();
 
-        this.userPropertyDAO.delete(prop);
-        this.userPropertyDAO.delete(prop2);
+        UserProperty prop = this.userPropertyDAO.getProp(provider, UserProperty.STALE_NOTEDATE);
+        if (prop != null) {
+            this.userPropertyDAO.delete(prop);
+        }
+
+        UserProperty prop2 = this.userPropertyDAO.getProp(provider, UserProperty.STALE_FORMAT);
+        if (prop2 != null) {
+            this.userPropertyDAO.delete(prop2);
+        }
 
         request.setAttribute("status", "success");
-
         return SUCCESS;
     }
 
     public String view() {
-        
         String provider = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo();
-        UserProperty prop = this.userPropertyDAO.getProp(provider, UserProperty.STALE_NOTEDATE);
+        request.setAttribute("providerNo", provider);
 
+        UserProperty prop = this.userPropertyDAO.getProp(provider, UserProperty.STALE_NOTEDATE);
         if (prop == null) {
             prop = new UserProperty();
             prop.setProviderNo(provider);
             prop.setName(UserProperty.STALE_NOTEDATE);
         }
-        
         this.setDateProperty(prop);
 
         UserProperty prop2 = this.userPropertyDAO.getProp(provider, UserProperty.STALE_FORMAT);
-
         if (prop2 == null) {
             prop2 = new UserProperty();
             prop2.setProviderNo(provider);
             prop2.setName(UserProperty.STALE_FORMAT);
         }
-
         this.setSingleViewProperty(prop2);
+
+        // dropdown menus
+        List<LabelValueBean> staleOptions = new ArrayList<>();
+        staleOptions.add(new LabelValueBean("All", "A"));
+        for (int i = 0; i <= 36; i++) {
+            staleOptions.add(new LabelValueBean(String.valueOf(i), "-" + i));
+        }
+        request.setAttribute("staleDateOptions", staleOptions);
+
+        List<LabelValueBean> viewOptions = new ArrayList<>();
+        viewOptions.add(new LabelValueBean("No", "no"));
+        viewOptions.add(new LabelValueBean("Yes", "yes"));
+        request.setAttribute("viewOptions", viewOptions);
 
         return SUCCESS;
     }
 
 
     public String save() {
+        String provider = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo();
 
-        UserProperty prop = this.getDateProperty();
+        String staleDateValue = request.getParameter("dateProperty.value");
+        String singleViewValue = request.getParameter("singleViewProperty.value");
 
-        this.userPropertyDAO.saveProp(prop);
+        UserProperty prop = this.userPropertyDAO.getProp(provider, UserProperty.STALE_NOTEDATE);
+        if (prop == null) {
+            prop = new UserProperty();
+            prop.setProviderNo(provider);
+            prop.setName(UserProperty.STALE_NOTEDATE);
+        }
+        prop.setValue(staleDateValue);
+        userPropertyDAO.saveProp(prop);
 
-        UserProperty prop2 = this.getSingleViewProperty();
-
-        this.userPropertyDAO.saveProp(prop2);
+        UserProperty prop2 = this.userPropertyDAO.getProp(provider, UserProperty.STALE_FORMAT);
+        if (prop2 == null) {
+            prop2 = new UserProperty();
+            prop2.setProviderNo(provider);
+            prop2.setName(UserProperty.STALE_FORMAT);
+        }
+        prop2.setValue(singleViewValue);
+        userPropertyDAO.saveProp(prop2);
 
         request.setAttribute("status", "success");
         return SUCCESS;
@@ -1670,7 +1698,7 @@ public class ProviderProperty2Action extends ActionSupport {
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
         UserProperty delegate = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_DELEGATE);
-        UserProperty subject = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_MSG_SUBJECT);
+        UserProperty subject = this.userPropertyDAO.getProp(providerNo, "labRecallMsgSubject");
         UserProperty ticklerAssignee = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_TICKLER_ASSIGNEE);
         UserProperty priority = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_TICKLER_PRIORITY);
 
@@ -1689,16 +1717,11 @@ public class ProviderProperty2Action extends ActionSupport {
             defaultToDelegate = ticklerAssignee.getValue();
         }
 
-        boolean checked;
-        if (defaultToDelegate.equalsIgnoreCase("yes")) {
-            checked = true;
-        } else {
-            checked = false;
-        }
-
         if (priority == null) {
             priority = new UserProperty();
         }
+
+        ticklerAssignee.setChecked("yes".equalsIgnoreCase(ticklerAssignee.getValue()));
 
         ArrayList<LabelValueBean> providerList = new ArrayList<LabelValueBean>();
         providerList.add(new LabelValueBean("Select", "")); //key , value
@@ -1707,14 +1730,11 @@ public class ProviderProperty2Action extends ActionSupport {
         List<Provider> ps = dao.getProviders();
         Collections.sort(ps, new BeanComparator("lastName"));
         try {
-
             for (Provider p : ps) {
                 if (!p.getProviderNo().equals("-1")) {
                     providerList.add(new LabelValueBean(p.getLastName() + ", " + p.getFirstName(), p.getProviderNo()));
                 }
             }
-
-
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         }
@@ -1729,11 +1749,8 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("prioritySelect", priorityList);
 
         request.setAttribute("labRecallDelegate", delegate);
-        request.setAttribute("labRecallMsgSubject", subject);
-
-        ticklerAssignee.setChecked(checked);
+        request.setAttribute("subject", subject);
         request.setAttribute("labRecallTicklerAssignee", ticklerAssignee);
-
         request.setAttribute("labRecallTicklerPriority", priority);
 
         request.setAttribute("providertitle", "provider.setLabRecall.title");
@@ -1756,30 +1773,26 @@ public class ProviderProperty2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-        UserProperty d = this.getLabRecallDelegate();
         UserProperty s = this.getLabRecallMsgSubject();
-        UserProperty a = this.getLabRecallTicklerAssignee();
-        UserProperty p = this.getLabRecallTicklerPriority();
-
-        String delegate = d != null ? d.getValue() : "";
         String subject = s != null ? s.getValue() : "";
 
-        boolean checked = a != null ? a.isChecked() : false;
+        String delegate = request.getParameter("labRecallDelegate.value"); 
+        String priority = request.getParameter("labRecallTicklerPriority.value");
 
-        String priority = p != null ? p.getValue() : "";
+        boolean assignee = request.getParameter("labRecallTicklerAssignee.checked") != null;
 
         boolean delete = false;
         if (delegate.equals("")) {
             delete = true;
         }
 
+        // Save delegate (dropdown)
         UserProperty dProperty = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_DELEGATE);
         if (dProperty == null) {
             dProperty = new UserProperty();
             dProperty.setProviderNo(providerNo);
             dProperty.setName(UserProperty.LAB_RECALL_DELEGATE);
         }
-
         if (delete) {
             userPropertyDAO.delete(dProperty);
         } else {
@@ -1787,11 +1800,12 @@ public class ProviderProperty2Action extends ActionSupport {
             userPropertyDAO.saveProp(dProperty);
         }
 
-        UserProperty sProperty = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_MSG_SUBJECT);
+        // Save subject text field
+        UserProperty sProperty = this.userPropertyDAO.getProp(providerNo, "labRecallMsgSubject");
         if (sProperty == null) {
             sProperty = new UserProperty();
             sProperty.setProviderNo(providerNo);
-            sProperty.setName(UserProperty.LAB_RECALL_MSG_SUBJECT);
+            sProperty.setName("labRecallMsgSubject");
         }
         if (delete) {
             userPropertyDAO.delete(sProperty);
@@ -1800,6 +1814,7 @@ public class ProviderProperty2Action extends ActionSupport {
             userPropertyDAO.saveProp(sProperty);
         }
 
+        // Save tickler assignee checkbox
         String defaultToDelegate = "no";
         UserProperty aProperty = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_TICKLER_ASSIGNEE);
         if (aProperty == null) {
@@ -1810,14 +1825,11 @@ public class ProviderProperty2Action extends ActionSupport {
         if (delete) {
             userPropertyDAO.delete(aProperty);
         } else {
-            if (checked) {
-                defaultToDelegate = "yes";
-            }
-
-            aProperty.setValue(defaultToDelegate);
+            aProperty.setValue(assignee ? "yes" : "no");
             userPropertyDAO.saveProp(aProperty);
         }
 
+        // Save tickler priority (dropdown)
         UserProperty pProperty = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_TICKLER_PRIORITY);
         if (pProperty == null) {
             pProperty = new UserProperty();
@@ -1830,6 +1842,8 @@ public class ProviderProperty2Action extends ActionSupport {
             pProperty.setValue(priority);
             userPropertyDAO.saveProp(pProperty);
         }
+        
+        aProperty.setChecked(assignee);
 
         request.setAttribute("status", "success");
         request.setAttribute("providertitle", "provider.setLabRecall.title");
@@ -1843,7 +1857,6 @@ public class ProviderProperty2Action extends ActionSupport {
             msgSuccess = "provider.setLabRecall.msgDeleted";
         }
         request.setAttribute("providermsgSuccess", msgSuccess);
-
         request.setAttribute("method", "saveLabRecallPrefs");
 
         return "genLabRecallPrefs";
@@ -1859,11 +1872,18 @@ public class ProviderProperty2Action extends ActionSupport {
         if (ticklerTaskAssignee == null) {
             ticklerTaskAssignee = new UserProperty();
             ticklerTaskAssignee.setValue("default");
-            defaultTo = ticklerTaskAssignee.getValue();
-        } else if (ticklerTaskAssignee.getValue().equals("mrp")) {
-            defaultTo = "mrp";
+            defaultTo = "default";
         } else {
-            defaultTo = "provider";
+            String value = ticklerTaskAssignee.getValue();
+            if ("default".equals(value) || "mrp".equals(value)) {
+                defaultTo = value;
+            } else {
+                defaultTo = "provider"; 
+
+                if ("provider".equals(defaultTo)) {
+                    request.setAttribute("selectedProvider", ticklerTaskAssignee.getValue());
+                }
+            }
         }
 
         ArrayList<LabelValueBean> providerList = new ArrayList<LabelValueBean>();
@@ -1873,31 +1893,26 @@ public class ProviderProperty2Action extends ActionSupport {
         List<Provider> ps = dao.getProviders();
         Collections.sort(ps, new BeanComparator("lastName"));
         try {
-
             for (Provider p : ps) {
                 if (!p.getProviderNo().equals("-1")) {
                     providerList.add(new LabelValueBean(p.getLastName() + ", " + p.getFirstName(), p.getProviderNo()));
                 }
             }
-
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         }
         request.setAttribute("providerSelect", providerList);
-
         request.setAttribute("providertitle", "provider.ticklerPreference.title");
         request.setAttribute("providermsgPrefs", "provider.ticklerPreference.msgPrefs"); //=Preferences
         request.setAttribute("providerbtnSubmit", "provider.ticklerPreference.btnSubmit"); //=Save
         request.setAttribute("providerbtnCancel", "provider.ticklerPreference.btnCancel"); //=Cancel
         request.setAttribute("method", "saveTicklerTaskAssignee");
-
         request.setAttribute("taskAssigneeSelection", ticklerTaskAssignee);
         this.setTaskAssigneeSelection(ticklerTaskAssignee);
         this.setTaskAssigneeMRP(ticklerTaskAssignee);
 
         request.setAttribute("providerMsg", "");
-
-        request.setAttribute("taskAssigneeMRP", defaultTo);
+        request.setAttribute("taskAssigneeMRPValue", defaultTo);
 
         UserProperty t = this.getTaskAssigneeMRP();
         t.setValue(defaultTo);
@@ -1905,18 +1920,23 @@ public class ProviderProperty2Action extends ActionSupport {
         return SUCCESS;
     }
 
-
     public String saveTicklerTaskAssignee() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
+        String radioValue = request.getParameter("taskAssigneeMRP.value");
+        String providerValue = request.getParameter("taskAssigneeSelection.value");
+
         UserProperty a = this.getTaskAssigneeSelection();
+        if ("provider".equals(radioValue)) {
+            a.setValue(providerValue); // providerNo
+        } else {
+            a.setValue(radioValue); // default or mrp
+        }
+
         String tickerTaskAssignee = a != null ? a.getValue() : "";
 
-        boolean delete = false;
-        if (tickerTaskAssignee.equals("")) {
-            delete = true;
-        }
+        boolean delete = "".equals(tickerTaskAssignee);
 
         UserProperty property = this.userPropertyDAO.getProp(providerNo, UserProperty.TICKLER_TASK_ASSIGNEE);
         if (property == null) {
@@ -1941,22 +1961,16 @@ public class ProviderProperty2Action extends ActionSupport {
             return "complete";
         }
 
-
         request.setAttribute("status", "success");
-
         request.setAttribute("providertitle", "provider.ticklerPreference.title");
         request.setAttribute("providermsgPrefs", "provider.ticklerPreference.msgPrefs"); //=Preferences
         request.setAttribute("providerbtnSubmit", "provider.ticklerPreference.btnSubmit"); //=Save
         request.setAttribute("providerbtnCancel", "provider.ticklerPreference.btnCancel"); //=Cancel
-
         request.setAttribute("providerbtnClose", "provider.ticklerPreference.providerbtnClose"); //=Close Window
-
         request.setAttribute("providerMsg", "provider.ticklerPreference.savedMsg");
-
         request.setAttribute("method", "saveTicklerTaskAssignee");
 
         return "complete";
-
     }
 
     public String viewEncounterWindowSize() {
