@@ -149,6 +149,7 @@
             <artifactId>commons-validator</artifactId>
             <version>1.9.0</version>
             <exclusions>
+                <!-- Excluded this low version to avoid triggering security issue -->
                 <exclusion>
                     <groupId>commons-beanutils</groupId>
                     <artifactId>commons-beanutils</artifactId>
@@ -176,6 +177,7 @@
             <artifactId>commons-digester</artifactId>
             <version>1.8</version>
             <exclusions>
+                <!-- Excluded this low version to avoid triggering security issue -->
                 <exclusion>
                     <groupId>commons-beanutils</groupId>
                     <artifactId>commons-beanutils</artifactId>
@@ -194,6 +196,7 @@
             <artifactId>commons-betwixt</artifactId>
             <version>0.7</version>
             <exclusions>
+                <!-- Excluded this low version to avoid triggering security issue -->
                 <exclusion>
                     <groupId>commons-beanutils</groupId>
                     <artifactId>commons-beanutils-core</artifactId>
@@ -210,12 +213,14 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.17.0</version>
         </dependency>
+        <!-- Added higher version to avoid security issue, suggested by GitHub Dependabot -->
         <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
             <version>1.11.0</version>
         </dependency>
+        <!-- Added higher version to avoid security issue, suggested by GitHub Dependabot -->
         <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
         <dependency>
             <groupId>commons-net</groupId>
@@ -223,6 +228,7 @@
             <version>3.11.1</version>
         </dependency>
         
+        <!-- Added higher version to avoid security issue, suggested by GitHub Dependabot -->
         <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -257,10 +263,12 @@
             <artifactId>hapi-base</artifactId>
             <version>1.0.1</version>
             <exclusions>
+                <!-- Not being used, excluded to avoid triggering security issue -->
                 <exclusion>
                     <groupId>xalan</groupId>
                     <artifactId>xalan</artifactId>
                 </exclusion>
+                <!-- Excluded this low version to avoid triggering security issue -->
                 <exclusion>
                     <groupId>org.jdom</groupId>
                     <artifactId>jdom</artifactId>
@@ -293,6 +301,7 @@
             <version>1.0.1</version>
         </dependency>
 
+        <!-- Added higher version to avoid security issue, suggested by GitHub Dependabot -->
         <!-- https://mvnrepository.com/artifact/org.jdom/jdom2 -->
         <dependency>
             <groupId>org.jdom</groupId>
@@ -327,6 +336,7 @@
             <artifactId>spring-integration-ftp</artifactId>
             <version>5.3.10.RELEASE</version>
             <exclusions>
+                <!-- Excluded this low version to avoid triggering security issue -->
                 <exclusion>
                     <groupId>commons-net</groupId>
                     <artifactId>commons-net</artifactId>
@@ -385,6 +395,7 @@
             <artifactId>xmlsec</artifactId>
             <version>2.1.8</version>
             <exclusions>
+                <!-- Not being used, excluded to avoid triggering security issue -->
                 <exclusion>
                     <groupId>com.fasterxml.woodstox</groupId>
                     <artifactId>woodstox-core</artifactId>
@@ -516,6 +527,7 @@
             <version>2.4</version>
             <classifier>jdk15</classifier>
             <exclusions>
+                <!-- Excluded this low version to avoid triggering security issue -->
                 <exclusion>
                     <groupId>commons-beanutils</groupId>
                     <artifactId>commons-beanutils</artifactId>
@@ -571,6 +583,7 @@
                     <groupId>com.fasterxml.jackson.core</groupId>
                     <artifactId>jackson-annotations</artifactId>
                 </exclusion>
+                <!-- Excluded this low version to avoid triggering security issue -->
                 <exclusion>
                     <groupId>commons-beanutils</groupId>
                     <artifactId>commons-beanutils</artifactId>
@@ -838,6 +851,7 @@
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-log4j12</artifactId>
                 </exclusion>
+                <!-- Excluded this low version to avoid triggering security issue -->
                 <exclusion>
                     <groupId>commons-beanutils</groupId>
                     <artifactId>commons-beanutils</artifactId>
@@ -947,6 +961,7 @@
             <version>1.78.1</version>
         </dependency>
 
+        <!-- Added for axis2 1.8.0 -->
         <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-client -->
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
@@ -956,8 +971,8 @@
 
         <!-- AXIS2 (for OLIS) -->
         <!-- 
-            Suggestted to upgrade to 1.8.0 or later by GitHub Dependabot, but got 
-            100+ compliation errors after upgrading, will stay at 1.5.4 now 
+            Updated to 1.8.0 by GitHub Dependabot suggestion,
+            the higher version 2.0.0 will need when we migrate to jakarta 
         -->
         <!-- https://mvnrepository.com/artifact/org.apache.axis2/axis2 -->
         <dependency>
@@ -980,6 +995,7 @@
                     <groupId>org.apache.neethi</groupId>
                     <artifactId>neethi</artifactId>
                 </exclusion>
+                <!-- Excluded this low version to avoid triggering security issue -->
                 <exclusion>
                     <groupId>org.apache.ant</groupId>
                     <artifactId>ant</artifactId>
@@ -993,6 +1009,7 @@
             <version>1.8.0</version>
         </dependency>
 
+        <!-- Added higher version to avoid security issue, suggested by GitHub Dependabot -->
         <!-- https://mvnrepository.com/artifact/org.apache.ant/ant -->
         <dependency>
             <groupId>org.apache.ant</groupId>
@@ -1030,6 +1047,7 @@
                     <groupId>org.apache.struts</groupId>
                     <artifactId>struts-tiles</artifactId>
                 </exclusion>
+                <!-- Excluded this low version to avoid triggering security issue -->
                 <exclusion>
                     <groupId>commons-beanutils</groupId>
                     <artifactId>commons-beanutils</artifactId>
@@ -1087,6 +1105,25 @@
                     <groupId>com.fasterxml.woodstox</groupId>
                     <artifactId>woodstox-core</artifactId>
                 </exclusion>
+                <!-- Not being used, excluded to avoid triggering security issue -->
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-server</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-http</artifactId>
+                </exclusion>
+                <!-- Excluded this low version to avoid triggering security issue -->
+                <exclusion>
+                    <groupId>org.codehaus.jettison</groupId>
+                    <artifactId>jettison</artifactId>
+                </exclusion>
+                <!-- 
+                    Not being used, excluded to avoid triggering security issue,
+                    these libraries are part of apache-cxf, 
+                    but excluding them won't impact our project  
+                -->
                 <exclusion>
                     <groupId>org.apache.mina</groupId>
                     <artifactId>mina-core</artifactId>
@@ -1098,18 +1135,6 @@
                 <exclusion>
                     <groupId>org.apache.activemq</groupId>
                     <artifactId>activemq-client</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.eclipse.jetty</groupId>
-                    <artifactId>jetty-server</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.eclipse.jetty</groupId>
-                    <artifactId>jetty-http</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.codehaus.jettison</groupId>
-                    <artifactId>jettison</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.apache.cxf</groupId>
@@ -1136,6 +1161,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- 
+            Updated to 3.3.0 by GitHub Dependabot suggestion,
+            No issue with other 3.2.0 cxf dependencies, 
+            but we need to update all of them to 3.5.x (javax compatible version)
+            or 4.x.x (jakarta compatible version)
+        -->
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-transports-http</artifactId>
@@ -1146,6 +1177,7 @@
             <artifactId>cxf-rt-ws-security</artifactId>
             <version>3.2.0</version>
             <exclusions>
+                <!-- Not being used, excluded to avoid triggering security issue -->
                 <exclusion>
                     <groupId>org.bouncycastle</groupId>
                     <artifactId>bcprov-jdk15on</artifactId>
@@ -1157,6 +1189,7 @@
             </exclusions>
         </dependency>
 
+        <!-- Added higher version to avoid security issue, suggested by GitHub Dependabot -->
         <!-- https://mvnrepository.com/artifact/org.codehaus.jettison/jettison -->
         <dependency>
             <groupId>org.codehaus.jettison</groupId>
@@ -1204,6 +1237,7 @@
                     <groupId>org.bouncycastle</groupId>
                     <artifactId>bcprov-jdk15</artifactId>
                 </exclusion>
+                <!-- Not being used, excluded to avoid triggering security issue -->
                 <exclusion>
                     <groupId>org.bouncycastle</groupId>
                     <artifactId>bcpkix-jdk15on</artifactId>
@@ -1216,6 +1250,7 @@
                     <groupId>org.apache.cxf</groupId>
                     <artifactId>apache-cxf</artifactId>
                 </exclusion>
+                <!-- Excluded this low version to avoid triggering security issue -->
                 <exclusion>
                     <groupId>commons-net</groupId>
                     <artifactId>commons-net</artifactId>
@@ -1251,13 +1286,10 @@
                     <groupId>org.codehaus.woodstox</groupId>
                     <artifactId>woodstox-core-asl</artifactId>
                 </exclusion>
+                <!-- Not being used, excluded to avoid triggering security issue -->
                 <exclusion>
                     <groupId>org.bouncycastle</groupId>
                     <artifactId>bcprov-jdk15</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.owasp.esapi</groupId>
-                    <artifactId>esapi</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>xalan</groupId>
@@ -1274,6 +1306,11 @@
                 <exclusion>
                     <groupId>org.opensaml</groupId>
                     <artifactId>opensaml</artifactId>
+                </exclusion>
+                <!-- Excluded this low version to avoid triggering security issue -->
+                <exclusion>
+                    <groupId>org.owasp.esapi</groupId>
+                    <artifactId>esapi</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -1293,6 +1330,7 @@
             <artifactId>shic-cda</artifactId>
             <version>1.0.8</version>
             <exclusions>
+                <!-- Excluded this low version to avoid triggering security issue -->
                 <exclusion>
                     <groupId>dom4j</groupId>
                     <artifactId>dom4j</artifactId>
@@ -1300,6 +1338,7 @@
             </exclusions>
         </dependency>
 
+        <!-- Added higher version to avoid security issue, suggested by GitHub Dependabot -->
         <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
         <dependency>
             <groupId>org.dom4j</groupId>
@@ -1371,6 +1410,7 @@
             <version>3.1.0</version>
         </dependency>
 
+        <!-- Added higher version to avoid security issue, suggested by GitHub Dependabot -->
         <!-- https://mvnrepository.com/artifact/org.owasp.esapi/esapi -->
         <dependency>
             <groupId>org.owasp.esapi</groupId>
@@ -1403,6 +1443,7 @@
             <artifactId>selenium-java</artifactId>
             <version>3.141.59</version>
             <exclusions>
+                <!-- Not being used, excluded to avoid triggering security issue -->
                 <exclusion>
                     <groupId>com.squareup.okio</groupId>
                     <artifactId>okio</artifactId>
@@ -1500,10 +1541,11 @@
            <version>2.3.3</version>
            <type>pom</type>
            <exclusions>
-            <exclusion>
-                <groupId>com.fasterxml.woodstox</groupId>
-                <artifactId>woodstox-core</artifactId>
-            </exclusion>
+                <!-- Not being used, excluded to avoid triggering security issue -->
+                <exclusion>
+                    <groupId>com.fasterxml.woodstox</groupId>
+                    <artifactId>woodstox-core</artifactId>
+                </exclusion>
            </exclusions>
         </dependency>
         <dependency>
@@ -1792,45 +1834,6 @@
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
-
-            <!-- Comming soon. After spring and java upgrades -->
-            <!-- <plugin>
-                <groupId>org.apache.axis2</groupId>
-                <artifactId>axis2-wsdl2code-maven-plugin</artifactId>
-                <version>1.5.4</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>wsdl2code</goal>
-                        </goals>
-                        <configuration>
-                            <packageName>test</packageName>
-                            <wsdlFile>src/main/resources/olis.wsdl</wsdlFile>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>com.sun.tools.xjc.maven2</groupId>
-                <artifactId>maven-jaxb-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <generatePackage>ca.ssha._2005.hial</generatePackage>
-                    <schemaDirectory>${basedir}/src/main/webapp/olis</schemaDirectory>
-                    <includeSchemas>
-                        <includeSchema>response.xsd</includeSchema>
-                    </includeSchemas>
-                    <strict>true</strict>
-                    <verbose>true</verbose>
-                </configuration>
-            </plugin> -->
 
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
