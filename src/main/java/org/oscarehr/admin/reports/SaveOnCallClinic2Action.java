@@ -82,7 +82,8 @@ public class SaveOnCallClinic2Action extends ActionSupport {
             PrintWriter out = response.getWriter();
             out.print(json);
             out.flush();
-        } catch (IOException ignored) {
+        } catch (IOException e) {
+            MiscUtils.getLogger().error("Error writing response in Save method", e);
         }
 
         return null;
