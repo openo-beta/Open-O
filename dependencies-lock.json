@@ -264,6 +264,30 @@
     "optional" : false,
     "integrity" : "sha512:gAOpa0YsbQ5Ukdddpwr8whG7M+8KHGd8I5lfwiQCKarh/bYCl3u3O5joeYplkzkFLJJSp2PmsMes+cWbIRXxNQ=="
   }, {
+    "groupId" : "com.fasterxml.jackson.jaxrs",
+    "artifactId" : "jackson-jaxrs-base",
+    "version" : "2.15.2",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:Y1z10fObhQt01uJ3mWTNSGSj+P+3PnCGMpSI9nLeo3iDiuYiigeVRMt4OIyq+yYhIXnX5eQzITL/rFiScw07Ug=="
+  }, {
+    "groupId" : "com.fasterxml.jackson.jaxrs",
+    "artifactId" : "jackson-jaxrs-json-provider",
+    "version" : "2.15.2",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:Hr/94SGXnABae8hu0ElRcjYB43g7WLA7uXEZpvT01CrLXoVP7eIA27f37eq7+mbUaOUWwm3XNEt9C8Xe8A+V8g=="
+  }, {
+    "groupId" : "com.fasterxml.jackson.module",
+    "artifactId" : "jackson-module-jaxb-annotations",
+    "version" : "2.15.2",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:JStWAs5mgxg6w+3rKe4TMmUYAbs2I4DJB3ENPvbTb1NYIGnlieeHPFeecty1kO8/Xlo68yopE3YLjccWnopQrA=="
+  }, {
     "groupId" : "com.fasterxml.woodstox",
     "artifactId" : "woodstox-core",
     "version" : "5.0.3",
@@ -2321,30 +2345,6 @@
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:okcLfOY3mKkpHIGiNhD5aOJDTAqWpuvwkOFbJFqx24eMAlDKXW8boVsqjEdY1/aZbiDYoT+RDDkrv859IstJtQ=="
-  }, {
-    "groupId" : "org.codehaus.jackson",
-    "artifactId" : "jackson-core-asl",
-    "version" : "1.9.13",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:EXJdpUx8GK8LUJZ6kxeGbOnRHrlNO1L/elTGVQBw4UO1pYLemo67bWGoEE9NzX3bnC5vXDYFtpANSPUkH+ONiQ=="
-  }, {
-    "groupId" : "org.codehaus.jackson",
-    "artifactId" : "jackson-jaxrs",
-    "version" : "1.9.13",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:kWMoTC4GV1874Qpdukdvp5BSc1RuG1JFcd5c3rAsNGJ87N4kCKZBdyU0Tj9eaERZbw3OMNB9ulsx17xQwOT3QQ=="
-  }, {
-    "groupId" : "org.codehaus.jackson",
-    "artifactId" : "jackson-mapper-asl",
-    "version" : "1.9.13",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:gc15Yv2e5tI1T15E0j3h+pbQ2mZbeaD0zm+AErtGUWg65puC2q489P6xAWWKNEv01mX+/DpX7KOnIHYXMpY4cw=="
   }, {
     "groupId" : "org.codehaus.jettison",
     "artifactId" : "jettison",
