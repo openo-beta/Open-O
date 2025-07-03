@@ -174,7 +174,7 @@
 		<jaxrs:providers>
 		    <ref bean="jaxb"/>
 			<ref bean="jsonProvider"/>
-			<bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/> 
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>
 		</jaxrs:providers>
 		
 	
