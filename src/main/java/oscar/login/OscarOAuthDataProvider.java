@@ -97,7 +97,9 @@ public class OscarOAuthDataProvider implements OAuthDataProvider {
         bearerToken.setTokenKey(accessTokenString);
         bearerToken.setIssuedAt(issuedAt);
         bearerToken.setSubject(accessTokenReg.getSubject());
-        bearerToken.setScopes(accessTokenReg.getRequestedScope());
+        if (accessTokenReg.getRequestedScope() != null) {
+            bearerToken.setScopes(accessTokenReg.getRequestedScope());
+        }
         
         ServiceAccessToken sat = new ServiceAccessToken();
         ServiceClient sc = serviceClientDao.findByKey(accessTokenReg.getClient().getClientId());
@@ -125,7 +127,9 @@ public class OscarOAuthDataProvider implements OAuthDataProvider {
         bearerToken.setTokenKey(accessTokenString);
         bearerToken.setIssuedAt(issuedAt);
         bearerToken.setSubject(subject);
-        bearerToken.setScopes(scopes);
+        if (scopes != null) {
+            bearerToken.setScopes(scopes);
+        }
         
         ServiceAccessToken sat = new ServiceAccessToken();
         ServiceClient sc = serviceClientDao.findByKey(client.getClientId());
@@ -183,7 +187,9 @@ public class OscarOAuthDataProvider implements OAuthDataProvider {
         bearerToken.setTokenKey(accessTokenString);
         bearerToken.setIssuedAt(issuedAt);
         bearerToken.setSubject(subject);
-        bearerToken.setScopes(requestedScopes);
+        if (requestedScopes != null) {
+            bearerToken.setScopes(requestedScopes);
+        }
         
         ServiceAccessToken sat = new ServiceAccessToken();
         ServiceClient sc = serviceClientDao.findByKey(client.getClientId());

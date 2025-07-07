@@ -36,7 +36,9 @@ public class CustomOAuthDataProvider implements OAuthDataProvider {
     public ServerAccessToken createAccessToken(AccessTokenRegistration accessTokenReg) {
         BearerAccessToken bearerToken = new BearerAccessToken(accessTokenReg.getClient(), 3600L);
         bearerToken.setSubject(accessTokenReg.getSubject());
-        bearerToken.setScopes(accessTokenReg.getRequestedScope());
+        if (accessTokenReg.getRequestedScope() != null) {
+            bearerToken.setScopes(accessTokenReg.getRequestedScope());
+        }
         accessTokens.put(bearerToken.getTokenKey(), bearerToken);
         return bearerToken;
     }
@@ -44,7 +46,9 @@ public class CustomOAuthDataProvider implements OAuthDataProvider {
     public ServerAccessToken createAccessToken(Client client, UserSubject subject, List<String> scopes) {
         BearerAccessToken bearerToken = new BearerAccessToken(client, 3600L);
         bearerToken.setSubject(subject);
-        bearerToken.setScopes(scopes);
+        if (scopes != null) {
+            bearerToken.setScopes(scopes);
+        }
         accessTokens.put(bearerToken.getTokenKey(), bearerToken);
         return bearerToken;
     }
@@ -59,7 +63,9 @@ public class CustomOAuthDataProvider implements OAuthDataProvider {
                                                    UserSubject subject, String grantType) {
         BearerAccessToken token = new BearerAccessToken(client, 3600L);
         token.setSubject(subject);
-        token.setScopes(requestedScopes);
+        if (requestedScopes != null) {
+            token.setScopes(requestedScopes);
+        }
         accessTokens.put(token.getTokenKey(), token);
         return token;
     }
