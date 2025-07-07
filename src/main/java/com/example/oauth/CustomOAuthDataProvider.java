@@ -75,7 +75,7 @@ public class CustomOAuthDataProvider implements OAuthDataProvider {
     }
 
     @Override
-    public List<ServerAccessToken> getRefreshTokens(Client client, UserSubject subject) {
+    public List<RefreshToken> getRefreshTokens(Client client, UserSubject subject) {
         return Collections.emptyList();
     }
 
