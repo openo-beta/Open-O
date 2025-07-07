@@ -2,7 +2,6 @@ package com.example.oauth;
 
 import org.apache.cxf.rs.security.oauth2.filters.OAuthRequestFilter;
 import org.apache.cxf.rs.security.oauth2.provider.AccessTokenValidator;
-import org.apache.cxf.rs.security.oauth2.provider.DefaultAccessTokenValidator;
 import org.apache.cxf.rs.security.oauth2.provider.OAuthDataProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +18,8 @@ public class OAuth2Config {
 
     @Bean
     public AccessTokenValidator accessTokenValidator() {
-        DefaultAccessTokenValidator validator = new DefaultAccessTokenValidator();
+        // Use the basic AccessTokenValidator implementation
+        AccessTokenValidator validator = new AccessTokenValidator();
         validator.setDataProvider(oauthDataProvider());
         return validator;
     }

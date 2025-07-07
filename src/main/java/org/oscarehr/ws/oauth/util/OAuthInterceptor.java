@@ -40,8 +40,8 @@ import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.PhaseInterceptor;
 import org.apache.cxf.phase.Phase;
-import org.apache.cxf.rs.security.oauth.filters.OAuthRequestFilter;
-import org.apache.cxf.rs.security.oauth.data.OAuthContext;
+import org.apache.cxf.rs.security.oauth2.filters.OAuthRequestFilter;
+import org.apache.cxf.rs.security.oauth2.common.OAuthContext;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +75,7 @@ public class OAuthInterceptor extends OAuthRequestFilter implements PhaseInterce
         if (oc == null) {
             return;
         }
-        String providerNo = oc.getSubject().getLogin();
+        String providerNo = oc.getSubject().getId();
 
         // Create a new provider directly from the Dao with the providerNo.
         // We can trust this number as it was authenticated from OAuth.
