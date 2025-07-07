@@ -1,6 +1,7 @@
 package com.example.oauth;
 
 import org.apache.cxf.rs.security.oauth2.common.AccessToken;
+import org.apache.cxf.rs.security.oauth2.common.AccessTokenRegistration;
 import org.apache.cxf.rs.security.oauth2.common.Client;
 import org.apache.cxf.rs.security.oauth2.common.OAuthPermission;
 import org.apache.cxf.rs.security.oauth2.common.ServerAccessToken;
@@ -29,6 +30,15 @@ public class CustomOAuthDataProvider implements OAuthDataProvider {
     @Override
     public Client getClient(String clientId) {
         return clients.get(clientId);
+    }
+
+    @Override
+    public ServerAccessToken createAccessToken(AccessTokenRegistration accessTokenReg) {
+        BearerAccessToken bearerToken = new BearerAccessToken(accessTokenReg.getClient(), 3600L);
+        bearerToken.setSubject(accessTokenReg.getSubject());
+        bearerToken.setScopes(accessTokenReg.getRequestedScope());
+        accessTokens.put(bearerToken.getTokenKey(), bearerToken);
+        return bearerToken;
     }
 
     public ServerAccessToken createAccessToken(Client client, UserSubject subject, List<String> scopes) {

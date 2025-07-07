@@ -34,6 +34,7 @@ import java.util.UUID;
 import org.oscarehr.common.dao.ServiceRequestTokenDaoImpl;
 
 import org.apache.cxf.rs.security.oauth2.common.AccessToken;
+import org.apache.cxf.rs.security.oauth2.common.AccessTokenRegistration;
 import org.apache.cxf.rs.security.oauth2.common.Client;
 import org.apache.cxf.rs.security.oauth2.common.OAuthPermission;
 import org.apache.cxf.rs.security.oauth2.common.ServerAccessToken;
@@ -85,6 +86,35 @@ public class OscarOAuthDataProvider implements OAuthDataProvider {
             return client;
         }
         return null;
+    }
+
+    @Override
+    public ServerAccessToken createAccessToken(AccessTokenRegistration accessTokenReg) throws OAuthServiceException {
+        logger.debug("createAccessToken() called");
+        String accessTokenString = UUID.randomUUID().toString();
+        long issuedAt = System.currentTimeMillis() / 1000;
+        BearerAccessToken bearerToken = new BearerAccessToken(accessTokenReg.getClient(), 3600L);
+        bearerToken.setTokenKey(accessTokenString);
+        bearerToken.setIssuedAt(issuedAt);
+        bearerToken.setSubject(accessTokenReg.getSubject());
+        bearerToken.setScopes(accessTokenReg.getRequestedScope());
+        
+        ServiceAccessToken sat = new ServiceAccessToken();
+        ServiceClient sc = serviceClientDao.findByKey(accessTokenReg.getClient().getClientId());
+        sat.setClientId(sc.getId());
+        sat.setDateCreated(new Date());
+        sat.setIssued(issuedAt);
+        sat.setLifetime(3600);
+        sat.setTokenId(accessTokenString);
+        sat.setTokenSecret(""); // OAuth2 doesn't use token secrets
+        if (accessTokenReg.getSubject() != null) {
+            sat.setProviderNo(accessTokenReg.getSubject().getId());
+        }
+        if (accessTokenReg.getRequestedScope() != null && !accessTokenReg.getRequestedScope().isEmpty()) {
+            sat.setScopes(String.join(" ", accessTokenReg.getRequestedScope()));
+        }
+        serviceAccessTokenDao.persist(sat);
+        return bearerToken;
     }
 
     public ServerAccessToken createAccessToken(Client client, UserSubject subject, List<String> scopes) throws OAuthServiceException {
