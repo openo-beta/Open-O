@@ -1,7 +1,6 @@
 package com.example.oauth;
 
 import org.apache.cxf.rs.security.oauth2.filters.OAuthRequestFilter;
-import org.apache.cxf.rs.security.oauth2.provider.AccessTokenValidator;
 import org.apache.cxf.rs.security.oauth2.provider.OAuthDataProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,13 +15,6 @@ public class OAuth2Config {
         return new CustomOAuthDataProvider();
     }
 
-    @Bean
-    public AccessTokenValidator accessTokenValidator() {
-        // Use the basic AccessTokenValidator implementation
-        AccessTokenValidator validator = new AccessTokenValidator();
-        validator.setDataProvider(oauthDataProvider());
-        return validator;
-    }
 
     @Bean
     public OAuthRequestFilter oauthRequestFilter() {
@@ -35,7 +27,6 @@ public class OAuth2Config {
     public SecureService secureService() {
         SecureService service = new SecureService();
         service.setDataProvider(oauthDataProvider());
-        service.setTokenValidator(accessTokenValidator());
         return service;
     }
 }

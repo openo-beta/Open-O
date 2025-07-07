@@ -41,6 +41,7 @@ import org.apache.cxf.rs.security.oauth2.common.UserSubject;
 import org.apache.cxf.rs.security.oauth2.provider.OAuthDataProvider;
 import org.apache.cxf.rs.security.oauth2.provider.OAuthServiceException;
 import org.apache.cxf.rs.security.oauth2.tokens.bearer.BearerAccessToken;
+import org.apache.cxf.rs.security.oauth2.tokens.refresh.RefreshToken;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.ServiceAccessTokenDao;
 import org.oscarehr.common.dao.ServiceClientDao;
@@ -80,36 +81,35 @@ public class OscarOAuthDataProvider implements OAuthDataProvider {
         if (sc != null) {
             Client client = new Client(sc.getKey(), sc.getSecret(), true);
             client.setApplicationName(sc.getName());
-            client.setApplicationURI(sc.getUri());
+            // setApplicationURI method doesn't exist in OAuth2 Client
             return client;
         }
         return null;
     }
 
-    @Override
-    public ServerAccessToken createAccessToken(AccessToken token) throws OAuthServiceException {
+    public ServerAccessToken createAccessToken(Client client, UserSubject subject, List<String> scopes) throws OAuthServiceException {
         logger.debug("createAccessToken() called");
         String accessTokenString = UUID.randomUUID().toString();
         long issuedAt = System.currentTimeMillis() / 1000;
-        BearerAccessToken bearerToken = new BearerAccessToken(token.getClient(), 3600L);
+        BearerAccessToken bearerToken = new BearerAccessToken(client, 3600L);
         bearerToken.setTokenKey(accessTokenString);
         bearerToken.setIssuedAt(issuedAt);
-        bearerToken.setSubject(token.getSubject());
-        bearerToken.setScopes(token.getScopes());
+        bearerToken.setSubject(subject);
+        bearerToken.setScopes(scopes);
         
         ServiceAccessToken sat = new ServiceAccessToken();
-        ServiceClient sc = serviceClientDao.findByKey(token.getClient().getClientId());
+        ServiceClient sc = serviceClientDao.findByKey(client.getClientId());
         sat.setClientId(sc.getId());
         sat.setDateCreated(new Date());
         sat.setIssued(issuedAt);
         sat.setLifetime(3600);
         sat.setTokenId(accessTokenString);
         sat.setTokenSecret(""); // OAuth2 doesn't use token secrets
-        if (token.getSubject() != null) {
-            sat.setProviderNo(token.getSubject().getId());
+        if (subject != null) {
+            sat.setProviderNo(subject.getId());
         }
-        if (token.getScopes() != null && !token.getScopes().isEmpty()) {
-            sat.setScopes(String.join(" ", token.getScopes()));
+        if (scopes != null && !scopes.isEmpty()) {
+            sat.setScopes(String.join(" ", scopes));
         }
         serviceAccessTokenDao.persist(sat);
         return bearerToken;
@@ -200,7 +200,7 @@ public class OscarOAuthDataProvider implements OAuthDataProvider {
     }
 
     @Override
-    public List<ServerAccessToken> getRefreshTokens(Client client, UserSubject subject) {
+    public List<RefreshToken> getRefreshTokens(Client client, UserSubject subject) {
         return Collections.emptyList();
     }
 

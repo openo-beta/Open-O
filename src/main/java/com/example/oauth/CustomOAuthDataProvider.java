@@ -7,6 +7,7 @@ import org.apache.cxf.rs.security.oauth2.common.ServerAccessToken;
 import org.apache.cxf.rs.security.oauth2.common.UserSubject;
 import org.apache.cxf.rs.security.oauth2.provider.OAuthDataProvider;
 import org.apache.cxf.rs.security.oauth2.tokens.bearer.BearerAccessToken;
+import org.apache.cxf.rs.security.oauth2.tokens.refresh.RefreshToken;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,11 +31,10 @@ public class CustomOAuthDataProvider implements OAuthDataProvider {
         return clients.get(clientId);
     }
 
-    @Override
-    public ServerAccessToken createAccessToken(AccessToken token) {
-        BearerAccessToken bearerToken = new BearerAccessToken(token.getClient(), 3600L);
-        bearerToken.setSubject(token.getSubject());
-        bearerToken.setScopes(token.getScopes());
+    public ServerAccessToken createAccessToken(Client client, UserSubject subject, List<String> scopes) {
+        BearerAccessToken bearerToken = new BearerAccessToken(client, 3600L);
+        bearerToken.setSubject(subject);
+        bearerToken.setScopes(scopes);
         accessTokens.put(bearerToken.getTokenKey(), bearerToken);
         return bearerToken;
     }
