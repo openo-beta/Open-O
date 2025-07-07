@@ -231,7 +231,6 @@ public class OscarOAuthDataProvider implements OAuthDataProvider {
         return Collections.emptyList();
     }
 
-    @Override
     public ServerAccessToken refreshAccessToken(Client client, String refreshToken, List<String> requestedScopes) throws OAuthServiceException {
         return null;
     }

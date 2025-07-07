@@ -92,7 +92,6 @@ public class CustomOAuthDataProvider implements OAuthDataProvider {
         return Collections.emptyList();
     }
 
-    @Override
     public ServerAccessToken refreshAccessToken(Client client, String refreshToken, List<String> requestedScopes) {
         return null;
     }

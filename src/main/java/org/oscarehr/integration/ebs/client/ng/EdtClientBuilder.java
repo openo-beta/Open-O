@@ -287,7 +287,6 @@ public class EdtClientBuilder {
 
 		Map<String, Object> outProps = newWSSOutInterceptorConfiguration();
 		WSS4JOutInterceptor wssOut = new WSS4JOutInterceptor(outProps);
-		wssOut.setAllowMTOM(true);
 		client.getEndpoint().getOutInterceptors().add(wssOut);
 	}
 
