@@ -88,6 +88,8 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequestWrapper;
 
 public class CaseManagementEntry2Action extends ActionSupport {
 
@@ -1213,6 +1215,99 @@ public class CaseManagementEntry2Action extends ActionSupport {
             return null;
         }
 
+        // Check if this is an AJAX request from CPP overlay
+        // CPP overlay saves have containerDiv (divR1I1, divR1I2, etc.) and reloadUrl parameters
+        String containerDiv = request.getParameter("containerDiv");
+        String reloadUrl = request.getParameter("reloadUrl");
+        
+        // Only apply special handling for CPP overlay AJAX requests
+        if (containerDiv != null && !containerDiv.isEmpty() && 
+            reloadUrl != null && !reloadUrl.isEmpty() &&
+            (containerDiv.startsWith("divR") || containerDiv.contains("cpp"))) {
+            
+            // For AJAX CPP updates, we need to call the listNotes method directly
+            // Parse the parameters from the reload URL
+            String issueCode = "";
+            String title = "";
+            
+            if (reloadUrl.contains("issue_code=")) {
+                int start = reloadUrl.indexOf("issue_code=") + 11;
+                int end = reloadUrl.indexOf("&", start);
+                if (end == -1) end = reloadUrl.length();
+                issueCode = reloadUrl.substring(start, end);
+            }
+            
+            if (reloadUrl.contains("title=")) {
+                int start = reloadUrl.indexOf("title=") + 6;
+                int end = reloadUrl.indexOf("&", start);
+                if (end == -1) end = reloadUrl.length();
+                title = reloadUrl.substring(start, end);
+            }
+            
+            // For CPP AJAX updates, we need to return just the CPP content
+            // The JavaScript expects to update the div with the response directly
+            // Parse out all necessary parameters from reloadUrl
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("issue_code", issueCode);
+            params.put("title", title);
+            params.put("cmd", containerDiv);
+            params.put("demographicNo", demo);
+            params.put("providerNo", providerNo);
+            params.put("method", "listNotes");
+            
+            // Parse any additional parameters from the reload URL
+            if (reloadUrl.contains("?")) {
+                String queryString = reloadUrl.substring(reloadUrl.indexOf("?") + 1);
+                String[] pairs = queryString.split("&");
+                for (String pair : pairs) {
+                    int idx = pair.indexOf("=");
+                    if (idx > 0 && idx < pair.length() - 1) {
+                        String key = pair.substring(0, idx);
+                        String value = pair.substring(idx + 1);
+                        // Don't override params we've already set
+                        if (!params.containsKey(key)) {
+                            params.put(key, value);
+                        }
+                    }
+                }
+            }
+            
+            // For CPP AJAX updates, we need to redirect with the ajaxview parameter
+            // This tells CaseManagementView to return just the partial content
+            try {
+                // Build redirect URL with all necessary parameters
+                StringBuilder redirectUrl = new StringBuilder();
+                redirectUrl.append(request.getContextPath());
+                redirectUrl.append("/CaseManagementView.do?");
+                redirectUrl.append("method=listNotes");
+                redirectUrl.append("&ajaxview=listNotes");  // This is the key parameter!
+                redirectUrl.append("&issue_code=").append(issueCode);
+                redirectUrl.append("&title=").append(java.net.URLEncoder.encode(title, "UTF-8"));
+                redirectUrl.append("&cmd=").append(containerDiv);
+                redirectUrl.append("&demographicNo=").append(demo);
+                redirectUrl.append("&providerNo=").append(providerNo);
+                
+                // Include any other parameters from the original reload URL
+                if (reloadUrl.contains("?") && reloadUrl.contains("&")) {
+                    String queryString = reloadUrl.substring(reloadUrl.indexOf("?") + 1);
+                    String[] pairs = queryString.split("&");
+                    for (String pair : pairs) {
+                        if (!pair.startsWith("method=") && !pair.startsWith("issue_code=") && 
+                            !pair.startsWith("title=") && !pair.startsWith("cmd=") && 
+                            !pair.startsWith("demographicNo=") && !pair.startsWith("providerNo=")) {
+                            redirectUrl.append("&").append(pair);
+                        }
+                    }
+                }
+                
+                response.sendRedirect(redirectUrl.toString());
+                return null;
+            } catch (Exception e) {
+                logger.error("Error redirecting for CPP response", e);
+            }
+        }
+
+        // For non-AJAX saves, return the standard redirect
         return "listCPPNotes";
     }
 
