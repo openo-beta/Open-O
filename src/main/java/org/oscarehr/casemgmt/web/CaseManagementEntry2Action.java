@@ -1247,13 +1247,13 @@ public class CaseManagementEntry2Action extends ActionSupport {
             // For CPP AJAX updates, we need to return just the CPP content
             // The JavaScript expects to update the div with the response directly
             // Parse out all necessary parameters from reloadUrl
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("issue_code", issueCode);
-            params.put("title", title);
-            params.put("cmd", containerDiv);
-            params.put("demographicNo", demo);
-            params.put("providerNo", providerNo);
-            params.put("method", "listNotes");
+            Map<String, String> urlParams = new HashMap<String, String>();
+            urlParams.put("issue_code", issueCode);
+            urlParams.put("title", title);
+            urlParams.put("cmd", containerDiv);
+            urlParams.put("demographicNo", demo);
+            urlParams.put("providerNo", providerNo);
+            urlParams.put("method", "listNotes");
             
             // Parse any additional parameters from the reload URL
             if (reloadUrl.contains("?")) {
@@ -1265,8 +1265,8 @@ public class CaseManagementEntry2Action extends ActionSupport {
                         String key = pair.substring(0, idx);
                         String value = pair.substring(idx + 1);
                         // Don't override params we've already set
-                        if (!params.containsKey(key)) {
-                            params.put(key, value);
+                        if (!urlParams.containsKey(key)) {
+                            urlParams.put(key, value);
                         }
                     }
                 }
