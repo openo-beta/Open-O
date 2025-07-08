@@ -200,8 +200,10 @@ public class OscarOAuthDataProvider implements OAuthDataProvider {
         return bearerToken;
     }
 
-    @Override
-    public void removeAccessToken(ServerAccessToken token) throws OAuthServiceException {
+    //This was made private since the new 3.5.10 does not contain this method
+    //Also doesn't seem to be used anywhere in the codebase
+    // @Override
+    private void removeAccessToken(ServerAccessToken token) throws OAuthServiceException {
         ServiceAccessToken sat = serviceAccessTokenDao.findByTokenId(token.getTokenKey());
         if (sat != null) {
             serviceAccessTokenDao.remove(sat);

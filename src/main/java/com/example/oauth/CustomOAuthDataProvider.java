@@ -1,12 +1,12 @@
 package com.example.oauth;
 
-import org.apache.cxf.rs.security.oauth2.common.AccessToken;
 import org.apache.cxf.rs.security.oauth2.common.AccessTokenRegistration;
 import org.apache.cxf.rs.security.oauth2.common.Client;
 import org.apache.cxf.rs.security.oauth2.common.OAuthPermission;
 import org.apache.cxf.rs.security.oauth2.common.ServerAccessToken;
 import org.apache.cxf.rs.security.oauth2.common.UserSubject;
 import org.apache.cxf.rs.security.oauth2.provider.OAuthDataProvider;
+import org.apache.cxf.rs.security.oauth2.provider.OAuthServiceException;
 import org.apache.cxf.rs.security.oauth2.tokens.bearer.BearerAccessToken;
 import org.apache.cxf.rs.security.oauth2.tokens.refresh.RefreshToken;
 
@@ -67,8 +67,10 @@ public class CustomOAuthDataProvider implements OAuthDataProvider {
         return token;
     }
 
-    @Override
-    public void removeAccessToken(ServerAccessToken token) {
+    //This was made private since the new 3.5.10 does not contain this method
+    // Also doesn't seem to be used anywhere in the codebase
+    // @Override
+    private void removeAccessToken(ServerAccessToken token) throws OAuthServiceException {
         accessTokens.remove(token.getTokenKey());
     }
 

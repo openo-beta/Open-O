@@ -28,6 +28,7 @@
         <slf4j.version>1.7.32</slf4j.version>
         <hapifhir.version>5.4.0</hapifhir.version>
         <struts.version>1.3.11</struts.version>
+        <cxf.version>3.5.10</cxf.version>
     </properties>
 
     <repositories>
@@ -505,6 +506,13 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.12.7.2</version>
         </dependency>
+        <!-- Added -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <version>2.12.7</version>
+        </dependency>
+
         <dependency>
             <groupId>net.sourceforge.barbecue</groupId>
             <artifactId>barbecue</artifactId>
@@ -936,7 +944,7 @@
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>apache-cxf</artifactId>
-            <version>3.2.0</version>
+            <version>${cxf.version}</version>
             <type>pom</type>
             <exclusions>
                 <exclusion>
@@ -980,7 +988,7 @@
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-frontend-jaxws</artifactId>
-            <version>3.2.0</version>
+            <version>${cxf.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.codehaus.woodstox</groupId>
@@ -991,12 +999,27 @@
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-transports-http</artifactId>
-            <version>3.2.0</version>
+            <version>${cxf.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-core</artifactId>
-            <version>3.5.10</version>
+            <version>${cxf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-rs-security-oauth2</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-rs-client</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-rs-extension-providers</artifactId>
+            <version>${cxf.version}</version>
         </dependency>
 
         <dependency>
