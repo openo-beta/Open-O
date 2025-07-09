@@ -31,7 +31,7 @@ package org.oscarehr.ws.oauth;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.cxf.rs.security.oauth2.common.OAuthContext;
+import org.apache.cxf.rs.security.oauth.data.OAuthContext;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.PhaseInterceptorChain;
