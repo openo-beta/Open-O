@@ -59,13 +59,13 @@ public class OAuthStatusService extends AbstractServiceImpl {
             JsonConfig config = new JsonConfig();
             config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
 
-            String login = getOAuthContext().getSubject().getLogin();
-            List<String> roles = getOAuthContext().getSubject().getRoles();
-
+            // Get OAuth provider number from request context
+            String providerNo = getOAuthProviderNo();
+            
             JSONObject obj = new JSONObject();
             obj.put("provider", JSONObject.fromObject(provider, config));
-            obj.put("login", login);
-            obj.put("roles", roles);
+            obj.put("login", providerNo != null ? providerNo : provider.getProviderNo());
+            obj.put("roles", java.util.Arrays.asList("provider")); // Default role for OAuth authenticated users
 
             return obj.toString();
 
