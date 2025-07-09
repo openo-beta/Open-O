@@ -271,7 +271,7 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 							href="javascript:popupOscarRx(700,960,'../../oscarEncounter/ViewRequest.do?de=<%=demo%>&requestId=<%=id%>')">
 						<%=patient%> </a></td>
 						<td class="stat<%=status%>"><%=Encode.forHtmlContent(provider)%></td>
-						<td class="stat<%=status%>"><%=Encode.forHtmlContent(cProv.getFormattedName())%></td>
+						<td class="stat<%=status%>"><%=(cProv != null) ? Encode.forHtmlContent(cProv.getFormattedName()) : ""%></td>
 						<td class="stat<%=status%>">
 							<a href="javascript:popupOscarRx(700,960,'../../oscarEncounter/ViewRequest.do?de=<%=demo%>&requestId=<%=id%>')">
 								<%=Encode.forHtmlContent(StringUtils.trimToEmpty(service))%>
