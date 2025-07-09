@@ -26,23 +26,23 @@ package oscar.login;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import org.oscarehr.common.dao.ServiceRequestTokenDaoImpl;
 
-import org.apache.cxf.rs.security.oauth2.common.AccessToken;
-import org.apache.cxf.rs.security.oauth2.common.AccessTokenRegistration;
-import org.apache.cxf.rs.security.oauth2.common.Client;
-import org.apache.cxf.rs.security.oauth2.common.OAuthPermission;
-import org.apache.cxf.rs.security.oauth2.common.ServerAccessToken;
-import org.apache.cxf.rs.security.oauth2.common.UserSubject;
-import org.apache.cxf.rs.security.oauth2.provider.OAuthDataProvider;
-import org.apache.cxf.rs.security.oauth2.provider.OAuthServiceException;
-import org.apache.cxf.rs.security.oauth2.tokens.bearer.BearerAccessToken;
-import org.apache.cxf.rs.security.oauth2.tokens.refresh.RefreshToken;
+import org.apache.cxf.rs.security.oauth.data.AccessToken;
+import org.apache.cxf.rs.security.oauth.data.AccessTokenRegistration;
+import org.apache.cxf.rs.security.oauth.data.AuthorizationInput;
+import org.apache.cxf.rs.security.oauth.data.Client;
+import org.apache.cxf.rs.security.oauth.data.OAuthPermission;
+import org.apache.cxf.rs.security.oauth.data.RequestToken;
+import org.apache.cxf.rs.security.oauth.data.RequestTokenRegistration;
+import org.apache.cxf.rs.security.oauth.data.Token;
+import org.apache.cxf.rs.security.oauth.data.UserSubject;
+import org.apache.cxf.rs.security.oauth.provider.OAuthDataProvider;
+import org.apache.cxf.rs.security.oauth.provider.OAuthServiceException;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.ServiceAccessTokenDao;
 import org.oscarehr.common.dao.ServiceClientDao;
@@ -76,164 +76,148 @@ public class OscarOAuthDataProvider implements OAuthDataProvider {
     //private ServiceClientDao serviceClientDao = SpringUtils.getBean(ServiceClientDao.class);
 
     @Override
-    public Client getClient(String clientId) {
+    public Client getClient(String clientId) throws OAuthServiceException {
         logger.debug("getClient() called");
         ServiceClient sc = serviceClientDao.findByKey(clientId);
         if (sc != null) {
-            Client client = new Client(sc.getKey(), sc.getSecret(), true);
-            client.setApplicationName(sc.getName());
-            // setApplicationURI method doesn't exist in OAuth2 Client
-            return client;
+            return new Client(sc.getKey(), sc.getSecret(), sc.getName(), sc.getUri());
         }
         return null;
     }
 
     @Override
-    public ServerAccessToken createAccessToken(AccessTokenRegistration accessTokenReg) throws OAuthServiceException {
-        logger.debug("createAccessToken() called");
-        String accessTokenString = UUID.randomUUID().toString();
-        long issuedAt = System.currentTimeMillis() / 1000;
-        BearerAccessToken bearerToken = new BearerAccessToken(accessTokenReg.getClient(), 3600L);
-        bearerToken.setTokenKey(accessTokenString);
-        bearerToken.setIssuedAt(issuedAt);
-        bearerToken.setSubject(accessTokenReg.getSubject());
-        // Note: setScopes expects List<OAuthPermission>, not List<String>
-        // For now, we'll store scopes in the database but not set them on the token
-        
-        ServiceAccessToken sat = new ServiceAccessToken();
-        ServiceClient sc = serviceClientDao.findByKey(accessTokenReg.getClient().getClientId());
-        sat.setClientId(sc.getId());
-        sat.setDateCreated(new Date());
-        sat.setIssued(issuedAt);
-        sat.setLifetime(3600);
-        sat.setTokenId(accessTokenString);
-        sat.setTokenSecret(""); // OAuth2 doesn't use token secrets
-        if (accessTokenReg.getSubject() != null) {
-            sat.setProviderNo(accessTokenReg.getSubject().getId());
+    public RequestToken createRequestToken(RequestTokenRegistration reg) throws OAuthServiceException {
+        logger.debug("createRequestToken() called");
+        String tokenId = UUID.randomUUID().toString();
+        String tokenSecret = UUID.randomUUID().toString();
+        RequestToken rt = new RequestToken(reg.getClient(), tokenId, tokenSecret);
+        StringBuilder sb = new StringBuilder();
+        List<OAuthPermission> perms = new ArrayList<>();
+        for (String scope : reg.getScopes()) {
+            OAuthPermission p = new OAuthPermission(scope, scope);
+            perms.add(p);
+            sb.append(scope).append(" ");
         }
-        if (accessTokenReg.getRequestedScope() != null && !accessTokenReg.getRequestedScope().isEmpty()) {
-            sat.setScopes(String.join(" ", accessTokenReg.getRequestedScope()));
-        }
-        serviceAccessTokenDao.persist(sat);
-        return bearerToken;
-    }
-
-    public ServerAccessToken createAccessToken(Client client, UserSubject subject, List<String> scopes) throws OAuthServiceException {
-        logger.debug("createAccessToken() called");
-        String accessTokenString = UUID.randomUUID().toString();
-        long issuedAt = System.currentTimeMillis() / 1000;
-        BearerAccessToken bearerToken = new BearerAccessToken(client, 3600L);
-        bearerToken.setTokenKey(accessTokenString);
-        bearerToken.setIssuedAt(issuedAt);
-        bearerToken.setSubject(subject);
-        // Note: setScopes expects List<OAuthPermission>, not List<String>
-        // For now, we'll store scopes in the database but not set them on the token
-        
-        ServiceAccessToken sat = new ServiceAccessToken();
-        ServiceClient sc = serviceClientDao.findByKey(client.getClientId());
-        sat.setClientId(sc.getId());
-        sat.setDateCreated(new Date());
-        sat.setIssued(issuedAt);
-        sat.setLifetime(3600);
-        sat.setTokenId(accessTokenString);
-        sat.setTokenSecret(""); // OAuth2 doesn't use token secrets
-        if (subject != null) {
-            sat.setProviderNo(subject.getId());
-        }
-        if (scopes != null && !scopes.isEmpty()) {
-            sat.setScopes(String.join(" ", scopes));
-        }
-        serviceAccessTokenDao.persist(sat);
-        return bearerToken;
+        rt.setScopes(perms);
+        rt.setCallback(reg.getCallback());
+        ServiceRequestToken srt = new ServiceRequestToken();
+        srt.setCallback(rt.getCallback());
+        srt.setClientId(serviceClientDao.findByKey(rt.getClient().getConsumerKey()).getId());
+        srt.setDateCreated(new Date());
+        srt.setTokenId(rt.getTokenKey());
+        srt.setTokenSecret(rt.getTokenSecret());
+        srt.setScopes(sb.toString().trim());
+        serviceRequestTokenDao.persist(srt);
+        return rt;
     }
 
     @Override
-    public ServerAccessToken getAccessToken(String accessToken) throws OAuthServiceException {
+    public RequestToken getRequestToken(String requestToken) throws OAuthServiceException {
+        logger.debug("getRequestToken() called");
+        ServiceRequestToken serviceToken = serviceRequestTokenDao.findByTokenId(requestToken);
+        if (serviceToken != null) {
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.HOUR, -1);
+            Date oneHourAgo = cal.getTime();
+            if (serviceToken.getDateCreated().before(oneHourAgo)) {
+                serviceRequestTokenDao.remove(serviceToken);
+                return null;
+            }
+            ServiceClient sc = serviceClientDao.find(serviceToken.getClientId());
+            Client newClient = new Client(sc.getKey(), sc.getSecret(), sc.getName(), sc.getUri());
+            RequestToken rt = new RequestToken(newClient, serviceToken.getTokenId(), serviceToken.getTokenSecret());
+            List<OAuthPermission> perms = new ArrayList<>();
+            String[] scopes = serviceToken.getScopes().split(" ");
+            for (String scope : scopes) {
+                OAuthPermission p = new OAuthPermission(scope, scope);
+                perms.add(p);
+            }
+            rt.setScopes(perms);
+            rt.setCallback(serviceToken.getCallback());
+            rt.setVerifier(serviceToken.getVerifier());
+            return rt;
+        }
+        return null;
+    }
+
+    @Override
+    public String finalizeAuthorization(AuthorizationInput data) throws OAuthServiceException {
+        logger.debug("finalizeAuthorization() called");
+        RequestToken requestToken = data.getToken();
+        requestToken.setVerifier(UUID.randomUUID().toString());
+        ServiceRequestToken srt = serviceRequestTokenDao.findByTokenId(requestToken.getTokenKey());
+        if (srt != null) {
+            srt.setVerifier(requestToken.getVerifier());
+            serviceRequestTokenDao.merge(srt);
+        }
+        return requestToken.getVerifier();
+    }
+
+    @Override
+    public AccessToken createAccessToken(AccessTokenRegistration reg) throws OAuthServiceException {
+        logger.debug("createAccessToken() called");
+        RequestToken requestToken = reg.getRequestToken();
+        Client client = requestToken.getClient();
+        ServiceRequestToken srt = serviceRequestTokenDao.findByTokenId(requestToken.getTokenKey());
+        if (srt == null) {
+            throw new OAuthServiceException("Invalid request token.");
+        }
+        String accessTokenString = UUID.randomUUID().toString();
+        String tokenSecretString = UUID.randomUUID().toString();
+        long issuedAt = System.currentTimeMillis() / 1000;
+        AccessToken accessToken = new AccessToken(client, accessTokenString,
+                tokenSecretString, 3600, issuedAt);
+        UserSubject subject = new UserSubject(srt.getProviderNo(), new ArrayList<>());
+        accessToken.setSubject(subject);
+        accessToken.getClient().setLoginName(srt.getProviderNo());
+        accessToken.setScopes(requestToken.getScopes());
+        ServiceAccessToken sat = new ServiceAccessToken();
+        ServiceClient sc = serviceClientDao.findByKey(client.getConsumerKey());
+        sat.setClientId(sc.getId());
+        sat.setDateCreated(new Date());
+        sat.setIssued(issuedAt);
+        sat.setLifetime(3600); // Assuming lifetime is 3600 seconds or should be set as per your application logic
+        sat.setTokenId(accessTokenString);
+        sat.setTokenSecret(tokenSecretString);
+        sat.setProviderNo(srt.getProviderNo());
+        sat.setScopes(String.join(" ", requestToken.getScopes().stream().map(OAuthPermission::getPermission).toArray(String[]::new)));
+        serviceAccessTokenDao.persist(sat);
+        serviceRequestTokenDao.remove(srt); // Correctly removing the entity
+        return accessToken;
+    }
+
+    @Override
+    public AccessToken getAccessToken(String accessToken) throws OAuthServiceException {
         ServiceAccessToken sat = serviceAccessTokenDao.findByTokenId(accessToken);
         if (sat == null) {
-            return null;
+            throw new OAuthServiceException("Invalid access token.");
         }
         ServiceClient sc = serviceClientDao.find(sat.getClientId());
         Client c = getClient(sc.getKey());
-        BearerAccessToken bearerToken = new BearerAccessToken(c, sat.getLifetime());
-        bearerToken.setTokenKey(sat.getTokenId());
-        bearerToken.setIssuedAt(sat.getIssued());
-        
-        if (sat.getProviderNo() != null) {
-            UserSubject subject = new UserSubject(sat.getProviderNo());
-            bearerToken.setSubject(subject);
+        AccessToken accessTokenObj = new AccessToken(c, sat.getTokenId(),
+                sat.getTokenSecret(), sat.getLifetime(), sat.getIssued());
+        UserSubject subject = new UserSubject(sat.getProviderNo(), new ArrayList<>());
+        accessTokenObj.setSubject(subject);
+        accessTokenObj.getClient().setLoginName(sat.getProviderNo());
+        List<OAuthPermission> perms = new ArrayList<>();
+        String[] scopes = sat.getScopes().split(" ");
+        for (String scope : scopes) {
+            OAuthPermission p = new OAuthPermission(scope, scope);
+            perms.add(p);
         }
-        
-        // Note: setScopes expects List<OAuthPermission>, not List<String>
-        // Scopes are stored in the database but not set on the token for now
-        
-        return bearerToken;
+        accessTokenObj.setScopes(perms);
+        return accessTokenObj;
     }
 
     @Override
-    public ServerAccessToken getPreauthorizedToken(Client client, List<String> requestedScopes, 
-                                                   UserSubject subject, String grantType) throws OAuthServiceException {
-        String accessTokenString = UUID.randomUUID().toString();
-        long issuedAt = System.currentTimeMillis() / 1000;
-        BearerAccessToken bearerToken = new BearerAccessToken(client, 3600L);
-        bearerToken.setTokenKey(accessTokenString);
-        bearerToken.setIssuedAt(issuedAt);
-        bearerToken.setSubject(subject);
-        // Note: setScopes expects List<OAuthPermission>, not List<String>
-        // For now, we'll store scopes in the database but not set them on the token
-        
-        ServiceAccessToken sat = new ServiceAccessToken();
-        ServiceClient sc = serviceClientDao.findByKey(client.getClientId());
-        sat.setClientId(sc.getId());
-        sat.setDateCreated(new Date());
-        sat.setIssued(issuedAt);
-        sat.setLifetime(3600);
-        sat.setTokenId(accessTokenString);
-        sat.setTokenSecret("");
-        if (subject != null) {
-            sat.setProviderNo(subject.getId());
+    public void removeToken(Token token) throws OAuthServiceException {
+        ServiceRequestToken srt = serviceRequestTokenDao.findByTokenId(token.getTokenKey());
+        if (srt != null) {
+            serviceRequestTokenDao.remove(srt);
         }
-        if (requestedScopes != null && !requestedScopes.isEmpty()) {
-            sat.setScopes(String.join(" ", requestedScopes));
-        }
-        serviceAccessTokenDao.persist(sat);
-        return bearerToken;
-    }
-
-    //This was made private since the new 3.5.10 does not contain this method
-    //Also doesn't seem to be used anywhere in the codebase
-    // @Override
-    private void removeAccessToken(ServerAccessToken token) throws OAuthServiceException {
         ServiceAccessToken sat = serviceAccessTokenDao.findByTokenId(token.getTokenKey());
         if (sat != null) {
             serviceAccessTokenDao.remove(sat);
         }
-    }
-
-    @Override
-    public List<OAuthPermission> convertScopeToPermissions(Client client, List<String> requestedScopes) {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public void revokeToken(Client client, String token, String tokenTypeHint) throws OAuthServiceException {
-        ServiceAccessToken sat = serviceAccessTokenDao.findByTokenId(token);
-        if (sat != null) {
-            serviceAccessTokenDao.remove(sat);
-        }
-    }
-
-    @Override
-    public List<ServerAccessToken> getAccessTokens(Client client, UserSubject subject) {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public List<RefreshToken> getRefreshTokens(Client client, UserSubject subject) {
-        return Collections.emptyList();
-    }
-
-    public ServerAccessToken refreshAccessToken(Client client, String refreshToken, List<String> requestedScopes) throws OAuthServiceException {
-        return null;
     }
 }
