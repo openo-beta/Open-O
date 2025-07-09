@@ -1,0 +1,21 @@
+1. Rebuild your docker container:
+    In VS Code:
+        Open Command Palette: Ctrl+Shift+P (Windows/Linux) or Cmd+Shift+P (macOS)
+
+        Run:
+        “Dev Containers: Rebuild Container”
+2. Create a .env file in aider_cli_code_scanning and add in a variable for PERSONAL_ACCESS_TOKEN=  (must be a classic github token, with full repo enabled) 
+3. Input the following commands in your terminal (Ctrl + Shift + `):
+    chmod +x ./aider_cli_code_scanning/install_packages.sh
+    chmod +x ./aider_cli_code_scanning/run_aider.sh
+    chmod +x ./aider_cli_code_scanning/aider_cli_code_scanning.py
+4. Run the shell script called "install_packages" by inputting the command:
+    ./aider_cli_code_scanning/install_packages.sh
+5. Run the python script by inputting the command:
+    ./.venv/bin/python aider_cli_code_scanning/aider_cli_code_scanning.py
+OR
+    source .venv/bin/activate
+    python3 ./aider_cli_code_scanning/aider_cli_code_scanning.py
+
+
+
