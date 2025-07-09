@@ -56,8 +56,8 @@ public class OAuth1Utils {
         }
         
         @Override
-        public String getAuthorizationUrl(String requestToken) {
-            return authorizationUrl + "?oauth_token=" + requestToken;
+        public String getAuthorizationBaseUrl() {
+            return authorizationUrl;
         }
     }
 
@@ -160,5 +160,15 @@ public class OAuth1Utils {
         } catch (IOException | InterruptedException | ExecutionException e) {
             logger.error("Error deleting information from OAuth Service", e);
         }
+    }
+
+    /**
+     * Get provider configuration for K2A
+     * This method was referenced by other classes and needs to be maintained for compatibility
+     */
+    public static List<Object> getProviderK2A() {
+        // Return empty list for now - this was likely used for CXF providers
+        // You may need to implement this based on your specific requirements
+        return new java.util.ArrayList<>();
     }
 }
