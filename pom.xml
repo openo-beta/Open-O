@@ -1663,21 +1663,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Update lockfile - mvn se.vandmo:dependency-lock-maven-plugin:lock -->
-            <plugin>
-                <groupId>se.vandmo</groupId>
-                <artifactId>dependency-lock-maven-plugin</artifactId>
-                <version>1.1.0</version>
-                <executions>
-                    <execution>
-                        <id>check</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
