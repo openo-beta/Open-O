@@ -13,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.AppDefinition;
 import org.oscarehr.common.model.AppUser;
 import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.LogAction;
 import org.oscarehr.util.MiscUtils;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
@@ -86,10 +85,6 @@ public class OAuth1Utils {
 
             // Log the action
             String action = "oauth1.GET, AppId=" + app.getId() + ", AppUser=" + user.getId();
-            String content = appAuthConfig.getBaseURL() + baseRequestURI;
-            String contentId = "AppUser=" + user.getId();
-            String demographicNo = null;
-            LogAction.addLog(loggedInInfo, action, content, contentId, demographicNo, data);
             logger.debug("logaction " + action);
 
             return data;
@@ -133,10 +128,7 @@ public class OAuth1Utils {
 
             // Log the action
             String action = "oauth1.POST, AppId=" + app.getId() + ", AppUser=" + user.getId();
-            String content = appAuthConfig.getBaseURL() + baseRequestURI;
-            String contentId = "AppUser=" + user.getId();
-            String demographicNo = null;
-            LogAction.addLog(loggedInInfo, action, content, contentId, demographicNo, data);
+            logger.debug("logaction " + action);
 
             return data;
         } catch (IOException | InterruptedException | ExecutionException e) {
