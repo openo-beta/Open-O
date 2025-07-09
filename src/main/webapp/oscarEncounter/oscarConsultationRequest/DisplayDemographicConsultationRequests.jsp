@@ -41,7 +41,7 @@ if(!authed) {
 %>
 
 
-<%@ page import="oscar.oscarDemographic.data.DemographicData" %>
+<%@ page import="org.oscarehr.managers.DemographicManager" %>
 <%@ page import="oscar.oscarEncounter.data.*"%>
 <%@ page import="oscar.oscarEncounter.pageUtil.*"%>
 <%@ page import="oscar.oscarProvider.data.ProviderData" %>
@@ -49,6 +49,7 @@ if(!authed) {
 <%@ page import="org.oscarehr.common.model.Demographic" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo"%>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
@@ -59,15 +60,14 @@ if(!authed) {
 <%
 String demo = request.getParameter("de");
 String proNo = (String) session.getAttribute("user");
-DemographicData demoData=null;
+DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
 Demographic demographic=null;
 
 ProviderData pdata = new ProviderData(proNo);
 String team = pdata.getTeam();
 
 if (demo != null ){
-    demoData = new DemographicData();
-    demographic = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demo);
+    demographic = demographicManager.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demo);
 }
 else
     response.sendRedirect("../error.jsp");
@@ -81,9 +81,8 @@ theRequests = new  oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctVie
 theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demo);
 %>
 
-<html:html locale="true">
+<html:html lang="en">
 <head>
-<!-- <script src="<%= request.getContextPath() %>/js/global.js"></script>-->
 <title><bean:message
 	key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.title" />
 </title>
@@ -93,14 +92,43 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 
 <!-- jquery -->
 	<script src="${pageContext.request.contextPath}/library/jquery/jquery-3.6.4.min.js"></script>
-	<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/library/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 	<script src="${pageContext.request.contextPath}/library/DataTables/datatables.min.js"></script><!-- 1.13.4 -->
 
 <!-- css -->
-	<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet"><!-- Bootstrap 2.3.1 -->
-	<link href="${pageContext.request.contextPath}/css/DT_bootstrap.css" rel="stylesheet">
-	<link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/library/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet"><!-- Bootstrap 2.3.1 -->
+	<link href="${pageContext.request.contextPath}/library/bootstrap/3.0.0/assets/css/DT_bootstrap.css" rel="stylesheet">
 	<link href="${pageContext.request.contextPath}/library/DataTables-1.10.12/media/css/jquery.dataTables.min.css" rel="stylesheet">
+
+	<style>
+		.MainTable .dataTables_length label {
+			display: flex;
+			align-items: center;
+			gap: 5px;
+		}
+		.MainTable .dataTables_length select {
+			display: inline-block;
+			width: auto;
+		}
+
+		.MainTable .dataTables_filter label {
+			display: flex;
+			align-items: center;
+			gap: 5px;
+		}
+		.MainTable .dataTables_filter input {
+			display: inline-block;
+			width: auto;
+		}
+
+		.MainTable tbody > tr > td {
+			border-top: none;
+		}
+
+		tr.MainTableTopRow  td {
+			padding: 0 8px 0 8px !important;
+		}
+	</style>
 
 <script>
 	jQuery(document).ready( function () {
@@ -109,7 +137,12 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 			"order": [[6,'desc']],
 			"language": {
 				"url": "<%=request.getContextPath() %>/library/DataTables/i18n/<bean:message key="global.i18nLanguagecode"/>.json"
-				}
+			},
+			"initComplete": function () {
+				// Add Bootstrap classes to dropdown and search input
+				jQuery('.dataTables_length select').addClass('form-control input');
+				jQuery('.dataTables_filter input').addClass('form-control input');
+			}
 		});
 	});
 
@@ -134,15 +167,15 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 </head>
 <body onload="window.focus()">
 
-<table class="MainTable" id="scrollNumber1" style="width:100%">
+<table class="MainTable table" id="scrollNumber1">
 	<tr class="MainTableTopRow">
 		<td class="MainTableTopRowLeftColumn" style="text-align: left;"><h4><bean:message key="global.con"/></h4></td>
 		<td class="MainTableTopRowRightColumn">
-		<table style="width:100%">
+		<table class="table">
 			<tr>
 				<td class="Header" style="white-space:nowrap"><h4><bean:message
 					key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgConsReqFor" />
-				<%=Encode.forHtml(demographic.getLastName()) %>, <%=Encode.forHtml(demographic.getFirstName())%> <%=demographic.getSex()%>
+				<%=Encode.forHtmlContent(demographic.getLastName()) %>, <%=Encode.forHtmlContent(demographic.getFirstName())%> <%=demographic.getSex()%>
 				<%=demographic.getAge()%></h4></td>
 				<td></td>
 			</tr>
@@ -151,10 +184,10 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 	</tr>
 	<tr style="vertical-align: top">
 		<td class="MainTableLeftColumn">
-		<table style="width:100%">
+		<table class="table">
 			<tr>
-				<td style="white-space:nowrap"><a
-					href="javascript:popupOscarRx(700,960,'ConsultationFormRequest.jsp?de=<%=demo%>&teamVar=<%=team%>')">
+				<td style="white-space:nowrap; padding-left: 0"><a
+					href="javascript:popupOscarRx(700,960,'${pageContext.request.contextPath}/oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp?de=<%=demo%>&teamVar=<%=team%>')">
 				<bean:message
 					key="oscarEncounter.oscarConsultationRequest.ConsultChoice.btnNewCon" /></a>
 				</td>
@@ -162,7 +195,7 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 		</table>
 		</td>
 		<td class="MainTableRightColumn">
-		<table style="width:100%">
+		<table class="table">
 			<tr>
 				<td><bean:message
 					key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgClickLink" />
@@ -171,7 +204,7 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 			<tr>
 				<td>
 
-				<table id="consultTable" style="width:100%">
+				<table id="consultTable" class="table">
 					<thead>
 					<tr>
 						<th ><bean:message
@@ -220,6 +253,9 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 							key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgPatCall" />
 						<% }else if(status.equals("4")) { %> <bean:message
 							key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgAppMade" />
+						<%-- For ocean referrals --%>
+						<% }else if(status.equals("5")) { %> <bean:message
+							key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgBookCon" />
 						<% } %>
 						</td>
 						<td class="stat<%=status%>" >
@@ -234,11 +270,11 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 						<td class="stat<%=status%>"><a
 							href="javascript:popupOscarRx(700,960,'../../oscarEncounter/ViewRequest.do?de=<%=demo%>&requestId=<%=id%>')">
 						<%=patient%> </a></td>
-						<td class="stat<%=status%>"><%=Encode.forHtml(provider)%></td>
-						<td class="stat<%=status%>"><%=Encode.forHtml(cProv.getFormattedName())%></td>
+						<td class="stat<%=status%>"><%=Encode.forHtmlContent(provider)%></td>
+						<td class="stat<%=status%>"><%=Encode.forHtmlContent(cProv.getFormattedName())%></td>
 						<td class="stat<%=status%>">
 							<a href="javascript:popupOscarRx(700,960,'../../oscarEncounter/ViewRequest.do?de=<%=demo%>&requestId=<%=id%>')">
-								<%=Encode.forHtml(StringUtils.trimToEmpty(service))%>
+								<%=Encode.forHtmlContent(StringUtils.trimToEmpty(service))%>
 							</a>
 						</td>
 						<td class="stat<%=status%>"><%=date%></td>
