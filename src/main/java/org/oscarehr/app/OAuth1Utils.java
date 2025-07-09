@@ -24,27 +24,61 @@
  */
 package org.oscarehr.app;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.jaxrs.provider.json.JSONProvider;
-import org.apache.cxf.rs.security.oauth.client.OAuthClientUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.AppDefinition;
 import org.oscarehr.common.model.AppUser;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 
+import com.github.scribejava.core.builder.ServiceBuilder;
+import com.github.scribejava.core.builder.api.DefaultApi10a;
+import com.github.scribejava.core.model.OAuth1AccessToken;
+import com.github.scribejava.core.model.OAuthRequest;
+import com.github.scribejava.core.model.Response;
+import com.github.scribejava.core.model.Verb;
+import com.github.scribejava.core.oauth.OAuth10aService;
+
 import oscar.log.LogAction;
 
 public class OAuth1Utils {
     private static final Logger logger = MiscUtils.getLogger();
+
+    /**
+     * Generic OAuth 1.0a API for custom providers
+     */
+    private static class GenericOAuth10aApi extends DefaultApi10a {
+        private final String requestTokenUrl;
+        private final String accessTokenUrl;
+        private final String authorizationUrl;
+        
+        public GenericOAuth10aApi(String baseUrl) {
+            this.requestTokenUrl = baseUrl + "/oauth/request_token";
+            this.accessTokenUrl = baseUrl + "/oauth/access_token";
+            this.authorizationUrl = baseUrl + "/oauth/authorize";
+        }
+        
+        @Override
+        public String getRequestTokenEndpoint() {
+            return requestTokenUrl;
+        }
+        
+        @Override
+        public String getAccessTokenEndpoint() {
+            return accessTokenUrl;
+        }
+        
+        @Override
+        public String getAuthorizationBaseUrl() {
+            return authorizationUrl;
+        }
+    }
 
     public static List<Object> getProviderK2A() {
         List<Object> providers = new ArrayList<Object>();
@@ -56,113 +90,117 @@ public class OAuth1Utils {
     }
 
     public static String getOAuthGetResponse(LoggedInInfo loggedInInfo, AppDefinition app, AppUser user, String requestURI, String baseRequestURI) {
-        StringBuilder sb = new StringBuilder();
-        InputStream in = null;
-        BufferedReader bufferedReader = null;
         try {
             AppOAuth1Config appAuthConfig = AppOAuth1Config.fromDocument(app.getConfig());
             Map<String, String> keySecret = AppOAuth1Config.getKeySecret(user.getAuthenticationData());
 
-            OAuthClientUtils.Consumer consumer = new OAuthClientUtils.Consumer(appAuthConfig.getConsumerKey(), appAuthConfig.getConsumerSecret());
-            OAuthClientUtils.Token accessToken = new OAuthClientUtils.Token(keySecret.get("key"), keySecret.get("secret"));
+            // Create OAuth 1.0a service using ScribeJava
+            OAuth10aService service = new ServiceBuilder(appAuthConfig.getConsumerKey())
+                    .apiSecret(appAuthConfig.getConsumerSecret())
+                    .build(new GenericOAuth10aApi(appAuthConfig.getBaseURL()));
 
-            requestURI = appAuthConfig.getBaseURL() + requestURI;
-            WebClient webclient = WebClient.create(requestURI);
+            // Create access token from stored credentials
+            OAuth1AccessToken accessToken = new OAuth1AccessToken(keySecret.get("key"), keySecret.get("secret"));
 
-            webclient = webclient.replaceHeader("Authorization", OAuthClientUtils.createAuthorizationHeader(consumer, accessToken, "GET", appAuthConfig.getBaseURL() + baseRequestURI));
+            // Create and sign the request
+            String fullUrl = appAuthConfig.getBaseURL() + requestURI;
+            OAuthRequest request = new OAuthRequest(Verb.GET, fullUrl);
+            service.signRequest(accessToken, request);
 
-            javax.ws.rs.core.Response reps = webclient.get();
+            // Execute the request
+            Response response = service.execute(request);
+            String data = response.getBody();
 
-            in = (InputStream) reps.getEntity();
-            bufferedReader = new BufferedReader(new InputStreamReader(in));
-
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                sb.append(line);
-            }
-
+            // Log the action
             String action = "oauth1.GET, AppId=" + app.getId() + ", AppUser=" + user.getId();
             String content = appAuthConfig.getBaseURL() + baseRequestURI;
             String contentId = "AppUser=" + user.getId();
             String demographicNo = null;
-            String data = sb.toString();
             LogAction.addLog(loggedInInfo, action, content, contentId, demographicNo, data);
             logger.debug("logaction " + action);
 
             return data;
-        } catch (Exception e) {
+        } catch (IOException | InterruptedException | ExecutionException e) {
             logger.error("Error getting information from OAuth Service", e);
             return null;
-        } finally {
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(bufferedReader);
+        } catch (Exception e) {
+            logger.error("Error with OAuth configuration", e);
+            return null;
         }
     }
 
     public static String getOAuthPostResponse(LoggedInInfo loggedInInfo, AppDefinition app, AppUser user, String requestURI, String baseRequestURI, List<Object> providers, Object obj) {
-        StringBuilder sb = new StringBuilder();
-        InputStream in = null;
-        BufferedReader bufferedReader = null;
         try {
             AppOAuth1Config appAuthConfig = AppOAuth1Config.fromDocument(app.getConfig());
             Map<String, String> keySecret = AppOAuth1Config.getKeySecret(user.getAuthenticationData());
 
-            OAuthClientUtils.Consumer consumer = new OAuthClientUtils.Consumer(appAuthConfig.getConsumerKey(), appAuthConfig.getConsumerSecret());
-            OAuthClientUtils.Token accessToken = new OAuthClientUtils.Token(keySecret.get("key"), keySecret.get("secret"));
+            // Create OAuth 1.0a service using ScribeJava
+            OAuth10aService service = new ServiceBuilder(appAuthConfig.getConsumerKey())
+                    .apiSecret(appAuthConfig.getConsumerSecret())
+                    .build(new GenericOAuth10aApi(appAuthConfig.getBaseURL()));
 
-            requestURI = appAuthConfig.getBaseURL() + requestURI;
-            WebClient webclient = WebClient.create(requestURI, providers);
+            // Create access token from stored credentials
+            OAuth1AccessToken accessToken = new OAuth1AccessToken(keySecret.get("key"), keySecret.get("secret"));
 
-            webclient = webclient.replaceHeader("Authorization", OAuthClientUtils.createAuthorizationHeader(consumer, accessToken, "POST", appAuthConfig.getBaseURL() + baseRequestURI));
-
-            javax.ws.rs.core.Response reps = webclient.accept("application/json, text/plain, */*").acceptEncoding("gzip, deflate").type("application/json;charset=utf-8").post(obj);
-
-            in = (InputStream) reps.getEntity();
-            bufferedReader = new BufferedReader(new InputStreamReader(in));
-
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                sb.append(line);
+            // Create and sign the request
+            String fullUrl = appAuthConfig.getBaseURL() + requestURI;
+            OAuthRequest request = new OAuthRequest(Verb.POST, fullUrl);
+            
+            // Add JSON payload if provided
+            if (obj != null) {
+                request.addHeader("Content-Type", "application/json;charset=utf-8");
+                request.addHeader("Accept", "application/json, text/plain, */*");
+                request.addHeader("Accept-Encoding", "gzip, deflate");
+                request.setPayload(obj.toString());
             }
+            
+            service.signRequest(accessToken, request);
+
+            // Execute the request
+            Response response = service.execute(request);
+            String data = response.getBody();
+
+            // Log the action
             String action = "oauth1.POST, AppId=" + app.getId() + ", AppUser=" + user.getId();
             String content = appAuthConfig.getBaseURL() + baseRequestURI;
             String contentId = "AppUser=" + user.getId();
             String demographicNo = null;
-            String data = sb.toString();
             LogAction.addLog(loggedInInfo, action, content, contentId, demographicNo, data);
 
-
             return data;
-        } catch (Exception e) {
+        } catch (IOException | InterruptedException | ExecutionException e) {
             logger.error("Error posting information to OAuth Service", e);
             return null;
-        } finally {
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(bufferedReader);
+        } catch (Exception e) {
+            logger.error("Error with OAuth configuration", e);
+            return null;
         }
     }
 
     public static void getOAuthDeleteResponse(AppDefinition app, AppUser user, String requestURI, String baseRequestURI) {
-        StringBuilder sb = new StringBuilder();
-        InputStream in = null;
-        BufferedReader bufferedReader = null;
         try {
             AppOAuth1Config appAuthConfig = AppOAuth1Config.fromDocument(app.getConfig());
             Map<String, String> keySecret = AppOAuth1Config.getKeySecret(user.getAuthenticationData());
 
-            OAuthClientUtils.Consumer consumer = new OAuthClientUtils.Consumer(appAuthConfig.getConsumerKey(), appAuthConfig.getConsumerSecret());
-            OAuthClientUtils.Token accessToken = new OAuthClientUtils.Token(keySecret.get("key"), keySecret.get("secret"));
+            // Create OAuth 1.0a service using ScribeJava
+            OAuth10aService service = new ServiceBuilder(appAuthConfig.getConsumerKey())
+                    .apiSecret(appAuthConfig.getConsumerSecret())
+                    .build(new GenericOAuth10aApi(appAuthConfig.getBaseURL()));
 
-            requestURI = appAuthConfig.getBaseURL() + requestURI;
-            WebClient webclient = WebClient.create(requestURI);
+            // Create access token from stored credentials
+            OAuth1AccessToken accessToken = new OAuth1AccessToken(keySecret.get("key"), keySecret.get("secret"));
 
-            webclient = webclient.replaceHeader("Authorization", OAuthClientUtils.createAuthorizationHeader(consumer, accessToken, "DELETE", appAuthConfig.getBaseURL() + baseRequestURI));
-            webclient.delete();
+            // Create and sign the request
+            String fullUrl = appAuthConfig.getBaseURL() + requestURI;
+            OAuthRequest request = new OAuthRequest(Verb.DELETE, fullUrl);
+            service.signRequest(accessToken, request);
+
+            // Execute the request
+            service.execute(request);
+        } catch (IOException | InterruptedException | ExecutionException e) {
+            logger.error("Error deleting information from OAuth Service", e);
         } catch (Exception e) {
-            logger.error("Error getting information from OAuth Service", e);
-        } finally {
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(bufferedReader);
+            logger.error("Error with OAuth configuration", e);
         }
     }
 }

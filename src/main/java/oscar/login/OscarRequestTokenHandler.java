@@ -24,127 +24,130 @@
  */
 package oscar.login;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.ExecutionException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Response;
 
-import net.oauth.OAuth;
-import net.oauth.OAuthMessage;
-import net.oauth.OAuthProblemException;
-import net.oauth.OAuthValidator;
-
-import org.apache.cxf.common.logging.LogUtils;
-import org.apache.cxf.common.util.StringUtils;
+import org.apache.logging.log4j.Logger;
 import org.apache.cxf.jaxrs.ext.MessageContext;
-import org.apache.cxf.rs.security.oauth.data.Client;
-import org.apache.cxf.rs.security.oauth.data.RequestToken;
-import org.apache.cxf.rs.security.oauth.data.RequestTokenRegistration;
-import org.apache.cxf.rs.security.oauth.provider.OAuthDataProvider;
-import org.apache.cxf.rs.security.oauth.provider.OAuthServiceException;
-import org.apache.cxf.rs.security.oauth.utils.OAuthConstants;
-import org.apache.cxf.rs.security.oauth.utils.OAuthUtils;
+import org.oscarehr.common.model.ServiceClient;
+import org.oscarehr.util.MiscUtils;
+
+import com.github.scribejava.core.model.OAuth1RequestToken;
 
 public class OscarRequestTokenHandler {
 
-    private static final Logger LOG = LogUtils.getL7dLogger(OscarRequestTokenHandler.class);
-    private static final String[] REQUIRED_PARAMETERS =
-            new String[]{
-                    OAuth.OAUTH_CONSUMER_KEY,
-                    OAuth.OAUTH_SIGNATURE_METHOD,
-                    OAuth.OAUTH_SIGNATURE,
-                    OAuth.OAUTH_TIMESTAMP,
-                    OAuth.OAUTH_NONCE,
-                    OAuth.OAUTH_CALLBACK
-            };
+    private static final Logger logger = MiscUtils.getLogger();
+    private static final String[] REQUIRED_PARAMETERS = {
+        "oauth_consumer_key",
+        "oauth_signature_method", 
+        "oauth_signature",
+        "oauth_timestamp",
+        "oauth_nonce",
+        "oauth_callback"
+    };
 
     private long tokenLifetime = 3600L;
     private String defaultScope;
+    private OscarOAuthDataProvider dataProvider;
+    
+    public OscarRequestTokenHandler(OscarOAuthDataProvider dataProvider) {
+        this.dataProvider = dataProvider;
+    }
 
-    public Response handle(MessageContext mc,
-                           OAuthDataProvider dataProvider,
-                           OAuthValidator validator) {
+    public Response handle(MessageContext mc) {
         try {
-            OAuthMessage oAuthMessage =
-                    OAuthUtils.getOAuthMessage(mc, mc.getHttpServletRequest(), REQUIRED_PARAMETERS);
+            HttpServletRequest request = mc.getHttpServletRequest();
+            
+            // Validate required parameters
+            for (String param : REQUIRED_PARAMETERS) {
+                if (request.getParameter(param) == null) {
+                    return Response.status(HttpServletResponse.SC_BAD_REQUEST)
+                            .entity("Missing required parameter: " + param)
+                            .build();
+                }
+            }
 
-            Client client = dataProvider
-                    .getClient(oAuthMessage.getParameter(OAuth.OAUTH_CONSUMER_KEY));
-            //client credentials not found
+            String consumerKey = request.getParameter("oauth_consumer_key");
+            String callback = request.getParameter("oauth_callback");
+            
+            // Get client
+            ServiceClient client = dataProvider.getClient(consumerKey);
             if (client == null) {
-                throw new OAuthProblemException(OAuth.Problems.CONSUMER_KEY_UNKNOWN);
+                return Response.status(HttpServletResponse.SC_UNAUTHORIZED)
+                        .entity("Unknown consumer key")
+                        .build();
             }
 
-            OAuthUtils.validateMessage(oAuthMessage, client, null,
-                    dataProvider, validator);
-
-            String callback = oAuthMessage.getParameter(OAuth.OAUTH_CALLBACK);
-            validateCallbackURL(client, callback);
-
-            List<String> scopes = OAuthUtils.parseParamValue(
-                    mc.getHttpServletRequest().getParameter(OAuthConstants.X_OAUTH_SCOPE), defaultScope);
-
-            RequestTokenRegistration reg = new RequestTokenRegistration();
-            reg.setClient(client);
-            reg.setCallback(callback);
-            reg.setState(oAuthMessage.getParameter("state"));
-            reg.setScopes(scopes);
-            reg.setLifetime(tokenLifetime);
-            reg.setIssuedAt(System.currentTimeMillis() / 1000);
-
-            RequestToken requestToken = dataProvider.createRequestToken(reg);
-
-            if (LOG.isLoggable(Level.FINE)) {
-                LOG.log(Level.FINE, "Preparing Temporary Credentials Endpoint correct response");
+            // Validate callback URL
+            if (!validateCallbackURL(client, callback)) {
+                return Response.status(HttpServletResponse.SC_BAD_REQUEST)
+                        .entity("Invalid callback URL")
+                        .build();
             }
-            //create response
-            Map<String, Object> responseParams = new HashMap<String, Object>();
-            responseParams.put(OAuth.OAUTH_TOKEN, requestToken.getTokenKey());
-            responseParams.put(OAuth.OAUTH_TOKEN_SECRET, requestToken.getTokenSecret());
-            responseParams.put(OAuth.OAUTH_CALLBACK_CONFIRMED, Boolean.TRUE);
 
-            String responseBody = OAuth.formEncode(responseParams.entrySet());
+            // Parse scopes
+            String scopeParam = request.getParameter("scope");
+            List<String> scopes = scopeParam != null ? 
+                Arrays.asList(scopeParam.split(" ")) : 
+                (defaultScope != null ? Arrays.asList(defaultScope) : null);
 
-            return Response.ok(responseBody).build();
-        } catch (OAuthProblemException e) {
-            LOG.log(Level.WARNING, "An OAuth-related problem: {0}", new Object[]{e.fillInStackTrace()});
-            int code = e.getHttpStatusCode();
-            if (code == HttpServletResponse.SC_OK) {
-                code = e.getProblem() == OAuth.Problems.CONSUMER_KEY_UNKNOWN
-                        ? 401 : 400;
+            // Create request token
+            OAuth1RequestToken requestToken = dataProvider.createRequestToken(consumerKey, callback, scopes);
+
+            logger.debug("Created request token: " + requestToken.getToken());
+
+            // Create response
+            Map<String, Object> responseParams = new HashMap<>();
+            responseParams.put("oauth_token", requestToken.getToken());
+            responseParams.put("oauth_token_secret", requestToken.getTokenSecret());
+            responseParams.put("oauth_callback_confirmed", "true");
+
+            StringBuilder responseBody = new StringBuilder();
+            for (Map.Entry<String, Object> entry : responseParams.entrySet()) {
+                if (responseBody.length() > 0) {
+                    responseBody.append("&");
+                }
+                responseBody.append(entry.getKey()).append("=").append(entry.getValue());
             }
-            return OAuthUtils.handleException(mc, e, code);
-        } catch (OAuthServiceException e) {
-            return OAuthUtils.handleException(mc, e, HttpServletResponse.SC_BAD_REQUEST);
+
+            return Response.ok(responseBody.toString())
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .build();
+
         } catch (Exception e) {
-            LOG.log(Level.SEVERE, "Unexpected internal server exception: {0}",
-                    new Object[]{e.fillInStackTrace()});
-            return OAuthUtils.handleException(mc, e, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            logger.error("Error handling request token request", e);
+            return Response.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+                    .entity("Internal server error")
+                    .build();
         }
     }
 
-    protected void validateCallbackURL(Client client,
-                                       String oauthCallback) throws OAuthProblemException {
-        // the callback must not be empty or null, and it should either match
+    protected boolean validateCallbackURL(ServiceClient client, String oauthCallback) {
+        // Allow "oob" for out-of-band callback
+        if ("oob".equals(oauthCallback)) {
+            return true;
+        }
+        
+        // The callback must not be empty or null, and it should either match
         // the pre-registered callback URI or have the common root with the
         // the pre-registered application URI
-        if (!StringUtils.isEmpty(oauthCallback)
-                && (!StringUtils.isEmpty(client.getCallbackURI())
-                && oauthCallback.equals(client.getCallbackURI())
-                || !StringUtils.isEmpty(client.getApplicationURI())
-                && oauthCallback.startsWith(client.getApplicationURI()))) {
-            return;
+        if (oauthCallback != null && !oauthCallback.isEmpty()) {
+            String clientCallback = client.getUri(); // Assuming this is the callback URI
+            if (clientCallback != null && (oauthCallback.equals(clientCallback) || 
+                oauthCallback.startsWith(clientCallback))) {
+                return true;
+            }
         }
-        OAuthProblemException problemEx = new OAuthProblemException(
-                OAuth.Problems.PARAMETER_REJECTED + " - " + OAuth.OAUTH_CALLBACK);
-        problemEx
-                .setParameter(OAuthProblemException.HTTP_STATUS_CODE,
-                        HttpServletResponse.SC_BAD_REQUEST);
-        throw problemEx;
+        
+        return false;
     }
 
     public void setTokenLifetime(long tokenLifetime) {
