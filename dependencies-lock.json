@@ -264,30 +264,6 @@
     "optional" : false,
     "integrity" : "sha512:gAOpa0YsbQ5Ukdddpwr8whG7M+8KHGd8I5lfwiQCKarh/bYCl3u3O5joeYplkzkFLJJSp2PmsMes+cWbIRXxNQ=="
   }, {
-    "groupId" : "com.fasterxml.jackson.jaxrs",
-    "artifactId" : "jackson-jaxrs-base",
-    "version" : "2.12.7",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:l1Y2mKImUVThMn18pOBLxoH7n6WGkFFWA5u8CNWpIjSxf2ksxXL3GuLyMbDSpD52KSaTZG1VXXlT068FFKC7Dw=="
-  }, {
-    "groupId" : "com.fasterxml.jackson.jaxrs",
-    "artifactId" : "jackson-jaxrs-json-provider",
-    "version" : "2.12.7",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:bWQShQAQ1pg/jiueYDlSM8sC5BYbcgA+jUMNz/+C42gX+r4gkFEvouXr6dBta2vydB4fBJpBi+Hxvn/RqFDcPg=="
-  }, {
-    "groupId" : "com.fasterxml.jackson.module",
-    "artifactId" : "jackson-module-jaxb-annotations",
-    "version" : "2.12.7",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:eHQ4COi0tCmDKPtSuxhlFdhQZ81iH9tmQjCsGqNf5u3QEpugYDI/9LFl11ek/5wPo5JQEUjXw/Fpv3yq01ltPg=="
-  }, {
     "groupId" : "com.fasterxml.woodstox",
     "artifactId" : "woodstox-core",
     "version" : "5.0.3",
@@ -367,6 +343,30 @@
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:wrZgw3qzidHOj5azKeYKrI+wvrbXYXSg2e0e0Ue4bRsZ6/r4ckq+E1bELl9aMRXRjdWeyIKmsj6es5ws0uQzfg=="
+  }, {
+    "groupId" : "com.github.scribejava",
+    "artifactId" : "scribejava-apis",
+    "version" : "8.3.3",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:lLEza8HPLUwJiAihUOXImG2NImnjSwW5V5xa7Oo4MvqzaQc8zIw1JXEitKlwtZ66a7SY6SYV6B+gHUUmi8VVKw=="
+  }, {
+    "groupId" : "com.github.scribejava",
+    "artifactId" : "scribejava-core",
+    "version" : "8.3.3",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:3yi2ZQBJ1j+kIKrTwYSZ1QO6WU2tVjZt2uf2skRB9l0RkDd2xXRvbWyyFQ/bXplrnr8ow9U7bJfpGkagr4GwvQ=="
+  }, {
+    "groupId" : "com.github.scribejava",
+    "artifactId" : "scribejava-java8",
+    "version" : "8.3.3",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:L+w8UAxL7RQ6SOhOmNWTjcR3SDDpyHbK8M/Di9nq7RiQcnjropJGd1T9EyyfuzCTAJ89yR91/xprznH09dQ7FA=="
   }, {
     "groupId" : "com.google.code.findbugs",
     "artifactId" : "jsr305",
