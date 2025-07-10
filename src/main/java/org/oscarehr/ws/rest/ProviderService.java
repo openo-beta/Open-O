@@ -207,26 +207,79 @@ public class ProviderService extends AbstractServiceImpl {
         }
     }
 
+    /**
+     * Retrieves the currently logged-in provider.
+     * 
+     * @return JSON representation of the logged-in provider
+     */
     @GET
     @Path("/provider/me")
     @Produces("application/json")
     public String getLoggedInProvider() {
-        Provider provider = getLoggedInInfo().getLoggedInProvider();
+        try {
+            // Validate OAuth1 access token
+            com.github.scribejava.core.model.OAuth1AccessToken accessToken = getOAuthAccessToken();
+            if (accessToken == null) {
+                logger.warn("No valid OAuth1 access token found for logged-in provider request");
+                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.UNAUTHORIZED);
+            }
 
-        if (provider != null) {
-            JsonConfig config = new JsonConfig();
-            config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
-            return JSONObject.fromObject(provider, config).toString();
+            logger.debug("Retrieving logged-in provider with OAuth1 token: {}", accessToken.getToken());
+
+            Provider provider = getLoggedInInfo().getLoggedInProvider();
+
+            if (provider != null) {
+                JsonConfig config = new JsonConfig();
+                config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+                logger.info("Successfully retrieved logged-in provider: {}", provider.getProviderNo());
+                return JSONObject.fromObject(provider, config).toString();
+            }
+            return null;
+            
+        } catch (javax.ws.rs.WebApplicationException e) {
+            throw e;
+        } catch (Exception e) {
+            logger.error("Error retrieving logged-in provider: {}", e.getMessage(), e);
+            throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR);
         }
-        return null;
     }
 
+    /**
+     * Retrieves a provider as JSON by ID.
+     * 
+     * @param id The provider ID
+     * @return JSON representation of the provider
+     */
     @GET
     @Path("/providerjson/{id}")
     public String getProviderAsJSON(@PathParam("id") String id) {
-        JsonConfig config = new JsonConfig();
-        config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
-        return JSONObject.fromObject(providerDao.getProvider(id), config).toString();
+        try {
+            // Validate OAuth1 access token
+            com.github.scribejava.core.model.OAuth1AccessToken accessToken = getOAuthAccessToken();
+            if (accessToken == null) {
+                logger.warn("No valid OAuth1 access token found for provider JSON request: {}", id);
+                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.UNAUTHORIZED);
+            }
+
+            logger.debug("Retrieving provider {} as JSON with OAuth1 token: {}", id, accessToken.getToken());
+
+            Provider provider = providerDao.getProvider(id);
+            if (provider == null) {
+                logger.warn("Provider not found: {}", id);
+                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.NOT_FOUND);
+            }
+
+            JsonConfig config = new JsonConfig();
+            config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+            logger.info("Successfully retrieved provider {} as JSON", id);
+            return JSONObject.fromObject(provider, config).toString();
+            
+        } catch (javax.ws.rs.WebApplicationException e) {
+            throw e;
+        } catch (Exception e) {
+            logger.error("Error retrieving provider {} as JSON: {}", id, e.getMessage(), e);
+            throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GET
@@ -235,30 +288,55 @@ public class ProviderService extends AbstractServiceImpl {
         return Response.status(Status.BAD_REQUEST).build();
     }
 
+    /**
+     * Searches for providers based on criteria.
+     * 
+     * @param json Search criteria
+     * @param startIndex Starting index for pagination
+     * @param itemsToReturn Number of items to return
+     * @return AbstractSearchResponse containing search results
+     */
     @POST
     @Path("/providers/search")
     @Produces("application/json")
     @Consumes("application/json")
     public AbstractSearchResponse<ProviderTo1> search(JSONObject json, @QueryParam("startIndex") Integer startIndex, @QueryParam("itemsToReturn") Integer itemsToReturn) {
-        AbstractSearchResponse<ProviderTo1> response = new AbstractSearchResponse<ProviderTo1>();
+        try {
+            // Validate OAuth1 access token
+            com.github.scribejava.core.model.OAuth1AccessToken accessToken = getOAuthAccessToken();
+            if (accessToken == null) {
+                logger.warn("No valid OAuth1 access token found for provider search request");
+                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.UNAUTHORIZED);
+            }
 
-        int startIndexVal = startIndex == null ? 0 : startIndex.intValue();
-        int itemsToReturnVal = itemsToReturn == null ? 5000 : itemsToReturn.intValue();
-        boolean active = Boolean.valueOf(json.getString("active"));
+            logger.debug("Searching providers with OAuth1 token: {}", accessToken.getToken());
 
-        String term = null;
-        if (json.containsKey("searchTerm")) {
-            term = json.getString("searchTerm");
+            AbstractSearchResponse<ProviderTo1> response = new AbstractSearchResponse<ProviderTo1>();
+
+            int startIndexVal = startIndex == null ? 0 : startIndex.intValue();
+            int itemsToReturnVal = itemsToReturn == null ? 5000 : itemsToReturn.intValue();
+            boolean active = Boolean.valueOf(json.getString("active"));
+
+            String term = null;
+            if (json.containsKey("searchTerm")) {
+                term = json.getString("searchTerm");
+            }
+
+            List<Provider> results = providerManager.search(getLoggedInInfo(), term, active, startIndexVal, itemsToReturnVal);
+
+            ProviderConverter converter = new ProviderConverter();
+            response.setContent(converter.getAllAsTransferObjects(getLoggedInInfo(), results));
+            response.setTotal(response.getContent().size());
+
+            logger.info("Successfully searched providers, found {} results", response.getTotal());
+            return response;
+            
+        } catch (javax.ws.rs.WebApplicationException e) {
+            throw e;
+        } catch (Exception e) {
+            logger.error("Error searching providers: {}", e.getMessage(), e);
+            throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR);
         }
-
-        List<Provider> results = providerManager.search(getLoggedInInfo(), term, active, startIndexVal, itemsToReturnVal);
-
-
-        ProviderConverter converter = new ProviderConverter();
-        response.setContent(converter.getAllAsTransferObjects(getLoggedInInfo(), results));
-        response.setTotal(response.getContent().size());
-
-        return response;
     }
 
     @GET

@@ -38,6 +38,7 @@ import javax.ws.rs.Produces;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
+import org.oscarehr.util.MiscUtils;
 import org.oscarehr.common.model.ConsentType;
 import org.oscarehr.managers.DemographicManager;
 import org.oscarehr.managers.OscarLogManager;
