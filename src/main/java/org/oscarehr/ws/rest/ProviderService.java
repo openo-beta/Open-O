@@ -21,6 +21,8 @@
  * McMaster University
  * Hamilton
  * Ontario, Canada
+ * 
+ * Migrated from CXF OAuth2 to ScribeJava OAuth1 implementation.
  */
 package org.oscarehr.ws.rest;
 
@@ -42,10 +44,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsDateJsonBeanProcessor;
 
-import org.apache.cxf.message.Message;
-import org.apache.cxf.phase.PhaseInterceptorChain;
-import org.apache.cxf.rs.security.oauth2.common.OAuthContext;
-import org.apache.cxf.security.SecurityContext;
+import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Provider;
@@ -65,10 +64,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
+/**
+ * REST service for provider-related operations using OAuth 1.0a authentication.
+ * 
+ * This service provides endpoints for managing providers, retrieving provider information,
+ * and handling provider settings. It uses ScribeJava OAuth1 for authentication.
+ */
 @Component("ProviderService")
 @Path("/providerService/")
 @Produces("application/xml")
 public class ProviderService extends AbstractServiceImpl {
+
+    private static final Logger logger = MiscUtils.getLogger();
 
     @Autowired
     ProviderDao providerDao;
@@ -83,60 +90,121 @@ public class ProviderService extends AbstractServiceImpl {
     DemographicManager demographicManager;
 
 
-    protected SecurityContext getSecurityContext() {
-        Message m = PhaseInterceptorChain.getCurrentMessage();
-        org.apache.cxf.security.SecurityContext sc = m.getContent(org.apache.cxf.security.SecurityContext.class);
-        return sc;
-    }
-
-    protected OAuthContext getOAuthContext() {
-        Message m = PhaseInterceptorChain.getCurrentMessage();
-        OAuthContext sc = m.getContent(OAuthContext.class);
-        return sc;
-    }
 
     public ProviderService() {
     }
 
+    /**
+     * Retrieves all active providers.
+     * 
+     * @return OscarSearchResponse containing list of providers
+     * @deprecated Use getProvidersAsJSON instead
+     */
     @GET
     @Path("/providers")
     @Deprecated
     public org.oscarehr.ws.rest.to.OscarSearchResponse<ProviderTransfer> getProviders() {
-        org.oscarehr.ws.rest.to.OscarSearchResponse<ProviderTransfer> lst = new
-                org.oscarehr.ws.rest.to.OscarSearchResponse<ProviderTransfer>();
+        try {
+            // Validate OAuth1 access token
+            com.github.scribejava.core.model.OAuth1AccessToken accessToken = getOAuthAccessToken();
+            if (accessToken == null) {
+                logger.warn("No valid OAuth1 access token found for providers request");
+                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.UNAUTHORIZED);
+            }
 
-        for (Provider p : providerDao.getActiveProviders()) {
-            lst.getContent().add(ProviderTransfer.toTransfer(p));
+            logger.debug("Retrieving active providers with OAuth1 token: {}", accessToken.getToken());
+
+            org.oscarehr.ws.rest.to.OscarSearchResponse<ProviderTransfer> lst = new
+                    org.oscarehr.ws.rest.to.OscarSearchResponse<ProviderTransfer>();
+
+            for (Provider p : providerDao.getActiveProviders()) {
+                lst.getContent().add(ProviderTransfer.toTransfer(p));
+            }
+            lst.setTimestamp(new Date());
+            lst.setTotal(lst.getContent().size());
+
+            logger.info("Successfully retrieved {} providers", lst.getTotal());
+            return lst;
+            
+        } catch (Exception e) {
+            logger.error("Error retrieving providers: {}", e.getMessage(), e);
+            throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR);
         }
-        lst.setTimestamp(new Date());
-        lst.setTotal(lst.getContent().size());
-
-        return lst;
     }
 
+    /**
+     * Retrieves all active providers as JSON.
+     * 
+     * @return AbstractSearchResponse containing list of providers in JSON format
+     */
     @GET
     @Path("/providers_json")
     @Produces("application/json")
     public AbstractSearchResponse<ProviderTo1> getProvidersAsJSON() {
-        JsonConfig config = new JsonConfig();
-        config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+        try {
+            // Validate OAuth1 access token
+            com.github.scribejava.core.model.OAuth1AccessToken accessToken = getOAuthAccessToken();
+            if (accessToken == null) {
+                logger.warn("No valid OAuth1 access token found for providers JSON request");
+                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.UNAUTHORIZED);
+            }
 
-        List<ProviderTo1> providers = new ProviderConverter().getAllAsTransferObjects(getLoggedInInfo(), providerDao.getActiveProviders());
+            logger.debug("Retrieving active providers as JSON with OAuth1 token: {}", accessToken.getToken());
 
-        AbstractSearchResponse<ProviderTo1> response = new AbstractSearchResponse<ProviderTo1>();
-        response.setContent(providers);
-        response.setTimestamp(new Date());
-        response.setTotal(response.getContent().size());
+            JsonConfig config = new JsonConfig();
+            config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
 
+            List<ProviderTo1> providers = new ProviderConverter().getAllAsTransferObjects(getLoggedInInfo(), providerDao.getActiveProviders());
 
-        return response;
+            AbstractSearchResponse<ProviderTo1> response = new AbstractSearchResponse<ProviderTo1>();
+            response.setContent(providers);
+            response.setTimestamp(new Date());
+            response.setTotal(response.getContent().size());
+
+            logger.info("Successfully retrieved {} providers as JSON", response.getTotal());
+            return response;
+            
+        } catch (Exception e) {
+            logger.error("Error retrieving providers as JSON: {}", e.getMessage(), e);
+            throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR);
+        }
     }
 
+    /**
+     * Retrieves a specific provider by ID.
+     * 
+     * @param id The provider ID
+     * @return ProviderTransfer object
+     */
     @GET
     @Path("/provider/{id}")
     @Produces({"application/xml", "application/json"})
     public ProviderTransfer getProvider(@PathParam("id") String id) {
-        return ProviderTransfer.toTransfer(providerDao.getProvider(id));
+        try {
+            // Validate OAuth1 access token
+            com.github.scribejava.core.model.OAuth1AccessToken accessToken = getOAuthAccessToken();
+            if (accessToken == null) {
+                logger.warn("No valid OAuth1 access token found for provider request: {}", id);
+                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.UNAUTHORIZED);
+            }
+
+            logger.debug("Retrieving provider {} with OAuth1 token: {}", id, accessToken.getToken());
+
+            Provider provider = providerDao.getProvider(id);
+            if (provider == null) {
+                logger.warn("Provider not found: {}", id);
+                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.NOT_FOUND);
+            }
+
+            logger.info("Successfully retrieved provider: {}", id);
+            return ProviderTransfer.toTransfer(provider);
+            
+        } catch (javax.ws.rs.WebApplicationException e) {
+            throw e;
+        } catch (Exception e) {
+            logger.error("Error retrieving provider {}: {}", id, e.getMessage(), e);
+            throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GET

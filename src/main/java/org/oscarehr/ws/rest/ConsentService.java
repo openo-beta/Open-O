@@ -21,6 +21,8 @@
  * McMaster University
  * Hamilton
  * Ontario, Canada
+ * 
+ * Migrated from CXF OAuth2 to ScribeJava OAuth1 implementation.
  */
 package org.oscarehr.ws.rest;
 
@@ -35,10 +37,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 
-import org.apache.cxf.message.Message;
-import org.apache.cxf.phase.PhaseInterceptorChain;
-import org.apache.cxf.rs.security.oauth2.common.OAuthContext;
-import org.apache.cxf.security.SecurityContext;
+import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.model.ConsentType;
 import org.oscarehr.managers.DemographicManager;
@@ -52,10 +51,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
+/**
+ * REST service for consent-related operations using OAuth 1.0a authentication.
+ * 
+ * This service provides endpoints for managing consent types and patient consents.
+ * It uses ScribeJava OAuth1 for authentication.
+ */
 @Component("ConsentService")
 @Path("/consentService/")
 @Produces("application/xml")
 public class ConsentService extends AbstractServiceImpl {
+
+    private static final Logger logger = MiscUtils.getLogger();
 
     @Autowired
     ProviderDao providerDao;
@@ -73,30 +80,84 @@ public class ConsentService extends AbstractServiceImpl {
     PatientConsentManager patientConsentManager;
 
 
-    protected SecurityContext getSecurityContext() {
-        Message m = PhaseInterceptorChain.getCurrentMessage();
-        org.apache.cxf.security.SecurityContext sc = m.getContent(org.apache.cxf.security.SecurityContext.class);
-        return sc;
-    }
-
-    protected OAuthContext getOAuthContext() {
-        Message m = PhaseInterceptorChain.getCurrentMessage();
-        OAuthContext sc = m.getContent(OAuthContext.class);
-        return sc;
-    }
 
     public ConsentService() {
     }
 
+    /**
+     * Retrieves all active consent types.
+     * 
+     * @return AbstractSearchResponse containing list of active consent types
+     */
     @GET
     @Path("/consentTypes")
     @Produces("application/json")
     public AbstractSearchResponse<ConsentTypeTo1> getActiveConsentTypes() {
+        try {
+            // Validate OAuth1 access token
+            com.github.scribejava.core.model.OAuth1AccessToken accessToken = getOAuthAccessToken();
+            if (accessToken == null) {
+                logger.warn("No valid OAuth1 access token found for consent types request");
+                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.UNAUTHORIZED);
+            }
 
-        List<ConsentType> consents = patientConsentManager.getActiveConsentTypes();
-        List<ConsentTypeTo1> consentTypes = new ArrayList<ConsentTypeTo1>();
+            logger.debug("Retrieving active consent types with OAuth1 token: {}", accessToken.getToken());
 
-        for (ConsentType consent : consents) {
+            List<ConsentType> consents = patientConsentManager.getActiveConsentTypes();
+            List<ConsentTypeTo1> consentTypes = new ArrayList<ConsentTypeTo1>();
+
+            for (ConsentType consent : consents) {
+                ConsentTypeTo1 consentTypeTo1 = new ConsentTypeTo1();
+                consentTypeTo1.setActive(consent.isActive());
+                consentTypeTo1.setDescription(consent.getDescription());
+                consentTypeTo1.setId(consent.getId());
+                consentTypeTo1.setName(consent.getName());
+                consentTypeTo1.setProviderNo(consent.getProviderNo());
+                consentTypeTo1.setRemoteEnabled(consent.isRemoteEnabled());
+                consentTypeTo1.setType(consent.getType());
+                consentTypes.add(consentTypeTo1);
+            }
+
+            AbstractSearchResponse<ConsentTypeTo1> response = new AbstractSearchResponse<ConsentTypeTo1>();
+            response.setContent(consentTypes);
+
+            logger.info("Successfully retrieved {} consent types", consentTypes.size());
+            return response;
+            
+        } catch (javax.ws.rs.WebApplicationException e) {
+            throw e;
+        } catch (Exception e) {
+            logger.error("Error retrieving consent types: {}", e.getMessage(), e);
+            throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Retrieves a specific consent type by ID.
+     * 
+     * @param id The consent type ID
+     * @return ConsentTypeTo1 object
+     */
+    @GET
+    @Path("/consentType/{id}")
+    @Produces("application/json")
+    public ConsentTypeTo1 getConsentType(@PathParam("id") Integer id) {
+        try {
+            // Validate OAuth1 access token
+            com.github.scribejava.core.model.OAuth1AccessToken accessToken = getOAuthAccessToken();
+            if (accessToken == null) {
+                logger.warn("No valid OAuth1 access token found for consent type request: {}", id);
+                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.UNAUTHORIZED);
+            }
+
+            logger.debug("Retrieving consent type {} with OAuth1 token: {}", id, accessToken.getToken());
+
+            ConsentType consent = patientConsentManager.getConsentTypeByConsentTypeId(id);
+            if (consent == null) {
+                logger.warn("Consent type not found: {}", id);
+                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.NOT_FOUND);
+            }
+
             ConsentTypeTo1 consentTypeTo1 = new ConsentTypeTo1();
             consentTypeTo1.setActive(consent.isActive());
             consentTypeTo1.setDescription(consent.getDescription());
@@ -105,58 +166,70 @@ public class ConsentService extends AbstractServiceImpl {
             consentTypeTo1.setProviderNo(consent.getProviderNo());
             consentTypeTo1.setRemoteEnabled(consent.isRemoteEnabled());
             consentTypeTo1.setType(consent.getType());
-            consentTypes.add(consentTypeTo1);
+
+            logger.info("Successfully retrieved consent type: {}", id);
+            return consentTypeTo1;
+            
+        } catch (javax.ws.rs.WebApplicationException e) {
+            throw e;
+        } catch (Exception e) {
+            logger.error("Error retrieving consent type {}: {}", id, e.getMessage(), e);
+            throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR);
         }
-
-        AbstractSearchResponse<ConsentTypeTo1> response = new AbstractSearchResponse<ConsentTypeTo1>();
-        response.setContent(consentTypes);
-
-        return response;
-    }
-
-    @GET
-    @Path("/consentType/{id}")
-    @Produces("application/json")
-    public ConsentTypeTo1 getConsentType(@PathParam("id") Integer id) {
-
-        ConsentType consent = patientConsentManager.getConsentTypeByConsentTypeId(id);
-
-
-        ConsentTypeTo1 consentTypeTo1 = new ConsentTypeTo1();
-        consentTypeTo1.setActive(consent.isActive());
-        consentTypeTo1.setDescription(consent.getDescription());
-        consentTypeTo1.setId(consent.getId());
-        consentTypeTo1.setName(consent.getName());
-        consentTypeTo1.setProviderNo(consent.getProviderNo());
-        consentTypeTo1.setRemoteEnabled(consent.isRemoteEnabled());
-        consentTypeTo1.setType(consent.getType());
-
-
-        return consentTypeTo1;
     }
 
 
+    /**
+     * Adds a new consent type.
+     * 
+     * @param consentType The consent type to add
+     * @return GenericRESTResponse indicating success or failure
+     */
     @POST
     @Path("/consentType")
     @Produces("application/json")
     @Consumes("application/json")
     public GenericRESTResponse addConsentType(ConsentTypeTo1 consentType) {
-        GenericRESTResponse response = new GenericRESTResponse();
+        try {
+            // Validate OAuth1 access token
+            com.github.scribejava.core.model.OAuth1AccessToken accessToken = getOAuthAccessToken();
+            if (accessToken == null) {
+                logger.warn("No valid OAuth1 access token found for add consent type request");
+                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.UNAUTHORIZED);
+            }
 
+            logger.debug("Adding consent type with OAuth1 token: {}", accessToken.getToken());
 
-        ConsentType consentTypeToAdd = new ConsentType();
+            if (consentType == null) {
+                logger.warn("Consent type data is null");
+                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.BAD_REQUEST);
+            }
 
-        consentTypeToAdd.setActive(true);
-        consentTypeToAdd.setDescription(consentType.getDescription());
-        consentTypeToAdd.setName(consentType.getName());
-        consentTypeToAdd.setProviderNo(consentType.getProviderNo());
-        consentTypeToAdd.setRemoteEnabled(consentType.isRemoteEnabled());
-        consentTypeToAdd.setType(consentType.getType());
+            GenericRESTResponse response = new GenericRESTResponse();
 
-        patientConsentManager.addConsentType(getLoggedInInfo(), consentTypeToAdd);
+            ConsentType consentTypeToAdd = new ConsentType();
+            consentTypeToAdd.setActive(true);
+            consentTypeToAdd.setDescription(consentType.getDescription());
+            consentTypeToAdd.setName(consentType.getName());
+            consentTypeToAdd.setProviderNo(consentType.getProviderNo());
+            consentTypeToAdd.setRemoteEnabled(consentType.isRemoteEnabled());
+            consentTypeToAdd.setType(consentType.getType());
 
-        response.setSuccess(true);
-        return response;
+            patientConsentManager.addConsentType(getLoggedInInfo(), consentTypeToAdd);
+
+            response.setSuccess(true);
+            logger.info("Successfully added consent type: {}", consentType.getName());
+            return response;
+            
+        } catch (javax.ws.rs.WebApplicationException e) {
+            throw e;
+        } catch (Exception e) {
+            logger.error("Error adding consent type: {}", e.getMessage(), e);
+            GenericRESTResponse response = new GenericRESTResponse();
+            response.setSuccess(false);
+            response.setMessage("Error adding consent type: " + e.getMessage());
+            return response;
+        }
     }
 
 
