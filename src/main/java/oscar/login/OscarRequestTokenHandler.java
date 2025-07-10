@@ -27,7 +27,6 @@ package oscar.login;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -72,14 +71,12 @@ public class OscarRequestTokenHandler {
      * @param app Application configuration containing OAuth settings
      * @param callbackUrl The callback URL for OAuth flow
      * @throws IOException if there's an I/O error during the OAuth process
-     * @throws InterruptedException if the OAuth request is interrupted
-     * @throws ExecutionException if there's an execution error during OAuth
      */
     public void handleRequestToken(HttpServletRequest request, 
                                  HttpServletResponse response,
                                  Object app, 
                                  String callbackUrl) 
-            throws IOException, InterruptedException, ExecutionException {
+            throws IOException {
         
         // Validate input parameters
         if (request == null || response == null) {
@@ -189,13 +186,6 @@ public class OscarRequestTokenHandler {
 
         } catch (IOException e) {
             logger.error("I/O error during OAuth request token handling: {}", e.getMessage(), e);
-            throw e;
-        } catch (InterruptedException e) {
-            logger.error("OAuth request was interrupted: {}", e.getMessage(), e);
-            Thread.currentThread().interrupt();
-            throw e;
-        } catch (ExecutionException e) {
-            logger.error("Execution error during OAuth request: {}", e.getMessage(), e);
             throw e;
         } catch (Exception e) {
             logger.error("Unexpected error during OAuth request token handling: {}", e.getMessage(), e);
