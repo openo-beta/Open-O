@@ -7,10 +7,14 @@ apt install -y python3-venv python3-pip
 
 # Create virtual environment
 python3 -m venv .venv
+source .venv/bin/activate
 
 # Install packages using venv's pip
-./.venv/bin/pip install requests
-./.venv/bin/pip install python-dotenv
-./.venv/bin/pip install aider-install
+python3 -m pip install requests
+python3 -m pip install python-dotenv
+python -m pip install uv  # If you need to install uv
+uv tool install --force --python python3.12 --with pip aider-chat@latest
+
+export PATH="/root/.local/bin:$PATH"
 
 echo "All packages have been installed."

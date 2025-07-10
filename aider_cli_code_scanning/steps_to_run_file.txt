@@ -4,7 +4,9 @@
 
         Run:
         “Dev Containers: Rebuild Container”
-2. Create a .env file in aider_cli_code_scanning and add in a variable for PERSONAL_ACCESS_TOKEN=  (must be a classic github token, with full repo enabled) 
+2. Create a .env file in aider_cli_code_scanning and add in a variable for:
+    PERSONAL_ACCESS_TOKEN=  (must be a classic github token, with full repo enabled) 
+    AI_API_KEY= (most likely an anthropic key)
 3. Input the following commands in your terminal (Ctrl + Shift + `):
     chmod +x ./aider_cli_code_scanning/install_packages.sh
     chmod +x ./aider_cli_code_scanning/run_aider.sh

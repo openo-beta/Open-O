@@ -6,7 +6,8 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-FILE_PATH="$1"
+# Normalize file path
+FILE_PATH=$(realpath --relative-to="$(pwd)" "$1")
 
 # Read prompt from stdin (sent from Python)
 prompt=$(cat)
@@ -15,4 +16,4 @@ prompt=$(cat)
 {
   echo "/add $FILE_PATH"
   echo "$prompt"
-} | ./.venv/bin/aider-install --model tinyllama --api-base http://localhost:11434 --yes
+} | aider --model ollama/tinyllama --yes
