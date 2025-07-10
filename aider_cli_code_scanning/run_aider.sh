@@ -9,11 +9,11 @@ fi
 # Set file path
 FILE_PATH="$1"
 
-# Read prompt from stdin (sent from Python)
-prompt=$(cat)
+# Read the prompt from stdin
+PROMPT=$(cat)
 
-# Feed the add command and prompt into aider
+# Pipe prompt and file path directly into aider
 {
   echo "/add $FILE_PATH"
-  echo "$prompt"
-} | aider --model claude-3-5-haiku
+  echo "$PROMPT"
+} | aider --model claude-3-5-haiku-latest --yes

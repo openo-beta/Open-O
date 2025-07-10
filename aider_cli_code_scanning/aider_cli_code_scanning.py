@@ -68,11 +68,7 @@ if response.status_code == 200:
 
         if issue_type != "" and rule_id == issue_type or issue_type == "":
             prompt = f"""\
-            Please fix this error listed below on the file added to the chat:
-            Information about the security issue:
-            Rule: {rule_id} | Description: {description} | Severity: {severity} | State: {state}
-            Location of the security issue:
-            File Path: {path} | Start Line: {start_line} | End Line: {end_line} | Start Column: {start_column} | End Column: {end_column}
+                Please fix this error listed below on the file added to the chat: Information about the security issue: Rule: {rule_id} | Description: {description} | Severity: {severity} | State: {state} Location of the security issue: File Path: {path} | Start Line: {start_line} | End Line: {end_line} | Start Column: {start_column} | End Column: {end_column}
             """
 
             print("PROMPT:")
@@ -82,16 +78,27 @@ if response.status_code == 200:
 
             print("Running aider with the code scanning results.....")
 
-            # Run the script and pass file path + prompt
-            result = subprocess.run(
+            process = subprocess.Popen(
                 ["./aider_cli_code_scanning/run_aider.sh", path],
-                input=prompt.encode(),
+                stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
+                stderr=subprocess.STDOUT,
+                text=True,
+                bufsize=1
             )
 
+            # Send the prompt and close stdin
+            process.stdin.write(prompt)
+            process.stdin.close()
+
+            # Stream and print output in real-time
             print("Aider output:")
-            print(result.stdout.decode())
+            for line in process.stdout:
+                line = line.strip()
+                if line:
+                    print(line)
+
+            process.wait()
         elif issue_type != "" and rule_id != issue_type:
             continue
 else:
