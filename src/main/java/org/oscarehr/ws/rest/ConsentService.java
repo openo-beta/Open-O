@@ -22,7 +22,6 @@
  * Hamilton
  * Ontario, Canada
  * 
- * Migrated from CXF OAuth2 to ScribeJava OAuth1 implementation.
  */
 package org.oscarehr.ws.rest;
 
