@@ -30,9 +30,12 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import org.apache.commons.codec.digest.DigestUtils;
+
+//Replaced old CXF FileUtils and DOM parser imports with Java NIO for simpler UTF-8 file reads
 import java.nio.file.Files;
 import java.nio.charset.StandardCharsets;
+
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.dao.DemographicCustDao;
@@ -50,12 +53,15 @@ import org.oscarehr.hospitalReportManager.model.HRMDocument;
 import org.oscarehr.hospitalReportManager.model.HRMDocumentSubClass;
 import org.oscarehr.hospitalReportManager.model.HRMDocumentToDemographic;
 import org.oscarehr.hospitalReportManager.model.HRMDocumentToProvider;
-import omd.hrm.OmdCds;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
+
 import org.springframework.core.io.ClassPathResource;
+
 import org.xml.sax.SAXException;
+
+import omd.hrm.OmdCds;
 
 import oscar.OscarProperties;
 
