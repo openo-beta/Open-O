@@ -68,7 +68,7 @@ if response.status_code == 200:
 
         if issue_type != "" and rule_id == issue_type or issue_type == "":
             prompt = f"""\
-            Please fix this error listed below:
+            Please fix this error listed below on the file added to the chat:
             Information about the security issue:
             Rule: {rule_id} | Description: {description} | Severity: {severity} | State: {state}
             Location of the security issue:

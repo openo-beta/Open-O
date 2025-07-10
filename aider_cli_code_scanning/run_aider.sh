@@ -6,8 +6,8 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-# Normalize file path
-FILE_PATH=$(realpath --relative-to="$(pwd)" "$1")
+# Set file path
+FILE_PATH="$1"
 
 # Read prompt from stdin (sent from Python)
 prompt=$(cat)
@@ -16,4 +16,4 @@ prompt=$(cat)
 {
   echo "/add $FILE_PATH"
   echo "$prompt"
-} | aider --model ollama/tinyllama --yes
+} | aider --model claude-3-5-haiku
