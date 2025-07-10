@@ -94,14 +94,7 @@ public class ConsentService extends AbstractServiceImpl {
     @Produces("application/json")
     public AbstractSearchResponse<ConsentTypeTo1> getActiveConsentTypes() {
         try {
-            // Validate OAuth1 access token
-            com.github.scribejava.core.model.OAuth1AccessToken accessToken = getOAuthAccessToken();
-            if (accessToken == null) {
-                logger.warn("No valid OAuth1 access token found for consent types request");
-                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.UNAUTHORIZED);
-            }
-
-            logger.debug("Retrieving active consent types with OAuth1 token: {}", accessToken.getToken());
+            logger.debug("Retrieving active consent types");
 
             List<ConsentType> consents = patientConsentManager.getActiveConsentTypes();
             List<ConsentTypeTo1> consentTypes = new ArrayList<ConsentTypeTo1>();
@@ -143,14 +136,7 @@ public class ConsentService extends AbstractServiceImpl {
     @Produces("application/json")
     public ConsentTypeTo1 getConsentType(@PathParam("id") Integer id) {
         try {
-            // Validate OAuth1 access token
-            com.github.scribejava.core.model.OAuth1AccessToken accessToken = getOAuthAccessToken();
-            if (accessToken == null) {
-                logger.warn("No valid OAuth1 access token found for consent type request: {}", id);
-                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.UNAUTHORIZED);
-            }
-
-            logger.debug("Retrieving consent type {} with OAuth1 token: {}", id, accessToken.getToken());
+            logger.debug("Retrieving consent type {}", id);
 
             ConsentType consent = patientConsentManager.getConsentTypeByConsentTypeId(id);
             if (consent == null) {
@@ -191,14 +177,7 @@ public class ConsentService extends AbstractServiceImpl {
     @Consumes("application/json")
     public GenericRESTResponse addConsentType(ConsentTypeTo1 consentType) {
         try {
-            // Validate OAuth1 access token
-            com.github.scribejava.core.model.OAuth1AccessToken accessToken = getOAuthAccessToken();
-            if (accessToken == null) {
-                logger.warn("No valid OAuth1 access token found for add consent type request");
-                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.UNAUTHORIZED);
-            }
-
-            logger.debug("Adding consent type with OAuth1 token: {}", accessToken.getToken());
+            logger.debug("Adding consent type");
 
             if (consentType == null) {
                 logger.warn("Consent type data is null");

@@ -105,14 +105,7 @@ public class ProviderService extends AbstractServiceImpl {
     @Deprecated
     public org.oscarehr.ws.rest.to.OscarSearchResponse<ProviderTransfer> getProviders() {
         try {
-            // Validate OAuth1 access token
-            com.github.scribejava.core.model.OAuth1AccessToken accessToken = getOAuthAccessToken();
-            if (accessToken == null) {
-                logger.warn("No valid OAuth1 access token found for providers request");
-                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.UNAUTHORIZED);
-            }
-
-            logger.debug("Retrieving active providers with OAuth1 token: {}", accessToken.getToken());
+            logger.debug("Retrieving active providers");
 
             org.oscarehr.ws.rest.to.OscarSearchResponse<ProviderTransfer> lst = new
                     org.oscarehr.ws.rest.to.OscarSearchResponse<ProviderTransfer>();
@@ -142,14 +135,7 @@ public class ProviderService extends AbstractServiceImpl {
     @Produces("application/json")
     public AbstractSearchResponse<ProviderTo1> getProvidersAsJSON() {
         try {
-            // Validate OAuth1 access token
-            com.github.scribejava.core.model.OAuth1AccessToken accessToken = getOAuthAccessToken();
-            if (accessToken == null) {
-                logger.warn("No valid OAuth1 access token found for providers JSON request");
-                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.UNAUTHORIZED);
-            }
-
-            logger.debug("Retrieving active providers as JSON with OAuth1 token: {}", accessToken.getToken());
+            logger.debug("Retrieving active providers as JSON");
 
             JsonConfig config = new JsonConfig();
             config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
@@ -181,14 +167,7 @@ public class ProviderService extends AbstractServiceImpl {
     @Produces({"application/xml", "application/json"})
     public ProviderTransfer getProvider(@PathParam("id") String id) {
         try {
-            // Validate OAuth1 access token
-            com.github.scribejava.core.model.OAuth1AccessToken accessToken = getOAuthAccessToken();
-            if (accessToken == null) {
-                logger.warn("No valid OAuth1 access token found for provider request: {}", id);
-                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.UNAUTHORIZED);
-            }
-
-            logger.debug("Retrieving provider {} with OAuth1 token: {}", id, accessToken.getToken());
+            logger.debug("Retrieving provider {}", id);
 
             Provider provider = providerDao.getProvider(id);
             if (provider == null) {
@@ -217,14 +196,7 @@ public class ProviderService extends AbstractServiceImpl {
     @Produces("application/json")
     public String getLoggedInProvider() {
         try {
-            // Validate OAuth1 access token
-            com.github.scribejava.core.model.OAuth1AccessToken accessToken = getOAuthAccessToken();
-            if (accessToken == null) {
-                logger.warn("No valid OAuth1 access token found for logged-in provider request");
-                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.UNAUTHORIZED);
-            }
-
-            logger.debug("Retrieving logged-in provider with OAuth1 token: {}", accessToken.getToken());
+            logger.debug("Retrieving logged-in provider");
 
             Provider provider = getLoggedInInfo().getLoggedInProvider();
 
@@ -254,14 +226,7 @@ public class ProviderService extends AbstractServiceImpl {
     @Path("/providerjson/{id}")
     public String getProviderAsJSON(@PathParam("id") String id) {
         try {
-            // Validate OAuth1 access token
-            com.github.scribejava.core.model.OAuth1AccessToken accessToken = getOAuthAccessToken();
-            if (accessToken == null) {
-                logger.warn("No valid OAuth1 access token found for provider JSON request: {}", id);
-                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.UNAUTHORIZED);
-            }
-
-            logger.debug("Retrieving provider {} as JSON with OAuth1 token: {}", id, accessToken.getToken());
+            logger.debug("Retrieving provider {} as JSON", id);
 
             Provider provider = providerDao.getProvider(id);
             if (provider == null) {
@@ -302,14 +267,7 @@ public class ProviderService extends AbstractServiceImpl {
     @Consumes("application/json")
     public AbstractSearchResponse<ProviderTo1> search(JSONObject json, @QueryParam("startIndex") Integer startIndex, @QueryParam("itemsToReturn") Integer itemsToReturn) {
         try {
-            // Validate OAuth1 access token
-            com.github.scribejava.core.model.OAuth1AccessToken accessToken = getOAuthAccessToken();
-            if (accessToken == null) {
-                logger.warn("No valid OAuth1 access token found for provider search request");
-                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.UNAUTHORIZED);
-            }
-
-            logger.debug("Searching providers with OAuth1 token: {}", accessToken.getToken());
+            logger.debug("Searching providers");
 
             AbstractSearchResponse<ProviderTo1> response = new AbstractSearchResponse<ProviderTo1>();
 
