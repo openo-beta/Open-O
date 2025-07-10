@@ -24,135 +24,304 @@
  */
 package oscar.login;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.Response;
 
-import net.oauth.OAuth;
-import net.oauth.OAuthMessage;
-import net.oauth.OAuthProblemException;
-import net.oauth.OAuthValidator;
+import org.oscarehr.util.MiscUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import org.apache.cxf.common.logging.LogUtils;
-import org.apache.cxf.common.util.StringUtils;
-import org.apache.cxf.jaxrs.ext.MessageContext;
-import org.apache.cxf.rs.security.oauth.data.Client;
-import org.apache.cxf.rs.security.oauth.data.RequestToken;
-import org.apache.cxf.rs.security.oauth.data.RequestTokenRegistration;
-import org.apache.cxf.rs.security.oauth.provider.OAuthDataProvider;
-import org.apache.cxf.rs.security.oauth.provider.OAuthServiceException;
-import org.apache.cxf.rs.security.oauth.utils.OAuthConstants;
-import org.apache.cxf.rs.security.oauth.utils.OAuthUtils;
+import com.github.scribejava.core.builder.ServiceBuilder;
+import com.github.scribejava.core.model.OAuth1RequestToken;
+import com.github.scribejava.core.model.OAuthRequest;
+import com.github.scribejava.core.model.Response;
+import com.github.scribejava.core.model.Verb;
+import com.github.scribejava.core.oauth.OAuth10aService;
 
+/**
+ * OAuth 1.0a Request Token Handler using ScribeJava library.
+ * 
+ * This class handles the first step of the OAuth 1.0a flow:
+ * 1. Obtains a request token from the OAuth provider
+ * 2. Stores the temporary token and secret
+ * 3. Redirects the user to the authorization URL
+ * 
+ * Migrated from Apache CXF to ScribeJava for OAuth implementation.
+ */
+@Component
 public class OscarRequestTokenHandler {
 
-    private static final Logger LOG = LogUtils.getL7dLogger(OscarRequestTokenHandler.class);
-    private static final String[] REQUIRED_PARAMETERS =
-            new String[]{
-                    OAuth.OAUTH_CONSUMER_KEY,
-                    OAuth.OAUTH_SIGNATURE_METHOD,
-                    OAuth.OAUTH_SIGNATURE,
-                    OAuth.OAUTH_TIMESTAMP,
-                    OAuth.OAUTH_NONCE,
-                    OAuth.OAUTH_CALLBACK
-            };
-
+    private static final Logger logger = MiscUtils.getLogger();
+    
+    @Autowired
+    private OscarOAuthDataProvider dataProvider;
+    
     private long tokenLifetime = 3600L;
     private String defaultScope;
 
-    public Response handle(MessageContext mc,
-                           OAuthDataProvider dataProvider,
-                           OAuthValidator validator) {
+    /**
+     * Handles the OAuth 1.0a request token flow.
+     * 
+     * @param request HTTP servlet request
+     * @param response HTTP servlet response
+     * @param app Application configuration containing OAuth settings
+     * @param callbackUrl The callback URL for OAuth flow
+     * @throws IOException if there's an I/O error during the OAuth process
+     * @throws InterruptedException if the OAuth request is interrupted
+     * @throws ExecutionException if there's an execution error during OAuth
+     */
+    public void handleRequestToken(HttpServletRequest request, 
+                                 HttpServletResponse response,
+                                 Object app, 
+                                 String callbackUrl) 
+            throws IOException, InterruptedException, ExecutionException {
+        
         try {
-            OAuthMessage oAuthMessage =
-                    OAuthUtils.getOAuthMessage(mc, mc.getHttpServletRequest(), REQUIRED_PARAMETERS);
-
-            Client client = dataProvider
-                    .getClient(oAuthMessage.getParameter(OAuth.OAUTH_CONSUMER_KEY));
-            //client credentials not found
-            if (client == null) {
-                throw new OAuthProblemException(OAuth.Problems.CONSUMER_KEY_UNKNOWN);
+            // Load OAuth configuration from application config
+            AppOAuth1Config config = AppOAuth1Config.fromDocument(getAppConfig(app));
+            
+            if (config == null || config.getConsumerKey() == null || config.getConsumerSecret() == null) {
+                logger.severe("OAuth configuration is missing or incomplete");
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "OAuth configuration error");
+                return;
             }
 
-            OAuthUtils.validateMessage(oAuthMessage, client, null,
-                    dataProvider, validator);
+            // Validate callback URL
+            validateCallbackURL(config, callbackUrl);
 
-            String callback = oAuthMessage.getParameter(OAuth.OAUTH_CALLBACK);
-            validateCallbackURL(client, callback);
+            // Build OAuth 1.0a service using ScribeJava
+            OAuth10aService service = new ServiceBuilder(config.getConsumerKey())
+                    .apiSecret(config.getConsumerSecret())
+                    .callback(callbackUrl)
+                    .build(new GenericOAuth10aApi(config.getBaseUrl()));
 
-            List<String> scopes = OAuthUtils.parseParamValue(
-                    mc.getHttpServletRequest().getParameter(OAuthConstants.X_OAUTH_SCOPE), defaultScope);
-
-            RequestTokenRegistration reg = new RequestTokenRegistration();
-            reg.setClient(client);
-            reg.setCallback(callback);
-            reg.setState(oAuthMessage.getParameter("state"));
-            reg.setScopes(scopes);
-            reg.setLifetime(tokenLifetime);
-            reg.setIssuedAt(System.currentTimeMillis() / 1000);
-
-            RequestToken requestToken = dataProvider.createRequestToken(reg);
-
-            if (LOG.isLoggable(Level.FINE)) {
-                LOG.log(Level.FINE, "Preparing Temporary Credentials Endpoint correct response");
+            // Get request token from OAuth provider
+            OAuth1RequestToken requestToken = service.getRequestToken();
+            
+            if (requestToken == null) {
+                logger.severe("Failed to obtain request token from OAuth provider");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Failed to obtain request token");
+                return;
             }
-            //create response
-            Map<String, Object> responseParams = new HashMap<String, Object>();
-            responseParams.put(OAuth.OAUTH_TOKEN, requestToken.getTokenKey());
-            responseParams.put(OAuth.OAUTH_TOKEN_SECRET, requestToken.getTokenSecret());
-            responseParams.put(OAuth.OAUTH_CALLBACK_CONFIRMED, Boolean.TRUE);
 
-            String responseBody = OAuth.formEncode(responseParams.entrySet());
+            // Store the request token and secret in data provider
+            storeRequestToken(requestToken, callbackUrl, config);
 
-            return Response.ok(responseBody).build();
-        } catch (OAuthProblemException e) {
-            LOG.log(Level.WARNING, "An OAuth-related problem: {0}", new Object[]{e.fillInStackTrace()});
-            int code = e.getHttpStatusCode();
-            if (code == HttpServletResponse.SC_OK) {
-                code = e.getProblem() == OAuth.Problems.CONSUMER_KEY_UNKNOWN
-                        ? 401 : 400;
-            }
-            return OAuthUtils.handleException(mc, e, code);
-        } catch (OAuthServiceException e) {
-            return OAuthUtils.handleException(mc, e, HttpServletResponse.SC_BAD_REQUEST);
+            // Build authorization URL and redirect user
+            String authorizationUrl = service.getAuthorizationUrl(requestToken);
+            
+            logger.info("Redirecting user to authorization URL: " + authorizationUrl);
+            response.sendRedirect(authorizationUrl);
+
+        } catch (IOException e) {
+            logger.severe("I/O error during OAuth request token handling: " + e.getMessage());
+            throw e;
+        } catch (InterruptedException e) {
+            logger.severe("OAuth request was interrupted: " + e.getMessage());
+            Thread.currentThread().interrupt();
+            throw e;
+        } catch (ExecutionException e) {
+            logger.severe("Execution error during OAuth request: " + e.getMessage());
+            throw e;
         } catch (Exception e) {
-            LOG.log(Level.SEVERE, "Unexpected internal server exception: {0}",
-                    new Object[]{e.fillInStackTrace()});
-            return OAuthUtils.handleException(mc, e, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            logger.severe("Unexpected error during OAuth request token handling: " + e.getMessage());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "OAuth processing error");
         }
     }
 
-    protected void validateCallbackURL(Client client,
-                                       String oauthCallback) throws OAuthProblemException {
-        // the callback must not be empty or null, and it should either match
-        // the pre-registered callback URI or have the common root with the
-        // the pre-registered application URI
-        if (!StringUtils.isEmpty(oauthCallback)
-                && (!StringUtils.isEmpty(client.getCallbackURI())
-                && oauthCallback.equals(client.getCallbackURI())
-                || !StringUtils.isEmpty(client.getApplicationURI())
-                && oauthCallback.startsWith(client.getApplicationURI()))) {
-            return;
+    /**
+     * Validates the callback URL against the configured application settings.
+     * 
+     * @param config OAuth configuration
+     * @param callbackUrl The callback URL to validate
+     * @throws IllegalArgumentException if the callback URL is invalid
+     */
+    protected void validateCallbackURL(AppOAuth1Config config, String callbackUrl) 
+            throws IllegalArgumentException {
+        
+        if (callbackUrl == null || callbackUrl.trim().isEmpty()) {
+            throw new IllegalArgumentException("Callback URL cannot be null or empty");
         }
-        OAuthProblemException problemEx = new OAuthProblemException(
-                OAuth.Problems.PARAMETER_REJECTED + " - " + OAuth.OAUTH_CALLBACK);
-        problemEx
-                .setParameter(OAuthProblemException.HTTP_STATUS_CODE,
-                        HttpServletResponse.SC_BAD_REQUEST);
-        throw problemEx;
+
+        // Check if callback URL matches pre-registered callback URI
+        if (config.getCallbackURI() != null && !config.getCallbackURI().isEmpty()) {
+            if (callbackUrl.equals(config.getCallbackURI())) {
+                return;
+            }
+        }
+
+        // Check if callback URL has common root with application URI
+        if (config.getApplicationURI() != null && !config.getApplicationURI().isEmpty()) {
+            if (callbackUrl.startsWith(config.getApplicationURI())) {
+                return;
+            }
+        }
+
+        throw new IllegalArgumentException("Invalid callback URL: " + callbackUrl);
     }
 
+    /**
+     * Stores the request token and associated information in the data provider.
+     * 
+     * @param requestToken The OAuth request token to store
+     * @param callbackUrl The callback URL
+     * @param config OAuth configuration
+     */
+    private void storeRequestToken(OAuth1RequestToken requestToken, 
+                                 String callbackUrl, 
+                                 AppOAuth1Config config) {
+        try {
+            // Create token registration for storage
+            RequestTokenRegistration registration = new RequestTokenRegistration();
+            registration.setTokenKey(requestToken.getToken());
+            registration.setTokenSecret(requestToken.getTokenSecret());
+            registration.setCallback(callbackUrl);
+            registration.setLifetime(tokenLifetime);
+            registration.setIssuedAt(System.currentTimeMillis() / 1000);
+            
+            if (defaultScope != null) {
+                registration.setScopes(java.util.Arrays.asList(defaultScope.split(",")));
+            }
+
+            // Store in data provider
+            dataProvider.createRequestToken(registration);
+            
+            logger.info("Successfully stored request token: " + requestToken.getToken());
+            
+        } catch (Exception e) {
+            logger.severe("Failed to store request token: " + e.getMessage());
+            throw new RuntimeException("Failed to store request token", e);
+        }
+    }
+
+    /**
+     * Extracts the application configuration from the app object.
+     * 
+     * @param app The application object
+     * @return The configuration document
+     */
+    private Object getAppConfig(Object app) {
+        try {
+            // Use reflection to call getConfig() method on app object
+            return app.getClass().getMethod("getConfig").invoke(app);
+        } catch (Exception e) {
+            logger.severe("Failed to get application config: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Sets the token lifetime in seconds.
+     * 
+     * @param tokenLifetime Token lifetime in seconds
+     */
     public void setTokenLifetime(long tokenLifetime) {
         this.tokenLifetime = tokenLifetime;
     }
 
+    /**
+     * Sets the default OAuth scope.
+     * 
+     * @param defaultScope Default scope string
+     */
     public void setDefaultScope(String defaultScope) {
         this.defaultScope = defaultScope;
     }
 
+    /**
+     * Inner class to represent OAuth configuration.
+     */
+    public static class AppOAuth1Config {
+        private String consumerKey;
+        private String consumerSecret;
+        private String baseUrl;
+        private String callbackURI;
+        private String applicationURI;
+
+        public static AppOAuth1Config fromDocument(Object configDoc) {
+            // Implementation would parse the configuration document
+            // This is a placeholder - actual implementation depends on config format
+            AppOAuth1Config config = new AppOAuth1Config();
+            // Parse configDoc and populate config fields
+            return config;
+        }
+
+        // Getters and setters
+        public String getConsumerKey() { return consumerKey; }
+        public void setConsumerKey(String consumerKey) { this.consumerKey = consumerKey; }
+        
+        public String getConsumerSecret() { return consumerSecret; }
+        public void setConsumerSecret(String consumerSecret) { this.consumerSecret = consumerSecret; }
+        
+        public String getBaseUrl() { return baseUrl; }
+        public void setBaseUrl(String baseUrl) { this.baseUrl = baseUrl; }
+        
+        public String getCallbackURI() { return callbackURI; }
+        public void setCallbackURI(String callbackURI) { this.callbackURI = callbackURI; }
+        
+        public String getApplicationURI() { return applicationURI; }
+        public void setApplicationURI(String applicationURI) { this.applicationURI = applicationURI; }
+    }
+
+    /**
+     * Inner class to represent request token registration.
+     */
+    public static class RequestTokenRegistration {
+        private String tokenKey;
+        private String tokenSecret;
+        private String callback;
+        private long lifetime;
+        private long issuedAt;
+        private java.util.List<String> scopes;
+
+        // Getters and setters
+        public String getTokenKey() { return tokenKey; }
+        public void setTokenKey(String tokenKey) { this.tokenKey = tokenKey; }
+        
+        public String getTokenSecret() { return tokenSecret; }
+        public void setTokenSecret(String tokenSecret) { this.tokenSecret = tokenSecret; }
+        
+        public String getCallback() { return callback; }
+        public void setCallback(String callback) { this.callback = callback; }
+        
+        public long getLifetime() { return lifetime; }
+        public void setLifetime(long lifetime) { this.lifetime = lifetime; }
+        
+        public long getIssuedAt() { return issuedAt; }
+        public void setIssuedAt(long issuedAt) { this.issuedAt = issuedAt; }
+        
+        public java.util.List<String> getScopes() { return scopes; }
+        public void setScopes(java.util.List<String> scopes) { this.scopes = scopes; }
+    }
+
+    /**
+     * Placeholder for GenericOAuth10aApi - this should be implemented separately
+     * to point to your OAuth endpoints at <baseUrl>/oauth/...
+     */
+    public static class GenericOAuth10aApi extends com.github.scribejava.core.builder.api.DefaultApi10a {
+        private final String baseUrl;
+
+        public GenericOAuth10aApi(String baseUrl) {
+            this.baseUrl = baseUrl;
+        }
+
+        @Override
+        public String getRequestTokenEndpoint() {
+            return baseUrl + "/oauth/request_token";
+        }
+
+        @Override
+        public String getAccessTokenEndpoint() {
+            return baseUrl + "/oauth/access_token";
+        }
+
+        @Override
+        public String getAuthorizationBaseUrl() {
+            return baseUrl + "/oauth/authorize";
+        }
+    }
 }
