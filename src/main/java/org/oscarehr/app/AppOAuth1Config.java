@@ -144,7 +144,7 @@ public class AppOAuth1Config implements AppAuthConfig {
         logger.debug("token === " + str);
         Document doc = XmlUtils.toDocument(str);
         Node node = doc.getFirstChild();
-        logger.debug(node.getNodeName());
+        logger.error(node.getNodeName());
         String key = XmlUtils.getChildNodeTextContents(node, "key");
         String secret = XmlUtils.getChildNodeTextContents(node, "secret");
         Map<String, String> map = new HashMap<String, String>();
