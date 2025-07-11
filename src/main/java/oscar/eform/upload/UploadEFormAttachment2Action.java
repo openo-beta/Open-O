@@ -43,7 +43,7 @@ import org.oscarehr.util.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 public class UploadEFormAttachment2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
