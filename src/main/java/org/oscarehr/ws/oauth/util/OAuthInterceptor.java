@@ -29,15 +29,11 @@
 
 package org.oscarehr.ws.oauth.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Collection;
@@ -70,9 +66,6 @@ import org.oscarehr.util.LoggedInInfo;
 
 
 public class OAuthInterceptor implements PhaseInterceptor<Message> {
-
-    private static final Logger logger = LoggerFactory.getLogger(OAuthInterceptor.class);
-
 
     @Autowired
     private AppDefinitionDao appDefinitionDao;

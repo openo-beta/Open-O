@@ -235,4 +235,34 @@ public class OscarOAuthDataProvider {
             serviceAccessTokenDao.remove(sat);
         }
     }
+
+    /**
+     * Return the secret associated with a given OAuth1 token.
+     * First checks access-tokens, then request-tokens if not found.
+     */
+    public String getTokenSecret(String tokenId) {
+        // try access‐token table
+        ServiceAccessToken sat = serviceAccessTokenDao.findByTokenId(tokenId);
+        if (sat != null) {
+            return sat.getTokenSecret();
+        }
+        // fallback to request‐token table
+        ServiceRequestToken srt = serviceRequestTokenDao.findByTokenId(tokenId);
+        return srt != null ? srt.getTokenSecret() : null;
+    }
+
+    /**
+     * Lookup which OSCAR providerNo “owns” this token.
+     * First checks access-tokens, then request-tokens.
+     */
+    public String getProviderNoByToken(String tokenId) {
+        // try access‐token table
+        ServiceAccessToken sat = serviceAccessTokenDao.findByTokenId(tokenId);
+        if (sat != null) {
+            return sat.getProviderNo();
+        }
+        // fallback to request‐token table
+        ServiceRequestToken srt = serviceRequestTokenDao.findByTokenId(tokenId);
+        return srt != null ? srt.getProviderNo() : null;
+    }
 }
