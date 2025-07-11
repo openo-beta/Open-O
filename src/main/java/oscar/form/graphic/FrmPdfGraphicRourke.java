@@ -191,8 +191,8 @@ public class FrmPdfGraphicRourke extends FrmPdfGraphic {
 
             if (xyProp.containsKey(String.valueOf(xcoord))) {
                 StringBuilder yvalue = new StringBuilder(xyProp.getProperty(String.valueOf(xcoord)));
-                yvalue = yvalue.append(",");
-                yvalue = yvalue.append(String.valueOf(ycoord));
+                yvalue.append(",");
+                yvalue.append(String.valueOf(ycoord));
                 xyProp.setProperty(String.valueOf(xcoord), yvalue.toString());
             } else {
                 xyProp.setProperty(String.valueOf(xcoord), String.valueOf(ycoord));
