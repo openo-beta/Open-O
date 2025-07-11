@@ -160,6 +160,9 @@ public class OAuthInterceptor implements PhaseInterceptor<Message> {
 
             // 7) Load OSCAR Provider by token
             String providerNo = oauthDataProvider.getProviderNoByToken(token);
+            if (providerNo == null) {
+                throw new IllegalArgumentException("No provider number found for token: " + token);
+            }
             Provider provider = providerDao.getProvider(providerNo);
             if (provider == null) {
                 throw new IllegalArgumentException("Unknown provider for token: " + token);
