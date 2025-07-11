@@ -106,7 +106,7 @@ public class OAuthInterceptor implements PhaseInterceptor<Message> {
             }
 
             // 3) Lookup AppDefinition by consumerKey
-            AppDefinition appDef = findAppDefinitionByConsumerKey(consumerKey);
+            AppDefinition appDef = appDefinitionDao.findByConsumerKey(consumerKey);
             if (appDef == null) {
                 throw new IllegalArgumentException("Unknown consumer_key: " + consumerKey);
             }
@@ -199,27 +199,6 @@ public class OAuthInterceptor implements PhaseInterceptor<Message> {
     }
 
     //——— Helper Methods ———
-    /**
-     * In‐memory lookup by consumerKey. Replace with a real DAO query when available.
-     */
-    private AppDefinition findAppDefinitionByConsumerKey(String consumerKey) {
-        List<AppDefinition> allApps = appDefinitionDao.findAll();
-        for (AppDefinition app : allApps) {
-            AppOAuth1Config cfg;
-            try {
-                // may throw IOException / JAXBException etc.
-                cfg = AppOAuth1Config.fromDocument(app.getConfig());
-            } catch (Exception e) {
-                // log & skip malformed configs
-                logger.error("Unable to parse OAuth config for AppDefinition id=" + app.getId(), e);
-                continue;
-            }
-            if (consumerKey.equals(cfg.getConsumerKey())) {
-                return app;
-            }
-        }
-        return null;
-    }
 
     /**
      * Extract all oauth_* params from the Authorization header or request parameters.
