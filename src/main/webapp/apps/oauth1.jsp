@@ -23,28 +23,31 @@
     Ontario, Canada
 
 --%>
-<%@page import="com.github.scribejava.core.model.OAuth1RequestToken" %>
-<%@page import="java.util.*" %>
-<%@page import="java.net.*" %>
-<%@page import="org.oscarehr.common.dao.*" %>
-<%@page import="org.oscarehr.common.model.*" %>
-<%@page import="org.oscarehr.util.*" %>
-<%@page import="org.oscarehr.app.*" %>
+<%@ page import="com.github.scribejava.core.model.OAuth1RequestToken" %>
+<%@ page import="org.oscarehr.common.dao.AppUserDao" %>
+<%@ page import="org.oscarehr.common.dao.AppDefinitionDao" %>
+<%@ page import="org.oscarehr.common.model.AppUser" %>
+<%@ page import="org.oscarehr.app.AppDefinition" %>
+<%@ page import="org.oscarehr.app.AppOAuth1Config" %>
+<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.util.MiscUtils" %>
+<%@ page import="java.util.Date" %>
+
 <%
+    // Lookup DAOs
+    AppUserDao appUserDao         = SpringUtils.getBean(AppUserDao.class);
+    AppDefinitionDao appDefDao    = SpringUtils.getBean(AppDefinitionDao.class);
 
-    AppUserDao appUserDao = SpringUtils.getBean(AppUserDao.class);
-    AppDefinitionDao appDefinitionDao = SpringUtils.getBean(AppDefinitionDao.class);
-
+    // Determine which app we’re handling
     Integer appId = null;
-    if (request.getParameter("id") != null) {
+    String idParam = request.getParameter("id");
+    if (idParam != null) {
         try {
-            appId = Integer.parseInt(request.getParameter("id"));
-        } catch (Exception e) {
-            if ("K2A".equals(request.getParameter("id"))) {
-                AppDefinition k2aApp = appDefinitionDao.findByName("K2A");
-                if (k2aApp != null) {
-                    appId = k2aApp.getId();
-                }
+            appId = Integer.parseInt(idParam);
+        } catch (NumberFormatException e) {
+            if ("K2A".equals(idParam)) {
+                AppDefinition k2a = appDefDao.findByName("K2A");
+                if (k2a != null) appId = k2a.getId();
             }
         }
     } else if (session.getAttribute("appId") != null) {
@@ -53,59 +56,84 @@
 
     if (appId == null) {
         response.sendRedirect("close.jsp");
+        return;
     }
 
-    AppDefinition appDef = appDefinitionDao.find(appId);
+    // Load our OAuth1 app configuration
+    AppDefinition    appDef       = appDefDao.find(appId);
+    AppOAuth1Config  oauthConfig  = AppOAuth1Config.fromDocument(appDef.getConfig());
 
-    AppOAuth1Config oauth1config = (AppOAuth1Config) AppOAuth1Config.fromDocument(appDef.getConfig());
-
-    if (request.getParameter("oauth_verifier") == null) {      //need to request a token
+    // Check if we’re in the “request token” phase or “access token” phase
+    String oauthVerifier = request.getParameter("oauth_verifier");
+    if (oauthVerifier == null) {
+        // -----------------------------------------------------------
+        // Phase 1: we need to redirect the client to the provider’s auth URL
+        // -----------------------------------------------------------
         try {
-            // Request token handling is now done by the OAuth service layer
-            // The JSP should redirect to the authorization URL provided by the service
-            OAuth1RequestToken requestToken = (OAuth1RequestToken) request.getAttribute("requestToken");
-            if (requestToken != null) {
-                session.setAttribute("requestToken", requestToken);
-                session.setAttribute("appId", appId);
-                String authUrl = (String) request.getAttribute("authorizationUrl");
-                response.sendRedirect(authUrl);
-            } else {
-                throw new Exception("No request token available");
+            OAuth1RequestToken requestToken =
+                (OAuth1RequestToken) request.getAttribute("requestToken");
+            if (requestToken == null) {
+                throw new IllegalStateException("No requestToken in request");
             }
+            // Persist for phase 2
+            session.setAttribute("requestToken", requestToken);
+            session.setAttribute("appId", appId);
+
+            // Authorization URL was prepared by your service layer
+            String authUrl = (String) request.getAttribute("authorizationUrl");
+            response.sendRedirect(authUrl);
+            return;
+
         } catch (Exception e) {
-            MiscUtils.getLogger().error("Error getting Request Token from app " + appId + " for user " + (String) session.getAttribute("user"), e);
-            session.setAttribute("oauthMessage", "Error requesting token from app");
+            MiscUtils.getLogger().error(
+                "Error obtaining request token for app " + appId, e
+            );
+            session.setAttribute("oauthMessage", "Error requesting token");
             response.sendRedirect("close.jsp");
+            return;
         }
     } else {
+        // -----------------------------------------------------------
+        // Phase 2: handling the callback, exchange for access token
+        // -----------------------------------------------------------
         try {
-            String oauthVerifier = request.getParameter("oauth_verifier");
-            OAuth1RequestToken requestToken = (OAuth1RequestToken) session.getAttribute("requestToken");
-            
-            // Access token handling is now done by the OAuth service layer
-            // The access token should be available as a request attribute
+            OAuth1RequestToken requestToken =
+                (OAuth1RequestToken) session.getAttribute("requestToken");
+            if (requestToken == null) {
+                throw new IllegalStateException("No requestToken in session");
+            }
+
+            // Your service layer set these on the request
             String accessTokenString = (String) request.getAttribute("accessToken");
             String accessTokenSecret = (String) request.getAttribute("accessTokenSecret");
 
-            //appUserDao
-            AppUser appuser = new AppUser();
-            appuser.setAppId(appId);
-            appuser.setProviderNo((String) session.getAttribute("user"));
+            // Persist the authorized user
+            AppUser appUser = new AppUser();
+            appUser.setAppId(appId);
+            appUser.setProviderNo((String) session.getAttribute("user"));
+            // Build the XML blob of token & secret
+            String authData = AppOAuth1Config.getTokenXML(
+                accessTokenString, accessTokenSecret
+            );
+            appUser.setAuthenticationData(authData);
+            appUser.setAdded(new Date());
 
-            String authenticationData = AppOAuth1Config.getTokenXML(accessTokenString, accessTokenSecret);
-            appuser.setAuthenticationData(authenticationData);
+            appUserDao.saveEntity(appUser);
 
-            appuser.setAdded(new Date());
-            appUserDao.saveEntity(appuser);
         } catch (Exception e) {
-            session.setAttribute("oauthMessage", "Error with verifing authentication");
-            MiscUtils.getLogger().error("Error returning from app " + appId + " for user " + (String) session.getAttribute("user"), e);
+            session.setAttribute("oauthMessage", "Error verifying authentication");
+            MiscUtils.getLogger().error(
+                "Error processing access token for app " + appId, e
+            );
             response.sendRedirect("close.jsp");
+            return;
         }
 
+        // Success!
         session.setAttribute("oauthMessage", "Success");
         session.removeAttribute("requestToken");
         session.removeAttribute("appId");
         response.sendRedirect("close.jsp");
+        return;
     }
 %>
