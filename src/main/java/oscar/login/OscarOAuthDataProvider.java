@@ -186,7 +186,7 @@ public class OscarOAuthDataProvider {
             OAuth10aService service = new ServiceBuilder(client.getKey())
                     .apiSecret(client.getSecret())
                     .callback(srt.getCallback())
-                    .build(new GenericOAuth10aApi("https://api.example.com")); // Replace with actual base URL
+                    .build(new GenericOAuth10aApi(client.getUri())); // Replace with actual base URL
 
             // Create request token for exchange
             OAuth1RequestToken requestToken = new OAuth1RequestToken(srt.getTokenId(), srt.getTokenSecret());
