@@ -115,7 +115,7 @@ public class OscarOAuthDataProvider {
             OAuth10aService service = new ServiceBuilder(client.getKey())
                     .apiSecret(client.getSecret())
                     .callback(callback != null ? callback : "oob")
-                    .build(new GenericOAuth10aApi("https://api.example.com")); // Replace with actual base URL
+                    .build(new GenericOAuth10aApi(client.getUri())); // Use dynamically retrieved base URL
 
             // Get request token from ScribeJava
             OAuth1RequestToken requestToken = service.getRequestToken();
