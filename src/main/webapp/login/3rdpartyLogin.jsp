@@ -31,34 +31,8 @@
 <%@ page import="java.util.*" %>
 <%@ page import="javax.servlet.http.*" %>
 <%@ page import="org.oscarehr.util.MiscUtils" %>
-
-<%!
-    // Holder for scope/UI data
-    public static class OAuthData {
-        private String applicationName;
-        private String applicationURI;
-        private String replyTo;
-        private String authenticityToken;
-        private String oauthToken;
-        private List<String> permissions;
-
-        public String getApplicationName()    { return applicationName; }
-        public String getApplicationURI()     { return applicationURI;  }
-        public String getReplyTo()            { return replyTo;         }
-        public String getAuthenticityToken()  { return authenticityToken;}
-        public String getOauthToken()         { return oauthToken;      }
-        public List<String> getPermissions()  { return permissions != null ? permissions : Collections.emptyList(); }
-    }
-
-    // Holder for out-of-band flow
-    public static class OOBAuthorizationResponse {
-        private String requestToken;
-        private String verifier;
-
-        public String getRequestToken() { return requestToken; }
-        public String getVerifier()     { return verifier;     }
-    }
-%>
+<%@ page import="oscar.login.OAuthData" %>
+<%@ page import="oscar.login.OOBAuthorizationResponse" %>
 
 <%
     // Determine if user already logged in to OSCAR
