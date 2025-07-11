@@ -27,6 +27,7 @@ package org.oscarehr.ws.rest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -49,7 +50,6 @@ import org.oscarehr.ws.rest.to.GenericRESTResponse;
 import org.oscarehr.ws.rest.to.model.ConsentTypeTo1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 
 /**
  * REST service for consent-related operations using OAuth 1.0a authentication.

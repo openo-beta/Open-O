@@ -144,9 +144,18 @@ public class OAuthInterceptor implements PhaseInterceptor<Message> {
             // parse out the oauth_signature (your helper will safely handle null/empty)
             String computedSig = extractSignatureFromHeader(authzHeader);
 
-            if (!incomingSig.equals(computedSig)) {
+            // constant‐time signature comparison to avoid timing attacks
+            byte[] incomingBytes = incomingSig != null
+                ? incomingSig.getBytes(java.nio.charset.StandardCharsets.UTF_8)
+                : new byte[0];
+            byte[] computedBytes = computedSig != null
+                ? computedSig.getBytes(java.nio.charset.StandardCharsets.UTF_8)
+                : new byte[0];
+
+            if (!java.security.MessageDigest.isEqual(incomingBytes, computedBytes)) {
                 throw new IllegalArgumentException("Invalid OAuth1 signature");
             }
+
 
 
             // 7) Load OSCAR Provider by token
