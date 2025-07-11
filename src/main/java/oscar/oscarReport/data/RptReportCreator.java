@@ -106,9 +106,15 @@ public final class RptReportCreator {
     public static String getWhereValueClause(String value, Vector vec) {
         String ret = "";
         for (int i = 0; i < 100; i++) {
-            if (value.matches("[^\\{\\}\\$]*\\$\\{[^\\{\\}]+\\}.*")) {
-
-                value = value.replaceFirst("\\$\\{[^\\{\\}]+\\}", (vec.get(i) == null ? "" : ((String) vec.get(i))));
+            int startIndex = value.indexOf("${");
+            if (startIndex >= 0) {
+                int endIndex = value.indexOf("}", startIndex);
+                if (endIndex > startIndex) {
+                    value = value.replaceFirst("\\$\\{[^\\{\\}]+\\}", (vec.get(i) == null ? "" : ((String) vec.get(i))));
+                } else {
+                    ret = value;
+                    break;
+                }
             } else {
                 ret = value;
                 break;
