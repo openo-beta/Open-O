@@ -859,7 +859,8 @@ public class SurveyManager2Action extends ActionSupport {
         }
 
         response.setContentType("text/xml");
-        response.setHeader("Content-disposition", "attachement;filename=" + survey.getSurvey().getName() + ".xml");
+        String sanitizedName = survey.getSurvey().getName().replaceAll("[\\r\\n]", "");
+        response.setHeader("Content-disposition", "attachement;filename=" + sanitizedName + ".xml");
         try {
             XmlOptions options = new XmlOptions();
             options.setSavePrettyPrint();
