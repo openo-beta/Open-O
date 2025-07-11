@@ -70,6 +70,11 @@ if response.status_code == 200:
         start_column = alert['most_recent_instance']['location']['start_column'] # Start column of alert
         end_column = alert['most_recent_instance']['location']['end_column'] # End line of alert
 
+        # Don't run Aider on JavaScript files
+        if path.endswith(".js"):
+            print(f"Skipping JS file: {path}")
+            continue
+
         if issue_type != "" and rule_id == issue_type or issue_type == "":
             prompt = f"""Please fix this error listed below on the file added to the chat:
             Information about the security issue:

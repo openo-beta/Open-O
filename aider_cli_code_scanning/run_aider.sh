@@ -16,4 +16,4 @@ PROMPT=$(cat)
 {
   echo "/add $FILE_PATH"
   echo "$PROMPT"
-} | aider --model claude-3-5-haiku-latest --dry-run --yes
+} | aider --model sonnet --yes --subtree-only
