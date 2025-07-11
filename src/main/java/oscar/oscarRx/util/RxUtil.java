@@ -670,7 +670,7 @@ public class RxUtil {
                 Pattern pF1 = Pattern.compile(method + "\\s*\\d*\\/*\\d+\\s+");
                 Matcher mF1 = pF1.matcher(instructions);
 
-                Pattern p4 = Pattern.compile(Pattern.quote(method) + "\\s*\\d+(?:\\.\\d*)?-\\s*\\d+(?:\\.\\d*)?\\s+");
+                Pattern p4 = Pattern.compile(Pattern.quote(method) + "\\s*\\d+(?:\\.\\d+)?-\\s*\\d+(?:\\.\\d+)?\\s+");
                 Matcher m4 = p4.matcher(instructions);
 
                 //since "\\s+[0-9]+-[0-9]+\\s+" is a case in "\\s+[0-9]+\\s+", check the latter regex first.
