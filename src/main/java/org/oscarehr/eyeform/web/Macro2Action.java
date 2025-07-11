@@ -163,10 +163,12 @@ public class Macro2Action extends ActionSupport {
             for (String test : tests.split("\n")) {
                 if (StringUtils.isBlank(test))
                     continue;
-                if (!test.matches(".*\\|(routine|ASAP|urgent)\\|.*")) {
+                // Check for valid urgency values without ReDoS vulnerability
+                if (!test.contains("|routine|") && !test.contains("|ASAP|") && !test.contains("|urgent|")) {
                     errors.append("<br/>Invalid test_urgency attribute in test bookings.");
                 }
-                if (!test.matches(".*\\|(OU|OD|OS)\\|.*")) {
+                // Check for valid eye values without ReDoS vulnerability  
+                if (!test.contains("|OU|") && !test.contains("|OD|") && !test.contains("|OS|")) {
                     errors.append("<br/>Invalid test_eye attribute in test bookings.");
                 }
                 sb.append(test.trim()).append("\n");
