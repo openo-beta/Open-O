@@ -4,6 +4,9 @@ import requests
 from dotenv import load_dotenv
 import os
 import subprocess
+import textwrap
+import pty
+import sys
 
 # Get owner and repository names
 OWNER = "cc-ar-emr"
@@ -67,8 +70,23 @@ if response.status_code == 200:
         end_column = alert['most_recent_instance']['location']['end_column'] # End line of alert
 
         if issue_type != "" and rule_id == issue_type or issue_type == "":
-            prompt = f"""\
-                Please fix this error listed below on the file added to the chat: Information about the security issue: Rule: {rule_id} | Description: {description} | Severity: {severity} | State: {state} Location of the security issue: File Path: {path} | Start Line: {start_line} | End Line: {end_line} | Start Column: {start_column} | End Column: {end_column}
+            # prompt = textwrap.dedent(f"""\
+            # Please fix this error listed below on the file added to the chat:
+            # Information about the security issue:
+            # Rule: {rule_id} | Description: {description} | Severity: {severity} | State: {state}
+            # Location of the security issue:
+            # File Path: {path} | Start Line: {start_line} | End Line: {end_line} | Start Column: {start_column} | End Column: {end_column}
+            # """)
+
+            # prompt = ("Please fix this error listed below on the file added to the chat:"
+            #         "Information about the security issue:"
+            # )
+
+            prompt = """Please fix this error listed below on the file added to the chat:
+            Information about the security issue:
+            Rule: {rule_id} | Description: {description} | Severity: {severity} | State: {state}
+            Location of the security issue:
+            File Path: {path} | Start Line: {start_line} | End Line: {end_line} | Start Column: {start_column} | End Column: {end_column}
             """
 
             print("PROMPT:")
@@ -81,23 +99,17 @@ if response.status_code == 200:
             process = subprocess.Popen(
                 ["./aider_cli_code_scanning/run_aider.sh", path],
                 stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
+                stdout=None,  # Let output go to terminal
+                stderr=None,  # Let errors go to terminal
                 text=True,
-                bufsize=1
+                bufsize=1 
             )
 
-            # Send the prompt and close stdin
-            process.stdin.write(prompt)
+            for line in prompt.splitlines():
+                process.stdin.write(line)
+                process.stdin.flush()
+
             process.stdin.close()
-
-            # Stream and print output in real-time
-            print("Aider output:")
-            for line in process.stdout:
-                line = line.strip()
-                if line:
-                    print(line)
-
             process.wait()
         elif issue_type != "" and rule_id != issue_type:
             continue
