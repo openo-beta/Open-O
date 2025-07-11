@@ -164,11 +164,17 @@ public class Macro2Action extends ActionSupport {
                 if (StringUtils.isBlank(test))
                     continue;
                 // Check for valid urgency values without ReDoS vulnerability
-                if (!test.contains("|routine|") && !test.contains("|ASAP|") && !test.contains("|urgent|")) {
+                boolean hasValidUrgency = test.indexOf("|routine|") >= 0 || 
+                                        test.indexOf("|ASAP|") >= 0 || 
+                                        test.indexOf("|urgent|") >= 0;
+                if (!hasValidUrgency) {
                     errors.append("<br/>Invalid test_urgency attribute in test bookings.");
                 }
                 // Check for valid eye values without ReDoS vulnerability  
-                if (!test.contains("|OU|") && !test.contains("|OD|") && !test.contains("|OS|")) {
+                boolean hasValidEye = test.indexOf("|OU|") >= 0 || 
+                                    test.indexOf("|OD|") >= 0 || 
+                                    test.indexOf("|OS|") >= 0;
+                if (!hasValidEye) {
                     errors.append("<br/>Invalid test_eye attribute in test bookings.");
                 }
                 sb.append(test.trim()).append("\n");
