@@ -23,9 +23,10 @@
     Ontario, Canada
 
 --%>
-<%@page import="com.myapp.oauth.OOBAuthorizationResponse" %>
+<%@page import="org.oscarehr.ws.oauth.OOBAuthorizationResponse" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="com.myapp.oauth.OAuthData" %>
+<%@page import="org.oscarehr.ws.oauth.OAuthData" %>
+<%@page import="com.github.scribejava.core.model.OAuth1RequestToken" %>
 <%@page import="oscar.login.OAuthSessionMerger" %>
 
 <%
@@ -42,7 +43,7 @@
     }
 
     OAuthData oauthData = (OAuthData) request.getAttribute("oauthData");
-    OOBAuthorizationResponse oauthOobResponse = (OOBAuthorizationResponse) request.getAttribute("oobResponse");
+    OOBAuthorizationResponse oauthOobResponse = (OOBAuthorizationResponse) request.getAttribute("oobauthorizationresponse");
 
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 %>

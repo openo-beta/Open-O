@@ -23,7 +23,13 @@
     Ontario, Canada
 
 --%>
-<%@page import="com.github.scribejava.core.model.OAuth1RequestToken,java.util.*,java.net.*,org.oscarehr.common.dao.*,org.oscarehr.common.model.*,org.oscarehr.util.*,org.oscarehr.app.*" %>
+<%@page import="com.github.scribejava.core.model.OAuth1RequestToken" %>
+<%@page import="java.util.*" %>
+<%@page import="java.net.*" %>
+<%@page import="org.oscarehr.common.dao.*" %>
+<%@page import="org.oscarehr.common.model.*" %>
+<%@page import="org.oscarehr.util.*" %>
+<%@page import="org.oscarehr.app.*" %>
 <%
 
     AppUserDao appUserDao = SpringUtils.getBean(AppUserDao.class);
