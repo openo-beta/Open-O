@@ -113,6 +113,8 @@ public class ConsentService extends AbstractServiceImpl {
 
             AbstractSearchResponse<ConsentTypeTo1> response = new AbstractSearchResponse<ConsentTypeTo1>();
             response.setContent(consentTypes);
+            response.setTimestamp(new Date());
+            response.setTotal(consentTypes.size());
 
             logger.info("Successfully retrieved {} consent types", consentTypes.size());
             return response;
