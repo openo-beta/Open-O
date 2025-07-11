@@ -269,7 +269,7 @@ public class EdtClientBuilder {
      */
     protected void configureOutInterceptor(Client client) {
         if (getConfig().isLoggingRequired()) {
-            client.getEndpoint().getOutInterceptors().add(new LoggingOutInterceptor());
+            client.getEndpoint().getOutInterceptors().add(new org.apache.cxf.ext.logging.LoggingOutInterceptor());
         }
         Map<String,Object> outProps = newWSSOutInterceptorConfiguration();
         WSS4JOutInterceptor wssOut = new WSS4JOutInterceptor(outProps);
