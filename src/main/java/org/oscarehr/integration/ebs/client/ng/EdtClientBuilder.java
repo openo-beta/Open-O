@@ -253,7 +253,7 @@ public class EdtClientBuilder {
     protected Map<String,Object> newWSSInInterceptorConfiguration() {
         Map<String,Object> props = new HashMap<>();
         // Specify which security actions to perform
-        props.put(WSHandlerConstants.ACTION, getCxfOutHandlerDriectives());
+        props.put(WSHandlerConstants.ACTION, getCxfOutHandlerDirectives());
         // Callback for password retrieval
         props.put(WSHandlerConstants.PW_CALLBACK_REF, newCallback());
         // Keystore for decryption
@@ -283,7 +283,7 @@ public class EdtClientBuilder {
     protected Map<String,Object> newWSSOutInterceptorConfiguration() {
         Map<String,Object> props = new HashMap<>();
         props.put(WSHandlerConstants.MUST_UNDERSTAND, "1");
-        props.put(WSHandlerConstants.ACTION, getCxfOutHandlerDriectives());
+        props.put(WSHandlerConstants.ACTION, getCxfOutHandlerDirectives());
         props.put(WSHandlerConstants.USER, getConfig().getKeystoreUser());
         props.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_TEXT);
         props.put(WSHandlerConstants.PW_CALLBACK_REF, newCallback());
@@ -299,13 +299,14 @@ public class EdtClientBuilder {
      * @return concatenated WS-Security directives including encryption
      */
     protected String getCxfOutHandlerDirectives() {
-        return getCxfOutHandlerDriectives() + " " + WSHandlerConstants.ENCRYPT;
+         return getCxfOutHandlerDirectivesBase() + " " + WSHandlerConstants.ENCRYPT;
     }
+ 
 
     /**
      * @return WS-Security directives for username token, timestamp, and signature
      */
-    protected String getCxfOutHandlerDriectives() {
+    protected String getCxfOutHandlerDirectivesBase() {
         return WSHandlerConstants.USERNAME_TOKEN + " "
              + WSHandlerConstants.TIMESTAMP     + " "
              + WSHandlerConstants.SIGNATURE;
