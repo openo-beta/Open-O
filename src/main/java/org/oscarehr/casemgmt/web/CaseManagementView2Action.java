@@ -71,6 +71,7 @@ import oscar.oscarRx.pageUtil.RxSessionBean;
 import oscar.util.ConversionUtils;
 import oscar.util.LabelValueBean;
 import oscar.util.OscarRoleObjectPrivilege;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -1458,7 +1459,7 @@ public class CaseManagementView2Action extends ActionSupport {
 
         //billing
 
-        response.getWriter().println(sb.toString());
+        response.getWriter().println(StringEscapeUtils.escapeJavaScript(sb.toString()));
 
         return null;
     }
