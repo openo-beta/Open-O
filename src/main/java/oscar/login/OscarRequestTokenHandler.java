@@ -120,7 +120,7 @@ public class OscarRequestTokenHandler {
                 validateCallbackURL(config, callbackUrl);
             } catch (IllegalArgumentException e) {
                 logger.error("Callback URL validation failed: {}", e.getMessage());
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid callback URL: " + e.getMessage());
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid callback URL");
                 return;
             }
 
