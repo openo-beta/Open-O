@@ -23,10 +23,9 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.apache.cxf.rs.security.oauth.services.OOBAuthorizationResponse" %>
+<%@page import="com.myapp.oauth.OOBAuthorizationResponse" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.apache.cxf.rs.security.oauth.data.OAuthAuthorizationData" %>
-<%@page import="org.apache.cxf.rs.security.oauth.data.OAuthPermission" %>
+<%@page import="com.myapp.oauth.OAuthData" %>
 <%@page import="oscar.login.OAuthSessionMerger" %>
 
 <%
@@ -42,8 +41,8 @@
         }
     }
 
-    OAuthAuthorizationData oauthData = (OAuthAuthorizationData) request.getAttribute("oauthauthorizationdata");
-    OOBAuthorizationResponse oauthOobResponse = (OOBAuthorizationResponse) request.getAttribute("oobauthorizationresponse");
+    OAuthData oauthData = (OAuthData) request.getAttribute("oauthData");
+    OOBAuthorizationResponse oauthOobResponse = (OOBAuthorizationResponse) request.getAttribute("oobResponse");
 
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 %>
@@ -214,14 +213,13 @@
 
 
                     <%
-                        for (Object p : oauthData.getPermissions()) {
-                            OAuthPermission perm = (OAuthPermission) p;
+                        for (String permission : oauthData.getPermissions()) {
                     %>
                     <div class="control group">
                         <div class="controls">
                             <label class="checkbox">
                                 <input type="checkbox" readonly="readonly"
-                                       checked="checked"> <%=perm.getDescription()%> <% if ("".equals(perm.getDescription().trim())) { %><em>Permission
+                                       checked="checked"> <%=permission%> <% if ("".equals(permission.trim())) { %><em>Permission
                                 with no description</em><% } %>
                             </label>
                         </div>

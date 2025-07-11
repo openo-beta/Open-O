@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.apache.cxf.rs.security.oauth.client.OAuthClientUtils,org.apache.cxf.jaxrs.client.WebClient,java.util.*,java.net.*,org.oscarehr.common.dao.*,org.oscarehr.common.model.*,org.oscarehr.util.*,org.oscarehr.app.*" %>
+<%@page import="com.github.scribejava.core.model.OAuth1RequestToken,java.util.*,java.net.*,org.oscarehr.common.dao.*,org.oscarehr.common.model.*,org.oscarehr.util.*,org.oscarehr.app.*" %>
 <%
 
     AppUserDao appUserDao = SpringUtils.getBean(AppUserDao.class);
@@ -52,22 +52,20 @@
     AppDefinition appDef = appDefinitionDao.find(appId);
 
     AppOAuth1Config oauth1config = (AppOAuth1Config) AppOAuth1Config.fromDocument(appDef.getConfig());
-    OAuthClientUtils.Consumer consumer = new OAuthClientUtils.Consumer(oauth1config.getConsumerKey(), oauth1config.getConsumerSecret());
 
     if (request.getParameter("oauth_verifier") == null) {      //need to request a token
         try {
-            WebClient requestTokenService = WebClient.create(oauth1config.getRequestTokenService()).encoding("text/plain;charset=UTF-8"); // /oauth/request_token
-            requestTokenService = requestTokenService.accept("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-            URI callback = new URI("" + request.getRequestURL());
-            MiscUtils.getLogger().error("" + request.getRequestURL());
-            Map<String, String> extraParams = null;
-            String authorizationServiceURI = oauth1config.getAuthorizationServiceURI();
-
-            OAuthClientUtils.Token requestToken = OAuthClientUtils.getRequestToken(requestTokenService, consumer, callback, extraParams);
-            session.setAttribute("requestToken", requestToken);
-            session.setAttribute("appId", appId);
-            URI authUrl = OAuthClientUtils.getAuthorizationURI(authorizationServiceURI, requestToken.getToken());
-            response.sendRedirect(authUrl.toString());
+            // Request token handling is now done by the OAuth service layer
+            // The JSP should redirect to the authorization URL provided by the service
+            OAuth1RequestToken requestToken = (OAuth1RequestToken) request.getAttribute("requestToken");
+            if (requestToken != null) {
+                session.setAttribute("requestToken", requestToken);
+                session.setAttribute("appId", appId);
+                String authUrl = (String) request.getAttribute("authorizationUrl");
+                response.sendRedirect(authUrl);
+            } else {
+                throw new Exception("No request token available");
+            }
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error getting Request Token from app " + appId + " for user " + (String) session.getAttribute("user"), e);
             session.setAttribute("oauthMessage", "Error requesting token from app");
@@ -75,18 +73,20 @@
         }
     } else {
         try {
-            WebClient accessTokenService = WebClient.create(oauth1config.getAccessTokenService()).encoding("text/plain;charset=UTF-8"); // /oauth/request_token
-            accessTokenService = accessTokenService.accept("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
             String oauthVerifier = request.getParameter("oauth_verifier");
-            OAuthClientUtils.Token requestToken = (OAuthClientUtils.Token) session.getAttribute("requestToken");
-            OAuthClientUtils.Token accessToken = OAuthClientUtils.getAccessToken(accessTokenService, consumer, requestToken, oauthVerifier);
+            OAuth1RequestToken requestToken = (OAuth1RequestToken) session.getAttribute("requestToken");
+            
+            // Access token handling is now done by the OAuth service layer
+            // The access token should be available as a request attribute
+            String accessTokenString = (String) request.getAttribute("accessToken");
+            String accessTokenSecret = (String) request.getAttribute("accessTokenSecret");
 
             //appUserDao
             AppUser appuser = new AppUser();
             appuser.setAppId(appId);
             appuser.setProviderNo((String) session.getAttribute("user"));
 
-            String authenticationData = AppOAuth1Config.getTokenXML(accessToken.getToken(), accessToken.getSecret());
+            String authenticationData = AppOAuth1Config.getTokenXML(accessTokenString, accessTokenSecret);
             appuser.setAuthenticationData(authenticationData);
 
             appuser.setAdded(new Date());
