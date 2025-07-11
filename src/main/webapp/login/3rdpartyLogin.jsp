@@ -24,21 +24,50 @@
 
     Migrated from Apache CXF to ScribeJava OAuth1 implementation.
 --%>
+
 <%@ page import="com.github.scribejava.core.model.OAuth1RequestToken" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="oscar.login.OAuthData" %>
-<%@ page import="oscar.login.OOBAuthorizationResponse" %>
 <%@ page import="oscar.login.OAuthSessionMerger" %>
 <%@ page import="java.util.*" %>
 <%@ page import="javax.servlet.http.*" %>
 <%@ page import="org.oscarehr.util.MiscUtils" %>
 
+<%!
+    // Holder for scope/UI data
+    public static class OAuthData {
+        private String applicationName;
+        private String applicationURI;
+        private String replyTo;
+        private String authenticityToken;
+        private String oauthToken;
+        private List<String> permissions;
+
+        public String getApplicationName()    { return applicationName; }
+        public String getApplicationURI()     { return applicationURI;  }
+        public String getReplyTo()            { return replyTo;         }
+        public String getAuthenticityToken()  { return authenticityToken;}
+        public String getOauthToken()         { return oauthToken;      }
+        public List<String> getPermissions()  { return permissions != null ? permissions : Collections.emptyList(); }
+    }
+
+    // Holder for out-of-band flow
+    public static class OOBAuthorizationResponse {
+        private String requestToken;
+        private String verifier;
+
+        public String getRequestToken() { return requestToken; }
+        public String getVerifier()     { return verifier;     }
+    }
+%>
+
 <%
+    // Determine if user already logged in to OSCAR
     boolean loggedIn = false;
     if (session.getAttribute("user") != null) {
         loggedIn = OAuthSessionMerger.mergeSession(request);
     }
 
+    // Retrieve OAuth1 flow data set by your controller
     OAuthData oauthData = (OAuthData) request.getAttribute("oauthData");
     OOBAuthorizationResponse oauthOobResponse =
         (OOBAuthorizationResponse) request.getAttribute("oobauthorizationresponse");
@@ -50,6 +79,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Login and Authorize 3rd Party Application</title>
     <link href="<%=request.getContextPath()%>/css/bootstrap.css" rel="stylesheet">
     <link href="<%=request.getContextPath()%>/css/bootstrap-responsive.css" rel="stylesheet">
@@ -91,29 +121,30 @@
                 {
                     username: $('#username').val(),
                     password: $('#password').val(),
-                    pin: $('#pin').val(),
+                    pin:      $('#pin').val(),
                     ajaxResponse: 'true',
                     invalidate_session: 'false',
                     oauth_token: '<%= oauthData != null ? oauthData.getOauthToken() : "" %>'
                 },
-                function (data) {
+                function(data) {
                     if (data.success) {
                         $('#login_div').hide();
                         $('#scope_div').show();
                         $('#loggedin_div').show();
-                        $('#providerName').html(data.providerName);
+                        $('#providerName').text(data.providerName);
                     } else {
-                        $('#login_error').show().find('span span').html(data.error);
+                        $('#login_error').show().find('span span').text(data.error);
                     }
                 }, 'json');
         }
-
-        $(document).ready(function () {
+        $(document).ready(function() {
             if (loggedIn) {
                 $('#login_div').hide();
                 $('#scope_div').show();
                 $('#loggedin_div').show();
-                $('#providerName').html('<%= loggedInInfo.getLoggedInProvider().getFormattedName() %>');
+                $('#providerName').text(
+                    loggedInInfo.getLoggedInProvider().getFormattedName()
+                );
             }
             if (oauthOobResponse != null) {
                 $('#login_div').hide();
@@ -121,40 +152,50 @@
         });
     </script>
 </head>
-<body style="background-color:white">
+<body>
 <div class="container">
     <div class="row">
         <div class="span5">
             <div style="margin-top:25px;">
-                <img src="<%=request.getContextPath()%>/images/OSCAR-LOGO.gif" width="450" height="274">
+                <img src="<%=request.getContextPath()%>/images/OSCAR-LOGO.gif"
+                     width="450" height="274" alt="OSCAR Logo">
                 <p>
                     <font size="-1" face="Verdana, Arial, Helvetica, sans-serif">
                         OSCAR McMaster<br>
-                        For more information, visit <a href="http://www.oscarcanada.org">www.oscarcanada.org</a><br>
+                        For more info, visit
+                        <a href="http://www.oscarcanada.org">www.oscarcanada.org</a><br>
                     </font>
                 </p>
             </div>
         </div>
         <div class="span7">
 
-            <div id="login_div">
-                <br/><br/>
+            <!-- Username / Password Form -->
+            <div id="login_div" class="form-container">
                 <form class="form-signin">
                     <h2 class="form-signin-heading">Please sign in</h2>
-                    <input class="input-block-level" placeholder="Username" type="text" id="username">
-                    <input class="input-block-level" placeholder="Password" type="password" id="password">
-                    <input class="input-block-level" placeholder="Pin" type="password" id="pin">
+                    <input class="input-block-level" placeholder="Username"
+                           type="text" id="username">
+                    <input class="input-block-level" placeholder="Password"
+                           type="password" id="password">
+                    <input class="input-block-level" placeholder="Pin"
+                           type="password" id="pin">
 
-                    <div id="login_error" class="help-block" style="display: none;">
-                        <span class="text-error"><strong>Login Failed: </strong><span></span></span>
+                    <div id="login_error" class="help-block" style="display:none;">
+                        <span class="text-error">
+                            <strong>Login Failed: </strong><span></span>
+                        </span>
                     </div>
 
-                    <button class="btn btn-large btn-primary" type="button" onclick="submitCredentials()">
+                    <button class="btn btn-large btn-primary"
+                            type="button"
+                            onclick="submitCredentials()">
                         Sign in
                     </button>
                 </form>
             </div>
 
+            <!-- Out‐of‐band Verifier Display -->
             <div id="oob_div">
                 <% if (oauthOobResponse != null) { %>
                     <h5>
@@ -164,6 +205,7 @@
                 <% } %>
             </div>
 
+            <!-- OAuth Scope Approval -->
             <div id="loggedin_div">
                 <% if (oauthData != null) { %>
                     <form class="form-signin">
@@ -171,20 +213,22 @@
                         <h4><span id="providerName"></span></h4>
                     </form>
                     <h5>
-                        The 3rd party application "<%= oauthData.getApplicationName() %>"
+                        The 3rd party application
+                        "<%= oauthData.getApplicationName() %>"
                         is requesting access to your OSCAR account.<br>
-                        URL for <%= oauthData.getApplicationName() %>:
-                        <%= oauthData.getApplicationURI() %>.
+                        URL: <%= oauthData.getApplicationURI() %>.
                     </h5>
                     <h5>Permissions requested:</h5>
-                    <form id="scopeForm" method="post" action="<%= oauthData.getReplyTo() %>;jsessionid=<%=session.getId()%>">
-                        <% for (String permission : oauthData.getPermissions()) { %>
+                    <form id="scopeForm" method="post"
+                          action="<%= oauthData.getReplyTo() %>;jsessionid=<%=session.getId()%>">
+                        <% for (String perm : oauthData.getPermissions()) { %>
                             <div class="control group">
                                 <div class="controls">
                                     <label class="checkbox">
-                                        <input type="checkbox" readonly checked> <%= permission %>
-                                        <% if (permission.trim().isEmpty()) { %>
-                                            <em>Permission with no description</em>
+                                        <input type="checkbox" checked readonly>
+                                        <%= perm %>
+                                        <% if (perm.trim().isEmpty()) { %>
+                                            <em>(no description)</em>
                                         <% } %>
                                     </label>
                                 </div>
@@ -194,13 +238,19 @@
                                value="<%= oauthData.getAuthenticityToken() %>"/>
                         <input type="hidden" name="oauth_token" id="oauth_token"
                                value="<%= oauthData.getOauthToken() %>"/>
-                        <input type="hidden" name="oauthDecision" id="oauthDecision" value="allow"/>
-                        <input type="submit" value="Authorize <%= oauthData.getApplicationName() %>"
-                               class="btn btn-primary"/>
-                        <input type="button" value="Cancel" onClick="deny();" class="btn btn-danger"/>
+                        <input type="hidden" name="oauthDecision" id="oauthDecision"
+                               value="allow"/>
+                        <button type="submit" class="btn btn-primary">
+                            Authorize <%= oauthData.getApplicationName() %>
+                        </button>
+                        <button type="button" class="btn btn-danger"
+                                onclick="deny();">
+                            Cancel
+                        </button>
                     </form>
                 <% } %>
             </div>
+
         </div>
     </div>
 </div>
