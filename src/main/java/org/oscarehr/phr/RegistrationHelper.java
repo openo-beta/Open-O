@@ -58,7 +58,12 @@ public final class RegistrationHelper {
     private static DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
     private static ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
     private static PropertyDao propertyDao = (PropertyDao) SpringUtils.getBean(PropertyDao.class);
-    private static final SecureRandom random = new SecureRandom();
+    private static final SecureRandom random;
+    
+    static {
+        random = new SecureRandom();
+        random.nextBytes(new byte[1]); // Force seeding
+    }
 
     public static String getDefaultUserName(int demographicId) {
         Demographic demographic = demographicDao.getDemographicById(demographicId);
