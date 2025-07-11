@@ -1045,7 +1045,7 @@ public class ManageDocument2Action extends ActionSupport {
         int pageNumber = Integer.parseInt(pageNum);
 
         response.setContentType("application/pdf");
-        String sanitizedPdfName = pdfName.replaceAll("[\r\n]", "");
+        String sanitizedPdfName = pdfName.replaceAll("[\\r\\n\\t\\f\\v\\x00-\\x1f\\x7f-\\x9f\"]", "_");
         response.setHeader("Content-Disposition", "inline; filename=\"" + sanitizedPdfName + UtilDateUtilities.getToday("yyyy-MM-dd.hh.mm.ss") + ".pdf\"");
 
         try {
