@@ -30,26 +30,33 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import org.apache.cxf.rs.security.oauth2.services.AuthorizationCodeGrantService;
+import org.apache.cxf.rs.security.oauth.services.AbstractOAuthService;
+import org.apache.cxf.rs.security.oauth.services.RequestTokenHandler;
 
 /**
- * This resource handles OAuth2 authorization code flow
- * Replaces the OAuth1 request token service
+ * This resource issues a temporarily request token to the Client
+ * which will be later authorised and exchanged for the access token
  */
-@Path("/authorize")
-public class OscarRequestTokenService extends AuthorizationCodeGrantService {
+@Path("/initiate")
+public class OscarRequestTokenService extends AbstractOAuthService {
+
+    private RequestTokenHandler handler = new RequestTokenHandler();
+
+    public void setRequestTokenHandler(RequestTokenHandler h) {
+        this.handler = h;
+    }
 
     @GET
-    @Produces("text/html")
-    public Response getAuthorizationCode() {
-        // Delegate to the OAuth2 authorization code flow
-        return super.authorize();
+    @Produces("application/x-www-form-urlencoded")
+    public Response getRequestTokenWithGET() {
+        return getRequestToken();
     }
 
     @POST
-    @Produces("application/json")
-    public Response authorizePost() {
-        // Handle POST authorization requests
-        return super.authorize();
+    @Produces("application/x-www-form-urlencoded")
+    public Response getRequestToken() {
+        return handler.handle(getMessageContext(),
+                getDataProvider(),
+                getValidator());
     }
 }
