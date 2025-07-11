@@ -37,6 +37,7 @@ page = 1
 per_page = 100
 state = "open"
 
+# Pull all of the code scanning issues from the github api
 while True:
     params = {"per_page": per_page, "page": page, "state": state}
     response = requests.get(url, headers=headers, params=params)
@@ -70,19 +71,7 @@ if response.status_code == 200:
         end_column = alert['most_recent_instance']['location']['end_column'] # End line of alert
 
         if issue_type != "" and rule_id == issue_type or issue_type == "":
-            # prompt = textwrap.dedent(f"""\
-            # Please fix this error listed below on the file added to the chat:
-            # Information about the security issue:
-            # Rule: {rule_id} | Description: {description} | Severity: {severity} | State: {state}
-            # Location of the security issue:
-            # File Path: {path} | Start Line: {start_line} | End Line: {end_line} | Start Column: {start_column} | End Column: {end_column}
-            # """)
-
-            # prompt = ("Please fix this error listed below on the file added to the chat:"
-            #         "Information about the security issue:"
-            # )
-
-            prompt = """Please fix this error listed below on the file added to the chat:
+            prompt = f"""Please fix this error listed below on the file added to the chat:
             Information about the security issue:
             Rule: {rule_id} | Description: {description} | Severity: {severity} | State: {state}
             Location of the security issue:
