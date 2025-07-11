@@ -134,7 +134,7 @@ public final class RptReportCreator {
     public static Vector getVarVec(String value) {
         Vector ret = new Vector();
         // if no ${}, return original string
-        if (!value.matches(".*\\$\\{.*\\}.*"))
+        if (value.indexOf("${") == -1 || value.indexOf("}") == -1)
             return ret;
         String[] var = value.split("[^\\{\\}\\$]*\\$\\{|\\}[^\\{\\}\\$]*");
         for (int i = 0; i < var.length; i++) {
