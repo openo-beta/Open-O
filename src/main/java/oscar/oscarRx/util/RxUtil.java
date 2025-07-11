@@ -983,7 +983,7 @@ public class RxUtil {
 
     public static boolean isStringToNumber(String s) {//see if string contains decimal or integer
         boolean retBool = false;
-        Pattern p1 = Pattern.compile("\\d+(?:\\.\\d+)?");
+        Pattern p1 = Pattern.compile("\\d+(?:\\.\\d*)?");
         Matcher m1 = p1.matcher(s);
         if (m1.find()) {
             String numStr = s.substring(m1.start(), m1.end());
