@@ -16,10 +16,10 @@ if [ ! -d ".venv" ]; then
 
     echo "Creating virtual environment..."
     python3 -m venv .venv
+    source .venv/bin/activate
 fi
 
-# Activate the virutal environment and Install packages
-source .venv/bin/activate
+# Install packages
 python3 -m pip install requests
 python3 -m pip install python-dotenv
 python -m pip install uv

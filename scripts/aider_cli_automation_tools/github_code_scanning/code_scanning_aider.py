@@ -52,29 +52,28 @@ def fetch_code_scanning_alerts(token, state="open", rule_filter=None):
 
 # Creates prompt to be inputted into aider
 def generate_prompt(alert):
-    return textwrap.dedent(f"""\
-        Please fix this error listed below on the file added to the chat:
-        Information about the security issue:
-        Rule: {alert['rule']['id']} | Description: {alert['rule']['full_description']} | Severity: {alert['rule']['security_severity_level']} | State: {alert['state']}
-        Location of the security issue:
-        File Path: {alert['most_recent_instance']['location']['path']} | Start Line: {alert['most_recent_instance']['location']['start_line']} | End Line: {alert['most_recent_instance']['location']['end_line']} | Start Column: {alert['most_recent_instance']['location']['start_column']} | End Column: {alert['most_recent_instance']['location']['end_column']}
-    """)
+    return f"""Please fix this error listed below on the file added to the chat:
+            Information about the security issue:
+            Rule: {alert['rule']['id']} | Description: {alert['rule']['full_description']} | Severity: {alert['rule']['security_severity_level']} | State: {alert['state']}
+            Location of the security issue:
+            File Path: {alert['most_recent_instance']['location']['path']} | Start Line: {alert['most_recent_instance']['location']['start_line']} | End Line: {alert['most_recent_instance']['location']['end_line']} | Start Column: {alert['most_recent_instance']['location']['start_column']} | End Column: {alert['most_recent_instance']['location']['end_column']}
+            """
 
 # Runs aider while inputting file path and prompt to be used in run_aider shell file
 def run_aider(path, prompt):
-    print(f"\nRunning aider on: {path}\n")
-    print("PROMPT:")
-    print("-------------------------------------------------------------------------------------")
-    print(prompt)
-    print("-------------------------------------------------------------------------------------")
-
     process = subprocess.Popen(
         ["./scripts/aider_cli_automation_tools/setup/run_aider.sh", path],
         stdin=subprocess.PIPE,
-        text=True
+        stdout=None,  # Let output go to terminal
+        stderr=None,  # Let errors go to terminal
+        text=True,
+        bufsize=1 
     )
 
-    process.stdin.write(prompt)
+    for line in prompt.splitlines():
+        process.stdin.write(line)
+        process.stdin.flush()
+
     process.stdin.close()
     process.wait()
 
@@ -96,6 +95,7 @@ def main():
         rule_id = alert['rule']['id']
         path = alert['most_recent_instance']['location']['path']
 
+        # Avoids javascript files, will be removed later on when going through those files
         if path.endswith(".js"):
             print(f"Skipping JS file: {path}")
             continue

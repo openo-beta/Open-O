@@ -11,8 +11,8 @@ FILE_PATH="$1"
 # Read the prompt from stdin
 PROMPT=$(cat)
 
-# Pipe prompt and file path directly into aider
+# Pipe file path and prompt directly into aider
 {
   echo "/add $FILE_PATH"
   echo "$PROMPT"
-} | aider --model sonnet --yes --subtree-only
+} | aider --model claude-3-5-haiku-latest --yes --subtree-only
