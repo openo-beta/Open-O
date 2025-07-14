@@ -82,10 +82,7 @@
             
             String demoName=request.getParameter("demoName");
             String documentNo = request.getParameter("segmentID");
-
             
-            //String searchProviderNo = request.getParameter("searchProviderNo");
-            //String status = request.getParameter("status");
             String inQueue=request.getParameter("inQueue");
             
             boolean inQueueB=false;
