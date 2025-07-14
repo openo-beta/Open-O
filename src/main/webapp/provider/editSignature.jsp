@@ -93,7 +93,7 @@
                 %>
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.editSignature.msgEdit"/>
                 <br>
-                <input type="text" name="signature" size="40" />
+                <input type="text" name="signature" size="40" value="<%=sig.getSignature(curUser_no)%>"/>
                 <br>
 
                 <!-- add by caisi -->
