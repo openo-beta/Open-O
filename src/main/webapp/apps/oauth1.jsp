@@ -115,6 +115,14 @@
             String accessTokenString = (String) request.getAttribute("accessToken");
             String accessTokenSecret = (String) request.getAttribute("accessTokenSecret");
 
+            // guard against missing values
+            if (accessTokenString == null || accessTokenSecret == null) {
+                // log or display a user‐friendly error
+                log.warn("Missing OAuth1 access token: token={}, secret={}", accessTokenString, accessTokenSecret);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "OAuth flow failed: missing access token");
+                return;
+            }
+
             // Persist the authorized user
             AppUser appUser = new AppUser();
             appUser.setAppId(appId);
