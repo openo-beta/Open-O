@@ -101,7 +101,8 @@ public class EctDisplayConsultAction extends EctDisplayAction {
             for (int idx = theRequests.ids.size() - 1; idx >= 0; --idx ){
                 NavBarDisplayDAO.Item item = NavBarDisplayDAO.Item();
 
-                String service = "", specialist = "";
+                String service = ""; 
+                String specialist = "";
                 String dateStr = "";
                 String status = "";
 

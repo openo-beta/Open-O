@@ -61,12 +61,12 @@ public class ConsultationRequestDaoImpl extends AbstractDaoImpl<ConsultationRequ
 	}
 
     public List<ConsultationRequest> getConsults(Integer demoNo) {
-        StringBuilder sql = new StringBuilder("SELECT cr " +
-                "FROM ConsultationRequest cr " +
-                "LEFT JOIN cr.professionalSpecialist specialist " + 
-                "LEFT JOIN Demographic d on cr.demographicId = d.DemographicNo " + 
-                "LEFT JOIN Provider p on d.ProviderNo = p.ProviderNo " + 
-                "WHERE cr.demographicId = :demoNo"); 
+        String sql = "SELECT cr " +
+                    "FROM ConsultationRequest cr " +
+                    "LEFT JOIN cr.professionalSpecialist specialist " + 
+                    "LEFT JOIN Demographic d on cr.demographicId = d.DemographicNo " + 
+                    "LEFT JOIN Provider p on d.ProviderNo = p.ProviderNo " + 
+                    "WHERE cr.demographicId = :demoNo"; 
     
         // Create the query and set the parameter
         Query query = entityManager.createQuery(sql.toString());
