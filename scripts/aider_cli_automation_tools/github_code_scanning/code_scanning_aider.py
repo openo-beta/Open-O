@@ -3,7 +3,6 @@ import os
 import sys
 import requests
 import subprocess
-import textwrap
 from dotenv import load_dotenv
 
 OWNER = "cc-ar-emr"
