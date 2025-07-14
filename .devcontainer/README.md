@@ -18,11 +18,6 @@ and VS-Code.
    git clone https://github.com/open-osp/Open-O.git
    cd Open-O
    ```
-   **Or use a forked version**
-   ```bash
-   git clone https://github.com/MagentaHealth/Open-O.git
-   cd Open-O  
-   ```
 
 2. **Confirm port availability:**
    Before proceeding, ensure that no other processes (Tomcat, MySQL) are using ports 8080 and 3306 on your PC/Macbook.
