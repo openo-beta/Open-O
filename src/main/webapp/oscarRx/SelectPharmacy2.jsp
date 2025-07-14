@@ -111,7 +111,7 @@
 											pharm += "Main Phone: " + preferredPharmacyInfo.phone1 + "<br />";
 											pharm += "Fax: " + preferredPharmacyInfo.fax + "<br />";
 											pharm += "<a href='#'  onclick='viewPharmacy(" + preferredPharmacyInfo.id + ");'>View More</a>";
-											pharm += "<p class='add-date' style='color: grey; font-size: 12px; text-align: right; margin: 0;'><i><span style='font-style: italic;'>Added: </span><span style='font-style: italic;'>" + formatTimestamp(preferredPharmacyInfo.demoAddDate) + "</span></i></p>" + "</td>";
+											pharm += "<p class='add-date' style='color: grey; text-align: right; margin: 0;'><i><small>Added: " + formatTimestamp(preferredPharmacyInfo.demoAddDate) + "</small></i></p>";
 											pharm += "</tr><tr><td class='prefAction prefUnlink'> Remove from List </td></tr><tr><td class='prefAction prefDown'> Move Down </td></tr></table></div>";
 											$("#preferredList").append(pharm);
 										}
