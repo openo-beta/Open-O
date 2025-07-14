@@ -49,8 +49,13 @@ import org.oscarehr.common.model.ServiceAccessToken;
 import org.oscarehr.common.dao.ServiceAccessTokenDao;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.apache.logging.log4j.Logger;
+import org.oscarehr.util.MiscUtils;
+
 @Path("/oauth")
 public class OAuthStatusService extends AbstractServiceImpl {
+
+    private static final Logger logger = MiscUtils.getLogger();
 
     @Autowired
     private ServiceAccessTokenDao serviceAccessTokenDao;
@@ -96,8 +101,10 @@ public class OAuthStatusService extends AbstractServiceImpl {
             return obj.toString();
 
         } catch (Exception e) {
-            // you may wish to return a proper HTTP error here
-            return "{\"error\":\"" + e.getMessage() + "\"}";
+            // Log the exception details on the server
+            logger.error("Error building OAuth status response", e);
+            // Return a generic error message in the JSON response
+            return "{\"error\":\"An internal error occurred. Please try again later.\"}";
         }
     }
 

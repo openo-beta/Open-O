@@ -37,6 +37,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -156,35 +157,28 @@ public class ProviderService extends AbstractServiceImpl {
         }
     }
 
-    /**
-     * Retrieves a specific provider by ID.
-     * 
-     * @param id The provider ID
-     * @return ProviderTransfer object
-     */
-    @GET
-    @Path("/provider/{id}")
-    @Produces({"application/xml", "application/json"})
-    public ProviderTransfer getProvider(@PathParam("id") String id) {
-        try {
+        /**
+         * Retrieves a specific provider by ID.
+         *
+         * @param id The provider ID
+         * @return ProviderTransfer object
+         */
+        @GET
+        @Path("/provider/{id}")
+        @Produces({"application/xml", "application/json"})
+        public ProviderTransfer getProvider(@PathParam("id") String id) {
             logger.debug("Retrieving provider {}", id);
 
             Provider provider = providerDao.getProvider(id);
             if (provider == null) {
                 logger.warn("Provider not found: {}", id);
-                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.NOT_FOUND);
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
 
             logger.info("Successfully retrieved provider: {}", id);
             return ProviderTransfer.toTransfer(provider);
-            
-        } catch (javax.ws.rs.WebApplicationException e) {
-            throw e;
-        } catch (Exception e) {
-            logger.error("Error retrieving provider {}: {}", id, e.getMessage(), e);
-            throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR);
         }
-    }
+
 
     /**
      * Retrieves the currently logged-in provider.
@@ -218,34 +212,28 @@ public class ProviderService extends AbstractServiceImpl {
 
     /**
      * Retrieves a provider as JSON by ID.
-     * 
+     *
      * @param id The provider ID
      * @return JSON representation of the provider
      */
     @GET
     @Path("/providerjson/{id}")
+    @Produces("application/json")
     public String getProviderAsJSON(@PathParam("id") String id) {
-        try {
-            logger.debug("Retrieving provider {} as JSON", id);
+        logger.debug("Retrieving provider {} as JSON", id);
 
-            Provider provider = providerDao.getProvider(id);
-            if (provider == null) {
-                logger.warn("Provider not found: {}", id);
-                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.NOT_FOUND);
-            }
-
-            JsonConfig config = new JsonConfig();
-            config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
-            logger.info("Successfully retrieved provider {} as JSON", id);
-            return JSONObject.fromObject(provider, config).toString();
-            
-        } catch (javax.ws.rs.WebApplicationException e) {
-            throw e;
-        } catch (Exception e) {
-            logger.error("Error retrieving provider {} as JSON: {}", id, e.getMessage(), e);
-            throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR);
+        Provider provider = providerDao.getProvider(id);
+        if (provider == null) {
+            logger.warn("Provider not found: {}", id);
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
+
+        JsonConfig config = new JsonConfig();
+        config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+        logger.info("Successfully retrieved provider {} as JSON", id);
+        return JSONObject.fromObject(provider, config).toString();
     }
+
 
     @GET
     @Path("/providers/bad")
@@ -255,47 +243,79 @@ public class ProviderService extends AbstractServiceImpl {
 
     /**
      * Searches for providers based on criteria.
-     * 
-     * @param json Search criteria
-     * @param startIndex Starting index for pagination
-     * @param itemsToReturn Number of items to return
+     *
+     * @param json            Search criteria
+     * @param startIndex      Starting index for pagination
+     * @param itemsToReturn   Number of items to return
      * @return AbstractSearchResponse containing search results
      */
     @POST
     @Path("/providers/search")
     @Produces("application/json")
     @Consumes("application/json")
-    public AbstractSearchResponse<ProviderTo1> search(JSONObject json, @QueryParam("startIndex") Integer startIndex, @QueryParam("itemsToReturn") Integer itemsToReturn) {
+    public AbstractSearchResponse<ProviderTo1> search(
+        JSONObject json,
+        @QueryParam("startIndex") Integer startIndex,
+        @QueryParam("itemsToReturn") Integer itemsToReturn
+    ) {
         try {
             logger.debug("Searching providers");
 
-            AbstractSearchResponse<ProviderTo1> response = new AbstractSearchResponse<ProviderTo1>();
-
-            int startIndexVal = startIndex == null ? 0 : startIndex.intValue();
-            int itemsToReturnVal = itemsToReturn == null ? 5000 : itemsToReturn.intValue();
-            boolean active = Boolean.valueOf(json.getString("active"));
-
-            String term = null;
-            if (json.containsKey("searchTerm")) {
-                term = json.getString("searchTerm");
+            // 1) Validate and coerce 'active'
+            Boolean active = null;
+            if (json.has("active")) {
+                Object a = json.get("active");
+                if (a instanceof Boolean) {
+                    active = (Boolean) a;
+                } else if (a instanceof String) {
+                    String s = ((String) a).trim().toLowerCase();
+                    if ("true".equals(s))      active = true;
+                    else if ("false".equals(s)) active = false;
+                    else throw new WebApplicationException(
+                        "Invalid 'active' value", Response.Status.BAD_REQUEST);
+                } else {
+                    throw new WebApplicationException(
+                        "'active' must be a boolean", Response.Status.BAD_REQUEST);
+                }
             }
 
-            List<Provider> results = providerManager.search(getLoggedInInfo(), term, active, startIndexVal, itemsToReturnVal);
+            // 2) Sanitize 'searchTerm'
+            String term = null;
+            if (json.has("searchTerm")) {
+                term = json.optString("searchTerm", null);
+                if (term != null) {
+                    term = term.replaceAll("[^\\w\\s\\-\\.]", "").trim();
+                    if (term.length() > 100) {
+                        throw new WebApplicationException(
+                            "Search term too long", Response.Status.BAD_REQUEST);
+                    }
+                }
+            }
 
-            ProviderConverter converter = new ProviderConverter();
-            response.setContent(converter.getAllAsTransferObjects(getLoggedInInfo(), results));
-            response.setTotal(response.getContent().size());
+            // 3) Pagination defaults
+            int start = (startIndex == null ? 0 : startIndex);
+            int count = (itemsToReturn == null ? 5000 : itemsToReturn);
 
-            logger.info("Successfully searched providers, found {} results", response.getTotal());
-            return response;
-            
-        } catch (javax.ws.rs.WebApplicationException e) {
+            // 4) Delegate to manager/DAO using sanitized inputs
+            List<Provider> results = providerManager.search(
+                getLoggedInInfo(), term, active, start, count);
+
+            // build response...
+            AbstractSearchResponse<ProviderTo1> resp = new AbstractSearchResponse<>();
+            resp.setContent(
+                new ProviderConverter().getAllAsTransferObjects(getLoggedInInfo(), results)
+            );
+            resp.setTotal(resp.getContent().size());
+            return resp;
+
+        } catch (WebApplicationException e) {
             throw e;
         } catch (Exception e) {
-            logger.error("Error searching providers: {}", e.getMessage(), e);
-            throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR);
+            logger.error("Error searching providers", e);
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @GET
     @Path("/getRecentDemographicsViewed")

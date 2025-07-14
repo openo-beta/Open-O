@@ -36,6 +36,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import javax.ws.rs.core.Response;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
@@ -183,33 +184,32 @@ public class ConsentService extends AbstractServiceImpl {
 
             if (consentType == null) {
                 logger.warn("Consent type data is null");
-                throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.BAD_REQUEST);
+                throw new javax.ws.rs.WebApplicationException(
+                    Response.Status.BAD_REQUEST);
             }
 
-            GenericRESTResponse response = new GenericRESTResponse();
+            ConsentType ct = new ConsentType();
+            ct.setActive(true);
+            ct.setDescription(consentType.getDescription());
+            ct.setName(consentType.getName());
+            ct.setProviderNo(consentType.getProviderNo());
+            ct.setRemoteEnabled(consentType.isRemoteEnabled());
+            ct.setType(consentType.getType());
 
-            ConsentType consentTypeToAdd = new ConsentType();
-            consentTypeToAdd.setActive(true);
-            consentTypeToAdd.setDescription(consentType.getDescription());
-            consentTypeToAdd.setName(consentType.getName());
-            consentTypeToAdd.setProviderNo(consentType.getProviderNo());
-            consentTypeToAdd.setRemoteEnabled(consentType.isRemoteEnabled());
-            consentTypeToAdd.setType(consentType.getType());
+            patientConsentManager.addConsentType(getLoggedInInfo(), ct);
 
-            patientConsentManager.addConsentType(getLoggedInInfo(), consentTypeToAdd);
-
-            response.setSuccess(true);
             logger.info("Successfully added consent type: {}", consentType.getName());
-            return response;
-            
+            return new GenericRESTResponse(true, "Consent type added successfully.");
+
         } catch (javax.ws.rs.WebApplicationException e) {
+            // propagate JAX-RS errors (e.g. 400 Bad Request)
             throw e;
         } catch (Exception e) {
-            logger.error("Error adding consent type: {}", e.getMessage(), e);
-            GenericRESTResponse response = new GenericRESTResponse();
-            response.setSuccess(false);
-            response.setMessage("Error adding consent type: " + e.getMessage());
-            return response;
+            // log full stack trace internally
+            logger.error("Error adding consent type {}", consentType, e);
+            // return a generic message to the client
+            return new GenericRESTResponse(false,
+                "An error occurred while processing your request.");
         }
     }
 

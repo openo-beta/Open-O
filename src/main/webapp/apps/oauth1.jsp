@@ -76,7 +76,16 @@
             OAuth1RequestToken requestToken =
                 (OAuth1RequestToken) request.getAttribute("requestToken");
             if (requestToken == null) {
-                throw new IllegalStateException("No requestToken in request");
+                String appIdContext = (session != null && session.getAttribute("appId") != null)
+                    ? "appId=" + session.getAttribute("appId") + ", "
+                    : "";
+                String userContext = (session != null && session.getAttribute("user") != null)
+                    ? "user=" + session.getAttribute("user") + ", "
+                    : "";
+                String contextMsg = appIdContext + userContext + "requestURI=" + request.getRequestURI();
+                // Optionally log the error (if a logger is available)
+                // log.error("Missing requestToken: " + contextMsg);
+                throw new IllegalStateException("No requestToken in request. Context: " + contextMsg);
             }
             // Persist for phase 2
             session.setAttribute("requestToken", requestToken);
