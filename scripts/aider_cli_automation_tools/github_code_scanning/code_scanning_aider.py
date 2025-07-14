@@ -13,7 +13,7 @@ PER_PAGE = 100
 
 # Loads personal access token provided in .env file for github api usage
 def load_token():
-    load_dotenv()
+    load_dotenv(dotenv_path="./scripts/aider_cli_automation_tools/setup/.env")
     token = os.getenv("PERSONAL_ACCESS_TOKEN")
     if not token:
         raise ValueError("PERSONAL_ACCESS_TOKEN not found in environment variables")

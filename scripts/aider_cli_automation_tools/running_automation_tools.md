@@ -21,5 +21,12 @@
 
 5. Run the Python automation script by entering the command:  
     ```bash
-    ./scripts/aider_cli_automation_tools/run_automation_tools.sh
+    bash ./scripts/aider_cli_automation_tools/run_automation_tools.sh
     ```
+
+**Possible additions that could be added later:**
+- Automated branch and pull request creation    
+    - not currently added to give more control for ensuring current alerts are resolved without issues
+- More sortable types to look for results with
+- Modularization of repeated functionality
+    - useful if multiple tools are created
