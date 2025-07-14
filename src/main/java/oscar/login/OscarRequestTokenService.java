@@ -44,6 +44,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
+import com.github.scribejava.core.builder.api.DefaultApi10a;
 import com.github.scribejava.core.model.OAuth1RequestToken;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
@@ -128,10 +129,25 @@ public class OscarRequestTokenService {
             }
 
             // Build OAuth 1.0a service
-            OAuth10aService service = new ServiceBuilder(appConfig.getConsumerKey())
+           OAuth10aService service = new ServiceBuilder(appConfig.getConsumerKey())
                     .apiSecret(appConfig.getConsumerSecret())
                     .callback(callbackUrl)
-                    .build(new OscarRequestTokenHandler.GenericOAuth10aApi(appConfig.getBaseUrl()));
+                    .build(new DefaultApi10a() {
+                        @Override
+                        public String getRequestTokenEndpoint() {
+                            return appConfig.getBaseUrl() + "/oauth/request_token";
+                        }
+
+                        @Override
+                        public String getAccessTokenEndpoint() {
+                            return appConfig.getBaseUrl() + "/oauth/access_token";
+                        }
+
+                        @Override
+                        public String getAuthorizationBaseUrl() {
+                            return appConfig.getBaseUrl() + "/oauth/authorize";
+                        }
+                    });
 
             // Get request token from OAuth provider
             OAuth1RequestToken requestToken = service.getRequestToken();

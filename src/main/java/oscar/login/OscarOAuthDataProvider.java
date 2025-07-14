@@ -25,8 +25,7 @@
 package oscar.login;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
+
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -41,6 +40,7 @@ import org.oscarehr.common.model.ServiceClient;
 import org.oscarehr.common.model.ServiceRequestToken;
 import org.oscarehr.util.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,6 +66,8 @@ public class OscarOAuthDataProvider {
     private ServiceAccessTokenDao serviceAccessTokenDao;
     @Autowired
     private ServiceClientDao serviceClientDao;
+    @Value("${oauth.token.lifetime:3600}")
+    private long requestTokenLifetime;
 
     /**
      * Generic OAuth 1.0a API for custom providers
@@ -137,22 +139,26 @@ public class OscarOAuthDataProvider {
         }
     }
 
+    /**
+     * Looks up a request‐token in the DB and returns a ScribeJava object,
+     * but only if it hasn’t expired (per requestTokenLifetime seconds).
+     */
     public OAuth1RequestToken getRequestToken(String requestTokenId) {
-        logger.debug("getRequestToken() called");
-        ServiceRequestToken serviceToken = serviceRequestTokenDao.findByTokenId(requestTokenId);
-        if (serviceToken != null) {
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.HOUR, -1);
-            Date oneHourAgo = cal.getTime();
-            if (serviceToken.getDateCreated().before(oneHourAgo)) {
-                serviceRequestTokenDao.remove(serviceToken);
-                return null;
-            }
-            
-            // Return ScribeJava OAuth1RequestToken
-            return new OAuth1RequestToken(serviceToken.getTokenId(), serviceToken.getTokenSecret());
+        ServiceRequestToken srt = serviceRequestTokenDao.findByTokenId(requestTokenId);
+        if (srt == null) {
+            return null;
         }
-        return null;
+
+        long ageMillis = System.currentTimeMillis() - srt.getDateCreated().getTime();
+        // lifetime is in seconds, so convert to ms
+        if (ageMillis > (requestTokenLifetime * 1_000L)) {
+            // expired -> delete and bail
+            serviceRequestTokenDao.remove(srt);
+            return null;
+        }
+
+        // still valid
+        return new OAuth1RequestToken(srt.getTokenId(), srt.getTokenSecret());
     }
 
     public String finalizeAuthorization(String requestTokenId, String providerNo) {
@@ -264,5 +270,22 @@ public class OscarOAuthDataProvider {
         // fallback to request‐token table
         ServiceRequestToken srt = serviceRequestTokenDao.findByTokenId(tokenId);
         return srt != null ? srt.getProviderNo() : null;
+    }
+
+        public OAuth10aService buildService(String clientKey, String callbackUrl) {
+        ServiceClient client = getClient(clientKey);
+        ServiceBuilder builder = new ServiceBuilder(client.getKey())
+            .apiSecret(client.getSecret());
+        if (callbackUrl != null) {
+            builder.callback(callbackUrl);
+        }
+        return builder.build(new GenericOAuth10aApi(client.getUri()));
+    }
+
+    /**
+     * Retrieve the stored access token object by its ID.
+     */
+    public OAuth1AccessToken getStoredAccessToken(String tokenId) {
+        return getAccessToken(tokenId);
     }
 }

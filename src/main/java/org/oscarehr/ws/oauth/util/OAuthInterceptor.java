@@ -31,9 +31,10 @@ package org.oscarehr.ws.oauth.util;
 
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.Collection;
@@ -160,9 +161,6 @@ public class OAuthInterceptor implements PhaseInterceptor<Message> {
 
             // 7) Load OSCAR Provider by token
             String providerNo = oauthDataProvider.getProviderNoByToken(token);
-            if (providerNo == null) {
-                throw new IllegalArgumentException("No provider number found for token: " + token);
-            }
             Provider provider = providerDao.getProvider(providerNo);
             if (provider == null) {
                 throw new IllegalArgumentException("Unknown provider for token: " + token);
@@ -204,36 +202,49 @@ public class OAuthInterceptor implements PhaseInterceptor<Message> {
     }
 
     //——— Helper Methods ———
-
     /**
      * Extract all oauth_* params from the Authorization header or request parameters.
      */
     private Map<String,String> extractOAuthParameters(HttpServletRequest req) {
-        Map<String,String> m = new HashMap<>();
+        Map<String,String> params = new LinkedHashMap<>(); 
 
-        // from Authorization: OAuth ...
-        String auth = req.getHeader("Authorization");
-        if (auth != null && auth.startsWith("OAuth ")) {
-            String[] parts = auth.substring(6).split(",");
-            for (String kv : parts) {
-                String[] pair = kv.trim().split("=", 2);
-                if (pair.length == 2) {
-                    String k = pair[0];
-                    String v = pair[1].replaceAll("^\"|\"$", "");
-                    m.put(k, urlDecode(v));
+        // 1) Pull from every "Authorization" header
+        Enumeration<String> authHeaders = req.getHeaders("Authorization");
+        while (authHeaders.hasMoreElements()) {
+            String header = authHeaders.nextElement();
+            if (header != null && header.startsWith("OAuth ")) {
+                // strip off "OAuth "
+                String raw = header.substring(6);
+
+                // split on commas _not_ inside quoted strings (simple case)
+                for (String pair : raw.split("\\s*,\\s*")) {
+                    String[] kv = pair.split("=", 2);
+                    if (kv.length == 2) {
+                        String key = kv[0].trim();
+                        String val = kv[1].trim();
+                        // remove surrounding quotes if present
+                        if (val.startsWith("\"") && val.endsWith("\"")) {
+                            val = val.substring(1, val.length() - 1);
+                        }
+                        // URL decode
+                        val = URLDecoder.decode(val, StandardCharsets.UTF_8);
+                        // last‐one‐wins for duplicate keys; if you want to collect lists,
+                        // switch to Map<String,List<String>> instead.
+                        params.put(key, val);
+                    }
                 }
             }
         }
 
-        // also from query/form
-        Enumeration<String> names = req.getParameterNames();
-        while (names.hasMoreElements()) {
-            String name = names.nextElement();
-            if (name.startsWith("oauth_")) {
-                m.put(name, req.getParameter(name));
+        // 2) Pull from query/form parameters as a fallback
+        req.getParameterMap().forEach((k, v) -> {
+            if (k.startsWith("oauth_") && v.length > 0) {
+                // Only use if not already set by header extraction
+                params.putIfAbsent(k, v[0]);
             }
-        }
-        return m;
+        });
+
+        return params;
     }
 
     /**
@@ -255,15 +266,6 @@ public class OAuthInterceptor implements PhaseInterceptor<Message> {
             }
         }
         return null;
-    }
-
-
-    private String urlDecode(String input) {
-        try {
-            return URLDecoder.decode(input, "UTF-8");
-        } catch (IOException e) {
-            return input;
-        }
     }
 
 
