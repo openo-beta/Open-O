@@ -30,6 +30,8 @@ public class AppOAuth1Config {
     public String getApplicationURI()    { return applicationURI; }
     public void   setApplicationURI(String a) { this.applicationURI = a; }
 
+    public String getBaseURL() { return baseUrl; }
+
     /**
      * Parse an OAuth1 config from a “document” that might be a Map, a
      * java.util.Properties, or some other POJO with getters.

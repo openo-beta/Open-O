@@ -29,15 +29,9 @@
 
 package org.oscarehr.ws.oauth.util;
 
-import java.io.IOException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -46,248 +40,70 @@ import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.Phase;
 import org.apache.cxf.phase.PhaseInterceptor;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.github.scribejava.core.builder.ServiceBuilder;
-import com.github.scribejava.core.builder.api.DefaultApi10a;
-import com.github.scribejava.core.model.OAuth1AccessToken;
-import com.github.scribejava.core.model.OAuthConstants;
-import com.github.scribejava.core.model.OAuthRequest;
-import com.github.scribejava.core.model.Verb;
-import com.github.scribejava.core.oauth.OAuth10aService;
-
 import org.oscarehr.common.dao.AppDefinitionDao;
 import org.oscarehr.common.model.AppDefinition;
-import org.oscarehr.app.AppOAuth1Config;
-import oscar.login.OscarOAuthDataProvider;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.model.Provider;
 import org.oscarehr.util.LoggedInInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import oscar.login.OscarOAuthDataProvider;
+import oscar.login.AppOAuth1Config;
 
+import org.oscarehr.PMmodule.dao.ProviderDao;
 
+@Component
 public class OAuthInterceptor implements PhaseInterceptor<Message> {
 
-    @Autowired
-    private AppDefinitionDao appDefinitionDao;
+    @Autowired private AppDefinitionDao           appDefinitionDao;
+    @Autowired private OscarOAuthDataProvider     oauthDataProvider;
+    @Autowired private OAuth1SignatureVerifier    signatureVerifier;
+    @Autowired private ProviderDao                providerDao;              
 
-    @Autowired
-    private OscarOAuthDataProvider oauthDataProvider;
-
-    @Autowired
-    private ProviderDao providerDao;
-
-    @Override
-    public String getPhase() {
-        return Phase.PRE_INVOKE;
-    }
+    @Override public String getPhase() { return Phase.PRE_INVOKE; }
 
     @Override
     public void handleMessage(Message message) throws Fault {
+        HttpServletRequest req =
+            (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
+
+        // 1) Skip non-OAuth1 requests
+        if (!OAuthRequestParser.isOAuth1Request(req)) {
+            return;
+        }
+
         try {
-            // 1) Grab the HTTP servlet request
-            HttpServletRequest req =
-                (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
-
-            // 2) Extract oauth_consumer_key, oauth_token, oauth_signature
-            Map<String, String> oauthParams = extractOAuthParameters(req);
-            String consumerKey = oauthParams.get(OAuthConstants.CONSUMER_KEY);
-            String token       = oauthParams.get(OAuthConstants.TOKEN);
-            String incomingSig = oauthParams.get(OAuthConstants.SIGNATURE);
-            if (consumerKey == null || token == null || incomingSig == null) {
-                // not an OAuth1 request → skip
-                return;
-            }
-
-            // 3) Lookup AppDefinition by consumerKey
+            // 2) Load AppDefinition & config
+            String consumerKey = OAuthRequestParser.getConsumerKey(req);
             AppDefinition appDef = appDefinitionDao.findByConsumerKey(consumerKey);
             if (appDef == null) {
                 throw new IllegalArgumentException("Unknown consumer_key: " + consumerKey);
             }
             AppOAuth1Config cfg = AppOAuth1Config.fromDocument(appDef.getConfig());
 
-            // 4) Build ScribeJava OAuth10aService
-            OAuth10aService service = new ServiceBuilder(cfg.getConsumerKey())
-                .apiSecret(cfg.getConsumerSecret())
-                .build(new GenericOAuth10aApi(cfg.getBaseURL()));
+            // 3) Delegate signature verification & grab the token
+            String token = signatureVerifier.verifySignature(req, cfg);
 
-            // 5) Fetch the stored token secret
-            String tokenSecret = oauthDataProvider.getTokenSecret(token);
-            if (tokenSecret == null) {
-                throw new IllegalArgumentException("Unknown or expired token: " + token);
-            }
-            OAuth1AccessToken accessToken = new OAuth1AccessToken(token, tokenSecret);
-
-            // 6) Recompute the signature on the exact same request
-            String url = req.getRequestURL().toString();
-            String qs  = req.getQueryString();
-            if (qs != null) {
-                url += "?" + qs;
-            }
-            OAuthRequest sreq = new OAuthRequest(Verb.valueOf(req.getMethod()), url);
-
-            if ("POST".equalsIgnoreCase(req.getMethod())) {
-                req.getParameterMap().forEach((k, v) -> {
-                    if (!k.startsWith("oauth_")) {
-                        for (String val : v) {
-                            sreq.addParameter(k, val);
-                        }
-                    }
-                });
-            }
-
-            // sign the request
-            service.signRequest(accessToken, sreq);
-
-            // pull out the single Authorization header value
-            String authzHeader = sreq.getHeaders().get("Authorization");
-
-            // parse out the oauth_signature (your helper will safely handle null/empty)
-            String computedSig = extractSignatureFromHeader(authzHeader);
-
-            // constant‐time signature comparison to avoid timing attacks
-            byte[] incomingBytes = incomingSig != null
-                ? incomingSig.getBytes(java.nio.charset.StandardCharsets.UTF_8)
-                : new byte[0];
-            byte[] computedBytes = computedSig != null
-                ? computedSig.getBytes(java.nio.charset.StandardCharsets.UTF_8)
-                : new byte[0];
-
-            if (!java.security.MessageDigest.isEqual(incomingBytes, computedBytes)) {
-                throw new IllegalArgumentException("Invalid OAuth1 signature");
-            }
-
-
-
-            // 7) Load OSCAR Provider by token
+            // 4) Resolve provider via ProviderDao, attach LoggedInInfo
             String providerNo = oauthDataProvider.getProviderNoByToken(token);
-            Provider provider = providerDao.getProvider(providerNo);
+            var provider = providerDao.getProvider(providerNo);
             if (provider == null) {
                 throw new IllegalArgumentException("Unknown provider for token: " + token);
             }
 
-            // 8) Attach LoggedInInfo to the request
             LoggedInInfo info = new LoggedInInfo();
             info.setLoggedInProvider(provider);
-            req.setAttribute(info.LOGGED_IN_INFO_KEY, info);
+            req.setAttribute(info.getLoggedInInfoKey(), info);
 
         } catch (Exception e) {
             throw new Fault(e);
         }
     }
 
-    @Override
-    public void handleFault(Message message) {
-        // no-op
-    }
-
-    @Override
-    public Set<String> getBefore() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public Set<String> getAfter() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public Collection<PhaseInterceptor<? extends Message>> getAdditionalInterceptors() {
+    @Override public void handleFault(Message message) { /* no-op */ }
+    @Override public Set<String> getBefore()  { return Collections.emptySet(); }
+    @Override public Set<String> getAfter()   { return Collections.emptySet(); }
+    @Override public Collection<PhaseInterceptor<? extends Message>> getAdditionalInterceptors() {
         return null;
     }
-
-    @Override
-    public String getId() {
-        return getClass().getSimpleName();
-    }
-
-    //——— Helper Methods ———
-    /**
-     * Extract all oauth_* params from the Authorization header or request parameters.
-     */
-    private Map<String,String> extractOAuthParameters(HttpServletRequest req) {
-        Map<String,String> params = new LinkedHashMap<>(); 
-
-        // 1) Pull from every "Authorization" header
-        Enumeration<String> authHeaders = req.getHeaders("Authorization");
-        while (authHeaders.hasMoreElements()) {
-            String header = authHeaders.nextElement();
-            if (header != null && header.startsWith("OAuth ")) {
-                // strip off "OAuth "
-                String raw = header.substring(6);
-
-                // split on commas _not_ inside quoted strings (simple case)
-                for (String pair : raw.split("\\s*,\\s*")) {
-                    String[] kv = pair.split("=", 2);
-                    if (kv.length == 2) {
-                        String key = kv[0].trim();
-                        String val = kv[1].trim();
-                        // remove surrounding quotes if present
-                        if (val.startsWith("\"") && val.endsWith("\"")) {
-                            val = val.substring(1, val.length() - 1);
-                        }
-                        // URL decode
-                        val = URLDecoder.decode(val, StandardCharsets.UTF_8);
-                        // last‐one‐wins for duplicate keys; if you want to collect lists,
-                        // switch to Map<String,List<String>> instead.
-                        params.put(key, val);
-                    }
-                }
-            }
-        }
-
-        // 2) Pull from query/form parameters as a fallback
-        req.getParameterMap().forEach((k, v) -> {
-            if (k.startsWith("oauth_") && v.length > 0) {
-                // Only use if not already set by header extraction
-                params.putIfAbsent(k, v[0]);
-            }
-        });
-
-        return params;
-    }
-
-    /**
-     * Pull the oauth_signature value back out of the signed Authorization header.
-     */
-    private String extractSignatureFromHeader(String authzHeader) {
-        if (authzHeader == null || !authzHeader.startsWith("OAuth ")) {
-            return null;
-        }
-        for (String kv : authzHeader.substring(6).split(",")) {
-            kv = kv.trim();
-            if (kv.startsWith("oauth_signature=")) {
-                String v = kv.split("=", 2)[1].replaceAll("^\"|\"$", "");
-                try {
-                    return URLDecoder.decode(v, "UTF-8");
-                } catch (IOException e) {
-                    return v;
-                }
-            }
-        }
-        return null;
-    }
-
-
-    /**
-     * Minimal DefaultApi10a for ScribeJava, pointing at our provider endpoints.
-     */
-    private static class GenericOAuth10aApi extends DefaultApi10a {
-        private final String baseUrl;
-        GenericOAuth10aApi(String baseUrl) {
-            this.baseUrl = baseUrl;
-        }
-        @Override
-        public String getRequestTokenEndpoint() {
-            return baseUrl + "/oauth/request_token";
-        }
-        @Override
-        public String getAccessTokenEndpoint() {
-            return baseUrl + "/oauth/access_token";
-        }
-        @Override
-        public String getAuthorizationBaseUrl() {
-            return baseUrl + "/oauth/authorize";
-        }
-    }
+    @Override public String getId() { return getClass().getSimpleName(); }
 }
