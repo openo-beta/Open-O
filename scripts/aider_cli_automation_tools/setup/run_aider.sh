@@ -2,7 +2,6 @@
 
 # Check for file argument
 if [ -z "$1" ]; then
-  echo "Usage: ./aider_cli_code_scanning/run_aider.sh <file-path>"
   exit 1
 fi
 

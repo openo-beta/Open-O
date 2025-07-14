@@ -12,7 +12,7 @@ source .venv/bin/activate
 # Install packages using venv's pip
 python3 -m pip install requests
 python3 -m pip install python-dotenv
-python -m pip install uv  # If you need to install uv
+python -m pip install uv
 uv tool install --force --python python3.12 --with pip aider-chat@latest
 
 export PATH="/root/.local/bin:$PATH"
