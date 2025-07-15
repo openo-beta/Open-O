@@ -35,6 +35,12 @@
 <%@ page import="org.oscarehr.util.MiscUtils" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="javax.servlet.http.*" %>
+<%@ page import="org.slf4j.Logger, org.slf4j.LoggerFactory" %>
+
+<%!
+  // Declare a JSP-level logger
+  private static final Logger log = LoggerFactory.getLogger("oauth1_jsp");
+%>
 
 <%
     // Lookup DAOs
@@ -97,7 +103,8 @@
             return;
 
         } catch (Exception e) {
-            MiscUtils.getLogger().error("Error obtaining request token for app " + appId, e);
+            log.debug("Entering OAuth callback, sessionId={}, requestURI={}",
+                session.getId(), request.getRequestURI());
             session.setAttribute("oauthMessage", "Error requesting token");
             response.sendRedirect("close.jsp");
             return;
@@ -116,10 +123,12 @@
             String accessTokenSecret = (String) request.getAttribute("accessTokenSecret");
 
             // guard against missing values
+            // WARN
             if (accessTokenString == null || accessTokenSecret == null) {
-                // log or display a user‐friendly error
-                log.warn("Missing OAuth1 access token: token={}, secret={}", accessTokenString, accessTokenSecret);
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "OAuth flow failed: missing access token");
+                log.warn("Missing OAuth1 access token: token={} secret={}",
+                        accessTokenString, accessTokenSecret);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                                    "OAuth flow failed: missing access token");
                 return;
             }
 
@@ -136,7 +145,7 @@
             appUserDao.saveEntity(appUser);
 
         } catch (Exception e) {
-            MiscUtils.getLogger().error("Error verifying authentication for app " + appId, e);
+            log.error("Failed to persist AppUser for appId={}", appId, e);
             session.setAttribute("oauthMessage", "Error verifying authentication");
             response.sendRedirect("close.jsp");
             return;
