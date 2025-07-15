@@ -49,6 +49,7 @@
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite"%>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar"%>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%@ page import="oscar.log.*"%>
 <%@ page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
@@ -152,6 +153,7 @@
             Integer docCurrentFiledQueue = null;
 
             request.setAttribute("mrpProviderName", mrpProviderName);
+            request.setAttribute("demoName", demoName);
 %>
 
 <c:if test="${param.inWindow eq 'true'}">
@@ -370,7 +372,7 @@
                     </td>
 
                     <td valign="top" class="pdfAssignmentToolsColumn">
-                        <fieldset><legend><bean:message key="inboxmanager.document.PatientMsg"/><span id="assignedPId_<%=docId%>"><%=demoName%></span> </legend>
+                        <fieldset><legend><bean:message key="inboxmanager.document.PatientMsg"/><span id="assignedPId_<%=docId%>"><e:forHtmlContent value='${demoName}' /></span> </legend>
                             <table>
                                 <tr>
                                     <td><bean:message key="inboxmanager.document.DocumentUploaded"/></td>
@@ -399,7 +401,7 @@
                                             %>
                                         </oscar:oscarPropertiesCheck>
                                         <div style="<%=updatableContent==true?"":"visibility: hidden"%>">
-                                            <input onclick="split('<%=docId%>','<%=StringEscapeUtils.escapeJavaScript(demoName) %>')" type="button" value="<bean:message key="inboxmanager.document.split" />" />
+                                            <input onclick="split('<%=docId%>','${e:forJavaScript(demoName)}')" type="button" value="<bean:message key="inboxmanager.document.split" />" />
                                             <input id="rotate180btn_<%=docId %>" onclick="rotate180('<%=docId %>')" type="button" value="<bean:message key="inboxmanager.document.rotate180" />" />
                                             <input id="rotate90btn_<%=docId %>" onclick="rotate90('<%=docId %>')" type="button" value="<bean:message key="inboxmanager.document.rotate90" />" />
                                             <% if (numOfPage > 1) { %><input id="removeFirstPagebtn_<%=docId %>" onclick="removeFirstPage('<%=docId %>')" type="button" value="<bean:message key="inboxmanager.document.removeFirstPage" />" /><% } %>
@@ -454,11 +456,11 @@
                                         if(!demographicID.equals("-1")){%>
                                             <input id="saved<%=docId%>" type="hidden" name="saved" value="true"/>
                                             <input type="hidden" value="<%=demographicID%>" name="demog" id="demofind<%=docId%>" />
-                                            <input type="hidden" name="demofindName" value="<%=demoName%>" id="demofindName<%=docId%>"/> 
-                                            <%=demoName%><c:out value="${mrpProviderName}" default=" (MRP: Unknown)" /><%}else{%>
+                                            <input type="hidden" name="demofindName" value="${e:forHtmlAttribute(demoName)}" id="demofindName<%=docId%>"/> 
+                                            <e:forHtmlContent value='${demoName}' /><c:out value="${mrpProviderName}" default=" (MRP: Unknown)" /><%}else{%>
                                             <input id="saved<%=docId%>" type="hidden" name="saved" value="false"/>
                                             <input type="hidden" name="demog" value="<%=demographicID%>" id="demofind<%=docId%>"/>   
-                                            <input type="hidden" name="demofindName" value="<%=demoName%>" id="demofindName<%=docId%>"/>   
+                                            <input type="hidden" name="demofindName" value="${e:forHtmlAttribute(demoName)}" id="demofindName<%=docId%>"/>   
                                                                                    
                                             <input type="checkbox" id="activeOnly<%=docId%>" name="activeOnly" checked="checked" value="true" onclick="setupDemoAutoCompletion(<%=docId%>, '${pageContext.servletContext.contextPath}')">Active Only<br>
                                             <input type="text" id="autocompletedemo<%=docId%>" onchange="checkSave('<%=docId%>');" name="demographicKeyword" placeholder="Search Demographic"/>
