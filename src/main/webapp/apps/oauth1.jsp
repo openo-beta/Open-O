@@ -81,18 +81,25 @@
         try {
             OAuth1RequestToken requestToken =
                 (OAuth1RequestToken) request.getAttribute("requestToken");
+
+            // Build context for logging
+            String appIdContext = (session != null && session.getAttribute("appId") != null)
+                ? "appId=" + session.getAttribute("appId") + ", "
+                : "";
+            String userContext = (session != null && session.getAttribute("user") != null)
+                ? "user=" + session.getAttribute("user") + ", "
+                : "";
+            String contextMsg = appIdContext + userContext + "requestURI=" + request.getRequestURI();
+
             if (requestToken == null) {
-                String appIdContext = (session != null && session.getAttribute("appId") != null)
-                    ? "appId=" + session.getAttribute("appId") + ", "
-                    : "";
-                String userContext = (session != null && session.getAttribute("user") != null)
-                    ? "user=" + session.getAttribute("user") + ", "
-                    : "";
-                String contextMsg = appIdContext + userContext + "requestURI=" + request.getRequestURI();
-                // Optionally log the error (if a logger is available)
-                // log.error("Missing requestToken: " + contextMsg);
-                throw new IllegalStateException("No requestToken in request. Context: " + contextMsg);
+                // Warn and redirect to a friendly error page
+                log.warn("Missing requestToken: {}", contextMsg);
+                session.setAttribute("oauthErrorMessage",
+                    "Authentication failed: missing request token.");
+                response.sendRedirect(request.getContextPath() + "/error.jsp");
+                return;
             }
+
             // Persist for phase 2
             session.setAttribute("requestToken", requestToken);
             session.setAttribute("appId", appId);
@@ -103,8 +110,8 @@
             return;
 
         } catch (Exception e) {
-            log.debug("Entering OAuth callback, sessionId={}, requestURI={}",
-                session.getId(), request.getRequestURI());
+            log.debug("Entering OAuth callback, sessionId={}, requestURI={}"
+                , session.getId(), request.getRequestURI());
             session.setAttribute("oauthMessage", "Error requesting token");
             response.sendRedirect("close.jsp");
             return;
@@ -123,10 +130,9 @@
             String accessTokenSecret = (String) request.getAttribute("accessTokenSecret");
 
             // guard against missing values
-            // WARN
             if (accessTokenString == null || accessTokenSecret == null) {
-                log.warn("Missing OAuth1 access token: token={} secret={}",
-                        accessTokenString, accessTokenSecret);
+                log.warn("Missing OAuth1 access token: token={} secret={}"
+                        , accessTokenString, accessTokenSecret);
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                                     "OAuth flow failed: missing access token");
                 return;
@@ -145,7 +151,8 @@
             appUserDao.saveEntity(appUser);
 
         } catch (Exception e) {
-            log.error("Failed to persist AppUser for appId={}", appId, e);
+            log.error("Failed to persist AppUser for appId={}"
+                , appId, e);
             session.setAttribute("oauthMessage", "Error verifying authentication");
             response.sendRedirect("close.jsp");
             return;

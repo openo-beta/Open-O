@@ -183,32 +183,43 @@ public class ProviderService extends AbstractServiceImpl {
     /**
      * Retrieves the currently logged-in provider.
      * 
-     * @return JSON representation of the logged-in provider
+     * @return JSON representation of the logged-in provider, or 404 if none
      */
     @GET
     @Path("/provider/me")
     @Produces("application/json")
-    public String getLoggedInProvider() {
+    public Response getLoggedInProvider() {
         try {
             logger.debug("Retrieving logged-in provider");
-
             Provider provider = getLoggedInInfo().getLoggedInProvider();
 
-            if (provider != null) {
-                JsonConfig config = new JsonConfig();
-                config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
-                logger.info("Successfully retrieved logged-in provider: {}", provider.getProviderNo());
-                return JSONObject.fromObject(provider, config).toString();
+            if (provider == null) {
+                // build a JSON error payload
+                JSONObject error = new JSONObject();
+                error.put("error", "Provider not found");
+                return Response.status(Status.NOT_FOUND)
+                               .entity(error.toString())
+                               .type("application/json")
+                               .build();
             }
-            return null;
-            
-        } catch (javax.ws.rs.WebApplicationException e) {
+
+            // serialize the provider to JSON
+            JsonConfig config = new JsonConfig();
+            config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
+            String body = JSONObject.fromObject(provider, config).toString();
+
+            logger.info("Successfully retrieved logged-in provider: {}", provider.getProviderNo());
+            return Response.ok(body, "application/json").build();
+        }
+        catch (WebApplicationException e) {
             throw e;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             logger.error("Error retrieving logged-in provider: {}", e.getMessage(), e);
-            throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR);
+            throw new WebApplicationException(Status.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     /**
      * Retrieves a provider as JSON by ID.
