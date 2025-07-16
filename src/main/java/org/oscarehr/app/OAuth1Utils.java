@@ -24,61 +24,51 @@
  */
 package org.oscarehr.app; 
 
-import java.io.IOException; 
-import java.util.List; 
-import java.util.Map; 
-import java.util.concurrent.ExecutionException; 
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-import org.apache.cxf.jaxrs.provider.json.JSONProvider; 
-import org.apache.logging.log4j.Logger; 
-import org.oscarehr.common.model.AppDefinition; 
-import org.oscarehr.common.model.AppUser; 
-import org.oscarehr.common.model.ServiceClient; 
-import org.oscarehr.util.LoggedInInfo; 
-import org.oscarehr.util.MiscUtils; 
-import org.springframework.beans.factory.annotation.Autowired; 
-import org.springframework.stereotype.Component; 
+import org.apache.cxf.jaxrs.provider.json.JSONProvider;
+import org.apache.logging.log4j.Logger;
+import org.oscarehr.common.model.AppDefinition;
+import org.oscarehr.common.model.AppUser;
+import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.util.MiscUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.JsonProcessingException; 
-import com.fasterxml.jackson.databind.ObjectMapper; 
+import com.github.scribejava.core.model.Verb;
 
-import com.github.scribejava.core.model.OAuth1AccessToken; 
-import com.github.scribejava.core.model.OAuthRequest; 
-import com.github.scribejava.core.model.Verb; 
-import com.github.scribejava.core.oauth.OAuth10aService; 
+import oscar.log.LogAction;
 
-import oscar.log.LogAction; 
-import oscar.login.OscarOAuthDataProvider;
-
+/**
+ * REST helpers that perform OAuth1-protected calls and audit them.
+ * Provides static wrappers for backward compatibility.
+ */
 @Component
 public class OAuth1Utils {
-    // Shared logger instance for diagnostic and error reporting
     private static final Logger logger = MiscUtils.getLogger();
-    // Jackson mapper used to serialize POST payloads to JSON
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final JSONProvider<Object> jsonProvider = new JSONProvider<>();
+    private static OAuth1Utils self;
 
-    // The dataProvider supplies consumer secrets, service construction, and token lookup
-    private static OscarOAuthDataProvider dataProvider;
+    private final OAuth1Executor executor;
 
     @Autowired
-    public void setDataProvider(OscarOAuthDataProvider dp) {
-        OAuth1Utils.dataProvider = dp;
+    public OAuth1Utils(OAuth1Executor executor) {
+        this.executor = executor;
+        jsonProvider.setDropRootElement(true);
+        self = this;
     }
 
     /**
      * Provide a CXF JSONProvider that drops root elements, for web client usage.
      */
     public static List<Object> getProviderK2A() {
-        JSONProvider<Object> provider = new JSONProvider<>();
-        provider.setDropRootElement(true);
-        return List.of(provider);
+        return List.of(jsonProvider);
     }
 
-    /**
-     * Perform a signed HTTP GET to an OAuth1-protected resource. Logs and returns
-     * the response body, or null on failure.
-     */
-    public static String getOAuthGetResponse(
+    // --- internal instance methods ---
+    private String doGet(
         LoggedInInfo info,
         AppDefinition app,
         AppUser user,
@@ -86,50 +76,93 @@ public class OAuth1Utils {
         String baseRequestURI
     ) {
         try {
-            // Parse OAuth config (consumer key/secret, endpoints)
-            AppOAuth1Config cfg = AppOAuth1Config.fromDocument(app.getConfig());
-            // Build a service instance with ScribeJava
-            OAuth10aService service = dataProvider.buildService(cfg.getConsumerKey(), null);
-            // Lookup stored token secret for this user
-            Map<String,String> authData = AppOAuth1Config.getKeySecret(user.getAuthenticationData());
-            OAuth1AccessToken token = dataProvider.getStoredAccessToken(authData.get("key"));
-
-            // Construct full URL and sign request
-            ServiceClient client = dataProvider.getClient(cfg.getConsumerKey());
-            String fullUrl = client.getUri() + requestURI;
-            OAuthRequest req = new OAuthRequest(Verb.GET, fullUrl);
-            service.signRequest(token, req);
-
-            // Execute and inspect response
-            com.github.scribejava.core.model.Response resp = service.execute(req);
+            var resp = executor.execute(app, user, Verb.GET, requestURI, null);
             int code = resp.getCode();
             if (code < 200 || code >= 300) {
-                logger.warn("GET {} -> status {} (baseURI={})", fullUrl, code, baseRequestURI);
+                logger.warn("GET {} -> status {} (baseURI={})", requestURI, code, baseRequestURI);
             }
             String body = resp.getBody();
-
-            // Audit log the entire GET operation
             LogAction.addLog(
                 info,
                 "oauth1.GET, AppId=" + app.getId() + ", AppUser=" + user.getId(),
-                client.getUri() + baseRequestURI,
+                baseRequestURI,
                 "AppUser=" + user.getId(),
                 null,
                 body
             );
             return body;
-
         } catch (IOException | InterruptedException | ExecutionException e) {
-            logger.error("Network or signing error during GET", e);
-        } catch (Exception e) {
-            logger.error("Configuration error during GET", e);
+            logger.error("Error during GET to {}", requestURI, e);
         }
         return null;
     }
 
-    /**
-     * Perform a signed HTTP POST with optional JSON body. Returns response body.
-     */
+    private String doPost(
+        LoggedInInfo info,
+        AppDefinition app,
+        AppUser user,
+        String requestURI,
+        String baseRequestURI,
+        Object payload
+    ) {
+        try {
+            var resp = executor.execute(app, user, Verb.POST, requestURI, payload);
+            String body = resp.getBody();
+            LogAction.addLog(
+                info,
+                "oauth1.POST, AppId=" + app.getId() + ", AppUser=" + user.getId(),
+                baseRequestURI,
+                "AppUser=" + user.getId(),
+                null,
+                body
+            );
+            return body;
+        } catch (IOException | InterruptedException | ExecutionException e) {
+            logger.error("Error during POST to {}", requestURI, e);
+        }
+        return null;
+    }
+
+    private void doDelete(
+        LoggedInInfo info,
+        AppDefinition app,
+        AppUser user,
+        String requestURI,
+        String auditURI
+    ) {
+        try {
+            var resp = executor.execute(app, user, Verb.DELETE, requestURI, null);
+            int code = resp.getCode();
+            String body = resp.getBody();
+            logger.info("DELETE {} -> {}: {}", requestURI, code, body);
+            if (code < 200 || code >= 300) {
+                logger.error("DELETE request failed (status={}): {}", code, body);
+            }
+            LogAction.addLog(
+                info,
+                "oauth1.DELETE, AppId=" + app.getId() + ", AppUser=" + user.getId(),
+                auditURI,
+                "AppUser=" + user.getId(),
+                null,
+                body
+            );
+        } catch (IOException | InterruptedException | ExecutionException e) {
+            logger.error("Error during DELETE to {}", requestURI, e);
+        }
+    }
+
+    // --- static wrappers for backward compatibility ---
+
+    public static String getOAuthGetResponse(
+        LoggedInInfo info,
+        AppDefinition app,
+        AppUser user,
+        String requestURI,
+        String baseRequestURI
+    ) {
+        return self.doGet(info, app, user, requestURI, baseRequestURI);
+    }
+
     public static String getOAuthPostResponse(
         LoggedInInfo info,
         AppDefinition app,
@@ -137,87 +170,18 @@ public class OAuth1Utils {
         String requestURI,
         String baseRequestURI,
         List<Object> providers,
-        Object obj
+        Object payload
     ) {
-        try {
-            // Load and build service as above
-            AppOAuth1Config cfg = AppOAuth1Config.fromDocument(app.getConfig());
-            OAuth10aService service = dataProvider.buildService(cfg.getConsumerKey(), null);
-            Map<String,String> authData = AppOAuth1Config.getKeySecret(user.getAuthenticationData());
-            OAuth1AccessToken token = dataProvider.getStoredAccessToken(authData.get("key"));
-
-            // Prepare POST request
-            ServiceClient client = dataProvider.getClient(cfg.getConsumerKey());
-            String fullUrl = client.getUri() + requestURI;
-            OAuthRequest req = new OAuthRequest(Verb.POST, fullUrl);
-
-            // Attach JSON payload if provided
-            if (obj != null) {
-                req.addHeader("Content-Type", "application/json; charset=UTF-8");
-                req.addHeader("Accept", "application/json, text/plain, */*");
-                try {
-                    String payload = objectMapper.writeValueAsString(obj);
-                    req.setPayload(payload);
-                } catch (JsonProcessingException ex) {
-                    logger.error("Failed to serialize POST payload", ex);
-                    throw ex;
-                }
-            }
-
-            // Sign, execute, and log
-            service.signRequest(token, req);
-            com.github.scribejava.core.model.Response resp = service.execute(req);
-            String body = resp.getBody();
-            LogAction.addLog(
-                info,
-                "oauth1.POST, AppId=" + app.getId() + ", AppUser=" + user.getId(),
-                client.getUri() + baseRequestURI,
-                "AppUser=" + user.getId(),
-                null,
-                body
-            );
-            return body;
-
-        } catch (IOException | InterruptedException | ExecutionException e) {
-            logger.error("Network or signing error during POST", e);
-        } catch (Exception e) {
-            logger.error("Configuration error during POST", e);
-        }
-        return null;
+        return self.doPost(info, app, user, requestURI, baseRequestURI, payload);
     }
 
-    /**
-     * Perform a signed HTTP DELETE. Logs status and response body; preserves void signature.
-     */
     public static void getOAuthDeleteResponse(
         AppDefinition app,
         AppUser user,
         String requestURI,
         String auditURI
     ) {
-        try {
-            // Build service and token
-            AppOAuth1Config cfg = AppOAuth1Config.fromDocument(app.getConfig());
-            OAuth10aService service = dataProvider.buildService(cfg.getConsumerKey(), null);
-            Map<String,String> authData = AppOAuth1Config.getKeySecret(user.getAuthenticationData());
-            OAuth1AccessToken token = dataProvider.getStoredAccessToken(authData.get("key"));
-
-            // Construct and sign DELETE request
-            ServiceClient client = dataProvider.getClient(cfg.getConsumerKey());
-            String fullUrl = client.getUri() + requestURI;
-            OAuthRequest req = new OAuthRequest(Verb.DELETE, fullUrl);
-            service.signRequest(token, req);
-            com.github.scribejava.core.model.Response resp = service.execute(req);
-
-            // Log outcome
-            int code = resp.getCode();
-            String body = resp.getBody();
-            logger.info("DELETE {} → {}: {}", fullUrl, code, body);
-            if (code < 200 || code >= 300) {
-                logger.error("DELETE request failed (status={}): {}", code, body);
-            }
-        } catch (Exception e) {
-            logger.error("Error executing DELETE {}: {}", requestURI, e.getMessage(), e);
-        }
+        // legacy delete had no info param
+        self.doDelete(null, app, user, requestURI, auditURI);
     }
 }
