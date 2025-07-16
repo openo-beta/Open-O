@@ -131,7 +131,9 @@ public class HRMReportParser {
                 JAXBContext jc = JAXBContext.newInstance("omd.hrm");
                 Unmarshaller u = jc.createUnmarshaller();
                 u.setSchema(schema);
-                root = (OmdCds) u.unmarshal(new FileInputStream(tmpXMLholder));
+                try (FileInputStream fileInputStream = new FileInputStream(tmpXMLholder)) {
+                    root = (OmdCds) u.unmarshal(fileInputStream);
+                }
 
                 tmpXMLholder = null;
             } catch (FileNotFoundException e) {
