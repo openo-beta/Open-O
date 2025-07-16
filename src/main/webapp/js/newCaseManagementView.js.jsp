@@ -1215,10 +1215,14 @@ function loadDiv(div,url,limit) {
     }
 
     function pasteToEncounterNote(txt) {
-        $(caseNote).value += "\n" + txt;
-        adjustCaseNote();
-        setCaretPosition($(caseNote),$(caseNote).value.length);
-
+        let caseNoteElement = document.getElementById(caseNote);
+        if (caseNoteElement) {
+            caseNoteElement.value += "\n" + txt;
+            adjustCaseNote();
+            setCaretPosition(caseNoteElement, caseNoteElement.value.length);
+        } else {
+            console.error('Element with ID caseNote element not found.');
+        }
     }
 
     function writeToEncounterNote(request) {
@@ -1403,7 +1407,8 @@ function changeToView(id) {
         Element.remove("notePasswd");
     }
 
-    Element.stopObserving(id, 'keyup', monitorCaseNote);
+    jQuery('#' + id).off('keyup', monitorCaseNote);
+    jQuery('#' + caseNote).off('paste');
     Element.stopObserving(id, 'click', getActiveText);
 
     Element.remove(id);
@@ -2013,7 +2018,11 @@ function editNote(e) {
         Element.stopObserving(txt, 'click', fullView);
     }
 
-    Element.observe(caseNote, 'keyup', monitorCaseNote);
+    jQuery('#' + caseNote).on('keyup', monitorCaseNote);
+    jQuery('#' + caseNote).on('paste', function(e) {
+		// Let the paste happen first, then resize
+		setTimeout(adjustCaseNote, 0);
+	});
     Element.observe(caseNote, 'click', getActiveText);
 
     if( passwordEnabled ) {
@@ -2932,7 +2941,11 @@ function newNote(e) {
         if( reason.length > 0 )
             setCaretPosition($(caseNote),$(caseNote).value.length);
 
-        Element.observe(caseNote, 'keyup', monitorCaseNote);
+        jQuery('#' + caseNote).on('keyup', monitorCaseNote);
+        jQuery('#' + caseNote).on('paste', function(e) {
+            // Let the paste happen first, then resize
+            setTimeout(adjustCaseNote, 0);
+        });
         Element.observe(caseNote, 'click', getActiveText);
 
         origCaseNote = $F(caseNote);
@@ -3094,7 +3107,7 @@ function monitorCaseNote(e) {
 
     var MAXCHARS = 78;
     var MINCHARS = -10;
-    var newChars = $(caseNote).value.length - numChars;
+    var newChars = jQuery('#' + caseNote).val().length - numChars;
     var newline = false;
 
     if( e.keyCode == 13)
@@ -3624,7 +3637,8 @@ function autoCompleteShowMenuCPP(element, update) {
                     Element.remove("notePasswd");
                 }
 
-                Element.stopObserving(caseNote, 'keyup', monitorCaseNote);
+                jQuery('#' + caseNote).off('keyup', monitorCaseNote);
+                jQuery('#' + caseNote).off('paste');
                 Element.stopObserving(caseNote, 'click', getActiveText);
 
                 Element.remove(caseNote);
