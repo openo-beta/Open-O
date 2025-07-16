@@ -200,6 +200,9 @@ background-color: #B8B8FF;
 td.stat4 {
 background-color: #eeeeff;
 }
+td.stat5 {
+background-color:rgb(212, 212, 254);
+}
 
 th.VCRheads {
 background-color: #ddddff;
@@ -440,6 +443,7 @@ function gotoPage(next) {
                             String patient =  theRequests.patient.get(i);
                             String provide =  theRequests.provider.get(i);
                             String service =  theRequests.service.get(i);
+                            boolean eReferral = theRequests.eReferral.get(i);
                             String date    =  theRequests.date.get(i);
                             String demo    =  theRequests.demographicNo.get(i);
                             String appt    =  theRequests.apptDate.get(i);
@@ -496,7 +500,9 @@ function gotoPage(next) {
                                     <bean:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgPR"/>      
                                     <% }else if(status.equals("4")) { %>
                                     <bean:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgDONE"/>    
-                                    <% } %>
+                                    <% }else if(status.equals("5")) { %>
+                                    <bean:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgBC"/>
+                                    <%}%>
 								</td>
                                 <td class="stat<%=status%>">
 			            <% if (urgency.equals("1")){ %>
@@ -532,7 +538,9 @@ function gotoPage(next) {
                                     <a href="javascript:popupOscarRx(700,960,'<%=request.getContextPath()%>/oscarEncounter/ViewRequest.do?requestId=<%=id%>')">
                                         <%=specialist%>
                                     </a>
-
+                                    <% if (eReferral) { %>   
+                                    <span>(via OCEAN)</span>                      
+                                    <%} %> 
                                 </td>
                                 <td class="stat<%=status%>">
                                     <%=date%>

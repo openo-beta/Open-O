@@ -212,7 +212,7 @@ function popupOscarConS(vheight,vwidth,varpage) { //open a new popup window
 							href="javascript:popupOscarRx(700,960,'../../oscarEncounter/ViewRequest.do?de=<%= Encode.forUriComponent(demo) %>&requestId=<%= Encode.forUriComponent(id) %>')">
 						<%= Encode.forHtml(patient) %> </a></td>
 						<td class="stat<%= Encode.forHtmlAttribute(status) %>"><%= Encode.forHtml(provide) %></td>
-						<td class="stat<%= Encode.forHtmlAttribute(status) %>"><%= Encode.forHtml(cProv.getFormattedName()) %></td>
+						<td class="stat<%= Encode.forHtmlAttribute(status) %>"><%= (cProv != null) ? Encode.forHtml(cProv.getFormattedName()) : "" %></td>
 						<td class="stat<%= Encode.forHtmlAttribute(status) %>">
 							<a href="javascript:popupOscarRx(700,960,'../../oscarEncounter/ViewRequest.do?de=<%= Encode.forUriComponent(demo) %>&requestId=<%= Encode.forUriComponent(id) %>')">
 								<%= Encode.forHtml(StringUtils.trimToEmpty(service)) %>
