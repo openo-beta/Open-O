@@ -398,7 +398,7 @@
                 ${issueCheckList.issueDisplay.description}
             </a>
 
-            <c:if test="${issueCheckList.issue.used == false}">
+            <c:if test="${issueCheckList.used == false}">
                 <c:set var="submitDelete" value="removeIssue('${winame}');document.forms['caseManagementEntryForm'].deleteId.value='${status.index}';return ajaxUpdateIssues('issueDelete', $('noteIssues').up().id);" />
                 &nbsp;
                 <a href="#" onclick="${submitDelete}">Delete</a>
