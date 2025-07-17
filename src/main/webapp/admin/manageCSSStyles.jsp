@@ -144,7 +144,6 @@
                 item = components[0];
                 value = components[1];
 
-                // GO HERE
                 if (item == "color" || item == "background-color") {
                     $(item).value = value;
                 } else {
