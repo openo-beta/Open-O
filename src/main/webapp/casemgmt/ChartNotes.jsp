@@ -188,13 +188,6 @@
 </script>
 <div id="topContent">
 
-    <form name="caseManagementEntryForm" id="caseManagementEntryForm" style="display:none;">
-        <input type="hidden" name="method" value="edit">
-        <input type="hidden" name="note_edit" value="new">
-        <input type="hidden" name="noteId" value="0">
-        <input type="hidden" name="ajax" value="false">
-        <input type="hidden" name="chain" value="list">
-    </form>
     <form name="caseManagementViewForm" action="${pageContext.request.contextPath}/CaseManagementView.do" method="post">
         <input type="hidden" name="demographicNo" value="<%=demographicNo%>"/>
         <input type="hidden" name="providerNo" value="<%=provNo%>"/>
@@ -527,7 +520,7 @@
     String oscarMsgType = (String) request.getParameter("msgType");
     String OscarMsgTypeLink = (String) request.getParameter("OscarMsgTypeLink");
 %>
-<form action="<%=request.getContextPath()%>/CaseManagementEntry.do" method="post">
+<form name="caseManagementEntryForm" id="caseManagementEntryForm" action="<%=request.getContextPath()%>/CaseManagementEntry.do" method="post">
     <input type="hidden" name="demographicNo" value="<%=demographicNo%>"/>
     <input type="hidden" name="includeIssue" value="off"/>
     <input type="hidden" name="OscarMsgType" value="<%=oscarMsgType%>"/>
