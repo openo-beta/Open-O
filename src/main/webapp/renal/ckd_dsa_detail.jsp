@@ -151,23 +151,70 @@
 <%
     message = "";
     Dxresearch screeningDx = null;
-    List<Dxresearch> dxs = dxResearchDao.findByDemographicNoResearchCodeAndCodingSystem(Integer.parseInt(demographicNo), "CKDSCREEN", "OscarCode");
+    List<Dxresearch> dxs = dxResearchDao
+        .findByDemographicNoResearchCodeAndCodingSystem(
+            Integer.parseInt(demographicNo),
+            "CKDSCREEN",
+            "OscarCode"
+        );
     for (Dxresearch dx : dxs) {
-        if (dx.getStatus() == 'A')
+        if (dx.getStatus() == 'A') {
             screeningDx = dx;
+            break;
+        }
     }
 
     if (screeningDx != null) {
-        message += "Screening complete - <a href=\"javascript:void(0)\" onClick=\"popupPage(580,900,'../oscarResearch/oscarDxResearch/dxResearchUpdate.do?status=C&did=" + screeningDx.getId() + "&demographicNo=" + Integer.parseInt(demographicNo) + "&providerNo=" + loggedInInfo.getLoggedInProviderNo() + "');\">Click Here</a>.<br/>";
-        message += "Screening not appropriate - <a href=\"javascript:void(0)\" onClick=\"popupPage(580,900,'../oscarResearch/oscarDxResearch/dxResearchUpdate.do?status=D&did=" + screeningDx.getId() + "&demographicNo=" + Integer.parseInt(demographicNo) + "&providerNo=" + loggedInInfo.getLoggedInProviderNo() + "');\">Click Here</a>.<br/>";
+        // “Complete” link
+        message += 
+            "Screening complete - <a href=\"javascript:void(0)\" "
+          + "onClick=\"popupPage(580,900,'"
+          + request.getContextPath()
+          + "/oscarResearch/oscarDxResearch/dxResearchUpdate.do?status=C"
+          + "&did="           + screeningDx.getId()
+          + "&demographicNo=" + Integer.parseInt(demographicNo)
+          + "&providerNo="    + loggedInInfo.getLoggedInProviderNo()
+          + "');\">Click Here</a>.<br/>";
+
+        // “Not appropriate” link
+        message += 
+            "Screening not appropriate - <a href=\"javascript:void(0)\" "
+          + "onClick=\"popupPage(580,900,'"
+          + request.getContextPath()
+          + "/oscarResearch/oscarDxResearch/dxResearchUpdate.do?status=D"
+          + "&did="           + screeningDx.getId()
+          + "&demographicNo=" + Integer.parseInt(demographicNo)
+          + "&providerNo="    + loggedInInfo.getLoggedInProviderNo()
+          + "');\">Click Here</a>.<br/>";
     }
 
-    dxs = dxResearchDao.findByDemographicNoResearchCodeAndCodingSystem(Integer.parseInt(demographicNo), "585", "icd9");
-    if (dxs.size() == 0) {
-        message += "<br/>Add 'Chronic Renal Failure' to Dx Registry, and prevent subsequent notifications - <a href=\"javascript:void(0);\" onClick=\"popupPage(580,900,'../oscarResearch/oscarDxResearch/dxResearch.do?selectedCodingSystem=icd9&xml_research1=585&xml_research2=&xml_research3=&xml_research4=&xml_research5=&demographicNo=" + demographicNo + "&quickList=default&forward=');\">Click Here</a></br/>";
+    // If no CKD registry entry, show “Add Chronic Renal Failure” link
+    dxs = dxResearchDao
+        .findByDemographicNoResearchCodeAndCodingSystem(
+            Integer.parseInt(demographicNo),
+            "585",
+            "icd9"
+        );
+    if (dxs.isEmpty()) {
+        message += 
+            "<br/>Add 'Chronic Renal Failure' to Dx Registry, and prevent subsequent notifications - "
+          + "<a href=\"javascript:void(0);\" "
+          + "onClick=\"popupPage(580,900,'"
+          + request.getContextPath()
+          + "/oscarResearch/oscarDxResearch/dxResearch.do"
+          + "?selectedCodingSystem=icd9"
+          + "&xml_research1=585"
+          + "&xml_research2="
+          + "&xml_research3="
+          + "&xml_research4="
+          + "&xml_research5="
+          + "&demographicNo=" + demographicNo
+          + "&quickList=default&forward="
+          + "');\">Click Here</a><br/>";
     }
 %>
-<%=message %>
+<%= message %>
+
 
 <br/>
 Order Labs - <a title="Create Lab Requisition" href="javascript:void(0);"
