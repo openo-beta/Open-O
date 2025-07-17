@@ -119,7 +119,8 @@ public class CaseManagementView2Action extends ActionSupport {
         request.getSession().setAttribute("casemgmt_msgBeans", new ArrayList<Object>());
 
 
-        String method = request.getParameter("method");
+        String method = request.getParameter("method") != null ? request.getParameter("method") : (String) request.getAttribute("method");
+
         if ("saveAndExit".equals(method)) {
             return saveAndExit();
         } else if ("save".equals(method)) {
