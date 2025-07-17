@@ -34,7 +34,7 @@
 <%@ page
         import="java.util.*,oscar.util.*, oscar.oscarWaitingList.bean.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
     String wlid = (String) request.getAttribute("WLId");
@@ -116,7 +116,7 @@
 
 
         function popupPage(ctr, patientName, demographicNo, startDate, vheight, vwidth, varpage) {
-            var nbPatients = "<c:out value="${nbPatients}"/>";
+            var nbPatients = <c:out value="${nbPatients}"/>;
             if (nbPatients > 1) {
                 var selected = document.forms[0].selectedProvider[ctr].options[document.forms[0].selectedProvider[ctr].selectedIndex].value;
             } else {
