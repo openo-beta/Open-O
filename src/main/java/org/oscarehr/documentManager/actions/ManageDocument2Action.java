@@ -119,6 +119,13 @@ public class ManageDocument2Action extends ActionSupport {
         ACTIONS.put("display", ctx -> { ctx.display(); return "display"; });
         ACTIONS.put("viewAnnotationAcknowledgementTickler", ctx -> { ctx.viewAnnotationAcknowledgementTickler(); return "viewAnnotationAcknowledgementTickler"; });
         ACTIONS.put("viewDocumentDescription", ctx -> { ctx.viewDocumentDescription(); return "viewDocumentDescription"; });
+        //  Enable calling the method to remove provider
+        ACTIONS.put("removeLinkFromDocument", new ActionHandler() {
+            public String handle(ManageDocument2Action action) {
+                action.removeLinkFromDocument();
+                return null;
+            }
+        });
     }
 
     // Called on default by struts.xml, finds the correct method to use by finding what the URL "method" param is equal to
@@ -265,7 +272,6 @@ public class ManageDocument2Action extends ActionSupport {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
             throw new SecurityException("missing required security object (_edoc)");
         }
-
 
         providerInboxRoutingDAO.removeLinkFromDocument(docType, Integer.parseInt(docId), providerNo);
         HashMap hm = new HashMap();

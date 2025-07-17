@@ -2146,7 +2146,9 @@
             <result name="setUpMainEncounterPage">/casemgmt/newEncounterLayout.jsp</result>
             <result name="view">/casemgmt/CaseManagementEntry.jsp</result>
             <result name="list">/CaseManagementView.do?method=view</result>
-            <result name="listCPPNotes">/CaseManagementView.do</result>
+            <result name="listCPPNotes" type="redirect">
+                <param name="location">${reloadUrl}</param>
+            </result>
             <result name="IssueSearch">/casemgmt/IssueSearch.jsp</result>
             <result name="NoDemoERR">/casemgmt/noDemo.jsp</result>
             <result name="windowClose">/casemgmt/close.jsp</result>

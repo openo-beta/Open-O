@@ -458,6 +458,7 @@
                     <form id="forms_<%=docId%>" onsubmit="return updateDocument('forms_<%=docId%>');">
                         <input type="hidden" name="method" value="documentUpdateAjax"/>
                         <input type="hidden" name="documentId" value="<%=docId%>"/>
+                        <input type="hidden" name="providerNo" value="<%= providerNo%>"/>
                         <input type="hidden" name="curPage_<%=docId%>" id="curPage_<%=docId%>" value="1"/>
                         <input type="hidden" name="totalPage_<%=docId%>" id="totalPage_<%=docId%>"
                                value="<%=numOfPage%>"/>
