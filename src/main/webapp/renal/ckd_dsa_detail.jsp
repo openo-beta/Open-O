@@ -151,10 +151,17 @@
 <%
     message = "";
     Dxresearch screeningDx = null;
-    List<Dxresearch> dxs = dxResearchDao.findByDemographicNoResearchCodeAndCodingSystem(Integer.parseInt(demographicNo), "CKDSCREEN", "OscarCode");
+    List<Dxresearch> dxs = dxResearchDao
+        .findByDemographicNoResearchCodeAndCodingSystem(
+            Integer.parseInt(demographicNo),
+            "CKDSCREEN",
+            "OscarCode"
+        );
     for (Dxresearch dx : dxs) {
-        if (dx.getStatus() == 'A')
+        if (dx.getStatus() == 'A') {
             screeningDx = dx;
+            break;
+        }
     }
 
     if (screeningDx != null) {
@@ -187,7 +194,8 @@
                 + "<a href=\"javascript:void(0);\" onclick=\"popupPage(580,900,'" + popupUrl + "');\">Click Here</a><br/>";
     }
 %>
-<%=message %>
+<%= message %>
+
 
 <br/>
 Order Labs - <a title="Create Lab Requisition" href="javascript:void(0);"
