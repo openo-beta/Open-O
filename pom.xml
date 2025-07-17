@@ -29,7 +29,7 @@
         <hapifhir.version>6.4.0</hapifhir.version>
         <struts.version>1.3.11</struts.version>
         <!-- Apache CXF Version -->
-        <cxf.version>3.5.10</cxf.version>
+        <cxf.version>3.5.11</cxf.version>
     </properties>
 
     <repositories>
@@ -166,7 +166,7 @@
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.5</version>
+            <version>1.6.0</version>
         </dependency>
         <dependency>
             <groupId>commons-collections</groupId>
@@ -213,7 +213,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.17.0</version>
+            <version>3.18.0</version>
         </dependency>
         <!-- Added higher version to avoid security issue, suggested by GitHub Dependabot -->
         <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
@@ -274,6 +274,10 @@
                 <exclusion>
                     <groupId>org.jdom</groupId>
                     <artifactId>jdom</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-lang</groupId>
+                    <artifactId>commons-lang</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -533,6 +537,10 @@
                 <exclusion>
                     <groupId>commons-beanutils</groupId>
                     <artifactId>commons-beanutils</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-lang</groupId>
+                    <artifactId>commons-lang</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -860,6 +868,10 @@
                     <groupId>commons-beanutils</groupId>
                     <artifactId>commons-beanutils</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>commons-lang</groupId>
+                    <artifactId>commons-lang</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -1118,6 +1130,18 @@
                     <groupId>org.eclipse.jetty</groupId>
                     <artifactId>jetty-http</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>io.undertow</groupId>
+                    <artifactId>undertow-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-common</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-handler</artifactId>
+                </exclusion>
                 <!-- Excluded this low version to avoid triggering security issue -->
                 <exclusion>
                     <groupId>org.codehaus.jettison</groupId>
@@ -1221,6 +1245,10 @@
                 <exclusion>
                     <groupId>javax.mail</groupId>
                     <artifactId>mail</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-lang</groupId>
+                    <artifactId>commons-lang</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.apache.commons</groupId>
@@ -1424,6 +1452,12 @@
             <groupId>org.owasp.esapi</groupId>
             <artifactId>esapi</artifactId>
             <version>2.6.2.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-lang</groupId>
+                    <artifactId>commons-lang</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -1463,7 +1497,14 @@
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>6.1.0</version>
+            <version>6.1.0</version>    
+            <exclusions>
+                <!-- Not being used, excluded to avoid triggering security issue -->
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-common</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.testng/testng -->
         <dependency>
