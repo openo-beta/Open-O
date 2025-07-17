@@ -1165,12 +1165,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- 
-            Updated to 3.3.0 by GitHub Dependabot suggestion,
-            No issue with other 3.2.0 cxf dependencies, 
-            but we need to update all of them to 3.5.x (javax compatible version)
-            or 4.x.x (jakarta compatible version)
-        -->
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-transports-http</artifactId>
@@ -1202,6 +1196,13 @@
             <groupId>com.github.scribejava</groupId>
             <artifactId>scribejava-core</artifactId>
             <version>8.3.3</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.codehaus.jettison/jettison -->
+        <dependency>
+            <groupId>org.codehaus.jettison</groupId>
+            <artifactId>jettison</artifactId>
+            <version>1.5.4</version>
         </dependency>
 
         <dependency>
