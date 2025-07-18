@@ -40,7 +40,13 @@ public class OAuthConfigService {
                 return null;
             }
             
-            AppOAuth1Config cfg = AppOAuth1Config.fromDocument(configStr);
+            AppOAuth1Config cfg;
+            try {
+                cfg = AppOAuth1Config.fromDocument(configStr);
+            } catch (Exception e) {
+                logger.error("Failed to parse OAuth config for app id {}: {}", app.getId(), e.getMessage());
+                return null;
+            }
             if (cfg == null
              || cfg.getConsumerKey() == null
              || cfg.getConsumerSecret() == null
@@ -63,7 +69,14 @@ public class OAuthConfigService {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Configuration retrieval error");
             return null;
         }
-        AppOAuth1Config cfg = AppOAuth1Config.fromDocument(configStr);
+        AppOAuth1Config cfg;
+        try {
+            cfg = AppOAuth1Config.fromDocument(configStr);
+        } catch (Exception e) {
+            logger.error("Failed to parse OAuth config for app id {}: {}", app.getId(), e.getMessage());
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Configuration parsing error");
+            return null;
+        }
         if (cfg == null
          || cfg.getConsumerKey() == null
          || cfg.getConsumerSecret() == null
