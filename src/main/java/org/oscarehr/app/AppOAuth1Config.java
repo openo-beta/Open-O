@@ -96,6 +96,17 @@ public class AppOAuth1Config implements AppAuthConfig {
         this.baseURL = baseURL;
     }
 
+    // Additional methods for OAuth configuration
+    public String getCallbackURI() {
+        // Extract from XML if needed, for now return null
+        return null;
+    }
+
+    public String getApplicationURI() {
+        // Extract from XML if needed, for now return null  
+        return null;
+    }
+
     public void setConsumerKey(String consumerKey) {
         this.consumerKey = consumerKey;
     }
