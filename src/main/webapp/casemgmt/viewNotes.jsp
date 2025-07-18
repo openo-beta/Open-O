@@ -183,33 +183,32 @@
 
 
 	<%
-		List<NoteDisplay>remoteNotes = (List<NoteDisplay>)request.getAttribute("remoteNotes");
-		String htmlText;
-		int noteIdx = 0;
-		if( remoteNotes != null ) {
-		    for( NoteDisplay remoteNote : remoteNotes) {
-				htmlText = remoteNote.getNote();
-				htmlText = htmlText.replaceAll("\n", "<br>");
-				if( noteIdx % 2 == 0 ) {
-				%>				
-				<li class="cpp" style="background-color: #FFCCCC;">
-				<%
-				}
-				else {
-				    %>
-				    <li class="cpp" style="background-color: #CCA3A3">
-				    <%
-				}
-				%>
-					<a class="links" onmouseover="this.className='linkhover'"	onmouseout="this.className='links'" title="<%=remoteNote.getLocation()%> by <%=remoteNote.getProviderName()%> on <%=ConversionUtils.toTimestampString(remoteNote.getObservationDate())%>" href="javascript:void(0)" onclick="showIntegratedNote('<fmt:setBundle basename="oscarResources"/><fmt:message key="${param.title}" />',<%=htmlText%>,<%=remoteNote.getLocation()%>, <%=remoteNote.getProviderName()%>, <%=ConversionUtils.toTimestampString(remoteNote.getObservationDate())%>);">					
-					<%=htmlText%>
-					</a>
-				</li>
-				<%
-		    }
-		    
-		}
-	%>
+	List<NoteDisplay>remoteNotes = (List<NoteDisplay>)request.getAttribute("remoteNotes");
+	int noteIdx = 0;
+	if (remoteNotes != null) {
+		for (NoteDisplay remoteNote : remoteNotes) {
+			String htmlText = remoteNote.getNote().replaceAll("\n", "<br>");
+			String htmlTextEscaped = StringEscapeUtils.escapeJavaScript(htmlText);
+			String locationEscaped = StringEscapeUtils.escapeJavaScript(remoteNote.getLocation());
+			String providerEscaped = StringEscapeUtils.escapeJavaScript(remoteNote.getProviderName());
+			String dateEscaped = StringEscapeUtils.escapeJavaScript(ConversionUtils.toTimestampString(remoteNote.getObservationDate()));
+    %>
+        <li class="cpp" style="background-color: <%= (noteIdx % 2 == 0) ? "#FFCCCC" : "#CCA3A3" %>;">
+            <a class="links"
+            onmouseover="this.className='linkhover'"
+            onmouseout="this.className='links'"
+            title="<%= locationEscaped %> by <%= providerEscaped %> on <%= dateEscaped %>"
+            href="javascript:void(0)"
+            onclick="showIntegratedNote('<fmt:setBundle basename="oscarResources"/><fmt:message key="${param.title}" />','<%= htmlTextEscaped %>','<%= locationEscaped %>', '<%= providerEscaped %>', '<%= dateEscaped %>');">
+                <%= htmlText %>
+            </a>
+        </li>
+    <%
+                noteIdx++;
+            }
+        }
+    %>
+
 </ul>
 
 <input type="hidden" id="${param.cmd}num" value="${num}">
