@@ -5,7 +5,7 @@ import java.security.MessageDigest;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
-import oscar.login.AppOAuth1Config;
+import org.oscarehr.app.AppOAuth1Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
