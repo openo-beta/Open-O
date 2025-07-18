@@ -181,6 +181,10 @@
     } // end if
 %>
 
+    <%-- Remote Notes Section --%>
+    <fmt:setBundle basename="oscarResources"/>
+    <fmt:message key="${param.title}" var="resolvedTitleRaw" />
+    <c:set var="resolvedTitle" value="${fn:escapeXml(resolvedTitleRaw)}"/>
 
 	<%
 	List<NoteDisplay>remoteNotes = (List<NoteDisplay>)request.getAttribute("remoteNotes");
@@ -199,7 +203,7 @@
             onmouseout="this.className='links'"
             title="<%= locationEscaped %> by <%= providerEscaped %> on <%= dateEscaped %>"
             href="javascript:void(0)"
-            onclick="showIntegratedNote('<fmt:setBundle basename="oscarResources"/><fmt:message key="${param.title}" />','<%= htmlTextEscaped %>','<%= locationEscaped %>', '<%= providerEscaped %>', '<%= dateEscaped %>');">
+		    onclick="showIntegratedNote('${resolvedTitle}','<%= htmlTextEscaped %>','<%= locationEscaped %>', '<%= providerEscaped %>', '<%= dateEscaped %>');">
                 <%= htmlText %>
             </a>
         </li>
