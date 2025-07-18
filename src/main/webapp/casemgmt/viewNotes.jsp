@@ -199,18 +199,18 @@
     %>
         <li class="cpp" style="background-color: <%= (noteIdx % 2 == 0) ? "#FFCCCC" : "#CCA3A3" %>;">
             <a class="links"
-            onmouseover="this.className='linkhover'"
-            onmouseout="this.className='links'"
-            title="<%= locationEscaped %> by <%= providerEscaped %> on <%= dateEscaped %>"
-            href="javascript:void(0)"
-		    onclick="showIntegratedNote('${resolvedTitle}','<%= htmlTextEscaped %>','<%= locationEscaped %>', '<%= providerEscaped %>', '<%= dateEscaped %>');">
-                <%= htmlText %>
+                onmouseover="this.className='linkhover'"
+                onmouseout="this.className='links'"
+                title="<%= locationEscaped %> by <%= providerEscaped %> on <%= dateEscaped %>"
+                href="javascript:void(0)"
+                onclick="showIntegratedNote('${resolvedTitle}','<%= htmlTextEscaped %>','<%= locationEscaped %>', '<%= providerEscaped %>', '<%= dateEscaped %>');">
+                <%= StringEscapeUtils.escapeHtml(htmlText) %>
             </a>
         </li>
+            <% noteIdx++; %>
     <%
-                noteIdx++;
-            }
         }
+    }
     %>
 
 </ul>
