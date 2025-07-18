@@ -1261,8 +1261,12 @@ public class DemographicExportAction4 extends Action {
 						String code = dx.getCodingSystem().equalsIgnoreCase("icd9") ? Util.formatIcd9(dx.getDxresearchCode()) : dx.getDxresearchCode();
 						diagnosis.setStandardCode(code);
 
-						String className = "org.oscarehr.common.dao." + org.apache.commons.lang3.StringUtils.capitalize(dx.getCodingSystem()) + "Dao";
-						AbstractCodeSystemDao dao = (AbstractCodeSystemDao)SpringUtils.getBean(Class.forName(className));
+						AbstractCodeSystemDao dao = null;
+						try {
+							dao = (AbstractCodeSystemDao) SpringUtils.getBean(Class.forName("org.oscarehr.common.dao." + org.apache.commons.lang3.StringUtils.capitalize(dx.getCodingSystem()) + "Dao"));
+						} catch (ClassNotFoundException e) {
+							logger.warn("DAO class not found for coding system: " + dx.getCodingSystem(), e);
+						}
 						if(dao != null) {
 							 AbstractCodeSystemModel result = dao.findByCode(dx.getDxresearchCode());
 							 if(result != null) {
@@ -2539,7 +2543,7 @@ public class DemographicExportAction4 extends Action {
 				// Sharing Center - Skip download if sharing with affinity domain
 				if (request.getParameter("SendToAffinityDomain") == null) {
 					Util.downloadFile(zipName+".pgp", tmpDir, response);
-					// Util.cleanFile(zipName+".pgp", tmpDir);
+					Util.cleanFile(zipName+".pgp", tmpDir);
 					ffwd = "success";
 				} else {
 					// Sharing Center - Change the forward (redirect) to the affinity domain export page
@@ -2589,9 +2593,9 @@ public class DemographicExportAction4 extends Action {
 		}
 
 		//Remove zip & export files from temp dir
-		// Util.cleanFile(zipName, tmpDir);
-		// Util.cleanFiles(files);
-		// Util.cleanFile(tmpDir);
+		Util.cleanFile(zipName, tmpDir);
+		Util.cleanFiles(files);
+		Util.cleanFile(tmpDir);
 	}
 			break;
 
