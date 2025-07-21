@@ -65,13 +65,11 @@
                 <c:set var="noteIndex" value="${param.newNoteIdx}" />
                 <div id="summary${param.newNoteIdx}">
                     <div id="observation${param.newNoteIdx}" style="float: right; margin-right: 3px;">
-                </div>
             </c:when>
             <c:otherwise>
                 <c:set var="noteIndex" value="0" />
                 <div id="summary0">
                     <div id="observation0" style="float: right; margin-right: 3px;">
-                </div>
             </c:otherwise>
         </c:choose>
     </c:when>
@@ -80,8 +78,6 @@
         <div style="background-color: #CCCCFF;"
              id="summary${caseManagementEntryForm.caseNote.id}">
             <div id="observation${caseManagementEntryForm.caseNote.id}" style="float: right; margin-right: 3px;">
-            </div>
-        </div>
     </c:otherwise>
 </c:choose>
 </div>
