@@ -1357,8 +1357,8 @@ function updateCPPNote() {
 
         var tmp = $(id).value;
         var saving = false;
-        var sumaryId = "sumary";
-        var sumary;
+        var summaryId = "summary";
+        var summary;
 
         var sig = 'sig' + nId;
 
@@ -3530,8 +3530,8 @@ function autoSave(async) {
 
     function assign(programId, demographicNo) {
         if (origCaseNote != $F(caseNote) || origObservationDate != $("observationDate").value) {
-            var sumaryId = "sumary";
-            var sumary;
+            var summaryId = "summary";
+            var summary;
             var saving = false;
             var parent = $(caseNote).parentNode.id;
             var nId = parent.substr(1);
@@ -3567,8 +3567,8 @@ function autoSave(async) {
                     for( var idx = 0; idx < siblings.length; ++idx ) {
                         if( (pos = siblings[idx].id.indexOf("sig")) != -1 ) {
                             nId = siblings[idx].id.substr(pos+3);
-                            sumaryId += nId;
-                            if( $(sumaryId) == null ) {
+                            summaryId += nId;
+                            if( $(summaryId) == null ) {
                                 siblings[idx].innerHTML = sigCache;
                             }
                             break;
