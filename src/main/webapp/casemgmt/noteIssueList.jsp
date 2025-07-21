@@ -63,13 +63,13 @@
         <c:choose>
             <c:when test="${not empty param.newNoteIdx}">
                 <c:set var="noteIndex" value="${param.newNoteIdx}" />
-                <div id="sumary${param.newNoteIdx}">
+                <div id="summary${param.newNoteIdx}">
                     <div id="observation${param.newNoteIdx}" style="float: right; margin-right: 3px;">
                 </div>
             </c:when>
             <c:otherwise>
                 <c:set var="noteIndex" value="0" />
-                <div id="sumary0">
+                <div id="summary0">
                     <div id="observation0" style="float: right; margin-right: 3px;">
                 </div>
             </c:otherwise>
@@ -78,7 +78,7 @@
     <c:otherwise>
         <c:set var="noteIndex" value="${caseManagementEntryForm.caseNote.id}" />
         <div style="background-color: #CCCCFF;"
-             id="sumary${caseManagementEntryForm.caseNote.id}">
+             id="summary${caseManagementEntryForm.caseNote.id}">
             <div id="observation${caseManagementEntryForm.caseNote.id}" style="float: right; margin-right: 3px;">
             </div>
         </div>
@@ -490,7 +490,7 @@
     var txtStyles = $F(c).split(";");
     var txtColour = txtStyles[0].substr(txtStyles[0].indexOf("#"));
     var background = txtStyles[1].substr(txtStyles[1].indexOf("#"));
-    var summary = "sumary" + "${noteIndex}";
+    var summary = "summary" + "${noteIndex}";
 
     if ($("observationDate") != null) {
         $("observationDate").style.color = txtColour;
