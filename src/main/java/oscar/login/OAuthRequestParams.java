@@ -30,7 +30,7 @@ public class OAuthRequestParams {
      * Parses and validates OAuth parameters from the HTTP request.
      * 
      * @param request The HTTP servlet request
-     * @return OAuthRequestParams if valid, null if validation fails
+     * @return OAuthRequestParams if the parameters are valid
      * @throws OAuthParameterException if required parameters are missing or invalid
      */
     public static OAuthRequestParams parseAndValidate(HttpServletRequest request) 
