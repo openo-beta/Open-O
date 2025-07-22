@@ -9,10 +9,21 @@ import javax.ws.rs.core.Response;
 public class OAuthRequestParams {
     private final String consumerKey;
     private final String callbackUrl;
+    private final String timestamp;
+    private final String nonce;
+    private final String signature;
+    private final String signatureMethod;
+    private final String version;
 
-    private OAuthRequestParams(String consumerKey, String callbackUrl) {
+    private OAuthRequestParams(String consumerKey, String callbackUrl, String timestamp, 
+                              String nonce, String signature, String signatureMethod, String version) {
         this.consumerKey = consumerKey;
         this.callbackUrl = callbackUrl;
+        this.timestamp = timestamp;
+        this.nonce = nonce;
+        this.signature = signature;
+        this.signatureMethod = signatureMethod;
+        this.version = version;
     }
 
     /**
@@ -24,21 +35,103 @@ public class OAuthRequestParams {
      */
     public static OAuthRequestParams parseAndValidate(HttpServletRequest request) 
             throws OAuthParameterException {
-        String consumerKey = request.getParameter("oauth_consumer_key");
-        String callbackUrl = request.getParameter("oauth_callback");
+        
+        // Extract all OAuth parameters
+        String consumerKey = getParameter(request, "oauth_consumer_key");
+        String callbackUrl = getParameter(request, "oauth_callback");
+        String timestamp = getParameter(request, "oauth_timestamp");
+        String nonce = getParameter(request, "oauth_nonce");
+        String signature = getParameter(request, "oauth_signature");
+        String signatureMethod = getParameter(request, "oauth_signature_method");
+        String version = getParameter(request, "oauth_version");
 
         // Validate required parameters
         if (consumerKey == null || consumerKey.trim().isEmpty()) {
-            throw new OAuthParameterException(Response.Status.BAD_REQUEST, 
-                "parameter_absent", "oauth_consumer_key");
+            throw new OAuthParameterException(Response.Status.BAD_REQUEST,
+                    "parameter_absent", "oauth_consumer_key");
         }
 
         if (callbackUrl == null || callbackUrl.trim().isEmpty()) {
-            throw new OAuthParameterException(Response.Status.BAD_REQUEST, 
-                "parameter_absent", "oauth_callback");
+            throw new OAuthParameterException(Response.Status.BAD_REQUEST,
+                    "parameter_absent", "oauth_callback");
+        }
+        
+        if (timestamp == null || timestamp.trim().isEmpty()) {
+            throw new OAuthParameterException(Response.Status.BAD_REQUEST,
+                    "parameter_absent", "oauth_timestamp");
+        }
+        
+        if (nonce == null || nonce.trim().isEmpty()) {
+            throw new OAuthParameterException(Response.Status.BAD_REQUEST,
+                    "parameter_absent", "oauth_nonce");
+        }
+        
+        if (signature == null || signature.trim().isEmpty()) {
+            throw new OAuthParameterException(Response.Status.BAD_REQUEST,
+                    "parameter_absent", "oauth_signature");
+        }
+        
+        if (signatureMethod == null || signatureMethod.trim().isEmpty()) {
+            throw new OAuthParameterException(Response.Status.BAD_REQUEST,
+                    "parameter_absent", "oauth_signature_method");
+        }
+        
+        // Validate signature method
+        if (!"HMAC-SHA1".equals(signatureMethod) && !"RSA-SHA1".equals(signatureMethod) && 
+            !"PLAINTEXT".equals(signatureMethod)) {
+            throw new OAuthParameterException(Response.Status.BAD_REQUEST,
+                    "signature_method_rejected", signatureMethod);
+        }
+        
+        // Validate OAuth version (should be 1.0)
+        if (version != null && !"1.0".equals(version)) {
+            throw new OAuthParameterException(Response.Status.BAD_REQUEST,
+                    "version_rejected", version);
         }
 
-        return new OAuthRequestParams(consumerKey, callbackUrl);
+        return new OAuthRequestParams(consumerKey, callbackUrl, timestamp, nonce, 
+                                    signature, signatureMethod, version);
+    }
+    
+    /**
+     * Gets parameter from request, checking both query parameters and Authorization header.
+     */
+    private static String getParameter(HttpServletRequest request, String paramName) {
+        // First check regular parameters
+        String value = request.getParameter(paramName);
+        if (value != null) {
+            return value;
+        }
+        
+        // Check Authorization header
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("OAuth ")) {
+            return extractFromAuthHeader(authHeader, paramName);
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Extracts parameter from OAuth Authorization header.
+     */
+    private static String extractFromAuthHeader(String authHeader, String paramName) {
+        String oauthParams = authHeader.substring(6); // Remove "OAuth "
+        String[] pairs = oauthParams.split(",");
+        
+        for (String pair : pairs) {
+            String[] keyValue = pair.trim().split("=", 2);
+            if (keyValue.length == 2 && keyValue[0].trim().equals(paramName)) {
+                String value = keyValue[1].trim();
+                // Remove quotes if present
+                if (value.startsWith("\"") && value.endsWith("\"")) {
+                    value = value.substring(1, value.length() - 1);
+                }
+                return value;
+            }
+        }
+        
+        return null;
     }
 
     public String getConsumerKey() {
@@ -47,6 +140,26 @@ public class OAuthRequestParams {
 
     public String getCallbackUrl() {
         return callbackUrl;
+    }
+    
+    public String getTimestamp() {
+        return timestamp;
+    }
+    
+    public String getNonce() {
+        return nonce;
+    }
+    
+    public String getSignature() {
+        return signature;
+    }
+    
+    public String getSignatureMethod() {
+        return signatureMethod;
+    }
+    
+    public String getVersion() {
+        return version;
     }
 
     /**
