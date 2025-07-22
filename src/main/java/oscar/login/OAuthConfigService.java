@@ -153,8 +153,15 @@ public class OAuthConfigService {
         }
     }
 
-    // Validates the application definition.
-    // If the app is null, it sends an error response.
+    /**
+     * Validates the application definition.
+     * If the app is null, it sends an error response.
+     *
+     * @param app  the application definition to validate
+     * @param resp the HTTP response to send an error message if validation fails
+     * @return true if the application definition is valid; false otherwise
+     * @throws IOException if an I/O error occurs while sending the error response
+     */
     public boolean validateApp(AppDefinition app, HttpServletResponse resp) throws IOException {
         if (app == null) {
             logger.error("AppDefinition is null");
