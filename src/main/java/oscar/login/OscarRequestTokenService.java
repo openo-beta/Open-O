@@ -131,11 +131,13 @@ public class OscarRequestTokenService {
                     "internal_error", null);
             }
 
-            // Store the request token
+            // Store the request token 
+            // null is passed here for scopes as AppOAuth1Config does not have a getScopes method
+            // Reason: oauth1.0a does not typically use scopes like OAuth2, but this can be extended if needed
             dataProvider.createRequestToken(
                 requestToken.getToken(), 
                 requestToken.getTokenSecret(), 
-                null // scopes - AppOAuth1Config doesn't have getScopes method
+                null // scopes - AppOAuth1Config doesn't have getScopes method (since OAuth1 doesn't use scopes)
             );
 
             // Build and return the response
