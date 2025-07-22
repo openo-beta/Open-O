@@ -126,8 +126,10 @@ public class OAuthConfigService {
     }
 
 
-    // Validates the callback URL against the registered application configuration.
-    // If the URL is valid, it returns true; otherwise, it sends an error response
+    /**
+     * Validates the callback URL against the registered application configuration.
+     * If the URL is valid, it returns true; otherwise, it sends an error response.
+     */
     public boolean validateRegisteredCallback(AppOAuth1Config cfg, String callbackUrl, HttpServletResponse resp) throws IOException {
         if (isValidCallback(cfg, callbackUrl)) {
             return true;
