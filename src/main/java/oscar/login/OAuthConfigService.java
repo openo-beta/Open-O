@@ -139,8 +139,15 @@ public class OAuthConfigService {
         return false;
     }
 
-    // Validates the format of the callback URL.
-    // If the URL is invalid, it sends an error response.
+    /**
+     * Validates the format of the callback URL.
+     * If the URL is invalid, it sends an error response.
+     *
+     * @param callbackUrl the callback URL to validate
+     * @param resp the HTTP response to send an error message if validation fails
+     * @return true if the callback URL is valid, false otherwise
+     * @throws IOException if an I/O error occurs while sending the error response
+     */
     public boolean validateCallbackFormat(String callbackUrl, HttpServletResponse resp) throws IOException {
         try {
             URI uri = new URI(callbackUrl);
