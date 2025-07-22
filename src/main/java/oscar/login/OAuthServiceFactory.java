@@ -2,7 +2,6 @@
 package oscar.login;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.app.AppOAuth1Config;
