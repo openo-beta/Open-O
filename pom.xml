@@ -257,6 +257,11 @@
             <artifactId>spring-orm</artifactId>
             <version>5.3.39</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>6.2.9</version>
+        </dependency>
         <!-- throws an compilation error when removed/commented -->
         <dependency>
             <groupId>org.springframework.integration</groupId>
