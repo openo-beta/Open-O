@@ -103,26 +103,9 @@ public class OAuthConfigService {
             return true;
         }
         
-        // If no restrictions are configured, allow any callback
-        if (!hasConfiguredCallbackRestrictions(config)) {
-            return true;
-        }
-        
-        // Check if callback URL matches pre-registered callback URI
-        if (config.getCallbackURI() != null && !config.getCallbackURI().isEmpty()) {
-            if (callbackUrl.equals(config.getCallbackURI())) {
-                return true;
-            }
-        }
-
-        // Check if callback URL has common root with application URI
-        if (config.getApplicationURI() != null && !config.getApplicationURI().isEmpty()) {
-            if (callbackUrl.startsWith(config.getApplicationURI())) {
-                return true;
-            }
-        }
-
-        return false;
+        // Currently no callback restrictions are enforced
+        // TODO: Implement callback validation if needed in the future
+        return true;
     }
 
     // Validates the callback URL against the registered application configuration.
@@ -131,8 +114,7 @@ public class OAuthConfigService {
         if (isValidCallback(cfg, callbackUrl)) {
             return true;
         }
-        logger.error("Callback URL '{}' is not allowed by config (registered='{}', appBase='{}')",
-                     callbackUrl, cfg.getCallbackURI(), cfg.getApplicationURI());
+        logger.error("Callback URL '{}' is not allowed by configuration", callbackUrl);
         resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid callback URL");
         return false;
     }
@@ -162,10 +144,4 @@ public class OAuthConfigService {
         return true;
     }
 
-    // Checks if the OAuth configuration has restrictions on callback URLs.
-    // If both callbackURI and applicationURI are set, it indicates restrictions.
-    private boolean hasConfiguredCallbackRestrictions(AppOAuth1Config config) {
-        return !(config.getCallbackURI() == null || config.getCallbackURI().isEmpty())
-            && !(config.getApplicationURI() == null || config.getApplicationURI().isEmpty());
-    }
 }
