@@ -705,14 +705,6 @@
     "optional" : false,
     "integrity" : "sha512:p1mCxjMUnNr1qsl4ergXxKyosF/hynX8XdWJlUfYYDjlymXszIdE5GGUlY7hwe2B0JHklbWb5+sl25Y0Pdx2PQ=="
   }, {
-    "groupId" : "com.sun",
-    "artifactId" : "pdfview",
-    "version" : "UNKNOWN",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:Uv1ngALqQlg+Kr+ALnIGk9krwGsvrkjgDwSvnatRRAmLzmGEo0eOafgHNuhjD39W8Gi9Z1/jhR4ZXpwoZABTfQ=="
-  }, {
     "groupId" : "com.twelvemonkeys.common",
     "artifactId" : "common-image",
     "version" : "3.7.1",
