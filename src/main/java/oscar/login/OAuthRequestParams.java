@@ -7,6 +7,12 @@ import javax.ws.rs.core.Response;
  * Handles parsing and validation of OAuth request parameters.
  */
 public class OAuthRequestParams {
+
+    public static final String SIGNATURE_METHOD_HMAC_SHA1 = "HMAC-SHA1";
+    public static final String SIGNATURE_METHOD_RSA_SHA1 = "RSA-SHA1";
+    public static final String SIGNATURE_METHOD_PLAINTEXT = "PLAINTEXT";
+
+
     private final String consumerKey;
     private final String callbackUrl;
     private final String timestamp;
