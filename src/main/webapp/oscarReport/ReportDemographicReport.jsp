@@ -515,8 +515,8 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="checkbox" name="startYear" size="4" />
-                                        <input type="checkbox" name="endYear" size="4" />
+                                        <input type="text" name="startYear" size="4" />
+                                        <input type="text" name="endYear" size="4" />
                                     </td>
                                     <td>
 
