@@ -77,8 +77,9 @@ public class OAuthRequestParams {
         }
         
         // Validate signature method
-        if (!"HMAC-SHA1".equals(signatureMethod) && !"RSA-SHA1".equals(signatureMethod) && 
-            !"PLAINTEXT".equals(signatureMethod)) {
+        if (!SIGNATURE_METHOD_HMAC_SHA1.equals(signatureMethod) && 
+            !SIGNATURE_METHOD_RSA_SHA1.equals(signatureMethod) && 
+            !SIGNATURE_METHOD_PLAINTEXT.equals(signatureMethod)) {
             throw new OAuthParameterException(Response.Status.BAD_REQUEST,
                     "signature_method_rejected", signatureMethod);
         }
