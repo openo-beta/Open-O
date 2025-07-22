@@ -62,6 +62,8 @@ public class OAuthConfigService {
         }
     }
 
+    // Loads the OAuth configuration for the given application.
+    // If the configuration is missing or invalid, it sends an error response.
     public AppOAuth1Config loadConfig(AppDefinition app, HttpServletResponse resp) throws IOException {
         String configStr = app.getConfig();
         if (configStr == null) {
@@ -123,6 +125,8 @@ public class OAuthConfigService {
         return false;
     }
 
+    // Validates the callback URL against the registered application configuration.
+    // If the URL is valid, it returns true; otherwise, it sends an error response
     public boolean validateRegisteredCallback(AppOAuth1Config cfg, String callbackUrl, HttpServletResponse resp) throws IOException {
         if (isValidCallback(cfg, callbackUrl)) {
             return true;
@@ -133,6 +137,8 @@ public class OAuthConfigService {
         return false;
     }
 
+    // Validates the format of the callback URL.
+    // If the URL is invalid, it sends an error response.
     public boolean validateCallbackFormat(String callbackUrl, HttpServletResponse resp) throws IOException {
         try {
             URI uri = new URI(callbackUrl);
@@ -145,6 +151,8 @@ public class OAuthConfigService {
         }
     }
 
+    // Validates the application definition.
+    // If the app is null, it sends an error response.
     public boolean validateApp(AppDefinition app, HttpServletResponse resp) throws IOException {
         if (app == null) {
             logger.error("AppDefinition is null");
@@ -154,6 +162,8 @@ public class OAuthConfigService {
         return true;
     }
 
+    // Checks if the OAuth configuration has restrictions on callback URLs.
+    // If both callbackURI and applicationURI are set, it indicates restrictions.
     private boolean hasConfiguredCallbackRestrictions(AppOAuth1Config config) {
         return !(config.getCallbackURI() == null || config.getCallbackURI().isEmpty())
             && !(config.getApplicationURI() == null || config.getApplicationURI().isEmpty());
