@@ -8,6 +8,8 @@ import org.oscarehr.app.AppOAuth1Config;
 import org.oscarehr.util.MiscUtils;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.builder.api.DefaultApi10a;
 import com.github.scribejava.core.oauth.OAuth10aService;
