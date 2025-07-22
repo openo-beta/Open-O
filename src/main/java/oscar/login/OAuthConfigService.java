@@ -102,8 +102,7 @@ public class OAuthConfigService {
         }
         
         // If no restrictions are configured, allow any callback
-        if ((config.getCallbackURI() == null || config.getCallbackURI().isEmpty())
-         && (config.getApplicationURI() == null || config.getApplicationURI().isEmpty())) {
+        if (!hasConfiguredCallbackRestrictions(config)) {
             return true;
         }
         
