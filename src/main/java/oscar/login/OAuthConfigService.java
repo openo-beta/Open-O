@@ -98,22 +98,33 @@ public class OAuthConfigService {
     }
 
     /**
-     * Validates the callback URL against the registered application configuration.
-     * 
-     * @param config OAuth application configuration
-     * @param callbackUrl The callback URL to validate
-     * @return true if the callback URL is valid, false otherwise
+     * Validates the callback URL against the app's registered base URL.
+     * Allows "oob" for out-of-band flows. Otherwise, ensures the callback is rooted at the baseURL.
      */
     public boolean isValidCallback(AppOAuth1Config config, String callbackUrl) {
-        // Allow "oob" (out-of-band) callback for desktop applications
-        if ("oob".equals(callbackUrl)) {
+        if ("oob".equalsIgnoreCase(callbackUrl)) {
             return true;
         }
-        
-        // Currently no callback restrictions are enforced
-        // TODO: Implement callback validation if needed in the future
-        return true;
+
+        if (callbackUrl == null || config.getBaseURL() == null) {
+            return false;
+        }
+
+        try {
+            URI callbackUri = new URI(callbackUrl);
+            URI baseUri = new URI(config.getBaseURL());
+
+            boolean matchesHost = callbackUri.getHost().equalsIgnoreCase(baseUri.getHost());
+            boolean matchesScheme = callbackUri.getScheme().equalsIgnoreCase(baseUri.getScheme());
+
+            return matchesHost && matchesScheme;
+
+        } catch (Exception e) {
+            logger.warn("Invalid callback URI: {}", callbackUrl, e);
+            return false;
+        }
     }
+
 
     // Validates the callback URL against the registered application configuration.
     // If the URL is valid, it returns true; otherwise, it sends an error response
