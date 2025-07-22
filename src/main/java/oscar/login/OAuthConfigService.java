@@ -62,8 +62,15 @@ public class OAuthConfigService {
         }
     }
 
-    // Loads the OAuth configuration for the given application.
-    // If the configuration is missing or invalid, it sends an error response.
+    /**
+     * Loads the OAuth configuration for the given application.
+     * If the configuration is missing or invalid, it sends an error response.
+     * 
+     * @param app  The application definition containing the configuration
+     * @param resp The HTTP response to send errors if configuration is invalid
+     * @return The parsed AppOAuth1Config or null if an error occurs
+     * @throws IOException If an error occurs while sending the error response
+     */
     public AppOAuth1Config loadConfig(AppDefinition app, HttpServletResponse resp) throws IOException {
         String configStr = app.getConfig();
         if (configStr == null) {
