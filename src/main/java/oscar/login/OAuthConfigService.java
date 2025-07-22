@@ -153,4 +153,9 @@ public class OAuthConfigService {
         }
         return true;
     }
+
+    private boolean hasConfiguredCallbackRestrictions(AppOAuth1Config config) {
+        return !(config.getCallbackURI() == null || config.getCallbackURI().isEmpty())
+            && !(config.getApplicationURI() == null || config.getApplicationURI().isEmpty());
+    }
 }
