@@ -28,8 +28,6 @@
 package oscar.oscarReport.reportByTemplate.actions;
 
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,9 +35,8 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.oscarehr.util.MiscUtils;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
+
+import com.Ostermiller.util.CSVParser;
 
 /**
  * Created on December 21, 2006, 10:47 AM
@@ -80,27 +77,21 @@ public class GenerateOutFiles2Action extends ActionSupport {
             MiscUtils.getLogger().debug("Generating Spread Sheet file for the 'report by template' module ..");
             response.setContentType("application/octet-stream");
             response.setHeader("Content-Disposition", "attachment; filename=\"oscarReport.xls\"");
-            
-            try {
-                CSVParser parser = CSVParser.parse(csv, CSVFormat.EXCEL);
-
-                HSSFWorkbook wb = new HSSFWorkbook();
-                HSSFSheet sheet = wb.createSheet("OSCAR_Report");
-
-                int x = 0; // row index
-                for (CSVRecord record : parser) {
-                    HSSFRow row = sheet.createRow((short) x);
-                    for (int y = 0; y < record.size(); y++) {
-                        String cellValue = record.get(y);
-                        try {
-                            double d = Double.parseDouble(cellValue);
-                            row.createCell(y).setCellValue(d);
-                        } catch (NumberFormatException e) {
-                            row.createCell(y).setCellValue(cellValue);
-                        }
+            String[][] data = CSVParser.parse(csv);
+            HSSFWorkbook wb = new HSSFWorkbook();
+            HSSFSheet sheet = wb.createSheet("OSCAR_Report");
+            for (int x = 0; x < data.length; x++) {
+                HSSFRow row = sheet.createRow((short) x);
+                for (int y = 0; y < data[x].length; y++) {
+                    try {
+                        double d = Double.parseDouble(data[x][y]);
+                        row.createCell((short) y).setCellValue(d);
+                    } catch (Exception e) {
+                        row.createCell((short) y).setCellValue(data[x][y]);
                     }
                 }
-
+            }
+            try {
                 wb.write(response.getOutputStream());
             } catch (Exception e) {
                 MiscUtils.getLogger().error("Error", e);

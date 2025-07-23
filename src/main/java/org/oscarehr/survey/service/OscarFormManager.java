@@ -55,7 +55,7 @@ import org.oscarehr.util.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import org.apache.commons.lang3.StringUtils;
+import com.Ostermiller.util.StringHelper;
 
 @Component(value = "oscarFormManager")
 public class OscarFormManager {
@@ -459,7 +459,7 @@ public class OscarFormManager {
     }
 
     private String escapeAndQuote(String value) {
-        String s = StringUtils.replace(value, String.valueOf(quoteChar), String.valueOf(quoteChar) + String.valueOf(quoteChar));
+        String s = StringHelper.replace(value, String.valueOf(quoteChar), String.valueOf(quoteChar) + String.valueOf(quoteChar));
         return (new StringBuilder(2 + s.length())).append(quoteChar).append(s).append(quoteChar).toString();
     }
 
