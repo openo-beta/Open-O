@@ -201,10 +201,6 @@
         <input type="hidden" id="serverDate" value="<%=strToday%>">
         <input type="hidden" id="resetFilter" name="resetFilter" value="false">
 
-        <input type="hidden" name="filter_providers" value="">
-        <input type="hidden" name="filter_roles" value="">
-        <input type="hidden" name="note_sort" value="">
-        <input type="hidden" name="issues" value="">
         <div id="filteredresults">
             <c:if test="${not empty caseManagementViewForm.filter_providers}">
                 <fieldset class="filterresult">

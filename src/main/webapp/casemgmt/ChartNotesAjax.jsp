@@ -708,7 +708,7 @@
                 }
             %>
             <div id="sig<%=globalNoteId%>" class="sig">
-                <div id="sumary<%=globalNoteId%>">
+                <div id="summary<%=globalNoteId%>">
                     <div id="observation<%=globalNoteId%>" style="float: right; margin-right: 3px;">
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterDate.title"/>:&nbsp;
                         <span id="obs<%=globalNoteId%>"><%=DateUtils.getDate(note.getObservationDate(), dateFormat, request.getLocale())%></span>&nbsp;

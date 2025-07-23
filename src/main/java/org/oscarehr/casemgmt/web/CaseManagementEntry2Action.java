@@ -3769,6 +3769,10 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
     }
 
     private void restoreFromSession() {
+        if (this.caseNote == null) {
+            this.caseNote = new CaseManagementNote();
+        }
+        
         if (demographicNo != null) {
             String sessionName = "caseManagementEntryForm" + demographicNo;
             CaseManagementEntryFormBean sessionFrm = (CaseManagementEntryFormBean) mySessionMap.get(sessionName);
