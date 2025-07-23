@@ -26,7 +26,7 @@
 
 <%@page import="java.sql.*,oscar.oscarDB.*" %>
 <%@page
-        import="java.util.*,org.oscarehr.PMmodule.dao.*,org.oscarehr.PMmodule.service.*,org.oscarehr.PMmodule.model.*,org.springframework.web.context.support.*,org.springframework.web.context.*,com.Ostermiller.util.NameValuePair" %>
+        import="java.util.*,org.oscarehr.PMmodule.dao.*,org.oscarehr.PMmodule.service.*,org.oscarehr.PMmodule.model.*,org.springframework.web.context.support.*,org.springframework.web.context.*,org.apache.commons.lang3.tuple.Pair" %>
 <%@ include file="/taglibs.jsp" %>
 <%
     WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
@@ -42,7 +42,7 @@
 
 
     /* use a common list? */
-    List<NameValuePair> lists = new ArrayList<NameValuePair>();
+    List<Pair<String, String>> lists = new ArrayList<>();
     IntakeNode itn = (IntakeNode) session.getAttribute("intakeNode");
     this.fillCommonLists(itn, lists);
 
@@ -155,8 +155,8 @@
     <br/>
     <select id="select_common_list" name="select_common_list" onchange="copy_common_list()">
         <option value=""></option>
-        <%for (NameValuePair nvp : lists) { %>
-        <option value="<%=nvp.getValue()%>"><%=nvp.getName() %>
+        <%for (Pair<String, String> pair nvp : lists) { %>
+            <option value="<%= pair.getRight() %>"><%= pair.getLeft() %></option>
         </option>
         <% } %>
     </select>
@@ -176,11 +176,10 @@
         }
     }
 
-    void fillCommonLists(IntakeNode org, List<NameValuePair> lists) {
+    void fillCommonLists(IntakeNode org, List<Pair<String, String>> lists) {
         if (org.getCommonList()) {
-            NameValuePair nvp = new NameValuePair(org.getLabelStr(), org.getIdStr());
+            Pair<String, String> nvp = Pair.of(org.getLabelStr(), org.getIdStr());
             lists.add(nvp);
-
         }
 
         ArrayList children = new ArrayList();

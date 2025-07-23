@@ -26,7 +26,10 @@
 
 package org.oscarehr.learning.web;
 
-import com.Ostermiller.util.ExcelCSVParser;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -37,9 +40,12 @@ import org.oscarehr.util.MiscUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,21 +81,23 @@ public class StudentImport2Action extends ActionSupport {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
-        String[][] data = ExcelCSVParser.parse(Files.newBufferedReader(file.toPath()));
-
+        Path filePath = file.toPath();
+        BufferedReader reader = Files.newBufferedReader(filePath);
+        CSVParser parser = CSVParser.parse(reader, CSVFormat.EXCEL);
         List<StudentInfo> studentInfoList = new ArrayList<StudentInfo>();
 
-        for (int x = 0; x < data.length; x++) {
-            if (data[x].length != 6) {
-                logger.warn("skipping line..invalid number of fields");
+        for (CSVRecord record : parser) {
+            if (record.size() != 6) {
+                logger.warn("Skipping line: invalid number of fields");
                 continue;
             }
-            String lastName = data[x][0];
-            String firstName = data[x][1];
-            String login = data[x][2];
-            String password = data[x][3];
-            String pin = data[x][4];
-            String studentNumber = data[x][5];
+
+            String lastName = record.get(0);
+            String firstName = record.get(1);
+            String login = record.get(2);
+            String password = record.get(3);
+            String pin = record.get(4);
+            String studentNumber = record.get(5);
 
             StudentInfo studentInfo = new StudentInfo();
             studentInfo.setLastName(lastName);

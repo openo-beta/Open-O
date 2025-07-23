@@ -48,9 +48,10 @@ import org.oscarehr.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
-
-import com.Ostermiller.util.ExcelCSVParser;
-import com.Ostermiller.util.ExcelCSVPrinter;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -127,11 +128,11 @@ public class dxResearchLoadAssociations2Action extends ActionSupport {
         response.setContentType("application/octet-stream");
         response.setHeader("Content-Disposition", "attachment; filename=\"dx_associations.csv\"");
 
-        ExcelCSVPrinter printer = new ExcelCSVPrinter(response.getWriter());
+        CSVPrinter printer = new CSVPrinter(response.getWriter(), CSVFormat.EXCEL);
 
-        printer.writeln(new String[]{"Issue List Code Type", "Issue List Code", "Disease Registry Code Type", "Disease Registry Code"});
+        printer.printRecord("Issue List Code Type", "Issue List Code", "Disease Registry Code Type", "Disease Registry Code");
         for (DxAssociation dxa : associations) {
-            printer.writeln(new String[]{dxa.getCodeType(), dxa.getCode(), dxa.getDxCodeType(), dxa.getDxCode()});
+            printer.printRecord(dxa.getCodeType(), dxa.getCode(), dxa.getDxCodeType(), dxa.getDxCode());
         }
 
         printer.flush();
@@ -148,7 +149,7 @@ public class dxResearchLoadAssociations2Action extends ActionSupport {
             return ERROR;
         }
 
-        String[][] data = ExcelCSVParser.parse(new FileReader(file));
+        CSVParser parser = CSVParser.parse(new FileReader(file), CSVFormat.EXCEL);
 
         int rowsInserted = 0;
 
@@ -156,15 +157,15 @@ public class dxResearchLoadAssociations2Action extends ActionSupport {
             dxDao.removeAssociations();
         }
 
-        for (int x = 1; x < data.length; x++) {
-            if (data[x].length != 4) {
+        for (CSVRecord record : parser) {
+            if (record.size() != 4) {
                 continue;
             }
             DxAssociation assoc = new DxAssociation();
-            assoc.setCodeType(data[x][0]);
-            assoc.setCode(data[x][1]);
-            assoc.setDxCodeType(data[x][2]);
-            assoc.setDxCode(data[x][3]);
+            assoc.setCodeType(record.get(0));
+            assoc.setCode(record.get(1));
+            assoc.setDxCodeType(record.get(2));
+            assoc.setDxCode(record.get(3));
 
             dxDao.persist(assoc);
             rowsInserted++;

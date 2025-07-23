@@ -43,7 +43,7 @@
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page import="oscar.oscarReport.data.DemographicSets, oscar.oscarDemographic.data.*,java.util.*,oscar.oscarPrevention.*,oscar.oscarProvider.data.*,oscar.util.*,oscar.oscarReport.ClinicalReports.*,oscar.oscarEncounter.oscarMeasurements.*,oscar.oscarEncounter.oscarMeasurements.bean.*" %>
-<%@page import="com.Ostermiller.util.CSVPrinter,java.io.*" %>
+<%@page import="org.apache.commons.csv.CSVPrinter, org.apache.commons.csv.CSVFormat,java.io.*,java.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -631,31 +631,38 @@
                         DemographicNameAgeString deName = DemographicNameAgeString.getInstance();
                         DemographicData demoData = new DemographicData();
                         StringWriter swr = new StringWriter();
-                        CSVPrinter csvp = new CSVPrinter(swr);
+                        CSVPrinter csvp = new CSVPrinter(swr, CSVFormat.EXCEL);
                 %>
 
                 <table class="sortable tabular_list results" id="results_table">
                     <thead>
                     <tr>
                         <%
+                            List<String> cleanHeadings = new ArrayList<>();
                             for (String heading : headings) {
-                                csvp.write(head(heading));
+                            cleanHeadings.add(head(heading));
                         %>
-                        <th><%=head(heading)%>
-                        </th>
-                        <%}%>
+                            <th><%=head(heading)%></th>
+                        <%
+                            }
+                            csvp.printRecord(cleanHeadings);
+                        %>
 
                         <%
+                            List<String> headingList = new ArrayList<>();
                             for (int i = 0; i < outputfields.length; i++) {
-                                csvp.write(replaceHeading(outputfields[i], forView, measurementTitles));
+                                String heading = replaceHeading(outputfields[i], forView, measurementTitles);
+                                headingList.add(heading);
                         %>
-                        <th><%=replaceHeading(outputfields[i], forView, measurementTitles)%>
-                        </th>
-                        <%}%>
+                        <th><%= heading%></th>
+                        <%
+                        }
+                        csvp.printRecord(headingList);
+                        %>
                     </tr>
                     </thead>
                     <%
-                        csvp.writeln();
+                        csvp.printRecord();
                         ArrayList<Hashtable> list = (ArrayList) request.getAttribute("list");
                         for (Hashtable h : list) {
 
@@ -671,23 +678,26 @@
 
                         <%
                             for (String heading : headings) {
-                                csvp.write(commonRow(heading, demoHash, demoObj));
+                                csvp.print(commonRow(heading, demoHash, demoObj));
                         %>
-                        <td><%=commonRow(heading, demoHash, demoObj)%>
-                        </td>
-                        <%}%>
+                        <td><%=commonRow(heading, demoHash, demoObj)%></td>
+                        <%
+                        }
+                        %>
 
                         <%
                             for (String outputfield : outputfields) {
-                                csvp.write("" + display(h.get(outputfield)));
+                                csvp.print("" + display(h.get(outputfield)));
                         %>
-                        <td><%=display(h.get(outputfield))%>
-                        </td>
-                        <%}%>
+                        <td><%=display(h.get(outputfield))%></td>
+                        <%
+                        }
+                        %>
                     </tr>
-                    <%
-                            csvp.writeln();
-                        }%>
+                        <%
+                        csvp.printRecord();
+                        }
+                        %>
                 </table>
                 <%
 

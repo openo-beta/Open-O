@@ -24,7 +24,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -44,7 +46,8 @@ import oscar.oscarReport.data.RptReportConfigData;
 import oscar.oscarReport.data.RptReportCreator;
 import oscar.oscarReport.data.RptReportItem;
 
-import com.Ostermiller.util.CSVPrinter;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 
 public class RptDownloadCSVServlet extends HttpServlet {
 
@@ -121,23 +124,28 @@ public class RptDownloadCSVServlet extends HttpServlet {
             Vector vecFieldValue = (new RptReportCreator()).query(reportSql, vecFieldCaption);
 
             StringWriter swr = new StringWriter();
-            CSVPrinter csvp = new CSVPrinter(swr);
-            csvp.changeDelimiter('\t');
+            // Create a CSVFormat with tab delimiter
+            CSVFormat format = CSVFormat.DEFAULT.withDelimiter('\t');
+            CSVPrinter csvp = new CSVPrinter(swr, format);
 
             for (int i = 0; i < vecFieldCaption.size(); i++) {
-                csvp.write((String) vecFieldCaption.get(i));
+                csvp.printRecord(vecFieldCaption);
             }
 
             for (int i = 0; i < vecFieldValue.size(); i++) {
                 Properties prop = (Properties) vecFieldValue.get(i);
-                csvp.writeln();
+
+                // Build a list of values for the row
+                List<String> row = new ArrayList<>();
                 for (int j = 0; j < vecFieldCaption.size(); j++) {
-                    csvp.write(prop.getProperty((String) vecFieldCaption.get(j), ""));
+                    row.add(prop.getProperty((String) vecFieldCaption.get(j), ""));
                 }
+
+                // Print the entire row at once
+                csvp.printRecord(row);
             }
+
             in = swr.toString();
-
-
         } catch (Exception e1) {
             _logger.error("service() - form report");
         }
@@ -596,33 +604,41 @@ public class RptDownloadCSVServlet extends HttpServlet {
         }
 
         StringWriter swr = new StringWriter();
-        CSVPrinter csvp = new CSVPrinter(swr);
-        csvp.changeDelimiter('\t');
+        CSVPrinter csvp = new CSVPrinter(swr, CSVFormat.DEFAULT.withDelimiter('\t'));
 
-        csvp.write("id");
+        // Write header row: "id" + vecFieldCaption + optional vecSpecCaption
+        List<String> headerRow = new ArrayList<>();
+        headerRow.add("id");
         for (int i = 0; i < vecFieldCaption.size(); i++) {
-            csvp.write((String) vecFieldCaption.get(i));
+            headerRow.add((String) vecFieldCaption.get(i));
         }
         if (bSpecSelect) {
             for (int i = 0; i < vecSpecCaption.size(); i++) {
-                csvp.write((String) vecSpecCaption.get(i));
+                headerRow.add((String) vecFieldCaption.get(i));
             }
         }
 
+        csvp.printRecord(headerRow);
+
+        // Write data rows
         for (int i = 0; i < vecFieldValue.size(); i++) {
             Properties prop = (Properties) vecFieldValue.get(i);
-            csvp.writeln();
-            csvp.write("" + (i + 1));
+
+
+            List<String> dataRow = new ArrayList<>();
+            dataRow.add(String.valueOf(i + 1));
 
             for (int j = 0; j < vecFieldName.size(); j++) {
-                csvp.write(prop.getProperty((String) vecFieldName.get(j), ""));
+                dataRow.add(prop.getProperty((String) vecFieldName.get(j), ""));
             }
             if (bSpecSelect) {
                 String demoNo = prop.getProperty("demographic_no");
                 for (int j = 0; j < vecSpecCaption.size(); j++) {
-                    csvp.write(propSpecValue.getProperty(demoNo + ((String) vecSpecCaption.get(j)).replaceAll(" ", "_"), ""));
+                    dataRow.add(propSpecValue.getProperty(demoNo + ((String) vecSpecCaption.get(j)).replaceAll(" ", "_"), ""));
                 }
             }
+            // Print data rows
+            csvp.printRecord(dataRow);
         }
 
         in = swr.toString();

@@ -38,7 +38,8 @@ import oscar.oscarDB.DBHandler;
 import oscar.oscarReport.data.RptResultStruct;
 import oscar.util.UtilMisc;
 
-import com.Ostermiller.util.CSVPrinter;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 
 
 /**
@@ -76,9 +77,13 @@ public class SQLReporter implements Reporter {
                 rsHtml = "The query returned no results.";
             } else {
                 rsHtml = RptResultStruct.getStructure2(rs);  //makes html from the result set
-                CSVPrinter csvp = new CSVPrinter(swr);
-                csvp.writeln(UtilMisc.getArrayFromResultSet(rs));
+                CSVFormat format = CSVFormat.DEFAULT;
+                CSVPrinter csvp = new CSVPrinter(swr, format);
+                Object[] row = UtilMisc.getArrayFromResultSet(rs);
+                csvp.printRecord(row);
+                csvp.flush();
                 csv = swr.toString();
+                csvp.close();
             }
         } catch (SQLException sqe) {
             rsHtml += sqe.getCause() != null ? sqe.getCause() : sqe.getMessage();
@@ -119,9 +124,13 @@ public class SQLReporter implements Reporter {
                     rsHtml = sql + "<br/>The query returned no results.";
                 } else {
                     rsHtml = RptResultStruct.getStructure2(rs);  //makes html from the result set
-                    CSVPrinter csvp = new CSVPrinter(swr);
-                    csvp.writeln(UtilMisc.getArrayFromResultSet(rs));
+                    CSVFormat format = CSVFormat.DEFAULT;
+                    CSVPrinter csvp = new CSVPrinter(swr, format);
+                    Object[] row = UtilMisc.getArrayFromResultSet(rs);
+                    csvp.printRecord(row);
+                    csvp.flush();
                     csv = swr.toString();
+                    csvp.close();
                 }
             } catch (SQLException sqe) {
                 rsHtml += sqe.getCause() != null ? sqe.getCause() : sqe.getMessage();

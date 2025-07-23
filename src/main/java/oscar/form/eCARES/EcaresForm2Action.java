@@ -25,7 +25,8 @@
 
 package oscar.form.eCARES;
 
-import com.Ostermiller.util.ExcelCSVPrinter;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import com.opensymphony.xwork2.ActionSupport;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
@@ -123,16 +124,16 @@ public class EcaresForm2Action extends ActionSupport {
         Integer demographicNo = demographicNumberToInteger(request);
         Integer formId = Integer.parseInt(request.getParameter(Constants.Cares.FormField.formId.name()));
         JSONObject formData = formeCARESManager.getData(loggedInInfo, demographicNo, formId);
-        ExcelCSVPrinter printer = null;
+        CSVPrinter printer = null;
 
         try {
             response.setContentType("application/octet-stream");
             response.setHeader("Content-Disposition", "attachment; filename=\"ecga_form_data.csv\"");
-            printer = new ExcelCSVPrinter(response.getWriter());
-            printer.writeln(new String[]{"Element", "Value"});
+            printer = new CSVPrinter(response.getWriter(), CSVFormat.EXCEL);
+            printer.printRecord("Element", "Value");
             Set keys = formData.keySet();
             for (Object key : keys) {
-                printer.writeln(new String[]{(String) key, formData.getString((String) key)});
+                printer.printRecord((String) key, formData.getString((String) key));
             }
         } catch (Exception e) {
             MiscUtils.getLogger().warn("Export failed for ecga form id " + formId, e);

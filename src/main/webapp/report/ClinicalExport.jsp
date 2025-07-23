@@ -40,7 +40,7 @@
 %>
 
 <%@page import="org.oscarehr.util.MiscUtils" %>
-<%@page import="org.apache.poi.hssf.usermodel.HSSFRow,org.apache.poi.hssf.usermodel.HSSFSheet,org.apache.poi.hssf.usermodel.HSSFWorkbook,com.Ostermiller.util.CSVParser" %>
+<%@page import="org.apache.poi.hssf.usermodel.HSSFRow,org.apache.poi.hssf.usermodel.HSSFSheet,org.apache.poi.hssf.usermodel.HSSFWorkbook,org.apache.commons.csv.CSVParser" %>
 <%
 
     String csv = (String) session.getAttribute("clinicalReportCSV");
@@ -58,17 +58,20 @@
     if (action != null) {
         response.setContentType("application/octet-stream");
         response.setHeader("Content-Disposition", "attachment; filename=\"oscarReport.xls\"");
-        String[][] data = CSVParser.parse(csv);
+        CSVParser parser = CSVParser.parse(new StringReader(csv), CSVFormat.DEFAULT);
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet("OSCAR_Report");
-        for (int x = 0; x < data.length; x++) {
-            HSSFRow row = sheet.createRow((short) x);
-            for (int y = 0; y < data[x].length; y++) {
+
+        int rowIndex = 0;
+        for (CSVRecord record : parser) {
+            HSSFRow row = sheet.createRow(rowIndex++);
+            for (int y = 0; y < record.size(); y++) {
+                String value = record.get(colIndex);
                 try {
-                    double d = Double.parseDouble(data[x][y]);
-                    row.createCell((short) y).setCellValue(d);
+                    double d = Double.parseDouble(value);
+                    row.createCell(colIndex).setCellValue(d);
                 } catch (Exception e) {
-                    row.createCell((short) y).setCellValue(data[x][y]);
+                    row.createCell(colIndex).setCellValue(value);
                 }
             }
         }
