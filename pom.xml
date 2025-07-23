@@ -714,7 +714,6 @@
 
         <!-- com.sun -->
         <!-- sun pdfview -->
-        <!-- can be found in the local_repo folder -->
         <dependency>
             <groupId>com.sun</groupId>
             <artifactId>pdfview</artifactId>
@@ -1037,6 +1036,7 @@
         </dependency>
 
         <!-- MARC-HI - Shared Health Integration Components (SHIC) Library -->
+        <!-- can be found in the local_repo folder -->
         <dependency>
             <groupId>org.marc.shic</groupId>
             <artifactId>shic-core</artifactId>
@@ -1124,6 +1124,7 @@
             <version>1.2.1</version>
         </dependency>
 
+        <!-- can be found in the local_repo folder -->
         <dependency>
             <groupId>com.cbi.ws</groupId>
             <artifactId>cbi_ws_client</artifactId>
@@ -1131,6 +1132,7 @@
         </dependency>
 
         <!-- EBS and HCV Stubs -->
+        <!-- can be found in the local_repo folder -->
         <dependency>
             <groupId>org.oscarehr.integration.ebs</groupId>
             <artifactId>edt-stubs</artifactId>
@@ -1167,12 +1169,15 @@
             <artifactId>csrfguard</artifactId>
             <version>3.1.0</version>
         </dependency>
+
+        <!-- can be found in the local_repo folder -->
         <dependency>
             <groupId>com.medseek.clinical.service</groupId>
             <artifactId>SSOClinicalConnect</artifactId>
             <version>20171101</version>
         </dependency>
 
+        <!-- can be found in the local_repo folder -->
         <dependency>
             <groupId>com.medseek</groupId>
             <artifactId>PatientService</artifactId>
@@ -1244,6 +1249,7 @@
         </dependency>
 
         <!-- HAPI FHIR -->
+        <!-- can be found in the local_repo folder -->
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>hapi-fhir-base</artifactId>
