@@ -712,14 +712,6 @@
             <version>1.4.3</version>
         </dependency>
 
-        <!-- com.sun -->
-        <!-- sun pdfview -->
-        <dependency>
-            <groupId>com.sun</groupId>
-            <artifactId>pdfview</artifactId>
-            <version>UNKNOWN</version>
-        </dependency>
-
         <!-- REMOVE displayTag. It's only used in 1 deprecated feature of this code
         and is not well maintained. -->
         <!-- From my current understanding, displayTag is used in a lot of jsp files -->
@@ -1183,6 +1175,7 @@
             <artifactId>PatientService</artifactId>
             <version>20161213</version>
         </dependency>
+        
         <dependency>
             <groupId>org.jasypt</groupId>
             <artifactId>jasypt</artifactId>
