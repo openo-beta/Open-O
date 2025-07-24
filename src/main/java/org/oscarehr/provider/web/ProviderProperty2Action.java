@@ -836,10 +836,10 @@ public class ProviderProperty2Action extends ActionSupport {
 
 
         UserProperty UdrugrefId = this.getDateProperty();
-        String dateProperty = "";
+        String drugrefId = "";
 
         if (UdrugrefId != null) {
-            dateProperty = UdrugrefId.getValue();
+            drugrefId = UdrugrefId.getValue();
         }
 
         UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.MYDRUGREF_ID);
@@ -849,12 +849,12 @@ public class ProviderProperty2Action extends ActionSupport {
             prop.setName(UserProperty.MYDRUGREF_ID);
             prop.setProviderNo(providerNo);
         }
-        prop.setValue(dateProperty);
+        prop.setValue(drugrefId);
 
         this.userPropertyDAO.saveProp(prop);
 
         request.setAttribute("status", "success");
-        request.setAttribute("dateProperty", prop);
+        request.setAttribute("drugrefId", prop);
         request.setAttribute("providertitle", "provider.setmyDrugrefId.title"); //=Set myDrugref ID
         request.setAttribute("providermsgPrefs", "provider.setmyDrugrefId.msgPrefs"); //=Preferences"); //
         request.setAttribute("providermsgProvider", "provider.setmyDrugrefId.msgProvider"); //=myDrugref ID
