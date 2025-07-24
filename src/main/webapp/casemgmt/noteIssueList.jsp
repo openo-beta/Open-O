@@ -56,19 +56,20 @@
         frm = (CaseManagementEntryFormBean) session.getAttribute(caseMgmtEntryFrm);
         request.setAttribute("caseManagementEntryForm", frm);
     }
+    request.setAttribute("encSelect", encSelect);
 %>
 <c:choose>
     <c:when test="${empty caseManagementEntryForm.caseNote.id}">
         <c:choose>
             <c:when test="${not empty param.newNoteIdx}">
                 <c:set var="noteIndex" value="${param.newNoteIdx}" />
-                <div id="sumary${param.newNoteIdx}">
+                <div id="summary${param.newNoteIdx}">
                     <div id="observation${param.newNoteIdx}" style="float: right; margin-right: 3px;">
                 </div>
             </c:when>
             <c:otherwise>
                 <c:set var="noteIndex" value="0" />
-                <div id="sumary0">
+                <div id="summary0">
                     <div id="observation0" style="float: right; margin-right: 3px;">
                 </div>
             </c:otherwise>
@@ -77,7 +78,7 @@
     <c:otherwise>
         <c:set var="noteIndex" value="${caseManagementEntryForm.caseNote.id}" />
         <div style="background-color: #CCCCFF;"
-             id="sumary${caseManagementEntryForm.caseNote.id}">
+             id="summary${caseManagementEntryForm.caseNote.id}">
             <div id="observation${caseManagementEntryForm.caseNote.id}" style="float: right; margin-right: 3px;">
             </div>
         </div>
@@ -206,12 +207,10 @@
 
 <div id="current_note_addon"></div>
 
-<%
-    encSelect += noteIndex;
-%>
+<c:set var="encSelect" value="${encSelect}${noteIndex}" />
 <div style="clear: right; margin: 0 3px 0 0; float: right;">
     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encType.title"/>:&nbsp;
-    <span id="encType<%=noteIndex%>">
+    <span id="encType${noteIndex}">
         <c:choose>
             <c:when test="${empty ajaxsave}">
                 <select id="${encSelect}" class="encTypeCombo" name="encounter_type">
@@ -398,7 +397,7 @@
                 ${issueCheckList.issueDisplay.description}
             </a>
 
-            <c:if test="${issueCheckList.issue.used == false}">
+            <c:if test="${issueCheckList.used == false}">
                 <c:set var="submitDelete" value="removeIssue('${winame}');document.forms['caseManagementEntryForm'].deleteId.value='${status.index}';return ajaxUpdateIssues('issueDelete', $('noteIssues').up().id);" />
                 &nbsp;
                 <a href="#" onclick="${submitDelete}">Delete</a>
@@ -458,7 +457,6 @@
     //check to see if we need to update div containers to most recent note id
     //this happens only when we're called thru ajaxsave
     <c:if test="${not empty ajaxsave}">
-    <script type="text/javascript">
         var origId = "${origNoteId}";
         var newId = "${ajaxsave}";
         var oldDiv;
@@ -485,15 +483,14 @@
         <c:if test="${not empty DateError}">
             alert("${DateError}");
         </c:if>
-    </script>
-</c:if>
+    </c:if>
 
 
-    var c = "bgColour" + "<%=noteIndex%>";
+    var c = "bgColour" + "${noteIndex}";
     var txtStyles = $F(c).split(";");
     var txtColour = txtStyles[0].substr(txtStyles[0].indexOf("#"));
     var background = txtStyles[1].substr(txtStyles[1].indexOf("#"));
-    var summary = "sumary" + "<%=noteIndex%>";
+    var summary = "summary" + "${noteIndex}";
 
     if ($("observationDate") != null) {
         $("observationDate").style.color = txtColour;
@@ -514,7 +511,7 @@
 
     //do we have a custom encounter type?  if so add an option to the encounter type select
     var encounterType = '${caseManagementEntryForm.caseNote.encounter_type}';
-    var selectEnc = "<%=encSelect%>";
+    var selectEnc = "${encSelect}";
 
     if ($(selectEnc) != null) {
 

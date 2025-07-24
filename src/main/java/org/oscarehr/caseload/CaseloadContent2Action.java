@@ -476,6 +476,8 @@ public class CaseloadContent2Action extends ActionSupport {
 
         String prov = oscarProperties.getProperty("billregion", "").trim().toUpperCase();
 
+        String contextPath = request.getContextPath();
+
         for (Integer result : demoSearchResult) {
 
             String demographic_no = result.toString();
@@ -547,7 +549,6 @@ public class CaseloadContent2Action extends ActionSupport {
             if (hasPrivilege("_caseload.Age", roleName$)) {
                 String clAge = demographicResult.get(0).get("age") != null ? demographicResult.get(0).get("age").toString() : "";
                 String clBDay = demographicResult.get(0).get("month_of_birth").toString() + "-" + demographicResult.get(0).get("date_of_birth").toString();
-                String contextPath = request.getContextPath();
                 if (isBirthday(monthDay, clBDay)) {
                     clAge += " <img src='" + contextPath + "/images/cake.gif' height='20' />";
                 }
@@ -632,7 +633,7 @@ public class CaseloadContent2Action extends ActionSupport {
                 List<Map<String, Object>> newTicklerResult = caseloadDao.getCaseloadDemographicData(newTicklerQuery, demographicParam);
                 if (!newTicklerResult.isEmpty() && newTicklerResult.get(0).get("count(*)") != null && !newTicklerResult.get(0).get("count(*)").toString().equals("") && !newTicklerResult.get(0).get("count(*)").toString().equals("0")) {
                     String clNewTickler = newTicklerResult.get(0).get("count(*)").toString();
-                    entry.add("<a href='#' onclick=\"popupPage('700', '1000', '../tickler/ticklerDemoMain.jsp?demoview=" + demographic_no + "'); return false;\">" + clNewTickler + "</a>");
+                    entry.add("<a href='#' onclick=\"popupPage('700', '1000', '" + contextPath + "/tickler/ticklerDemoMain.jsp?demoview=" + demographic_no + "'); return false;\">" + clNewTickler + "</a>");
                 } else {
                     entry.add("&nbsp;");
                 }

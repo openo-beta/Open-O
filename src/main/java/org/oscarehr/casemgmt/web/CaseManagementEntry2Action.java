@@ -32,6 +32,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.SessionAware;
 import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.PMmodule.model.Program;
@@ -89,7 +90,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class CaseManagementEntry2Action extends ActionSupport {
+public class CaseManagementEntry2Action extends ActionSupport implements SessionAware {
 
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
@@ -109,7 +110,11 @@ public class CaseManagementEntry2Action extends ActionSupport {
             logger.error(message);
             return null;
         }
-        String method = request.getParameter("method");
+
+        restoreFromSession();
+
+        String method = request.getParameter("method") != null ? request.getParameter("method") : (String) request.getAttribute("method");
+        
         if ("setUpMainEncounter".equals(method)) {
             return setUpMainEncounter();
         } else if ("isNoteEdited".equals(method)) {
@@ -205,7 +210,8 @@ public class CaseManagementEntry2Action extends ActionSupport {
             return null;
         }
 
-        this.setChain("");
+        CaseManagementEntryFormBean cform = new CaseManagementEntryFormBean();
+        cform.setChain("");
         request.setAttribute("change_flag", "false");
         request.setAttribute("from", "casemgmt");
 
@@ -279,7 +285,7 @@ public class CaseManagementEntry2Action extends ActionSupport {
         logger.debug("Get Issues and filter them " + String.valueOf(current - start));
         start = current;
 
-        this.setDemoNo(demono);
+        cform.setDemoNo(demono);
         CaseManagementNote note = null;
 
         String nId = request.getParameter("noteId");
@@ -411,8 +417,8 @@ public class CaseManagementEntry2Action extends ActionSupport {
         start = current;
 
         // put the new/retrieved not in the form object for rendering on page
-        this.setCaseNote(note);
-        logger.debug("note in cform " + this.getCaseNote_note());
+        cform.setCaseNote(note);
+        logger.debug("note in cform " + cform.getCaseNote_note());
         /* set issue checked list */
 
         // get issues for current demographic, based on provider rights
@@ -458,11 +464,11 @@ public class CaseManagementEntry2Action extends ActionSupport {
 
         current = System.currentTimeMillis();
 
-        this.setIssueCheckList(checkedList);
+        cform.setIssueCheckList(checkedList);
 
-        this.setSign("off");
-        if (!note.isIncludeissue()) this.setIncludeIssue("off");
-        else this.setIncludeIssue("on");
+        cform.setSign("off");
+        if (!note.isIncludeissue()) cform.setIncludeIssue("off");
+        else cform.setIncludeIssue("on");
 
         boolean passwd = caseManagementMgr.getEnabled();
         String chain = request.getParameter("chain");
@@ -481,15 +487,15 @@ public class CaseManagementEntry2Action extends ActionSupport {
 
         if (casemgmtNoteLock.isLocked()) {
             note = makeNewNote(providerNo, demono, request);
-            this.setCaseNote(note);
+            cform.setCaseNote(note);
         }
 
         session.setAttribute("casemgmtNoteLock" + demono, casemgmtNoteLock);
 
         String frmName = "caseManagementEntryForm" + demono;
         //logger.debug("Setting session form - " + frmName + " - " + String.valueOf(cform != null));
-        logger.debug("note in cform " + this.getCaseNote_note());
-        //session.setAttribute(frmName, cform);
+        logger.debug("note in cform " + cform.getCaseNote_note());
+        mySessionMap.put(frmName, cform);
 
         String fwd, finalFwd = null;
         if (chain != null && chain.length() > 0) {
@@ -1213,6 +1219,7 @@ public class CaseManagementEntry2Action extends ActionSupport {
             return null;
         }
 
+        this.setReloadUrl("/CaseManagementView.do?" + reloadUrl);
         return "listCPPNotes";
     }
 
@@ -3754,6 +3761,28 @@ public class CaseManagementEntry2Action extends ActionSupport {
         }
     }
 
+    private Map<String, Object> mySessionMap;
+
+    @Override
+    public void setSession(Map<String, Object> session) {
+        this.mySessionMap = session;
+    }
+
+    private void restoreFromSession() {
+        if (this.caseNote == null) {
+            this.caseNote = new CaseManagementNote();
+        }
+        
+        if (demographicNo != null) {
+            String sessionName = "caseManagementEntryForm" + demographicNo;
+            CaseManagementEntryFormBean sessionFrm = (CaseManagementEntryFormBean) mySessionMap.get(sessionName);
+            if (sessionFrm != null) {
+                this.issueCheckList = sessionFrm.getIssueCheckList();
+                this.newIssueCheckList = sessionFrm.getNewIssueCheckList();
+            }
+        }
+    }
+
     private CaseManagementNote caseNote;
     private CaseManagementCPP cpp;
     private String demoNo;
@@ -3794,6 +3823,8 @@ public class CaseManagementEntry2Action extends ActionSupport {
     private Integer minuteOfEncTransportationTime;
     private Integer OscarMsgType;
     private Integer OscarMsgTypeLink;
+
+    private String reloadUrl;
 
     public String getObservation_date() {
         return this.observation_date;
@@ -4089,6 +4120,14 @@ public class CaseManagementEntry2Action extends ActionSupport {
 
     public void setMinuteOfEncTransportationTime(Integer minuteOfEncTransportationTime) {
         this.minuteOfEncTransportationTime = minuteOfEncTransportationTime;
+    }
+
+    public String getReloadUrl() {
+        return reloadUrl;
+    }
+
+    public void setReloadUrl(String reloadUrl) {
+        this.reloadUrl = reloadUrl;
     }
 
     /**
