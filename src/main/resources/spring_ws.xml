@@ -75,6 +75,19 @@
 		 
     </cxf:bus>
 
+	<!-- OAuth 1.0a REST Service -->
+	<bean id="scribeOAuthService" class="org.oscarehr.ws.oauth.ScribeOAuthService" autowire="byName" />
+
+	<jaxrs:server address="/oauth" id="oauthServer">
+		<jaxrs:serviceBeans>
+			<ref bean="scribeOAuthService"/>
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<ref bean="jsonProvider"/>
+		</jaxrs:providers>
+	</jaxrs:server>
+
+
 	<!-- Managed WS Beans -->
 	<!-- The WS classes are turned into spring beans to allow autowiring etc, then the endpoints reference them -->
  	<context:component-scan base-package="org.oscarehr.ws"/>
@@ -158,7 +171,7 @@
 	</jaxws:endpoint>	
 	
 	<context:component-scan base-package="oscar.login"/>
-	
+	<context:component-scan base-package="org.oscarehr.ws.oauth"/>
 	<context:component-scan base-package="org.oscarehr.ws.rest"/>
 	<context:component-scan base-package="org.oscarehr.ws.rest.util"/>
 	<context:component-scan base-package="org.oscarehr.ws.rest.conversion"/>
@@ -217,7 +230,7 @@
 			<bean class="org.oscarehr.ws.rest.ResourceService" autowire="byName" />
 			<bean class="org.oscarehr.ws.rest.SurveillanceService" autowire="byName" />
 			<bean class="org.oscarehr.ws.rest.DiseaseRegistryService" autowire="byName" />
-<!--			<bean class="org.oscarehr.ws.rest.SystemInfoService" autowire="byName" /> -->
+			<bean class="org.oscarehr.ws.rest.SystemInfoService" autowire="byName" />
 			<bean class="org.oscarehr.ws.rest.LabService" autowire="byName" />
 			<bean class="org.oscarehr.ws.rest.MeasurementService" autowire="byName" />
 			<bean class="org.oscarehr.ws.rest.ConsentService" autowire="byName" />
