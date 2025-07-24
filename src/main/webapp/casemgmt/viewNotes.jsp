@@ -40,6 +40,7 @@
 <%@page import="org.oscarehr.common.model.PartialDate"%>
 <%@page import="org.oscarehr.util.SpringUtils"%>
 <%@page import="org.oscarehr.util.LoggedInInfo"%>
+<%@page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -185,33 +186,40 @@
     <fmt:setBundle basename="oscarResources"/>
     <fmt:message key="${param.title}" var="resolvedTitleRaw" />
     <c:set var="resolvedTitle" value="${fn:escapeXml(resolvedTitleRaw)}"/>
-
-	<%
-	List<NoteDisplay>remoteNotes = (List<NoteDisplay>)request.getAttribute("remoteNotes");
-	int noteIdx = 0;
-	if (remoteNotes != null) {
-		for (NoteDisplay remoteNote : remoteNotes) {
-			String htmlText = remoteNote.getNote().replaceAll("\n", "<br>");
-			String htmlTextEscaped = StringEscapeUtils.escapeJavaScript(htmlText);
-			String locationEscaped = StringEscapeUtils.escapeJavaScript(remoteNote.getLocation());
-			String providerEscaped = StringEscapeUtils.escapeJavaScript(remoteNote.getProviderName());
-			String dateEscaped = StringEscapeUtils.escapeJavaScript(ConversionUtils.toTimestampString(remoteNote.getObservationDate()));
-    %>
-        <li class="cpp" style="background-color: <%= (noteIdx % 2 == 0) ? "#FFCCCC" : "#CCA3A3" %>;">
-            <a class="links"
-                onmouseover="this.className='linkhover'"
-                onmouseout="this.className='links'"
-                title="<%= locationEscaped %> by <%= providerEscaped %> on <%= dateEscaped %>"
-                href="javascript:void(0)"
-                onclick="showIntegratedNote('${resolvedTitle}','<%= htmlTextEscaped %>','<%= locationEscaped %>', '<%= providerEscaped %>', '<%= dateEscaped %>');">
-                <%= StringEscapeUtils.escapeHtml(htmlText) %>
-            </a>
-        </li>
-            <% noteIdx++; %>
+    
     <%
-        }
-    }
+        List<NoteDisplay> remoteNotes = (List<NoteDisplay>) request.getAttribute("remoteNotes");
+        int noteIdx = 0;
+        if (remoteNotes != null) {
+            for (NoteDisplay remoteNote : remoteNotes) {
+                String rawText = remoteNote.getNote().replaceAll("\n","<br>");
+                String timestamp = ConversionUtils.toTimestampString(remoteNote.getObservationDate());
     %>
+        <li class="cpp"
+            style="background-color: <%= (noteIdx % 2 == 0) ? "#FFCCCC" : "#CCA3A3" %>;">
+        <a class="links"
+            onmouseover="this.className='linkhover'"
+            onmouseout=" this.className='links'"
+            title="<%= Encode.forHtmlAttribute(remoteNote.getLocation()) %>
+                    by <%= Encode.forHtmlAttribute(remoteNote.getProviderName()) %>
+                    on <%= Encode.forHtmlAttribute(timestamp) %>"
+            href="javascript:void(0)"
+            onclick="showIntegratedNote(
+                '<%= Encode.forJavaScript((String)pageContext.getAttribute("resolvedTitle")) %>',
+                '<%= Encode.forJavaScript(rawText) %>',
+                '<%= Encode.forJavaScript(remoteNote.getLocation()) %>',
+                '<%= Encode.forJavaScript(remoteNote.getProviderName()) %>',
+                '<%= Encode.forJavaScript(timestamp) %>'
+            );">
+            <%= Encode.forHtml(rawText) %>
+        </a>
+        </li>
+    <%
+                noteIdx++;
+            }
+        }
+    %>
+
 
 </ul>
 
