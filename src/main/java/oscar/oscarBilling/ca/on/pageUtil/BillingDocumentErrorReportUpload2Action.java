@@ -84,6 +84,7 @@ public class BillingDocumentErrorReportUpload2Action extends ActionSupport {
             }
         } else {
             if (getData(loggedInInfo, filename, "ONEDT_INBOX", request)) {
+                System.out.println("get data is true!!!!");
                 return filename.startsWith("L") ? "outside":SUCCESS;
             } else if (getData(loggedInInfo, filename, "ONEDT_ARCHIVE", request)) {
                 return filename.startsWith("L") ? "outside":SUCCESS;
@@ -158,14 +159,20 @@ public class BillingDocumentErrorReportUpload2Action extends ActionSupport {
 
         try {
             OscarProperties props = OscarProperties.getInstance();
-            // properties must exist
             String filepath = props.getProperty(pathDir);
-            boolean bNewBilling = props.getProperty("isNewONbilling", "").equals("true") ? true : false;
-            if (!filepath.endsWith("/"))
-                filepath = new StringBuilder(filepath).insert(filepath.length(), "/").toString();
+            boolean bNewBilling = "true".equals(props.getProperty("isNewONbilling", ""));
 
-            FileInputStream file = new FileInputStream(filepath + fileName);
-            MiscUtils.getLogger().debug("file path: " + filepath + fileName);
+            File inputFile = new File(fileName);
+            // This ensures that relative paths become absolute paths, or skipped if already absolute
+            if (!inputFile.isAbsolute()) {
+                if (!filepath.endsWith("/")) {
+                    filepath += "/";
+                }
+                inputFile = new File(filepath, fileName);
+            }
+
+            FileInputStream file = new FileInputStream(inputFile);
+            MiscUtils.getLogger().debug("File path: " + inputFile.getAbsolutePath());
             // Assign associated report Name
             ArrayList<String> messages = new ArrayList<String>();
             String ReportName = "";
@@ -205,6 +212,8 @@ public class BillingDocumentErrorReportUpload2Action extends ActionSupport {
             return isGot = false;
 
         }
+
+        System.out.println("isGot value at end: " + isGot);
         return isGot;
     }
 
