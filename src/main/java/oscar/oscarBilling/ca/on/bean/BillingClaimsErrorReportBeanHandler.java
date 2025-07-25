@@ -152,7 +152,6 @@ public class BillingClaimsErrorReportBeanHandler {
             MiscUtils.getLogger().error("Error, setting verdict to false:", ioe);
         }
 
-        System.out.println("vertict is equal to: " + verdict);
         return verdict;
     }
 

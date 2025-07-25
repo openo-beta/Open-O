@@ -71,27 +71,28 @@ public class BillingDocumentErrorReportUpload2Action extends ActionSupport {
             if (!saveFile(file1, file1FileName)) {
                 addActionError(getText("errors.fileNotAdded"));
 
-                response.sendRedirect("/billing/CA/ON/billingOBECEA.jsp");
+                response.sendRedirect(request.getContextPath() + "/billing/CA/ON/billingOBECEA.jsp");
                 return NONE;
             } else {
-                if (getData(loggedInInfo, file1.toString(), "DOCUMENT_DIR", request))
+                if (getData(loggedInInfo, file1FileName, "DOCUMENT_DIR", request)) {
                     return filename.startsWith("L") ? "outside" : SUCCESS;
+                }
                 else {
                     addActionError(getText("errors.incorrectFileFormat"));
 
-                    response.sendRedirect("/billing/CA/ON/billingOBECEA.jsp");
-                    return NONE;                }
+                    response.sendRedirect(request.getContextPath() + "/billing/CA/ON/billingOBECEA.jsp");
+                    return NONE;                
+                }
             }
         } else {
             if (getData(loggedInInfo, filename, "ONEDT_INBOX", request)) {
-                System.out.println("get data is true!!!!");
                 return filename.startsWith("L") ? "outside":SUCCESS;
             } else if (getData(loggedInInfo, filename, "ONEDT_ARCHIVE", request)) {
                 return filename.startsWith("L") ? "outside":SUCCESS;
             } else {
                 addActionError(getText("errors.incorrectFileFormat"));
 
-                response.sendRedirect("/billing/CA/ON/billingOBECEA.jsp");
+                response.sendRedirect(request.getContextPath() + "/billing/CA/ON/billingOBECEA.jsp");
                 return NONE;
             }
         }
@@ -213,7 +214,6 @@ public class BillingDocumentErrorReportUpload2Action extends ActionSupport {
 
         }
 
-        System.out.println("isGot value at end: " + isGot);
         return isGot;
     }
 
