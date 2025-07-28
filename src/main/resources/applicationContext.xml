@@ -260,15 +260,14 @@
 
     <!-- DAOs requiring a sessionFactory setter -->
     <bean id="secUserRoleDao"
+          class="org.oscarehr.PMmodule.dao.SecUserRoleDaoImpl"
+          autowire="byName"/>
+
+    <bean id="quatroSecUserRoleDao"
           class="com.quatro.dao.security.SecuserroleDaoImpl"
           autowire="byName">
       <property name="sessionFactoryOverride" ref="sessionFactory"/>
     </bean>
-
-    <!-- Add the missing SecUserRoleDao bean that demographicService expects -->
-    <bean id="secUserRoleDao" 
-          class="org.oscarehr.PMmodule.dao.SecUserRoleDaoImpl" 
-          autowire="byName"/>
 
     <bean id="secobjprivilegeDao"
           class="com.quatro.dao.security.SecobjprivilegeDaoImpl"
