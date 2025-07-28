@@ -60,8 +60,8 @@ public class FrmXmlUpload2Action extends ActionSupport {
         File tmpFile = File.createTempFile("tmp", ".zip");
         tmpFile.deleteOnExit();
 
-        try (InputStream is = new FileInputStream(tmpFile);
-             FileOutputStream fos = new FileOutputStream(tmpFile)) {
+       try (InputStream is = new FileInputStream(file1);
+            OutputStream fos = new FileOutputStream(tmpFile)) {
             byte[] data = new byte[BUFFER];
             int count;
             while ((count = is.read(data)) != -1) {
