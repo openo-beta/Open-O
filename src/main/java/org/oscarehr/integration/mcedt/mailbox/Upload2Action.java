@@ -399,6 +399,8 @@ public class Upload2Action extends ActionSupport {
     private String fileName;
     private BigInteger resourceId;
     private File addUploadFile;
+    private String addUploadFileFileName;
+    private String addUploadFileContentType;
 
     public String getDescription() {
         return description;
@@ -438,5 +440,21 @@ public class Upload2Action extends ActionSupport {
 
     public void setAddUploadFile(File addUploadFile) {
         this.addUploadFile = addUploadFile;
+    }
+
+    public String getAddUploadFileFileName() {
+        return addUploadFileFileName;
+    }
+    public void setAddUploadFileFileName(String addUploadFileFileName) {
+        this.addUploadFileFileName = addUploadFileFileName;
+        this.setFileName(addUploadFileFileName); // set the file name to the upload file name
+    }
+
+    public String getAddUploadFileContentType() {
+        return addUploadFileContentType;
+    }
+    public void setAddUploadFileContentType(String addUploadFileContentType) {
+        this.addUploadFileContentType = addUploadFileContentType;
+        this.setResourceType(addUploadFileContentType); // set the resource type to the upload file content type
     }
 }
