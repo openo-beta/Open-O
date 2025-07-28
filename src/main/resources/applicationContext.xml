@@ -22,8 +22,14 @@
            http://cxf.apache.org/jaxrs                          http://cxf.apache.org/schemas/jaxrs.xsd"
        default-autowire="no">
 
+	<!-- setup CXF -->
+	<import resource="classpath:spring_ws.xml" />
+    <!-- <context:component-scan base-package="org.oscarehr.common.dao" /> -->
+
+
     <!-- load properties -->
-    <bean id="propertyConfigurer" class="org.oscarehr.common.OscarPropertyPlaceholderConfigurer">
+    <bean id="propertyConfigurer"
+          class="org.oscarehr.common.OscarPropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
                 <value>classpath:oscar_mcmaster.properties</value>
@@ -43,14 +49,15 @@
     <import resource="classpath:spring_hibernate.xml"/>
     <import resource="classpath:spring_managers.xml"/>
 
-    <!-- Spring‑WS (SOAP) -->
+    <!-- Spring-WS (SOAP) -->
     <import resource="classpath:spring_ws.xml"/>
 
     <!-- component-scan -->
     <context:component-scan base-package="oscar.service"/>
     <!-- <context:component-scan base-package="org.oscarehr.common.dao"/> -->
 
-    <!-- ─ DAO BEANS ────────────────────────────────────────────────────────── -->
+    <!-- ──────────────────────────────────────────────────────────────────────── -->
+    <!-- DAO beans ───────────────────────────────────────────────────────────── -->
     <bean id="hl7HandlerMSHMappingDao"      class="org.oscarehr.common.dao.HL7HandlerMSHMappingDaoImpl"    autowire="byName"/>
     <bean id="gstControlDao"                class="org.oscarehr.billing.CA.dao.GstControlDaoImpl"          autowire="byName"/>
     <bean id="programDao"                   class="org.oscarehr.PMmodule.dao.ProgramDaoImpl"               autowire="byName"/>
@@ -69,7 +76,7 @@
     <bean id="CaseManagementTmpSaveDao"     class="org.oscarehr.common.dao.CaseManagementTmpSaveDaoImpl"   autowire="byName"/>
     <bean id="caseManagementTmpSaveDao"     class="org.oscarehr.common.dao.CaseManagementTmpSaveDaoImpl"   autowire="byName"/>
     <bean id="CaseManagementNoteExtDAO"     class="org.oscarehr.casemgmt.dao.CaseManagementNoteExtDAOImpl" autowire="byName"/>
-    <bean id="CaseManagementNoteLinkDAO"    class="org.oscarehr.casemgmt.dao.CaseManagementNoteLinkDAOImpl"autowire="byName"/>
+    <bean id="CaseManagementNoteLinkDAO"    class="org.oscarehr.casemgmt.dao.CaseManagementNoteLinkDAOImpl" autowire="byName"/>
     <bean id="CaseManagementCPPDAO"         class="org.oscarehr.casemgmt.dao.CaseManagementCPPDAOImpl"     autowire="byName"/>
 
     <bean id="queueDao"                     class="org.oscarehr.common.dao.QueueDaoImpl"                   autowire="byName"/>
@@ -88,7 +95,7 @@
     <bean id="IssueDAO"                     class="org.oscarehr.casemgmt.dao.IssueDAOImpl"                 autowire="byName"/>
 
     <bean id="secroleDao"                   class="com.quatro.dao.security.SecroleDaoImpl"                 autowire="byName"/>
-    <bean id="RoleProgramAccessDAO"         class="org.oscarehr.casemgmt.dao.RoleProgramAccessDAOImpl"       autowire="byName"/>
+    <bean id="RoleProgramAccessDAO"         class="org.oscarehr.casemgmt.dao.RoleProgramAccessDAOImpl"      autowire="byName"/>
     <bean id="clientImageDAO"               class="org.oscarehr.casemgmt.dao.ClientImageDAOImpl"           autowire="byName"/>
     <bean id="programProviderDAO"           class="org.oscarehr.PMmodule.dao.ProgramProviderDAOImpl"       autowire="byName"/>
     <bean id="programFunctionalUserDAO"     class="org.oscarehr.PMmodule.dao.ProgramFunctionalUserDAOImpl" autowire="byName"/>
@@ -99,7 +106,6 @@
     <bean id="bedProgramDao"                class="org.caisi.dao.BedProgramDaoImpl"                       autowire="byName"/>
 
     <bean id="demographicDao"               class="org.oscarehr.common.dao.DemographicDaoImpl"            autowire="byName"/>
-    <bean id="secUserRoleDao"               class="org.oscarehr.PMmodule.dao.SecUserRoleDaoImpl"          autowire="byName"/>
     <bean id="programSignatureDao"          class="org.oscarehr.PMmodule.dao.ProgramSignatureDaoImpl"     autowire="byName"/>
     <bean id="programClientRestrictionDAO"  class="org.oscarehr.PMmodule.dao.ProgramClientRestrictionDAOImpl" autowire="byName"/>
     <bean id="UserPropertyDAO"              class="org.oscarehr.common.dao.UserPropertyDAOImpl"           autowire="byName"/>
@@ -120,7 +126,7 @@
     <bean id="rourke2009Dao"                class="org.oscarehr.common.dao.forms.Rourke2009DAO"           autowire="byName"/>
     <bean id="ocanSubmissionLogDao"         class="org.oscarehr.PMmodule.dao.OcanSubmissionLogDaoImpl"    autowire="byName"/>
     <bean id="lookupDao"                    class="com.quatro.dao.LookupDaoImpl"                          autowire="byName"/>
-    <bean id="documentDao"                  class="org.oscarehr.common.dao.DocumentMergeDemographicDAOImpl"autowire="byName"/>
+    <bean id="documentDao"                  class="org.oscarehr.common.dao.DocumentMergeDemographicDAOImpl" autowire="byName"/>
     <bean id="userAccessDao"                class="com.quatro.dao.security.UserAccessDaoImpl"             autowire="byName"/>
     <bean id="demographicExtDao"            class="org.oscarehr.common.dao.DemographicExtDaoImpl"         autowire="byName"/>
     <bean id="providerDefaultProgramDao"    class="org.oscarehr.common.dao.ProviderDefaultProgramDaoImpl" autowire="byName"/>
@@ -142,7 +148,8 @@
     <bean id="eChartDao"                    class="org.oscarehr.common.dao.EChartDaoImpl"                 autowire="byName"/>
     <bean id="encounterWindowDao"           class="org.oscarehr.common.dao.EncounterWindowDaoImpl"        autowire="byName"/>
 
-    <!-- ─ MANAGER & SERVICE BEANS ───────────────────────────────────────── -->
+    <!-- ──────────────────────────────────────────────────────────────────────── -->
+    <!-- MANAGER & SERVICE BEANS ─────────────────────────────────────────────── -->
     <bean id="oscarSuperManager" class="oscar.service.OscarSuperManagerImpl" autowire="byName" init-method="init"/>
     <bean id="lookupManager"     class="com.quatro.service.LookupManagerImpl"    autowire="byName">
         <property name="lookupDao" ref="lookupDao"/>
@@ -156,29 +163,30 @@
     </bean>
     <bean id="ClientImageManager"   class="org.oscarehr.casemgmt.service.ClientImageManagerImpl" autowire="byName"/>
     <bean id="programQueueManager"  class="org.oscarehr.PMmodule.service.ProgramQueueManagerImpl" autowire="byName"/>
-    <bean id="admissionManager"     class="org.oscarehr.PMmodule.service.AdmissionManagerImpl"    autowire="byType"/>
-    <bean id="programManager"       class="org.oscarehr.PMmodule.service.ProgramManagerImpl"      autowire="byName"/>
-    <bean id="clientManager"        class="org.oscarehr.PMmodule.service.ClientManagerImpl"       autowire="byName"/>
-    <bean id="infirmBedProgramManager" class="org.caisi.service.InfirmBedProgramManagerImpl"   autowire="byName"/>
+    <bean id="admissionManager"     class="org.oscarehr.PMmodule.service.AdmissionManagerImpl" autowire="byType"/>
+    <bean id="programManager"       class="org.oscarehr.PMmodule.service.ProgramManagerImpl" autowire="byName"/>
+    <bean id="clientManager"        class="org.oscarehr.PMmodule.service.ClientManagerImpl" autowire="byName"/>
+    <bean id="infirmBedProgramManager" class="org.caisi.service.InfirmBedProgramManagerImpl" autowire="byName"/>
     <bean id="demographicManagerT"      class="org.caisi.service.DemographicManagerTickler">
         <property name="demographicDao" ref="demographicDao"/>
     </bean>
     <bean id="preparedTicklerManagerT"  class="org.caisi.tickler.prepared.PreparedTicklerManagerImpl" scope="singleton"/>
-    <bean id="providerManager"          class="org.oscarehr.PMmodule.service.ProviderManagerImpl"    autowire="byName"/>
+    <bean id="providerManager"          class="org.oscarehr.PMmodule.service.ProviderManagerImpl" autowire="byName"/>
     <bean id="clientRestrictionManager" class="org.oscarehr.PMmodule.service.ClientRestrictionManagerImpl" autowire="byName"/>
-    <bean id="agencyManager"            class="org.oscarehr.PMmodule.service.AgencyManagerImpl"      autowire="byName"/>
+    <bean id="agencyManager"            class="org.oscarehr.PMmodule.service.AgencyManagerImpl" autowire="byName"/>
     <bean id="facilityMessageManager"   class="org.caisi.service.FacilityMessageManagerImpl"/>
 
     <bean id="rolesManager" class="com.quatro.service.security.RolesManagerImpl" autowire="byName">
         <property name="secroleDao"         ref="secroleDao"/>
         <property name="secobjprivilegeDao" ref="secobjprivilegeDao"/>
     </bean>
-    <bean id="drilldownQueryHandler"    class="org.oscarehr.dashboard.handler.DrilldownQueryHandler"   autowire="byName"/>
-    <bean id="indicatorQueryHandler"    class="org.oscarehr.dashboard.handler.IndicatorQueryHandler"   autowire="byName"/>
-    <bean id="exportQueryHandler"       class="org.oscarehr.dashboard.handler.ExportQueryHandler"      autowire="byName"/>
-    <bean id="extPrintMeasurements"     class="org.oscarehr.casemgmt.service.MeasurementPrint"         autowire="byName"/>
-    <bean id="extPrintOcularProcedures" class="org.oscarehr.eyeform.web.OcularProcPrint"               autowire="byName"/>
-    <bean id="extPrintSpecsHistory"     class="org.oscarehr.eyeform.web.SpecsHistoryPrint"            autowire="byName"/>
+    <bean id="drilldownQueryHandler"    class="org.oscarehr.dashboard.handler.DrilldownQueryHandler" autowire="byName"/>
+    <bean id="indicatorQueryHandler"    class="org.oscarehr.dashboard.handler.IndicatorQueryHandler" autowire="byName"/>
+    <bean id="exportQueryHandler"       class="org.oscarehr.dashboard.handler.ExportQueryHandler" autowire="byName"/>
+    <bean id="extPrintMeasurements"     class="org.oscarehr.casemgmt.service.MeasurementPrint" autowire="byName"/>
+    <bean id="extPrintOcularProcedures" class="org.oscarehr.eyeform.web.OcularProcPrint" autowire="byName"/>
+    <bean id="extPrintSpecsHistory"     class="org.oscarehr.eyeform.web.SpecsHistoryPrint" autowire="byName"/>
+
     <bean id="measurementTemplateFlowSheet"
           class="oscar.oscarEncounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig">
         <property name="flowSheets">
@@ -241,62 +249,66 @@
         <property name="mapper" ref="jacksonObjectMapper"/>
     </bean>
 
-    <!-- CXF JAX‑RS (/rs) with OAuth1 interceptor -->
-    <bean id="oauthInterceptor" class="org.oscarehr.ws.oauth.util.OAuthInterceptor"/>
+    <!-- ─── ScribeJava OAuth1 setup (you need this in applicationContext.xml) ─────────────────── -->
+    <bean id="serviceBuilder"
+        class="com.github.scribejava.core.builder.ServiceBuilder">
+    <constructor-arg index="0" value="${oscar.oauth.consumerKey}"/>
+    <property name="apiSecret"  value="${oscar.oauth.consumerSecret}"/>
+    <property name="callback"   value="${oscar.oauth.callbackUrl}"/>
+    </bean>
 
-    <jaxrs:server id="jaxrServer" address="/rs">
-        <jaxrs:inInterceptors>
-            <ref bean="oauthInterceptor"/>
-            <bean name="authInInterceptor" class="org.oscarehr.ws.rest.util.AuthenticationInInterceptor"/>
-        </jaxrs:inInterceptors>
-        <jaxrs:serviceBeans>
-            <bean class="org.oscarehr.ws.oauth.OAuthStatusService"          autowire="byName"/>
-            <bean class="org.oscarehr.ws.csrf.CsrfTokenService"             autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.PharmacyService"              autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.DemographicService"           autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.ScheduleService"              autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.DemographicMergeService"      autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.MessagingService"             autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.InboxService"                 autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.TicklerWebService"            autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.RxWebService"                 autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.RxLookupService"              autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.ProviderService"              autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.PatientDetailStatusService"   autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.RSSFeedService"               autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.PersonaService"               autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.FormsService"                 autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.OscarJobService"              autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.NotesService"                 autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.ProductDispensingService"     autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.RecordUxService"              autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.ReportingService"             autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.BillingService"               autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.StatusService"                autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.ProgramService"               autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.ConsultationWebService"       autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.AppService"                   autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.AllergyService"               autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.PreventionService"            autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.ReportByTemplateService"      autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.ResourceService"              autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.DiseaseRegistryService"       autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.LabService"                   autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.MeasurementService"           autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.DocumentService"              autowire="byName"/>
-        </jaxrs:serviceBeans>
-        <jaxrs:providers>
-            <ref bean="jsonProvider"/>
-            <ref bean="jaxb"/>
-        </jaxrs:providers>
-        <jaxrs:extensionMappings>
-            <entry key="xml"  value="application/xml"/>
-            <entry key="json" value="application/json"/>
-        </jaxrs:extensionMappings>
-    </jaxrs:server>
+    <bean id="apiInstance"
+        factory-bean="com.github.scribejava.apis.TwitterApi$Instance"
+        factory-method="getInstance"/>
 
-    <!-- Scribe OAuth1.0a endpoint (/oauth) -->
-    <bean id="scribeOAuthService" class="org.oscarehr.ws.oauth.ScribeOAuthService" autowire="byName"/>
+    <bean id="oAuth1Service"
+        factory-bean="serviceBuilder"
+        factory-method="build">
+    <constructor-arg index="0" ref="apiInstance"/>
+    </bean>
+
+    <!-- 1) just call the ctor(key)
+    <bean id="serviceBuilderInit"
+          class="com.github.scribejava.core.builder.ServiceBuilder">
+      <constructor-arg value="${oscar.oauth.consumerKey}"/>
+    </bean>
+
+    2) invoke apiSecret(secret) 
+    <bean id="serviceBuilderWithSecret"
+          factory-bean="serviceBuilderInit"
+          factory-method="apiSecret">
+      <constructor-arg value="${oscar.oauth.consumerSecret}"/>
+    </bean>
+
+    3) invoke callback(url) 
+    <bean id="serviceBuilderFullyConfigured"
+          factory-bean="serviceBuilderWithSecret"
+          factory-method="callback">
+      <constructor-arg value="${oscar.oauth.callbackUrl}"/>
+    </bean>
+
+    4) build() it against the API instance 
+    <bean id="apiInstance"
+          factory-bean="com.github.scribejava.apis.TwitterApi$Instance"
+          factory-method="getInstance"/>
+    <bean id="oAuth1Service"
+          factory-bean="serviceBuilderFullyConfigured"
+          factory-method="build">
+      <constructor-arg index="0" ref="apiInstance"/>
+    </bean> -->
+
+
+    <!-- your DataProvider -->
+    <bean id="oscarOAuthDataProvider"
+          class="oscar.login.OscarOAuthDataProvider"/>
+
+    <!-- your OAuth1 service -->
+    <bean id="scribeOAuthService"
+          class="org.oscarehr.ws.oauth.ScribeOAuthService">
+      <property name="oAuthDataProvider" ref="oscarOAuthDataProvider"/>
+      <property name="oAuthService"      ref="oAuth1Service"/>
+    </bean>
+
     <jaxrs:server id="scribeOAuthServer" address="/oauth">
         <jaxrs:serviceBeans>
             <ref bean="scribeOAuthService"/>
@@ -312,6 +324,19 @@
     <bean id="ocanDataProcessor" class="oscar.ocan.service.OcanDataProcessor">
         <property name="serviceOrganizationNumber" value="1001"/>
         <property name="submissionFileLocation"    value="C:/TEMP/ocan_test"/>
+    </bean>
+
+    <!-- DAOs requiring a sessionFactory setter -->
+    <bean id="secUserRoleDao"
+          class="com.quatro.dao.security.SecuserroleDaoImpl"
+          autowire="byName">
+      <property name="sessionFactoryOverride" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="secobjprivilegeDao"
+          class="com.quatro.dao.security.SecobjprivilegeDaoImpl"
+          autowire="byName">
+      <property name="sessionFactoryOverride" ref="sessionFactory"/>
     </bean>
 
 </beans>
