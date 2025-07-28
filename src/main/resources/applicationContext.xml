@@ -249,60 +249,6 @@
         <property name="mapper" ref="jacksonObjectMapper"/>
     </bean>
 
-    <!-- ─── ScribeJava OAuth1 setup (you need this in applicationContext.xml) ─────────────────── -->
-    <!-- Step 1: Create ServiceBuilder with consumer key -->
-    <bean id="serviceBuilderInit"
-          class="com.github.scribejava.core.builder.ServiceBuilder">
-        <constructor-arg value="${oscar.oauth.consumerKey}"/>
-    </bean>
-
-    <!-- Step 2: Add API secret using fluent method -->
-    <bean id="serviceBuilderWithSecret"
-          factory-bean="serviceBuilderInit"
-          factory-method="apiSecret">
-        <constructor-arg value="${oscar.oauth.consumerSecret}"/>
-    </bean>
-
-    <!-- Step 3: Add callback URL using fluent method -->
-    <bean id="serviceBuilderComplete"
-          factory-bean="serviceBuilderWithSecret"
-          factory-method="callback">
-        <constructor-arg value="${oscar.oauth.callbackUrl}"/>
-    </bean>
-
-    <!-- Step 4: Get Twitter API instance -->
-    <bean id="apiInstance"
-          factory-bean="com.github.scribejava.apis.TwitterApi$Instance"
-          factory-method="getInstance"/>
-
-    <!-- Step 5: Build the OAuth1Service -->
-    <bean id="oAuth1Service"
-          factory-bean="serviceBuilderComplete"
-          factory-method="build">
-        <constructor-arg ref="apiInstance"/>
-    </bean>
-
-
-
-    <!-- your DataProvider -->
-    <bean id="oscarOAuthDataProvider"
-          class="oscar.login.OscarOAuthDataProvider"/>
-
-    <!-- your OAuth1 service -->
-    <bean id="scribeOAuthService"
-          class="org.oscarehr.ws.oauth.ScribeOAuthService">
-      <property name="oAuthDataProvider" ref="oscarOAuthDataProvider"/>
-      <property name="oAuthService"      ref="oAuth1Service"/>
-    </bean>
-
-    <jaxrs:server id="scribeOAuthServer" address="/oauth">
-        <jaxrs:serviceBeans>
-            <ref bean="scribeOAuthService"/>
-        </jaxrs:serviceBeans>
-        <jaxrs:providers>
-            <ref bean="jsonProvider"/>
-        </jaxrs:providers>
-    </jaxrs:server>
 
     <!-- OTHER SUPPORTING BEANS -->
     <bean id="dsService"         class="org.oscarehr.decisionSupport.service.DSServiceMyDrugref"/>
