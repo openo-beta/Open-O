@@ -250,52 +250,38 @@
     </bean>
 
     <!-- ─── ScribeJava OAuth1 setup (you need this in applicationContext.xml) ─────────────────── -->
-    <bean id="serviceBuilder"
-        class="com.github.scribejava.core.builder.ServiceBuilder">
-    <constructor-arg index="0" value="${oscar.oauth.consumerKey}"/>
-    <property name="apiSecret"  value="${oscar.oauth.consumerSecret}"/>
-    <property name="callback"   value="${oscar.oauth.callbackUrl}"/>
-    </bean>
-
-    <bean id="apiInstance"
-        factory-bean="com.github.scribejava.apis.TwitterApi$Instance"
-        factory-method="getInstance"/>
-
-    <bean id="oAuth1Service"
-        factory-bean="serviceBuilder"
-        factory-method="build">
-    <constructor-arg index="0" ref="apiInstance"/>
-    </bean>
-
-    <!-- 1) just call the ctor(key)
+    <!-- Step 1: Create ServiceBuilder with consumer key -->
     <bean id="serviceBuilderInit"
           class="com.github.scribejava.core.builder.ServiceBuilder">
-      <constructor-arg value="${oscar.oauth.consumerKey}"/>
+        <constructor-arg value="${oscar.oauth.consumerKey}"/>
     </bean>
 
-    2) invoke apiSecret(secret) 
+    <!-- Step 2: Add API secret using fluent method -->
     <bean id="serviceBuilderWithSecret"
           factory-bean="serviceBuilderInit"
           factory-method="apiSecret">
-      <constructor-arg value="${oscar.oauth.consumerSecret}"/>
+        <constructor-arg value="${oscar.oauth.consumerSecret}"/>
     </bean>
 
-    3) invoke callback(url) 
-    <bean id="serviceBuilderFullyConfigured"
+    <!-- Step 3: Add callback URL using fluent method -->
+    <bean id="serviceBuilderComplete"
           factory-bean="serviceBuilderWithSecret"
           factory-method="callback">
-      <constructor-arg value="${oscar.oauth.callbackUrl}"/>
+        <constructor-arg value="${oscar.oauth.callbackUrl}"/>
     </bean>
 
-    4) build() it against the API instance 
+    <!-- Step 4: Get Twitter API instance -->
     <bean id="apiInstance"
           factory-bean="com.github.scribejava.apis.TwitterApi$Instance"
           factory-method="getInstance"/>
+
+    <!-- Step 5: Build the OAuth1Service -->
     <bean id="oAuth1Service"
-          factory-bean="serviceBuilderFullyConfigured"
+          factory-bean="serviceBuilderComplete"
           factory-method="build">
-      <constructor-arg index="0" ref="apiInstance"/>
-    </bean> -->
+        <constructor-arg ref="apiInstance"/>
+    </bean>
+
 
 
     <!-- your DataProvider -->
