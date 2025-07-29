@@ -25,127 +25,120 @@
        xmlns:jaxrs="http://cxf.apache.org/jaxrs"
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="
-           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
-           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
-           http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
-           http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
-           http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
-       ">
+         http://www.springframework.org/schema/beans     http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context   http://www.springframework.org/schema/context/spring-context.xsd
+         http://cxf.apache.org/jaxrs                     http://cxf.apache.org/schemas/jaxrs.xsd
+         http://www.springframework.org/schema/util      http://www.springframework.org/schema/util/spring-util.xsd">
 
-	
-	
-	<!-- <bean class="org.ServletContextConfig"/> -->
-	
-	<bean id="oauthProvider" class="oscar.login.OscarOAuthDataProvider" autowire="byName"/>
+    <!-- ─── ScribeJava OAuth1 setup ──────────────────────────────────────────── -->
+    <!-- 1) your Oscar data provider -->
+    <bean id="oscarOAuthDataProvider"
+          class="oscar.login.OscarOAuthDataProvider"
+          autowire="byName"/>
 
-	<bean id="requestTokenService" class="oscar.login.OscarRequestTokenService">
-	   <property name="dataProvider" ref="oauthProvider"/>
-	</bean>
-	
-	<bean id="oAuthFilter" class="org.apache.cxf.rs.security.oauth.filters.OAuthRequestFilter">
-         <property name="dataProvider" ref="oauthProvider"/>
-         <property name="useUserSubject" value="true"/>
-         <property name="supportUnknownParameters" value="true"/>
-     </bean>
+    <!-- 2) build the ScribeJava OAuth1 service -->
+    <bean id="serviceBuilder"
+          class="com.github.scribejava.core.builder.ServiceBuilder">
+      <constructor-arg index="0" value="${oscar.oauth.consumerKey}"/>
+      <property name="apiSecret"  value="${oscar.oauth.consumerSecret}"/>
+      <property name="callback"   value="${oscar.oauth.callbackUrl}"/>
+    </bean>
+    <bean id="apiInstance"
+          factory-bean="com.github.scribejava.apis.TwitterApi$Instance"
+          factory-method="getInstance"/>
+    <bean id="oAuth1Service"
+          factory-bean="serviceBuilder"
+          factory-method="build">
+      <constructor-arg index="0" ref="apiInstance"/>
+    </bean>
 
-	<bean id="authorizationService" class="org.apache.cxf.rs.security.oauth.services.AuthorizationRequestService">
-		<property name="dataProvider" ref="oauthProvider"/>
-	</bean>
-     
-     <bean id="dispatchProvider" class="org.apache.cxf.jaxrs.provider.RequestDispatcherProvider">
-      <property name="resourcePath" value="/login/3rdpartyLogin.jsp"/>
-	 </bean>
-	      
-	<bean id="accessTokenService" class="org.apache.cxf.rs.security.oauth.services.AccessTokenService">
-	  <property name="dataProvider" ref="oauthProvider"/>
-	</bean>
-	
-	
-	<bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
-		<property name="serializationInclusion" value="NON_NULL"/>
-	</bean>
+    <!-- 3) CXF filter that enforces OAuth1 on every /services request -->
+    <bean id="oAuthFilter"
+          class="org.apache.cxf.rs.security.oauth.filters.OAuthRequestFilter">
+      <property name="dataProvider"   ref="oscarOAuthDataProvider"/>
+      <property name="oAuthService"   ref="oAuth1Service"/>
+      <property name="useUserSubject" value="true"/>
+      <property name="supportUnknownParameters" value="true"/>
+    </bean>
 
-	<bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider">
-    	<!-- <property name="mapper" ref="jacksonObjectMapper"/> -->
-	</bean>
-	
-	
-    <jaxrs:server id="oauthService" address="/oauth" >
+    <!-- JSON + XML providers -->
+    <bean id="jaxb" class="org.apache.cxf.jaxb.JAXBElementProvider"/>
+    <bean id="jsonProvider"
+          class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider">
+      <property name="mapper" ref="jacksonObjectMapper"/>
+    </bean>
 
-        <jaxrs:serviceBeans>
-            <ref bean="requestTokenService"/>
-            <ref bean="accessTokenService"/>
-            <ref bean="authorizationService"/>
-        </jaxrs:serviceBeans>
-         
-        <jaxrs:providers>
-      		<ref bean="dispatchProvider"/>
-   		</jaxrs:providers> 
-      
-        <jaxrs:extensionMappings>
-            <entry key="xml" value="application/xml" />         
-        </jaxrs:extensionMappings>
-        
+    <!-- ─── OAuth token endpoints ─────────────────────────────────────────────── -->
+    <jaxrs:server id="oauthService" address="/oauth">
+      <jaxrs:serviceBeans>
+        <ref bean="requestTokenService"/>
+        <ref bean="authorizationService"/>
+        <ref bean="accessTokenService"/>
+      </jaxrs:serviceBeans>
+      <jaxrs:providers>
+        <ref bean="dispatchProvider"/>
+      </jaxrs:providers>
     </jaxrs:server>
 
+    <!-- ─── Your existing REST endpoints, all protected by OAuth1 ───────────── -->
     <jaxrs:server id="restServices" address="/services">
 
-		<jaxrs:inInterceptors>
-			<bean name="oauthInInterceptor"
-				class="org.oscarehr.ws.oauth.util.OAuthInterceptor" />
-		</jaxrs:inInterceptors>
+      <!-- 1) plug in the OAuth1 filter -->
+      <jaxrs:inInterceptors>
+        <ref bean="oAuthFilter"/>
+      </jaxrs:inInterceptors>
 
-        <jaxrs:serviceBeans>
-			<bean class="org.oscarehr.ws.oauth.OAuthStatusService" autowire="byName" />
-			<bean class="org.oscarehr.ws.csrf.CsrfTokenService" autowire="byName" />
-			<bean class="org.oscarehr.ws.rest.PharmacyService"  autowire="byName"/>
-			<bean class="org.oscarehr.ws.rest.DemographicService"  autowire="byName"/>
-			<bean class="org.oscarehr.ws.rest.ScheduleService"  autowire="byName"/>
-			<bean class="org.oscarehr.ws.rest.DemographicMergeService"  autowire="byName"/>
-			<bean class="org.oscarehr.ws.rest.MessagingService"  autowire="byName"/>
-			<bean class="org.oscarehr.ws.rest.InboxService"  autowire="byName"/>
-			<bean class="org.oscarehr.ws.rest.TicklerWebService"  autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.RxWebService"  autowire="byName"/>
-            <bean class="org.oscarehr.ws.rest.RxLookupService"  autowire="byName"/>
-			<bean class="org.oscarehr.ws.rest.ProviderService"  autowire="byName"/>
-			<bean class="org.oscarehr.ws.rest.PatientDetailStatusService"  autowire="byName"/>
-			<bean class="org.oscarehr.ws.rest.RSSFeedService"  autowire="byName"/>
-			<bean class="org.oscarehr.ws.rest.PersonaService"  autowire="byName"/>
-			<bean class="org.oscarehr.ws.rest.FormsService"  autowire="byName"/>
-			<bean class="org.oscarehr.ws.rest.OscarJobService"  autowire="byName"/>
-			<bean class="org.oscarehr.ws.rest.NotesService" autowire="byName" />
-			<bean class="org.oscarehr.ws.rest.ProductDispensingService"  autowire="byName"/>
-			<bean class="org.oscarehr.ws.rest.RecordUxService" autowire="byName" />
-			<bean class="org.oscarehr.ws.rest.ReportingService" autowire="byName" />
-			<bean class="org.oscarehr.ws.rest.BillingService" autowire="byName" />
-			<bean class="org.oscarehr.ws.rest.StatusService" autowire="byName" />
-			<bean class="org.oscarehr.ws.rest.ProgramService" autowire="byName" />
-			<bean class="org.oscarehr.ws.rest.ConsultationWebService" autowire="byName" />
-			<bean class="org.oscarehr.ws.rest.AppService" autowire="byName" />
-			<bean class="org.oscarehr.ws.rest.AllergyService" autowire="byName" />
-			<bean class="org.oscarehr.ws.rest.PreventionService" autowire="byName" />
-			<bean class="org.oscarehr.ws.rest.ReportByTemplateService" autowire="byName" />
-			<bean class="org.oscarehr.ws.rest.ResourceService" autowire="byName" />
-			<bean class="org.oscarehr.ws.rest.DiseaseRegistryService" autowire="byName" />
-			<bean class="org.oscarehr.ws.rest.LabService" autowire="byName" />
-			<bean class="org.oscarehr.ws.rest.MeasurementService" autowire="byName" />
-			<bean class="org.oscarehr.ws.rest.DocumentService" autowire="byName" />
-        </jaxrs:serviceBeans>
-             
-        <jaxrs:providers>
-           <ref bean="oAuthFilter"/>
-           <ref bean="jaxb"/>
-           <ref bean="jsonProvider"/>
-        </jaxrs:providers>
-      
-      
-        <jaxrs:extensionMappings>
-            <entry key="xml" value="application/xml" />
-            <entry key="json" value="application/json" />
-        </jaxrs:extensionMappings>
+      <!-- 2) all of your service beans, exactly as before -->
+      <jaxrs:serviceBeans>
+        <bean class="org.oscarehr.ws.oauth.OAuthStatusService"         autowire="byName"/>
+        <bean class="org.oscarehr.ws.csrf.CsrfTokenService"            autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.PharmacyService"             autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.DemographicService"          autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.ScheduleService"             autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.DemographicMergeService"     autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.MessagingService"            autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.InboxService"                autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.TicklerWebService"           autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.RxWebService"                autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.RxLookupService"             autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.ProviderService"             autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.PatientDetailStatusService"  autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.RSSFeedService"              autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.PersonaService"              autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.FormsService"                autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.OscarJobService"             autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.NotesService"                autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.ProductDispensingService"    autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.RecordUxService"             autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.ReportingService"            autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.BillingService"              autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.StatusService"               autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.ProgramService"              autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.ConsultationWebService"      autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.AppService"                  autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.AllergyService"              autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.PreventionService"           autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.ReportByTemplateService"     autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.ResourceService"             autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.DiseaseRegistryService"      autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.LabService"                  autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.MeasurementService"          autowire="byName"/>
+        <bean class="org.oscarehr.ws.rest.DocumentService"             autowire="byName"/>
+      </jaxrs:serviceBeans>
+
+      <!-- 3) JSON + XML marshallers -->
+      <jaxrs:providers>
+        <ref bean="jaxb"/>
+        <ref bean="jsonProvider"/>
+      </jaxrs:providers>
+
+      <!-- 4) extension->content-type mapping -->
+      <jaxrs:extensionMappings>
+        <entry key="xml"  value="application/xml"/>
+        <entry key="json" value="application/json"/>
+      </jaxrs:extensionMappings>
     </jaxrs:server>
-<context:component-scan base-package="oscar.login" />
 
+    <!-- scan your OAuth/DC beans -->
+    <context:component-scan base-package="oscar.login"/>
 </beans>
