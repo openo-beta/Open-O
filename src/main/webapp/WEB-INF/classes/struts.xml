@@ -1843,7 +1843,9 @@
         <action name="lab/newLabUpload" class="oscar.oscarLab.ca.all.pageUtil.LabUpload2Action">
             <result name="success">/lab/CA/ALL/uploadComplete.jsp</result>
         </action>
-        <action name="lab/CA/ALL/insideLabUpload" class="oscar.oscarLab.ca.all.pageUtil.InsideLabUpload2Action">
+        <action name="lab/CA/ALL/insideLabUpload" class="oscar.oscarLab.ca.all.pageUtil.InsideLabUpload2Action"> 
+            <interceptor-ref name="fileUpload" />
+            <interceptor-ref name="defaultStack"/>
             <result name="success">/lab/CA/ALL/testUploader.jsp</result>
         </action>
         <action name="lab/CA/ALL/oruR01Upload" class="oscar.oscarLab.ca.all.pageUtil.OruR01Upload2Action">
