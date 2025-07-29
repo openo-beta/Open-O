@@ -40,6 +40,9 @@ public class SpringUtils {
     private static BeanFactory beanFactory;
 
     public static Object getBean(String beanName) {
+        if (beanFactory == null) {
+            throw new IllegalStateException("Spring BeanFactory is not initialized. Application context may have failed to start.");
+        }
         return (beanFactory.getBean(beanName));
     }
 
@@ -51,6 +54,14 @@ public class SpringUtils {
 
     public static BeanFactory getBeanFactory() {
         return SpringUtils.beanFactory;
+    }
+
+    /**
+     * Check if the Spring BeanFactory has been initialized
+     * @return true if beanFactory is available, false otherwise
+     */
+    public static boolean isInitialized() {
+        return beanFactory != null;
     }
 
     /**
@@ -68,6 +79,9 @@ public class SpringUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> T getBean(Class<?> clazz) {
+        if (beanFactory == null) {
+            throw new IllegalStateException("Spring BeanFactory is not initialized. Application context may have failed to start.");
+        }
 
         // legacy code - I wonder if it's necessary since we are looking up a bean based directly on the class name anyways
         // but to keep legacy logic working properly attempt to locate component based on the Spring conventions
