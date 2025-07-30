@@ -1594,6 +1594,8 @@
         </action>
         <action name="dxCodeSearchJSON" class="oscar.oscarResearch.oscarDxResearch.pageUtil.dxCodeSearchJSON2Action"/>
         <action name="oscarResearch/oscarDxResearch/dxResearchLoadAssociations" class="oscar.oscarResearch.oscarDxResearch.pageUtil.dxResearchLoadAssociations2Action">
+            <interceptor-ref name="fileUpload" />
+            <interceptor-ref name="defaultStack"/>
             <result name="success">/oscarResearch/oscarDxResearch/dxResearchSelectAssociations.jsp</result>
         </action>
         <action name="oscarLearning/CourseManager" class="org.oscarehr.learning.web.CourseManager2Action">
