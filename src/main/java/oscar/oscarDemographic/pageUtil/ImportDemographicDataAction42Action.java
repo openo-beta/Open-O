@@ -117,6 +117,7 @@ import oscar.util.ConversionUtils;
 import oscar.util.StringUtils;
 import oscar.util.UtilDateUtilities;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
@@ -225,7 +226,21 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
          * thread to close gracefully while the import is being processed.
          */
         String filename = importFile.getName();
-        Path filePath = importFile.toPath();
+        Path filePath = importFile.toPath().normalize();
+
+        // Get context of the temp directory, get the file path to the the temp directory
+        ServletContext servletContext = ServletActionContext.getServletContext();
+
+        // Validate the paths
+        File safeDir = (File) servletContext.getAttribute("javax.servlet.context.tempdir"); // Use a safe directory
+
+        String safeDirPath = safeDir.getCanonicalPath() + File.separator;
+
+        // Validate that the file path is within the safe directory
+        if (!filePath.startsWith(safeDirPath)) {
+            throw new IllegalArgumentException("Invalid file path: Access outside the allowed directory is not permitted.");
+        }
+
         int dotIndex = filename.lastIndexOf('.');
         String filetype = (dotIndex == -1) ? "" : filename.substring(dotIndex + 1).toLowerCase();
         Path directory;

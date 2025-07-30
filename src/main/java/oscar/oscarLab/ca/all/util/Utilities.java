@@ -131,9 +131,13 @@ public class Utilities {
                 throw new IllegalArgumentException("Attempt to write file outside allowed directory: " + targetFile.getPath());
             }
 
-            if (!place.endsWith("/"))
-                place = new StringBuilder(place).insert(place.length(), "/").toString();
-            retVal = place + "LabUpload." + filename.replaceAll(".enc", "") + "." + (new Date()).getTime();
+            // Validate filename to ensure it does not contain invalid characters
+            if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
+                throw new IllegalArgumentException("Invalid filename: " + filename);
+            }
+
+            // Construct retVal using the validated targetFile path
+            retVal = targetFile.getParent() + File.separator + "LabUpload." + targetFile.getName().replaceAll(".enc", "") + "." + (new Date()).getTime();
 
             logger.debug("saveFile place=" + place + ", retVal=" + retVal);
             //write the  file to the file specified
