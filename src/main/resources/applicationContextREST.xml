@@ -38,11 +38,11 @@
 	
 	<!-- <bean class="org.ServletContextConfig"/> -->
 	
-	<!-- Modern OAuth 2.0 configuration using ScribeJava -->
+	<!-- Modern OAuth 1.0a configuration using ScribeJava -->
 	<context:component-scan base-package="org.oscarehr.ws.oauth.modern" />
 	
-	<!-- OAuth 2.0 Interceptor for REST services -->
-	<bean id="modernOAuthInterceptor" class="org.oscarehr.ws.oauth.modern.OAuthInterceptor" />
+	<!-- OAuth 1.0a Interceptor for REST services -->
+	<bean id="modernOAuthInterceptor" class="org.oscarehr.ws.oauth.modern.ScribeOAuthInterceptor" />
 	
 	
 	<bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">

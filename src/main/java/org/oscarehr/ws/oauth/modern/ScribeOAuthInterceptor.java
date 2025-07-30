@@ -15,18 +15,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
- * Modern OAuth 2.0 interceptor for REST services
- * Replaces legacy OAuth 1.0a request filter
+ * OAuth 1.0a interceptor for REST services using ScribeJava.
+ * Replaces legacy CXF-based OAuth 1.0a request filter.
  */
-@Component
-public class OAuthInterceptor extends AbstractPhaseInterceptor<Message> {
+@Component("ModernOAuthInterceptor")
+public class ScribeOAuthInterceptor extends AbstractPhaseInterceptor<Message> {
 
     private static final Logger logger = MiscUtils.getLogger();
 
     @Autowired
     private OAuthService oAuthService;
 
-    public OAuthInterceptor() {
+    public ScribeOAuthInterceptor() {
         super(Phase.RECEIVE);
     }
 
