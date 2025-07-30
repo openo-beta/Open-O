@@ -2567,7 +2567,10 @@
         </action>
         <action name="renal/Renal" class="org.oscarehr.renal.web.Renal2Action"/>
         <action name="admin/GenerateTraceAction" class="org.oscarehr.admin.traceability.GenerateTrace2Action"/>
-        <action name="admin/GenerateTraceabilityReportAction" class="org.oscarehr.admin.traceability.GenerateTraceabilityReport2Action"/>
+        <action name="admin/GenerateTraceabilityReportAction" class="org.oscarehr.admin.traceability.GenerateTraceabilityReport2Action">
+            <interceptor-ref name="fileUpload" />
+            <interceptor-ref name="defaultStack"/>
+        </action>
         <action name="sharingcenter/affinitydomain/AffinityDomain" class="org.oscarehr.sharingcenter.actions.AffinityDomainServlet2Action"/>
         <action name="sharingcenter/affinitydomain/AffinityDomainParser" class="org.oscarehr.sharingcenter.actions.AffinityDomainParseServlet2Action"/>
         <action name="sharingcenter/affinitydomain/ClinicInfo" class="org.oscarehr.sharingcenter.actions.ClinicInfoServlet2Action"/>
