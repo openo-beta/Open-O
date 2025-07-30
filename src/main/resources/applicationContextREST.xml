@@ -38,7 +38,11 @@
 	
 	<!-- <bean class="org.ServletContextConfig"/> -->
 	
-	<!-- Legacy OAuth 1.0a components removed - replaced with modern ScribeJava implementation -->
+	<!-- Modern OAuth 2.0 configuration using ScribeJava -->
+	<context:component-scan base-package="org.oscarehr.ws.oauth.modern" />
+	
+	<!-- OAuth 2.0 Interceptor for REST services -->
+	<bean id="modernOAuthInterceptor" class="org.oscarehr.ws.oauth.modern.OAuthInterceptor" />
 	
 	
 	<bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
@@ -65,8 +69,7 @@
     <jaxrs:server id="restServices" address="/services">
 
 		<jaxrs:inInterceptors>
-			<bean name="oauthInInterceptor"
-				class="org.oscarehr.ws.oauth.util.OAuthInterceptor" />
+			<ref bean="modernOAuthInterceptor" />
 		</jaxrs:inInterceptors>
 
         <jaxrs:serviceBeans>
