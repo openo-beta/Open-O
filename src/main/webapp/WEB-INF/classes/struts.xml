@@ -1727,6 +1727,8 @@
             <result name="success">/demographic/AddAlternateContact.jsp</result>
         </action>
         <action name="form/importUpload" class="oscar.oscarDemographic.pageUtil.ImportDemographicDataAction42Action">
+            <interceptor-ref name="fileUpload" />
+            <interceptor-ref name="defaultStack"/>
             <result name="success">/demographic/demographicImport.jsp</result>
         </action>
         <action name="form/importLogDownload" class="oscar.oscarDemographic.pageUtil.ImportLogDownload2Action">

@@ -82,7 +82,9 @@ public class TraceabilityReportProcessor implements Callable<String> {
             sourceMap.remove("origin_date");
             sourceMap.remove("git_sha");
 
+            // build local 'trace'
             Map<String, String> targetMap = GenerateTraceabilityUtil.buildTraceMap(request);
+            // find the difference between incoming and local 'trace'
             MapDifference<String, String> diff = Maps.difference(sourceMap, targetMap);
             // modified, for the same keys
             Map<String, MapDifference.ValueDifference<String>> differing = diff.entriesDiffering();

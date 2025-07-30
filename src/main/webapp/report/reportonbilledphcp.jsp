@@ -348,13 +348,11 @@
                                 "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
                                         + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
                                         "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=1 "
-                        ;
+                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=1 ";
                     } else {
                         sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
                                 + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "' "
-                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=1 "
-                        ;
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=1 ";
                     }
                     rs = dbObj.queryResults(sql);
 
@@ -368,13 +366,11 @@
                                 "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
                                         + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
                                         "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=1 "
-                        ;
+                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=1 ";
                     } else {
                         sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
                                 + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'"
-                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=1 "
-                        ;
+                                + " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=1 ";
                     }
                     rs = dbObj.queryResults(sql);
 
@@ -391,15 +387,13 @@
                                         "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
                                         " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=11 "
                                         +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=2 "
-                        ;
+                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=2 ";
                     } else {
                         sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
                                 + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "' " +
                                 " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=11 "
                                 +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=2 "
-                        ;
+                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=2 ";
                     }
                     rs = dbObj.queryResults(sql);
                     while (rs.next()) {
@@ -414,15 +408,13 @@
                                         "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
                                         " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=11 "
                                         +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=2 "
-                        ;
+                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=2 ";
                     } else {
                         sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
                                 + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'" +
                                 " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=11 "
                                 +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=2 "
-                        ;
+                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=2 ";
                     }
                     rs = dbObj.queryResults(sql);
                     while (rs.next()) {
@@ -438,15 +430,13 @@
                                         "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
                                         " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=20 "
                                         +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=12 "
-                        ;
+                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=12 ";
                     } else {
                         sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
                                 + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "' " +
                                 " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=20 "
                                 +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=12 "
-                        ;
+                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=12 ";
                     }
                     rs = dbObj.queryResults(sql);
                     while (rs.next()) {
@@ -461,15 +451,13 @@
                                         "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
                                         " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=20 "
                                         +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=12 "
-                        ;
+                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=12 ";
                     } else {
                         sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
                                 + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'" +
                                 " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=20 "
                                 +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=12 "
-                        ;
+                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=12 ";
                     }
                     rs = dbObj.queryResults(sql);
                     while (rs.next()) {
@@ -485,15 +473,13 @@
                                         "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
                                         " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=34 "
                                         +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=21 "
-                        ;
+                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=21 ";
                     } else {
                         sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
                                 + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "' " +
                                 " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=34 "
                                 +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=21 "
-                        ;
+                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=21 ";
                     }
                     rs = dbObj.queryResults(sql);
                     while (rs.next()) {
@@ -508,15 +494,13 @@
                                         "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
                                         " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=34 "
                                         +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=21 "
-                        ;
+                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=21 ";
                     } else {
                         sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
                                 + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'" +
                                 " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=34 "
                                 +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=21 "
-                        ;
+                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=21 ";
                     }
                     rs = dbObj.queryResults(sql);
                     while (rs.next()) {
@@ -532,15 +516,13 @@
                                         "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
                                         " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=50 "
                                         +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=35 "
-                        ;
+                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=35 ";
                     } else {
                         sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
                                 + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "' " +
                                 " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=50 "
                                 +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=35 "
-                        ;
+                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=35 ";
                     }
                     rs = dbObj.queryResults(sql);
                     while (rs.next()) {
@@ -555,15 +537,13 @@
                                         "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
                                         " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=50 "
                                         +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=35 "
-                        ;
+                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=35 ";
                     } else {
                         sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
                                 + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'" +
                                 " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=50 "
                                 +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=35 "
-                        ;
+                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=35 ";
                     }
                     rs = dbObj.queryResults(sql);
                     while (rs.next()) {
@@ -579,15 +559,13 @@
                                         "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
                                         " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=64 "
                                         +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=51 "
-                        ;
+                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=51 ";
                     } else {
                         sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
                                 + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "' " +
                                 " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=64 "
                                 +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=51 "
-                        ;
+                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=51 ";
                     }
                     rs = dbObj.queryResults(sql);
                     while (rs.next()) {
@@ -602,15 +580,13 @@
                                         "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
                                         " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=64 "
                                         +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=51 "
-                        ;
+                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=51 ";
                     } else {
                         sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
                                 + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'" +
                                 " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=64 "
                                 +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=51 "
-                        ;
+                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=51 ";
                     }
                     rs = dbObj.queryResults(sql);
                     while (rs.next()) {
@@ -626,15 +602,13 @@
                                         "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
                                         " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=70 "
                                         +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=65 "
-                        ;
+                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=65 ";
                     } else {
                         sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
                                 + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "' " +
                                 " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=70 "
                                 +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=65 "
-                        ;
+                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=65 ";
                     }
                     rs = dbObj.queryResults(sql);
                     while (rs.next()) {
@@ -649,15 +623,13 @@
                                         "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
                                         " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=70 "
                                         +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=65 "
-                        ;
+                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=65 ";
                     } else {
                         sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
                                 + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'" +
                                 " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth),'-',(d.month_of_birth),'-',(d.date_of_birth)),'%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) <=70 "
                                 +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=65 "
-                        ;
+                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=65 ";
                     }
                     rs = dbObj.queryResults(sql);
                     while (rs.next()) {
@@ -671,13 +643,11 @@
                                 "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
                                         + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
                                         "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=71 "
-                        ;
+                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=71 ";
                     } else {
                         sql = "select count(distinct(b.demographic_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
                                 + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "' " +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=71 "
-                        ;
+                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=71 ";
                     }
                     rs = dbObj.queryResults(sql);
                     while (rs.next()) {
@@ -690,13 +660,11 @@
                                 "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d  where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no and bd.diagnostic_code='"
                                         + vServiceCode.get(i) + "' and b.creator='" + providerNo + "' and b.billing_date>='" + startDate +
                                         "' and b.billing_date<='" + endDate + "' and b.status!='D' and bd.status!='D'" +
-                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=71 "
-                        ;
+                                        " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=71 ";
                     } else {
                         sql = "select count(distinct(b.billing_no)) from billing b, billingdetail bd, demographic d where b.billing_no=bd.billing_no and b.demographic_no=d.demographic_no  and b.billing_date>='"
                                 + startDate + "' and b.billing_date<='" + endDate + "' and b.creator='" + providerNo + "' and b.status!='D' and bd.status!='D' and bd.service_code='" + vServiceCode.get(i) + "' and bd.service_desc='" + vServiceDesc.get(i) + "'" +
-                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=71 "
-                        ;
+                                " and (YEAR(CURRENT_DATE)-YEAR(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'))) - (RIGHT(CURRENT_DATE,5)<RIGHT(DATE_FORMAT(CONCAT((d.year_of_birth), '-', (d.month_of_birth), '-', (d.date_of_birth)), '%Y-%m-%d'),5)) >=71 ";
                     }
                     rs = dbObj.queryResults(sql);
                     while (rs.next()) {
