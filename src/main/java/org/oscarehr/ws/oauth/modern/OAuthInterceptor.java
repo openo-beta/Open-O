@@ -1,6 +1,6 @@
 package org.oscarehr.ws.oauth.modern;
 
-import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.github.scribejava.core.model.OAuth1AccessToken;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
@@ -53,7 +53,7 @@ public class OAuthInterceptor extends AbstractPhaseInterceptor<Message> {
             throw new Fault(new Exception("No session found - authentication required"));
         }
 
-        OAuth2AccessToken token = oAuthService.getAccessToken(session);
+        OAuth1AccessToken token = oAuthService.getAccessToken(session);
         if (token == null || !oAuthService.validateToken(token)) {
             throw new Fault(new Exception("Invalid or expired OAuth token"));
         }

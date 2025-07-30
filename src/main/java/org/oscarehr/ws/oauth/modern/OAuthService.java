@@ -1,10 +1,11 @@
 package org.oscarehr.ws.oauth.modern;
 
-import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.github.scribejava.core.model.OAuth1AccessToken;
+import com.github.scribejava.core.model.OAuth1RequestToken;
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
-import com.github.scribejava.core.oauth.OAuth20Service;
+import com.github.scribejava.core.oauth.OAuth10aService;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.util.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Modern OAuth 2.0 service implementation using ScribeJava
+ * Modern OAuth 1.0a service implementation using ScribeJava
  * Provides OAuth authentication and token management
  */
 @Service
@@ -23,56 +24,53 @@ public class OAuthService {
 
     private static final Logger logger = MiscUtils.getLogger();
     private static final String ACCESS_TOKEN_SESSION_KEY = "oauth_access_token";
-    private static final String STATE_SESSION_KEY = "oauth_state";
+    private static final String REQUEST_TOKEN_SESSION_KEY = "oauth_request_token";
 
     @Autowired(required = false)
-    private OAuth20Service oAuth20Service;
+    private OAuth10aService oAuth10aService;
 
     /**
-     * Generate authorization URL for OAuth flow
+     * Generate authorization URL for OAuth 1.0a flow
      */
     public String getAuthorizationUrl(HttpSession session) {
-        if (oAuth20Service == null) {
+        if (oAuth10aService == null) {
             logger.warn("OAuth service not configured");
             return null;
         }
 
         try {
-            String state = generateState();
-            session.setAttribute(STATE_SESSION_KEY, state);
+            OAuth1RequestToken requestToken = oAuth10aService.getRequestToken();
+            session.setAttribute(REQUEST_TOKEN_SESSION_KEY, requestToken);
             
-            return oAuth20Service.createAuthorizationUrlBuilder()
-                    .state(state)
-                    .build();
-        } catch (Exception e) {
+            return oAuth10aService.getAuthorizationUrl(requestToken);
+        } catch (IOException | InterruptedException | ExecutionException e) {
             logger.error("Error generating authorization URL", e);
             return null;
         }
     }
 
     /**
-     * Exchange authorization code for access token
+     * Exchange OAuth verifier for access token
      */
-    public OAuth2AccessToken exchangeCodeForToken(String code, String state, HttpSession session) {
-        if (oAuth20Service == null) {
+    public OAuth1AccessToken exchangeVerifierForToken(String oauthVerifier, HttpSession session) {
+        if (oAuth10aService == null) {
             logger.warn("OAuth service not configured");
             return null;
         }
 
-        // Verify state parameter
-        String sessionState = (String) session.getAttribute(STATE_SESSION_KEY);
-        if (sessionState == null || !sessionState.equals(state)) {
-            logger.error("Invalid state parameter");
+        OAuth1RequestToken requestToken = (OAuth1RequestToken) session.getAttribute(REQUEST_TOKEN_SESSION_KEY);
+        if (requestToken == null) {
+            logger.error("No request token found in session");
             return null;
         }
 
         try {
-            OAuth2AccessToken accessToken = oAuth20Service.getAccessToken(code);
+            OAuth1AccessToken accessToken = oAuth10aService.getAccessToken(requestToken, oauthVerifier);
             session.setAttribute(ACCESS_TOKEN_SESSION_KEY, accessToken);
-            session.removeAttribute(STATE_SESSION_KEY);
+            session.removeAttribute(REQUEST_TOKEN_SESSION_KEY);
             return accessToken;
         } catch (IOException | InterruptedException | ExecutionException e) {
-            logger.error("Error exchanging code for token", e);
+            logger.error("Error exchanging verifier for token", e);
             return null;
         }
     }
@@ -80,23 +78,24 @@ public class OAuthService {
     /**
      * Get stored access token from session
      */
-    public OAuth2AccessToken getAccessToken(HttpSession session) {
-        return (OAuth2AccessToken) session.getAttribute(ACCESS_TOKEN_SESSION_KEY);
+    public OAuth1AccessToken getAccessToken(HttpSession session) {
+        return (OAuth1AccessToken) session.getAttribute(ACCESS_TOKEN_SESSION_KEY);
     }
 
     /**
      * Validate access token by making a test API call
      */
-    public boolean validateToken(OAuth2AccessToken token) {
-        if (oAuth20Service == null || token == null) {
+    public boolean validateToken(OAuth1AccessToken token) {
+        if (oAuth10aService == null || token == null) {
             return false;
         }
 
         try {
-            OAuthRequest request = new OAuthRequest(Verb.GET, "https://www.googleapis.com/oauth2/v1/userinfo");
-            oAuth20Service.signRequest(token, request);
+            // Use a simple verification endpoint - this would depend on your OAuth provider
+            OAuthRequest request = new OAuthRequest(Verb.GET, "https://api.twitter.com/1.1/account/verify_credentials.json");
+            oAuth10aService.signRequest(token, request);
             
-            Response response = oAuth20Service.execute(request);
+            Response response = oAuth10aService.execute(request);
             return response.isSuccessful();
         } catch (IOException | InterruptedException | ExecutionException e) {
             logger.error("Error validating token", e);
@@ -109,17 +108,13 @@ public class OAuthService {
      */
     public void clearSession(HttpSession session) {
         session.removeAttribute(ACCESS_TOKEN_SESSION_KEY);
-        session.removeAttribute(STATE_SESSION_KEY);
+        session.removeAttribute(REQUEST_TOKEN_SESSION_KEY);
     }
 
     /**
      * Check if OAuth is configured and available
      */
     public boolean isOAuthConfigured() {
-        return oAuth20Service != null;
-    }
-
-    private String generateState() {
-        return java.util.UUID.randomUUID().toString();
+        return oAuth10aService != null;
     }
 }

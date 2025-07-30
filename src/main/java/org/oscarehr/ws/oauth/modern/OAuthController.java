@@ -1,6 +1,6 @@
 package org.oscarehr.ws.oauth.modern;
 
-import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.github.scribejava.core.model.OAuth1AccessToken;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.util.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,36 +46,36 @@ public class OAuthController {
     }
 
     /**
-     * Handle OAuth callback
+     * Handle OAuth 1.0a callback
      */
     @RequestMapping(value = "/callback", method = RequestMethod.GET)
     public void callback(
-            @RequestParam(required = false) String code,
-            @RequestParam(required = false) String state,
-            @RequestParam(required = false) String error,
+            @RequestParam(required = false) String oauth_verifier,
+            @RequestParam(required = false) String oauth_token,
+            @RequestParam(required = false) String denied,
             HttpServletRequest request,
             HttpServletResponse response) throws IOException {
 
         HttpSession session = request.getSession();
 
-        if (error != null) {
-            logger.error("OAuth error: " + error);
-            response.sendRedirect("/oscar/login.jsp?oauth_error=" + error);
+        if (denied != null) {
+            logger.error("OAuth access denied");
+            response.sendRedirect("/oscar/login.jsp?oauth_error=access_denied");
             return;
         }
 
-        if (code == null) {
-            logger.error("No authorization code received");
-            response.sendRedirect("/oscar/login.jsp?oauth_error=no_code");
+        if (oauth_verifier == null || oauth_token == null) {
+            logger.error("Missing OAuth verifier or token");
+            response.sendRedirect("/oscar/login.jsp?oauth_error=missing_parameters");
             return;
         }
 
-        OAuth2AccessToken token = oAuthService.exchangeCodeForToken(code, state, session);
+        OAuth1AccessToken token = oAuthService.exchangeVerifierForToken(oauth_verifier, session);
         if (token != null) {
             logger.info("OAuth authentication successful");
             response.sendRedirect("/oscar/provider/providercontrol.jsp");
         } else {
-            logger.error("Failed to exchange code for token");
+            logger.error("Failed to exchange verifier for token");
             response.sendRedirect("/oscar/login.jsp?oauth_error=token_exchange_failed");
         }
     }
@@ -95,11 +95,11 @@ public class OAuthController {
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     public void status(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        OAuth2AccessToken token = oAuthService.getAccessToken(session);
+        OAuth1AccessToken token = oAuthService.getAccessToken(session);
         
         response.setContentType("application/json");
         if (token != null && oAuthService.validateToken(token)) {
-            response.getWriter().write("{\"authenticated\": true, \"token_type\": \"" + token.getTokenType() + "\"}");
+            response.getWriter().write("{\"authenticated\": true, \"token\": \"" + token.getToken() + "\"}");
         } else {
             response.getWriter().write("{\"authenticated\": false}");
         }

@@ -1,42 +1,38 @@
 package org.oscarehr.ws.oauth.modern;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
-import com.github.scribejava.core.oauth.OAuth20Service;
-import com.github.scribejava.apis.GoogleApi20;
+import com.github.scribejava.core.oauth.OAuth10aService;
+import com.github.scribejava.apis.TwitterApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Modern OAuth 2.0 configuration using ScribeJava
+ * Modern OAuth 1.0a configuration using ScribeJava
  * Replaces legacy CXF OAuth 1.0a implementation
  */
 @Configuration
 public class OAuthConfig {
 
-    @Value("${oauth.client.id:}")
-    private String clientId;
+    @Value("${oauth.consumer.key:}")
+    private String consumerKey;
 
-    @Value("${oauth.client.secret:}")
-    private String clientSecret;
+    @Value("${oauth.consumer.secret:}")
+    private String consumerSecret;
 
     @Value("${oauth.callback.url:http://localhost:8080/oscar/ws/oauth/callback}")
     private String callbackUrl;
 
-    @Value("${oauth.scope:openid profile email}")
-    private String scope;
-
     @Bean
-    public OAuth20Service oAuth20Service() {
-        if (clientId == null || clientId.isEmpty() || clientSecret == null || clientSecret.isEmpty()) {
+    public OAuth10aService oAuth10aService() {
+        if (consumerKey == null || consumerKey.isEmpty() || consumerSecret == null || consumerSecret.isEmpty()) {
             // Return a null service if OAuth is not configured
             return null;
         }
 
-        return new ServiceBuilder(clientId)
-                .apiSecret(clientSecret)
-                .defaultScope(scope)
+        return new ServiceBuilder(consumerKey)
+                .apiSecret(consumerSecret)
                 .callback(callbackUrl)
-                .build(GoogleApi20.instance()); // Can be configured for other providers
+                .build(TwitterApi.instance()); // Using Twitter API as OAuth 1.0a example
     }
 }
