@@ -1383,6 +1383,8 @@
             <result name="continue">/oscarEncounter/oscarMeasurements/DisplayMeasurementStyleSheet.jsp</result>
         </action>
         <action name="oscarEncounter/oscarMeasurements/AddMeasurementStyleSheet" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctAddMeasurementStyleSheet2Action">
+            <interceptor-ref name="fileUpload" />
+            <interceptor-ref name="defaultStack"/>
             <result name="success">/oscarEncounter/oscarMeasurements/AddMeasurementStyleSheet.jsp</result>
         </action>
         <action name="oscarEncounter/oscarMeasurements/AddMeasurementMap" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctAddMeasurementMap2Action">
