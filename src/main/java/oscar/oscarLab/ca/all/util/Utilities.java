@@ -36,6 +36,7 @@
 package oscar.oscarLab.ca.all.util;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -121,6 +122,14 @@ public class Utilities {
             OscarProperties props = OscarProperties.getInstance();
             //properties must exist
             String place = props.getProperty("DOCUMENT_DIR");
+
+            File safeDir = new File(place).getCanonicalFile(); // Canonicalize safe base
+            File targetFile = new File(safeDir, filename).getCanonicalFile(); // Canonicalize target path
+
+            // Ensure target file is inside the allowed base directory
+            if (!targetFile.getPath().startsWith(safeDir.getPath() + File.separator)) {
+                throw new IllegalArgumentException("Attempt to write file outside allowed directory: " + targetFile.getPath());
+            }
 
             if (!place.endsWith("/"))
                 place = new StringBuilder(place).insert(place.length(), "/").toString();

@@ -225,9 +225,11 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
          * thread to close gracefully while the import is being processed.
          */
         String filename = importFile.getName();
-        String filetype = null;
+        Path filePath = importFile.toPath();
+        int dotIndex = filename.lastIndexOf('.');
+        String filetype = (dotIndex == -1) ? "" : filename.substring(dotIndex + 1).toLowerCase();
         Path directory;
-        try (InputStream inputStream = Files.newInputStream(Paths.get(filename));
+        try (InputStream inputStream = Files.newInputStream(filePath);
              ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
             int length;
             byte[] bytes = new byte[1024];
@@ -3224,18 +3226,25 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
                 if (id == null) id = 0;
                 out.write(fillUp(id.toString(), ' ', column1.length()));
                 out.write(" |");
-                String[] info = demo.get(i);
-                if (info != null && info.length > 0) {
-                    String[] text = info[info.length - 1].split("\n");
-                    out.write(text[0]);
-                    out.newLine();
-                    for (int j = 1; j < text.length; j++) {
-                        out.write(fillUp("", ' ', column1.length()));
-                        out.write(" |");
-                        out.write(text[j]);
+
+                try {
+                    String[] info = demo.get(i);
+
+                    if (info != null && info.length > 0) {
+                        String[] text = info[info.length - 1].split("\n");
+                        out.write(text[0]);
                         out.newLine();
+                        for (int j = 1; j < text.length; j++) {
+                            out.write(fillUp("", ' ', column1.length()));
+                            out.write(" |");
+                            out.write(text[j]);
+                            out.newLine();
+                        }
                     }
+                } catch (IndexOutOfBoundsException e) {
+                    MiscUtils.getLogger().error("Error", e);
                 }
+
                 out.write(fillUp("", '-', tableWidth));
                 out.newLine();
             }

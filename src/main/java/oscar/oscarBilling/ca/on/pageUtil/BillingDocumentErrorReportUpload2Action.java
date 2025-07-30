@@ -155,7 +155,8 @@ public class BillingDocumentErrorReportUpload2Action extends ActionSupport {
      * @param file
      * @return
      */
-    private boolean getData(LoggedInInfo loggedInInfo, String fileName, String pathDir, HttpServletRequest request) {
+    private boolean getData(LoggedInInfo loggedInInfo, String fileName, String pathDir, HttpServletRequest request) 
+            throws ServletException, IOException {
         boolean isGot = false;
 
         try {
@@ -163,13 +164,18 @@ public class BillingDocumentErrorReportUpload2Action extends ActionSupport {
             String filepath = props.getProperty(pathDir);
             boolean bNewBilling = "true".equals(props.getProperty("isNewONbilling", ""));
 
-            File inputFile = new File(fileName);
-            // This ensures that relative paths become absolute paths, or skipped if already absolute
-            if (!inputFile.isAbsolute()) {
-                if (!filepath.endsWith("/")) {
-                    filepath += "/";
-                }
-                inputFile = new File(filepath, fileName);
+            if (filepath == null || filepath.isBlank()) {
+                throw new IllegalStateException("Missing or empty path: " + pathDir);
+            }
+
+            File safeDir = new File(filepath).getCanonicalFile();
+            File inputFile = new File(filepath, fileName).getCanonicalFile();
+
+            String safeDirPath = safeDir.getPath() + File.separator;
+            String filePath = inputFile.getPath();
+
+            if (!filePath.startsWith(safeDirPath)) {
+                throw new IllegalArgumentException("File path is outside allowed directory: " + filePath);
             }
 
             FileInputStream file = new FileInputStream(inputFile);
