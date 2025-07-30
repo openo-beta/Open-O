@@ -67,8 +67,18 @@
 		<property name="serializationInclusion" value="NON_NULL"/>
 	</bean>
 
-	<bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider">
-    	<!-- <property name="mapper" ref="jacksonObjectMapper"/> -->
+	<bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider">
+    	<property name="mapper" ref="jacksonObjectMapper"/>
+	</bean>
+	
+	<bean id="jaxb" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider">
+		<property name="marshallerProperties">
+			<map>
+				<entry key="jaxb.formatted.output">
+					<value type="java.lang.Boolean">true</value>
+				</entry>
+			</map>
+		</property>
 	</bean>
 	
 	
