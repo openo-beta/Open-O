@@ -38,29 +38,7 @@
 	
 	<!-- <bean class="org.ServletContextConfig"/> -->
 	
-	<bean id="oauthProvider" class="oscar.login.OscarOAuthDataProvider" autowire="byName"/>
-
-	<bean id="requestTokenService" class="oscar.login.OscarRequestTokenService">
-	   <property name="dataProvider" ref="oauthProvider"/>
-	</bean>
-	
-	<bean id="oAuthFilter" class="org.apache.cxf.rs.security.oauth.filters.OAuthRequestFilter">
-         <property name="dataProvider" ref="oauthProvider"/>
-         <property name="useUserSubject" value="true"/>
-         <property name="supportUnknownParameters" value="true"/>
-     </bean>
-
-	<bean id="authorizationService" class="org.apache.cxf.rs.security.oauth.services.AuthorizationRequestService">
-		<property name="dataProvider" ref="oauthProvider"/>
-	</bean>
-     
-     <bean id="dispatchProvider" class="org.apache.cxf.jaxrs.provider.RequestDispatcherProvider">
-      <property name="resourcePath" value="/login/3rdpartyLogin.jsp"/>
-	 </bean>
-	      
-	<bean id="accessTokenService" class="org.apache.cxf.rs.security.oauth.services.AccessTokenService">
-	  <property name="dataProvider" ref="oauthProvider"/>
-	</bean>
+	<!-- Legacy OAuth 1.0a components removed - replaced with modern ScribeJava implementation -->
 	
 	
 	<bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
@@ -82,23 +60,7 @@
 	</bean>
 	
 	
-    <jaxrs:server id="oauthService" address="/oauth" >
-
-        <jaxrs:serviceBeans>
-            <ref bean="requestTokenService"/>
-            <ref bean="accessTokenService"/>
-            <ref bean="authorizationService"/>
-        </jaxrs:serviceBeans>
-         
-        <jaxrs:providers>
-      		<ref bean="dispatchProvider"/>
-   		</jaxrs:providers> 
-      
-        <jaxrs:extensionMappings>
-            <entry key="xml" value="application/xml" />         
-        </jaxrs:extensionMappings>
-        
-    </jaxrs:server>
+    <!-- Legacy OAuth service endpoints removed - will be replaced with modern implementation -->
 
     <jaxrs:server id="restServices" address="/services">
 
@@ -145,7 +107,6 @@
         </jaxrs:serviceBeans>
              
         <jaxrs:providers>
-           <ref bean="oAuthFilter"/>
            <ref bean="jaxb"/>
            <ref bean="jsonProvider"/>
         </jaxrs:providers>
