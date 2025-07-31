@@ -35,4 +35,4 @@ public class OAuthConfig {
                 .callback(callbackUrl)
                 .build(TwitterApi.instance()); // Using Twitter API as OAuth 1.0a example
     }
-}
+}   
