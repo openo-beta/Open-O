@@ -7,10 +7,13 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 import org.apache.logging.log4j.Logger;
+import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -25,6 +28,9 @@ public class OAuthService {
     private static final Logger logger = MiscUtils.getLogger();
     private static final String ACCESS_TOKEN_SESSION_KEY = "oauth_access_token";
     private static final String REQUEST_TOKEN_SESSION_KEY = "oauth_request_token";
+
+    @Value("${oauth.token.validation.url}")
+    private String validationUrl;
 
     @Autowired(required = false)
     private OAuth10aService oAuth10aService;
@@ -92,7 +98,7 @@ public class OAuthService {
 
         try {
             // Use a simple verification endpoint - this would depend on your OAuth provider
-            OAuthRequest request = new OAuthRequest(Verb.GET, "https://api.twitter.com/1.1/account/verify_credentials.json");
+            OAuthRequest request = new OAuthRequest(Verb.GET, validationUrl);
             oAuth10aService.signRequest(token, request);
             
             Response response = oAuth10aService.execute(request);
@@ -118,3 +124,4 @@ public class OAuthService {
         return oAuth10aService != null;
     }
 }
+
