@@ -512,6 +512,11 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
             }
         }
 
+        session.setAttribute("note_sort", request.getParameter("note_sort"));
+        session.setAttribute("filter_roles", request.getParameter("filter_roles"));
+        session.setAttribute("filter_provider", request.getParameter("filter_providers"));
+        session.setAttribute("issues", request.getParameter("issues"));
+
         return fwd;
     }
 

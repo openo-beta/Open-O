@@ -250,7 +250,11 @@ public class CaseManagementView2Action extends ActionSupport {
         long beginning = start;
         long current = 0;
         boolean useNewCaseMgmt = false;
+        // First, try to get the newCaseManagement boolean from the session
         String useNewCaseMgmtString = (String) request.getSession().getAttribute("newCaseManagement");
+        // If null, try to get the newCaseManagement boolean from the parameters
+        if (useNewCaseMgmtString == null) useNewCaseMgmtString = (String) request.getParameter("newCaseManagement");
+        // Set the correct boolean if default or fallback value is present
         if (useNewCaseMgmtString != null) useNewCaseMgmt = Boolean.parseBoolean(useNewCaseMgmtString);
 
         logger.debug("Starting VIEW");
@@ -780,7 +784,6 @@ public class CaseManagementView2Action extends ActionSupport {
 
         List<Secrole> roles = roleMgr.getRoles();
         request.setAttribute("roles", roles);
-
     }
 
     private void fetchInvoices(ArrayList<NoteDisplay> notes, String demographicNo) {
@@ -1862,27 +1865,34 @@ public class CaseManagementView2Action extends ActionSupport {
         criteria.setDemographicId(ConversionUtils.fromIntString(demoNo));
         criteria.setUserRole((String) request.getSession().getAttribute("userrole"));
         criteria.setUserName((String) request.getSession().getAttribute("user"));
-        if (request.getParameter("note_sort") != null && request.getParameter("note_sort").length() > 0) {
-            criteria.setNoteSort(request.getParameter("note_sort"));
+
+        // First, try to get the filter strings from the parameters
+        String note_sort_param = getFilterParams("note_sort");
+        String filter_roles_param = getFilterParams("filter_roles");
+        String filter_provider_param = getFilterParams("filter_provider");
+        String[] issues_param = getFilterParamValues("issues");
+
+        // Ensure that both tries have set it at least once
+        if (note_sort_param != null && !note_sort_param.isEmpty()) {
+            criteria.setNoteSort(note_sort_param);
         }
         if (programId != null && !programId.trim().isEmpty()) {
             criteria.setProgramId(programId);
         }
-        if (this.getFilter_roles() != null) {
-            List<String> rs = Arrays.asList(this.getFilter_roles());
+        if (filter_roles_param != null) {
+            List<String> rs = Arrays.asList(filter_roles_param);
             criteria.getRoles().addAll(rs);
             se.setAttribute("CaseManagementViewAction_filter_roles", rs);
         }
 
-        if (this.getFilter_providers() != null) {
-            List<String> rs = Arrays.asList(this.getFilter_providers());
+        if (filter_provider_param != null) {
+            List<String> rs = Arrays.asList(filter_provider_param);
             criteria.getProviders().addAll(rs);
             se.setAttribute("CaseManagementViewAction_filter_providers", rs);
         }
 
-        String[] checkedIssues = request.getParameterValues("issues");
-        if (checkedIssues != null) {
-            List<String> rs = Arrays.asList(checkedIssues);
+        if (issues_param != null) {
+            List<String> rs = Arrays.asList(issues_param);
             criteria.getIssues().addAll(rs);
             se.setAttribute("CaseManagementViewAction_filter_issues", rs);
         }
@@ -1906,6 +1916,35 @@ public class CaseManagementView2Action extends ActionSupport {
         request.setAttribute("notesToDisplay", result.getNotes());
         return "ajaxDisplayNotes";
     }
+
+    private String getFilterParams(String paramName) {
+        // First, try to get the filter strings from the parameter
+        String filterParam = request.getParameter(paramName);
+        // If null, First, try to get the filter strings from the session, remove after setting variable
+        if (filterParam == null) {
+            filterParam = (String) request.getSession().getAttribute(paramName);
+            request.getSession().removeAttribute(paramName);
+        }
+        return filterParam;
+    }
+
+    private String[] getFilterParamValues(String paramName) {
+        // First, try to get the filter strings values from the parameter
+        String[] filterParams = request.getParameterValues(paramName);
+        if (filterParams == null) {
+            // If null, First, try to get the filter strings from the session, remove after setting variable
+            Object obj = request.getSession().getAttribute(paramName);
+            request.getSession().removeAttribute(paramName);
+            // Check to see if obj is one or more values
+            if (obj instanceof String) {
+                return new String[]{(String) obj};
+            } else if (obj instanceof String[]) {
+                return (String[]) obj;
+            }
+        }
+        return filterParams;
+    }
+
     private String demographicNo;
     private String providerNo;
     private String issues[];

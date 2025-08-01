@@ -2181,14 +2181,23 @@ function updateCPPNote() {
 
         var caseMgtEntryfrm = document.forms["caseManagementEntryForm"];
         var caseMgtViewfrm = document.forms["caseManagementViewForm"];
+
+        // Temporarily remove one demographicNo field before serialization
+        var tempInput = caseMgtEntryfrm.demographicNo;
+        caseMgtEntryfrm.removeChild(tempInput);
+
         params += "&" + Form.serialize(caseMgtEntryfrm);
         params += "&" + Form.serialize(caseMgtViewfrm);
+
+        // Restore the field to the form after serialization
+        caseMgtEntryfrm.appendChild(tempInput);
 
         var objAjax = new Ajax.Request(
             url,
             {
                 method: 'post',
                 postBody: params,
+                contentType: 'application/x-www-form-urlencoded',
                 evalScripts: true,
                 onSuccess: function (request) {
                     $("notCPP").update(request.responseText);
@@ -2200,7 +2209,6 @@ function updateCPPNote() {
             }
         );
         return false;
-
     }
 
 // find index of month
@@ -2836,7 +2844,7 @@ function updateCPPNote() {
     function filterCheckBox(checkbox) {
         var checks = document.getElementsByName(checkbox.name);
 
-        if (checkbox.value == "a" && checkbox.checked) {
+        if (checkbox.value === "a" && checkbox.checked) {
 
             for (var idx = 0; idx < checks.length; ++idx) {
                 if (checks[idx] != checkbox)
@@ -2844,7 +2852,7 @@ function updateCPPNote() {
             }
         } else {
             for (var idx = 0; idx < checks.length; ++idx) {
-                if (checks[idx].value == "a") {
+                if (checks[idx].value === "a") {
                     if (checks[idx].checked)
                         checks[idx].checked = false;
 
