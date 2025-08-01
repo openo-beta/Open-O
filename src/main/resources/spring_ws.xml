@@ -33,6 +33,9 @@
             http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
             http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
 
+	
+    <!-- IMPORT your REST‐OAuth config so CXF will see /ws/oauth -->
+    <import resource="classpath:applicationContextREST.xml"/>
 
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
@@ -59,19 +62,24 @@
 			<ref bean="loggingOutInterceptor" />
 		</cxf:outInterceptors>
 		
-		<!-- logging interceptors 
+		<!-- logging interceptors  -->
 		 
 		<cxf:inInterceptors>
-			<ref bean="loggingInInterceptor" />
+    		<ref bean="loggingInInterceptor"/>
 		</cxf:inInterceptors>
+
+		<cxf:outInterceptors>
+			<ref bean="loggingOutInterceptor"/>
+		</cxf:outInterceptors>
+
+		<cxf:inFaultInterceptors>
+			<ref bean="loggingInInterceptor"/>
+		</cxf:inFaultInterceptors>
 		
 		<cxf:outFaultInterceptors>
-			<ref bean="loggingOutInterceptor" />
+			<ref bean="loggingOutInterceptor"/>
 		</cxf:outFaultInterceptors>
-		<cxf:inFaultInterceptors>
-			<ref bean="loggingInInterceptor" />
-		</cxf:inFaultInterceptors>
-		-->
+		
 		 
     </cxf:bus>
 
@@ -254,6 +262,4 @@
 		<property name="arrayKeys" ref="jsonKeys"/>
 		<property name="dropCollectionWrapperElement" value="true" />
     </bean>
-	
-	
 </beans>
