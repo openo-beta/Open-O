@@ -52,36 +52,33 @@
 
     <cxf:bus>
 		<cxf:properties>
-			<entry key="ws-security.ut.validator" value="org.oscarehr.ws.OscarUsernameTokenValidator" />
+			<entry key="ws-security.ut.validator"
+				value="org.oscarehr.ws.OscarUsernameTokenValidator"/>
 		</cxf:properties>
-		
-		<!-- BORN XDS Soap Header Interceptor (Adds endpointID node to header) -->
-		
-		<cxf:outInterceptors>
-			<bean id="bornSOAPHeaderInterceptor" class="org.oscarehr.integration.born.BornSOAPHeaderInterceptor" />
-			<ref bean="loggingOutInterceptor" />
-		</cxf:outInterceptors>
-		
-		<!-- logging interceptors  -->
-		 
+
+		<!-- 1) Inbound interceptors (log & auth) -->
 		<cxf:inInterceptors>
-    		<ref bean="loggingInInterceptor"/>
+			<ref bean="loggingInInterceptor"/>
 		</cxf:inInterceptors>
 
+		<!-- 2) Outbound interceptors (SOAP header + logging) -->
 		<cxf:outInterceptors>
+			<bean id="bornSOAPHeaderInterceptor"
+				class="org.oscarehr.integration.born.BornSOAPHeaderInterceptor"/>
 			<ref bean="loggingOutInterceptor"/>
 		</cxf:outInterceptors>
 
+		<!-- 3) In-fault interceptors (log faults) -->
 		<cxf:inFaultInterceptors>
 			<ref bean="loggingInInterceptor"/>
 		</cxf:inFaultInterceptors>
-		
+
+		<!-- 4) Out-fault interceptors (log faults) -->
 		<cxf:outFaultInterceptors>
 			<ref bean="loggingOutInterceptor"/>
 		</cxf:outFaultInterceptors>
-		
-		 
-    </cxf:bus>
+	</cxf:bus>
+
 
 	<!-- Managed WS Beans -->
 	<!-- The WS classes are turned into spring beans to allow autowiring etc, then the endpoints reference them -->
