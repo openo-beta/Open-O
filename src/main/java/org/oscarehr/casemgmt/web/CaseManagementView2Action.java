@@ -1867,34 +1867,26 @@ public class CaseManagementView2Action extends ActionSupport {
         criteria.setUserName((String) request.getSession().getAttribute("user"));
 
         // First, try to get the filter strings from the parameters
-        String note_sort_param = getSingleRequestValue("note_sort");
-        String[] filter_roles_param = getArrayRequestValue("filter_roles");
-        String[] filter_provider_param = getArrayRequestValue("filter_provider");
-        String[] issues_param = getArrayRequestValue("issues");
+        getParamOrSession("note_sort")
+            .ifPresent(criteria::setNoteSort);
 
-        // Ensure that both tries have set it at least once
-        if (note_sort_param != null && !note_sort_param.isEmpty()) {
-            criteria.setNoteSort(note_sort_param);
-        }
-        if (programId != null && !programId.trim().isEmpty()) {
-            criteria.setProgramId(programId);
-        }
-        if (filter_roles_param != null) {
-            List<String> rs = Arrays.asList(filter_roles_param);
+        getParamsOrSession("filter_roles").ifPresent(rs -> {
             criteria.getRoles().addAll(rs);
             se.setAttribute("CaseManagementViewAction_filter_roles", rs);
-        }
+        });
 
-        if (filter_provider_param != null) {
-            List<String> rs = Arrays.asList(filter_provider_param);
+
+        getParamsOrSession("filter_provider").ifPresent(rs -> {
             criteria.getProviders().addAll(rs);
             se.setAttribute("CaseManagementViewAction_filter_providers", rs);
-        }
-
-        if (issues_param != null) {
-            List<String> rs = Arrays.asList(issues_param);
+        });
+        getParamsOrSession("issues").ifPresent(rs -> {
             criteria.getIssues().addAll(rs);
             se.setAttribute("CaseManagementViewAction_filter_issues", rs);
+        });
+
+        if (programId != null && !programId.trim().isEmpty()) {
+            criteria.setProgramId(programId);
         }
 
         if (logger.isDebugEnabled()) {
@@ -1917,32 +1909,26 @@ public class CaseManagementView2Action extends ActionSupport {
         return "ajaxDisplayNotes";
     }
 
-    private String getSingleRequestValue(String paramName) {
-        // First, try to get the filter strings from the parameter
-        String filterParam = request.getParameter(paramName);
-        // If null, First, try to get the filter strings from the session, remove after setting variable
-        if (filterParam == null) {
-            filterParam = (String) request.getSession().getAttribute(paramName);
-            request.getSession().removeAttribute(paramName);
+    private Optional<String> getParamOrSession(String name) {
+        HttpSession session = request.getSession();
+        String val = request.getParameter(name);
+        if (val == null) {
+            val = (String) session.getAttribute(name);
+            session.removeAttribute(name);
         }
-        return filterParam;
+        return Optional.ofNullable(val).filter(s -> !s.isEmpty());
     }
 
-    private String[] getArrayRequestValue(String paramName) {
-        // First, try to get the filter strings values from the parameter
-        String[] filterParams = request.getParameterValues(paramName);
-        if (filterParams == null) {
-            // If null, First, try to get the filter strings from the session, remove after setting variable
-            Object obj = request.getSession().getAttribute(paramName);
-            request.getSession().removeAttribute(paramName);
-            // Check to see if obj is one or more values
-            if (obj instanceof String) {
-                return new String[]{(String) obj};
-            } else if (obj instanceof String[]) {
-                return (String[]) obj;
-            }
+    private Optional<List<String>> getParamsOrSession(String name) {
+        HttpSession session = request.getSession();
+        String[] vals = request.getParameterValues(name);
+        if (vals == null) {
+            Object o = session.getAttribute(name);
+            session.removeAttribute(name);
+            if      (o instanceof String[]) vals = (String[]) o;
+            else if (o instanceof String)   vals = new String[]{(String)o};
         }
-        return filterParams;
+        return Optional.ofNullable(vals).map(Arrays::asList);
     }
 
     private String demographicNo;

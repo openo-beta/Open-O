@@ -2182,15 +2182,15 @@ function updateCPPNote() {
         var caseMgtEntryfrm = document.forms["caseManagementEntryForm"];
         var caseMgtViewfrm = document.forms["caseManagementViewForm"];
 
-        // Temporarily remove one demographicNo field before serialization
-        var tempInput = caseMgtEntryfrm.demographicNo;
-        caseMgtEntryfrm.removeChild(tempInput);
+        // Serialize caseMgtEntryfrm excluding demographicNo field, this is to avoid duplicate demographicNo
+        var clonedForm = caseMgtEntryfrm.cloneNode(true);
+        var demoField = clonedForm.demographicNo;
+        if (demoField) {
+            clonedForm.removeChild(demoField);
+        }
 
-        params += "&" + Form.serialize(caseMgtEntryfrm);
+        params += "&" + Form.serialize(clonedForm);
         params += "&" + Form.serialize(caseMgtViewfrm);
-
-        // Restore the field to the form after serialization
-        caseMgtEntryfrm.appendChild(tempInput);
 
         var objAjax = new Ajax.Request(
             url,
