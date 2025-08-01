@@ -1867,10 +1867,10 @@ public class CaseManagementView2Action extends ActionSupport {
         criteria.setUserName((String) request.getSession().getAttribute("user"));
 
         // First, try to get the filter strings from the parameters
-        String note_sort_param = getFilterParams("note_sort");
-        String filter_roles_param = getFilterParams("filter_roles");
-        String filter_provider_param = getFilterParams("filter_provider");
-        String[] issues_param = getFilterParamValues("issues");
+        String note_sort_param = getSingleRequestValue("note_sort");
+        String[] filter_roles_param = getArrayRequestValue("filter_roles");
+        String[] filter_provider_param = getArrayRequestValue("filter_provider");
+        String[] issues_param = getArrayRequestValue("issues");
 
         // Ensure that both tries have set it at least once
         if (note_sort_param != null && !note_sort_param.isEmpty()) {
@@ -1917,7 +1917,7 @@ public class CaseManagementView2Action extends ActionSupport {
         return "ajaxDisplayNotes";
     }
 
-    private String getFilterParams(String paramName) {
+    private String getSingleRequestValue(String paramName) {
         // First, try to get the filter strings from the parameter
         String filterParam = request.getParameter(paramName);
         // If null, First, try to get the filter strings from the session, remove after setting variable
@@ -1928,7 +1928,7 @@ public class CaseManagementView2Action extends ActionSupport {
         return filterParam;
     }
 
-    private String[] getFilterParamValues(String paramName) {
+    private String[] getArrayRequestValue(String paramName) {
         // First, try to get the filter strings values from the parameter
         String[] filterParams = request.getParameterValues(paramName);
         if (filterParams == null) {
