@@ -2834,9 +2834,9 @@ function updateCPPNote() {
     function showFilter() {
 
         if (filterShows)
-            new Effect.BlindUp('filter');
+            new Effect.BlindUp('filter', { queue: 'end' });
         else
-            new Effect.BlindDown('filter');
+            new Effect.BlindDown('filter', { queue: 'end' });
 
         filterShows = !filterShows;
     }
