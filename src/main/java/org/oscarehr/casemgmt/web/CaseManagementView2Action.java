@@ -1866,7 +1866,6 @@ public class CaseManagementView2Action extends ActionSupport {
         criteria.setUserRole((String) request.getSession().getAttribute("userrole"));
         criteria.setUserName((String) request.getSession().getAttribute("user"));
 
-        // First, try to get the filter strings from the parameters
         getParamOrSession("note_sort")
             .ifPresent(criteria::setNoteSort);
 
@@ -1874,8 +1873,6 @@ public class CaseManagementView2Action extends ActionSupport {
             criteria.getRoles().addAll(rs);
             se.setAttribute("CaseManagementViewAction_filter_roles", rs);
         });
-
-
         getParamsOrSession("filter_provider").ifPresent(rs -> {
             criteria.getProviders().addAll(rs);
             se.setAttribute("CaseManagementViewAction_filter_providers", rs);
@@ -1909,6 +1906,8 @@ public class CaseManagementView2Action extends ActionSupport {
         return "ajaxDisplayNotes";
     }
 
+    // Gets the parameters or attributes that are connected to the inputted name
+    // Works for string outputs
     private Optional<String> getParamOrSession(String name) {
         HttpSession session = request.getSession();
         String val = request.getParameter(name);
@@ -1919,6 +1918,8 @@ public class CaseManagementView2Action extends ActionSupport {
         return Optional.ofNullable(val).filter(s -> !s.isEmpty());
     }
 
+    // Gets the parameters or attributes that are connected to the inputted name
+    // Works for Array and List string outputs
     private Optional<List<String>> getParamsOrSession(String name) {
         HttpSession session = request.getSession();
         String[] vals = request.getParameterValues(name);
