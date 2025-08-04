@@ -59,6 +59,7 @@ import com.github.scribejava.core.oauth.OAuth10aService;
 @Path("/initiate")
 public class OscarRequestTokenService {
 
+    /** Logger for this class */
     private static final Logger logger = MiscUtils.getLogger();
 
     @Autowired
@@ -114,7 +115,7 @@ public class OscarRequestTokenService {
             }
 
             // Get OAuth configuration for this consumer key
-            OAuthAppConfig appConfig = getOAuthConfiguration(consumerKey);
+            OAuthAppConfig appConfig = getOAuthConfiguration(request);
             if (appConfig == null) {
                 logger.warn("Unknown consumer key: {}", consumerKey);
                 return buildErrorResponse(Response.Status.UNAUTHORIZED, 
@@ -200,40 +201,71 @@ public class OscarRequestTokenService {
     }
 
     /**
-     * Retrieves OAuth application configuration for the given consumer key.
-     * 
-     * @param consumerKey The OAuth consumer key
-     * @return OAuthAppConfig or null if not found
+     * Retrieves OAuth application configuration for the given request.
+     * Pulls config from system properties or fallback defaults (no DB).
+     *
+     * @param request The incoming HTTP request with OAuth params
+     * @return OAuthAppConfig or null if no config is found
      */
-    private OAuthAppConfig getOAuthConfiguration(String consumerKey) {
-        // Check system properties first (useful for development)
+    private OAuthAppConfig getOAuthConfiguration(HttpServletRequest request) {
+        String consumerKey = request.getParameter("oauth_consumer_key");
+
+        System.out.println("Request Data: oauth_consumer_key= " + consumerKey);
+        System.out.println("Request Data:");
+        System.out.println("Method: " + request.getMethod());
+        System.out.println("Request URI: " + request.getRequestURI());
+        System.out.println("Query String: " + request.getQueryString());
+        System.out.println("Remote Address: " + request.getRemoteAddr());
+        System.out.println("Context Path: " + request.getContextPath());
+        System.out.println("Protocol: " + request.getProtocol());
+        System.out.println("Parameters:");
+        java.util.Enumeration<String> paramNames = request.getParameterNames();
+        while (paramNames.hasMoreElements()) {
+            String param = paramNames.nextElement();
+            System.out.println("  " + param + " = " + request.getParameter(param));
+        }
+        System.out.println("Headers:");
+        java.util.Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String header = headerNames.nextElement();
+            System.out.println("  " + header + " = " + request.getHeader(header));
+        }
+
+        if (consumerKey == null || consumerKey.trim().isEmpty()) {
+            logger.warn("Missing oauth_consumer_key in request");
+            return null;
+        }
+
+        // Look up from system properties (for dev/local use)
         String consumerSecret = System.getProperty("oauth.consumer." + consumerKey + ".secret");
-        String baseUrl = System.getProperty("oauth.consumer." + consumerKey + ".baseUrl");
-        String callbackUri = System.getProperty("oauth.consumer." + consumerKey + ".callbackUri");
+        String baseUrl        = System.getProperty("oauth.consumer." + consumerKey + ".baseUrl");
+        String callbackUri    = System.getProperty("oauth.consumer." + consumerKey + ".callbackUri");
         String applicationUri = System.getProperty("oauth.consumer." + consumerKey + ".applicationUri");
-        String scopesStr = System.getProperty("oauth.consumer." + consumerKey + ".scopes");
-        
+        String scopesStr      = System.getProperty("oauth.consumer." + consumerKey + ".scopes");
+
         if (consumerSecret != null && baseUrl != null) {
-            logger.debug("Found OAuth configuration in system properties for consumer: {}", consumerKey);
+            logger.debug("Found OAuth config in system properties for consumer: {}", consumerKey);
+
             OAuthAppConfig config = new OAuthAppConfig();
             config.setConsumerKey(consumerKey);
             config.setConsumerSecret(consumerSecret);
             config.setBaseUrl(baseUrl);
             config.setCallbackURI(callbackUri);
             config.setApplicationURI(applicationUri);
-            
+
             if (scopesStr != null && !scopesStr.trim().isEmpty()) {
                 config.setScopes(java.util.Arrays.asList(scopesStr.split(",")));
             }
-            
+
             return config;
         }
-        
-        // Fallback to default configuration for known consumer keys
+
+        // Fallback to hardcoded dev key
         if ("oscar-client".equals(consumerKey)) {
-            logger.debug("Using default configuration for oscar-client");
+            logger.debug("Using fallback config for oscar-client");
+
             OAuthAppConfig config = new OAuthAppConfig();
-            config.setConsumerKey(consumerKey);
+            config.setConsumerKey("oscar-client");
             config.setConsumerSecret("oscar-secret");
             config.setBaseUrl("http://localhost:8080");
             config.setCallbackURI("http://localhost:8080/oscar/oauth/callback");
@@ -241,10 +273,12 @@ public class OscarRequestTokenService {
             config.setScopes(java.util.Arrays.asList("read", "write"));
             return config;
         }
-        
-        logger.warn("No OAuth configuration found for consumer key: {}", consumerKey);
+
+        logger.warn("No OAuth config found for consumer key: {}", consumerKey);
         return null;
     }
+
+
 
     /**
      * Validates the callback URL against the registered application configuration.
