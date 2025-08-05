@@ -34,6 +34,7 @@ import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Entities;
 import org.jsoup.select.Elements;
 import org.oscarehr.common.model.EFormData;
 import org.oscarehr.email.core.EmailData;
@@ -327,17 +328,23 @@ public final class ConvertToEdoc {
                 .convert()
         ) {
             IOUtils.copy(inputStream, os);
+            inputStream.close();
         } catch (Exception e) {
             logger.error("Document conversion exception thrown, attempting with alternate conversion library.", e);
-            ITextRenderer renderer = new ITextRenderer();
-            SharedContext sharedContext = renderer.getSharedContext();
-            sharedContext.setPrint(true);
-            sharedContext.setInteractive(false);
-            sharedContext.setReplacedElementFactory(new ReplacedElementFactoryImpl());
-            sharedContext.getTextRenderer().setSmoothingThreshold(0);
-            renderer.setDocumentFromString(document, null);
-            renderer.layout();
-            renderer.createPDF(os, true);
+            
+            try {
+                ITextRenderer renderer = new ITextRenderer();
+                SharedContext sharedContext = renderer.getSharedContext();
+                sharedContext.setPrint(true);
+                sharedContext.setInteractive(false);
+                sharedContext.setReplacedElementFactory(new ReplacedElementFactoryImpl());
+                sharedContext.getTextRenderer().setSmoothingThreshold(0);
+                renderer.setDocumentFromString(document, null);
+                renderer.layout();
+                renderer.createPDF(os, true);
+            } catch (Exception fallbackEx) {
+                logger.error("Fallback PDF generation has also failed", fallbackEx);
+            }
         }
     }
 
@@ -358,9 +365,9 @@ public final class ConvertToEdoc {
         }
 
         // DOCTYPE declarations are mandatory. HTML5 if none is declared.
-//		if(! incomingDocumentString.startsWith("<!DOCTYPE") || ! incomingDocumentString.startsWith("<!doctype")) {
-//			incomingDocumentString = "<!DOCTYPE html>" + incomingDocumentString;
-//		}
+        if(!incomingDocumentString.startsWith("<!DOCTYPE") || !incomingDocumentString.startsWith("<!doctype")) {
+            incomingDocumentString = "<!DOCTYPE html>" + incomingDocumentString;
+        }
 
         //TODO: COMING SOON.  EForms should be selectively sanitized against potential injection attacks and etc...
 //		Safelist safelist = Safelist.relaxed();
@@ -369,8 +376,15 @@ public final class ConvertToEdoc {
 
         Document document = Jsoup.parse(incomingDocumentString);
 
-        //TODO add any other custom Document.OutputSettings here.
-        document.outputSettings().prettyPrint(Boolean.FALSE);
+        document.outputSettings()
+            .syntax(Document.OutputSettings.Syntax.xml)  // Enforce XML syntax
+            .escapeMode(Entities.EscapeMode.xhtml)        // XHTML entities
+            .prettyPrint(false);
+
+        // Ensure DOCTYPE is present
+        if (document.childNodeSize() == 0 || !document.hasText()) {
+            throw new IllegalArgumentException("Document is empty or invalid.");
+        }
 
         /*
          * remove invalid, suspicious, and CDN links
