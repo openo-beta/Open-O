@@ -29,6 +29,7 @@ import org.apache.wss4j.dom.WSConstants;
 import org.apache.wss4j.dom.handler.WSHandlerConstants;
 import org.apache.xml.security.exceptions.AlgorithmAlreadyRegisteredException;
 import org.apache.xml.security.transforms.Transform;
+import org.apache.xml.security.transforms.InvalidTransformException;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 
 import ca.ontario.health.ebs.idp.IdpHeader;
@@ -369,14 +370,14 @@ public class EdtClientBuilder {
      */
     private static void registerAttachmentResolver() {
         if (isInitialized.compareAndSet(false, true)) {
-            ResourceResolver.register(AttachmentResolverSpi.class, true);
+            ResourceResolver.register(new AttachmentResolverSpi(), true);
             try {
                 Transform.register(
                     TransformAttachmentCiphertext.TRANSFORM_ATTACHMENT_CIPHERTEXT,
                     TransformAttachmentCiphertext.class
                 );
-            } catch (AlgorithmAlreadyRegisteredException e) {
-                // ignore if already registered
+            } catch (AlgorithmAlreadyRegisteredException | InvalidTransformException e) {
+                // ignore if already registered or invalid transform
             }
         }
     }

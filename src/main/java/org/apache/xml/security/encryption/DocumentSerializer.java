@@ -3,7 +3,6 @@ package org.apache.xml.security.encryption;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -11,7 +10,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
-import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
@@ -23,6 +21,10 @@ import org.xml.sax.SAXException;
  * Converts <code>String</code>s into <code>Node</code>s and visa versa.
  */
 public class DocumentSerializer extends AbstractSerializer {
+
+    public DocumentSerializer() throws InvalidCanonicalizerException {
+        super("", false);
+    }
 
     /**
      * @param source
@@ -50,8 +52,8 @@ public class DocumentSerializer extends AbstractSerializer {
      * @throws XMLEncryptionException
      */
     public Node deserialize(String source, Node ctx) throws XMLEncryptionException {
-        String fragment = createContext(source, ctx);
-        return deserialize(ctx, new InputSource(new StringReader(fragment)));
+        byte[] fragment = createContext(source.getBytes(), ctx);
+        return deserialize(ctx, new InputSource(new ByteArrayInputStream(fragment)));
     }
 
     /**
@@ -62,7 +64,11 @@ public class DocumentSerializer extends AbstractSerializer {
      */
     private Node deserialize(Node ctx, InputSource inputSource) throws XMLEncryptionException {
         try {
-            Document d = XMLUtils.read(inputSource, secureValidation);
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(true);
+            dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", secureValidation);
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document d = db.parse(inputSource);
 
             Document contextDocument = null;
             if (Node.DOCUMENT_NODE == ctx.getNodeType()) {

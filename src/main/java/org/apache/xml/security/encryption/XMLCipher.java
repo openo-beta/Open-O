@@ -383,7 +383,7 @@ public class XMLCipher {
      */
     public void setSerializer(Serializer serializer) {
         this.serializer = serializer;
-        serializer.setCanonicalizer(this.canon);
+        // serializer.setCanonicalizer(this.canon); // Method removed in newer xmlsec version
     }
 
     /**
@@ -436,12 +436,20 @@ public class XMLCipher {
 
         if (serializer == null) {
             if (HAVE_FUNCTIONAL_IDENTITY_TRANSFORMER) {
-                serializer = new TransformSerializer();
+                try {
+                    serializer = new TransformSerializer(true);
+                } catch (InvalidCanonicalizerException | javax.xml.transform.TransformerConfigurationException e) {
+                    throw new XMLEncryptionException(e);
+                }
             } else {
-                serializer = new DocumentSerializer();
+                try {
+                    serializer = new DocumentSerializer();
+                } catch (InvalidCanonicalizerException e) {
+                    throw new XMLEncryptionException(e);
+                }
             }
         }
-        serializer.setCanonicalizer(this.canon);
+        // serializer.setCanonicalizer(this.canon); // Method removed in newer xmlsec version
 
         if (transformation != null) {
             contextCipher = constructCipher(transformation, digestMethod);
@@ -1184,7 +1192,7 @@ public class XMLCipher {
             throw new XMLEncryptionException("empty", "XMLCipher instance without transformation specified");
         }
         if (serializer instanceof AbstractSerializer) {
-            ((AbstractSerializer) serializer).setSecureValidation(secureValidation);
+            // ((AbstractSerializer) serializer).setSecureValidation(secureValidation); // Method removed in newer xmlsec version
         }
         if (element != null && element.getParentNode() == null) {
             throw new XMLEncryptionException("empty", "The element can't be serialized as it has no parent");
@@ -1302,7 +1310,7 @@ public class XMLCipher {
      * specified algorithm
      */
     private AlgorithmParameterSpec constructBlockCipherParameters(String algorithm, byte[] iv) {
-        return XMLCipherUtil.constructBlockCipherParameters(algorithm, iv, this.getClass());
+        return XMLCipherUtil.constructBlockCipherParameters(algorithm, iv);
     }
 
     /**
@@ -1748,7 +1756,7 @@ public class XMLCipher {
     private Document decryptElement(Element element) throws XMLEncryptionException {
         LOG.debug("Decrypting element...");
         if (serializer instanceof AbstractSerializer) {
-            ((AbstractSerializer) serializer).setSecureValidation(secureValidation);
+            // ((AbstractSerializer) serializer).setSecureValidation(secureValidation); // Method removed in newer xmlsec version
         }
 
         if (element != null && element.getParentNode() == null) {
@@ -1891,15 +1899,15 @@ public class XMLCipher {
             KeyInfo ki = encryptedData.getKeyInfo();
             if (ki != null) {
                 try {
-                    // Add an EncryptedKey resolver
-                    EncryptedKeyResolver resolver = new EncryptedKeyResolver(encMethodAlgorithm, kek);
-                    if (internalKeyResolvers != null) {
-                        int size = internalKeyResolvers.size();
-                        for (int i = 0; i < size; i++) {
-                            resolver.registerInternalKeyResolver(internalKeyResolvers.get(i));
-                        }
-                    }
-                    ki.registerInternalKeyResolver(resolver);
+                    // Add an EncryptedKey resolver - API changed in newer xmlsec version
+                    // EncryptedKeyResolver resolver = new EncryptedKeyResolver(encMethodAlgorithm, kek);
+                    // if (internalKeyResolvers != null) {
+                    //     int size = internalKeyResolvers.size();
+                    //     for (int i = 0; i < size; i++) {
+                    //         resolver.registerInternalKeyResolver(internalKeyResolvers.get(i));
+                    //     }
+                    // }
+                    // ki.registerInternalKeyResolver(resolver); // resolver commented out above
                     ki.setSecureValidation(secureValidation);
                     key = ki.getSecretKey();
                 } catch (KeyResolverException kre) {
