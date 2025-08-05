@@ -27,10 +27,13 @@
 package oscar.login;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -108,11 +111,16 @@ public class OscarRequestTokenService {
                     "parameter_absent", "oauth_consumer_key");
             }
 
+            System.out.println("Consumer Key is not null");
+
+            // OAuth 1.0a requires oauth_callback parameter
             if (callbackUrl == null || callbackUrl.trim().isEmpty()) {
                 logger.warn("Missing oauth_callback parameter in request token request");
                 return buildErrorResponse(Response.Status.BAD_REQUEST, 
                     "parameter_absent", "oauth_callback");
             }
+
+            System.out.println("Callback URL is not null");
 
             // Get OAuth configuration for this consumer key
             OAuthAppConfig appConfig = getOAuthConfiguration(request);
@@ -122,6 +130,8 @@ public class OscarRequestTokenService {
                     "consumer_key_unknown", null);
             }
 
+            System.out.println("App config found for consumer key");
+
             // Validate callback URL against registered callback
             if (!isValidCallback(appConfig, callbackUrl)) {
                 logger.warn("Invalid callback URL: {} for consumer: {}", callbackUrl, consumerKey);
@@ -129,26 +139,33 @@ public class OscarRequestTokenService {
                     "parameter_rejected", "oauth_callback");
             }
 
+            System.out.println("Building OAuth service");
+
             // Build OAuth 1.0a service
-           OAuth10aService service = new ServiceBuilder(appConfig.getConsumerKey())
+            OAuth10aService service = new ServiceBuilder(appConfig.getConsumerKey())
                     .apiSecret(appConfig.getConsumerSecret())
                     .callback(callbackUrl)
                     .build(new DefaultApi10a() {
                         @Override
                         public String getRequestTokenEndpoint() {
+                            System.out.println("Setting request token endpoint");
                             return appConfig.getBaseUrl() + "/oauth/request_token";
                         }
 
                         @Override
                         public String getAccessTokenEndpoint() {
+                            System.out.println("Setting access token endpoint");
                             return appConfig.getBaseUrl() + "/oauth/access_token";
                         }
 
                         @Override
                         public String getAuthorizationBaseUrl() {
+                            System.out.println("Setting authorization base URL");
                             return appConfig.getBaseUrl() + "/oauth/authorize";
                         }
                     });
+
+            System.out.println("OAuth service built successfully");
 
             // Get request token from OAuth provider
             OAuth1RequestToken requestToken = service.getRequestToken();
@@ -173,9 +190,11 @@ public class OscarRequestTokenService {
                 requestToken.getTokenSecret()
             );
 
+            // Log success
             logger.info("Successfully issued request token: {} for consumer: {}", 
                 requestToken.getToken(), consumerKey);
 
+            // Return the response
             return Response.ok(responseBody)
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .build();
@@ -210,72 +229,32 @@ public class OscarRequestTokenService {
     private OAuthAppConfig getOAuthConfiguration(HttpServletRequest request) {
         String consumerKey = request.getParameter("oauth_consumer_key");
 
-        System.out.println("Request Data: oauth_consumer_key= " + consumerKey);
-        System.out.println("Request Data:");
-        System.out.println("Method: " + request.getMethod());
-        System.out.println("Request URI: " + request.getRequestURI());
-        System.out.println("Query String: " + request.getQueryString());
-        System.out.println("Remote Address: " + request.getRemoteAddr());
-        System.out.println("Context Path: " + request.getContextPath());
-        System.out.println("Protocol: " + request.getProtocol());
-        System.out.println("Parameters:");
-        java.util.Enumeration<String> paramNames = request.getParameterNames();
-        while (paramNames.hasMoreElements()) {
-            String param = paramNames.nextElement();
-            System.out.println("  " + param + " = " + request.getParameter(param));
-        }
-        System.out.println("Headers:");
-        java.util.Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String header = headerNames.nextElement();
-            System.out.println("  " + header + " = " + request.getHeader(header));
-        }
-
         if (consumerKey == null || consumerKey.trim().isEmpty()) {
-            logger.warn("Missing oauth_consumer_key in request");
-            return null;
-        }
-
-        // Look up from system properties (for dev/local use)
-        String consumerSecret = System.getProperty("oauth.consumer." + consumerKey + ".secret");
-        String baseUrl        = System.getProperty("oauth.consumer." + consumerKey + ".baseUrl");
-        String callbackUri    = System.getProperty("oauth.consumer." + consumerKey + ".callbackUri");
-        String applicationUri = System.getProperty("oauth.consumer." + consumerKey + ".applicationUri");
-        String scopesStr      = System.getProperty("oauth.consumer." + consumerKey + ".scopes");
-
-        if (consumerSecret != null && baseUrl != null) {
-            logger.debug("Found OAuth config in system properties for consumer: {}", consumerKey);
-
-            OAuthAppConfig config = new OAuthAppConfig();
-            config.setConsumerKey(consumerKey);
-            config.setConsumerSecret(consumerSecret);
-            config.setBaseUrl(baseUrl);
-            config.setCallbackURI(callbackUri);
-            config.setApplicationURI(applicationUri);
-
-            if (scopesStr != null && !scopesStr.trim().isEmpty()) {
-                config.setScopes(java.util.Arrays.asList(scopesStr.split(",")));
-            }
-
-            return config;
-        }
-
-        // Fallback to hardcoded dev key
-        if ("oscar-client".equals(consumerKey)) {
-            logger.debug("Using fallback config for oscar-client");
-
-            OAuthAppConfig config = new OAuthAppConfig();
-            config.setConsumerKey("oscar-client");
-            config.setConsumerSecret("oscar-secret");
-            config.setBaseUrl("http://localhost:8080");
-            config.setCallbackURI("http://localhost:8080/oscar/oauth/callback");
-            config.setApplicationURI("http://localhost:8080/oscar");
-            config.setScopes(java.util.Arrays.asList("read", "write"));
-            return config;
-        }
-
-        logger.warn("No OAuth config found for consumer key: {}", consumerKey);
+        logger.warn("Missing oauth_consumer_key in request");
         return null;
+        }
+
+        OAuthAppConfig config = CLIENTS.get(consumerKey);
+
+        if (config == null) {
+            logger.warn("No OAuth config found for consumer key: {}", consumerKey);
+        }
+
+        return config;
+    }
+
+    private static final Map<String, OAuthAppConfig> CLIENTS = new HashMap<>();
+    
+    static {
+        OAuthAppConfig config = new OAuthAppConfig();
+        config.setConsumerKey("ntl5hj1z77kyu1ad");
+        config.setConsumerSecret("secret123");
+        config.setBaseUrl("http://localhost:8080/oscar/ws");
+        config.setCallbackURI("https://example.com/");
+        config.setApplicationURI("http://localhost:8080/oscar");
+        config.setScopes(Arrays.asList("read", "write"));
+
+        CLIENTS.put(config.getConsumerKey(), config);
     }
 
 
