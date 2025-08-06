@@ -10,6 +10,8 @@ import org.oscarehr.common.model.AppDefinition;
 import org.oscarehr.util.MiscUtils;
 import org.springframework.stereotype.Component;
 
+import oscar.login.OscarRequestTokenHandler.AppOAuth1Config;
+
 @Component
 public class OAuthConfigService {
     private static final Logger logger = MiscUtils.getLogger();
@@ -64,5 +66,49 @@ public class OAuthConfigService {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Finds an AppDefinition by consumer key.
+     * 
+     * @param consumerKey The OAuth consumer key
+     * @return AppDefinition or null if not found
+     */
+    public AppDefinition findAppByConsumerKey(String consumerKey) {
+        // TODO: Implement database lookup for AppDefinition by consumer key
+        // This should query the database to find the app with the given consumer key
+        logger.debug("Looking up app for consumer key: {}", consumerKey);
+        return null; // Placeholder - needs actual implementation
+    }
+
+    /**
+     * Validates callback URL against application configuration without HTTP response.
+     * 
+     * @param cfg The OAuth configuration
+     * @param callbackUrl The callback URL to validate
+     * @return true if valid, false otherwise
+     */
+    public boolean isValidCallback(AppOAuth1Config cfg, String callbackUrl) {
+        // Allow "oob" (out-of-band) callback for desktop applications
+        if ("oob".equals(callbackUrl)) {
+            return true;
+        }
+        
+        // Check if callback URL matches pre-registered callback URI
+        if (cfg.getCallbackURI() != null && !cfg.getCallbackURI().isEmpty()) {
+            if (callbackUrl.equals(cfg.getCallbackURI())) {
+                return true;
+            }
+        }
+
+        // Check if callback URL has common root with application URI
+        if (cfg.getApplicationURI() != null && !cfg.getApplicationURI().isEmpty()) {
+            if (callbackUrl.startsWith(cfg.getApplicationURI())) {
+                return true;
+            }
+        }
+
+        logger.warn("Callback URL '{}' is not valid for config", callbackUrl);
+        return false;
     }
 }
