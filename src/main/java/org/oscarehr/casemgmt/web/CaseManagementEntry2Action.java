@@ -1347,7 +1347,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         Set<CaseManagementIssue> issueset = new HashSet<CaseManagementIssue>();
         // wherever this is populated, it's not here...
         Set<CaseManagementNote> noteSet = new HashSet<CaseManagementNote>();
-        String ongoing = new String();
+        String ongoing = "";
         if (checkedlist != null) {
             for (CheckBoxBean cb : checkedlist) {
                 if ("on".equalsIgnoreCase(cb.getChecked())) {
@@ -3698,14 +3698,12 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         return rt + "]\n";
     }
 
-    protected CaseManagementIssue newIssueToCIssue(String demoNo, Issue iss, Integer programId) {
+    protected CaseManagementIssue newIssueToCIssue(String demographicNo, Issue iss, Integer programId) {
         CaseManagementIssue cIssue = new CaseManagementIssue();
-        demoNo = getDemographicNo(request);
-        request.setAttribute("demographicNo", demoNo);
         // cIssue.setActive(true);
         cIssue.setAcute(false);
         cIssue.setCertain(false);
-        cIssue.setDemographic_no(Integer.valueOf(demoNo));
+        cIssue.setDemographic_no(Integer.valueOf(demographicNo));
 
         cIssue.setIssue_id(iss.getId().longValue());
 
@@ -3731,7 +3729,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
      * @param programId is optional, can be null for none.
      */
     protected CaseManagementIssue newIssueToCIssue(CaseManagementEntryFormBean cform, Issue iss, Integer programId) {
-        return newIssueToCIssue(this.getDemoNo(), iss, programId);
+        return newIssueToCIssue(this.getDemographicNo(), iss, programId);
     }
 
     protected Map<Long, CaseManagementIssue> convertIssueListToMap(List<CaseManagementIssue> issueList) {
