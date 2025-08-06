@@ -51,6 +51,8 @@ import org.springframework.stereotype.Component;
 import com.github.scribejava.core.model.OAuth1RequestToken;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
+import oscar.login.OscarRequestTokenHandler.AppOAuth1Config;
+
 /**
  * OAuth 1.0a Request Token Service using ScribeJava.
  * 

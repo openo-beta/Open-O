@@ -118,6 +118,28 @@ public class OscarRequestTokenHandler {
         
         public List<String> getScopes() { return scopes; }
         public void setScopes(List<String> scopes) { this.scopes = scopes; }
+
+        /**
+         * Creates an AppOAuth1Config from a configuration document.
+         * 
+         * @param doc The configuration document (could be JSON, XML, Map, etc.)
+         * @return AppOAuth1Config instance or null if parsing fails
+         */
+        public static AppOAuth1Config fromDocument(Object doc) {
+            if (doc == null) {
+                return null;
+            }
+            
+            AppOAuth1Config config = new AppOAuth1Config();
+            
+            // TODO: Implement actual document parsing based on your config format
+            // This is a placeholder implementation that assumes the document
+            // contains the necessary OAuth configuration data
+            
+            // For now, return null to indicate parsing is not implemented
+            // You'll need to implement this based on your actual config format
+            return null;
+        }
     }
 
     public void handleRequestToken(HttpServletRequest request,

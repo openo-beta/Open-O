@@ -20,7 +20,9 @@ public class OAuthConfigService {
         Object doc = app.getConfig();
         if (doc == null) {
             logger.error("Configuration document missing for app id {}", app.getId());
-            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Configuration retrieval error");
+            if (resp != null) {
+                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Configuration retrieval error");
+            }
             return null;
         }
         AppOAuth1Config cfg = AppOAuth1Config.fromDocument(doc);
@@ -29,7 +31,9 @@ public class OAuthConfigService {
          || cfg.getConsumerSecret() == null
          || cfg.getBaseUrl() == null) {
             logger.error("Invalid OAuth config in app id {}", app.getId());
-            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Invalid OAuth configuration");
+            if (resp != null) {
+                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Invalid OAuth configuration");
+            }
             return null;
         }
         return cfg;
