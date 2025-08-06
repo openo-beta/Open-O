@@ -78,6 +78,16 @@ public class OnlineHCValidator implements HCValidator {
         validation = builder.build(HCValidation.class);
 
         if (!config.isLoggingRequired()) { removeDownloadInInterceptor(validation); }
+
+        // One consolidated log
+        System.out.println("OnlineHCValidator initialized with: " +
+            "loggingRequired=" + config.isLoggingRequired() +
+            ", keystoreUser=" + config.getKeystoreUser() +
+            ", userNameTokenUser=" + config.getUserNameTokenUser() +
+            ", serviceUrl=" + config.getServiceUrl() +
+            ", conformanceKey=" + config.getConformanceKey() +
+            ", serviceId=" + config.getServiceId() +
+            ", externalClientKeystore=" + properties.getProperty("hcv.service.clientKeystore.properties"));
     }
 
     @Override
@@ -87,36 +97,50 @@ public class OnlineHCValidator implements HCValidator {
 
     @Override
     public HCValidationResult validate(String healthCardNumber, String versionCode, String serviceCode) {
+        System.out.println("Starting validate() with HCN: " + healthCardNumber + ", Version: " + versionCode + ", ServiceCode: " + serviceCode);
+
         Requests requests = new Requests();
         HcvRequest request = new HcvRequest();
         request.setHealthNumber(healthCardNumber);
         request.setVersionCode(versionCode);
+
         if (serviceCode != null && !serviceCode.isEmpty()) {
             request.getFeeServiceCodes().add(serviceCode);
+            System.out.println("Added service code to request: " + serviceCode);
         }
+
         requests.getHcvRequest().add(request);
+
         HcvResults results = null;
         HCValidationResult result = null;
         try {
             results = validate(requests, "en");
             if (results != null) {
+                System.out.println("Validation response received, parsing result...");
                 result = HCValidator.createSingleResult(results, 0);
+            } else {
+                System.out.println("Validation returned null results.");
             }
         } catch (Faultexception e) {
+            System.out.println("Faultexception caught during validation: " + e.getFaultInfo());
             result = new HCValidationResult();
             result.setEbsFault(e.getFaultInfo());
             result.setResponseCode(NOT_VALID_RESPONSE_CODE);
         }
 
+        System.out.println("Returning validation result: " + (result != null ? result.getResponseCode() : "null"));
         return result;
     }
 
     @Override
     public HcvResults validate(Requests requests, String local) throws Faultexception {
+        System.out.println("Sending validation request to external service...");
         HcvResults results;
         try {
             results = validation.validate(requests, local);
+            System.out.println("Validation call succeeded.");
         } catch (SOAPFaultException sfx) {
+            System.out.println("SOAPFaultException occurred: " + sfx.getMessage());
             SOAPFault soapFault = sfx.getFault();
             EbsFault ebsFault = new EbsFault();
             ebsFault.setCode(soapFault.getFaultCode());
