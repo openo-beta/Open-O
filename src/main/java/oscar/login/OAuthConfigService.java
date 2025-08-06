@@ -6,18 +6,22 @@ import java.net.URI;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
+import org.oscarehr.common.dao.AppDefinitionDaoImpl;
 import org.oscarehr.common.model.AppDefinition;
 import org.oscarehr.util.MiscUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import oscar.login.OscarRequestTokenHandler.AppOAuth1Config;
-
 @Component
-public class OAuthConfigService {
+public class OAuthConfigService implements OscarRequestTokenHandler.OAuthConfigService {
     private static final Logger logger = MiscUtils.getLogger();
+
+    @Autowired
+    private AppDefinitionDaoImpl appDefinitionDao;
 
     public AppOAuth1Config loadConfig(AppDefinition app, HttpServletResponse resp) throws IOException {
         Object doc = app.getConfig();
+        logger.debug("Loading config for app id {}: {}", app.getId(), doc);
         if (doc == null) {
             logger.error("Configuration document missing for app id {}", app.getId());
             if (resp != null) {
@@ -79,10 +83,8 @@ public class OAuthConfigService {
      * @return AppDefinition or null if not found
      */
     public AppDefinition findAppByConsumerKey(String consumerKey) {
-        // TODO: Implement database lookup for AppDefinition by consumer key
-        // This should query the database to find the app with the given consumer key
-        logger.debug("Looking up app for consumer key: {}", consumerKey);
-        return null; // Placeholder - needs actual implementation
+        System.out.println("Looking up app for consumer key: " + consumerKey);
+        return appDefinitionDao.findByConsumerKey(consumerKey);
     }
 
     /**

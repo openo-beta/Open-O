@@ -26,10 +26,8 @@
  */
 package oscar.login;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +49,7 @@ import org.springframework.stereotype.Component;
 import com.github.scribejava.core.model.OAuth1RequestToken;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
-import oscar.login.OscarRequestTokenHandler.AppOAuth1Config;
+import oscar.login.AppOAuth1Config;
 
 /**
  * OAuth 1.0a Request Token Service using ScribeJava.
@@ -109,20 +107,20 @@ public class OscarRequestTokenService {
     public Response getRequestToken(@Context HttpServletRequest request, 
                                    @Context HttpServletResponse response) {
         try {
-            logger.info("Processing OAuth 1.0a request token request");
+            System.out.println("Processing OAuth 1.0a request token request");
 
             String consumerKey = request.getParameter("oauth_consumer_key");
             String callbackUrl = request.getParameter("oauth_callback");
 
             // Basic parameter validation
             if (consumerKey == null || consumerKey.trim().isEmpty()) {
-                logger.warn("Missing oauth_consumer_key parameter in request token request");
+                System.out.println("Missing oauth_consumer_key parameter in request token request");
                 return buildErrorResponse(Response.Status.BAD_REQUEST, 
                     "parameter_absent", "oauth_consumer_key");
             }
 
             if (callbackUrl == null || callbackUrl.trim().isEmpty()) {
-                logger.warn("Missing oauth_callback parameter in request token request");
+                System.out.println("Missing oauth_callback parameter in request token request");
                 return buildErrorResponse(Response.Status.BAD_REQUEST, 
                     "parameter_absent", "oauth_callback");
             }
@@ -130,14 +128,14 @@ public class OscarRequestTokenService {
             // Get configuration using service
             AppOAuth1Config appConfig = getOAuthConfiguration(consumerKey);
             if (appConfig == null) {
-                logger.warn("Unknown consumer key: {}", consumerKey);
+                System.out.println("Unknown consumer key: " + consumerKey);
                 return buildErrorResponse(Response.Status.UNAUTHORIZED, 
                     "consumer_key_unknown", null);
             }
 
             // Validate callback using service
             if (!configService.isValidCallback(appConfig, callbackUrl)) {
-                logger.warn("Invalid callback URL: {} for consumer: {}", callbackUrl, consumerKey);
+                System.out.println("Invalid callback URL: " + callbackUrl + " for consumer: " + consumerKey);
                 return buildErrorResponse(Response.Status.BAD_REQUEST, 
                     "parameter_rejected", "oauth_callback");
             }
@@ -145,7 +143,7 @@ public class OscarRequestTokenService {
             // Build service using factory
             OAuth10aService service = serviceFactory.buildService(appConfig, callbackUrl, null);
             if (service == null) {
-                logger.error("Failed to build OAuth service for consumer: {}", consumerKey);
+                System.out.println("Failed to build OAuth service for consumer: " + consumerKey);
                 return buildErrorResponse(Response.Status.INTERNAL_SERVER_ERROR, 
                     "internal_error", null);
             }
@@ -154,7 +152,7 @@ public class OscarRequestTokenService {
             OAuth1RequestToken requestToken = service.getRequestToken();
             
             if (requestToken == null || requestToken.getToken() == null) {
-                logger.error("Failed to generate request token for consumer: {}", consumerKey);
+                System.out.println("Failed to generate request token for consumer: " + consumerKey);
                 return buildErrorResponse(Response.Status.INTERNAL_SERVER_ERROR, 
                     "internal_error", null);
             }
@@ -176,8 +174,8 @@ public class OscarRequestTokenService {
                 requestToken.getTokenSecret()
             );
 
-            logger.info("Successfully issued request token: {} for consumer: {}", 
-                requestToken.getToken(), consumerKey);
+            System.out.println("Successfully issued request token: " + 
+                requestToken.getToken() + " for consumer: " + consumerKey);
 
             return Response.ok(responseBody)
                 .header("Content-Type", "application/x-www-form-urlencoded")
@@ -201,7 +199,7 @@ public class OscarRequestTokenService {
             // Get AppDefinition from database/config service
             AppDefinition app = configService.findAppByConsumerKey(consumerKey);
             if (app == null) {
-                logger.warn("No app found for consumer key: {}", consumerKey);
+                System.out.println("No app found for consumer key: " + consumerKey);
                 return null;
             }
             

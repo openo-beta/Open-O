@@ -12,7 +12,7 @@ import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
 @Component
-public class OAuthServiceFactory {
+public class OAuthServiceFactory implements OscarRequestTokenHandler.OAuthServiceFactory {
     private static final Logger logger = MiscUtils.getLogger();
 
     /**
