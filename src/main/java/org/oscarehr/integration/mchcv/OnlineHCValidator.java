@@ -134,9 +134,8 @@ public class OnlineHCValidator implements HCValidator {
                 System.out.println("EBS Fault Info is null.");
             }
 
-            // Optional: print the full stack trace
-            e.printStackTrace();
-            
+            logger.error("Error: ", e);
+
             result = new HCValidationResult();
             result.setEbsFault(e.getFaultInfo());
             result.setResponseCode(NOT_VALID_RESPONSE_CODE);
