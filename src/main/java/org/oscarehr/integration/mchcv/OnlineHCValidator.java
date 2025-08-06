@@ -122,7 +122,21 @@ public class OnlineHCValidator implements HCValidator {
                 System.out.println("Validation returned null results.");
             }
         } catch (Faultexception e) {
-            System.out.println("Faultexception caught during validation: " + e.getFaultInfo());
+            System.out.println("Faultexception caught during validation.");
+            System.out.println("Exception Message: " + e.getMessage());
+
+            // Print the EbsFault details if available
+            EbsFault fault = e.getFaultInfo();
+            if (fault != null) {
+                System.out.println("EBS Fault Code: " + fault.getCode());
+                System.out.println("EBS Fault Message: " + fault.getMessage());
+            } else {
+                System.out.println("EBS Fault Info is null.");
+            }
+
+            // Optional: print the full stack trace
+            e.printStackTrace();
+            
             result = new HCValidationResult();
             result.setEbsFault(e.getFaultInfo());
             result.setResponseCode(NOT_VALID_RESPONSE_CODE);
