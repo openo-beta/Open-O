@@ -1341,12 +1341,24 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         List<CaseManagementIssue> issuelist = new ArrayList<CaseManagementIssue>();
 
         CheckBoxBean[] checkedlist = sessionFrm.getIssueCheckList();
-
+        // this is for debugging, please keep it for future development
+        // System.out.println("Checkedlist from sessionFrm: " + Arrays.toString(checkedlist));
         // this gets attached to the CaseManagementNote object
         Set<CaseManagementIssue> issueset = new HashSet<CaseManagementIssue>();
         // wherever this is populated, it's not here...
         Set<CaseManagementNote> noteSet = new HashSet<CaseManagementNote>();
         String ongoing = new String();
+        if (checkedlist != null) {
+            for (CheckBoxBean cb : checkedlist) {
+                if ("on".equalsIgnoreCase(cb.getChecked())) {
+                    CaseManagementIssue issue = cb.getIssue();
+                    if (issue != null && issue.getId() != null) {
+                        issueset.add(issue);
+                    }
+                }
+            }
+        }
+        note.setIssues(issueset);
         Boolean useNewCaseMgmt = Boolean.valueOf((String) session.getAttribute("newCaseManagement"));
         if (useNewCaseMgmt) {
             ongoing = saveCheckedIssues_newCme(request, demo, note, issuelist, checkedlist, issueset, noteSet, ongoing);
@@ -3688,6 +3700,8 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
     protected CaseManagementIssue newIssueToCIssue(String demoNo, Issue iss, Integer programId) {
         CaseManagementIssue cIssue = new CaseManagementIssue();
+        demoNo = getDemographicNo(request);
+        request.setAttribute("demographicNo", demoNo);
         // cIssue.setActive(true);
         cIssue.setAcute(false);
         cIssue.setCertain(false);
