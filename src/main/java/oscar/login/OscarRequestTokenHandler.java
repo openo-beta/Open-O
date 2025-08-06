@@ -71,6 +71,55 @@ public class OscarRequestTokenHandler {
     @Value("${oauth.default.scope:}")
     private String defaultScope;
 
+    /**
+     * Interface for OAuthConfigService to support the service class.
+     */
+    public static interface OAuthConfigService {
+        boolean validateApp(AppDefinition app, HttpServletResponse response) throws IOException;
+        boolean validateCallbackFormat(String callbackUrl, HttpServletResponse response) throws IOException;
+        AppOAuth1Config loadConfig(AppDefinition app, HttpServletResponse response) throws IOException;
+        boolean validateRegisteredCallback(AppOAuth1Config config, String callbackUrl, HttpServletResponse response) throws IOException;
+        AppDefinition findAppByConsumerKey(String consumerKey);
+        boolean isValidCallback(AppOAuth1Config config, String callbackUrl);
+    }
+
+    /**
+     * Interface for OAuthServiceFactory to support the service class.
+     */
+    public static interface OAuthServiceFactory {
+        OAuth10aService buildService(AppOAuth1Config config, String callbackUrl, HttpServletResponse response) throws IOException;
+    }
+
+    /**
+     * Configuration class for OAuth 1.0a applications.
+     */
+    public static class AppOAuth1Config {
+        private String consumerKey;
+        private String consumerSecret;
+        private String baseUrl;
+        private String callbackURI;
+        private String applicationURI;
+        private List<String> scopes;
+
+        public String getConsumerKey() { return consumerKey; }
+        public void setConsumerKey(String consumerKey) { this.consumerKey = consumerKey; }
+        
+        public String getConsumerSecret() { return consumerSecret; }
+        public void setConsumerSecret(String consumerSecret) { this.consumerSecret = consumerSecret; }
+        
+        public String getBaseUrl() { return baseUrl; }
+        public void setBaseUrl(String baseUrl) { this.baseUrl = baseUrl; }
+        
+        public String getCallbackURI() { return callbackURI; }
+        public void setCallbackURI(String callbackURI) { this.callbackURI = callbackURI; }
+        
+        public String getApplicationURI() { return applicationURI; }
+        public void setApplicationURI(String applicationURI) { this.applicationURI = applicationURI; }
+        
+        public List<String> getScopes() { return scopes; }
+        public void setScopes(List<String> scopes) { this.scopes = scopes; }
+    }
+
     public void handleRequestToken(HttpServletRequest request,
                                    HttpServletResponse response,
                                    AppDefinition app,

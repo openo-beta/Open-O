@@ -27,13 +27,13 @@
 package oscar.login;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -42,12 +42,12 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.logging.log4j.Logger;
+import org.oscarehr.common.model.AppDefinition;
 import org.oscarehr.util.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.github.scribejava.core.builder.ServiceBuilder;
-import com.github.scribejava.core.builder.api.DefaultApi10a;
 import com.github.scribejava.core.model.OAuth1RequestToken;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
@@ -66,7 +66,16 @@ public class OscarRequestTokenService {
     private static final Logger logger = MiscUtils.getLogger();
 
     @Autowired
+    private OAuthConfigService configService;
+
+    @Autowired
+    private OAuthServiceFactory serviceFactory;
+
+    @Autowired
     private OscarOAuthDataProvider dataProvider;
+
+    @Value("${oauth.default.scope:}")
+    private String defaultScope;
 
     /**
      * Handles GET requests for OAuth 1.0a request tokens.
@@ -100,74 +109,46 @@ public class OscarRequestTokenService {
         try {
             logger.info("Processing OAuth 1.0a request token request");
 
-            // Extract required OAuth parameters
             String consumerKey = request.getParameter("oauth_consumer_key");
             String callbackUrl = request.getParameter("oauth_callback");
 
-            // Validate required parameters
+            // Basic parameter validation
             if (consumerKey == null || consumerKey.trim().isEmpty()) {
                 logger.warn("Missing oauth_consumer_key parameter in request token request");
                 return buildErrorResponse(Response.Status.BAD_REQUEST, 
                     "parameter_absent", "oauth_consumer_key");
             }
 
-            System.out.println("Consumer Key is not null");
-
-            // OAuth 1.0a requires oauth_callback parameter
             if (callbackUrl == null || callbackUrl.trim().isEmpty()) {
                 logger.warn("Missing oauth_callback parameter in request token request");
                 return buildErrorResponse(Response.Status.BAD_REQUEST, 
                     "parameter_absent", "oauth_callback");
             }
 
-            System.out.println("Callback URL is not null");
-
-            // Get OAuth configuration for this consumer key
-            OAuthAppConfig appConfig = getOAuthConfiguration(request);
+            // Get configuration using service
+            AppOAuth1Config appConfig = getOAuthConfiguration(consumerKey);
             if (appConfig == null) {
                 logger.warn("Unknown consumer key: {}", consumerKey);
                 return buildErrorResponse(Response.Status.UNAUTHORIZED, 
                     "consumer_key_unknown", null);
             }
 
-            System.out.println("App config found for consumer key");
-
-            // Validate callback URL against registered callback
-            if (!isValidCallback(appConfig, callbackUrl)) {
+            // Validate callback using service
+            if (!configService.isValidCallback(appConfig, callbackUrl)) {
                 logger.warn("Invalid callback URL: {} for consumer: {}", callbackUrl, consumerKey);
                 return buildErrorResponse(Response.Status.BAD_REQUEST, 
                     "parameter_rejected", "oauth_callback");
             }
 
-            System.out.println("Building OAuth service");
+            // Build service using factory
+            OAuth10aService service = serviceFactory.buildService(appConfig, callbackUrl, null);
+            if (service == null) {
+                logger.error("Failed to build OAuth service for consumer: {}", consumerKey);
+                return buildErrorResponse(Response.Status.INTERNAL_SERVER_ERROR, 
+                    "internal_error", null);
+            }
 
-            // Build OAuth 1.0a service
-            OAuth10aService service = new ServiceBuilder(appConfig.getConsumerKey())
-                    .apiSecret(appConfig.getConsumerSecret())
-                    .callback(callbackUrl)
-                    .build(new DefaultApi10a() {
-                        @Override
-                        public String getRequestTokenEndpoint() {
-                            System.out.println("Setting request token endpoint");
-                            return appConfig.getBaseUrl() + "/oauth/request_token";
-                        }
-
-                        @Override
-                        public String getAccessTokenEndpoint() {
-                            System.out.println("Setting access token endpoint");
-                            return appConfig.getBaseUrl() + "/oauth/access_token";
-                        }
-
-                        @Override
-                        public String getAuthorizationBaseUrl() {
-                            System.out.println("Setting authorization base URL");
-                            return appConfig.getBaseUrl() + "/oauth/authorize";
-                        }
-                    });
-
-            System.out.println("OAuth service built successfully");
-
-            // Get request token from OAuth provider
+            // Get request token
             OAuth1RequestToken requestToken = service.getRequestToken();
             
             if (requestToken == null || requestToken.getToken() == null) {
@@ -176,117 +157,73 @@ public class OscarRequestTokenService {
                     "internal_error", null);
             }
 
-            // Store the request token
+            // Parse scopes from default configuration
+            List<String> scopes = parseScopes(defaultScope);
+
+            // Store token
             dataProvider.createRequestToken(
                 requestToken.getToken(), 
                 requestToken.getTokenSecret(), 
-                appConfig.getScopes()
+                scopes
             );
 
-            // Build and return the response
+            // Build response
             String responseBody = String.format(
                 "oauth_token=%s&oauth_token_secret=%s&oauth_callback_confirmed=true",
                 requestToken.getToken(),
                 requestToken.getTokenSecret()
             );
 
-            // Log success
             logger.info("Successfully issued request token: {} for consumer: {}", 
                 requestToken.getToken(), consumerKey);
 
-            // Return the response
             return Response.ok(responseBody)
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .build();
 
-        } catch (IOException e) {
-            logger.error("I/O error processing request token: {}", e.getMessage(), e);
-            return buildErrorResponse(Response.Status.INTERNAL_SERVER_ERROR, 
-                "internal_error", null);
-        } catch (InterruptedException e) {
-            logger.error("Request token generation was interrupted: {}", e.getMessage(), e);
-            Thread.currentThread().interrupt();
-            return buildErrorResponse(Response.Status.INTERNAL_SERVER_ERROR, 
-                "internal_error", null);
-        } catch (ExecutionException e) {
-            logger.error("Execution error during request token generation: {}", e.getMessage(), e);
-            return buildErrorResponse(Response.Status.INTERNAL_SERVER_ERROR, 
-                "internal_error", null);
         } catch (Exception e) {
-            logger.error("Unexpected error processing request token: {}", e.getMessage(), e);
+            logger.error("Error processing request token: {}", e.getMessage(), e);
             return buildErrorResponse(Response.Status.INTERNAL_SERVER_ERROR, 
                 "internal_error", null);
         }
     }
 
     /**
-     * Retrieves OAuth application configuration for the given request.
-     * Pulls config from system properties or fallback defaults (no DB).
+     * Retrieves OAuth application configuration for the given consumer key.
      *
-     * @param request The incoming HTTP request with OAuth params
-     * @return OAuthAppConfig or null if no config is found
+     * @param consumerKey The OAuth consumer key
+     * @return AppOAuth1Config or null if no config is found
      */
-    private OAuthAppConfig getOAuthConfiguration(HttpServletRequest request) {
-        String consumerKey = request.getParameter("oauth_consumer_key");
-
-        if (consumerKey == null || consumerKey.trim().isEmpty()) {
-        logger.warn("Missing oauth_consumer_key in request");
-        return null;
+    private AppOAuth1Config getOAuthConfiguration(String consumerKey) {
+        try {
+            // Get AppDefinition from database/config service
+            AppDefinition app = configService.findAppByConsumerKey(consumerKey);
+            if (app == null) {
+                logger.warn("No app found for consumer key: {}", consumerKey);
+                return null;
+            }
+            
+            return configService.loadConfig(app, null);
+        } catch (Exception e) {
+            logger.error("Error loading OAuth config for consumer: {}", consumerKey, e);
+            return null;
         }
-
-        OAuthAppConfig config = CLIENTS.get(consumerKey);
-
-        if (config == null) {
-            logger.warn("No OAuth config found for consumer key: {}", consumerKey);
-        }
-
-        return config;
     }
-
-    private static final Map<String, OAuthAppConfig> CLIENTS = new HashMap<>();
-    
-    static {
-        OAuthAppConfig config = new OAuthAppConfig();
-        config.setConsumerKey("ntl5hj1z77kyu1ad");
-        config.setConsumerSecret("secret123");
-        config.setBaseUrl("http://localhost:8080/oscar/ws");
-        config.setCallbackURI("https://example.com/");
-        config.setApplicationURI("http://localhost:8080/oscar");
-        config.setScopes(Arrays.asList("read", "write"));
-
-        CLIENTS.put(config.getConsumerKey(), config);
-    }
-
-
 
     /**
-     * Validates the callback URL against the registered application configuration.
-     * 
-     * @param config OAuth application configuration
-     * @param callbackUrl The callback URL to validate
-     * @return true if the callback URL is valid, false otherwise
+     * Parses scope string into a list of individual scopes.
+     *
+     * @param scopeString Comma-separated scope string
+     * @return List of scopes or null if empty
      */
-    private boolean isValidCallback(OAuthAppConfig config, String callbackUrl) {
-        // Allow "oob" (out-of-band) callback for desktop applications
-        if ("oob".equals(callbackUrl)) {
-            return true;
+    private List<String> parseScopes(String scopeString) {
+        if (scopeString == null || scopeString.trim().isEmpty()) {
+            return null;
         }
-        
-        // Check if callback URL matches pre-registered callback URI
-        if (config.getCallbackURI() != null && !config.getCallbackURI().isEmpty()) {
-            if (callbackUrl.equals(config.getCallbackURI())) {
-                return true;
-            }
-        }
-
-        // Check if callback URL has common root with application URI
-        if (config.getApplicationURI() != null && !config.getApplicationURI().isEmpty()) {
-            if (callbackUrl.startsWith(config.getApplicationURI())) {
-                return true;
-            }
-        }
-
-        return false;
+        return Arrays.stream(scopeString.split(","))
+                     .map(String::trim)
+                     .filter(s -> !s.isEmpty())
+                     .collect(Collectors.toList());
     }
 
     /**
@@ -311,33 +248,4 @@ public class OscarRequestTokenService {
             .build();
     }
 
-    /**
-     * Simple OAuth application configuration class.
-     */
-    private static class OAuthAppConfig {
-        private String consumerKey;
-        private String consumerSecret;
-        private String baseUrl;
-        private String callbackURI;
-        private String applicationURI;
-        private java.util.List<String> scopes;
-
-        public String getConsumerKey() { return consumerKey; }
-        public void setConsumerKey(String consumerKey) { this.consumerKey = consumerKey; }
-        
-        public String getConsumerSecret() { return consumerSecret; }
-        public void setConsumerSecret(String consumerSecret) { this.consumerSecret = consumerSecret; }
-        
-        public String getBaseUrl() { return baseUrl; }
-        public void setBaseUrl(String baseUrl) { this.baseUrl = baseUrl; }
-        
-        public String getCallbackURI() { return callbackURI; }
-        public void setCallbackURI(String callbackURI) { this.callbackURI = callbackURI; }
-        
-        public String getApplicationURI() { return applicationURI; }
-        public void setApplicationURI(String applicationURI) { this.applicationURI = applicationURI; }
-        
-        public java.util.List<String> getScopes() { return scopes; }
-        public void setScopes(java.util.List<String> scopes) { this.scopes = scopes; }
-    }
 }
