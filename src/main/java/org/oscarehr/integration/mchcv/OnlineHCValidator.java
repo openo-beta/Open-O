@@ -134,8 +134,6 @@ public class OnlineHCValidator implements HCValidator {
                 System.out.println("EBS Fault Info is null.");
             }
 
-            logger.error("Error: ", e);
-
             result = new HCValidationResult();
             result.setEbsFault(e.getFaultInfo());
             result.setResponseCode(NOT_VALID_RESPONSE_CODE);
@@ -153,7 +151,7 @@ public class OnlineHCValidator implements HCValidator {
             results = validation.validate(requests, local);
             System.out.println("Validation call succeeded.");
         } catch (SOAPFaultException sfx) {
-            System.out.println("SOAPFaultException occurred: " + sfx.getMessage());
+            logger.error("SOAPFaultException: ", sfx);
             SOAPFault soapFault = sfx.getFault();
             EbsFault ebsFault = new EbsFault();
             ebsFault.setCode(soapFault.getFaultCode());
