@@ -6,7 +6,7 @@ import java.net.URI;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.AppDefinitionDaoImpl;
+import org.oscarehr.common.dao.AppDefinitionDao;
 import org.oscarehr.common.model.AppDefinition;
 import org.oscarehr.util.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class OAuthConfigService implements OscarRequestTokenHandler.OAuthConfigS
     private static final Logger logger = MiscUtils.getLogger();
 
     @Autowired
-    private AppDefinitionDaoImpl appDefinitionDao;
+    private AppDefinitionDao appDefinitionDao;
 
     public AppOAuth1Config loadConfig(AppDefinition app, HttpServletResponse resp) throws IOException {
         Object doc = app.getConfig();
@@ -83,8 +83,13 @@ public class OAuthConfigService implements OscarRequestTokenHandler.OAuthConfigS
      * @return AppDefinition or null if not found
      */
     public AppDefinition findAppByConsumerKey(String consumerKey) {
-        System.out.println("Looking up app for consumer key: " + consumerKey);
-        return appDefinitionDao.findByConsumerKey(consumerKey);
+        logger.debug("Looking up app for consumer key: {}", consumerKey);
+        try {
+            return appDefinitionDao.findByConsumerKey(consumerKey);
+        } catch (Exception e) {
+            logger.error("Error finding app by consumer key: {}", consumerKey, e);
+            return null;
+        }
     }
 
     /**
