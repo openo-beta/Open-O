@@ -30,6 +30,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxrender1 libxi6 xfonts-75dpi xfonts-base zlib1g maven mariadb-client \
     nano openssh-client vim-tiny \
     python3 python3-pip \
+    wkhtmltopdf \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Remove unnecessary default web apps in Tomcat
