@@ -77,7 +77,7 @@ public class OnlineHCValidator implements HCValidator {
         setExternalClientKeystoreFilename(properties.getProperty("hcv.service.clientKeystore.properties"));
         validation = builder.build(HCValidation.class);
 
-        if (!config.isLoggingRequired()) { removeDownloadInInterceptor(validation); }
+        //if (!config.isLoggingRequired()) { removeDownloadInInterceptor(validation); }
 
         // One consolidated log
         System.out.println("OnlineHCValidator initialized with: " +

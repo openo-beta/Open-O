@@ -276,6 +276,7 @@ public class EdtClientBuilder {
         WSS4JOutInterceptor wssOut = new WSS4JOutInterceptor(outProps);
         // MTOM is enabled on the SOAPBinding, so remove deprecated setAllowMTOM
         client.getEndpoint().getOutInterceptors().add(wssOut);
+        client.getEndpoint().getOutInterceptors().add(new OutSoapMessageInterceptor());
     }
 
     /**
