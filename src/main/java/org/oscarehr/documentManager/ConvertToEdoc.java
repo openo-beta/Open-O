@@ -47,9 +47,13 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 import oscar.OscarProperties;
 import oscar.form.util.FormTransportContainer;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -309,26 +313,16 @@ public final class ConvertToEdoc {
     private static void renderPDF(final String document, ByteArrayOutputStream os)
             throws DocumentException, IOException {
 
-        HashMap<String, String> htmlToPdfSettings = new HashMap<String, String>() {{
-            put("load.blockLocalFileAccess", "false");
-            put("web.enableIntelligentShrinking", "true");
-            put("web.minimumFontSize", "10");
-//	        put("load.zoomFactor", "0.92");
-            put("web.printMediaType", "true");
-            put("web.defaultEncoding", "utf-8");
-            put("T", "10mm");
-            put("L", "8mm");
-            put("R", "8mm");
-            put("web.enableJavascript", "false");
-        }};
+        OscarProperties props = OscarProperties.getInstance();
+        String command = props.getProperty("WKHTMLTOPDF_COMMAND");
+        String args = props.getProperty("WKHTMLTOPDF_ARGS");
 
-        try (InputStream inputStream = HtmlToPdf.create()
-                .object(HtmlToPdfObject.forHtml(document, htmlToPdfSettings))
-                .pageSize(PdfPageSize.Letter)
-                .convert()
-        ) {
-            IOUtils.copy(inputStream, os);
-            inputStream.close();
+        try {
+            if ("internal".equalsIgnoreCase(command)) {
+                convertWithInternal(document, os);
+            } else {
+                convertWithExternal(command, args, document, os);
+            }
         } catch (Exception e) {
             logger.error("Document conversion exception thrown, attempting with alternate conversion library.", e);
             
@@ -346,6 +340,121 @@ public final class ConvertToEdoc {
                 logger.error("Fallback PDF generation has also failed", fallbackEx);
             }
         }
+    }
+
+    /**
+     * Converts HTML to PDF using the internal io.woo.htmltopdf library.
+     * Only use this if you've bundled the required native .so file (e.g., libwkhtmltox.ubuntu.noble.amd64.so)
+     * and WKHTMLTOPDF_COMMAND=internal is set.
+     */
+    private static void convertWithInternal(String document, ByteArrayOutputStream os) throws Exception {
+        // Settings for wkhtmltopdf behavior
+        HashMap<String, String> htmlToPdfSettings = new HashMap<>();
+        htmlToPdfSettings.put("load.blockLocalFileAccess", "false");
+        htmlToPdfSettings.put("web.enableIntelligentShrinking", "true");
+        htmlToPdfSettings.put("web.minimumFontSize", "10");
+        htmlToPdfSettings.put("web.printMediaType", "true");
+        htmlToPdfSettings.put("web.defaultEncoding", "utf-8");
+        htmlToPdfSettings.put("T", "10mm");
+        htmlToPdfSettings.put("L", "8mm");
+        htmlToPdfSettings.put("R", "8mm");
+        htmlToPdfSettings.put("web.enableJavascript", "false");
+
+        try (InputStream inputStream = HtmlToPdf.create()
+                .object(HtmlToPdfObject.forHtml(document, htmlToPdfSettings))
+                .pageSize(PdfPageSize.Letter)
+                .convert()) {
+            IOUtils.copy(inputStream, os);
+        } catch (Exception e) {
+            throw new IOException("Failed to generate PDF with internal converter", e);
+        }
+    }
+
+    /**
+     * Converts HTML to PDF using an external CLI tool, such as wkhtmltopdf or xvfb.
+     * Please set the WKHTMLTOPDF_COMMAND to your external CLI tool, 
+     * and WKHTMLTOPDF_ARGS to your arguments that will be attached to the CLI tool call
+     */
+    public static void convertWithExternal(String command, String args, String html, ByteArrayOutputStream os) throws Exception {
+        // Prepare the list of command + args + "-" + "-" for stdin/stdout
+        List<String> commandParts = new ArrayList<>();
+        commandParts.add(command);
+
+        if (args != null && !args.trim().isEmpty()) {
+            // Simple split by whitespace, handle quotes if needed (improved below)
+            String[] splitArgs = splitArgs(args);
+            Collections.addAll(commandParts, splitArgs);
+        }
+
+        // Add stdin/stdout arguments
+        commandParts.add("-");  // stdin
+        commandParts.add("-");  // stdout
+
+        // Debug print final command array
+        System.out.println("🚀 Final command (ProcessBuilder args): " + commandParts);
+
+        ProcessBuilder pb = new ProcessBuilder(commandParts);
+        pb.redirectErrorStream(true); // merge stderr into stdout
+
+        Process process = pb.start();
+
+        // Write HTML to stdin
+        try (OutputStream stdin = process.getOutputStream()) {
+            stdin.write(html.getBytes(StandardCharsets.UTF_8));
+            stdin.flush();
+            stdin.close();
+        }
+
+        // Read PDF from stdout
+        try (InputStream stdout = process.getInputStream()) {
+            IOUtils.copy(stdout, os);
+        }
+
+        int exitCode = process.waitFor();
+        if (exitCode != 0) {
+            // Capture any error output
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+                String line;
+                StringBuilder sb = new StringBuilder();
+                while ((line = br.readLine()) != null) {
+                    sb.append(line).append("\n");
+                }
+                System.err.println("wkhtmltopdf stderr: " + sb.toString());
+            }
+            throw new IOException("wkhtmltopdf failed with exit code " + exitCode);
+        }
+    }
+
+    /**
+     * Splits command line arguments string into tokens, respecting quotes.
+     * For example: --foo "bar baz" --> ["--foo", "bar baz"]
+     * 
+     * @param argsString the argument string to split
+     * @return array of argument tokens
+     */
+    private static String[] splitArgs(String argsString) {
+        // Simple state machine to parse args with quotes
+        List<String> args = new ArrayList<>();
+        boolean inQuotes = false;
+        StringBuilder current = new StringBuilder();
+
+        for (int i = 0; i < argsString.length(); i++) {
+            char c = argsString.charAt(i);
+            if (c == '"') {
+                inQuotes = !inQuotes;
+            } else if (Character.isWhitespace(c) && !inQuotes) {
+                if (current.length() > 0) {
+                    args.add(current.toString());
+                    current.setLength(0);
+                }
+            } else {
+                current.append(c);
+            }
+        }
+        if (current.length() > 0) {
+            args.add(current.toString());
+        }
+        return args.toArray(new String[0]);
     }
 
     /**
