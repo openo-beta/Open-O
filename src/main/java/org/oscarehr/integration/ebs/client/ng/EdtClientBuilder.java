@@ -293,8 +293,6 @@ public class EdtClientBuilder {
         props.put(WSHandlerConstants.SIG_KEY_ID, "DirectReference");
         props.put(WSHandlerConstants.STORE_BYTES_IN_ATTACHMENT, "0");
         props.put(WSHandlerConstants.EXPAND_XOP_INCLUDE, "0");
-        props.put(WSHandlerConstants.ENCRYPTION_USER, getConfig().getKeystoreUser());
-        props.put(WSHandlerConstants.ENC_PROP_FILE, clientKeystore);
         return props;
     }
 
@@ -302,7 +300,8 @@ public class EdtClientBuilder {
      * @return concatenated WS-Security directives including encryption
      */
     protected String getCxfOutHandlerDirectives() {
-         return getCxfOutHandlerDirectivesBase() + " " + WSHandlerConstants.ENCRYPT;
+         return getCxfOutHandlerDirectivesBase(); 
+        //  + " " + WSHandlerConstants.ENCRYPT;
     }
  
 
