@@ -346,6 +346,9 @@ public final class ConvertToEdoc {
      * Converts HTML to PDF using the internal io.woo.htmltopdf library.
      * Only use this if you've bundled the required native .so file (e.g., libwkhtmltox.ubuntu.noble.amd64.so)
      * and WKHTMLTOPDF_COMMAND=internal is set.
+     * @param document the complete HTML string to convert to PDF
+     * @param os the {@link ByteArrayOutputStream} where the generated PDF content will be written
+     * @throws Exception if the external process fails or PDF conversion is unsuccessful
      */
     private static void convertWithInternal(String document, ByteArrayOutputStream os) throws Exception {
         // Settings for wkhtmltopdf behavior
@@ -371,9 +374,15 @@ public final class ConvertToEdoc {
     }
 
     /**
-     * Converts HTML to PDF using an external CLI tool, such as wkhtmltopdf or xvfb.
+     * Converts HTML to PDF using an external CLI tool, such as wkhtmltopdf.
      * Please set the WKHTMLTOPDF_COMMAND to your external CLI tool, 
      * and WKHTMLTOPDF_ARGS to your arguments that will be attached to the CLI tool call
+     * 
+     * @param command the full path to the external wkhtmltopdf executable (e.g., /usr/bin/wkhtmltopdf)
+     * @param args space-separated CLI arguments to pass to wkhtmltopdf (e.g., "--encoding utf-8")
+     * @param html the complete HTML string to convert to PDF
+     * @param os the {@link ByteArrayOutputStream} where the generated PDF content will be written
+     * @throws Exception if the external process fails or PDF conversion is unsuccessful
      */
     public static void convertWithExternal(String command, String args, String html, ByteArrayOutputStream os) throws Exception {
         // Prepare the list of command + args + "-" + "-" for stdin/stdout
@@ -389,9 +398,6 @@ public final class ConvertToEdoc {
         // Add stdin/stdout arguments
         commandParts.add("-");  // stdin
         commandParts.add("-");  // stdout
-
-        // Debug print final command array
-        System.out.println("🚀 Final command (ProcessBuilder args): " + commandParts);
 
         ProcessBuilder pb = new ProcessBuilder(commandParts);
         pb.redirectErrorStream(true); // merge stderr into stdout
@@ -478,16 +484,11 @@ public final class ConvertToEdoc {
             incomingDocumentString = "<!DOCTYPE html>" + incomingDocumentString;
         }
 
-        //TODO: COMING SOON.  EForms should be selectively sanitized against potential injection attacks and etc...
-//		Safelist safelist = Safelist.relaxed();
-//		safelist.addTags().addTags() etc...
-//		String sanitized = Jsoup.clean(documentString, safeList);
-
         Document document = Jsoup.parse(incomingDocumentString);
 
         document.outputSettings()
             .syntax(Document.OutputSettings.Syntax.xml)  // Enforce XML syntax
-            .escapeMode(Entities.EscapeMode.xhtml)        // XHTML entities
+            .escapeMode(Entities.EscapeMode.xhtml)
             .prettyPrint(false);
 
         // Ensure DOCTYPE is present
