@@ -47,7 +47,7 @@
 		</property>
 	</bean>
 	
-	<!-- OAuth token endpoints -->
+	<!-- OAuth token endpoints
 	<jaxrs:server id="oauthServices" address="/oauth">
 	<jaxrs:serviceBeans>
 		<ref bean="oscarRequestTokenService"/>
@@ -56,7 +56,9 @@
 		<ref bean="jaxb"/>
 		<ref bean="jsonProvider"/>
 	</jaxrs:providers>
-	</jaxrs:server>
+	</jaxrs:server> -->
+
+	
 	
 
     <jaxrs:server id="restServices" address="/services">

@@ -26,226 +26,66 @@
  */
 package oscar.login;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import org.oscarehr.ws.oauth.OAuth1Request;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-
-import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.AppDefinition;
-import org.oscarehr.util.MiscUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import com.github.scribejava.core.model.OAuth1RequestToken;
-import com.github.scribejava.core.oauth.OAuth10aService;
-
-import oscar.login.AppOAuth1Config;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
- * OAuth 1.0a Request Token Service using ScribeJava.
- * 
- * This REST service issues temporary request tokens to clients which will be
- * later authorized and exchanged for access tokens. It replaces the CXF-based
- * OAuth implementation with ScribeJava.
+ * Issues an OAuth 1.0a temporary request token (a.k.a. "initiate"),
+ * replacing the old CXF JAX-RS resource with a Spring MVC controller.
+ *
+ * URL (via servlet mapping): /ws/oauth/initiate
  */
-@Component
-@Path("/initiate")
+@RestController
+@RequestMapping // servlet handles /ws/oauth/*; we map just the method below
 public class OscarRequestTokenService {
 
-    /** Logger for this class */
-    private static final Logger logger = MiscUtils.getLogger();
+    private final OscarOAuthDataProvider dataProvider;
+    private final org.oscarehr.ws.oauth.OAuth1ParamParser parser;
+    private final org.oscarehr.ws.oauth.OAuth1SignatureVerifier verifier;
 
-    @Autowired
-    private OAuthConfigService configService;
-
-    @Autowired
-    private OAuthServiceFactory serviceFactory;
-
-    @Autowired
-    private OscarOAuthDataProvider dataProvider;
-
-    @Value("${oauth.default.scope:}")
-    private String defaultScope;
-
-    /**
-     * Handles GET requests for OAuth 1.0a request tokens.
-     * 
-     * @param request HTTP servlet request
-     * @param response HTTP servlet response
-     * @return Response containing the request token or error
-     */
-    @GET
-    @Produces("application/x-www-form-urlencoded")
-    public Response getRequestTokenWithGET(@Context HttpServletRequest request, 
-                                          @Context HttpServletResponse response) {
-        return getRequestToken(request, response);
+    public OscarRequestTokenService(OscarOAuthDataProvider dataProvider,
+                                    org.oscarehr.ws.oauth.OAuth1ParamParser parser,
+                                    org.oscarehr.ws.oauth.OAuth1SignatureVerifier verifier) {
+        this.dataProvider = dataProvider;
+        this.parser = parser;
+        this.verifier = verifier;
     }
 
-    /**
-     * Handles POST requests for OAuth 1.0a request tokens.
-     * 
-     * This method implements the OAuth 1.0a request token endpoint as specified in RFC 5849.
-     * It validates the consumer key, generates a temporary request token, stores it, and
-     * returns it to the client in form-encoded format.
-     * 
-     * @param request HTTP servlet request
-     * @param response HTTP servlet response
-     * @return Response containing the request token or error
-     */
-    @POST
-    @Produces("application/x-www-form-urlencoded")
-    public Response getRequestToken(@Context HttpServletRequest request, 
-                                   @Context HttpServletResponse response) {
-        try {
-            System.out.println("Processing OAuth 1.0a request token request");
 
-            String consumerKey = request.getParameter("oauth_consumer_key");
-            String callbackUrl = request.getParameter("oauth_callback");
+    @RequestMapping(
+    value = "/initiate",
+    method = {RequestMethod.GET, RequestMethod.POST},
+    produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+    )
+    public String initiate(HttpServletRequest req) {
+        OAuth1Request oreq = parser.parseFromRequest(req);
 
-            // Basic parameter validation
-            if (consumerKey == null || consumerKey.trim().isEmpty()) {
-                System.out.println("Missing oauth_consumer_key parameter in request token request");
-                return buildErrorResponse(Response.Status.BAD_REQUEST, 
-                    "parameter_absent", "oauth_consumer_key");
-            }
-
-            if (callbackUrl == null || callbackUrl.trim().isEmpty()) {
-                System.out.println("Missing oauth_callback parameter in request token request");
-                return buildErrorResponse(Response.Status.BAD_REQUEST, 
-                    "parameter_absent", "oauth_callback");
-            }
-
-            // Get configuration using service
-            AppOAuth1Config appConfig = getOAuthConfiguration(consumerKey);
-            if (appConfig == null) {
-                System.out.println("Unknown consumer key: " + consumerKey);
-                return buildErrorResponse(Response.Status.UNAUTHORIZED, 
-                    "consumer_key_unknown", null);
-            }
-
-            // Validate callback using service
-            if (!configService.isValidCallback(appConfig, callbackUrl)) {
-                System.out.println("Invalid callback URL: " + callbackUrl + " for consumer: " + consumerKey);
-                return buildErrorResponse(Response.Status.BAD_REQUEST, 
-                    "parameter_rejected", "oauth_callback");
-            }
-
-            // Build service using factory
-            OAuth10aService service = serviceFactory.buildService(appConfig, callbackUrl, null);
-            if (service == null) {
-                System.out.println("Failed to build OAuth service for consumer: " + consumerKey);
-                return buildErrorResponse(Response.Status.INTERNAL_SERVER_ERROR, 
-                    "internal_error", null);
-            }
-
-            // Get request token
-            OAuth1RequestToken requestToken = service.getRequestToken();
-            
-            if (requestToken == null || requestToken.getToken() == null) {
-                System.out.println("Failed to generate request token for consumer: " + consumerKey);
-                return buildErrorResponse(Response.Status.INTERNAL_SERVER_ERROR, 
-                    "internal_error", null);
-            }
-
-            // Parse scopes from default configuration
-            List<String> scopes = parseScopes(defaultScope);
-
-            // Store token
-            dataProvider.createRequestToken(
-                requestToken.getToken(), 
-                requestToken.getTokenSecret(), 
-                scopes
-            );
-
-            // Build response
-            String responseBody = String.format(
-                "oauth_token=%s&oauth_token_secret=%s&oauth_callback_confirmed=true",
-                requestToken.getToken(),
-                requestToken.getTokenSecret()
-            );
-
-            System.out.println("Successfully issued request token: " + 
-                requestToken.getToken() + " for consumer: " + consumerKey);
-
-            return Response.ok(responseBody)
-                .header("Content-Type", "application/x-www-form-urlencoded")
-                .build();
-
-        } catch (Exception e) {
-            logger.error("Error processing request token: {}", e.getMessage(), e);
-            return buildErrorResponse(Response.Status.INTERNAL_SERVER_ERROR, 
-                "internal_error", null);
-        }
-    }
-
-    /**
-     * Retrieves OAuth application configuration for the given consumer key.
-     *
-     * @param consumerKey The OAuth consumer key
-     * @return AppOAuth1Config or null if no config is found
-     */
-    private AppOAuth1Config getOAuthConfiguration(String consumerKey) {
-        try {
-            // Get AppDefinition from database/config service
-            AppDefinition app = configService.findAppByConsumerKey(consumerKey);
-            if (app == null) {
-                System.out.println("No app found for consumer key: " + consumerKey);
-                return null;
-            }
-            
-            return configService.loadConfig(app, null);
-        } catch (Exception e) {
-            logger.error("Error loading OAuth config for consumer: {}", consumerKey, e);
-            return null;
-        }
-    }
-
-    /**
-     * Parses scope string into a list of individual scopes.
-     *
-     * @param scopeString Comma-separated scope string
-     * @return List of scopes or null if empty
-     */
-    private List<String> parseScopes(String scopeString) {
-        if (scopeString == null || scopeString.trim().isEmpty()) {
-            return null;
-        }
-        return Arrays.stream(scopeString.split(","))
-                     .map(String::trim)
-                     .filter(s -> !s.isEmpty())
-                     .collect(Collectors.toList());
-    }
-
-    /**
-     * Builds an OAuth error response in the standard format.
-     * 
-     * @param status HTTP status code
-     * @param problem OAuth problem identifier
-     * @param advice Additional problem advice (optional)
-     * @return Response with OAuth error
-     */
-    private Response buildErrorResponse(Response.Status status, String problem, String advice) {
-        StringBuilder errorBody = new StringBuilder();
-        errorBody.append("oauth_problem=").append(problem);
-        
-        if (advice != null && !advice.isEmpty()) {
-            errorBody.append("&oauth_problem_advice=").append(advice);
+        Client client = dataProvider.getClient(oreq.consumerKey);
+        if (client == null) {
+            throw new org.oscarehr.ws.oauth.OAuth1Exception(401, "invalid_consumer");
         }
 
-        return Response.status(status)
-            .entity(errorBody.toString())
-            .header("Content-Type", "application/x-www-form-urlencoded")
-            .build();
+        // Verify HMAC-SHA1 signature (no token secret at initiate)
+        verifier.verifySignature(oreq, client.getSecret(), "");
+
+        RequestTokenRegistration reg = new RequestTokenRegistration(client);
+        reg.setCallback(oreq.callback); // may be "oob"
+        if (oreq.scopesCsv != null && !oreq.scopesCsv.isBlank()) {
+            reg.setScopes(oreq.scopesCsv.split("\\s+"));
+        }
+        RequestToken rt = dataProvider.createRequestToken(reg);
+
+        return "oauth_token=" + enc(rt.getTokenKey())
+            + "&oauth_token_secret=" + enc(rt.getTokenSecret())
+            + "&oauth_callback_confirmed=true";
     }
 
+
+    private static String enc(String s) {
+        return URLEncoder.encode(s, StandardCharsets.UTF_8);
+    }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/mvc   http://www.springframework.org/schema/mvc/spring-mvc.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+  <!-- Enable @Controller/@RestController etc. -->
+  <mvc:annotation-driven/>
+
+  <!-- Scan the converted controller (oscar.login) and our small OAuth helpers (org.oscarehr.ws.oauth) -->
+  <context:component-scan base-package="oscar.login"/>
+  <context:component-scan base-package="org.oscarehr.ws.oauth"/>
+
+  <!-- Reuse the existing provider from the ROOT context if it's already defined there.
+       If it's NOT available at runtime, uncomment the bean below to define locally. -->
+  <!-- <bean id="oauthProvider" class="oscar.login.OscarOAuthDataProvider" autowire="byName"/> -->
+
+  <!-- Signature verifier using ScribeJava (we'll add the class shortly) -->
+  <bean id="oauthSignatureVerifier" class="org.oscarehr.ws.oauth.ScribeOAuth1Verifier"/>
+
+  <!-- Simple JSP resolver so /login/3rdpartyLogin.jsp can render -->
+  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix" value="/"/>
+    <property name="suffix" value=".jsp"/>
+  </bean>
+</beans>
