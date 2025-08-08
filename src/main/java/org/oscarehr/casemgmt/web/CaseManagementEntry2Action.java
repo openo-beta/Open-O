@@ -1445,7 +1445,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         String observationDate = this.getObservation_date();
         ResourceBundle props = ResourceBundle.getBundle("oscarResources", request.getLocale());
         if (observationDate != null && !observationDate.equals("")) {
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy H:mm", request.getLocale());
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy H:mm", Locale.ENGLISH);
             Date dateObserve = formatter.parse(observationDate);
             if (dateObserve.getTime() > now.getTime()) {
                 request.setAttribute("DateError", props.getString("oscarEncounter.futureDate.Msg"));
