@@ -270,8 +270,9 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
             // StringEncoderUtils.a();
             String default_view = OscarProperties.getInstance().getProperty("default_view", "");
+            String contextPath = request.getContextPath();
 
-            url = bsurl + "/billing.do?billRegion=" + java.net.URLEncoder.encode(province, "UTF-8") + "&billForm=" + java.net.URLEncoder.encode(default_view, "UTF-8") + "&hotclick=" + java.net.URLEncoder.encode("", "UTF-8") + "&appointment_no=" + bean.appointmentNo + "&appointment_date=" + bean.appointmentDate + "&start_time=" + Hour + ":" + Min + "&demographic_name=" + java.net.URLEncoder.encode(bean.patientLastName + "," + bean.patientFirstName, "UTF-8") + "&demographic_no=" + bean.demographicNo
+            url = bsurl + contextPath + "/billing.do?billRegion=" + java.net.URLEncoder.encode(province, "UTF-8") + "&billForm=" + java.net.URLEncoder.encode(default_view, "UTF-8") + "&hotclick=" + java.net.URLEncoder.encode("", "UTF-8") + "&appointment_no=" + bean.appointmentNo + "&appointment_date=" + bean.appointmentDate + "&start_time=" + Hour + ":" + Min + "&demographic_name=" + java.net.URLEncoder.encode(bean.patientLastName + "," + bean.patientFirstName, "UTF-8") + "&demographic_no=" + bean.demographicNo
                     + "&providerview=" + bean.curProviderNo + "&user_no=" + bean.providerNo + "&apptProvider_no=" + bean.curProviderNo + "&bNewForm=1&status=t";
 
             session.setAttribute("billing_url", url);
@@ -1341,12 +1342,24 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         List<CaseManagementIssue> issuelist = new ArrayList<CaseManagementIssue>();
 
         CheckBoxBean[] checkedlist = sessionFrm.getIssueCheckList();
-
+        // this is for debugging, please keep it for future development
+        // System.out.println("Checkedlist from sessionFrm: " + Arrays.toString(checkedlist));
         // this gets attached to the CaseManagementNote object
         Set<CaseManagementIssue> issueset = new HashSet<CaseManagementIssue>();
         // wherever this is populated, it's not here...
         Set<CaseManagementNote> noteSet = new HashSet<CaseManagementNote>();
-        String ongoing = new String();
+        String ongoing = "";
+        if (checkedlist != null) {
+            for (CheckBoxBean cb : checkedlist) {
+                if ("on".equalsIgnoreCase(cb.getChecked())) {
+                    CaseManagementIssue issue = cb.getIssue();
+                    if (issue != null && issue.getId() != null) {
+                        issueset.add(issue);
+                    }
+                }
+            }
+        }
+        note.setIssues(issueset);
         Boolean useNewCaseMgmt = Boolean.valueOf((String) session.getAttribute("newCaseManagement"));
         if (useNewCaseMgmt) {
             ongoing = saveCheckedIssues_newCme(request, demo, note, issuelist, checkedlist, issueset, noteSet, ongoing);
@@ -1433,7 +1446,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         String observationDate = this.getObservation_date();
         ResourceBundle props = ResourceBundle.getBundle("oscarResources", request.getLocale());
         if (observationDate != null && !observationDate.equals("")) {
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy H:mm", request.getLocale());
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy H:mm", Locale.ENGLISH);
             Date dateObserve = formatter.parse(observationDate);
             if (dateObserve.getTime() > now.getTime()) {
                 request.setAttribute("DateError", props.getString("oscarEncounter.futureDate.Msg"));
@@ -1828,7 +1841,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         note.setUpdate_date(now);
         if (note.getCreate_date() == null) note.setCreate_date(now);
 
-        note.setEncounter_type(request.getParameter("encType"));
+        note.setEncounter_type(request.getParameter("caseNote.encounter_type"));
 
         String hourOfEncounterTime = request.getParameter("hourOfEncounterTime");
         if (hourOfEncounterTime != null) {
@@ -2059,7 +2072,8 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
                 ++dxNum;
             }
 
-            String url = "/billing.do?billRegion=" + region
+            String contextPath = request.getContextPath();
+            String url = contextPath + "/billing.do?billRegion=" + region
                     + "&billForm=" + defaultView
                     + "&hotclick=&appointment_no="
                     + appointmentNo
@@ -3686,12 +3700,12 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         return rt + "]\n";
     }
 
-    protected CaseManagementIssue newIssueToCIssue(String demoNo, Issue iss, Integer programId) {
+    protected CaseManagementIssue newIssueToCIssue(String demographicNo, Issue iss, Integer programId) {
         CaseManagementIssue cIssue = new CaseManagementIssue();
         // cIssue.setActive(true);
         cIssue.setAcute(false);
         cIssue.setCertain(false);
-        cIssue.setDemographic_no(Integer.valueOf(demoNo));
+        cIssue.setDemographic_no(Integer.valueOf(demographicNo));
 
         cIssue.setIssue_id(iss.getId().longValue());
 
@@ -3717,7 +3731,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
      * @param programId is optional, can be null for none.
      */
     protected CaseManagementIssue newIssueToCIssue(CaseManagementEntryFormBean cform, Issue iss, Integer programId) {
-        return newIssueToCIssue(this.getDemoNo(), iss, programId);
+        return newIssueToCIssue(this.getDemographicNo(), iss, programId);
     }
 
     protected Map<Long, CaseManagementIssue> convertIssueListToMap(List<CaseManagementIssue> issueList) {

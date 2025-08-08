@@ -311,7 +311,7 @@
             function addNotes() {
 
 
-                var url = "AddRxComment.jsp";
+                var url = "oscarRx/AddRxComment.jsp";
                 var ran_number = Math.round(Math.random() * 1000000);
                 var comment = encodeURIComponent(document.getElementById('additionalNotes').value);
                 var params = "scriptNo=<%=request.getAttribute("scriptId")%>&comment=" + comment + "&rand=" + ran_number;  //]
@@ -703,9 +703,14 @@
                                     </div>
                                 </form>
                                     <script type="text/javascript">
-                                        function clearPending(action) {
-                                            document.forms.RxClearPendingForm.action.value = action;
-                                            document.forms.RxClearPendingForm.submit();
+                                        function clearPending(actionValue) {
+                                            var form = document.forms["RxClearPendingForm"];
+                                            if (form && form.elements["action"]) {
+                                                form.elements["action"].value = actionValue;
+                                                form.submit();
+                                            } else {
+                                                console.warn("RxClearPendingForm not found, skipping clearPending()");
+                                            }
                                         }
 
                                         function clearPendingFax() {

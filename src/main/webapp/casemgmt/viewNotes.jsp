@@ -40,6 +40,7 @@
 <%@page import="org.oscarehr.common.model.PartialDate"%>
 <%@page import="org.oscarehr.util.SpringUtils"%>
 <%@page import="org.oscarehr.util.LoggedInInfo"%>
+<%@page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -181,36 +182,59 @@
     } // end if
 %>
 
+    <%-- Remote Notes Section --%>
+    <fmt:setBundle basename="oscarResources"/>
+<fmt:message key="${param.title}" var="resolvedTitleRaw"/>
+<c:set var="resolvedTitle" value="${fn:escapeXml(resolvedTitleRaw)}"/>
 
-	<%
-		List<NoteDisplay>remoteNotes = (List<NoteDisplay>)request.getAttribute("remoteNotes");
-		String htmlText;
-		int noteIdx = 0;
-		if( remoteNotes != null ) {
-		    for( NoteDisplay remoteNote : remoteNotes) {
-				htmlText = remoteNote.getNote();
-				htmlText = htmlText.replaceAll("\n", "<br>");
-				if( noteIdx % 2 == 0 ) {
-				%>				
-				<li class="cpp" style="background-color: #FFCCCC;">
-				<%
-				}
-				else {
-				    %>
-				    <li class="cpp" style="background-color: #CCA3A3">
-				    <%
-				}
-				%>
-					<a class="links" onmouseover="this.className='linkhover'"	onmouseout="this.className='links'" title="<%=remoteNote.getLocation()%> by <%=remoteNote.getProviderName()%> on <%=ConversionUtils.toTimestampString(remoteNote.getObservationDate())%>" href="javascript:void(0)" onclick="showIntegratedNote('<fmt:setBundle basename="oscarResources"/><fmt:message key="${param.title}" />',<%=htmlText%>,<%=remoteNote.getLocation()%>, <%=remoteNote.getProviderName()%>, <%=ConversionUtils.toTimestampString(remoteNote.getObservationDate())%>);">					
-					<%=htmlText%>
-					</a>
-				</li>
-				<%
-		    }
-		    
-		}
-	%>
+<%
+  // JS‑escaped version of the title
+  String resolvedTitleJs = Encode.forJavaScript(
+    (String) pageContext.getAttribute("resolvedTitle")
+  );
+%>
+
+<ul>
+  <c:forEach var="remoteNote" items="${remoteNotes}" varStatus="status">
+    <% 
+       // pull the JSP var "remoteNote" into a Java variable
+       org.oscarehr.casemgmt.web.NoteDisplay note =
+         (org.oscarehr.casemgmt.web.NoteDisplay) pageContext.getAttribute("remoteNote");
+
+       // now you can use 'note' in your scriptlet
+       String rawText   = note.getNote().replaceAll("\n","<br>");
+       String rawTextJs = Encode.forJavaScript(rawText);
+
+       String locAttr = note.getLocation();
+       String locJs   = Encode.forJavaScript(locAttr);
+
+       String provAttr = note.getProviderName();
+       String provJs   = Encode.forJavaScript(provAttr);
+
+       String timestamp = ConversionUtils
+                            .toTimestampString(note.getObservationDate());
+       String timeJs   = Encode.forJavaScript(timestamp);
+    %>
+
+    <li class="cpp ${status.index % 2 == 0 ? 'row-even' : 'row-odd'}">
+      <a class="links"
+         onmouseover="this.className='linkhover'"
+         onmouseout="this.className='links'"
+         title="<%= Encode.forHtmlAttribute(locAttr) %> by <%= Encode.forHtmlAttribute(provAttr) %> on <%= Encode.forHtmlAttribute(timestamp) %>"
+         href="javascript:void(0)"
+         onclick="showIntegratedNote(
+           '<%= resolvedTitleJs %>',
+           '<%= rawTextJs      %>',
+           '<%= locJs          %>',
+           '<%= provJs         %>',
+           '<%= timeJs         %>'
+         ); return false;">
+        <%= Encode.forHtml(rawText) %>
+      </a>
+    </li>
+  </c:forEach>
 </ul>
+
 
 <input type="hidden" id="${param.cmd}num" value="${num}">
 <input type="hidden" id="${param.cmd}threshold" value="0">
