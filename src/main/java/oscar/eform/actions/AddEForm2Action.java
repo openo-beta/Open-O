@@ -440,7 +440,15 @@ public class AddEForm2Action extends ActionSupport {
             }
 		}
 
-		String path = request.getContextPath() + "/eform/efmshowform_data.jsp?fdid=" + prev_fdid + "&parentAjaxId=eforms";
+        String fdid = eformDataManager.saveEformData(loggedInInfo, curForm) + "";
+        String path;
+
+        if (prev_fdid != null) {
+            path = request.getContextPath() + "/eform/efmshowform_data.jsp?fdid=" + prev_fdid + "&parentAjaxId=eforms";
+        } else {
+            path = request.getContextPath() + "/eform/efmshowform_data.jsp?fdid=" + fdid + "&parentAjaxId=eforms";
+        }
+
 
 		String pdfBase64;
 		try {
