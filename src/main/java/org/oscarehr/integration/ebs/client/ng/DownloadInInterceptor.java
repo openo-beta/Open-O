@@ -1,54 +1,38 @@
 package org.oscarehr.integration.ebs.client.ng;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Map;
+import java.util.Set;
+
+import javax.xml.soap.SOAPMessage;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import java.io.InputStream;
+import java.io.StringWriter;
 
 import org.apache.cxf.attachment.LazyAttachmentCollection;
+import org.apache.cxf.binding.xml.interceptor.XMLMessageInInterceptor;
 import org.apache.cxf.helpers.IOUtils;
 import org.apache.cxf.interceptor.Fault;
+import org.apache.cxf.io.CachedOutputStream;
 import org.apache.cxf.message.Attachment;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.apache.cxf.phase.Phase;
 
-/**
- * A CXF interceptor that processes incoming attachments and message properties after a message has been invoked.
- * 
- * <h3>Purpose</h3>
- * 
- * The {@code DownloadInInterceptor} is designed to handle attachments after the main invocation phase 
- * of a message, typically used in scenarios where the client downloads and processes attachments 
- * from a response message.
- * 
- * <h3>Usage</h3>
- * 
- * This interceptor operates in the {@link Phase#POST_INVOKE} phase, meaning it processes the 
- * message after it has been fully invoked. It retrieves and logs all attachments from the message 
- * and prints out all key-value pairs from the message's internal map.
- * 
- * <h3>Implementation notes</h3>
- * 
- * - The attachments are accessed via the {@link LazyAttachmentCollection}, which allows the 
- *   attachments to be loaded lazily (i.e., only when needed).
- * - It prints the attachment ID and content to the standard output.
- * - If an {@link IOException} occurs when reading the attachment data, the exception is swallowed 
- *   and logged as part of the message processing.
- */
 public class DownloadInInterceptor extends AbstractPhaseInterceptor<Message> {
 
-	/**
-	 * Constructs a new {@code DownloadInInterceptor} and sets it to operate in the POST_INVOKE phase.
-	 */
 	public DownloadInInterceptor() {
-		super(Phase.POST_INVOKE);
+		super(Phase.PRE_INVOKE);
 	}
 
-	/**
-	 * Handles the incoming message by processing its attachments and logging message properties.
-	 * 
-	 * @param message The incoming {@link Message} to be processed.
-	 * @throws Fault If there is a problem during message processing.
-	 */
 	@Override
 	public void handleMessage(Message message) throws Fault {
 		LazyAttachmentCollection attachments = (LazyAttachmentCollection) 
@@ -64,9 +48,61 @@ public class DownloadInInterceptor extends AbstractPhaseInterceptor<Message> {
 			}
 		}
 		
-		for(Map.Entry<String, Object> entry : message.entrySet()) {
-			System.out.println(entry.getKey() + " - " + entry.getValue());
-		}
+		
+		StringBuilder messageInfo = new StringBuilder();
+
+        try {
+            // Get the content of the message as an InputStream
+            InputStream is = message.getContent(InputStream.class);
+            if (is != null) {
+                // Copy the input stream to a CachedOutputStream so we can read it
+                CachedOutputStream cos = new CachedOutputStream();
+                IOUtils.copy(is, cos);
+                cos.flush();
+
+                // Reset the input stream to the beginning and set it back in the message
+                message.setContent(InputStream.class, cos.getInputStream());
+
+                // Convert the CachedOutputStream to a String (decrypted message)
+                String soapMessage = IOUtils.toString(cos.getInputStream(), "UTF-8");
+
+                // Print the decrypted SOAP message to the console
+                System.out.println("Decrypted SOAP Response Message: \n" + soapMessage);
+            } else {
+                System.out.println("No InputStream found in the message content.");
+            }
+        } catch (Exception e) {
+            throw new Fault(e);
+        }
+
+        // Add message properties
+        messageInfo.append("\nMessage Properties:\n");
+        Map<String, Object> properties = message;
+        for (Map.Entry<String, Object> property : properties.entrySet()) {
+            messageInfo.append(property.getKey()).append(": ").append(property.getValue()).append("\n");
+        }
+
+        System.out.println(messageInfo.toString());
+
+		try {
+            SOAPMessage soapMessage = message.getContent(SOAPMessage.class);
+            if (soapMessage != null) {
+                // Convert the SOAPMessage to a String (XML format)
+                StringWriter sw = new StringWriter();
+                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                Transformer transformer = transformerFactory.newTransformer();
+                transformer.transform(new DOMSource(soapMessage.getSOAPPart()), new StreamResult(sw));
+
+                String xmlMessage = sw.toString();
+                System.out.println("Decrypted SOAP Response XML: \n" + xmlMessage);
+            } else {
+                System.out.println("No SOAP Message found in the response.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		
+		// SOAPMessage soapMessage = (SOAPMessage) message;
 	}
 
 }
