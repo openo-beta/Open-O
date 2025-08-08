@@ -25,11 +25,8 @@
 package org.oscarehr.documentManager;
 
 import com.lowagie.text.DocumentException;
-import io.woo.htmltopdf.HtmlToPdf;
-import io.woo.htmltopdf.HtmlToPdfObject;
-import io.woo.htmltopdf.PdfPageSize;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -47,13 +44,9 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 import oscar.OscarProperties;
 import oscar.form.util.FormTransportContainer;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -314,153 +307,30 @@ public final class ConvertToEdoc {
             throws DocumentException, IOException {
 
         OscarProperties props = OscarProperties.getInstance();
-        String command = props.getProperty("WKHTMLTOPDF_COMMAND");
+        String cmd = props.getProperty("WKHTMLTOPDF_COMMAND");
         String args = props.getProperty("WKHTMLTOPDF_ARGS");
 
+        EDocConverterInterface converter = "internal".equalsIgnoreCase(cmd) ? new InternalEDocConverter() : new ExternalEDocConverter(cmd, args);
+
         try {
-            if ("internal".equalsIgnoreCase(command)) {
-                convertWithInternal(document, os);
-            } else {
-                convertWithExternal(command, args, document, os);
-            }
-        } catch (Exception e) {
-            logger.error("Document conversion exception thrown, attempting with alternate conversion library.", e);
-            
-            try {
-                ITextRenderer renderer = new ITextRenderer();
-                SharedContext sharedContext = renderer.getSharedContext();
-                sharedContext.setPrint(true);
-                sharedContext.setInteractive(false);
-                sharedContext.setReplacedElementFactory(new ReplacedElementFactoryImpl());
-                sharedContext.getTextRenderer().setSmoothingThreshold(0);
-                renderer.setDocumentFromString(document, null);
-                renderer.layout();
-                renderer.createPDF(os, true);
-            } catch (Exception fallbackEx) {
-                logger.error("Fallback PDF generation has also failed", fallbackEx);
-            }
+            converter.convert(document, os);
+        } catch(Exception e) {
+            logger.error("Primary conversion failed", e);
+            fallbackRender(document, os);
         }
     }
 
-    /**
-     * Converts HTML to PDF using the internal io.woo.htmltopdf library.
-     * Only use this if you've bundled the required native .so file (e.g., libwkhtmltox.ubuntu.noble.amd64.so)
-     * and WKHTMLTOPDF_COMMAND=internal is set.
-     * @param document the complete HTML string to convert to PDF
-     * @param os the {@link ByteArrayOutputStream} where the generated PDF content will be written
-     * @throws Exception if the external process fails or PDF conversion is unsuccessful
-     */
-    private static void convertWithInternal(String document, ByteArrayOutputStream os) throws Exception {
-        // Settings for wkhtmltopdf behavior
-        HashMap<String, String> htmlToPdfSettings = new HashMap<>();
-        htmlToPdfSettings.put("load.blockLocalFileAccess", "false");
-        htmlToPdfSettings.put("web.enableIntelligentShrinking", "true");
-        htmlToPdfSettings.put("web.minimumFontSize", "10");
-        htmlToPdfSettings.put("web.printMediaType", "true");
-        htmlToPdfSettings.put("web.defaultEncoding", "utf-8");
-        htmlToPdfSettings.put("T", "10mm");
-        htmlToPdfSettings.put("L", "8mm");
-        htmlToPdfSettings.put("R", "8mm");
-        htmlToPdfSettings.put("web.enableJavascript", "false");
-
-        try (InputStream inputStream = HtmlToPdf.create()
-                .object(HtmlToPdfObject.forHtml(document, htmlToPdfSettings))
-                .pageSize(PdfPageSize.Letter)
-                .convert()) {
-            IOUtils.copy(inputStream, os);
-        } catch (Exception e) {
-            throw new IOException("Failed to generate PDF with internal converter", e);
-        }
-    }
-
-    /**
-     * Converts HTML to PDF using an external CLI tool, such as wkhtmltopdf.
-     * Please set the WKHTMLTOPDF_COMMAND to your external CLI tool, 
-     * and WKHTMLTOPDF_ARGS to your arguments that will be attached to the CLI tool call
-     * 
-     * @param command the full path to the external wkhtmltopdf executable (e.g., /usr/bin/wkhtmltopdf)
-     * @param args space-separated CLI arguments to pass to wkhtmltopdf (e.g., "--encoding utf-8")
-     * @param html the complete HTML string to convert to PDF
-     * @param os the {@link ByteArrayOutputStream} where the generated PDF content will be written
-     * @throws Exception if the external process fails or PDF conversion is unsuccessful
-     */
-    public static void convertWithExternal(String command, String args, String html, ByteArrayOutputStream os) throws Exception {
-        // Prepare the list of command + args + "-" + "-" for stdin/stdout
-        List<String> commandParts = new ArrayList<>();
-        commandParts.add(command);
-
-        if (args != null && !args.trim().isEmpty()) {
-            // Simple split by whitespace, handle quotes if needed (improved below)
-            String[] splitArgs = splitArgs(args);
-            Collections.addAll(commandParts, splitArgs);
-        }
-
-        // Add stdin/stdout arguments
-        commandParts.add("-");  // stdin
-        commandParts.add("-");  // stdout
-
-        ProcessBuilder pb = new ProcessBuilder(commandParts);
-        pb.redirectErrorStream(true); // merge stderr into stdout
-
-        Process process = pb.start();
-
-        // Write HTML to stdin
-        try (OutputStream stdin = process.getOutputStream()) {
-            stdin.write(html.getBytes(StandardCharsets.UTF_8));
-            stdin.flush();
-            stdin.close();
-        }
-
-        // Read PDF from stdout
-        try (InputStream stdout = process.getInputStream()) {
-            IOUtils.copy(stdout, os);
-        }
-
-        int exitCode = process.waitFor();
-        if (exitCode != 0) {
-            // Capture any error output
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
-                String line;
-                StringBuilder sb = new StringBuilder();
-                while ((line = br.readLine()) != null) {
-                    sb.append(line).append("\n");
-                }
-                System.err.println("wkhtmltopdf stderr: " + sb.toString());
-            }
-            throw new IOException("wkhtmltopdf failed with exit code " + exitCode);
-        }
-    }
-
-    /**
-     * Splits command line arguments string into tokens, respecting quotes.
-     * For example: --foo "bar baz" --> ["--foo", "bar baz"]
-     * 
-     * @param argsString the argument string to split
-     * @return array of argument tokens
-     */
-    private static String[] splitArgs(String argsString) {
-        // Simple state machine to parse args with quotes
-        List<String> args = new ArrayList<>();
-        boolean inQuotes = false;
-        StringBuilder current = new StringBuilder();
-
-        for (int i = 0; i < argsString.length(); i++) {
-            char c = argsString.charAt(i);
-            if (c == '"') {
-                inQuotes = !inQuotes;
-            } else if (Character.isWhitespace(c) && !inQuotes) {
-                if (current.length() > 0) {
-                    args.add(current.toString());
-                    current.setLength(0);
-                }
-            } else {
-                current.append(c);
-            }
-        }
-        if (current.length() > 0) {
-            args.add(current.toString());
-        }
-        return args.toArray(new String[0]);
+    private static void fallbackRender(String document, OutputStream os)
+            throws DocumentException, IOException {
+        ITextRenderer renderer = new ITextRenderer();
+        SharedContext sharedContext = renderer.getSharedContext();
+        sharedContext.setPrint(true);
+        sharedContext.setInteractive(false);
+        sharedContext.setReplacedElementFactory(new ReplacedElementFactoryImpl());
+        sharedContext.getTextRenderer().setSmoothingThreshold(0);
+        renderer.setDocumentFromString(document, null);
+        renderer.layout();
+        renderer.createPDF(os, true);
     }
 
     /**
@@ -471,30 +341,21 @@ public final class ConvertToEdoc {
      * @param documentString raw HTML string
      * @return org.jsoup.nodes.Document JSoup DOM
      */
-    public static Document getDocument(final String documentString) {
-        String incomingDocumentString = "";
-
-        // null check
-        if (documentString != null) {
-            incomingDocumentString = documentString;
+    public static Document getDocument(String documentString) {
+        if (StringUtils.isBlank(documentString)) {
+            throw new IllegalArgumentException("HTML cannot be blank");
         }
 
         // DOCTYPE declarations are mandatory. HTML5 if none is declared.
-        if(!incomingDocumentString.startsWith("<!DOCTYPE") || !incomingDocumentString.startsWith("<!doctype")) {
-            incomingDocumentString = "<!DOCTYPE html>" + incomingDocumentString;
+        if(!documentString.trim().toLowerCase().startsWith("<!doctype")) {
+            documentString = "<!DOCTYPE html>\n" + documentString;
         }
 
-        Document document = Jsoup.parse(incomingDocumentString);
-
+        Document document = Jsoup.parse(documentString);
         document.outputSettings()
             .syntax(Document.OutputSettings.Syntax.xml)  // Enforce XML syntax
             .escapeMode(Entities.EscapeMode.xhtml)
             .prettyPrint(false);
-
-        // Ensure DOCTYPE is present
-        if (document.childNodeSize() == 0 || !document.hasText()) {
-            throw new IllegalArgumentException("Document is empty or invalid.");
-        }
 
         /*
          * remove invalid, suspicious, and CDN links
