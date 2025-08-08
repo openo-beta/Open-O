@@ -2181,7 +2181,15 @@ function updateCPPNote() {
 
         var caseMgtEntryfrm = document.forms["caseManagementEntryForm"];
         var caseMgtViewfrm = document.forms["caseManagementViewForm"];
-        params += "&" + Form.serialize(caseMgtEntryfrm);
+
+        // Serialize caseMgtEntryfrm excluding demographicNo field, this is to avoid duplicate demographicNo
+        var clonedForm = caseMgtEntryfrm.cloneNode(true);
+        var demoField = clonedForm.demographicNo;
+        if (demoField) {
+            clonedForm.removeChild(demoField);
+        }
+
+        params += "&" + Form.serialize(clonedForm);
         params += "&" + Form.serialize(caseMgtViewfrm);
 
         var objAjax = new Ajax.Request(
@@ -2189,6 +2197,7 @@ function updateCPPNote() {
             {
                 method: 'post',
                 postBody: params,
+                contentType: 'application/x-www-form-urlencoded',
                 evalScripts: true,
                 onSuccess: function (request) {
                     $("notCPP").update(request.responseText);
@@ -2200,7 +2209,6 @@ function updateCPPNote() {
             }
         );
         return false;
-
     }
 
 // find index of month
@@ -2826,9 +2834,9 @@ function updateCPPNote() {
     function showFilter() {
 
         if (filterShows)
-            new Effect.BlindUp('filter');
+            new Effect.BlindUp('filter', { queue: 'end' });
         else
-            new Effect.BlindDown('filter');
+            new Effect.BlindDown('filter', { queue: 'end' });
 
         filterShows = !filterShows;
     }
@@ -2836,7 +2844,7 @@ function updateCPPNote() {
     function filterCheckBox(checkbox) {
         var checks = document.getElementsByName(checkbox.name);
 
-        if (checkbox.value == "a" && checkbox.checked) {
+        if (checkbox.value === "a" && checkbox.checked) {
 
             for (var idx = 0; idx < checks.length; ++idx) {
                 if (checks[idx] != checkbox)
@@ -2844,7 +2852,7 @@ function updateCPPNote() {
             }
         } else {
             for (var idx = 0; idx < checks.length; ++idx) {
-                if (checks[idx].value == "a") {
+                if (checks[idx].value === "a") {
                     if (checks[idx].checked)
                         checks[idx].checked = false;
 
