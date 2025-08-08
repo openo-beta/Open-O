@@ -270,8 +270,9 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
             // StringEncoderUtils.a();
             String default_view = OscarProperties.getInstance().getProperty("default_view", "");
+            String contextPath = request.getContextPath();
 
-            url = bsurl + "/billing.do?billRegion=" + java.net.URLEncoder.encode(province, "UTF-8") + "&billForm=" + java.net.URLEncoder.encode(default_view, "UTF-8") + "&hotclick=" + java.net.URLEncoder.encode("", "UTF-8") + "&appointment_no=" + bean.appointmentNo + "&appointment_date=" + bean.appointmentDate + "&start_time=" + Hour + ":" + Min + "&demographic_name=" + java.net.URLEncoder.encode(bean.patientLastName + "," + bean.patientFirstName, "UTF-8") + "&demographic_no=" + bean.demographicNo
+            url = bsurl + contextPath + "/billing.do?billRegion=" + java.net.URLEncoder.encode(province, "UTF-8") + "&billForm=" + java.net.URLEncoder.encode(default_view, "UTF-8") + "&hotclick=" + java.net.URLEncoder.encode("", "UTF-8") + "&appointment_no=" + bean.appointmentNo + "&appointment_date=" + bean.appointmentDate + "&start_time=" + Hour + ":" + Min + "&demographic_name=" + java.net.URLEncoder.encode(bean.patientLastName + "," + bean.patientFirstName, "UTF-8") + "&demographic_no=" + bean.demographicNo
                     + "&providerview=" + bean.curProviderNo + "&user_no=" + bean.providerNo + "&apptProvider_no=" + bean.curProviderNo + "&bNewForm=1&status=t";
 
             session.setAttribute("billing_url", url);
@@ -2059,7 +2060,8 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
                 ++dxNum;
             }
 
-            String url = "/billing.do?billRegion=" + region
+            String contextPath = request.getContextPath();
+            String url = contextPath + "/billing.do?billRegion=" + region
                     + "&billForm=" + defaultView
                     + "&hotclick=&appointment_no="
                     + appointmentNo
