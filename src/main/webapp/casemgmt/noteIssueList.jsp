@@ -213,42 +213,18 @@
     <span id="encType${noteIndex}">
         <c:choose>
             <c:when test="${empty ajaxsave}">
-                <select id="${encSelect}" class="encTypeCombo" name="encounter_type">
-                    <option value=""></option>
-                    <option value="face to face encounter with client">
-                        <fmt:setBundle basename="oscarResources"/>
-                        <fmt:message key="oscarEncounter.faceToFaceEnc.title"/>
-                    </option>
-                    <option value="telephone encounter with client">
-                        <fmt:setBundle basename="oscarResources"/>
-                        <fmt:message key="oscarEncounter.telephoneEnc.title"/>
-                    </option>
-                    <option value="email encounter with client">
-                        <fmt:setBundle basename="oscarResources"/>
-                        <fmt:message key="oscarEncounter.emailEnc.title"/>
-                    </option>
-                    <option value="encounter without client">
-                        <fmt:setBundle basename="oscarResources"/>
-                        <fmt:message key="oscarEncounter.noClientEnc.title"/>
-                    </option>
+                <select id="${encSelect}" class="encTypeCombo" name="caseNote.encounter_type">
+                    <option value="" ${empty caseManagementEntryForm.caseNote.encounter_type ? 'selected' : ''}></option>
+                    <option value="face to face encounter with client" ${caseManagementEntryForm.caseNote.encounter_type == 'face to face encounter with client' ? 'selected' : ''}><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.faceToFaceEnc.title"/></option>
+                    <option value="telephone encounter with client" ${caseManagementEntryForm.caseNote.encounter_type == 'telephone encounter with client' ? 'selected' : ''}><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.telephoneEnc.title"/></option>
+                    <option value="email encounter with client" ${caseManagementEntryForm.caseNote.encounter_type == 'email encounter with client' ? 'selected' : ''}><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.emailEnc.title"/></option>
+                    <option value="encounter without client" ${caseManagementEntryForm.caseNote.encounter_type == 'encounter without client' ? 'selected' : ''}><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.noClientEnc.title"/></option>
         
                     <c:if test="${loggedInInfo73557.currentFacility.enableGroupNotes}">
-                        <option value="group face to face encounter">
-                            <fmt:setBundle basename="oscarResources"/>
-                            <fmt:message key="oscarEncounter.groupFaceEnc.title"/>
-                        </option>
-                        <option value="group telephone encounter">
-                            <fmt:setBundle basename="oscarResources"/>
-                            <fmt:message key="oscarEncounter.groupTelephoneEnc.title"/>
-                        </option>
-                        <option value="group encounter with client">
-                            <fmt:setBundle basename="oscarResources"/>
-                            <fmt:message key="oscarEncounter.emailEnc.title"/>
-                        </option>
-                        <option value="group encounter without group">
-                            <fmt:setBundle basename="oscarResources"/>
-                            <fmt:message key="oscarEncounter.groupNoClientEnc.title"/>
-                        </option>
+                        <option value="group face to face encounter" ${caseManagementEntryForm.caseNote.encounter_type == 'group face to face encounter' ? 'selected' : ''}><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.groupFaceEnc.title"/></option>
+                        <option value="group telephone encounter" ${caseManagementEntryForm.caseNote.encounter_type == 'group telephone encounter' ? 'selected' : ''}><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.groupTelephoneEnc.title"/></option>
+                        <option value="group encounter with client" ${caseManagementEntryForm.caseNote.encounter_type == 'group encounter with client' ? 'selected' : ''}><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.emailEnc.title"/></option>
+                        <option value="group encounter without group" ${caseManagementEntryForm.caseNote.encounter_type == 'group encounter without group' ? 'selected' : ''}><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.groupNoClientEnc.title"/></option>
                     </c:if>
                 </select>
             </c:when>
@@ -256,7 +232,8 @@
                 "&quot;<c:out value="${caseManagementEntryForm.caseNote.encounter_type}"/>&quot;"
             </c:otherwise>
         </c:choose>        
-</span></div>
+    </span>
+</div>
 
 
 <c:set var="numIssues" value="${fn:length(caseManagementEntryForm.caseNote.issues)}"/>

@@ -1840,7 +1840,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         note.setUpdate_date(now);
         if (note.getCreate_date() == null) note.setCreate_date(now);
 
-        note.setEncounter_type(request.getParameter("encType"));
+        note.setEncounter_type(request.getParameter("caseNote.encounter_type"));
 
         String hourOfEncounterTime = request.getParameter("hourOfEncounterTime");
         if (hourOfEncounterTime != null) {
