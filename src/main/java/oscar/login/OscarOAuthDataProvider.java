@@ -156,4 +156,32 @@ public class OscarOAuthDataProvider {
         ServiceAccessToken sat = serviceAccessTokenDao.findByTokenId(tokenId);
         if (sat != null) serviceAccessTokenDao.remove(sat);
     }
+
+    // Convenience overload: pull providerNo from the DB row that OAuthSessionMerger updated
+    public String finalizeAuthorization(RequestToken token) {
+        ServiceRequestToken srt = serviceRequestTokenDao.findByTokenId(token.getTokenKey());
+        String providerNo = (srt != null) ? srt.getProviderNo() : null;
+
+        // if the merger didn’t set it, fail clearly
+        if (providerNo == null || providerNo.isEmpty()) {
+            throw new OAuth1Exception(401, "unauthenticated_resource_owner");
+        }
+        return finalizeAuthorization(token, providerNo);
+    }
+
+    public String getAccessTokenSecret(String accessTokenId) {
+        ServiceAccessToken sat = serviceAccessTokenDao.findByTokenId(accessTokenId);
+        return sat != null ? sat.getTokenSecret() : null;
+    }
+
+    public String getProviderNoByAccessToken(String accessTokenId) {
+        ServiceAccessToken sat = serviceAccessTokenDao.findByTokenId(accessTokenId);
+        return sat != null ? sat.getProviderNo() : null;
+    }
+
+    public String getRequestTokenSecret(String requestTokenId) {
+        ServiceRequestToken srt = serviceRequestTokenDao.findByTokenId(requestTokenId);
+        return srt != null ? srt.getTokenSecret() : null;
+    }
+
 }

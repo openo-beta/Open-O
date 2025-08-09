@@ -1,9 +1,6 @@
 package org.oscarehr.ws.oauth;
 
 import oscar.login.OscarOAuthDataProvider;
-import org.apache.cxf.rs.security.oauth.data.AuthorizationInput;
-import org.apache.cxf.rs.security.oauth.data.RequestToken;
-import org.apache.cxf.rs.security.oauth.data.UserSubject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,62 +13,58 @@ public class AuthorizeController {
 
     private final OscarOAuthDataProvider provider;
 
-    // If OAuthSessionMerger is a Spring bean, inject it; if it's static utils, call statically.
-    private final org.oscarehr.ws.oauth.util.OAuthSessionMerger sessionMerger;
-
-    public AuthorizeController(OscarOAuthDataProvider provider,
-                               org.oscarehr.ws.oauth.util.OAuthSessionMerger sessionMerger) {
+    public AuthorizeController(OscarOAuthDataProvider provider) {
         this.provider = provider;
-        this.sessionMerger = sessionMerger;
     }
 
     @GetMapping("/authorize")
-    public String showConsent(@RequestParam("oauth_token") String token, Model model) {
+    public String showConsent(@RequestParam("oauth_token") String token,
+                            HttpServletRequest req, Model model) {
         RequestToken rt = provider.getRequestToken(token);
         if (rt == null) throw new OAuth1Exception(400, "invalid_request_token");
-        model.addAttribute("requestToken", rt);
-        // Renders the existing consent/login JSP
-        return "/login/3rdpartyLogin";
+
+        oscar.login.OAuthData od = new oscar.login.OAuthData();
+        od.setOauthToken(token);
+
+        // Use your Client POJO accessors
+        Client c = rt.getClient();
+        od.setApplicationName(c != null ? c.getName() : null);
+        od.setApplicationURI(c != null ? c.getUri() : null);
+
+        // POST target for approval
+        od.setReplyTo(req.getContextPath() + "/ws/oauth/authorize");
+
+        // Permissions -> strings
+        od.setPermissions(
+            rt.getScopes() == null ? java.util.Collections.emptyList()
+                : rt.getScopes().stream()
+                    .map(org.oscarehr.ws.oauth.OAuth1Permission::getPermission)
+                    .toList()
+        );
+
+        model.addAttribute("oauthData", od);
+        return "forward:/login/3rdpartyLogin.jsp";
+
     }
 
-    // The JSP "Approve" should POST oauth_token (and any UI inputs)
     @PostMapping("/authorize")
     public String approve(@RequestParam("oauth_token") String token,
-                          HttpServletRequest req) {
+                        HttpServletRequest req) {
         RequestToken rt = provider.getRequestToken(token);
         if (rt == null) throw new OAuth1Exception(400, "invalid_request_token");
 
-        // 1) Preserve existing behavior: merge session -> sets providerNo onto ServiceRequestToken
-        //    (This mirrors what LoginAction used to do.)
-        sessionMerger.mergeSession(token, req.getSession());
+        // Keep your existing behavior: set providerNo on the request token
+        oscar.login.OAuthSessionMerger.mergeSession(req);
 
-        // 2) Tell provider to finalize authorization (creates/stores verifier)
-        //    We also pass a subject so the provider could use it if it ever needs to.
-        var subject = loginToSubject(lookupProviderNo(req));
-        var verifier = provider.finalizeAuthorization(new AuthorizationInput(rt, subject, true));
+        String verifier = provider.finalizeAuthorization(rt, /* providerNo is set by merger */ null);
 
-        // 3) Redirect back to callback (or show OOB verifier if callback was "oob")
         String callback = rt.getCallback();
         if (callback == null || "oob".equalsIgnoreCase(callback)) {
-            // show a simple page that displays the verifier (optional JSP you create), or reuse login page
             req.setAttribute("oauth_verifier", verifier);
-            return "/login/authorized"; // make /login/authorized.jsp to display the verifier
+            // show a simple page with the verifier; create this JSP if you don’t have it
+            return "forward:/login/authorized.jsp";
         }
         String sep = callback.contains("?") ? "&" : "?";
         return "redirect:" + callback + sep + "oauth_token=" + token + "&oauth_verifier=" + verifier;
-    }
-
-    private String lookupProviderNo(HttpServletRequest req) {
-        // pull it from the same session place LoginAction uses.
-        // Example: LoggedInInfo or similar – adjust if your app uses a different key.
-        Object li = req.getSession().getAttribute("loggedInInfo");
-        if (li instanceof org.oscarehr.util.LoggedInInfo) {
-            return ((org.oscarehr.util.LoggedInInfo) li).getLoggedInProviderNo();
-        }
-        return null; // sessionMerger will have already persisted it; this is only for subject cosmetics.
-    }
-
-    private static UserSubject loginToSubject(String providerNo) {
-        return (providerNo == null) ? null : new UserSubject(providerNo);
     }
 }

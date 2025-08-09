@@ -33,6 +33,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+// OscarRequestTokenService.java
+import org.oscarehr.ws.oauth.Client;
+import org.oscarehr.ws.oauth.RequestTokenRegistration;
+import org.oscarehr.ws.oauth.RequestToken;
+
+
 /**
  * Issues an OAuth 1.0a temporary request token (a.k.a. "initiate"),
  * replacing the old CXF JAX-RS resource with a Spring MVC controller.

@@ -84,7 +84,7 @@ public class OAuthInterceptor implements PhaseInterceptor<Message> {
             String token = signatureVerifier.verifySignature(req, cfg);
 
             // 4) Resolve provider via ProviderDao, attach LoggedInInfo
-            String providerNo = oauthDataProvider.getProviderNoByToken(token);
+            String providerNo = oauthDataProvider.getProviderNoByAccessToken(token);
             var provider = providerDao.getProvider(providerNo);
             if (provider == null) {
                 throw new IllegalArgumentException("Unknown provider for token: " + token);

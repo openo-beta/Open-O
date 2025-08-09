@@ -44,7 +44,7 @@ public class OAuth1SignatureVerifier {
             .build(new GenericApi(cfg.getBaseUrl()));
 
         // 3) Retrieve the stored token secret
-        String tokenSecret = dataProvider.getTokenSecret(token);
+        String tokenSecret = dataProvider.getAccessTokenSecret(token);
         if (tokenSecret == null) {
             throw new IllegalArgumentException("Unknown or expired token: " + token);
         }
@@ -76,7 +76,7 @@ public class OAuth1SignatureVerifier {
      * After verifySignature, use this to look up which provider owns the token.
      */
     public String getProviderNo(String token) {
-        return dataProvider.getProviderNoByToken(token);
+        return dataProvider.getProviderNoByAccessToken(token);
     }
 
     /**
