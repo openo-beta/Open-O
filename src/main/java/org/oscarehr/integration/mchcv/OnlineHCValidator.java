@@ -175,16 +175,26 @@ public class OnlineHCValidator implements HCValidator {
      */
     private static void setExternalClientKeystoreFilename(String clientKeystorePropertiesPath) {
         if (clientKeystorePropertiesPath == null) {
+            logger.warn("No client keystore properties path provided. Skipping keystore setup.");
             return;
         }
+
+        logger.info("Received client keystore properties path: {}", clientKeystorePropertiesPath);
+
         Path signaturePropFile = Paths.get(clientKeystorePropertiesPath);
+        logger.debug("Resolved absolute path for client keystore: {}", signaturePropFile.toAbsolutePath());
+
         if (Files.exists(signaturePropFile)) {
             File file = new File(clientKeystorePropertiesPath);
             try {
-                EdtClientBuilder.setClientKeystoreFilename(file.toURI().toURL().toString());
+                String keystoreURL = file.toURI().toURL().toString();
+                logger.info("Keystore properties file found. Setting client keystore filename to: {}", keystoreURL);
+                EdtClientBuilder.setClientKeystoreFilename(keystoreURL);
             } catch (MalformedURLException e) {
-                logger.error("Malformed URL: " + clientKeystorePropertiesPath, e);
+                logger.error("Malformed URL when converting client keystore path: {}", clientKeystorePropertiesPath, e);
             }
+        } else {
+            logger.error("Client keystore properties file not found at path: {}", signaturePropFile.toAbsolutePath());
         }
     }
 
