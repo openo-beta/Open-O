@@ -262,9 +262,6 @@ public class EdtClientBuilder {
         // Decryption properties - more explicit in CXF 3.5+
         props.put(WSHandlerConstants.DEC_PROP_FILE, clientKeystore);
         
-        // Signature verification properties
-        props.put(WSHandlerConstants.SIG_PROP_FILE, clientKeystore);
-        
         // Algorithm support
         props.put(WSHandlerConstants.ALLOW_RSA15_KEY_TRANSPORT_ALGORITHM, "true");
         props.put(WSHandlerConstants.ENC_SYM_ALGO, "http://www.w3.org/2001/04/xmlenc#aes128-cbc");
