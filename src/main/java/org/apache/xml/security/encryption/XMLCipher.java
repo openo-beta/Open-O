@@ -658,6 +658,27 @@ public class XMLCipher {
     }
 
     /**
+     * Set whether secure validation is enabled or not. The default is false.
+     */
+    public void setSecureValidation(boolean secureValidation) {
+        this.secureValidation = secureValidation;
+    }
+
+    /**
+     * This method is used to add a custom {@link KeyResolverSpi} to an XMLCipher.
+     * These KeyResolvers are used in KeyInfo objects in DECRYPT and
+     * UNWRAP modes.
+     *
+     * @param keyResolver
+     */
+    public void registerInternalKeyResolver(KeyResolverSpi keyResolver) {
+        if (internalKeyResolvers == null) {
+            internalKeyResolvers = new ArrayList<>();
+        }
+        internalKeyResolvers.add(keyResolver);
+    }
+
+    /**
      * Get the EncryptedData being built
      * <p>
      * Returns the EncryptedData being built during an ENCRYPT operation.
