@@ -1,10 +1,12 @@
 package org.oscarehr.integration.ebs.client.ng;
 
+import java.io.InputStream;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.net.ssl.X509TrustManager;
@@ -254,15 +256,24 @@ public class EdtClientBuilder {
      */
     protected Map<String,Object> newWSSInInterceptorConfiguration() {
         Map<String,Object> props = new HashMap<>();
-        // Specify which security actions to perform
-        props.put(WSHandlerConstants.ACTION, getCxfOutHandlerDirectives());
-        // Callback for password retrieval
+        props.put(WSHandlerConstants.ACTION, getCxfInHandlerDirectives());
         props.put(WSHandlerConstants.PW_CALLBACK_REF, newCallback());
-        // Keystore for decryption
+        
+        // Decryption properties - more explicit in CXF 3.5+
         props.put(WSHandlerConstants.DEC_PROP_FILE, clientKeystore);
+        
+        // Signature verification properties
+        props.put(WSHandlerConstants.SIG_PROP_FILE, clientKeystore);
+        
+        // Algorithm support
         props.put(WSHandlerConstants.ALLOW_RSA15_KEY_TRANSPORT_ALGORITHM, "true");
+        props.put(WSHandlerConstants.ENC_SYM_ALGO, "http://www.w3.org/2001/04/xmlenc#aes128-cbc");
+        props.put(WSHandlerConstants.ENC_KEY_TRANSPORT, "http://www.w3.org/2001/04/xmlenc#rsa-1_5");
+        
+        // MTOM settings
         props.put(WSHandlerConstants.STORE_BYTES_IN_ATTACHMENT, "false");
         props.put(WSHandlerConstants.EXPAND_XOP_INCLUDE, "false");
+        
         return props;
     }
 
@@ -298,19 +309,18 @@ public class EdtClientBuilder {
         return props;
     }
 
-    /**
-     * @return concatenated WS-Security directives including encryption
-     */
-    protected String getCxfOutHandlerDirectives() {
-         return getCxfOutHandlerDirectivesBase(); 
-        //  + " " + WSHandlerConstants.ENCRYPT;
+    protected String getCxfInHandlerDirectives() {
+        return 
+            // WSHandlerConstants.ENCRYPT + " "  // This means "decrypt incoming encrypted content"
+            //  + WSHandlerConstants.USERNAME_TOKEN + " "
+              WSHandlerConstants.TIMESTAMP + " "
+             + WSHandlerConstants.SIGNATURE;
     }
- 
 
     /**
      * @return WS-Security directives for username token, timestamp, and signature
      */
-    protected String getCxfOutHandlerDirectivesBase() {
+    protected String getCxfOutHandlerDirectives() {
         return WSHandlerConstants.USERNAME_TOKEN + " "
              + WSHandlerConstants.TIMESTAMP     + " "
              + WSHandlerConstants.SIGNATURE;
