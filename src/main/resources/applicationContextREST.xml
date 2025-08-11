@@ -23,11 +23,19 @@
     <context:component-scan base-package="org.oscarehr.ws.soap"/>
 
     <bean id="systemInfoWs" class="org.oscarehr.ws.SystemInfoWs"/>
+    
+    <!-- Add loginWs bean if it exists - comment out if class doesn't exist -->
+    <!-- <bean id="loginWs" class="org.oscarehr.ws.LoginWs"/> -->
 
     <!-- Publish the SOAP endpoint -->
     <jaxws:endpoint id="systemInfoEndpoint"
                     implementor="#systemInfoWs"
                     address="/SystemInfoService"/>
+                    
+    <!-- Add login endpoint if loginWs bean exists - comment out if not needed -->
+    <!-- <jaxws:endpoint id="loginEndpoint"
+                    implementor="#loginWs"
+                    address="/LoginService"/> -->
 
     <!-- JSON/JAXB providers for CXF JAX-RS -->
     <bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">

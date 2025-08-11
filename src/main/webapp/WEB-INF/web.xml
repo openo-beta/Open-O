@@ -226,17 +226,22 @@
     <url-pattern>/csrfguard</url-pattern>
   </servlet-mapping>
 
-  <!-- CXF base servlet -->
+  <!-- CXF base servlet for SOAP services -->
   <servlet>
     <servlet-name>CXFServlet</servlet-name>
     <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+    <init-param>
+      <param-name>config-location</param-name>
+      <param-value>classpath:applicationContextREST.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
     <servlet-name>CXFServlet</servlet-name>
-    <url-pattern>/ws/*</url-pattern>
+    <url-pattern>/ws/soap/*</url-pattern>
   </servlet-mapping>
 
-  <!-- *** FIX: satisfy CXF JAX-RS SCI by declaring a servlet named exactly javax.ws.rs.core.Application *** -->
+  <!-- CXF JAX-RS servlet for REST services -->
   <servlet>
     <servlet-name>javax.ws.rs.core.Application</servlet-name>
     <servlet-class>org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet</servlet-class>
@@ -244,7 +249,7 @@
       <param-name>config-location</param-name>
       <param-value>classpath:applicationContextREST.xml</param-value>
     </init-param>
-    <load-on-startup>1</load-on-startup>
+    <load-on-startup>2</load-on-startup>
   </servlet>
   <servlet-mapping>
     <servlet-name>javax.ws.rs.core.Application</servlet-name>

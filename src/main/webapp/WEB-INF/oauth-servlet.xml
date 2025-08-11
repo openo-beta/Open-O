@@ -8,16 +8,16 @@
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!-- Scan only the OAuth MVC packages -->
-    <context:component-scan base-package="org.oscarehr.ws.oauth"/>
-    <context:component-scan base-package="org.oscarehr.ws.oauth.util"/>
+    <!-- Scan OAuth MVC packages -->
+    <context:component-scan base-package="org.oscarehr.ws.oauth">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
+    </context:component-scan>
 
-    <!-- Explicit bean registrations in case annotations aren't picked up -->
+    <!-- Explicit bean registrations for OAuth1 utilities -->
     <bean id="oauth1ParamParser" class="org.oscarehr.ws.oauth.util.OAuth1ParamParser"/>
     <bean id="oauth1SignatureVerifier" class="org.oscarehr.ws.oauth.util.OAuth1SignatureVerifier"/>
-
-    <!-- Optional: if you want to make sure controllers are detected -->
-    <context:component-scan base-package="org.oscarehr.ws.oauth.controllers"/>
 
     <!-- View resolver for any MVC responses (probably JSON/XML only) -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
