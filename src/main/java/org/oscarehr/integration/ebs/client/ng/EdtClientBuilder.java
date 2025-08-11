@@ -1,5 +1,6 @@
 package org.oscarehr.integration.ebs.client.ng;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -261,6 +262,8 @@ public class EdtClientBuilder {
         
         // Decryption properties - more explicit in CXF 3.5+
         props.put(WSHandlerConstants.DEC_PROP_FILE, clientKeystore);
+        props.put(WSHandlerConstants.DEC_PROP_REF_ID, "decryptionProperties");
+        props.put("decryptionProperties", loadKeystoreProperties());
         
         // Algorithm support
         props.put(WSHandlerConstants.ALLOW_RSA15_KEY_TRANSPORT_ALGORITHM, "true");
@@ -388,6 +391,34 @@ public class EdtClientBuilder {
             } catch (AlgorithmAlreadyRegisteredException | InvalidTransformException e) {
                 // ignore if already registered or invalid transform
             }
+        }
+    }
+
+    private Properties loadKeystoreProperties() {
+        Properties props = new Properties();
+
+        // Normalize path if it starts with "file:" to strip that prefix
+        String normalizedPath = clientKeystore;
+        if (normalizedPath != null && normalizedPath.startsWith("file:")) {
+            normalizedPath = normalizedPath.substring("file:".length());
+        }
+
+        // First try as classpath resource
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(clientKeystore)) {
+            if (is != null) {
+                props.load(is);
+                return props;
+            }
+        } catch (Exception e) {
+            // Log or ignore this because we will try filesystem next
+        }
+
+        // If classpath resource not found, try filesystem
+        try (InputStream is = new FileInputStream(normalizedPath)) {
+            props.load(is);
+            return props;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load keystore properties from either classpath or file system: " + clientKeystore, e);
         }
     }
 }
