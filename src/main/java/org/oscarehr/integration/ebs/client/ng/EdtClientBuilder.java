@@ -397,27 +397,37 @@ public class EdtClientBuilder {
     private Properties loadKeystoreProperties() {
         Properties props = new Properties();
 
-        // Normalize path if it starts with "file:" to strip that prefix
+        // Normalize path if it starts with "file:"
         String normalizedPath = clientKeystore;
         if (normalizedPath != null && normalizedPath.startsWith("file:")) {
+            System.out.println("[DEBUG] Stripping 'file:' prefix from: " + normalizedPath);
             normalizedPath = normalizedPath.substring("file:".length());
         }
 
         // First try as classpath resource
+        System.out.println("[INFO] Trying to load keystore properties from classpath: " + clientKeystore);
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(clientKeystore)) {
             if (is != null) {
                 props.load(is);
+                System.out.println("[INFO] Successfully loaded keystore properties from classpath resource: " + clientKeystore);
                 return props;
+            } else {
+                System.out.println("[WARN] Keystore properties not found in classpath: " + clientKeystore);
             }
         } catch (Exception e) {
-            // Log or ignore this because we will try filesystem next
+            System.out.println("[ERROR] Error loading keystore properties from classpath: " + clientKeystore);
+            e.printStackTrace(System.out);
         }
 
-        // If classpath resource not found, try filesystem
+        // Try filesystem path
+        System.out.println("[INFO] Trying to load keystore properties from file system: " + normalizedPath);
         try (InputStream is = new FileInputStream(normalizedPath)) {
             props.load(is);
+            System.out.println("[INFO] Successfully loaded keystore properties from file system path: " + normalizedPath);
             return props;
         } catch (Exception e) {
+            System.out.println("[ERROR] Failed to load keystore properties from either classpath or file system: " + clientKeystore);
+            e.printStackTrace(System.out);
             throw new RuntimeException("Failed to load keystore properties from either classpath or file system: " + clientKeystore, e);
         }
     }

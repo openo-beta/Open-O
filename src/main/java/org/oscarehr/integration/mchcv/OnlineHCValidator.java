@@ -175,26 +175,27 @@ public class OnlineHCValidator implements HCValidator {
      */
     private static void setExternalClientKeystoreFilename(String clientKeystorePropertiesPath) {
         if (clientKeystorePropertiesPath == null) {
-            logger.warn("No client keystore properties path provided. Skipping keystore setup.");
+            System.out.println("[WARN] No client keystore properties path provided. Skipping keystore setup.");
             return;
         }
 
-        logger.info("Received client keystore properties path: {}", clientKeystorePropertiesPath);
+        System.out.println("[INFO] Received client keystore properties path: " + clientKeystorePropertiesPath);
 
         Path signaturePropFile = Paths.get(clientKeystorePropertiesPath);
-        logger.debug("Resolved absolute path for client keystore: {}", signaturePropFile.toAbsolutePath());
+        System.out.println("[DEBUG] Resolved absolute path for client keystore: " + signaturePropFile.toAbsolutePath());
 
         if (Files.exists(signaturePropFile)) {
             File file = new File(clientKeystorePropertiesPath);
             try {
                 String keystoreURL = file.toURI().toURL().toString();
-                logger.info("Keystore properties file found. Setting client keystore filename to: {}", keystoreURL);
+                System.out.println("[INFO] Keystore properties file found. Setting client keystore filename to: " + keystoreURL);
                 EdtClientBuilder.setClientKeystoreFilename(keystoreURL);
             } catch (MalformedURLException e) {
-                logger.error("Malformed URL when converting client keystore path: {}", clientKeystorePropertiesPath, e);
+                System.out.println("[ERROR] Malformed URL when converting client keystore path: " + clientKeystorePropertiesPath);
+                e.printStackTrace(System.out);
             }
         } else {
-            logger.error("Client keystore properties file not found at path: {}", signaturePropFile.toAbsolutePath());
+            System.out.println("[ERROR] Client keystore properties file not found at path: " + signaturePropFile.toAbsolutePath());
         }
     }
 
