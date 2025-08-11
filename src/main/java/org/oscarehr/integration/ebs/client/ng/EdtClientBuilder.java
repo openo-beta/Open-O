@@ -246,6 +246,7 @@ public class EdtClientBuilder {
         );
         client.getEndpoint().getInInterceptors().add(new DownloadInInterceptor());
         client.getEndpoint().getInInterceptors().add(new AttachmentCleanupInterceptor());
+        client.getEndpoint().getInInterceptors().add(new RawXmlLoggingInInterceptor());
     }
 
     /**
