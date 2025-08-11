@@ -16,9 +16,18 @@
            http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
            http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
 
-    <!-- DO NOT scan oauth.modern; OAuth1.0a now lives under the MVC servlet (/ws/oauth/*) -->
-    <!-- Remove any oauth.modern stuff and the Scribe interceptor -->
-    <!-- <context:component-scan base-package="org.oscarehr.ws.oauth.modern" /> -->
+    <!-- CXF core beans -->
+    <import resource="classpath:META-INF/cxf/cxf.xml"/>
+
+    <!-- If you annotate the implementor with @Service, scan its package -->
+    <context:component-scan base-package="org.oscarehr.ws.soap"/>
+
+    <bean id="systemInfoWs" class="org.oscarehr.ws.SystemInfoWs"/>
+
+    <!-- Publish the SOAP endpoint -->
+    <jaxws:endpoint id="systemInfoEndpoint"
+                    implementor="#systemInfoWs"
+                    address="/SystemInfoService"/>
 
     <!-- JSON/JAXB providers for CXF JAX-RS -->
     <bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">

@@ -3,19 +3,26 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="
-         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
 
-  <!-- Pick up AccessTokenController, AuthorizeController, parsers, etc. -->
-  <context:component-scan base-package="org.oscarehr.ws.oauth"/>
+    <!-- Scan only the OAuth MVC packages -->
+    <context:component-scan base-package="org.oscarehr.ws.oauth"/>
+    <context:component-scan base-package="org.oscarehr.ws.oauth.util"/>
 
-  <!-- Exception mapper so we return 401/PlainText for OAuth errors -->
-  <bean class="org.oscarehr.ws.oauth.OAuthExceptionHandler"/>
+    <!-- Explicit bean registrations in case annotations aren't picked up -->
+    <bean id="oauth1ParamParser" class="org.oscarehr.ws.oauth.util.OAuth1ParamParser"/>
+    <bean id="oauth1SignatureVerifier" class="org.oscarehr.ws.oauth.util.OAuth1SignatureVerifier"/>
 
-  <!-- View resolver for /login/3rdpartyLogin and /login/authorized -->
-  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-    <property name="prefix" value="/WEB-INF/jsp/"/>
-    <property name="suffix" value=".jsp"/>
-    <property name="order"  value="1"/>
-  </bean>
+    <!-- Optional: if you want to make sure controllers are detected -->
+    <context:component-scan base-package="org.oscarehr.ws.oauth.controllers"/>
+
+    <!-- View resolver for any MVC responses (probably JSON/XML only) -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
 </beans>
