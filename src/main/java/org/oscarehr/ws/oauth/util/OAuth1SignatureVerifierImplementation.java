@@ -18,9 +18,10 @@ import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
 import oscar.login.OscarOAuthDataProvider;
+import org.oscarehr.ws.oauth.OAuth1SignatureVerifier;
 
 @Service
-public class OAuth1SignatureVerifier {
+public class OAuth1SignatureVerifierImplementation implements OAuth1SignatureVerifier {
     @Autowired
     private OscarOAuthDataProvider dataProvider;
 

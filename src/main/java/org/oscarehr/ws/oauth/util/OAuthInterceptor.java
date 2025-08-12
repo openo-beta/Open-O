@@ -43,6 +43,7 @@ import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.oscarehr.common.dao.AppDefinitionDao;
 import org.oscarehr.common.model.AppDefinition;
 import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.ws.oauth.OAuth1SignatureVerifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

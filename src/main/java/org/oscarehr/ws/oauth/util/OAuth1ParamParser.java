@@ -1,9 +1,13 @@
-package org.oscarehr.ws.oauth;
+package org.oscarehr.ws.oauth.util;
 
+import org.oscarehr.ws.oauth.OAuth1Exception;
+import org.oscarehr.ws.oauth.OAuth1Request;
+import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.*;
 
+@Component
 public class OAuth1ParamParser {
 
     public OAuth1Request parseFromRequest(HttpServletRequest req) {

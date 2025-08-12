@@ -27,57 +27,67 @@
 package oscar.login;
 
 import org.oscarehr.ws.oauth.OAuth1Request;
+import org.oscarehr.ws.oauth.OAuth1SignatureVerifier;
+import org.oscarehr.ws.oauth.OAuth1Exception;
+import org.oscarehr.ws.oauth.Client;
+import org.oscarehr.ws.oauth.RequestTokenRegistration;
+import org.oscarehr.ws.oauth.RequestToken;
+import org.oscarehr.ws.oauth.util.OAuth1ParamParser;
+
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-// OscarRequestTokenService.java
-import org.oscarehr.ws.oauth.Client;
-import org.oscarehr.ws.oauth.RequestTokenRegistration;
-import org.oscarehr.ws.oauth.RequestToken;
-
-
-/**
- * Issues an OAuth 1.0a temporary request token (a.k.a. "initiate"),
- * replacing the old CXF JAX-RS resource with a Spring MVC controller.
- *
- * URL (via servlet mapping): /ws/oauth/initiate
- */
 @RestController
-@RequestMapping // servlet handles /ws/oauth/*; we map just the method below
+@RequestMapping // servlet handles /ws/oauth/*
 public class OscarRequestTokenService {
 
     private final OscarOAuthDataProvider dataProvider;
-    private final org.oscarehr.ws.oauth.OAuth1ParamParser parser;
-    private final org.oscarehr.ws.oauth.OAuth1SignatureVerifier verifier;
+    private final OAuth1ParamParser parser;
+    private final OAuth1SignatureVerifier verifier;
 
     public OscarRequestTokenService(OscarOAuthDataProvider dataProvider,
-                                    org.oscarehr.ws.oauth.OAuth1ParamParser parser,
-                                    org.oscarehr.ws.oauth.OAuth1SignatureVerifier verifier) {
+                                    OAuth1ParamParser parser,
+                                    OAuth1SignatureVerifier verifier) {
         this.dataProvider = dataProvider;
         this.parser = parser;
         this.verifier = verifier;
     }
 
-
     @RequestMapping(
-    value = "/initiate",
-    method = {RequestMethod.GET, RequestMethod.POST},
-    produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+        value = "/initiate",
+        method = {RequestMethod.GET, RequestMethod.POST},
+        produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE
     )
     public String initiate(HttpServletRequest req) {
         OAuth1Request oreq = parser.parseFromRequest(req);
 
         Client client = dataProvider.getClient(oreq.consumerKey);
         if (client == null) {
-            throw new org.oscarehr.ws.oauth.OAuth1Exception(401, "invalid_consumer");
+            throw new OAuth1Exception(401, "invalid_consumer");
         }
 
-        // Verify HMAC-SHA1 signature (no token secret at initiate)
-        verifier.verifySignature(oreq, client.getSecret(), "");
+        // Build config expected by the verifier
+        // Use whatever constructor/setters your AppOAuth1Config provides.
+        AppOAuth1Config cfg = new AppOAuth1Config();
+        cfg.setConsumerKey(client.getConsumerKey());
+        cfg.setConsumerSecret(client.getSecret());
+        cfg.setApplicationURI(req.getRequestURL().toString());
 
+        
+        try {
+            // ignore the return value for /initiate; you just need it to not throw
+            verifier.verifySignature(req, cfg);
+        } catch (org.oscarehr.ws.oauth.OAuth1Exception e) {
+            // pass through your domain error
+            throw e;
+        } catch (Exception e) {
+            // normalize any other failure
+            throw new org.oscarehr.ws.oauth.OAuth1Exception(401, "invalid_signature");
+        }
         RequestTokenRegistration reg = new RequestTokenRegistration(client);
         reg.setCallback(oreq.callback); // may be "oob"
         if (oreq.scopesCsv != null && !oreq.scopesCsv.isBlank()) {
@@ -86,10 +96,9 @@ public class OscarRequestTokenService {
         RequestToken rt = dataProvider.createRequestToken(reg);
 
         return "oauth_token=" + enc(rt.getTokenKey())
-            + "&oauth_token_secret=" + enc(rt.getTokenSecret())
-            + "&oauth_callback_confirmed=true";
+             + "&oauth_token_secret=" + enc(rt.getTokenSecret())
+             + "&oauth_callback_confirmed=true";
     }
-
 
     private static String enc(String s) {
         return URLEncoder.encode(s, StandardCharsets.UTF_8);
