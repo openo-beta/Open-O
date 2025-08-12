@@ -1,3 +1,16 @@
+/**
+ * Purpose: Extract and normalize OAuth 1.0a parameters from HttpServletRequest.
+ * Responsibilities:
+ *   • Read Authorization header and query/form params; merge per OAuth precedence.
+ *   • Percent-decode where applicable; build an immutable OAuth1Request.
+ * Why changed/added: Separate parsing from business logic to make signature verification
+ * deterministic and unit-testable during the CXF→ScribeJava migration.
+ * Notes:
+ *   • Do not mutate the request; no logging of secrets.
+ *   • Validate required fields (consumer key, signature method, nonce, timestamp).
+ */
+
+
 package org.oscarehr.ws.oauth.util;
 
 import org.oscarehr.ws.oauth.OAuth1Exception;
