@@ -75,7 +75,7 @@ public class ConsentCheckerServlet2Action extends ActionSupport {
                 policy.put("consent", patientPolicyConsentDao.isPatientConsentedToPolicy(patientId, policyId));
             }
 
-        } catch (RuntimeException e) {
+        } catch (JSONException e) {
             LOGGER.error("Error creating the JSON object", e);
         }
         response.setContentType("application/json");

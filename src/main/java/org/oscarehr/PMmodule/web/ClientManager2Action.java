@@ -43,9 +43,9 @@ import javax.servlet.http.HttpSession;
 import javax.xml.ws.WebServiceException;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.text.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
@@ -2053,19 +2053,19 @@ public class ClientManager2Action extends ActionSupport {
             else sb.append(DateFormatUtils.ISO_DATE_FORMAT.format(admission.getDischargeDate()));
             sb.append(" )");
         }
-        return (StringEscapeUtils.escapeHtml4(sb.toString()));
+        return (StringEscapeUtils.escapeHtml(sb.toString()));
     }
 
     public static String getEscapedProviderDisplay(String providerNo) {
         Provider provider = providerDao.getProvider(providerNo);
 
-        return (StringEscapeUtils.escapeHtml4(provider.getFormattedName()));
+        return (StringEscapeUtils.escapeHtml(provider.getFormattedName()));
     }
 
     public static String getEscapedDateDisplay(Date d) {
         String display = DateFormatUtils.ISO_DATE_FORMAT.format(d);
 
-        return (StringEscapeUtils.escapeHtml4(display));
+        return (StringEscapeUtils.escapeHtml(display));
     }
 
     @Required
@@ -2167,7 +2167,7 @@ public class ClientManager2Action extends ActionSupport {
         Program program = programDao.getProgram(admission.getProgramId());
 
         String displayString = program.getName() + " : " + DateFormatUtils.ISO_DATE_FORMAT.format(admission.getAdmissionDate());
-        return (StringEscapeUtils.escapeHtml4(displayString));
+        return (StringEscapeUtils.escapeHtml(displayString));
     }
 
     public static String getCbiProgramDisplayString(OcanStaffForm ocanStaffForm) {
@@ -2175,7 +2175,7 @@ public class ClientManager2Action extends ActionSupport {
         Program program = programDao.getProgram(admission.getProgramId());
 
         String displayString = program.getName() + " : " + DateFormatUtils.ISO_DATE_FORMAT.format(admission.getAdmissionDate());
-        return (StringEscapeUtils.escapeHtml4(displayString));
+        return (StringEscapeUtils.escapeHtml(displayString));
     }
 
     private ClientManagerFormBean view;

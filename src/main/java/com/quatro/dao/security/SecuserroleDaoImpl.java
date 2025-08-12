@@ -28,9 +28,8 @@ package com.quatro.dao.security;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.SqlEscapeUtil;
 import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -331,12 +330,12 @@ public class SecuserroleDaoImpl extends HibernateDaoSupport implements Secuserro
             String lname = staffForm.getLastName();
 
             if (fname != null && fname.length() > 0) {
-                fname = SqlEscapeUtil.escapeSql(fname);
+                fname = StringEscapeUtils.escapeSql(fname);
                 fname = fname.toLowerCase();
                 queryString = queryString + AND + "lower(a.providerFName) like '%" + fname + "%'";
             }
             if (lname != null && lname.length() > 0) {
-                lname = SqlEscapeUtil.escapeSql(lname);
+                lname = StringEscapeUtils.escapeSql(lname);
                 lname = lname.toLowerCase();
                 queryString = queryString + AND + "lower(a.providerLName) like '%" + lname + "%'";
             }

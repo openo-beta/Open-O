@@ -961,6 +961,14 @@
     "optional" : false,
     "integrity" : "sha512:eGd4UpQ12KFKts4hds3yue5lhacYk7eF8mJXEiFm3O/HxK8/YS7aOXSwbBbQb8NXF4vyi5t0AQ6bwEwzIhrcLw=="
   }, {
+    "groupId" : "commons-lang",
+    "artifactId" : "commons-lang",
+    "version" : "2.4",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:rjW3YdFvQyfNtv2hZ4kWb8ZwIO/XH9LMM5W5dET0Od/Mfu6Uij79OwJEBBbK64c0F9ldtqKxb07xmN6dGvvARQ=="
+  }, {
     "groupId" : "commons-logging",
     "artifactId" : "commons-logging",
     "version" : "1.2",

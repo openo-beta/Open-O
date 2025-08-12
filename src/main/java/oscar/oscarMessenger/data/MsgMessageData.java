@@ -43,7 +43,6 @@ import org.oscarehr.common.model.OscarCommLocations;
 import org.oscarehr.managers.MessengerGroupManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
-import org.oscarehr.util.SqlEscapeUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -181,8 +180,8 @@ public class MsgMessageData {
             pdfAttach = str.q(pdfAttach);
         }
 
-        sentToWho = org.oscarehr.util.SqlEscapeUtil.escapeSql(sentToWho);
-        userName = org.oscarehr.util.SqlEscapeUtil.escapeSql(userName);
+        sentToWho = org.apache.commons.lang.StringEscapeUtils.escapeSql(sentToWho);
+        userName = org.apache.commons.lang.StringEscapeUtils.escapeSql(userName);
 
         MessageTbl mt = new MessageTbl();
         mt.setDate(new Date());
@@ -233,8 +232,8 @@ public class MsgMessageData {
             pdfAttach = str.q(pdfAttach);
         }
 
-        sentToWho = org.oscarehr.util.SqlEscapeUtil.escapeSql(sentToWho);
-        userName = org.oscarehr.util.SqlEscapeUtil.escapeSql(userName);
+        sentToWho = org.apache.commons.lang.StringEscapeUtils.escapeSql(sentToWho);
+        userName = org.apache.commons.lang.StringEscapeUtils.escapeSql(userName);
 
         MessageTbl mt = new MessageTbl();
         mt.setDate(new Date());

@@ -46,7 +46,7 @@
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
-<%@page import="org.apache.commons.lang3.StringUtils" %>
+<%@page import="org.apache.commons.lang.StringUtils" %>
 
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo

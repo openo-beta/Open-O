@@ -25,7 +25,7 @@ package org.oscarehr.common.model;
 
 import java.text.NumberFormat;
 
-import org.apache.commons.lang3.math.Fraction;
+import org.apache.commons.lang.math.Fraction;
 
 public class ReportStatistic implements Comparable<ReportStatistic> {
 

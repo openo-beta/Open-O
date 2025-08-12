@@ -32,17 +32,16 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import org.apache.commons.text.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.FastDateFormat;
 import org.oscarehr.common.PaginationQuery;
 import org.oscarehr.common.model.ConsultationRequest;
 import org.oscarehr.consultations.ConsultationQuery;
 import org.oscarehr.consultations.ConsultationRequestSearchFilter;
 import org.oscarehr.consultations.ConsultationRequestSearchFilter.SORTMODE;
 import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SqlEscapeUtil;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -82,19 +81,19 @@ public class ConsultRequestDaoImpl extends AbstractDaoImpl<ConsultationRequest> 
                         " left outer join d.provider p where d.DemographicNo = cr.demographicId and cs.id = cr.serviceId ");
         
         if (StringUtils.isNotBlank(consultationQuery.getProviderNo())) {
-            sql.append("and cr.providerNo = '" + SqlEscapeUtil.escapeSql(consultationQuery.getProviderNo()) + "' ");
+            sql.append("and cr.providerNo = '" + StringEscapeUtils.escapeSql(consultationQuery.getProviderNo()) + "' ");
         }
         if (!StringUtils.equals(consultationQuery.getComplete(), "true")) {
             sql.append("and cr.status != 4 ");
         }
         if (StringUtils.isNotBlank(consultationQuery.getStatus())) {
-            sql.append("and cr.status = '" + SqlEscapeUtil.escapeSql(consultationQuery.getStatus()) + "' ");
+            sql.append("and cr.status = '" + StringEscapeUtils.escapeSql(consultationQuery.getStatus()) + "' ");
         }
         if (StringUtils.isNotBlank(consultationQuery.getTeam())) {
-            sql.append("and cr.sendTo = '" + SqlEscapeUtil.escapeSql(consultationQuery.getTeam()) + "' ");
+            sql.append("and cr.sendTo = '" + StringEscapeUtils.escapeSql(consultationQuery.getTeam()) + "' ");
         }
         if (StringUtils.isNotBlank(consultationQuery.getKeyword())) {
-            String escapedKeyword = "%" + SqlEscapeUtil.escapeSql(consultationQuery.getKeyword()) + "%";
+            String escapedKeyword = "%" + StringEscapeUtils.escapeSql(consultationQuery.getKeyword()) + "%";
             sql.append("and (");
             sql.append("d.LastName like '" + escapedKeyword + "'");
             sql.append("or d.FirstName like '" + escapedKeyword + "'");
@@ -129,8 +128,8 @@ public class ConsultRequestDaoImpl extends AbstractDaoImpl<ConsultationRequest> 
                     }
                 }
             }
-            String sort = SqlEscapeUtil.escapeSql(consultationQuery.getSort());
-            String orderby = SqlEscapeUtil.escapeSql(consultationQuery.getOrderby());
+            String sort = StringEscapeUtils.escapeSql(consultationQuery.getSort());
+            String orderby = StringEscapeUtils.escapeSql(consultationQuery.getOrderby());
             if (StringUtils.isBlank(orderby) || "null".equals(orderby)) {
                 sql.append("order by cr.referralDate desc ");
             } else if (orderby.equals("serviceDesc")) {
@@ -205,11 +204,11 @@ public class ConsultRequestDaoImpl extends AbstractDaoImpl<ConsultationRequest> 
         }
 
         if (StringUtils.isNotBlank(filter.getTeam())) {
-            sql.append("and cr.sendTo = '" + SqlEscapeUtil.escapeSql(filter.getTeam()) + "' ");
+            sql.append("and cr.sendTo = '" + StringEscapeUtils.escapeSql(filter.getTeam()) + "' ");
         }
 
         if (StringUtils.isNotBlank(filter.getUrgency())) {
-            sql.append("and cr.urgency = '" + SqlEscapeUtil.escapeSql(filter.getUrgency()) + "' ");
+            sql.append("and cr.urgency = '" + StringEscapeUtils.escapeSql(filter.getUrgency()) + "' ");
         }
 
         if (filter.getDemographicNo() != null && filter.getDemographicNo() > 0) {

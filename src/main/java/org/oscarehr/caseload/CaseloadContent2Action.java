@@ -25,11 +25,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
-import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.oscarehr.common.dao.CaseloadDao;
 import org.oscarehr.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
@@ -141,13 +140,12 @@ public class CaseloadContent2Action extends ActionSupport {
 
         CaseloadDao caseloadDao = (CaseloadDao) SpringUtils.getBean(CaseloadDao.class);
         List<Integer> demoSearchResult = caseloadDao.getCaseloadDemographicSet(clSearchQuery, clSearchParams, clSortParams, caseloadCategory, sortAscending ? "ASC" : "DESC", caseloadPage, caseloadPageSize);
-        ArrayNode data = generateCaseloadDataForDemographics(request, response, caseloadProv, demoSearchResult);
+        JSONArray data = generateCaseloadDataForDemographics(request, response, caseloadProv, demoSearchResult);
 
 
         response.setContentType("text/x-json");
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectNode json = mapper.createObjectNode();
-        json.set("data", data);
+        JSONObject json = new JSONObject();
+        json.put("data", data);
 
         if (caseloadPage == 0) {
             Integer size = caseloadDao.getCaseloadDemographicSearchSize(clSearchQuery, clSearchParams);
@@ -157,7 +155,7 @@ public class CaseloadContent2Action extends ActionSupport {
         LogAction.addLogSynchronous(LoggedInInfo.getLoggedInInfoFromSession(request), "CaseloadContent2Action", "view caseload");
 
         try {
-            response.getWriter().write(mapper.writeValueAsString(json));
+            json.write(response.getWriter());
         } catch (IOException e) {
             MiscUtils.getLogger().error("Couldn't get data for caseload", e);
         }
@@ -418,12 +416,11 @@ public class CaseloadContent2Action extends ActionSupport {
 
         CaseloadDao caseloadDao = (CaseloadDao) SpringUtils.getBean(CaseloadDao.class);
         List<Integer> demoSearchResult = caseloadDao.getCaseloadDemographicSet(clSearchQuery, clSearchParams, clSortParams, caseloadCategory, sortAscending ? "ASC" : "DESC", caseloadPage, caseloadPageSize);
-        ArrayNode data = generateCaseloadDataForDemographics(request, response, caseloadProv, demoSearchResult);
+        JSONArray data = generateCaseloadDataForDemographics(request, response, caseloadProv, demoSearchResult);
 
         response.setContentType("text/x-json");
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectNode json = mapper.createObjectNode();
-        json.set("data", data);
+        JSONObject json = new JSONObject();
+        json.put("data", data);
 
         if (caseloadPage == 0) {
             Integer size = caseloadDao.getCaseloadDemographicSearchSize(clSearchQuery, clSearchParams);
@@ -431,7 +428,7 @@ public class CaseloadContent2Action extends ActionSupport {
         }
 
         try {
-            response.getWriter().write(mapper.writeValueAsString(json));
+            json.write(response.getWriter());
         } catch (IOException e) {
             MiscUtils.getLogger().error("Couldn't get data for caseload", e);
         }
@@ -440,11 +437,10 @@ public class CaseloadContent2Action extends ActionSupport {
     }
 
 
-    private ArrayNode generateCaseloadDataForDemographics(HttpServletRequest request, HttpServletResponse response, String caseloadProv, List<Integer> demoSearchResult) {
-        ObjectMapper mapper = new ObjectMapper();
-        ArrayNode entry;
+    private JSONArray generateCaseloadDataForDemographics(HttpServletRequest request, HttpServletResponse response, String caseloadProv, List<Integer> demoSearchResult) {
+        JSONArray entry;
         String buttons;
-        ArrayNode data = mapper.createArrayNode();
+        JSONArray data = new JSONArray();
 
         CaseloadDao caseloadDao = (CaseloadDao) SpringUtils.getBean(CaseloadDao.class);
 
@@ -485,7 +481,7 @@ public class CaseloadContent2Action extends ActionSupport {
         for (Integer result : demoSearchResult) {
 
             String demographic_no = result.toString();
-            entry = mapper.createArrayNode();
+            entry = new JSONArray();
             // name
             String demographicQuery = "cl_demographic_query";
             String[] demographicParam = new String[1];
@@ -494,7 +490,7 @@ public class CaseloadContent2Action extends ActionSupport {
 
             String clLastName = demographicResult.get(0).get("last_name").toString();
             String clFirstName = demographicResult.get(0).get("first_name").toString();
-            String clFullName = StringEscapeUtils.escapeEcmaScript(clLastName + ", " + clFirstName).toUpperCase();
+            String clFullName = StringEscapeUtils.escapeJavaScript(clLastName + ", " + clFirstName).toUpperCase();
             entry.add(clFullName);
 
             // add E button to string

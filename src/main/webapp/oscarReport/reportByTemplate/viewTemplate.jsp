@@ -29,7 +29,7 @@
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 %>
 
-<%@ page import="oscar.oscarReport.reportByTemplate.*, org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="oscar.oscarReport.reportByTemplate.*, org.apache.commons.lang.StringEscapeUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -78,7 +78,7 @@
     <%}%>
 
     <div class="xmlBorderDiv">
-        <pre style="font-size: 11px;"><%=StringEscapeUtils.escapeHtml4(xml)%></pre>
+        <pre style="font-size: 11px;"><%=StringEscapeUtils.escapeHtml(xml)%></pre>
     </div>
 
     <div id="viewTemplateActions" class="form-actions noprint">

@@ -28,7 +28,7 @@ package oscar.oscarEncounter.oscarMeasurements.pageUtil;
 import com.opensymphony.xwork2.ActionSupport;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.GenericValidator;
 import org.apache.struts2.ServletActionContext;
@@ -45,7 +45,6 @@ import org.oscarehr.common.model.Validations;
 import org.oscarehr.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
-import org.oscarehr.util.SqlEscapeUtil;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import oscar.oscarEncounter.data.EctProgram;
@@ -226,7 +225,7 @@ public class EctMeasurements2Action extends ActionSupport {
                 inputType = (String) this.getValue(inputTypeName);
                 mInstrc = (String) this.getValue(mInstrcName);
                 comments = (String) this.getValue(commentsName);
-                comments = org.oscarehr.util.SqlEscapeUtil.escapeSql(comments);
+                comments = org.apache.commons.lang.StringEscapeUtils.escapeSql(comments);
                 validation = (String) this.getValue(validationName);
                 dateObserved = (String) this.getValue(dateName);
 
@@ -332,7 +331,7 @@ public class EctMeasurements2Action extends ActionSupport {
             json.write(response.getWriter());
             return null;
         } else {
-            request.setAttribute("textOnEncounter", StringEscapeUtils.escapeEcmaScript(textOnEncounter));
+            request.setAttribute("textOnEncounter", StringEscapeUtils.escapeJavaScript(textOnEncounter));
             return SUCCESS;
         }
     }

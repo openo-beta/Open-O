@@ -15,7 +15,7 @@
 <%@ page errorPage="../appointment/errorpage.jsp"
          import="java.util.*, oscar.oscarReport.data.*" %>
 <%@ page import="oscar.login.*" %>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%
     boolean bDeletedList = false;
     String msg = "Report List";
