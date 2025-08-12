@@ -204,17 +204,7 @@
         <value>post</value>
     </util:list>
 
-    <!-- Explicit beans so we don't rely on component-scan naming -->
-    <bean id="OAuth1ParamParser" class="org.oscarehr.ws.oauth.util.OAuth1ParamParser"/>
-    <bean id="OAuth1SignatureVerifier" class="org.oscarehr.ws.oauth.OAuth1SignatureVerifier"/>
-
-
-    <!-- Spring XML -->
-    <bean id="oscarRequestTokenService" class="oscar.login.OscarRequestTokenService">
-        <constructor-arg ref="oscarOAuthDataProvider"/>
-        <constructor-arg ref="OAuth1ParamParser"/>
-        <constructor-arg ref="OAuth1SignatureVerifier"/>
-    </bean>
+    <!-- OAuth beans will be picked up by component scanning -->
 
 
     <!-- OAuth JAX-RS server at /ws/* -->
