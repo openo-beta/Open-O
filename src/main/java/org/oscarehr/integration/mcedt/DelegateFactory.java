@@ -36,12 +36,17 @@ import oscar.OscarProperties;
 import ca.ontario.health.edt.EDTDelegate;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.KeyStore;
+import java.security.cert.Certificate;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 public class DelegateFactory {
 
@@ -81,6 +86,17 @@ public class DelegateFactory {
         if (logger.isInfoEnabled()) {
             logger.info("Created new EDT delegate " + edtDelegate);
         }
+
+        System.out.println("MCEDT delegate initialized with: " +
+                "loggingRequired=" + config.isLoggingRequired() +
+                ", keystoreUser=" + config.getKeystoreUser() +
+                ", userNameTokenUser=" + config.getUserNameTokenUser() +
+                ", serviceUrl=" + config.getServiceUrl() +
+                ", conformanceKey=" + config.getConformanceKey() +
+                ", serviceId=" + config.getServiceId() +
+                ", mtomEnabled=" + config.isMtomEnabled() +
+                ", externalClientKeystore=" + props.getProperty("mcedt.service.clientKeystore.properties"));
+
         return edtDelegate;
     }
 
@@ -109,18 +125,67 @@ public class DelegateFactory {
      * If the path is not provided, it will default to `src/main/resources/clientKeystore.properties`.
      */
     private static void setExternalClientKeystoreFilename(String clientKeystorePropertiesPath) {
+        System.out.println("=========================================================================================================================");
         if (clientKeystorePropertiesPath == null) {
+            System.out.println("[WARN] No client keystore properties path provided. Skipping keystore setup.");
             return;
         }
+
+        System.out.println("[INFO] Received client keystore properties path: " + clientKeystorePropertiesPath);
+
         Path signaturePropFile = Paths.get(clientKeystorePropertiesPath);
+        System.out.println("[DEBUG] Resolved absolute path for client keystore: " + signaturePropFile.toAbsolutePath());
+
         if (Files.exists(signaturePropFile)) {
             File file = new File(clientKeystorePropertiesPath);
             try {
-                EdtClientBuilder.setClientKeystoreFilename(file.toURI().toURL().toString());
+                String keystoreURL = file.toURI().toURL().toString();
+                System.out.println("[INFO] Keystore properties file found. Setting client keystore filename to: " + keystoreURL);
+                EdtClientBuilder.setClientKeystoreFilename(keystoreURL);
+
+                // Load properties to get keystore details
+                Properties props = new Properties();
+                try (FileInputStream fis = new FileInputStream(file)) {
+                    props.load(fis);
+                }
+
+                String keystorePath = props.getProperty("org.apache.ws.security.crypto.merlin.keystore.file");
+                String keystorePassword = props.getProperty("org.apache.ws.security.crypto.merlin.keystore.password");
+                String keystoreType = props.getProperty("org.apache.ws.security.crypto.merlin.keystore.type", "JKS");
+
+                if (keystorePath != null) {
+                    System.out.println("[INFO] Loading keystore from: " + keystorePath + " (type= " + keystoreType + ")");
+                    try (FileInputStream ksStream = new FileInputStream(keystorePath)) {
+                        KeyStore ks = KeyStore.getInstance(keystoreType);
+                        ks.load(ksStream, keystorePassword != null ? keystorePassword.toCharArray() : null);
+
+                        Enumeration<String> aliases = ks.aliases();
+                        while (aliases.hasMoreElements()) {
+                            String alias = aliases.nextElement();
+                            Certificate cert = ks.getCertificate(alias);
+                            System.out.println("[CERT] Alias: " + alias);
+                            if (cert != null) {
+                                System.out.println(cert.toString());
+                            } else {
+                                System.out.println("  (no certificate found for alias)");
+                            }
+                        }
+                    }
+                } else {
+                    System.out.println("[WARN] No 'org.apache.ws.security.crypto.merlin.keystore.file' found in properties.");
+                }
+
             } catch (MalformedURLException e) {
-                logger.error("Malformed URL: " + clientKeystorePropertiesPath, e);
+                System.out.println("[ERROR] Malformed URL when converting client keystore path: " + clientKeystorePropertiesPath);
+                e.printStackTrace(System.out);
+            } catch (Exception e) {
+                System.out.println("[ERROR] Failed to list certificates from keystore.");
+                e.printStackTrace(System.out);
             }
+        } else {
+            System.out.println("[ERROR] Client keystore properties file not found at path: " + signaturePropFile.toAbsolutePath());
         }
+        System.out.println("=========================================================================================================================");
     }
 
 }
