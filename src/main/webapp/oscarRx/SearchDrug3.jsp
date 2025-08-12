@@ -162,7 +162,6 @@
 
     RxPharmacyData pharmacyData = new RxPharmacyData();
     List<PharmacyInfo> pharmacyList = pharmacyData.getPharmacyFromDemographic(Integer.toString(demoNo));
-            List<PharmacyInfo> pharmacyList = pharmacyData.getPharmacyFromDemographic(Integer.toString(demoNo));
 
     String drugref_route = OscarProperties.getInstance().getProperty("drugref_route");
     if (drugref_route == null) {
