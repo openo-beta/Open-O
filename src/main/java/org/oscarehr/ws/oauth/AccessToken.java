@@ -1,3 +1,12 @@
+/**
+ * Purpose: Domain model for an OAuth 1.0a access token.
+ * Contains: token key/secret, client reference, user subject, timestamps, flags.
+ * Used by: AccessToken issuance and request signing/verification.
+ * Notes:
+ *   • Never log token secrets.
+ *   • Equals/hashCode should NOT include the secret.
+ */
+
 package org.oscarehr.ws.oauth;
 
 import java.util.ArrayList;

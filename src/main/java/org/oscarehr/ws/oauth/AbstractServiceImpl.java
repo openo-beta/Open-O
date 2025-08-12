@@ -27,6 +27,16 @@
  * Written by Brandon Aubie <brandon@aubie.ca>
  */
 
+/**
+ * Purpose: Common base for OAuth-related services.
+ * Responsibilities:
+ *   • Shared helpers (e.g., form-encoded building, error mapping, logging).
+ *   • Convenience methods used by request/access token flows.
+ * Notes:
+ *   • Stateless by design; avoid keeping per-request state in fields.
+ *   • Extend in controllers/services as needed to reduce duplication.
+ */
+
 package org.oscarehr.ws.oauth;
 
 import javax.servlet.http.HttpServletRequest;

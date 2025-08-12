@@ -1,3 +1,13 @@
+/**
+ * Purpose: Endpoint/controller for exchanging a request token + verifier
+ * for an access token (OAuth 1.0a step 3).
+ * Responsibilities:
+ *   • Validate signature, nonce, timestamp.
+ *   • Validate oauth_verifier and request token state.
+ *   • Issue and return a form-encoded access token/secret.
+ * Notes: Returns 401 on signature/nonce errors; 400 on bad verifier/state.
+ */
+
 package org.oscarehr.ws.oauth;
 
 import oscar.login.OscarOAuthDataProvider;

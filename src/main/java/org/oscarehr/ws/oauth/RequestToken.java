@@ -1,3 +1,12 @@
+/**
+ * Purpose: Domain model for an OAuth 1.0a request token.
+ * Contains: token key/secret, client, callback, authorized user (when approved),
+ *           and lifecycle state (new/authorized/consumed/expired).
+ * Used by: Initiate (create), Authorize (approve), Token (exchange).
+ * Notes:
+ *   • One-time use after successful exchange; mark consumed.
+ */
+
 package org.oscarehr.ws.oauth;
 
 import java.util.ArrayList;

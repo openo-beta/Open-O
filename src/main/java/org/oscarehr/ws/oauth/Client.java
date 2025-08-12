@@ -1,3 +1,12 @@
+/**
+ * Purpose: Domain model for an OAuth 1.0a client/application.
+ * Contains: consumerKey/secret, app name, callback/application URIs, status.
+ * Used by: Lookup during signature verification and token issuance.
+ * Notes:
+ *   • consumerSecret must be stored securely and never logged.
+ *   • Consider rotating secrets and tracking last-used timestamps.
+ */
+
 package org.oscarehr.ws.oauth;
 
 public class Client {

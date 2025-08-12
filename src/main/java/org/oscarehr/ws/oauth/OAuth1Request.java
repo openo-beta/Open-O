@@ -1,3 +1,13 @@
+/**
+ * Purpose: Immutable view of normalized OAuth 1.0a request parameters.
+ * Contains: consumerKey, token, signatureMethod, signature, timestamp, nonce,
+ *           callback, verifier, httpMethod, baseUri, normalized params.
+ * Used by: Signature verification and token endpoints.
+ * Notes:
+ *   • Produced by the parser; do not mutate.
+ *   • Avoid logging secrets or raw signatures.
+ */
+
 package org.oscarehr.ws.oauth;
 
 import java.util.*;

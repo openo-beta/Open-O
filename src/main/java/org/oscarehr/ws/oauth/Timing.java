@@ -1,3 +1,11 @@
+/**
+ * Purpose: Represents the authenticated end-user (resource owner) identity.
+ * Contains: user id/username and optional roles/attributes.
+ * Used by: Linking approved tokens to a user during authorization.
+ * Notes:
+ *   • Do not place sensitive PII beyond what’s needed to bind tokens.
+ */
+
 package org.oscarehr.ws.oauth;
 
 public final class Timing {

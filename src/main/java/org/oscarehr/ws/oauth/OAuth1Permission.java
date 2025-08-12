@@ -1,9 +1,13 @@
+/**
+ * Purpose: Represents a granted scope/permission within OAuth.
+ * Contains: scope identifier and optional description/constraints.
+ * Used by: RequestTokenRegistration to capture requested scopes.
+ * Notes:
+ *   • Keep canonical scope names; validate unknown scopes early.
+ */
+
 package org.oscarehr.ws.oauth;
 
-/**
- * Simple replacement for CXF's OAuthPermission.
- * Represents a single scope/permission.
- */
 public class OAuth1Permission {
     private String permission;
     private String description;

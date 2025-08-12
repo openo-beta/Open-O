@@ -24,6 +24,21 @@
  * 
  * Migrated from Apache CXF to ScribeJava OAuth1 implementation.
  */
+
+
+/**
+ * Purpose: OAuth 1.0a Request Token endpoint for CXF JAX-RS, served at /ws/oauth/initiate.
+ * Responsibilities:
+ *   • Parse OAuth params from the HTTP request (Authorization header, query/form).
+ *   • Verify HMAC-SHA1/PLAINTEXT signature and timestamp/nonce via OAuth1SignatureVerifier.
+ *   • Create and persist a request token; return form-encoded response per RFC 5849.
+ * Why changed: Migrated from CXF OAuth/SOAP wiring to ScribeJava-style server-side verification
+ * under CXF JAX-RS to satisfy the /ws/oauth/* spec without refactoring existing REST.
+ * Dependencies: OscarOAuthDataProvider, OAuth1ParamParser, OAuth1SignatureVerifier.
+ * Notes:
+ *   • Keep the same host/port/proto across steps to avoid signature base-string mismatch.
+ *   • Response format: oauth_token, oauth_token_secret, oauth_callback_confirmed=true.
+ */
 package oscar.login;
 
 import org.oscarehr.ws.oauth.OAuth1Request;
@@ -34,15 +49,14 @@ import org.oscarehr.ws.oauth.RequestTokenRegistration;
 import org.oscarehr.ws.oauth.RequestToken;
 import org.oscarehr.ws.oauth.util.OAuth1ParamParser;
 
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-
+// JAX-RS + Servlet
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-@RestController
-@RequestMapping // servlet handles /ws/oauth/*
+@Path("/oauth") // CXF JAX-RS base under /ws
 public class OscarRequestTokenService {
 
     private final OscarOAuthDataProvider dataProvider;
@@ -57,12 +71,15 @@ public class OscarRequestTokenService {
         this.verifier = verifier;
     }
 
-    @RequestMapping(
-        value = "/initiate",
-        method = {RequestMethod.GET, RequestMethod.POST},
-        produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE
-    )
-    public String initiate(HttpServletRequest req) {
+    // Support POST
+    @POST
+    @Path("/initiate")
+    @Produces(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response initiatePost(@Context HttpServletRequest req) {
+        return doInitiate(req);
+    }
+
+    private Response doInitiate(HttpServletRequest req) {
         OAuth1Request oreq = parser.parseFromRequest(req);
 
         Client client = dataProvider.getClient(oreq.consumerKey);
@@ -70,24 +87,19 @@ public class OscarRequestTokenService {
             throw new OAuth1Exception(401, "invalid_consumer");
         }
 
-        // Build config expected by the verifier
-        // Use whatever constructor/setters your AppOAuth1Config provides.
         AppOAuth1Config cfg = new AppOAuth1Config();
         cfg.setConsumerKey(client.getConsumerKey());
         cfg.setConsumerSecret(client.getSecret());
         cfg.setApplicationURI(req.getRequestURL().toString());
 
-        
         try {
-            // ignore the return value for /initiate; you just need it to not throw
             verifier.verifySignature(req, cfg);
         } catch (org.oscarehr.ws.oauth.OAuth1Exception e) {
-            // pass through your domain error
             throw e;
         } catch (Exception e) {
-            // normalize any other failure
             throw new org.oscarehr.ws.oauth.OAuth1Exception(401, "invalid_signature");
         }
+
         RequestTokenRegistration reg = new RequestTokenRegistration(client);
         reg.setCallback(oreq.callback); // may be "oob"
         if (oreq.scopesCsv != null && !oreq.scopesCsv.isBlank()) {
@@ -95,9 +107,11 @@ public class OscarRequestTokenService {
         }
         RequestToken rt = dataProvider.createRequestToken(reg);
 
-        return "oauth_token=" + enc(rt.getTokenKey())
-             + "&oauth_token_secret=" + enc(rt.getTokenSecret())
-             + "&oauth_callback_confirmed=true";
+        String body = "oauth_token=" + enc(rt.getTokenKey())
+                    + "&oauth_token_secret=" + enc(rt.getTokenSecret())
+                    + "&oauth_callback_confirmed=true";
+
+        return Response.ok(body).type(MediaType.APPLICATION_FORM_URLENCODED).build();
     }
 
     private static String enc(String s) {

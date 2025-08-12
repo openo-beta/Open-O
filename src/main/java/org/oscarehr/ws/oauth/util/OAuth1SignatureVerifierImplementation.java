@@ -1,3 +1,16 @@
+/**
+ * Purpose: Server-side verification of OAuth 1.0a signatures (HMAC-SHA1/PLAINTEXT).
+ * Responsibilities:
+ *   • Build signature base string; recompute signature; constant-time comparison.
+ *   • Validate timestamp/nonce (anti-replay) via injected store if configured.
+ *   • Throw domain-specific OAuth1Exception with HTTP 401 on failure.
+ * Why changed/added: Replace CXF OAuth filter with an explicit, testable verifier used by
+ * request/access token endpoints while keeping CXF JAX-RS for routing.
+ * Notes:
+ *   • Do not log shared secrets or raw signatures.
+ *   • Allow small clock skew; ensure nonce uniqueness per consumer+timestamp.
+ */
+
 package org.oscarehr.ws.oauth.util;
 
 import java.nio.charset.StandardCharsets;

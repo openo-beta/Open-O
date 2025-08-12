@@ -27,6 +27,15 @@
  * Written by Brandon Aubie <brandon@aubie.ca>
  */
 
+/**
+ * Purpose: Optional health/status service for OAuth components.
+ * Responsibilities:
+ *   • Lightweight checks (e.g., nonce store, clock skew, config presence).
+ *   • Debug endpoints guarded for admins/environments only.
+ * Notes:
+ *   • Never expose secrets or token values in responses.
+ */
+
 package org.oscarehr.ws.oauth;
 
 import java.util.Arrays;

@@ -1,3 +1,13 @@
+/**
+ * Purpose: Time/constant-time helpers for security-sensitive comparisons.
+ * Responsibilities:
+ *   • Constant-time equals for signatures/secrets.
+ *   • Clock-skew checks for OAuth timestamp validation.
+ * Notes:
+ *   • Keep methods static and side-effect free.
+ *   • Unit test with edge values (past, future, boundary skew).
+ */
+
 package org.oscarehr.ws.oauth;
 
 public class RequestTokenRegistration {

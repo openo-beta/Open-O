@@ -1,3 +1,13 @@
+/**
+ * Purpose: Build the OAuth 1.0a signature base string.
+ * Responsibilities:
+ *   • Normalize HTTP method, base URI, and parameters per RFC 5849.
+ *   • Percent-encode components correctly and sort params lexicographically.
+ * Notes:
+ *   • Exclude "oauth_signature" from parameter normalization.
+ *   • Ensure host/port/protocol match the actual request to avoid 401s.
+ */
+
 package org.oscarehr.ws.oauth;
 
 import org.springframework.stereotype.Service;

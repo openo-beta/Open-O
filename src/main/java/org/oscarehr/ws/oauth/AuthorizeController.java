@@ -1,3 +1,14 @@
+/**
+ * Purpose: Authorization endpoint (OAuth 1.0a step 2) where a user approves
+ * a client and the server generates an oauth_verifier.
+ * Responsibilities:
+ *   • Display/handle user consent.
+ *   • On approval, redirect to the registered callback with oauth_verifier.
+ * Notes:
+ *   • Supports "oob" flows by showing the verifier on-screen when no callback.
+ *   • Do not leak client secrets or token secrets in views/logs.
+ */
+
 package org.oscarehr.ws.oauth;
 
 import oscar.login.OscarOAuthDataProvider;
