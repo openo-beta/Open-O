@@ -28,7 +28,9 @@
     <context:component-scan base-package="org.oscarehr.ws.rest"/>
     <context:component-scan base-package="org.oscarehr.ws.rest.util"/>
     <context:component-scan base-package="org.oscarehr.ws.rest.conversion"/>
-    <context:component-scan base-package="org.oscarehr.ws"/>
+    <context:component-scan base-package="org.oscarehr.ws">
+        <context:exclude-filter type="assignable" expression="org.oscarehr.ws.SystemInfoWs"/>
+    </context:component-scan>
 
     <aop:aspectj-autoproxy/>
 
