@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.oscarehr.common.dao.ReportByExamplesFavoriteDao;
 import org.oscarehr.common.model.ReportByExamplesFavorite;
 import org.oscarehr.util.MiscUtils;
