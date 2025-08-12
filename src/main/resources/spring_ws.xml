@@ -204,8 +204,16 @@
         <value>post</value>
     </util:list>
 
-    <!-- OAuth beans will be picked up by component scanning -->
-
+    <!-- OAuth beans - define explicitly since they need specific constructor args -->
+    <bean id="OAuth1ParamParser" class="org.oscarehr.ws.oauth.util.OAuth1ParamParser"/>
+    
+    <!-- Define oscarRequestTokenService with constructor args -->
+    <bean id="oscarRequestTokenService" class="oscar.login.OscarRequestTokenService">
+        <constructor-arg ref="oscarOAuthDataProvider"/>
+        <constructor-arg ref="OAuth1ParamParser"/>
+        <!-- Note: OAuth1SignatureVerifier is an interface - you'll need to provide a concrete implementation -->
+        <!-- <constructor-arg ref="OAuth1SignatureVerifier"/> -->
+    </bean>
 
     <!-- OAuth JAX-RS server at /ws/* -->
     <jaxrs:server id="oauthServer" address="/">
