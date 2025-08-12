@@ -74,7 +74,7 @@ is hosted in an IFrame and that the IFrame's parent window implements signatureH
     <input type="hidden" name="source" value="IPAD"/>
     <input type="hidden" name="<%=DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY %>" value="<%= requestIdKey %>"/>
     <input type="hidden" name="demographicNo" value="<%= request.getParameter("demographicNo") %>"/>
-	<input type="hidden" name=<%= ModuleType.class.getSimpleName()%>
+	<input type="hidden" name="<%= ModuleType.class.getSimpleName()%>"
 			value="<%= request.getParameter(ModuleType.class.getSimpleName()) %>" />
     <input type="hidden" name="saveToDB" value="<%=saveToDB%>"/>
 </form>
