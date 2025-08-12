@@ -70,7 +70,6 @@
     <bean id="authenticationInWSS4JInterceptor" class="org.oscarehr.ws.AuthenticationInWSS4JInterceptor"/>
     
     <!-- Define missing WS beans if not picked up by component scanning -->
-    <bean id="systemInfoWs" class="org.oscarehr.ws.SystemInfoWs"/>
     <bean id="loginWs" class="org.oscarehr.ws.LoginWs"/>
     <bean id="scheduleWs" class="org.oscarehr.ws.ScheduleWs"/>
     <bean id="bookingWs" class="org.oscarehr.ws.BookingWs"/>
@@ -85,7 +84,7 @@
     <bean id="prescriptionWs" class="org.oscarehr.ws.PrescriptionWs"/>
     <bean id="labUploadWs" class="org.oscarehr.ws.LabUploadWs"/>
     
-    <jaxws:endpoint implementor="#systemInfoWs" address="/SystemInfoService"/>
+    <jaxws:endpoint implementor="org.oscarehr.ws.SystemInfoWs" address="/SystemInfoService"/>
     <jaxws:endpoint implementor="#loginWs"      address="/LoginService"/>
 
     <jaxws:endpoint implementor="#scheduleWs" address="/ScheduleService">
