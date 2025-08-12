@@ -27,6 +27,7 @@ package oscar.eform;
 
 import com.quatro.model.security.Secobjprivilege;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -1631,8 +1632,14 @@ public class EFormUtil {
             if (currentErrors == null || currentErrors.isEmpty()) {
                 jsonArray = new JSONArray();
                 jsonArray.add(error);
-            } else {
-                jsonArray = JSONArray.fromObject(currentErrors);
+            } else {                    
+                try {
+                    jsonArray = JSONArray.fromObject(currentErrors);
+                } catch (JSONException e) {
+                    logger.warn("Malformed JSON in currentErrors, resetting: " + currentErrors, e);
+                    jsonArray = new JSONArray();
+                }
+
                 boolean addError = true;
                 for (Object jsonArrayObject : jsonArray) {
                     if (((String) jsonArrayObject).equalsIgnoreCase(error)) {
