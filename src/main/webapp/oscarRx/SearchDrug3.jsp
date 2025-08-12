@@ -162,7 +162,6 @@
 
     RxPharmacyData pharmacyData = new RxPharmacyData();
     List<PharmacyInfo> pharmacyList = pharmacyData.getPharmacyFromDemographic(Integer.toString(demoNo));
-            List<PharmacyInfo> pharmacyList = pharmacyData.getPharmacyFromDemographic(Integer.toString(demoNo));
 
     String drugref_route = OscarProperties.getInstance().getProperty("drugref_route");
     if (drugref_route == null) {
@@ -965,7 +964,8 @@
                                             </security:oscarSec>
 
                                             <input id="saveOnlyButton" type="button" class="ControlPushButton"
-                                                   onclick="updateSaveAllDrugsCheckContinue();"                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgSaveOnly"/>"
+                                                   onclick="updateSaveAllDrugsCheckContinue();"
+                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgSaveOnly"/>"
                                                    title="<fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.help.Save"/>"/>
                                             <%
                                                 if (OscarProperties.getInstance().getProperty("oscarrx.medrec", "false").equals("true")) {
