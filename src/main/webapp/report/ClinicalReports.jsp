@@ -659,7 +659,7 @@
                         ArrayList<Hashtable> list = (ArrayList) request.getAttribute("list");
                         for (Hashtable h : list) {
 
-                            Hashtable demoHash = deName.getNameAgeSexHashtable(LoggedInInfo.getLoggedInInfoFromSession(request), "" + h.get("_demographic_no"));
+                        Map<String, String> demoHash = deName.getNameAgeSexHashtable(LoggedInInfo.getLoggedInInfoFromSession(request), "" + h.get("_demographic_no"));
                             org.oscarehr.common.model.Demographic demoObj = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), "" + h.get("_demographic_no"));
 
                             String colour = "";
@@ -669,12 +669,10 @@
                     %>
                     <tr <%=colour%> >
 
-                        <%
-                            for (String heading : headings) {
-                                csvp.write(commonRow(heading, demoHash, demoObj));
+                         <%for(String heading:headings){
+                             csvp.write(Encode.forHtmlContent(commonRow(heading,demoHash, demoObj)));
                         %>
-                        <td><%=commonRow(heading, demoHash, demoObj)%>
-                        </td>
+                           <td><%=Encode.forHtmlContent(commonRow(heading,demoHash, demoObj))%></td>
                         <%}%>
 
                         <%
@@ -888,17 +886,17 @@
     }
 
 
-    String commonRow(String heading, Hashtable demoHash, org.oscarehr.common.model.Demographic demoObj) {
+    String commonRow(String heading,Map<String, String> demoHash,org.oscarehr.common.model.Demographic demoObj){
         if (heading == null) {
             return "";
         }
 
         if ("lastName".equals(heading)) {
-            return "" + demoHash.get("lastName");
+           return demoHash.get("lastName");
         } else if ("firstName".equals(heading)) {
-            return "" + demoHash.get("firstName");
+           return demoHash.get("firstName");
         } else if ("sex".equals(heading)) {
-            return "" + demoHash.get("sex");
+           return demoHash.get("sex");
         } else if ("phone".equals(heading)) {
             return demoObj.getPhone();
         } else if ("address".equals(heading)) {

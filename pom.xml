@@ -313,7 +313,7 @@
             and 'hcv-stubs' as they are currently utilizing xmlsec version 1.5.6.
             Thus, we need to update all dependencies together.
 
-            The GitHub Dependabot suggested to upgrade to 2.2.6 or later version, but due to the 
+            The GitHub Dependabot suggested to upgrade to 2.2.6 or later version, but due to the
             compatible issues with other dependencies as mentioned above, we are staying at 2.1.8 for now.
         -->
         <dependency>
@@ -467,7 +467,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        
+
         <!-- Jackson dependencies for JSON processing -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -520,7 +520,7 @@
             <artifactId>krysalis-jCharts</artifactId>
             <version>0.7.5</version>
         </dependency>
-        
+
         <!-- cds: can be found in the local_repo folder -->
         <dependency>
             <groupId>cds</groupId>
@@ -839,10 +839,17 @@
             <version>1.78.1</version>
         </dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+			<version>5.8.16</version>
+		</dependency>
+
         <!-- AXIS2 (for OLIS) -->
-        <!-- 
-            Suggestted to upgrade to 1.8.0 or later by GitHub Dependabot, but got 
-            100+ compliation errors after upgrading, will stay at 1.5.4 now 
+        <!--
+            Suggestted to upgrade to 1.8.0 or later by GitHub Dependabot, but got
+            100+ compliation errors after upgrading, will stay at 1.5.4 now
         -->
         <dependency>
             <groupId>org.apache.axis2</groupId>
@@ -1175,7 +1182,7 @@
             <artifactId>PatientService</artifactId>
             <version>20161213</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.jasypt</groupId>
             <artifactId>jasypt</artifactId>
@@ -1276,7 +1283,7 @@
             <artifactId>flowsheets</artifactId>
             <version>1.0</version>
         </dependency>
-        
+
         <!-- Detected as "Unused dependency" but don't remove it, it's using actually -->
         <dependency>
            <groupId>com.sun.xml.ws</groupId>
@@ -1294,7 +1301,7 @@
             <artifactId>javax.annotation-api</artifactId>
             <version>1.3.2</version>
         </dependency>
-        
+
         <!-- Added for Tomcat 9.0.97 -->
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
@@ -1306,7 +1313,7 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.struts</groupId>
             <artifactId>struts2-core</artifactId>
@@ -1317,6 +1324,14 @@
             <artifactId>struts2-spring-plugin</artifactId>
             <version>2.5.33</version>
         </dependency>
+		<!-- https://mvnrepository.com/artifact/org.jboss.aerogear/aerogear-otp-java -->
+		<dependency>
+			<groupId>org.jboss.aerogear</groupId>
+			<artifactId>aerogear-otp-java</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+
     </dependencies>
 
     <build>
@@ -1453,7 +1468,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
