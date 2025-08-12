@@ -1,24 +1,18 @@
 package org.oscarehr.integration.ebs.client.ng;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 import javax.xml.soap.SOAPMessage;
-import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import java.io.InputStream;
-import java.io.StringWriter;
-
-import org.apache.cxf.attachment.LazyAttachmentCollection;
-import org.apache.cxf.binding.xml.interceptor.XMLMessageInInterceptor;
 import org.apache.cxf.helpers.IOUtils;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.io.CachedOutputStream;
@@ -29,45 +23,42 @@ import org.apache.cxf.phase.Phase;
 
 public class DownloadInInterceptor extends AbstractPhaseInterceptor<Message> {
 
-	public DownloadInInterceptor() {
-		super(Phase.PRE_INVOKE);
-	}
+    public DownloadInInterceptor() {
+        super(Phase.PRE_INVOKE);
+    }
 
-	@Override
-	public void handleMessage(Message message) throws Fault {
-		LazyAttachmentCollection attachments = (LazyAttachmentCollection) 
-				message.get(org.apache.cxf.message.Message.ATTACHMENTS);
-		if (attachments != null) {
-			for(Attachment a : attachments.getLoadedAttachments()) {
-				System.out.println(a.getId());
-				try {
-					System.out.println(IOUtils.readStringFromStream(a.getDataHandler().getInputStream()));
-				} catch (IOException e) {
-					// swallow
-				}
-			}
-		}
-		
-		
-		StringBuilder messageInfo = new StringBuilder();
+    @Override
+    public void handleMessage(Message message) throws Fault {
 
+        // ---- Handle attachments safely ----
+        Object attObj = message.get(Message.ATTACHMENTS);
+        if (attObj instanceof Collection) {
+            @SuppressWarnings("unchecked")
+            Collection<Attachment> attachments = (Collection<Attachment>) attObj;
+            for (Attachment a : attachments) {
+                System.out.println("Attachment ID: " + a.getId());
+                try (InputStream attIs = a.getDataHandler().getInputStream()) {
+                    System.out.println(IOUtils.readStringFromStream(attIs));
+                } catch (IOException e) {
+                    // swallow or log
+                }
+            }
+        }
+
+        // ---- Copy the message input stream so we can read it multiple times ----
         try {
-            // Get the content of the message as an InputStream
             InputStream is = message.getContent(InputStream.class);
             if (is != null) {
-                // Copy the input stream to a CachedOutputStream so we can read it
                 CachedOutputStream cos = new CachedOutputStream();
                 IOUtils.copy(is, cos);
                 cos.flush();
 
-                // Reset the input stream to the beginning and set it back in the message
+                // Put the stream back so CXF and later interceptors can still use it
                 message.setContent(InputStream.class, cos.getInputStream());
 
-                // Convert the CachedOutputStream to a String (decrypted message)
-                String soapMessage = IOUtils.toString(cos.getInputStream(), "UTF-8");
-
-                // Print the decrypted SOAP message to the console
-                System.out.println("Decrypted SOAP Response Message: \n" + soapMessage);
+                // Get message as String (once)
+                String soapText = IOUtils.toString(cos.getInputStream(), StandardCharsets.UTF_8.name());
+                System.out.println("Decrypted SOAP Response Message:\n" + soapText);
             } else {
                 System.out.println("No InputStream found in the message content.");
             }
@@ -75,34 +66,26 @@ public class DownloadInInterceptor extends AbstractPhaseInterceptor<Message> {
             throw new Fault(e);
         }
 
-        // Add message properties
-        messageInfo.append("\nMessage Properties:\n");
-        Map<String, Object> properties = message;
-        for (Map.Entry<String, Object> property : properties.entrySet()) {
-            messageInfo.append(property.getKey()).append(": ").append(property.getValue()).append("\n");
+        // ---- Log message properties ----
+        StringBuilder messageInfo = new StringBuilder("\nMessage Properties:\n");
+        for (Map.Entry<String, Object> entry : message.entrySet()) {
+            messageInfo.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
         }
-
         System.out.println(messageInfo.toString());
 
-		try {
+        // ---- SOAPMessage logging ----
+        try {
             SOAPMessage soapMessage = message.getContent(SOAPMessage.class);
             if (soapMessage != null) {
-                // Convert the SOAPMessage to a String (XML format)
                 StringWriter sw = new StringWriter();
-                TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                Transformer transformer = transformerFactory.newTransformer();
+                Transformer transformer = TransformerFactory.newInstance().newTransformer();
                 transformer.transform(new DOMSource(soapMessage.getSOAPPart()), new StreamResult(sw));
-
-                String xmlMessage = sw.toString();
-                System.out.println("Decrypted SOAP Response XML: \n" + xmlMessage);
+                System.out.println("Decrypted SOAP Response XML:\n" + sw.toString());
             } else {
                 System.out.println("No SOAP Message found in the response.");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-		
-		// SOAPMessage soapMessage = (SOAPMessage) message;
-	}
-
+    }
 }
