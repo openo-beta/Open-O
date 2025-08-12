@@ -27,7 +27,6 @@ import org.oscarehr.common.model.Security;
 import org.oscarehr.util.LoggedInInfo;
 import oscar.OscarProperties;
 
-import javax.jms.IllegalStateException;
 import java.io.UnsupportedEncodingException;
 
 /**

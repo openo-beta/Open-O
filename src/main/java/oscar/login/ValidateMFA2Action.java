@@ -22,26 +22,38 @@
 
 package oscar.login;
 
-import org.apache.struts.action.ActionForm;
+import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ServletActionContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-public class ValidateMFAForm extends ActionForm {
-
+public class ValidateMFA2Action extends ActionSupport {
+    
+    private HttpServletRequest request = ServletActionContext.getRequest();
+    private HttpServletResponse response = ServletActionContext.getResponse();
+    
     private String code;
-    private boolean isMfaRegistrationFlow;
-
+    private boolean mfaRegistrationFlow;
+    
+    public String execute() {
+        // This action appears to be handled by Login2Action
+        // Keeping this as a placeholder in case it needs separate handling
+        return SUCCESS;
+    }
+    
     public void setCode(String code) {
         this.code = code;
     }
-
+    
     public String getCode() {
         return this.code;
     }
-
+    
     public boolean isMfaRegistrationFlow() {
-        return isMfaRegistrationFlow;
+        return mfaRegistrationFlow;
     }
-
+    
     public void setMfaRegistrationFlow(boolean mfaRegistrationFlow) {
-        isMfaRegistrationFlow = mfaRegistrationFlow;
+        this.mfaRegistrationFlow = mfaRegistrationFlow;
     }
 }

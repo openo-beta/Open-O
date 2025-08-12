@@ -63,6 +63,22 @@
 
     <dependencyManagement>
         <dependencies>
+        <!-- Override the problematic beta JAXB versions with stable releases -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.0</version> <!-- Final release, not beta -->
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>2.3.0</version> <!-- Final release, not beta -->
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <version>2.3.0</version> <!-- Final release, not beta -->
+        </dependency>
             <!-- https://mvnrepository.com/artifact/org.springframework/spring-framework-bom -->
             <dependency>
                 <groupId>org.springframework</groupId>

@@ -48,6 +48,8 @@ import oscar.oscarEncounter.oscarMeasurements.util.TargetCondition;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 public class FlowSheetCustom2Action extends ActionSupport {
@@ -145,7 +147,7 @@ public class FlowSheetCustom2Action extends ActionSupport {
                 cust.setPayload(outp.outputString(va));
                 cust.setFlowsheet(flowsheet);
                 cust.setMeasurement(prevItem);//THIS THE MEASUREMENT TO SET THIS AFTER!
-                cust.setProviderNo("clinic".equals(scope) ? "" : (String) request.getSession().getAttribute("user"));
+                cust.setProviderNo("clinic".equals(scope) ? "" : LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo());
                 cust.setDemographicNo(demographicNo);
                 cust.setCreateDate(new Date());
 
@@ -291,7 +293,7 @@ public class FlowSheetCustom2Action extends ActionSupport {
                 cust.setDemographicNo(demographicNo);
             }
             cust.setMeasurement(item.getItemName());//THIS THE MEASUREMENT TO SET THIS AFTER!
-            cust.setProviderNo("clinic".equals(scope) ? "" : (String) request.getSession().getAttribute("user"));
+            cust.setProviderNo("clinic".equals(scope) ? "" : LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo());
 
             logger.debug("UPDATE " + cust);
 
@@ -321,7 +323,7 @@ public class FlowSheetCustom2Action extends ActionSupport {
         cust.setAction(FlowSheetCustomization.DELETE);
         cust.setFlowsheet(flowsheet);
         cust.setMeasurement(measurement);
-        cust.setProviderNo("clinic".equals(scope) || demographicNo != null ? "" : (String) request.getSession().getAttribute("user"));
+        cust.setProviderNo("clinic".equals(scope) || demographicNo != null ? "" : LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo());
         cust.setDemographicNo(demographicNo);
 
         flowSheetCustomizationDao.persist(cust);
@@ -436,6 +438,6 @@ public class FlowSheetCustom2Action extends ActionSupport {
 
         request.setAttribute("flowsheet", fsuc.getName());
         request.setAttribute("displayName", fsuc.getDisplayName());
-        return mapping.findForward("success");
+        return SUCCESS;
     }
 }

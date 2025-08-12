@@ -47,7 +47,7 @@
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Security" %>
 <%@ page import="org.oscarehr.common.dao.SecurityDao" %>
-<%@ page import="org.oscarehr.security.MfaActions" %>
+<%@ page import="org.oscarehr.security.MfaActions2Action" %>
 <%@ page import="org.oscarehr.managers.MfaManager" %>
 
 
@@ -184,7 +184,7 @@
 		if (confirm("<bean:message key="admin.securityAddRecord.mfa.reset.confirm"/>")) {
 			let url = "${pageContext.request.contextPath}/securityRecord/mfa.do";
 			let data = {
-				method: '<%= MfaActions.METHOD_RESET_MFA %>',
+				method: '<%= MfaActions2Action.METHOD_RESET_MFA %>',
 				securityId: securityId
 			};
 			new Ajax.Request(url, {

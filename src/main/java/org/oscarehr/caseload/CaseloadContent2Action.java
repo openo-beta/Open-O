@@ -13,12 +13,7 @@ package org.oscarehr.caseload;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
@@ -633,7 +628,7 @@ public class CaseloadContent2Action extends ActionSupport {
                 List<Map<String, Object>> newTicklerResult = caseloadDao.getCaseloadDemographicData(newTicklerQuery, demographicParam);
                 if (!newTicklerResult.isEmpty() && newTicklerResult.get(0).get("count(*)") != null && !newTicklerResult.get(0).get("count(*)").toString().equals("") && !newTicklerResult.get(0).get("count(*)").toString().equals("0")) {
                     String clNewTickler = newTicklerResult.get(0).get("count(*)").toString();
-                    entry.add("<a href='#' onclick=\"popupPage('700', '1000', '" + contextPath + "/tickler/ticklerDemoMain.jsp?demoview=" + demographic_no + "'); return false;\">" + clNewTickler + "</a>");
+                    entry.add("<a href='#' onclick=\"popupPage('700', '1000', '" + contextPath + "/tickler/ticklerMain.jsp?demoview=" + demographic_no + "'); return false;\">" + clNewTickler + "</a>");
                 } else {
                     entry.add("&nbsp;");
                 }

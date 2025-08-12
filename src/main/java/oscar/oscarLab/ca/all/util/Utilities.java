@@ -143,7 +143,7 @@ public class Utilities {
 
             logger.debug("saveFile place=" + place + ", retVal=" + retVal);
 
-            try (OutputStream os = Files.newOutputStream(filePath);
+            try (OutputStream os = Files.newOutputStream(Paths.get(retVal));
                 BufferedInputStream bis = new BufferedInputStream(stream)) {
 
                 byte[] buffer = new byte[8192]; // 8KB buffer

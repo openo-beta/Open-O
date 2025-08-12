@@ -22,10 +22,8 @@
 
 package org.oscarehr.security;
 
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.actions.DispatchAction;
+import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ServletActionContext;
 import org.oscarehr.common.model.Security;
 import org.oscarehr.managers.MfaManager;
 import org.oscarehr.managers.SecurityManager;
@@ -35,29 +33,34 @@ import org.oscarehr.util.SpringUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /**
  * This class handles actions related to Multi-Factor Authentication (MFA).
  * It provides functionality to reset the MFA secret for a user.
  */
-public final class MfaActions extends DispatchAction {
+public final class MfaActions2Action extends ActionSupport {
+
+    private HttpServletRequest request = ServletActionContext.getRequest();
+    private HttpServletResponse response = ServletActionContext.getResponse();
 
     public static final String METHOD_RESET_MFA = "resetMfa";
 
     private final SecurityManager securityManager = SpringUtils.getBean(SecurityManager.class);
     private final MfaManager mfaManager = SpringUtils.getBean(MfaManager.class);
 
+    public String execute() {
+        String method = request.getParameter("method");
+        if (METHOD_RESET_MFA.equals(method)) {
+            return resetMfa();
+        }
+        return SUCCESS;
+    }
+
     /**
      * Resets the MFA secret for a specified user.
      *
-     * @param mapping  The ActionMapping used to select this instance.
-     * @param form     The optional ActionForm bean for this request.
-     * @param request  The HTTP request we are processing.
-     * @param response The HTTP response we are creating.
      * @return null, as this action does not forward to another page.
      */
-    public ActionForward resetMfa(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-
+    public String resetMfa() {
         String securityId = request.getParameter("securityId");
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         Security security = this.securityManager.find(loggedInInfo, Integer.valueOf(securityId));
