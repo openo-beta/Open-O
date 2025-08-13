@@ -130,7 +130,6 @@
     </div><!-- modal-body -->
     <div class="modal-footer">
         <input type="button" class="btn" ng-click="print();" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>">
-        <input type="button" class="btn" ng-click="sendToPhr();" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnSendToPHR"/>">
         <input type="button" class="btn" ng-click="cancelPrint()" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>">
         <input type="button" class="btn" ng-click="clearPrint()" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.clear"/>">
     </div>

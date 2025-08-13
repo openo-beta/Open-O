@@ -1029,8 +1029,6 @@
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.workflowShortcut"/> :
                         popupOscarRx(700, 1024, '../oscarWorkflow/WorkFlowList.jsp', '<fmt:setBundle basename="oscarResources"/><fmt:message key="global.workflow"/>');
                         return false; //code for 'W'orkflow
-                    case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.phrShortcut"/> :
-                        popupOscarRx('600', '1024', '../phr/PhrMessage.do?method=viewMessages', 'INDIVOMESSENGER2<%=curUser_no%>')
                     default :
                         return;
                 }

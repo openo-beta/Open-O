@@ -249,8 +249,7 @@
                     <input type="button" value="Print"
                            onclick="javascript:return onPrint();"/></td>
                 <td align="right"><a
-                        href="dmdata.jsp?demographic_no=<%=demoNo%>">View Data</a> | <a
-                        href="dm2ping.jsp?demographic_no=<%=demoNo%>">Send to PING</a></td>
+                        href="dmdata.jsp?demographic_no=<%=demoNo%>">View Data</a></td>
             </tr>
         </table>
 

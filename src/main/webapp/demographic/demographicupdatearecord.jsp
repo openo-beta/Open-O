@@ -141,7 +141,6 @@
             } else {
                 demographic.setConsentToUseEmailForCare(null);
             }
-            demographic.setMyOscarUserName(StringUtils.trimToNull(request.getParameter("myOscarUserName")));
             demographic.setYearOfBirth(request.getParameter("year_of_birth"));
             demographic.setMonthOfBirth(request.getParameter("month_of_birth") != null && request.getParameter("month_of_birth").length() == 1 ? "0" + request.getParameter("month_of_birth") : request.getParameter("month_of_birth"));
             demographic.setDateOfBirth(request.getParameter("date_of_birth") != null && request.getParameter("date_of_birth").length() == 1 ? "0" + request.getParameter("date_of_birth") : request.getParameter("date_of_birth"));
@@ -340,18 +339,6 @@
                 }
             }
 
-            if (demographic.getMyOscarUserName() != null && !demographic.getMyOscarUserName().trim().isEmpty()) {
-                Demographic myoscarDemographic = demographicDao.getDemographicByMyOscarUserName(demographic.getMyOscarUserName());
-                if (myoscarDemographic != null && !myoscarDemographic.getDemographicNo().equals(demographic.getDemographicNo())) {
-
-        %>
-        ***<font color='red'><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddarecord.msgDuplicatedPHR"/></font>
-        ***<br><br><a href=# onClick="history.go(-1);return false;"><b>&lt;-<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnBack"/></b></a>
-        <%
-                    return;
-                }
-
-            }
             Long archiveId = demographicArchiveDao.archiveRecord(demographic);
             for (DemographicExt extension : extensions) {
                 DemographicExtArchive archive = new DemographicExtArchive(extension);

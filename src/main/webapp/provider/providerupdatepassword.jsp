@@ -39,9 +39,6 @@
 <%@ page import="org.oscarehr.common.dao.SecurityDao" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page import="org.oscarehr.managers.SecurityManager" %>
-<%@ page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo" %>
-<%@ page import="oscar.oscarProvider.data.ProviderMyOscarIdData" %>
-<%@ page import="org.oscarehr.phr.util.MyOscarUtils" %>
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 	SecurityManager securityManager = SpringUtils.getBean(SecurityManager.class);
@@ -116,10 +113,6 @@
             }
         }
 
-        if (ProviderMyOscarIdData.idIsSet(curUser_no)) {
-            MyOscarLoggedInInfo.setLoggedInInfo(request.getSession(), null);
-            MyOscarUtils.attemptMyOscarAutoLoginIfNotAlreadyLoggedInAsynchronously(loggedInInfo, true);
-        }
 
         //In case of the error for any reason go back.
         if (!errorMsg.isEmpty()) {

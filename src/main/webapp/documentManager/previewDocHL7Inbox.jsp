@@ -44,11 +44,10 @@
 
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
-<%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="indivo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@ page
-        import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, oscar.util.*, java.net.*,oscar.MyDateFormat, oscar.oscarProvider.data.ProviderMyOscarIdData, oscar.oscarDemographic.data.DemographicData" %>
+        import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, oscar.util.*, java.net.*,oscar.MyDateFormat, oscar.oscarDemographic.data.DemographicData" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="oscar.oscarMDS.data.*,oscar.oscarLab.ca.on.*" %>
 <%@page import="org.oscarehr.util.SessionConstants" %>
@@ -69,7 +68,6 @@
         <link rel="stylesheet" type="text/css"
               href="<%= request.getContextPath() %>/share/css/niftyPrint.css" media="print"/>
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/nifty.js"></script>
-        <script type="text/javascript" src="<%= request.getContextPath() %>/phr/phr.js"></script>
         <script type="text/javascript">
             function popup1(height, width, url, windowName) {
                 var page = url;

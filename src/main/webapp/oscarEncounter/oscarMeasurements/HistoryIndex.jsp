@@ -25,9 +25,7 @@
 --%>
 
 <%@page import="org.oscarehr.util.WebUtils" %>
-<%@page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo" %>
 <%@page import="org.oscarehr.util.LocaleUtils" %>
-<%@page import="org.oscarehr.phr.util.MyOscarUtils" %>
 <%@page import="org.oscarehr.util.WebUtils" %>
 <%
     if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
@@ -109,22 +107,6 @@
             <input type="hidden" name="type" value="${type}"/>
         </c:if>
 
-        <%
-            if (MyOscarUtils.isMyOscarEnabled((String) session.getAttribute("user"))) {
-                MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(session);
-                boolean enabledMyOscarButton = MyOscarUtils.isMyOscarSendButtonEnabled(myOscarLoggedInInfo, Integer.valueOf(bean.getDemographicNo()));
-
-                String sendDataPath = request.getContextPath() + "/phr/send_medicaldata_to_myoscar.jsp?"
-                        + "demographicId=" + bean.getDemographicNo() + "&"
-                        + "medicalDataType=Measurements" + "&"
-                        + "parentPage=" + request.getRequestURI();
-        %>
-        <input type="button" name="Button" <%=WebUtils.getDisabledString(enabledMyOscarButton)%>
-               value="<%=LocaleUtils.getMessage(request, "SendToPHR")%>"
-               onclick="document.location.href='<%=sendDataPath%>'">
-        <%
-            }
-        %>
 
     </div>
 

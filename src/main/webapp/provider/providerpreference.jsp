@@ -794,10 +794,6 @@
             </oscar:oscarPropertiesCheck>
             <tr>
                 <td align="center"><a href=#
-                                      onClick="popupPage(230,860,'providerIndivoIdSetter.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetIndivoId"/></a></td>
-            </tr>
-            <tr>
-                <td align="center"><a href=#
                                       onClick="popupPage(230,860,'../setProviderStaleDate.do?method=viewUseMyMeds');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetUseMyMeds"/></a></td>
             </tr>
 

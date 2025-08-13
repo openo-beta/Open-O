@@ -36,10 +36,8 @@
 <%@page import="org.oscarehr.common.dao.ConsentDao" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page import="org.oscarehr.util.WebUtils" %>
-<%@page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo" %>
 <%@page import="oscar.OscarProperties" %>
 <%@page import="oscar.oscarDemographic.data.*,java.util.*,oscar.oscarPrevention.*" %>
-<%@page import="org.oscarehr.phr.util.MyOscarUtils" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao, org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.util.LocaleUtils" %>
@@ -263,9 +261,6 @@
                     display(checkboxes);
                     var spaces = document.getElementsByName("printSp");
                     display(spaces);
-                    if (button.form.sendToPhrButton != null) {
-                        button.form.sendToPhrButton.style.display = 'block';
-                    }
                     showImmunizationOnlyPrintButton();
                 } else {
                     if (onPrint())
@@ -303,12 +298,6 @@
                 return true;
             }
 
-            function sendToPhr(button) {
-                var oldAction = button.form.action;
-                button.form.action = "<%=request.getContextPath()%>/phr/SendToPhrPreview.jsp"
-                button.form.submit();
-                button.form.action = oldAction;
-            }
 
             function addByLot() {
                 var lotNbr = $("#lotNumberToAdd").val();
@@ -741,27 +730,6 @@
                     <a href="#" onclick="popup(600,800,'http://www.phac-aspc.gc.ca/im/is-cv/index-eng.php')">Immunization
                         Schedules - Public Health Agency of Canada</a>
 
-                    <%
-                        if (MyOscarUtils.isMyOscarEnabled((String) session.getAttribute("user"))) {
-                            MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(session);
-                            boolean enabledMyOscarButton = MyOscarUtils.isMyOscarSendButtonEnabled(myOscarLoggedInInfo, Integer.valueOf(demographic_no));
-                            if (enabledMyOscarButton) {
-                                String sendDataPath = request.getContextPath() + "/phr/send_medicaldata_to_myoscar.jsp?"
-                                        + "demographicId=" + demographic_no + "&"
-                                        + "medicalDataType=Immunizations" + "&"
-                                        + "parentPage=" + request.getRequestURI() + "?demographic_no=" + demographic_no;
-                    %>
-                    | | <a href="<%=sendDataPath%>"><%=LocaleUtils.getMessage(request, "SendToPHR")%>
-                </a>
-                    <%
-                    } else {
-                    %>
-                    | | <span
-                        style="color:grey;text-decoration:underline"><%=LocaleUtils.getMessage(request, "SendToPHR")%></span>
-                    <%
-                            }
-                        }
-                    %>
 
                     <%
                         if (warnings.size() > 0 || recomendations.size() > 0 || dsProblems) { %>
@@ -1125,10 +1093,6 @@
 				<input type="button" class="noPrint" name="printButton" onclick="EnablePrint(this)"
                        value="Enable Print">
 			</input>
-                <!--
-                            <br>
-                            <input type="button" name="sendToPhrButton" value="Send To MyOscar (PDF)" style="display: none;" onclick="sendToPhr(this)">
-                -->
             </td>
 
             <input type="hidden" id="demographicNo" name="demographicNo" value="<%=demographic_no%>"/>

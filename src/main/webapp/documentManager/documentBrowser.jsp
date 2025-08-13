@@ -32,7 +32,6 @@
 
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
-<%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="indivo" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:useBean id="oscarVariables" class="java.util.Properties" scope="page"/>
@@ -412,8 +411,7 @@ Remote documents not supported
         <%}%>
         <tr>
             <td align="left" valign="top" style="width: 400px">
-                <oscar:nameage demographicNo="<%=moduleid%>"/> &nbsp; <oscar:phrverification
-                    demographicNo="<%=moduleid%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="phr.verification.link"/></oscar:phrverification><br>
+                <oscar:nameage demographicNo="<%=moduleid%>"/><br>
                 <%=categoryKey%>
                 <br>
 

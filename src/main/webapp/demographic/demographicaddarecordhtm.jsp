@@ -1493,9 +1493,6 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                             <td id="emailLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formEMail"/>: </b></td>
                             <td id="emailCell" align="left"><input type="text" id="email" name="email" value="">
                             </td>
-                            <td id="myOscarLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formPHRUserName"/>:</b></td>
-                            <td id="myOscarCell" align="left"><input type="text" name="myOscarUserName" value="">
-                            </td>
                         </tr>
                         <tr valign="top">
                             <td id="dobLbl" align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddrecordhtm.formDOB"/><span

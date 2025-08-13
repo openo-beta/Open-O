@@ -162,7 +162,6 @@
                 demographic.setPhone(request.getParameter("phone"));
                 demographic.setPhone2(request.getParameter("phone2"));
                 demographic.setEmail(request.getParameter("email"));
-                demographic.setMyOscarUserName(StringUtils.trimToNull(request.getParameter("myOscarUserName")));
                 demographic.setYearOfBirth(request.getParameter("year_of_birth"));
                 demographic.setMonthOfBirth(request.getParameter("month_of_birth") != null && request.getParameter("month_of_birth").length() == 1 ? "0" + request.getParameter("month_of_birth") : request.getParameter("month_of_birth"));
                 demographic.setDateOfBirth(request.getParameter("date_of_birth") != null && request.getParameter("date_of_birth").length() == 1 ? "0" + request.getParameter("date_of_birth") : request.getParameter("date_of_birth"));
@@ -262,18 +261,6 @@
                     }
                 }
 
-                if (demographic.getMyOscarUserName() != null && !demographic.getMyOscarUserName().trim().isEmpty()) {
-                    Demographic myoscarDemographic = demographicDao.getDemographicByMyOscarUserName(demographic.getMyOscarUserName());
-                    if (myoscarDemographic != null) {
-
-            %>
-            ***<font color='red'><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicaddarecord.msgDuplicatedPHR"/></font>
-            ***<br><br><a href=# onClick="history.go(-1);return false;"><b>&lt;-<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnBack"/></b></a>
-            <%
-                        return;
-                    }
-
-                }
 
                 bufName = new StringBuilder(request.getParameter("last_name") + "," + request.getParameter("first_name"));
                 bufNo = new StringBuilder((StringUtils.trimToEmpty("demographic_no")));

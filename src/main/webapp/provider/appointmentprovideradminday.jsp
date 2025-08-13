@@ -24,7 +24,6 @@
 
 --%>
 <!DOCTYPE html>
-<%@ page import="org.oscarehr.common.model.Appointment.BookingSource" %>
 <%@ page import="org.oscarehr.common.dao.MyGroupAccessRestrictionDao" %>
 <%@ page import="org.oscarehr.common.dao.DemographicStudyDao" %>
 <%@ page import="org.oscarehr.common.dao.StudyDao" %>
@@ -70,8 +69,6 @@
 <%@ taglib uri="/WEB-INF/special_tag.tld" prefix="special" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="myoscar" %>
-<%@ taglib uri="/WEB-INF/phr-tag.tld" prefix="phr" %>
 
 <!-- Struts for i18n -->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -510,7 +507,6 @@
                 src="${pageContext.servletContext.contextPath}/share/javascript/Oscar.js"></script>
         <script type="text/javascript"
                 src="${pageContext.servletContext.contextPath}/share/javascript/prototype.js"></script>
-        <script type="text/javascript" src="${pageContext.servletContext.contextPath}/phr/phr.js"></script>
         <link rel="stylesheet" type="text/css" media="all"
               href="${pageContext.servletContext.contextPath}/library/jquery/jquery-ui.theme-1.12.1.min.css"/>
         <link rel="stylesheet" type="text/css" media="all"
@@ -1944,13 +1940,6 @@
                                                     <td class="appt" bgcolor='<%=as.getBgColor()%>'
                                                         rowspan="<%=iRows%>"
                                                         nowrap>
-                                                        <%
-                                                            if (BookingSource.MYOSCAR_SELF_BOOKING == appointment.getBookingSource()) {
-                                                        %>
-                                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.SelfBookedMarker"/>
-                                                        <%
-                                                            }
-                                                        %>
                                                         <!-- multisites : add colour-coded to the "location" value of that appointment. -->
                                                         <%if (bMultisites) {%>
                                                         <span title="<%= sitename %>"
@@ -2487,8 +2476,6 @@
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.workflowShortcut"/> :
                         popupOscarRx(700, 1024, '../oscarWorkflow/WorkFlowList.jsp', '<fmt:setBundle basename="oscarResources"/><fmt:message key="global.workflow"/>');
                         return false; //code for 'W'orkflow
-                    case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.phrShortcut"/> :
-                        popupOscarRx('600', '1024', '../phr/PhrMessage.do?method=viewMessages', 'INDIVOMESSENGER2<%=loggedInInfo1.getLoggedInProviderNo()%>')
                     default :
                         return;
                 }

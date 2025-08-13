@@ -850,13 +850,6 @@
                 <input type="submit" id="printOp" style="border: 1px solid #7682b1;"
                        value="Print" onclick="return printNotes();">
 
-                <indivo:indivoRegistered
-                        demographic="<%=(String) request.getAttribute(\"demographicNo\")%>"
-                        provider="<%=(String) request.getSession().getAttribute(\"user\")%>">
-                    <input type="submit" id="sendToPhr"
-                           style="border: 1px solid #7682b1;" value="Send To Phr"
-                           onclick="return sendToPhrr();">
-                </indivo:indivoRegistered>
                 <input type="submit" id="cancelprintOp"
                        style="border: 1px solid #7682b1;" value="Cancel"
                        onclick="$('printOps').style.display='none';"> <input

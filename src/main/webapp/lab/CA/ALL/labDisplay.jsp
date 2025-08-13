@@ -32,7 +32,6 @@
 <%@ page import="oscar.util.ConversionUtils" %>
 <%@ page import="org.oscarehr.common.dao.PatientLabRoutingDao" %>
 <%@ page import="org.oscarehr.common.model.PatientLabRouting" %>
-<%@ page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="org.apache.commons.lang.builder.ReflectionToStringBuilder" %>
 <%@ page import="org.oscarehr.util.MiscUtils" %>
@@ -66,7 +65,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProperties" %>
-<%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="indivo" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -871,24 +869,6 @@ request.setAttribute("missingTests", missingTests);
             window.open(link, "linkwin", "width=500, height=200");
         }
 
-        function sendToPHR(labId, demographicNo) {
-            <%
-                MyOscarLoggedInInfo myOscarLoggedInInfo=MyOscarLoggedInInfo.getLoggedInInfo(session);
-
-                if (myOscarLoggedInInfo==null || !myOscarLoggedInInfo.isLoggedIn())
-                {
-                    %>
-            alert('Please Login to MyOscar before performing this action.');
-            <%
-        }
-        else
-        {
-            %>
-            popup(450, 600, "<%=request.getContextPath()%>/phr/SendToPhrPreview.jsp?labId=" + labId + "&demographic_no=" + demographicNo, "sendtophr");
-            <%
-        }
-    %>
-        }
 
         function matchMe() {
             <% if ( !isLinkedToDemographic) { %>
@@ -2633,10 +2613,6 @@ request.setAttribute("missingTests", missingTests);
                     <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/> " onClick="window.close()">
                     <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> "
                            onClick="printPDF('<%=Encode.forJavaScript(segmentID)%>')">
-                    <indivo:indivoRegistered demographic="<%=demographicID%>" provider="<%=providerNo%>">
-                        <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnSendToPHR"/>"
-                               onClick="sendToPHR('<%=Encode.forJavaScript(segmentID)%>', '<%=demographicID%>')">
-                    </indivo:indivoRegistered>
                     <% if (searchProviderNo != null) { // we were called from e-chart %>
                     <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
                            onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= Encode.forJavaScript(segmentID) %>&name=<%=java.net.URLEncoder.encode(handler.getLastName()+", "+handler.getFirstName())%>', 'encounter')">

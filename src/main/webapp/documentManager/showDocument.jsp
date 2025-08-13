@@ -41,7 +41,7 @@
 
 <%@page import="java.text.SimpleDateFormat" %>
 <%@ page
-        import="org.oscarehr.phr.util.MyOscarUtils,org.oscarehr.myoscar.utils.MyOscarLoggedInInfo,org.oscarehr.util.WebUtils" %>
+        import="org.oscarehr.util.WebUtils" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="java.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -303,15 +303,6 @@
         <input type="submit" id="ackBtn_<%=docId%>"
                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnAcknowledge"/>">
         <input type="button" value="Comment" onclick="addDocComment('<%=docId%>','<%=providerNo%>',true)"/>
-        <%
-            if (MyOscarUtils.isMyOscarEnabled((String) session.getAttribute("user"))) {
-                MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(session);
-                boolean enabledMyOscarButton = MyOscarUtils.isMyOscarSendButtonEnabled(myOscarLoggedInInfo, Integer.valueOf(demographicID));
-        %>
-        <input type="button" <%=WebUtils.getDisabledString(enabledMyOscarButton)%>
-               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnSendToPHR"/>"
-               onclick="popup(450, 600, '../phr/SendToPhrPreview.jsp?module=document&documentNo=<%=docId%>&demographic_no=<%=demographicID%>', 'sendtophr')"/>
-        <%}%>
         <%}%>
         <input type="button" id="fwdBtn_<%=docId%>" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnForward"/>"
                onClick="ForwardSelectedRows(<%=docId%> + ':DOC', null, null);">
