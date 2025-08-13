@@ -1859,14 +1859,6 @@
     "integrity" : "sha512:jOlBYl9t4y4SitfQe0yMdPRF4XlEWiWtVDiWnTskSwO2ILFsqYI/bq/yxMy7+cd78B13nVDEXwDgli3E1hHjrw=="
   }, {
     "groupId" : "org.apache.cxf",
-    "artifactId" : "cxf-rt-transports-udp",
-    "version" : "3.5.10",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:dHVB2u7WJdFTD9rrVsTh7uFo4CWNmdG4vAjiMik8n0fsr1d0DKesL4l4x8JG/cEGeZw/vjAouhcBRiJwXjOiLw=="
-  }, {
-    "groupId" : "org.apache.cxf",
     "artifactId" : "cxf-rt-transports-websocket",
     "version" : "3.5.10",
     "scope" : "compile",
@@ -2153,14 +2145,6 @@
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:+YBXlHegB1mILkPsYIQqP3kmTRbLSCPeJxREopGeLocz/ttGzrsw6AmCS6Ex3cEL7zIQbMGvowV2WaKaJJN0eQ=="
-  }, {
-    "groupId" : "org.apache.mina",
-    "artifactId" : "mina-core",
-    "version" : "2.1.5",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:RefXXOyCTvkjcZfScohsYQgSYhNnRSDuKmdIM265qv8fXIDUt42SQHiO6ZA+9hBJqi/3VF5NeWPmf98BQIt2kw=="
   }, {
     "groupId" : "org.apache.neethi",
     "artifactId" : "neethi",

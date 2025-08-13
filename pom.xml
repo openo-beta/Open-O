@@ -93,6 +93,12 @@
                 <artifactId>gson</artifactId>
                 <version>2.10.1</version>
             </dependency>
+            <!-- Force secure version of mina-core to fix CVE -->
+            <dependency>
+                <groupId>org.apache.mina</groupId>
+                <artifactId>mina-core</artifactId>
+                <version>2.1.10</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -989,6 +995,10 @@
                 <exclusion>
                     <groupId>com.fasterxml.woodstox</groupId>
                     <artifactId>woodstox-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-rt-transports-udp</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
