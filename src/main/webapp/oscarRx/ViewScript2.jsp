@@ -709,7 +709,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                     <div class="DivContentPadding"><!-- src modified by vic, hsfo -->
 					<% if (bean.getStashSize() > 0) { %>
                                         <iframe id='preview' name='preview' width=420px height=890px
-							src="<%= dx<0?"Preview2.jsp?scriptId="+bean.getStashItem(0).getScript_no()+"&rePrint="+reprint+"&pharmacyId="+request.getParameter("pharmacyId"):dx==7?"HsfoPreview.jsp?dxCode=7":"about:blank" %>"
+							src="<%= dx<0?"oscarRx/Preview2.jsp?scriptId="+bean.getStashItem(0).getScript_no()+"&rePrint="+reprint+"&pharmacyId="+request.getParameter("pharmacyId"):dx==7?"HsfoPreview.jsp?dxCode=7":"about:blank" %>"
 							align=center border=0 frameborder=0></iframe></div>
 					<% } %>
                                 </td>
