@@ -35,10 +35,6 @@ import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.xmlbeans.XmlOptions;
-import org.marc.shic.cda.datatypes.CDAStandard;
-import org.marc.shic.cda.utils.CdaUtils;
-import org.marc.shic.core.CodeValue;
-import org.marc.shic.core.DocumentMetaData;
 import org.oscarehr.common.jobs.OscarRunnable;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Provider;
@@ -123,10 +119,10 @@ public class BORNEHealthIntegrationJob implements OscarRunnable {
 
                 //Create CDA Document, and set the XML data.
 
-                BornCDADocument bornCDA = new BornCDADocument(CDAStandard.CCD, BORNCDADocumentType.A1A2, demographic, authorList, props, cal, String.valueOf(metadata.get("id")));
+                BornCDADocument bornCDA = new BornCDADocument(BORNCDADocumentType.A1A2, demographic, authorList, props, cal, String.valueOf(metadata.get("id")));
 
                 bornCDA.setNonXmlBody(result.getBytes(), "text/plain");
-                String cdaForLogging = CdaUtils.toXmlString(bornCDA.getDocument(), true);
+                String cdaForLogging = bornCDA.toXmlString(true);
 
                 if (logger.isDebugEnabled()) {
                     logger.debug("Antenatal CDA Record for Patient ID:" + demographic + "\n" + cdaForLogging + "\n");
@@ -180,9 +176,9 @@ public class BORNEHealthIntegrationJob implements OscarRunnable {
 
                     //create CDA document
                     BornHialProperties props = getBornHialProperties();
-                    BornCDADocument bornCDA = new BornCDADocument(CDAStandard.CCD, BORNCDADocumentType.EighteenMonth, demographic, providerList, props, cal, eighteenMonthConnector.getIDForCDA(d));
+                    BornCDADocument bornCDA = new BornCDADocument(BORNCDADocumentType.EighteenMonth, demographic, providerList, props, cal, eighteenMonthConnector.getIDForCDA(d));
                     bornCDA.setNonXmlBody(xml.getBytes(), "text/plain");
-                    String cdaForLogging = CdaUtils.toXmlString(bornCDA.getDocument(), true);
+                    String cdaForLogging = bornCDA.toXmlString(true);
 
                     if (logger.isDebugEnabled()) {
                         logger.debug("18M CDA Record for Patient ID:" + d + "\n" + cdaForLogging + "\n");

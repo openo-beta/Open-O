@@ -40,10 +40,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.helpers.FileUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.xmlbeans.XmlOptions;
-import org.marc.shic.cda.datatypes.CDAStandard;
-import org.marc.shic.cda.utils.CdaUtils;
-import org.marc.shic.core.CodeValue;
-import org.marc.shic.core.DocumentMetaData;
 import org.oscarehr.common.dao.EFormDataDao;
 import org.oscarehr.common.dao.EFormValueDao;
 import org.oscarehr.common.jobs.OscarRunnable;
@@ -163,13 +159,13 @@ public class BORNWBJob implements OscarRunnable {
                     String id = BORNWbXmlGenerator.generateHash(xml.getEformFdidMap().values());
                     logger.info("id is " + id);
 
-                    BornCDADocument bornCDA = new BornCDADocument(CDAStandard.CCD, BORNCDADocumentType.EighteenMonth, demographic, authorList, props, cal, id);
+                    BornCDADocument bornCDA = new BornCDADocument(BORNCDADocumentType.EighteenMonth, demographic, authorList, props, cal, id);
                     //TODO:need to check if empty
                     byte[] wbXml = generateWBXml(xml, demographicNo);
 
                     if (wbXml != null) {
                         bornCDA.setNonXmlBody(wbXml, "text/plain");
-                        String cdaForLogging = CdaUtils.toXmlString(bornCDA.getDocument(), true);
+                        String cdaForLogging = bornCDA.toXmlString(true);
 
                         if (logger.isDebugEnabled()) {
                             logger.info("WB CDA Record for Patient ID:" + demographicNo + "\n" + cdaForLogging + "\n");

@@ -29,7 +29,6 @@ package oscar.oscarProvider.pageUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.foo.segment.ERR;
 import org.oscarehr.util.LoggedInInfo;
 
 import oscar.oscarProvider.data.ProviderFaxUpdater;

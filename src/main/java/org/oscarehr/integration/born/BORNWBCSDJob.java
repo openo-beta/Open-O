@@ -40,10 +40,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.helpers.FileUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.xmlbeans.XmlOptions;
-import org.marc.shic.cda.datatypes.CDAStandard;
-import org.marc.shic.cda.utils.CdaUtils;
-import org.marc.shic.core.CodeValue;
-import org.marc.shic.core.DocumentMetaData;
 import org.oscarehr.common.dao.ConsultationRequestDao;
 import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.dao.DemographicExtDao;
@@ -201,11 +197,11 @@ public class BORNWBCSDJob implements OscarRunnable {
 
             Calendar cal = Calendar.getInstance();
 
-            BornCDADocument bornCDA = new BornCDADocument(CDAStandard.CCD, BORNCDADocumentType.CSD, demographic, authorList, props, cal, String.valueOf(demographicNo));
+            BornCDADocument bornCDA = new BornCDADocument(BORNCDADocumentType.CSD, demographic, authorList, props, cal, String.valueOf(demographicNo));
             byte[] wbcsdXml = generateWBCSDXml(xml, demographicNo);
             if (wbcsdXml != null) {
                 bornCDA.setNonXmlBody(wbcsdXml, "text/plain");
-                String cdaForLogging = CdaUtils.toXmlString(bornCDA.getDocument(), true);
+                String cdaForLogging = bornCDA.toXmlString(true);
 
                 if (logger.isDebugEnabled()) {
                     logger.info("WBCSD CDA Record for Patient ID:" + demographicNo + "\n" + cdaForLogging + "\n");
