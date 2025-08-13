@@ -3620,11 +3620,11 @@
   }, {
     "groupId" : "org.springframework",
     "artifactId" : "spring-webmvc",
-    "version" : "6.2.9",
+    "version" : "5.3.39",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:PwemABwOtvXZk1+/IuNJ2vKLaR/86wv3uUlz5o3dJr/WYKmeONUCgZOybTUXcOTrXgtMCu2w/4rQTnQZV90BUQ=="
+    "integrity" : "sha512:rA94Jqmh3Upf+6QZyBkU8WOm1jj3PBvyNt3oIIo0N4x8wtgke4xD3b0txAorBh3G9if2S6hs/qLUJef7nzvSUg=="
   }, {
     "groupId" : "org.swinglabs",
     "artifactId" : "pdf-renderer",
