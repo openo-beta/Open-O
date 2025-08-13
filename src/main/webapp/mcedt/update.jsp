@@ -79,7 +79,7 @@
 
             <h2>Update Resource</h2>
 
-            <form action="${pageContext.request.contextPath}/mcedt/update.do" method="post" styleId="form">
+            <form action="${pageContext.request.contextPath}/mcedt/update.do" method="post" id="form">
 
                 <jsp:include page="messages.jsp"/>
 

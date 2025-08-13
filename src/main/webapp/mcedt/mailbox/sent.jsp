@@ -250,7 +250,7 @@
 <c:set var="resourceListSent" value="${sessionScope.resourceListSent}"/>
 <c:set var="resultSize" value="${sessionScope.resultSize}"/>
 
-<form action="${pageContext.request.contextPath}/mcedt/resourceInfo" method="post" styleId="formSent">
+<form action="${pageContext.request.contextPath}/mcedt/resourceInfo" method="post" id="formSent">
     <jsp:include page="../messages.jsp"/>
     <input id="methodSent" name="method" type="hidden" value=""/>
     <div>
