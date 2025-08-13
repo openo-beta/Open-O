@@ -845,3 +845,37 @@ ADD CONSTRAINT `FKdnvemm0tthasq3eahbiuuefh`
 FOREIGN KEY (`elt`) REFERENCES `program_team` (`team_id`),
 ADD CONSTRAINT `FKt1tgve2mege16gusn7prwq552` FOREIGN KEY (`id`) 
 REFERENCES `program_provider` (`id`);
+
+--
+-- Update table structure for table `relationships` by setting deleted to "0" if deleted is NULL
+-- set to "RSVPreF3"
+-- 
+UPDATE relationships SET deleted = 0 WHERE deleted IS NULL;
+
+--
+-- Alter table structure for table DigitalSignature, modified signatureImage column and added ModuleType
+-- 
+ALTER TABLE DigitalSignature MODIFY COLUMN signatureImage MEDIUMBLOB;
+ALTER TABLE DigitalSignature ADD COLUMN ModuleType ENUM('CONSULTATION', 'E_FORM', 'PRESCRIPTION') null;
+
+--
+-- Alter table structure for table emailLog, modified signatureImage column and added ModuleType
+-- 
+ALTER TABLE emailLog ADD COLUMN internalComment BLOB DEFAULT '' AFTER chartDisplayOption;
+
+--
+-- Alter table structure for table prescription, added digital_signature_id
+-- 
+ALTER TABLE prescription ADD COLUMN digital_signature_id INT NULL DEFAULT NULL;
+
+--
+-- Alter table structure for table security, added usingMfa and mfaSecret
+-- 
+ALTER TABLE security ADD usingMfa BOOL NOT NULL;
+ALTER TABLE security ADD mfaSecret VARCHAR(255);
+
+--
+-- Update table structure for table `preventions` by setting prevention_type to "RSV" if previously
+-- set to "RSVPreF3"
+-- 
+UPDATE `preventions` SET prevention_type = "RSV" WHERE `prevention_type` = "RSVPreF3";
