@@ -573,7 +573,7 @@
                     for (int i = 0; i < list.size(); i++) {
                         setBill = false;
                         PreventionReportDisplay dis = (PreventionReportDisplay) list.get(i);
-                        Hashtable h = deName.getNameAgeSexHashtable(LoggedInInfo.getLoggedInInfoFromSession(request), dis.demographicNo.toString());
+                        Hashtable<String, String> h = new Hashtable<>(deName.getNameAgeSexHashtable(LoggedInInfo.getLoggedInInfoFromSession(request), dis.demographicNo.toString()));
                         org.oscarehr.common.model.Demographic demo = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), dis.demographicNo.toString());
 
                         if (dis.nextSuggestedProcedure != null) {
@@ -676,6 +676,7 @@
 
                        </tr>
                       <%}%>
+                    <%}%>
                     	</tbody>
                     </table>
                     <table class="ele" style="width:80%;">

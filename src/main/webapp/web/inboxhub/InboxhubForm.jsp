@@ -20,9 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
 <%@ page import="java.util.*" %>
 <%@ page import="oscar.OscarProperties" %>
 <%@ page import="oscar.oscarLab.ca.on.*" %>
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
@@ -30,6 +28,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
 <%@page import="org.apache.logging.log4j.Logger,org.oscarehr.common.dao.OscarLogDao,org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.inboxhub.query.InboxhubQuery" %>
 <%@ page import="oscar.oscarMDS.data.CategoryData" %>
+
+<fmt:setBundle basename="oscarResources"/>
+
 <!DOCTYPE html>
 
 <input type="hidden" class="totalDocsCount" id="totalDocsCount" value="${totalDocsCount}" />
@@ -64,23 +65,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
                         <div class="mb-1">
                         <!--Provider-->
                             <label class="fw-bold text-uppercase">
-                                <bean:message key="inbox.inboxmanager.msgProviders"/>
+                                <fmt:message key="inbox.inboxmanager.msgProviders"/>
                             </label>
                             <input type="hidden" name="searchAll" id="searchProviderAll" value="${query.searchAll}"/>
                             <!-- Any Provider -->
                             <div class="form-check">
                                 <input class="btn-check-input" type="radio" name="providerRadios" value="option1" id="anyProvider" ${query.searchAll eq 'true' ? 'checked' : ''} onClick="changeValueElementByName('searchAll', 'true');toggleInputVisibility('specificProvider', 'specificProviderId', 200);"/>
-                                <label class="form-check-label" for="anyProvider"><bean:message key="oscarMDS.search.formAnyProvider"/></label>
+                                <label class="form-check-label" for="anyProvider"><fmt:message key="oscarMDS.search.formAnyProvider"/></label>
                             </div>
                             <!-- No Provier -->
                             <div class="form-check">
                                 <input class="btn-check-input" type="radio" name="providerRadios" value="option2" id="noProvider" ${query.searchAll eq 'false' ? 'checked' : ''} onClick="changeValueElementByName('searchAll', 'false');toggleInputVisibility('specificProvider', 'specificProviderId', 200);"/>
-                                <label class="form-check-label" for="noProvider"><bean:message key="oscarMDS.search.formNoProvider"/></label>
+                                <label class="form-check-label" for="noProvider"><fmt:message key="oscarMDS.search.formNoProvider"/></label>
                             </div>
                             <!-- Specific Provider -->
                             <div class="form-check">
                                 <input class="btn-check-input" type="radio" name="providerRadios" value="option3" id="specificProvider" ${query.searchAll eq '' ? 'checked' : ''} onclick="changeValueElementByName('searchAll', ''); changeValueElementByName('searchProviderNo', document.getElementsByName('searchProviderNo')[0].value);toggleInputVisibility('specificProvider', 'specificProviderId', 200);" />
-                                <label class="form-check-label" for="specificProvider"><bean:message key="oscarMDS.search.formSpecificProvider"/></label>
+                                <label class="form-check-label" for="specificProvider"><fmt:message key="oscarMDS.search.formSpecificProvider"/></label>
                                 <div id="specificProviderId" class="ms-3">
                                     <input type="hidden" name="searchProviderNo" id="findProvider" value="${query.searchProviderNo}"/>
                                     <div class="input-group input-group-sm">
@@ -93,32 +94,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
                         <div class="mb-1">
                         <!--Patient(s)-->
                             <label class="fw-bold text-uppercase">
-                                <bean:message key="inbox.inboxmanager.msgPatinets"/>
+                                <fmt:message key="inbox.inboxmanager.msgPatinets"/>
                             </label>
                             <!-- All Patients (including unmatched) -->
                             <input type="hidden" name="unmatched" id="unmatchedId" value="${query.unmatched}"/>
                             <div class="form-check">
                                 <input class="btn-check-input" type="radio" name="patientsRadios" value="patientsOption1" id="allPatients" ${query.unmatched eq 'false' and query.patientFirstName eq '' and query.patientLastName eq '' and query.patientHealthNumber eq '' ? 'checked' : ''} onClick="changeValueElementByName('unmatched', 'false');toggleInputVisibility('specificPatients', 'specificPatientsId', 200);"/>
-                                <label class="form-check-label" for="allPatients"><bean:message key="oscarMDS.search.formAllPatients"/></label>
+                                <label class="form-check-label" for="allPatients"><fmt:message key="oscarMDS.search.formAllPatients"/></label>
                             </div>
                             <!-- Unmatched to Existing Patient -->
                             <div class="form-check">
                                 <input class="btn-check-input" type="radio" name="patientsRadios" value="patientsOption2" id="unmatchedPatients" ${query.unmatched eq 'true' ? 'checked' : ''} onClick="changeValueElementByName('unmatched', 'true');toggleInputVisibility('specificPatients', 'specificPatientsId', 200);" />
-                                <label class="form-check-label" for="unmatchedPatients"><bean:message key="oscarMDS.search.formExistingPatient"/></label>
+                                <label class="form-check-label" for="unmatchedPatients"><fmt:message key="oscarMDS.search.formExistingPatient"/></label>
                             </div>
                             <!-- Specific Patient(s) -->
                             <div class="form-check">
                                 <input class="btn-check-input" type="radio" name="patientsRadios" value="patientsOption3" id="specificPatients" ${query.unmatched eq 'false' and (query.patientFirstName ne '' or query.patientLastName ne '' or query.patientHealthNumber ne '') ? 'checked' : ''} onClick="changeValueElementByName('unmatched', 'false');toggleInputVisibility('specificPatients', 'specificPatientsId', 200);"/>
-                                <label class="form-check-label" for="specificPatients"><bean:message key="oscarMDS.search.formSpecificPatients"/></label> <br>
+                                <label class="form-check-label" for="specificPatients"><fmt:message key="oscarMDS.search.formSpecificPatients"/></label> <br>
                                 <div id="specificPatientsId" class="d-grid ms-3">
                                     <div class="input-group input-group-sm">
-                                        <input class="form-control pe-0 m-1" type="text" name="patientFirstName" id="inputFirstName" value="<e:forHtmlAttribute value='${query.patientFirstName}'/>" placeholder="<bean:message key='admin.provider.formFirstName'/>"/>
+                                        <input class="form-control pe-0 m-1" type="text" name="patientFirstName" id="inputFirstName" value="<e:forHtmlAttribute value='${query.patientFirstName}'/>" placeholder="<fmt:message key='admin.provider.formFirstName'/>"/>
                                     </div>
                                     <div class="input-group input-group-sm">
-                                        <input class="form-control pe-0 mb-1 mx-1" type="text" name="patientLastName" id="inputLastName" value="<e:forHtmlAttribute value='${query.patientLastName}'/>" placeholder="<bean:message key='admin.provider.formLastName'/>"/>
+                                        <input class="form-control pe-0 mb-1 mx-1" type="text" name="patientLastName" id="inputLastName" value="<e:forHtmlAttribute value='${query.patientLastName}'/>" placeholder="<fmt:message key='admin.provider.formLastName'/>"/>
                                     </div>
                                     <div class="input-group input-group-sm">
-                                        <input class="form-control pe-0 mb-1 mx-1" type="text" name="patientHealthNumber" id="inputHIN" value="<e:forHtmlAttribute value='${query.patientHealthNumber}'/>" placeholder="<bean:message key='oscarMDS.index.msgHealthNumber'/>"/>
+                                        <input class="form-control pe-0 mb-1 mx-1" type="text" name="patientHealthNumber" id="inputHIN" value="<e:forHtmlAttribute value='${query.patientHealthNumber}'/>" placeholder="<fmt:message key='oscarMDS.index.msgHealthNumber'/>"/>
                                     </div>
                                     <div class="text-danger d-none ms-1" id="specificPatientErrorMessage">Please fill at least one field for the specific patient.</div>
                                 </div>
@@ -128,7 +129,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
                         <div class="mb-1">
                         <!-- Date Range-->
                             <label class="fw-bold text-uppercase">
-                                <bean:message key="inbox.inboxmanager.msgDateRange"/>
+                                <fmt:message key="inbox.inboxmanager.msgDateRange"/>
                             </label>
                             <div id="dateId" class="inbox-form-date-range">
                                 <div class="inbox-form-datepicker-wrapper mb-1 d-flex">
@@ -153,21 +154,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
                         <div class="mb-1">
                         <!--Type-->
                             <label class="fw-bold text-uppercase">
-                                <bean:message key="inbox.inboxmanager.msgType"/>
+                                <fmt:message key="inbox.inboxmanager.msgType"/>
                             </label>
                             <div class="form-check">
                                 <input type="checkbox" class="btn-check-input" name="doc" ${query.doc || (!query.doc && !query.lab && !query.hrm) ? 'checked' : ''} id="btnDoc" autocomplete="off">
-                                <label class="form-check-label" for="btnDoc"><bean:message key="inbox.inboxmanager.msgTypeDocs"/></label><br>
+                                <label class="form-check-label" for="btnDoc"><fmt:message key="inbox.inboxmanager.msgTypeDocs"/></label><br>
                             </div>
                             <div class="form-check">
                                 <input type="checkbox" class="btn-check-input" name="lab" ${query.lab || (!query.doc && !query.lab && !query.hrm) ? 'checked' : ''} id="btnLab" autocomplete="off">
-                                <label class="form-check-label" for="btnLab"><bean:message key="inbox.inboxmanager.msgTypeLabs"/></label><br>
+                                <label class="form-check-label" for="btnLab"><fmt:message key="inbox.inboxmanager.msgTypeLabs"/></label><br>
                             </div>
 
                             <c:if test="${!OscarProperties.getInstance().isBritishColumbiaBillingRegion()}">
                                 <div class="form-check">
                                     <input type="checkbox" class="btn-check-input" name="hrm" ${query.hrm || (!query.doc && !query.lab && !query.hrm) ? 'checked' : ''} id="btnHRM" autocomplete="off">
-                                    <label class="form-checkbox-label" for="btnHRM"><bean:message key="inbox.inboxmanager.msgTypeHRM"/></label><br>
+                                    <label class="form-checkbox-label" for="btnHRM"><fmt:message key="inbox.inboxmanager.msgTypeHRM"/></label><br>
                                 </div>
                             </c:if>
                         </div>
@@ -175,59 +176,59 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
                         <div class="mb-1">
                         <!--Review Status-->
                             <label class="fw-bold text-uppercase">
-                                <bean:message key="inbox.inboxmanager.msgReviewStatus"/>
+                                <fmt:message key="inbox.inboxmanager.msgReviewStatus"/>
                             </label>
                             <input type="hidden" name="status" id="statusId" value="${query.status}"/>
                             <div class="form-check">
                                 <input type="radio" class="btn-check-input" name="statusReview" id="statusAll" id="All" value="All"
                                     ${empty query.status ? 'checked' : ''} onclick="changeValueElementByName('status', '')">
-                                <label class="form-check-label" for="statusAll"><bean:message key="inbox.inboxmanager.msgAll"/>
+                                <label class="form-check-label" for="statusAll"><fmt:message key="inbox.inboxmanager.msgAll"/>
                             </div>
                             <div class="form-check">
                                 <input type="radio" class="btn-check-input" name="statusReview" id="statusNew" value="N"
                                     ${query.status eq 'N' ? 'checked' : ''} onclick="changeValueElementByName('status', 'N')">
-                                <label class="form-check-label" for="statusNew"><bean:message key="inbox.inboxmanager.msgNew"/></label>
+                                <label class="form-check-label" for="statusNew"><fmt:message key="inbox.inboxmanager.msgNew"/></label>
                             </div>
                             <div class="form-check">
                                 <input type="radio" class="btn-check-input" name="statusReview" id="statusAcknowledged" value="A"
                                     ${query.status eq 'A' ? 'checked' : ''} onclick="changeValueElementByName('status', 'A')">
-                                <label class="form-check-label" for="statusAcknowledged"><bean:message key="inbox.inboxmanager.msgAcknowledged"/></label>
+                                <label class="form-check-label" for="statusAcknowledged"><fmt:message key="inbox.inboxmanager.msgAcknowledged"/></label>
                             </div>
                             <div class="form-check">
                                 <input type="radio" class="btn-check-input" name="statusReview" id="statusFiled" value="F"
                                     ${query.status eq 'F' ? 'checked' : ''} onclick="changeValueElementByName('status', 'F')">
-                                <label class="form-check-label" for="statusFiled"><bean:message key="inbox.inboxmanager.msgFiled"/></label>
+                                <label class="form-check-label" for="statusFiled"><fmt:message key="inbox.inboxmanager.msgFiled"/></label>
                             </div>
                         </div>
 
                         <div class="mb-2">
                         <!--Abnormal-->
                             <label class="fw-bold text-uppercase">
-                                <bean:message key="inbox.inboxmanager.msgResultStatus"/>
+                                <fmt:message key="inbox.inboxmanager.msgResultStatus"/>
                             </label>
                             <input type="hidden" name="abnormal" id="abnormalId" value="${query.abnormal}"/>
                             <div class="form-check">
                                 <input type="radio" class="btn-check-input" name="abnormalResult" id="All" value="All"
                                     ${query.abnormal eq 'all' ? 'checked' : ''} onclick="changeValueElementByName('abnormal', 'all')">
-                                <label class="form-check-label" for="All"><bean:message key="inbox.inboxmanager.msgAll"/></label>
+                                <label class="form-check-label" for="All"><fmt:message key="inbox.inboxmanager.msgAll"/></label>
                             </div>
                             <div class="form-check">
                                 <input type="radio" class="btn-check-input" name="abnormalResult" id="Abnormal" value="Abnormal"
                                     ${query.abnormal eq 'abnormalOnly' ? 'checked' : ''} onclick="changeValueElementByName('abnormal', 'abnormalOnly')">
-                                <label class="form-check-label" for="Abnormal"><bean:message key="global.abnormal"/></label>
+                                <label class="form-check-label" for="Abnormal"><fmt:message key="global.abnormal"/></label>
                             </div>
                             <div class="form-check">
                                 <input type="radio" class="btn-check-input" name="abnormalResult" id="Normal" value="Normal"
                                     ${query.abnormal eq 'normalOnly' ? 'checked' : ''} onclick="changeValueElementByName('abnormal', 'normalOnly')">
-                                <label class="form-check-label" for="Normal"><bean:message key="inbox.inboxmanager.msgNormal"/></label>
+                                <label class="form-check-label" for="Normal"><fmt:message key="inbox.inboxmanager.msgNormal"/></label>
                             </div>
                         </div>
 
                         <!--Search Button-->
                         <div class="d-grid">
-                            <button id="inboxhubFormSearchBtn" class="btn btn-primary btn-sm" type="submit" value='<bean:message key="oscarMDS.search.btnSearch"/>'>
+                            <button id="inboxhubFormSearchBtn" class="btn btn-primary btn-sm" type="submit" value='<fmt:message key="oscarMDS.search.btnSearch"/>'>
                                 <span id="inboxhubFormSearchSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
-                                <span id="inboxhubFormSearchText"><bean:message key="oscarMDS.search.btnSearch"/></span>
+                                <span id="inboxhubFormSearchText"><fmt:message key="oscarMDS.search.btnSearch"/></span>
                             </button>
                         </div>
                     </div>

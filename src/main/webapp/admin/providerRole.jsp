@@ -40,7 +40,9 @@
 <%@ page import="com.quatro.model.security.Secuserrole" %>
 <%@ page import="com.quatro.dao.security.SecuserroleDao" %>
 <%@ page import="org.oscarehr.common.model.RecycleBin" %>
+<%@ page import="org.oscarehr.common.model.ProviderData" %>
 <%@ page import="org.oscarehr.common.dao.RecycleBinDao" %>
+<%@ page import="org.oscarehr.common.dao.ProviderDataDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.springframework.web.context.WebApplicationContext" %>
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
@@ -58,8 +60,6 @@
     WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(application);
     ProgramProviderService programProviderService = (ProgramProviderService) ctx.getBean("programProviderService");
 
-
-<%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     String curUser_no = (String) session.getAttribute("user");
 
