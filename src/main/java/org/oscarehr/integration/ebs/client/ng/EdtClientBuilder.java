@@ -241,12 +241,13 @@ public class EdtClientBuilder {
         if (getConfig().isLoggingRequired()) {
             client.getEndpoint().getInInterceptors().add(new LoggingInInterceptor());
         }
+
         // Cache attachments for later processing
         client.getEndpoint().getInInterceptors().add(new AttachmentCachingInterceptor());
+
         // Apply WS-Security in interceptor
-        client.getEndpoint().getInInterceptors().add(
-            new WSS4JInInterceptor(newWSSInInterceptorConfiguration())
-        );
+        client.getEndpoint().getInInterceptors().add(new DynamicWSS4JInInterceptor(this));
+
         client.getEndpoint().getInInterceptors().add(new DownloadInInterceptor());
         client.getEndpoint().getInInterceptors().add(new AttachmentCleanupInterceptor());
         client.getEndpoint().getInInterceptors().add(new RawXmlLoggingInInterceptor());
