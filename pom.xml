@@ -1581,13 +1581,51 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.21.2</version>
+                <version>3.27.0</version>
                 <configuration>
-                    <targetJdk>1.8</targetJdk>
+                    <!-- Target JDK version -->
+                    <targetJdk>21</targetJdk>
+                    
+                    <!-- Custom ruleset -->
                     <rulesets>
                         <ruleset>utils/pmd_rules.xml</ruleset>
                     </rulesets>
+                    
+                    <!-- Analysis configuration -->
+                    <includeTests>false</includeTests>
+                    <minimumTokens>100</minimumTokens>
+                    <printFailingErrors>true</printFailingErrors>
+                    <linkXRef>false</linkXRef>
+                    
+                    <!-- Performance settings -->
+                    <analysisCache>true</analysisCache>
+                    <analysisCacheLocation>${project.build.directory}/pmd/pmd.cache</analysisCacheLocation>
+                    
+                    <!-- Output formats -->
+                    <format>html</format>
+                    <outputDirectory>${project.build.directory}/pmd</outputDirectory>
+                    
+                    <!-- Exclude generated code and known legacy files -->
+                    <excludeRoots>
+                        <excludeRoot>target/generated-sources</excludeRoot>
+                    </excludeRoots>
+                    <excludes>
+                        <exclude>**/generated/**</exclude>
+                        <exclude>**/*_.java</exclude>
+                    </excludes>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.sourceforge.pmd</groupId>
+                        <artifactId>pmd-core</artifactId>
+                        <version>7.7.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>net.sourceforge.pmd</groupId>
+                        <artifactId>pmd-java</artifactId>
+                        <version>7.7.0</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
             <plugin>
