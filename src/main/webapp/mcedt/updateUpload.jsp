@@ -68,7 +68,7 @@
         <div class="row-fluid">
             <h2>Update Upload</h2>
 
-            <form action="${pageContext.request.contextPath}/mcedt/update" method="post" id="form"
+            <form action="${pageContext.request.contextPath}/mcedt/update.do" method="post" id="form"
                        enctype="multipart/form-data">
 
             <jsp:include page="messages.jsp"/>
