@@ -28,6 +28,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
 <%@page import="org.apache.logging.log4j.Logger,org.oscarehr.common.dao.OscarLogDao,org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.inboxhub.query.InboxhubQuery" %>
 <%@ page import="oscar.oscarMDS.data.CategoryData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%
+    String safeData = Encode.forHtmlContent(data);
+%>
 
 <fmt:setBundle basename="oscarResources"/>
 
@@ -598,34 +602,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
     }
 
     function addDataInInboxhubListTable(data) {
+        let inboxhubListTable = jQuery('#inbox_table').DataTable();
+
         if (page == 1) {
             jQuery("#inboxhubMode").html(data);
-            jQuery('#inbox_table').DataTable().draw(false); // `draw(false)` prevents resetting the scroll position
+            inboxhubListTable.draw(false); // `draw(false)` prevents resetting the scroll position
             showInboxhubStats();
             startInboxhubListProgress();
             updateInboxhubListProgress();
             return;
         }
 
-        let inboxhubListTable = jQuery('#inbox_table').DataTable();
+        let tempDiv = document.createElement('div');
+        tempDiv.innerHTML = data;
 
-        // Check if the string contains <script> tags
-        if (!/<script\b[^>]*>([\s\S]*?)<\/script>/gi.test(data)) {
-            // Split the concatenated rows by the closing </tr> tag, and re-add </tr> to each split part
-            const splitRows = data.split(/<\/tr>/i).map(row => row + '</tr>').filter(row => row.trim() !== '</tr>');
-            // Add rows to DataTable without destroying it
-            jQuery.each(splitRows, function(index, row) {
-                inboxhubListTable.row.add(jQuery(row));
-            });
+        let rows = tempDiv.querySelectorAll('tr');
+        rows.forEach(function(row) {
+            inboxhubListTable.row.add(row.cloneNode(true));
+        });
 
-            // Redraw the table
-            inboxhubListTable.draw(false); // `draw(false)` prevents resetting the scroll position
-        } else {
-            jQuery("#inboxhubMode").append(data);
-        }
-
+        inboxhubListTable.draw(false);
         updateInboxhubListProgress();
     }
+
+    let safeDataForJs = '<%= Encode.forJavaScript(data) %>';
+    addDataInInboxhubListTable(safeDataForJs);
 
     function addDataInInboxhubViewTable(data) {
         if (page == 1) {

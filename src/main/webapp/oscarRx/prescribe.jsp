@@ -32,6 +32,7 @@
 <%@page import="oscar.oscarRx.data.*" %>
 <%@page import="oscar.oscarRx.util.*" %>
 <%@page import="oscar.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -176,7 +177,11 @@
 %>
 
 <fieldset style="margin-top:2px;width:640px;" id="<%=fieldSetId%>">
-    <a tabindex="-1" href="javascript:void(0);"  style="float:right;margin-left:5px;margin-top:0px;padding-top:0px;" onclick="removePrescribingDrug(<%=fieldSetId%>, <%=DrugReferenceId%>);"><img src='<c:out value="${ctx}/images/close.png"/>' border="0"></a>
+    <a tabindex="-1" href="javascript:void(0);"  
+        style="float:right;margin-left:5px;margin-top:0px;padding-top:0px;"
+        onclick="removePrescribingDrug('<%= Encode.forJavaScript(fieldSetId) %>', <%= DrugReferenceId %>);">
+        <img src='<c:out value="${ctx}/images/close.png"/>' border="0">
+    </a>
     <a tabindex="-1" href="javascript:void(0);"  style="float:right;;margin-left:5px;margin-top:0px;padding-top:0px;" title="Add to Favorites" onclick="addFav('<%=rand%>','<%=drugName%>')">F</a>
     <a tabindex="-1" href="javascript:void(0);" style="float:right;margin-top:0px;padding-top:0px;" onclick="$('rx_more_<%=rand%>').toggle();">  <span id="moreLessWord_<%=rand%>" onclick="updateMoreLess(id)" >more</span> </a>
 
@@ -751,7 +756,7 @@
             //do nothing
                     }
                     else{
-                        $('<%=fieldSetId%>').remove();
+                        $('#<%=fieldSetId%>').remove();
             //call java class to delete it from stash pool.
             var randId = '<%=rand%>';
             deletePrescribe(randId);

@@ -951,13 +951,13 @@ public class RxUtil {
 		String amountMethod = null;
 		String amountFrequency = null;
 
-		Pattern p2 = Pattern.compile(method + "\\s*\\d*\\.*\\d+\\s+");
+		Pattern p2 = Pattern.compile(Pattern.quote(method) + "\\s*\\d*\\.*\\d+\\s+");
 		Matcher m2 = p2.matcher(instructions);
 
-		Pattern pF1 = Pattern.compile(method + "\\s*\\d*\\/*\\d+\\s+");
+		Pattern pF1 = Pattern.compile(Pattern.quote(method) + "\\s*\\d*\\/*\\d+\\s+");
 		Matcher mF1 = pF1.matcher(instructions);
 
-		Pattern p4 = Pattern.compile(method + "\\s*\\d*\\.*\\d+-\\s*\\d*\\.*\\d+\\s+");
+		Pattern p4 = Pattern.compile(Pattern.quote(method) + "\\s*\\d*\\.*\\d+-\\s*\\d*\\.*\\d+\\s+");
 		Matcher m4 = p4.matcher(instructions);
 
 		//since "\\s+[0-9]+-[0-9]+\\s+" is a case in "\\s+[0-9]+\\s+", check the latter regex first.
@@ -999,8 +999,10 @@ public class RxUtil {
 		} else {
 			p("word amount");
 			for (String word : zeroToTen) {
-				String r1 = method + "\\s+" + word + "\\s";
-				String r2 = method + "\\s+" + word + "$";
+                String safeMethod = Pattern.quote(method);
+                String safeWord = Pattern.quote(word);
+				String r1 = safeMethod + "\\s+" + safeWord + "\\s";
+				String r2 = safeMethod + "\\s+" + safeWord + "$";
 				Pattern p5 = Pattern.compile(r1);
 				Matcher m5 = p5.matcher(instructions);
 				p("pattern word =" + r1);
