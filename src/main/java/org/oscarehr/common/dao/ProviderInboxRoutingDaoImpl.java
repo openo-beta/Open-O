@@ -96,10 +96,10 @@ public class ProviderInboxRoutingDaoImpl extends AbstractDaoImpl<ProviderInboxIt
     @Override
     public List<ProviderInboxItem> findDocumentsLinkedWithProvider(String docType, Integer docId, String providerNo) {
         Query query = entityManager.createQuery(
-                "select p from ProviderInboxItem p where p.labType = ? and p.labNo = ? and p.providerNo=?");
-        query.setParameter(0, docType);
-        query.setParameter(1, docId);
-        query.setParameter(2, providerNo);
+                "select p from ProviderInboxItem p where p.labType = ?1 and p.labNo = ?2 and p.providerNo=?3");
+        query.setParameter(1, docType);
+        query.setParameter(2, docId);
+        query.setParameter(3, providerNo);
 
         @SuppressWarnings("unchecked")
         List<ProviderInboxItem> results = query.getResultList();
