@@ -218,11 +218,6 @@
             //			templateUrl: 'record/tracker/tracker.jsp',
             //			controller: 'TrackerCtrl'
             //		})
-            //		.state('record.phr', {
-            //			url: '/phr',
-            //			templateUrl: 'record/phr/phr.jsp',
-            //			controller: 'PHRCtrl'
-            //		})
              --%>
             .state('record.rx', {
                 url: '/rx',

@@ -24,7 +24,6 @@
 
 --%>
 
-<%@ page import="org.oscarehr.phr.util.MyOscarUtils"%>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page import="org.oscarehr.common.model.UserProperty" %>
 <%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
@@ -39,7 +38,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
-<%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="myoscar" %>
 
 <% 
 LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -276,25 +274,6 @@ function popupPage2(varpage) {
    <li><a href="javascript: function myFunction() {return false; }" onClick="popupPage2('<%=request.getContextPath()%>/oscarWorkflow/WorkFlowList.jsp','<fmt:setBundle basename="oscarResources"/><fmt:message key="global.workflow"/>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnworkflow"/></a></li>
 </oscar:oscarPropertiesCheck>
 
-    <myoscar:indivoRegistered provider="<%=curUser_no%>">
-		<%
-		MyOscarUtils.attemptMyOscarAutoLoginIfNotAlreadyLoggedInAsynchronously(loggedInInfo, false);%>
-	    <li>
-			<a HREF="#" ONCLICK ="popupPage2('<%=request.getContextPath()%>/phr/PhrMessage.do?method=viewMessages','INDIVOMESSENGER2<%=curUser_no%>')" title='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.phr"/>'>
-				<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnphr"/>
-				<div id="unreadMessagesMenuMarker" style="display:inline-block;vertical-align:top"><!-- place holder for unread message count --></div>
-			</a>
-			<script type="text/javascript">
-				function pollMessageCount()
-				{
-					jQuery('#unreadMessagesMenuMarker').load('<%=request.getContextPath()%>/phr/msg/unread_message_count.jsp')
-				}
-				
-				window.setInterval(pollMessageCount, 60000);
-				window.setTimeout(pollMessageCount, 2000);
-			</script>
-	    </li>
-    </myoscar:indivoRegistered>
 
 <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
 	<security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.userAdmin,_admin.schedule,_admin.billing,_admin.resource,_admin.reporting,_admin.backup,_admin.messenger,_admin.eform,_admin.encounter,_admin.misc" rights="r">

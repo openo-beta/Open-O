@@ -29,9 +29,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="indivo" %>
 <%@ page
-        import="oscar.oscarRx.data.*,oscar.oscarProvider.data.ProviderMyOscarIdData,oscar.oscarDemographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
+        import="oscar.oscarRx.data.*,oscar.oscarDemographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
 <%@ page import="org.oscarehr.common.model.*" %>
 <%@page import="java.util.Enumeration" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
@@ -123,7 +122,6 @@
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
         <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
-        <script type="text/javascript" src="<c:out value="${ctx}/phr/phr.js"/>"></script>
 
         <script type="text/javascript">
 
@@ -298,15 +296,6 @@
                                             onClick="showpic('Layer1');" id="Calcs"><%=prefPharmacy%>
                                     </a></td>
                                 </tr>
-                                <indivo:indivoRegistered demographic="<%=String.valueOf(bean.getDemographicNo())%>"
-                                                         provider="<%=bean.getProviderNo()%>">
-                                    <tr>
-                                        <td colspan="3">
-                                            <a href="javascript: phrActionPopup('../oscarRx/SendToPhr.do?demoId=<%=Integer.toString(bean.getDemographicNo())%>', 'sendRxToPhr');">Send
-                                                To PHR</a>
-                                        </td>
-                                    </tr>
-                                </indivo:indivoRegistered>
 
                             </table>
                         </td>

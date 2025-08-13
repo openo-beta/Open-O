@@ -518,7 +518,6 @@
                             <option value="Email">Email</option>
                             <option value="L1">Letter 1</option>
                             <option value="L2">Letter 2</option>
-                            <option value="myOSCARmsg">MyOSCAR Message</option>
                             <option value="Newsletter">Newsletter</option>
                             <option value="other">Other</option>
                         </select>

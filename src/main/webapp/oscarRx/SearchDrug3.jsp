@@ -27,17 +27,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="indivo" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="org.oscarehr.util.WebUtils" %>
-<%@page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo" %>
 <%@page import="org.oscarehr.common.dao.DrugDao" %>
 <%@page import="org.oscarehr.common.model.Drug" %>
 <%@page import="org.oscarehr.common.model.PharmacyInfo" %>
 <%@page import="org.oscarehr.util.WebUtils" %>
-<%@page import="org.oscarehr.phr.util.MyOscarUtils" %>
 <%@page import="org.oscarehr.util.LocaleUtils" %>
-<%@page import="oscar.oscarRx.data.*,oscar.oscarProvider.data.ProviderMyOscarIdData,oscar.oscarDemographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
+<%@page import="oscar.oscarRx.data.*,oscar.oscarDemographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
 <%@page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
 <%@page import="java.text.SimpleDateFormat" %>
 <%@page import="java.util.*" %>
@@ -1016,26 +1013,6 @@
                                                    onclick="callReplacementWebService('GetmyDrugrefInfo.do?method=view','interactionsRxMyD');">DS
                                                     run</a>
                                                 &nbsp;&nbsp;
-                                                <%
-                                                    if (MyOscarUtils.isMyOscarEnabled((String) session.getAttribute("user"))) {
-                                                        MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(session);
-                                                        boolean enabledMyOscarButton = MyOscarUtils.isMyOscarSendButtonEnabled(myOscarLoggedInInfo, Integer.valueOf(demoNo));
-                                                        if (enabledMyOscarButton) {
-                                                            String sendDataPath = request.getContextPath() + "/phr/send_medicaldata_to_myoscar.jsp?"
-                                                                    + "demographicId=" + demoNo + "&"
-                                                                    + "medicalDataType=Prescriptions" + "&"
-                                                                    + "parentPage=" + request.getRequestURI();
-                                                %>
-                                                <a href="<%=sendDataPath%>"><%=LocaleUtils.getMessage(request, "SendToPHR")%>
-                                                </a>
-                                                <%
-                                                } else {
-                                                %>
-                                                <span style="color:grey;text-decoration:underline"><%=LocaleUtils.getMessage(request, "SendToPHR")%></span>
-                                                <%
-                                                        }
-                                                    }
-                                                %>
                                             </div>
 
                                         </td>

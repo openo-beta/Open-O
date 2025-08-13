@@ -23,7 +23,6 @@
     Ontario, Canada
 
 --%>
-<%@ page import="org.oscarehr.phr.util.MyOscarUtils" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page import="org.oscarehr.common.model.UserProperty" %>
 <%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
@@ -37,7 +36,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
-<%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="myoscar" %>
 
 <%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
 

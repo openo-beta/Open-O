@@ -213,9 +213,6 @@
             <tr valign="top">
                 <td align="left"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formEmail"/>: </b><%=d.getEmail() != null ? d.getEmail() : ""%>
                 </td>
-                <td align="left"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formPHRUserName"/>: </b></td>
-                <td align="left"><%=d.getMyOscarUserName() != null ? d.getMyOscarUserName() : ""%>
-                </td>
             </tr>
             <tr valign="top">
                 <td align="left"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formDOB"/></b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formDOBDetais"/><b>:

@@ -50,10 +50,9 @@
 
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
-<%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="indivo" %>
 
 <%@ page
-        import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, oscar.util.*, java.net.*,oscar.MyDateFormat, oscar.oscarProvider.data.ProviderMyOscarIdData, oscar.oscarDemographic.data.DemographicData" %>
+        import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, oscar.util.*, java.net.*,oscar.MyDateFormat, oscar.oscarDemographic.data.DemographicData" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="org.oscarehr.util.SessionConstants" %>
 <%@page import="oscar.oscarProvider.data.*" %>
@@ -214,7 +213,6 @@
 
 
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/nifty.js"></script>
-        <script type="text/javascript" src="<%= request.getContextPath() %>/phr/phr.js"></script>
         <script type="text/javascript">
 
 
@@ -262,19 +260,6 @@
 
                 var form = document.forms[2];
                 if (verifyChecks(form)) {
-                    form.action = actionPath;
-                    form.submit();
-                    return true;
-                } else
-                    return false;
-            }
-
-            function submitPhrForm(actionPath, windowName) {
-
-                var form = document.forms[2];
-                if (verifyChecks(form)) {
-                    form.onsubmit = phrActionPopup(actionPath, windowName);
-                    form.target = windowName;
                     form.action = actionPath;
                     form.submit();
                     return true;

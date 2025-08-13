@@ -49,7 +49,6 @@
         return;
     }
 %>
-<%@page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@page import="org.oscarehr.common.model.UserProperty" %>
@@ -69,7 +68,6 @@
 
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
-<%@ taglib uri="/WEB-INF/phr-tag.tld" prefix="phr" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="Encode" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
@@ -628,20 +626,6 @@
 
                                                         <a href="javascript:popupViewAttach(700,960,'../oscarRx/choosePatient.do?providerNo=<%=session.getAttribute("providerNo")%>&demographicNo=${ demographic.key }')">Rx</a>
 
-                                                        <phr:indivoRegistered provider="<%=providerNo%>"
-                                                                              demographic="${ demographic.key }">
-                                                            <%
-                                                                String onclickString = "alert('Please login to MyOscar first.')";
-
-                                                                MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(session);
-                                                                if (myOscarLoggedInInfo != null && myOscarLoggedInInfo.isLoggedIn())
-                                                                    onclickString = "msg4phr = encodeURIComponent(document.getElementById('msgBody').innerHTML); sub4phr =  encodeURIComponent(document.getElementById('msgSubject').innerHTML); popupViewAttach(600,900,'../phr/PhrMessage.do?method=createMessage&providerNo=" + session.getAttribute("providerNo") + "&demographicNo=" + (String) pageContext.getAttribute("demographicNumber") + "&message='+msg4phr+'&subject='+sub4phr)";
-                                                            %>
-                                                            <a href="javascript: function myFunction() {return false; }"
-                                                               ONCLICK="<%=onclickString%>" title="myOscar">
-                                                                <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgSendMsgPHR"/>
-                                                            </a>
-                                                        </phr:indivoRegistered>
 
 
                                                         <input type="button" class="ControlPushButton"

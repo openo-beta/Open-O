@@ -118,15 +118,6 @@
                     <li><a class="hand-hover" ng-click="billingDo('BillINR')"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgINRBill"/></a></li>
                 </ul>
             </div>
-            <div class="btn-group" ng-show="page.macPHRIdsSet">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="global.personalHealthRecord"/> <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="hand-hover" ng-click="macPHRDo('SendMessage')"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgSendMsgPHR"/></a></li>
-                    <li><a class="hand-hover" ng-click="macPHRDo('ViewRecord')"><fmt:setBundle basename="oscarResources"/><fmt:message key="web.record.details.viewPhrRecord"/></a></li>
-                </ul>
-            </div>
             <div class="btn-group">
                 <button type="button" class="btn btn-default" ng-click="exportDemographic()"><fmt:setBundle basename="oscarResources"/><fmt:message key="export"/></button>
             </div>
@@ -226,17 +217,8 @@
                     <label><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.alias"/></label>
                     <input type="text" class="form-control form-control-details"
                            placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.alias"/>"
-                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formPHRUserName"/>"
+                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.alias"/>"
                            ng-model="page.demo.alias"/>
-                </div>
-                <div class="col-md-6">
-                    <label><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formPHRUserName"/></label>
-                    <input type="text" class="form-control form-control-details"
-                           placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formPHRUserName"/>"
-                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.formPHRUserName"/>"
-                           ng-model="page.demo.myOscarUserName"/>
-                    <button type="button" class="btn flat-btn" ng-click="macPHRDo('Register')"
-                            ng-show="page.demo.myOscarUserName==null || page.demo.myOscarUserName==''"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgRegisterPHR"/></button>
                 </div>
                 <div class="col-md-6">
                     <label><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgCountryOfOrigin"/></label>
@@ -705,8 +687,6 @@
                     {{page.demo.address.city}}, {{page.demo.address.province}} {{page.demo.address.postal}}<br/>
                     <abbr title="Phone" ng-show="page.preferredPhoneNumber"><fmt:setBundle basename="oscarResources"/><fmt:message key="web.record.details.phoneShortHand"/></abbr> {{page.preferredPhoneNumber}}
                 </address>
-                <a ng-click="macPHRDo('Verification')" ng-show="page.macPHRIdsSet"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.phr"/><span
-                        ng-if="page.macPHRVerificationLevel">&#x2713;</span></a>
             </div>
         </div>
         <br/>

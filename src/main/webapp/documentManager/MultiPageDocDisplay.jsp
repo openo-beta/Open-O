@@ -42,8 +42,7 @@
 
 <%@page import="oscar.util.UtilDateUtilities" %>
 <%@ page import="java.util.*" %>
-<%@ page
-        import="org.oscarehr.phr.util.MyOscarUtils,org.oscarehr.myoscar.utils.MyOscarLoggedInInfo,org.oscarehr.util.WebUtils" %>
+<%@ page import="org.oscarehr.util.WebUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -924,20 +923,7 @@
                                                            onClick="javascript: checkDelete('documentReport.jsp?delDocumentNo=1&amp;function=demographic&amp;functionid=1&amp;viewstatus=active','test')"/>
                                                 </security:oscarSec>
                                                 <% } %>
-                                                <%
-                                                    if (MyOscarUtils.isMyOscarEnabled((String) session.getAttribute("user"))) {
-                                                        MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(session);
-                                                        boolean enabledMyOscarButton = MyOscarUtils.isMyOscarSendButtonEnabled(myOscarLoggedInInfo, Integer.valueOf(demographicID));
-                                                %>
-                                                <input type="button" <%=WebUtils.getDisabledString(enabledMyOscarButton)%>
-                                                       tabindex="<%=tabindex++%>"
-                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnSendToPHR"/>"
-                                                       onclick="popup(450, 600, '../phr/SendToPhrPreview.jsp?module=document&documentNo=<%=docId%>&demographic_no=<%=demographicID%>', 'sendtophr')"/>
-
-                                                <%
-                                                        }
-
-                                                    }
+                                                <%}
                                                 %>
                                             </td>
                                         </tr>

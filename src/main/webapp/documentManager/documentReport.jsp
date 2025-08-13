@@ -52,7 +52,6 @@
 
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
-<%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="indivo" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -241,19 +240,6 @@
 
                 var form = document.forms[2];
                 if (verifyChecks(form)) {
-                    form.action = actionPath;
-                    form.submit();
-                    return true;
-                } else
-                    return false;
-            }
-
-            function submitPhrForm(actionPath, windowName) {
-
-                var form = document.forms[2];
-                if (verifyChecks(form)) {
-                    form.onsubmit = phrActionPopup(actionPath, windowName);
-                    form.target = windowName;
                     form.action = actionPath;
                     form.submit();
                     return true;

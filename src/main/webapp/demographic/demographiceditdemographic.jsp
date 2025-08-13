@@ -40,7 +40,6 @@
         return;
     }
 %>
-<%@page import="org.oscarehr.sharingcenter.SharingCenterUtil" %>
 <%@page import="oscar.util.ConversionUtils" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.ConformanceTestHelper" %>
@@ -196,8 +195,6 @@
         noteReason = "";
     }
 
-    // MARC-HI's Sharing Center
-    boolean isSharingCenterEnabled = SharingCenterUtil.isEnabled();
 
     String currentProgram = "";
     String programId = (String) session.getAttribute(org.oscarehr.util.SessionConstants.CURRENT_PROGRAM_ID);
@@ -1336,18 +1333,6 @@
                                     href="<%= request.getContextPath() %>/eform/efmformslistadd.jsp?demographic_no=<%=demographic_no%>&appointment=<%=appointment%>">
                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnAddEForm"/> </a></td>
                         </tr>
-
-                        <% if (isSharingCenterEnabled) { %>
-                        <!-- Sharing Center Links -->
-                        <tr>
-                            <td>
-                                <a href="<%= request.getContextPath() %>/sharingcenter/networks/sharingnetworks.jsp?demographic_no=<%=demographic_no%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="sharingcenter.networks.sharingnetworks"/></a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <a href="<%= request.getContextPath() %>/sharingcenter/documents/SharedDocuments.do?demographic_no=<%=demographic_no%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="sharingcenter.documents.shareddocuments"/></a></td>
-                        </tr>
-                        <% } // endif isSharingCenterEnabled %>
 
                     </table>
                 </td>
@@ -3418,49 +3403,6 @@
                                                             <input type="text" id="patientGender" name="gender"
                                                                    value="<%=Encode.forHtmlAttribute(StringUtils.trimToEmpty(demographic.getGender()))%>"/>
                                                         </td>
-
-                                                            <%--								<td align="right"><b><fmt:message--%>
-                                                            <%--									key="demographic.demographiceditdemographic.formPHRUserName" />: </b></td>--%>
-                                                            <%--								<td align="left">--%>
-                                                            <%--								<input type="text" name="myOscarUserName" size="30" <%=getDisabled("myOscarUserName")%>--%>
-                                                            <%--									value="<%=demographic.getMyOscarUserName()!=null? demographic.getMyOscarUserName() : ""%>">--%>
-                                                            <%--								<%if (demographic.getEmail()!=null && !demographic.getEmail().equals("") && (demographic.getMyOscarUserName()==null ||demographic.getMyOscarUserName().equals(""))) {%>--%>
-                                                            <%--									<input type="button" id="emailInvite" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnEmailInvite"/>" onclick="sendEmailInvite('<%=demographic.getDemographicNo()%>')"/>--%>
-                                                            <%--									<script>--%>
-                                                            <%--										function sendEmailInvite(demoNo) {--%>
-                                                            <%--											var http = new XMLHttpRequest();--%>
-                                                            <%--											var url = "../ws/rs/app/PHREmailInvite/"+demoNo;--%>
-                                                            <%--											http.open("GET", url, true);--%>
-                                                            <%--											http.onreadystatechange = function() {--%>
-                                                            <%--												if(http.readyState == 4 && http.status == 200) {--%>
-                                                            <%--													var success = http.responseXML.getElementsByTagName("success")[0].childNodes[0].nodeValue=="true";--%>
-                                                            <%--													var btn = document.getElementById("emailInvite");--%>
-                                                            <%--													btn.disabled = true;--%>
-                                                            <%--													if (success) btn.value = "<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnEmailInviteSent"/>";--%>
-                                                            <%--													else btn.value = "<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnEmailInviteError"/>";--%>
-                                                            <%--												}--%>
-                                                            <%--											}--%>
-                                                            <%--											http.send(null);--%>
-                                                            <%--										}--%>
-                                                            <%--									</script>--%>
-
-                                                            <%--								<%}%>--%>
-
-                                                            <%--								<%if (demographic.getMyOscarUserName()==null ||demographic.getMyOscarUserName().equals("")) {%>--%>
-
-                                                            <%--								<%--%>
-                                                            <%--									String onclickString="popup(900, 800, '../phr/indivo/RegisterIndivo.jsp?demographicNo="+demographic_no+"', 'indivoRegistration');";--%>
-                                                            <%--									MyOscarLoggedInInfo myOscarLoggedInInfo=MyOscarLoggedInInfo.getLoggedInInfo(session);--%>
-                                                            <%--									if (myOscarLoggedInInfo==null || !myOscarLoggedInInfo.isLoggedIn()) onclickString="alert('Please login to MyOscar first.')";--%>
-                                                            <%--								%>--%>
-                                                            <%--								<br />--%>
-                                                            <%--								<a href="javascript:"--%>
-                                                            <%--									onclick="<%=onclickString%>"><sub--%>
-                                                            <%--									style="white-space: nowrap;"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgRegisterPHR"/></sub></a> --%>
-                                                            <%--								<%}else{%>--%>
-                                                            <%--									<input type="button" id="phrConsent" style="display:none;" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.confirmAccount"/>"  value="Confirm" />--%>
-                                                            <%--								<%}%>--%>
-                                                            <%--								</td>--%>
                                                     </tr>
                                                         <%--							<tr valign="top">--%>
                                                         <%--								<td align="right"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.consentToUseEmailForCare"/></b></td>--%>

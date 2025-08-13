@@ -44,10 +44,9 @@
 
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
-<%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="indivo" %>
 
 <%@ page
-        import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, oscar.util.*, java.net.*,oscar.MyDateFormat, oscar.oscarProvider.data.ProviderMyOscarIdData, oscar.oscarDemographic.data.DemographicData" %>
+        import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, oscar.util.*, java.net.*,oscar.MyDateFormat, oscar.oscarDemographic.data.DemographicData" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="org.springframework.web.context.WebApplicationContext" %>

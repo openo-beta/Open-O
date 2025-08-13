@@ -51,7 +51,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProperties" %>
-<%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="indivo" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
@@ -223,9 +222,6 @@
         window.open(link, "linkwin", "width=500, height=200");
     }
 
-    sendToPHR = function (labId, demographicNo) {
-        popup(300, 600, "<%=request.getContextPath()%>/phr/SendToPhrPreview.jsp?labId=" + labId + "&demographic_no=" + demographicNo, "sendtophr");
-    }
     popupStart = function (vheight, vwidth, varpage, windowname) {
         var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes";
         var popup = window.open(varpage, windowname, windowprops);
@@ -1324,10 +1320,6 @@
 
                         <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> "
                                onClick="printPDF('<%=segmentID%>')">
-                        <indivo:indivoRegistered demographic="<%=demographicID%>" provider="<%=providerNo%>">
-                            <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnSendToPHR"/>"
-                                   onClick="sendToPHR('<%=segmentID%>', '<%=demographicID%>')">
-                        </indivo:indivoRegistered>
                         <% if (searchProviderNo != null) { // we were called from e-chart %>
                         <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
                                onClick="popupStart(360, 680, '${pageContext.request.contextPath}/oscarMDS/SearchPatient.do?labType=HL7&segmentID=<%= segmentID %>&name=<%=java.net.URLEncoder.encode(handler.getLastName()+", "+handler.getFirstName())%>', 'searchPatientWindow')">

@@ -361,7 +361,6 @@
 <script src="<%= request.getContextPath() %>/web/record/summary/summaryController.js"></script>
 <script src="<%= request.getContextPath() %>/web/record/forms/formsController.js"></script>
 <script src="<%= request.getContextPath() %>/web/record/details/detailsController.js"></script>
-<script src="<%= request.getContextPath() %>/web/record/phr/phrController.js"></script>
 <script src="<%= request.getContextPath() %>/web/record/tracker/trackerController.js"></script>
 
 <script src="<%= request.getContextPath() %>/web/tickler/ticklerController.js"></script>

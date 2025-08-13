@@ -23,7 +23,6 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.myoscar.utils.MyOscarLoggedInInfo" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -845,22 +844,6 @@
                     %>
                     <li><a href="#" onclick='popupPage(400, 400, "${pageContext.request.contextPath}/olis/Preferences.jsp");return false;'>OLIS Preferences</a></li>
                     <% } %>
-                    <li><a href="#" onclick='popupPage(800, 1000, "${pageContext.request.contextPath}/admin/MyoscarConfiguration.jsp");return false;'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.phrconfig"/></a></li>
-                    <%
-                        if (StringUtils.trimToNull(OscarProperties.getInstance().getProperty("oscar_myoscar_sync_component_url")) != null) {
-                            MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(session);
-                            if (myOscarLoggedInInfo != null && myOscarLoggedInInfo.isLoggedIn()) {
-                    %>
-                    <li><a href="#" onclick='popupPage(800, 1000, "${pageContext.request.contextPath}/admin/oscar_myoscar_sync_config_redirect.jsp");return false;'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.oscar_phr_sync_config"/></a></li>
-                    <%
-                    } else {
-                    %>
-                    <li onclick="alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.oscar_phr_sync_config_must_be_logged_in"/>');">
-                        <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.oscar_phr_sync_config"/></li>
-                    <%
-                            }
-                        }
-                    %>
 
                     <%
                         if (oscarVariables.getProperty("hsfo.loginSiteCode", "") != null && !"".equalsIgnoreCase(oscarVariables.getProperty("hsfo.loginSiteCode", ""))) {
