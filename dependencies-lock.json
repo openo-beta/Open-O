@@ -40,14 +40,6 @@
     "optional" : false,
     "integrity" : "sha512:ZwhuS++JbO6HgE0BC0jF0tz3pFcthsAF5ETB9AbqGcO1r7UkVLxz2urQYSlWzvYjGNxkIeuEUf8EyQj8OhBveA=="
   }, {
-    "groupId" : "ca.mcmaster.plus",
-    "artifactId" : "macplus_client_stubs",
-    "version" : "SNAPSHOT",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:nQprVnLlI3IY4IvIlaRnAmFvLaQJi3ACvQmkJvywmMFC7HDcySUz/XMQd/x7F4QNcdiAHa7kgIskxAw4bE/PrA=="
-  }, {
     "groupId" : "ca.ssha.www",
     "artifactId" : "olis-service",
     "version" : "20111111",
