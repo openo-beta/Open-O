@@ -71,24 +71,7 @@
             <form action="${pageContext.request.contextPath}/mcedt/update" method="post" styleId="form"
                        enctype="multipart/form-data">
 
-                <% 
-    java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
-    if (actionErrors != null && !actionErrors.isEmpty()) {
-%>
-    <div class="action-errors">
-        <ul>
-            <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
-            <% } %>
-        </ul>
-    </div>
-<% } %>
-
-                <c:if test="${not empty savedMessage}">
-                    <div class="messages">
-                            ${savedMessage}
-                    </div>
-                </c:if>
+            <jsp:include page="messages.jsp"/>
 
             <input id="method" name="method" type="hidden"
                    value="addUpdateRequest"/>
