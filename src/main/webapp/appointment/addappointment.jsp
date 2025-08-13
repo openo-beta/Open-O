@@ -1185,7 +1185,7 @@ Ontario, Canada
                             <td>
                                 <textarea id="reason" name="reason" class="form-control" tabindex="2" rows="2"
                                           style="resize:none;"
-                                          placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formReason"/>" cols="18"                                     <%=bFirstDisp ? "" : request.getParameter("reason").equals("") ? "" : Encode.forHtmlContent(request.getParameter("reason"))%></textarea>
+                                          placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formReason"/>" cols="18"                                     <%=bFirstDisp ? "" : "".equals(request.getParameter("reason")) ? "" : Encode.forHtmlContent(request.getParameter("reason"))%></textarea>
 
                             </td>
                         </tr>
@@ -1251,7 +1251,7 @@ Ontario, Canada
                             </td>
                             <td>
 	                <input type="TEXT" name="user_id" class="form-control"
-                                       value='<%=bFirstDisp?(Encode.forHtmlAttribute(userlastname)+", "+Encode.forHtmlAttribute(userfirstname)):request.getParameter("user_id").equals("")?"Unknown":Encode.forHtmlAttribute(request.getParameter("user_id"))%>'
+                                       value='<%=bFirstDisp?(Encode.forHtmlAttribute(userlastname)+", "+Encode.forHtmlAttribute(userfirstname)):"".equals(request.getParameter("user_id"))?"Unknown":Encode.forHtmlAttribute(request.getParameter("user_id"))%>'
 	                   readonly="readonly" >
                             </td>
                         </tr>
@@ -1338,7 +1338,7 @@ Ontario, Canada
                             <td>
                                 <textarea class="form-control" name="notes" tabindex="3" rows="2" style="resize:none;"
                                           placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formNotes"/>" cols="18"
-                                          maxlength="255"><%=bFirstDisp ? "" : request.getParameter("notes").equals("") ? "" : request.getParameter("notes")%></textarea>
+                                          maxlength="255"><%=bFirstDisp ? "" : "".equals(request.getParameter("notes")) ? "" : request.getParameter("notes")%></textarea>
                             </td>
                         </tr>
                         <tr>
@@ -1499,8 +1499,10 @@ Ontario, Canada
                             if (props.getProperty("allowMultipleSameDayGroupAppt", "").equalsIgnoreCase("no")) {
                                 String[] sqlParam = new String[3];
                                 sqlParam[0] = myGroupNo; //schedule group
+
+
                                 //convert empty string to placeholder demographic number "0" to prevent NumberFormatException when cutting/copying an empty appointmnet.
-                                if (apptObj.getDemographic_no().trim().equals("")) {
+                                if (StringUtils.isBlank(apptObj.getDemographic_no())) {
                                     apptObj.setDemographic_no("0");//demographic numbers start at 1
                                 }
                                 sqlParam[1] = apptObj.getDemographic_no();
