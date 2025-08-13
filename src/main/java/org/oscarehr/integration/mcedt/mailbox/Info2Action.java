@@ -53,6 +53,13 @@ public class Info2Action extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
+        String method = request.getParameter("method");
+        if ("deleteFiles".equals(method)) {
+            return deleteFiles();
+        } else if ("changeDisplay".equals(method)) {
+            return changeDisplay();
+        }
+
         List<BigInteger> resourceIds = getResourceIds(request);
         String serviceId = getServiceId(request);
         if (serviceId == null || serviceId.trim().equals("")) serviceId = getDefaultServiceId();
