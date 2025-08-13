@@ -64,8 +64,6 @@ import org.oscarehr.common.model.PreventionExt;
 import org.oscarehr.common.model.ProfessionalSpecialist;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.managers.CodingSystemManager;
-import org.oscarehr.sharingcenter.dao.ClinicInfoDao;
-import org.oscarehr.sharingcenter.model.ClinicInfoDataObject;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
@@ -596,9 +594,10 @@ public class BORNWbCsdXmlGenerator {
         patientInfo.setOrganizationID(OscarProperties.getInstance().getProperty("born_orgcode"));
 
         if (useClinicInfoForOrganizationId) {
-            ClinicInfoDao clinicInfoDao = SpringUtils.getBean(ClinicInfoDao.class);
-            ClinicInfoDataObject clinicInfo = clinicInfoDao.getClinic();
-            patientInfo.setOrganizationID(clinicInfo.getFacilityName());
+            // ClinicInfo functionality removed with Sharing Center
+            // Using default organization ID from properties
+            String organizationId = OscarProperties.getInstance().getProperty("born_organization_id", "OSCAR");
+            patientInfo.setOrganizationID(organizationId);
         }
     }
 

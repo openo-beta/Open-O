@@ -57,8 +57,6 @@ import org.oscarehr.documentManager.EDocUtil;
 import org.oscarehr.documentManager.IncomingDocUtil;
 import org.oscarehr.managers.ProgramManager2;
 import org.oscarehr.managers.SecurityInfoManager;
-import org.oscarehr.sharingcenter.SharingCenterUtil;
-import org.oscarehr.sharingcenter.model.DemographicExport;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
@@ -719,19 +717,9 @@ public class ManageDocument2Action extends ActionSupport {
             throw new SecurityException("missing required security object (_edoc)");
         }
 
-        DemographicExport export = SharingCenterUtil.retrieveDemographicExport(Integer.valueOf(request.getParameter("doc_no")));
-        String contentType = "application/zip";
-        String filename = String.format("%s_%s", export.getDocumentType(), export.getId());
-        byte[] contentBytes = export.getDocument();
-
-        response.setContentType(contentType);
-        response.setContentLength(contentBytes.length);
-        response.setHeader("Content-Disposition", "inline; filename=" + filename);
-        log.debug("about to Print to stream");
-        ServletOutputStream outs = response.getOutputStream();
-        outs.write(contentBytes);
-        outs.flush();
-        outs.close();
+        // Sharing Center functionality has been removed
+        log.warn("CDS download no longer available - Sharing Center has been removed");
+        response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "CDS download functionality is no longer available");
         return null;
     }
 

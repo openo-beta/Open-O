@@ -115,9 +115,6 @@ import org.oscarehr.hospitalReportManager.model.HRMDocumentToDemographic;
 import org.oscarehr.hospitalReportManager.model.HRMDocumentToProvider;
 import org.oscarehr.managers.DemographicManager;
 import org.oscarehr.managers.SecurityInfoManager;
-import org.oscarehr.sharingcenter.DocumentType;
-import org.oscarehr.sharingcenter.dao.DemographicExportDao;
-import org.oscarehr.sharingcenter.model.DemographicExport;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
@@ -2565,15 +2562,10 @@ public class DemographicExportAction42Action extends ActionSupport {
                         PGPEncrypt pgp = new PGPEncrypt();
                         if (pgp.encrypt(zipName, tmpDir)) {
 
-                            // Sharing Center - Skip download if sharing with affinity domain
-                            if (request.getParameter("SendToAffinityDomain") == null) {
-                                Util.downloadFile(zipName + ".pgp", tmpDir, response);
-                                Util.cleanFile(zipName + ".pgp", tmpDir);
-                                ffwd = "success";
-                            } else {
-                                // Sharing Center - Change the forward (redirect) to the affinity domain export page
-                                ffwd = "sendToAffinityDomain";
-                            }
+                            // Sharing Center removed - always download file
+                            Util.downloadFile(zipName + ".pgp", tmpDir, response);
+                            Util.cleanFile(zipName + ".pgp", tmpDir);
+                            ffwd = "success";
 
                         } else {
                             request.getSession().setAttribute("pgp_ready", "No");
@@ -2583,14 +2575,9 @@ public class DemographicExportAction42Action extends ActionSupport {
                         if (!"true".equals(OscarProperties.getInstance().getProperty("demographic.export.encryptedOnly", "false"))) {
                             logger.info("Warning: PGP Encryption NOT available - unencrypted file exported!");
 
-                            // Sharing Center - Skip download if sharing with affinity domain
-                            if (request.getParameter("SendToAffinityDomain") == null) {
-                                Util.downloadFile(zipName, tmpDir, response);
-                                ffwd = "success";
-                            } else {
-                                // Sharing Center - Change the forward (redirect) to the affinity domain export page
-                                ffwd = "sendToAffinityDomain";
-                            }
+                            // Sharing Center removed - always download file
+                            Util.downloadFile(zipName, tmpDir, response);
+                            ffwd = "success";
                         } else {
                             request.getSession().setAttribute("pgp_ready", "No");
                             ffwd = "fail";
@@ -2599,22 +2586,7 @@ public class DemographicExportAction42Action extends ActionSupport {
 
                     }
 
-                    // Sharing Center - Store the exported data for later retrieval while sending to the affinity domain
-                    if (ffwd.equalsIgnoreCase("sendToAffinityDomain")) {
-                        String exportFile = Util.fixDirName(tmpDir) + zipName;
-
-                        DemographicExportDao demographicExportDao = SpringUtils.getBean(DemographicExportDao.class);
-                        DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
-
-                        DemographicExport demographicExport = new DemographicExport();
-                        byte[] data = FileUtils.readFileToByteArray(new File(exportFile));
-                        demographicExport.setDocument(data);
-                        demographicExport.setDemographic(demographicManager.getDemographic(loggedInInfo, demographicNo));
-                        demographicExport.setDocumentType(DocumentType.CDS.name());
-
-                        DemographicExport export = demographicExportDao.saveEntity(demographicExport);
-                        documentExportId = export.getId();
-                    }
+                    // Sharing Center functionality removed
 
                     //Remove zip & export files from temp dir
                     Util.cleanFile(zipName, tmpDir);
@@ -2728,13 +2700,7 @@ public class DemographicExportAction42Action extends ActionSupport {
                 break;
         }
 
-        if (ffwd.equalsIgnoreCase("sendToAffinityDomain")) {
-            String url = "/sharingcenter/documents/shareDocumentsAction.jsp" + "?affinityDomain=" + request.getParameter("affinityDomain") + "&demoId=" + demographicNo + "&docNo=" + documentExportId + "&type=" + DocumentType.CDS.name();
-            response.sendRedirect(url);
-            return NONE;
-        } else {
-            return ffwd;
-        }
+        return ffwd;
     }
 
     File makeReadMe(ArrayList<String> dirs, ArrayList<File> fs) throws IOException {
