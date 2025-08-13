@@ -29,7 +29,6 @@ package oscar.oscarRx.pageUtil;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.Allergy;
-import org.oscarehr.phr.model.PHRMedication;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import oscar.OscarProperties;
@@ -57,34 +56,6 @@ public class RxSessionBean implements java.io.Serializable {
     private CopyOnWriteArrayList reRxDrugIdList = new CopyOnWriteArrayList<>();
     private HashMap randomIdDrugIdPair = new HashMap();
     private List<HashMap<String, String>> listMedHistory = new ArrayList();
-    private HashMap<Long, PHRMedication> pairPHRMed = new HashMap<Long, PHRMedication>();
-    private HashMap<Long, PHRMedication> pairPrevViewedPHRMed = new HashMap<Long, PHRMedication>();//viewed meds but not saved, rethrieved from phr_document
-
-
-    //--------------------------------------------------------------------------
-    public HashMap<Long, PHRMedication> getPairPHRMed() {
-        return pairPHRMed;
-    }
-
-    public void setPairPHRMed(HashMap<Long, PHRMedication> l) {
-        pairPHRMed = l;
-    }
-
-    public void clearPairPHRMed() {
-        pairPHRMed = new HashMap<Long, PHRMedication>();
-    }
-
-    public HashMap<Long, PHRMedication> getPairPrevViewedPHRMed() {
-        return pairPrevViewedPHRMed;
-    }
-
-    public void setPairPrevViewedPHRMed(HashMap<Long, PHRMedication> l) {
-        pairPrevViewedPHRMed = l;
-    }
-
-    public void clearPairPrevViewedPHRMed() {
-        pairPrevViewedPHRMed = new HashMap<Long, PHRMedication>();
-    }
 
     public List<HashMap<String, String>> getListMedHistory() {
         return listMedHistory;
@@ -497,8 +468,6 @@ public class RxSessionBean implements java.io.Serializable {
                 .append("reRxDrugIdList", reRxDrugIdList)
                 .append("randomIdDrugIdPair", randomIdDrugIdPair)
                 .append("listMedHistory", listMedHistory)
-                .append("pairPHRMed", pairPHRMed)
-                .append("pairPrevViewedPHRMed", pairPrevViewedPHRMed)
                 .toString();
     }
 }

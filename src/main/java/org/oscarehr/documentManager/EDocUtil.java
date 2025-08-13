@@ -69,7 +69,6 @@ import org.oscarehr.common.model.CtlDocumentPK;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Document;
 import org.oscarehr.common.model.EFormDocs;
-import org.oscarehr.common.model.IndivoDocs;
 import org.oscarehr.common.model.PartialDate;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Tickler;
@@ -94,7 +93,6 @@ public final class EDocUtil {
 
     private static ConsultDocsDao consultDocsDao = (ConsultDocsDao) SpringUtils.getBean(ConsultDocsDao.class);
     private static DocumentDao documentDao = (DocumentDao) SpringUtils.getBean(DocumentDao.class);
-    private static IndivoDocsDao indivoDocsDao = (IndivoDocsDao) SpringUtils.getBean(IndivoDocsDao.class);
     private static Logger logger = MiscUtils.getLogger();
     private static ProgramManager2 programManager2 = SpringUtils.getBean(ProgramManager2.class);
     private static final PartialDateDao partialDateDao = (PartialDateDao) SpringUtils.getBean(PartialDateDao.class);
@@ -348,19 +346,6 @@ public final class EDocUtil {
         }
     }
 
-    public static void indivoRegister(EDoc doc) {
-        IndivoDocs id = new IndivoDocs();
-        id.setOscarDocNo(ConversionUtils.fromIntString(doc.getDocId()));
-        id.setIndivoDocIdx(doc.getIndivoIdx());
-        id.setDocType("document");
-        id.setDateSent(new Date());
-        if (doc.isInIndivo()) {
-            id.setUpdate("U");
-        } else {
-            id.setUpdate("I");
-        }
-        indivoDocsDao.persist(id);
-    }
 
     /**
      * Fetches all consult documents attached to specific consultation
@@ -755,7 +740,6 @@ public final class EDocUtil {
     public static EDoc getDoc(String documentNo) {
 
         DocumentDao dao = SpringUtils.getBean(DocumentDao.class);
-        IndivoDocsDao iDao = SpringUtils.getBean(IndivoDocsDao.class);
 
         EDoc currentdoc = new EDoc();
 
@@ -793,13 +777,6 @@ public final class EDocUtil {
                 currentdoc.setRestrictToProgram(d.isRestrictToProgram());
             }
 
-            IndivoDocs id = iDao.findByOscarDocNo(d.getDocumentNo(), "document");
-            if (id != null) {
-                currentdoc.setIndivoIdx(id.getIndivoDocIdx());
-                if (currentdoc.getIndivoIdx().length() > 0) {
-                    currentdoc.registerIndivo();
-                }
-            }
 
         }
 

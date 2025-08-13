@@ -2682,30 +2682,6 @@
     "optional" : false,
     "integrity" : "sha512:8mHTu29DGmV3jLdG55JJ6EwMlf8g0FqmOvW4zv5XUz4Je09xMOLntKokziRzWrrhaf8mnN43JZXuO0NODWnjHA=="
   }, {
-    "groupId" : "org.indivo",
-    "artifactId" : "indivo-core",
-    "version" : "3.0-SNAPSHOT",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:r9AWb+ENgBkNlefmymHz9d/y5nJNajuWw4LNDkAd8GmhLXrQck3tqQ92J6zs29Eye0ys1j5Uvsc1luXoKmKPDQ=="
-  }, {
-    "groupId" : "org.indivo",
-    "artifactId" : "indivo-model-core",
-    "version" : "3.0-SNAPSHOT",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:Hv+4o0ADdD89kn8i4fYHdZtCT00+FpyuDIvaowrCounufBqrJkzQJO/LhktxSwYdWhAAZnxy4hqqsI2vKGcFDA=="
-  }, {
-    "groupId" : "org.indivo",
-    "artifactId" : "indivo-model-phr-jackson",
-    "version" : "3.1-SNAPSHOT",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:lHMV2oMHPQb5NMQcX5qOEw86QAs03QZAxarG05ZVr0cZNRqJk8Rx5zFC8hAN4jh2TgY6hWINtAkE1tPtI9jB5A=="
-  }, {
     "groupId" : "org.jasypt",
     "artifactId" : "jasypt",
     "version" : "1.9.3",
@@ -3066,22 +3042,6 @@
     "optional" : false,
     "integrity" : "sha512:ZjRzu8bOkEqxy1p8/TEzG350QcDnUR2sowHnwYf2UMBx/hTvHDev9GIifA+4rI8mBrMngtiIw+5vFKPHcnYcdA=="
   }, {
-    "groupId" : "org.oscarehr.myoscar_server",
-    "artifactId" : "myoscar_server_client_stubs2",
-    "version" : "2014.10.24",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:vDxKxxrFG3poJEbJ8Iikc6d6QBF9VSyqONUFb+/0NDhxDKYza96PlxJWboU/WRhjPkxMCyKGaJLL++EjwnHNUg=="
-  }, {
-    "groupId" : "org.oscarehr.myoscar_server",
-    "artifactId" : "myoscar_server_client_stubs",
-    "version" : "2013.07.22",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:FfzKiNTK7WTalz+QFhg+V0+PYOIsX4hQ7LB3zrjhWSZ5eRW+SJ91rsKu4ggadaV8QyQy9t4WRr5qvddmes653A=="
-  }, {
     "groupId" : "org.oscarehr",
     "artifactId" : "flowsheets",
     "version" : "1.0",
@@ -3089,22 +3049,6 @@
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:LtpvwJ/z/mZrdwKHxmAVDvzo1Fesmjg5YXC2ceSPUEmC3HiCf5p2t8DwtllnSMxQrzEr72Efv7ATzhM720u5mg=="
-  }, {
-    "groupId" : "org.oscarehr",
-    "artifactId" : "myoscar_client_server_commons",
-    "version" : "2013.07.18",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:PFx/KlvvhB3VVao1ovIzZWFpBJeOy80kPnzQ2596UiOqnGJGpIwbk851k1+1VhEy5N/RKSzHiXd2TtUVHVdeAQ=="
-  }, {
-    "groupId" : "org.oscarehr",
-    "artifactId" : "myoscar_client_utils",
-    "version" : "2013.07.22.TLS",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:rKUGTFlxVsKVz5atGo8YDxjbm91mnziUe/hK7hUn0aWKTAX6bh3xTZD5f2/DoR4mZQdkWcCeBls1LbbbApeoPg=="
   }, {
     "groupId" : "org.ow2.asm",
     "artifactId" : "asm",

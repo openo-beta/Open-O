@@ -39,10 +39,8 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.DrugDao;
 import org.oscarehr.common.dao.FavoriteDao;
-import org.oscarehr.common.dao.IndivoDocsDao;
 import org.oscarehr.common.dao.PrescriptionDao;
 import org.oscarehr.common.model.Drug;
-import org.oscarehr.common.model.IndivoDocs;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
@@ -472,12 +470,6 @@ public class RxPrescriptionData {
                 logger.debug("ADDING PRESCRIPTION " + drug.getId());
                 Prescription p = toPrescription(drug, demographicNo);
 
-                IndivoDocsDao iDao = SpringUtils.getBean(IndivoDocsDao.class);
-                IndivoDocs iDoc = iDao.findByOscarDocNo(drug.getId());
-                if (iDoc != null) {
-                    p.setIndivoIdx(iDoc.getIndivoDocIdx());
-                    if (p.getIndivoIdx() != null && p.getIndivoIdx().length() > 0) p.setRegisterIndivo();
-                }
 
                 p.setPosition(drug.getPosition());
                 result.add(p);
@@ -1597,16 +1589,8 @@ public class RxPrescriptionData {
         }
 
         public boolean registerIndivo() {
-            IndivoDocs doc = new IndivoDocs();
-            doc.setOscarDocNo(getDrugId());
-            doc.setIndivoDocIdx(getIndivoIdx());
-            doc.setDocType(docType);
-            doc.setDateSent(new Date());
-            doc.setUpdate(isRegisteredIndivo() ? "U" : "I");
-
-            IndivoDocsDao dao = SpringUtils.getBean(IndivoDocsDao.class);
-            dao.persist(doc);
-            return true;
+            // Indivo functionality removed
+            return false;
         }
 
         public boolean Print(LoggedInInfo loggedInInfo) {

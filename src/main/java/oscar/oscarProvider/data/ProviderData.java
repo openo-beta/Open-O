@@ -688,16 +688,6 @@ public class ProviderData {
         return p.getFirstName() + " " + p.getLastName();
     }
 
-    public String getMyOscarId() {
-        if (myOscarId == null) this.initMyOscarId();
-        return myOscarId;
-    }
-
-    public void initMyOscarId() {
-        this.myOscarId = ProviderMyOscarIdData.getMyOscarId(this.getProviderNo());
-    }
-
-    private String myOscarId = null;
 
     public String getDefaultBillingView(String providerNo) {
 

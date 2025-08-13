@@ -59,12 +59,6 @@ import org.oscarehr.casemgmt.service.CaseManagementManager;
 import org.oscarehr.casemgmt.service.CaseManagementManagerImpl;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.managers.SecurityInfoManager;
-import org.oscarehr.myoscar.client.ws_manager.AccountManager;
-import org.oscarehr.myoscar.client.ws_manager.MessageManager;
-import org.oscarehr.myoscar.utils.MyOscarLoggedInInfo;
-import org.oscarehr.myoscar_server.ws.MessageTransfer3;
-import org.oscarehr.myoscar_server.ws.MinimalPersonTransfer2;
-import org.oscarehr.phr.web.MyOscarMessagesHelper;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SessionConstants;
@@ -185,55 +179,6 @@ public class EctIncomingEncounter2Action extends ActionSupport {
                         + ((String) request.getSession().getAttribute("userlastname"));
             }
 
-            bean.myoscarMsgId = request.getParameter("myoscarmsg");
-            if (request.getParameter("myoscarmsg") != null) {
-                ResourceBundle props = ResourceBundle.getBundle("oscarResources", request.getLocale());
-                try {
-                    MessageTransfer3 messageTransfer = MyOscarMessagesHelper.readMessage(request.getSession(),
-                            Long.parseLong(bean.myoscarMsgId));
-                    String messageBeingRepliedTo = "";
-                    String dateStr = "";
-
-                    if (request.getParameter("remyoscarmsg") != null) {
-                        MessageTransfer3 messageTransferOrig = MyOscarMessagesHelper.readMessage(request.getSession(),
-                                Long.parseLong(request.getParameter("remyoscarmsg")));
-                        dateStr = StringEscapeUtils.escapeHtml(
-                                DateUtils.formatDateTime(messageTransferOrig.getSentDate(), request.getLocale()));
-
-                        MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo
-                                .getLoggedInInfo(request.getSession());
-                        MinimalPersonTransfer2 minimalPersonTransfer = AccountManager
-                                .getMinimalPerson(myOscarLoggedInInfo, messageTransferOrig.getSenderPersonId());
-                        String originalMessageBody = MessageManager.getMessageBody(messageTransferOrig);
-                        messageBeingRepliedTo = props.getString("myoscar.msg.From") + ": "
-                                + StringEscapeUtils.escapeHtml(minimalPersonTransfer.getLastName() + ", "
-                                + minimalPersonTransfer.getFirstName())
-                                + " (" + dateStr + ")\n" + originalMessageBody + "\n-------------\n"
-                                + props.getString("myoscar.msg.Reply") + ":\n";
-                    } else {
-                        dateStr = StringEscapeUtils.escapeHtml(
-                                DateUtils.formatDateTime(messageTransfer.getSentDate(), request.getLocale()));
-
-                        MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo
-                                .getLoggedInInfo(request.getSession());
-                        MinimalPersonTransfer2 minimalPersonTransfer = AccountManager
-                                .getMinimalPerson(myOscarLoggedInInfo, messageTransfer.getSenderPersonId());
-                        messageBeingRepliedTo = props.getString("myoscar.msg.From") + ": "
-                                + StringEscapeUtils.escapeHtml(minimalPersonTransfer.getLastName() + ", "
-                                + minimalPersonTransfer.getFirstName())
-                                + " (" + dateStr + ")\n";
-                    }
-
-                    String subject = MessageManager.getSubject(messageTransfer);
-                    String messageBody = MessageManager.getMessageBody(messageTransfer);
-                    bean.reason = props.getString("myoscar.msg.SubjectPrefix") + " - " + subject;
-                    bean.myoscarMsgId = messageBeingRepliedTo + StringEscapeUtils.escapeHtml(messageBody) + "\n";
-                } catch (Exception myoscarEx) {
-                    bean.oscarMsg = "PHR message was not retrieved";
-                    log.error("ERROR retrieving message", myoscarEx);
-                }
-
-            }
 
             bean.appointmentDate = request.getParameter("appointmentDate");
             bean.startTime = request.getParameter("startTime");

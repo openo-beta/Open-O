@@ -86,8 +86,6 @@ public class DemographicManagerImpl implements DemographicManager {
     @Autowired
     private DemographicMergedDao demographicMergedDao;
 
-    @Autowired
-    private PHRVerificationDao phrVerificationDao;
 
     @Autowired
     private AdmissionDao admissionDao;
@@ -699,50 +697,9 @@ public class DemographicManagerImpl implements DemographicManager {
         return result;
     }
 
-    @Override
-    public PHRVerification getLatestPhrVerificationByDemographicId(LoggedInInfo loggedInInfo, Integer demographicId) {
-        PHRVerification result = phrVerificationDao.findLatestByDemographicId(demographicId);
 
-        // --- log action ---
-        if (result != null) {
-            LogAction.addLogSynchronous(loggedInInfo, "DemographicManager.getLatestPhrVerificationByDemographicId",
-                    "demographicId=" + demographicId);
-        }
 
-        return (result);
-    }
 
-    @Override
-    public boolean getPhrVerificationLevelByDemographicId(LoggedInInfo loggedInInfo, Integer demographicId) {
-        Integer consentId = appManager.getAppDefinitionConsentId(loggedInInfo, "PHR");
-        if (consentId != null) {
-            Consent consent = consentDao.findByDemographicAndConsentTypeId(demographicId, consentId);
-            if (consent != null && consent.getPatientConsented()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * This method should only return true if the demographic passed in is "phr
-     * verified" to a sufficient level to allow a provider to send this phr account
-     * messages.
-     */
-    @Override
-    public boolean isPhrVerifiedToSendMessages(LoggedInInfo loggedInInfo, Integer demographicId) {
-        return getPhrVerificationLevelByDemographicId(loggedInInfo, demographicId);
-    }
-
-    /**
-     * This method should only return true if the demographic passed in is "phr
-     * verified" to a sufficient level to allow a provider to send this phr account
-     * medicalData.
-     */
-    @Override
-    public boolean isPhrVerifiedToSendMedicalData(LoggedInInfo loggedInInfo, Integer demographicId) {
-        return getPhrVerificationLevelByDemographicId(loggedInInfo, demographicId);
-    }
 
     /**
      * @deprecated there should be a generic call for getDemographicExt(Integer

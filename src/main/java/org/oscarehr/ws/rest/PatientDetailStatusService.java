@@ -40,7 +40,6 @@ import org.oscarehr.integration.mchcv.HCValidationResult;
 import org.oscarehr.integration.mchcv.HCValidator;
 import org.oscarehr.integration.mchcv.OnlineHCValidator;
 import org.oscarehr.managers.DemographicManager;
-import org.oscarehr.myoscar.utils.MyOscarLoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.ws.rest.to.GenericRESTResponse;
 import org.oscarehr.ws.rest.to.model.PatientDetailStatusTo1;
@@ -48,7 +47,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import oscar.OscarProperties;
 import oscar.oscarDemographic.data.DemographicData;
-import oscar.oscarProvider.data.ProviderMyOscarIdData;
 
 
 @Path("/patientDetailStatusService")
@@ -93,22 +91,6 @@ public class PatientDetailStatusService extends AbstractServiceImpl {
             status.setIntegratorAllSynced(allSynced);
         }
 
-        //McMaster PHR status
-        MyOscarLoggedInInfo myOscarLoggedInInfo = MyOscarLoggedInInfo.getLoggedInInfo(getLoggedInInfo().getSession());
-        if (myOscarLoggedInInfo != null) {
-            status.setMacPHRLoggedIn(myOscarLoggedInInfo.isLoggedIn());
-        }
-
-        if (ProviderMyOscarIdData.idIsSet(getLoggedInInfo().getLoggedInProviderNo())) {
-            if (demographicNo > 0) {
-                Demographic demo = new DemographicData().getDemographic(getLoggedInInfo(), demographicNo.toString());
-                String myOscarUserName = demo.getMyOscarUserName();
-                if (myOscarUserName != null && !myOscarUserName.equals("")) {
-                    status.setMacPHRIdsSet(true);
-                    status.setMacPHRVerificationLevel(demographicManager.getPhrVerificationLevelByDemographicId(getLoggedInInfo(), demographicNo));
-                }
-            }
-        }
 
         //from oscar.properties
         status.setConformanceFeaturesEnabled(oscarProperties.isPropertyActive("ENABLE_CONFORMANCE_ONLY_FEATURES"));

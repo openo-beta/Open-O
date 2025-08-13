@@ -74,8 +74,6 @@ public class EDoc extends TagObject implements Comparable<EDoc> {
     private String reviewerId = "";
     private String reviewDateTime = null;
     private Date reviewDateTimeDate = null;
-    private String indivoIdx = null;
-    private boolean indivoRegistered = false;
     private int numberOfPages = 0;
     private Integer appointmentNo = -1;
     private boolean restrictToProgram = false;
@@ -490,21 +488,6 @@ public class EDoc extends TagObject implements Comparable<EDoc> {
         this.observationDate = formattedDate;
     }
 
-    public void setIndivoIdx(String idx) {
-        indivoIdx = idx;
-    }
-
-    public String getIndivoIdx() {
-        return indivoIdx;
-    }
-
-    public void registerIndivo() {
-        indivoRegistered = true;
-    }
-
-    public boolean isInIndivo() {
-        return indivoRegistered;
-    }
 
     public Integer getProgramId() {
         return programId;

@@ -543,22 +543,6 @@
         </dependency>
 
 
-        <!-- indivo: can be found in the local_repo folder -->
-        <dependency>
-            <groupId>org.indivo</groupId>
-            <artifactId>indivo-core</artifactId>
-            <version>3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.indivo</groupId>
-            <artifactId>indivo-model-core</artifactId>
-            <version>3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.indivo</groupId>
-            <artifactId>indivo-model-phr-jackson</artifactId>
-            <version>3.1-SNAPSHOT</version>
-        </dependency>
 
         <!-- jcharts: can be found in the local_repo folder -->
         <dependency>
@@ -1074,37 +1058,7 @@
             <version>8.3.3</version>
         </dependency>
 
-        <!-- can be found in the local_repo folder -->
-        <dependency>
-            <groupId>org.oscarehr</groupId>
-            <artifactId>myoscar_client_utils</artifactId>
-            <version>2013.07.22.TLS</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.oscarehr</groupId>
-                    <artifactId>util</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.mail</groupId>
-                    <artifactId>mail</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.commons</groupId>
-                    <artifactId>commons-email</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
-        <!-- can be found in the local_repo folder -->
-        <dependency>
-            <groupId>org.oscarehr.myoscar_server</groupId>
-            <artifactId>myoscar_server_client_stubs2</artifactId>
-            <version>2014.10.24</version>
-        </dependency>
 
         <!-- Apache Tika - MimeType handling for downloaded files (ie. XDS) -->
         <dependency>

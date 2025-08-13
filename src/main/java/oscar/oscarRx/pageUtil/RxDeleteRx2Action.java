@@ -230,7 +230,6 @@ public final class RxDeleteRx2Action extends ActionSupport {
             response.sendRedirect("error.html");
             return null;
         }
-        bean.clearPairPHRMed();
         //return "successClearStash";
         return null;
     }
