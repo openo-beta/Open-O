@@ -73,8 +73,7 @@
         administrator for support.
     </div>
     <div data-ng-show="k2aActive && !k2aReports">
-        Please authenticate with K2A using your username and password <a href=""
-                                                                         onclick="window.open('<%=request.getContextPath()%>/web/#/settings');">here</a>
+        Please authenticate with K2A using your username and password in settings
         under the integration tab. Once completed please refresh the page.
     </div>
     <div data-ng-show="k2aActive && k2aReports">
