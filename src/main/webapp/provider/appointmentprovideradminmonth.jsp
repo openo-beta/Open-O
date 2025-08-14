@@ -96,15 +96,8 @@
     mygroupno = (request.getParameter("mygroup_no") == null ? providerPreference.getMyGroupNo() : request.getParameter("mygroup_no"));
     if (mygroupno == null)
         mygroupno = ".default";
-    if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.IsPropertiesOn.isTicklerPlusEnable()) {
-        n_t_w_w = (String) session.getAttribute("newticklerwarningwindow");
-    }
     String newticklerwarningwindow = null;
     String default_pmm = null;
-    if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.IsPropertiesOn.isTicklerPlusEnable()) {
-        newticklerwarningwindow = (String) session.getAttribute("newticklerwarningwindow");
-        default_pmm = (String) session.getAttribute("default_pmm");
-    }
 
     int startHour = providerPreference.getStartHour();
     int endHour = providerPreference.getEndHour();
@@ -383,13 +376,7 @@
             function selectprovider(s) {
                 if (s.options[s.selectedIndex].value.indexOf("_grp_") != -1) {
                     var newGroupNo = s.options[s.selectedIndex].value.substring(5);
-                    <%if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.IsPropertiesOn.isTicklerPlusEnable()){%>
-                    {
-                        popupOscarRx(10, 10, "providercontrol.jsp?provider_no=<%=curUser_no%>&start_hour=<%=startHour%>&end_hour=<%=endHour%>&every_min=<%=everyMin%>&new_tickler_warning_window=<%=n_t_w_w%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&mygroup_no=" + newGroupNo) + "<%=eformIds.toString()%><%=ectFormNames.toString()%>";
-                    }
-                    <%}else {%>
                     popupOscarRx(10, 10, "providercontrol.jsp?provider_no=<%=curUser_no%>&start_hour=<%=startHour%>&end_hour=<%=endHour%>&every_min=<%=everyMin%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&mygroup_no=" + newGroupNo + "<%=eformIds.toString()%><%=ectFormNames.toString()%>");
-                    <%}%>
                 } else {
                     if (self.location.href.lastIndexOf("&providerview=") > 0)
                         a = self.location.href.substring(0, self.location.href.lastIndexOf("&providerview="));
@@ -978,12 +965,7 @@
                         popupOscarRx(600, 750, '<%=resourcebaseurl%>');
                         return false;  //run code for 'H'elp
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.ticklerShortcut"/> : {
-                        <caisi:isModuleLoad moduleName="ticklerplus" reverse="true">
                         popupOscarRx(700, 1024, '../tickler/ticklerMain.jsp', '<fmt:setBundle basename="oscarResources"/><fmt:message key="global.tickler"/>') //run code for t'I'ckler
-                        </caisi:isModuleLoad>
-                        <caisi:isModuleLoad moduleName="ticklerplus">
-                        popupOscarRx(700, 1024, '../Tickler.do', '<fmt:setBundle basename="oscarResources"/><fmt:message key="global.tickler"/>'); //run code for t'I'ckler+
-                        </caisi:isModuleLoad>
                         return false;
                     }
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.labShortcut"/> :
@@ -1002,14 +984,8 @@
                         popupOscarRx(650, 1024, '../report/reportindex.jsp', 'reportPage');
                         return false;  //run code for 'R'eports
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.prefShortcut"/> : {
-                        <caisi:isModuleLoad moduleName="ticklerplus">
-                        popupOscarRx(715, 680, 'providerpreference.jsp?provider_no=<%=curUser_no%>&start_hour=<%=startHour%>&end_hour=<%=endHour%>&every_min=<%=everyMin%>&mygroup_no=<%=mygroupno%>&new_tickler_warning_window=<%=newticklerwarningwindow%>&default_pmm=<%=default_pmm%>'); //run code for tickler+ 'P'references
-                        return false;
-                        </caisi:isModuleLoad>
-                        <caisi:isModuleLoad moduleName="ticklerplus" reverse="true">
                         popupOscarRx(715, 680, 'providerpreference.jsp?provider_no=<%=curUser_no%>&start_hour=<%=startHour%>&end_hour=<%=endHour%>&every_min=<%=everyMin%>&mygroup_no=<%=mygroupno%>'); //run code for 'P'references
                         return false;
-                        </caisi:isModuleLoad>
                     }
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.searchShortcut"/> :
                         popupOscarRx(550, 687, '../demographic/search.jsp');

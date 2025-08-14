@@ -1096,11 +1096,7 @@ public final class EDocUtil {
             for (TicklerLink tl : linkList) {
                 ticklerNo = tl.getTicklerNo();
                 Tickler t = ticklerManager.getTickler(loggedInInfo, ticklerNo.intValue());
-                if (org.oscarehr.common.IsPropertiesOn.isTicklerPlusEnable()) {
-                    HtmlTickler += "<br><a href='#' onclick=\"window.open('../Tickler.do?method=view&id=" + ticklerNo.toString() + "','viewtickler" + ticklerNo.toString() + "','height=700,width=600,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0');\" >" + t.getMessage() + "</a>";
-                } else {
-                    HtmlTickler += "<br>" + t.getMessage();
-                }
+                HtmlTickler += "<br>" + t.getMessage();
             }
         }
         return HtmlTickler;

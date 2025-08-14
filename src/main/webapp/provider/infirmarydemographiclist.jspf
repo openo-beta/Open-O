@@ -84,11 +84,9 @@
 					<c:if test="${demographic_no == 0}">
 						<c:choose>
 							<c:when test="${not empty tickler_no}">
-								<caisi:isModuleLoad moduleName="ticklerplus" reverse="true">
 									<a href="#" onClick="popupPage(700, 1000, '../tickler/ticklerDemoMain.jsp?demoview=0'); return false;" title="${tickler_note}">
 										<font color="red">!</font>
 									</a>
-								</caisi:isModuleLoad>
 							</c:when>
 							<c:otherwise>
 								<b><c:out value="${de.label}"/></b>

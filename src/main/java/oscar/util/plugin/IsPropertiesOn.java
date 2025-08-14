@@ -61,8 +61,4 @@ public class IsPropertiesOn {
     public static boolean isProgramEnable() {
         return propertiesOn("program");
     }
-
-    public static boolean isTicklerPlusEnable() {
-        return propertiesOn("ticklerplus");
-    }
 }

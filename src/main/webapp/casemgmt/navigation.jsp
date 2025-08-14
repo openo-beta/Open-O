@@ -319,7 +319,7 @@
                                       demoNo="<%=bean.demographicNo%>" programId="<%=pgId%>">
                 <tr>
                     <td><a href="javascript:void(0)"
-                           onClick="popupPage('<%=bsurl%>/Tickler.do?method=edit&tickler.demographic_webName=<%=StringEscapeUtils.escapeJavaScript(bean.getPatientLastName() +"," + bean.getPatientFirstName())%>&tickler.demographicNo=<%=bean.demographicNo%>');return false;">Add
+                           onClick="popupPage('<%=bsurl%>/tickler/ticklerAdd.jsp?demographic_no=<%=bean.demographicNo%>&name=<%=StringEscapeUtils.escapeJavaScript(bean.getPatientLastName() +"," + bean.getPatientFirstName())%>');return false;">Add
                         Tickler</a></td>
                 </tr>
             </caisirole:SecurityAccess>
@@ -568,7 +568,7 @@
                 <tr>
                     <td>
                         <a href="javascript:void(0)"
-                           onClick="popupPage('<%=bsurl%>/Tickler.do?method=filter&filter.demographic_webName=<%=StringEscapeUtils.escapeJavaScript(bean.getPatientLastName() +"," + bean.getPatientFirstName())%>&filter.demographic_no=<%=bean.demographicNo%>');return false;">View
+                           onClick="popupPage('<%=bsurl%>/tickler/ticklerMain.jsp?demoview=<%=bean.demographicNo%>');return false;">View
                             Tickler</a><br>
                     </td>
                 </tr>

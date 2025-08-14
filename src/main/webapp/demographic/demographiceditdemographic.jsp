@@ -1225,17 +1225,10 @@
                         </security:oscarSec>
                         <tr>
                             <td>
-                                <%if (org.oscarehr.common.IsPropertiesOn.isTicklerPlusEnable()) {%>
-                                <a
-                                        href="javascript: function myFunction() {return false; }"
-                                        onClick="popupPage(700,1000,'../Tickler.do?filter.demographic_no=<%=demographic_no%>');return false;">
-                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="global.tickler"/></a>
-                                <% } else { %>
                                 <a
                                         href="javascript: function myFunction() {return false; }"
                                         onClick="popupPage(700,1000,'<%= request.getContextPath() %>/tickler/ticklerMain.jsp?demoview=<%=demographic_no%>');return false;">
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="global.tickler"/></a>
-                                <% } %>
                             </td>
                         </tr>
                         <tr>

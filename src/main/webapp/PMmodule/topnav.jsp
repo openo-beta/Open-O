@@ -80,11 +80,6 @@
     String newticklerwarningwindow = null;
     String tklerProviderNo = null;
     String default_pmm = null;
-    if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.IsPropertiesOn.isTicklerPlusEnable()) {
-        newticklerwarningwindow = (String) session.getAttribute("newticklerwarningwindow");
-        tklerProviderNo = (String) session.getAttribute("tklerProviderNo");
-        default_pmm = (String) session.getAttribute("default_pmm");
-    }
 
 %>
 
@@ -177,9 +172,9 @@
                 </security:oscarSec>
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_tickler" rights="r">
                     <li>
-                        <a HREF="#" ONCLICK="popupPage2('${request.contextPath}/Tickler.do?filter.demographic_no=','
+                        <a HREF="#" ONCLICK="popupPage2('${request.contextPath}/tickler/ticklerMain.jsp','
                             <fmt:setBundle basename="oscarResources"/><fmt:message key="global.tickler"/>');return false;"
-                           TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.tickler"/>' +'+'>
+                           TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.tickler"/>'>
                         <span id="oscar_new_tickler">T<u>i</u>ckler</span></a>
                     </li>
                 </security:oscarSec>

@@ -325,15 +325,8 @@
                onclick="popupPatient(700,960,'${pageContext.servletContext.contextPath}/oscarMessenger/SendDemoMessage.do?demographic_no=','msg', '<%=docId%>')" <%=btnDisabled %>/>
 
         <!--input type="button" id="ticklerBtn_<%=docId%>" value="Tickler" onclick="handleDocSave('<%=docId%>','addTickler')"/-->
+        <input type="button" id="mainTickler_<%=docId%>" value="Tickler" onClick="popupPatientTickler(710, 1024,'${pageContext.servletContext.contextPath}/tickler/ticklerAdd.jsp?', 'Tickler','<%=docId%>')" <%=btnDisabled %>>
         <%
-            if (org.oscarehr.common.IsPropertiesOn.isTicklerPlusEnable()) {
-        %>
-        <input type="button" id="mainTickler_<%=docId%>" value="Tickler"
-               onClick="popupPatientTicklerPlus(710, 1024,'${pageContext.servletContext.contextPath}/Tickler.do?', 'Tickler','<%=docId%>')" <%=btnDisabled %>>
-        <% } else { %>
-                                                        <input type="button" id="mainTickler_<%=docId%>" value="Tickler" onClick="popupPatientTickler(710, 1024,'${pageContext.servletContext.contextPath}/tickler/ticklerAdd.jsp?', 'Tickler','<%=docId%>')" <%=btnDisabled %>>
-                                                        <% }
-
                                                             String refileBtnVisibility = "";
                                                             for (Hashtable ht : queues) {
                                                                 int id = (Integer) ht.get("id");
@@ -359,7 +352,7 @@
 
         <input type="button" id="refileDoc_<%=docId%>"
                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.noteBrowser.msgRefile"/>" onclick="refileDoc('<%=docId%>');" <%=refileBtnVisibility%> >
-        <select id="queueList_<%=docId%>" name="queueList">
+        <select id="queueList_<%=docId%>" name="queueList"
                 onchange="handleQueueListChange(this, document.getElementById('refileDoc_<%=docId%>'), '<%=docCurrentFiledQueue%>')">
             <%
                 for (Hashtable ht : queues) {

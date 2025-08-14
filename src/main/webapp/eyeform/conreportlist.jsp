@@ -108,8 +108,11 @@
             }
 
             function search_demographic() {
-                var url = '<c:out value="${ctx}"/>/ticklerPlus/demographicSearch2.jsp?form=consultationReportForm&elementName=dmname&elementId=cr.demographicNo';
-                var popup = window.open(url, 'demographic_search');
+                // ticklerPlus removed - demographic search functionality disabled
+                alert('Demographic search is currently unavailable');
+                return;
+                // var url = '<c:out value="${ctx}"/>/demographic/demographicsearchresults.jsp?form=consultationReportForm&elementName=dmname&elementId=cr.demographicNo';
+                // var popup = window.open(url, 'demographic_search');
                 demo_no_orig = document.consultationReportForm.elements['cr.demographicNo'].value;
                 check_demo_no = setInterval("if (demo_no_orig != document.consultationReportForm.elements['cr.demographicNo'].value) updTklrList()", 100);
 

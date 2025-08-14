@@ -238,9 +238,7 @@ function popupPage2(varpage) {
 
 <security:oscarSec roleName="<%=roleName$%>" objectName="_pref" rights="r">
 <li>  
-    <caisi:isModuleLoad moduleName="ticklerplus" reverse="true">
 	<a href=# onClick ="popupPage2('<%=request.getContextPath()%>/provider/providerpreference.jsp?provider_no=<%=curUser_no%>');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>' OnMouseOver="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>' ; return true"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.pref"/></a>
-    </caisi:isModuleLoad>
 </li>
 </security:oscarSec>
 
@@ -253,14 +251,8 @@ function popupPage2(varpage) {
  </caisi:isModuleLoad>
  <security:oscarSec roleName="<%=roleName$%>" objectName="_tickler" rights="r">
 <li>
-   <caisi:isModuleLoad moduleName="ticklerplus" reverse="true">
     <a HREF="#" ONCLICK ="popupPage2('<%=request.getContextPath()%>/tickler/ticklerMain.jsp','<fmt:setBundle basename="oscarResources"/><fmt:message key="global.tickler"/>');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.tickler"/>'>
 	<span id="oscar_new_tickler"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btntickler"/></span></a>
-   </caisi:isModuleLoad>
-   <caisi:isModuleLoad moduleName="ticklerplus">
-    <a HREF="#" ONCLICK ="popupPage2('<%=request.getContextPath()%>/Tickler.do?filter.assignee=<%=curUser_no%>&filter.demographic_no=&filter.demographic_webName=','<fmt:setBundle basename="oscarResources"/><fmt:message key="global.tickler"/>');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.tickler"/>'+'+'>
-	<span id="oscar_new_tickler"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btntickler"/></span></a>
-   </caisi:isModuleLoad>
 </li>
 </security:oscarSec>
 <oscar:oscarPropertiesCheck property="OSCAR_LEARNING" value="yes">

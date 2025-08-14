@@ -363,10 +363,6 @@
 <script src="<%= request.getContextPath() %>/web/record/details/detailsController.js"></script>
 <script src="<%= request.getContextPath() %>/web/record/tracker/trackerController.js"></script>
 
-<script src="<%= request.getContextPath() %>/web/tickler/ticklerController.js"></script>
-<script src="<%= request.getContextPath() %>/web/tickler/ticklerViewController.js"></script>
-<script src="<%= request.getContextPath() %>/web/tickler/ticklerAddController.js"></script>
-
 <script src="<%= request.getContextPath() %>/web/schedule/scheduleController.js"></script>
 <script src="<%= request.getContextPath() %>/web/admin/adminController.js"></script>
 <script src="<%= request.getContextPath() %>/web/billing/billingController.js"></script>
