@@ -184,9 +184,6 @@
             <caisirole:SecurityAccess accessName="medical encounter" accessType="access"
                                       providerNo="<%=bean.providerNo%>" demoNo="<%=bean.demographicNo%>"
                                       programId="<%=pgId%>">
-                <!--
-                <a href='<%=bsurl%>/oscarSurveillance/CheckSurveillance.do?demographicNo=<%=bean.demographicNo%>&proceed=<%=java.net.URLEncoder.encode(eURL)%>'>Oscar Encounter</a>
-                -->
             </caisirole:SecurityAccess>
             <!-- tr><td><a href="</td></tr -->
 
