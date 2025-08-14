@@ -1986,8 +1986,6 @@
             <result name="edit-redirect">page.pmm.client</result>
             <result name="search_programs">/PMmodule/ClientManager/ProgramSearch.jsp</result>
             <result name="survey">/PMmodule/Forms/SurveyExecute.do</result>
-            <result name="consent">page.pmm.erconsent</result>
-            <result name="er-redirect">/PMmodule/ErReceptionistReport.jsp</result>
             <result name="vaccine-report">/VaccineProviderReport.do</result>
             <result name="search">/PMmodule/ClientSearch2.do</result>
             <result name="links">/PMmodule/ClientManager/links.jsp</result>
@@ -2075,9 +2073,6 @@
             <result name="view">/survey/surveyTest/surveyView.jsp</result>
             <result name="execute">/survey/surveyTest/surveyExecute.jsp</result>
             <result name="manager">/SurveyManager.do?method=list</result>
-        </action>
-        <action name="ReceptionistReport" class="org.oscarehr.er.ReceptionistReport2Action" method="execute">
-            <result name="report">/er/receptionist_report.jsp</result>
         </action>
         <action name="CaseManagementView" class="org.oscarehr.casemgmt.web.CaseManagementView2Action" method="execute">
             <result name="view">/casemgmt/CaseManagementView.jsp</result>

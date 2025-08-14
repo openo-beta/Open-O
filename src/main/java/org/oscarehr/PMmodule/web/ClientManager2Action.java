@@ -77,7 +77,6 @@ import org.oscarehr.PMmodule.service.ProgramQueueManager;
 import org.oscarehr.PMmodule.service.ProviderManager;
 import org.oscarehr.PMmodule.service.SurveyManager;
 import org.oscarehr.PMmodule.web.formbean.ClientManagerFormBean;
-import org.oscarehr.PMmodule.web.formbean.ErConsentFormBean;
 import org.oscarehr.PMmodule.web.utils.UserRoleUtils;
 import org.oscarehr.PMmodule.wlmatch.MatchBO;
 import org.oscarehr.PMmodule.wlmatch.MatchingManager;
@@ -215,8 +214,6 @@ public class ClientManager2Action extends ActionSupport {
             return remove_joint_admission();
         } else if ("search_programs".equals(method)) {
             return search_programs();
-        } else if ("submit_erconsent".equals(method)) {
-            return submit_erconsent();
         } else if ("survey".equals(method)) {
             return survey();
         } else if ("update".equals(method)) {
@@ -422,22 +419,6 @@ public class ClientManager2Action extends ActionSupport {
                 throw new RuntimeException(e);
             }
             return null;
-        }
-
-        // for ERModule
-        if (roles.indexOf(UserRoleUtils.Roles.er_clerk.name()) != -1) {
-            Map<?, ?> consentMap = (Map<?, ?>) request.getSession().getAttribute("er_consent_map");
-
-            if (consentMap == null) {
-                return "consent";
-            }
-
-            if (consentMap.get(id) == null) {
-                return "consent";
-            }
-
-            request.getSession().setAttribute("er_consent_map", consentMap);
-            return "er-redirect";
         }
 
         Demographic demographic = clientManager.getClientByDemographicNo(id);
@@ -1286,84 +1267,6 @@ public class ClientManager2Action extends ActionSupport {
         }
     }
 
-    public String submit_erconsent() {
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-
-        ErConsentFormBean consentFormBean = this.getErconsent();
-        boolean success = true;
-
-        String demographicNo = request.getParameter("id");
-
-        // save consent to session
-        Map<String, ErConsentFormBean> consentMap = (Map) request.getSession().getAttribute("er_consent_map");
-
-        if (consentMap == null) {
-            consentMap = new HashMap<String, ErConsentFormBean>();
-        }
-        consentMap.put(demographicNo, consentFormBean);
-
-        request.getSession().setAttribute("er_consent_map", consentMap);
-
-        List<?> programDomain = providerManager.getProgramDomain(loggedInInfo.getLoggedInProviderNo());
-        if (programDomain.size() > 0) {
-            boolean doAdmit = true;
-            boolean doRefer = true;
-            ProgramProvider program = (ProgramProvider) programDomain.get(0);
-            // refer/admin client to service program associated with this user
-
-            ClientReferral referral = new ClientReferral();
-            referral.setFacilityId(loggedInInfo.getCurrentFacility().getId());
-            referral.setClientId(new Long(demographicNo));
-            referral.setNotes("ER Automated referral\nConsent Type: " + consentFormBean.getConsentType() + "\nReason: " + consentFormBean.getConsentReason());
-            referral.setProgramId(program.getProgramId().longValue());
-            referral.setProviderNo(loggedInInfo.getLoggedInProviderNo());
-            referral.setReferralDate(new Date());
-            referral.setStatus(ClientReferral.STATUS_ACTIVE);
-
-            Admission currentAdmission = admissionManager.getCurrentAdmission(String.valueOf(program.getProgramId()), Integer.valueOf(demographicNo));
-            if (currentAdmission != null) {
-                referral.setStatus(ClientReferral.STATUS_REJECTED);
-                referral.setCompletionNotes("Client currently admitted");
-                referral.setCompletionDate(new Date());
-                addActionMessage(getText("refer.already_admitted"));
-                doAdmit = false;
-            }
-            ProgramQueue queue = programQueueManager.getActiveProgramQueue(String.valueOf(program.getId()), demographicNo);
-            if (queue != null) {
-                referral.setStatus(ClientReferral.STATUS_REJECTED);
-                referral.setCompletionNotes("Client already in queue");
-                referral.setCompletionDate(new Date());
-                addActionMessage(getText("refer.already_referred"));
-                doRefer = false;
-            }
-            if (doRefer) {
-                if (referral.getFacilityId() == null) {
-                    referral.setFacilityId(loggedInInfo.getCurrentFacility().getId());
-                }
-                clientManager.saveClientReferral(referral);
-            }
-
-            if (doAdmit) {
-                String admissionNotes = "ER Automated admission\nConsent Type: " + consentFormBean.getConsentType() + "\nReason: " + consentFormBean.getConsentReason();
-                try {
-                    admissionManager.processAdmission(Integer.valueOf(demographicNo), loggedInInfo.getLoggedInProviderNo(), programManager.getProgram(String.valueOf(program.getProgramId())), null, admissionNotes);
-                } catch (Exception e) {
-                    MiscUtils.getLogger().error("Error", e);
-                    addActionMessage(getText("admit.error", e.getMessage()));
-                    success = false;
-                }
-            }
-        }
-
-        this.setErconsent(new ErConsentFormBean());
-        request.setAttribute("id", demographicNo);
-        if (success) {
-            return "er-redirect";
-        } else {
-            return "intake-search";
-        }
-    }
-
     public String survey() {
         CaisiFormInstance formInstance = this.getForm();
 
@@ -2186,7 +2089,6 @@ public class ClientManager2Action extends ActionSupport {
     private ProgramClientRestriction serviceRestriction;
     private Integer serviceRestrictionLength;
     private CaisiFormInstance form;
-    private ErConsentFormBean erconsent;
     private Demographic client;
     private Provider provider;
     private Bed[] unreservedBeds;
@@ -2254,14 +2156,6 @@ public class ClientManager2Action extends ActionSupport {
 
     public void setForm(CaisiFormInstance form) {
         this.form = form;
-    }
-
-    public ErConsentFormBean getErconsent() {
-        return erconsent;
-    }
-
-    public void setErconsent(ErConsentFormBean erconsent) {
-        this.erconsent = erconsent;
     }
 
     public Demographic getClient() {
