@@ -2159,12 +2159,6 @@
                                                         } // end if not is week view %>
 
                                                         <%= (bShortcutIntakeForm) ? "| <a href='#' onClick='popupPage(700, 1024, \"formIntake.jsp?demographic_no=" + demographic_no + "\")' title='Intake Form'>In</a>" : "" %>
-                                                        <!--  eyeform open link -->
-                                                        <% if (oscar.OscarProperties.getInstance().isPropertyActive("new_eyeform_enabled") && !isWeekView) { %>
-                                                        &#124; <a href="#"
-                                                                  onClick='popupPage(800, 1280, "../eyeform/eyeform.jsp?demographic_no=<%=demographic_no %>&appointment_no=<%=appointment.getId()%>");return false;'
-                                                                  title="EyeForm">EF</a>
-                                                        <% } %>
 
                                                         <!-- billing code block -->
                                                         <% if (!isWeekView) { %>

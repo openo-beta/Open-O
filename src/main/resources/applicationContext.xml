@@ -127,7 +127,6 @@
 	<bean id="icd9Dao" class="org.oscarehr.common.dao.Icd9DaoImpl" autowire="byName" />
 	<bean id="defaultIssueDao" class="org.caisi.dao.DefaultIssueDaoImpl" autowire="byName" />
 	
-    <bean id="MacroDAO" class="org.oscarehr.eyeform.dao.MacroDaoImpl" autowire="byName" />
 	<bean id="rourke2009Dao" class="org.oscarehr.common.dao.forms.Rourke2009DAO" autowire="byName" />
 	<bean id="ocanSubmissionLogDao" class="org.oscarehr.PMmodule.dao.OcanSubmissionLogDaoImpl" autowire="byName" />
 
@@ -291,8 +290,6 @@
 	<bean id="exportQueryHandler" class="org.oscarehr.dashboard.handler.ExportQueryHandler" autowire="byName" />
 		
 	<bean id="extPrintMeasurements" class="org.oscarehr.casemgmt.service.MeasurementPrint" autowire="byName"/>
-	<bean id="extPrintOcularProcedures" class="org.oscarehr.eyeform.web.OcularProcPrint" autowire="byName"/>
-	<bean id="extPrintSpecsHistory" class="org.oscarehr.eyeform.web.SpecsHistoryPrint" autowire="byName"/>
 
 	<!-- Encounter Form DAO -->
 	<bean id="Rourke2009DAO" class="org.oscarehr.common.dao.forms.Rourke2009DAO" autowire="byName"/>

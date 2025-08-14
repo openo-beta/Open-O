@@ -1162,7 +1162,6 @@
 
                         <security:oscarSec roleName="<%=roleName$%>" objectName="_eChart"
                                            rights="r" reverse="<%=false%>">
-                            <special:SpecialEncounterTag moduleName="eyeform" reverse="true">
                                 <tr>
                                     <td>
                                         <a href="javascript: function myFunction() {return false; }"
@@ -1204,17 +1203,6 @@
                                         </div>
                                     </td>
                                 </tr>
-                            </special:SpecialEncounterTag>
-                            <special:SpecialEncounterTag moduleName="eyeform">
-                                <tr>
-                                    <td>
-                                        <a href="javascript: function myFunction() {return false; }"
-                                           onClick="popupEChart(710, 1024,encURL);return false;"
-                                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnEChart"/>">
-                                            <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnEChart"/></a>
-                                    </td>
-                                </tr>
-                            </special:SpecialEncounterTag>
                             <tr>
                                 <td><a
                                         href="javascript: function myFunction() {return false; }"
@@ -1303,20 +1291,6 @@
                                         onClick="popupPage(710,970,'<%= request.getContextPath() %>/documentManager/documentReport.jsp?function=demographic&doctype=lab&functionid=<%=demographic.getDemographicNo()%>&curUser=<%=curProvider_no%>&mode=add')"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnAddDocument"/></a></td>
                             </tr>
                         </special:SpecialPlugin>
-                        <special:SpecialEncounterTag moduleName="eyeform">
-                            <% String iviewTag = oscarProps.getProperty("iviewTag");
-
-                                if (iviewTag != null && !"".equalsIgnoreCase(iviewTag.trim())) {
-                            %>
-                            <tr>
-                                <td>
-                                    <a href='<%=request.getContextPath()%>/mod/specialencounterComp/iviewServlet?method=iview&demoNo=<%=demographic.getDemographicNo()%>&<%=System.currentTimeMillis() %>'>
-                                        <%=iviewTag %>
-                                    </a>
-                                </td>
-                            </tr>
-                            <%} %>
-                        </special:SpecialEncounterTag>
                         <tr>
                             <td><a
                                     href="<%= request.getContextPath() %>/eform/efmpatientformlist.jsp?demographic_no=<%=demographic_no%>&apptProvider=<%=apptProvider%>&appointment=<%=appointment%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnEForm"/></a></td>

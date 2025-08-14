@@ -44,7 +44,6 @@ import org.oscarehr.common.dao.CaseManagementIssueNotesDao;
 import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.dao.GroupNoteDao;
 import org.oscarehr.common.model.BillingONCHeader1;
-import org.oscarehr.eyeform.EyeformInit;
 import org.oscarehr.managers.TicklerManager;
 import org.oscarehr.provider.web.CppPreferencesUIBean;
 import org.oscarehr.util.LoggedInInfo;
@@ -74,10 +73,6 @@ public class CaseManagementViewAction {
     private NoteService noteService = SpringUtils.getBean(NoteService.class);
     private TicklerManager ticklerManager = SpringUtils.getBean(TicklerManager.class);
 
-    static {
-        //temporary..need something generic;
-        EyeformInit.init();
-    }
 
     public static class IssueDisplay {
         public boolean writeAccess = true;

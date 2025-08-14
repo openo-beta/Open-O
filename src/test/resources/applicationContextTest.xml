@@ -93,7 +93,6 @@
 	<bean id="Icd9DAO" class="org.oscarehr.common.dao.Icd9Dao" autowire="byName" />
 	<bean id="defaultIssueDao" class="org.caisi.dao.DefaultIssueDao" autowire="byName" />
 	
-    <bean id="MacroDAO" class="org.oscarehr.eyeform.dao.MacroDao" autowire="byName" />
 	<!-- <bean id="rourke2009Dao" class="oscar.form.dao.Rourke2009DAO" autowire="byName" /> -->
 	<!-- <bean id="Rourke2017Dao" class="oscar.form.dao.Rourke2017Dao" autowire="byName"/> -->
     <!-- <bean id="FormBooleanValueDao" class="oscar.form.dao.FormBooleanValueDao" autowire="byName"/> -->
