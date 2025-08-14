@@ -1125,6 +1125,13 @@
             <artifactId>csrfguard</artifactId>
             <version>3.1.0</version>
         </dependency>
+        
+        <!-- OWASP ESAPI for ClickjackFilter -->
+        <dependency>
+            <groupId>org.owasp.esapi</groupId>
+            <artifactId>esapi</artifactId>
+            <version>2.5.2.0</version>
+        </dependency>
 
         <!-- can be found in the local_repo folder -->
         <dependency>
