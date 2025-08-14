@@ -1186,8 +1186,7 @@ Ontario, Canada
                                 <textarea id="reason" name="reason" class="form-control" tabindex="2" rows="2"
                                           style="resize:none;"
                                           placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formReason"/>" cols="18"
-                                          maxlength="80"><%=bFirstDisp ? "" : request.getParameter("reason").equals("") ? "" : Encode.forHtmlContent(request.getParameter("reason"))%></textarea>
-
+                                          maxlength="80"><%=bFirstDisp ? "" : "".equals(request.getParameter("reason")) ? "" : Encode.forHtmlContent(request.getParameter("reason"))%></textarea>
                             </td>
                         </tr>
                         <%
