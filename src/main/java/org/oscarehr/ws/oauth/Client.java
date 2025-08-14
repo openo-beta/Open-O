@@ -15,6 +15,7 @@ public class Client {
     private String name;
     private String uri;
     private String loginName; // optional, used for storing providerNo
+    private String callbackUri;
 
     public Client(String consumerKey, String secret, String name, String uri) {
         this.consumerKey = consumerKey;
@@ -46,4 +47,13 @@ public class Client {
     public void setLoginName(String loginName) {
         this.loginName = loginName;
     }
+
+    public String getCallbackUri() { 
+        return callbackUri; 
+    }
+
+    public void setCallbackUri(String v) { 
+        this.callbackUri = v; 
+    }
+
 }

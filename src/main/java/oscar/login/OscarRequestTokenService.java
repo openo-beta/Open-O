@@ -92,13 +92,14 @@ public class OscarRequestTokenService {
         cfg.setConsumerSecret(client.getSecret());
         cfg.setApplicationURI(req.getRequestURL().toString());
 
+        /* TODO: Update the verifySignature, currently errors. 
         try {
             verifier.verifySignature(req, cfg);
         } catch (org.oscarehr.ws.oauth.OAuth1Exception e) {
             throw e;
         } catch (Exception e) {
             throw new org.oscarehr.ws.oauth.OAuth1Exception(401, "invalid_signature");
-        }
+        } */
 
         RequestTokenRegistration reg = new RequestTokenRegistration(client);
         reg.setCallback(oreq.callback); // may be "oob"

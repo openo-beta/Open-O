@@ -40,15 +40,20 @@ public class HmacSha1SignatureVerifier implements OAuth1SignatureVerifier {
             throw new OAuth1Exception(400, "unsupported_signature_method");
         }
 
-        // For access-token exchange, we must use the **request token secret**
-        String tokenSecret = provider.getRequestTokenSecret(r.token);
-        if (tokenSecret == null) {
-            throw new OAuth1Exception(401, "invalid_request_token");
+        // For /oauth/initiate there is NO oauth_token -> tokenSecret must be ""
+        String tokenSecret = "";
+        if (r.token != null && !r.token.isEmpty()) {
+            // Only needed for access-token exchange or signed resource calls
+            tokenSecret = provider.getRequestTokenSecret(r.token);
+            if (tokenSecret == null) {
+                throw new OAuth1Exception(401, "invalid_request_token");
+            }
         }
 
         verifySignature(r, cfg.getConsumerSecret(), tokenSecret);
-        return r.token; // return the token we validated
+        return r.token; // will be null for initiate, which is fine
     }
+
 
     // Interface method
     @Override
