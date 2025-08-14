@@ -33,8 +33,7 @@ import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.apache.cxf.phase.Phase;
-import org.oscarehr.sharingcenter.dao.ClinicInfoDao;
-import org.oscarehr.sharingcenter.model.ClinicInfoDataObject;
+import oscar.OscarProperties;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 import org.w3c.dom.Document;
@@ -75,9 +74,10 @@ public class BornSOAPHeaderInterceptor extends AbstractPhaseInterceptor<Message>
             }
 
             Element endpointID = doc.createElementNS("http://ehealthontario.on.ca/xmlns/common", "endpointID");
-            ClinicInfoDao clinicInfoDao = SpringUtils.getBean(ClinicInfoDao.class);
-            ClinicInfoDataObject clinicInfo = clinicInfoDao.getClinic();
-            endpointID.setTextContent(String.format("urn:oid:%s", clinicInfo.getSourceId())); // 'XDS Source ID' must be set in Administration > Clinic Info
+            // ClinicInfo functionality removed with Sharing Center
+            // Using default source ID from properties
+            String sourceId = OscarProperties.getInstance().getProperty("born_xds_source_id", "2.16.840.1.113883.3.239.23.100.1");
+            endpointID.setTextContent(String.format("urn:oid:%s", sourceId));
             endpointID.setPrefix("eho");
 
             // get existing reference parameters

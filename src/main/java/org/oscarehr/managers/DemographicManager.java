@@ -141,13 +141,6 @@ public interface DemographicManager {
 
     public List<DemographicMerged> getMergedDemographics(LoggedInInfo loggedInInfo, Integer parentId);
 
-    public PHRVerification getLatestPhrVerificationByDemographicId(LoggedInInfo loggedInInfo, Integer demographicId);
-
-    public boolean getPhrVerificationLevelByDemographicId(LoggedInInfo loggedInInfo, Integer demographicId);
-
-    public boolean isPhrVerifiedToSendMessages(LoggedInInfo loggedInInfo, Integer demographicId);
-
-    public boolean isPhrVerifiedToSendMedicalData(LoggedInInfo loggedInInfo, Integer demographicId);
 
     public String getDemographicWorkPhoneAndExtension(LoggedInInfo loggedInInfo, Integer demographicNo);
 

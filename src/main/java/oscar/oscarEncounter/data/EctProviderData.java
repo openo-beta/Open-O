@@ -31,7 +31,6 @@ import org.oscarehr.util.SpringUtils;
 
 import oscar.SxmlMisc;
 import oscar.oscarClinic.ClinicData;
-import oscar.oscarProvider.data.ProviderMyOscarIdData;
 
 public class EctProviderData {
     public class Provider {
@@ -141,7 +140,7 @@ public class EctProviderData {
             String clinicPhone = clinic.getClinicPhone();
             String clinicFax = clinic.getClinicFax();
 
-            String myOscarLoginId = ProviderMyOscarIdData.getMyOscarId(providerNo);
+            String myOscarLoginId = null;
 
             provider = new Provider(providerNo, surname, firstName, clinicName, clinicAddress, clinicCity, clinicPostal, clinicPhone, clinicFax, myOscarLoginId, selfLearningPasswd);
         }

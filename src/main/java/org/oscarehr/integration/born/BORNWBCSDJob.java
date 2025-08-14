@@ -40,10 +40,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.helpers.FileUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.xmlbeans.XmlOptions;
-import org.marc.shic.cda.datatypes.CDAStandard;
-import org.marc.shic.cda.utils.CdaUtils;
-import org.marc.shic.core.CodeValue;
-import org.marc.shic.core.DocumentMetaData;
 import org.oscarehr.common.dao.ConsultationRequestDao;
 import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.dao.DemographicExtDao;
@@ -59,15 +55,6 @@ import org.oscarehr.common.model.Security;
 import org.oscarehr.integration.born.BornCDADocument.BORNCDADocumentType;
 import org.oscarehr.managers.DemographicManager;
 import org.oscarehr.managers.ProviderManager2;
-import org.oscarehr.sharingcenter.SharingCenterUtil;
-import org.oscarehr.sharingcenter.dao.AffinityDomainDao;
-import org.oscarehr.sharingcenter.dao.ClinicInfoDao;
-import org.oscarehr.sharingcenter.dao.PolicyDefinitionDao;
-import org.oscarehr.sharingcenter.dao.SiteMappingDao;
-import org.oscarehr.sharingcenter.model.AffinityDomainDataObject;
-import org.oscarehr.sharingcenter.model.ClinicInfoDataObject;
-import org.oscarehr.sharingcenter.model.PolicyDefinitionDataObject;
-import org.oscarehr.sharingcenter.model.SiteMapping;
 import org.oscarehr.util.DbConnectionFilter;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
@@ -210,11 +197,11 @@ public class BORNWBCSDJob implements OscarRunnable {
 
             Calendar cal = Calendar.getInstance();
 
-            BornCDADocument bornCDA = new BornCDADocument(CDAStandard.CCD, BORNCDADocumentType.CSD, demographic, authorList, props, cal, String.valueOf(demographicNo));
+            BornCDADocument bornCDA = new BornCDADocument(BORNCDADocumentType.CSD, demographic, authorList, props, cal, String.valueOf(demographicNo));
             byte[] wbcsdXml = generateWBCSDXml(xml, demographicNo);
             if (wbcsdXml != null) {
                 bornCDA.setNonXmlBody(wbcsdXml, "text/plain");
-                String cdaForLogging = CdaUtils.toXmlString(bornCDA.getDocument(), true);
+                String cdaForLogging = bornCDA.toXmlString(true);
 
                 if (logger.isDebugEnabled()) {
                     logger.info("WBCSD CDA Record for Patient ID:" + demographicNo + "\n" + cdaForLogging + "\n");
@@ -236,78 +223,9 @@ public class BORNWBCSDJob implements OscarRunnable {
     }
 
     public boolean createXds(Integer demographicNo, String cdaXml) {
-        ClinicInfoDao clinicInfoDao = SpringUtils.getBean(ClinicInfoDao.class);
-        ClinicInfoDataObject clinicData = clinicInfoDao.getClinic();
-        PolicyDefinitionDao policyDefinitionDao = SpringUtils.getBean(PolicyDefinitionDao.class);
-        SiteMappingDao siteMappingDao = SpringUtils.getBean(SiteMappingDao.class);
-
-        AffinityDomainDao affDao = SpringUtils.getBean(AffinityDomainDao.class);
-        AffinityDomainDataObject network = null;
-
-        for (AffinityDomainDataObject obj : affDao.getAllAffinityDomains()) {
-            if ("BORN".equals(obj.getName())) {
-                network = obj;
-            }
-        }
-        if (network == null) {
-            logger.warn("Cannot send via XDS since the BORN affinity domain not found");
-            return false;
-        }
-
-        DocumentMetaData document = new DocumentMetaData();
-        document.addExtendedAttribute("legalAuthenticator", String.format("%s^%s^%s^^%s^^^^&%s&ISO", provider.getProviderNo(), provider.getLastName(), provider.getFirstName(), provider.getTitle(), clinicData.getUniversalId()));
-        document.addExtendedAttribute("authorInstitution", clinicData.getName());
-
-        document.setContent(cdaXml.getBytes());
-
-        document.setMimeType("text/xml");
-        document.setTitle("title");
-        document.setCreationTime(Calendar.getInstance());
-
-        //document.setClassCode(eDocMapping.getClassCode().generateCodeValue());
-        //document.setType(eDocMapping.getTypeCode().generateCodeValue());
-        //document.setFormat(eDocMapping.getFormatCode().generateCodeValue());
-
-        CodeValue cv = new CodeValue("code", "codesystem", "displayName", "codeSystemName");
-
-        document.setContentType(cv);
-
-        Integer[] policies = {1};
-
-        List<Integer> policyList = Arrays.asList(policies);
-        for (Integer policyId : policyList) {
-            PolicyDefinitionDataObject policy = policyDefinitionDao.getPolicyDefinition(policyId);
-            if (policy != null) {
-                document.addConfidentiality(new CodeValue(policy.getCode(), policy.getCodeSystem(), policy.getDisplayName()));
-            }
-        }
-
-        SiteMapping siteMapping = siteMappingDao.findSiteMapping(network.getId());
-        if (siteMapping != null) {
-            if (siteMapping.getFacilityTypeCode() != null) {
-                document.setFacilityType(siteMapping.getFacilityTypeCode().generateCodeValue());
-            }
-
-            if (siteMapping.getPracticeSettingCode() != null) {
-                document.setPracticeSetting(siteMapping.getPracticeSettingCode().generateCodeValue());
-            }
-        }
-
-        document.setSourceId(clinicData.getOid());
-
-        document.setServiceTimeStart(Calendar.getInstance());
-        document.setServiceTimeEnd(Calendar.getInstance());
-
-        document.setAuthor(SharingCenterUtil.createAuthor(Integer.parseInt(provider.getProviderNo())));
-
-        document.setPatient(SharingCenterUtil.createPatientDemographic(demographicNo));
-
-        logger.info(document.toString());
-        boolean submissionResult = SharingCenterUtil.submitSingleDocument(document, network);
-
-        logger.info("XDS submissionResult = " + submissionResult);
-
-        return submissionResult;
+        // XDS submission functionality has been removed with Sharing Center
+        logger.warn("XDS submission to BORN is no longer available - Sharing Center has been removed");
+        return false;
     }
 
     public void setLoggedInProvider(Provider provider) {
@@ -320,17 +238,18 @@ public class BORNWBCSDJob implements OscarRunnable {
 
     private BornHialProperties getBornHialProperties() {
         BornHialProperties props = new BornHialProperties();
-        ClinicInfoDao clinicInfoDao = SpringUtils.getBean(ClinicInfoDao.class);
-        ClinicInfoDataObject clinicInfo = clinicInfoDao.getClinic();
+        // ClinicInfo functionality removed with Sharing Center
+        // Using properties instead
 
-        props.setIdCodingSystem("2.1.8.1.1.4.4.3.5"); // clinicInfo.getOid() ?
+        props.setIdCodingSystem("2.1.8.1.1.4.4.3.5");
         props.setIdValue("abc-1234");
 
-        props.setSetIdCodingSystem("2.1.8.1.1.4.4.3.5"); // clinicInfo.getOid() ?
+        props.setSetIdCodingSystem("2.1.8.1.1.4.4.3.5");
         props.setSetIdValue("atn121");
 
-        props.setOrganization(clinicInfo.getOid()); // Organization OID in the Administration > Clinic Info page
-        props.setOrganizationName(clinicInfo.getFacilityName()); // Clinic Name in the Administration > Clinic Info page
+        // Use properties instead of ClinicInfo
+        props.setOrganization(OscarProperties.getInstance().getProperty("born_organization_oid", "2.16.840.1.113883.3.239.23.100.1"));
+        props.setOrganizationName(OscarProperties.getInstance().getProperty("born_organization_name", "OSCAR Clinic"));
         return props;
     }
 

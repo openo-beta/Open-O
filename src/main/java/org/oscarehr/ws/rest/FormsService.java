@@ -80,7 +80,6 @@ import org.springframework.stereotype.Component;
 
 import oscar.eform.EFormExportZip;
 import oscar.oscarEncounter.data.EctFormData;
-import oscar.oscarProvider.data.ProviderMyOscarIdData;
 
 
 /**
@@ -335,13 +334,6 @@ public class FormsService extends AbstractServiceImpl {
         int idCounter = 0;
 
         //formMenu.add(idCounter++, bundle.getString("global.saveAsPDF"), "PDF", "URL");
-        if (ProviderMyOscarIdData.idIsSet(getLoggedInInfo().getLoggedInProviderNo())) {
-            DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
-            Demographic demographic = demographicDao.getDemographic("" + demographicNo);
-            if (demographic.getMyOscarUserName() != null && !demographic.getMyOscarUserName().equals("")) {        /*register link -myoscar (strikethrough) links to create account*/
-                formMenu.add(idCounter++, bundle.getString("global.send2PHR"), "send2PHR", "url");
-            }
-        }
         return formMenu;
     }
 

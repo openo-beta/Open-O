@@ -269,6 +269,31 @@
             <artifactId>hapi-structures-v231</artifactId>
             <version>1.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi</groupId>
+            <artifactId>hapi-structures-v21</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi</groupId>
+            <artifactId>hapi-structures-v22</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi</groupId>
+            <artifactId>hapi-structures-v23</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi</groupId>
+            <artifactId>hapi-structures-v24</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi</groupId>
+            <artifactId>hapi-structures-v26</artifactId>
+            <version>1.0.1</version>
+        </dependency>
 
         <!-- spring -->
         <dependency>
@@ -518,22 +543,6 @@
         </dependency>
 
 
-        <!-- indivo: can be found in the local_repo folder -->
-        <dependency>
-            <groupId>org.indivo</groupId>
-            <artifactId>indivo-core</artifactId>
-            <version>3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.indivo</groupId>
-            <artifactId>indivo-model-core</artifactId>
-            <version>3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.indivo</groupId>
-            <artifactId>indivo-model-phr-jackson</artifactId>
-            <version>3.1-SNAPSHOT</version>
-        </dependency>
 
         <!-- jcharts: can be found in the local_repo folder -->
         <dependency>
@@ -914,6 +923,11 @@
         <!-- velocity -->
         <dependency>
             <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-engine-core</artifactId>
             <version>2.4.1</version>
             <exclusions>
@@ -1044,106 +1058,7 @@
             <version>8.3.3</version>
         </dependency>
 
-        <!-- can be found in the local_repo folder -->
-        <dependency>
-            <groupId>org.oscarehr</groupId>
-            <artifactId>myoscar_client_utils</artifactId>
-            <version>2013.07.22.TLS</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.oscarehr</groupId>
-                    <artifactId>util</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.mail</groupId>
-                    <artifactId>mail</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.commons</groupId>
-                    <artifactId>commons-email</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
-        <!-- can be found in the local_repo folder -->
-        <dependency>
-            <groupId>org.oscarehr.myoscar_server</groupId>
-            <artifactId>myoscar_server_client_stubs2</artifactId>
-            <version>2014.10.24</version>
-        </dependency>
-
-        <!-- MARC-HI - Shared Health Integration Components (SHIC) Library -->
-        <!-- can be found in the local_repo folder -->
-        <dependency>
-            <groupId>org.marc.shic</groupId>
-            <artifactId>shic-core</artifactId>
-            <version>1.0.8</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.bouncycastle</groupId>
-                    <artifactId>bcprov-jdk15</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.cxf</groupId>
-                    <artifactId>apache-cxf</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.marc.shic</groupId>
-            <artifactId>shic-xds</artifactId>
-            <version>1.0.8</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>jcl-over-slf4j</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>jul-to-slf4j</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-simple</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>joda-time</groupId>
-                    <artifactId>joda-time</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.codehaus.woodstox</groupId>
-                    <artifactId>woodstox-core-asl</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.marc.shic</groupId>
-            <artifactId>shic-pix</artifactId>
-            <version>1.0.8</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.mail</groupId>
-                    <artifactId>mail</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.marc.shic</groupId>
-            <artifactId>shic-cda</artifactId>
-            <version>1.0.8</version>
-        </dependency>
 
         <!-- Apache Tika - MimeType handling for downloaded files (ie. XDS) -->
         <dependency>

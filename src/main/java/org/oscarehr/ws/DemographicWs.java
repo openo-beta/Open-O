@@ -40,14 +40,12 @@ import org.oscarehr.common.Gender;
 import org.oscarehr.common.model.Consent;
 import org.oscarehr.common.model.ConsentType;
 import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.PHRVerification;
 import org.oscarehr.managers.DemographicManager;
 import org.oscarehr.managers.PatientConsentManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.ws.transfer_objects.DemographicTransfer;
 import org.oscarehr.ws.transfer_objects.DemographicTransfer2;
-import org.oscarehr.ws.transfer_objects.PhrVerificationTransfer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -83,26 +81,7 @@ public class DemographicWs extends AbstractWs {
         return (DemographicTransfer.toTransfers(demographics));
     }
 
-    public PhrVerificationTransfer getLatestPhrVerificationByDemographic(Integer demographicId) {
-        PHRVerification phrVerification = demographicManager.getLatestPhrVerificationByDemographicId(getLoggedInInfo(), demographicId);
-        return (PhrVerificationTransfer.toTransfer(phrVerification));
-    }
 
-    /**
-     * This method should only return true if the demographic passed in is "phr verified" to a sufficient level to allow a provider to send this phr account messages.
-     */
-    public boolean isPhrVerifiedToSendMessages(Integer demographicId) {
-        boolean result = demographicManager.isPhrVerifiedToSendMessages(getLoggedInInfo(), demographicId);
-        return (result);
-    }
-
-    /**
-     * This method should only return true if the demographic passed in is "phr verified" to a sufficient level to allow a provider to send this phr account medicalData.
-     */
-    public boolean isPhrVerifiedToSendMedicalData(Integer demographicId) {
-        boolean result = demographicManager.isPhrVerifiedToSendMedicalData(getLoggedInInfo(), demographicId);
-        return (result);
-    }
 
     /**
      * @see DemographicManager.searchDemographicsByAttributes for parameter details

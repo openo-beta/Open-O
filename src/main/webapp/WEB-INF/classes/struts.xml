@@ -1738,7 +1738,6 @@
         </action>
         <action name="demographic/DemographicExport" class="oscar.oscarDemographic.pageUtil.DemographicExportAction42Action">
             <result name="fail">/demographic/demographicExport.jsp</result>
-            <result name="sendToAffinityDomain">/sharingcenter/documents/shareDocumentsAction.jsp</result>
         </action>
         <action name="demographic/cihiExportOMD4" class="oscar.oscarDemographic.pageUtil.CihiExport2Action" method="execute">
             <result name="display">/demographic/cihiExport.jsp</result>
@@ -2575,17 +2574,6 @@
             <interceptor-ref name="fileUpload" />
             <interceptor-ref name="defaultStack"/>
         </action>
-        <action name="sharingcenter/affinitydomain/AffinityDomain" class="org.oscarehr.sharingcenter.actions.AffinityDomainServlet2Action"/>
-        <action name="sharingcenter/affinitydomain/AffinityDomainParser" class="org.oscarehr.sharingcenter.actions.AffinityDomainParseServlet2Action"/>
-        <action name="sharingcenter/affinitydomain/ClinicInfo" class="org.oscarehr.sharingcenter.actions.ClinicInfoServlet2Action"/>
-        <action name="sharingcenter/security/Infrastructure" class="org.oscarehr.sharingcenter.actions.SecurityInfrastructureServlet2Action"/>
-        <action name="sharingcenter/networks/ShareDomain" class="org.oscarehr.sharingcenter.actions.ShareDomainServlet2Action"/>
-        <action name="sharingcenter/documents/DocumentExport" class="org.oscarehr.sharingcenter.actions.DocumentExportServlet2Action"/>
-        <action name="sharingcenter/documents/SharedDocuments" class="org.oscarehr.sharingcenter.actions.SharedDocumentsServlet2Action"/>
-        <action name="sharingcenter/documents/DemographicExport" class="org.oscarehr.sharingcenter.actions.DemographicExportServlet2Action"/>
-        <action name="sharingcenter/affinitydomain/DomainMappings" class="org.oscarehr.sharingcenter.actions.MappingServlet2Action"/>
-        <action name="sharingcenter/affinitydomain/ConsentChecker" class="org.oscarehr.sharingcenter.actions.ConsentCheckerServlet2Action"/>
-        <action name="sharingcenter/documents/DocumentPreview" class="org.oscarehr.sharingcenter.actions.DocumentPreviewServlet2Action"/>
         <action name="mcedt/mcedt" class="org.oscarehr.integration.mcedt.Resource2Action">
             <result name="success">/mcedt/index.jsp</result>
         </action>

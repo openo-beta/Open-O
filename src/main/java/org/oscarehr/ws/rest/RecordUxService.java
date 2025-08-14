@@ -72,7 +72,6 @@ import org.springframework.stereotype.Component;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import oscar.oscarProvider.data.ProviderMyOscarIdData;
 
 
 @Path("/recordUX/")
@@ -149,19 +148,6 @@ public class RecordUxService extends AbstractServiceImpl {
             menulist.add(new MenuItemTo1(idCounter++, "Rx", "../oscarRx/choosePatient.do?demographicNo=" + demographicNo));
         }
 
-        //PHR
-        if (ProviderMyOscarIdData.idIsSet(loggedInInfo.getLoggedInProviderNo())) {
-            DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
-            Demographic demographic = demographicDao.getDemographic("" + demographicNo);
-
-            if (demographic.getMyOscarUserName() == null || demographic.getMyOscarUserName().equals("")) {        /*register link -myoscar (strikethrough) links to create account*/
-                menulist.add(new MenuItemTo1(idCounter++, "PHR", "../phr/indivo/RegisterIndivo.jsp?demographicNo=" + demographicNo));
-            } else {
-                menulist.add(MenuItemTo1.generateStateMenuItem(idCounter++, "PHR", "record.phr"));
-
-            }
-
-        }
 
         menulist.add(MenuItemTo1.generateStateMenuItem(idCounter++, "Rx", "record.rx"));
 
