@@ -26,7 +26,6 @@
 			<list>
 				<value>classpath:/org/caisi/model</value>
 				<value>classpath:/org/oscarehr/PMmodule/model</value>
-				<value>classpath:/org/oscarehr/survey/model</value>
 				<value>classpath:/org/oscarehr/casemgmt/model</value>
 				<value>classpath:/org/oscarehr/common/model</value>
 				<value>classpath:/com/quatro/model</value>
@@ -71,7 +70,6 @@
 				<value>classpath:/org/oscarehr/common/model</value>
 				<value>classpath:/org/caisi/model</value>
 				<value>classpath:/org/oscarehr/PMmodule/model</value>
-				<value>classpath:/org/oscarehr/survey/model</value>
 				<value>classpath:/org/oscarehr/casemgmt/model</value>
 				<value>classpath:/com/quatro/model</value>
 				<value>classpath:/oscar/appt/status/model</value>

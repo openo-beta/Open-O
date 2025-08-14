@@ -108,16 +108,6 @@
 
         // -->
 
-        function openSurvey(ctl) {
-            var formId = ctl.options[ctl.selectedIndex].value;
-            if (formId == 0) {
-                return;
-            }
-            var id = document.getElementById('formInstanceId').value;
-            var url = '<%=request.getContextPath() %>/PMmodule/Forms/SurveyExecute.do?method=survey&type=provider&formId=' + formId + '&formInstanceId=' + id + '&clientId=' + 10;
-            ctl.selectedIndex = 0;
-            popupPage(url);
-        }
 
         function popupPage(varpage) {
             var page = "" + varpage;

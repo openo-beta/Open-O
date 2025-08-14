@@ -25,8 +25,6 @@
 --%>
 <!DOCTYPE html>
 <%@ page import="org.oscarehr.common.dao.MyGroupAccessRestrictionDao" %>
-<%@ page import="org.oscarehr.common.dao.DemographicStudyDao" %>
-<%@ page import="org.oscarehr.common.dao.StudyDao" %>
 <%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
@@ -126,8 +124,6 @@
 <%!
     SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
     TicklerManager ticklerManager = SpringUtils.getBean(TicklerManager.class);
-    DemographicStudyDao demographicStudyDao = SpringUtils.getBean(DemographicStudyDao.class);
-    StudyDao studyDao = SpringUtils.getBean(StudyDao.class);
     UserPropertyDAO userPropertyDao = SpringUtils.getBean(UserPropertyDAO.class);
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
     SiteDao siteDao = SpringUtils.getBean(SiteDao.class);
@@ -336,8 +332,6 @@
     String mob = "";
     String dob = "";
     String demBday = "";
-    StringBuffer study_no = null, study_link = null, studyDescription = null;
-    String studySymbol = "\u03A3", studyColor = "red";
 
     // List of statuses that are excluded from the schedule appointment count for each provider
     List<String> noCountStatus = Arrays.asList("C", "CS", "CV", "N", "NS", "NV");
@@ -1848,27 +1842,6 @@
                                                                     roster = "";
                                                                 }
                                                               }
-                                                              study_no = new StringBuffer("");
-                                                              study_link = new StringBuffer("");
-                                                              studyDescription = new StringBuffer("");
-
-                                                              int numStudy = 0;
-
-                                                              for(DemographicStudy ds:demographicStudyDao.findByDemographicNo(demographic_no)) {
-                                                                  Study study = studyDao.find(ds.getId().getStudyNo());
-                                                                  if(study != null && study.getCurrent1() == 1) {
-                                                                      numStudy++;
-                                                                      if(numStudy == 1) {
-                                                                          study_no = new StringBuffer(String.valueOf(study.getId()));
-                                                                                  study_link = new StringBuffer(String.valueOf(study.getStudyLink()));
-                                                                                  studyDescription = new StringBuffer(String.valueOf(study.getDescription()));
-                                                                      } else {
-                                                                          study_no = new StringBuffer("0");
-                                                                                  study_link = new StringBuffer("formstudy.jsp");
-                                                                          studyDescription = new StringBuffer("Form Studies");
-                                                                      }
-                                                                  }
-                                                              }
 
                                                                       String reason = String.valueOf(appointment.getReason()).trim();
                                                                       String notes = String.valueOf(appointment.getNotes()).trim();
@@ -2043,12 +2016,6 @@
 
                                                         <!-- doctor code block 1 -->
                                                         <c:if test="${doctorLinkRights}">
-
-                                                            <% if ("".compareTo(study_no.toString()) != 0) {%>
-                                                            <a href="#"
-                                                               onClick="popupPage(700,1024, '../form/study/forwardstudyname.jsp?study_link=<%=study_link.toString()%>&demographic_no=<%=demographic_no%>&study_no=<%=study_no%>');return false;"
-                                                               title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.study"/>: <%=UtilMisc.htmlEscape(studyDescription.toString())%>"><%="<span color='" + studyColor + "'>" + studySymbol + "</span>"%>
-                                                            </a><%} %>
 
                                                             <% if (ver != null && ver != "" && "##".compareTo(ver.toString()) == 0) {%><a
                                                                 href="#"

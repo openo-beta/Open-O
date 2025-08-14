@@ -75,7 +75,6 @@ public class GenericIntakeEdit2Action extends ActionSupport {
     protected static final String CLIENT_EDIT_ID = "id";
 
     private ClientImageDAO clientImageDAO = SpringUtils.getBean(ClientImageDAO.class);
-    private SurveyManager surveyManager = (SurveyManager) SpringUtils.getBean("surveyManager2");
     //private IMatchManager matchManager = new MatchManager();
 
     protected static final String PROGRAM_ID = "programId";
@@ -278,9 +277,6 @@ public class GenericIntakeEdit2Action extends ActionSupport {
                         .areServiceProgramsVisible(intakeType), Agency.getLocalAgency().areExternalProgramsVisible(intakeType), null,
                 null, null, facilityId, nodeId, jsLocation, Agency.getLocalAgency().areCommunityProgramsVisible(intakeType), null);
 
-        // UCF -- intake accessment : please don't remove the following lines
-        List allForms = surveyManager.getAllFormsForCurrentProviderAndCurrentFacility(loggedInInfo);
-        request.getSession().setAttribute("survey_list", allForms);
 
         String oldBedProgramId = null;
         request.getSession().setAttribute("intakeCurrentBedId", oldBedProgramId);
@@ -358,9 +354,6 @@ public class GenericIntakeEdit2Action extends ActionSupport {
                         .areServiceProgramsVisible(intakeType), Agency.getLocalAgency().areExternalProgramsVisible(intakeType), getCurrentBedProgramId(clientId),
                 getCurrentServiceProgramIds(clientId), getCurrentExternalProgramId(clientId), facilityId, nodeId, jsLocation, Agency.getLocalAgency().areCommunityProgramsVisible(intakeType), getCurrentCommunityProgramId(clientId));
 
-        // UCF -- intake accessment : please don't remove the following lines
-        List allForms = surveyManager.getAllFormsForCurrentProviderAndCurrentFacility(loggedInInfo);
-        request.getSession().setAttribute("survey_list", allForms);
 
         String oldBedProgramId = String.valueOf(getCurrentBedProgramId(clientId));
         request.getSession().setAttribute("intakeCurrentBedId", oldBedProgramId);

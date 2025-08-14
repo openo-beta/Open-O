@@ -62,7 +62,6 @@
 
 	<bean id="oscarSecurityManager" class="org.oscarehr.PMmodule.service.impl.OscarSecurityManagerImpl" autowire="byName" />
 	<bean id="formsManagerCaisi" class="org.oscarehr.PMmodule.service.impl.FormsManagerImpl" autowire="byName" />
-	<bean id="surveyUserManager" class="org.oscarehr.survey.service.impl.UserManagerOscar" autowire="byName" />
 	<bean id="populationReportManager" class="org.oscarehr.common.service.PopulationReportManager" autowire="byName">
 		<property name="issueDAO" ref="IssueDAO" />
 		<property name="populationReportDao" ref="populationReportDao" />
@@ -188,7 +187,6 @@
 			</list>
 		</property>
 	</bean> -->
-	<bean id="QuestionTypes" class="org.oscarehr.survey.model.QuestionTypes" scope="singleton" />
 	<!--
 		<bean id="UCRConfigurationManager" class="org.oscarehr.PMmodule.web.reports.custom.UCRConfigurationManager"> <property name="filename"> <value>org/oscarehr/PMmodule/web/reports/custom/test.xml</value> </property> </bean>
 	-->

@@ -479,8 +479,6 @@
 
 
                     <li><a href="#"
-                           onclick='popupPage(600,900,"${pageContext.request.contextPath}/oscarReport/oscarReportRehabStudy.jsp")'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.rehabStudy"/></a></li>
-                    <li><a href="#"
                            onclick='popupPage(600,900,"${pageContext.request.contextPath}/oscarReport/patientlist.jsp")'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.exportPatientbyAppt"/></a></li>
                     <caisi:isModuleLoad moduleName="caisi">
                         <li><a href="${pageContext.request.contextPath}/PMmodule/reports/activity_report_form.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.activityRpt"/></a></li>
@@ -504,9 +502,6 @@
                     </oscar:oscarPropertiesCheck>
                     <li><a href="#"
                            onclick='popupPage(600,900,"${pageContext.request.contextPath}/report/DxresearchReport.do")'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.diseaseRegister"/></a></li>
-
-                    <li><a href="#"
-                           onclick='popupPage(550,810, "${pageContext.request.contextPath}/admin/demographicstudy.jsp");return false;'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnStudy"/></a></li>
                     <%
                         if (oscarVariables.getProperty("billregion", "").equals("ON")) {
                     %>
@@ -577,9 +572,6 @@
                     <li><a href="${pageContext.request.contextPath}/issueAdmin.do?method=list">
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.issueEditor"/>
                     </a></li>
-                    <li><a href="${pageContext.request.contextPath}/SurveyManager.do">
-                        <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.surveyManager"/>
-                    </a></li>
                     <li><a href="${pageContext.request.contextPath}/DefaultEncounterIssue.do">
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.defaultEncounterIssue"/>
                     </a></li>
@@ -614,9 +606,6 @@
                     </security:oscarSec>
                     <security:oscarSec roleName="<%=roleName$%>"
                                        objectName="_admin.userCreatedForms" rights="r">
-                        <li><a href="${pageContext.request.contextPath}/SurveyManager.do">
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.surveyManager"/>
-                        </a></li>
                     </security:oscarSec>
                 </ul>
             </div>
@@ -844,25 +833,6 @@
                     %>
                     <li><a href="#" onclick='popupPage(400, 400, "${pageContext.request.contextPath}/olis/Preferences.jsp");return false;'>OLIS Preferences</a></li>
                     <% } %>
-
-                    <%
-                        if (oscarVariables.getProperty("hsfo.loginSiteCode", "") != null && !"".equalsIgnoreCase(oscarVariables.getProperty("hsfo.loginSiteCode", ""))) {
-                    %>
-                    <li><a href="#"
-                           onclick='popupPage(400,600, "${pageContext.request.contextPath}/admin/RecommitHSFO.do"/>?method=showSchedule&quot;);return false;'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.hsfoSubmit"/></a></li>
-                    <%
-                        }
-                    %>
-
-                    <%
-                        if (oscarVariables.getProperty("hsfo2.loginSiteCode", "") != null && !"".equalsIgnoreCase(oscarVariables.getProperty("hsfo2.loginSiteCode", ""))) {
-                    %>
-                    <li><a href="#"
-                           onclick='popupPage(400,600, "${pageContext.request.contextPath}/admin/RecommitHSFO2.do"/>?method=showSchedule&quot;);return false;'>schedule
-                        HSFO2 XML resubmit</a></li>
-                    <%
-                        }
-                    %>
 
                     <li><a href="javascript:void(0);" onclick="popupPage(550,800, "${pageContext.request.contextPath}/admin/updateDrugref.jsp");return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.UpdateDrugref"/></a></li>
                 </ul>

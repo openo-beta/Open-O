@@ -63,7 +63,6 @@ import oscar.OscarProperties;
 import oscar.form.graphic.FrmGraphicFactory;
 import oscar.form.graphic.FrmPdfGraphic;
 import oscar.form.pdfservlet.FrmPDFPostValueProcessor;
-import oscar.form.pdfservlet.HsfoRxDataHolder;
 import oscar.util.ConcatPDF;
 
 import com.itextpdf.text.pdf.BaseFont;
@@ -78,7 +77,6 @@ import com.itextpdf.text.pdf.PdfWriter;
  */
 public class EFormPDFServlet extends HttpServlet {
 
-    public static final String HSFO_RX_DATA_KEY = "hsfo.rx.data";
     Logger log = org.oscarehr.util.MiscUtils.getLogger();
 
     /**
@@ -168,23 +166,6 @@ public class EFormPDFServlet extends HttpServlet {
         }
     }
 
-    // added by vic, hsfo
-    private ByteArrayOutputStream generateHsfoRxPDF(HttpServletRequest req) {
-        HsfoRxDataHolder rx = (HsfoRxDataHolder) req.getSession()
-                .getAttribute(HSFO_RX_DATA_KEY);
-
-        JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(rx.getOutlines());
-        InputStream is = Thread.currentThread().getContextClassLoader()
-                .getResourceAsStream("/oscar/form/prop/Hsfo_Rx.jasper");
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            JasperRunManager.runReportToPdfStream(is, baos, rx.getParams(), ds);
-        } catch (JRException e) {
-            throw new RuntimeException(e);
-        }
-        return baos;
-    }
 
     /**
      * the form txt file has lines in the form:
@@ -209,9 +190,6 @@ public class EFormPDFServlet extends HttpServlet {
      */
     protected ByteArrayOutputStream generatePDFDocumentBytes(final HttpServletRequest req, final ServletContext ctx, int multiple) throws Exception {
 
-        // added by vic, hsfo
-        if (HSFO_RX_DATA_KEY.equals(req.getParameter("__title")))
-            return generateHsfoRxPDF(req);
 
         String suffix = (multiple > 0) ? String.valueOf(multiple) : "";
 

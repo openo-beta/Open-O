@@ -98,19 +98,6 @@
         window.open(url, 'programIntakePrint', 'width=1024,height=768,scrollbars=1');
     }
 
-    function openSurvey(methodId) {
-        var selectBox = getElement('form.formId');
-        var formId = selectBox.options[selectBox.selectedIndex].value;
-        document.clientManagerForm.clientId.value = '<c:out value="${client.demographicNo}"/>';
-        document.clientManagerForm.formId.value = formId;
-        var id = document.getElementById('formInstanceId').value;
-        if (methodId == 0)
-            methodName = "survey";
-        else
-            methodName = "printPreview_survey";
-
-        location.href = "<%=request.getContextPath() %>/PMmodule/Forms/SurveyExecute.do?method=" + methodName + "&formId=" + formId + "&formInstanceId=" + id + "&clientId=" + '<c:out value="${client.demographicNo}"/>';
-    }
 
     function createIntake(clientId, nodeId) {
         if (nodeId == '') {
@@ -319,50 +306,6 @@ New General Form:&nbsp;
 <br />
 <br />
 -->
-<div class="tabs">
-    <table cellpadding="3" cellspacing="0" border="0">
-        <tr>
-            <th title="Programs">User Created Forms</th>
-        </tr>
-    </table>
-</div>
-<table class="simple" cellspacing="2" cellpadding="3">
-    <thead>
-    <tr>
-        <th>Form Name</th>
-        <th>Date</th>
-        <th>Staff</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <c:forEach var="form" items="${surveys}">
-        <tr>
-            <td><c:out value="${form.description}"/></td>
-            <td><c:out value="${form.dateCreated}"/></td>
-            <td><c:out value="${form.username}"/></td>
-            <td><input type="button" value="Update"
-                       onclick="document.clientManagerForm.elements['form.formId'].value='<c:out
-                               value="${form.formId}"/>';document.clientManagerForm.elements['formInstanceId'].value='
-                           <c:out value="${form.id}"/>';openSurvey(0);"/>
-                <input type="button" value="Print Preview"
-                       onclick="document.clientManagerForm.elements['form.formId'].value='<c:out
-                               value="${form.formId}"/>';document.clientManagerForm.elements['formInstanceId'].value='
-                           <c:out value="${form.id}"/>';openSurvey(1);"/></td>
-
-        </tr>
-    </c:forEach>
-</table>
-New User Created Form:&nbsp;
-<select name="formId" onchange="openSurvey(0)">
-    <option value="0">&nbsp;</option>
-    <c:forEach var="survey" items="${survey_list}">
-        <option value="${survey.id}">
-                ${survey.description}
-        </option>
-    </c:forEach>
-</select>
-<br/>
-<br/>
 
 <div class="tabs">
     <table cellpadding="3" cellspacing="0" border="0">

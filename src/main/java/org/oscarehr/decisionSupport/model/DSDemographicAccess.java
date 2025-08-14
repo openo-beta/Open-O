@@ -43,14 +43,7 @@ import org.oscarehr.casemgmt.dao.CaseManagementNoteDAO;
 import org.oscarehr.casemgmt.model.CaseManagementNote;
 import org.oscarehr.common.dao.BillingONCHeader1Dao;
 import org.oscarehr.common.dao.FlowSheetCustomizationDao;
-import org.oscarehr.common.dao.ProviderStudyDao;
-import org.oscarehr.common.dao.StudyDao;
-import org.oscarehr.common.dao.StudyDataDao;
 import org.oscarehr.common.model.FlowSheetCustomization;
-import org.oscarehr.common.model.ProviderStudy;
-import org.oscarehr.common.model.ProviderStudyPK;
-import org.oscarehr.common.model.Study;
-import org.oscarehr.common.model.StudyData;
 import org.oscarehr.decisionSupport.model.conditionValue.DSValue;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
@@ -85,10 +78,7 @@ public class DSDemographicAccess {
         billedFor("billedFor"),
         paid("paid"),
         flowsheet("flowsheetUptoDate"),
-        providerInStudy("providerInStudy"),
-        studyActive("studyActive"),
         hasATCcode("hasATCcode"),
-        demoHasData("demoHasData"),
         hasRxClass("hasRxClass");
 
 
@@ -181,40 +171,6 @@ public class DSDemographicAccess {
         throw new DecisionSupportException("NOT IMPLEMENTED");
     }
 
-    public boolean demoHasDataNot(String studyId) {
-        logger.debug("demoHasData called");
-        StudyDao studyDao = (StudyDao) SpringUtils.getBean(StudyDao.class);
-
-        studyId = studyId.replaceAll("'", "");
-        Study study = studyDao.findByName(studyId);
-        StudyDataDao studyDataDao = (StudyDataDao) SpringUtils.getBean(StudyDataDao.class);
-        List<StudyData> studyDataList = studyDataDao.findByDemoAndStudy(Integer.parseInt(demographicNo), study.getId());
-
-        boolean isEmpty = true;
-        for (StudyData studyData : studyDataList) {
-            if (!studyData.getContent().equalsIgnoreCase("Eligible - ask later")) {
-                isEmpty = false;
-            }
-        }
-
-        return isEmpty;
-    }
-
-    public boolean demoHasDataAny(String atcCode) throws DecisionSupportException {
-        throw new DecisionSupportException("NOT IMPLEMENTED");
-    }
-
-    public boolean demoHasDataNotall(String atcCode) throws DecisionSupportException {
-        throw new DecisionSupportException("NOT IMPLEMENTED");
-    }
-
-    public boolean demoHasDataNotany(String atcCode) throws DecisionSupportException {
-        throw new DecisionSupportException("NOT IMPLEMENTED");
-    }
-
-    public boolean demoHasDataAll(String atcCode) throws DecisionSupportException {
-        throw new DecisionSupportException("NOT IMPLEMENTED");
-    }
 
 
     public boolean hasATCcode(DSValue rxCode) {
@@ -265,62 +221,8 @@ public class DSDemographicAccess {
         throw new DecisionSupportException("NOT IMPLEMENTED");
     }
 
-    public boolean studyActiveAll(String strStudyId) {
-        StudyDao studyDao = (StudyDao) SpringUtils.getBean(StudyDao.class);
-        strStudyId = strStudyId.replaceAll("'", "");
-        Study study = studyDao.findByName(strStudyId);
-
-        return (study.getCurrent1() == 1);
-    }
-
-    public boolean StudyActiveNot(String strStudyId) {
-        return !studyActiveAll(strStudyId);
-    }
-
-    public boolean StudyActiveNotall(String strStudyId) {
-        return !studyActiveAll(strStudyId);
-    }
-
-    public boolean StudyActiveNotany(String strStudyId) {
-        return !studyActiveAll(strStudyId);
-    }
-
-    public boolean StudyActiveAny(String strStudyId) {
-        return studyActiveAll(strStudyId);
-    }
 
 
-    public boolean providerInStudyAll(String strStudyId) {
-        StudyDao studyDao = (StudyDao) SpringUtils.getBean(StudyDao.class);
-        ProviderStudyDao providerStudyDao = (ProviderStudyDao) SpringUtils.getBean(ProviderStudyDao.class);
-        strStudyId = strStudyId.replaceAll("'", "");
-        logger.info("Looking up " + strStudyId);
-        Study study = studyDao.findByName(strStudyId);
-        logger.info("STUDY found " + String.valueOf(study != null));
-        ProviderStudyPK providerStudyPK = new ProviderStudyPK();
-        providerStudyPK.setProviderNo(this.providerNo);
-        providerStudyPK.setStudyNo(study.getId());
-
-        ProviderStudy providerStudy = providerStudyDao.find(providerStudyPK);
-
-        return (providerStudy != null);
-    }
-
-    public boolean providerInStudyNot(String strStudyId) throws DecisionSupportException {
-        throw new DecisionSupportException("NOT IMPLEMENTED");
-    }
-
-    public boolean providerInStudyNotall(String strStudyId) throws DecisionSupportException {
-        throw new DecisionSupportException("NOT IMPLEMENTED");
-    }
-
-    public boolean providerInStudyNotany(String strStudyId) throws DecisionSupportException {
-        throw new DecisionSupportException("NOT IMPLEMENTED");
-    }
-
-    public boolean providerInStudyAny(String strStudyId) throws DecisionSupportException {
-        throw new DecisionSupportException("NOT IMPLEMENTED");
-    }
 
     public List<dxResearchBean> getDxCodes() {
         dxResearchBeanHandler handler = new dxResearchBeanHandler(demographicNo);

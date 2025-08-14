@@ -103,16 +103,6 @@
 
             // -->
 
-            function openSurvey(ctl) {
-                var formId = ctl.options[ctl.selectedIndex].value;
-                if (formId == 0) {
-                    return;
-                }
-                var id = document.getElementById('formInstanceId').value;
-                var url = '<%=request.getContextPath() %>/PMmodule/Forms/SurveyExecute.do?method=survey&type=provider&formId=' + formId + '&formInstanceId=' + id + '&clientId=' + <%=clientId%>;
-                ctl.selectedIndex = 0;
-                popupPage(url);
-            }
 
             function popupPage(varpage) {
                 var page = "" + varpage;
@@ -768,28 +758,6 @@
                     </div>
                     <br/>
 
-                    <c:if test="${not empty sessionScope.genericIntakeEditForm.client.demographicNo}">
-                        <div id="admissionsTable" dojoType="TitlePane" label="Intake Assessment"
-                             labelNodeClass="intakeSectionLabel"
-                             containerNodeClass="intakeSectionContainer">
-                            <table class="intakeTable">
-                                <tr>
-                                    <td><input type="hidden" id="formInstanceId" value="0"/></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <select property="form.formId" onchange="openSurvey(this);">
-                                            <option value="0">&nbsp;</option>
-                                            <c:forEach var="survey" items="${survey_list}">
-                                                <option value="<c:out value="${survey.formId}"/>"><c:out
-                                                        value="${survey.description}"/></option>
-                                            </c:forEach>
-                                        </select>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </c:if>
                 </caisi:isModuleLoad>
 
                 <br/>

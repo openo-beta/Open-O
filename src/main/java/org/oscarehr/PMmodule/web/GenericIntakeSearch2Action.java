@@ -32,7 +32,6 @@ import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
 import org.oscarehr.PMmodule.model.Intake;
 import org.oscarehr.PMmodule.service.ClientManager;
-import org.oscarehr.PMmodule.service.SurveyManager;
 import org.oscarehr.PMmodule.web.formbean.ClientSearchFormBean;
 import org.oscarehr.PMmodule.web.formbean.GenericIntakeConstants;
 import org.oscarehr.PMmodule.web.utils.UserRoleUtils;
@@ -108,7 +107,6 @@ public class GenericIntakeSearch2Action extends ActionSupport {
     private static final String FORWARD_INTAKE_EDIT = "intakeEdit";
 
     private ClientImageDAO clientImageDAO = SpringUtils.getBean(ClientImageDAO.class);
-    private SurveyManager surveyManager = SpringUtils.getBean(SurveyManager.class);
 
 
     @Override
@@ -165,8 +163,6 @@ public class GenericIntakeSearch2Action extends ActionSupport {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
-        // UCF
-        request.getSession().setAttribute("survey_list", surveyManager.getAllFormsForCurrentProviderAndCurrentFacility(loggedInInfo));
 
         List<Demographic> localMatches = localSearch(loggedInInfo.getLoggedInProviderNo());
         this.setLocalMatches(localMatches);

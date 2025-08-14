@@ -743,13 +743,6 @@
                 <td width="2"><%=j%>
                     <%j++;%>
                 </td>
-                <td width="1"></td>
-                <td width="300"><a href=#
-                                   onClick="popupPage(600,750,'demographicstudyreport.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.btnDemographicStudyList"/></a></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
             </tr>
 
             <tr>
@@ -860,8 +853,6 @@
                                     Report</a></div>
                                 <div><a
                                         href="${pageContext.request.contextPath}/PMmodule/Reports/ProgramActivityReport.do">Activity Report</a></div>
-                                <div><a
-                                        href="${pageContext.request.contextPath}/SurveyManager.do?method=reportForm">User Created Form Report</a></div>
                                 <div><a
                                         href="${pageContext.request.contextPath}/QuatroReport/ReportList.do">Quatro Report Runner</a></div>
                                 <div><a href="javascript:void(0);"

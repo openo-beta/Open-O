@@ -75,7 +75,6 @@ import org.oscarehr.PMmodule.service.HealthSafetyManager;
 import org.oscarehr.PMmodule.service.ProgramManager;
 import org.oscarehr.PMmodule.service.ProgramQueueManager;
 import org.oscarehr.PMmodule.service.ProviderManager;
-import org.oscarehr.PMmodule.service.SurveyManager;
 import org.oscarehr.PMmodule.web.formbean.ClientManagerFormBean;
 import org.oscarehr.PMmodule.web.utils.UserRoleUtils;
 import org.oscarehr.PMmodule.wlmatch.MatchBO;
@@ -125,7 +124,6 @@ public class ClientManager2Action extends ActionSupport {
 
     private HealthSafetyManager healthSafetyManager = SpringUtils.getBean(HealthSafetyManager.class);
     private ClientRestrictionManager clientRestrictionManager = SpringUtils.getBean(ClientRestrictionManager.class);
-    private SurveyManager surveyManager = SpringUtils.getBean(SurveyManager.class);
     private LookupManager lookupManager = SpringUtils.getBean(LookupManager.class);
     private CaseManagementManager caseManagementManager = SpringUtils.getBean(CaseManagementManager.class);
     private AdmissionManager admissionManager = SpringUtils.getBean(AdmissionManager.class);
@@ -206,16 +204,12 @@ public class ClientManager2Action extends ActionSupport {
             return save();
         } else if ("saveBedReservation".equals(method)) {
             return saveBedReservation();
-        }  else if ("save_survey".equals(method)) {
-            return save_survey();
         } else if ("save_joint_admission".equals(method)) {
             return save_joint_admission();
         } else if ("remove_joint_admission".equals(method)) {
             return remove_joint_admission();
         } else if ("search_programs".equals(method)) {
             return search_programs();
-        } else if ("survey".equals(method)) {
-            return survey();
         } else if ("update".equals(method)) {
             return update();
         }  else if ("view_referral".equals(method)) {
@@ -1112,21 +1106,6 @@ public class ClientManager2Action extends ActionSupport {
         return edit();
     }
 
-    public String save_survey() {
-        CaisiFormInstance formInstance = this.getForm();
-        ClientManagerFormBean formBean = this.getView();
-        formInstance.setFormId(0);
-
-        String clientId = (String) request.getAttribute("clientId");
-        if (clientId == null) {
-            clientId = request.getParameter("id");
-        }
-
-        formBean.setTab("Forms");
-
-        setEditAttributes(request, clientId);
-        return "edit";
-    }
 
     public String save_joint_admission() {
         JointAdmission jadmission = new JointAdmission();
@@ -1267,26 +1246,6 @@ public class ClientManager2Action extends ActionSupport {
         }
     }
 
-    public String survey() {
-        CaisiFormInstance formInstance = this.getForm();
-
-        if (request.getAttribute("survey_saved") != null) {
-            setEditAttributes(request, (String) request.getAttribute("clientId"));
-            return "edit";
-        }
-
-        String clientId = request.getParameter("id");
-        String formId = String.valueOf(formInstance.getFormId());
-
-        formInstance.setFormId(0);
-
-        try {
-            response.sendRedirect("/PMmodule/Forms/SurveyExecute.do?method=survey&formId=" + formId + "&clientId=" + clientId);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
 
     public String update() {
         return edit();
@@ -1420,7 +1379,6 @@ public class ClientManager2Action extends ActionSupport {
             }
         }
 
-        // tab override - from survey module
         String tabOverride = (String) request.getAttribute("tab.override");
 
         if (tabOverride != null && tabOverride.length() > 0) {
@@ -1428,9 +1386,6 @@ public class ClientManager2Action extends ActionSupport {
         }
 
         if (tabBean.getTab().equals("Summary")) {
-            /* survey module */
-            request.setAttribute("survey_list", surveyManager.getAllFormsForCurrentProviderAndCurrentFacility(loggedInInfo));
-            request.setAttribute("surveys", surveyManager.getFormsForCurrentProviderAndCurrentFacility(loggedInInfo, demographicNo));
 
             // request.setAttribute("admissions", admissionManager.getCurrentAdmissions(Integer.valueOf(demographicNo)));
             // only allow bed/service programs show up.(not external program)
@@ -1618,9 +1573,6 @@ public class ClientManager2Action extends ActionSupport {
             request.setAttribute("indepthIntakeNodes", genericIntakeManager.getIntakeNodesByType(2));
             request.setAttribute("generalIntakeNodes", genericIntakeManager.getIntakeNodesByType(3));
 
-            /* survey module */
-            request.setAttribute("survey_list", surveyManager.getAllFormsForCurrentProviderAndCurrentFacility(loggedInInfo));
-            request.setAttribute("surveys", surveyManager.getFormsForCurrentProviderAndCurrentFacility(loggedInInfo, demographicNo));
 
             /* consent forms */
             int clientId = Integer.parseInt(demographicNo);

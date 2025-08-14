@@ -25,8 +25,6 @@
     <context:component-scan base-package="org.oscarehr.common.service" />
     <context:component-scan base-package="org.oscarehr.casemgmt.service" />
     <context:component-scan base-package="oscar.oscarDemographic.pageUtil" />
-    <context:component-scan base-package="org.oscarehr.survey.service.impl" />
-    <context:component-scan base-package="org.oscarehr.survey.service" />
     <context:component-scan base-package="org.oscarehr.PMmodule.service"/>
     <context:component-scan base-package="org.oscarehr.ticklers.service"/>
     <context:component-scan base-package="org.oscarehr.consultations"/>

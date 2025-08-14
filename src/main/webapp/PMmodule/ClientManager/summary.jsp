@@ -126,14 +126,6 @@
         location.href = "<%=request.getContextPath() %>/PMmodule/ClientManager.do?method=remove_joint_admission&clientId=<c:out value='${client.demographicNo}'/>&dependentClientId=" + clientId;
     }
 
-    function openSurvey() {
-        var selectBox = getElement('form.formId');
-        var formId = selectBox.options[selectBox.selectedIndex].value;
-        document.clientManagerForm.clientId.value = '<c:out value="${client.demographicNo}"/>';
-        document.clientManagerForm.formId.value = formId;
-        var id = document.getElementById('formInstanceId').value;
-        location.href = "<%=request.getContextPath() %>/PMmodule/Forms/SurveyExecute.do?method=survey&formId=" + formId + "&formInstanceId=" + id + "&clientId=" + '<c:out value="${client.demographicNo}"/>';
-    }
 
 </script>
 
@@ -791,54 +783,6 @@
 </table>
 <br/>
 
-<%
-    /*User Created Form*/
-%>
-<caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="false">
-    <div class="tabs">
-        <table cellpadding="3" cellspacing="0" border="0">
-            <tr>
-                <th>Assessments</th>
-            </tr>
-        </table>
-    </div>
-    <table class="simple" cellspacing="2" cellpadding="3">
-        <thead>
-        <tr>
-            <th>Form Name</th>
-            <th>Date</th>
-            <th>Staff</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <c:forEach var="form" items="${surveys}">
-            <tr>
-                <td width="20%"><c:out value="${form.description}"/></td>
-                <td><c:out value="${form.dateCreated}"/></td>
-                <td><c:out value="${form.username}"/></td>
-                <td><input type="button" value="update"
-                           onclick="document.clientManagerForm.elements['form.formId'].value='<c:out
-                                   value="${form.formId}"/>';document.clientManagerForm.elements['formInstanceId'].value='
-                               <c:out value="${form.id}"/>';openSurvey();"/></td>
-            </tr>
-        </c:forEach>
-    </table>
-    <br/>
-    <table cellspacing="0" cellpadding="0">
-        <tr>
-            <td>New User Created Form:</td>
-            <td><select name="formId" onchange="openSurvey()">
-                <option value="0">&nbsp;</option>
-                <c:forEach var="survey" items="${survey_list}">
-                    <option value="${survey.formId}">
-                            ${survey.description}
-                    </option>
-                </c:forEach>
-            </select></td>
-        </tr>
-    </table>
-    <br/>
-</caisi:isModuleLoad>
 
 <div class="tabs">
     <table cellpadding="3" cellspacing="0" border="0">

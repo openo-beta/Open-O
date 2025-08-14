@@ -58,7 +58,6 @@ public class GenericIntakeEditAction {
     protected static final String CLIENT_EDIT_ID = "id";
 
     private ClientImageDAO clientImageDAO = null;
-    private SurveyManager surveyManager = (SurveyManager) SpringUtils.getBean("surveyManager2");
     //private IMatchManager matchManager = new MatchManager();
 
     protected static final String PROGRAM_ID = "programId";
@@ -98,9 +97,6 @@ public class GenericIntakeEditAction {
         return programId;
     }
 
-    public void setOscarSurveyManager(SurveyManager mgr) {
-        this.surveyManager = mgr;
-    }
 
     public void setClientImageDAO(ClientImageDAO clientImageDAO) {
         this.clientImageDAO = clientImageDAO;

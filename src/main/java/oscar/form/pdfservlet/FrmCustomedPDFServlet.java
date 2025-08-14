@@ -73,7 +73,6 @@ import oscar.oscarRx.data.RxPharmacyData;
 
 public class FrmCustomedPDFServlet extends HttpServlet {
 
-    public static final String HSFO_RX_DATA_KEY = "hsfo.rx.data";
     private static Logger logger = MiscUtils.getLogger();
     private final FaxJobDao faxJobDao = SpringUtils.getBean(FaxJobDao.class);
 
@@ -212,22 +211,6 @@ public class FrmCustomedPDFServlet extends HttpServlet {
 
     }
 
-    // added by vic, hsfo
-    private ByteArrayOutputStream generateHsfoRxPDF(HttpServletRequest req) {
-
-        HsfoRxDataHolder rx = (HsfoRxDataHolder) req.getSession().getAttribute(HSFO_RX_DATA_KEY);
-
-        JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(rx.getOutlines());
-        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("/oscar/form/prop/Hsfo_Rx.jasper");
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            JasperRunManager.runReportToPdfStream(is, baos, rx.getParams(), ds);
-        } catch (JRException e) {
-            throw new RuntimeException(e);
-        }
-        return baos;
-    }
 
     /**
      * the form txt file has lines in the form: For Checkboxes: ie. ohip : left, 76, 193, 0, BaseFont.ZAPFDINGBATS, 8, \u2713 requestParamName : alignment, Xcoord, Ycoord, 0, font, fontSize, textToPrint[if empty, prints the value of the request param]
@@ -568,10 +551,6 @@ public class FrmCustomedPDFServlet extends HttpServlet {
         logger.debug("***in generatePDFDocumentBytes2 FrmCustomedPDFServlet.java***");
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(req);
-
-        if (HSFO_RX_DATA_KEY.equals(req.getParameter("__title"))) {
-            return generateHsfoRxPDF(req);
-        }
         String newline = System.getProperty("line.separator");
         String method = req.getParameter("__method");
         String origPrintDate = null;

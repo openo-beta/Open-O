@@ -67,7 +67,6 @@ import com.lowagie.text.pdf.PdfWriter;
  */
 public class FrmPDFServlet extends HttpServlet {
 
-    public static final String HSFO_RX_DATA_KEY = "hsfo.rx.data";
     Logger log = org.oscarehr.util.MiscUtils.getLogger();
 
     /**
@@ -175,26 +174,6 @@ public class FrmPDFServlet extends HttpServlet {
 
     }
 
-    // added by vic, hsfo
-    private ByteArrayOutputStream generateHsfoRxPDF(HttpServletRequest req) {
-        HsfoRxDataHolder rx = (HsfoRxDataHolder) req.getSession()
-                .getAttribute(HSFO_RX_DATA_KEY);
-
-        JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(rx.getOutlines());
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("/oscar/form/prop/Hsfo_Rx.jasper");
-
-        try {
-            JasperRunManager.runReportToPdfStream(is, baos, rx.getParams(), ds);
-        } catch (JRException e) {
-            throw new RuntimeException(e);
-        } finally {
-            IOUtils.closeQuietly(is);
-        }
-
-        return baos;
-    }
 
     /**
      * the form txt file has lines in the form:
@@ -219,10 +198,6 @@ public class FrmPDFServlet extends HttpServlet {
             throws DocumentException, java.io.IOException {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(req);
-
-        // added by vic, hsfo
-        if (HSFO_RX_DATA_KEY.equals(req.getParameter("__title")))
-            return generateHsfoRxPDF(req);
 
         final String PAGESIZE = "printPageSize";
         Document document = new Document();
