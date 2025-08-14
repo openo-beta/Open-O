@@ -1971,21 +1971,7 @@
             <result name="checkElig">/billing/CA/BC/checkEligibility.jsp</result>
         </action>
         <!--action name="billing/CA/BC/DownloadBilling" class="oscar.oscarBilling.ca.bc.pageUtil.DownloadFile2Action"/-->
-        <action name="Tickler" class="org.caisi.tickler.web.Tickler2Action" method="execute">
-            <result name="list">/ticklerPlus/ticklerList.jsp</result>
-            <result name="view">/ticklerPlus/ticklerView.jsp</result>
-            <result name="edit">/ticklerPlus/ticklerForm.jsp</result>
-            <result name="preparedTicklerList">/ticklerPlus/preparedTicklerList.jsp</result>
-        </action>
-        <action name="CustomFilter" class="org.caisi.tickler.web.CustomFilter2Action" method="execute">
-            <result name="customFilterList">/ticklerPlus/customFilterList.jsp</result>
-            <result name="customFilterForm">/ticklerPlus/customFilterForm.jsp</result>
-        </action>
-        <action name="UnreadTickler" class="org.caisi.tickler.web.UnreadTickler2Action">
-            <result name="error">/loginfailed.jsp</result>
-            <result name="view">/ticklerPlus/viewUnreadTicklers.jsp</result>
-            <result name="login">/ticklerPlus/loginUnreadTicklers.jsp</result>
-        </action>
+        <!-- ticklerPlus actions removed -->
         <action name="PMmodule/StreetHealthIntakeReportAction" class="org.oscarehr.PMmodule.streethealth.StreetHealthIntakeReport2Action">
             <result name="success">/PMmodule/StreetHealthIntakeReport.jsp</result>
             <result name="download">/PMmodule/StreetHealthIntakeReportDownload.jsp</result>

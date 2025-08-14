@@ -29,9 +29,6 @@
     String ocanWarningWindow = null;
     String cbiReminderWindow = null;
 
-    if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.IsPropertiesOn.isTicklerPlusEnable()) {
-        newticklerwarningwindow = (String) session.getAttribute("newticklerwarningwindow");
-    }
     if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.IsPropertiesOn.propertiesOn("OCAN_warning_window")) {
         ocanWarningWindow = (String) session.getAttribute("ocanWarningWindow");
     }

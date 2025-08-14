@@ -139,10 +139,6 @@
                                    VALUE='<%=providerPreference.getEveryMin()%>'>
                             <INPUT TYPE="hidden" NAME="provider_no"
                                    VALUE='<%=(String) session.getAttribute("user")%>'>
-                            <caisi:isModuleLoad moduleName="ticklerplus">
-                                <INPUT TYPE="hidden" NAME="new_tickler_warning_window"
-                                       VALUE='<%=(String) session.getAttribute("newticklerwarningwindow")%>'>
-                            </caisi:isModuleLoad>
                             <INPUT TYPE="hidden" NAME="color_template" VALUE='deepblue'>
                             <INPUT TYPE="hidden" NAME="dboperation" VALUE='updatepreference'>
                             <INPUT TYPE="hidden" NAME="displaymode" VALUE='updatepreference'>

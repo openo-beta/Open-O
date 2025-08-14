@@ -76,9 +76,6 @@
     }
 
     String n_t_w_w = null;
-    if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.IsPropertiesOn.isTicklerPlusEnable()) {
-        n_t_w_w = (String) session.getAttribute("newticklerwarningwindow");
-    }
     boolean caisi = Boolean.valueOf(request.getParameter("caisi")).booleanValue();
 
     String form = null;
@@ -108,11 +105,7 @@
 
         function selectProvider(p, pn) {
             newGroupNo = p;
-            <%if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.IsPropertiesOn.isTicklerPlusEnable()){%>
-            this.location.href = "providercontrol.jsp?provider_no=<%=curUser_no%>&start_hour=<%=startHour%>&end_hour=<%=endHour%>&every_min=<%=everyMin%>&new_tickler_warning_window=<%=n_t_w_w%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&default_servicetype=<%=defaultServiceType%>&mygroup_no=" + newGroupNo;
-            <%}else{%>
             this.location.href = "providercontrol.jsp?provider_no=<%=curUser_no%>&start_hour=<%=startHour%>&end_hour=<%=endHour%>&every_min=<%=everyMin%>&color_template=deepblue&dboperation=updatepreference&displaymode=updatepreference&default_servicetype=<%=defaultServiceType%>&mygroup_no=" + newGroupNo;
-            <%}%>
         }
 
         function selectProviderCaisi(p, pn) {
@@ -231,10 +224,6 @@
             </td>
             <td><%=spnf%>
             </td>
-            <caisi:isModuleLoad moduleName="ticklerplus">
-                <input type="hidden" name="<%=sp%>_name" id="<%=sp%>_name"
-                       value="<%=new String(spnl+","+ spnf)%>"/>
-            </caisi:isModuleLoad>
         </tr>
         <%
                 nItems++;

@@ -45,10 +45,6 @@ public class IsPropertiesOn {
         return propertiesOn("program");
     }
 
-    public static boolean isTicklerPlusEnable() {
-        return propertiesOn("ticklerplus");
-    }
-
     public static boolean isMultisitesEnable() {
         return propertiesOn("multisites");
     }
