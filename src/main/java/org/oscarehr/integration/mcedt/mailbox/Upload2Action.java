@@ -276,7 +276,7 @@ public class Upload2Action extends ActionSupport {
             // we don't need to find out if upload is successful, we rather get info about submit status of that file
             //if ( successUploads!=null && successUploads.size()>0 ) messages = ActionUtils.addMoreMessage(messages, "uploadAction.upload.success", McedtMessageCreator.stringListToString(successUploads));
             if (successSubmits != null && successSubmits.size() > 0) {
-                addActionMessage(getText("uploadAction.submit.success", McedtMessageCreator.stringListToString(successSubmits)));
+                addActionMessage(getText("uploadAction.submit.success", new String[]{McedtMessageCreator.stringListToString(successSubmits)}));
             }
 
             String key = "";
