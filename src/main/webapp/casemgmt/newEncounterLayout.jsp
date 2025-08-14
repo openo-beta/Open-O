@@ -386,12 +386,6 @@
             famHistoryLabel = "oscarEncounter.famHistory.title";
             riskFactorsLabel = "oscarEncounter.riskFactors.title";
 
-            diagnosticNotesLabel = "oscarEncounter.eyeform.diagnosticNotes.title";
-            pastOcularHistoryLabel = "oscarEncounter.eyeform.pastOcularHistory.title";
-            patientLogLabel = "oscarEncounter.eyeform.patientLog.title";
-            ocularMedicationsLabel = "oscarEncounter.eyeform.ocularMedications.title";
-            currentHistoryLabel = "oscarEncounter.eyeform.currentHistory.title";
-
             quickChartMsg = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.quickChart.msg"/>";
             fullChartMsg = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.fullChart.msg"/>";
             insertTemplateError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.templateError.msg"/>";

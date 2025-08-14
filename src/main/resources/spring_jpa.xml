@@ -112,7 +112,6 @@
 </context:component-scan>
 
 
-	<context:component-scan base-package="org.oscarehr.eyeform.dao" />
 	<context:component-scan base-package="org.oscarehr.fax.core" />
 	<context:component-scan base-package="org.oscarehr.hospitalReportManager.dao" />
 	<context:component-scan base-package="org.oscarehr.olis.dao" />

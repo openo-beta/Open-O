@@ -67,16 +67,12 @@ public class EctDisplayAppointmentHistory2Action extends EctDisplayAction {
             String pathview, pathedit;
 
             pathview = request.getContextPath() + "/demographic/demographiccontrol.jsp?demographic_no=" + bean.demographicNo + "&orderby=appttime&displaymode=appt_history&dboperation=appt_history&limit1=0&limit2=25";
-            pathedit = request.getContextPath() + "/eyeform/SpecsHistory.do?specs.demographicNo=" + bean.demographicNo;
-
 
             String url = "popupPage(500,900,'" + winName + "','" + pathview + "')";
             Dao.setLeftHeading(getText("global.viewAppointmentHistory"));
             Dao.setLeftURL(url);
 
             //set right hand heading link
-            winName = "AddSpecsHistory" + bean.demographicNo;
-            url = "popupPage(500,600,'" + winName + "','" + pathedit + "'); return false;";
             Dao.setRightURL("return false;");
             Dao.setRightHeadingID(cmd); //no menu so set div id to unique id for this action
 
@@ -105,9 +101,7 @@ public class EctDisplayAppointmentHistory2Action extends EctDisplayAction {
                 String itemHeader = StringUtils.maxLenString(title, MAX_LEN_TITLE, CROP_LEN_TITLE, ELLIPSES);
                 item.setLinkTitle(itemHeader);
                 item.setTitle(itemHeader);
-                int hash = Math.abs(winName.hashCode());
-                url = "popupPage(500,900,'" + hash + "','" + request.getContextPath() + "/eyeform/Eyeform.do?method=print&apptNos=" + sh.getId() + "&cpp=" + cpp + "'); return false;";
-                item.setURL(url);
+                item.setURL("return false;");
                 Dao.addItem(item);
                 index++;
             }

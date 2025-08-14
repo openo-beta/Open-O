@@ -2205,54 +2205,6 @@
         <action name="oscarReport/reportByTemplate/actions/delGroup" class="oscar.oscarReport.reportByTemplate.actions.RBTDeleteGroup2Action">
             <result name="success">/oscarReport/reportByTemplate/rbtGroup.do</result>
         </action>
-        <action name="eyeform/OcularProc" class="org.oscarehr.eyeform.web.OcularProc2Action">
-            <result name="form">/eyeform/ocular_proc.jsp</result>
-            <result name="list">/eyeform/ocular_proc_list.jsp</result>
-            <result name="success">/eyeform/success.jsp</result>
-        </action>
-        <action name="eyeform/SpecsHistory" class="org.oscarehr.eyeform.web.SpecsHistory2Action">
-            <result name="form">/eyeform/specs_history.jsp</result>
-            <result name="list">/eyeform/specs_history_list.jsp</result>
-            <result name="success">/eyeform/success.jsp</result>
-        </action>
-        <action name="eyeform/Macro" class="org.oscarehr.eyeform.web.Macro2Action">
-            <result name="list">/eyeform/macro_list.jsp</result>
-            <result name="form">/eyeform/macro.jsp</result>
-            <result name="success">/eyeform/success.jsp</result>
-        </action>
-        <action name="eyeform/NoteData" class="org.oscarehr.eyeform.web.NoteAddon2Action">
-            <result name="current_note">/eyeform/current_note.jsp</result>
-        </action>
-        <action name="eyeform/ProcedureBook" class="org.oscarehr.eyeform.web.ProcedureBook2Action">
-            <result name="form">/eyeform/procedure_book.jsp</result>
-            <result name="success">/eyeform/success.jsp</result>
-        </action>
-        <action name="eyeform/TestBook" class="org.oscarehr.eyeform.web.TestBook2Action">
-            <result name="form">/eyeform/test_book.jsp</result>
-            <result name="success">/eyeform/success.jsp</result>
-        </action>
-        <action name="eyeform/FollowUp" class="org.oscarehr.eyeform.web.FollowUp2Action">
-            <result name="form">/eyeform/followup.jsp</result>
-            <result name="success">/eyeform/success.jsp</result>
-        </action>
-        <action name="eyeform/EyeformPlan" class="org.oscarehr.eyeform.web.Plan2Action">
-            <result name="form">/eyeform/plan_new.jsp</result>
-            <result name="edit">/eyeform/plan_edit.jsp</result>
-            <result name="success">/eyeform/plan_success.jsp</result>
-        </action>
-        <action name="eyeform/Eyeform" class="org.oscarehr.eyeform.web.Eyeform2Action">
-            <result name="conreqcc">/eyeform/conreqcc.jsp</result>
-            <result name="conspecial">/eyeform/conspecialScript.jsp</result>
-            <result name="conspecialhtml">/eyeform/conspecial.jsp</result>
-            <result name="conReport">/eyeform/conreplyGen.jsp</result>
-            <result name="printReport">/eyeform/conreportprint.jsp</result>
-            <result name="success">/eyeform/success.jsp</result>
-        </action>
-        <action name="eyeform/ConsultationReportList" class="org.oscarehr.eyeform.web.ConReportList2Action">
-            <result name="list">/eyeform/conreportlist.jsp</result>
-        </action>
-        <action name="eyeform/SendTickler" class="org.oscarehr.eyeform.EyeformSendTickler2Action"/>
-        <action name="eyeform/Util" class="org.oscarehr.eyeform.EyeformUtil2Action"/>
         <action name="casemgmt/ExtPrintRegistry" class="org.oscarehr.casemgmt.web.ExtPrintRegistry2Action"/>
         <action name="casemgmt/RegisterCppCode" class="org.oscarehr.casemgmt.web.RegisterCppCode2Action"/>
         <action name="provider/UserPreference" class="org.oscarehr.provider.web.UserPreference2Action">
@@ -2264,10 +2216,6 @@
         </action>
         <action name="provider/OlisPreferences" class="org.oscarehr.provider.web.OlisPreferences2Action">
             <result name="form">/provider/olis_preferences.jsp</result>
-        </action>
-        <action name="eyeform/ExaminationHistory" class="org.oscarehr.eyeform.web.ExaminationHistory2Action">
-            <result name="success">/eyeform/examination_history.jsp</result>
-            <result name="results">/eyeform/examination_history_results.jsp</result>
         </action>
         <action name="searchProfessionalSpecialist" class="org.oscarehr.contactRegistry.ProfessionalSpecialist2Action"/>
         <action name="getProfessionalSpecialist" class="org.oscarehr.contactRegistry.ProfessionalSpecialist2Action"/>

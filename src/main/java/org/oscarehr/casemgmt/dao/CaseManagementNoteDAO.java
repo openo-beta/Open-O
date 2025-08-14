@@ -118,9 +118,6 @@ public interface CaseManagementNoteDAO {
     public Collection<CaseManagementNote> findNotesByDemographicAndIssueCode(Integer demographic_no,
                                                                              String[] issueCodes);
 
-    public Collection<CaseManagementNote> findNotesByDemographicAndIssueCodeInEyeform(Integer demographic_no,
-                                                                                      String[] issueCodes);
-
     public List<CaseManagementNote> getNotesByDemographicDateRange(String demographic_no, Date startDate, Date endDate);
 
     public List<CaseManagementNote> getNotesByDemographicLimit(String demographic_no, Integer offset,

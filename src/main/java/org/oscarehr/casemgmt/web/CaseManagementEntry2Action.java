@@ -50,17 +50,6 @@ import org.oscarehr.casemgmt.web.CaseManagementViewAction.IssueDisplay;
 import org.oscarehr.casemgmt.web.formbeans.CaseManagementEntryFormBean;
 import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;
-import org.oscarehr.eyeform.dao.EyeFormDao;
-import org.oscarehr.eyeform.dao.EyeformFollowUpDao;
-import org.oscarehr.eyeform.dao.EyeformTestBookDao;
-import org.oscarehr.eyeform.dao.MacroDao;
-import org.oscarehr.eyeform.model.EyeForm;
-import org.oscarehr.eyeform.model.EyeformFollowUp;
-import org.oscarehr.eyeform.model.EyeformTestBook;
-import org.oscarehr.eyeform.model.Macro;
-import org.oscarehr.eyeform.web.FollowUp2Action;
-import org.oscarehr.eyeform.web.ProcedureBook2Action;
-import org.oscarehr.eyeform.web.TestBook2Action;
 import org.oscarehr.managers.TicklerManager;
 import org.oscarehr.util.*;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -173,8 +162,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
             return displayNotes();
         } else if ("print".equals(method)) {
             return print();
-        } else if ("runMacro".equals(method)) {
-            return runMacro();
         } else if ("ticklerSaveNote".equals(method)) {
             return ticklerSaveNote();
         } else if ("ticklerGetNote".equals(method)) {
@@ -2945,215 +2932,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         return null;
     }
 
-    public String runMacro() throws Exception {
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        MacroDao macroDao = (MacroDao) SpringUtils.getBean(MacroDao.class);
-        Macro macro = macroDao.find(Integer.parseInt(request.getParameter("macro.id")));
-        logger.debug("loaded macro " + macro.getLabel());
-		/*
-		boolean cppFromMeasurements = false;
-		String cpp = request.getParameter("cpp");
-		if (cpp != null && cpp.equals("measurements")) {
-			cppFromMeasurements = true;
-		}
-		*/
-        this.setCaseNote_note(this.getCaseNote_note() + "\n" + macro.getImpression());
-
-        String fwd = saveAndExit();
-
-        if (fwd.equals("windowClose")) {
-            EyeFormDao eyeformDao = SpringUtils.getBean(EyeFormDao.class);
-            EyeForm eyeform = eyeformDao.getByAppointmentNo(Integer.parseInt(this.getAppointmentNo()));
-            // load up the eyeform to set/unset checkboxes
-            if (macro.getDischargeFlag() != null && macro.getDischargeFlag().equals("dischargeFlag")) {
-                eyeform.setDischarge("true");
-            }
-            if (macro.getOptFlag() != null && macro.getOptFlag().equals("optFlag")) {
-                eyeform.setOpt("true");
-            }
-            if (macro.getStatFlag() != null && macro.getStatFlag().equals("statFlag")) {
-                eyeform.setStat("true");
-            }
-            eyeformDao.merge(eyeform);
-
-            // follow ups
-            EyeformFollowUpDao followUpDao = SpringUtils.getBean(EyeformFollowUpDao.class);
-            int followUpNo = macro.getFollowupNo();
-            String followUpUnit = macro.getFollowupUnit();
-            String followUpDr = macro.getFollowupDoctorId();
-            if (followUpNo > 0) {
-                EyeformFollowUp f = new EyeformFollowUp();
-                f.setAppointmentNo(Integer.parseInt(this.getAppointmentNo()));
-                f.setDate(new Date());
-                f.setDemographicNo(Integer.parseInt(this.getDemographicNo()));
-                f.setProvider(loggedInInfo.getLoggedInProvider());
-                f.setTimeframe(followUpUnit);
-                f.setTimespan(followUpNo);
-                f.setType("followup");
-                f.setUrgency("routine");
-                f.setFollowupProvider(followUpDr);
-                followUpDao.persist(f);
-            }
-
-            // tests
-            EyeformTestBookDao testDao = SpringUtils.getBean(EyeformTestBookDao.class);
-            String[] tests = macro.getTestRecords().split("\n");
-            for (String test : tests) {
-                String[] parts = test.trim().split("\\|");
-                if (parts.length == 3 || parts.length == 4) {
-                    EyeformTestBook rec = new EyeformTestBook();
-                    rec.setAppointmentNo(Integer.parseInt(this.getAppointmentNo()));
-                    if (parts.length == 4) rec.setComment(parts[3]);
-                    else rec.setComment("");
-                    rec.setDate(new Date());
-                    rec.setDemographicNo(Integer.parseInt(this.getDemographicNo()));
-                    rec.setEye(parts[1]);
-                    rec.setProvider(loggedInInfo.getLoggedInProviderNo());
-                    // rec.setStatus(null);
-                    rec.setTestname(parts[0]);
-                    rec.setUrgency(parts[2]);
-                    testDao.save(rec);
-                }
-            }
-
-            // send tickler
-            if (macro.getTicklerRecipient() != null && macro.getTicklerRecipient().length() > 0) {
-                Tickler t = new Tickler();
-                t.setCreator(loggedInInfo.getLoggedInProvider().getPractitionerNo());
-                t.setDemographicNo(Integer.parseInt(this.getDemographicNo()));
-                t.setMessage(getMacroTicklerText(Integer.parseInt(this.getAppointmentNo())));
-                t.setTaskAssignedTo(macro.getTicklerRecipient());
-                ticklerManager.addTickler(loggedInInfo, t);
-            }
-
-            // billing
-            if (macro.getBillingCodes() != null && macro.getBillingCodes().length() > 0) {
-                GstControlDao gstControlDao = (GstControlDao) SpringUtils.getBean(GstControlDao.class);
-                BillingServiceDao billingServiceDao = (BillingServiceDao) SpringUtils.getBean(BillingServiceDao.class);
-                DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
-                Provider provider = loggedInInfo.getLoggedInProvider();
-                OscarAppointmentDao apptDao = (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class);
-
-                Appointment appt = null;
-                if (this.getAppointmentNo() != null && this.getAppointmentNo().length() > 0 && !this.getAppointmentDate().equals("0")) {
-                    appt = apptDao.find(Integer.parseInt(this.getAppointmentNo()));
-                }
-
-                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-                String serviceDate = sf.format(new Date());
-
-                // create a mock httprequest to fill in the preset values
-                MockHttpServletRequest mockReq = new MockHttpServletRequest();
-                mockReq.addParameter("dxCode", macro.getBillingDxcode());
-                String[] bcodes = macro.getBillingCodes().replace("\r", "").split("\n");
-
-                BigDecimal btotal = new BigDecimal(0);
-                // must use 100.0 otherwise result will be an int
-                BigDecimal gstFactor = new BigDecimal(1 + gstControlDao.find(1).getGstPercent().intValue() / 100.0);
-                ArrayList<String[]> percentUnits = new ArrayList<String[]>();
-                for (int i = 0; i < bcodes.length; i++) {
-                    if (StringUtils.isBlank(bcodes[i])) continue;
-                    String[] codes = bcodes[i].split("\\|");
-                    mockReq.addParameter("xserviceCode_" + i, codes[0]);
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    Object[] priceg = billingServiceDao.getUnitPrice(codes[0], sdf.parse(serviceDate));
-                    mockReq.addParameter("xserviceUnit_" + i, codes[1]);
-                    String sliCode = OscarProperties.getInstance().getProperty("clinic_no");
-                    if (codes.length == 3 && !codes[2].equals("NA")) {
-                        sliCode = codes[2];
-                    }
-                    mockReq.addParameter("xsliCode_" + i, sliCode);
-                    if (".00".equals(priceg[0])) {
-                        percentUnits.add(codes);
-                        mockReq.addParameter("percCodeSubtotal_" + i, (String) priceg[0]);
-                        // skip to next as we deal with percentage later
-                        continue;
-                    }
-
-                    // price is unit_price*unit*at_percent, but in macro we only assume at_percent=1
-                    // as it's not possible to enter percent value for macros (1-click action).
-                    BigDecimal price = new BigDecimal((String) priceg[0]).multiply(new BigDecimal(codes[1]));
-                    if ((Boolean) priceg[1] == true) {
-                        // add GST
-                        price = price.multiply(gstFactor);
-                    }
-                    mockReq.addParameter("percCodeSubtotal_" + i, price.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString());
-                    btotal = btotal.add(price).setScale(4, BigDecimal.ROUND_HALF_UP);
-
-                }
-                // now process percent codes
-                BigDecimal stotal = new BigDecimal(0);
-                for (String[] code : percentUnits) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    String pct = billingServiceDao.getUnitPercentage(code[0], sdf.parse(serviceDate));
-                    stotal = stotal.add(btotal.multiply(new BigDecimal(pct)));
-                }
-                btotal = btotal.add(stotal);
-                mockReq.addParameter("totalItem", "" + bcodes.length);
-                mockReq.addParameter("total", btotal.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString());
-
-                Demographic demo = demographicDao.getClientByDemographicNo(Integer.parseInt(this.getDemographicNo()));
-                mockReq.setParameter("xml_billtype", macro.getBillingBilltype());
-                if (macro.getSliCode() == null || macro.getSliCode().equals("NA")) {
-                    String value = OscarProperties.getInstance().getProperty("clinic_no", "");
-                    mockReq.setParameter("xml_slicode", value);
-                } else {
-                    mockReq.setParameter("xml_slicode", macro.getSliCode());
-                }
-                // mockReq.addParameter("xml_billtype", "ODP | Bill OHIP");
-                mockReq.addParameter("hin", demo.getHin());
-                mockReq.addParameter("ver", demo.getVer());
-                mockReq.addParameter("demographic_dob", demo.getDateOfBirth());
-                mockReq.addParameter("appointment_no", this.getAppointmentNo());
-                mockReq.addParameter("demographic_name", demo.getLastName() + "," + demo.getFirstName());
-                mockReq.addParameter("sex", "F".equalsIgnoreCase(demo.getSex()) ? "2" : "1");
-                mockReq.addParameter("hc_type", demo.getHcType());
-                String referalNo = getRefNo(demo.getFamilyDoctor());
-                mockReq.addParameter("referralCode", referalNo);
-                mockReq.addParameter("xml_location", macro.getBillingVisitLocation()); // visit location
-                mockReq.addParameter("m_review", "N"); // manual review, always No
-                // as it's automated
-                mockReq.addParameter("clinic_no", oscar.OscarProperties.getInstance().getProperty("clinic_no", "").trim());
-                // clinic_location
-                mockReq.addParameter("demographic_no", this.getDemographicNo());
-                mockReq.addParameter("service_date", serviceDate);
-                SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
-                mockReq.addParameter("start_time", tf.format(new Date()));
-                mockReq.addParameter("submit", "Save");
-                mockReq.addParameter("comment", macro.getBillingComment());
-                mockReq.addParameter("xml_visittype", macro.getBillingVisitType());
-                mockReq.addParameter("xml_vdate", this.getAppointmentDate());
-                mockReq.addParameter("apptProvider_no", appt == null ? "" : appt.getProviderNo());
-                mockReq.addParameter("xml_provider", provider.getProviderNo() + "|" + provider.getOhipNo());
-                mockReq.getSession().setAttribute("user", loggedInInfo.getLoggedInProviderNo());
-
-                BillingSavePrep bObj = new BillingSavePrep();
-                boolean ret = bObj.addABillingRecord(bObj.getBillingClaimObj(mockReq));
-                /*
-                 * not applicable in macro context if (mockReq.getParameter("xml_billtype").substring(0, 3).matches( BillingDataHlp.BILLINGMATCHSTRING_3RDPARTY)) { mockReq.addParameter("billto", macro.getBillingBillto()); mockReq.addParameter("remitto",
-                 * macro.getBillingRemitto()); mockReq.addParameter("gstBilledTotal", macro .getBillingGstBilledTotal()); mockReq.addParameter("payment", macro.getBillingPayment()); mockReq.addParameter("refund", macro.getBillingRefund());
-                 * mockReq.addParameter("gst", macro.getBillingGst()); mockReq.addParameter("payMethod", macro.getBillingPayMethod());
-                 *
-                 * bObj.addPrivateBillExtRecord(mockReq); }
-                 */
-                // int billingNo = bObj.getBillingId();
-
-                // update appt and close the page
-                if (ret) {
-                    if (!this.getAppointmentNo().equals("0")) {
-                        String apptCurStatus = bObj.getApptStatus(this.getAppointmentNo());
-                        oscar.appt.ApptStatusData as = new oscar.appt.ApptStatusData();
-                        String billStatus = as.billStatus(apptCurStatus);
-                        bObj.updateApptStatus(this.getAppointmentNo(), billStatus, this.getProviderNo());
-                    }
-                } else {
-                    //log.error("++++++++++++++ Failed to add billing codes");
-                }
-            }
-        }
-
-        return fwd;
-    }
 
     public String getRefNo(String referal) {
         if (referal == null) return "";
@@ -3171,13 +2949,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         return ref;
     }
 
-    public String getMacroTicklerText(int appointmentNo) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(FollowUp2Action.getTicklerText(appointmentNo));
-        sb.append(ProcedureBook2Action.getTicklerText(appointmentNo));
-        sb.append(TestBook2Action.getTicklerText(appointmentNo));
-        return sb.toString();
-    }
 
     /**
      * gets all the notes
