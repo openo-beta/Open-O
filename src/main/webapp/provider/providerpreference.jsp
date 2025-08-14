@@ -722,16 +722,6 @@
             </tr>
             <tr>
                 <td align="center"><a href=#
-                                      onClick="popupPage(230,860,'../setProviderStaleDate.do?method=viewCobalt');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetCobalt"/></a></td>
-            </tr>
-            <% if (OscarProperties.getInstance().isPropertyActive("SINGLE_PAGE_CHART")) {%>
-            <tr>
-                <td align="center"><a href=#
-                                      onClick="popupPage(230,860,'../setProviderStaleDate.do?method=viewHideOldEchartLinkInAppt');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnHideOldEchartLinkInAppt"/></a></td>
-            </tr>
-            <% } %>
-            <tr>
-                <td align="center"><a href=#
                                       onClick="popupPage(230,860,'../setProviderStaleDate.do?method=viewBornPrefs');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnViewBornPrefs"/></a></td>
             </tr>
             <tr>

@@ -2112,21 +2112,6 @@
 
                                                         <!-- doctor code block 3 -->
                                                         <% if (!isWeekView) { %>
-                                                        <% if (oscar.OscarProperties.getInstance().isPropertyActive("SINGLE_PAGE_CHART")) {
-
-                                                            newUxUrl = "../web/#/record/" + demographic_no + "/";
-
-                                                            if (String.valueOf(demographic_no).equals(record) && !module.equals("summary")) {
-                                                                newUxUrl = newUxUrl + module;
-                                                                inContextStyle = "style='color: blue;'";
-                                                            } else {
-                                                                newUxUrl = newUxUrl + "summary?appointmentNo=" + appointment.getId() + "&encType=face%20to%20face%20encounter%20with%20client";
-                                                                inContextStyle = "";
-                                                            }
-                                                        %>
-                                                        &#124;
-                                                        <a href="<%=newUxUrl%>" <%=inContextStyle %>><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.btnE"/>2</a>
-                                                        <%}%>
 
                                                         <% String eURL = "../oscarEncounter/IncomingEncounter.do?providerNo="
                                                                 + loggedInInfo1.getLoggedInProviderNo() + "&appointmentNo="

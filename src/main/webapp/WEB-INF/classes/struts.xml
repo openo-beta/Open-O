@@ -19,12 +19,6 @@
             <result name="success">/admin/lookUpLists/</result>
         </action>
         <action name="admin/oncallClinic" class="org.oscarehr.admin.reports.SaveOnCallClinic2Action"/>
-        <action name="web/dashboard/admin/DashboardManager" class="org.oscarehr.dashboard.admin.ManageDashboard2Action">
-            <result name="success">/web/dashboard/admin/DashboardManager.jsp</result>
-            <result name="unauthorized">/securityError.jsp</result>
-            <result name="error">/failure.jsp</result>
-            <result name="ajax">/web/dashboard/admin/DashboardManager.do</result>
-        </action>
         <action name="web/dashboard/display/DashboardDisplay" class="org.oscarehr.dashboard.display.DisplayDashboard2Action">
             <result name="success">/web/dashboard/display/DashboardDisplay.jsp</result>
             <result name="unauthorized">/securityError.jsp</result>
@@ -133,7 +127,6 @@
             <result name="shelterSelection">/shelterSelection.do</result>
             <result name="LoginTest">/login/LoginTest.jsp</result>
             <result name="programLocation">/location.jsp</result>
-            <result name="cobalt">/web/</result>
             <result name="logout">/logout.jsp</result>
         </action>
         <action name="econsultSSOLogin" class="oscar.login.SSOLogin2Action">
@@ -1530,8 +1523,6 @@
             <result name="genEDocBrowserInMasterFile">/provider/setEDocBrowserInMasterFile.jsp</result>
             <result name="genPatientNameLength">/provider/setPatientNameLength.jsp</result>
             <result name="genDisplayDocumentAs">/provider/setDisplayDocumentAs.jsp</result>
-            <result name="genCobalt">/provider/setCobalt.jsp</result>
-            <result name="genHideOldEchartLinkInAppt">/provider/setHideOldEchartLinkInAppt.jsp</result>
             <result name="genBornPrefs">/provider/setBornPrefs.jsp</result>
             <result name="genAppointmentCardPrefs">/provider/setAppointmentCardPrefs.jsp</result>
             <result name="genDashboardPrefs">/provider/setDashboardPrefs.jsp</result>

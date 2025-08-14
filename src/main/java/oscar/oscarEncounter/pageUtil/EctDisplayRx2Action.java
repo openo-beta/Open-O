@@ -65,10 +65,6 @@ public class EctDisplayRx2Action extends EctDisplayAction {
 
             //set righthand link to same as left so we have visual consistency with other modules
 
-            if (OscarProperties.getInstance().isPropertyActive("RX2")) {
-                // This is temporary for testing the angularRx
-                url = "popupPage(700,1027,'" + winName + "','" + request.getContextPath() + "/webp/#!/record/" + bean.demographicNo + "/rx')";
-            }
             url += "; return false;";
             Dao.setRightURL(url);
             Dao.setRightHeadingID(cmd);  //no menu so set div id to unique id for this action

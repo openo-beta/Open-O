@@ -66,8 +66,7 @@
         AppUser k2aUser = appUserDao.findForProvider(k2aApp.getId(), loggedInInfo.getLoggedInProvider().getProviderNo());
 
         if (k2aUser == null) { %>
-    <div>Please authenticate with K2A using your username and password <a href=""
-                                                                          onclick="window.open('<%=request.getContextPath()%>/web/#/settings');">here</a>
+    <div>Please authenticate with K2A using your username and password in settings
         under the integration tab. Once completed please refresh the page.
     </div>
     <% } else {
