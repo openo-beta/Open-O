@@ -5,11 +5,13 @@ import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.apache.cxf.phase.Phase;
 import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
+import org.apache.logging.log4j.Logger;
 import org.apache.wss4j.dom.handler.WSHandlerConstants;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
+import org.oscarehr.util.MiscUtils;
 
-import java.util.HashMap;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -18,6 +20,7 @@ import java.util.Map;
 public class DynamicWSS4JInInterceptor extends AbstractPhaseInterceptor<SoapMessage> {
     
     private final EdtClientBuilder clientBuilder;
+    private static final Logger logger = MiscUtils.getLogger();
     
     public DynamicWSS4JInInterceptor(EdtClientBuilder clientBuilder) {
         super(Phase.PRE_PROTOCOL);
@@ -27,8 +30,7 @@ public class DynamicWSS4JInInterceptor extends AbstractPhaseInterceptor<SoapMess
     @Override
     public void handleMessage(SoapMessage message) throws Fault {
         try {
-            Document doc = message.getContent(Document.class);
-            boolean hasEncryptedContent = hasEncryptedContent(doc);
+            boolean hasEncryptedContent = hasEncryptedContent(message);
             
             Map<String, Object> wssProps;
             if (hasEncryptedContent) {
@@ -57,13 +59,34 @@ public class DynamicWSS4JInInterceptor extends AbstractPhaseInterceptor<SoapMess
         return props;
     }
 
-    private boolean hasEncryptedContent(Document doc) {
-        if (doc == null) return false;
-        
-        // Check for any encryption-related elements
-        NodeList encryptedData = doc.getElementsByTagNameNS("http://www.w3.org/2001/04/xmlenc#", "EncryptedData");
-        NodeList encryptedKey = doc.getElementsByTagNameNS("http://www.w3.org/2001/04/xmlenc#", "EncryptedKey");
-        
-        return encryptedData.getLength() > 0 || encryptedKey.getLength() > 0;
+    private boolean hasEncryptedContent(SoapMessage message) {
+        String xmlContent = getRawMessageString(message);
+
+        // Check for any encryption-related elements        
+        return xmlContent.contains("EncryptedData") && xmlContent.contains("EncryptedKey");
+    }
+
+    private String getRawMessageString(SoapMessage message) {
+        String xml = "";
+        InputStream is = message.getContent(InputStream.class);
+        if (is == null) {
+            return xml;
+        }
+
+        try (InputStream input = is;
+            ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+
+            byte[] buffer = new byte[4096]; // larger buffer is usually more efficient
+            int len;
+            while ((len = input.read(buffer)) != -1) {
+                bos.write(buffer, 0, len);
+            }
+
+            xml = bos.toString(StandardCharsets.UTF_8.name());
+        } catch (Exception e) {
+            logger.error("Error reading message content", e);
+        }
+
+        return xml;
     }
 }
