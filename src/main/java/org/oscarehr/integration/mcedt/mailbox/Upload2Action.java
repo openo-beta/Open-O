@@ -328,7 +328,7 @@ public class Upload2Action extends ActionSupport {
             try (FileOutputStream outputStream = new FileOutputStream(myFile)) {
                 outputStream.write(Files.readAllBytes(this.getAddUploadFile().toPath()));
                 outputStream.close();
-                addActionError(getText("uploadAction.upload.add.success", new String[]{this.getFileName() + " is succesfully added to the uploads list!"}));
+                addActionMessage(getText("uploadAction.upload.add.success", new String[]{this.getFileName() + " is succesfully added to the uploads list!"}));
             } catch (IOException e) {
                 logger.error("An error has occured with the addUpload file at " + new Date(), e);
 
