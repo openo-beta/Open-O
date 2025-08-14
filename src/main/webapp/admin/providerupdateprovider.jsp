@@ -489,14 +489,6 @@
                         </select>
                         </td>
                     </tr>
-                    <% if (OscarProperties.getInstance().getBooleanProperty("questimed.enabled", "true")) { %>
-                    <tr>
-                        <td align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.provider.formQuestimedUsername"/>:</td>
-                        <td><input type="text" name="questimedUserName"
-                                   value="<%=StringUtils.trimToEmpty(userPropertyDAO.getStringValue(provider_no, UserProperty.QUESTIMED_USERNAME))%>"
-                                   maxlength="255"></td>
-                    </tr>
-                    <%}%>
                     <tr>
                         <td align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.provider.formOfficialFirstName"/>:</td>
                         <td><input type="text" name="officialFirstName"
