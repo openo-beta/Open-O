@@ -51,7 +51,6 @@ import org.oscarehr.util.SpringUtils;
 import oscar.OscarProperties;
 import oscar.log.LogAction;
 import oscar.log.LogConst;
-import oscar.oscarSurveillance.SurveillanceMaster;
 import oscar.util.ConversionUtils;
 import oscar.util.UtilDateUtilities;
 
@@ -306,12 +305,6 @@ public class EctSaveEncounter2Action extends ActionSupport {
             forward = "bill";
         } else if (httpservletrequest.getParameter("btnPressed").equals("Sign,Save and Exit")) {
             forward = "success";
-            SurveillanceMaster sMaster = SurveillanceMaster.getInstance();
-            if (!SurveillanceMaster.surveysEmpty()) {
-                httpservletrequest.setAttribute("demoNo", sessionbean.demographicNo);
-                log.debug("sending to surveillance");
-                forward = "surveillance";
-            }
         } else if (httpservletrequest.getParameter("btnPressed").equals("Verify and Sign")) {
             forward = "success";
         } else if (httpservletrequest.getParameter("btnPressed").equals("Save") || httpservletrequest.getParameter("btnPressed").equals("AutoSave")) {

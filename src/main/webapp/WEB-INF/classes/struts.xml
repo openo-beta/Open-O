@@ -1096,7 +1096,6 @@
             <result name="success">/oscarEncounter/TimeOut.jsp</result>
             <result name="bill">/billing.do</result>
             <result name="splitchart">/oscarEncounter/Index2.jsp?saved=true&amp;splitchart=true</result>
-            <result name="surveillance">/oscarSurveillance/CheckSurveillance.do</result>
             <result name="close">/oscarEncounter/close.jsp</result>
             <result name="concurrencyError">/oscarEncounter/concurrencyError.jsp</result>
         </action>
@@ -1651,19 +1650,9 @@
             <result name="success">/billing/CA/ON/billingEAreport.jsp</result>
             <result name="outside">/billing/CA/ON/billingLreport.jsp</result>
         </action>
-        <action name="oscarSurveillance/CheckSurveillance" class="oscar.oscarSurveillance.CheckSurveillance2Action">
-            <result name="survey">/oscarSurveillance/Surveillance.jsp</result>
-            <result name="close">/oscarEncounter/TimeOut.jsp</result>
-        </action>
         <!--action name="PMmodule/remoteReferal" class="oscar.remotereferal.OscarRemoteReferal2Action">
             <result name="success">/eform/efmshowform_data.jsp</result>
         </action-->
-        <action name="oscarSurveillance/SurveillanceAnswer" class="oscar.oscarSurveillance.SurveillanceAnswer2Action">
-            <result name="survey">/oscarSurveillance/CheckSurveillance.do</result>
-        </action>
-        <action name="oscarSurveillance/CreateSurveillanceFile" class="oscar.oscarSurveillance.CreateSurveillanceFile2Action">
-            <result name="success">/oscarSurveillance/ReportSurvey.jsp</result>
-        </action>
         <action name="oscarWaitingList/SetupDisplayPatientWaitingList" class="oscar.oscarWaitingList.pageUtil.WLSetupDisplayPatientWaitingList2Action">
             <result name="continue">/oscarWaitingList/DisplayPatientWaitingList.jsp</result>
         </action>
@@ -2132,7 +2121,6 @@
             <result name="issueAutoCompletion">/casemgmt/IssueList.jsp</result>
             <result name="issueList_ajax">/casemgmt/noteIssueList.jsp</result>
             <result name="expired">/casemgmt/expired.jsp</result>
-            <result name="surveillance">/oscarSurveillance/CheckSurveillance.do</result>
         </action>
         <action name="OscarChartPrint" class="org.oscarehr.casemgmt.web.EChartPrint2Action"/>
         <action name="ClientImage" class="org.oscarehr.casemgmt.web.ClientImage2Action" method="execute">

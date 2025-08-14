@@ -26,10 +26,6 @@
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 
-<!--
-../oscarSurveillance/CheckSurveillance.do?demographicNo=2&proceed=..%2FoscarEncounter%2FIncomingEncounter.do%3FproviderNo%3D999998%26appointmentNo%3D0%26demographicNo%3D2%26curProviderNo%3D999998%26reason%3D%26encType%3Dface%2Bto%2Bface%2Bencounter%2Bwith%2Bclient%26userName%3Ddoctor%2Boscardoc%26curDate%3D2010-3-3%26appointmentDate%3D2010-3-3%26startTime%3D14%3A49%26status%3DT%26source%3Dcm
-
--->
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     Demographic demographic = null;
@@ -54,6 +50,6 @@
     java.text.SimpleDateFormat sdf2 = new java.text.SimpleDateFormat("kk:mm");
     String curTime = sdf2.format(new java.util.Date());
 
-    response.sendRedirect("../oscarSurveillance/CheckSurveillance.do?demographicNo=" + demographic.getDemographicNo() + "&proceed=..%2FoscarEncounter%2FIncomingEncounter.do%3FproviderNo%3D" + provider.getProviderNo() + "%26appointmentNo%3D0%26demographicNo%3D" + demographic.getDemographicNo() + "%26curProviderNo%3D" + provider.getProviderNo() + "%26reason%3D%26encType%3Dface%2Bto%2Bface%2Bencounter%2Bwith%2Bclient%26userName%3D" + provider.getFormattedName() + "%26curDate%3D" + curDate + "%26appointmentDate%3D" + curDate + "%26startTime%3D" + curTime + "%26status%3DT%26source%3Dcm");
+    response.sendRedirect("../oscarEncounter/IncomingEncounter.do?providerNo=" + provider.getProviderNo() + "&appointmentNo=0&demographicNo=" + demographic.getDemographicNo() + "&curProviderNo=" + provider.getProviderNo() + "&reason=&encType=face+to+face+encounter+with+client&userName=" + provider.getFormattedName() + "&curDate=" + curDate + "&appointmentDate=" + curDate + "&startTime=" + curTime + "&status=T&source=cm");
 
 %>

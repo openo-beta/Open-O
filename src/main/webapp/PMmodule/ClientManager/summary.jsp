@@ -883,7 +883,7 @@
         %>
         <c:if test="${admission.programType != 'community'}">
             <a href=#
-               onClick="popupPage(710, 1024,'../oscarSurveillance/CheckSurveillance.do?programId=<%=tempAdmission.getProgramId()%>&demographicNo=<%=demographic_no%>&proceed=<%=java.net.URLEncoder.encode(eURL)%>');return false;"
+               onClick="popupPage(710, 1024,'<%=eURL%>');return false;"
                title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.encounter"/>">
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.btnEncounter"/>
             </a>
