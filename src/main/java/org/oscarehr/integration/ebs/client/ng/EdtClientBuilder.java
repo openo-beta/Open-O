@@ -313,7 +313,7 @@ public class EdtClientBuilder {
     protected String getCxfInHandlerDirectives() {
         return WSHandlerConstants.TIMESTAMP + " "
              + WSHandlerConstants.SIGNATURE + " "
-             + WSHandlerConstants.ENCRYPT;  // This means "decrypt incoming encrypted content"
+             + WSHandlerConstants.ENCRYPTION;  // This means "decrypt incoming encrypted content"
     }
 
     /**
