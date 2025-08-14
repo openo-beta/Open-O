@@ -14,13 +14,14 @@ import java.io.InputStream;
 import java.util.Map;
 
 /**
- * Custom interceptor that dynamically configures WSS4J based on message content
+ * Custom interceptor that dynamically configures WSS4J based on message content.
+ * Detects encryption in the SOAP body and/or attachments, and configures actions accordingly.
  */
 public class DynamicWSS4JInInterceptor extends AbstractPhaseInterceptor<Message> {
-    
+
     private final EdtClientBuilder clientBuilder;
     private static final Logger logger = MiscUtils.getLogger();
-    
+
     public DynamicWSS4JInInterceptor(EdtClientBuilder clientBuilder) {
         super(Phase.RECEIVE);
         this.clientBuilder = clientBuilder;
@@ -29,33 +30,51 @@ public class DynamicWSS4JInInterceptor extends AbstractPhaseInterceptor<Message>
     @Override
     public void handleMessage(Message message) {
         try {
-            boolean hasEncryptedContent = hasEncryptedContent(message);
-            
+            EncryptionDetectionResult detection = detectEncryption(message);
+
             Map<String, Object> wssProps = clientBuilder.newWSSInInterceptorConfiguration();
-            if (!hasEncryptedContent) {
-                // Use limited configuration without decryption
-                // Only timestamp and signature verification - no decryption (updating WSHandlerConstants.ACTION prop)
-                wssProps.put(WSHandlerConstants.ACTION, WSHandlerConstants.TIMESTAMP + " " + WSHandlerConstants.SIGNATURE);
+
+            if (!detection.hasEncryption) {
+                // No encryption → only timestamp and signature verification
+                wssProps.put(WSHandlerConstants.ACTION,
+                        WSHandlerConstants.TIMESTAMP + " " + WSHandlerConstants.SIGNATURE);
+            } else if (detection.hasAttachmentEncryption) {
+                // Both SOAP body and attachment encryption → encryption action twice
+                wssProps.put(WSHandlerConstants.ACTION,
+                        WSHandlerConstants.TIMESTAMP + " " + WSHandlerConstants.SIGNATURE + " "
+                                + WSHandlerConstants.ENCRYPTION + " " + WSHandlerConstants.ENCRYPTION);
+            } else {
+                // Only one encryption block
+                wssProps.put(WSHandlerConstants.ACTION,
+                        WSHandlerConstants.TIMESTAMP + " " + WSHandlerConstants.SIGNATURE + " " + WSHandlerConstants.ENCRYPTION);
             }
-            
-            // Create and invoke WSS4J interceptor with appropriate configuration
+
+            // Add WSS4J interceptor to chain with appropriate configuration
             WSS4JInInterceptor wssInterceptor = new WSS4JInInterceptor(wssProps);
             message.getInterceptorChain().add(wssInterceptor);
-            
+
         } catch (Exception e) {
             throw new Fault(e);
         }
     }
 
-    private boolean hasEncryptedContent(Message message) {
-        boolean hasEncrypted = false;
+    private static class EncryptionDetectionResult {
+        boolean hasEncryption;
+        boolean hasAttachmentEncryption;
+    }
+
+    /**
+     * Detects if the incoming message has encryption in the SOAP body or encrypted attachments.
+     */
+    private EncryptionDetectionResult detectEncryption(Message message) {
+        EncryptionDetectionResult result = new EncryptionDetectionResult();
         try {
             InputStream is = message.getContent(InputStream.class);
             if (is == null) {
-                return hasEncrypted;
+                logger.warn("No InputStream found in message when detecting encryption.");
+                return result;
             }
 
-            // Copy stream to buffer so CXF can still read it later
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
             int len;
@@ -65,14 +84,26 @@ public class DynamicWSS4JInInterceptor extends AbstractPhaseInterceptor<Message>
 
             String xml = bos.toString("UTF-8");
 
-            // Reset stream so CXF can process the message normally
-            message.setContent(InputStream.class, 
-                new java.io.ByteArrayInputStream(bos.toByteArray()));
+            // Reset stream so CXF can still process it downstream
+            message.setContent(InputStream.class,
+                    new java.io.ByteArrayInputStream(bos.toByteArray()));
 
-            return xml.contains("<wsse:EncryptedData") || xml.contains("<xenc:EncryptedData");
+            // Detect body encryption markers
+            if (xml.contains("<wsse:EncryptedData") || xml.contains("<xenc:EncryptedData")) {
+                result.hasEncryption = true;
+            }
+
+            // Detect attachment encryption markers
+            if (xml.contains("Attachment-Content-Only")) {
+                result.hasAttachmentEncryption = true;
+            }
+
+            logger.debug("Encryption detection result: hasEncryption={}, hasAttachmentEncryption={}",
+                    result.hasEncryption, result.hasAttachmentEncryption);
+
         } catch (Exception e) {
-            logger.error("Error reading message content", e);
+            logger.error("Error reading message content for encryption detection", e);
         }
-        return hasEncrypted;
+        return result;
     }
 }
