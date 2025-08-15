@@ -489,9 +489,6 @@
                     </caisi:isModuleLoad>
                     <li><a href="${pageContext.request.contextPath}/oscarReport/cds_4_report_form.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.cdsRpt"/></a></li>
                     <li><a href="${pageContext.request.contextPath}/oscarReport/mis_report_form.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.misRpt"/></a></li>
-                    <li><a href="${pageContext.request.contextPath}/oscarReport/ocan_report_form.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.ocanRpt"/></a></li>
-                    <li><a href="${pageContext.request.contextPath}/oscarReport/ocan_iar.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.ocanIarRpt"/></a></li>
-                    <li><a href="${pageContext.request.contextPath}/oscarReport/ocan_reporting.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.ocanReporting"/></a></li>
                     <li><a href="${pageContext.request.contextPath}/oscarReport/cbi_submit_form.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.cbiSubmit"/></a></li>
                     <li><a href="${pageContext.request.contextPath}/admin/cbiAdmin.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.cbi.reportlink"/></a></li>
                     <li><a href="${pageContext.request.contextPath}/oscarReport/cbi_report_form.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.cbiRpt"/></a></li>

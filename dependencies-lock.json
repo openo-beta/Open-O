@@ -1234,30 +1234,6 @@
     "optional" : false,
     "integrity" : "sha512:XLrAyogt9NN4GXOZ69bE4crUKMER6+xw6m0qbGSYXI1DlKpWr6fOW9Qxp2wppKuSI4Wk7BnXbAO5nvMS5IJSZQ=="
   }, {
-    "groupId" : "ocan",
-    "artifactId" : "ocan-iar-consent",
-    "version" : "UNKNOWN",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:fkHddlaDsoboFxGAVzpe75AN6tEEBMWjyyZQ2BhZmnoGCjbB8IVjbcJHxEVAomRGv1evSFtqm76TFuCAYNDZoA=="
-  }, {
-    "groupId" : "ocan",
-    "artifactId" : "ocan-iar",
-    "version" : "3.0",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:YCng8qXO3zS6A7T7I1loSsj0a0G8PYTMMqWZrUjENWPfmoEdPhOtg2BkSiy4z7pzb3nyS1hbBUM4v+Ar1nTyvA=="
-  }, {
-    "groupId" : "ocan",
-    "artifactId" : "ocan",
-    "version" : "0.0-SNAPSHOT",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:hUByYB2ChBUVewXEy5ZEMTAVd84A5PTR6TCnDvEMFcnRmTKabCAS498Oe9NifdDItoF+Aa3R8mN37lR62oqR7g=="
-  }, {
     "groupId" : "ognl",
     "artifactId" : "ognl",
     "version" : "3.1.29",

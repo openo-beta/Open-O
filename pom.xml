@@ -654,13 +654,6 @@
             <version>1.5.4</version>
         </dependency>
 
-        <!-- ocan.jar, suspect this is generated classes and should be removed as a jar in the future -->
-        <!-- can be found in the local_repo folder -->
-        <dependency>
-            <groupId>ocan</groupId>
-            <artifactId>ocan</artifactId>
-            <version>0.0-SNAPSHOT</version>
-        </dependency>
 
         <!-- FOR BORN Project - AR2005 in XML format -->
         <!-- can be found in the local_repo folder -->
@@ -846,17 +839,6 @@
             <version>2.3.2</version>
         </dependency>
 
-        <!-- ocan: can be found in the local_repo folder -->
-        <dependency>
-            <groupId>ocan</groupId>
-            <artifactId>ocan-iar</artifactId>
-            <version>3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>ocan</groupId>
-            <artifactId>ocan-iar-consent</artifactId>
-            <version>UNKNOWN</version>
-        </dependency>
 
         <dependency>
             <groupId>com.jcraft</groupId>
@@ -1284,9 +1266,6 @@
                 <directory>${basedir}/src/main/resources</directory>
                 <filtering>true</filtering>
                 <excludes>
-                    <exclude>
-                        ${basedir}/src/main/resources/oscar/ocan
-                    </exclude>
                 </excludes>
             </resource>
         </resources>
