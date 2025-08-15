@@ -81,56 +81,6 @@ public class Agency implements Serializable {
         this.setIntakeIndepthState(intakeIndepthState);
     }
 
-    public boolean areHousingProgramsVisible(String intakeType) {
-        boolean visible = false;
-
-        if (Intake.QUICK.equalsIgnoreCase(intakeType)) {
-            visible = getIntakeQuickState().contains("H");
-        } else if (Intake.INDEPTH.equalsIgnoreCase(intakeType)) {
-            visible = getIntakeIndepthState().contains("H");
-        }
-
-        return visible;
-    }
-
-    public boolean areCommunityProgramsVisible(String intakeType) {
-        boolean visible = false;
-
-        if (Intake.QUICK.equalsIgnoreCase(intakeType)) {
-            visible = getIntakeQuickState().contains("C");
-        } else if (Intake.INDEPTH.equalsIgnoreCase(intakeType)) {
-            visible = getIntakeIndepthState().contains("C");
-        }
-
-        return visible;
-    }
-
-    public boolean areServiceProgramsVisible(String intakeType) {
-        boolean visible = false;
-
-        if (Intake.QUICK.equalsIgnoreCase(intakeType)) {
-            visible = getIntakeQuickState().contains("S");
-        } else if (Intake.INDEPTH.equalsIgnoreCase(intakeType)) {
-            visible = getIntakeIndepthState().contains("S");
-        }
-
-        return visible;
-    }
-
-    public boolean areExternalProgramsVisible(String intakeType) {
-        boolean visible = false;
-
-        if (Intake.QUICK.equalsIgnoreCase(intakeType)) {
-            //"S" should be changed to be "E" in the future if still use this external program function.
-            visible = getIntakeQuickState().contains("S");
-        } else if (Intake.INDEPTH.equalsIgnoreCase(intakeType)) {
-            //"S" should be changed to be "E" in the future if still use this external program function.
-            visible = getIntakeIndepthState().contains("S");
-        }
-
-        return visible;
-    }
-
     /**
      * Return the unique identifier of this class generator-class="native" column="id"
      */

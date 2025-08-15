@@ -36,10 +36,8 @@ import java.util.TimerTask;
 import javax.xml.bind.JAXBException;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.service.GenericIntakeManager;
 import org.oscarehr.util.DbConnectionFilter;
 import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.ShutdownException;
 
 import oscar.ocan.service.OcanDataProcessor;
 import oscar.ocan.service.OcanDataProcessor.OcanProcess;
@@ -48,15 +46,11 @@ public class OcanSubmissionTask extends TimerTask {
 
     private static final Logger logger = org.oscarehr.util.MiscUtils.getLogger();
 
-    private GenericIntakeManager genericIntakeManager;
     private OcanDataProcessor ocanDataProcessor;
 
     private boolean useTestData;
     private String testDataPath;
 
-    public void setGenericIntakeManager(GenericIntakeManager genericIntakeManager) {
-        this.genericIntakeManager = genericIntakeManager;
-    }
 
     public void setOcanDataProcessor(OcanDataProcessor ocanDataProcessor) {
         this.ocanDataProcessor = ocanDataProcessor;
@@ -76,39 +70,14 @@ public class OcanSubmissionTask extends TimerTask {
                         new FileInputStream(testDataPath + "/staff.xml"),
                         "1001");
             } else {
-
-                Calendar after = new GregorianCalendar();
-                after.roll(Calendar.MONTH, -1);
-
-                List<Map<String, String>> intakes = genericIntakeManager.getIntakeListforOcan(after);
-
-                if (intakes == null || intakes.size() == 0) {
-                    logger.warn("getIntakeListforOcan() returned null or empty list - no data for submission.");
-                    return;
-                }
-
-                for (Map<String, String> intakeMap : intakes) {
-                    MiscUtils.checkShutdownSignaled();
-
-                    try {
-                        ocanDataProcessor.createOcanRecord(process,
-                                new ByteArrayInputStream(intakeMap.get("client").getBytes()),
-                                new ByteArrayInputStream(intakeMap.get("staff").getBytes()),
-                                intakeMap.get("clientId"));
-
-                    } catch (Exception e) {
-                        logger.error("createOcanRecord() thrown an exception, skipping the record.", e);
-                        continue;
-                    }
-                }
+                logger.warn("OCAN submission not supported - intake functionality removed.");
+                return;
             }
 
             ocanDataProcessor.finishOcanProcess(process);
 
             logger.info("finish ocan submission task");
 
-        } catch (ShutdownException e) {
-            logger.debug("OcanSubmissionTask noticed shutdown signaled.");
         } catch (FileNotFoundException e) {
             logger.error("finishOcanProcess() thrown an exception, terminating the submission.", e);
         } catch (JAXBException e) {

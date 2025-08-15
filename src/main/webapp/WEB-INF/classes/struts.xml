@@ -438,7 +438,6 @@
             <result name="failure">/oscarEncounter/error.jsp</result>
         </action>
         <action name="form/forwardshortcutname" class="oscar.form.pageUtil.FormForward2Action"/>
-        </action>
         <action name="form/SetupForm" class="oscar.form.pageUtil.FrmSetupForm2Action"/>
         <action name="form/SubmitForm" class="oscar.form.pageUtil.FrmForm2Action"/>
         <action name="oscarEncounter/displayLabs" class="oscar.oscarEncounter.pageUtil.EctDisplayLabAction22Action">
@@ -1887,12 +1886,6 @@
         </action>
         <!--action name="billing/CA/BC/DownloadBilling" class="oscar.oscarBilling.ca.bc.pageUtil.DownloadFile2Action"/-->
         <!-- ticklerPlus actions removed -->
-        <action name="PMmodule/StreetHealthIntakeReportAction" class="org.oscarehr.PMmodule.streethealth.StreetHealthIntakeReport2Action">
-            <result name="success">/PMmodule/StreetHealthIntakeReport.jsp</result>
-            <result name="download">/PMmodule/StreetHealthIntakeReportDownload.jsp</result>
-            <result name="error">/PMmodule/StreetHealthIntakeReport.jsp</result>
-            <result name="timeout">/PMmodule/Timeout.jsp</result>
-        </action>
         <action name="PMmodule/ProgramManager" class="org.oscarehr.PMmodule.web.admin.ProgramManager2Action" method="execute">
             <result name="list">page.pmm.admin.list</result>
             <result name="edit">page.pmm.admin.edit</result>
@@ -1910,7 +1903,6 @@
             <result name="viewBedReservationChangeReport">/PMmodule/Admin/ProgramView/bed_reservation_change_report.jsp</result>
             <result name="viewBedCheckReport">/PMmodule/Admin/ProgramView/bed_check_report.jsp</result>
             <result name="service_restriction_error">page.pmm.program.service_restriction_error</result>
-            <result name="searchForm">/PMmodule/GenericIntake/Search.do</result>
         </action>
         <action name="PMmodule/AgencyManager" class="org.oscarehr.PMmodule.web.admin.AgencyManager2Action" method="execute">
             <result name="view">page.pmm.admin.agency.view</result>
@@ -1948,7 +1940,6 @@
             <result name="view_admission">/PMmodule/ClientManager/view_admission.jsp</result>
             <result name="service_restriction_error">page.pmm.client.service_restriction_error</result>
             <result name="generalFormsReport">/PMmodule/GeneralFormsReport.jsp</result>
-            <result name="intake-search">/PMmodule/GenericIntake/Search</result>
         </action>
         <action name="PMmodule/ProviderInfo" class="org.oscarehr.PMmodule.web.ProviderInfo2Action" method="execute">
             <result name="view">page.pmm.provider.view</result>
@@ -1960,22 +1951,6 @@
         <action name="PMmodule/StaffManager" class="org.oscarehr.PMmodule.web.admin.StaffManager2Action" method="execute">
             <result name="list">page.pmm.staff.list</result>
             <result name="edit">page.pmm.staff.edit</result>
-        </action>
-        <action name="PMmodule/GenericIntake/Search" class="org.oscarehr.PMmodule.web.GenericIntakeSearch2Action" method="execute">
-            <result name="searchForm">page.genericIntake.search</result>
-            <result name="intakeEdit">/PMmodule/GenericIntake/Edit.do</result>
-            <result name="clientEdit">/PMmodule/ClientManager.do?method=edit</result>
-        </action>
-        <action name="PMmodule/GenericIntake/Edit" class="org.oscarehr.PMmodule.web.GenericIntakeEdit2Action" method="execute">
-            <result name="edit">/PMmodule/GenericIntake/Edit.jsp</result>
-            <result name="print">/PMmodule/GenericIntake/PrintPreview.jsp</result>
-            <result name="clientEdit">/PMmodule/ClientManager.do</result>
-            <result name="eformAdd">/eform/efmformadd_data.jsp</result>
-            <result name="appointment">/appointment/addappointment.jsp</result>
-            <result name="providerView">/PMmodule/ProviderInfo.do?method=view</result>
-        </action>
-        <action name="PMmodule/GenericIntake/Report" class="org.oscarehr.PMmodule.web.GenericIntakeReport2Action" method="execute">
-            <result name="report">/PMmodule/GenericIntake/Report.jsp</result>
         </action>
         <action name="PMmodule/Admin/DefaultRoleAccess" class="org.oscarehr.PMmodule.web.admin.DefaultRoleAccess2Action" method="execute">
             <result name="list">page.pmm.admin.defaultroleaccess.list</result>

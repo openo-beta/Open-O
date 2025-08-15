@@ -72,8 +72,6 @@
             dojo.require("dojo.validate.*");
         </script>
 
-        <script type="text/javascript"
-                src="${request.contextPath}/js/genericIntake.js"></script>
 
         <script type="text/javascript" src="${request.contextPath}/js/jquery.js"></script>
         <script type="text/javascript" src="${request.contextPath}/js/topnav.js"></script>

@@ -101,9 +101,9 @@
 
         alert("Generating report from " + startDate + " to " + endDate + ". Please note: it is normal for the generation process to take up to a few minutes to complete, be patient.");
 
-        var url = '<%=request.getContextPath() %>/PMmodule/GenericIntake/Report.do?' + 'nodeId=' + nodeId + '&method=report' + '&type=&startDate=' + startDate + '&endDate=' + endDate + '&includePast=' + includePast;
+        alert("This functionality has been removed.");
+        return;
 
-        popupPage2(url, "IntakeReport" + nodeId);
     }
 </script>
 

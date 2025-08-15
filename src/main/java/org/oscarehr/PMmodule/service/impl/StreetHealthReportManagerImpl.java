@@ -29,8 +29,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.PMmodule.model.Intake;
-import org.oscarehr.PMmodule.service.GenericIntakeManager;
 import org.oscarehr.PMmodule.service.StreetHealthReportManager;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.util.MiscUtils;
@@ -42,15 +40,11 @@ public class StreetHealthReportManagerImpl implements StreetHealthReportManager 
     private Logger log = MiscUtils.getLogger();
 
     private DemographicDao demographicDao;
-    private GenericIntakeManager intakeMgr;
 
     public void setDemographicDao(DemographicDao dao) {
         this.demographicDao = dao;
     }
 
-    public void setGenericIntakeManager(GenericIntakeManager mgr) {
-        this.intakeMgr = mgr;
-    }
 
     public List getCohort(Date beginDate, Date endDate, int facilityId) {
         List<Demographic> clients = demographicDao.getClients();
@@ -65,51 +59,10 @@ public class StreetHealthReportManagerImpl implements StreetHealthReportManager 
             log.debug("Getting Cohort: " + beginDate + " to " + endDate);
         }
 
-        for (int x = 0; x < clients.size(); x++) {
-            Demographic client = clients.get(x);
-            if (client.getPatientStatus().equals("AC")) {
-                // get current intake
+        // Intake functionality removed - cannot generate cohort data
+        log.warn("Street Health Report cohort generation not available - intake functionality removed.");
 
-                Intake intake = this.intakeMgr.getMostRecentQuickIntake(client.getDemographicNo(), facilityId);
-
-                if (intake == null) {
-                    continue;
-                }
-
-                // parse date
-                Date admissionDate = null;
-                try {
-                    //admissionDate = formatter.parse(intake.getAnswerKeyValues().get("Admission Date"));
-                    admissionDate = intake.getCreatedOn().getTime();
-                } catch (Exception e) {
-                }
-                if (admissionDate == null) {
-                    log.warn("invalid admission date for client #" + client.getDemographicNo());
-                    continue;
-                }
-                // does it belong in this cohort?
-                if (beginDate != null && endDate != null) {
-                    if (admissionDate.after(beginDate) && admissionDate.before(endDate)) {
-                        log.debug("admissionDate=" + admissionDate);
-                        // ok, add this client
-                        Object[] ar = new Object[2];
-                        ar[0] = intake;
-                        ar[1] = client;
-                        results.add(ar);
-                    }
-                }
-                if (beginDate == null && admissionDate.before(endDate)) {
-                    log.debug("admissionDate=" + admissionDate);
-                    // ok, add this client
-                    Object[] ar = new Object[2];
-                    ar[0] = intake;
-                    ar[1] = client;
-                    results.add(ar);
-                }
-            }
-        }
-
-        log.info("getCohort: found " + results.size() + " results. (" + beginDate + " - " + endDate + ")");
+        log.info("getCohort: no results available - intake functionality removed. (" + beginDate + " - " + endDate + ")");
 
         return results;
     }

@@ -102,14 +102,6 @@
         location.href = url;
     }
 
-    function updateQuickIntake(clientId) {
-        location.href = '<%=request.getContextPath() %>/PMmodule/GenericIntake/Edit.do?method=update&type=quick&clientId=' + clientId;
-    }
-
-    function printQuickIntake(clientId, intakeId) {
-        url = '<%=request.getContextPath() %>/PMmodule/GenericIntake/Edit.do?method=print&type=quick&clientId=' + clientId + "&intakeId=" + intakeId;
-        window.open(url, 'quickIntakePrint', 'width=1024,height=768,scrollbars=1');
-    }
 
     function openHealthSafety() {
         var url = '<%=request.getContextPath() %>/PMmodule/HealthSafety.do';
@@ -517,7 +509,7 @@
 <div class="tabs">
     <table cellpadding="3" cellspacing="0" border="0">
         <tr>
-            <th>Intake Form/Follow up Intake forms</th>
+            <th>Forms</th>
         </tr>
     </table>
 </div>
@@ -531,39 +523,6 @@
         <th>Actions</th>
     </tr>
     </thead>
-    <tr>
-        <td width="20%">Registration Intake</td>
-        <c:if test="${mostRecentQuickIntake != null}">
-            <td><c:out value="${mostRecentQuickIntake.createdOnStr}"/></td>
-            <td><c:out value="${mostRecentQuickIntake.staffName}"/></td>
-            <td><c:out value="${mostRecentQuickIntake.intakeStatus}"/></td>
-            <td>
-                <%
-                    if (!UserRoleUtils.hasRole(request, UserRoleUtils.Roles.external)) {
-                        if (caisiSearchWorkflow) {
-                %> <input type="button" value="Update"
-                          onclick="updateQuickIntake('<c:out value="${client.demographicNo}"/>')"/>&nbsp;
-                <%
-                        }
-                    }
-                %> <input type="button" value="Print Preview"
-                          onclick="printQuickIntake('<c:out value="${client.demographicNo}"/>', '<c:out
-                                  value="${mostRecentQuickIntake.id}"/>')"/>
-            </td>
-        </c:if>
-        <c:if test="${mostRecentQuickIntake == null}">
-            <td><span style="color: red">None found</span></td>
-            <td></td>
-            <td>
-                <%
-                    if (caisiSearchWorkflow) {
-                %>
-                <input type="button" value="Create"
-                       onclick="updateQuickIntake('<c:out value="${client.demographicNo}"/>')"/>
-                <% } %>
-            </td>
-        </c:if>
-    </tr>
     <%
         List<CdsClientForm> allLatestCdsForms = (List<CdsClientForm>) request.getAttribute("allLatestCdsForms");
         if (allLatestCdsForms != null && allLatestCdsForms.size() > 0) {

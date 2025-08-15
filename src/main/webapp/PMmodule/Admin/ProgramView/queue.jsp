@@ -124,9 +124,6 @@
         popup("caseManagement" + clientId, "../oscarEncounter/IncomingEncounter.do?case_program_id=" + programId + "&demographicNo=" + clientId + "&status=B");
     }
 
-    function admitFromRemote(remoteReferralId) {
-        window.location = "<%=request.getContextPath()%>/PMmodule/GenericIntake/Search.do?method=searchFromRemoteAdmit&remoteReferralId=" + remoteReferralId;
-    }
 
     function removeFromRemoteQueue(remoteReferralId) {
         var form = document.programManagerViewForm;
@@ -450,10 +447,6 @@
         <display:setProperty name="paging.banner.placement" value="bottom"/>
         <display:setProperty name="basic.msg.empty_list"
                              value="Queue is empty."/>
-        <display:column sortable="false" title="">
-            <input type="button" value="Admit"
-                   onclick="admitFromRemote('<c:out value="${queue_entry.referral.referralId}"/>')"/>
-        </display:column>
         <display:column sortable="false" title="">
             <input type="button" value="Reject"
                    onclick="removeFromRemoteQueue('<c:out value="${queue_entry.referral.referralId}"/>')"/>

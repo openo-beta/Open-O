@@ -30,9 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.swing.Spring;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.model.Intake;
 import org.oscarehr.PMmodule.service.ClientManager;
-import org.oscarehr.PMmodule.service.GenericIntakeManager;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
@@ -48,7 +46,6 @@ public class VaccineProviderReport2Action extends ActionSupport {
     private static Logger log = MiscUtils.getLogger();
 
     private ClientManager clientManager = SpringUtils.getBean(ClientManager.class);
-    private GenericIntakeManager genericIntakeManager= SpringUtils.getBean(GenericIntakeManager.class);
 
     protected void postMessage(HttpServletRequest request, String key, String val) {
         addActionMessage(getText(key, val));
@@ -101,11 +98,9 @@ public class VaccineProviderReport2Action extends ActionSupport {
         //List allergies = this.caseManagementManager.getAllergies(clientId);
         //request.setAttribute("allergies",allergies);
 
-        Intake quickIntake = genericIntakeManager.getMostRecentQuickIntake(Integer.parseInt(clientId), loggedInInfo.getCurrentFacility().getId());
-        Map<String, String> answerMap = quickIntake.getAnswerKeyValues();
-        String allergies = answerMap.get("Allergies");
-        request.setAttribute("allergies", allergies);
-        request.setAttribute("intakeMap", answerMap);
+        // No intake data available - functionality removed
+        request.setAttribute("allergies", "N/A - Intake data not available");
+        request.setAttribute("intakeMap", new java.util.HashMap<String, String>());
 
 
         return "report";

@@ -58,7 +58,6 @@
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.managers.ProgramManager2" %>
 <%@page import="org.oscarehr.PMmodule.model.Program" %>
-<%@page import="org.oscarehr.PMmodule.web.GenericIntakeEditAction" %>
 <%@page import="org.oscarehr.PMmodule.model.ProgramProvider" %>
 <%@page import="org.oscarehr.managers.PatientConsentManager" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -4764,14 +4763,18 @@
                                                                             <select id="rsid" name="rps">
                                                                                 <option value=""></option>
                                                                                 <%
-                                                                                    GenericIntakeEditAction gieat = new GenericIntakeEditAction();
-                                                                                    gieat.setProgramManager(pm);
-
-
                                                                                     String _pvid = loggedInInfo.getLoggedInProviderNo();
-                                                                                    Set<Program> pset = gieat.getActiveProviderProgramsInFacility(loggedInInfo, _pvid, loggedInInfo.getCurrentFacility().getId());
-                                                                                    List<Program> bedP = gieat.getBedPrograms(pset, _pvid);
-                                                                                    List<Program> commP = gieat.getCommunityPrograms();
+                                                                                    ProgramManager tempPm = SpringUtils.getBean(ProgramManager.class);
+                                                                                    
+                                                                                    // Get provider's programs for permission checking - recreating getActiveProviderPrograms logic
+                                                                                    Set<Program> pset = new HashSet<Program>();
+                                                                                    for (Program providerProgram : tempPm.getProgramDomain(_pvid)) {
+                                                                                        if (providerProgram != null && providerProgram.isActive()) {
+                                                                                            pset.add(providerProgram);
+                                                                                        }
+                                                                                    }
+                                                                                    
+                                                                                    Program[] bedP = tempPm.getBedPrograms();
                                                                                     Program oscarp = programDao.getProgramByName("OSCAR");
 
 
