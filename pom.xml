@@ -772,33 +772,6 @@
         <!-- chip / ping libararies -->
         <!-- Detected as "Unused dependency" but don't remove it, it's using in jsp -->
         <!-- can be found in the local_repo folder -->
-        <dependency>
-            <groupId>org.chip.ping</groupId>
-            <artifactId>oscar-ping</artifactId>
-            <version>UNKNOWN</version>
-        </dependency>
-        <dependency>
-            <groupId>org.chip.ping</groupId>
-            <artifactId>ping-client</artifactId>
-            <version>UNKNOWN</version>
-        </dependency>
-        <!-- Detected as "Unused dependency" but don't remove it, caused 404 error after removing -->
-        <dependency>
-            <groupId>org.chip.ping</groupId>
-            <artifactId>ping-core</artifactId>
-            <version>UNKNOWN</version>
-        </dependency>
-        <!-- Detected as "Unused dependency" but don't remove it, it's using in jsp -->
-        <dependency>
-            <groupId>org.chip.ping</groupId>
-            <artifactId>ping-server</artifactId>
-            <version>UNKNOWN</version>
-        </dependency>
-        <dependency>
-            <groupId>org.chip.ping</groupId>
-            <artifactId>ping-xml</artifactId>
-            <version>UNKNOWN</version>
-        </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.github.jtidy/jtidy -->
         <dependency>

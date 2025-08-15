@@ -2394,46 +2394,6 @@
     "optional" : false,
     "integrity" : "sha512:H7EdGdjGNkC0xAkHqAOEtBdpJPYOR9h7TGz2EaBiy6QiDZkMCLhTawNA/TKYXAj5aWUK/TNgpb0ojs2JEk8Zow=="
   }, {
-    "groupId" : "org.chip.ping",
-    "artifactId" : "oscar-ping",
-    "version" : "UNKNOWN",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:sj91nb5y7e6cdCBdjKndkAP5MQQ6nYEkiWLiSilwAbYrs+EJhNNpyFGhzkSeWDEV2sRHm71MDLfW+mkl7U7KDQ=="
-  }, {
-    "groupId" : "org.chip.ping",
-    "artifactId" : "ping-client",
-    "version" : "UNKNOWN",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:QD8lrKN6j4wu/alZBuIV5NO1tRf8ecgpU4I7OCmFdHBAKNGSe42okxlUA95lIp/c2EQIn+gBqfXkq1FHC9l3pA=="
-  }, {
-    "groupId" : "org.chip.ping",
-    "artifactId" : "ping-core",
-    "version" : "UNKNOWN",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:emsvMDhWsKiWIu8UpkSFfu33aZElMFHYeeqt8Q3kj+bbgjryF4I/fy0L0a5U10FiQ+/EwPjSzWgS6rrbRfa9Cw=="
-  }, {
-    "groupId" : "org.chip.ping",
-    "artifactId" : "ping-server",
-    "version" : "UNKNOWN",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:i96S4iPe8FXkZuzv7lYMHYIaeT/2MmMjxSJTDXnK6hju02rVzYXKr8tRDCYX9Rk5BVm6HO+oY7LJ+812ePBjHQ=="
-  }, {
-    "groupId" : "org.chip.ping",
-    "artifactId" : "ping-xml",
-    "version" : "UNKNOWN",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:ooULyoBxoCFj1Rv4w+OUv9ucUrIf6jb8k5zcq9ghp8hLiQZuhCINytUKhPPlGEglf7z5GDLBHTyTjTVimb42DQ=="
-  }, {
     "groupId" : "org.codehaus.castor",
     "artifactId" : "castor-core",
     "version" : "1.4.1",
