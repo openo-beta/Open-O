@@ -238,10 +238,6 @@ public class OscarProperties extends Properties {
         return oscarProperties.getProperty("buildVersion");
     }
 
-    public boolean isOscarLearning() {
-        return isPropertyActive("OSCAR_LEARNING");
-    }
-
     public boolean faxEnabled() {
         return isPropertyActive("enableFax");
     }
