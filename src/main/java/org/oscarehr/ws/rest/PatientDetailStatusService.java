@@ -125,47 +125,28 @@ public class PatientDetailStatusService extends AbstractServiceImpl {
     @GET
     @Path("/validateHC")
     public HCValidationResult validateHC(@QueryParam("hin") String healthCardNo, @QueryParam("ver") String versionCode) {
-        System.out.println("Starting validateHC with HIN: " + healthCardNo + ", Version: " + versionCode);
-
         HCValidator validator = HCValidationFactory.getHCValidator();
         HCValidationResult result = null;
 
-        System.out.println("Validator class: " + validator.getClass().getName());
-
         if (validator.getClass().equals(OnlineHCValidator.class)) {
-            System.out.println("Using simple validator as fallback because validator is OnlineHCValidator.");
             HCValidator simpleValidator = HCValidationFactory.getSimpleValidator();
             result = simpleValidator.validate(healthCardNo, versionCode);
 
-            System.out.println("Simple validator result: " + (result != null ? result.isValid() : "null"));
-
-            if (result.isValid()) {
-                System.out.println("Simple validator returned valid. Skipping online validation.");
-                result = null;
-            }
+            if (result.isValid()) result = null;
         }
 
         if (result == null) {
             try {
-                System.out.println("Calling online validator.");
                 result = validator.validate(healthCardNo, versionCode);
             } catch (Exception ex) {
-                System.out.println("Exception occurred during online validation: " + ex.getMessage());
                 logger.error("Error doing HCValidation", ex);
             }
         }
 
         if (result != null && result.getResponseDescription() == null) {
-            if (result.isValid()) {
-                result.setResponseDescription("Valid Health Card Number");
-                System.out.println("Validation successful. Description set to 'Valid Health Card Number'.");
-            } else {
-                result.setResponseDescription("Invalid Health Card Number");
-                System.out.println("Validation failed. Description set to 'Invalid Health Card Number'.");
-            }
+            if (result.isValid()) result.setResponseDescription("Valid Health Card Number");
+            else result.setResponseDescription("Invalid Health Card Number");
         }
-
-        System.out.println("Returning result: " + (result != null ? result.getResponseDescription() : "null"));
         return result;
     }
 
