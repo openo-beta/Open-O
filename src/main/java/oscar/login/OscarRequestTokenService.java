@@ -56,7 +56,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-@Path("/oauth") // CXF JAX-RS base under /ws
 public class OscarRequestTokenService {
 
     private final OscarOAuthDataProvider dataProvider;
