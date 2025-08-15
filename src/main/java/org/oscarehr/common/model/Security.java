@@ -101,10 +101,8 @@ public class Security extends AbstractModel<Integer> {
 
     private String lastUpdateUser;
 
-    @Column(name = "usingMfa")
 	private boolean usingMfa;
 
-    @Column(name = "mfaSecret")
 	private String mfaSecret;
 
 
