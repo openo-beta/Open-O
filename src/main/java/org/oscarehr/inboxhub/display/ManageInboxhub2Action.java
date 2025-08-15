@@ -40,6 +40,9 @@ public class ManageInboxhub2Action extends ActionSupport {
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
     private InboxhubQuery query = new InboxhubQuery();
 
+    /**
+     * Struts action execute function that is called by default
+     */
     public String execute() throws Exception {
         String method = request.getParameter("method");
         if ("displayInboxForm".equals(method)) {
@@ -52,6 +55,10 @@ public class ManageInboxhub2Action extends ActionSupport {
         return displayInboxForm();
     }
 
+    /**
+     * Displays the inbox form, this is the first call when you open the inbox hub jsp
+     * @return Struts result name
+     */
     public String displayInboxForm() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", SecurityInfoManager.READ, null)) {
@@ -75,6 +82,11 @@ public class ManageInboxhub2Action extends ActionSupport {
         return "success";
     }
 
+    /**
+     * Displays the inbox list if the page is set to that option
+     * fetches all of the lab data to show in the inbox hub list jsp
+     * @return Struts result name
+     */
     public String displayInboxList() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", SecurityInfoManager.READ, null)) {
@@ -85,6 +97,11 @@ public class ManageInboxhub2Action extends ActionSupport {
         return "displayList";
     }
 
+    /**
+     * Displays the inbox view if the page is set to that option
+     * fetches all of the lab data to show in the inbox hub view jsp
+     * @return Struts result name
+     */
     public String displayInboxView() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", SecurityInfoManager.READ, null)) {
@@ -95,6 +112,10 @@ public class ManageInboxhub2Action extends ActionSupport {
         return "displayView";
     }
 
+    /**
+     * Fetches all of the lab data that will be shown onto the inbox hub jsp
+     * @param request
+     */
     private void fetchLabData(HttpServletRequest request) {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 

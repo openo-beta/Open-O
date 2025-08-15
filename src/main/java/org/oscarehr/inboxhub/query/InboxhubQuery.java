@@ -22,6 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 public class InboxhubQuery {
+    /**
+     * Type filters for the inbox hub
+     */
     public enum TypeFilter implements FilterEnum {
         ALL("all"),
         DOC("doc"),
@@ -44,6 +47,9 @@ public class InboxhubQuery {
         }
     }
 
+    /**
+     * Abnormal filters for the inbox hub
+     */
     public enum AbnormalFilter implements FilterEnum {
         ALL("all"),
         NORMAL_ONLY("normalOnly"),
@@ -65,6 +71,9 @@ public class InboxhubQuery {
         }
     }
 
+    /**
+     * Status filters for the inbox hub
+     */
     public enum StatusFilter implements FilterEnum {
         ALL(""),
         NEW("N"),
@@ -87,6 +96,9 @@ public class InboxhubQuery {
         }
     }
 
+    /**
+     * Provider search filters for the inbox hub
+     */
     public enum ProviderSearchFilter implements FilterEnum {
         ANY_PROVIDER("true"),
         NO_PROVIDER("false"),
@@ -298,6 +310,10 @@ public class InboxhubQuery {
         this.pageSize = pageSize;
     }
 
+    /**
+     * Reset all of the InboxhubQuery related variables
+     * @param request
+     */
     public void reset(HttpServletRequest request) {
         this.clearFilters = false;
         this.searchProviderName = "";
