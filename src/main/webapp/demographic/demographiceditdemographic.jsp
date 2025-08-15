@@ -59,6 +59,7 @@
 <%@page import="org.oscarehr.managers.ProgramManager2" %>
 <%@page import="org.oscarehr.PMmodule.model.Program" %>
 <%@page import="org.oscarehr.PMmodule.model.ProgramProvider" %>
+<%@page import="java.util.HashSet" %>
 <%@page import="org.oscarehr.managers.PatientConsentManager" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <jsp:useBean id="apptMainBean" class="oscar.AppointmentMainBean" scope="session"/>

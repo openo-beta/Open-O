@@ -416,12 +416,15 @@
 
 
             function checkResidentStatus() {
+                // If OSCAR program exists (ID 10034), make sure it or another program is selected
                 var rs = document.adddemographic.rsid.value;
-                if (rs != "") return true;
-                else {
-                    alert("you must choose a Residential Status");
-                    return false;
+                var oscarOption = document.querySelector('#rsid option[value="10034"]');
+                
+                if (oscarOption && rs == "") {
+                    // If OSCAR program exists but nothing selected, select OSCAR
+                    document.adddemographic.rsid.value = "10034";
                 }
+                return true;
             }
 
             function checkAllDate() {
@@ -2380,7 +2383,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                         <th colspan="2" class="alignLeft">Program Admissions</th>
                                     </tr>
                                     <tr>
-                                        <td>Residential Status<span style="color:red;">:</span></td>
+                                        <td>Residential Status:</td>
                                         <td>Service Programs</td>
                                     </tr>
                                     <tr>
@@ -2389,11 +2392,29 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                                 <%
                                                     String _pvid = loggedInInfo.getLoggedInProviderNo();
                                                     Program[] bedP = pm.getBedPrograms(loggedInInfo.getCurrentFacility().getId());
-
-                                                    for (Program _p : bedP) {
+                                                    Program oscarProgram = programDao.getProgramByName("OSCAR");
+                                                    
+                                                    // Always use OSCAR program as default if it exists
+                                                    if (oscarProgram != null) {
                                                 %>
-                                                <option value="<%=_p.getId()%>" <%=("OSCAR".equals(_p.getName()) ? " selected=\"selected\" " : "")%> ><%=_p.getName()%>
-                                                </option>
+                                                <option value="<%=oscarProgram.getId()%>" selected="selected"><%=oscarProgram.getName()%></option>
+                                                <%
+                                                    }
+                                                    
+                                                    for (Program _p : bedP) {
+                                                        // Skip OSCAR program since we already added it
+                                                        if (oscarProgram != null && _p.getId().equals(oscarProgram.getId())) {
+                                                            continue;
+                                                        }
+                                                %>
+                                                <option value="<%=_p.getId()%>"><%=_p.getName()%></option>
+                                                <%
+                                                    }
+                                                    
+                                                    // If no OSCAR program and no bed programs, still need a value
+                                                    if (oscarProgram == null && bedP.length == 0) {
+                                                %>
+                                                <option value="">No programs available</option>
                                                 <%
                                                     }
                                                 %>

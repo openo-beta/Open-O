@@ -33,7 +33,6 @@ import org.apache.struts2.ServletActionContext;
 import org.jboss.aerogear.security.otp.Totp;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.PMmodule.service.ProviderManager;
-import org.oscarehr.PMmodule.web.OcanForm;
 import org.oscarehr.PMmodule.web.utils.UserRoleUtils;
 import org.oscarehr.common.IsPropertiesOn;
 import org.oscarehr.common.dao.*;
@@ -51,7 +50,6 @@ import oscar.OscarProperties;
 import oscar.log.LogAction;
 import oscar.log.LogConst;
 import oscar.util.AlertTimer;
-import oscar.util.CBIUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -258,10 +256,6 @@ public final class Login2Action extends ActionSupport {
                 request.getSession().setAttribute(SessionConstants.CURRENT_FACILITY, facility);
                 String username = (String) request.getSession().getAttribute("user");
                 LogAction.addLog(username, LogConst.LOGIN, LogConst.CON_LOGIN, "facilityId=" + facilityIdString, ip);
-                if (facility.isEnableOcanForms()) {
-                    request.getSession().setAttribute("ocanWarningWindow",
-                            OcanForm.getOcanWarningMessage(facility.getId()));
-                }
                 response.sendRedirect(nextPage);
                 return NONE;
             }
@@ -565,14 +559,6 @@ public final class Login2Action extends ActionSupport {
                 request.getSession().setAttribute("currentFacility", facility);
                 LogAction.addLog(strAuth[0], LogConst.LOGIN, LogConst.CON_LOGIN, "facilityId=" + facilityIds.get(0),
                         ip);
-                if (facility.isEnableOcanForms()) {
-                    request.getSession().setAttribute("ocanWarningWindow",
-                            OcanForm.getOcanWarningMessage(facility.getId()));
-                }
-                if (facility.isEnableCbiForm()) {
-                    request.getSession().setAttribute("cbiReminderWindow",
-                            CBIUtil.getCbiSubmissionFailureWarningMessage(facility.getId(), provider.getProviderNo()));
-                }
             } else {
                 List<Facility> facilities = facilityDao.findAll(true);
                 if (facilities != null && facilities.size() >= 1) {

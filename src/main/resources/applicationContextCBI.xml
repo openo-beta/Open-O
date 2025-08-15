@@ -19,20 +19,6 @@
 	</bean>
 	
 	<!-- ========================= SCHEDULED JOBS ========================= -->
-	 <bean id="cbiDataSubmissionJob" class="oscar.util.CBIFormDataSubmissionJob" />
-
-    <!-- Define the scheduled executor factory bean -->
-    <bean id="schedulerCBI" class="org.springframework.scheduling.concurrent.ScheduledExecutorFactoryBean">
-        <property name="scheduledExecutorTasks">
-            <list>
-                <!-- Configure the scheduled task -->
-                <bean class="org.springframework.scheduling.concurrent.ScheduledExecutorTask">
-                    <property name="delay" value="200000" />
-                    <property name="period" value="${CBI_JOB_INTERVAL}" />
-                    <property name="runnable" ref="cbiDataSubmissionJob" />
-                </bean>
-            </list>
-        </property>
-    </bean>
+	<!-- CBI jobs removed - functionality no longer supported -->
 		
 </beans>

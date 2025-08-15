@@ -90,7 +90,6 @@ import org.oscarehr.casemgmt.service.CaseManagementManager;
 import org.oscarehr.common.dao.AdmissionDao;
 import org.oscarehr.common.dao.CdsClientFormDao;
 import org.oscarehr.common.dao.IntegratorConsentDao;
-import org.oscarehr.common.dao.OcanStaffFormDao;
 import org.oscarehr.common.dao.OscarLogDao;
 import org.oscarehr.common.dao.RemoteReferralDao;
 import org.oscarehr.common.model.*;
@@ -136,7 +135,6 @@ public class ClientManager2Action extends ActionSupport {
     private static AdmissionDao admissionDao = SpringUtils.getBean(AdmissionDao.class);
     private static ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
     private static ProgramDao programDao = SpringUtils.getBean(ProgramDao.class);
-    private OcanStaffFormDao ocanStaffFormDao = SpringUtils.getBean(OcanStaffFormDao.class);
     private RemoteReferralDao remoteReferralDao = SpringUtils.getBean(RemoteReferralDao.class);
     private VacancyDao vacancyDao = SpringUtils.getBean(VacancyDao.class);
     private VacancyTemplateDao vacancyTemplateDao = SpringUtils.getBean(VacancyTemplateDao.class);
@@ -1405,37 +1403,6 @@ public class ClientManager2Action extends ActionSupport {
 
             request.setAttribute("referrals", getReferralsForSummary(loggedInInfo, Integer.parseInt(demographicNo), facilityId));
 
-            // FULL OCAN Staff/Client Assessment
-            OcanStaffForm ocanStaffForm = ocanStaffFormDao.findLatestByFacilityClient(facilityId, Integer.valueOf(demographicNo), "FULL");
-            if (ocanStaffForm != null) {
-                if (ocanStaffForm.getAssessmentStatus() != null && ocanStaffForm.getAssessmentStatus().equals("In Progress"))
-                    request.setAttribute("ocanStaffForm", ocanStaffForm);
-            } else {
-                request.setAttribute("ocanStaffForm", null);
-            }
-
-            // SELF+CORE OCAN Staff/Client Assessment
-            OcanStaffForm selfOcanStaffForm = ocanStaffFormDao.findLatestByFacilityClient(facilityId, Integer.valueOf(demographicNo), "SELF");
-            if (selfOcanStaffForm != null) {
-                if (selfOcanStaffForm.getAssessmentStatus() != null && selfOcanStaffForm.getAssessmentStatus().equals("In Progress")) {
-                    request.setAttribute("selfOcanStaffForm", selfOcanStaffForm);
-                }
-            } else {
-                request.setAttribute("selfOcanStaffForm", null);
-            }
-
-            // CORE OCAN Staff/Client Assessment
-            OcanStaffForm coreOcanStaffForm = ocanStaffFormDao.findLatestByFacilityClient(facilityId, Integer.valueOf(demographicNo), "CORE");
-            if (coreOcanStaffForm != null) {
-                if (coreOcanStaffForm.getAssessmentStatus() != null && coreOcanStaffForm.getAssessmentStatus().equals("In Progress")) {
-                    request.setAttribute("coreOcanStaffForm", coreOcanStaffForm);
-                }
-            } else {
-                request.setAttribute("coreOcanStaffForm", null);
-            }
-
-            //CBI form and OCAN forms are stored in same table OcanStaffForm.
-            populateCbiData(request, Integer.parseInt(demographicNo), facilityId);
 
             // CDS
             populateCdsData(request, Integer.parseInt(demographicNo), facilityId);
@@ -1592,21 +1559,6 @@ public class ClientManager2Action extends ActionSupport {
             List<CdsClientForm> cdsForms = cdsClientFormDao.findByFacilityClient(facilityId, clientId);
             request.setAttribute("cdsForms", cdsForms);
 
-            // CBI forms
-            List<OcanStaffForm> cbiForms = ocanStaffFormDao.findByFacilityClient(facilityId, clientId, "CBI");
-            request.setAttribute("cbiForms", cbiForms);
-
-            // FULL OCAN Forms
-            List<OcanStaffForm> ocanStaffForms = ocanStaffFormDao.findByFacilityClient(facilityId, clientId, "FULL");
-            request.setAttribute("ocanStaffForms", ocanStaffForms);
-
-            // SELF+CORE OCAN Forms
-            List<OcanStaffForm> selfOcanStaffForms = ocanStaffFormDao.findByFacilityClient(facilityId, clientId, "SELF");
-            request.setAttribute("selfOcanStaffForms", selfOcanStaffForms);
-
-            // CORE OCAN Forms
-            List<OcanStaffForm> coreOcanStaffForms = ocanStaffFormDao.findByFacilityClient(facilityId, clientId, "CORE");
-            request.setAttribute("coreOcanStaffForms", coreOcanStaffForms);
 
         }
 
@@ -1795,18 +1747,6 @@ public class ClientManager2Action extends ActionSupport {
         }
     }
 
-    private void populateCbiData(HttpServletRequest request, Integer demographicNo, Integer facilityId) {
-        List<Admission> admissions = admissionDao.getAdmissions(demographicNo);
-
-        ArrayList<OcanStaffForm> allLatestCbiForms = new ArrayList<OcanStaffForm>();
-
-        for (Admission admission : admissions) {
-            OcanStaffForm cbiForm = ocanStaffFormDao.findLatestCbiFormsByFacilityAdmissionId(facilityId, admission.getId().intValue(), null);
-            if (cbiForm != null) allLatestCbiForms.add(cbiForm);
-        }
-
-        request.setAttribute("allLatestCbiForms", allLatestCbiForms);
-    }
 
     private void addRemoteAdmissions(LoggedInInfo loggedInInfo, ArrayList<AdmissionForDisplay> admissionsForDisplay, Integer demographicId) {
         if (loggedInInfo.getCurrentFacility().isIntegratorEnabled()) {
@@ -2014,14 +1954,6 @@ public class ClientManager2Action extends ActionSupport {
 
     public static String getCdsProgramDisplayString(CdsClientForm cdsClientForm) {
         Admission admission = admissionDao.getAdmission(cdsClientForm.getAdmissionId());
-        Program program = programDao.getProgram(admission.getProgramId());
-
-        String displayString = program.getName() + " : " + DateFormatUtils.ISO_DATE_FORMAT.format(admission.getAdmissionDate());
-        return (StringEscapeUtils.escapeHtml(displayString));
-    }
-
-    public static String getCbiProgramDisplayString(OcanStaffForm ocanStaffForm) {
-        Admission admission = admissionDao.getAdmission(ocanStaffForm.getAdmissionId());
         Program program = programDao.getProgram(admission.getProgramId());
 
         String displayString = program.getName() + " : " + DateFormatUtils.ISO_DATE_FORMAT.format(admission.getAdmissionDate());

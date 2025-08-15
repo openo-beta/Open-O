@@ -112,35 +112,6 @@
     </bean>
 
     <!-- Define the scheduled executor factory bean -->
-	<bean class="org.springframework.scheduling.concurrent.ScheduledExecutorFactoryBean">
-		<property name="scheduledExecutorTasks">
-			<list>
-				<!-- Configure the scheduled task -->
-				<bean class="org.springframework.scheduling.concurrent.ScheduledExecutorTask">
-					<property name="delay" value="43200000000" />
-					<property name="period" value="86400000" />
-					<property name="runnable" ref="scheduledOcanSubmissionTask" />
-				</bean>
-			</list>
-		</property>
-	</bean>
-
-
-	<bean id="ocanIarSubmissionTask" class="org.oscarehr.util.OcanIarSubmissionTask" />
-    <!-- Define the scheduled executor factory bean -->
-    <bean class="org.springframework.scheduling.concurrent.ScheduledExecutorFactoryBean">
-        <property name="scheduledExecutorTasks">
-            <list>
-                <!-- Configure the scheduled task -->
-                <bean class="org.springframework.scheduling.concurrent.ScheduledExecutorTask">
-                    <property name="delay" value="43200000000" />
-                    <property name="period" value="86400000" />
-                    <property name="runnable" ref="ocanIarSubmissionTask" />
-                </bean>
-            </list>
-        </property>
-    </bean>
-
 	<bean id="schedulerCaisi" class="org.springframework.scheduling.concurrent.ScheduledExecutorFactoryBean">
     <property name="scheduledExecutorTasks">
         <list>
@@ -150,26 +121,12 @@
             <bean class="org.springframework.scheduling.concurrent.ScheduledExecutorTask">
                 <property name="runnable" ref="scheduledAnonymousClientDischargeTask" />
             </bean>
-            <bean class="org.springframework.scheduling.concurrent.ScheduledExecutorTask">
-                <property name="runnable" ref="ocanIarSubmissionTask" />
-            </bean>
         </list>
     </property>
 </bean>
 
 
 
-	<!-- <bean id="schedulerCaisi" class="org.springframework.scheduling.timer.TimerFactoryBean">
-		<property name="scheduledTimerTasks">
-			<list>
-				<ref bean="scheduledBedProgramDischargeTask" />
-				<ref bean="scheduledAnonymousClientDischargeTask" />
-				 <ref bean="ocanIarSubmissionTask"/>
-
-				
-			</list>
-		</property>
-	</bean> -->
 	<!--
 		<bean id="UCRConfigurationManager" class="org.oscarehr.PMmodule.web.reports.custom.UCRConfigurationManager"> <property name="filename"> <value>org/oscarehr/PMmodule/web/reports/custom/test.xml</value> </property> </bean>
 	-->

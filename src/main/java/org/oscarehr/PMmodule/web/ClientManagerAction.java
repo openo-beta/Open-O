@@ -38,7 +38,6 @@ import org.oscarehr.casemgmt.service.CaseManagementManager;
 import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.Admission;
 import org.oscarehr.common.model.CdsClientForm;
-import org.oscarehr.common.model.OcanStaffForm;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.managers.BedDemographicManager;
 import org.oscarehr.managers.BedManager;
@@ -75,7 +74,6 @@ public class ClientManagerAction {
     private static AdmissionDao admissionDao = (AdmissionDao) SpringUtils.getBean(AdmissionDao.class);
     private static ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
     private static ProgramDao programDao = (ProgramDao) SpringUtils.getBean(ProgramDao.class);
-    private OcanStaffFormDao ocanStaffFormDao = (OcanStaffFormDao) SpringUtils.getBean(OcanStaffFormDao.class);
     private RemoteReferralDao remoteReferralDao = (RemoteReferralDao) SpringUtils.getBean(RemoteReferralDao.class);
     private VacancyDao vacancyDao = (VacancyDao) SpringUtils.getBean(VacancyDao.class);
     private VacancyTemplateDao vacancyTemplateDao = (VacancyTemplateDao) SpringUtils.getBean(VacancyTemplateDao.class);
@@ -205,14 +203,6 @@ public class ClientManagerAction {
 
     public static String getCdsProgramDisplayString(CdsClientForm cdsClientForm) {
         Admission admission = admissionDao.getAdmission(cdsClientForm.getAdmissionId());
-        Program program = programDao.getProgram(admission.getProgramId());
-
-        String displayString = program.getName() + " : " + DateFormatUtils.ISO_DATE_FORMAT.format(admission.getAdmissionDate());
-        return (StringEscapeUtils.escapeHtml(displayString));
-    }
-
-    public static String getCbiProgramDisplayString(OcanStaffForm ocanStaffForm) {
-        Admission admission = admissionDao.getAdmission(ocanStaffForm.getAdmissionId());
         Program program = programDao.getProgram(admission.getProgramId());
 
         String displayString = program.getName() + " : " + DateFormatUtils.ISO_DATE_FORMAT.format(admission.getAdmissionDate());

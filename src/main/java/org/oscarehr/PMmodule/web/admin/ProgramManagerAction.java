@@ -23,7 +23,7 @@
 
 package org.oscarehr.PMmodule.web.admin;
 
-import oscar.ocan.domain.submission.Referral;
+import org.oscarehr.caisi_integrator.ws.Referral;
 
 public class ProgramManagerAction {
     public static class RemoteQueueEntry {

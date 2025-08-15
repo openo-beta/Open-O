@@ -2187,11 +2187,6 @@
         <action name="admin/oscarStatus" class="oscar.util.OscarStatus2Action">
             <result name="success">/admin/oscarStatus.jsp</result>
         </action>
-        <action name="OcanIarSubmit" class="org.oscarehr.web.OcanIarSubmit2Action"/>
-        <action name="OcanReporting" class="org.oscarehr.web.OcanReporting2Action"/>
-        <action name="PMmodule/OcanWorkload" class="org.oscarehr.PMmodule.web.OcanWorkload2Action">
-            <result name="view">/PMmodule/OcanWorkload.jsp</result>
-        </action>
         <action name="billing/CA/ON/moveMOHFiles" class="org.oscarehr.billing.CA.ON.web.MoveMOHFiles2Action">
             <result name="success">/billing/CA/ON/viewMOHFiles.jsp</result>
         </action>
