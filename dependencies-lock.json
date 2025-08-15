@@ -200,14 +200,6 @@
     "optional" : false,
     "integrity" : "sha512:XuLvTBKIikjXyDAYnQbuimU8dmSlPJtvqTXU54ZrBFQRH4CS1+zghuyAxh7asoVhh6HiR4c+XI5HJO+wLDdQSw=="
   }, {
-    "groupId" : "com.cbi.ws",
-    "artifactId" : "cbi_ws_client",
-    "version" : "1.1",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:gtvJyJ2J92do75pcHhg4mbDaDkuRFMKTdgOhI6jkmlhpwBTUWl9qfg98t8hVaEGJUcr4IUS2PqgV9xAJyjG8Ow=="
-  }, {
     "groupId" : "com.fasterxml.jackson.core",
     "artifactId" : "jackson-annotations",
     "version" : "2.19.2",
@@ -840,22 +832,6 @@
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:inKNILJc6hIXn86nnCy1OrTjzmw23kXy0c0+8+1VzZ8DeB5b5tKhDQji7Juj5wu7XqOjjItxxh2bumbanyDcPw=="
-  }, {
-    "groupId" : "hsfo2",
-    "artifactId" : "hsfo2",
-    "version" : "2.0",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:VSz5g/c035foeI4aYr0mMthMsRBnh+IwVIAC/Y4YJ2esWEzMV8y9lI1hFYZfKzWYhls850zaR6WYcnlF+GODYA=="
-  }, {
-    "groupId" : "hsfo",
-    "artifactId" : "hsfo",
-    "version" : "2007-02-12",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:tw7s8QJwqoXBMPfVl5A1viPyUVcKkP83XG8U9jWO6q6Z4kgOxU3ttjzbC3sBxx1FkMPDhl1ptro+rPcmQ9Q0fA=="
   }, {
     "groupId" : "io.dropwizard.metrics",
     "artifactId" : "metrics-core",
