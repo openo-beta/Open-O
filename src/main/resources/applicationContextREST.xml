@@ -22,6 +22,26 @@
     <!-- If you annotate the implementor with @Service, scan its package -->
     <context:component-scan base-package="org.oscarehr.ws.soap"/>
 
+    <!-- oauth provider, uses component scan. -->
+    <alias name="oscarOAuthDataProvider" alias="oauthProvider"/>
+
+    <!-- Helpers for initiate -->
+    <bean id="OAuth1ParamParser" class="org.oscarehr.ws.oauth.util.OAuth1ParamParser"/>
+
+    <!-- Step 1: Request token (initiate) -->
+    <bean id="oscarRequestTokenService"
+        class="oscar.login.OscarRequestTokenService"
+        autowire="constructor">
+        <constructor-arg ref="oscarOAuthDataProvider"/>
+        <constructor-arg ref="OAuth1ParamParser"/>
+    </bean>
+
+
+    <!-- JAX-RS resources (use autowire so provider gets injected) -->
+    <bean id="oauthAuthorizeResource"
+          class="org.oscarehr.ws.oauth.AuthorizeResource"
+          autowire="byType"/>
+
 
     <!-- JSON/JAXB providers for CXF JAX-RS -->
     <bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
@@ -41,6 +61,38 @@
             </map>
         </property>
     </bean>
+
+    <jaxrs:server id="oauthEndpoints" address="/oauth">
+
+        <!-- New OAuth 1.0a flow: initiate -> authorize -> token -->
+        <jaxrs:serviceBeans>
+            <!-- Step 1: Request token (initiate) -->
+            <ref bean="oscarRequestTokenService"/>
+
+            <!-- Step 2: Authorize (consent UI + verifier) -->
+            <ref bean="oauthAuthorizeResource"/>
+
+            <!-- TODO: IMPLEMENT ENDPOINT. -->
+            <!-- Step 3: Access token (exchange) -->
+            <!-- <ref bean="oauthAccessTokenEndpoint"/> -->
+        </jaxrs:serviceBeans>
+
+        <jaxrs:providers>
+            <ref bean="jaxb"/>
+            <ref bean="jsonProvider"/>
+        </jaxrs:providers>
+
+        <jaxrs:features>
+            <cxf:logging/>
+        </jaxrs:features>
+
+        <jaxrs:extensionMappings>
+            <entry key="xml"  value="application/xml"/>
+            <entry key="json" value="application/json"/>
+        </jaxrs:extensionMappings>
+
+    </jaxrs:server>
+
 
     <!-- CXF JAX-RS server for data APIs at /ws/services (NO OAuth interceptor here) -->
     <jaxrs:server id="restServices" address="/services">
