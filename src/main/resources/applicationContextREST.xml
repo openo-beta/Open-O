@@ -22,7 +22,7 @@
     <!-- If you annotate the implementor with @Service, scan its package -->
     <context:component-scan base-package="org.oscarehr.ws.soap"/>
 
-    <!-- oauth provider, uses component scan. -->
+    <!-- OAuth provider, uses component scan. -->
     <alias name="oscarOAuthDataProvider" alias="oauthProvider"/>
 
     <!-- Helpers for initiate -->
@@ -30,8 +30,7 @@
 
     <!-- Step 1: Request token (initiate) -->
     <bean id="oscarRequestTokenService"
-        class="oscar.login.OscarRequestTokenService"
-        autowire="constructor">
+        class="oscar.login.OscarRequestTokenService">
         <constructor-arg ref="oscarOAuthDataProvider"/>
         <constructor-arg ref="OAuth1ParamParser"/>
     </bean>
@@ -132,6 +131,7 @@
             <bean class="org.oscarehr.ws.rest.LabService" autowire="byName" />
             <bean class="org.oscarehr.ws.rest.MeasurementService" autowire="byName" />
             <bean class="org.oscarehr.ws.rest.DocumentService" autowire="byName" />
+            <bean class="org.oscarehr.ws.rest.ConsentService" autowire="byName"/>
         </jaxrs:serviceBeans>
 
         <jaxrs:providers>

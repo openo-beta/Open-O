@@ -204,24 +204,8 @@
         <value>post</value>
     </util:list>
 
-    <!-- OAuth beans - define explicitly since they need specific constructor args -->
-    <bean id="OAuth1ParamParser" class="org.oscarehr.ws.oauth.util.OAuth1ParamParser"/>
-    
-    <!-- Define oscarRequestTokenService with constructor args -->
-    <bean id="oscarRequestTokenService" class="oscar.login.OscarRequestTokenService">
-        <constructor-arg ref="oscarOAuthDataProvider"/>
-        <constructor-arg ref="OAuth1ParamParser"/>
-        <!-- Note: OAuth1SignatureVerifier is an interface - you'll need to provide a concrete implementation -->
-        <!-- <constructor-arg ref="OAuth1SignatureVerifier"/> -->
-    </bean>
-
-    <!-- OAuth JAX-RS server at /ws/* -->
-    <jaxrs:server id="oauthServer" address="/">
-        <jaxrs:serviceBeans>
-            <ref bean="oscarRequestTokenService"/>
-        </jaxrs:serviceBeans>
-        <jaxrs:features><cxf:logging/></jaxrs:features>
-    </jaxrs:server>
+    <!-- OAuth provider alias - OAuth beans are defined in applicationContextREST.xml -->
+    <alias name="oscarOAuthDataProvider" alias="oauthProvider"/>
 
 
     <bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
