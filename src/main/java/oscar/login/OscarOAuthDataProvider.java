@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+// OAuth 1.0a - replaced cxf OAuthServiceException. 
+import org.oscarehr.ws.oauth.OAuth1Exception;
+
 import java.util.*;
 
 @Component
@@ -86,18 +89,18 @@ public class OscarOAuthDataProvider {
         return rt;
     }
 
-    public String finalizeAuthorization(RequestToken token, String providerNo) {
-        logger.debug("finalizeAuthorization() called");
-        token.setVerifier(UUID.randomUUID().toString());
+    // public String finalizeAuthorization(Token data) throws OAuthServiceException {
+    //     logger.debug("finalizeAuthorization() called");
+    //     RequestToken requestToken = data.getToken();
+    //     requestToken.setVerifier(UUID.randomUUID().toString());
+    //     ServiceRequestToken srt = serviceRequestTokenDao.findByTokenId(requestToken.getTokenKey());
+    //     if (srt != null) {
+    //         srt.setVerifier(requestToken.getVerifier());
+    //         serviceRequestTokenDao.merge(srt);
+    //     }
+    //     return requestToken.getVerifier();
+    // }
 
-        ServiceRequestToken srt = serviceRequestTokenDao.findByTokenId(token.getTokenKey());
-        if (srt != null) {
-            srt.setVerifier(token.getVerifier());
-            srt.setProviderNo(providerNo);
-            serviceRequestTokenDao.merge(srt);
-        }
-        return token.getVerifier();
-    }
 
     public AccessToken createAccessToken(RequestToken requestToken) {
         ServiceRequestToken srt = serviceRequestTokenDao.findByTokenId(requestToken.getTokenKey());
@@ -157,17 +160,18 @@ public class OscarOAuthDataProvider {
         if (sat != null) serviceAccessTokenDao.remove(sat);
     }
 
-    // Convenience overload: pull providerNo from the DB row that OAuthSessionMerger updated
-    public String finalizeAuthorization(RequestToken token) {
-        ServiceRequestToken srt = serviceRequestTokenDao.findByTokenId(token.getTokenKey());
-        String providerNo = (srt != null) ? srt.getProviderNo() : null;
-
-        // if the merger didn’t set it, fail clearly
-        if (providerNo == null || providerNo.isEmpty()) {
-            throw new OAuth1Exception(401, "unauthenticated_resource_owner");
+    public String finalizeAuthorization(RequestToken requestToken) throws OAuth1Exception {
+        logger.debug("finalizeAuthorization() called");
+        // RequestToken requestToken = data.getToken(); - now passing the token directly. 
+        requestToken.setVerifier(UUID.randomUUID().toString());
+        ServiceRequestToken srt = serviceRequestTokenDao.findByTokenId(requestToken.getTokenKey());
+        if (srt != null) {
+            srt.setVerifier(requestToken.getVerifier());
+            serviceRequestTokenDao.merge(srt);
         }
-        return finalizeAuthorization(token, providerNo);
+        return requestToken.getVerifier();
     }
+ 
 
     public String getAccessTokenSecret(String accessTokenId) {
         ServiceAccessToken sat = serviceAccessTokenDao.findByTokenId(accessTokenId);
