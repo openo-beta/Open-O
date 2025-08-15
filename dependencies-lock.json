@@ -499,7 +499,7 @@
     "groupId" : "com.squareup.okhttp3",
     "artifactId" : "okhttp",
     "version" : "3.11.0",
-    "scope" : "compile",
+    "scope" : "test",
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:99iBggx9a5ygv23I2BKOF2kVYtw5IC03Y1Oxc1SqgDEbbOD/WETlekrBNOC7OgOTEe3xysM0/TrnjqXzMRbTiA=="
@@ -507,7 +507,7 @@
     "groupId" : "com.squareup.okio",
     "artifactId" : "okio",
     "version" : "1.14.0",
-    "scope" : "compile",
+    "scope" : "test",
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:4czbwYwNDOot3ziKPvScQ7aGHMYx53YIxuEeFj8IhFT2O3BStYB8AznDIltrydaKqoPozAYfmKOf8do/NvdZZQ=="
@@ -844,7 +844,7 @@
     "groupId" : "io.github.bonigarcia",
     "artifactId" : "webdrivermanager",
     "version" : "3.8.1",
-    "scope" : "compile",
+    "scope" : "test",
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:Nlxb25dHhsMkjKbPe2Cv69osOWnrfK9Gs2JbQznJ1jy0BHecDFCeoFgjHF+Wne4yvJHwORc1mKrcE4IofMqFFQ=="
@@ -3157,7 +3157,7 @@
     "groupId" : "org.rauschig",
     "artifactId" : "jarchivelib",
     "version" : "1.0.0",
-    "scope" : "compile",
+    "scope" : "test",
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:91iY5nZu6PamgM0w8hXoXr8X5/AoPzfU4siEKybIwVgZmyg9V0jZtycSnDlqmv9qsrr5D0sL3fXKhXEYC5lApw=="
@@ -3173,7 +3173,7 @@
     "groupId" : "org.seleniumhq.selenium",
     "artifactId" : "selenium-api",
     "version" : "3.141.59",
-    "scope" : "compile",
+    "scope" : "test",
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:lvH6jU/uakUiWxjk38EUO7cE8tv/W6SYOl6JDdbDS3TuvmIYG3xXbyolB1ka4Cl25NxHkxfXAo4DzNRZSUkuUw=="
@@ -3181,7 +3181,7 @@
     "groupId" : "org.seleniumhq.selenium",
     "artifactId" : "selenium-chrome-driver",
     "version" : "3.141.59",
-    "scope" : "compile",
+    "scope" : "test",
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:qGoyvSOXWlrzD61B88nU2TlnDQhnDK6U+3+0IgWkGBuTyB9fWPBXxD1oFg/QGE5wy2GD9bbIxHqIICwCRjPohg=="
@@ -3189,7 +3189,7 @@
     "groupId" : "org.seleniumhq.selenium",
     "artifactId" : "selenium-edge-driver",
     "version" : "3.141.59",
-    "scope" : "compile",
+    "scope" : "test",
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:EGeA1j0idvi/uu9Uk4WL19I81eAJjb1k8L0Xkis+5f9fISDykCy0a6pkCG5d6aFehhSdmYX3hbmkvUVOp4x57A=="
@@ -3197,7 +3197,7 @@
     "groupId" : "org.seleniumhq.selenium",
     "artifactId" : "selenium-firefox-driver",
     "version" : "3.141.59",
-    "scope" : "compile",
+    "scope" : "test",
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:n6VcfHh5+ftr54pWEfkif+NfZEodOuOThl1csZVG88B4puTTqdffZcP0gZlYTIlJNcQKaDlD2p21IFzmTxk8jg=="
@@ -3205,7 +3205,7 @@
     "groupId" : "org.seleniumhq.selenium",
     "artifactId" : "selenium-ie-driver",
     "version" : "3.141.59",
-    "scope" : "compile",
+    "scope" : "test",
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:WNtQx99wSINxOQpq0OxITCBMcH+WGVZ87ZbTGbBrURzbPEK+qxXI8oyDaiCpLDgkPdXE9Vo2/BkXb8UTywXJaQ=="
@@ -3213,7 +3213,7 @@
     "groupId" : "org.seleniumhq.selenium",
     "artifactId" : "selenium-java",
     "version" : "3.141.59",
-    "scope" : "compile",
+    "scope" : "test",
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:JqelxjpmOsQIXO1wx65aDNx8LWQoAblsLTK5e/36Sms2qan+r9QEXj37dm+QFZsJSNQh42CdhwNjNYteNGuocA=="
@@ -3221,7 +3221,7 @@
     "groupId" : "org.seleniumhq.selenium",
     "artifactId" : "selenium-opera-driver",
     "version" : "3.141.59",
-    "scope" : "compile",
+    "scope" : "test",
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:BkI4W4CjcLSB6G14jLoG9m5jB3iXdU4ruU+JbDKEpBdGKCI437cLpp2EuRjj84Sm4W0py3KLBkbumDIU32fZtg=="
@@ -3229,7 +3229,7 @@
     "groupId" : "org.seleniumhq.selenium",
     "artifactId" : "selenium-remote-driver",
     "version" : "3.141.59",
-    "scope" : "compile",
+    "scope" : "test",
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:RHOd/AXZOfwj4jc0To7mLrsvQoEvkzta3bXJsDWEV0RKqoKGmq1r9O0ldw9/ymPVIeSeyhcCkjYPIw0OFWBauw=="
@@ -3237,7 +3237,7 @@
     "groupId" : "org.seleniumhq.selenium",
     "artifactId" : "selenium-safari-driver",
     "version" : "3.141.59",
-    "scope" : "compile",
+    "scope" : "test",
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:rOsJd0Vn7HJrDRL2moDCgT2GojxSnk8BocRcTEOIc2Zu/2fDSt+89neZiX/RlbERwjKtW4sJ0NVSkx17os75Vw=="
@@ -3245,7 +3245,7 @@
     "groupId" : "org.seleniumhq.selenium",
     "artifactId" : "selenium-support",
     "version" : "3.141.59",
-    "scope" : "compile",
+    "scope" : "test",
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:u4HvxWYjE7MfUN1m2T+M3m/HuSk2ytGF8OkaDJ3lXBblo/lD4JSg5G+8A68G2YtBAbcHPx8dKDG/o3wak8GUFw=="
