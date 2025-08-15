@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/library/DataTables/DataTables-1.13.4/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/css/bootstrap-datetimepicker-standalone.css" />
     <link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/css/bootstrap-datetimepicker.min.css" /> 

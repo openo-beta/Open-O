@@ -127,8 +127,8 @@ public class InboxhubQuery {
     private String endDate = "";
     private String demographicNo; 
 
-    private int page = 1;
-    private int pageSize = 20;
+    private int page;
+    private int pageSize;
 
     public String getEndDate() {
         return endDate;

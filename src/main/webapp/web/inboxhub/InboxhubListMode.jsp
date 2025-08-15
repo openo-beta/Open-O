@@ -51,7 +51,7 @@
                 <th>Ack #</th>
             </tr>
             </thead>
-            <tbody id="inoxhubListModeTableBody">
+            <tbody id="inboxhubListModeTableBody">
 </c:if>
             <c:if test="${page ge 1}">
             <c:forEach var="labResult" items="${labDocs}" varStatus="loopStatus">

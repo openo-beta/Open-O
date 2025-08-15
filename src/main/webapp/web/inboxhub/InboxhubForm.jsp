@@ -158,17 +158,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
                                 <fmt:message key="inbox.inboxmanager.msgType"/>
                             </label>
                             <div class="form-check">
-                                <input type="checkbox" class="btn-check-input" name="query.doc" ${query.doc || (!query.doc && !query.lab && !query.hrm) ? 'checked' : ''} id="btnDoc" autocomplete="off">
+                                <input type="checkbox" class="btn-check-input" name="query.doc" value="true" ${query.doc || (!query.doc && !query.lab && !query.hrm) ? 'checked' : ''} id="btnDoc" autocomplete="off">
                                 <label class="form-check-label" for="btnDoc"><fmt:message key="inbox.inboxmanager.msgTypeDocs"/></label><br>
                             </div>
                             <div class="form-check">
-                                <input type="checkbox" class="btn-check-input" name="query.lab" ${query.lab || (!query.doc && !query.lab && !query.hrm) ? 'checked' : ''} id="btnLab" autocomplete="off">
+                                <input type="checkbox" class="btn-check-input" name="query.lab" value="true" ${query.lab || (!query.doc && !query.lab && !query.hrm) ? 'checked' : ''} id="btnLab" autocomplete="off">
                                 <label class="form-check-label" for="btnLab"><fmt:message key="inbox.inboxmanager.msgTypeLabs"/></label><br>
                             </div>
 
                             <c:if test="${!OscarProperties.getInstance().isBritishColumbiaBillingRegion()}">
                                 <div class="form-check">
-                                    <input type="checkbox" class="btn-check-input" name="query.hrm" ${query.hrm || (!query.doc && !query.lab && !query.hrm) ? 'checked' : ''} id="btnHRM" autocomplete="off">
+                                    <input type="checkbox" class="btn-check-input" name="query.hrm" value="true" ${query.hrm || (!query.doc && !query.lab && !query.hrm) ? 'checked' : ''} id="btnHRM" autocomplete="off">
                                     <label class="form-checkbox-label" for="btnHRM"><fmt:message key="inbox.inboxmanager.msgTypeHRM"/></label><br>
                                 </div>
                             </c:if>
@@ -416,9 +416,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
         autoCompleteProvider();
     });
 
-    function changeValueElementByName(name, value) {
+    function changeValueElementByName(name, newValue) {
         let inPatient = document.getElementsByName(name);
-        inPatient[0].value = value;
+        if (inPatient && inPatient.length > 0) {
+            inPatient[0].value = newValue;
+        }
     }
 
     function toggleInputVisibility(selectedRadioId, inputDivId, animationTime) {
@@ -496,9 +498,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
 
         // If the "patientsOption1" radio is selected, clear the patient details fields
         if (selectedValue === "patientsOption1") {
-            ['patientFirstName', 'patientLastName', 'patientHealthNumber'].forEach(fieldName => 
+            ['patientFirstName', 'patientLastName', 'patientHealthNumber'].forEach(fieldName => {
                 changeValueElementByName(fieldName, '')
-            );
+            });
         }
 
         // If "patientsOption3" is selected, validate the patient details fields
@@ -610,12 +612,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
             return;
         }
 
+        // Parse only the inboxhub table rows from response
         let tempDiv = document.createElement('div');
         tempDiv.innerHTML = data;
+        let newRows = tempDiv.querySelectorAll('#inboxhubListModeTableBody tr');
 
-        let rows = tempDiv.querySelectorAll('tr');
-        rows.forEach(function(row) {
-            inboxhubListTable.row.add(row.cloneNode(true));
+        if (newRows.length === 0) {
+            console.log("No more rows to add — stopping scroll.");
+            hasMoreData = false; // stop further fetches
+        }
+
+        // Add rows to DataTable
+        newRows.forEach(row => {
+            inboxhubListTable.row.add(row);
         });
 
         inboxhubListTable.draw(false);
@@ -714,7 +723,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
 
     function updateInboxhubListProgress() {
         const totalResultsCount = jQuery("#totalResultsCount").val();
-        const currentlyLoadedResultsCount = jQuery('#inoxhubListModeTableBody tr').length;
+        const currentlyLoadedResultsCount = jQuery('#inboxhubListModeTableBody tr').length;
 
         if (totalResultsCount < currentlyLoadedResultsCount && hasMoreData) {
             return;

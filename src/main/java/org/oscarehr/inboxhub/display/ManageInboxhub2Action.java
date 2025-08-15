@@ -33,7 +33,7 @@ import org.oscarehr.util.SpringUtils;
 import oscar.oscarLab.ca.on.LabResultData;
 import oscar.oscarMDS.data.CategoryData;
 
-public class ManageInboxhubAction extends ActionSupport {
+public class ManageInboxhub2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
     
@@ -62,7 +62,6 @@ public class ManageInboxhubAction extends ActionSupport {
         String unclaimed = (String) request.getParameter("unclaimed");
 
         labDataController.setInboxFormQueryUnclaimed(query, unclaimed);
-        request.setAttribute("query", query);
 
         labDataController.sanitizeInboxFormQuery(loggedInInfo, query, null, null);
         CategoryData categoryData = labDataController.getCategoryData(query);
@@ -72,7 +71,6 @@ public class ManageInboxhubAction extends ActionSupport {
         request.setAttribute("totalLabsCount", totalCounts[1]);
         request.setAttribute("totalHRMCount", totalCounts[2]);
         request.setAttribute("totalResultsCount", totalCounts[3]);
-        request.setAttribute("viewMode", query.getViewMode());
         request.setAttribute("categoryData", categoryData);
         return "success";
     }
