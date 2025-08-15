@@ -59,6 +59,7 @@
 <%@page import="org.oscarehr.web.PrescriptionQrCodeUIBean" %>
 <%@ page import="org.oscarehr.managers.DemographicManager" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="java.util.Objects" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -89,7 +90,11 @@
         </style>
         <style media="all">
             * {
-                font: 13px/1.231 arial, helvetica, clean, sans-serif;
+		font-family: Arial, "Helvetica Neue", Helvetica, sans-serif !important;
+		font-size: 12px;
+		overscroll-behavior: none;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
             }
 
             #fax-success {
@@ -115,7 +120,7 @@
                     return; // Ensure no further JSP processing
                 }
             %>
-        </c:if>        
+        </c:if>
 
             <%--<link rel="stylesheet" type="text/css" href="styles.css">--%>
             <%--<script type="text/javascript" language="Javascript">--%>
@@ -302,7 +307,7 @@
                         <tr>
                             <th valign=top width="100px">
                                 <input type="image"
-                                       src="img/rx.gif" border="0" alt="[Submit]"
+                                       src="oscarRx/img/rx.gif" border="0" alt="[Submit]"
                                        name="submit" title="Print in a half letter size paper"
                                        onclick="<%=rePrint.equalsIgnoreCase("true") ? "javascript:return onPrint2('rePrint');" : "javascript:return onPrint2('print');"  %>"/>
                                 <%
@@ -533,6 +538,12 @@
                                     imageUrl = request.getContextPath() + "/imageRenderingServlet?source=" + ImageRenderingServlet.Source.signature_preview.name() + "&" + DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY + "=" + signatureRequestId;
                                     startimageUrl = request.getContextPath() + "/images/1x1.gif";
                                     statusUrl = request.getContextPath() + "/PMmodule/ClientManager/check_signature_status.jsp?" + DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY + "=" + signatureRequestId;
+
+								if (bean.getStashSize() > 0 && Objects.nonNull(bean.getStashItem(0).getDigitalSignatureId())) {
+									startimageUrl=request.getContextPath()+"/imageRenderingServlet?source="+ImageRenderingServlet.Source.signature_stored.name()+"&digitalSignatureId="+bean.getStashItem(0).getDigitalSignatureId();
+								}
+
+
                                 %>
 
                                 <input type="hidden" name="<%= DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY %>"

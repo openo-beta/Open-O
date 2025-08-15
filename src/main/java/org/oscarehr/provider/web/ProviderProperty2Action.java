@@ -854,7 +854,7 @@ public class ProviderProperty2Action extends ActionSupport {
         this.userPropertyDAO.saveProp(prop);
 
         request.setAttribute("status", "success");
-        request.setAttribute("dateProperty", prop);
+        request.setAttribute("drugrefId", prop);
         request.setAttribute("providertitle", "provider.setmyDrugrefId.title"); //=Set myDrugref ID
         request.setAttribute("providermsgPrefs", "provider.setmyDrugrefId.msgPrefs"); //=Preferences"); //
         request.setAttribute("providermsgProvider", "provider.setmyDrugrefId.msgProvider"); //=myDrugref ID
