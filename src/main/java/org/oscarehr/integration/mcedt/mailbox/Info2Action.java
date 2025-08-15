@@ -113,7 +113,7 @@ public class Info2Action extends ActionSupport {
 
         if (result != null) {
             for (ResponseResult r : result.getResponse()) {
-                addActionError(getText("resourceAction.delete.success", new String[]{McedtMessageCreator.responseResultToString(r)}));
+                addActionMessage(getText("resourceAction.delete.success", new String[]{McedtMessageCreator.responseResultToString(r)}));
             }
         }
         //get the updated list from mcedt and save to session
