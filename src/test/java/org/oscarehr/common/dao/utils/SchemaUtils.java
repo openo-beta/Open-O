@@ -347,7 +347,7 @@ public class SchemaUtils {
         return exitValue;
     }
 
-    private static void runCreateTablesScript(Connection c) throws IOException {
+    private static void runCreateTablesScript(Connection c) throws IOException, SQLException {
         logger.info("#------------>> runCreateTablesScript()");
 
         boolean skipDbInit = false;
@@ -359,25 +359,29 @@ public class SchemaUtils {
             String baseDir = System.getProperty("user.dir");
             logger.info("using baseDir : " + baseDir);
 
-            assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscarinit.sql"), 0);
+            try (Statement stmt = c.createStatement()) {
+                stmt.execute("SET FOREIGN_KEY_CHECKS=0");
+                assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscarinit.sql"), 0);
 
-            assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscarinit_on.sql"), 0);
-            assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscardata.sql"), 0);
-            assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscardata_on.sql"), 0);
-            assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/icd9.sql"), 0);
+                assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscarinit_on.sql"), 0);
+                assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscardata.sql"), 0);
+                assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscardata_on.sql"), 0);
+                assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/icd9.sql"), 0);
 
-            assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/caisi/initcaisi.sql"), 0);
+                assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/caisi/initcaisi.sql"), 0);
 
-            assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/caisi/initcaisidata.sql"), 0);
-            assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/caisi/populate_issue_icd9.sql"), 0);
-            //		assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/icd9_issue_groups.sql"),0);
-            assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/measurementMapData.sql"), 0);
-            //		assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/expire_oscardoc.sql"),0);
+                assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/caisi/initcaisidata.sql"), 0);
+                assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/caisi/populate_issue_icd9.sql"), 0);
+                //		assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/icd9_issue_groups.sql"),0);
+                assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/measurementMapData.sql"), 0);
+                //		assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/expire_oscardoc.sql"),0);
 
-            assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscarinit_bc.sql"), 0);
-            assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscardata_bc.sql"), 0);
+                assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscarinit_bc.sql"), 0);
+                assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscardata_bc.sql"), 0);
 
-            assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscarinit_2025.sql"), 0);
+                assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscarinit_2025.sql"), 0);
+                stmt.execute("SET FOREIGN_KEY_CHECKS=1");
+            }
 
 
             createTableStatements.clear();
