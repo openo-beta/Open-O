@@ -377,6 +377,8 @@ public class SchemaUtils {
             assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscarinit_bc.sql"), 0);
             assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscardata_bc.sql"), 0);
 
+            assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscarinit_2025.sql"), 0);
+
 
             createTableStatements.clear();
             try {
