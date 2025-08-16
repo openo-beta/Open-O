@@ -332,27 +332,44 @@ public class EFormPDFServlet extends HttpServlet {
 
     private Properties[] loadPrintCfg(HttpServletRequest req, String suffix, int numPages) {
         Properties[] printCfg = null;
-        int cfgFileNo;
-        String[] cfgFile = req.getParameterValues("__cfgfile" + suffix);
-
-        cfgFileNo = cfgFile == null ? 0 : cfgFile.length;
-        if (cfgFileNo > 0) {
-            printCfg = new Properties[cfgFileNo];
-            for (int idx2 = 0; idx2 < cfgFileNo; ++idx2) {
-                // Sanitize filename to prevent path traversal
-                String sanitizedFile = org.apache.commons.io.FilenameUtils.getName(cfgFile[idx2]);
-                if (sanitizedFile == null || sanitizedFile.isEmpty()) {
-                    cfgFile[idx2] = "";
-                } else {
-                    // Remove any remaining dangerous characters
-                    sanitizedFile = sanitizedFile.replaceAll("\\.\\.", "")
-                                                 .replaceAll("[/\\\\]", "");
-                    cfgFile[idx2] = sanitizedFile + ".txt";
-                }
-
-                printCfg[idx2] = getCfgProp(cfgFile[idx2]);
-            }
+        
+        // Get user parameters
+        String[] userProvidedFiles = req.getParameterValues("__cfgfile" + suffix);
+        
+        // Validate and sanitize immediately at point of user input
+        if (userProvidedFiles == null || userProvidedFiles.length == 0) {
+            return printCfg;
         }
+        
+        // Create array for sanitized values only
+        printCfg = new Properties[userProvidedFiles.length];
+        
+        for (int idx2 = 0; idx2 < userProvidedFiles.length; ++idx2) {
+            // Sanitize each user input immediately
+            String userInput = userProvidedFiles[idx2];
+            String safeFilename = null;
+            
+            if (userInput != null && !userInput.isEmpty()) {
+                // Extract just the filename, removing any path components
+                String cleanName = org.apache.commons.io.FilenameUtils.getName(userInput);
+                
+                if (cleanName != null && !cleanName.isEmpty()) {
+                    // Additional sanitization - remove dangerous patterns
+                    cleanName = cleanName.replaceAll("\\.\\.", "")
+                                        .replaceAll("[/\\\\]", "")
+                                        .replaceAll("[^a-zA-Z0-9._-]", "");
+                    
+                    // Only proceed if we have a valid name after cleaning
+                    if (!cleanName.isEmpty()) {
+                        safeFilename = cleanName + ".txt";
+                    }
+                }
+            }
+            
+            // Use sanitized filename or empty string
+            printCfg[idx2] = getCfgProp(safeFilename != null ? safeFilename : "");
+        }
+        
         return printCfg;
     }
 
