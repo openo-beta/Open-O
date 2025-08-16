@@ -783,37 +783,64 @@ public class FrmPDFServlet extends HttpServlet {
 
     protected Properties getCfgProp(String cfgFilename) {
         Properties ret = new Properties();
-        //String propFilename = "../../OscarDocument/" + getProjectName() + "/form/" + cfgFilename;
-        String propFilename = oscar.OscarProperties.getInstance().getProperty("pdfFORMDIR", "") + "/" + cfgFilename;
-
-        try {
-            log.debug("1Looking for the prop file! " + propFilename);
-            InputStream is = new FileInputStream(propFilename); //getServletContext().getResourceAsStream(propFilename);
+        
+        // Sanitize filename to prevent path traversal
+        String sanitizedFilename = org.apache.commons.io.FilenameUtils.getName(cfgFilename);
+        if (sanitizedFilename == null || sanitizedFilename.isEmpty()) {
+            log.warn("Invalid config filename provided");
+            return ret;
+        }
+        
+        // Additional sanitization - remove any dangerous patterns
+        sanitizedFilename = sanitizedFilename.replaceAll("\\.\\.", "")
+                                             .replaceAll("[/\\\\]", "");
+        
+        String pdfFormDir = oscar.OscarProperties.getInstance().getProperty("pdfFORMDIR", "");
+        
+        if (!pdfFormDir.isEmpty()) {
             try {
-                if (is != null) {
-                    log.debug("2Found the prop file! " + cfgFilename);
-                    ret.load(is);
-                    is.close();
+                // Validate path stays within allowed directory
+                java.nio.file.Path basePath = java.nio.file.Paths.get(pdfFormDir).normalize().toAbsolutePath();
+                java.nio.file.Path filePath = basePath.resolve(sanitizedFilename).normalize();
+                
+                if (!filePath.startsWith(basePath)) {
+                    log.warn("Path traversal attempt detected for file: " + cfgFilename);
+                    return ret;
                 }
-            } finally {
-                is.close();
-            }
-        } catch (Exception e) {
-            try {
-                String propPath = "/WEB-INF/classes/oscar/form/prop/";
-                InputStream is = getServletContext().getResourceAsStream(propPath + cfgFilename);
+                
+                String propFilename = filePath.toString();
+                log.debug("1Looking for the prop file! " + propFilename);
+                InputStream is = new FileInputStream(propFilename);
                 try {
                     if (is != null) {
-                        log.debug("found prop file " + propPath + cfgFilename);
+                        log.debug("2Found the prop file! " + sanitizedFilename);
                         ret.load(is);
                         is.close();
                     }
                 } finally {
                     is.close();
                 }
-            } catch (Exception ee) {
-                log.warn("Can't find the prop file! " + cfgFilename);
+            } catch (Exception e) {
+                // Fall through to try WEB-INF location
             }
+        }
+        
+        // Try WEB-INF location as fallback
+        try {
+            String propPath = "/WEB-INF/classes/oscar/form/prop/";
+            // Use sanitized filename for resource lookup as well
+            InputStream is = getServletContext().getResourceAsStream(propPath + sanitizedFilename);
+            try {
+                if (is != null) {
+                    log.debug("found prop file " + propPath + sanitizedFilename);
+                    ret.load(is);
+                    is.close();
+                }
+            } finally {
+                if (is != null) is.close();
+            }
+        } catch (Exception ee) {
+            log.warn("Can't find the prop file! " + sanitizedFilename);
         }
         return ret;
     }

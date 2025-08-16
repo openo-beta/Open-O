@@ -106,23 +106,47 @@ public class FrmCustomedPDFServlet extends HttpServlet {
                 } else {
                     // write to file
                     String pdfid = req.getParameter("pdfId");
+                    // Sanitize pdfId to prevent path traversal
+                    if (pdfid != null) {
+                        pdfid = pdfid.replaceAll("[^a-zA-Z0-9_-]", "");
+                    }
                     String pdfFile = "prescription_" + pdfid + ".pdf";
                     String document_dir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
-                    Path filepath = Paths.get(document_dir, pdfFile);
+                    
+                    // Use proper path validation
+                    Path basePath = Paths.get(document_dir).normalize().toAbsolutePath();
+                    Path filepath = basePath.resolve(pdfFile).normalize();
+                    
+                    // Ensure the path stays within document directory
+                    if (!filepath.startsWith(basePath)) {
+                        throw new SecurityException("Invalid file path");
+                    }
+                    
                     if (!Files.exists(filepath)) {
                         baosPDF.writeTo(Files.newOutputStream(filepath));
                     }
 
                     // write to temporary file??
                     String tempPath = OscarProperties.getInstance().getProperty("fax_file_location", System.getProperty("java.io.tmpdir"));
-                    Path tempPdf = Paths.get(tempPath, "/prescription_" + pdfid + ".pdf");
+                    Path tempBasePath = Paths.get(tempPath).normalize().toAbsolutePath();
+                    Path tempPdf = tempBasePath.resolve("prescription_" + pdfid + ".pdf").normalize();
+                    
+                    // Ensure temp path stays within temp directory
+                    if (!tempPdf.startsWith(tempBasePath)) {
+                        throw new SecurityException("Invalid temp file path");
+                    }
+                    
                     // Copying the fax pdf.
                     if (Files.exists(filepath) && !Files.exists(tempPdf)) {
                         FileUtils.copyFile(filepath.toFile(), tempPdf.toFile());
                     }
 
                     // tracking file
-                    String txtFile = tempPath + "/prescription_" + pdfid + ".txt";
+                    Path txtFilePath = tempBasePath.resolve("prescription_" + pdfid + ".txt").normalize();
+                    if (!txtFilePath.startsWith(tempBasePath)) {
+                        throw new SecurityException("Invalid tracking file path");
+                    }
+                    String txtFile = txtFilePath.toString();
                     try (FileWriter fstream = new FileWriter(txtFile);
                          BufferedWriter out = new BufferedWriter(fstream)) {
                         if (faxNo != null) {
@@ -197,13 +221,20 @@ public class FrmCustomedPDFServlet extends HttpServlet {
                 sos.flush();
             }
         } catch (DocumentException dex) {
+            // Log the detailed error for debugging
+            logger.error("PDF generation error in FrmCustomedPDFServlet", dex);
+            
+            // Return generic error message to user
             res.setContentType("text/html");
             PrintWriter writer = res.getWriter();
-            writer.println("Exception from: " + this.getClass().getName() + " " + dex.getClass().getName() + "<br>");
-            writer.println("<pre>");
-            writer.println(dex.getMessage());
-            writer.println("</pre>");
+            writer.println("<html><body>");
+            writer.println("<h3>An error occurred generating the PDF.</h3>");
+            writer.println("<p>Please try again or contact support if the problem persists.</p>");
+            writer.println("</body></html>");
         } catch (java.io.FileNotFoundException dex) {
+            // Log the error
+            logger.debug("Signature file not found", dex);
+            
             res.setContentType("text/html");
             PrintWriter writer = res.getWriter();
             writer.println("<script>alert('Signature not found. Please sign the prescription.');</script>");

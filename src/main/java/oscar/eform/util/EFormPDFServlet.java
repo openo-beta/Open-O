@@ -339,9 +339,15 @@ public class EFormPDFServlet extends HttpServlet {
         if (cfgFileNo > 0) {
             printCfg = new Properties[cfgFileNo];
             for (int idx2 = 0; idx2 < cfgFileNo; ++idx2) {
-                cfgFile[idx2] += ".txt";
-                if (cfgFile[idx2].indexOf("/") > 0) {
+                // Sanitize filename to prevent path traversal
+                String sanitizedFile = org.apache.commons.io.FilenameUtils.getName(cfgFile[idx2]);
+                if (sanitizedFile == null || sanitizedFile.isEmpty()) {
                     cfgFile[idx2] = "";
+                } else {
+                    // Remove any remaining dangerous characters
+                    sanitizedFile = sanitizedFile.replaceAll("\\.\\.", "")
+                                                 .replaceAll("[/\\\\]", "");
+                    cfgFile[idx2] = sanitizedFile + ".txt";
                 }
 
                 printCfg[idx2] = getCfgProp(cfgFile[idx2]);
