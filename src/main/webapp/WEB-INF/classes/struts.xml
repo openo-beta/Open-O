@@ -57,12 +57,6 @@
             <result name="tickler">/tickler/ticklerAddWidget.jsp</result>
         </action>
         <action name="notification/create" class="org.oscarehr.common.web.ProviderNotification2Action"/>
-        <action name="study/ManageStudy" class="org.oscarehr.study.ManageStudy2Action">
-            <result name="AddedToStudy">/admin/addStudy.jsp</result>
-            <result name="closeWindow">/study/closeWindow.html</result>
-            <result name="create">/study/closeWindow.html</result>
-            <result name="update">/study/closeWindow.html</result>
-        </action>
         <action name="quickBillingBC" class="oscar.oscarBilling.ca.bc.quickbilling.QuickBillingBC2Action">
             <result name="success">/billing/CA/BC/quickBillingBC.jsp</result>
             <result name="searchdx">billing/CA/BC/billingDigNewSearch.jsp</result>
@@ -424,12 +418,6 @@
             <result name="failure">/errorpage.jsp</result>
             <result name="success">/admin/labforwardingrules.jsp</result>
         </action>
-        <action name="form/study/studyname" class="oscar.form.study.FrmStudy2Action">
-            <result name="exit">/oscarEncounter/close.jsp</result>
-            <result name="print">/oscarEncounter/formType2DiabetesPrint.jsp</result>
-            <result name="save">/form/study/forwardstudyname.jsp</result>
-            <result name="failure">/oscarEncounter/error.jsp</result>
-        </action>
         <action name="form/setupSelect" class="oscar.form.pageUtil.FrmSetupSelect2Action">
             <result name="continue">/form/formselect.jsp</result>
         </action>
@@ -450,35 +438,6 @@
             <result name="failure">/oscarEncounter/error.jsp</result>
         </action>
         <action name="form/forwardshortcutname" class="oscar.form.pageUtil.FormForward2Action"/>
-        <action name="admin/RecommitHSFO" class="oscar.form.study.HSFO.pageUtil.RecommitHSFO2Action">
-            <result name="schedulePage">/admin/recommitschedule.jsp</result>
-        </action>
-        <action name="form/HSFOform" class="oscar.form.study.HSFO.pageUtil.ManageHSFO2Action">
-            <result name="registration">/form/HSFORegistrationFrm.jsp</result>
-            <result name="flowsheet">/form/HSFOFlowsheet.jsp</result>
-        </action>
-        <action name="form/HSFOsaveform" class="oscar.form.study.HSFO.pageUtil.SaveRegistration2Action">
-            <result name="success">/form/HSFOform.do</result>
-            <result name="exit">/oscarEncounter/close.jsp</result>
-        </action>
-        <action name="admin/RecommitHSFO2" class="oscar.form.study.hsfo2.pageUtil.RecommitHSFO2Action">
-            <result name="schedulePage">/admin/recommitschedule.jsp</result>
-        </action>
-        <action name="form/HSFOForm2" class="oscar.form.study.hsfo2.pageUtil.ManageHSFO2Action">
-            <result name="registration">/form/hsfo2/HSFORegistrationForm.jsp</result>
-            <result name="flowsheet">/form/hsfo2/HSFOFlowsheet.jsp</result>
-            <result name="graphs">/form/hsfo2/displayGraphs.jsp</result>
-        </action>
-        <action name="form/SaveHSFORegistrationForm2" class="oscar.form.study.hsfo2.pageUtil.SaveRegistration2Action">
-            <result name="success">/form/HSFOForm2.do</result>
-            <result name="exit">/oscarEncounter/close.jsp</result>
-        </action>
-        <action name="form/HSFOXmlTransfer2" class="oscar.form.study.hsfo2.pageUtil.TransferHSFOXml2Action">
-            <result name="HSFORE">/form/hsfo2/HSFOXmlResult.jsp</result>
-        </action>
-        <action name="form/HSFOXmlTransfer" class="oscar.form.study.HSFO.pageUtil.TransferHSFOXml2Action">
-            <result name="HSFORE">/form/hsfoxmlresult.jsp</result>
-        </action>
         <action name="form/SetupForm" class="oscar.form.pageUtil.FrmSetupForm2Action"/>
         <action name="form/SubmitForm" class="oscar.form.pageUtil.FrmForm2Action"/>
         <action name="oscarEncounter/displayLabs" class="oscar.oscarEncounter.pageUtil.EctDisplayLabAction22Action">
@@ -1420,7 +1379,6 @@
         <action name="report/DemographicReport" class="oscar.oscarReport.pageUtil.RptDemographicReport2Action">
             <result name="success">/oscarReport/ReportDemographicReport.jsp</result>
             <result name="failure">/oscar_sfhc/JAYREPORTS/DemographicReport.jsp</result>
-            <result name="addToStudy">/study/ManageStudy.do?method=AddToStudy</result>
         </action>
         <action name="report/CreateDemographicSet" class="oscar.oscarReport.pageUtil.RptCreateDemographicSet2Action">
             <result name="success">/oscarReport/ReportDemographicReport.jsp</result>
@@ -1444,9 +1402,6 @@
         </action>
         <action name="oscarReport/oscarMeasurements/InitializeFrequencyOfRelevantTestsCDMReport" class="oscar.oscarReport.oscarMeasurements.pageUtil.RptInitializeFrequencyOfRelevantTestsCDMReport2Action">
             <result name="success">/oscarReport/oscarMeasurements/CDMReport.jsp</result>
-        </action>
-        <action name="oscarReport/RptRehabStudy" class="oscar.oscarReport.pageUtil.RptRehabStudy2Action">
-            <result name="success">/oscarReport/oscarReportRehabStudy.jsp</result>
         </action>
         <!--action name="oscarMaintenance" class="oscar.oscarMaintenance.pageUtil.Maintenance2Action">
             <result name="success">/oscarMaintenance/oscarMaintenanceDisplay.jsp</result>
@@ -1931,12 +1886,6 @@
         </action>
         <!--action name="billing/CA/BC/DownloadBilling" class="oscar.oscarBilling.ca.bc.pageUtil.DownloadFile2Action"/-->
         <!-- ticklerPlus actions removed -->
-        <action name="PMmodule/StreetHealthIntakeReportAction" class="org.oscarehr.PMmodule.streethealth.StreetHealthIntakeReport2Action">
-            <result name="success">/PMmodule/StreetHealthIntakeReport.jsp</result>
-            <result name="download">/PMmodule/StreetHealthIntakeReportDownload.jsp</result>
-            <result name="error">/PMmodule/StreetHealthIntakeReport.jsp</result>
-            <result name="timeout">/PMmodule/Timeout.jsp</result>
-        </action>
         <action name="PMmodule/ProgramManager" class="org.oscarehr.PMmodule.web.admin.ProgramManager2Action" method="execute">
             <result name="list">page.pmm.admin.list</result>
             <result name="edit">page.pmm.admin.edit</result>
@@ -1954,7 +1903,6 @@
             <result name="viewBedReservationChangeReport">/PMmodule/Admin/ProgramView/bed_reservation_change_report.jsp</result>
             <result name="viewBedCheckReport">/PMmodule/Admin/ProgramView/bed_check_report.jsp</result>
             <result name="service_restriction_error">page.pmm.program.service_restriction_error</result>
-            <result name="searchForm">/PMmodule/GenericIntake/Search.do</result>
         </action>
         <action name="PMmodule/AgencyManager" class="org.oscarehr.PMmodule.web.admin.AgencyManager2Action" method="execute">
             <result name="view">page.pmm.admin.agency.view</result>
@@ -1985,7 +1933,6 @@
             <result name="refer_vacancy">page.pmm.client.vacancy</result>
             <result name="edit-redirect">page.pmm.client</result>
             <result name="search_programs">/PMmodule/ClientManager/ProgramSearch.jsp</result>
-            <result name="survey">/PMmodule/Forms/SurveyExecute.do</result>
             <result name="vaccine-report">/VaccineProviderReport.do</result>
             <result name="search">/PMmodule/ClientSearch2.do</result>
             <result name="links">/PMmodule/ClientManager/links.jsp</result>
@@ -1993,7 +1940,6 @@
             <result name="view_admission">/PMmodule/ClientManager/view_admission.jsp</result>
             <result name="service_restriction_error">page.pmm.client.service_restriction_error</result>
             <result name="generalFormsReport">/PMmodule/GeneralFormsReport.jsp</result>
-            <result name="intake-search">/PMmodule/GenericIntake/Search</result>
         </action>
         <action name="PMmodule/ProviderInfo" class="org.oscarehr.PMmodule.web.ProviderInfo2Action" method="execute">
             <result name="view">page.pmm.provider.view</result>
@@ -2005,30 +1951,6 @@
         <action name="PMmodule/StaffManager" class="org.oscarehr.PMmodule.web.admin.StaffManager2Action" method="execute">
             <result name="list">page.pmm.staff.list</result>
             <result name="edit">page.pmm.staff.edit</result>
-        </action>
-        <action name="PMmodule/GenericIntake/Search" class="org.oscarehr.PMmodule.web.GenericIntakeSearch2Action" method="execute">
-            <result name="searchForm">page.genericIntake.search</result>
-            <result name="intakeEdit">/PMmodule/GenericIntake/Edit.do</result>
-            <result name="clientEdit">/PMmodule/ClientManager.do?method=edit</result>
-        </action>
-        <action name="PMmodule/GenericIntake/Edit" class="org.oscarehr.PMmodule.web.GenericIntakeEdit2Action" method="execute">
-            <result name="edit">/PMmodule/GenericIntake/Edit.jsp</result>
-            <result name="print">/PMmodule/GenericIntake/PrintPreview.jsp</result>
-            <result name="clientEdit">/PMmodule/ClientManager.do</result>
-            <result name="eformAdd">/eform/efmformadd_data.jsp</result>
-            <result name="appointment">/appointment/addappointment.jsp</result>
-            <result name="providerView">/PMmodule/ProviderInfo.do?method=view</result>
-        </action>
-        <action name="PMmodule/GenericIntake/Report" class="org.oscarehr.PMmodule.web.GenericIntakeReport2Action" method="execute">
-            <result name="report">/PMmodule/GenericIntake/Report.jsp</result>
-        </action>
-        <action name="PMmodule/Forms/SurveyExecute" class="org.oscarehr.PMmodule.web.forms.SurveyExecute2Action">
-            <result name="view">/PMmodule/survey/surveyView.jsp</result>
-            <result name="execute">/PMmodule/survey/surveyExecute.jsp</result>
-            <result name="printPreview">/PMmodule/survey/surveyPrintPreview.jsp</result>
-            <result name="client_manager">/PMmodule/ClientManager.do?method=save_survey</result>
-            <result name="success">/PMmodule/ClientManager.do?method=edit</result>
-            <result name="close">/PMmodule/survey/close.jsp</result>
         </action>
         <action name="PMmodule/Admin/DefaultRoleAccess" class="org.oscarehr.PMmodule.web.admin.DefaultRoleAccess2Action" method="execute">
             <result name="list">page.pmm.admin.defaultroleaccess.list</result>
@@ -2057,22 +1979,6 @@
         <action name="PMmodule/Reports/ClientListsReport" class="org.oscarehr.PMmodule.web.reports.ClientListsReport2Action" method="execute">
             <result name="form">/PMmodule/reports/ClientListsReportForm.jsp</result>
             <result name="report">/PMmodule/reports/ClientListsReport.jsp</result>
-        </action>
-        <action name="SurveyManager" class="org.oscarehr.survey.web.SurveyManager2Action">
-            <result name="edit">/survey/surveyManager/edit.jsp</result>
-            <result name="list">/survey/surveyManager/list.jsp</result>
-            <result name="new_survey">/survey/surveyManager/new_survey.jsp</result>
-            <result name="question_editor">/survey/surveyManager/questionForm.jsp</result>
-            <result name="execute">/SurveyTest.do</result>
-            <result name="import">/survey/surveyManager/import.jsp</result>
-            <result name="redirect">/SurveyManager.do</result>
-            <result name="reportForm">/PMmodule/reports/UcfReportForm.jsp</result>
-            <result name="report">/PMmodule/reports/UcfReport.jsp</result>
-        </action>
-        <action name="SurveyTest" class="org.oscarehr.survey.web.SurveyTest2Action">
-            <result name="view">/survey/surveyTest/surveyView.jsp</result>
-            <result name="execute">/survey/surveyTest/surveyExecute.jsp</result>
-            <result name="manager">/SurveyManager.do?method=list</result>
         </action>
         <action name="CaseManagementView" class="org.oscarehr.casemgmt.web.CaseManagementView2Action" method="execute">
             <result name="view">/casemgmt/CaseManagementView.jsp</result>

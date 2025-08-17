@@ -48,7 +48,6 @@
 <%@page import="java.util.ArrayList,oscar.oscarRx.data.RxPrescriptionData" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
 <%@page import="org.oscarehr.web.admin.ProviderPreferencesUIBean" %>
-<%@page import="org.oscarehr.study.StudyFactory, org.oscarehr.study.Study, org.oscarehr.study.types.MyMedsStudy" %>
 <%@page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
 <%@page import="org.oscarehr.casemgmt.model.CaseManagementNote" %>
 <%@page import="org.oscarehr.casemgmt.model.Issue" %>
@@ -2811,12 +2810,7 @@ function getReRxCheckboxByUiRefId(uiRefId) {
     }
 
 <%
-		ArrayList<Object> args = new ArrayList<Object>();
-		args.add(String.valueOf(bean.getDemographicNo()));
-		args.add(bean.getProviderNo());
-
-		Study myMeds = StudyFactory.getFactoryInstance().makeStudy(Study.MYMEDS, args);
-		out.write(myMeds.printInitcode());
+		// MyMeds study functionality removed
 %>
 
 

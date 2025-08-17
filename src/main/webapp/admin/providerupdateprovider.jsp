@@ -250,11 +250,6 @@
                             <option value="admin"
                                     <% if (provider.getProviderType().equals("admin")) { %>
                                     SELECTED <%}%>><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.provider.formType.optionAdmin"/></option>
-                            <caisi:isModuleLoad moduleName="survey">
-                                <option value="er_clerk"
-                                        <% if (provider.getProviderType().equals("er_clerk")) { %>
-                                        SELECTED <%}%>><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.provider.formType.optionErClerk"/></option>
-                            </caisi:isModuleLoad>
                         </select>
                         <!--input type="text" name="provider_type" value="<%= provider.getProviderType() %>" maxlength="15" -->
                     </td>

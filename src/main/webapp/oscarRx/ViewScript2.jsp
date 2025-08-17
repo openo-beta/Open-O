@@ -632,59 +632,8 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
 <body topmargin="0" leftmargin="0" vlink="#0000FF"
 	onload="addressSelect();printPharmacy('<%=prefPharmacyId%>');showFaxWarning();">
 
-    <!-- added by vic, hsfo -->
-    <%
-        int hsfo_patient_id = bean.getDemographicNo();
-        oscar.form.study.HSFO.HSFODAO hsfoDAO = new oscar.form.study.HSFO.HSFODAO();
-        int dx = hsfoDAO.retrievePatientDx(String.valueOf(hsfo_patient_id));
-        if (dx >= 0 && dx < 7) {
-            // dx>=0 means patient is enrolled in HSFO program
-            // dx==7 means patient has all 3 symptoms, according to hsfo requirement, stop showing the popup
-    %>
-    <script type="text/javascript" language="javascript">
-        function toggleView(form) {
-            var dxCode = (form.hsfo_Hypertension.checked ? 1 : 0) + (form.hsfo_Diabetes.checked ? 2 : 0) + (form.hsfo_Dyslipidemia.checked ? 4 : 0);
-            // send dx code to HsfoPreview.jsp so that it will be displayed and persisted there
-            document.getElementById("hsfoPop").style.display = "none";
-            document.getElementById("bodyView").style.display = "block";
-            document.getElementById("preview").src = "HsfoPreview.jsp?dxCode=" + dxCode;
-        }
-
-    </script>
-    <div id="hsfoPop"
-         style="border: ridge; background-color: ivory; width: 550px; height: 150px; position: absolute; left: 100px; top: 100px;">
-        <form name="hsfoForm">
-            <center><BR>
-                <table>
-                    <tr>
-                        <td colspan="3"><b>Please mark the corresponding symptom(s)
-                            for the enrolled patient.</b></td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" name="hsfo_Hypertension" value="1"
-                                <%= (dx&1)==0?"":"checked" %>> Hypertension
-                        </td>
-                        <td><input type="checkbox" name="hsfo_Diabetes" value="2"
-                                <%= (dx&2)==0?"":"checked" %>> Diabetes
-                        </td>
-                        <td><input type="checkbox" name="hsfo_Dyslipidemia" value="4"
-                                <%= (dx&4)==0?"":"checked" %>> Dyslipidemia
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" align="center">
-                            <hr>
-                            <input type="button" name="hsfo_submit" value="submit"
-                                   onclick="toggleView(this.form);"></td>
-                    </tr>
-                </table>
-            </center>
-        </form>
-    </div>
-    <div id="bodyView" style="display: none">
-                <% } else { %>
-        <div id="bodyView">
-            <% } %>
+    <!-- HSFO functionality removed -->
+    <div id="bodyView">
 
 
             <table border="0" cellpadding="0" cellspacing="0"
@@ -705,10 +654,10 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
 
                             <tr>
 				<td>
-                                    <div class="DivContentPadding"><!-- src modified by vic, hsfo -->
+                                    <div class="DivContentPadding">
 					<% if (bean.getStashSize() > 0) { %>
                                         <iframe id='preview' name='preview' width=420px height=890px
-							src="<%= dx<0?"Preview2.jsp?scriptId="+bean.getStashItem(0).getScript_no()+"&rePrint="+reprint+"&pharmacyId="+request.getParameter("pharmacyId"):dx==7?"HsfoPreview.jsp?dxCode=7":"about:blank" %>"
+							src="Preview2.jsp?scriptId=<%=bean.getStashItem(0).getScript_no()%>&rePrint=<%=reprint%>&pharmacyId=<%=request.getParameter("pharmacyId")%>"
 							align=center border=0 frameborder=0></iframe></div>
 					<% } %>
                                 </td>

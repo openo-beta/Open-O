@@ -63,7 +63,6 @@ import oscar.OscarProperties;
 import oscar.form.graphic.FrmGraphicFactory;
 import oscar.form.graphic.FrmPdfGraphic;
 import oscar.form.pdfservlet.FrmPDFPostValueProcessor;
-import oscar.form.pdfservlet.HsfoRxDataHolder;
 import oscar.util.ConcatPDF;
 
 import com.itextpdf.text.pdf.BaseFont;
@@ -78,7 +77,6 @@ import com.itextpdf.text.pdf.PdfWriter;
  */
 public class EFormPDFServlet extends HttpServlet {
 
-    public static final String HSFO_RX_DATA_KEY = "hsfo.rx.data";
     Logger log = org.oscarehr.util.MiscUtils.getLogger();
 
     /**
@@ -168,23 +166,6 @@ public class EFormPDFServlet extends HttpServlet {
         }
     }
 
-    // added by vic, hsfo
-    private ByteArrayOutputStream generateHsfoRxPDF(HttpServletRequest req) {
-        HsfoRxDataHolder rx = (HsfoRxDataHolder) req.getSession()
-                .getAttribute(HSFO_RX_DATA_KEY);
-
-        JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(rx.getOutlines());
-        InputStream is = Thread.currentThread().getContextClassLoader()
-                .getResourceAsStream("/oscar/form/prop/Hsfo_Rx.jasper");
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            JasperRunManager.runReportToPdfStream(is, baos, rx.getParams(), ds);
-        } catch (JRException e) {
-            throw new RuntimeException(e);
-        }
-        return baos;
-    }
 
     /**
      * the form txt file has lines in the form:
@@ -209,9 +190,6 @@ public class EFormPDFServlet extends HttpServlet {
      */
     protected ByteArrayOutputStream generatePDFDocumentBytes(final HttpServletRequest req, final ServletContext ctx, int multiple) throws Exception {
 
-        // added by vic, hsfo
-        if (HSFO_RX_DATA_KEY.equals(req.getParameter("__title")))
-            return generateHsfoRxPDF(req);
 
         String suffix = (multiple > 0) ? String.valueOf(multiple) : "";
 
@@ -354,21 +332,44 @@ public class EFormPDFServlet extends HttpServlet {
 
     private Properties[] loadPrintCfg(HttpServletRequest req, String suffix, int numPages) {
         Properties[] printCfg = null;
-        int cfgFileNo;
-        String[] cfgFile = req.getParameterValues("__cfgfile" + suffix);
-
-        cfgFileNo = cfgFile == null ? 0 : cfgFile.length;
-        if (cfgFileNo > 0) {
-            printCfg = new Properties[cfgFileNo];
-            for (int idx2 = 0; idx2 < cfgFileNo; ++idx2) {
-                cfgFile[idx2] += ".txt";
-                if (cfgFile[idx2].indexOf("/") > 0) {
-                    cfgFile[idx2] = "";
-                }
-
-                printCfg[idx2] = getCfgProp(cfgFile[idx2]);
-            }
+        
+        // Get user parameters
+        String[] userProvidedFiles = req.getParameterValues("__cfgfile" + suffix);
+        
+        // Validate and sanitize immediately at point of user input
+        if (userProvidedFiles == null || userProvidedFiles.length == 0) {
+            return printCfg;
         }
+        
+        // Create array for sanitized values only
+        printCfg = new Properties[userProvidedFiles.length];
+        
+        for (int idx2 = 0; idx2 < userProvidedFiles.length; ++idx2) {
+            // Sanitize each user input immediately
+            String userInput = userProvidedFiles[idx2];
+            String safeFilename = null;
+            
+            if (userInput != null && !userInput.isEmpty()) {
+                // Extract just the filename, removing any path components
+                String cleanName = org.apache.commons.io.FilenameUtils.getName(userInput);
+                
+                if (cleanName != null && !cleanName.isEmpty()) {
+                    // Additional sanitization - remove dangerous patterns
+                    cleanName = cleanName.replaceAll("\\.\\.", "")
+                                        .replaceAll("[/\\\\]", "")
+                                        .replaceAll("[^a-zA-Z0-9._-]", "");
+                    
+                    // Only proceed if we have a valid name after cleaning
+                    if (!cleanName.isEmpty()) {
+                        safeFilename = cleanName + ".txt";
+                    }
+                }
+            }
+            
+            // Use sanitized filename or empty string
+            printCfg[idx2] = getCfgProp(safeFilename != null ? safeFilename : "");
+        }
+        
         return printCfg;
     }
 

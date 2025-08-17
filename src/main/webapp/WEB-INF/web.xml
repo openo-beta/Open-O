@@ -171,9 +171,6 @@
 	<listener>
 		<listener-class>org.oscarehr.web.OscarSessionListener</listener-class>
 	</listener>
-	<listener>
-		<listener-class>oscar.form.study.hsfo2.pageUtil.HsfoQuartzContextListener</listener-class>
-	</listener>
 
     <!--  Cross Site Request Forgery Configuration  -->
     <context-param>
@@ -314,11 +311,6 @@
 		<servlet-class>oscar.DocumentUploadServlet</servlet-class>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
-	<!-- <servlet>
-		<servlet-name>HsfoQuartzSchedulerServlet</servlet-name>
-		<servlet-class>oscar.form.study.hsfo2.pageUtil.HsfoQuartzContextListener</servlet-class>
-		<load-on-startup>0</load-on-startup>
-	</servlet> -->
 	<servlet>
 		<servlet-name>PatientListByAppt</servlet-name>
 		<servlet-class>oscar.oscarReport.data.PatientListByAppt</servlet-class>
@@ -351,10 +343,6 @@
 		</init-param>
 
 	</servlet>
-	<!-- <servlet-mapping>
-		<servlet-name>HsfoQuartzSchedulerServlet</servlet-name>
-		<url-pattern>/HsfoQuartzSchedulerServlet</url-pattern>
-	</servlet-mapping> -->
 
 	<servlet-mapping>
 		<servlet-name>EFormViewForPdfGenerationServlet</servlet-name>
@@ -391,25 +379,6 @@
 		<url-pattern>/EFormImageViewForPdfGenerationServlet</url-pattern>
 	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>DATISExportTest</servlet-name>
-		<servlet-class>org.oscarehr.PMmodule.exporter.TestServlet</servlet-class>
-		<load-on-startup>0</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>DATISExportTest</servlet-name>
-		<url-pattern>/PMmodule/export</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>DATISExport</servlet-name>
-		<servlet-class>org.oscarehr.PMmodule.exporter.DATISExporterServlet</servlet-class>
-		<load-on-startup>0</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>DATISExport</servlet-name>
-		<url-pattern>/PMmodule/exportfiles</url-pattern>
-	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>UploadDocument</servlet-name>

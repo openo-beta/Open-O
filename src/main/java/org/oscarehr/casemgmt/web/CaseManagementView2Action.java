@@ -40,7 +40,6 @@ import org.oscarehr.PMmodule.model.ProgramTeam;
 import org.oscarehr.PMmodule.model.SecUserRole;
 import org.oscarehr.PMmodule.service.AdmissionManager;
 import org.oscarehr.PMmodule.service.ProgramManager;
-import org.oscarehr.PMmodule.service.SurveyManager;
 import org.oscarehr.caisi_integrator.ws.*;
 import org.oscarehr.casemgmt.common.Colour;
 import org.oscarehr.casemgmt.dao.CaseManagementNoteDAO;
@@ -96,7 +95,6 @@ public class CaseManagementView2Action extends ActionSupport {
     protected RolesManager roleMgr = SpringUtils.getBean(RolesManager.class);
     protected ProgramManager programMgr = SpringUtils.getBean(ProgramManager.class);
     protected AdmissionManager admissionMgr = SpringUtils.getBean(AdmissionManager.class);
-    protected SurveyManager surveyMgr = (SurveyManager) SpringUtils.getBean("surveyManager2");
 
 
     public String execute() throws Exception {
@@ -372,10 +370,6 @@ public class CaseManagementView2Action extends ActionSupport {
         request.setAttribute("dxMap", dxMap);
 
         // UCF
-        logger.debug("Fetch Survey List");
-        request.setAttribute("survey_list", surveyMgr.getAllFormsForCurrentProviderAndCurrentFacility(loggedInInfo));
-        current = System.currentTimeMillis();
-        logger.debug("Fetch Survey List " + String.valueOf(current - start));
 
         /* ISSUES */
         if (tab.equals("Current Issues")) {

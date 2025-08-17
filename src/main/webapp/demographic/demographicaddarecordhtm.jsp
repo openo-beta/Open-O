@@ -64,7 +64,6 @@
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="org.oscarehr.common.model.WaitingListName" %>
-<%@page import="org.oscarehr.PMmodule.web.GenericIntakeEditAction" %>
 <%@page import="org.oscarehr.PMmodule.model.Program" %>
 <%@page import="org.oscarehr.PMmodule.service.ProgramManager" %>
 <%@page import="org.oscarehr.common.dao.WaitingListNameDao" %>
@@ -2388,13 +2387,8 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                         <td>
                                             <select id="rsid" name="rps">
                                                 <%
-                                                    GenericIntakeEditAction gieat = new GenericIntakeEditAction();
-                                                    gieat.setProgramManager(pm);
-
                                                     String _pvid = loggedInInfo.getLoggedInProviderNo();
-                                                    Set<Program> pset = gieat.getActiveProviderProgramsInFacility(loggedInInfo, _pvid, loggedInInfo.getCurrentFacility().getId());
-                                                    List<Program> bedP = gieat.getBedPrograms(pset, _pvid);
-                                                    List<Program> commP = gieat.getCommunityPrograms();
+                                                    Program[] bedP = pm.getBedPrograms(loggedInInfo.getCurrentFacility().getId());
 
                                                     for (Program _p : bedP) {
                                                 %>
@@ -2408,7 +2402,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                         <td>
                                             <ul>
                                                 <%
-                                                    List<Program> servP = gieat.getServicePrograms(pset, _pvid);
+                                                    List<Program> servP = pm.getServicePrograms();
                                                     for (Program _p : servP) {
                                                 %>
                                                 <li>

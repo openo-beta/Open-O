@@ -55,7 +55,6 @@
 <%@ page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@ page import="org.oscarehr.common.model.DemographicCust" %>
 <%@ page import="org.oscarehr.common.dao.DemographicCustDao" %>
-<%@page import="org.oscarehr.PMmodule.web.GenericIntakeEditAction" %>
 <%@page import="org.oscarehr.PMmodule.service.ProgramManager" %>
 <%@page import="org.oscarehr.PMmodule.service.AdmissionManager" %>
 
@@ -270,18 +269,6 @@
                 demographicDao.save(demographic);
 
 
-                GenericIntakeEditAction gieat = new GenericIntakeEditAction();
-                gieat.setAdmissionManager(am);
-                gieat.setProgramManager(pm);
-                String bedP = request.getParameter("rps");
-                gieat.admitBedCommunityProgram(demographic.getDemographicNo(), loggedInInfo.getLoggedInProviderNo(), Integer.parseInt(bedP), "", "", null);
-
-                String[] servP = request.getParameterValues("sp");
-                if (servP != null && servP.length > 0) {
-                    Set<Integer> s = new HashSet<Integer>();
-                    for (String _s : servP) s.add(Integer.parseInt(_s));
-                    gieat.admitServicePrograms(demographic.getDemographicNo(), loggedInInfo.getLoggedInProviderNo(), s, "", null);
-                }
 
 
                 //add democust record for alert

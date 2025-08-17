@@ -61,11 +61,9 @@ public class ClientManagerAction {
 
     private HealthSafetyManager healthSafetyManager;
     private ClientRestrictionManager clientRestrictionManager;
-    private SurveyManager surveyManager = (SurveyManager) SpringUtils.getBean(SurveyManager.class);
     private LookupManager lookupManager;
     private CaseManagementManager caseManagementManager;
     private AdmissionManager admissionManager;
-    private GenericIntakeManager genericIntakeManager;
     private BedDemographicManager bedDemographicManager = SpringUtils.getBean(BedDemographicManager.class);
     private BedManager bedManager = SpringUtils.getBean(BedManager.class);
     private ClientManager clientManager;
@@ -135,9 +133,6 @@ public class ClientManagerAction {
         this.admissionManager = mgr;
     }
 
-    public void setGenericIntakeManager(GenericIntakeManager genericIntakeManager) {
-        this.genericIntakeManager = genericIntakeManager;
-    }
 
     public void setBedDemographicManager(BedDemographicManager demographicBedManager) {
         this.bedDemographicManager = demographicBedManager;

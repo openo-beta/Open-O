@@ -67,7 +67,6 @@ import com.lowagie.text.pdf.PdfWriter;
  */
 public class FrmPDFServlet extends HttpServlet {
 
-    public static final String HSFO_RX_DATA_KEY = "hsfo.rx.data";
     Logger log = org.oscarehr.util.MiscUtils.getLogger();
 
     /**
@@ -175,26 +174,6 @@ public class FrmPDFServlet extends HttpServlet {
 
     }
 
-    // added by vic, hsfo
-    private ByteArrayOutputStream generateHsfoRxPDF(HttpServletRequest req) {
-        HsfoRxDataHolder rx = (HsfoRxDataHolder) req.getSession()
-                .getAttribute(HSFO_RX_DATA_KEY);
-
-        JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(rx.getOutlines());
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("/oscar/form/prop/Hsfo_Rx.jasper");
-
-        try {
-            JasperRunManager.runReportToPdfStream(is, baos, rx.getParams(), ds);
-        } catch (JRException e) {
-            throw new RuntimeException(e);
-        } finally {
-            IOUtils.closeQuietly(is);
-        }
-
-        return baos;
-    }
 
     /**
      * the form txt file has lines in the form:
@@ -219,10 +198,6 @@ public class FrmPDFServlet extends HttpServlet {
             throws DocumentException, java.io.IOException {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(req);
-
-        // added by vic, hsfo
-        if (HSFO_RX_DATA_KEY.equals(req.getParameter("__title")))
-            return generateHsfoRxPDF(req);
 
         final String PAGESIZE = "printPageSize";
         Document document = new Document();
@@ -808,39 +783,105 @@ public class FrmPDFServlet extends HttpServlet {
 
     protected Properties getCfgProp(String cfgFilename) {
         Properties ret = new Properties();
-        //String propFilename = "../../OscarDocument/" + getProjectName() + "/form/" + cfgFilename;
-        String propFilename = oscar.OscarProperties.getInstance().getProperty("pdfFORMDIR", "") + "/" + cfgFilename;
-
-        try {
-            log.debug("1Looking for the prop file! " + propFilename);
-            InputStream is = new FileInputStream(propFilename); //getServletContext().getResourceAsStream(propFilename);
-            try {
-                if (is != null) {
-                    log.debug("2Found the prop file! " + cfgFilename);
-                    ret.load(is);
-                    is.close();
-                }
-            } finally {
-                is.close();
-            }
-        } catch (Exception e) {
-            try {
-                String propPath = "/WEB-INF/classes/oscar/form/prop/";
-                InputStream is = getServletContext().getResourceAsStream(propPath + cfgFilename);
-                try {
-                    if (is != null) {
-                        log.debug("found prop file " + propPath + cfgFilename);
-                        ret.load(is);
-                        is.close();
-                    }
-                } finally {
-                    is.close();
-                }
-            } catch (Exception ee) {
-                log.warn("Can't find the prop file! " + cfgFilename);
+        
+        // Input validation - reject null or empty
+        if (cfgFilename == null || cfgFilename.isEmpty()) {
+            log.warn("No config filename provided");
+            return ret;
+        }
+        
+        // Sanitize user input immediately
+        // Step 1: Extract just the filename, removing any directory paths
+        String baseFilename = org.apache.commons.io.FilenameUtils.getName(cfgFilename);
+        if (baseFilename == null || baseFilename.isEmpty()) {
+            log.warn("Invalid config filename after sanitization: " + cfgFilename);
+            return ret;
+        }
+        
+        // Step 2: Remove all dangerous patterns and characters
+        String cleanFilename = baseFilename.replaceAll("\\.\\.", "")  // Remove directory traversal
+                                          .replaceAll("[/\\\\]", "")   // Remove path separators
+                                          .replaceAll("[^a-zA-Z0-9._-]", ""); // Allow only safe characters
+        
+        if (cleanFilename.isEmpty()) {
+            log.warn("Config filename contained only invalid characters");
+            return ret;
+        }
+        
+        // Now cleanFilename is safe to use
+        
+        // Try loading from file system
+        String pdfFormDir = oscar.OscarProperties.getInstance().getProperty("pdfFORMDIR", "");
+        if (!pdfFormDir.isEmpty()) {
+            Properties fsProps = loadFromFileSystem(pdfFormDir, cleanFilename);
+            if (fsProps != null) {
+                return fsProps;
             }
         }
+        
+        // Try loading from classpath as fallback
+        Properties cpProps = loadFromClasspath(cleanFilename);
+        if (cpProps != null) {
+            return cpProps;
+        }
+        
+        log.warn("Config file not found: " + cleanFilename);
         return ret;
+    }
+    
+    private Properties loadFromFileSystem(String baseDir, String safeFilename) {
+        try {
+            // Build and validate the full path
+            java.nio.file.Path basePath = java.nio.file.Paths.get(baseDir).normalize().toAbsolutePath();
+            java.nio.file.Path filePath = basePath.resolve(safeFilename).normalize();
+            
+            // Security check: ensure resolved path is within base directory
+            if (!filePath.startsWith(basePath)) {
+                log.warn("Path validation failed for file: " + safeFilename);
+                return null;
+            }
+            
+            // Load the properties file
+            try (InputStream is = new FileInputStream(filePath.toFile())) {
+                Properties props = new Properties();
+                props.load(is);
+                log.debug("Loaded config from filesystem: " + safeFilename);
+                return props;
+            }
+        } catch (Exception e) {
+            log.debug("Failed to load from filesystem: " + safeFilename);
+            return null;
+        }
+    }
+    
+    private Properties loadFromClasspath(String safeFilename) {
+        try {
+            // Build the resource path using only the safe filename
+            String resourceBase = "/WEB-INF/classes/oscar/form/prop/";
+            
+            // Construct full path - safeFilename is already validated
+            String fullResourcePath = resourceBase + safeFilename;
+            
+            // Additional safety check
+            if (!fullResourcePath.startsWith(resourceBase)) {
+                log.warn("Resource path validation failed");
+                return null;
+            }
+            
+            // Load from classpath
+            InputStream is = getServletContext().getResourceAsStream(fullResourcePath);
+            if (is != null) {
+                try (InputStream autoCloseIs = is) {
+                    Properties props = new Properties();
+                    props.load(autoCloseIs);
+                    log.debug("Loaded config from classpath: " + safeFilename);
+                    return props;
+                }
+            }
+        } catch (Exception e) {
+            log.debug("Failed to load from classpath: " + safeFilename);
+        }
+        return null;
     }
 
 }

@@ -3562,14 +3562,6 @@
     "optional" : false,
     "integrity" : "sha512:xpIViq24ZgebxTg1iWRchOCeDH2p82OoAnUV7GQgv/x9XWmY50Pg+lDegSAFuig2euhELQsAKVp1wxB87osjJA=="
   }, {
-    "groupId" : "surveyModel",
-    "artifactId" : "surveyModel",
-    "version" : "0.0-SNAPSHOT",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:Hk87uNG16X8ofJXCAqqYnOoGylwHv0qiMh2MNVgktwMyYdzPh6yx4I8GlZzqVUb7U/DSjDkc2oo/yjlVi7PJ2w=="
-  }, {
     "groupId" : "taglibs",
     "artifactId" : "standard",
     "version" : "1.1.2",

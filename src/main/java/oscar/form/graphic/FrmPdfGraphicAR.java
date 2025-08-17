@@ -44,7 +44,8 @@ public final class FrmPdfGraphicAR extends FrmPdfGraphic {
         //find the sep
         String[] sep = dateFormat.split("[a-zA-Z]");
         for (int i = 0; i < sep.length; i++) {
-            String[] part = strDate.split(sep[i], 2);
+            // Fix: Use Pattern.quote to escape special regex characters in separator
+            String[] part = strDate.split(java.util.regex.Pattern.quote(sep[i]), 2);
             if (!isDigit(part[0])) {
                 ret = false;
                 break;

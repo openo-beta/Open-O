@@ -74,43 +74,6 @@
 %>
 
 <script type="text/javascript">
-    function getIntakeReport(type) {
-        var oneWeekAgo = new Date();
-        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-
-        var startDate = prompt("Please enter a start date in this format (e.g. 2000-01-01)", dojo.date.format(oneWeekAgo, {
-            selector: 'dateOnly',
-            datePattern: 'yyyy-MM-dd'
-        }));
-        if (startDate == null) {
-            return;
-        }
-        if (!dojo.validate.isValidDate(startDate, 'YYYY-MM-DD')) {
-            alert("'" + startDate + "' is not a valid start date");
-            return;
-        }
-
-        var endDate = prompt("Please enter the end date in this format (e.g. 2000-12-01)", dojo.date.format(new Date(), {
-            selector: 'dateOnly',
-            datePattern: 'yyyy-MM-dd'
-        }));
-        if (endDate == null) {
-            return;
-        }
-        if (!dojo.validate.isValidDate(endDate, 'YYYY-MM-DD')) {
-            alert("'" + endDate + "' is not a valid end date");
-            return;
-        }
-
-        var includePast = confirm("Do you want to include past intake forms in your report? ([OK] for yes / [Cancel] for no)");
-
-        alert("Generating report from " + startDate + " to " + endDate + ". Please note: it is normal for the generation process to take up to a few minutes to complete, be patient.");
-
-        var url = '<%=request.getContextPath() %>/PMmodule/GenericIntake/Report.do?' + 'method=report' + '&type=' + type + '&startDate=' + startDate + '&endDate=' + endDate + '&includePast=' + includePast;
-
-        popupPage2(url, "IntakeReport" + type);
-    }
-
 
     function getGeneralFormsReport() {
 
@@ -246,14 +209,8 @@
 
                     <div><a href="${pageContext.request.contextPath}/PMmodule/FacilityManager.do?method=list">Manage Facilities</a>
                     </div>
-                </security:oscarSec> <security:oscarSec roleName="<%=roleName$%>" objectName="_pmm.editor"
-                                                        rights="r">
-                    <span>Editor</span>
-                    <div><span><a href="javascript:void(0)"
-                                  onclick="window.open('<%=request.getContextPath()%>/PMmodule/GenericIntake/EditIntake.jsp?pub=
-                                      <c:out value="${sessionScope.provider.formattedName}"/>');">Intake
-	Form Editor</a></span></div>
-                </security:oscarSec></div>
+                </security:oscarSec>
+</div>
 
                 <div>
                     <security:oscarSec roleName="<%=roleName$%>" objectName="_pmm.staffList" rights="r">

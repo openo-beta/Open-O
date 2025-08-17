@@ -64,7 +64,6 @@
 <%@page import="org.oscarehr.provider.model.PreventionManager" %>
 
 <%@ page import="org.oscarehr.PMmodule.model.Program" %>
-<%@page import="org.oscarehr.PMmodule.web.GenericIntakeEditAction" %>
 <%@page import="org.oscarehr.PMmodule.service.ProgramManager" %>
 <%@page import="org.oscarehr.PMmodule.service.AdmissionManager" %>
 <%@page import="org.oscarehr.managers.PatientConsentManager" %>
@@ -377,42 +376,8 @@
             }
 
             //update admission information
-            GenericIntakeEditAction gieat = new GenericIntakeEditAction();
             ProgramManager pm = SpringUtils.getBean(ProgramManager.class);
             AdmissionManager am = SpringUtils.getBean(AdmissionManager.class);
-            gieat.setAdmissionManager(am);
-            gieat.setProgramManager(pm);
-
-            String bedP = request.getParameter("rps");
-            if (bedP != null && bedP.length() > 0) {
-                try {
-                    gieat.admitBedCommunityProgram(demographic.getDemographicNo(), (String) session.getAttribute("user"), Integer.parseInt(bedP), "", "(Master record change)", new java.util.Date());
-                } catch (Exception e) {
-
-                }
-            }
-
-            String[] servP = request.getParameterValues("sp");
-            if (servP != null && servP.length > 0) {
-                Set<Integer> s = new HashSet<Integer>();
-                for (String _s : servP) s.add(Integer.parseInt(_s));
-                try {
-                    gieat.admitServicePrograms(demographic.getDemographicNo(), (String) session.getAttribute("user"), s, "(Master record change)", new java.util.Date());
-                } catch (Exception e) {
-                }
-            }
-
-            String _pvid = loggedInInfo.getLoggedInProviderNo();
-            Set<Program> pset = gieat.getActiveProviderProgramsInFacility(loggedInInfo, _pvid, loggedInInfo.getCurrentFacility().getId());
-            List<Program> allServiceProgramsShown = gieat.getServicePrograms(pset, _pvid);
-            for (Program p : allServiceProgramsShown) {
-                if (!isFound(servP, p.getId().toString())) {
-                    try {
-                        am.processDischarge(p.getId(), demographic.getDemographicNo(), "(Master record change)", "0");
-                    } catch (org.oscarehr.PMmodule.exception.AdmissionException e) {
-                    }
-                }
-            }
 
 
             //add to waiting list if the waiting_list parameter in the property file is set to true

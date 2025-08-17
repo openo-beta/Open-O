@@ -61,7 +61,6 @@ import org.oscarehr.PMmodule.exception.ProgramFullException;
 import org.oscarehr.PMmodule.exception.ServiceRestrictionException;
 import org.oscarehr.PMmodule.model.ClientReferral;
 import org.oscarehr.PMmodule.model.HealthSafety;
-import org.oscarehr.PMmodule.model.Intake;
 import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.PMmodule.model.ProgramClientRestriction;
 import org.oscarehr.PMmodule.model.ProgramProvider;
@@ -70,12 +69,10 @@ import org.oscarehr.PMmodule.model.Vacancy;
 import org.oscarehr.PMmodule.service.AdmissionManager;
 import org.oscarehr.PMmodule.service.ClientManager;
 import org.oscarehr.PMmodule.service.ClientRestrictionManager;
-import org.oscarehr.PMmodule.service.GenericIntakeManager;
 import org.oscarehr.PMmodule.service.HealthSafetyManager;
 import org.oscarehr.PMmodule.service.ProgramManager;
 import org.oscarehr.PMmodule.service.ProgramQueueManager;
 import org.oscarehr.PMmodule.service.ProviderManager;
-import org.oscarehr.PMmodule.service.SurveyManager;
 import org.oscarehr.PMmodule.web.formbean.ClientManagerFormBean;
 import org.oscarehr.PMmodule.web.utils.UserRoleUtils;
 import org.oscarehr.PMmodule.wlmatch.MatchBO;
@@ -125,11 +122,9 @@ public class ClientManager2Action extends ActionSupport {
 
     private HealthSafetyManager healthSafetyManager = SpringUtils.getBean(HealthSafetyManager.class);
     private ClientRestrictionManager clientRestrictionManager = SpringUtils.getBean(ClientRestrictionManager.class);
-    private SurveyManager surveyManager = SpringUtils.getBean(SurveyManager.class);
     private LookupManager lookupManager = SpringUtils.getBean(LookupManager.class);
     private CaseManagementManager caseManagementManager = SpringUtils.getBean(CaseManagementManager.class);
     private AdmissionManager admissionManager = SpringUtils.getBean(AdmissionManager.class);
-    private GenericIntakeManager genericIntakeManager = SpringUtils.getBean(GenericIntakeManager.class);
     private BedDemographicManager bedDemographicManager = SpringUtils.getBean(BedDemographicManager.class);
     private BedManager bedManager = SpringUtils.getBean(BedManager.class);
     private ClientManager clientManager = SpringUtils.getBean(ClientManager.class);
@@ -206,16 +201,12 @@ public class ClientManager2Action extends ActionSupport {
             return save();
         } else if ("saveBedReservation".equals(method)) {
             return saveBedReservation();
-        }  else if ("save_survey".equals(method)) {
-            return save_survey();
         } else if ("save_joint_admission".equals(method)) {
             return save_joint_admission();
         } else if ("remove_joint_admission".equals(method)) {
             return remove_joint_admission();
         } else if ("search_programs".equals(method)) {
             return search_programs();
-        } else if ("survey".equals(method)) {
-            return survey();
         } else if ("update".equals(method)) {
             return update();
         }  else if ("view_referral".equals(method)) {
@@ -385,7 +376,8 @@ public class ClientManager2Action extends ActionSupport {
     }
 
     public String getGeneralFormsReport() {
-        request.setAttribute("generalIntakeNodes", genericIntakeManager.getIntakeNodesByType(3));
+        // Intake functionality removed
+        request.setAttribute("generalIntakeNodes", new ArrayList<>());
 
         return "generalFormsReport";
     }
@@ -1112,21 +1104,6 @@ public class ClientManager2Action extends ActionSupport {
         return edit();
     }
 
-    public String save_survey() {
-        CaisiFormInstance formInstance = this.getForm();
-        ClientManagerFormBean formBean = this.getView();
-        formInstance.setFormId(0);
-
-        String clientId = (String) request.getAttribute("clientId");
-        if (clientId == null) {
-            clientId = request.getParameter("id");
-        }
-
-        formBean.setTab("Forms");
-
-        setEditAttributes(request, clientId);
-        return "edit";
-    }
 
     public String save_joint_admission() {
         JointAdmission jadmission = new JointAdmission();
@@ -1267,26 +1244,6 @@ public class ClientManager2Action extends ActionSupport {
         }
     }
 
-    public String survey() {
-        CaisiFormInstance formInstance = this.getForm();
-
-        if (request.getAttribute("survey_saved") != null) {
-            setEditAttributes(request, (String) request.getAttribute("clientId"));
-            return "edit";
-        }
-
-        String clientId = request.getParameter("id");
-        String formId = String.valueOf(formInstance.getFormId());
-
-        formInstance.setFormId(0);
-
-        try {
-            response.sendRedirect("/PMmodule/Forms/SurveyExecute.do?method=survey&formId=" + formId + "&clientId=" + clientId);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
 
     public String update() {
         return edit();
@@ -1420,7 +1377,6 @@ public class ClientManager2Action extends ActionSupport {
             }
         }
 
-        // tab override - from survey module
         String tabOverride = (String) request.getAttribute("tab.override");
 
         if (tabOverride != null && tabOverride.length() > 0) {
@@ -1428,9 +1384,6 @@ public class ClientManager2Action extends ActionSupport {
         }
 
         if (tabBean.getTab().equals("Summary")) {
-            /* survey module */
-            request.setAttribute("survey_list", surveyManager.getAllFormsForCurrentProviderAndCurrentFacility(loggedInInfo));
-            request.setAttribute("surveys", surveyManager.getFormsForCurrentProviderAndCurrentFacility(loggedInInfo, demographicNo));
 
             // request.setAttribute("admissions", admissionManager.getCurrentAdmissions(Integer.valueOf(demographicNo)));
             // only allow bed/service programs show up.(not external program)
@@ -1444,8 +1397,8 @@ public class ClientManager2Action extends ActionSupport {
             addRemoteAdmissions(loggedInInfo, bedServiceList, demographicId);
             request.setAttribute("admissions", bedServiceList);
 
-            Intake mostRecentQuickIntake = genericIntakeManager.getMostRecentQuickIntakeByFacility(Integer.valueOf(demographicNo), facilityId);
-            request.setAttribute("mostRecentQuickIntake", mostRecentQuickIntake);
+            // Intake functionality removed
+            request.setAttribute("mostRecentQuickIntake", null);
 
             HealthSafety healthsafety = healthSafetyManager.getHealthSafetyByDemographic(Long.valueOf(demographicNo));
             request.setAttribute("healthsafety", healthsafety);
@@ -1607,20 +1560,17 @@ public class ClientManager2Action extends ActionSupport {
         }
         /* forms */
         if (tabBean.getTab().equals("Forms")) {
-            request.setAttribute("regIntakes", genericIntakeManager.getRegIntakes(Integer.valueOf(demographicNo), facilityId));
-            request.setAttribute("quickIntakes", genericIntakeManager.getQuickIntakes(Integer.valueOf(demographicNo), facilityId));
-            // request.setAttribute("indepthIntakes", genericIntakeManager.getIndepthIntakes(Integer.valueOf(demographicNo), facilityId));
-            request.setAttribute("indepthIntakes", genericIntakeManager.getIntakesByType(Integer.valueOf(demographicNo), facilityId, 2));
-            request.setAttribute("generalIntakes", genericIntakeManager.getIntakesByType(Integer.valueOf(demographicNo), facilityId, 3));
-            request.setAttribute("programIntakes", genericIntakeManager.getProgramIntakes(Integer.valueOf(demographicNo), facilityId));
-            request.setAttribute("programsWithIntake", genericIntakeManager.getProgramsWithIntake(Integer.valueOf(demographicNo)));
+            // Intake functionality removed
+            request.setAttribute("regIntakes", new ArrayList<>());
+            request.setAttribute("quickIntakes", new ArrayList<>());
+            request.setAttribute("indepthIntakes", new ArrayList<>());
+            request.setAttribute("generalIntakes", new ArrayList<>());
+            request.setAttribute("programIntakes", new ArrayList<>());
+            request.setAttribute("programsWithIntake", new ArrayList<>());
 
-            request.setAttribute("indepthIntakeNodes", genericIntakeManager.getIntakeNodesByType(2));
-            request.setAttribute("generalIntakeNodes", genericIntakeManager.getIntakeNodesByType(3));
+            request.setAttribute("indepthIntakeNodes", new ArrayList<>());
+            request.setAttribute("generalIntakeNodes", new ArrayList<>());
 
-            /* survey module */
-            request.setAttribute("survey_list", surveyManager.getAllFormsForCurrentProviderAndCurrentFacility(loggedInInfo));
-            request.setAttribute("surveys", surveyManager.getFormsForCurrentProviderAndCurrentFacility(loggedInInfo, demographicNo));
 
             /* consent forms */
             int clientId = Integer.parseInt(demographicNo);
@@ -1992,9 +1942,6 @@ public class ClientManager2Action extends ActionSupport {
         this.admissionManager = mgr;
     }
 
-    public void setGenericIntakeManager(GenericIntakeManager genericIntakeManager) {
-        this.genericIntakeManager = genericIntakeManager;
-    }
 
     public void setBedDemographicManager(BedDemographicManager demographicBedManager) {
         this.bedDemographicManager = demographicBedManager;
