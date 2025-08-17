@@ -45,17 +45,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
-<%
-    ProgramDao programDao = (ProgramDao) SpringUtils.getBean(ProgramDao.class);
-    List<Program> programs = programDao.getAllPrograms();
-    List<Program> courses = new ArrayList<Program>();
-    for (Program p : programs) {
-        if (p.getSiteSpecificField() != null && p.getSiteSpecificField().equals("course")) {
-            courses.add(p);
-        }
-    }
-
-%>
 <html>
     <script src="${pageContext.request.contextPath}/csrfguard"></script>
     <head>
@@ -180,7 +169,6 @@
 
     <%
         oscar.OscarProperties op = oscar.OscarProperties.getInstance();
-        String learningEnabled = op.getProperty("OSCAR_LEARNING");
         if (!Util.checkDir(op.getProperty("TMP_DIR"))) { %>
     <p>
     <h2>Error! Cannot perform demographic import. Please contact support.</h2>
@@ -200,17 +188,6 @@
                     border="0" src="<%= request.getContextPath() %>/images/icon_alertsml.gif"/></span></span>
 
         </p>
-                <%if(learningEnabled != null && learningEnabled.equalsIgnoreCase("yes")) { %>
-        <!-- Drop Down box of courses -->
-        Course:&nbsp;<select name="courseId" id="courseId">
-        <option value="0">Choose One</option>
-                <%for(Program course:courses) { %>
-        <option value="<%=course.getId().intValue()%>"><%=course.getName()%>
-        </option>
-                <% } %>
-        </select><br/>
-        Timeshift (in days +/-):&nbsp;<input type="text" name="timeshiftInDays" value="0" size="5"/></br/>
-                <%} %>
         If patient's providers do not have OHIP numbers:<br>
         <input type="radio" name="matchProviderNames" value="true"/>
         Match providers in database by first and last names (Recommended)

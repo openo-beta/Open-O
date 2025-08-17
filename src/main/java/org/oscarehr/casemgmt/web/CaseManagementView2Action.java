@@ -225,10 +225,7 @@ public class CaseManagementView2Action extends ActionSupport {
         logger.debug("is client in program");
         // need to check to see if the client is in our program domain
         // if not...don't show this screen!
-        String roles = (String) se.getAttribute("userrole");
-        if (OscarProperties.getInstance().isOscarLearning() && roles != null && roles.indexOf("moderator") != -1) {
-            logger.info("skipping domain check..provider is a moderator");
-        } else if (!caseManagementMgr.isClientInProgramDomain(providerNo, demoNo) && !caseManagementMgr.isClientReferredInProgramDomain(providerNo, demoNo)) {
+        if (!caseManagementMgr.isClientInProgramDomain(providerNo, demoNo) && !caseManagementMgr.isClientReferredInProgramDomain(providerNo, demoNo)) {
             return "domain-error";
         }
         String programId = (String) request.getSession().getAttribute("case_program_id");
@@ -270,10 +267,7 @@ public class CaseManagementView2Action extends ActionSupport {
         logger.debug("is client in program");
         // need to check to see if the client is in our program domain
         // if not...don't show this screen!
-        String roles = (String) se.getAttribute("userrole");
-        if (OscarProperties.getInstance().isOscarLearning() && roles != null && roles.indexOf("moderator") != -1) {
-            logger.info("skipping domain check..provider is a moderator");
-        } else if (!caseManagementMgr.isClientInProgramDomain(loggedInInfo.getLoggedInProviderNo(), demoNo) && !caseManagementMgr.isClientReferredInProgramDomain(loggedInInfo.getLoggedInProviderNo(), demoNo)) {
+        if (!caseManagementMgr.isClientInProgramDomain(loggedInInfo.getLoggedInProviderNo(), demoNo) && !caseManagementMgr.isClientReferredInProgramDomain(loggedInInfo.getLoggedInProviderNo(), demoNo)) {
             return "domain-error";
         }
 
@@ -1843,10 +1837,7 @@ public class CaseManagementView2Action extends ActionSupport {
         logger.debug("is client in program");
         // need to check to see if the client is in our program domain
         // if not...don't show this screen!
-        String roles = (String) se.getAttribute("userrole");
-        if (OscarProperties.getInstance().isOscarLearning() && roles != null && roles.indexOf("moderator") != -1) {
-            logger.info("skipping domain check..provider is a moderator");
-        } else if (!caseManagementMgr.isClientInProgramDomain(loggedInInfo.getLoggedInProviderNo(), demoNo) && !caseManagementMgr.isClientReferredInProgramDomain(loggedInInfo.getLoggedInProviderNo(), demoNo)) {
+        if (!caseManagementMgr.isClientInProgramDomain(loggedInInfo.getLoggedInProviderNo(), demoNo) && !caseManagementMgr.isClientReferredInProgramDomain(loggedInInfo.getLoggedInProviderNo(), demoNo)) {
             return "domain-error";
         }
         String programId = (String) request.getSession().getAttribute("case_program_id");

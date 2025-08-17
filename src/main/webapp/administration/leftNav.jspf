@@ -956,29 +956,7 @@ String curProvider_no = (String)session.getAttribute("user");
 				</div>
 	</security:oscarSec>
 </oscar:oscarPropertiesCheck>
-<!-- #SHARING CENTER END -->	
-
-<oscar:oscarPropertiesCheck property="OSCAR_LEARNING" value="yes">
-	<security:oscarSec roleName="<%=roleName$%>" objectName="_admin" rights="r" reverse="<%=false%>">
-				<div class="accordion-heading">
-				<a class="accordion-toggle" data-toggle="collapse" data-parent="#adminNav" href="#collapseFourteen">
-				<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.learning"/>
-				<i class="icon-chevron-right"></i>
-				</a>
-				</div>
-				<div id="collapseFourteen" class="accordion-body collapse">
-				<div class="accordion-inner">
-				<li><a href='javascript:void(0);'
-						class="xlink" rel="${ctx}/oscarLearning/CourseManager.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.learning.manageCourses"/></a></li>
-					<li><a href='javascript:void(0);'
-						class="xlink" rel="${ctx}/demographic/demographicImport.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.learning.importPatient"/></a></li>
-					<li><a href='javascript:void(0);'
-						class="xlink" rel="${ctx}/oscarLearning/StudentImport.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.learning.importStudent"/></a></li>
-				</ul>
-				</div>
-				</div>
-	</security:oscarSec>
-</oscar:oscarPropertiesCheck>
+<!-- #SHARING CENTER END -->
 
  <oscar:oscarPropertiesCheck property="billregion" value="ON">
 	<security:oscarSec roleName="<%=roleName$%>" objectName="_admin" rights="r" reverse="<%=false%>">

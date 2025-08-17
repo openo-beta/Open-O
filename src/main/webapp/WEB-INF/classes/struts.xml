@@ -1602,12 +1602,6 @@
             <interceptor-ref name="defaultStack"/>
             <result name="success">/oscarResearch/oscarDxResearch/dxResearchSelectAssociations.jsp</result>
         </action>
-        <action name="oscarLearning/CourseManager" class="org.oscarehr.learning.web.CourseManager2Action">
-            <result name="success">/oscarLearning/CourseManager.jsp</result>
-        </action>
-        <action name="oscarLearning/StudentImport" class="org.oscarehr.learning.web.StudentImport2Action">
-            <result name="success">/oscarLearning/StudentImport.jsp</result>
-        </action>
         <action name="billing" class="oscar.oscarBilling.ca.bc.pageUtil.Billing2Action">
             <result name="BC">/billing/CA/BC/billingBC.jsp</result>
             <result name="ON">/billing/CA/ON/billingOB.jsp</result>
