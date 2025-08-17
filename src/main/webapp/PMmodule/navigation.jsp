@@ -63,14 +63,6 @@
     String dateStr = yearStr + "-" + mthStr + "-" + dayStr;
     WebApplicationContext ctx = null;
 
-    //get current program, to check for OCAN
-    boolean programEnableOcan = false;
-    String currentProgram = (String) session.getAttribute(org.oscarehr.util.SessionConstants.CURRENT_PROGRAM_ID);
-    if (currentProgram != null) {
-        ProgramManager pm = SpringUtils.getBean(ProgramManager.class);
-        Program program = pm.getProgram(currentProgram);
-        programEnableOcan = program.isEnableOCAN();
-    }
 %>
 
 <script type="text/javascript">
@@ -100,17 +92,6 @@
         var page = "" + varpage;
         var windowprops = "height=700,width=1000,top=10,left=0,location=yes,scrollbars=yes,menubars=no,toolbars=no,resizable=yes";
         var popup = window.open(page, windowname, windowprops);
-        if (popup != null) {
-            if (popup.opener == null) {
-                popup.opener = self;
-            }
-            popup.focus();
-        }
-    }
-
-    function popupOcanWorkloadPage(url) {
-        var windowprops = "height=700,width=1400,top=10,left=0,location=yes,scrollbars=yes,menubars=no,toolbars=no,resizable=yes";
-        var popup = window.open(url, 'OcanWorkload', windowprops);
         if (popup != null) {
             if (popup.opener == null) {
                 popup.opener = self;
@@ -162,17 +143,6 @@
 		Management</a>
         </caisi:isModuleLoad>
 		</span></div>
-            <%
-                if (loggedInInfo987.getCurrentFacility() != null && loggedInInfo987.getCurrentFacility().isEnableOcanForms() && programEnableOcan) {
-            %>
-            <div>
-                <a href="javascript:void(0);"
-                   onclick="popupOcanWorkloadPage('<%=request.getContextPath()%>/PMmodule/OcanWorkload.do'); return false;">OCAN
-                    Workload</a>
-            </div>
-            <%
-                }
-            %>
         </div>
         </security:oscarSec>
         </c:if>

@@ -1,5 +1,5 @@
 -- Migration script to remove study-related and HSFO2 tables
--- Date: 2025-01-14
+-- Date: 2025-08-14
 -- Description: Removes all study module and HSFO2 tables and related data
 
 -- Drop foreign key constraints first if they exist

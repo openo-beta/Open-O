@@ -128,7 +128,6 @@
 	<bean id="defaultIssueDao" class="org.caisi.dao.DefaultIssueDaoImpl" autowire="byName" />
 	
 	<bean id="rourke2009Dao" class="org.oscarehr.common.dao.forms.Rourke2009DAO" autowire="byName" />
-	<bean id="ocanSubmissionLogDao" class="org.oscarehr.PMmodule.dao.OcanSubmissionLogDaoImpl" autowire="byName" />
 
 	<bean id="lookupDao" class="com.quatro.dao.LookupDaoImpl" autowire="byName" />
 	<bean id="documentDao" class="org.oscarehr.common.dao.DocumentMergeDemographicDAOImpl" autowire="byName" />
@@ -167,11 +166,6 @@
 	<!--Container for holding preventions -->
 	<bean id="preventionMgr" class="org.oscarehr.provider.model.PreventionManager"></bean>
 
-	<!-- OcanDataProcessor is used to create the OCAN xml submission file based on intake data -->
-	<bean id="ocanDataProcessor" class="oscar.ocan.service.OcanDataProcessor">
-		<property name="serviceOrganizationNumber" value="1001" />
-		<property name="submissionFileLocation" value="C:/TEMP/ocan_test" />
-	</bean>
 
 	<!-- OscarSuperManager manager provides business logic facade for jsp layer -->
 	<bean id="oscarSuperManager" class="oscar.service.OscarSuperManagerImpl" autowire="byName" init-method="init"/>

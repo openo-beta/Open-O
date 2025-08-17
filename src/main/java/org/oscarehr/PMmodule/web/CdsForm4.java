@@ -46,9 +46,7 @@ import org.oscarehr.common.model.CdsClientFormData;
 import org.oscarehr.common.model.CdsFormOption;
 import org.oscarehr.common.model.CdsHospitalisationDays;
 import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.OcanStaffForm;
 import org.oscarehr.util.SpringUtils;
-import oscar.util.CBIUtil;
 
 public class CdsForm4 {
 
@@ -109,14 +107,7 @@ public class CdsForm4 {
 
         //A new CDS form should populate date of initial contact and date of assessment/interview
         //from CBI form's referral date and admission date
-        //and this CBI form should have same program (functional centre).
-        Integer programId = admission.getProgramId();
-        CBIUtil cbiUtil = new CBIUtil();
-        OcanStaffForm cbiForm = cbiUtil.getLatestCbiFormByDemographicNoAndProgramId(facilityId, clientId, programId);
-        if (cbiForm != null) {
-            newForm.setInitialContactDate(cbiForm.getReferralDate());
-            newForm.setAssessmentDate(cbiForm.getAdmissionDate());
-        }
+        // CBI form references removed - functionality no longer available
 
         return (newForm);
     }

@@ -1873,6 +1873,11 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
         List allAdmissions = this.admissionManager.getAdmissions(Integer.valueOf(demographicNo));
 
+        // If client has no admissions at all, allow access (new patient or non-program patient)
+        if (allAdmissions == null || allAdmissions.isEmpty()) {
+            return true;
+        }
+
         for (int x = 0; x < providerPrograms.size(); x++) {
             ProgramProvider pp = (ProgramProvider) providerPrograms.get(x);
             long programId = pp.getProgramId().longValue();
@@ -1904,6 +1909,11 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
     @Override
     public boolean isClientInProgramDomain(List<ProgramProvider> providerPrograms, List<Admission> allAdmissions) {
+
+        // If client has no admissions at all, allow access (new patient or non-program patient)
+        if (allAdmissions == null || allAdmissions.isEmpty()) {
+            return true;
+        }
 
         for (int x = 0; x < providerPrograms.size(); x++) {
             ProgramProvider pp = providerPrograms.get(x);

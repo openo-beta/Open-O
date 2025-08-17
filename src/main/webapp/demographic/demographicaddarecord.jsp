@@ -65,6 +65,7 @@
 <%@page import="org.oscarehr.managers.PatientConsentManager" %>
 <%@page import="org.oscarehr.common.model.ConsentType" %>
 <%@page import="oscar.OscarProperties" %>
+<%@page import="org.oscarehr.util.MiscUtils" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -394,6 +395,37 @@
 
 
                 } //end of waitingl list
+
+                // Ensure program admission - default to OSCAR if no program selected
+                String rps = request.getParameter("rps");
+                if (rps == null || rps.trim().isEmpty()) {
+                    // No program selected, try to use OSCAR program
+                    org.oscarehr.PMmodule.dao.ProgramDao programDao = (org.oscarehr.PMmodule.dao.ProgramDao) SpringUtils.getBean(org.oscarehr.PMmodule.dao.ProgramDao.class);
+                    org.oscarehr.PMmodule.model.Program oscarProgram = programDao.getProgramByName("OSCAR");
+                    if (oscarProgram != null) {
+                        rps = String.valueOf(oscarProgram.getId());
+                    }
+                }
+                
+                // Create admission if we have a valid program
+                if (rps != null && !rps.trim().isEmpty()) {
+                    try {
+                        Integer programId = Integer.parseInt(rps);
+                        org.oscarehr.common.model.Admission admission = new org.oscarehr.common.model.Admission();
+                        admission.setClientId(demographic.getDemographicNo());
+                        admission.setProgramId(programId);
+                        admission.setProviderNo(curUser_no);
+                        admission.setAdmissionDate(new java.util.Date());
+                        admission.setAdmissionStatus("current");
+                        admission.setAdmissionFromTransfer(false);
+                        
+                        org.oscarehr.common.dao.AdmissionDao admissionDao = (org.oscarehr.common.dao.AdmissionDao) SpringUtils.getBean(org.oscarehr.common.dao.AdmissionDao.class);
+                        admissionDao.saveAdmission(admission);
+                    } catch (Exception e) {
+                        // Log but don't fail demographic creation
+                        MiscUtils.getLogger().warn("Failed to create program admission for demographic " + dem, e);
+                    }
+                }
 
                 //if(request.getParameter("fromAppt")!=null && request.getParameter("provider_no").equals("1")) {
                 if (start_time2 != null && !start_time2.equals("null")) {
