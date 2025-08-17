@@ -255,12 +255,6 @@ function popupPage2(varpage) {
 	<span id="oscar_new_tickler"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btntickler"/></span></a>
 </li>
 </security:oscarSec>
-<oscar:oscarPropertiesCheck property="OSCAR_LEARNING" value="yes">
-<li>
-    <a HREF="#" ONCLICK ="popupPage2('<%=request.getContextPath()%>/oscarLearning/CourseView.jsp','<fmt:setBundle basename="oscarResources"/><fmt:message key="global.courseview"/>');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.courseview"/>'>
-	<span id="oscar_courseview"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btncourseview"/></span></a>
-</li>
-</oscar:oscarPropertiesCheck>
 
 <oscar:oscarPropertiesCheck property="WORKFLOW" value="yes">
    <li><a href="javascript: function myFunction() {return false; }" onClick="popupPage2('<%=request.getContextPath()%>/oscarWorkflow/WorkFlowList.jsp','<fmt:setBundle basename="oscarResources"/><fmt:message key="global.workflow"/>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnworkflow"/></a></li>

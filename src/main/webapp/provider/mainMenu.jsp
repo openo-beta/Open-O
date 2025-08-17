@@ -238,14 +238,6 @@
                                     <span id="oscar_new_tickler"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btntickler"/></span></a>
                             </li>
                         </security:oscarSec>
-                        <oscar:oscarPropertiesCheck property="OSCAR_LEARNING" value="yes">
-                            <li>
-                                <a HREF="#"
-                                   ONCLICK="popupPage2('../oscarLearning/CourseView.jsp','<fmt:setBundle basename="oscarResources"/><fmt:message key="global.courseview"/>');return false;"
-                                   TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.courseview"/>'>
-                                    <span id="oscar_courseview"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btncourseview"/></span></a>
-                            </li>
-                        </oscar:oscarPropertiesCheck>
 
                         <oscar:oscarPropertiesCheck property="referral_menu" value="yes">
                             <security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.misc" rights="r">
