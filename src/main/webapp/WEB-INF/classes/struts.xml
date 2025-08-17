@@ -2292,8 +2292,6 @@
             <result name="list">/pregnancy/list.jsp</result>
             <result name="success">/pregnancy/success.jsp</result>
             <result name="complete">/pregnancy/complete.jsp</result>
-            <result name="migrate">/pregnancy/migrate.jsp</result>
-            <result name="pre-migrate">/pregnancy/premigrate.jsp</result>
         </action>
         <action name="form/BCAR2020" class="oscar.form.FrmBCAR20202Action">
             <result name="pg1">/form/formBCAR2020pg1.jsp</result>
