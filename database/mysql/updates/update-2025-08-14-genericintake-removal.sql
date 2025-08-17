@@ -1,7 +1,7 @@
 -- ============================================================================
 -- GenericIntake Module Removal Information
 -- ============================================================================
--- Date: 2025-01-14
+-- Date: 2025-08-14
 -- Purpose: Document removal of GenericIntake module from PMmodule
 -- 
 -- The GenericIntake functionality has been removed from the application.
