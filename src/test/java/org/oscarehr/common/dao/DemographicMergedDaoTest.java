@@ -125,8 +125,8 @@ public class DemographicMergedDaoTest extends DaoTestFixtures {
     @Test
     public void testFindCurrentByDemographicNo() throws Exception {
 
-        int demographicNo1 = 111;
-        int demographicNo2 = 222;
+        int demographicNo1 = 333;
+        int demographicNo2 = 444;
 
         int isNotDeleted = 0;
         int isDeleted = 1;
@@ -185,8 +185,8 @@ public class DemographicMergedDaoTest extends DaoTestFixtures {
     @Test
     public void testFindByDemographicNo() throws Exception {
 
-        int demographicNo1 = 111;
-        int demographicNo2 = 222;
+        int demographicNo1 = 555;
+        int demographicNo2 = 666;
 
         Demographic demo1 = new Demographic();
         EntityDataGenerator.generateTestDataForModelClass(demo1);

@@ -46,14 +46,16 @@ public class ProgramProviderDaoTest extends DaoTestFixtures {
 
     @Test
     public void testUpdateProviderRoles() throws Exception {
+        String providerid = "111";
+
         Provider provider = new Provider();
         EntityDataGenerator.generateTestDataForModelClass(provider);
-        provider.setProviderNo(null);
+        provider.setProviderNo(providerid);
         providerDao.saveProvider(provider);
 
         ProgramProvider pp = new ProgramProvider();
         EntityDataGenerator.generateTestDataForModelClass(pp);
-        pp.setProviderNo(provider.getProviderNo());
+        pp.setProviderNo(providerid);
         pp.setId(null);
 
         dao.saveProgramProvider(pp);
