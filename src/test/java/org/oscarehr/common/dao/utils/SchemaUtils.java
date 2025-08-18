@@ -194,7 +194,7 @@ public class SchemaUtils {
             for (int i = 0; i < tableNames.length; i++) {
                 s.executeUpdate("drop table if exists " + tableNames[i]);
             }
-            s.executeUpdate("set foreign_key_checks = 0");
+            s.executeUpdate("set foreign_key_checks = 1");
             s.close();
 
         } finally {
