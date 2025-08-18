@@ -498,7 +498,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
 
         // If the "patientsOption1" radio is selected, clear the patient details fields
         if (selectedValue === "patientsOption1") {
-            ['patientFirstName', 'patientLastName', 'patientHealthNumber'].forEach(fieldName => {
+            ['query.patientFirstName', 'query.patientLastName', 'query.patientHealthNumber'].forEach(fieldName => {
                 changeValueElementByName(fieldName, '')
             });
         }
@@ -618,13 +618,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
         let newRows = tempDiv.querySelectorAll('#inboxhubListModeTableBody tr');
 
         if (newRows.length === 0) {
-            console.log("No more rows to add — stopping scroll.");
             hasMoreData = false; // stop further fetches
         }
 
         // Add rows to DataTable
         newRows.forEach(row => {
-            inboxhubListTable.row.add(row);
+            // Extract cell data from the row
+            let rowData = Array.from(row.children).map(cell => cell.innerHTML);
+            inboxhubListTable.row.add(rowData);
         });
 
         inboxhubListTable.draw(false);

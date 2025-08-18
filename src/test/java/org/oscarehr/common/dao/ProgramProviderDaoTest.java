@@ -46,16 +46,17 @@ public class ProgramProviderDaoTest extends DaoTestFixtures {
 
     @Test
     public void testUpdateProviderRoles() throws Exception {
-        String providerid = "111";
+        String providerId = "111";
 
+        // Creating a new provider in this test to enforce foreign key addition of "provider_id" in the "program_provider" table
         Provider provider = new Provider();
         EntityDataGenerator.generateTestDataForModelClass(provider);
-        provider.setProviderNo(providerid);
+        provider.setProviderNo(providerId);
         providerDao.saveProvider(provider);
 
         ProgramProvider pp = new ProgramProvider();
         EntityDataGenerator.generateTestDataForModelClass(pp);
-        pp.setProviderNo(providerid);
+        pp.setProviderNo(providerId);
         pp.setId(null);
 
         dao.saveProgramProvider(pp);

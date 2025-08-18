@@ -51,6 +51,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class LabDataController {
 
@@ -77,6 +78,7 @@ public class LabDataController {
         }
         return null;
     }
+
     //Grabs lab link for specific inbox item.
     public ArrayList<String> getLabLink(ArrayList<LabResultData> results, InboxhubQuery query, String contextPath, String providerNo) {
         ArrayList<String> labLinks = new ArrayList<String>();
@@ -136,6 +138,7 @@ public class LabDataController {
         }
         return labLinks;
     }
+
     //Gets inbox CategoryData for given query. CategoryData includes document counts for all document types & patient lists.
     public CategoryData getCategoryData(InboxhubQuery query) {
         if (Objects.equals(query.getSearchProviderNo(), "-1")) {
@@ -153,6 +156,7 @@ public class LabDataController {
         }
         return categoryData;
     }
+
     //Returns lab data based on the query. If lab, doc, and hrm flags are not set in the query returns all data from all data types.
     public ArrayList<LabResultData> getLabData(LoggedInInfo loggedInInfo, InboxhubQuery query) {
         Integer page = query.getPage() - 1;

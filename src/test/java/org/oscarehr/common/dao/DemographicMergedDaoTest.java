@@ -51,6 +51,7 @@ public class DemographicMergedDaoTest extends DaoTestFixtures {
 
     @Test
     public void testCreate() throws Exception {
+        // Creating a new demographic in this test to enforce foreign key addition of "demographic_id" in the "demographic_merged" table
         Demographic demo = new Demographic();
         EntityDataGenerator.generateTestDataForModelClass(demo);
         demo.setDemographicNo(null);
@@ -68,6 +69,7 @@ public class DemographicMergedDaoTest extends DaoTestFixtures {
         int isNotDeleted = 0;
         int isDeleted = 1;
 
+        // Creating new demographics in this test to enforce foreign key addition of "demographic_id" in the "demographic_merged" table
         Demographic demo1 = new Demographic();
         EntityDataGenerator.generateTestDataForModelClass(demo1);
         demo1.setDemographicNo(null);
@@ -127,6 +129,7 @@ public class DemographicMergedDaoTest extends DaoTestFixtures {
         int isNotDeleted = 0;
         int isDeleted = 1;
 
+        // Creating new demographics in this test to enforce foreign key addition of "demographic_id" in the "demographic_merged" table
         Demographic demo1 = new Demographic();
         EntityDataGenerator.generateTestDataForModelClass(demo1);
         demo1.setDemographicNo(null);
@@ -187,6 +190,7 @@ public class DemographicMergedDaoTest extends DaoTestFixtures {
 
     @Test
     public void testFindByDemographicNo() throws Exception {
+        // Creating new demographics in this test to enforce foreign key addition of "demographic_id" in the "demographic_merged" table
         Demographic demo1 = new Demographic();
         EntityDataGenerator.generateTestDataForModelClass(demo1);
         demo1.setDemographicNo(null);

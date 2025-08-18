@@ -124,8 +124,24 @@ public class ManageInboxhub2Action extends ActionSupport {
         String demographicFilter = request.getParameter("demographicFilter");
         String typeFilter = request.getParameter("typeFilter");
 
-        query.setPage(Integer.parseInt(page));
-        query.setPageSize(Integer.parseInt(pageSize));
+        int defaultPage = 1;
+        int defaultPageSize = 20;
+        int pageNum;
+        int pageSizeNum;  
+        
+        try {
+            pageNum = Integer.parseInt(page);
+        } catch (NumberFormatException e) {
+            pageNum = defaultPage;
+        }
+        try {
+            pageSizeNum = Integer.parseInt(pageSize);
+        } catch (NumberFormatException e) {
+            pageSizeNum = defaultPageSize;
+        }
+
+        query.setPage(pageNum);
+        query.setPageSize(pageSizeNum);
 
         LabDataController labDataController = new LabDataController();
         labDataController.sanitizeInboxFormQuery(loggedInInfo, query, demographicFilter, typeFilter);
