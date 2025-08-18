@@ -166,24 +166,12 @@ public class ProgramManagerImpl implements ProgramManager {
         return programDao.getPrograms();
     }
 
-    public Program[] getBedPrograms() {
-        return programDao.getProgramsByType(null, Program.BED_TYPE, null).toArray(new Program[0]);
-    }
-
-    public Program[] getBedPrograms(Integer facilityId) {
-        return programDao.getProgramsByType(facilityId, Program.BED_TYPE, null).toArray(new Program[0]);
-    }
-
     public List<Program> getServicePrograms() {
         return programDao.getProgramsByType(null, Program.SERVICE_TYPE, null);
     }
 
     public Program[] getExternalPrograms() {
         return programDao.getProgramsByType(null, Program.EXTERNAL_TYPE, true).toArray(new Program[0]);
-    }
-
-    public boolean isBedProgram(String programId) {
-        return programDao.isBedProgram(Integer.valueOf(programId));
     }
 
     public boolean isServiceProgram(String programId) {

@@ -2396,10 +2396,9 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
 
                                                     String _pvid = loggedInInfo.getLoggedInProviderNo();
                                                     Set<Program> pset = gieat.getActiveProviderProgramsInFacility(loggedInInfo, _pvid, loggedInInfo.getCurrentFacility().getId());
-                                                    List<Program> bedP = gieat.getBedPrograms(pset, _pvid);
                                                     List<Program> commP = gieat.getCommunityPrograms();
 
-                                                    for (Program _p : bedP) {
+                                                    for (Program _p : commP) {
                                                 %>
                                                 <option value="<%=_p.getId()%>" <%=("OSCAR".equals(_p.getName()) ? " selected=\"selected\" " : "")%> ><%=_p.getName()%>
                                                 </option>

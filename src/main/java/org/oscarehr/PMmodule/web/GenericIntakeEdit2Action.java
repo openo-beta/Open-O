@@ -173,8 +173,11 @@ public class GenericIntakeEdit2Action extends ActionSupport {
             defaultCommunityProgramId = getOscarClinicDefaultCommunityProgramId(oscar.OscarProperties.getInstance().getProperty("oscarClinicDefaultProgram"));
         }
 
-        setBeanProperties(loggedInInfo, intake, getClient(request), providerNo, Agency.getLocalAgency().areHousingProgramsVisible(intakeType), Agency.getLocalAgency()
-                .areServiceProgramsVisible(intakeType), Agency.getLocalAgency().areExternalProgramsVisible(intakeType), defaultCommunityProgramId, null, null, loggedInInfo.getCurrentFacility().getId(), null, jsLocation, Agency.getLocalAgency().areCommunityProgramsVisible(intakeType), null);
+        setBeanProperties(loggedInInfo, intake, getClient(request), providerNo, 
+                Agency.getLocalAgency().areServiceProgramsVisible(intakeType), 
+                Agency.getLocalAgency().areExternalProgramsVisible(intakeType), 
+                null, null, loggedInInfo.getCurrentFacility().getId(), null, jsLocation, 
+                Agency.getLocalAgency().areCommunityProgramsVisible(intakeType), defaultCommunityProgramId);
 
         request.getSession().setAttribute(SessionConstants.INTAKE_CLIENT_IS_DEPENDENT_OF_FAMILY, false);
 
@@ -274,17 +277,18 @@ public class GenericIntakeEdit2Action extends ActionSupport {
         Demographic client = new Demographic();
 
 
-        setBeanProperties(loggedInInfo, intake, client, providerNo, Agency.getLocalAgency().areHousingProgramsVisible(intakeType), Agency.getLocalAgency()
-                        .areServiceProgramsVisible(intakeType), Agency.getLocalAgency().areExternalProgramsVisible(intakeType), null,
-                null, null, facilityId, nodeId, jsLocation, Agency.getLocalAgency().areCommunityProgramsVisible(intakeType), null);
+        setBeanProperties(loggedInInfo, intake, client, providerNo, 
+                Agency.getLocalAgency().areServiceProgramsVisible(intakeType), 
+                Agency.getLocalAgency().areExternalProgramsVisible(intakeType), 
+                null, null, facilityId, nodeId, jsLocation, 
+                Agency.getLocalAgency().areCommunityProgramsVisible(intakeType), null);
 
         // UCF -- intake accessment : please don't remove the following lines
         List allForms = surveyManager.getAllFormsForCurrentProviderAndCurrentFacility(loggedInInfo);
         request.getSession().setAttribute("survey_list", allForms);
 
-        String oldBedProgramId = null;
-        request.getSession().setAttribute("intakeCurrentBedId", oldBedProgramId);
-        request.getSession().setAttribute("intakeCurrentCommunityId", oldBedProgramId);
+        request.getSession().setAttribute("intakeCurrentBedId", null);
+        request.getSession().setAttribute("intakeCurrentCommunityId", null);
 
         request.getSession().setAttribute(SessionConstants.INTAKE_CLIENT_IS_DEPENDENT_OF_FAMILY, false);
 
@@ -354,16 +358,14 @@ public class GenericIntakeEdit2Action extends ActionSupport {
         List<IntakeNodeJavascript> jsLocation = genericIntakeManager.getIntakeNodeJavascriptLocation(intake.getNode().getQuestionId());
 
 
-        setBeanProperties(loggedInInfo, intake, getClient(clientId), providerNo, Agency.getLocalAgency().areHousingProgramsVisible(intakeType), Agency.getLocalAgency()
-                        .areServiceProgramsVisible(intakeType), Agency.getLocalAgency().areExternalProgramsVisible(intakeType), getCurrentBedProgramId(clientId),
+        setBeanProperties(loggedInInfo, intake, getClient(clientId), providerNo, Agency.getLocalAgency()
+                        .areServiceProgramsVisible(intakeType), Agency.getLocalAgency().areExternalProgramsVisible(intakeType),
                 getCurrentServiceProgramIds(clientId), getCurrentExternalProgramId(clientId), facilityId, nodeId, jsLocation, Agency.getLocalAgency().areCommunityProgramsVisible(intakeType), getCurrentCommunityProgramId(clientId));
 
         // UCF -- intake accessment : please don't remove the following lines
         List allForms = surveyManager.getAllFormsForCurrentProviderAndCurrentFacility(loggedInInfo);
         request.getSession().setAttribute("survey_list", allForms);
 
-        String oldBedProgramId = String.valueOf(getCurrentBedProgramId(clientId));
-        request.getSession().setAttribute("intakeCurrentBedId", oldBedProgramId);
 
         String oldCommunityProgramId = String.valueOf(getCurrentCommunityProgramId(clientId));
         request.getSession().setAttribute("intakeCurrentCommunityId", oldCommunityProgramId);
@@ -407,7 +409,7 @@ public class GenericIntakeEdit2Action extends ActionSupport {
         List<IntakeNodeJavascript> jsLocation = genericIntakeManager.getIntakeNodeJavascriptLocation(intake.getNode().getQuestionId());
 
 
-        setBeanProperties(loggedInInfo, intake, getClient(clientId), providerNo, false, false, false, null, null, null, facilityId, null, jsLocation, false, null);
+        setBeanProperties(loggedInInfo, intake, getClient(clientId), providerNo, false, false, null, null, facilityId, null, jsLocation, false, null);
 
         return PRINT;
     }
@@ -472,7 +474,9 @@ public class GenericIntakeEdit2Action extends ActionSupport {
             if (OscarProperties.getInstance().isTorontoRFQ()) {
                 Integer clientId = client.getDemographicNo();
                 if (clientId != null && !"".equals(clientId)) {
-                    oldId = getCurrentBedCommunityProgramId(client.getDemographicNo());
+                    // Get current community program
+                    Admission communityProgramAdmission = admissionManager.getCurrentCommunityProgramAdmission(client.getDemographicNo());
+                    oldId = communityProgramAdmission != null ? communityProgramAdmission.getProgramId() : null;
 
                     // Save 'external' program for RFQ.
                     admitExternalProgram(client.getDemographicNo(), providerNo, this.getSelectedExternalProgramId());
@@ -482,14 +486,9 @@ public class GenericIntakeEdit2Action extends ActionSupport {
                 Integer intakeLocationId = 0;
                 String intakeLocationStr = this.getProgramInDomainId();
                 if (intakeLocationStr == null || "".equals(intakeLocationStr)) {
-                    Integer selectedBedProgramId = this.getSelectedBedProgramId();
                     if ("RFQ_admit".equals(saveWhich)) {
-                        if (programManager.isBedProgram(selectedBedProgramId.toString())) {
-                            intakeLocationId = selectedBedProgramId;
-                        } else {
-                            if (this.getProgramInDomainId() != null && this.getProgramInDomainId().trim().length() > 0)
-                                intakeLocationId = Integer.valueOf(this.getProgramInDomainId());
-                        }
+                        if (this.getProgramInDomainId() != null && this.getProgramInDomainId().trim().length() > 0)
+                            intakeLocationId = Integer.valueOf(this.getProgramInDomainId());
                     }
                 } else {
                     intakeLocationId = Integer.valueOf(intakeLocationStr);
@@ -506,7 +505,6 @@ public class GenericIntakeEdit2Action extends ActionSupport {
                 admissionText = getAdmissionText(loggedInInfo, admissionText, remoteReferralId);
             }
 
-            admitBedCommunityProgram(client.getDemographicNo(), providerNo, this.getSelectedBedProgramId(), saveWhich, admissionText, admissionDate);
             admitBedCommunityProgram(client.getDemographicNo(), providerNo, this.getSelectedCommunityProgramId(), saveWhich, admissionText, admissionDate);
 
             if (remoteReferralId != null) {
@@ -563,12 +561,10 @@ public class GenericIntakeEdit2Action extends ActionSupport {
         List<IntakeNodeJavascript> jsLocation = genericIntakeManager.getIntakeNodeJavascriptLocation(intake.getNode().getQuestionId());
 
 
-        setBeanProperties(loggedInInfo, intake, client, providerNo, Agency.getLocalAgency().areHousingProgramsVisible(intakeType), Agency.getLocalAgency().areServiceProgramsVisible(
-                        intakeType), Agency.getLocalAgency().areExternalProgramsVisible(intakeType), getCurrentBedProgramId(client.getDemographicNo()),
+        setBeanProperties(loggedInInfo, intake, client, providerNo, Agency.getLocalAgency().areServiceProgramsVisible(
+                        intakeType), Agency.getLocalAgency().areExternalProgramsVisible(intakeType),
                 getCurrentServiceProgramIds(client.getDemographicNo()), getCurrentExternalProgramId(client.getDemographicNo()), loggedInInfo.getCurrentFacility().getId(), nodeId, jsLocation, Agency.getLocalAgency().areCommunityProgramsVisible(intakeType), getCurrentCommunityProgramId(client.getDemographicNo()));
 
-        String oldBedProgramId = String.valueOf(getCurrentBedProgramId(client.getDemographicNo()));
-        request.getSession().setAttribute("intakeCurrentBedId", oldBedProgramId);
 
         String oldCommunityProgramId = String.valueOf(getCurrentCommunityProgramId(client.getDemographicNo()));
         request.getSession().setAttribute("intakeCurrentCommunityId", oldCommunityProgramId);
@@ -779,23 +775,6 @@ public class GenericIntakeEdit2Action extends ActionSupport {
         return activeProviderPrograms;
     }
 
-    public List<Program> getBedPrograms(Set<Program> providerPrograms, String providerNo) {
-        List<Program> bedPrograms = new ArrayList<Program>();
-
-        for (Program program : programManager.getBedPrograms()) {
-            if (providerPrograms.contains(program)) {
-                if (OscarProperties.getInstance().isTorontoRFQ()) {
-                    if (caseManagementManager.hasAccessRight("perform admissions", "access", providerNo, "", String.valueOf(program.getId()))) {
-                        bedPrograms.add(program);
-                    }
-                } else {
-                    bedPrograms.add(program);
-                }
-            }
-        }
-
-        return bedPrograms;
-    }
 
     public List<Program> getServicePrograms(Set<Program> providerPrograms, String providerNo) {
         List<Program> servicePrograms = new ArrayList<Program>();
@@ -836,32 +815,6 @@ public class GenericIntakeEdit2Action extends ActionSupport {
         return communityProgramId;
     }
 
-    private Integer getCurrentBedCommunityProgramId(Integer clientId) {
-        Integer currentProgramId = null;
-
-        Admission bedProgramAdmission = admissionManager.getCurrentBedProgramAdmission(clientId);
-        Admission communityProgramAdmission = admissionManager.getCurrentCommunityProgramAdmission(clientId);
-
-        if (bedProgramAdmission != null) {
-            currentProgramId = bedProgramAdmission.getProgramId();
-        } else if (communityProgramAdmission != null) {
-            currentProgramId = communityProgramAdmission.getProgramId();
-        }
-
-        return currentProgramId;
-    }
-
-    private Integer getCurrentBedProgramId(Integer clientId) {
-        Integer currentProgramId = null;
-
-        Admission bedProgramAdmission = admissionManager.getCurrentBedProgramAdmission(clientId);
-
-        if (bedProgramAdmission != null) {
-            currentProgramId = bedProgramAdmission.getProgramId();
-        }
-
-        return currentProgramId;
-    }
 
     private Integer getCurrentCommunityProgramId(Integer clientId) {
         Integer currentProgramId = null;
@@ -945,7 +898,9 @@ public class GenericIntakeEdit2Action extends ActionSupport {
     public void admitBedCommunityProgram(Integer clientId, String providerNo, Integer bedCommunityProgramId, String saveWhich, String admissionText, Date admissionDate) throws ProgramFullException,
             AdmissionException, ServiceRestrictionException {
         Program bedCommunityProgram = null;
-        Integer currentBedCommunityProgramId = getCurrentBedCommunityProgramId(clientId);
+        // Get current community program  
+        Admission communityProgramAdmission = admissionManager.getCurrentCommunityProgramAdmission(clientId);
+        Integer currentBedCommunityProgramId = communityProgramAdmission != null ? communityProgramAdmission.getProgramId() : null;
 
         if (admissionText == null) admissionText = "intake admit";
 
@@ -996,19 +951,11 @@ public class GenericIntakeEdit2Action extends ActionSupport {
                     if (currentBedCommunityProgramId == null) {
                         admissionManager.processAdmission(familyId, providerNo, bedCommunityProgram, "intake discharge", admissionText, admissionDate);
                     } else if (!currentBedCommunityProgramId.equals(bedCommunityProgramId)) {
-                        if (programManager.getProgram(currentBedCommunityProgramId).isBed()) {
-                            if (bedCommunityProgram.isBed()) {
-                                admissionManager.processAdmission(familyId, providerNo, bedCommunityProgram, "intake discharge", admissionText, admissionDate);
-                            } else {
-                                admissionManager.processDischargeToCommunity(bedCommunityProgramId, familyId, providerNo, "intake discharge", "0", admissionDate);
-                            }
+                        if (bedCommunityProgram.isCommunity()) {
+                            admissionManager.processDischargeToCommunity(bedCommunityProgramId, familyId, providerNo, "intake discharge", "0", admissionDate);
                         } else {
-                            if (bedCommunityProgram.isCommunity()) {
-                                admissionManager.processDischargeToCommunity(bedCommunityProgramId, familyId, providerNo, "intake discharge", "0", admissionDate);
-                            } else {
-                                admissionManager.processDischarge(currentBedCommunityProgramId, familyId, "intake discharge", "0", admissionDate);
-                                admissionManager.processAdmission(familyId, providerNo, bedCommunityProgram, "intake discharge", admissionText, admissionDate);
-                            }
+                            admissionManager.processDischarge(currentBedCommunityProgramId, familyId, "intake discharge", "0", admissionDate);
+                            admissionManager.processAdmission(familyId, providerNo, bedCommunityProgram, "intake discharge", admissionText, admissionDate);
                         }
                     }
                 }
@@ -1023,20 +970,11 @@ public class GenericIntakeEdit2Action extends ActionSupport {
                 if (currentBedCommunityProgramId == null) {
                     admissionManager.processAdmission(clientId, providerNo, bedCommunityProgram, "intake discharge", admissionText, admissionDate);
                 } else if (!currentBedCommunityProgramId.equals(bedCommunityProgramId)) {
-                    if (programManager.getProgram(currentBedCommunityProgramId).isBed()) {
-                        if (bedCommunityProgram.isBed()) {
-                            // automatic discharge from one bed program to another bed program.
-                            admissionManager.processAdmission(clientId, providerNo, bedCommunityProgram, "intake discharge", admissionText, admissionDate);
-                        } else {
-                            admissionManager.processDischargeToCommunity(bedCommunityProgramId, clientId, providerNo, "intake discharge", "0", admissionDate);
-                        }
+                    if (bedCommunityProgram.isCommunity()) {
+                        admissionManager.processDischargeToCommunity(bedCommunityProgramId, clientId, providerNo, "intake discharge", "0", admissionDate);
                     } else {
-                        if (bedCommunityProgram.isCommunity()) {
-                            admissionManager.processDischargeToCommunity(bedCommunityProgramId, clientId, providerNo, "intake discharge", "0", admissionDate);
-                        } else {
-                            admissionManager.processDischarge(currentBedCommunityProgramId, clientId, "intake discharge", "0", admissionDate);
-                            admissionManager.processAdmission(clientId, providerNo, bedCommunityProgram, "intake discharge", admissionText, admissionDate);
-                        }
+                        admissionManager.processDischarge(currentBedCommunityProgramId, clientId, "intake discharge", "0", admissionDate);
+                        admissionManager.processAdmission(clientId, providerNo, bedCommunityProgram, "intake discharge", admissionText, admissionDate);
                     }
                 }
             }
@@ -1111,21 +1049,16 @@ public class GenericIntakeEdit2Action extends ActionSupport {
 
     // Bean
 
-    private void setBeanProperties(LoggedInInfo loggedInInfo, Intake intake, Demographic client, String providerNo, boolean bedProgramsVisible,
-                                   boolean serviceProgramsVisible, boolean externalProgramsVisible, Integer currentBedProgramId, SortedSet<Integer> currentServiceProgramIds,
+    private void setBeanProperties(LoggedInInfo loggedInInfo, Intake intake, Demographic client, String providerNo,
+                                   boolean serviceProgramsVisible, boolean externalProgramsVisible, SortedSet<Integer> currentServiceProgramIds,
                                    Integer currentExternalProgramId, Integer facilityId, Integer nodeId, List<IntakeNodeJavascript> javascriptLocation, boolean communityProgramsVisible, Integer currentCommunityProgramId) {
         this.setIntake(intake);
         this.setClient(client);
         this.setNodeId(nodeId);
         this.setJsLocation(javascriptLocation);
 
-        if (bedProgramsVisible || communityProgramsVisible || serviceProgramsVisible || externalProgramsVisible) {
+        if (communityProgramsVisible || serviceProgramsVisible || externalProgramsVisible) {
             Set<Program> providerPrograms = getActiveProviderProgramsInFacility(loggedInInfo, providerNo, facilityId);
-
-            if (bedProgramsVisible) {
-                this.setBedPrograms(getBedPrograms(providerPrograms, providerNo));
-                this.setSelectedBedProgramId(currentBedProgramId);
-            }
 
             if (communityProgramsVisible) {
                 //this.setCommunityPrograms(getCommunityPrograms());
@@ -1210,7 +1143,6 @@ public class GenericIntakeEdit2Action extends ActionSupport {
         return attribute;
     }
 
-    private static final String BED_PROGRAM_LABEL = "Bed Program";
     private static final String EXTERNAL_PROGRAM_LABEL = "External Agency Client Referred From";
     private static final String COMMUNITY_PROGRAM_LABEL = "Residential Status";
     private static final String PROGRAM_IN_DOMAIN_LABEL = "Select where the intake is being performed if different from Admission Program";
@@ -1223,9 +1155,6 @@ public class GenericIntakeEdit2Action extends ActionSupport {
     private LabelValueBean[] days;
     private LabelValueBean[] provinces;
 
-    private List<LabelValueBean> bedPrograms;
-    private String bedProgramId;
-    private String bedProgramLabel;
 
     private List<LabelValueBean> communityPrograms;
     private String communityProgramId;
@@ -1385,48 +1314,9 @@ public class GenericIntakeEdit2Action extends ActionSupport {
     }
     //---------------------
 
-    //	 Bed programs
 
-    public List<LabelValueBean> getBedPrograms() {
-        return bedPrograms;
-    }
 
-    public void setBedPrograms(List<Program> bedPrograms2) {
-        setBedProgramLabel(!bedPrograms2.isEmpty());
-        bedPrograms = convertToLabelValues2(bedPrograms2);
-    }
 
-    public String getBedProgramLabel() {
-        return bedProgramLabel;
-    }
-
-    public void setBedProgramLabel(boolean hasBedPrograms) {
-        StringBuilder buffer = new StringBuilder();
-
-        if (hasBedPrograms) {
-            buffer.append(BED_PROGRAM_LABEL);
-        }
-
-        bedProgramLabel = buffer.toString();
-    }
-
-    // Selected Bed program id
-
-    public Integer getSelectedBedProgramId() {
-        return convertToInteger(bedProgramId);
-    }
-
-    public void setSelectedBedProgramId(Integer selectedId) {
-        bedProgramId = convertToString(selectedId);
-    }
-
-    public String getBedProgramId() {
-        return bedProgramId;
-    }
-
-    public void setBedProgramId(String bedProgramId) {
-        this.bedProgramId = bedProgramId;
-    }
 
     //////////////////////////////////
     //	 Community programs

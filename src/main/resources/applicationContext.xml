@@ -108,7 +108,6 @@
 	<bean id="defaultRoleAccessDAO" class="org.oscarehr.PMmodule.dao.DefaultRoleAccessDAOImpl" autowire="byName" />
 	<bean id="programClientStatusDAO" class="org.oscarehr.PMmodule.dao.ProgramClientStatusDAOImpl" autowire="byName" />
 	<bean id="programTeamDAO" class="org.oscarehr.PMmodule.dao.ProgramTeamDAOImpl" autowire="byName" />
-	<bean id="bedProgramDao" class="org.caisi.dao.BedProgramDaoImpl" autowire="byName" />
 	<bean id="demographicDao" class="org.oscarehr.common.dao.DemographicDaoImpl" autowire="byName" />
 	<bean id="secUserRoleDao" class="org.oscarehr.PMmodule.dao.SecUserRoleDaoImpl" autowire="byName"/>
 	<bean id="programSignatureDao" class="org.oscarehr.PMmodule.dao.ProgramSignatureDaoImpl" autowire="byName" />
@@ -260,11 +259,6 @@
 		<property name="clientRestrictionManager" ref="clientRestrictionManager" />
 		<property name="demographicExtDao" ref="demographicExtDao" />
 		<property name="outsideOfDomainEnabled" value="${pmm.client.search.outside.of.domain.enabled}" />
-	</bean>
-	<bean id="infirmBedProgramManager" class="org.caisi.service.InfirmBedProgramManagerImpl" autowire="byName">
-		<property name="programProviderDAOT" ref="programProviderDAO" />
-		<property name="demographicDao" ref="demographicDao" />
-		<property name="providerDefaultProgramDao" ref="providerDefaultProgramDao" />
 	</bean>
 
 	

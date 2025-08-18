@@ -1852,7 +1852,6 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         String lastName = "";
         String firstNameL = "";
         String lastNameL = "";
-        String bedProgramId = "";
         String assignedToProviderNo = "";
 
         String active = "";
@@ -1939,12 +1938,6 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
             criteria.add(Expression.eq("Ver", bean.getHealthCardVersion()));
         }
 
-        if (bean.getBedProgramId() != null && bean.getBedProgramId().length() > 0) {
-            bedProgramId = bean.getBedProgramId();
-            sql = " demographic_no in (select decode(dm.merged_to,null,i.client_id,dm.merged_to) from intake i,demographic_merged dm where i.client_id=dm.demographic_no(+) and i.program_id in ("
-                + bedProgramId + "))";
-            criteria.add(Restrictions.sqlRestriction(sql));
-        }
         if (bean.getAssignedToProviderNo() != null && bean.getAssignedToProviderNo().length() > 0) {
             assignedToProviderNo = bean.getAssignedToProviderNo();
             sql = " demographic_no in (select decode(dm.merged_to,null,a.client_id,dm.merged_to) from admission a,demographic_merged dm where a.client_id=dm.demographic_no(+)and a.primaryWorker='"

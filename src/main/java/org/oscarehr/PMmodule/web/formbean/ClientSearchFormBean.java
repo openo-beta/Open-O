@@ -47,7 +47,6 @@ public class ClientSearchFormBean {
     private String active;
     private boolean searchOutsideDomain;
     private boolean searchUsingSoundex;
-    private String bedProgramId;
     private String assignedToProviderNo;
     private String dateFrom;
     private String dateTo;
@@ -212,19 +211,6 @@ public class ClientSearchFormBean {
         this.programDomain = programDomain;
     }
 
-    /**
-     * @return Returns the bedProgramId.
-     */
-    public String getBedProgramId() {
-        return bedProgramId;
-    }
-
-    /**
-     * @param bedProgramId The bedProgramId to set.
-     */
-    public void setBedProgramId(String bedProgramId) {
-        this.bedProgramId = bedProgramId;
-    }
 
     /**
      * @return Returns the dateFrom.

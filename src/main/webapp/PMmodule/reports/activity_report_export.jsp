@@ -115,7 +115,7 @@
     for (Program program : populationReportUIBean.getAllPrograms()) {
         populationReportUIBean.setProgramId(program.getId());
 
-        if (!program.isBed() && !program.isService()) continue;
+        if (!program.isService()) continue;
 
         // this line is here to ensure the calendar is materialised before cloning, it's a known "issue" in java and not considered a bug....
         startCalendar.getTimeInMillis();

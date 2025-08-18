@@ -88,8 +88,8 @@ public class ProviderServiceReportUIBean {
         ArrayList<DataRow> results = new ArrayList<DataRow>();
 
         for (Program program : activePrograms) {
-            // we only want bed and service programs
-            if (!Program.BED_TYPE.equals(program.getType()) && !Program.SERVICE_TYPE.equals(program.getType()))
+            // we only want service programs (bed programs removed)
+            if (!Program.SERVICE_TYPE.equals(program.getType()))
                 continue;
 
             results.addAll(getProgramNumbers(startCal, endCal, doctorRole, program));

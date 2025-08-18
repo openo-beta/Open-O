@@ -357,16 +357,13 @@ public class CBIUtil {
     private List<Program> getPrograms() {
         ProgramDao programDao = (ProgramDao) SpringUtils.getBean(ProgramDao.class);
 
-        // get bed programs
-        Program[] bedProgramsArr = programDao.getProgramsByType(null, Program.BED_TYPE, null).toArray(new Program[0]);
+        // bed programs removed
 
         // get service programs
         List<Program> serviceProgramList = programDao.getProgramsByType(null, Program.SERVICE_TYPE, null);
 
         // combine programs
         List<Program> finalProgramList = new ArrayList<Program>();
-        if (bedProgramsArr != null)
-            finalProgramList.addAll(Arrays.asList(bedProgramsArr));
         if (serviceProgramList != null)
             finalProgramList.addAll(serviceProgramList);
 

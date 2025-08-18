@@ -24,13 +24,7 @@
 
 package oscar.oscarEncounter.data;
 
-import org.caisi.service.InfirmBedProgramManager;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-import oscar.util.LabelValueBean;
-
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  * @author rjonasz
@@ -46,44 +40,7 @@ public class EctProgram {
     }
 
     public String getProgram(String providerNo) {
-
-        List programBean;
-
-        InfirmBedProgramManager manager = getInfirmBedProgramManager();
-        programBean = manager.getProgramBeans(providerNo, null);
-
-        //get default program
-        int defaultprogramId = manager.getDefaultProgramId(providerNo);
-        boolean defaultInList = false;
-        for (int i = 0; i < programBean.size(); i++) {
-            int id = new Integer(((LabelValueBean) programBean.get(i)).getValue()).intValue();
-            if (defaultprogramId == id) defaultInList = true;
-        }
-        if (!defaultInList) defaultprogramId = 0;
-        int OriprogramId = 0;
-        if (programBean.size() > 0)
-            OriprogramId = new Integer(((LabelValueBean) programBean.get(0)).getValue()).intValue();
-        int programId = 0;
-        if (defaultprogramId != 0 && OriprogramId != 0) programId = defaultprogramId;
-        else {
-            if (OriprogramId == 0)
-                programId = 0;
-            if (defaultprogramId == 0 && OriprogramId != 0)
-                programId = OriprogramId;
-        }
-
-        return String.valueOf(programId);
-    }
-
-    public ApplicationContext getAppContext() {
-        return WebApplicationContextUtils.getWebApplicationContext(
-                se.getServletContext());
-    }
-
-    public InfirmBedProgramManager getInfirmBedProgramManager() {
-        InfirmBedProgramManager bpm = (InfirmBedProgramManager) getAppContext()
-                .getBean(InfirmBedProgramManager.class);
-        return bpm;
+        return "0";
     }
 
 }

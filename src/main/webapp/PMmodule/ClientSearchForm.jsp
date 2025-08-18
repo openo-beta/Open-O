@@ -206,7 +206,7 @@
             <display:column sortable="true" title="Chart No" sortProperty="chartNo">
                 <c:out value="${client.chartNo}"/>
             </display:column>
-            <display:column sortable="true" title="Admitted to Bed Program">
+            <display:column sortable="true" title="Admitted to Program">
                 <c:choose>
                     <c:when test="${client.activeCount == 0}">No</c:when>
                     <c:otherwise>Yes</c:otherwise>

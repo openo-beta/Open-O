@@ -48,8 +48,6 @@ import oscar.OscarProperties;
 
 public interface ProgramDao {
 
-    public boolean isBedProgram(Integer programId);
-
     public boolean isServiceProgram(Integer programId);
 
     public boolean isCommunityProgram(Integer programId);

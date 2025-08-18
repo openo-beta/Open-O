@@ -118,23 +118,6 @@ public class GenericIntakeEditAction {
         return activeProviderPrograms;
     }
 
-    public List<Program> getBedPrograms(Set<Program> providerPrograms, String providerNo) {
-        List<Program> bedPrograms = new ArrayList<Program>();
-
-        for (Program program : programManager.getBedPrograms()) {
-            if (providerPrograms.contains(program)) {
-                if (OscarProperties.getInstance().isTorontoRFQ()) {
-                    if (caseManagementManager.hasAccessRight("perform admissions", "access", providerNo, "", String.valueOf(program.getId()))) {
-                        bedPrograms.add(program);
-                    }
-                } else {
-                    bedPrograms.add(program);
-                }
-            }
-        }
-
-        return bedPrograms;
-    }
 
     public List<Program> getCommunityPrograms() {
         List<Program> communityPrograms = new ArrayList<Program>();
@@ -185,32 +168,6 @@ public class GenericIntakeEditAction {
         return communityProgramId;
     }
 
-    private Integer getCurrentBedCommunityProgramId(Integer clientId) {
-        Integer currentProgramId = null;
-
-        Admission bedProgramAdmission = admissionManager.getCurrentBedProgramAdmission(clientId);
-        Admission communityProgramAdmission = admissionManager.getCurrentCommunityProgramAdmission(clientId);
-
-        if (bedProgramAdmission != null) {
-            currentProgramId = bedProgramAdmission.getProgramId();
-        } else if (communityProgramAdmission != null) {
-            currentProgramId = communityProgramAdmission.getProgramId();
-        }
-
-        return currentProgramId;
-    }
-
-    private Integer getCurrentBedProgramId(Integer clientId) {
-        Integer currentProgramId = null;
-
-        Admission bedProgramAdmission = admissionManager.getCurrentBedProgramAdmission(clientId);
-
-        if (bedProgramAdmission != null) {
-            currentProgramId = bedProgramAdmission.getProgramId();
-        }
-
-        return currentProgramId;
-    }
 
     private Integer getCurrentCommunityProgramId(Integer clientId) {
         Integer currentProgramId = null;
@@ -294,7 +251,7 @@ public class GenericIntakeEditAction {
     public void admitBedCommunityProgram(Integer clientId, String providerNo, Integer bedCommunityProgramId, String saveWhich, String admissionText, Date admissionDate) throws ProgramFullException,
             AdmissionException, ServiceRestrictionException {
         Program bedCommunityProgram = null;
-        Integer currentBedCommunityProgramId = getCurrentBedCommunityProgramId(clientId);
+        Integer currentBedCommunityProgramId = getCurrentCommunityProgramId(clientId);
 
         if (admissionText == null) admissionText = "intake admit";
 
@@ -345,19 +302,11 @@ public class GenericIntakeEditAction {
                     if (currentBedCommunityProgramId == null) {
                         admissionManager.processAdmission(familyId, providerNo, bedCommunityProgram, "intake discharge", admissionText, admissionDate);
                     } else if (!currentBedCommunityProgramId.equals(bedCommunityProgramId)) {
-                        if (programManager.getProgram(currentBedCommunityProgramId).isBed()) {
-                            if (bedCommunityProgram.isBed()) {
-                                admissionManager.processAdmission(familyId, providerNo, bedCommunityProgram, "intake discharge", admissionText, admissionDate);
-                            } else {
-                                admissionManager.processDischargeToCommunity(bedCommunityProgramId, familyId, providerNo, "intake discharge", "0", admissionDate);
-                            }
-                        } else {
                             if (bedCommunityProgram.isCommunity()) {
-                                admissionManager.processDischargeToCommunity(bedCommunityProgramId, familyId, providerNo, "intake discharge", "0", admissionDate);
-                            } else {
-                                admissionManager.processDischarge(currentBedCommunityProgramId, familyId, "intake discharge", "0", admissionDate);
-                                admissionManager.processAdmission(familyId, providerNo, bedCommunityProgram, "intake discharge", admissionText, admissionDate);
-                            }
+                            admissionManager.processDischargeToCommunity(bedCommunityProgramId, familyId, providerNo, "intake discharge", "0", admissionDate);
+                        } else {
+                            admissionManager.processDischarge(currentBedCommunityProgramId, familyId, "intake discharge", "0", admissionDate);
+                            admissionManager.processAdmission(familyId, providerNo, bedCommunityProgram, "intake discharge", admissionText, admissionDate);
                         }
                     }
                 }
@@ -372,20 +321,11 @@ public class GenericIntakeEditAction {
                 if (currentBedCommunityProgramId == null) {
                     admissionManager.processAdmission(clientId, providerNo, bedCommunityProgram, "intake discharge", admissionText, admissionDate);
                 } else if (!currentBedCommunityProgramId.equals(bedCommunityProgramId)) {
-                    if (programManager.getProgram(currentBedCommunityProgramId).isBed()) {
-                        if (bedCommunityProgram.isBed()) {
-                            // automatic discharge from one bed program to another bed program.
-                            admissionManager.processAdmission(clientId, providerNo, bedCommunityProgram, "intake discharge", admissionText, admissionDate);
-                        } else {
-                            admissionManager.processDischargeToCommunity(bedCommunityProgramId, clientId, providerNo, "intake discharge", "0", admissionDate);
-                        }
+                    if (bedCommunityProgram.isCommunity()) {
+                        admissionManager.processDischargeToCommunity(bedCommunityProgramId, clientId, providerNo, "intake discharge", "0", admissionDate);
                     } else {
-                        if (bedCommunityProgram.isCommunity()) {
-                            admissionManager.processDischargeToCommunity(bedCommunityProgramId, clientId, providerNo, "intake discharge", "0", admissionDate);
-                        } else {
-                            admissionManager.processDischarge(currentBedCommunityProgramId, clientId, "intake discharge", "0", admissionDate);
-                            admissionManager.processAdmission(clientId, providerNo, bedCommunityProgram, "intake discharge", admissionText, admissionDate);
-                        }
+                        admissionManager.processDischarge(currentBedCommunityProgramId, clientId, "intake discharge", "0", admissionDate);
+                        admissionManager.processAdmission(clientId, providerNo, bedCommunityProgram, "intake discharge", admissionText, admissionDate);
                     }
                 }
             }
@@ -460,21 +400,16 @@ public class GenericIntakeEditAction {
 
     // Bean
 
-    private void setBeanProperties(LoggedInInfo loggedInInfo, GenericIntakeEditFormBean formBean, Intake intake, Demographic client, String providerNo, boolean bedProgramsVisible,
-                                   boolean serviceProgramsVisible, boolean externalProgramsVisible, Integer currentBedProgramId, SortedSet<Integer> currentServiceProgramIds,
+    private void setBeanProperties(LoggedInInfo loggedInInfo, GenericIntakeEditFormBean formBean, Intake intake, Demographic client, String providerNo,
+                                   boolean serviceProgramsVisible, boolean externalProgramsVisible, SortedSet<Integer> currentServiceProgramIds,
                                    Integer currentExternalProgramId, Integer facilityId, Integer nodeId, List<IntakeNodeJavascript> javascriptLocation, boolean communityProgramsVisible, Integer currentCommunityProgramId) {
         formBean.setIntake(intake);
         formBean.setClient(client);
         formBean.setNodeId(nodeId);
         formBean.setJsLocation(javascriptLocation);
 
-        if (bedProgramsVisible || communityProgramsVisible || serviceProgramsVisible || externalProgramsVisible) {
+        if (communityProgramsVisible || serviceProgramsVisible || externalProgramsVisible) {
             Set<Program> providerPrograms = getActiveProviderProgramsInFacility(loggedInInfo, providerNo, facilityId);
-
-            if (bedProgramsVisible) {
-                formBean.setBedPrograms(getBedPrograms(providerPrograms, providerNo));
-                formBean.setSelectedBedProgramId(currentBedProgramId);
-            }
 
             if (communityProgramsVisible) {
                 formBean.setCommunityPrograms(getCommunityPrograms());

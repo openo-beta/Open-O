@@ -85,7 +85,7 @@
                     <option value="0"></option>
                     <%
                         for (Program program : allPrograms) {
-                            if (program.isBed() || program.isService()) {
+                            if (program.isService()) {
                     %>
                     <option value="<%=program.getId() %>"><%=program.getName()%>
                     </option>
@@ -111,7 +111,7 @@
 <hr/>
 
 <h2>Export to csv, report on all programs and all providers</h2>
-(This will export all bed/service programs to a csv broken down by
+(This will export all service programs to a csv broken down by
 month.)
 
 <form method="post" action="activity_report_export.jsp">
@@ -138,7 +138,7 @@ month.)
 <hr/>
 
 <h2>Export to csv, report by role and program</h2>
-(This will export to csv based on the selected bed/service program for the specified providers, broken down by
+(This will export to csv based on the selected service program for the specified providers, broken down by
 month.)
 
 <form method="post" action="activity_report_export_program_role.jsp">
@@ -174,7 +174,7 @@ month.)
                 <select name="programIds" multiple="multiple" style="width:16em;height:6em">
                     <%
                         for (Program program : allPrograms) {
-                            if (program.isBed() || program.isService()) {
+                            if (program.isService()) {
                     %>
                     <option value="<%=program.getId() %>" title="<%=program.getName()%>"><%=program.getName()%>
                     </option>

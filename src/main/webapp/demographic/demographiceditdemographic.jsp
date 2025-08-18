@@ -936,7 +936,6 @@
         List<DemographicExtArchive> extArchives = demographicExtArchiveDao.getDemographicExtArchiveByDemoAndKey(Integer.parseInt(demographic_no), "demo_cell");
 
         AdmissionManager admissionManager = SpringUtils.getBean(AdmissionManager.class);
-        Admission bedAdmission = admissionManager.getCurrentBedProgramAdmission(demographic.getDemographicNo());
         Admission communityAdmission = admissionManager.getCurrentCommunityProgramAdmission(demographic.getDemographicNo());
         List<Admission> serviceAdmissions = admissionManager.getCurrentServiceProgramAdmission(demographic.getDemographicNo());
         if (serviceAdmissions == null) {
@@ -2586,9 +2585,6 @@
                                                                 <div class="demographicSection" id="programs">
                                                                     <h3>Programs</h3>
                                                                     <ul>
-                                                                        <li><span class="label">Bed:</span><span
-                                                                                class="info"><%=bedAdmission != null ? bedAdmission.getProgramName() : "N/A" %></span>
-                                                                        </li>
                                                                         <%
                                                                             for (Admission adm : serviceAdmissions) {
                                                                         %>
@@ -4861,14 +4857,13 @@
 
                                                                                     String _pvid = loggedInInfo.getLoggedInProviderNo();
                                                                                     Set<Program> pset = gieat.getActiveProviderProgramsInFacility(loggedInInfo, _pvid, loggedInInfo.getCurrentFacility().getId());
-                                                                                    List<Program> bedP = gieat.getBedPrograms(pset, _pvid);
                                                                                     List<Program> commP = gieat.getCommunityPrograms();
                                                                                     Program oscarp = programDao.getProgramByName("OSCAR");
 
 
-                                                                                    for (Program _p : bedP) {
+                                                                                    for (Program _p : commP) {
                                                                                 %>
-                                                                                <option value="<%=_p.getId()%>" <%=isProgramSelected(bedAdmission, _p.getId()) %>><%=_p.getName()%>
+                                                                                <option value="<%=_p.getId()%>"><%=_p.getName()%>
                                                                                 </option>
                                                                                 <%
                                                                                     }

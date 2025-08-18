@@ -449,41 +449,6 @@ public class AdmissionDaoImpl extends AbstractDaoImpl<Admission> implements Admi
         return null;
     }
 
-    // TODO: rewrite
-    @SuppressWarnings("unchecked")
-    @Override
-    public Admission getCurrentBedProgramAdmission(ProgramDao programDAO, Integer demographicNo) {
-        if (programDAO == null) {
-            throw new IllegalArgumentException();
-        }
-
-        if (demographicNo == null || demographicNo <= 0) {
-            throw new IllegalArgumentException();
-        }
-
-        String queryStr = "select a FROM Admission a WHERE a.clientId=?1 AND a.admissionStatus='current' ORDER BY a.admissionDate DESC";
-        Query query = entityManager.createQuery(queryStr);
-        query.setParameter(1, demographicNo);
-        Admission admission = null;
-        List<Admission> rs = query.getResultList();
-
-        if (rs.isEmpty()) {
-            return null;
-        }
-
-        ListIterator<Admission> listIterator = rs.listIterator();
-        while (listIterator.hasNext()) {
-            try {
-                admission = listIterator.next();
-                if (programDAO.isBedProgram(admission.getProgramId())) {
-                    return admission;
-                }
-            } catch (Exception ex) {
-                return null;
-            }
-        }
-        return null;
-    }
 
     // TODO: rewrite
     @SuppressWarnings("unchecked")

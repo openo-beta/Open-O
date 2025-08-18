@@ -191,29 +191,7 @@ public final class MisReportUIBean {
         HashSet<Integer> uniqueElderlyClients = new HashSet<Integer>();
         HashSet<Integer> uniqueAdultClients = new HashSet<Integer>();
 
-        for (Admission admission : admissions) {
-            if (isProgramType(admission.getProgramId(), Program.BED_TYPE)) {
-                int residentDays = calculateResidentDays(admission);
-                boolean isNewAdmission = isNewAdmission(admission);
-
-                Demographic demographic = demographicDao.getDemographicById(admission.getClientId());
-                Integer age = DateUtils.getAge(demographic.getBirthDay(), endDate);
-
-                if (age != null && age.intValue() >= ELDERLY_AGE) {
-                    totalDaysElderly = totalDaysElderly + residentDays;
-                    if (isNewAdmission) totalNewAdmissionsElderly++;
-
-                    uniqueElderlyClients.add(admission.getClientId());
-                } else {
-                    totalDaysAdult = totalDaysAdult + residentDays;
-                    if (isNewAdmission) totalNewAdmissionsAdult++;
-
-                    if (isNewDischarge(admission)) totalNewDischargeAdult++;
-
-                    uniqueAdultClients.add(admission.getClientId());
-                }
-            }
-        }
+        // Bed program functionality has been removed - this loop is skipped
 
         results.add(new DataRow(4034520, "Resident days - Elderly", totalDaysElderly));
         results.add(new DataRow(4034540, "Resident days - Adult", totalDaysAdult));

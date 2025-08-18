@@ -36,7 +36,6 @@ import java.util.Set;
 
 public class GenericIntakeEditFormBean {
 
-    private static final String BED_PROGRAM_LABEL = "Bed Program";
     private static final String EXTERNAL_PROGRAM_LABEL = "External Agency Client Referred From";
     private static final String COMMUNITY_PROGRAM_LABEL = "Residential Status";
     private static final String PROGRAM_IN_DOMAIN_LABEL = "Select where the intake is being performed if different from Admission Program";
@@ -48,10 +47,6 @@ public class GenericIntakeEditFormBean {
     private LabelValueBean[] months;
     private LabelValueBean[] days;
     private LabelValueBean[] provinces;
-
-    private List<LabelValueBean> bedPrograms;
-    private String bedProgramId;
-    private String bedProgramLabel;
 
     private List<LabelValueBean> communityPrograms;
     private String communityProgramId;
@@ -217,48 +212,6 @@ public class GenericIntakeEditFormBean {
     }
     //---------------------
 
-    //	 Bed programs
-
-    public List<LabelValueBean> getBedPrograms() {
-        return bedPrograms;
-    }
-
-    public void setBedPrograms(List<Program> bedPrograms2) {
-        setBedProgramLabel(!bedPrograms2.isEmpty());
-        bedPrograms = convertToLabelValues2(bedPrograms2);
-    }
-
-    public String getBedProgramLabel() {
-        return bedProgramLabel;
-    }
-
-    public void setBedProgramLabel(boolean hasBedPrograms) {
-        StringBuilder buffer = new StringBuilder();
-
-        if (hasBedPrograms) {
-            buffer.append(BED_PROGRAM_LABEL);
-        }
-
-        bedProgramLabel = buffer.toString();
-    }
-
-    // Selected Bed program id
-
-    public Integer getSelectedBedProgramId() {
-        return convertToInteger(bedProgramId);
-    }
-
-    public void setSelectedBedProgramId(Integer selectedId) {
-        bedProgramId = convertToString(selectedId);
-    }
-
-    public String getBedProgramId() {
-        return bedProgramId;
-    }
-
-    public void setBedProgramId(String bedProgramId) {
-        this.bedProgramId = bedProgramId;
-    }
 
     //////////////////////////////////
     //	 Community programs

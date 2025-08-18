@@ -55,19 +55,6 @@ public class ProgramDaoImpl extends AbstractDaoImpl<Program> implements ProgramD
         super(Program.class);
     }
 
-    /**
-     * Checks if the specified program is a bed program.
-     *
-     * @param programId the ID of the program to check
-     * @return true if the program is a bed program, false otherwise
-     */
-    @Override
-    public boolean isBedProgram(Integer programId) {
-        Program result = getProgram(programId);
-        if (result == null)
-            return (false);
-        return (result.isBed());
-    }
 
     /**
      * Checks if the specified program is a service program.
@@ -504,9 +491,6 @@ public class ProgramDaoImpl extends AbstractDaoImpl<Program> implements ProgramD
             predicates.add(cb.isTrue(root.get("firstNation")));
         }
 
-        if (program.isBedProgramAffiliated()) {
-            predicates.add(cb.isTrue(root.get("bedProgramAffiliated")));
-        }
 
         if (program.isAlcohol()) {
             predicates.add(cb.isTrue(root.get("alcohol")));
@@ -610,9 +594,6 @@ public class ProgramDaoImpl extends AbstractDaoImpl<Program> implements ProgramD
             predicates.add(cb.isTrue(root.get("firstNation")));
         }
 
-        if (program.isBedProgramAffiliated()) {
-            predicates.add(cb.isTrue(root.get("bedProgramAffiliated")));
-        }
 
         if (program.isAlcohol()) {
             predicates.add(cb.isTrue(root.get("alcohol")));
@@ -718,14 +699,8 @@ public class ProgramDaoImpl extends AbstractDaoImpl<Program> implements ProgramD
      * @return a list of Program objects representing the linked service programs
      */
     public List<Program> getLinkedServicePrograms(Integer bedProgramId, Integer clientId) {
-        String queryStr = "SELECT p FROM Admission a JOIN Program p ON a.programId = p.id "
-                 + "WHERE p.type = ?1 AND p.bedProgramLinkId = ?2 AND a.clientId = ?3";
-        TypedQuery<Program> query = entityManager.createQuery(queryStr, Program.class);
-        query.setParameter(1, Program.SERVICE_TYPE);
-        query.setParameter(2, bedProgramId);
-        query.setParameter(3, clientId);
-
-        return query.getResultList();
+        // Bed program functionality has been removed
+        return new ArrayList<>();
     }
 
     /**

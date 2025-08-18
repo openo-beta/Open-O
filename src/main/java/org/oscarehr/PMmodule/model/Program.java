@@ -43,7 +43,6 @@ public class Program extends AbstractModel<Integer> {
     public static final Integer DEFAULT_COMMUNITY_PROGRAM_ID = new Integer(10010);
 
     public static final String EXTERNAL_TYPE = "external";
-    public static final String BED_TYPE = "Bed";
     public static final String COMMUNITY_TYPE = "community";
     public static final String SERVICE_TYPE = "Service";
 
@@ -82,12 +81,10 @@ public class Program extends AbstractModel<Integer> {
     private boolean hic;
     private String programStatus = "active";
     private Integer intakeProgram;
-    private Integer bedProgramLinkId;
     private String manOrWoman;
     private String genderDesc;
     private boolean transgender;
     private boolean firstNation;
-    private boolean bedProgramAffiliated;
     private boolean alcohol;
     private String abstinenceSupport;
     private boolean physicalHealth;
@@ -298,15 +295,6 @@ public class Program extends AbstractModel<Integer> {
      */
     public boolean isExternal() {
         return EXTERNAL_TYPE.equalsIgnoreCase(getType());
-    }
-
-    /**
-     * Checks if this is a bed program.
-     * 
-     * @return true if the program type is "Bed", false otherwise
-     */
-    public boolean isBed() {
-        return BED_TYPE.equalsIgnoreCase(getType());
     }
 
     /**
@@ -707,24 +695,6 @@ public class Program extends AbstractModel<Integer> {
     }
 
     /**
-     * Gets the ID of the bed program linked to this program.
-     * 
-     * @return the bed program link ID
-     */
-    public Integer getBedProgramLinkId() {
-        return bedProgramLinkId;
-    }
-
-    /**
-     * Sets the ID of the bed program linked to this program.
-     * 
-     * @param bedProgramLinkId the bed program link ID to set
-     */
-    public void setBedProgramLinkId(Integer bedProgramLinkId) {
-        this.bedProgramLinkId = bedProgramLinkId;
-    }
-
-    /**
      * Gets the abstinence support offered by this program.
      * 
      * @return the abstinence support description
@@ -758,24 +728,6 @@ public class Program extends AbstractModel<Integer> {
      */
     public void setAlcohol(boolean alcohol) {
         this.alcohol = alcohol;
-    }
-
-    /**
-     * Checks if this program is affiliated with a bed program.
-     * 
-     * @return true if affiliated with a bed program, false otherwise
-     */
-    public boolean isBedProgramAffiliated() {
-        return bedProgramAffiliated;
-    }
-
-    /**
-     * Sets whether this program is affiliated with a bed program.
-     * 
-     * @param bedProgramAffiliated true if affiliated with a bed program, false otherwise
-     */
-    public void setBedProgramAffiliated(boolean bedProgramAffiliated) {
-        this.bedProgramAffiliated = bedProgramAffiliated;
     }
 
     /**

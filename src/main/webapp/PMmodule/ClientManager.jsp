@@ -101,8 +101,8 @@
                     for (int x = 0; x < ClientManagerFormBean.tabs.length; x++) {
 
                         if (isExternal) {
-                            // "Bed Reservation", "Forms", "Refer"
-                            if ("Bed Reservation".equalsIgnoreCase(ClientManagerFormBean.tabs[x]) || "Forms".equalsIgnoreCase(ClientManagerFormBean.tabs[x]) || "Refer".equalsIgnoreCase(ClientManagerFormBean.tabs[x])
+                            // "Forms", "Refer"
+                            if ("Forms".equalsIgnoreCase(ClientManagerFormBean.tabs[x]) || "Refer".equalsIgnoreCase(ClientManagerFormBean.tabs[x])
                                     || "Refer to vacancy".equals(ClientManagerFormBean.tabs[x]))
                                 continue;
                         }
@@ -114,17 +114,6 @@
                             }
                         }
 
-                        //check role:
-                        //If the user don't have the role "perform bed assignments" for this program, then tab "perform bed assignments" won't show up.
-                        if (OscarProperties.getInstance().isTorontoRFQ()) {
-                            Object pfb = request.getSession().getAttribute("performBedAssignments");
-                            if ((pfb != null) && !(((Boolean) pfb).booleanValue()) &&
-                                    "Bed Reservation".equalsIgnoreCase(ClientManagerFormBean.tabs[x]))
-                                continue;
-                        }
-
-                        if (!bedRoomReservation && "Bed/Room Reservation".equalsIgnoreCase(ClientManagerFormBean.tabs[x]))
-                            continue;
 
                         if (ClientManagerFormBean.tabs[x].equals(selectedTab)) {
                 %>
@@ -157,11 +146,6 @@
             </tr>
         </table>
     </div>
-    <%
-        if (selectedTab.contains("Bed/Room")) {
-            selectedTab = selectedTab.toLowerCase().replaceAll("bed/room", "bed");
-        }
-    %>
     <%@ include file="/common/messages.jsp" %>
     <jsp:include
             page='<%="/PMmodule/ClientManager/" + selectedTab.toLowerCase().replaceAll(" ", "_") + ".jsp"%>'/>

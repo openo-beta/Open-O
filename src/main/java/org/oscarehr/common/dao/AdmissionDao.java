@@ -74,7 +74,6 @@ public interface AdmissionDao extends AbstractDao<Admission> {
 
     public Admission getCurrentExternalProgramAdmission(ProgramDao programDAO, Integer demographicNo);
 
-    public Admission getCurrentBedProgramAdmission(ProgramDao programDAO, Integer demographicNo);
 
     public List<Admission> getCurrentServiceProgramAdmission(ProgramDao programDAO, Integer demographicNo);
 

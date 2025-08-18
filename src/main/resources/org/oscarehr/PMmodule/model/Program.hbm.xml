@@ -47,11 +47,9 @@
 		<property name="hic" />
 		<property name="programStatus" />
 		<property name="intakeProgram" />
-		<property name="bedProgramLinkId" />
 		<property name="manOrWoman" />
 		<property name="transgender" />
 		<property name="firstNation" />
-		<property name="bedProgramAffiliated" />
 		<property name="alcohol" />
 		<property name="abstinenceSupport" />
 		<property name="physicalHealth" />

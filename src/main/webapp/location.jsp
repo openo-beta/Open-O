@@ -28,7 +28,6 @@
 <%@ page import="org.oscarehr.common.model.Facility" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@ page import="org.caisi.service.InfirmBedProgramManager" %>
 <%@ page import="oscar.util.LabelValueBean" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
@@ -45,9 +44,8 @@
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     String providerNo = loggedInInfo.getLoggedInProviderNo();
     Facility facility = loggedInInfo.getCurrentFacility();
-    InfirmBedProgramManager bpm = SpringUtils.getBean(InfirmBedProgramManager.class);
-    List<LabelValueBean> programs = bpm.getProgramBeans(providerNo, facility.getId());
-    int defaultprogramId = bpm.getDefaultProgramId(providerNo);
+    List<LabelValueBean> programs = new ArrayList<LabelValueBean>();
+    int defaultprogramId = 0;
 %>
 <p>&nbsp;</p>
 <table align="center">

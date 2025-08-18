@@ -48,13 +48,7 @@ import org.oscarehr.PMmodule.model.ProgramQueue;
 import org.oscarehr.PMmodule.model.Vacancy;
 import org.oscarehr.common.dao.AdmissionDao;
 import org.oscarehr.common.model.Admission;
-import org.oscarehr.common.model.BedDemographic;
 import org.oscarehr.common.model.JointAdmission;
-import org.oscarehr.common.model.RoomDemographic;
-import org.oscarehr.managers.BedManager;
-import org.oscarehr.managers.BedDemographicManager;
-import org.oscarehr.managers.RoomManager;
-import org.oscarehr.managers.RoomDemographicManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 import org.springframework.beans.factory.annotation.Required;
@@ -69,12 +63,8 @@ public class AdmissionManagerImpl implements AdmissionManager {
     private ProgramDao programDao;
     private ProgramQueueDao programQueueDao;
     private ClientReferralDAO clientReferralDAO;
-    private BedDemographicManager bedDemographicManager;
     private ProgramClientStatusDAO programClientStatusDAO;
     private ClientRestrictionManager clientRestrictionManager;
-    private RoomManager roomManager;
-    private BedManager bedManager;
-    private RoomDemographicManager roomDemographicManager;
 
     public List<Admission> getAdmissions_archiveView(String programId, Integer demographicNo) {
         return dao.getAdmissions_archiveView(Integer.valueOf(programId), demographicNo);
@@ -108,9 +98,6 @@ public class AdmissionManagerImpl implements AdmissionManager {
         return dao.getCurrentAdmissions(demographicNo);
     }
 
-    public Admission getCurrentBedProgramAdmission(Integer demographicNo) {
-        return dao.getCurrentBedProgramAdmission(programDao, demographicNo);
-    }
 
     public List<Admission> getCurrentServiceProgramAdmission(Integer demographicNo) {
         return dao.getCurrentServiceProgramAdmission(programDao, demographicNo);
@@ -187,7 +174,7 @@ public class AdmissionManagerImpl implements AdmissionManager {
         boolean automaticDischarge = false;
         // If admitting to bed program, discharge from old bed program
         if (program.getType().equalsIgnoreCase("bed") && !tempAdmission) {
-            Admission fullAdmission = getCurrentBedProgramAdmission(demographicNo);
+            Admission fullAdmission = null;
 
             // community?
             if (fullAdmission != null) {
@@ -348,14 +335,14 @@ public class AdmissionManagerImpl implements AdmissionManager {
         //Check whether all family members are under same bed program -> if not, display error message.
         Integer headProgramId = null;
         Integer dependentProgramId = null;
-        Admission headAdmission = getCurrentBedProgramAdmission(demographicNo);
+        Admission headAdmission = null;
         if (headAdmission != null) {
             headProgramId = headAdmission.getProgramId();
         } else {
             headProgramId = null;
         }
         for (int i = 0; dependentIds != null && i < dependentIds.length; i++) {
-            Admission dependentAdmission = getCurrentBedProgramAdmission(dependentIds[i]);
+            Admission dependentAdmission = null;
             if (dependentAdmission != null) {
                 dependentProgramId = dependentAdmission.getProgramId();
             } else {
@@ -412,23 +399,7 @@ public class AdmissionManagerImpl implements AdmissionManager {
 
         saveAdmission(fullAdmission);
 
-        if (roomManager != null && roomManager.isRoomOfDischargeProgramAssignedToClient(demographicNo, programId)) {
-            if (roomDemographicManager != null) {
-                RoomDemographic roomDemographic = roomDemographicManager.getRoomDemographicByDemographic(demographicNo, facilityId);
-                if (roomDemographic != null) {
-                    roomDemographicManager.deleteRoomDemographic(roomDemographic);
-                }
-            }
-        }
 
-        if (bedManager != null && bedManager.isBedOfDischargeProgramAssignedToClient(demographicNo, programId)) {
-            if (bedDemographicManager != null) {
-                BedDemographic bedDemographic = bedDemographicManager.getBedDemographicByDemographic(demographicNo, facilityId);
-                if (bedDemographic != null) {
-                    bedDemographicManager.deleteBedDemographic(bedDemographic);
-                }
-            }
-        }
 
         if (dependents != null) {
             for (Integer l : dependents) {
@@ -442,21 +413,12 @@ public class AdmissionManagerImpl implements AdmissionManager {
     }
 
     public void processDischargeToCommunity(Integer communityProgramId, Integer demographicNo, String providerNo, String notes, String radioDischargeReason, List<Integer> dependents, Date dischargeDate) throws AdmissionException {
-        Admission currentBedAdmission = getCurrentBedProgramAdmission(demographicNo);
+        Admission currentBedAdmission = null;
 
         Program program = programDao.getProgram(communityProgramId);
         Integer facilityId = null;
         if (program != null) facilityId = (int) program.getFacilityId();
 
-        if (currentBedAdmission != null) {
-            processDischarge(currentBedAdmission.getProgramId(), demographicNo, notes, radioDischargeReason);
-
-            BedDemographic bedDemographic = bedDemographicManager.getBedDemographicByDemographic(demographicNo, facilityId);
-
-            if (bedDemographic != null) {
-                bedDemographicManager.deleteBedDemographic(bedDemographic);
-            }
-        }
 
         Admission currentCommunityAdmission = getCurrentCommunityProgramAdmission(demographicNo);
 
@@ -506,11 +468,6 @@ public class AdmissionManagerImpl implements AdmissionManager {
     }
 
     @Required
-    public void setBedDemographicManager(BedDemographicManager bedDemographicManager) {
-        this.bedDemographicManager = bedDemographicManager;
-    }
-
-    @Required
     public void setProgramClientStatusDAO(ProgramClientStatusDAO programClientStatusDAO) {
         this.programClientStatusDAO = programClientStatusDAO;
     }
@@ -520,20 +477,6 @@ public class AdmissionManagerImpl implements AdmissionManager {
         this.clientRestrictionManager = clientRestrictionManager;
     }
 
-    @Required
-    public void setRoomManager(RoomManager roomManager) {
-        this.roomManager = roomManager;
-    }
-
-    @Required
-    public void setBedManager(BedManager bedManager) {
-        this.bedManager = bedManager;
-    }
-
-    @Required
-    public void setRoomDemographicManager(RoomDemographicManager roomDemographicManager) {
-        this.roomDemographicManager = roomDemographicManager;
-    }
 
     public boolean isActiveInCurrentFacility(LoggedInInfo loggedInInfo, int demographicId) {
         List<Admission> results = getCurrentAdmissionsByFacility(demographicId, loggedInInfo.getCurrentFacility().getId());
