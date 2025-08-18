@@ -190,9 +190,11 @@ public class SchemaUtils {
         try {
             Statement s = c.createStatement();
             s.executeUpdate("use " + schema);
+            s.executeUpdate("set foreign_key_checks = 0");
             for (int i = 0; i < tableNames.length; i++) {
                 s.executeUpdate("drop table if exists " + tableNames[i]);
             }
+            s.executeUpdate("set foreign_key_checks = 0");
             s.close();
 
         } finally {
@@ -360,7 +362,7 @@ public class SchemaUtils {
             logger.info("using baseDir : " + baseDir);
 
             try (Statement stmt = c.createStatement()) {
-                stmt.execute("SET FOREIGN_KEY_CHECKS=0");
+                stmt.executeUpdate("set foreign_key_checks = 0");
                 assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscarinit.sql"), 0);
 
                 assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscarinit_on.sql"), 0);
@@ -380,7 +382,7 @@ public class SchemaUtils {
                 assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscardata_bc.sql"), 0);
 
                 assertEquals(loadFileIntoMySQL(baseDir + "/database/mysql/oscarinit_2025.sql"), 0);
-                stmt.execute("SET FOREIGN_KEY_CHECKS=1");
+                stmt.executeUpdate("set foreign_key_checks = 1");
             }
 
 
