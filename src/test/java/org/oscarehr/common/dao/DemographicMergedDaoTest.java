@@ -34,6 +34,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
+import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.DemographicMerged;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
@@ -41,6 +42,7 @@ import org.oscarehr.util.SpringUtils;
 public class DemographicMergedDaoTest extends DaoTestFixtures {
 
     protected DemographicMergedDao dao = SpringUtils.getBean(DemographicMergedDao.class);
+    protected DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
 
     @Before
     public void before() throws Exception {
@@ -49,20 +51,35 @@ public class DemographicMergedDaoTest extends DaoTestFixtures {
 
     @Test
     public void testCreate() throws Exception {
+        Demographic demo = new Demographic();
+        EntityDataGenerator.generateTestDataForModelClass(demo);
+        demo.setDemographicNo(null);
+        demographicDao.save(demo);
+
         DemographicMerged entity = new DemographicMerged();
         EntityDataGenerator.generateTestDataForModelClass(entity);
+        entity.setMergedTo(demo.getDemographicNo());
         dao.persist(entity);
         assertNotNull(entity.getId());
     }
 
     @Test
     public void testFindCurrentByMergedTo() throws Exception {
-
         int mergedTo1 = 111;
         int mergedTo2 = 222;
 
         int isNotDeleted = 0;
         int isDeleted = 1;
+
+        Demographic demo1 = new Demographic();
+        EntityDataGenerator.generateTestDataForModelClass(demo1);
+        demo1.setDemographicNo(mergedTo1);
+        demographicDao.save(demo1);
+
+        Demographic demo2 = new Demographic();
+        EntityDataGenerator.generateTestDataForModelClass(demo2);
+        demo2.setDemographicNo(mergedTo1);
+        demographicDao.save(demo2);
 
         DemographicMerged demoMerged1 = new DemographicMerged();
         EntityDataGenerator.generateTestDataForModelClass(demoMerged1);
@@ -114,6 +131,16 @@ public class DemographicMergedDaoTest extends DaoTestFixtures {
         int isNotDeleted = 0;
         int isDeleted = 1;
 
+        Demographic demo1 = new Demographic();
+        EntityDataGenerator.generateTestDataForModelClass(demo1);
+        demo1.setDemographicNo(demographicNo1);
+        demographicDao.save(demo1);
+
+        Demographic demo2 = new Demographic();
+        EntityDataGenerator.generateTestDataForModelClass(demo2);
+        demo2.setDemographicNo(demographicNo2);
+        demographicDao.save(demo2);
+
         DemographicMerged demoMerged1 = new DemographicMerged();
         EntityDataGenerator.generateTestDataForModelClass(demoMerged1);
         demoMerged1.setDemographicNo(demographicNo1);
@@ -160,6 +187,16 @@ public class DemographicMergedDaoTest extends DaoTestFixtures {
 
         int demographicNo1 = 111;
         int demographicNo2 = 222;
+
+        Demographic demo1 = new Demographic();
+        EntityDataGenerator.generateTestDataForModelClass(demo1);
+        demo1.setDemographicNo(demographicNo1);
+        demographicDao.save(demo1);
+
+        Demographic demo2 = new Demographic();
+        EntityDataGenerator.generateTestDataForModelClass(demo2);
+        demo2.setDemographicNo(demographicNo2);
+        demographicDao.save(demo2);
 
         DemographicMerged demoMerged1 = new DemographicMerged();
         EntityDataGenerator.generateTestDataForModelClass(demoMerged1);
