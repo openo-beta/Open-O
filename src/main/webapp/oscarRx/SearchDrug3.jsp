@@ -2774,11 +2774,11 @@ function getReRxCheckboxByUiRefId(uiRefId) {
 
 
     function updateSaveAllDrugsPrintCheckContinue() {
-        showUnstagedReRxConfirmation(updateSaveAllDrugsPrint);
+        updateSaveAllDrugsPrintContinue();
     }
 
     function updateSaveAllDrugsCheckContinue() {
-        showUnstagedReRxConfirmation(updateSaveAllDrugs);
+        updateSaveAllDrugsContinue();
     }
 
     const CONFIRMATION_MESSAGE = {
