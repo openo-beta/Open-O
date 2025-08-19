@@ -381,7 +381,7 @@ public class Hl7TextInfoDaoImpl extends AbstractDaoImpl<Hl7TextInfo> implements 
                         + "	AND cd.document_no = plr.lab_no"
                         + "	AND plr.lab_type = 'DOC'  	"
                         + " AND plr.status" + ("".equals(status) ? " IS NOT NULL " : " = :status ")
-                        + (searchProvider ? " AND plr.provider_no = :providerNo " : " )")
+                        + (searchProvider ? " AND plr.provider_no = :providerNo )" : " )")
                         + " ORDER BY id DESC) AS Y"
                         + " UNION"
                         + " SELECT * FROM"
