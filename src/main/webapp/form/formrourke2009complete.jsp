@@ -734,7 +734,7 @@
     </script>
 </head>
 <body onload="init()">
-<form styleId="frmP1" action="${pageContext.request.contextPath}/form/formname.do" method="post">
+<form id="frmP1" action="${pageContext.request.contextPath}/form/formname.do" method="post">
     <table>
         <tr>
             <td id="cp1">

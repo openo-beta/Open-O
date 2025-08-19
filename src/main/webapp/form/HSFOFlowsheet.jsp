@@ -291,7 +291,7 @@
     </table>
 
     <form action="${pageContext.request.contextPath}/form/HSFOsaveform.do" method="post" onsubmit="return checkform()">
-               styleId="form1">
+               id="form1">
         <input type="hidden" name="dispatch" value="flowsheet"/>
         <table width="82%" border="0" cellpadding="1" cellspacing="0"
                class="table">

@@ -735,7 +735,7 @@
     </style>
 </head>
 <body onload="init()">
-<form styleId="frmP1" action="${pageContext.request.contextPath}/form/formname.do" method="post">
+<form id="frmP1" action="${pageContext.request.contextPath}/form/formname.do" method="post">
     <div id="rourke2020-tabs">
         <ul id="tab-list">
             <li><a href="#tab-cp1">Page I</a></li>

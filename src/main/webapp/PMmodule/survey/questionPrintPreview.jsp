@@ -140,7 +140,7 @@
                     </td>
                     <td><input type="text"
                             name="data.value(${pageNumber}_${sectionId}_${question.id})"
-                            styleId="f_date_c"/> &nbsp;
+                            id="f_date_c"/> &nbsp;
                     </td>
                 </c:when>
 

@@ -30,7 +30,7 @@
 
 
 <form action="${pageContext.request.contextPath}/SurveyManager.do" method="POST"
-           enctype="multipart/form-data" styleId="surveyForm">
+           enctype="multipart/form-data" id="surveyForm">
     <input type="hidden" name="method" value="import_survey"/>
     <table width=100%">
         <tr>

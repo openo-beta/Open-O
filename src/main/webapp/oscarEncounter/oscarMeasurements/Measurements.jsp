@@ -143,7 +143,7 @@
         </script>
     </head>
     <body class="BodyStyle" onload="window.focus();">
-    <form action="${pageContext.request.contextPath}/oscarEncounter/Measurements.do" method="post" styleId="theForm">
+    <form action="${pageContext.request.contextPath}/oscarEncounter/Measurements.do" method="post" id="theForm">
         <c:if test="${not empty css}">
             <link rel="stylesheet" type="text/css" href="${css}">
         </c:if>

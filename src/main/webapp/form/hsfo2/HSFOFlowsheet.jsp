@@ -62,7 +62,7 @@
     %>
     <body onLoad="initialize()">
 
-    <form action="${pageContext.request.contextPath}/form/SaveHSFORegistrationForm2.do" method="post" onsubmit="return checkform(false)" styleId="form1">
+    <form action="${pageContext.request.contextPath}/form/SaveHSFORegistrationForm2.do" method="post" onsubmit="return checkform(false)" id="form1">
         <DIV id="page_1">
 
             <DIV id="id_1">

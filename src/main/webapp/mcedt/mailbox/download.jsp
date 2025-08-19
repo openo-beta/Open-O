@@ -103,7 +103,7 @@
 <c:set var="resourceListDL" value="${sessionScope.resourceListDL}"/>
 <c:set var="resultSize" value="${sessionScope.resultSize}"/>
 
-<form action="${pageContext.request.contextPath}/mcedt/download.do" method="post" styleId="formDownload">
+<form action="${pageContext.request.contextPath}/mcedt/download.do" method="post" id="formDownload">
     <jsp:include page="../messages.jsp"/>
     <input id="methodDownload" name="method" type="hidden" value=""/>
     <div>

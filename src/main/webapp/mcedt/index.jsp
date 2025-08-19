@@ -132,7 +132,7 @@
 
             <h2>MCEDT Resources</h2>
 
-            <form action="${pageContext.request.contextPath}/mcedt/mcedt" method="post" styleId="form">
+            <form action="${pageContext.request.contextPath}/mcedt/mcedt" method="post" id="form">
 
                 <jsp:include page="messages.jsp"/>
 

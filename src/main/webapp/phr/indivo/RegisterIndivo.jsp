@@ -219,7 +219,7 @@
 
 %>
 
-<form style="form form-horizontal" action="<%= request.getContextPath() %>/phr/UserManagement.do" styleId="registrationForm" method="POST">
+<form style="form form-horizontal" action="<%= request.getContextPath() %>/phr/UserManagement.do" id="registrationForm" method="POST">
     <input type="hidden" name="method" value="registerUser"/>
     <input type="hidden" name="demographicNo" value="<%=demographicNo%>"/>
     <div class="page-header">
@@ -264,7 +264,7 @@
             <div class="control-group <%if(usernameNotUnique){%>error <%}%> " id="username-group">
                 <label class="control-label" for="username">Username</label>
                 <div class="controls">
-                    <input type="text" styleId="username" name="username" value="<%=ulist.get(0)%>"/>
+                    <input type="text" id="username" name="username" value="<%=ulist.get(0)%>"/>
                     <div class="help-block" id="username-required" style="display:none">Username is required</div>
                     <div class="help-block" id="username-invalid" style="display:none">Username is invalid</div>
                     <%
@@ -290,7 +290,7 @@
             <div class="control-group" id="password-group">
                 <label class="control-label" for="password">Password (generated)</label>
                 <div class="controls">
-                    <input type="text" styleId="password" name="password" value="<%=password%>"/>
+                    <input type="text" id="password" name="password" value="<%=password%>"/>
                     <div class="help-block" id="pwd-help" style="display:none">Password must be at least 8 characters
                         long
                     </div>
@@ -429,10 +429,10 @@
         <div class="control-group">
 						<span class="controls span1">
 							<input style="btn btn-primary" onclick="validateNSubmit();"
-                                            type="submit" styleId="submitButton" value="Submit"/>
+                                            type="submit" id="submitButton" value="Submit"/>
 						 </span>
             <span class="controls span1">
-							<input type="button" style="btn" property="closeButton" styleId="closeButton" value="Close"
+							<input type="button" style="btn" property="closeButton" id="closeButton" value="Close"
                                             onclick="window.close();"/>
 						</span>
         </div>
@@ -451,4 +451,3 @@
 <%
     }
 %>
-</body>

@@ -79,7 +79,7 @@
 
             <h2>Update Resource</h2>
 
-            <form action="${pageContext.request.contextPath}/mcedt/update.do" method="post" styleId="form">
+            <form action="${pageContext.request.contextPath}/mcedt/update.do" method="post" id="form">
 
                 <% 
     java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");

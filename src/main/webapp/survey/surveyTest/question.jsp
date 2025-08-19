@@ -151,7 +151,7 @@
                     </td>
                     <td><input type="text"
                             name="data.value(${pageNumber}_${sectionId}_${question.id})"
-                            styleId="${pageNumber}_${sectionId}_${question.id}"/> &nbsp; <img
+                            id="${pageNumber}_${sectionId}_${question.id}"/> &nbsp; <img
                             src="images/calendar.jpg"
                             id="<c:out value="${pageNumber}"/>_<c:out value="${sectionId}"/>_<c:out value="${question.id}"/>_trigger"
                             style="cursor: pointer;" title="Date selector"/> <%

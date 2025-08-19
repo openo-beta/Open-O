@@ -28,7 +28,7 @@
 
 <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 
-<form action="${pageContext.request.contextPath}/SurveyManager.do" method="POST" styleId="surveyForm">
+<form action="${pageContext.request.contextPath}/SurveyManager.do" method="POST" id="surveyForm">
 
     <script language="JavaScript">
 

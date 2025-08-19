@@ -80,9 +80,9 @@ Follow Up/Consult
             <td colspan="2">
 
 
-                <input type="text" name="followup.timespan" size="4" id="width: 25px;" class="special"/>
+                <input type="text" name="followup.timespan" size="4" style="width: 25px;" class="special"/>
 
-                <select property="followup.timeframe" styleId="width: 50px;" styleClass="special">
+                <select property="followup.timeframe" style="width: 50px;" class="special">
                     <option value="days">days</option>
                     <option value="weeks">weeks</option>
                     <option value="months">months</option>
@@ -91,7 +91,7 @@ Follow Up/Consult
         </tr>
         <tr>
             <td>
-                <select name="urgency" styleId="width: 50px;" style="special">
+                <select name="urgency" style="width: 50px;" class="special">
                     <option value="routine">routine</option>
                     <option value="asap">ASAP</option>
                 </select>

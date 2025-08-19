@@ -61,7 +61,7 @@
 <a onclick="setToFrom('','')"> Clear </a>
 
 <form action="${request.contextPath}/oscarEncounter/myoscar/measurements_${param.sourcePage}.do"
-           styleId="tofromForm" class="form-inline">
+           id="tofromForm" class="form-inline">
 
     <div class="form-group">
         <input type="hidden" name="type" id="type" value="${param.sourcePage}"/>
