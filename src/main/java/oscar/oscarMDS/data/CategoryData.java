@@ -297,7 +297,7 @@ public class CategoryData {
 
         Connection c = DbConnectionFilter.getThreadLocalDbConnection();
         PreparedStatement ps = c.prepareStatement(sql);
-
+        
         int paramIndex = 1;
         if (providerSearch) ps.setString(paramIndex++, searchProviderNo);
         if (!"".equals(status)) ps.setString(paramIndex++, status);
