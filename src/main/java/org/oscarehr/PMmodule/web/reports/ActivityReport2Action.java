@@ -98,11 +98,11 @@ public class ActivityReport2Action extends ActionSupport {
             int totalAdmissions = admissions.size();
 
             ClientReferral cr = new ClientReferral();
-            cr.setProgramId(new Long(p.getId().longValue()));
+            cr.setProgramId(Long.valueOf(p.getId().longValue()));
             List referrals = clientManager.searchReferrals(cr);
             int totalReferrals = referrals.size();
 
-            Long[] values = {new Long(totalAdmissions), new Long(totalReferrals)};
+            Long[] values = {Long.valueOf(totalAdmissions), Long.valueOf(totalReferrals)};
             summaryMap.put(p.getName(), values);
         }
         request.setAttribute("summary", summaryMap);

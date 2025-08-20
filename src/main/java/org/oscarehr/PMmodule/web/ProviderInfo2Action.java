@@ -74,7 +74,7 @@ public class ProviderInfo2Action extends ActionSupport {
         Facility facility = (Facility) request.getSession().getAttribute("currentFacility");
         if (facility != null) facilityId1 = facility.getId();
 
-        for (ProgramProvider programProvider : providerManager.getProgramDomainByFacility(providerNo, new Integer(facilityId1))) {
+        for (ProgramProvider programProvider : providerManager.getProgramDomainByFacility(providerNo, Integer.valueOf(facilityId1))) {
             Program program = programManager.getProgram(programProvider.getProgramId());
 
             if (program.isActive()) {

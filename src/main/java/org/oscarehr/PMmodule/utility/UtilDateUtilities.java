@@ -36,6 +36,7 @@ import java.util.ResourceBundle;
 /**
  * @deprecated 2013-04-28 use org.oscarehr.util.DateUtils instead
  */
+@Deprecated
 public class UtilDateUtilities {
 
     public static Date StringToDate(String s) {

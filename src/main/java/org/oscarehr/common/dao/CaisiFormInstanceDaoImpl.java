@@ -101,7 +101,7 @@ public class CaisiFormInstanceDaoImpl extends AbstractDaoImpl<CaisiFormInstance>
 
         for (Iterator<Demographic> iter = clients.iterator(); iter.hasNext(); ) {
             Demographic client = iter.next();
-            CaisiFormInstance ofi = getLatestForm(new Integer(formId), client.getDemographicNo());
+            CaisiFormInstance ofi = getLatestForm(Integer.valueOf(formId), client.getDemographicNo());
             results.add(ofi);
         }
 

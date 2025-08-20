@@ -85,7 +85,7 @@ public final class ShelterSelection2Action extends ActionSupport {
             request.getSession(true).setAttribute(KeyConstants.SESSION_KEY_SHELTER, shelter);
             // LogAction.addLog(strAuth[0], LogConst.LOGIN, LogConst.CON_LOGIN, "shelterId="+shelterId, ip);
         } else {
-            request.getSession(true).setAttribute(KeyConstants.SESSION_KEY_SHELTERID, new Integer(0));
+            request.getSession(true).setAttribute(KeyConstants.SESSION_KEY_SHELTERID, Integer.valueOf(0));
             request.getSession(true).setAttribute(KeyConstants.SESSION_KEY_SHELTER, new LookupCodeValue());
         }
         // initiate security manager
@@ -102,7 +102,7 @@ public final class ShelterSelection2Action extends ActionSupport {
 
         String shelter = request.getParameter("shelterId");
         String providerNo = (String) request.getSession().getAttribute(KeyConstants.SESSION_KEY_PROVIDERNO);
-        Integer shelterId = new Integer(shelter);
+        Integer shelterId = Integer.valueOf(shelter);
         request.getSession(true).setAttribute(KeyConstants.SESSION_KEY_SHELTERID, shelterId);
         LookupCodeValue shelterObj = lookupManager.GetLookupCode("SHL", shelter);
         request.getSession(true).setAttribute(KeyConstants.SESSION_KEY_SHELTER, shelterObj);

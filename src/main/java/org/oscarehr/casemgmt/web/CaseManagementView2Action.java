@@ -287,7 +287,7 @@ public class CaseManagementView2Action extends ActionSupport {
         CaseManagementTmpSave tmpsavenote = this.caseManagementMgr.restoreTmpSave(loggedInInfo.getLoggedInProviderNo(), demoNo, programId);
         if (tmpsavenote != null) {
             String restoring = (String) se.getAttribute("restoring");
-            if (restoring == null) request.setAttribute("can_restore", new Boolean(true));
+            if (restoring == null) request.setAttribute("can_restore", Boolean.valueOf(true));
             else se.setAttribute("restoring", null);
         }
 
@@ -297,7 +297,20 @@ public class CaseManagementView2Action extends ActionSupport {
 
         logger.debug("Get admission");
         String teamName = "";
-        Admission admission = admissionMgr.getCurrentAdmission(programId, Integer.valueOf(demoNo));
+        Admission admission = null;
+        
+        // Only get admission if we have a valid programId
+        if (programId != null && !programId.equals("0") && !programId.isEmpty()) {
+            try {
+                admission = admissionMgr.getCurrentAdmission(programId, Integer.valueOf(demoNo));
+            } catch (Exception e) {
+                logger.debug("No admission found for programId: " + programId + " and demoNo: " + demoNo + " - " + e.getMessage());
+                // Continue without admission - this is acceptable
+            }
+        } else {
+            logger.debug("No valid programId available - skipping admission lookup");
+        }
+        
         current = System.currentTimeMillis();
         logger.debug("Get admission " + String.valueOf(current - start));
         start = current;
@@ -323,7 +336,16 @@ public class CaseManagementView2Action extends ActionSupport {
 
             logger.debug("Get program providers");
             List<String> teamMembers = new ArrayList<String>();
-            List<ProgramProvider> ps = programMgr.getProgramProviders(programId);
+            List<ProgramProvider> ps = new ArrayList<ProgramProvider>();
+            
+            // Only get program providers if we have a valid programId
+            if (programId != null && !programId.equals("0") && !programId.isEmpty()) {
+                try {
+                    ps = programMgr.getProgramProviders(programId);
+                } catch (Exception e) {
+                    logger.debug("Unable to get program providers for programId: " + programId + " - " + e.getMessage());
+                }
+            }
             current = System.currentTimeMillis();
             logger.debug("Get program providers " + String.valueOf(current - start));
             start = current;
@@ -349,10 +371,10 @@ public class CaseManagementView2Action extends ActionSupport {
             se.setAttribute("casemgmt_newFormBeans", encounterFormDao.findAll());
 
             /* prepare messenger list */
-            se.setAttribute("casemgmt_msgBeans", this.caseManagementMgr.getMsgBeans(new Integer(demoNo)));
+            se.setAttribute("casemgmt_msgBeans", this.caseManagementMgr.getMsgBeans(Integer.valueOf(demoNo)));
 
             // readonly access to define creat a new note button in jsp.
-            se.setAttribute("readonly", new Boolean(this.caseManagementMgr.hasAccessRight("note-read-only", "access", loggedInInfo.getLoggedInProviderNo(), demoNo, (String) se.getAttribute("case_program_id"))));
+            se.setAttribute("readonly", Boolean.valueOf(this.caseManagementMgr.hasAccessRight("note-read-only", "access", loggedInInfo.getLoggedInProviderNo(), demoNo, (String) se.getAttribute("case_program_id"))));
 
         }
         /* Dx */
@@ -525,7 +547,11 @@ public class CaseManagementView2Action extends ActionSupport {
         Collection<CaseManagementNote> localNotes = caseManagementNoteDao.findNotesByDemographicAndIssueCode(demographicNo, checkedCodeList.toArray(new String[0]));
         //show locked notes anyway: localNotes = manageLockedNotes(localNotes, true, this.getUnlockedNotesMap(request));
         localNotes = manageLockedNotes(localNotes, false, this.getUnlockedNotesMap(request));
-        localNotes = caseManagementMgr.filterNotes(loggedInInfo, loggedInInfo.getLoggedInProviderNo(), localNotes, programId);
+        
+        // Only filter if we have a valid program ID
+        if (programId != null && !programId.equals("0") && !programId.isEmpty()) {
+            localNotes = caseManagementMgr.filterNotes(loggedInInfo, loggedInInfo.getLoggedInProviderNo(), localNotes, programId);
+        }
 
         caseManagementMgr.getEditors(localNotes);
 
@@ -655,7 +681,10 @@ public class CaseManagementView2Action extends ActionSupport {
         logger.debug("Filter Notes");
 
         // filter notes based on role and program/provider mappings
-        notes = caseManagementMgr.filterNotes(loggedInInfo, loggedInInfo.getLoggedInProviderNo(), notes, programId);
+        // Only filter if we have a valid program ID
+        if (programId != null && !programId.equals("0") && !programId.isEmpty()) {
+            notes = caseManagementMgr.filterNotes(loggedInInfo, loggedInInfo.getLoggedInProviderNo(), notes, programId);
+        }
         logger.debug("FILTER NOTES " + (System.currentTimeMillis() - startTime));
 
         // apply provider filter
@@ -1232,7 +1261,11 @@ public class CaseManagementView2Action extends ActionSupport {
             programId = "0";
         }
 
-        notes = caseManagementMgr.filterNotes(loggedInInfo, providerNo, notes, programId);
+        // Only filter notes if we have a valid program ID
+        // When programId is "0", skip filtering to show all notes
+        if (!programId.equals("0")) {
+            notes = caseManagementMgr.filterNotes(loggedInInfo, providerNo, notes, programId);
+        }
         this.caseManagementMgr.getEditors(notes);
 
         List<CaseManagementNoteExt> lcme = new ArrayList<CaseManagementNoteExt>();
@@ -1294,7 +1327,14 @@ public class CaseManagementView2Action extends ActionSupport {
         searchBean.setSearchText(this.getSearchText());
         List<CaseManagementNote> results = caseManagementMgr.search(searchBean);
         Collection<CaseManagementNote> filtered1 = manageLockedNotes(results, false, this.getUnlockedNotesMap(request));
-        List<CaseManagementNote> filteredResults = caseManagementMgr.filterNotes(loggedInInfo, providerNo, filtered1, programId);
+        
+        // Only filter if we have a valid program ID
+        List<CaseManagementNote> filteredResults;
+        if (programId != null && !programId.equals("0") && !programId.isEmpty()) {
+            filteredResults = caseManagementMgr.filterNotes(loggedInInfo, providerNo, filtered1, programId);
+        } else {
+            filteredResults = new ArrayList<CaseManagementNote>(filtered1);
+        }
 
         List<CaseManagementNote> sortedResults = sortNotes_old(filteredResults, this.getNote_sort());
         request.setAttribute("search_results", sortedResults);
@@ -1373,11 +1413,11 @@ public class CaseManagementView2Action extends ActionSupport {
         request.setAttribute("Note", note);
 
         boolean success = caseManagementMgr.unlockNote(noteId, password);
-        request.setAttribute("success", new Boolean(success));
+        request.setAttribute("success", Boolean.valueOf(success));
 
         if (success) {
             Map<Long, Boolean> unlockedNoteMap = this.getUnlockedNotesMap(request);
-            unlockedNoteMap.put(new Long(noteId), new Boolean(success));
+            unlockedNoteMap.put(Long.valueOf(noteId), Boolean.valueOf(success));
             request.getSession().setAttribute("unlockedNoteMap", unlockedNoteMap);
         }
 
@@ -1390,11 +1430,11 @@ public class CaseManagementView2Action extends ActionSupport {
         int noteId = this.getNoteId();
 
         boolean success = caseManagementMgr.unlockNote(noteId, password);
-        request.setAttribute("success", new Boolean(success));
+        request.setAttribute("success", Boolean.valueOf(success));
 
         if (success) {
             Map<Long, Boolean> unlockedNoteMap = this.getUnlockedNotesMap(request);
-            unlockedNoteMap.put(new Long(noteId), new Boolean(success));
+            unlockedNoteMap.put(Long.valueOf(noteId), Boolean.valueOf(success));
             request.getSession().setAttribute("unlockedNoteMap", unlockedNoteMap);
             return "unlockSuccess";
         } else {
@@ -1768,7 +1808,8 @@ public class CaseManagementView2Action extends ActionSupport {
             se.setAttribute("CaseManagementViewAction_filter_issues", rs);
         });
 
-        if (programId != null && !programId.trim().isEmpty()) {
+        // Only set programId if it's valid (not null, not empty, not "0")
+        if (programId != null && !programId.trim().isEmpty() && !programId.equals("0")) {
             criteria.setProgramId(programId);
         }
 

@@ -46,6 +46,7 @@ public class FacilityWs extends AbstractWs {
     /**
      * @deprecated 2013-03-19 grammatical mistaken in name, this only returns 1 default facility, use getDefaultFacility() instead.
      */
+    @Deprecated
     public FacilityTransfer getDefaultFacilities() {
         return (FacilityTransfer.toTransfer(facilityManager.getDefaultFacility(getLoggedInInfo())));
     }

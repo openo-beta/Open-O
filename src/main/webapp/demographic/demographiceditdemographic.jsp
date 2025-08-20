@@ -933,7 +933,7 @@
         List<DemographicExtArchive> extArchives = demographicExtArchiveDao.getDemographicExtArchiveByDemoAndKey(Integer.parseInt(demographic_no), "demo_cell");
 
         AdmissionManager admissionManager = SpringUtils.getBean(AdmissionManager.class);
-        Admission bedAdmission = admissionManager.getCurrentBedProgramAdmission(demographic.getDemographicNo());
+        Admission bedAdmission = null;
         Admission communityAdmission = admissionManager.getCurrentCommunityProgramAdmission(demographic.getDemographicNo());
         List<Admission> serviceAdmissions = admissionManager.getCurrentServiceProgramAdmission(demographic.getDemographicNo());
         if (serviceAdmissions == null) {
@@ -2538,9 +2538,6 @@
                                                                 <div class="demographicSection" id="programs">
                                                                     <h3>Programs</h3>
                                                                     <ul>
-                                                                        <li><span class="label">Bed:</span><span
-                                                                                class="info"><%=bedAdmission != null ? bedAdmission.getProgramName() : "N/A" %></span>
-                                                                        </li>
                                                                         <%
                                                                             for (Admission adm : serviceAdmissions) {
                                                                         %>
@@ -4775,7 +4772,7 @@
                                                                                         }
                                                                                     }
                                                                                     
-                                                                                    Program[] bedP = tempPm.getBedPrograms();
+                                                                                    Program[] bedP = new Program[0];
                                                                                     Program oscarp = programDao.getProgramByName("OSCAR");
 
 

@@ -203,12 +203,12 @@ public final class XmlUtils {
 
     public static Long getChildNodeLongContents(Node node, String name) {
         String s = getChildNodeTextContents(node, name);
-        return s != null ? new Long(s) : null;
+        return s != null ? Long.valueOf(s) : null;
     }
 
     public static Integer getChildNodeIntegerContents(Node node, String name) {
         String s = getChildNodeTextContents(node, name);
-        return s != null ? new Integer(s) : null;
+        return s != null ? Integer.valueOf(s) : null;
     }
 
     public static Boolean getChildNodeBooleanContents(Node node, String name) {

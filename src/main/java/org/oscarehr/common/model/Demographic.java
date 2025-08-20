@@ -153,6 +153,7 @@ public class Demographic extends AbstractModel<Integer> implements Serializable 
     /**
      * @deprecated default for birth day should be null
      */
+    @Deprecated
     public static Demographic create(String firstName, String lastName, String gender, String monthOfBirth, String dateOfBirth, String yearOfBirth, String hin, String ver, boolean applyDefaultBirthDate) {
         return (create(firstName, lastName, gender, monthOfBirth, dateOfBirth, yearOfBirth, hin, ver));
     }

@@ -60,12 +60,10 @@ public class ProgramTo1 implements Serializable {
     private boolean hic;
     private String programStatus;
     private Integer intakeProgram;
-    private Integer bedProgramLinkId;
     private String manOrWoman;
     private String genderDesc;
     private boolean transgender;
     private boolean firstNation;
-    private boolean bedProgramAffiliated;
     private boolean alcohol;
     private String abstinenceSupport;
     private boolean physicalHealth;
@@ -81,10 +79,9 @@ public class ProgramTo1 implements Serializable {
 
     private String facilityDesc;
     private String orgCd;
-    private Integer capacity_funding = new Integer(0);
-    private Integer capacity_space = new Integer(0);
-    private Integer capacity_actual = new Integer(0);
-    private Integer totalUsedRoom = new Integer(0);
+    private Integer capacity_funding = Integer.valueOf(0);
+    private Integer capacity_space = Integer.valueOf(0);
+    private Integer capacity_actual = Integer.valueOf(0);
     private String lastUpdateUser;
     private Date lastUpdateDate;
     private LookupCodeValue shelter;
@@ -278,13 +275,6 @@ public class ProgramTo1 implements Serializable {
         this.intakeProgram = intakeProgram;
     }
 
-    public Integer getBedProgramLinkId() {
-        return bedProgramLinkId;
-    }
-
-    public void setBedProgramLinkId(Integer bedProgramLinkId) {
-        this.bedProgramLinkId = bedProgramLinkId;
-    }
 
     public String getManOrWoman() {
         return manOrWoman;
@@ -318,13 +308,6 @@ public class ProgramTo1 implements Serializable {
         this.firstNation = firstNation;
     }
 
-    public boolean isBedProgramAffiliated() {
-        return bedProgramAffiliated;
-    }
-
-    public void setBedProgramAffiliated(boolean bedProgramAffiliated) {
-        this.bedProgramAffiliated = bedProgramAffiliated;
-    }
 
     public boolean isAlcohol() {
         return alcohol;
@@ -462,13 +445,6 @@ public class ProgramTo1 implements Serializable {
         this.capacity_actual = capacity_actual;
     }
 
-    public Integer getTotalUsedRoom() {
-        return totalUsedRoom;
-    }
-
-    public void setTotalUsedRoom(Integer totalUsedRoom) {
-        this.totalUsedRoom = totalUsedRoom;
-    }
 
     public String getLastUpdateUser() {
         return lastUpdateUser;

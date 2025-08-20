@@ -1894,16 +1894,11 @@
         </action>
         <action name="PMmodule/ProgramManagerView" class="org.oscarehr.PMmodule.web.admin.ProgramManagerView2Action" method="execute">
             <result name="view">page.pmm.admin.view</result>
-            <result name="viewBedReservationChangeReport">/PMmodule/Admin/ProgramView/bed_reservation_change_report.jsp</result>
-            <result name="viewBedCheckReport">/PMmodule/Admin/ProgramView/bed_check_report.jsp</result>
             <result name="service_restriction_error">page.pmm.program.service_restriction_error</result>
         </action>
         <action name="PMmodule/AgencyManager" class="org.oscarehr.PMmodule.web.admin.AgencyManager2Action" method="execute">
             <result name="view">page.pmm.admin.agency.view</result>
             <result name="edit">page.pmm.admin.agency.edit</result>
-        </action>
-        <action name="PMmodule/BedManager" class="org.oscarehr.PMmodule.web.admin.BedManager2Action" method="execute">
-            <result name="manage">page.pmm.admin.beds.manage</result>
         </action>
         <action name="PMmodule/FacilityManager" class="org.oscarehr.PMmodule.web.admin.FacilityManager2Action" method="execute">
             <result name="list">page.pmm.admin.facility.list</result>

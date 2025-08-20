@@ -706,6 +706,7 @@ public class DemographicManagerImpl implements DemographicManager {
      * demoId, String key) instead. Then the caller should assemble what
      * it needs from the demographic and ext call itself.
      */
+    @Deprecated
     @Override
     public String getDemographicWorkPhoneAndExtension(LoggedInInfo loggedInInfo, Integer demographicNo) {
 

@@ -145,10 +145,10 @@ public class IntegratorPushManager {
         if (up == null) {
             up = new UserProperty();
             up.setName(INTEGRATOR_PAUSE_FULL_PUSH);
-            up.setValue(new Boolean(pause).toString());
+            up.setValue(Boolean.valueOf(pause).toString());
             userPropertyDao.persist(up);
         } else {
-            up.setValue(new Boolean(pause).toString());
+            up.setValue(Boolean.valueOf(pause).toString());
             userPropertyDao.merge(up);
         }
     }

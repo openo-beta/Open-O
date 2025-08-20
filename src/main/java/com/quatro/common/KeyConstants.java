@@ -34,7 +34,6 @@ public class KeyConstants {
     public static final String CONST_GENDER_Female = "F";
     public static final String CONST_GENDER_Transgender = "T";
 
-    public static final String BED_PROGRAM_TYPE = "Bed";
     public static final String SERVICE_PROGRAM_TYPE = "Service";
 
     public static final String CONSTANT_YES = "1";
@@ -45,15 +44,14 @@ public class KeyConstants {
     public static final String SESSION_KEY_SWITCH_MODULE = "switch";
     public static final String SESSION_KEY_CURRENT_MODULE = "curModule";
     public static final String SESSION_KEY_CURRENT_RECORD = "curRec";
-    public static final Integer MODULE_ID_CLIENT = new Integer(1);
-    public static final Integer MODULE_ID_SHELTER = new Integer(2);
-    public static final Integer MODULE_ID_CASE = new Integer(3);
-    public static final Integer MODULE_ID_SYSTEM = new Integer(4);
-    public static final Integer MODULE_ID_REPORT = new Integer(5);
-    public static final Integer MODULE_ID_INTAKE = new Integer(6);
-    public static final Integer MODULE_ID_AGENCY = new Integer(7);
+    public static final Integer MODULE_ID_CLIENT = Integer.valueOf(1);
+    public static final Integer MODULE_ID_SHELTER = Integer.valueOf(2);
+    public static final Integer MODULE_ID_CASE = Integer.valueOf(3);
+    public static final Integer MODULE_ID_SYSTEM = Integer.valueOf(4);
+    public static final Integer MODULE_ID_REPORT = Integer.valueOf(5);
+    public static final Integer MODULE_ID_INTAKE = Integer.valueOf(6);
+    public static final Integer MODULE_ID_AGENCY = Integer.valueOf(7);
 
-    public static final String PROGRAM_TYPE_Bed = "Bed";
     public static final String PROGRAM_TYPE_Service = "Service";
     public static final String PROGRAM_TYPE_External = "external";
     public static final String PROGRAM_TYPE_Community = "community";
@@ -149,12 +147,10 @@ public class KeyConstants {
     public static final String TAB_FACILITY_MESSAGE = "tabMessage";
 
     public static final String TAB_FACILITY_EDIT = "tabEdit";
-    public static final String TAB_FACILITY_BED = "tabBed";
 
     public static final String DEFAULT_TIME_ZONE = "GMT-05:00";
 
     /*Function Definition */
-    public static final String FUN_FACILITY_BED = "_facility.bed";
     public static final String FUN_FACILITY_EDIT = "_facility.edit";
     //public static final String FUN_FACILITY_GENERAL="_facility.general";
     public static final String FUN_FACILITY_MESSAGE = "_facility.message";

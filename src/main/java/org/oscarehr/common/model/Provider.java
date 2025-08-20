@@ -229,6 +229,7 @@ public class Provider extends AbstractModel<String> implements Comparable<Provid
     /**
      * @deprecated no longer is use 2010-04-23, marked for future removal
      */
+    @Deprecated
     public String getProviderType() {
         return providerType;
     }

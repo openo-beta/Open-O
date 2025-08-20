@@ -205,7 +205,7 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
         header1.setRefLabNum("");
         header1.setManReview("");
         header1.setLocation(properties.getProperty("clinic_no", ""));
-        header1.setDemographicNo(new Integer(demographic));
+        header1.setDemographicNo(Integer.valueOf(demographic));
         header1.setProviderNo(prov.getProviderNo());
         header1.setAppointmentNo(0);
         header1.setDemographicName(demo.getLastName() + "," + demo.getFirstName());
@@ -266,7 +266,7 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
     }
 
     private String calcTotal(List<String> codes, Date serviceDate) {
-        GstControl gstControl = gstControlDao.find(new Integer(1));
+        GstControl gstControl = gstControlDao.find(Integer.valueOf(1));
         BigDecimal gst;
         BigDecimal gstTotal;
         BigDecimal total = new BigDecimal(0.0);

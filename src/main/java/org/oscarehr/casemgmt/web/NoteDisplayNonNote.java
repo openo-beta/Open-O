@@ -75,7 +75,7 @@ public class NoteDisplayNonNote implements NoteDisplay {
         note = eform.get("formName") + " : " + eform.get("formSubject");
         provider = providerDao.getProvider((String) eform.get("providerNo"));
         isEformData = true;
-        noteId = new Integer((String) eform.get("fdid"));
+        noteId = Integer.valueOf((String) eform.get("fdid"));
     }
 
     public NoteDisplayNonNote(PatientForm patientForm) {

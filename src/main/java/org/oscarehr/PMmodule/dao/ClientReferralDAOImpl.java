@@ -297,7 +297,7 @@ public class ClientReferralDAOImpl extends HibernateDaoSupport implements Client
 
     public List<ClientReferral> getClientReferralsByProgram(int programId) {
         @SuppressWarnings("unchecked")
-        List<ClientReferral> results = (List<ClientReferral>) this.getHibernateTemplate().find("from ClientReferral cr where cr.ProgramId = ?0", new Long(programId));
+        List<ClientReferral> results = (List<ClientReferral>) this.getHibernateTemplate().find("from ClientReferral cr where cr.ProgramId = ?0", Long.valueOf(programId));
 
         return results;
     }

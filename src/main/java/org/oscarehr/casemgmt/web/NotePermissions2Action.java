@@ -91,7 +91,7 @@ public class NotePermissions2Action extends ActionSupport {
         }
         Program program = programDao.getProgram(Integer.parseInt(programNo));
 
-        List<ProgramAccess> programAccessList = programAccessDAO.getAccessListByProgramId(new Long(programNo));
+        List<ProgramAccess> programAccessList = programAccessDAO.getAccessListByProgramId(Long.valueOf(programNo));
         Map<String, ProgramAccess> programAccessMap = convertProgramAccessListToMap(programAccessList);
 
 
@@ -322,7 +322,7 @@ public class NotePermissions2Action extends ActionSupport {
 
         String programNo = note.getProgram_no();
 
-        List<ProgramAccess> programAccessList = programAccessDAO.getAccessListByProgramId(new Long(programNo));
+        List<ProgramAccess> programAccessList = programAccessDAO.getAccessListByProgramId(Long.valueOf(programNo));
         Map<String, ProgramAccess> programAccessMap = convertProgramAccessListToMap(programAccessList);
 
 
@@ -362,7 +362,7 @@ public class NotePermissions2Action extends ActionSupport {
         RoleProgramAccessDAO roleProgramAccessDao = (RoleProgramAccessDAO) SpringUtils.getBean(RoleProgramAccessDAO.class);
         AdmissionDao admissionDao = (AdmissionDao) SpringUtils.getBean(AdmissionDao.class);
 
-        List<ProgramAccess> programAccessList = programAccessDAO.getAccessListByProgramId(new Long(programNo));
+        List<ProgramAccess> programAccessList = programAccessDAO.getAccessListByProgramId(Long.valueOf(programNo));
         Map<String, ProgramAccess> programAccessMap = convertProgramAccessListToMap(programAccessList);
         String roleName = secroleDao.getRole(Integer.parseInt(roleId)).getName().toLowerCase();
 

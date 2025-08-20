@@ -84,7 +84,7 @@ public class EctConEditDepartments2Action extends ActionSupport {
         request.setAttribute("annotation", Department.getAnnotation());
 
 
-        request.setAttribute("upd", new Integer(updater));
+        request.setAttribute("upd", Integer.valueOf(updater));
         EctConConstructSpecialistsScriptsFile constructSpecialistsScriptsFile = new EctConConstructSpecialistsScriptsFile();
         request.setAttribute("verd", constructSpecialistsScriptsFile.makeFile());
         constructSpecialistsScriptsFile.makeString(request.getLocale());

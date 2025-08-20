@@ -50,7 +50,7 @@ public class LabRequestReportLink {
         for (org.oscarehr.common.model.LabRequestReportLink l : results) {
             link.put("id", l.getId().longValue());
             link.put("request_table", l.getRequestTable());
-            link.put("request_id", new Long(l.getRequestId()));
+            link.put("request_id", Long.valueOf(l.getRequestId()));
             link.put("request_date", l.getRequestDate());
             link.put("report_table", reportTable);
             link.put("report_id", reportId);
@@ -67,10 +67,10 @@ public class LabRequestReportLink {
         for (org.oscarehr.common.model.LabRequestReportLink l : results) {
             link.put("id", l.getId().longValue());
             link.put("request_table", l.getRequestTable());
-            link.put("request_id", new Long(l.getRequestId()));
+            link.put("request_id", Long.valueOf(l.getRequestId()));
             link.put("request_date", l.getRequestDate());
             link.put("report_table", l.getReportTable());
-            link.put("report_id", new Long(l.getReportId()));
+            link.put("report_id", Long.valueOf(l.getReportId()));
         }
 
         return link;

@@ -74,13 +74,6 @@ public class ClientSearchAction22Action extends ActionSupport {
             request.getSession().setAttribute("outsideOfDomainEnabled", "false");
         }
 
-        List<Program> allBedPrograms = new ArrayList<Program>();
-        Program[] allBedProgramsInArr = programManager.getBedPrograms();
-
-        for (int i = 0; i < allBedProgramsInArr.length; i++) {
-            allBedPrograms.add(allBedProgramsInArr[i]);
-        }
-        request.setAttribute("allBedPrograms", allBedPrograms);
 
         request.setAttribute("genders", lookupManager.LoadCodeList("GEN", true, null, null));
 
@@ -93,9 +86,6 @@ public class ClientSearchAction22Action extends ActionSupport {
         } else {
             request.getSession().setAttribute("outsideOfDomainEnabled", "false");
         }
-
-        List<Program> allBedPrograms = new ArrayList<Program>();
-        Program[] allBedProgramsInArr = programManager.getBedPrograms();
 
         String noteId = request.getParameter("noteId");
         if (noteId == null || noteId.trim().length() == 0 || noteId.trim().equalsIgnoreCase("null") || noteId.trim().substring(0, 1).equalsIgnoreCase("0")) {
@@ -114,10 +104,6 @@ public class ClientSearchAction22Action extends ActionSupport {
             request.setAttribute("noteId", noteId);
         }
 
-        for (int i = 0; i < allBedProgramsInArr.length; i++) {
-            allBedPrograms.add(allBedProgramsInArr[i]);
-        }
-        request.setAttribute("allBedPrograms", allBedPrograms);
 
         request.setAttribute("genders", lookupManager.LoadCodeList("GEN", true, null, null));
 
@@ -129,13 +115,6 @@ public class ClientSearchAction22Action extends ActionSupport {
 
         ClientSearchFormBean formBean = this.getCriteria();
 
-        List<Program> allBedPrograms = new ArrayList<Program>();
-        Program[] allBedProgramsInArr = programManager.getBedPrograms();
-
-        for (int i = 0; i < allBedProgramsInArr.length; i++) {
-            allBedPrograms.add(allBedProgramsInArr[i]);
-        }
-        request.setAttribute("allBedPrograms", allBedPrograms);
 
         formBean.setProgramDomain((List) request.getSession().getAttribute("program_domain"));
 
@@ -155,13 +134,6 @@ public class ClientSearchAction22Action extends ActionSupport {
 
         ClientSearchFormBean formBean = this.getCriteria();
 
-        List<Program> allBedPrograms = new ArrayList<Program>();
-        Program[] allBedProgramsInArr = programManager.getBedPrograms();
-
-        for (int i = 0; i < allBedProgramsInArr.length; i++) {
-            allBedPrograms.add(allBedProgramsInArr[i]);
-        }
-        request.setAttribute("allBedPrograms", allBedPrograms);
 
         formBean.setProgramDomain((List) request.getSession().getAttribute("program_domain"));
 

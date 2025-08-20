@@ -61,6 +61,7 @@ public class LoginWs extends AbstractWs {
      * <p>
      * Returns LoginResultTransfer on valid login, will be provided with a security token too.
      */
+    @Deprecated
     public LoginResultTransfer login(String userName, String password) throws NotAuthorisedException {
         logger.info("Login attempt : user=" + userName);
         logger.debug("Login attempt : p =" + password);

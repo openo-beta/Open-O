@@ -108,7 +108,7 @@ public class DrugDispensingManagerImpl implements DrugDispensingManager {
             totalQuantitiesDispensed += dd.getQuantity();
         }
 
-        Integer totalDosesRemaining = (totalDosesAvailable == null) ? null : new Integer(totalDosesAvailable - totalDosesDispensed);
+        Integer totalDosesRemaining = (totalDosesAvailable == null) ? null : Integer.valueOf(totalDosesAvailable - totalDosesDispensed);
         String strTotalDosesRemaining = (totalDosesRemaining == null) ? "<Unknown>" : String.valueOf(totalDosesRemaining);
 
         String status = null;

@@ -138,7 +138,7 @@ public class ERxPrescriptionTranslator {
                 + in.getSigUnitToString());
 
         // As specified by Jay, round up when converting the float to an int
-        out.setRefillQuantity(new Double(StrictMath.ceil(in.getQuantity()))
+        out.setRefillQuantity(Double.valueOf(StrictMath.ceil(in.getQuantity()))
                 .intValue());
 
         /*
@@ -308,7 +308,7 @@ public class ERxPrescriptionTranslator {
                 + in.getSigUnitToString());
 
         // As specified by Jay, round up when converting the float to an int
-        out.setRefillQuantity(new Double(StrictMath.ceil(in.getQuantity()))
+        out.setRefillQuantity(Double.valueOf(StrictMath.ceil(in.getQuantity()))
                 .intValue());
 
         /*

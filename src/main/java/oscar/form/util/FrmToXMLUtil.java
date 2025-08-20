@@ -289,9 +289,9 @@ public class FrmToXMLUtil {
                 value = "0";
             Integer integer = null;
             try {
-                integer = new Integer(value);
+                integer = Integer.valueOf(value);
             } catch (NumberFormatException nfe) {
-                integer = new Integer("" + Math.round(Double.parseDouble(value)));
+                integer = Integer.valueOf("" + Math.round(Double.parseDouble(value)));
             }
 
             setValueMethod.invoke(obj, new Object[]{integer});
@@ -303,7 +303,7 @@ public class FrmToXMLUtil {
             Method setValueMethod = cls.getMethod("setValue", new Class[]{double.class});
             if (value.equalsIgnoreCase(""))
                 value = "0";
-            Double dbl = new Double(value);
+            Double dbl = Double.valueOf(value);
             setValueMethod.invoke(obj, new Object[]{dbl});
             i = 3;
         } catch (NoSuchMethodException noSuchMethod1) {
@@ -312,7 +312,7 @@ public class FrmToXMLUtil {
         try {
             Method setValueMethod = cls.getMethod("setValue", new Class[]{boolean.class});
             i = 4;
-            Boolean bool = new Boolean(value);
+            Boolean bool = Boolean.valueOf(value);
             setValueMethod.invoke(obj, new Object[]{bool});
         } catch (NoSuchMethodException noSuchMethod2) {
         }

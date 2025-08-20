@@ -4293,7 +4293,7 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
     private Long findMeasurementId(Integer labNo, String testName) {
         Integer measId = measurementsExtDao.getMeasurementIdByLabNoAndTestName(labNo.toString(), testName);
         if (measId != null) {
-            return new Long(measId);
+            return Long.valueOf(measId);
         } else {
             return null;
         }

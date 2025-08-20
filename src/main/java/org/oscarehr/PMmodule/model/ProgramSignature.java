@@ -101,9 +101,9 @@ public class ProgramSignature implements Serializable {
         if (null == obj) return false;
         if (!(obj instanceof ProgramSignature)) return false;
         else {
-            ProgramSignature bed = (ProgramSignature) obj;
-            if (null == this.getId() || null == bed.getId()) return false;
-            else return (this.getId().equals(bed.getId()));
+            ProgramSignature other = (ProgramSignature) obj;
+            if (null == this.getId() || null == other.getId()) return false;
+            else return (this.getId().equals(other.getId()));
         }
     }
 

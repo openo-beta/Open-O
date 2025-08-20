@@ -87,6 +87,7 @@ public class SystemMessage extends AbstractModel<Integer> {
     /**
      * @deprecated
      */
+    @Deprecated
     public String getExpiry_day() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         return formatter.format(getExpiryDate());
@@ -95,6 +96,7 @@ public class SystemMessage extends AbstractModel<Integer> {
     /**
      * @deprecated
      */
+    @Deprecated
     public void setExpiry_day(String day) throws IllegalArgumentException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -115,6 +117,7 @@ public class SystemMessage extends AbstractModel<Integer> {
     /**
      * @deprecated
      */
+    @Deprecated
     public String getExpiry_hour() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(getExpiryDate());
@@ -128,6 +131,7 @@ public class SystemMessage extends AbstractModel<Integer> {
     /**
      * @deprecated
      */
+    @Deprecated
     public void setExpiry_hour(String hour) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(getExpiryDate());
@@ -145,6 +149,7 @@ public class SystemMessage extends AbstractModel<Integer> {
     /**
      * @deprecated
      */
+    @Deprecated
     public String getExpiry_minute() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(getExpiryDate());
@@ -154,6 +159,7 @@ public class SystemMessage extends AbstractModel<Integer> {
     /**
      * @deprecated
      */
+    @Deprecated
     public void setExpiry_minute(String minute) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(getExpiryDate());
@@ -164,6 +170,7 @@ public class SystemMessage extends AbstractModel<Integer> {
     /**
      * @deprecated
      */
+    @Deprecated
     public String getFormattedCreationDate() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd kk:mm");
         return formatter.format(getCreationDate());
@@ -172,6 +179,7 @@ public class SystemMessage extends AbstractModel<Integer> {
     /**
      * @deprecated
      */
+    @Deprecated
     public String getFormattedExpiryDate() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd kk:mm");
         return formatter.format(getExpiryDate());

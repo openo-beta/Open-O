@@ -245,7 +245,7 @@ public class Utility {
             }
             return retVal;
         }
-        Long timeStam = new Long(pDate);
+        Long timeStam = Long.valueOf(pDate);
         Calendar today = new GregorianCalendar();
         today.setTimeInMillis(timeStam.longValue());
         //yyyymmddHHMM
@@ -280,7 +280,7 @@ public class Utility {
     }
 
     public static String FormatNumber(Integer pNumber, int tolLen) {
-        if (pNumber == null) pNumber = new Integer(0);
+        if (pNumber == null) pNumber = Integer.valueOf(0);
         String retVal = pNumber.toString();
         for (int i = 0; i < tolLen - pNumber.toString().length(); i++) {
             retVal = " " + retVal;
@@ -289,7 +289,7 @@ public class Utility {
     }
 
     public static String FormatIntNoWithZero(int pNumber, int tolLen) {
-        Integer pNo = new Integer(pNumber);
+        Integer pNo = Integer.valueOf(pNumber);
         String retVal = pNo.toString();
         for (int i = 0; i < tolLen - pNo.toString().length(); i++) {
             retVal = "0" + retVal;
@@ -372,9 +372,9 @@ public class Utility {
                     while ((str = in.readLine()) != null) {
                         fDev = new FieldDefinition();
                         fDev.setFieldName(str.substring(0, 30).trim());
-                        fDev.setFieldLength(new Integer(str.substring(30, 35).trim()));
+                        fDev.setFieldLength(Integer.valueOf(str.substring(30, 35).trim()));
                         fDev.setFieldType(str.substring(35, 36));
-                        fDev.setFieldStartIndex(new Integer(str.substring(36, 41).trim()));
+                        fDev.setFieldStartIndex(Integer.valueOf(str.substring(36, 41).trim()));
                         if (str.length() > 41) fDev.setDateFormatStr(str.substring(41, 53).trim());
                         list.add(fDev);
                     }
@@ -382,7 +382,7 @@ public class Utility {
                     while ((str = in.readLine()) != null) {
                         fDev = new FieldDefinition();
                         fDev.setFieldName(str.substring(0, 30).trim());
-                        fDev.setFieldLength(new Integer(str.substring(30, 35).trim()));
+                        fDev.setFieldLength(Integer.valueOf(str.substring(30, 35).trim()));
                         fDev.setFieldType(str.substring(35, 36));
                         if (str.length() > 36) fDev.setDateFormatStr(str.substring(36, 48).trim());
                         list.add(fDev);

@@ -122,7 +122,7 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
 
         //Get all EFORM information for demographic, along with which are already attached
         List<String> attachedEFormIds = new ArrayList<String>();
-        List<EFormData> allEForms = EFormUtil.listPatientEformsCurrent(new Integer(demographicNo), true);
+        List<EFormData> allEForms = EFormUtil.listPatientEformsCurrent(Integer.valueOf(demographicNo), true);
         List<EFormData> attachedEForms = null;
         if (requestId != null && !requestId.isEmpty() && !"null".equals(requestId)) {
             attachedEForms = consultationManager.getAttachedEForms(requestId);

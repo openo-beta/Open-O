@@ -208,7 +208,7 @@ public class StringUtils {
         boolean ret = false;
         if (filled(str)) {
             try {
-                new Double(str);
+                Double.valueOf(str);
                 ret = true;
             } catch (NumberFormatException e) {
                 ret = false;
@@ -228,7 +228,7 @@ public class StringUtils {
         boolean ret = false;
         if (filled(str)) {
             try {
-                new Integer(str);
+                Integer.valueOf(str);
                 ret = true;
             } catch (NumberFormatException e) {
                 ret = false;

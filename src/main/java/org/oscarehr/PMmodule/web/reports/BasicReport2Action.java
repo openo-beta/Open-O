@@ -40,8 +40,7 @@ import org.oscarehr.util.SpringUtils;
  * Will report some basic statistics out of the PMM
  * <p>
  * 1) # of programs
- * 2) # of bed programs
- * 3) # of service programs
+ * 2) # of service programs
  */
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -70,31 +69,27 @@ public class BasicReport2Action extends ActionSupport {
 
     protected Map getProgramStatistics() {
         Map map = new LinkedHashMap();
-        int total = 0, totalBed = 0, totalService = 0;
+        int total = 0, totalService = 0;
 
         List programs = programManager.getPrograms();
 
         for (Iterator iter = programs.iterator(); iter.hasNext(); ) {
             Program p = (Program) iter.next();
-            if (p.getType().equalsIgnoreCase("bed")) {
-                totalBed++;
-            }
             if (p.getType().equalsIgnoreCase("service")) {
                 totalService++;
             }
             total++;
         }
 
-        map.put("Total number of programs", new Long(total));
-        map.put("Total number of bed programs", new Long(totalBed));
-        map.put("Total number of service programs", new Long(totalService));
+        map.put("Total number of programs", Long.valueOf(total));
+        map.put("Total number of service programs", Long.valueOf(totalService));
         return map;
     }
 
     protected Map getProviderStatistics() {
         Map map = new LinkedHashMap();
 
-        map.put("Total number of providers", new Long(providerManager.getProviders().size()));
+        map.put("Total number of providers", Long.valueOf(providerManager.getProviders().size()));
 		/*
 		List roles = roleManager.getRoles();
 		for(Iterator iter=roles.iterator();iter.hasNext();) {

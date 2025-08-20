@@ -410,7 +410,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
         // get issues for current demographic, based on provider rights
 
-        Boolean useNewCaseMgmt = new Boolean((String) session.getAttribute("newCaseManagement"));
+        Boolean useNewCaseMgmt = Boolean.valueOf((String) session.getAttribute("newCaseManagement"));
 
         CheckBoxBean[] checkedList = null;
         if (useNewCaseMgmt) {
@@ -1685,7 +1685,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
                 String varName = "newNote";
                 session.setAttribute(varName, false);
                 varName = "saveNote" + demono;
-                session.setAttribute(varName, new Boolean(true)); // tell CaseManagementView we have just saved note
+                session.setAttribute(varName, Boolean.valueOf(true)); // tell CaseManagementView we have just saved note
             }
 
             if (request.getAttribute("DateError") != null) {
@@ -2431,7 +2431,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         request.setAttribute("demoDOB", getDemoDOB(demono));
 
         request.setAttribute("from", request.getParameter("from"));
-        request.setAttribute("change_diagnosis", new Boolean(true));
+        request.setAttribute("change_diagnosis", Boolean.valueOf(true));
         request.setAttribute("change_diagnosis_id", inds);
         this.setShowList("false");
         this.setSearString("");
@@ -2564,7 +2564,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         CheckBoxBean[] oldList = sessionFrm.getIssueCheckList();
 
         String inds = this.getDeleteId();
-        Integer ind = new Integer(inds);
+        Integer ind = Integer.valueOf(inds);
 
         // delete the right issue
         CheckBoxBean[] caseIssueList = new CheckBoxBean[oldList.length - 1];
@@ -2639,7 +2639,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
         String inds = this.getLineId();
 
-        Integer ind = new Integer(inds);
+        Integer ind = Integer.valueOf(inds);
         List<CaseManagementIssue> iss = new ArrayList<CaseManagementIssue>();
         oldList[ind.intValue()].getIssue().setUpdate_date(new Date());
         iss.add(oldList[ind.intValue()].getIssue());
@@ -2708,8 +2708,8 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
             if (!recentNote.isLocked()) {
                 history.add(historyNote);
                 if (recentNote.getUpdate_date().compareTo(historyNote.getUpdate_date()) > 0) {
-                    current.add(new Boolean(false));
-                } else current.add(new Boolean(true));
+                    current.add(Boolean.valueOf(false));
+                } else current.add(Boolean.valueOf(true));
             }
         }
 
@@ -2805,7 +2805,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
     public String restore() throws Exception {
 
         request.getSession().setAttribute("restoring", "true"); // tell CaseManagementView we're handling temp note
-        request.setAttribute("restore", new Boolean(true));
+        request.setAttribute("restore", Boolean.valueOf(true));
 
         return edit();
     }

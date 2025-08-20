@@ -382,16 +382,16 @@ public class BillingCreateBilling2Action extends ActionSupport {
                                                 ArrayList<BillingItem> billItem,
                                                 String serviceDate) {
         HashMap<String, Double> mgmCodeCount = new HashMap<String, Double>();
-        mgmCodeCount.put("14015", new Double(0));
-        mgmCodeCount.put("14016", new Double(0));
+        mgmCodeCount.put("14015", Double.valueOf(0));
+        mgmCodeCount.put("14016", Double.valueOf(0));
         for (Iterator<BillingItem> iter = billItem.iterator(); iter.hasNext(); ) {
             BillingItem item = iter.next();
             if (mgmCodeCount.containsKey(item.getServiceCode())) {
                 //Increments the service code count by the number of units for
                 //the current bill item
-                Double svcCodeUnitCount = new Double(item.getUnit());
+                Double svcCodeUnitCount = Double.valueOf(item.getUnit());
                 Double unitCount = mgmCodeCount.get(item.getServiceCode());
-                unitCount = new Double(unitCount.doubleValue() +
+                unitCount = Double.valueOf(unitCount.doubleValue() +
                         svcCodeUnitCount.doubleValue());
                 mgmCodeCount.remove(item.getServiceCode());
                 mgmCodeCount.put(item.getServiceCode(), unitCount);

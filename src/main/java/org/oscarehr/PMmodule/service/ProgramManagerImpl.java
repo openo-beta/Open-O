@@ -112,7 +112,7 @@ public class ProgramManagerImpl implements ProgramManager {
     }
 
     public Program getProgram(Long programId) {
-        return programDao.getProgram(new Integer(programId.intValue()));
+        return programDao.getProgram(Integer.valueOf(programId.intValue()));
     }
 
     public List<Program> getActiveProgramByFacility(String providerNo, Integer facilityId) {
@@ -166,13 +166,6 @@ public class ProgramManagerImpl implements ProgramManager {
         return programDao.getPrograms();
     }
 
-    public Program[] getBedPrograms() {
-        return programDao.getProgramsByType(null, Program.BED_TYPE, null).toArray(new Program[0]);
-    }
-
-    public Program[] getBedPrograms(Integer facilityId) {
-        return programDao.getProgramsByType(facilityId, Program.BED_TYPE, null).toArray(new Program[0]);
-    }
 
     public List<Program> getServicePrograms() {
         return programDao.getProgramsByType(null, Program.SERVICE_TYPE, null);
@@ -182,9 +175,6 @@ public class ProgramManagerImpl implements ProgramManager {
         return programDao.getProgramsByType(null, Program.EXTERNAL_TYPE, true).toArray(new Program[0]);
     }
 
-    public boolean isBedProgram(String programId) {
-        return programDao.isBedProgram(Integer.valueOf(programId));
-    }
 
     public boolean isServiceProgram(String programId) {
         return programDao.isServiceProgram(Integer.valueOf(programId));
@@ -415,7 +405,7 @@ public class ProgramManagerImpl implements ProgramManager {
     }
 
     public DefaultRoleAccess findDefaultRoleAccess(long roleId, long accessTypeId) {
-        return defaultRoleAccessDAO.find(new Long(roleId), new Long(accessTypeId));
+        return defaultRoleAccessDAO.find(Long.valueOf(roleId), Long.valueOf(accessTypeId));
     }
 
     public List<ProgramClientStatus> getProgramClientStatuses(Integer programId) {

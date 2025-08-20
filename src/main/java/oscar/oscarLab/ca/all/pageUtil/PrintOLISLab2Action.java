@@ -61,11 +61,11 @@ public class PrintOLISLab2Action extends ActionSupport {
 
         } catch (IOException ioe) {
             logger.error("IOException occured insided OLISPrintLabsAction", ioe);
-            request.setAttribute("printError", new Boolean(true));
+            request.setAttribute("printError", Boolean.valueOf(true));
             return "error";
         } catch (Exception e) {
             logger.error("Unknown Exception occured insided OLISPrintLabsAction", e);
-            request.setAttribute("printError", new Boolean(true));
+            request.setAttribute("printError", Boolean.valueOf(true));
             return "error";
         }
 

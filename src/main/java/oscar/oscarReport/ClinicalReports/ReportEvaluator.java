@@ -96,7 +96,7 @@ public class ReportEvaluator {
             //Object obj = numer.getOutputValues();  // PROBLEM IS THAT THIS WILL ALWAYS HAVE A VALUE
             Hashtable<String, Object> h = new Hashtable<String, Object>();
             h.put("_demographic_no", demo);
-            h.put("_report_result", new Boolean(bool && bool2));
+            h.put("_report_result", Boolean.valueOf(bool && bool2));
 
             if (additionalFields != null) {
                 for (KeyValue field : additionalFields) {
@@ -155,7 +155,7 @@ public class ReportEvaluator {
     }
 
     public int getPercentageInt() {
-        return new Float(getPercentage()).intValue();
+        return Float.valueOf(getPercentage()).intValue();
     }
 
 

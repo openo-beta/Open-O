@@ -678,7 +678,7 @@ public class ERxPatientData {
      * @param hip the hip to set
      */
     public void setHip(int hip) {
-        this.hip = new Integer(hip);
+        this.hip = Integer.valueOf(hip);
     }
 
     /**
@@ -755,7 +755,7 @@ public class ERxPatientData {
      * @param pin1type the pin1type to set
      */
     public void setPin1type(int pin1type) {
-        this.pin1type = new Integer(pin1type);
+        this.pin1type = Integer.valueOf(pin1type);
     }
 
     /**
@@ -776,7 +776,7 @@ public class ERxPatientData {
      * @param pin2type the pin2type to set
      */
     public void setPin2type(int pin2type) {
-        this.pin2type = new Integer(pin2type);
+        this.pin2type = Integer.valueOf(pin2type);
     }
 
     /**
@@ -797,7 +797,7 @@ public class ERxPatientData {
      * @param pin3type the pin3type to set
      */
     public void setPin3type(int pin3type) {
-        this.pin3type = new Integer(pin3type);
+        this.pin3type = Integer.valueOf(pin3type);
     }
 
     /**

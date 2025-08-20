@@ -93,7 +93,7 @@ public class EctDisplayEForm2Action extends EctDisplayAction {
                 //I've put in an arbitrary limit here of 100. Some people use a single eform/patient for
                 //logging calls, etc. This makes this result set huge. People can click on the eform tab and view the full
                 //history if they need to.
-                List<EFormData> eFormDatas = EFormUtil.listPatientEformsCurrent(new Integer(bean.demographicNo), true, 0, 100);
+                List<EFormData> eFormDatas = EFormUtil.listPatientEformsCurrent(Integer.valueOf(bean.demographicNo), true, 0, 100);
                 filterRoles(eFormDatas, roleName);
                 //Collections.sort(eFormDatas, EFormData.FORM_DATE_COMPARATOR);
                 //Collections.reverse(eFormDatas);

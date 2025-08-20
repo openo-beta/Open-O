@@ -119,7 +119,7 @@
                 <select id="programIds" name="programIds" multiple='multiple' class="input">
                     <%
                         for (Program program : programs) {
-                            if (program.isBed() || program.isService()) {
+                            if ("Service".equalsIgnoreCase(program.getType())) {
                     %>
                     <option value="<%=program.getId()%>"><%=StringEscapeUtils.escapeHtml(program.getName() + " (" + program.getType() + ')')%>
                     </option>
