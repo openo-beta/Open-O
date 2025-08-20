@@ -109,20 +109,19 @@
     <div>
         <div>
             Billing Number:
-            <select name="serviceId" id="serviceId"
-                         class="serviceId">
+            <select name="serviceId" id="serviceId" class="serviceId">
                 <c:forEach var="r" items="${serviceIds}">
-                    <option value="${r}">
-                        <c:out value="${r}"/>
+                    <option value="${r}" <c:if test="${r == serviceId}">selected</c:if>>
+                        <c:out value="${r}" />
                     </option>
                 </c:forEach>
             </select>
+
             Page #:
             <select name="pageNo" id="pageNo">
-                <c:forEach var="i" begin="1"
-                           end="${resultSize}">
-                    <option value="${i}">
-                        <c:out value="${i}"/>
+                <c:forEach var="i" begin="1" end="${resultSize}">
+                    <option value="${i}" <c:if test="${i == pageNo}">selected</c:if>>
+                        <c:out value="${i}" />
                     </option>
                 </c:forEach>
             </select>
