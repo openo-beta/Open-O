@@ -35,11 +35,19 @@
         <constructor-arg ref="OAuth1ParamParser"/>
     </bean>
 
-
-    <!-- JAX-RS resources (use autowire so provider gets injected) -->
+    <!-- Step 2: JAX-RS resources (use autowire so provider gets injected) -->
     <bean id="oauthAuthorizeResource"
           class="org.oscarehr.ws.oauth.AuthorizeResource"
           autowire="byType"/>
+
+    <!-- Step 3: Access token resource (CXF JAX-RS) -->
+    <bean id="oauthAccessTokenEndpoint"
+        class="org.oscarehr.ws.oauth.AccessTokenResource">
+        <constructor-arg ref="oscarOAuthDataProvider"/>
+        <constructor-arg ref="OAuth1ParamParser"/>
+        <!-- Use the existing verifier bean id in your app; if it's different, change this ref -->
+        <constructor-arg ref="OAuth1SignatureVerifierImplementation"/>
+    </bean>
 
 
     <!-- JSON/JAXB providers for CXF JAX-RS -->
@@ -61,24 +69,25 @@
         </property>
     </bean>
 
+    <!-- OAuth 1.0a endpoints at /oscar/ws/oauth/* -->
     <jaxrs:server id="oauthEndpoints" address="/oauth">
 
-        <!-- New OAuth 1.0a flow: initiate -> authorize -> token -->
         <jaxrs:serviceBeans>
             <!-- Step 1: Request token (initiate) -->
             <ref bean="oscarRequestTokenService"/>
 
-            <!-- Step 2: Authorize (consent UI + verifier) -->
+            <!-- Step 2: Authorize (consent UI + sets verifier) -->
             <ref bean="oauthAuthorizeResource"/>
 
-            <!-- TODO: IMPLEMENT ENDPOINT. -->
-            <!-- Step 3: Access token (exchange) -->
-            <!-- <ref bean="oauthAccessTokenEndpoint"/> -->
+            <!-- Step 3: Access token (exchange request token + verifier for access token) -->
+            <ref bean="oauthAccessTokenEndpoint"/>
         </jaxrs:serviceBeans>
 
         <jaxrs:providers>
             <ref bean="jaxb"/>
             <ref bean="jsonProvider"/>
+            <!-- Optional: accept x-www-form-urlencoded bodies -->
+            <bean class="org.apache.cxf.jaxrs.provider.FormEncodingProvider"/>
         </jaxrs:providers>
 
         <jaxrs:features>
@@ -91,6 +100,7 @@
         </jaxrs:extensionMappings>
 
     </jaxrs:server>
+
 
 
     <!-- CXF JAX-RS server for data APIs at /ws/services (NO OAuth interceptor here) -->
