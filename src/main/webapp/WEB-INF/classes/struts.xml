@@ -371,6 +371,13 @@
             <result name="failure">/errorpage.jsp</result>
             <result name="success">/documentManager/inboxManage.do?method=prepareForIndexPage</result>
         </action>
+        <action name="web/inboxhub/Inboxhub" class="org.oscarehr.inboxhub.display.ManageInboxhub2Action" method="execute">
+			<result name="success">/web/inboxhub/Inboxhub.jsp</result>
+			<result name="displayList">/web/inboxhub/InboxhubListMode.jsp</result>
+			<result name="displayView">/web/inboxhub/InboxhubViewMode.jsp</result>
+			<result name="unauthorized">/securityError.jsp</result>
+			<result name="error">/failure.jsp</result>
+        </action>
         <action name="lab/CA/ALL/Forward" class="oscar.oscarMDS.pageUtil.ReportReassign2Action">
             <result name="failure">/errorpage.jsp</result>
             <result name="success">/lab/CA/ALL/labDisplay.jsp</result>
