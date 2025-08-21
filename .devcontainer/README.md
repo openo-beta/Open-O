@@ -213,13 +213,13 @@ mvn se.vandmo:dependency-lock-maven-plugin:lock
     ./devcontainer/development/scripts/make-debug
     ```
 
-If you encounter an error "/usr/bin/env: ‘sh\r’: No such file or directory /usr/bin/env: use -[v]S to pass options in shebang lines". 
-Then run: 
+    If you encounter an error "/usr/bin/env: ‘sh\r’: No such file or directory /usr/bin/env: use -[v]S to pass options in shebang lines". 
+    Then run: 
     ```bash
     apt-get update && apt-get install -y dos2unix dos2unix .devcontainer/development/scripts/make2
     ```
 
-then re-run the script.
+    then re-run the script.
 
 5. Add deployment.
     Right click the tomcat server, found within the file explorer on VSCode. 
