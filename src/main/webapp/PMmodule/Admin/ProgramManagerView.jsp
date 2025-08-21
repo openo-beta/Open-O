@@ -78,10 +78,6 @@
                     Program program = (Program) request.getAttribute("program");
 
                     for (int i = 0; i < ProgramManagerViewFormBean.tabs.length; i++) {
-                        if (ProgramManagerViewFormBean.tabs[i].equalsIgnoreCase("Bed Check") && program.isService()) {
-                            //break;
-                            continue;
-                        }
 
                         if (ProgramManagerViewFormBean.tabs[i].equalsIgnoreCase(selectedTab)) {
                 %>
@@ -149,15 +145,6 @@
                 %>
                 <security:oscarSec roleName="<%=roleName$%>"
                                    objectName="_pmm_editProgram.access" rights="r">
-                    <td><a href="javascript:void(0)"
-                           onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
-                    </a></td>
-                </security:oscarSec>
-                <%
-                } else if (ProgramManagerViewFormBean.tabs[i].equalsIgnoreCase("Bed Check")) {
-                %>
-                <security:oscarSec roleName="<%=roleName$%>"
-                                   objectName="_pmm_editProgram.bedCheck" rights="r">
                     <td><a href="javascript:void(0)"
                            onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
                     </a></td>

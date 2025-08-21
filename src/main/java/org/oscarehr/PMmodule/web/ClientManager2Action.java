@@ -93,10 +93,6 @@ import org.oscarehr.common.dao.IntegratorConsentDao;
 import org.oscarehr.common.dao.OscarLogDao;
 import org.oscarehr.common.dao.RemoteReferralDao;
 import org.oscarehr.common.model.*;
-import org.oscarehr.managers.BedDemographicManager;
-import org.oscarehr.managers.BedManager;
-import org.oscarehr.managers.RoomDemographicManager;
-import org.oscarehr.managers.RoomManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
@@ -124,8 +120,6 @@ public class ClientManager2Action extends ActionSupport {
     private LookupManager lookupManager = SpringUtils.getBean(LookupManager.class);
     private CaseManagementManager caseManagementManager = SpringUtils.getBean(CaseManagementManager.class);
     private AdmissionManager admissionManager = SpringUtils.getBean(AdmissionManager.class);
-    private BedDemographicManager bedDemographicManager = SpringUtils.getBean(BedDemographicManager.class);
-    private BedManager bedManager = SpringUtils.getBean(BedManager.class);
     private ClientManager clientManager = SpringUtils.getBean(ClientManager.class);
     private ProgramManager programManager = SpringUtils.getBean(ProgramManager.class);
     private ProviderManager providerManager = SpringUtils.getBean(ProviderManager.class);
@@ -140,8 +134,6 @@ public class ClientManager2Action extends ActionSupport {
     private VacancyTemplateDao vacancyTemplateDao = SpringUtils.getBean(VacancyTemplateDao.class);
     private MatchingManager matchingManager = new MatchingManager();
 
-    private RoomDemographicManager roomDemographicManager = SpringUtils.getBean(RoomDemographicManager.class);
-    private RoomManager roomManager = SpringUtils.getBean(RoomManager.class);
 
 
     public void setIntegratorConsentDao(IntegratorConsentDao integratorConsentDao) {
@@ -193,12 +185,8 @@ public class ClientManager2Action extends ActionSupport {
             return terminate_early();
         } else if ("override_restriction".equals(method)) {
             return override_restriction();
-        } else if ("refreshBedDropDownForReservation".equals(method)) {
-            return refreshBedDropDownForReservation();
         } else if ("save".equals(method)) {
             return save();
-        } else if ("saveBedReservation".equals(method)) {
-            return saveBedReservation();
         } else if ("save_joint_admission".equals(method)) {
             return save_joint_admission();
         } else if ("remove_joint_admission".equals(method)) {
@@ -250,17 +238,7 @@ public class ClientManager2Action extends ActionSupport {
 
         program = programManager.getProgram(program.getId());
 
-        /*
-         * If the user is currently enrolled in a bed program, we must warn the provider that this will also be a discharge
-         */
-        if (program.getType().equalsIgnoreCase("bed")) {
-            Admission currentAdmission = admissionManager.getCurrentBedProgramAdmission(Integer.valueOf(demographicNo));
-            if (currentAdmission != null) {
-                request.setAttribute("current_admission", currentAdmission);
-                request.setAttribute("current_program", programManager.getProgram(currentAdmission.getProgramId()));
-            }
-        }
-        request.setAttribute("do_admit", new Boolean(true));
+        request.setAttribute("do_admit", Boolean.valueOf(true));
 
         return "edit";
     }
@@ -279,13 +257,13 @@ public class ClientManager2Action extends ActionSupport {
         Admission admission = this.getAdmission();
         Program p = this.getProgram();
         String id = request.getParameter("id");
-        List<Integer> dependents = clientManager.getDependentsList(new Integer(id));
+        List<Integer> dependents = clientManager.getDependentsList(Integer.valueOf(id));
         String formattedDischargeDate = request.getParameter("dischargeDate");
         Date dischargeDate = oscar.util.DateUtils.toDate(formattedDischargeDate);
         boolean success = true;
 
         try {
-            admissionManager.processDischarge(p.getId(), new Integer(id), admission.getDischargeNotes(), admission.getRadioDischargeReason(), dischargeDate, dependents, false, false);
+            admissionManager.processDischarge(p.getId(), Integer.valueOf(id), admission.getDischargeNotes(), admission.getRadioDischargeReason(), dischargeDate, dependents, false, false);
         } catch (AdmissionException e) {
             addActionMessage(getText("discharge.failure", e.getMessage()));
             success = false;
@@ -308,10 +286,10 @@ public class ClientManager2Action extends ActionSupport {
         Admission admission = this.getAdmission();
         Program program = this.getProgram();
         String clientId = request.getParameter("id");
-        List<Integer> dependents = clientManager.getDependentsList(new Integer(clientId));
+        List<Integer> dependents = clientManager.getDependentsList(Integer.valueOf(clientId));
 
         try {
-            admissionManager.processDischargeToCommunity(program.getId(), new Integer(clientId), loggedInInfo.getLoggedInProviderNo(), admission.getDischargeNotes(), admission.getRadioDischargeReason(), dependents, null);
+            admissionManager.processDischargeToCommunity(program.getId(), Integer.valueOf(clientId), loggedInInfo.getLoggedInProviderNo(), admission.getDischargeNotes(), admission.getRadioDischargeReason(), dependents, null);
             LogAction.log("write", "discharge", clientId, request);
             addActionMessage(getText("discharge.success"));
         } catch (AdmissionException e) {
@@ -330,14 +308,14 @@ public class ClientManager2Action extends ActionSupport {
 
         setEditAttributes(request, id);
 
-        Admission admission = admissionDao.getCurrentBedProgramAdmission(programDao, Integer.parseInt(id));
+        Admission admission = null;
         if (admission != null) {
             request.setAttribute("admissionDate", admission.getAdmissionDate("yyyy-MM-dd"));
         }
 
 
-        request.setAttribute("do_discharge", new Boolean(true));
-        request.setAttribute("community_discharge", new Boolean(true));
+        request.setAttribute("do_discharge", Boolean.valueOf(true));
+        request.setAttribute("community_discharge", Boolean.valueOf(true));
         return "edit";
     }
 
@@ -354,7 +332,7 @@ public class ClientManager2Action extends ActionSupport {
         request.setAttribute("programId", String.valueOf(program.getId()));
         setEditAttributes(request, id);
 
-        request.setAttribute("do_discharge", new Boolean(true));
+        request.setAttribute("do_discharge", Boolean.valueOf(true));
 
         if (admissionId != null) {
             Admission admission = admissionDao.find(Integer.parseInt(admissionId));
@@ -369,7 +347,7 @@ public class ClientManager2Action extends ActionSupport {
     public String nested_discharge_select_program() {
         request.setAttribute("nestedReason", "true");
         setEditAttributes(request, request.getParameter("id"));
-        request.setAttribute("do_discharge", new Boolean(true));
+        request.setAttribute("do_discharge", Boolean.valueOf(true));
         return "edit";
     }
 
@@ -757,350 +735,11 @@ public class ClientManager2Action extends ActionSupport {
         return "edit";
     }
 
-    public String refreshBedDropDownForReservation() {
-        BedDemographic bedDemographic = this.getBedDemographic();
-        String roomId = request.getParameter("roomId");
-        request.setAttribute("roomId", roomId);
-
-        request.setAttribute("isRefreshRoomDropDown", "Y");
-
-        // retrieve an array of beds associated with this roomId
-        Bed[] unreservedBeds = bedManager.getCurrentPlusUnreservedBedsByRoom(Integer.valueOf(roomId), bedDemographic.getId().getBedId(), false);
-
-        request.setAttribute("unreservedBeds", unreservedBeds);
-
-        return edit();
-    }
 
     public String save() {
         return edit();
     }
 
-    public String saveBedReservation() {
-        // When room has beds assigned to it --> should not let client select room only.
-        // When room has no beds assigned to it --> allow clients to select room only.
-
-        BedDemographic bedDemographic = this.getBedDemographic();
-        Date today = new Date();
-        String roomId = request.getParameter("roomId");
-        bedDemographic.setReservationStart(today);
-        bedDemographic.setRoomId(Integer.valueOf(roomId));
-
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-
-        Integer bedId = bedDemographic.getBedId();
-        Integer demographicNo = bedDemographic.getId().getDemographicNo();
-        boolean isBedSelected = (bedDemographic.getBedId() != null && bedDemographic.getBedId().intValue() != 0);
-
-        boolean isFamilyHead = false;
-        boolean isFamilyDependent = false;
-        int familySize = 0;
-        RoomDemographic roomDemographic = null;
-
-        // if room has bed --> must be assigned as room/bed combo or
-        // if room has no bed --> must be assigned as room only.
-        boolean isRoomAssignedWithBeds = roomManager.isRoomAssignedWithBeds(bedDemographic.getRoomId());
-
-        if (isRoomAssignedWithBeds && (bedId == null || bedId.intValue() == 0)) {// if assignedBed==1 && no bed assigned --> display error
-            addActionMessage(getText("bed.reservation.room_bed"));
-            return edit();
-        }
-
-        // get dependents to be saved, removed from 'room_demographic' & 'bed_demographic' tables.
-        List<JointAdmission> dependentList = clientManager.getDependents(new Integer(demographicNo));
-        JointAdmission clientsJadm = clientManager.getJointAdmission(new Integer(demographicNo));
-
-        if (dependentList != null && dependentList.size() > 0) {
-            // condition met then demographicNo must be familyHead
-            familySize = dependentList.size() + 1;
-            isFamilyHead = true;
-        }
-
-        if (clientsJadm != null && clientsJadm.getHeadClientId() != null) {
-            isFamilyDependent = true;
-        }
-
-        if (!isFamilyHead && isFamilyDependent) {// when client is dependent of a family -> do not attempt to assign.
-            // Display message notifying that the client cannot be saved (assign or unassign) a room or a bed
-            addActionMessage(getText("bed.reservation.dependent_disallowed"));
-            return edit();
-        } else {// check whether client is familyHead or independent client
-            // create roomDemographic from bedDemographic
-            roomDemographic = roomDemographicManager.getRoomDemographicByDemographic(demographicNo, loggedInInfo.getCurrentFacility().getId());
-            if (roomDemographic == null) {// demographicNo (familyHead or independent) has no record in 'room_demographic'
-                roomDemographic = RoomDemographic.create(demographicNo, bedDemographic.getProviderNo());
-            }
-            roomDemographic.setRoomDemographicFromBedDemographic(bedDemographic);
-            // detect check box false
-            if (request.getParameter("bedDemographic.latePass") == null) {
-                bedDemographic.setLatePass(false);
-            }
-            // when client is familyHead, all family + dependents must be assigned or unassigned together
-            if (isFamilyHead && !isFamilyDependent) {
-                // Conditions:
-                // (1)Check whether the familySize is less than or equal to the (roomCapacity - roomOccupancy) currently.
-                // (i.e.) [roomCapacity] - [roomOccupancy] - [familySize] >= 0
-                // (1.1)roomCapacity is either max number of clients a room can accomodate or number of beds assigned to this room
-                // with the beds taking precedence!
-                // >> if familyHead choose room with bed, then roomCapacity = [total number of unreserved beds]
-                // >> if familyHead choose room only, then roomCapacity = Capacity set for that particular room
-                // (1.2)roomOccupancy = [number of all reserved beds] - [number of family members if occupying beds] or
-                // roomOccupancy = [number of all assigned clients] - [number of family members if amongst assigned]
-                // (2)If less than --> display message to notify that there is not enough space in room.
-                // (3)If greater or equal :
-                // (3.1)for room/bed --> Delete all records in 'bed_demographic' & 'room_demographic' if any -->
-                // then save room/bed for all family members one at a time.
-                // (3.2)for room only --> Delete all records in 'room_demographic' if any --> then save room for all family
-                // members one at a time.
-
-                int roomCapacity = 0;
-                int roomOccupancy = 0;
-                Room room = roomManager.getRoom(bedDemographic.getRoomId());
-                Integer[] dependentIds = new Integer[dependentList.size()];
-                List<Integer> unreservedBedIdList = new ArrayList<Integer>();
-                List<Integer> dependentsBedIdList = new ArrayList<Integer>();
-                List<Integer> availableBedIdList = new ArrayList<Integer>();
-                List<Integer> correctedAvailableBedIdList = new ArrayList<Integer>();
-                int numberOfFamilyMembersAssignedRoomBed = 0;
-                Bed[] bedReservedInRoom = null;
-                Bed[] bedUnReservedInRoom = null;
-                List rdsByRoom = null;
-
-                if (familySize > 1) {
-                    for (int i = 0; i < dependentList.size(); i++) {
-                        dependentIds[i] = new Integer((dependentList.get(i)).getClientId().intValue());
-                    }
-                }
-
-                // Check whether all family members are under same bed program -> if not, display error message.
-                boolean isProgramDifferent = admissionManager.isDependentInDifferentProgramFromHead(demographicNo, dependentList);
-
-                if (isProgramDifferent) {
-                    addActionMessage(getText("bed.reservation.programId_different"));
-                    // Display message notifying that the dependent is under different bed program than family head -> cannot assign room/bed
-                }
-
-                if (bedDemographic.getRoomId().intValue() == 0) {// unassigning whole family
-                    // unassign family head first
-                    roomDemographicManager.saveRoomDemographic(roomDemographic);
-                    if (isBedSelected) {
-                        bedDemographicManager.saveBedDemographic(bedDemographic);
-                    } else {
-                        // if only select room without bed, delete previous selected bedId in 'bed_demographic' table
-                        roomDemographicManager.cleanUpBedTables(roomDemographic);
-                    }
-                    // unassigning all dependents
-                    for (int i = 0; dependentIds != null && i < dependentIds.length; i++) {
-                        roomDemographic.getId().setDemographicNo(dependentIds[i]);
-                        bedDemographic.getId().setDemographicNo(dependentIds[i]);
-                        roomDemographicManager.saveRoomDemographic(roomDemographic);
-                        if (isBedSelected) {
-                            bedDemographicManager.saveBedDemographic(bedDemographic);
-                        } else {
-                            // if only select room without bed, delete previous selected bedId in 'bed_demographic' table
-                            roomDemographicManager.cleanUpBedTables(roomDemographic);
-                        }
-                    }
-                } else {
-                    if (bedId == null || bedId.intValue() == 0) {// assign room only
-                        if (room != null) {
-                            roomCapacity = room.getOccupancy().intValue();
-                        }
-                    } else {// roomCapacity = total number of beds assigned to room
-                        Bed[] bedAssignedToRoom = bedManager.getBedsByRoom(bedDemographic.getRoomId());
-                        if (bedAssignedToRoom != null && bedAssignedToRoom.length > 0) {
-                            roomCapacity = bedAssignedToRoom.length;
-                        }
-                    }
-
-                    // roomOccupancy = [number of all assigned clients] - [number of family members if amongst room assigned] or
-                    // roomOccupancy = [number of all reserved beds] - [number of family members if occupying beds]
-                    // bedIdList = [id of all unreserved beds] + [id beds previously occupied by family members]
-                    if (bedId == null || bedId.intValue() == 0) {// assign room only
-                        int numberOfFamilyMembersAssignedRoom = 0;
-                        rdsByRoom = roomDemographicManager.getRoomDemographicByRoom(bedDemographic.getRoomId());
-
-                        if (rdsByRoom != null && !rdsByRoom.isEmpty()) {
-                            for (int i = 0; i < rdsByRoom.size(); i++) {
-                                int rdsClientId = ((RoomDemographic) (rdsByRoom.get(i))).getId().getDemographicNo().intValue();
-                                if (demographicNo.intValue() == rdsClientId) {
-                                    numberOfFamilyMembersAssignedRoom++;
-                                }
-                                for (int j = 0; j < dependentIds.length; j++) {
-
-                                    if (dependentIds[j].intValue() == rdsClientId) {
-                                        numberOfFamilyMembersAssignedRoom++;
-                                    }
-                                }
-                            }
-                            roomOccupancy = rdsByRoom.size() - numberOfFamilyMembersAssignedRoom;
-                        }
-                    } else {// assign room/bed combination
-
-                        BedDemographic bd = null;
-
-                        // unreservedBedIdList = [id of all unreserved beds] + [id beds previously occupied by family members]
-                        bedUnReservedInRoom = bedManager.getReservedBedsByRoom(bedDemographic.getRoomId(), false);
-                        if (bedUnReservedInRoom != null && bedUnReservedInRoom.length > 0) {
-                            for (int i = 0; i < bedUnReservedInRoom.length; i++) {
-                                unreservedBedIdList.add(bedUnReservedInRoom[i].getId());
-                            }
-                        }
-
-                        bedReservedInRoom = bedManager.getReservedBedsByRoom(bedDemographic.getRoomId(), true);
-                        if (bedReservedInRoom != null && bedReservedInRoom.length > 0) {
-
-                            for (int i = 0; i < bedReservedInRoom.length; i++) {
-
-                                int bedReservedInRoomId = (bedReservedInRoom[i]).getId().intValue();
-                                bd = bedDemographicManager.getBedDemographicByBed(bedReservedInRoomId);
-                                int bdClientId = bd.getId().getDemographicNo().intValue();
-
-                                if (demographicNo.intValue() == bdClientId) {
-                                    dependentsBedIdList.add(bd.getId().getBedId());
-                                    numberOfFamilyMembersAssignedRoomBed++;
-                                } else {
-                                    for (int j = 0; j < dependentIds.length; j++) {
-                                        if (dependentIds[j].intValue() == bdClientId) {
-                                            dependentsBedIdList.add(bd.getId().getBedId());
-                                            numberOfFamilyMembersAssignedRoomBed++;
-                                        }
-                                    }
-                                }
-                            }// end for loop
-                            roomOccupancy = bedReservedInRoom.length - numberOfFamilyMembersAssignedRoomBed;
-                        }
-
-                        if (!unreservedBedIdList.isEmpty()) {
-                            availableBedIdList.addAll(unreservedBedIdList);
-                        }
-                        if (!dependentsBedIdList.isEmpty()) {
-                            availableBedIdList.addAll(dependentsBedIdList);
-                        }
-                    }// end of assign room/bed combination
-
-                    // Check whether the familySize is less than or equal to the (roomCapacity - roomOccupancy) currently
-
-                    if (roomCapacity > 0 && roomOccupancy >= 0 && familySize > 0 && (roomCapacity - roomOccupancy - familySize >= 0)) {
-                        Integer clientId = null;
-
-                        // assigning for familyHead only
-                        roomDemographicManager.saveRoomDemographic(roomDemographic);
-
-                        if (isBedSelected) {
-                            BedDemographic bdHeadDelete = bedDemographicManager.getBedDemographicByDemographic(bedDemographic.getId().getDemographicNo(), loggedInInfo.getCurrentFacility().getId());
-                            if (bdHeadDelete != null) {
-                                bedDemographicManager.deleteBedDemographic(bdHeadDelete);
-                            }
-                            for (int i = 0; i < availableBedIdList.size(); i++) {
-                                if (bedDemographic.getId().getBedId().intValue() != availableBedIdList.get(i).intValue()) {
-                                    correctedAvailableBedIdList.add(availableBedIdList.get(i));
-                                }
-                            }
-                            bedDemographicManager.saveBedDemographic(bedDemographic);
-                        } else {
-                            // if only select room without bed, delete previous selected bedId in 'bed_demographic' table
-                            roomDemographicManager.cleanUpBedTables(roomDemographic);
-                        }
-                        // Assign for each dependent member of family
-                        for (int i = 0; i < dependentList.size(); i++) {
-                            // clienId is each dependent
-                            clientId = new Integer(dependentList.get(i).getClientId().intValue());
-
-                            if (clientId != null) {
-                                roomDemographic = roomDemographicManager.getRoomDemographicByDemographic(clientId, loggedInInfo.getCurrentFacility().getId());
-                                bedDemographic.getId().setDemographicNo(clientId); // change to dependent member
-
-                                // assigning both room & bed (different ones) for all dependents
-                                if (isBedSelected && correctedAvailableBedIdList.size() >= dependentList.size()) {
-
-                                    BedDemographic bdDependent = bedDemographicManager.getBedDemographicByDemographic(bedDemographic.getId().getDemographicNo(), loggedInInfo.getCurrentFacility().getId());
-                                    bedDemographic.getId().setBedId(correctedAvailableBedIdList.get(i));
-
-                                    if (roomDemographic == null) {
-                                        roomDemographic = RoomDemographic.create(clientId, bedDemographic.getProviderNo());
-                                    }
-                                    roomDemographic.setRoomDemographicFromBedDemographic(bedDemographic);
-                                    // detect check box false
-                                    if (request.getParameter("bedDemographic.latePass") == null) {
-                                        bedDemographic.setLatePass(false);
-                                    }
-
-                                    roomDemographicManager.saveRoomDemographic(roomDemographic);
-                                    if (bdDependent != null) {
-                                        bedDemographicManager.deleteBedDemographic(bdDependent);
-                                    }
-                                    bedDemographicManager.saveBedDemographic(bedDemographic);
-
-                                } else if (!isBedSelected) {// assigning room only for all dependents
-
-                                    if (roomDemographic != null) {
-                                        roomDemographic.setRoomDemographicFromBedDemographic(bedDemographic);
-                                    } else {
-                                        roomDemographic = RoomDemographic.create(clientId, bedDemographic.getProviderNo());
-                                        roomDemographic.setRoomDemographicFromBedDemographic(bedDemographic);
-                                    }
-                                    // detect check box false
-                                    if (request.getParameter("bedDemographic.latePass") == null) {
-                                        bedDemographic.setLatePass(false);
-                                    }
-                                    roomDemographicManager.saveRoomDemographic(roomDemographic);
-
-                                    // if only select room without bed, delete previous selected bedId in 'bed_demographic' table
-                                    roomDemographicManager.cleanUpBedTables(roomDemographic);
-                                }
-
-                            }// end of if( clientId != null )
-
-                        }// end for loop
-
-                    } else {// if(roomCapacity - roomOccupancy - familySize < 0 )
-                        String occupancy = "0";
-                        String available = "0";
-                        // Display message notifying that the roomCapacity is deficient ...
-                        if (isBedSelected) {
-                            if (bedReservedInRoom != null) {
-                                occupancy = String.valueOf(bedReservedInRoom.length);
-                            }
-                            if (availableBedIdList != null) {
-                                available = String.valueOf(availableBedIdList.size());
-                            }
-                            addActionMessage(getText("bed.reservation.bedsCapacity_exceeded", occupancy, available));
-                        } else {
-                            if (rdsByRoom != null) {
-                                occupancy = String.valueOf(rdsByRoom.size());
-                            }
-                            if (roomCapacity > 0) {
-                                available = "" + (roomCapacity - rdsByRoom.size());
-                            }
-                            addActionMessage(getText("bed.reservation.roomCapacity_exceeded", occupancy, available));
-                        }
-                        return edit();
-                    }// end of if(roomCapacity - roomOccupancy - familySize < 0 )
-
-                }// end of if(roomId != 0) -> (i.e.) assigning instead of unassigning
-
-            } else { // when client is independent -> just assign/unassign either room/bed or room only.
-
-                roomDemographicManager.saveRoomDemographic(roomDemographic);
-
-                if (isBedSelected) {
-                    bedDemographicManager.saveBedDemographic(bedDemographic);
-                } else {
-                    // if only select room without bed, delete previous selected bedId in 'bed_demographic' table
-                    roomDemographicManager.cleanUpBedTables(roomDemographic);
-                }
-            }// end of isIndependentClient
-
-        }// end of isFamilyHead || isIndependentClient
-
-        if (bedDemographic.getRoomId().intValue() == 0) {
-            addActionMessage(getText("bed.reservation.unreserved"));
-        } else {
-            addActionMessage(getText("bed.reservation.success"));
-        }
-        return edit();
-    }
 
 
     public String save_joint_admission() {
@@ -1109,15 +748,15 @@ public class ClientManager2Action extends ActionSupport {
         String headClientId = request.getParameter("headClientId");
         String clientId = request.getParameter("dependentClientId");
         String type = request.getParameter("type");
-        Integer headInteger = new Integer(headClientId);
-        Integer clientInteger = new Integer(clientId);
+        Integer headInteger = Integer.valueOf(headClientId);
+        Integer clientInteger = Integer.valueOf(clientId);
 
         jadmission.setAdmissionDate(new Date());
         jadmission.setHeadClientId(headInteger);
         jadmission.setArchived(false);
         jadmission.setClientId(clientInteger);
         jadmission.setProviderNo((String) request.getSession().getAttribute("user"));
-        jadmission.setTypeId(new Integer(type));
+        jadmission.setTypeId(Integer.valueOf(type));
         clientManager.saveJointAdmission(jadmission);
         setEditAttributes(request, request.getParameter("clientId"));
 
@@ -1126,7 +765,7 @@ public class ClientManager2Action extends ActionSupport {
 
     public String remove_joint_admission() {
         String clientId = request.getParameter("dependentClientId");
-        clientManager.removeJointAdmission(new Integer(clientId), (String) request.getSession().getAttribute("user"));
+        clientManager.removeJointAdmission(Integer.valueOf(clientId), (String) request.getSession().getAttribute("user"));
         setEditAttributes(request, request.getParameter("clientId"));
         return "edit";
     }
@@ -1207,10 +846,6 @@ public class ClientManager2Action extends ActionSupport {
                 continue;
             }
 
-            if (criteria.isBedProgramAffiliated() && !cachedProgram.isBedProgramAffiliated()) {
-                it.remove();
-                continue;
-            }
 
             if (criteria.isAlcohol() && !cachedProgram.isAlcohol()) {
                 it.remove();
@@ -1364,13 +999,8 @@ public class ClientManager2Action extends ActionSupport {
             String inProgramId = String.valueOf(admission.getProgramId());
             String inProgramType = admission.getProgramType();
             if ("service".equalsIgnoreCase(inProgramType)) {
-                se.setAttribute("performDischargeService", new Boolean(caseManagementManager.hasAccessRight("perform discharges", "access", providerNo, demographicNo, inProgramId)));
-                se.setAttribute("performAdmissionService", new Boolean(caseManagementManager.hasAccessRight("perform admissions", "access", providerNo, demographicNo, inProgramId)));
-
-            } else if ("bed".equalsIgnoreCase(inProgramType)) {
-                se.setAttribute("performDischargeBed", new Boolean(caseManagementManager.hasAccessRight("perform discharges", "access", providerNo, demographicNo, inProgramId)));
-                se.setAttribute("performAdmissionBed", new Boolean(caseManagementManager.hasAccessRight("perform admissions", "access", providerNo, demographicNo, inProgramId)));
-                se.setAttribute("performBedAssignments", new Boolean(caseManagementManager.hasAccessRight("perform bed assignments", "access", providerNo, demographicNo, inProgramId)));
+                se.setAttribute("performDischargeService", Boolean.valueOf(caseManagementManager.hasAccessRight("perform discharges", "access", providerNo, demographicNo, inProgramId)));
+                se.setAttribute("performAdmissionService", Boolean.valueOf(caseManagementManager.hasAccessRight("perform admissions", "access", providerNo, demographicNo, inProgramId)));
 
             }
         }
@@ -1386,14 +1016,14 @@ public class ClientManager2Action extends ActionSupport {
             // request.setAttribute("admissions", admissionManager.getCurrentAdmissions(Integer.valueOf(demographicNo)));
             // only allow bed/service programs show up.(not external program)
             List<Admission> currentAdmissionList = admissionManager.getCurrentAdmissionsByFacility(demographicId, facilityId);
-            ArrayList<AdmissionForDisplay> bedServiceList = new ArrayList<AdmissionForDisplay>();
+            ArrayList<AdmissionForDisplay> admissionList = new ArrayList<AdmissionForDisplay>();
             for (Admission admission1 : currentAdmissionList) {
                 if (!"External".equalsIgnoreCase(programManager.getProgram(admission1.getProgramId()).getType())) {
-                    bedServiceList.add(new AdmissionForDisplay(admission1));
+                    admissionList.add(new AdmissionForDisplay(admission1));
                 }
             }
-            addRemoteAdmissions(loggedInInfo, bedServiceList, demographicId);
-            request.setAttribute("admissions", bedServiceList);
+            addRemoteAdmissions(loggedInInfo, admissionList, demographicId);
+            request.setAttribute("admissions", admissionList);
 
             // Intake functionality removed
             request.setAttribute("mostRecentQuickIntake", null);
@@ -1433,98 +1063,6 @@ public class ClientManager2Action extends ActionSupport {
             }
         }
 
-        /* bed reservation view */
-        BedDemographic bedDemographic = bedDemographicManager.getBedDemographicByDemographic(Integer.valueOf(demographicNo), facilityId);
-        request.setAttribute("bedDemographic", bedDemographic);
-
-        RoomDemographic roomDemographic = roomDemographicManager.getRoomDemographicByDemographic(Integer.valueOf(demographicNo), facilityId);
-
-        if (roomDemographic != null) {
-            Integer roomIdInt = roomDemographic.getId().getRoomId();
-            Room room = null;
-            if (roomIdInt != null) {
-                room = roomManager.getRoom(roomIdInt);
-            }
-            if (room != null) {
-                roomDemographic.setRoom(room);
-            }
-        }
-        request.setAttribute("roomDemographic", roomDemographic);
-
-        if (tabBean.getTab().equals("Bed/Room Reservation")) {
-
-            boolean isRefreshRoomDropDown = false;
-            if (request.getAttribute("isRefreshRoomDropDown") != null && request.getAttribute("isRefreshRoomDropDown").equals("Y")) {
-                isRefreshRoomDropDown = true;
-            } else {
-                isRefreshRoomDropDown = false;
-            }
-
-            String roomId = request.getParameter("roomId");
-            if (roomDemographic != null && roomId == null) {
-                roomId = roomDemographic.getId().getRoomId().toString();
-            }
-
-            // set bed program id
-            Admission bedProgramAdmission = admissionManager.getCurrentBedProgramAdmission(Integer.valueOf(demographicNo));
-            Integer bedProgramId = null;
-            if (bedProgramAdmission != null) {
-                bedProgramId = (bedProgramAdmission != null) ? bedProgramAdmission.getProgramId() : null;
-            }
-            request.setAttribute("bedProgramId", bedProgramId);
-
-            Bed reservedBed = null;
-
-            if (bedDemographic == null) {
-                bedDemographic = BedDemographic.create(Integer.valueOf(demographicNo), bedDemographicManager.getDefaultBedDemographicStatus(), providerNo);
-
-                if (roomDemographic != null) {
-                    bedDemographic.setReservationStart(roomDemographic.getAssignStart());
-                    bedDemographic.setReservationEnd(roomDemographic.getAssignEnd());
-                }
-
-                reservedBed = null;
-
-            } else {
-
-                reservedBed = bedManager.getBed(bedDemographic.getBedId());
-            }
-
-            if (isRefreshRoomDropDown) {
-                bedDemographic.setRoomId(Integer.valueOf(roomId));
-            }
-
-            this.setBedDemographic(bedDemographic);
-            Room[] availableRooms = roomManager.getAvailableRooms(facilityId, bedProgramId, Boolean.TRUE, demographicNo);
-
-            request.setAttribute("availableRooms", availableRooms);
-
-            if ((isRefreshRoomDropDown && roomId != null) || (reservedBed == null && !"0".equals(roomId))) {
-                request.setAttribute("roomId", roomId);
-            } else if (reservedBed != null) {
-                request.setAttribute("roomId", reservedBed.getRoomId().toString());
-            } else {
-                request.setAttribute("roomId", "0");
-            }
-            request.setAttribute("isAssignedBed", String.valueOf(roomManager.isAssignedBed((String) request.getAttribute("roomId"), availableRooms)));
-
-            // retrieve an array of beds associated with this roomId
-            Bed[] unreservedBeds = null;
-
-            if (isRefreshRoomDropDown && request.getAttribute("unreservedBeds") != null) {
-                unreservedBeds = (Bed[]) request.getAttribute("unreservedBeds");
-
-            } else if (reservedBed != null) {
-
-                // unreservedBeds = bedManager.getBedsByRoomProgram(availableRooms, bedProgramId, false);
-                unreservedBeds = bedManager.getCurrentPlusUnreservedBedsByRoom(reservedBed.getRoomId(), bedDemographic.getId().getBedId(), false);
-            }
-
-            this.setUnreservedBeds(unreservedBeds);
-
-            // set bed demographic statuses
-            this.setBedDemographicStatuses(bedDemographicManager.getBedDemographicStatuses());
-        }
         /* forms */
         if (tabBean.getTab().equals("Forms")) {
             // Intake functionality removed
@@ -1686,7 +1224,6 @@ public class ClientManager2Action extends ActionSupport {
             request.setAttribute("communityPrograms", programManager.getCommunityPrograms());
             request.setAttribute("serviceAdmissions", admissionManager.getCurrentServiceProgramAdmission(Integer.valueOf(demographicNo)));
             request.setAttribute("temporaryAdmissions", admissionManager.getCurrentTemporaryProgramAdmission(Integer.valueOf(demographicNo)));
-            request.setAttribute("current_bed_program", admissionManager.getCurrentBedProgramAdmission(Integer.valueOf(demographicNo)));
             request.setAttribute("current_community_program", admissionManager.getCurrentCommunityProgramAdmission(Integer.valueOf(demographicNo)));
             request.setAttribute("dischargeReasons", lookupManager.LoadCodeList("DRN", true, null, null));
             request.setAttribute("dischargeReasons2", ""/*lookupManager.LoadCodeList("DR2", true, null, null)*/);
@@ -1695,8 +1232,8 @@ public class ClientManager2Action extends ActionSupport {
         /* Relations */
         DemographicRelationship demoRelation = new DemographicRelationship();
         List<Map<String, Object>> relList = demoRelation.getDemographicRelationshipsWithNamePhone(loggedInInfo, demographicNo, facilityId);
-        List<JointAdmission> list = clientManager.getDependents(new Integer(demographicNo));
-        JointAdmission clientsJadm = clientManager.getJointAdmission(new Integer(demographicNo));
+        List<JointAdmission> list = clientManager.getDependents(Integer.valueOf(demographicNo));
+        JointAdmission clientsJadm = clientManager.getJointAdmission(Integer.valueOf(demographicNo));
         int familySize = list.size() + 1;
         if (familySize > 1) {
             request.setAttribute("groupHead", "yes");
@@ -1712,7 +1249,7 @@ public class ClientManager2Action extends ActionSupport {
         if (relList != null && relList.size() > 0) {
             for (Map<String, Object> h : relList) {
                 String demographic = (String) h.get("demographicNo");
-                Integer demoLong = new Integer(demographic);
+                Integer demoLong = Integer.valueOf(demographic);
                 JointAdmission demoJadm = clientManager.getJointAdmission(demoLong);
 
                 // IS PERSON JOINTLY ADMITTED WITH ME, They will either have the same HeadClient or be my headClient
@@ -1721,7 +1258,7 @@ public class ClientManager2Action extends ActionSupport {
                 } else if (demoJadm != null && clientsJadm != null && clientsJadm.getHeadClientId().longValue() == demoJadm.getHeadClientId().longValue()) {
                     // They depend on the same person i do!
                     h.put("jointAdmission", "dependent");
-                } else if (demoJadm != null && demoJadm.getHeadClientId().longValue() == new Long(demographicNo).longValue()) {
+                } else if (demoJadm != null && demoJadm.getHeadClientId().longValue() == Long.valueOf(demographicNo).longValue()) {
                     // They depend on me
                     h.put("jointAdmission", "dependent");
                 }
@@ -1734,11 +1271,11 @@ public class ClientManager2Action extends ActionSupport {
                 }
                 if (demoJadm != null) { // DEPENDS ON SOMEONE
                     h.put("dependentOn", demoJadm.getHeadClientId());
-                    if (demoJadm.getHeadClientId().longValue() == new Long(demographicNo).longValue()) {
+                    if (demoJadm.getHeadClientId().longValue() == Long.valueOf(demographicNo).longValue()) {
                         h.put("dependent", demoJadm.getTypeId());
                     }
                 } else if (clientsJadm != null && clientsJadm.getHeadClientId().longValue() == demoLong) { // HEAD PERSON WON'T DEPEND ON ANYONE
-                    h.put("dependent", new Long(0));
+                    h.put("dependent", Long.valueOf(0));
                 }
             }
             request.setAttribute("relations", relList);
@@ -1883,17 +1420,6 @@ public class ClientManager2Action extends ActionSupport {
     }
 
 
-    public void setBedDemographicManager(BedDemographicManager demographicBedManager) {
-        this.bedDemographicManager = demographicBedManager;
-    }
-
-    public void setRoomDemographicManager(RoomDemographicManager roomDemographicManager) {
-        this.roomDemographicManager = roomDemographicManager;
-    }
-
-    public void setBedManager(BedManager bedManager) {
-        this.bedManager = bedManager;
-    }
 
     public void setClientManager(ClientManager mgr) {
         this.clientManager = mgr;
@@ -1911,9 +1437,6 @@ public class ClientManager2Action extends ActionSupport {
         this.providerManager = mgr;
     }
 
-    public void setRoomManager(RoomManager roomManager) {
-        this.roomManager = roomManager;
-    }
 
     private void populateCdsData(HttpServletRequest request, Integer demographicNo, Integer facilityId) {
         List<Admission> admissions = admissionDao.getAdmissions(demographicNo);
@@ -1963,15 +1486,12 @@ public class ClientManager2Action extends ActionSupport {
     private ClientManagerFormBean view;
     private Admission admission;
     private Program program;
-    private BedDemographic bedDemographic;
     private ClientReferral referral;
     private ProgramClientRestriction serviceRestriction;
     private Integer serviceRestrictionLength;
     private CaisiFormInstance form;
     private Demographic client;
     private Provider provider;
-    private Bed[] unreservedBeds;
-    private BedDemographicStatus[] bedDemographicStatuses;
 
     public ClientManagerFormBean getView() {
         return view;
@@ -1997,13 +1517,6 @@ public class ClientManager2Action extends ActionSupport {
         this.program = program;
     }
 
-    public BedDemographic getBedDemographic() {
-        return bedDemographic;
-    }
-
-    public void setBedDemographic(BedDemographic bedDemographic) {
-        this.bedDemographic = bedDemographic;
-    }
 
     public ClientReferral getReferral() {
         return referral;
@@ -2053,19 +1566,4 @@ public class ClientManager2Action extends ActionSupport {
         this.provider = provider;
     }
 
-    public Bed[] getUnreservedBeds() {
-        return unreservedBeds;
-    }
-
-    public void setUnreservedBeds(Bed[] unreservedBeds) {
-        this.unreservedBeds = unreservedBeds;
-    }
-
-    public BedDemographicStatus[] getBedDemographicStatuses() {
-        return bedDemographicStatuses;
-    }
-
-    public void setBedDemographicStatuses(BedDemographicStatus[] bedDemographicStatuses) {
-        this.bedDemographicStatuses = bedDemographicStatuses;
-    }
 }

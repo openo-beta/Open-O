@@ -61,17 +61,17 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
     private static final Logger logger = MiscUtils.getLogger();
 
     private static final String HQL_CURRENT_POP_SIZE = "select count(distinct a.clientId) from Admission a where " +
-    "a.programId in (select p.id from Program p where lower(p.programStatus) = 'active' and lower(p.type) = 'bed') and " +
+    "a.programId in (select p.id from Program p where lower(p.programStatus) = 'active' and lower(p.type) = 'service') and " +
     "a.clientId in (select d.DemographicNo from Demographic d where lower(d.PatientStatus) = 'ac') and " +
     "a.dischargeDate is null";
 
     private static final String HQL_CURRENT_HISTORICAL_POP_SIZE = "select count(distinct a.clientId) from Admission a where " +
-    "a.programId in (select p.id from Program p where lower(p.programStatus) = 'active' and lower(p.type) = 'bed') and " +
+    "a.programId in (select p.id from Program p where lower(p.programStatus) = 'active' and lower(p.type) = 'service') and " +
     "a.clientId in (select d.DemographicNo from Demographic d where lower(d.PatientStatus) = 'ac') and " +
     "(a.dischargeDate is null or a.dischargeDate > ?1)";
 
     private static final String HQL_GET_USAGES = "select a.clientId, a.admissionDate, a.dischargeDate from ?1 a where " +
-    "a.programId in (select p.id from Program p where lower(p.programStatus) = 'active' and lower(p.type) = 'bed') and " +
+    "a.programId in (select p.id from Program p where lower(p.programStatus) = 'active' and lower(p.type) = 'service') and " +
     "a.clientId in (select d.DemographicNo from Demographic d where lower(d.PatientStatus) = 'ac') and " +
     "(a.dischargeDate is null or a.dischargeDate > ?2) " +
     "order by a.clientId, a.admissionDate";
@@ -82,12 +82,12 @@ public class PopulationReportDaoImpl extends HibernateDaoSupport implements Popu
 
     private static final String HQL_GET_PREVALENCE = "select count(cmi) from CaseManagementIssue cmi where cmi.resolved = false and " +
     "cmi.demographic_no in (select distinct a.clientId from Admission a where a.programId in (select p.id from Program p where " +
-    "lower(p.programStatus) = 'active' and lower(p.type) = 'bed') and a.clientId in (select d.DemographicNo from Demographic d where " +
+    "lower(p.programStatus) = 'active' and lower(p.type) = 'service') and a.clientId in (select d.DemographicNo from Demographic d where " +
     "lower(d.PatientStatus) = 'ac') and a.dischargeDate is null) and cmi.issue.code in ";
 
     private static final String HQL_GET_INCIDENCE = "select count(cmi) from CaseManagementIssue cmi where " +
     "cmi.demographic_no in (select distinct a.clientId from Admission a where a.programId in (select p.id from Program p where " +
-    "lower(p.programStatus) = 'active' and lower(p.type) = 'bed') and a.clientId in (select d.DemographicNo from Demographic d where " +
+    "lower(p.programStatus) = 'active' and lower(p.type) = 'service') and a.clientId in (select d.DemographicNo from Demographic d where " +
     "lower(d.PatientStatus) = 'ac') and a.dischargeDate is null) and cmi.issue.code in ";
 
     public int getCurrentPopulationSize() {

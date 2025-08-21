@@ -120,8 +120,8 @@ public class EctMeasurements2Action extends ActionSupport {
         String comments, dateObserved, validation;
 
         String regExp = null;
-        Double dMax = new Double(0);
-        Double dMin = new Double(0);
+        Double dMax = Double.valueOf(0);
+        Double dMin = Double.valueOf(0);
         Integer iMax = 0;
         Integer iMin = 0;
         Boolean numeric = null;
@@ -148,8 +148,8 @@ public class EctMeasurements2Action extends ActionSupport {
             }
 
             regExp = null;
-            dMax = new Double(0);
-            dMin = new Double(0);
+            dMax = Double.valueOf(0);
+            dMin = Double.valueOf(0);
             iMax = 0;
             iMin = 0;
 
@@ -167,10 +167,10 @@ public class EctMeasurements2Action extends ActionSupport {
             }
 
             if (dMax == null) {
-                dMax = new Double(0);
+                dMax = Double.valueOf(0);
             }
             if (dMin == null) {
-                dMin = new Double(0);
+                dMin = Double.valueOf(0);
             }
             if (iMax == null) {
                 iMax = 0;

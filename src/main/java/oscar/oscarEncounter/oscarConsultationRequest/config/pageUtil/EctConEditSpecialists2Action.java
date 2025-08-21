@@ -106,7 +106,7 @@ public class EctConEditSpecialists2Action extends ActionSupport {
         request.setAttribute("hideFromView", professionalSpecialist.getHideFromView());
         request.setAttribute("eformId", professionalSpecialist.getEformId());
 
-        request.setAttribute("upd", new Integer(updater));
+        request.setAttribute("upd", Integer.valueOf(updater));
         EctConConstructSpecialistsScriptsFile constructSpecialistsScriptsFile = new EctConConstructSpecialistsScriptsFile();
         request.setAttribute("verd", constructSpecialistsScriptsFile.makeFile());
         constructSpecialistsScriptsFile.makeString(request.getLocale());

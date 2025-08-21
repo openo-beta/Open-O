@@ -312,7 +312,7 @@ public class TicklerManagerImpl implements TicklerManager {
 
             // load up the program_provider entry to get the role for this provider in the
             // tickler's program
-            ppList = programProviderDAO.getProgramProviderByProviderProgramId(providerNo, new Long(programId));
+            ppList = programProviderDAO.getProgramProviderByProviderProgramId(providerNo, Long.valueOf(programId));
             if (ppList == null || ppList.isEmpty()) {
                 continue;
             }
@@ -323,7 +323,7 @@ public class TicklerManagerImpl implements TicklerManager {
             String ticklerRole = null;
             List<ProgramProvider> ppList2 = new ArrayList<ProgramProvider>();
             ppList2 = this.programProviderDAO.getProgramProviderByProviderProgramId(t.getTaskAssignedTo(),
-                    new Long(t.getProgramId()));
+                    Long.valueOf(t.getProgramId()));
             if (ppList2 != null && !ppList2.isEmpty()) {
                 ticklerRole = ppList2.get(0).getRole().getRoleName().toLowerCase();
             }
@@ -331,7 +331,7 @@ public class TicklerManagerImpl implements TicklerManager {
             ProgramAccess pa = null;
 
             // Load up access list from program
-            List<ProgramAccess> programAccessList = programAccessDAO.getAccessListByProgramId(new Long(programId));
+            List<ProgramAccess> programAccessList = programAccessDAO.getAccessListByProgramId(Long.valueOf(programId));
             Map<String, ProgramAccess> programAccessMap = caseManagementManager
                     .convertProgramAccessListToMap(programAccessList);
 

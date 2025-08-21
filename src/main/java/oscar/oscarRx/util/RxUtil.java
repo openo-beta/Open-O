@@ -123,7 +123,7 @@ public class RxUtil {
     }
 
     public static String FloatToString(float value) {
-        Float f = new Float(value);
+        Float f = Float.valueOf(value);
 
         java.text.NumberFormat fmt = java.text.NumberFormat.getNumberInstance();
 

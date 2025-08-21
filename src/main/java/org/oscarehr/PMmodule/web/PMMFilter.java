@@ -86,7 +86,7 @@ public class PMMFilter implements Filter {
 
         if (session.getAttribute("pmm_admin") == null) {
             logger.debug("setting session variable: pmm_admin");
-            session.setAttribute("pmm_admin", new Boolean(oscarSecurityManager.hasAdminRole(oscarUser)));
+            session.setAttribute("pmm_admin", Boolean.valueOf(oscarSecurityManager.hasAdminRole(oscarUser)));
         }
 		
 /* If the provider didn't have the role 'admin', he can still have the access to the administration links(eg. Add Program) on PMM.

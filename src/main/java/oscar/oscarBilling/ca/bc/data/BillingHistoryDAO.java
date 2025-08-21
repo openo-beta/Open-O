@@ -150,11 +150,11 @@ public class BillingHistoryDAO {
         if (billValues != null) {
             history = new BillHistory();
             String[] values = (String[]) billValues.get(0);
-            history.setBillingMasterNo(new Integer(billMasterNo).intValue());
+            history.setBillingMasterNo(Integer.valueOf(billMasterNo).intValue());
             history.setPractitioner_no(values[0]);
             history.setBillingtype(values[1]);
             history.setBillingStatus(values[2]);
-            history.setAmount(new Double(values[3]).doubleValue());
+            history.setAmount(Double.valueOf(values[3]).doubleValue());
             history.setPaymentTypeId(values[4]);
             MSPReconcile rec = new MSPReconcile();
             //don't waste resources if this is a private bill

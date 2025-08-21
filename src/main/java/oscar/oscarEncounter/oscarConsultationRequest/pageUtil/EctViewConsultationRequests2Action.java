@@ -93,7 +93,7 @@ public class EctViewConsultationRequests2Action extends ActionSupport {
             logger.error("Cannot parse start date " + startDate + " and/or end date " + endDate + " for consultation request report. ", e);
         }
 
-        request.setAttribute("includeCompleted", new Boolean(includedComp));
+        request.setAttribute("includeCompleted", Boolean.valueOf(includedComp));
         request.setAttribute("teamVar", sendTo);
         request.setAttribute("orderby", orderby);
         request.setAttribute("desc", desc);

@@ -369,13 +369,6 @@ public class ScheduleService extends AbstractServiceImpl {
 	}
 
 	@GET
-	@Path("/roomDetails/get")
-	@Produces("application/json")
-	public Response getRoomDetails() {
-		return Response.status(Status.OK).build();
-	}
-
-	@GET
 	@Path("/{appDate}/{providerId}/{startTime}/{endTime}/checkProvAvali")
 	@Produces("application/json")
 	public Response checkProviderAvaliablity(@PathParam("appDate") String appDate, @PathParam("providerId") String providerId, @PathParam("startTime") String startTime, @PathParam("endTime") String endTime) {

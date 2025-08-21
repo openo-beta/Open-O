@@ -527,7 +527,7 @@ public final class Login2Action extends ActionSupport {
             if (pvar.getProperty("billregion").equals("BC")) {
                 String alertFreq = pvar.getProperty("ALERT_POLL_FREQUENCY");
                 if (alertFreq != null) {
-                    Long longFreq = new Long(alertFreq);
+                    Long longFreq = Long.valueOf(alertFreq);
                     String[] alertCodes = OscarProperties.getInstance().getProperty("CDM_ALERTS").split(",");
                     AlertTimer.getInstance(alertCodes, longFreq.longValue());
                 }

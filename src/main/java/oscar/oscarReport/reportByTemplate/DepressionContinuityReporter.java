@@ -84,7 +84,7 @@ public class DepressionContinuityReporter implements Reporter {
         String cohortSQL = " -- N/A -- Migrated to JPA ";
         String apptSQL = " -- N/A -- Migrated to JPA ";
 
-        Boolean odd = new Boolean(true);
+        Boolean odd = Boolean.valueOf(true);
         try {
             rsHtml = this.makeHTMLHeader();
             csv = this.makeCSVHeader();

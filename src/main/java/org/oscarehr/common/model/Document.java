@@ -349,6 +349,7 @@ public class Document extends AbstractModel<Integer> implements Serializable {
     /**
      * @deprecated replaced by <code>DocumentReview.getDateTimeReviewed()</code>.
      */
+    @Deprecated
     public Date getReviewdatetime() {
         return reviewdatetime;
     }
@@ -356,6 +357,7 @@ public class Document extends AbstractModel<Integer> implements Serializable {
     /**
      * @deprecated replaced by <code>DocumentReview.setDateTimeReviewed(Date dateTimeReviewed)</code>.
      */
+    @Deprecated
     public void setReviewdatetime(Date reviewdatetime) {
         this.reviewdatetime = reviewdatetime;
     }

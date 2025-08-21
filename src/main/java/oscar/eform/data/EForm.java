@@ -96,7 +96,7 @@ public class EForm extends EFormBase {
 
     public EForm(String fdid) {
         if (!StringUtils.isBlank(fdid) && !"null".equalsIgnoreCase(fdid)) {
-            EFormData eFormData = eFormDataDao.find(new Integer(fdid));
+            EFormData eFormData = eFormDataDao.find(Integer.valueOf(fdid));
             if (eFormData != null) {
                 this.fdid = fdid;
                 this.fid = eFormData.getFormId().toString();

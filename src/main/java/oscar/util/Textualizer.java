@@ -216,7 +216,7 @@ public class Textualizer {
             }
 
             if (Boolean.class.isAssignableFrom(returnType) || boolean.class.isAssignableFrom(returnType)) {
-                return new Boolean(ConversionUtils.fromBoolString(str));
+                return Boolean.valueOf(ConversionUtils.fromBoolString(str));
             }
 
             if (Long.class.isAssignableFrom(returnType) || long.class.isAssignableFrom(returnType)) {
@@ -228,23 +228,23 @@ public class Textualizer {
                 if (str.isEmpty()) {
                     return null;
                 }
-                return new Character(str.charAt(0));
+                return Character.valueOf(str.charAt(0));
             }
 
             if (Byte.class.isAssignableFrom(returnType) || byte.class.isAssignableFrom(returnType)) {
-                return new Byte(Byte.parseByte(str));
+                return Byte.valueOf(Byte.parseByte(str));
             }
 
             if (Short.class.isAssignableFrom(returnType) || short.class.isAssignableFrom(returnType)) {
-                return new Short(Short.parseShort(str));
+                return Short.valueOf(Short.parseShort(str));
             }
 
             if (Float.class.isAssignableFrom(returnType) || float.class.isAssignableFrom(returnType)) {
-                return new Float(Float.parseFloat(str));
+                return Float.valueOf(Float.parseFloat(str));
             }
 
             if (Double.class.isAssignableFrom(returnType) || double.class.isAssignableFrom(returnType)) {
-                return new Double(Double.parseDouble(str));
+                return Double.valueOf(Double.parseDouble(str));
             }
 
             throw new IllegalStateException("Unsupported type " + returnType + " for property " + descriptor.getName());

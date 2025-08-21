@@ -158,7 +158,6 @@ public final class MisReportUIBean {
     public void generateDataRows() {
         dataRows = new ArrayList<DataRow>();
 
-        addBedProgramInfo(dataRows);
 
         dataRows.add(getFaceToFace());
         dataRows.add(getPhone());
@@ -180,49 +179,6 @@ public final class MisReportUIBean {
         return (false);
     }
 
-    private void addBedProgramInfo(ArrayList<DataRow> results) {
-        // only pertains to bed programs
-
-        int totalDaysElderly = 0;
-        int totalDaysAdult = 0;
-        int totalNewAdmissionsElderly = 0;
-        int totalNewAdmissionsAdult = 0;
-        int totalNewDischargeAdult = 0;
-        HashSet<Integer> uniqueElderlyClients = new HashSet<Integer>();
-        HashSet<Integer> uniqueAdultClients = new HashSet<Integer>();
-
-        for (Admission admission : admissions) {
-            if (isProgramType(admission.getProgramId(), Program.BED_TYPE)) {
-                int residentDays = calculateResidentDays(admission);
-                boolean isNewAdmission = isNewAdmission(admission);
-
-                Demographic demographic = demographicDao.getDemographicById(admission.getClientId());
-                Integer age = DateUtils.getAge(demographic.getBirthDay(), endDate);
-
-                if (age != null && age.intValue() >= ELDERLY_AGE) {
-                    totalDaysElderly = totalDaysElderly + residentDays;
-                    if (isNewAdmission) totalNewAdmissionsElderly++;
-
-                    uniqueElderlyClients.add(admission.getClientId());
-                } else {
-                    totalDaysAdult = totalDaysAdult + residentDays;
-                    if (isNewAdmission) totalNewAdmissionsAdult++;
-
-                    if (isNewDischarge(admission)) totalNewDischargeAdult++;
-
-                    uniqueAdultClients.add(admission.getClientId());
-                }
-            }
-        }
-
-        results.add(new DataRow(4034520, "Resident days - Elderly", totalDaysElderly));
-        results.add(new DataRow(4034540, "Resident days - Adult", totalDaysAdult));
-        results.add(new DataRow(4014520, "New Resident Admission - Elderly", totalNewAdmissionsElderly));
-        results.add(new DataRow(4014540, "New Resident Admission - Adult", totalNewAdmissionsAdult));
-        results.add(new DataRow(4104540, "New Resident discharged - Adult", totalNewDischargeAdult));
-        results.add(new DataRow(4554520, "Unique Individuals Served by FC - Elderly", uniqueElderlyClients.size()));
-        results.add(new DataRow(4554540, "Unique Individuals Served by FC - Adult", uniqueAdultClients.size()));
-    }
 
     private boolean isNewAdmission(Admission admission) {
         return (startDate.before(admission.getAdmissionCalendar()) && endDate.after(admission.getAdmissionCalendar()));

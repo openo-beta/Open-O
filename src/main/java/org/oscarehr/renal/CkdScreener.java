@@ -391,11 +391,11 @@ public class CkdScreener {
         }
 
         public MyBoolean(String b) {
-            value = new Boolean(b);
+            value = Boolean.valueOf(b);
         }
 
         public MyBoolean(boolean b) {
-            value = new Boolean(b);
+            value = Boolean.valueOf(b);
         }
 
         public Boolean getValue() {

@@ -161,10 +161,10 @@ public class IntegratorPush2Action extends ActionSupport {
                     prop = new UserProperty();
                     prop.setName(IntegratorPushManager.INTEGRATOR_PAUSE_FULL_PUSH);
                     prop.setProviderNo(null);
-                    prop.setValue(new Boolean(doPause).toString());
+                    prop.setValue(Boolean.valueOf(doPause).toString());
                     userPropertyDao.persist(prop);
                 } else {
-                    prop.setValue(new Boolean(doPause).toString());
+                    prop.setValue(Boolean.valueOf(doPause).toString());
                     userPropertyDao.merge(prop);
                 }
                 json.put("success", true);

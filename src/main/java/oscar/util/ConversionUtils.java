@@ -45,9 +45,9 @@ public class ConversionUtils {
     public static final String DEFAULT_TIME_PATTERN = "HH:mm:ss";
     public static final String DEFAULT_TS_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
-    private static final Long ZERO_LONG = new Long(0);
-    private static final Integer ZERO_INT = new Integer(0);
-    private static final Double ZERO_DOUBLE = new Double(0.0);
+    private static final Long ZERO_LONG = Long.valueOf(0);
+    private static final Integer ZERO_INT = Integer.valueOf(0);
+    private static final Double ZERO_DOUBLE = Double.valueOf(0.0);
     private static final String ZERO_STRING = "0";
 
     private static final long MS_IN_DAY = 1000 * 60 * 60 * 24;

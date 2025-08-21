@@ -114,12 +114,6 @@ public class ProgramService extends AbstractServiceImpl {
             List<ProgramTo1> listProgramTo1 = new ArrayList<ProgramTo1>();
             ProgramConverter converter = new ProgramConverter();
 
-            for (ProgramProvider pp : programProviders) {
-                Program program = programManager.getProgram(getLoggedInInfo(), pp.getProgramId().intValue());
-                if (program.getType().equals(Program.BED_TYPE)) {
-                    listProgramTo1.add(converter.getAsTransferObject(getLoggedInInfo(), program));
-                }
-            }
             response.setContent(listProgramTo1);
             response.setTotal(listProgramTo1.size());
         }

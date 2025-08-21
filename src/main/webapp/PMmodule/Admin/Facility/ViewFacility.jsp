@@ -152,7 +152,7 @@
         <tr>
             <th>Name</th>
             <th>Client DOB</th>
-            <th>Bed Program</th>
+            <th>Program</th>
             <th>Discharge Date/Time</th>
         </tr>
         <c:forEach var="client" items="${associatedClients}">

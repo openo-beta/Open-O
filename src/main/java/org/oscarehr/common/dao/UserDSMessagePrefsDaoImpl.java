@@ -92,7 +92,7 @@ public class UserDSMessagePrefsDaoImpl extends AbstractDaoImpl<UserDSMessagePref
         query.setParameter(1, providerNo);
         query.setParameter(2, resourceType);
         query.setParameter(3, resourceId);
-        query.setParameter(4, new Boolean(archived));
+        query.setParameter(4, Boolean.valueOf(archived));
         return query.getResultList();
     }
 

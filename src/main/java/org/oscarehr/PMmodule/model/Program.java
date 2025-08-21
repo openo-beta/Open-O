@@ -40,10 +40,9 @@ import org.oscarehr.common.model.AbstractModel;
 @Entity
 @Table(name = "program")
 public class Program extends AbstractModel<Integer> {
-    public static final Integer DEFAULT_COMMUNITY_PROGRAM_ID = new Integer(10010);
+    public static final Integer DEFAULT_COMMUNITY_PROGRAM_ID = Integer.valueOf(10010);
 
     public static final String EXTERNAL_TYPE = "external";
-    public static final String BED_TYPE = "Bed";
     public static final String COMMUNITY_TYPE = "community";
     public static final String SERVICE_TYPE = "Service";
 
@@ -82,12 +81,10 @@ public class Program extends AbstractModel<Integer> {
     private boolean hic;
     private String programStatus = "active";
     private Integer intakeProgram;
-    private Integer bedProgramLinkId;
     private String manOrWoman;
     private String genderDesc;
     private boolean transgender;
     private boolean firstNation;
-    private boolean bedProgramAffiliated;
     private boolean alcohol;
     private String abstinenceSupport;
     private boolean physicalHealth;
@@ -103,10 +100,9 @@ public class Program extends AbstractModel<Integer> {
 
     private String facilityDesc;
     private String orgCd;
-    private Integer capacity_funding = new Integer(0);
-    private Integer capacity_space = new Integer(0);
-    private Integer capacity_actual = new Integer(0);
-    private Integer totalUsedRoom = new Integer(0);
+    private Integer capacity_funding = Integer.valueOf(0);
+    private Integer capacity_space = Integer.valueOf(0);
+    private Integer capacity_actual = Integer.valueOf(0);
     private String lastUpdateUser;
     private Date lastUpdateDate = new Date();
     private LookupCodeValue shelter;
@@ -300,14 +296,6 @@ public class Program extends AbstractModel<Integer> {
         return EXTERNAL_TYPE.equalsIgnoreCase(getType());
     }
 
-    /**
-     * Checks if this is a bed program.
-     * 
-     * @return true if the program type is "Bed", false otherwise
-     */
-    public boolean isBed() {
-        return BED_TYPE.equalsIgnoreCase(getType());
-    }
 
     /**
      * Checks if this is a community program.
@@ -706,23 +694,6 @@ public class Program extends AbstractModel<Integer> {
         this.intakeProgram = intakeProgram;
     }
 
-    /**
-     * Gets the ID of the bed program linked to this program.
-     * 
-     * @return the bed program link ID
-     */
-    public Integer getBedProgramLinkId() {
-        return bedProgramLinkId;
-    }
-
-    /**
-     * Sets the ID of the bed program linked to this program.
-     * 
-     * @param bedProgramLinkId the bed program link ID to set
-     */
-    public void setBedProgramLinkId(Integer bedProgramLinkId) {
-        this.bedProgramLinkId = bedProgramLinkId;
-    }
 
     /**
      * Gets the abstinence support offered by this program.
@@ -760,23 +731,6 @@ public class Program extends AbstractModel<Integer> {
         this.alcohol = alcohol;
     }
 
-    /**
-     * Checks if this program is affiliated with a bed program.
-     * 
-     * @return true if affiliated with a bed program, false otherwise
-     */
-    public boolean isBedProgramAffiliated() {
-        return bedProgramAffiliated;
-    }
-
-    /**
-     * Sets whether this program is affiliated with a bed program.
-     * 
-     * @param bedProgramAffiliated true if affiliated with a bed program, false otherwise
-     */
-    public void setBedProgramAffiliated(boolean bedProgramAffiliated) {
-        this.bedProgramAffiliated = bedProgramAffiliated;
-    }
 
     /**
      * Checks if this program serves First Nations communities.
@@ -1040,23 +994,6 @@ public class Program extends AbstractModel<Integer> {
         this.facilityDesc = facilityDesc;
     }
 
-    /**
-     * Gets the total number of rooms used in this program.
-     * 
-     * @return the total used rooms
-     */
-    public Integer getTotalUsedRoom() {
-        return totalUsedRoom;
-    }
-
-    /**
-     * Sets the total number of rooms used in this program.
-     * 
-     * @param totalUsedRoom the total used rooms to set
-     */
-    public void setTotalUsedRoom(Integer totalUsedRoom) {
-        this.totalUsedRoom = totalUsedRoom;
-    }
 
     /**
      * Gets the number of intake appointments for this program.

@@ -244,7 +244,7 @@ public class EctConsultationFormRequestPrintAction22Action extends ActionSupport
         }
         if (!error.equals("")) {
             logger.error(error + " occured insided ConsultationPrintAction", exception);
-            request.setAttribute("printError", new Boolean(true));
+            request.setAttribute("printError", Boolean.valueOf(true));
             return "error";
         }
         return null;

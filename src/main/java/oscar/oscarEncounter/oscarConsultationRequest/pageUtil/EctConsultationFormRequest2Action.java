@@ -157,7 +157,7 @@ public class EctConsultationFormRequest2Action extends ActionSupport {
                     date = DateUtils.parseDate(dateString, format);
                 }
                 consult.setReferralDate(date);
-                consult.setServiceId(new Integer(this.getService()));
+                consult.setServiceId(Integer.valueOf(this.getService()));
 
                 consult.setSignatureImg(signatureId);
 
@@ -172,8 +172,8 @@ public class EctConsultationFormRequest2Action extends ActionSupport {
 
                     if (!StringUtils.isEmpty(appointmentHour) && !StringUtils.isEmpty(this.getAppointmentMinute())) {
                         try {
-                            date = DateUtils.setHours(date, new Integer(appointmentHour));
-                            date = DateUtils.setMinutes(date, new Integer(this.getAppointmentMinute()));
+                            date = DateUtils.setHours(date, Integer.valueOf(appointmentHour));
+                            date = DateUtils.setMinutes(date, Integer.valueOf(this.getAppointmentMinute()));
                             consult.setAppointmentTime(date);
                         } catch (NumberFormatException nfEx) {
                             MiscUtils.getLogger().error("Invalid Time", nfEx);
@@ -188,7 +188,7 @@ public class EctConsultationFormRequest2Action extends ActionSupport {
                 consult.setCurrentMeds(this.getCurrentMedications());
                 consult.setAllergies(this.getAllergies());
                 consult.setProviderNo(this.getProviderNo());
-                consult.setDemographicId(new Integer(this.getDemographicNo()));
+                consult.setDemographicId(Integer.valueOf(this.getDemographicNo()));
                 consult.setStatus(this.getStatus());
                 consult.setStatusText(this.getAppointmentNotes());
                 consult.setSendTo(this.getSendTo());
@@ -219,7 +219,7 @@ public class EctConsultationFormRequest2Action extends ActionSupport {
                 if (OscarProperties.getInstance().getBooleanProperty("ENABLE_HEALTH_CARE_TEAM_IN_CONSULTATION_REQUESTS", "true")) {
 
                     // when this is enabled the demographicContactId is being posted as a specId variable.
-                    Integer demographicContactId = new Integer(specId);
+                    Integer demographicContactId = Integer.valueOf(specId);
 
                     // specId is reset to unknown.
                     specId = 0;
@@ -290,7 +290,7 @@ public class EctConsultationFormRequest2Action extends ActionSupport {
                     signatureId = signatureImg;
                 }
 
-                ConsultationRequest consult = consultationRequestDao.find(new Integer(requestId));
+                ConsultationRequest consult = consultationRequestDao.find(Integer.valueOf(requestId));
                 Date date = null;
 
                 // By default, the referral date will not have a value on edit, so we need to make sure
@@ -302,7 +302,7 @@ public class EctConsultationFormRequest2Action extends ActionSupport {
                 }
 
                 consult.setReferralDate(date);
-                consult.setServiceId(new Integer(this.getService()));
+                consult.setServiceId(Integer.valueOf(this.getService()));
                 consult.setSignatureImg(signatureId);
                 consult.setProviderNo(this.getProviderNo());
                 consult.setLetterheadName(this.getLetterheadName());
@@ -312,7 +312,7 @@ public class EctConsultationFormRequest2Action extends ActionSupport {
 
                 Integer specId = null;
                 if (!this.getSpecialist().isEmpty()) {
-                    specId = new Integer(this.getSpecialist());
+                    specId = Integer.valueOf(this.getSpecialist());
                 }
 
                 // converting the newer Contacts Table and Health Care Team back and forth
@@ -346,8 +346,8 @@ public class EctConsultationFormRequest2Action extends ActionSupport {
                     date = DateUtils.parseDate(this.getAppointmentDate(), format);
                     consult.setAppointmentDate(date);
                     try {
-                        date = DateUtils.setHours(date, new Integer(appointmentHour));
-                        date = DateUtils.setMinutes(date, new Integer(this.getAppointmentMinute()));
+                        date = DateUtils.setHours(date, Integer.valueOf(appointmentHour));
+                        date = DateUtils.setMinutes(date, Integer.valueOf(this.getAppointmentMinute()));
                         consult.setAppointmentTime(date);
                     } catch (NumberFormatException nfEx) {
                         MiscUtils.getLogger().error("Invalid Time", nfEx);
@@ -360,7 +360,7 @@ public class EctConsultationFormRequest2Action extends ActionSupport {
                 consult.setClinicalInfo(this.getClinicalInformation());
                 consult.setCurrentMeds(this.getCurrentMedications());
                 consult.setAllergies(this.getAllergies());
-                consult.setDemographicId(new Integer(this.getDemographicNo()));
+                consult.setDemographicId(Integer.valueOf(this.getDemographicNo()));
                 consult.setStatus(this.getStatus());
                 consult.setStatusText(this.getAppointmentNotes());
                 consult.setSendTo(this.getSendTo());

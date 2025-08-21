@@ -327,9 +327,6 @@
         <action name="oscarRx/managePharmacy" class="oscar.oscarRx.pageUtil.RxManagePharmacy2Action">
             <result name="success">/oscarRx/SelectPharmacy2.jsp</result>
         </action>
-        <action name="oscarRx/SendToPhr" class="oscar.oscarRx.pageUtil.RxSendToPhr2Action" method="execute">
-            <result name="finished">/phr/response.jsp</result>
-        </action>
         <action name="oscarRx/RxReason" class="oscar.oscarRx.pageUtil.RxReason2Action">
             <result name="close">/oscarRx/close.html</result>
             <result name="success">/oscarRx/SelectReason.jsp</result>
@@ -1012,27 +1009,6 @@
             <result name="guidelineList">/oscarEncounter/decisionSupport/guidelineList.jsp</result>
             <result name="guidelineDetail">/oscarEncounter/decisionSupport/guidelineDetail.jsp</result>
         </action>
-        <action name="oscarEncounter/displayMyOscar" class="oscar.oscarEncounter.pageUtil.EctDisplayMyOscar2Action">
-            <result name="labs">/oscarEncounter/displayLabs.do</result>
-			<result name="forms">/oscarEncounter/displayForms.do</result>
-			<result name="msgs">/oscarEncounter/displayMessages.do</result>
-			<result name="eforms">/oscarEncounter/displayEForms.do</result>
-			<result name="docs">/oscarEncounter/displayDocuments.do</result>
-			<result name="measurements">/oscarEncounter/displayMeasurements.do</result>
-			<result name="tickler">/oscarEncounter/displayTickler.do</result>
-			<result name="Dx">/oscarEncounter/displayDisease.do</result>
-			<result name="preventions">/oscarEncounter/displayPrevention.do</result>
-			<result name="consultation">/oscarEncounter/displayConsultation.do</result>
-			<result name="allergies">/oscarEncounter/displayAllergy.do</result>
-			<result name="unresolvedIssues">/oscarEncounter/displayIssues.do</result>
-			<result name="resolvedIssues">/oscarEncounter/displayIssues.do</result>
-			<result name="Rx">/oscarEncounter/displayRx.do</result>
-			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
-			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
-			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
-			<result name="eams">/eaaps/displayEctEaaps.do</result>
-        </action>
         <action name="oscarEncounter/SaveEncounter" class="oscar.oscarEncounter.pageUtil.EctSaveEncounter2Action">
             <result name="saveAndStay">/oscarEncounter/Index.jsp?saved=true</result>
             <result name="failure">/oscarEncounter/error.jsp</result>
@@ -1074,9 +1050,6 @@
         <action name="oscarEncounter/ViewRequest" class="oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctViewRequest2Action">
             <result name="failESend">/oscarEncounter/ViewRequest.do</result>
             <result name="success">/oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp</result>
-        </action>
-        <action name="oscarEncounter/myoscar/measurements_*" class="oscar.oscarEncounter.data.myoscar.EctMyOscarFilter2Action">
-            <result name="success">/oscarEncounter/myoscar/{1}.jsp</result>
         </action>
         <action name="oscarEncounter/eRefer" class="oscar.oscarEncounter.oceanEReferal.pageUtil.ERefer2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp</result>
@@ -1490,12 +1463,6 @@
             <result name="complete">/provider/setTicklerPreferences.jsp</result>
             <result name="error">/provider/setTicklerPreferences.jsp?error</result>
         </action>
-        <action name="setMyOscarId" class="oscar.oscarProvider.pageUtil.ProEditMyOscarId2Action">
-            <result name="success">/provider/providerIndivoIdSetter.jsp</result>
-            <result name="failure">/provider/providerIndivoIdSetter.jsp</result>
-            <result name="error">/provider/providerColourErr.jsp</result>
-            <result name="eject">/index.jsp</result>
-        </action>
         <action name="provider/rxInteractionWarningLevel" class="org.oscarehr.provider.web.ProviderRxInteractionWarningLevel2Action"/>
         <action name="oscarResearch/oscarDxResearch/setupDxResearch" class="oscar.oscarResearch.oscarDxResearch.pageUtil.dxSetupResearch2Action">
             <result name="success">/oscarResearch/oscarDxResearch/dxResearch.jsp</result>
@@ -1823,9 +1790,6 @@
             <result name="success">/documentManager/closeWindow.html</result>
             <result name="failed">/documentManager/addedithtmldocument.jsp</result>
         </action>
-        <action name="documentManager/SendDocToPhr" class="org.oscarehr.documentManager.actions.SendDocToPhr2Action" method="execute">
-            <result name="finished">/phr/response.jsp</result>
-        </action>
         <action name="Scratch" class="oscar.scratch.Scratch2Action">
             <result name="success">/scratch/index.jsp</result>
             <result name="scratchPadVersion">/scratch/version.jsp</result>
@@ -1894,16 +1858,11 @@
         </action>
         <action name="PMmodule/ProgramManagerView" class="org.oscarehr.PMmodule.web.admin.ProgramManagerView2Action" method="execute">
             <result name="view">page.pmm.admin.view</result>
-            <result name="viewBedReservationChangeReport">/PMmodule/Admin/ProgramView/bed_reservation_change_report.jsp</result>
-            <result name="viewBedCheckReport">/PMmodule/Admin/ProgramView/bed_check_report.jsp</result>
             <result name="service_restriction_error">page.pmm.program.service_restriction_error</result>
         </action>
         <action name="PMmodule/AgencyManager" class="org.oscarehr.PMmodule.web.admin.AgencyManager2Action" method="execute">
             <result name="view">page.pmm.admin.agency.view</result>
             <result name="edit">page.pmm.admin.agency.edit</result>
-        </action>
-        <action name="PMmodule/BedManager" class="org.oscarehr.PMmodule.web.admin.BedManager2Action" method="execute">
-            <result name="manage">page.pmm.admin.beds.manage</result>
         </action>
         <action name="PMmodule/FacilityManager" class="org.oscarehr.PMmodule.web.admin.FacilityManager2Action" method="execute">
             <result name="list">page.pmm.admin.facility.list</result>
@@ -2092,15 +2051,6 @@
         <action name="PopulationReport" class="org.oscarehr.common.web.PopulationReport2Action" method="execute">
             <result name="report">/report/PopulationReport.jsp</result>
         </action>
-        <action name="SendToPhr" class="org.oscarehr.phr.web.PHRGenericSendToPhr2Action" method="execute">
-            <result name="inputJsp">/phr/SendToPhrPreview.jsp</result>
-            <result name="loginPage">/phr/response.jsp</result>
-        </action>
-        <action name="demographic/viewPhrRecord" class="org.oscarehr.phr.web.PHRViewPatientRecord2Action">
-            <result name="login">/phr/PHRLoginAndRedirect.jsp</result>
-            <result name="phr">/phr/PHRRedirectToPhrForm.jsp</result>
-            <result name="viewVerification">/phr/PHRVerification.jsp</result>
-        </action>
         <action name="admin/ManageClinic" class="org.oscarehr.common.web.ClinicManage2Action" method="execute">
             <result name="success">/admin/clinicAdmin.jsp</result>
         </action>
@@ -2136,27 +2086,6 @@
             <result name="success">/oscarMDS/Splitclose.jsp</result>
         </action>
         <action name="documentManager/documentUpload" class="org.oscarehr.documentManager.actions.DocumentUpload2Action"/>
-        <action name="phr/PhrMessage" class="org.oscarehr.phr.web.PHRMessage2Action" method="execute">
-            <result name="view">/phr/msg/DisplayPHRMessages.jsp</result>
-            <result name="read">/phr/msg/ReadPHRMessage.jsp</result>
-            <result name="create">/phr/msg/CreatePHRMessage.jsp</result>
-            <result name="document_not_found">/phr/PHRDocNotFound.jsp</result>
-            <result name="echart">/oscarEncounter/IncomingEncounter.do</result>
-            <result name="loginAndRedirect">/phr/PHRLoginAndRedirect.jsp</result>
-            <result name="verifyAndRedirect">/phr/PHRVerification.jsp</result>
-        </action>
-        <action name="phr/Login" class="org.oscarehr.phr.web.PHRLogin2Action" method="execute"/>
-        <action name="phr/Logout" class="org.oscarehr.phr.web.PHRLogout2Action" method="execute"/>
-        <action name="phr/UserManagement" class="org.oscarehr.phr.web.PHRUserManagement2Action" method="execute">
-            <result name="registrationResult">/phr/indivo/RegisterIndivo.jsp</result>
-            <result name="msgIndex">/phr/PhrMessage.do?method=viewMessages</result>
-            <result name="registrationLetter">/admin/MyoscarConfiguration.jsp</result>
-            <result name="viewVerification">/phr/PHRVerification.jsp</result>
-            <result name="relationfragment">/phr/PatientRelationship.jsp</result>
-        </action>
-        <action name="oscarEncounter/oscarMeasurements/SendToPhr" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctSendMeasurementToPhr2Action" method="execute">
-            <result name="finished">/phr/response.jsp</result>
-        </action>
         <action name="appointment/apptStatusSetting" class="oscar.appt.status.web.AppointmentStatus2Action" method="execute">
             <result name="success">/appointment/appointmentstatussetting.jsp</result>
             <result name="edit">/appointment/appointmentstatusedit.jsp</result>

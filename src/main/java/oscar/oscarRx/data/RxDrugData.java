@@ -616,7 +616,7 @@ public class RxDrugData {
      */
     public DrugMonograph getDrug(String pKey) throws Exception {
         RxDrugRef d = new RxDrugRef();
-        return new DrugMonograph(d.getDrug(pKey, new Boolean(true)));
+        return new DrugMonograph(d.getDrug(pKey, Boolean.valueOf(true)));
     }
 
 
@@ -629,7 +629,7 @@ public class RxDrugData {
      */
     public DrugMonograph getDrug2(String pKey) throws Exception {
         RxDrugRef d = new RxDrugRef();
-        return new DrugMonograph(d.getDrug2(pKey, new Boolean(true)));
+        return new DrugMonograph(d.getDrug2(pKey, Boolean.valueOf(true)));
     }
 
     /**

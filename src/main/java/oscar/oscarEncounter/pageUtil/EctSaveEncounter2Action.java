@@ -97,8 +97,8 @@ public class EctSaveEncounter2Action extends ActionSupport {
         }
 
         try {
-            Integer iLatestID = new Integer(latestID);
-            Integer iUsrCopyID = new Integer(userEChartID);
+            Integer iLatestID = Integer.valueOf(latestID);
+            Integer iUsrCopyID = Integer.valueOf(userEChartID);
             if (iLatestID.longValue() > iUsrCopyID.longValue()) {
                 return true;
             } else {

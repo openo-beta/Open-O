@@ -98,7 +98,7 @@ public class ReportElementTag extends TagSupport {
                 for (int x = 0; x < cohortSize; x++) {
                     Integer value = results.get(new StreetHealthReportKey(x, question, answer));
                     if (value == null) {
-                        value = new Integer(0);
+                        value = Integer.valueOf(0);
                     }
                     total += value;
                 }
@@ -107,7 +107,7 @@ public class ReportElementTag extends TagSupport {
                 for (int x = 0; x < cohortSize; x++) {
                     Integer value = results.get(new StreetHealthReportKey(x, question, answer));
                     if (value == null) {
-                        value = new Integer(0);
+                        value = Integer.valueOf(0);
                     }
                     out.print(",\"" + value + "\"");
                 }
@@ -172,7 +172,7 @@ public class ReportElementTag extends TagSupport {
                 for (int x = 0; x < cohortSize; x++) {
                     Integer value = results.get(new StreetHealthReportKey(x, question, answer));
                     if (value == null) {
-                        value = new Integer(0);
+                        value = Integer.valueOf(0);
                     }
                     total += value;
                 }
@@ -181,7 +181,7 @@ public class ReportElementTag extends TagSupport {
                 for (int x = 0; x < cohortSize; x++) {
                     Integer value = results.get(new StreetHealthReportKey(x, question, answer));
                     if (value == null) {
-                        value = new Integer(0);
+                        value = Integer.valueOf(0);
                     }
                     out.println("<td>" + value + "</td>");
                 }

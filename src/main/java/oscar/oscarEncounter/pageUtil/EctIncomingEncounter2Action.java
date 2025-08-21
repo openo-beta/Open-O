@@ -248,14 +248,14 @@ public class EctIncomingEncounter2Action extends ActionSupport {
     private Set<Long> getIssueIdSet(String providerNo, String wlProgramId) {
         ProgramProviderDAO programProviderDao = (ProgramProviderDAO) SpringUtils.getBean(ProgramProviderDAO.class);
         List<ProgramProvider> ppList = programProviderDao.getProgramProviderByProviderProgramId(providerNo,
-                new Long(wlProgramId));
+                Long.valueOf(wlProgramId));
         ProgramProvider pp = ppList.get(0);
         Secrole role = pp.getRole();
 
         // get program accesses... program allows either all roles or not all roles
         // (does this mean no roles?)
         ProgramAccessDAO programAccessDAO = (ProgramAccessDAO) SpringUtils.getBean(ProgramAccessDAO.class);
-        List<ProgramAccess> paList = programAccessDAO.getAccessListByProgramId(new Long(wlProgramId));
+        List<ProgramAccess> paList = programAccessDAO.getAccessListByProgramId(Long.valueOf(wlProgramId));
         Map<String, ProgramAccess> paMap = new HashMap<String, ProgramAccess>();
         for (Iterator<ProgramAccess> iter = paList.iterator(); iter.hasNext(); ) {
             ProgramAccess pa = iter.next();

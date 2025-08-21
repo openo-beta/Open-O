@@ -372,7 +372,7 @@ public class BillingReProcessBill2Action extends ActionSupport {
             BillingHistoryDAO dao = new BillingHistoryDAO();
             //If the adjustment amount field isn't empty, create an archive of the adjustment
             if (frm.getAdjAmount() != null && !"".equals(frm.getAdjAmount())) {
-                double dblAdj = Math.abs(new Double(frm.getAdjAmount()).doubleValue());
+                double dblAdj = Math.abs(Double.valueOf(frm.getAdjAmount()).doubleValue());
                 //if 1 this adjustment is a debit
                 if ("1".equals(frm.getAdjType())) {
                     dblAdj = dblAdj * -1.0;

@@ -525,7 +525,7 @@ public class MSPReconcile {
 
         public void setAmountPaid(String paid) {
             try {
-                Double dbl = new Double(paid);
+                Double dbl = Double.valueOf(paid);
                 this.amountPaid = dbl.doubleValue();
             } catch (Exception ex) {
                 MiscUtils.getLogger().error("Error", ex);
@@ -547,7 +547,7 @@ public class MSPReconcile {
         public double getAmount() {
             double ret = 0;
             try {
-                Double dbl = new Double(this.amount);
+                Double dbl = Double.valueOf(this.amount);
                 ret = dbl.doubleValue();
             } catch (Exception ex) {
                 MiscUtils.getLogger().error("Error", ex);
@@ -757,7 +757,7 @@ public class MSPReconcile {
         for (TeleplanS00 s : dao.findByOfficeNumber(forwardZero(billingmaster_no, 7))) {
             //this line fixes a bug where the amounts weren't calculating negative values
             String strAmount = convCurValue(s.getPaidAmount());
-            double amount = new Double(strAmount).doubleValue();
+            double amount = Double.valueOf(strAmount).doubleValue();
             retval += amount;
         }
         return retval;
@@ -1220,7 +1220,7 @@ public class MSPReconcile {
                 if (type.equals(MSPReconcile.REP_ACCOUNT_REC)) {
                     double dblAmtOwing = this.getAmountOwing(b.billMasterNo, b.amount, b.billingtype);
                     b.amtOwing = String.valueOf(dblAmtOwing);
-                    skipBill = new Double(b.amtOwing).doubleValue() == 0.0;
+                    skipBill = Double.valueOf(b.amtOwing).doubleValue() == 0.0;
                 }
 
                 if (!skipBill) {
@@ -1257,7 +1257,7 @@ public class MSPReconcile {
     public double getAmountOwing(String billingMasterNo, String amountBilled, String billingType) {
 
         amountBilled = (amountBilled != null && !amountBilled.equals("")) ? amountBilled : "0.0";
-        double dbltBilled = new Double(amountBilled).doubleValue();
+        double dbltBilled = Double.valueOf(amountBilled).doubleValue();
         //Gets the total 'paid' or adjusted for any type of bill from billinghistory
         double totalPaidFromHistory = getTotalPaidFromHistory(billingMasterNo, false);
         double totalPaidFromS00 = 0.0;
@@ -1272,7 +1272,7 @@ public class MSPReconcile {
                 }
                 String paidAmount = s.getPaidAmount();
                 paidAmount = MSPReconcile.convCurValue(paidAmount);
-                Double dblAmtPaid = new Double(paidAmount);
+                Double dblAmtPaid = Double.valueOf(paidAmount);
                 totalPaidFromS00 += dblAmtPaid.doubleValue();
                 log.debug("paidAmount " + paidAmount);
             }
@@ -1402,7 +1402,7 @@ public class MSPReconcile {
                 b.payeeName = this.getProvider(b.payeeNo, 1).getInitials();
                 b.provName = this.getProvider(b.apptDoctorNo, 1).getInitials();
 
-                double dblAmount = new Double(b.amount).doubleValue();
+                double dblAmount = Double.valueOf(b.amount).doubleValue();
                 /**
                  * @todo Get rid of hard coded strings
                  */
@@ -1709,10 +1709,10 @@ public class MSPReconcile {
             String beanStatus = beanut.getPropertyValue(bill, "status");
 
             if (beanStatus.equals(status)) {
-                amt += new Double(bill.getAmount()).doubleValue();
+                amt += Double.valueOf(bill.getAmount()).doubleValue();
             }
         }
-        return new Double(amt);
+        return Double.valueOf(amt);
     }
 
     /**
@@ -1734,7 +1734,7 @@ public class MSPReconcile {
                 cnt++;
             }
         }
-        return new Integer(cnt);
+        return Integer.valueOf(cnt);
     }
 
     /**
@@ -1943,7 +1943,7 @@ public class MSPReconcile {
                 isNeg = true;
                 ret = preDigits + lastDigit;
             }
-            int dblValue = new Double(ret).intValue();
+            int dblValue = Double.valueOf(ret).intValue();
             if (isNeg) {
                 dblValue = dblValue * -1;
             }
@@ -1984,7 +1984,7 @@ public class MSPReconcile {
      * @return boolean
      */
     public boolean isPrivateBillItemOutstanding(String billingmaster_no, double amount) {
-        double amountPaid = new Double(getAmountPaid(billingmaster_no, BILLTYPE_PRI)).doubleValue();
+        double amountPaid = Double.valueOf(getAmountPaid(billingmaster_no, BILLTYPE_PRI)).doubleValue();
         return amountPaid < amount;
     }
 

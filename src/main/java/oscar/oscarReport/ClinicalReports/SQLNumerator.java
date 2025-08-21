@@ -132,7 +132,7 @@ public class SQLNumerator implements Numerator {
                     for (int i = 0; i < outputfields.length; i++) {
                         outputValues.put(outputfields[i], oscar.Misc.getString(rs, outputfields[i]));
                     }
-                    outputValues.put("_evaluation", new Boolean(evalTrue));
+                    outputValues.put("_evaluation", Boolean.valueOf(evalTrue));
                 }
                 //for 
 

@@ -284,7 +284,7 @@ public final class MessageUploader {
             boolean orderByLength = false;
             String search = null;
 			if ("Spire".equals(type)) {
-                limit = new Integer(1);
+                limit = Integer.valueOf(1);
                 orderByLength = true;
                 search = "provider_no";
             }

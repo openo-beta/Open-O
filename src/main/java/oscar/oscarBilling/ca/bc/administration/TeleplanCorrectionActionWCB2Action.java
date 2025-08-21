@@ -100,7 +100,7 @@ public class TeleplanCorrectionActionWCB2Action extends ActionSupport {
             BillingHistoryDAO dao = new BillingHistoryDAO();
             //If the adjustment amount field isn't empty, create an archive of the adjustment
             if (this.getAdjAmount() != null && !"".equals(this.getAdjAmount())) {
-                double dblAdj = Math.abs(new Double(this.getAdjAmount()).doubleValue());
+                double dblAdj = Math.abs(Double.valueOf(this.getAdjAmount()).doubleValue());
                 //if 1 this adjustment is a debit
                 if ("1".equals(this.getAdjType())) {
                     dblAdj = dblAdj * -1.0;

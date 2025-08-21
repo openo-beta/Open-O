@@ -51,7 +51,7 @@ public class ReceivePayment2Action
     HttpServletResponse response = ServletActionContext.getResponse();
 
     public String execute() {
-        double dblAmount = new Double(this.getAmountReceived()).doubleValue();
+        double dblAmount = Double.valueOf(this.getAmountReceived()).doubleValue();
         if ("true".equals(this.getIsRefund())) {
 
             this.setAmountReceived(String.valueOf(dblAmount * -1.0));

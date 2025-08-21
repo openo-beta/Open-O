@@ -145,7 +145,7 @@ public class PayRefSummary {
 
         try {
             if (adjAmt != null && !"".equals(adjAmt)) {
-                Double amt = new Double(adjAmt);
+                Double amt = Double.valueOf(adjAmt);
                 this.electronic += amt.doubleValue();
             }
         } catch (NumberFormatException e) {

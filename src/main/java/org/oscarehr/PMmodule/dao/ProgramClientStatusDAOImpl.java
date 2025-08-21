@@ -64,7 +64,7 @@ public class ProgramClientStatusDAOImpl extends HibernateDaoSupport implements P
         }
 
         ProgramClientStatus pcs = null;
-        pcs = this.getHibernateTemplate().get(ProgramClientStatus.class, new Integer(id));
+        pcs = this.getHibernateTemplate().get(ProgramClientStatus.class, Integer.valueOf(id));
         if (pcs != null) return pcs;
         else return null;
     }

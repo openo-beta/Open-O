@@ -54,6 +54,7 @@ public class ProviderWs extends AbstractWs {
     /**
      * @deprecated 2013-03-27 parameter should have been an object to allow nulls
      */
+    @Deprecated
     public ProviderTransfer[] getProviders(boolean active) {
         return (getProviders2(active));
     }
