@@ -186,7 +186,7 @@ Currently, oscar error logs are sent to console without saving to a log file. If
 
 * This should open the Open-O repo in VS Code and prompt you to reopen the folder in the dev container environment.
 
-### Checksum locks
+## Checksum locks
 
 Whenever you update, add, or remove a library ensure that the changes are reflected in the dependencies-lock.json. 
 
@@ -196,12 +196,12 @@ Keeping these locks in sync ensures reproducible builds and guards against tampe
 Only update when you trust the signature of the libraries. 
 mvn se.vandmo:dependency-lock-maven-plugin:lock
 
-### Debugging in Tomcat. Setup steps and usage
+## Debugging in Tomcat. Setup steps and usage
 1. Download Community Server Connectors in extensions.  
-    Ensure its set to version - v0.26.19  
+* Ensure its set to version - v0.26.19  
 
 2. Add new server   
-    use on disk - /usr/local/tomact/  
+* use on disk - /usr/local/tomact/  
 
 3. Make make-debug executable   
     ```bash
@@ -222,18 +222,18 @@ mvn se.vandmo:dependency-lock-maven-plugin:lock
     then re-run the script.
 
 5. Add deployment.
-    Right click the tomcat server, found within the file explorer on VSCode.  
-    Add deployment  
-    exploded  
-    Path: "/workspace/target/oscar"  
+* Right click the tomcat server, found within the file explorer on VSCode.  
+* Add deployment  
+* exploded  
+* Path: "/workspace/target/oscar"  
 
 6. Publish the server  
-    Right click the tomcat server  
-    "Publish Server"  
+* Right click the tomcat server  
+* "Publish Server"  
 
 7. Run in debug mode  
-    Right click the tomcat server  
-    "Debug Server"  
+* Right click the tomcat server  
+* "Debug Server"  
 
 You should now be able to use breakpoints within vscode!
 
