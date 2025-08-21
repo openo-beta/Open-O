@@ -34,7 +34,8 @@
  */
 package oscar.oscarLab.ca.all.upload.handlers;
 
-import java.io.FileInputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -64,31 +65,42 @@ public class PATHL7Handler implements MessageHandler {
 	}
 
     public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
-        // Validate fileName to prevent path traversal
-        if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
-            logger.error("Invalid file name: " + fileName);
-            return null;
-        }
-        Document doc = null;
+    Document doc = null;
         try {
+            if (fileName == null || fileName.isBlank()) {
+                throw new IllegalArgumentException("Filename cannot be null or empty");
+            }
+
+            // Base directory
+            String baseDir = "/some/safe/path/";
+            Path basePath = Paths.get(baseDir).toAbsolutePath().normalize();
+            Path targetPath = basePath.resolve(fileName).normalize();
+
+            if (!targetPath.startsWith(basePath)) {
+                throw new IllegalArgumentException("Invalid file name (path traversal): " + fileName);
+            }
+
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-            doc = docBuilder.parse(new FileInputStream(fileName));
+            doc = docBuilder.parse(targetPath.toFile());
+
+        } catch (IllegalArgumentException e) {
+            logger.error("Invalid file name: " + fileName, e);
+            return null;
         } catch (Exception e) {
             logger.error("Could not parse PATHL7 message", e);
         }
 
-		RouteReportResults routeResults;
         if (doc != null) {
             int i = 0;
             try {
                 Node messageSpec = doc.getFirstChild();
                 NodeList messages = messageSpec.getChildNodes();
                 for (i = 0; i < messages.getLength(); i++) {
-					routeResults = new RouteReportResults();
+                    RouteReportResults routeResults = new RouteReportResults();
                     String hl7Body = messages.item(i).getFirstChild().getTextContent();
-					MessageUploader.routeReport(loggedInInfo, serviceName, "PATHL7", hl7Body, fileId, routeResults);
-					labNo = routeResults.segmentId;
+                    MessageUploader.routeReport(loggedInInfo, serviceName, "PATHL7", hl7Body, fileId, routeResults);
+                    labNo = routeResults.segmentId;
                 }
             } catch (Exception e) {
                 logger.error("Could not upload PATHL7 message", e);
@@ -96,7 +108,7 @@ public class PATHL7Handler implements MessageHandler {
                 MessageUploader.clean(fileId);
                 return null;
             }
-            return ("success");
+            return "success";
         } else {
             return null;
         }
