@@ -46,7 +46,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
@@ -73,7 +72,6 @@ public class Utilities {
             String line = null;
             boolean firstPIDflag = false; //true if the first PID segment has been processed false otherwise
             boolean firstMSHflag = false; //true if the first MSH segment has been processed false otherwise
-            //String mshSeg = br.readLine();
 
             StringBuilder sb = new StringBuilder();
             String mshSeg = "";
@@ -111,7 +109,6 @@ public class Utilities {
 
         return (messages);
     }
-
 
     /**
      * @param stream
@@ -237,7 +234,6 @@ public class Utilities {
         } catch (FileNotFoundException fnfe) {
             logger.error("Error", fnfe);
             return retVal;
-
         } catch (IOException ioe) {
             logger.error("Error", ioe);
             return retVal;

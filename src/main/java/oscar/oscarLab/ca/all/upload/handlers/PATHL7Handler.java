@@ -100,7 +100,6 @@ public class PATHL7Handler implements MessageHandler {
         } else {
             return null;
         }
-
     }
 
 }
