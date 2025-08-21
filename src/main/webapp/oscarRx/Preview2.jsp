@@ -577,11 +577,7 @@
 
                         <tr valign=bottom>
                             <td height=25px>
-                                <% if (props.getProperty("signature_tablet", "").equals("yes")) { %>
-                                <input type="button" value=
-                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.digitallySign"/> class="noprint"
-                                       onclick="setInterval('refreshImage()', POLL_TIME); document.location='<%=request.getContextPath()%>/signature_pad/topaz_signature_pad.jnlp.jsp?<%=DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY%>=<%=signatureRequestId%>'"/>
-                                <% } %>
+                                <%-- Topaz signature pad support removed - HTML5 signature capture is now standard --%>
                             </td>
                             <td height=25px>
                                 &nbsp; <%= Encode.forHtmlContent(doctorName) %>

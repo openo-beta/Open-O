@@ -867,7 +867,8 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                         </tr>
 
                                         <%}%>
-                                        <% if (OscarProperties.getInstance().isRxSignatureEnabled() && !OscarProperties.getInstance().getBooleanProperty("signature_tablet", "yes")) { %>
+                                        <% if (OscarProperties.getInstance().isRxSignatureEnabled()) { %>
+                                        <%-- Topaz signature pad check removed - HTML5 signature is now standard --%>
 						<% if (bean.getStashSize() == 0 || Objects.isNull(bean.getStashItem(0).getDigitalSignatureId())) { %>
                                         <tr>
                                             <td colspan=2 style="font-weight: bold"><span>Signature</span></td>
