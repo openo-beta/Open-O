@@ -203,7 +203,7 @@ mvn se.vandmo:dependency-lock-maven-plugin:lock
 2. Add new server   
     use on disk - /usr/local/tomact/  
 
-3. Make it executable   
+3. Make make-debug executable   
     ```bash
     chmod +x ./devcontainer/development/scripts/make-debug
     ```
@@ -214,7 +214,7 @@ mvn se.vandmo:dependency-lock-maven-plugin:lock
     ```
 
     If you encounter an error "/usr/bin/env: ‘sh\r’: No such file or directory /usr/bin/env: use -[v]S to pass options in shebang lines".   
-    Then run: 
+    Run: 
     ```bash
     apt-get update && apt-get install -y dos2unix dos2unix .devcontainer/development/scripts/make2
     ```
@@ -222,10 +222,10 @@ mvn se.vandmo:dependency-lock-maven-plugin:lock
     then re-run the script.
 
 5. Add deployment.
-    1. Right click the tomcat server, found within the file explorer on VSCode.  
-    2. "add deployment"  
-    3. "exploded"  
-    4. Path: "/workspace/target/oscar"  
+    Right click the tomcat server, found within the file explorer on VSCode.  
+    Add deployment  
+    exploded  
+    Path: "/workspace/target/oscar"  
 
 6. Publish the server  
     Right click the tomcat server  
