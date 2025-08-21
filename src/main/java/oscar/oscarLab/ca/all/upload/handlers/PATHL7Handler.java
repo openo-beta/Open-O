@@ -64,6 +64,11 @@ public class PATHL7Handler implements MessageHandler {
 	}
 
     public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
+        // Validate fileName to prevent path traversal
+        if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
+            logger.error("Invalid file name: " + fileName);
+            return null;
+        }
         Document doc = null;
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
