@@ -194,6 +194,13 @@ public class Utilities {
     public static String savePdfFile(InputStream stream, String filename) {
         String retVal = null;
         try {
+            // Validate filename to prevent path traversal and absolute paths
+            if (filename == null || filename.contains("..") || 
+            filename.contains("/") || filename.contains("\\") || 
+            filename.startsWith(".")) {
+                throw new IllegalArgumentException("Invalid filename: " + filename);
+            }
+
             OscarProperties props = OscarProperties.getInstance();
             //properties must exist
             String place = props.getProperty("DOCUMENT_DIR");
@@ -234,7 +241,11 @@ public class Utilities {
         } catch (IOException ioe) {
             logger.error("Error", ioe);
             return retVal;
+        } catch (IllegalArgumentException iae) {
+            logger.error("Invalid filename: " + filename, iae);
+            return null;
         }
+
         return retVal;
     }
 
