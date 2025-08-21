@@ -197,23 +197,23 @@ Only update when you trust the signature of the libraries.
 mvn se.vandmo:dependency-lock-maven-plugin:lock
 
 ### Debugging in Tomcat. Setup steps and usage
-1. Download Community Server Connectors in extensions. 
-    Ensure its set to version - v0.26.19
+1. Download Community Server Connectors in extensions.  
+    Ensure its set to version - v0.26.19  
 
-2. Add new server 
-    use on disk - /usr/local/tomact/
+2. Add new server   
+    use on disk - /usr/local/tomact/  
 
-3. Make it executable 
+3. Make it executable   
     ```bash
     chmod +x ./devcontainer/development/scripts/make-debug
     ```
 
-4. Run the make script.
+4. Run the make script.  
     ```bash
     ./devcontainer/development/scripts/make-debug
     ```
 
-    If you encounter an error "/usr/bin/env: ‘sh\r’: No such file or directory /usr/bin/env: use -[v]S to pass options in shebang lines". 
+    If you encounter an error "/usr/bin/env: ‘sh\r’: No such file or directory /usr/bin/env: use -[v]S to pass options in shebang lines".   
     Then run: 
     ```bash
     apt-get update && apt-get install -y dos2unix dos2unix .devcontainer/development/scripts/make2
@@ -222,18 +222,18 @@ mvn se.vandmo:dependency-lock-maven-plugin:lock
     then re-run the script.
 
 5. Add deployment.
-    Right click the tomcat server, found within the file explorer on VSCode. 
-    "add deployment"
-    "exploded"
-    Path: "/workspace/target/oscar"
+    1. Right click the tomcat server, found within the file explorer on VSCode.  
+    2. "add deployment"  
+    3. "exploded"  
+    4. Path: "/workspace/target/oscar"  
 
-6. Publish the server
-    Right click the tomcat server
-    "Publish Server"
+6. Publish the server  
+    Right click the tomcat server  
+    "Publish Server"  
 
-7. Run in debug mode
-    Right click the tomcat server
-    "Debug Server" 
+7. Run in debug mode  
+    Right click the tomcat server  
+    "Debug Server"  
 
 You should now be able to use breakpoints within vscode!
 
