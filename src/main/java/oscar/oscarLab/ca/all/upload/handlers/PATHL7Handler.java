@@ -81,6 +81,12 @@ public class PATHL7Handler implements MessageHandler {
             }
 
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            // Disable DTDs and external entities for XXE prevention
+            docFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            docFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            docFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            docFactory.setXIncludeAware(false);
+            docFactory.setExpandEntityReferences(false);
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             doc = docBuilder.parse(targetPath.toFile());
 
