@@ -73,14 +73,7 @@ public class AccessTokenResource {
                 logger.warn("Access token request failed: token mismatch (req [{}] vs sig [{}])",
                         oreq.token, tokenFromSig);
                 return Response.status(401).entity("invalid_signature").build();
-            }
-
-
-            if (!oreq.token.equals(tokenFromSig)) {
-                logger.warn("Access token request failed: token mismatch (req [{}] vs sig [{}])",
-                        oreq.token, tokenFromSig);
-                return Response.status(401).entity("invalid_signature").build();
-            }
+            }            
         } catch (Exception e) {
             logger.warn("Access token request failed: signature verification error for token [{}]", oreq.token, e);
             return Response.status(401).entity("invalid_signature").build();

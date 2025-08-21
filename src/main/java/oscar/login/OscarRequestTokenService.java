@@ -54,6 +54,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
 public class OscarRequestTokenService {
@@ -91,17 +92,25 @@ public class OscarRequestTokenService {
         cfg.setConsumerSecret(client.getSecret());
         cfg.setApplicationURI(req.getRequestURL().toString());
 
-        /* TODO: Update the verifySignature, currently errors. 
-        try {
-            verifier.verifySignature(req, cfg);
-        } catch (org.oscarehr.ws.oauth.OAuth1Exception e) {
-            throw e;
-        } catch (Exception e) {
-            throw new org.oscarehr.ws.oauth.OAuth1Exception(401, "invalid_signature");
-        } */
-
         RequestTokenRegistration reg = new RequestTokenRegistration(client);
-        reg.setCallback(oreq.callback); // may be "oob"
+
+        // --- decode+normalize callback ONLY for persistence ---
+        String cbRaw = oreq.callback; // keep whatever the parser gives (was working before)
+        String cbToStore;
+
+        if ("oob".equals(cbRaw)) {
+            cbToStore = "oob";
+        } else if (cbRaw != null && !cbRaw.isEmpty()) {
+            // decode once (RFC3986) and normalize to plain canonical URL
+            String decoded = pctDecode(cbRaw);
+            cbToStore = normalizeUrl(decoded);
+        } else {
+            // fallback to app-registered callback if your flow allows it
+            cbToStore = normalizeUrl(client.getCallbackUri());
+        }
+
+        reg.setCallback(cbToStore);   // <-- store plain URL now (not encoded)
+
         if (oreq.scopesCsv != null && !oreq.scopesCsv.isBlank()) {
             reg.setScopes(oreq.scopesCsv.split("\\s+"));
         }
@@ -113,8 +122,49 @@ public class OscarRequestTokenService {
 
         return Response.ok(body).type(MediaType.APPLICATION_FORM_URLENCODED).build();
     }
-
     private static String enc(String s) {
         return URLEncoder.encode(s, StandardCharsets.UTF_8);
     }
+    
+    private static String urlDecode(String s) {
+        return URLDecoder.decode(s, StandardCharsets.UTF_8);
+    }
+
+    private static String pctDecode(String s) {
+    if (s == null || s.isEmpty()) return s;
+    int n = s.length();
+    StringBuilder out = new StringBuilder(n);
+    for (int i = 0; i < n; i++) {
+        char c = s.charAt(i);
+        if (c == '%' && i + 2 < n) {
+            int hi = Character.digit(s.charAt(i + 1), 16);
+            int lo = Character.digit(s.charAt(i + 2), 16);
+            if (hi >= 0 && lo >= 0) {
+                out.append((char)((hi << 4) + lo));
+                i += 2;
+                continue;
+            }
+        }
+        out.append(c);
+    }
+    return out.toString();
+}
+
+    private static String normalizeUrl(String url) {
+        try {
+            var u = java.net.URI.create(url).normalize();
+            String scheme = u.getScheme() == null ? null : u.getScheme().toLowerCase();
+            String host   = u.getHost()   == null ? null : u.getHost().toLowerCase();
+            int port = u.getPort();
+            if ((port == 80 && "http".equalsIgnoreCase(scheme)) ||
+                (port == 443 && "https".equalsIgnoreCase(scheme))) {
+                port = -1; // drop default ports
+            }
+            String path = (u.getPath() == null || u.getPath().isEmpty()) ? "/" : u.getPath();
+            return new java.net.URI(scheme, u.getUserInfo(), host, port, path, u.getQuery(), u.getFragment()).toString();
+        } catch (Exception ignore) {
+            return url; // fail-safe
+        }
+    }
+
 }
