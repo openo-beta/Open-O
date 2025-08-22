@@ -208,7 +208,7 @@ public class DSServiceMyDrugref extends DSService {
     }
 
     private boolean isValidGuidelineXml(String guidelineXml) {
-        StreamSource xsd = new StreamSource(this.getClass().getResourceAsStream("/k2a/dsGuideline.xsd"));
+        StreamSource xsd = new StreamSource(this.getClass().getResourceAsStream("/dsGuideline.xsd"));
         StreamSource xml = new StreamSource(new StringReader(guidelineXml));
 
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);

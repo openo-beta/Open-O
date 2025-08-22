@@ -60,12 +60,6 @@ public class OAuth1Utils {
         self = this;
     }
 
-    /**
-     * Provide a CXF JSONProvider that drops root elements, for web client usage.
-     */
-    public static List<Object> getProviderK2A() {
-        return List.of(jsonProvider);
-    }
 
     // --- internal instance methods ---
     private String doGet(

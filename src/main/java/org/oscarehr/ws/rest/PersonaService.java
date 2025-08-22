@@ -202,13 +202,6 @@ public class PersonaService extends AbstractServiceImpl {
         messengerMenu.add(menuItemCounter++, bundle.getString("navbar.newOscarMessages"), "" + ptMessageCount, "classic");
 
 
-
-        if (appManager.isK2AEnabled()) {
-            String k2aMessageCount = appManager.getK2ANotificationNumber(getLoggedInInfo());
-            messengerMenu.add(menuItemCounter++, bundle.getString("navbar.newK2ANotifications"), k2aMessageCount, "k2a");
-        }
-
-
         /* this is manual right now. Need to have this generated from some kind
          * of user data
          */

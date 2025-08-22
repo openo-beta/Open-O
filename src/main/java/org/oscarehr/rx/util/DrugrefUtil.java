@@ -182,7 +182,7 @@ public class DrugrefUtil {
                     currentIdWarnings.add(idWarning);
 
                     RxDsMessageTo1 dsMessage = new RxDsMessageTo1();
-                    dsMessage.setMessageSource("K2A");
+                    dsMessage.setMessageSource("DrugRef");
                     dsMessage.setName((String) ht.get("name"));
                     dsMessage.setUpdated_at((Date) ht.get("updated_at"));
 

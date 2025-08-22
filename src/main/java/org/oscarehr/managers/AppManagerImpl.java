@@ -165,52 +165,5 @@ public class AppManagerImpl implements AppManager {
     }
 
 
-    @Override
-    public boolean isK2AUser(LoggedInInfo loggedInInfo) {
-        return isK2AUser(loggedInInfo.getLoggedInProviderNo());
-    }
-
-    @Override
-    public boolean isK2AUser(String providerNo) {
-        AppDefinition k2aApp = appDefinitionDao.findByName("K2A");
-        if (k2aApp != null) {
-            AppUser k2aUser = appUserDao.findForProvider(k2aApp.getId(), providerNo);
-            if (k2aUser != null) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean isK2AEnabled() {
-        AppDefinition k2aApp = appDefinitionDao.findByName("K2A");
-        if (k2aApp != null) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public String getK2ANotificationNumber(LoggedInInfo loggedInInfo) {
-        String retval = "-";
-        AppDefinition k2aApp = appDefinitionDao.findByName("K2A");
-        if (k2aApp != null) {
-            AppUser k2aUser = appUserDao.findForProvider(k2aApp.getId(), loggedInInfo.getLoggedInProviderNo());
-
-            if (k2aUser != null) {
-                String notificationStr = null;
-                try {
-                    notificationStr = OAuth1Utils.getOAuthGetResponse(loggedInInfo, k2aApp, k2aUser, "/ws/api/notification", "/ws/api/notification");
-                    JSONObject notifyObject = JSONObject.fromObject(notificationStr);
-                    retval = notifyObject.getString("numberOfNotifications");
-                } catch (Exception e) {
-                    logger.error("User is not logged in " + notificationStr);
-                }
-            }
-        }
-        return retval;
-    }
-
 }
  

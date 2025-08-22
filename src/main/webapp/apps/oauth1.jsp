@@ -54,12 +54,7 @@
         try {
             appId = Integer.parseInt(idParam);
         } catch (NumberFormatException e) {
-            if ("K2A".equals(idParam)) {
-                AppDefinition k2a = appDefDao.findByName("K2A");
-                if (k2a != null) {
-                    appId = k2a.getId();
-                }
-            }
+            // K2A handling removed
         }
     } else if (session.getAttribute("appId") != null) {
         appId = (Integer) session.getAttribute("appId");

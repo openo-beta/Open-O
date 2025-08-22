@@ -477,7 +477,7 @@
 
         $scope.loadedSurveillanceConfigs = [];
 
-        $scope.k2aSurveillanceConfigs = [];
+        // k2a surveillance config removed
 
 
         getSearchConfigList = function () {

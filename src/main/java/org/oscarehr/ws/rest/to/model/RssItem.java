@@ -48,7 +48,6 @@ public class RssItem implements Serializable {
     private Long disagreeCount;
     private Long commentCount;
     private String significance;
-    private Boolean authenticatek2a;
     private Boolean agree;
     private Boolean disagree;
     private Long agreeId;
@@ -156,14 +155,6 @@ public class RssItem implements Serializable {
 
     public void setSignificance(String significance) {
         this.significance = significance;
-    }
-
-    public Boolean getAuthenticatek2a() {
-        return authenticatek2a;
-    }
-
-    public void setAuthenticatek2a(Boolean authenticatek2a) {
-        this.authenticatek2a = authenticatek2a;
     }
 
     public Boolean isAgree() {

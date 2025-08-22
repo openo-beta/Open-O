@@ -542,7 +542,7 @@ public final class Login2Action extends ActionSupport {
 
             if (where.equals("provider")) {
                 UserProperty drugrefProperty = propDao.getProp(UserProperty.MYDRUGREF_ID);
-                if (drugrefProperty != null || appManager.isK2AUser(loggedInInfo)) {
+                if (drugrefProperty != null) {
                     dsService.fetchGuidelinesFromServiceInBackground(loggedInInfo);
                 }
             }

@@ -62,12 +62,4 @@ public interface AppManager {
 
     public Integer getAppDefinitionConsentId(LoggedInInfo loggedInInfo, String appName);
 
-    public boolean isK2AUser(LoggedInInfo loggedInInfo);
-
-    public boolean isK2AUser(String providerNo);
-
-    public boolean isK2AEnabled();
-
-    public String getK2ANotificationNumber(LoggedInInfo loggedInInfo);
-
 }

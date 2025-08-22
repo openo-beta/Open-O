@@ -95,132 +95,62 @@ public final class RxMyDrugrefInfoAction {
 
     public Vector callOAuthService(LoggedInInfo loggedInInfo, String procedureName, Vector params, String myDrugrefId) {
         try {
-            AppDefinitionDao appDefinitionDao = SpringUtils.getBean(AppDefinitionDao.class);
-            AppUserDao appUserDao = SpringUtils.getBean(AppUserDao.class);
-
-            AppDefinition k2aApp = appDefinitionDao.findByName("K2A");
-
-            boolean useXMLRPC = false;
+            // K2A service has been removed - always use XML-RPC
             Vector result = null;
+            Vector newParams = new Vector();
 
-            if (k2aApp != null) {
-                AppUser k2aUser = appUserDao.findForProvider(k2aApp.getId(), loggedInInfo.getLoggedInProviderNo());
+            //Convert from OAuth procedure name to xml rpc procedure name
+            if (procedureName.equals("atcfetch/getWarnings")) {
+                newParams.addElement("warnings_byATC");
+                procedureName = "Fetch";
+            } else if (procedureName.equals("atcfetch/getBulletins")) {
+                newParams.addElement("bulletins_byATC");
+                procedureName = "Fetch";
+            } else if (procedureName.equals("atcfetch/getInteractions")) {
+                newParams.addElement("interactions_byATC");
+                procedureName = "Fetch";
+            } else if (procedureName.equals("guidelines/getGuidelineIds")) {
+                procedureName = "GetGuidelineIds";
+            } else if (procedureName.equals("guidelines/getGuidelines")) {
+                procedureName = "GetGuidelines";
+            }
 
-                if (k2aUser != null) {
+            if (params != null) {
+                newParams.add(params);
+            }
 
-                    String requestURI = "/ws/api/" + procedureName;
+            if (myDrugrefId != null && !myDrugrefId.trim().equals("")) {
+                log2.debug("putting >" + myDrugrefId + "< in the request");
+                newParams.addElement(myDrugrefId);
+                //params.addElement("true");
+            }
+            log2.debug("#CALLmyDRUGREF-" + procedureName);
+            Object object = null;
 
-                    String requestURIWithParams = null;
-                    if (params != null && !params.isEmpty() && params.size() > 0) {
-                        requestURIWithParams = requestURI + "?";
-                        for (int i = 0; i < params.size(); i++) {
-                            if (procedureName.contains("guidelines")) {
-                                requestURIWithParams += "uuidCodes=" + params.get(i) + "&";
-                            } else {
-                                requestURIWithParams += "atcCodes=" + params.get(i) + "&";
-                            }
-                        }
-                        requestURIWithParams = requestURIWithParams.substring(0, requestURIWithParams.length() - 1);
-                    }
+            String server_url = OscarProperties.getInstance().getProperty("MY_DRUGREF_URL", "");
 
-
-                    if (requestURIWithParams == null) {
-                        requestURIWithParams = requestURI;
-                    }
-
-                    String jsonString = OAuth1Utils.getOAuthGetResponse(loggedInInfo, k2aApp, k2aUser, requestURIWithParams, requestURI);
-                    //Convert JSON return to Vector/Hashtable
-                    JSONArray jsonArray = new JSONArray();
-
-                    if (jsonString != null && !jsonString.isEmpty()) {
-                        jsonArray = new JSONArray(jsonString);
-                        result = new Vector();
-
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject eform = jsonArray.getJSONObject(i);
-                            Hashtable drugInfo = new Hashtable();
-
-                            Iterator iterator = eform.keys();
-                            while (iterator.hasNext()) {
-                                String key = (String) iterator.next();
-                                if (key.equals("significance") || key.equals("version")) {
-                                    drugInfo.put(key, eform.get(key).toString());
-                                } else if (key.equals("updated_at") || key.equals("updatedAt") || key.equals("created_at")) {
-                                    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-                                    Date date = formatter.parse(eform.get(key).toString());
-                                    drugInfo.put(key, date);
-                                } else {
-
-                                    drugInfo.put(key.toLowerCase(), eform.get(key));
-                                }
-                            }
-
-                            result.add(drugInfo);
-                        }
-                    }
+            TimingOutCallback callback = new TimingOutCallback(10 * 1000);
+            try {
+                log2.debug("server_url :" + server_url);
+                if (!System.getProperty("http.proxyHost", "").isEmpty()) {
+                    //The Lite client won't recgonize JAVA_OPTS as it uses a customized http
+                    XmlRpcClient server = new XmlRpcClient(server_url);
+                    server.executeAsync(procedureName, newParams, callback);
                 } else {
-                    useXMLRPC = true;
+                    XmlRpcClientLite server = new XmlRpcClientLite(server_url);
+                    server.executeAsync(procedureName, newParams, callback);
                 }
-            } else {
-                useXMLRPC = true;
+                object = callback.waitForResponse();
+            } catch (TimeoutException e) {
+                log2.debug("No response from server." + server_url);
+            } catch (Throwable ethrow) {
+                log2.debug("Throwing error." + ethrow.getMessage());
             }
-
-            if (useXMLRPC) {
-                Vector newParams = new Vector();
-
-                //Convert from OAuth procedure name to xml rpc procedure name
-                if (procedureName.equals("atcfetch/getWarnings")) {
-                    newParams.addElement("warnings_byATC");
-                    procedureName = "Fetch";
-                } else if (procedureName.equals("atcfetch/getBulletins")) {
-                    newParams.addElement("bulletins_byATC");
-                    procedureName = "Fetch";
-                } else if (procedureName.equals("atcfetch/getInteractions")) {
-                    newParams.addElement("interactions_byATC");
-                    procedureName = "Fetch";
-                } else if (procedureName.equals("guidelines/getGuidelineIds")) {
-                    procedureName = "GetGuidelineIds";
-                } else if (procedureName.equals("guidelines/getGuidelines")) {
-                    procedureName = "GetGuidelines";
-                }
-
-                if (params != null) {
-                    newParams.add(params);
-                }
-
-                if (myDrugrefId != null && !myDrugrefId.trim().equals("")) {
-                    log2.debug("putting >" + myDrugrefId + "< in the request");
-                    newParams.addElement(myDrugrefId);
-                    //params.addElement("true");
-                }
-                log2.debug("#CALLmyDRUGREF-" + procedureName);
-                Object object = null;
-
-                String server_url = OscarProperties.getInstance().getProperty("MY_DRUGREF_URL", "http://know2act.org/backend/api");
-
-                TimingOutCallback callback = new TimingOutCallback(10 * 1000);
-                try {
-                    log2.debug("server_url :" + server_url);
-                    if (!System.getProperty("http.proxyHost", "").isEmpty()) {
-                        //The Lite client won't recgonize JAVA_OPTS as it uses a customized http
-                        XmlRpcClient server = new XmlRpcClient(server_url);
-                        server.executeAsync(procedureName, newParams, callback);
-                    } else {
-                        XmlRpcClientLite server = new XmlRpcClientLite(server_url);
-                        server.executeAsync(procedureName, newParams, callback);
-                    }
-                    object = callback.waitForResponse();
-                } catch (TimeoutException e) {
-                    log2.debug("No response from server." + server_url);
-                } catch (Throwable ethrow) {
-                    log2.debug("Throwing error." + ethrow.getMessage());
-                }
-                result = (Vector) object;
-            }
+            result = (Vector) object;
 
             return result;
         } catch (Exception e) {
-            log2.error("Failed to retrieve K2A drug ref information", e);
+            log2.error("Failed to retrieve drug ref information", e);
             return null;
         }
     }
