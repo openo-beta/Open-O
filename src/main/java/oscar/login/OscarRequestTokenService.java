@@ -55,7 +55,6 @@
 package oscar.login;
 
 import org.oscarehr.ws.oauth.OAuth1Request;
-import org.oscarehr.ws.oauth.OAuth1SignatureVerifier;
 import org.oscarehr.ws.oauth.OAuth1Exception;
 import org.oscarehr.ws.oauth.Client;
 import org.oscarehr.ws.oauth.RequestTokenRegistration;
@@ -73,14 +72,11 @@ public class OscarRequestTokenService {
 
     private final OscarOAuthDataProvider dataProvider;
     private final OAuth1ParamParser parser;
-    private final OAuth1SignatureVerifier verifier;
 
     public OscarRequestTokenService(OscarOAuthDataProvider dataProvider,
-                                    OAuth1ParamParser parser,
-                                    OAuth1SignatureVerifier verifier) {
+                                    OAuth1ParamParser parser) {
         this.dataProvider = dataProvider;
         this.parser = parser;
-        this.verifier = verifier;
     }
 
     // Support POST
