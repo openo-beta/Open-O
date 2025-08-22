@@ -236,21 +236,6 @@
 		<url-pattern>/ws/*</url-pattern>
 	</servlet-mapping>
 
-  <!-- Spring MVC servlet for OAuth endpoints -->
-  <!-- <servlet>
-    <servlet-name>oauth</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>/WEB-INF/oauth-servlet.xml</param-value>
-    </init-param>
-    <load-on-startup>2</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>oauth</servlet-name>
-    <url-pattern>/ws/oauth/*</url-pattern>
-  </servlet-mapping> -->
-
   <!-- Security headers -->
   <filter>
     <filter-name>ClickjackFilterSameOrigin</filter-name>
