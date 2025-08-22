@@ -27,6 +27,34 @@
  * Written by Brandon Aubie <brandon@aubie.ca>
  */
 
+/** 
+ * File: OAuthInterceptor.java
+ *
+ * Purpose:
+ *   CXF phase interceptor that authenticates OAuth 1.0a requests before
+ *   endpoint invocation. Bridges signature verification with OSCAR’s
+ *   provider/session model.
+ *
+ * Responsibilities:
+ *   • Detect OAuth 1.0a requests and load the calling application's config.
+ *   • Delegate signature verification to OAuth1SignatureVerifier.
+ *   • Resolve the provider from the validated access token and attach a
+ *     LoggedInInfo to the HttpServletRequest for downstream use.
+ *   • Fail fast with a CXF Fault on unknown consumer keys, invalid tokens,
+ *     or verification errors.
+ *
+ * Context / Why Added:
+ *   Part of the CXF → ScribeJava migration. Keeps CXF for routing/phases while
+ *   replacing legacy OAuth filters with explicit, unit-testable components.
+ *
+ * Notes:
+ *   • Does not log secrets; avoids mutating the request beyond attaching
+ *     LoggedInInfo on success.
+ *   • Nonce/timestamp replay protection is handled by the verifier/provider.
+ *   • Intercepts in Phase.PRE_INVOKE to ensure endpoints only see authenticated requests.
+ */
+
+
 package org.oscarehr.ws.oauth.util;
 
 import java.util.Collection;

@@ -1,11 +1,26 @@
 /**
- * Purpose: Immutable view of normalized OAuth 1.0a request parameters.
- * Contains: consumerKey, token, signatureMethod, signature, timestamp, nonce,
- *           callback, verifier, httpMethod, baseUri, normalized params.
- * Used by: Signature verification and token endpoints.
+ * File: OAuth1Request.java
+ *
+ * Purpose:
+ *   Immutable representation of a normalized OAuth 1.0a request. Encapsulates
+ *   the HTTP method, base URL, OAuth parameters, and extracted core fields
+ *   needed for signature verification and token handling.
+ *
+ * Responsibilities:
+ *   • Hold normalized OAuth parameters (excluding raw HttpServletRequest state).
+ *   • Expose commonly used OAuth fields such as consumerKey, token, signature,
+ *     nonce, timestamp, callback, and verifier.
+ *   • Provide helper for accumulating parameters during parsing.
+ *
+ * Context / Why Added:
+ *   Produced by OAuth1ParamParser to decouple request parsing from business
+ *   logic. Used consistently by signature verifiers and token endpoints to
+ *   ensure deterministic behavior.
+ *
  * Notes:
- *   • Produced by the parser; do not mutate.
- *   • Avoid logging secrets or raw signatures.
+ *   • Should be treated as immutable after parsing (no mutations in verifiers).
+ *   • Never log secrets or raw signatures when debugging.
+ *   • Supports non-standard `scope` parameter if present in client requests.
  */
 
 package org.oscarehr.ws.oauth;

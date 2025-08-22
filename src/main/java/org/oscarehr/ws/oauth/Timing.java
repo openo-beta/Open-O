@@ -1,15 +1,35 @@
 /**
- * Purpose: Represents the authenticated end-user (resource owner) identity.
- * Contains: user id/username and optional roles/attributes.
- * Used by: Linking approved tokens to a user during authorization.
+ * File: Timing.java
+ *
+ * Purpose:
+ *   Security utility for performing constant-time operations to prevent
+ *   timing attacks when comparing secrets (e.g., OAuth signatures).
+ *
+ * Responsibilities:
+ *   • Provide a constant-time string equality check.
+ *   • Avoid leaking information about matching prefixes/characters through
+ *     branch timing.
+ *
+ * Context / Why Added:
+ *   Used by signature verifiers (e.g., HMAC-SHA1) to compare the computed
+ *   signature with the client-provided one safely.
+ *
  * Notes:
- *   • Do not place sensitive PII beyond what’s needed to bind tokens.
+ *   • All methods are static and side-effect free.
+ *   • Returns false if either input is null.
+ *   • Compare full length and character values to ensure timing is uniform.
  */
+
 
 package org.oscarehr.ws.oauth;
 
 public final class Timing {
     private Timing() {}
+
+    /**
+     * Compare two strings in constant time to mitigate timing attacks.
+     * Returns true only if both are non-null and equal.
+     */
     public static boolean safeEquals(String a, String b) {
         if (a == null || b == null) return false;
         int len = Math.max(a.length(), b.length());

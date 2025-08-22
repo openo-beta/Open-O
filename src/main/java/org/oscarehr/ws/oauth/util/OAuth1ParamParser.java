@@ -10,6 +10,36 @@
  *   • Validate required fields (consumer key, signature method, nonce, timestamp).
  */
 
+/**
+ * File: OAuth1ParamParser.java
+ *
+ * Purpose:
+ *   Centralized parser for OAuth 1.0a HTTP request parameters. Ensures that
+ *   parsing, normalization, and validation of OAuth inputs are consistent
+ *   across all endpoints.
+ *
+ * Responsibilities:
+ *   • Extract OAuth parameters from Authorization header, query string, and
+ *     application/x-www-form-urlencoded request bodies.
+ *   • Normalize values (trim quotes, decode where applicable) and preserve
+ *     them in an immutable OAuth1Request object.
+ *   • Validate presence of required fields (consumer key, signature,
+ *     signature method, timestamp, nonce).
+ *   • Provide a clean separation of concerns so signature verification logic
+ *     is deterministic and unit-testable.
+ *
+ * Context / Why Added:
+ *   Introduced during the CXF → ScribeJava migration to decouple low-level
+ *   request parsing from signature verification and controller logic. This
+ *   makes OAuth request handling more predictable and easier to test.
+ *
+ * Notes:
+ *   • Does not mutate the underlying HttpServletRequest.
+ *   • Does not log secrets or sensitive parameters.
+ *   • Endpoint-specific validations (e.g., token presence, callback rules)
+ *     are handled downstream.
+ */
+
 
 package org.oscarehr.ws.oauth.util;
 

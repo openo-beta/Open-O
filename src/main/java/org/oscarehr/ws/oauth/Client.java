@@ -1,10 +1,26 @@
 /**
- * Purpose: Domain model for an OAuth 1.0a client/application.
- * Contains: consumerKey/secret, app name, callback/application URIs, status.
- * Used by: Lookup during signature verification and token issuance.
+ * File: Client.java
+ *
+ * Purpose:
+ *   Domain model representing an OAuth 1.0a client (consumer application).
+ *   Encapsulates credentials, identifying information, and callback URIs.
+ *
+ * Responsibilities:
+ *   • Store the client’s consumer key/secret pair used for OAuth signing.
+ *   • Provide metadata such as application name, URI, and optional loginName.
+ *   • Track callback URI used during the authorization flow.
+ *   • Expose simple getters/setters for use in token and verification services.
+ *
+ * Context / Why Added:
+ *   Used during signature verification and token issuance to validate
+ *   client credentials and associate issued tokens with the correct
+ *   consumer application.
+ *
  * Notes:
  *   • consumerSecret must be stored securely and never logged.
- *   • Consider rotating secrets and tracking last-used timestamps.
+ *   • Optional loginName field can be used to map to a providerNo in OSCAR.
+ *   • Supports callback URI overrides, allowing per-client authorization
+ *     redirect handling.
  */
 
 package org.oscarehr.ws.oauth;

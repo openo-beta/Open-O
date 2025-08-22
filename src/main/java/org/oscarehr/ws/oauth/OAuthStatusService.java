@@ -28,13 +28,30 @@
  */
 
 /**
- * Purpose: Optional health/status service for OAuth components.
+ * File: OAuthStatusService.java
+ *
+ * Purpose:
+ *   Exposes a lightweight status/health endpoint for OAuth-authenticated requests.
+ *   Allows admins or developers to verify that OAuth tokens are functioning and
+ *   that granted scopes/roles are resolved correctly.
+ *
  * Responsibilities:
- *   • Lightweight checks (e.g., nonce store, clock skew, config presence).
- *   • Debug endpoints guarded for admins/environments only.
+ *   • Provide a JSON response with the authenticated provider’s details and
+ *     granted roles/scopes for the active oauth_token.
+ *   • Rehydrate persisted scopes from ServiceAccessToken records.
+ *   • Act as a debug/diagnostic endpoint without exposing sensitive secrets.
+ *
+ * Context / Why Added:
+ *   Useful for validating OAuth 1.0a integration during development, testing,
+ *   or administration. Complements the main token and authorization endpoints.
+ *
  * Notes:
- *   • Never expose secrets or token values in responses.
+ *   • Requires a valid OAuth token; relies on OAuthInterceptor to attach
+ *     LoggedInInfo before invocation.
+ *   • Never exposes secrets (consumerSecret, tokenSecret) in output.
+ *   • Exceptions are logged server-side but return a safe generic error to clients.
  */
+
 
 package org.oscarehr.ws.oauth;
 

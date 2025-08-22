@@ -25,20 +25,33 @@
  * Migrated from Apache CXF to ScribeJava OAuth1 implementation.
  */
 
-
 /**
- * Purpose: OAuth 1.0a Request Token endpoint for CXF JAX-RS, served at /ws/oauth/initiate.
+ * File: OscarRequestTokenService.java
+ *
+ * Purpose:
+ *   OAuth 1.0a Request Token endpoint (CXF JAX-RS) served at /ws/oauth/initiate.
+ *   Issues temporary request tokens after validating the client and signature.
+ *
  * Responsibilities:
- *   • Parse OAuth params from the HTTP request (Authorization header, query/form).
- *   • Verify HMAC-SHA1/PLAINTEXT signature and timestamp/nonce via OAuth1SignatureVerifier.
- *   • Create and persist a request token; return form-encoded response per RFC 5849.
- * Why changed: Migrated from CXF OAuth/SOAP wiring to ScribeJava-style server-side verification
- * under CXF JAX-RS to satisfy the /ws/oauth/* spec without refactoring existing REST.
- * Dependencies: OscarOAuthDataProvider, OAuth1ParamParser, OAuth1SignatureVerifier.
+ *   • Parse OAuth params from Authorization/query/form via OAuth1ParamParser.
+ *   • Verify signature (HMAC-SHA1/PLAINTEXT) with OAuth1SignatureVerifier.
+ *   • Create and persist a RequestToken; return form-encoded response per RFC 5849.
+ *
+ * Context / Why Changed:
+ *   Migrated from CXF OAuth/SOAP wiring to explicit JAX-RS + ScribeJava-style
+ *   verification to match /ws/oauth/* without refactoring existing REST.
+ *
+ * Dependencies:
+ *   • OscarOAuthDataProvider (client & token storage)
+ *   • OAuth1ParamParser (normalized params)
+ *   • OAuth1SignatureVerifier (crypto & checks)
+ *
  * Notes:
- *   • Keep the same host/port/proto across steps to avoid signature base-string mismatch.
- *   • Response format: oauth_token, oauth_token_secret, oauth_callback_confirmed=true.
+ *   • Keep host/port/scheme consistent across the flow to avoid base-string mismatches.
+ *   • Response body fields: oauth_token, oauth_token_secret, oauth_callback_confirmed=true.
+ *   • Do not log secrets; log high-level failures only.
  */
+
 package oscar.login;
 
 import org.oscarehr.ws.oauth.OAuth1Request;
@@ -54,7 +67,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;
-import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
 public class OscarRequestTokenService {
@@ -124,10 +136,6 @@ public class OscarRequestTokenService {
     }
     private static String enc(String s) {
         return URLEncoder.encode(s, StandardCharsets.UTF_8);
-    }
-    
-    private static String urlDecode(String s) {
-        return URLDecoder.decode(s, StandardCharsets.UTF_8);
     }
 
     private static String pctDecode(String s) {

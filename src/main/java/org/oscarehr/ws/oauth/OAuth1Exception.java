@@ -1,10 +1,27 @@
 /**
- * Purpose: Exception type for OAuth 1.0a failures.
- * Encodes an HTTP status and a short error code/message suitable for clients.
- * Used by: Signature/nonce/timestamp/callback validation and token state checks.
+ * File: OAuth1Exception.java
+ *
+ * Purpose:
+ *   Custom unchecked exception type for signaling OAuth 1.0a failures.
+ *   Couples an HTTP response code with a short error message that can be
+ *   returned to clients.
+ *
+ * Responsibilities:
+ *   • Wrap OAuth-related validation and processing errors (e.g. invalid
+ *     signature, missing parameters, expired tokens).
+ *   • Carry an HTTP status code so callers can map failures directly
+ *     to appropriate responses (e.g. 400, 401).
+ *   • Provide a message string suitable for client error bodies.
+ *
+ * Context / Why Added:
+ *   Replaces generic exceptions to enforce consistent error handling
+ *   across the OAuth request parsing, verification, and token services.
+ *
  * Notes:
- *   • Prefer 401 for auth failures, 400 for malformed requests, 500 for server errors.
- *   • Avoid including secrets in exception messages.
+ *   • Use 401 for authentication/authorization failures.
+ *   • Use 400 for malformed requests or unsupported parameters.
+ *   • Avoid including consumer secrets, token secrets, or other sensitive
+ *     data in exception messages.
  */
 
 package org.oscarehr.ws.oauth;

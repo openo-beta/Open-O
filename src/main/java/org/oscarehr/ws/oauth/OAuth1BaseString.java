@@ -1,12 +1,29 @@
 /**
- * Purpose: Build the OAuth 1.0a signature base string.
+ * File: OAuth1BaseString.java
+ *
+ * Purpose:
+ *   Utility for constructing the OAuth 1.0a signature base string
+ *   used in HMAC-SHA1 and PLAINTEXT signature verification.
+ *
  * Responsibilities:
- *   • Normalize HTTP method, base URI, and parameters per RFC 5849.
- *   • Percent-encode components correctly and sort params lexicographically.
+ *   • Collect and normalize all request parameters, excluding oauth_signature.
+ *   • Percent-encode keys/values per RFC 5849 (UTF-8, space as %20).
+ *   • Sort parameters lexicographically by encoded key, then value.
+ *   • Concatenate HTTP method, base URL, and normalized parameters into
+ *     the final signature base string.
+ *
+ * Context / Why Added:
+ *   Shared helper used by signature verifiers to ensure consistent,
+ *   deterministic base string construction across endpoints.
+ *
  * Notes:
- *   • Exclude "oauth_signature" from parameter normalization.
- *   • Ensure host/port/protocol match the actual request to avoid 401s.
+ *   • Excludes oauth_signature during normalization.
+ *   • Host, port, and protocol must exactly match the actual request
+ *     to avoid false 401s during verification.
+ *   • Percent-encoding follows OAuth 1.0a spec (slightly different from
+ *     standard URL encoding).
  */
+
 
 package org.oscarehr.ws.oauth;
 

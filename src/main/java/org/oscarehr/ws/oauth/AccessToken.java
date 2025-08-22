@@ -7,6 +7,29 @@
  *   • Equals/hashCode should NOT include the secret.
  */
 
+/**
+ * File: AccessToken.java
+ *
+ * Purpose:
+ *   Domain model representing an OAuth 1.0a access token issued to a client.
+ *   Encapsulates the client reference, token credentials, validity, and user
+ *   association.
+ *
+ * Responsibilities:
+ *   • Hold the token key/secret pair used in OAuth request signing.
+ *   • Store metadata such as client reference, lifetime, and issued-at timestamp.
+ *   • Maintain the associated user subject (resource owner) and granted scopes.
+ *   • Provide standard getters/setters for use in token services and verifiers.
+ *
+ * Context / Why Added:
+ *   Core part of OAuth 1.0a token handling, consumed by signature verification,
+ *   access control checks, and token persistence layers.
+ *
+ * Notes:
+ *   • Token secrets must never be logged or included in equals/hashCode.
+ *   • Lifetime and issuedAt values are used to enforce token expiry.
+ */
+
 package org.oscarehr.ws.oauth;
 
 import java.util.ArrayList;

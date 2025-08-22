@@ -1,12 +1,29 @@
 /**
- * Purpose: Time/constant-time helpers for security-sensitive comparisons.
+ * File: RequestTokenRegistration.java
+ *
+ * Purpose:
+ *   Domain model representing the client’s registration request when
+ *   initiating an OAuth 1.0a request token. Encapsulates the client,
+ *   requested callback URI, and requested scopes.
+ *
  * Responsibilities:
- *   • Constant-time equals for signatures/secrets.
- *   • Clock-skew checks for OAuth timestamp validation.
+ *   • Capture the client application initiating the request.
+ *   • Hold the callback URI for redirecting after authorization.
+ *   • Store the list of requested scopes/permissions.
+ *   • Provide simple getters/setters for use in token issuance.
+ *
+ * Context / Why Added:
+ *   Used in the OAuth 1.0a "request token" step to carry the client’s
+ *   requested parameters into the token service. Keeps the initiation
+ *   flow clean and testable.
+ *
  * Notes:
- *   • Keep methods static and side-effect free.
- *   • Unit test with edge values (past, future, boundary skew).
+ *   • Callback URI may be overridden or validated by server policy.
+ *   • Scopes should be canonicalized/validated before persisting.
+ *   • Does not store or generate token keys/secrets — that happens
+ *     when issuing a RequestToken.
  */
+
 
 package org.oscarehr.ws.oauth;
 

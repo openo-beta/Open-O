@@ -1,4 +1,32 @@
-// src/main/java/org/oscarehr/ws/oauth/AccessTokenResource.java
+/**
+ * File: AccessTokenResource.java
+ *
+ * Purpose:
+ *   JAX-RS resource handling the OAuth 1.0a "access token" exchange step
+ *   (request token → access token). Implements the server-side logic
+ *   required by RFC 5849 Section 2.3.
+ *
+ * Responsibilities:
+ *   • Parse the incoming OAuth1 request using OAuth1ParamParser.
+ *   • Validate the client’s consumer key, request token, and verifier.
+ *   • Verify the request signature using OAuth1SignatureVerifier.
+ *   • Delegate token issuance to the OscarOAuthDataProvider.
+ *   • Return a form-encoded access token response containing
+ *     oauth_token and oauth_token_secret.
+ *
+ * Context / Why Added:
+ *   Part of the CXF → ScribeJava migration. This explicit resource class
+ *   replaces CXF’s built-in OAuth handlers with a more transparent,
+ *   testable implementation.
+ *
+ * Notes:
+ *   • Logs invalid attempts at WARN level but never logs secrets.
+ *   • Request tokens are invalidated/consumed once exchanged by the provider.
+ *   • Optional timestamp/nonce replay checks may be added in the provider.
+ *   • Always responds with "application/x-www-form-urlencoded" as required
+ *     by the OAuth 1.0a spec.
+ */
+
 package org.oscarehr.ws.oauth;
 
 import oscar.login.OscarOAuthDataProvider;

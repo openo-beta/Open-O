@@ -1,9 +1,34 @@
 /**
- * OAuth 1.0a Authorize Endpoint (Step 2) — CXF JAX-RS only.
- * GET  /ws/oauth/authorize?oauth_token=...  -> consent page
- * POST /ws/oauth/authorize                  -> approve -> redirect with oauth_verifier
- * If callback == "oob", returns the verifier in the body.
+ * File: AuthorizeResource.java
+ *
+ * Purpose:
+ *   Implements the OAuth 1.0a "authorize" endpoint (Step 2 of the flow).
+ *   Provides the consent page for resource owners and issues/verifies
+ *   the oauth_verifier value required to exchange a request token
+ *   for an access token.
+ *
+ * Responsibilities:
+ *   • GET  /ws/oauth/authorize: Display consent UI (3rdpartyLogin.jsp),
+ *     pre-populated with client and requested scopes.
+ *   • POST /ws/oauth/authorize: Handle approval, finalize authorization
+ *     with the provider, and redirect the user agent back to the client
+ *     with oauth_token and oauth_verifier.
+ *   • Support "oob" (out-of-band) flows by returning the verifier in
+ *     the response body instead of redirecting.
+ *
+ * Context / Why Added:
+ *   Part of OAuth 1.0a implementation replacing CXF’s generic handlers.
+ *   Explicit JAX-RS resource allows integration with OSCAR’s login/session
+ *   model and JSP-based consent UI.
+ *
+ * Notes:
+ *   • Requires an authenticated user session (via "user" attribute).
+ *   • Does not log or expose verifier/token values beyond what’s required
+ *     by the protocol.
+ *   • Responds with 400/401 for missing tokens, invalid request tokens,
+ *     or unauthenticated users.
  */
+
 package org.oscarehr.ws.oauth;
 
 import javax.inject.Inject;

@@ -1,25 +1,27 @@
 /**
- * Purpose: Lightweight identity for the OAuth “resource owner” bound to a token/request.
+ * File: UserSubject.java
  *
- * What it represents:
- *  • The authenticated user/principal (e.g., provider/staff/patient) that approved the token.
- *  • Stable identifiers only (e.g., userId/providerNo, optional tenant/clinic/site id).
- *  • Optional display fields (username/displayName) and role hints.
+ * Purpose:
+ *   Lightweight domain model representing the OAuth 1.0a resource owner
+ *   (end-user) bound to a token or request. Encapsulates only stable,
+ *   non-sensitive identifiers and role hints.
  *
- * Used by:
- *  • Authorization step to attach an approver to a RequestToken.
- *  • AccessToken to carry the subject across signed requests.
- *  • Downstream services to resolve permissions/audit without re-querying session state.
+ * Responsibilities:
+ *   • Identify the authenticated user who approved or owns a token.
+ *   • Provide a stable loginName (e.g., providerNo, staffId, patientId).
+ *   • Optionally carry a list of roles/permissions for downstream checks.
  *
- * Design notes:
- *  • Keep it IMMUTABLE where possible (final fields; no setters) for thread safety.
- *  • equals/hashCode should rely on stable IDs (e.g., subjectId + tenant) – never on names.
- *  • Do NOT include secrets or volatile data (passwords, hashes, session ids).
- *  • Minimize PII; avoid logging full objects—log only non-sensitive ids.
- *  • If multi-tenant, include tenant/clinic id and treat it as part of identity.
+ * Context / Why Added:
+ *   Linked to RequestToken during authorization and carried forward in
+ *   AccessToken to avoid re-querying session state on every request.
  *
- * Serialization:
- *  • Safe to serialize as part of token persistence; version carefully if fields change.
+ * Notes:
+ *   • Keep immutable where possible for thread safety.
+ *   • equals/hashCode should be based on stable IDs (not display fields).
+ *   • Do not include secrets, session identifiers, or volatile data.
+ *   • Limit PII; log only non-sensitive identifiers if needed.
+ *   • Safe for token persistence/serialization, but version carefully if
+ *     the model evolves.
  */
 
 package org.oscarehr.ws.oauth;
@@ -28,7 +30,10 @@ import java.util.List;
 
 public class UserSubject {
 
+    // Stable identifier for the user (e.g., providerNo or username)
     private String loginName;
+    
+    // Optional list of roles/permissions associated with this subject
     private List<String> roles;
 
     public UserSubject(String loginName, List<String> roles) {

@@ -28,14 +28,31 @@
  */
 
 /**
- * Purpose: Common base for OAuth-related services.
+ * File: AbstractServiceImpl.java
+ *
+ * Purpose:
+ *   Provides a common base for OAuth-related web service implementations in OSCAR.
+ *   Centralizes access to request context, authenticated provider info, and
+ *   OAuth access tokens.
+ *
  * Responsibilities:
- *   • Shared helpers (e.g., form-encoded building, error mapping, logging).
- *   • Convenience methods used by request/access token flows.
+ *   • Retrieve the current HttpServletRequest from the CXF PhaseInterceptorChain.
+ *   • Access the bound OAuth1AccessToken from the current CXF message.
+ *   • Resolve provider identifiers (providerNo) stored by OAuthInterceptor.
+ *   • Expose convenience methods for retrieving the authenticated Provider
+ *     and LoggedInInfo objects.
+ *
+ * Context / Why Added:
+ *   Used by OAuth-enabled web service controllers to reduce boilerplate and
+ *   ensure consistent request/context handling across endpoints.
+ *
  * Notes:
- *   • Stateless by design; avoid keeping per-request state in fields.
- *   • Extend in controllers/services as needed to reduce duplication.
+ *   • Assumes OAuthInterceptor has already attached authentication context.
+ *   • Stateless; per-request data is always pulled from the current CXF message.
+ *   • Throws IllegalStateException if authentication context is missing,
+ *     ensuring endpoints fail fast when accessed without valid OAuth.
  */
+
 
 package org.oscarehr.ws.oauth;
 

@@ -1,12 +1,31 @@
 /**
- * Purpose: Build the OAuth 1.0a signature base string.
+ * File: HmacSha1SignatureVerifier.java
+ *
+ * Purpose:
+ *   Implements OAuth 1.0a signature verification for the HMAC-SHA1 method.
+ *   Responsible for building the RFC 5849-compliant base string and
+ *   comparing the client-provided signature against a locally computed one.
+ *
  * Responsibilities:
- *   • Normalize HTTP method, base URI, and parameters per RFC 5849.
- *   • Percent-encode components correctly and sort params lexicographically.
+ *   • Parse and validate OAuth1 parameters from the incoming request.
+ *   • Build the normalized signature base string from method, URI, and params.
+ *   • Compute the HMAC-SHA1 signature using the consumer secret and token secret.
+ *   • Compare the computed signature against the client’s using constant-time
+ *     equality checks.
+ *
+ * Context / Why Added:
+ *   Replaces CXF’s built-in OAuth verifier with an explicit, Spring-managed
+ *   service. Part of the CXF → ScribeJava migration to make OAuth request
+ *   verification more deterministic and testable.
+ *
  * Notes:
- *   • Exclude "oauth_signature" from parameter normalization.
- *   • Ensure host/port/protocol match the actual request to avoid 401s.
+ *   • Throws OAuth1Exception with HTTP-like codes on invalid/unsupported input.
+ *   • Delegates provider lookups (request/access token secrets, providerNo)
+ *     to OscarOAuthDataProvider.
+ *   • Relies on OAuth1BaseString for normalization and Timing.safeEquals
+ *     for constant-time comparison.
  */
+
 
 package org.oscarehr.ws.oauth;
 

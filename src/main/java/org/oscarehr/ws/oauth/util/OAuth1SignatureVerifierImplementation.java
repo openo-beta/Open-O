@@ -1,15 +1,36 @@
-/**
- * Purpose: Server-side verification of OAuth 1.0a signatures (HMAC-SHA1/PLAINTEXT).
+ /**
+ * File: OAuth1SignatureVerifierImplementation.java
+ *
+ * Purpose:
+ *   Provides the server-side verification of OAuth 1.0a request signatures
+ *   using supported methods (HMAC-SHA1, PLAINTEXT). Ensures only requests
+ *   with valid signatures are accepted by the API endpoints.
+ *
  * Responsibilities:
- *   • Build signature base string; recompute signature; constant-time comparison.
- *   • Validate timestamp/nonce (anti-replay) via injected store if configured.
- *   • Throw domain-specific OAuth1Exception with HTTP 401 on failure.
- * Why changed/added: Replace CXF OAuth filter with an explicit, testable verifier used by
- * request/access token endpoints while keeping CXF JAX-RS for routing.
+ *   • Extract OAuth parameters and signature from HttpServletRequest.
+ *   • Construct the normalized parameter string and base signature string.
+ *   • Compute signatures using consumer secret and token secret, then
+ *     perform constant-time comparison against the incoming signature.
+ *   • Resolve appropriate token secrets (request vs. access tokens) via the
+ *     OscarOAuthDataProvider.
+ *   • Validate replay-prevention fields (timestamp, nonce) if configured.
+ *   • Expose utility to map an access token back to its provider.
+ *
+ * Context / Why Added:
+ *   Introduced during the CXF → ScribeJava migration to replace the legacy
+ *   CXF OAuth filter with an explicit, unit-testable verifier class. This
+ *   ensures predictable and deterministic signature validation across token
+ *   and resource endpoints.
+ *
  * Notes:
- *   • Do not log shared secrets or raw signatures.
- *   • Allow small clock skew; ensure nonce uniqueness per consumer+timestamp.
+ *   • No secrets or raw signatures are logged.
+ *   • Uses RFC 5849-compliant percent-encoding/decoding rules.
+ *   • Nonce/timestamp anti-replay handling is delegated to the configured
+ *     store/provider.
+ *   • Designed to fail fast with IllegalArgumentException on invalid or
+ *     missing signature material.
  */
+
 
 package org.oscarehr.ws.oauth.util;
 
@@ -21,8 +42,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.github.scribejava.core.model.OAuthConstants;
-import com.github.scribejava.core.model.OAuthRequest;
-import com.github.scribejava.core.model.Verb;
 
 import oscar.login.OscarOAuthDataProvider;
 import org.oscarehr.ws.oauth.OAuth1SignatureVerifier;
@@ -168,6 +187,7 @@ public class OAuth1SignatureVerifierImplementation implements OAuth1SignatureVer
         return out.toString();
     }
 
+    // Compute HMAC-SHA1 digest of input data using the provided key.
     private static byte[] hmacSha1(String data, String key) {
         try {
             javax.crypto.Mac mac = javax.crypto.Mac.getInstance("HmacSHA1");
@@ -179,10 +199,12 @@ public class OAuth1SignatureVerifierImplementation implements OAuth1SignatureVer
         }
     }
 
+    // Encode bytes into a Base64 string.
     private static String base64(byte[] bytes) {
         return java.util.Base64.getEncoder().encodeToString(bytes);
     }
 
+    // Constant-time string equality check to mitigate timing attacks.
     private static boolean constantTimeEquals(String a, String b) {
         if (a == null || b == null) return false;
         int len = Math.max(a.length(), b.length());
@@ -195,33 +217,30 @@ public class OAuth1SignatureVerifierImplementation implements OAuth1SignatureVer
         return r == 0 && a.length() == b.length();
     }
 
-    private static String urlDecode(String s) {
-        try { return java.net.URLDecoder.decode(s, "UTF-8"); }
-        catch (Exception e) { return s; }
-    }
-
+    // Immutable key/value pair used for normalized parameter lists.
     private static final class NameValue {
         final String name, value;
         NameValue(String n, String v) { this.name = n; this.value = v; }
     }
 
+    // Percent-decode a string per RFC 5849 (OAuth 1.0a encoding rules).
     private static String pctDecode(String s) {
-    if (s == null || s.isEmpty()) return s;
-    int n = s.length();
-    StringBuilder out = new StringBuilder(n);
-    for (int i = 0; i < n; i++) {
-        char c = s.charAt(i);
-        if (c == '%' && i + 2 < n) {
-            int hi = Character.digit(s.charAt(i + 1), 16);
-            int lo = Character.digit(s.charAt(i + 2), 16);
-            if (hi >= 0 && lo >= 0) {
-                out.append((char)((hi << 4) + lo));
-                i += 2;
-                continue;
+        if (s == null || s.isEmpty()) return s;
+        int n = s.length();
+        StringBuilder out = new StringBuilder(n);
+        for (int i = 0; i < n; i++) {
+            char c = s.charAt(i);
+            if (c == '%' && i + 2 < n) {
+                int hi = Character.digit(s.charAt(i + 1), 16);
+                int lo = Character.digit(s.charAt(i + 2), 16);
+                if (hi >= 0 && lo >= 0) {
+                    out.append((char)((hi << 4) + lo));
+                    i += 2;
+                    continue;
+                }
             }
+            out.append(c);
         }
-        out.append(c);
+        return out.toString();
     }
-    return out.toString();
-}
 }

@@ -22,6 +22,9 @@
 //  * Hamilton
 //  * Ontario, Canada
 //  */
+
+// This class is commented out and all the functionality has been put into OscarRequestTokenService.
+
 // package oscar.login;
 
 // import java.io.IOException;
