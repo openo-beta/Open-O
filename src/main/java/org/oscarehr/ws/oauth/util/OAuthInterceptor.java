@@ -27,33 +27,32 @@
  * Written by Brandon Aubie <brandon@aubie.ca>
  */
 
-/** 
- * File: OAuthInterceptor.java
+/**
+ * OAuthInterceptor
  *
  * Purpose:
- *   CXF phase interceptor that authenticates OAuth 1.0a requests before
- *   endpoint invocation. Bridges signature verification with OSCAR’s
- *   provider/session model.
+ *   CXF phase interceptor that wires OAuth1 requests into OSCAR’s provider model.
  *
  * Responsibilities:
- *   • Detect OAuth 1.0a requests and load the calling application's config.
- *   • Delegate signature verification to OAuth1SignatureVerifier.
- *   • Resolve the provider from the validated access token and attach a
- *     LoggedInInfo to the HttpServletRequest for downstream use.
- *   • Fail fast with a CXF Fault on unknown consumer keys, invalid tokens,
- *     or verification errors.
+ *   • Detect OAuth 1.0a requests on incoming HTTP messages.
+ *   • Pull consumer key and access token directly from request parameters.
+ *   • Resolve the providerNo from the access token using OscarOAuthDataProvider.
+ *   • Attach a LoggedInInfo object to the HttpServletRequest for downstream use.
  *
- * Context / Why Added:
- *   Part of the CXF → ScribeJava migration. Keeps CXF for routing/phases while
- *   replacing legacy OAuth filters with explicit, unit-testable components.
+ * Design notes:
+ *   • This version does NOT perform signature verification — trusted flow assumes
+ *     requests reach this point only after valid OAuth handling upstream.
+ *   • Keeps state lightweight; avoids DB lookups beyond resolving providerNo → Provider.
+ *   • Runs in Phase.PRE_INVOKE to ensure endpoints see authenticated context only.
  *
- * Notes:
- *   • Does not log secrets; avoids mutating the request beyond attaching
- *     LoggedInInfo on success.
- *   • Nonce/timestamp replay protection is handled by the verifier/provider.
- *   • Intercepts in Phase.PRE_INVOKE to ensure endpoints only see authenticated requests.
+ * Error handling:
+ *   • Throws OAuth1Exception for missing/invalid consumer keys or providers.
+ *   • Wraps errors in CXF Faults for consistent exception handling.
+ *
+ * Why simplified:
+ *   • Replaces older CXF OAuth filter with a minimal interceptor that fits the
+ *     current request format and avoids unused AppDefinition / verifier logic.
  */
-
 
 package org.oscarehr.ws.oauth.util;
 
