@@ -130,7 +130,6 @@
     <ul class="nav nav-pills" id="eformOptions">
         <li><a href="#upload">Upload</a></li>
         <li><a href="#import">Import</a></li>
-        <li><a href="#download">Download</a></li>
     </ul>
 
     <div class="tab-content">
@@ -151,18 +150,6 @@
 
                     <iframe id="importFrame" name="importFrame" frameborder="0" width="100%" height="auto"
                             src="<%=request.getContextPath()%>/eform/partials/import.jsp"></iframe>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="tab-pane" id="download">
-            <div class="row-fluid">
-                <div class="well">
-
-                    <iframe id="downloadFrame" name="downloadFrame" onload="downloadFrameLoaded()" frameborder="0"
-                            width="100%" height="auto" scrolling="no"
-                            src="<%=request.getContextPath()%>/eform/partials/download.jsp"></iframe>
 
                 </div>
             </div>
@@ -242,19 +229,8 @@
     <script>
         $('#eformOptions a').click(function (e) {
             e.preventDefault();
-            if (this.href.indexOf('download') != -1) {
-                document.getElementById("downloadFrame").src = document.getElementById("downloadFrame").src;
-            }
             $(this).tab('show');
         });
-
-        function downloadFrameLoaded() {
-            var iFrame = document.getElementById('downloadFrame');
-            if (iFrame) {
-                iFrame.height = "";
-                iFrame.height = iFrame.contentWindow.document.body.scrollHeight + "px";
-            }
-        }
 
         registerFormSubmit('eformImportForm', 'dynamic-content');
 

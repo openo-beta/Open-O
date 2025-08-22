@@ -74,7 +74,7 @@
         </tr>
         <tr>
             <td align="right" style="font-size:10px">
-                <i>Reference: <a href="http://know2act.org" target="_blank"></i>know2act.org</a><br/>
+                <i>Reference: <!-- know2act.org URL removed --></i><br/>
                 <em>From:<%=author%>
                 </em>
             </td>
@@ -238,7 +238,7 @@
 
     private Object callWebserviceLite(String procedureName, Vector params) throws Exception {
         Object object = null;
-        String server_url = "http://know2act.org/backend/api";
+        String server_url = ""; // know2act.org URL removed
         try {
             if (!System.getProperty("http.proxyHost", "").isEmpty()) {
                 //The Lite client won't recgonize JAVA_OPTS as it uses a customized http

@@ -264,67 +264,6 @@ public class FormsService extends AbstractServiceImpl {
         return summaryList;
     }
 
-    @POST
-    @Path("/getK2AEForm")
-    @Consumes("application/json")
-    @Produces("application/json")
-    public AbstractSearchResponse<String> getK2AEForm(String id) {
-        AbstractSearchResponse<String> response = new AbstractSearchResponse<String>();
-        MiscUtils.getLogger().info("EForm id is: " + id);
-
-        try {
-            AppDefinition k2aApp = appDefinitionDao.findByName("K2A");
-            AppOAuth1Config appAuthConfig = AppOAuth1Config.fromDocument(k2aApp.getConfig());
-            URL url = new URL(appAuthConfig.getBaseURL() + "/download/eform/" + id);
-            url.openStream();
-            EFormExportZip eFormExportZip = new EFormExportZip();
-            List<String> errors = eFormExportZip.importForm(url.openStream());
-            if (errors != null) {
-                response.setContent(errors);
-            }
-            response.setTotal(1);
-        } catch (Exception e) {
-            MiscUtils.getLogger().error("Error parsing data - " + e);
-            return null;
-        }
-        return response;
-    }
-
-    @POST
-    @Path("/getAllK2AEForms")
-    @Consumes("application/json")
-    @Produces(MediaType.APPLICATION_JSON)
-    public AbstractSearchResponse<String> getAllK2AEForms(String jsonString) {
-        try {
-            AbstractSearchResponse<String> response = new AbstractSearchResponse<String>();
-            JSONArray jsonArray = JSONArray.fromObject(jsonString);
-            List<String> errors = new ArrayList<String>();
-            int totalEFormsProcessed = 0;
-
-            AppDefinition k2aApp = appDefinitionDao.findByName("K2A");
-            AppOAuth1Config appAuthConfig = AppOAuth1Config.fromDocument(k2aApp.getConfig());
-
-            for (int i = 0; i < jsonArray.size(); i++) {
-                JSONObject eform = jsonArray.getJSONObject(i);
-                URL url = new URL(appAuthConfig.getBaseURL() + "/download/eform/" + eform.getString("id"));
-
-                url.openStream();
-                EFormExportZip eFormExportZip = new EFormExportZip();
-                List<String> eformErrors = eFormExportZip.importForm(url.openStream());
-                if (eformErrors != null) {
-                    errors.add("failed to upload eform: " + eform.getString("name") + ", eform may already exist in OSCAR.");
-                }
-                totalEFormsProcessed++;
-            }
-            response.setTotal(totalEFormsProcessed);
-            response.setContent(errors);
-            return response;
-        } catch (Exception e) {
-            MiscUtils.getLogger().error("Error parsing data - " + e);
-            return null;
-        }
-    }
-
     @GET
     @Path("/{demographicNo}/formOptions")
     @Produces("application/json")
@@ -335,15 +274,5 @@ public class FormsService extends AbstractServiceImpl {
 
         //formMenu.add(idCounter++, bundle.getString("global.saveAsPDF"), "PDF", "URL");
         return formMenu;
-    }
-
-    public static String getK2AEFormsList(LoggedInInfo loggedInInfo, AppDefinition k2aApp, AppUser k2aUser) {
-        try {
-            String requestURI = "/ws/api/eforms/getEForms";
-            String retval = OAuth1Utils.getOAuthGetResponse(loggedInInfo, k2aApp, k2aUser, requestURI, requestURI);
-            return retval;
-        } catch (Exception e) {
-            return null;
-        }
     }
 }

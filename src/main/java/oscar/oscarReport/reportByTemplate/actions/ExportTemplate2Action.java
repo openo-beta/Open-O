@@ -27,17 +27,7 @@ package oscar.oscarReport.reportByTemplate.actions;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.app.OAuth1Utils;
-import org.oscarehr.common.dao.AppDefinitionDao;
-import org.oscarehr.common.dao.AppUserDao;
-import org.oscarehr.common.model.AppDefinition;
-import org.oscarehr.common.model.AppUser;
-import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import org.oscarehr.ws.rest.to.model.RssItem;
-
-import oscar.oscarReport.reportByTemplate.ReportManager;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -45,9 +35,6 @@ import org.apache.struts2.ServletActionContext;
 public class ExportTemplate2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
-
-    private static final AppDefinitionDao appDefinitionDao = SpringUtils.getBean(AppDefinitionDao.class);
-    private static final AppUserDao appUserDao = SpringUtils.getBean(AppUserDao.class);
 
     public String execute() {
         MiscUtils.getLogger().debug("Entered manage template action");
@@ -63,44 +50,9 @@ public class ExportTemplate2Action extends ActionSupport {
         request.setAttribute("templateid", templateId);
 
         MiscUtils.getLogger().debug("Entered export template action with : " + name + ", id: " + templateId);
-        try {
-            AppDefinition k2aApp = appDefinitionDao.findByName("K2A");
-            if (k2aApp != null) {
-                LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-                AppUser k2aUser = appUserDao.findForProvider(k2aApp.getId(), loggedInInfo.getLoggedInProvider().getProviderNo());
-
-                if (k2aUser != null) {
-                    ReportManager reportManager = new ReportManager();
-                    String xml = reportManager.getTemplateXml(templateId);
-
-                    if (xml != null) {
-                        RssItem report = new RssItem();
-                        report.setName(name);
-                        report.setBody(xml);
-                        report.setType("Report");
-                        String jsonString = OAuth1Utils.getOAuthPostResponse(loggedInInfo, k2aApp, k2aUser, "/ws/api/posts", "/ws/api/posts", OAuth1Utils.getProviderK2A(), report);
-
-                        if (jsonString != null && !jsonString.isEmpty()) {
-                            message = "Sucessfully exported report with name: " + name;
-                        }
-                    } else {
-                        message = "Unable to retreive template from database, please contact an administrator";
-                        request.setAttribute("message", message);
-                        return "fail";
-                    }
-                } else {
-                    request.setAttribute("message", message);
-                    return "fail";
-                }
-            } else {
-                request.setAttribute("message", message);
-                return "fail";
-            }
-        } catch (Exception e) {
-            MiscUtils.getLogger().error("Failed to export Report by Template to K2A", e);
-            request.setAttribute("message", message);
-            return "fail";
-        }
+        // K2A service has been discontinued - export functionality is no longer available
+        message = "The K2A export service has been discontinued and is no longer available";
+        MiscUtils.getLogger().info("K2A export attempted but service is no longer available");
         request.setAttribute("message", message);
         return SUCCESS;
     }
