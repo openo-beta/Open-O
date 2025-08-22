@@ -59,8 +59,8 @@ package org.oscarehr.ws.oauth.util;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.cxf.interceptor.Fault;
@@ -68,71 +68,65 @@ import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.Phase;
 import org.apache.cxf.phase.PhaseInterceptor;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
-import org.oscarehr.common.dao.AppDefinitionDao;
-import org.oscarehr.common.model.AppDefinition;
+
 import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.ws.oauth.OAuth1SignatureVerifier;
+import org.oscarehr.ws.oauth.OAuth1Exception;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import oscar.login.OscarOAuthDataProvider;
-import oscar.login.AppOAuth1Config;
 
 import org.oscarehr.PMmodule.dao.ProviderDao;
 
 @Component
 public class OAuthInterceptor implements PhaseInterceptor<Message> {
 
-    @Autowired private AppDefinitionDao           appDefinitionDao;
-    @Autowired private OscarOAuthDataProvider     oauthDataProvider;
-    @Autowired private OAuth1SignatureVerifier    signatureVerifier;
-    @Autowired private ProviderDao                providerDao;              
+    @Autowired private OscarOAuthDataProvider oauthDataProvider;
+    @Autowired private ProviderDao            providerDao;
 
-    @Override public String getPhase() { return Phase.PRE_INVOKE; }
+    @Override
+    public String getPhase() { return Phase.PRE_INVOKE; }
 
     @Override
     public void handleMessage(Message message) throws Fault {
         HttpServletRequest req =
             (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
 
-        // 1) Skip non-OAuth1 requests
+        // 1) Skip non‑OAuth1 requests
         if (!OAuthRequestParser.isOAuth1Request(req)) {
             return;
         }
 
         try {
-            // 2) Load AppDefinition & config
-            String consumerKey = OAuthRequestParser.getConsumerKey(req);
-            AppDefinition appDef = appDefinitionDao.findByConsumerKey(consumerKey);
-            if (appDef == null) {
-                throw new IllegalArgumentException("Unknown consumer_key: " + consumerKey);
+            // 2) Pull oauth_token directly from the request (Authorization/query/form)
+            Map<String, String> oauth = OAuthRequestParser.extractOAuthParameters(req);
+            String token = oauth.get("oauth_token");
+            if (token == null || token.isEmpty()) {
+                throw new OAuth1Exception(400, "missing_access_token");
             }
-            AppOAuth1Config cfg = AppOAuth1Config.fromDocument(appDef.getConfig());
 
-            // 3) Delegate signature verification & grab the token
-            String token = signatureVerifier.verifySignature(req, cfg);
-
-            // 4) Resolve provider via ProviderDao, attach LoggedInInfo
+            // 3) Resolve provider and attach LoggedInInfo
             String providerNo = oauthDataProvider.getProviderNoByAccessToken(token);
             var provider = providerDao.getProvider(providerNo);
             if (provider == null) {
-                throw new IllegalArgumentException("Unknown provider for token: " + token);
+                throw new OAuth1Exception(401, "unknown_provider");
             }
 
             LoggedInInfo info = new LoggedInInfo();
             info.setLoggedInProvider(provider);
             req.setAttribute(info.getLoggedInInfoKey(), info);
 
-        } catch (Exception e) {
+        } catch (OAuth1Exception e) {
             throw new Fault(e);
+        } catch (Exception e) {
+            // Keep details server‑side; expose a generic fault
+            throw new Fault(new OAuth1Exception(401, "oauth_authentication_failed"));
         }
     }
 
-    @Override public void handleFault(Message message) { /* no-op */ }
-    @Override public Set<String> getBefore()  { return Collections.emptySet(); }
-    @Override public Set<String> getAfter()   { return Collections.emptySet(); }
-    @Override public Collection<PhaseInterceptor<? extends Message>> getAdditionalInterceptors() {
-        return null;
-    }
+    @Override public void handleFault(Message message) { /* no‑op */ }
+    @Override public Set<String> getBefore() { return Collections.emptySet(); }
+    @Override public Set<String> getAfter()  { return Collections.emptySet(); }
+    @Override public Collection<PhaseInterceptor<? extends Message>> getAdditionalInterceptors() { return null; }
     @Override public String getId() { return getClass().getSimpleName(); }
 }
