@@ -51,6 +51,7 @@ import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;
 import org.oscarehr.managers.TicklerManager;
 import org.oscarehr.provider.web.CppPreferencesUIBean;
+import org.oscarehr.util.CppUtils;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
@@ -96,6 +97,16 @@ public class CaseManagementView2Action extends ActionSupport {
     protected ProgramManager programMgr = SpringUtils.getBean(ProgramManager.class);
     protected AdmissionManager admissionMgr = SpringUtils.getBean(AdmissionManager.class);
 
+    static {
+        // Initialize CPP 
+        try {
+            CppUtils.addCppCode("CurrentHistory");
+            CppUtils.addCppCode("DiagnosticNotes");
+            CppUtils.addCppCode("PastOcularHistory");
+        } catch (Exception e) {
+            System.err.println("Failed to init CPP codes in CaseManagementView2Action: " + e.getMessage());
+        }
+    }
 
     public String execute() throws Exception {
         this.setFilter_provider("");
