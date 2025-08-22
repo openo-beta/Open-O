@@ -73,7 +73,6 @@ public class Utilities {
             String line = null;
             boolean firstPIDflag = false; //true if the first PID segment has been processed false otherwise
             boolean firstMSHflag = false; //true if the first MSH segment has been processed false otherwise
-            //String mshSeg = br.readLine();
 
             StringBuilder sb = new StringBuilder();
             String mshSeg = "";
@@ -111,7 +110,6 @@ public class Utilities {
 
         return (messages);
     }
-
 
     /**
      * @param stream
@@ -194,50 +192,54 @@ public class Utilities {
     public static String savePdfFile(InputStream stream, String filename) {
         String retVal = null;
         try {
+            if (filename == null || filename.isBlank()) {
+                throw new IllegalArgumentException("Filename cannot be null or empty");
+            }
+
             OscarProperties props = OscarProperties.getInstance();
-            //properties must exist
             String place = props.getProperty("DOCUMENT_DIR");
 
             if (!place.endsWith("/")) {
-                place = new StringBuilder(place).insert(place.length(), "/").toString();
+                place = place + "/";
             }
 
-            filename = filename.replaceAll(".enc", "");
-            int fileExtIdx = -1;
-            if (filename.endsWith(".pdf")) {
-                fileExtIdx = filename.lastIndexOf(".pdf");
-            } else if (filename.endsWith(".PDF")) {
-                fileExtIdx = filename.lastIndexOf(".PDF");
+            // Canonicalize path to prevent traversal
+            Path basePath = Paths.get(place).toAbsolutePath().normalize();
+            Path targetPath = basePath.resolve(filename).normalize();
+
+            if (!targetPath.startsWith(basePath)) {
+                throw new IllegalArgumentException("Invalid filename (path traversal): " + filename);
             }
 
-            if (fileExtIdx >= 0) {
-                filename = filename.substring(0, fileExtIdx);
+            // Remove .enc
+            filename = filename.replaceAll("\\.enc$", "");
+            if (filename.toLowerCase().endsWith(".pdf")) {
+                filename = filename.substring(0, filename.length() - 4);
             }
 
-            retVal = place + "DocUpload." + filename + "." + (new Date()).getTime() + ".pdf";
+            retVal = basePath.resolve("DocUpload." + filename + "." + System.currentTimeMillis() + ".pdf").toString();
 
-            //write the  file to the file specified
-            OutputStream os = new FileOutputStream(retVal);
-
-            int bytesRead = 0;
-            while ((bytesRead = stream.read()) != -1) {
-                os.write(bytesRead);
+            try (OutputStream os = new FileOutputStream(retVal)) {
+                int bytesRead;
+                while ((bytesRead = stream.read()) != -1) {
+                    os.write(bytesRead);
+                }
             }
-            os.close();
-
-            //close the stream
             stream.close();
+
         } catch (FileNotFoundException fnfe) {
             logger.error("Error", fnfe);
             return retVal;
-
         } catch (IOException ioe) {
             logger.error("Error", ioe);
             return retVal;
+        } catch (IllegalArgumentException iae) {
+            logger.error("Invalid filename: " + filename, iae);
+            return null;
         }
+
         return retVal;
     }
-
 
     /*
      *  Return a string corresponding to the data in a given InputStream
