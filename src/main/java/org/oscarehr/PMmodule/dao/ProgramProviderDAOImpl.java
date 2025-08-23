@@ -157,8 +157,8 @@ public class ProgramProviderDAOImpl extends HibernateDaoSupport implements Progr
 
 
         ProgramProvider result = null;
-        List results = this.getHibernateTemplate().find(
-                "from ProgramProvider pp where pp.ProviderNo = ? and pp.ProgramId = ? and pp.RoleId = ?", new Object[] { providerNo, programId, roleId });
+        String queryStr = "from ProgramProvider pp where pp.ProviderNo = ?0 and pp.ProgramId = ?1 and pp.RoleId = ?2";
+        List results = this.getHibernateTemplate().find(queryStr, new Object[] { providerNo, programId, roleId });
 
         if (!results.isEmpty()) {
             result = (ProgramProvider) results.get(0);
