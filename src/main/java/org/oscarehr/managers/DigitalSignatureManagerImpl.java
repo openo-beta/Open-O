@@ -34,6 +34,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
 import java.util.Date;
 import java.util.Objects;
 
@@ -100,23 +103,51 @@ public class DigitalSignatureManagerImpl implements DigitalSignatureManager {
 
     @Override
     public DigitalSignature processAndSaveDigitalSignature(LoggedInInfo loggedInInfo, String signatureRequestId, Integer demographicNo, ModuleType moduleType) {
+        if (!loggedInInfo.getCurrentFacility().isEnableDigitalSignatures()) {
+            return null;
+        }
 
-        if (loggedInInfo.getCurrentFacility().isEnableDigitalSignatures()) {
-            String filename = DigitalSignatureUtils.getTempFilePath(signatureRequestId);
-            if (filename.isEmpty()) {
+        String filename = DigitalSignatureUtils.getTempFilePath(signatureRequestId);
+        if (filename == null || filename.isEmpty()) {
+            return null;
+        }
+
+        try {
+            Path baseDir = Paths.get("/safe/signatures").toAbsolutePath().normalize();
+            Path filePath = baseDir.resolve(filename).normalize();
+
+            if (!filePath.startsWith(baseDir)) {
+                logger.warn("Attempted access to file outside of signature directory: " + filename);
+                throw new SecurityException("Invalid file path");
+            }
+
+            if (!Files.exists(filePath) || !Files.isRegularFile(filePath)) {
+                logger.debug("Signature file not found or not a regular file: " + filePath);
                 return null;
             }
-            try (FileInputStream fileInputStream = new FileInputStream(filename)) {
-                byte[] image = new byte[1024 * 256];
-                fileInputStream.read(image);
 
-                return this.saveDigitalSignature(loggedInInfo.getCurrentFacility().getId(),
-                        loggedInInfo.getLoggedInProviderNo(), demographicNo, image, moduleType);
-            } catch (FileNotFoundException e) {
-                logger.debug("Signature file not found. User probably didn't collect a signature.", e);
-            } catch (Exception e) {
-                logger.error("UnexpectedError.", e);
+            try (FileInputStream fileInputStream = new FileInputStream(filePath.toFile())) {
+                byte[] image = new byte[1024 * 256];
+                int readBytes = fileInputStream.read(image);
+                if (readBytes <= 0) {
+                    logger.debug("Signature file is empty: " + filePath);
+                    return null;
+                }
+
+                return this.saveDigitalSignature(
+                        loggedInInfo.getCurrentFacility().getId(),
+                        loggedInInfo.getLoggedInProviderNo(),
+                        demographicNo, 
+                        image, 
+                        moduleType
+                );
             }
+        } catch (FileNotFoundException e) {
+            logger.debug("Signature file not found. User probably didn't collect a signature.", e);
+        } catch (SecurityException e) {
+            logger.warn("Blocked unsafe file access attempt.", e);
+        } catch (Exception e) {
+            logger.error("Unexpected error processing digital signature.", e);
         }
 
         return null;
