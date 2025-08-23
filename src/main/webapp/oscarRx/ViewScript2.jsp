@@ -251,20 +251,12 @@
             }
 
             function updateCurrentInteractions() {
-                new Ajax.Request("GetmyDrugrefInfo.do?method=findInteractingDrugList", {
+                new Ajax.Request("UpdateInteractingDrugs.jsp", {
                     method: 'get', onSuccess: function (transport) {
-                        new Ajax.Request("UpdateInteractingDrugs.jsp", {
-                            method: 'get', onSuccess: function (transport) {
-                                var str = transport.responseText;
-                                str = str.replace('<script type="text/javascript">', '');
-                                str = str.replace(/<\/script>/, '');
-                                eval(str);
-                                //oscarLog("str="+str);
-                                <oscar:oscarPropertiesCheck property="MYDRUGREF_DS" value="yes">
-                                callReplacementWebService("GetmyDrugrefInfo.do?method=view", 'interactionsRxMyD');
-                                </oscar:oscarPropertiesCheck>
-                            }
-                        });
+                        var str = transport.responseText;
+                        str = str.replace('<script type="text/javascript">', '');
+                        str = str.replace(/<\/script>/, '');
+                        eval(str);
                     }
                 });
             }

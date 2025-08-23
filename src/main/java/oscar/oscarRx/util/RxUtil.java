@@ -43,7 +43,6 @@ import org.oscarehr.util.SpringUtils;
 import oscar.OscarProperties;
 import oscar.oscarRx.data.RxCodesData;
 import oscar.oscarRx.data.RxPrescriptionData;
-import oscar.oscarRx.pageUtil.RxMyDrugrefInfoAction;
 import oscar.oscarRx.pageUtil.RxSessionBean;
 import oscar.oscarRx.util.TimingOutCallback.TimeoutException;
 
@@ -1506,19 +1505,13 @@ public class RxUtil {
     }
 
     public static String findInterDrugStr(final UserPropertyDAO propDAO, String provider, final RxSessionBean bean) {
-        //quiry mydrugref database to get a vector with all interacting drugs
+        //Check for drug interactions using remaining drug reference systems
         //if effect is not null or effect is not empty string
         //get a list of all pending prescriptions' ATC codes
         //compare if anyone match,
         //if yes, get it's randomId and set an session attribute
         //if not, do nothing
 
-        UserProperty prop = propDAO.getProp(provider, UserProperty.MYDRUGREF_ID);
-        String myDrugrefId = null;
-        if (prop != null) {
-            myDrugrefId = prop.getValue();
-            MiscUtils.getLogger().debug("3myDrugrefId" + myDrugrefId);
-        }
         RxPrescriptionData.Prescription[] rxs = bean.getStash();
         //acd contains all atccodes in stash
         Vector<String> acd = new Vector<String>();
@@ -1531,7 +1524,8 @@ public class RxUtil {
         Vector allInteractions = new Vector();
         for (String command : str) {
             try {
-                Vector v = getMyDrugrefInfo(command, acd, myDrugrefId);
+                // MyDrugRef service has been removed - use alternative drug interaction checking
+                Vector v = null; // TODO: Replace with alternative drug interaction service
                 MiscUtils.getLogger().debug("2v in for loop: " + v);
                 if (v != null && v.size() > 0) {
                     allInteractions.addAll(v);
@@ -1619,70 +1613,12 @@ public class RxUtil {
 
     }
 
-    private static Vector getMyDrugrefInfo(String command, Vector drugs, String myDrugrefId) {
-        MiscUtils.getLogger().debug("3in getMyDrugrefInfo");
-        RxMyDrugrefInfoAction.removeNullFromVector(drugs);
-        Vector params = new Vector();
-        MiscUtils.getLogger().debug("3command,drugs,myDrugrefId= " + command + "--" + drugs + "--" + myDrugrefId);
-        params.addElement(command);
-        params.addElement(drugs);
-        if (myDrugrefId != null && !myDrugrefId.trim().equals("")) {
-            log2.debug("putting >" + myDrugrefId + "< in the request");
-            params.addElement(myDrugrefId);
-            //params.addElement("true");
-        }
-        Vector vec = new Vector();
-        Object obj = callWebserviceLite("Fetch", params);
-        log2.debug("RETURNED " + obj);
-        if (obj instanceof Vector) {
-            MiscUtils.getLogger().debug("3obj is instance of vector");
-            vec = (Vector) obj;
-            MiscUtils.getLogger().debug(vec);
-        } else if (obj instanceof Hashtable) {
-            MiscUtils.getLogger().debug("3obj is instace of hashtable");
-            Object holbrook = ((Hashtable) obj).get("Holbrook Drug Interactions");
-            if (holbrook instanceof Vector) {
-                MiscUtils.getLogger().debug("3holbrook is instance of vector ");
-                vec = (Vector) holbrook;
-                MiscUtils.getLogger().debug(vec);
-            }
-            Enumeration e = ((Hashtable) obj).keys();
-            while (e.hasMoreElements()) {
-                String s = (String) e.nextElement();
-                MiscUtils.getLogger().debug(s);
-                log2.debug(s + " " + ((Hashtable) obj).get(s) + " " + ((Hashtable) obj).get(s).getClass().getName());
-            }
-        }
-        return vec;
-    }
+    // MyDrugRef service has been removed
+    // TODO: Implement alternative drug interaction checking service
 
     private static final Logger log2 = MiscUtils.getLogger();
 
-    public static Object callWebserviceLite(String procedureName, Vector params) {
-        log2.debug("#CALLmyDRUGREF-" + procedureName);
-        Object object = null;
-
-        String server_url = OscarProperties.getInstance().getProperty("MY_DRUGREF_URL", "");
-        MiscUtils.getLogger().debug("server_url: " + server_url);
-        TimingOutCallback callback = new TimingOutCallback(30 * 1000);
-        try {
-            log2.debug("server_url :" + server_url);
-            if (!System.getProperty("http.proxyHost", "").isEmpty()) {
-                //The Lite client won't recgonize JAVA_OPTS as it uses a customized http
-                XmlRpcClient server = new XmlRpcClient(server_url);
-                server.executeAsync(procedureName, params, callback);
-            } else {
-                XmlRpcClientLite server = new XmlRpcClientLite(server_url);
-                server.executeAsync(procedureName, params, callback);
-            }
-            object = callback.waitForResponse();
-        } catch (TimeoutException e) {
-            log2.debug("No response from server." + server_url);
-        } catch (Throwable ethrow) {
-            log2.debug("Throwing error." + ethrow.getMessage());
-        }
-        return object;
-    }
+    // MyDrugRef callWebserviceLite method removed - no longer needed
 
     public static <T> HashMap<Long, T> createKeyValPair(List<T> lst) {
         HashMap<Long, T> ret = new HashMap<Long, T>();

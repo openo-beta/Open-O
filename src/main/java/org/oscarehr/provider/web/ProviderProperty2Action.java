@@ -308,33 +308,6 @@ public class ProviderProperty2Action extends ActionSupport {
 
     /////
 
-    public String viewMyDrugrefId() {
-
-
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.MYDRUGREF_ID);
-
-
-        if (prop == null) {
-            prop = new UserProperty();
-        }
-
-        request.setAttribute("dateProperty", prop);
-
-
-        request.setAttribute("providertitle", "provider.setmyDrugrefId.title"); //=Set myDrugref ID
-        request.setAttribute("providermsgPrefs", "provider.setmyDrugrefId.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setmyDrugrefId.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setmyDrugrefId.msgEdit"); //=Enter your desired login for myDrugref
-        request.setAttribute("providerbtnSubmit", "provider.setmyDrugrefId.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setmyDrugrefId.msgSuccess"); //=myDrugref Id saved
-        request.setAttribute("method", "saveMyDrugrefId");
-
-        this.setDateProperty(prop);
-        return "gen";
-    }
 
     public String viewRxPageSize() {
 
@@ -829,41 +802,6 @@ public class ProviderProperty2Action extends ActionSupport {
         return "genRxDefaultQuantity";
     }
 
-    public String saveMyDrugrefId() {
-
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-
-
-        UserProperty UdrugrefId = this.getDateProperty();
-        String drugrefId = "";
-
-        if (UdrugrefId != null) {
-            drugrefId = UdrugrefId.getValue();
-        }
-
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.MYDRUGREF_ID);
-
-        if (prop == null) {
-            prop = new UserProperty();
-            prop.setName(UserProperty.MYDRUGREF_ID);
-            prop.setProviderNo(providerNo);
-        }
-        prop.setValue(drugrefId);
-
-        this.userPropertyDAO.saveProp(prop);
-
-        request.setAttribute("status", "success");
-        request.setAttribute("drugrefId", prop);
-        request.setAttribute("providertitle", "provider.setmyDrugrefId.title"); //=Set myDrugref ID
-        request.setAttribute("providermsgPrefs", "provider.setmyDrugrefId.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setmyDrugrefId.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setmyDrugrefId.msgEdit"); //=Enter your desired login for myDrugref
-        request.setAttribute("providerbtnSubmit", "provider.setmyDrugrefId.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setmyDrugrefId.msgSuccess"); //=myDrugref Id saved
-        request.setAttribute("method", "saveMyDrugrefId");
-        return "gen";
-    }
     /////
 
 
@@ -888,12 +826,12 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("dateProperty2", prop2);
 
 
-        request.setAttribute("providertitle", "provider.setOntarioMD.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.setOntarioMD.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.setOntarioMD.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setOntarioMD.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setOntarioMD.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.setOntarioMD.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.setOntarioMD.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.setOntarioMD.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setOntarioMD.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.setOntarioMD.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveOntarioMDId");
 
         this.setDateProperty(prop);
@@ -947,12 +885,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("status", "success");
         request.setAttribute("dateProperty", prop);
-        request.setAttribute("providertitle", "provider.setOntarioMD.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.setOntarioMD.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.setOntarioMD.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setOntarioMD.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setOntarioMD.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.setOntarioMD.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.setOntarioMD.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.setOntarioMD.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setOntarioMD.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.setOntarioMD.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveOntarioMDId");
         return "gen";
     }
@@ -971,12 +909,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("dateProperty", prop);
 
-        request.setAttribute("providertitle", "provider.setConsultationCutOffDate.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.setConsultationCutOffDate.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.setConsultationCutOffDate.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setConsultationCutOffDate.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setConsultationCutOffDate.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.setConsultationCutOffDate.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.setConsultationCutOffDate.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.setConsultationCutOffDate.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setConsultationCutOffDate.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.setConsultationCutOffDate.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveConsultationRequestCuffOffDate");
 
         this.setDateProperty(prop);
@@ -1009,12 +947,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("status", "success");
         request.setAttribute("dateProperty", prop);
-        request.setAttribute("providertitle", "provider.setConsultationCutOffDate.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.setConsultationCutOffDate.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.setConsultationCutOffDate.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setConsultationCutOffDate.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setConsultationCutOffDate.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.setConsultationCutOffDate.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.setConsultationCutOffDate.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.setConsultationCutOffDate.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setConsultationCutOffDate.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.setConsultationCutOffDate.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveConsultationRequestCuffOffDate");
         return "gen";
     }
@@ -1052,12 +990,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("dateProperty", prop);
 
-        request.setAttribute("providertitle", "provider.setConsultationTeamWarning.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.setConsultationTeamWarning.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.setConsultationTeamWarning.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setConsultationTeamWarning.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setConsultationTeamWarning.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.setConsultationTeamWarning.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.setConsultationTeamWarning.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.setConsultationTeamWarning.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setConsultationTeamWarning.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.setConsultationTeamWarning.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveConsultationRequestTeamWarning");
 
         this.setDateProperty(prop);
@@ -1104,12 +1042,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("status", "success");
         request.setAttribute("dateProperty", prop);
-        request.setAttribute("providertitle", "provider.setConsultationTeamWarning.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.setConsultationTeamWarning.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.setConsultationTeamWarning.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setConsultationTeamWarning.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setConsultationTeamWarning.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.setConsultationTeamWarning.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.setConsultationTeamWarning.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.setConsultationTeamWarning.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setConsultationTeamWarning.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.setConsultationTeamWarning.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveConsultationRequestTeamWarning");
         return "gen";
     }
@@ -1135,12 +1073,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("UdrugrefId", UdrugrefId);
 
-        request.setAttribute("providertitle", "provider.setWorkLoadManagement.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.setWorkLoadManagement.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.setWorkLoadManagement.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setWorkLoadManagement.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setWorkLoadManagement.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.setWorkLoadManagement.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.setWorkLoadManagement.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.setWorkLoadManagement.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setWorkLoadManagement.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.setWorkLoadManagement.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveWorkLoadManagement");
 
         this.setDateProperty(UdrugrefId);
@@ -1173,12 +1111,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("status", "success");
         request.setAttribute("dateProperty", prop);
-        request.setAttribute("providertitle", "provider.setWorkLoadManagement.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.setWorkLoadManagement.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.setWorkLoadManagement.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setWorkLoadManagement.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setWorkLoadManagement.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.setWorkLoadManagement.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.setWorkLoadManagement.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.setWorkLoadManagement.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setWorkLoadManagement.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.setWorkLoadManagement.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveWorkLoadManagement");
         return "gen";
     }
@@ -2000,12 +1938,12 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("maximize", maximize);
 
 
-        request.setAttribute("providertitle", "provider.encounterWindowSize.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.encounterWindowSize.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.encounterWindowSize.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.encounterWindowSize.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.encounterWindowSize.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.encounterWindowSize.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.encounterWindowSize.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.encounterWindowSize.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.encounterWindowSize.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.encounterWindowSize.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveEncounterWindowSize");
 
         this.setEncounterWindowWidth(width);
@@ -2060,12 +1998,12 @@ public class ProviderProperty2Action extends ActionSupport {
         userPropertyDAO.saveProp(mProperty);
 
         request.setAttribute("status", "success");
-        request.setAttribute("providertitle", "provider.encounterWindowSize.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.encounterWindowSize.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.encounterWindowSize.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.encounterWindowSize.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.encounterWindowSize.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.encounterWindowSize.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.encounterWindowSize.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.encounterWindowSize.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.encounterWindowSize.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.encounterWindowSize.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveEncounterWindowSize");
 
         return "genEncounterWindowSize";
@@ -2084,12 +2022,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("size", size);
 
-        request.setAttribute("providertitle", "provider.quickChartSize.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.quickChartSize.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.quickChartSize.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.quickChartSize.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.quickChartSize.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.quickChartSize.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.quickChartSize.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.quickChartSize.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.quickChartSize.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.quickChartSize.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveQuickChartSize");
 
         this.setQuickChartSize(size);
@@ -2116,12 +2054,12 @@ public class ProviderProperty2Action extends ActionSupport {
         userPropertyDAO.saveProp(wProperty);
 
         request.setAttribute("status", "success");
-        request.setAttribute("providertitle", "provider.quickChartSize.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.quickChartSize.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.quickChartSize.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.quickChartSize.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.quickChartSize.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.quickChartSize.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.quickChartSize.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.quickChartSize.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.quickChartSize.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.quickChartSize.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveQuickChartSize");
 
         return "genQuickChartSize";
@@ -2237,12 +2175,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
 
         request.setAttribute("status", "success");
-        request.setAttribute("providertitle", "provider.patientNameLength.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.patientNameLength.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.patientNameLength.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.patientNameLength.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.patientNameLength.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.patientNameLength.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.patientNameLength.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.patientNameLength.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.patientNameLength.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.patientNameLength.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "savePatientNameLength");
 
         return "genPatientNameLength";
@@ -2531,12 +2469,12 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("phone", phone);
         request.setAttribute("fax", fax);
 
-        request.setAttribute("providertitle", "provider.appointmentCardPrefs.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.appointmentCardPrefs.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.appointmentCardPrefs.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.appointmentCardPrefs.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.appointmentCardPrefs.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.appointmentCardPrefs.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.appointmentCardPrefs.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.appointmentCardPrefs.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.appointmentCardPrefs.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.appointmentCardPrefs.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveAppointmentCardPrefs");
 
         this.setAppointmentCardName(name);
@@ -2586,12 +2524,12 @@ public class ProviderProperty2Action extends ActionSupport {
         userPropertyDAO.saveProp(mProperty);
 
         request.setAttribute("status", "success");
-        request.setAttribute("providertitle", "provider.appointmentCardPrefs.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.appointmentCardPrefs.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.appointmentCardPrefs.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.appointmentCardPrefs.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.appointmentCardPrefs.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.appointmentCardPrefs.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.appointmentCardPrefs.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.appointmentCardPrefs.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.appointmentCardPrefs.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.appointmentCardPrefs.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveAppointmentCardPrefs");
 
         return "genAppointmentCardPrefs";
@@ -2903,8 +2841,6 @@ public class ProviderProperty2Action extends ActionSupport {
         methodMap.put("saveShowPatientDOB", this::saveShowPatientDOB);
         methodMap.put("viewDefaultQuantity", this::viewDefaultQuantity);
         methodMap.put("saveDefaultQuantity", this::saveDefaultQuantity);
-        methodMap.put("viewMyDrugrefId", this::viewMyDrugrefId);
-        methodMap.put("saveMyDrugrefId", this::saveMyDrugrefId);
         methodMap.put("viewConsultationRequestCuffOffDate", this::viewConsultationRequestCuffOffDate);
         methodMap.put("saveConsultationRequestCuffOffDate", this::saveConsultationRequestCuffOffDate);
         methodMap.put("viewConsultationRequestTeamWarning", this::viewConsultationRequestTeamWarning);

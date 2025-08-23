@@ -24,50 +24,30 @@
  */
 
 
-package oscar.oscarRx.util;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
-import java.util.Comparator;
-import java.util.Hashtable;
+package org.oscarehr.decisionSupport.service;
+
+import org.apache.logging.log4j.Logger;
+import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.util.MiscUtils;
 
 /**
- * @author jay
+ * Default Decision Support Service implementation.
+ * Provides core decision support functionality using local database guidelines.
+ * External guideline fetching has been disabled.
  */
-public class MyDrugrefComparator implements Comparator {
+public class DSServiceImpl extends DSService {
+    private static final Logger logger = MiscUtils.getLogger();
 
-    /**
-     * Creates a new instance of MyDrugrefComparator
-     */
-    public MyDrugrefComparator() {
+    public DSServiceImpl() {
     }
 
-    public int compare(Object obj1, Object obj2) {
-        Hashtable h1 = (Hashtable) obj1;
-        Hashtable h2 = (Hashtable) obj2;
-
-
-        String fee1 = (String) h1.get("significance");
-        String fee2 = (String) h2.get("significance");
-
-        int fe1 = getInt(fee1);
-        int fe2 = getInt(fee2);
-
-        if (fe1 < fe2) {
-            return 1;
-        } else if (fe2 > fe1) {
-            return -1;
-        }
-
-        return 0;
+    @Override
+    public void fetchGuidelinesFromService(LoggedInInfo loggedInInfo) {
+        logger.info("External guideline fetching is disabled. Decision support uses local database guidelines only.");
     }
-
-    int getInt(String s) {
-        int ret = 0;
-        try {
-            ret = Integer.parseInt(s);
-        } catch (Exception e) {
-            ret = 0;
-        }
-        return ret;
-    }
-
 }

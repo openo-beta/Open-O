@@ -1008,9 +1008,6 @@
                                                 <a href="javascript:popupWindow(720,920,'oscarRx/chartDrugProfile.jsp?demographic_no=<%=demoNo%>','PrintDrugProfile2')">Timeline
                                                     Drug Profile</a>
                                                 &nbsp;
-                                                <a href="javascript: void(0);"
-                                                   onclick="callReplacementWebService('GetmyDrugrefInfo.do?method=view','interactionsRxMyD');">DS
-                                                    run</a>
                                                 &nbsp;&nbsp;
                                             </div>
 
@@ -1609,9 +1606,6 @@
 
                     }
                 });
-                <oscar:oscarPropertiesCheck property="MYDRUGREF_DS" value="yes">
-                callReplacementWebService("GetmyDrugrefInfo.do?method=view", 'interactionsRxMyD');
-                </oscar:oscarPropertiesCheck>
             } else {
                 $("drugName_" + randomId).value = origDrugName;
             }
@@ -1875,19 +1869,12 @@
 	     * deprecated: causes speed and accuracy issues.
 	     */
         function updateCurrentInteractions() {
-            new Ajax.Request("GetmyDrugrefInfo.do?method=findInteractingDrugList&rand=" + Math.floor(Math.random() * 10001), {
+            new Ajax.Request("UpdateInteractingDrugs.jsp?rand=" + Math.floor(Math.random() * 10001), {
                 method: 'get', onSuccess: function (transport) {
-                    new Ajax.Request("UpdateInteractingDrugs.jsp?rand=" + Math.floor(Math.random() * 10001), {
-                        method: 'get', onSuccess: function (transport) {
-                            var str = transport.responseText;
-                            str = str.replace('<script type="text/javascript">', '');
-                            str = str.replace(/<\/script>/, '');
-                            eval(str);
-                            <oscar:oscarPropertiesCheck property="MYDRUGREF_DS" value="yes">
-                            callReplacementWebService("GetmyDrugrefInfo.do?method=view&rand=" + Math.floor(Math.random() * 10001), 'interactionsRxMyD');
-                            </oscar:oscarPropertiesCheck>
-                        }
-                    });
+                    var str = transport.responseText;
+                    str = str.replace('<script type="text/javascript">', '');
+                    str = str.replace(/<\/script>/, '');
+                    eval(str);
                 }
             });
         }
@@ -2059,9 +2046,6 @@
         }
 
         //callReplacementWebService("InteractionDisplay.jsp",'interactionsRx');
-        <oscar:oscarPropertiesCheck property="MYDRUGREF_DS" value="yes">
-        callReplacementWebService("GetmyDrugrefInfo.do?method=view", 'interactionsRxMyD');
-        </oscar:oscarPropertiesCheck>
         callReplacementWebService("ListDrugs.jsp", 'drugProfile');
 
         YAHOO.example.FnMultipleFields = function () {
@@ -2235,7 +2219,7 @@
         function ShowW(id, resourceId, updated) {
 
             var params = "resId=" + resourceId + "&updatedat=" + updated
-            var url = '<c:out value="${ctx}"/>/oscarRx/GetmyDrugrefInfo.do?method=setWarningToShow&rand=' + Math.floor(Math.random() * 10001);
+            var url = '';
             new Ajax.Updater('<c:out value="${ctx}"/>/oscarRx/showHideTotal', url, {
                 method: 'get',
                 parameters: params,
@@ -2251,7 +2235,7 @@
         }
 
         function HideW(id, resourceId, updated) {
-            var url = '<c:out value="${ctx}"/>/oscarRx/GetmyDrugrefInfo.do?method=setWarningToHide';
+            var url = '';
             var ran_number = Math.round(Math.random() * 1000000);
             var params = "resId=" + resourceId + "&updatedat=" + updated + "&rand=" + ran_number;  //hack to get around ie caching the page
             //totalHiddenResources++;

@@ -159,7 +159,7 @@
 	<bean id="encounterWindowDao" class="org.oscarehr.common.dao.EncounterWindowDaoImpl" autowire="byName" />
 
 	<!-- OSCAR Desicion Support -->
-	<bean id="dsService" class="org.oscarehr.decisionSupport.service.DSServiceMyDrugref">
+	<bean id="dsService" class="org.oscarehr.decisionSupport.service.DSServiceImpl">
 	</bean>
 
 	<!--Container for holding preventions -->

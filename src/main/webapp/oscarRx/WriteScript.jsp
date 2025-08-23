@@ -794,8 +794,7 @@
 
 
             function HideW(id, resourceId, updated) {
-                var url = 'GetmyDrugrefInfo.do?method=setWarningToHide';
-                //callReplacementWebService("GetmyDrugrefInfo.do?method=setWarningToHide",'interactionsRxMyD');function callReplacementWebService(url,id){
+                var url = '';
                 var ran_number = Math.round(Math.random() * 1000000);
                 var params = "resId=" + resourceId + "&updatedat=" + updated + "&rand=" + ran_number;  //hack to get around ie caching the page
 
@@ -1634,10 +1633,6 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                 }
 
                 // callReplacementWebService("InteractionDisplay.jsp",'interactionsRx');
-                callReplacementWebService("GetmyDrugrefInfo.do?method=view&target=interactionsRx", 'interactionsRx');
-                <oscar:oscarPropertiesCheck property="MYDRUGREF_DS" value="yes">
-                callReplacementWebService("GetmyDrugrefInfo.do?method=view", 'interactionsRxMyD');
-                </oscar:oscarPropertiesCheck>
 
                 <%--  OLD CALLS TO THE WEB SERVICES
                 callReplacementWebService("InteractionDisplayMyD.jsp",'interactionsRxMyD');

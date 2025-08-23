@@ -632,10 +632,6 @@
                                           onClick="popupPage(230,860,'../setProviderStaleDate.do?method=view&provider_no=<%=providerNo%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditStaleDate"/></a></td>
                 </tr>
 
-                <tr>
-                    <td align="center"><a href=#
-                                          onClick="popupPage(230,860,'../setProviderStaleDate.do?method=viewMyDrugrefId');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetmyDrugrefID"/></a></td>
-                </tr>
 
                 <tr>
                     <td align="center"><a href=#

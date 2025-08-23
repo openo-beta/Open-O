@@ -32,11 +32,6 @@
     WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
     UserPropertyDAO userPropertyDAO = (UserPropertyDAO) ctx.getBean(UserPropertyDAO.class);
 
-    UserProperty prop = userPropertyDAO.getProp((String) session.getAttribute("user"), UserProperty.MYDRUGREF_ID);
-    String mydrugrefid = prop == null ? null : prop.getValue();
-    if (mydrugrefid == null) {
-        mydrugrefid = "";
-    }
 
 
 %>
@@ -44,7 +39,7 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>myDrugref login details</title>
+    <title>Form Submit</title>
 
 </head>
 <body>
@@ -60,7 +55,7 @@
                 <tr>
                     <td class="fieldLabel">Username:</td>
                     <td>
-                        <input name="username" type="text" value="<%=mydrugrefid%>"/>
+                        <input name="username" type="text" value=""/>
                         <input type="hidden" name="method" value="exportEFormSend"/>
                         <input type="hidden" name="fid" value="<%=request.getParameter("fid")%>"/>
                     </td>
