@@ -1507,99 +1507,10 @@ public class RxUtil {
     }
 
     public static String findInterDrugStr(final UserPropertyDAO propDAO, String provider, final RxSessionBean bean) {
-        //Check for drug interactions using remaining drug reference systems
-        //if effect is not null or effect is not empty string
-        //get a list of all pending prescriptions' ATC codes
-        //compare if anyone match,
-        //if yes, get it's randomId and set an session attribute
-        //if not, do nothing
-
-        RxPrescriptionData.Prescription[] rxs = bean.getStash();
-        //acd contains all atccodes in stash
-        Vector<String> acd = new Vector<String>();
-        for (RxPrescriptionData.Prescription rxItem : rxs) {
-            acd.add(rxItem.getAtcCode());
-        }
-        logger.debug("3acd=" + acd);
-
-        String[] str = new String[]{"warnings_byATC,bulletins_byATC,interactions_byATC,get_guidelines"}; //NEW more efficent way of sending multiple requests at the same time.
-        Vector allInteractions = new Vector();
-        for (String command : str) {
-            try {
-                // MyDrugRef service has been removed - use alternative drug interaction checking
-                Vector v = null; // TODO: Replace with alternative drug interaction service
-                MiscUtils.getLogger().debug("2v in for loop: " + v);
-                if (v != null && v.size() > 0) {
-                    allInteractions.addAll(v);
-                }
-                MiscUtils.getLogger().debug("3after all.addAll(v): " + allInteractions);
-            } catch (Exception e) {
-                log2.debug("3command :" + command + " " + e.getMessage());
-                MiscUtils.getLogger().error("Error", e);
-            }
-        }
-        String retStr = "";
-        HashMap rethm = new HashMap();
-        for (RxPrescriptionData.Prescription rxItem : rxs) {
-            MiscUtils.getLogger().debug("rxItem=" + rxItem.getDrugName());
-            Vector uniqueDrugNameList = new Vector();
-            for (int i = 0; i < allInteractions.size(); i++) {
-                Hashtable hb = (Hashtable) allInteractions.get(i);
-                String interactingAtc = (String) hb.get("atc");
-                String interactingDrugName = (String) hb.get("drug2");
-                String effectStr = (String) hb.get("effect");
-                String sigStr = (String) hb.get("significance");
-                MiscUtils.getLogger().debug("findInterDrugStr=" + hb);
-                if (sigStr != null) {
-                    if (sigStr.equals("1")) {
-                        sigStr = "minor";
-                    } else if (sigStr.equals("2")) {
-                        sigStr = "moderate";
-                    } else if (sigStr.equals("3")) {
-                        sigStr = "major";
-                    } else {
-                        sigStr = "unknown";
-                    }
-                } else {
-                    sigStr = "unknown";
-                }
-                if (interactingAtc != null && interactingDrugName != null && rxItem.getAtcCode().equals(interactingAtc) && effectStr != null && effectStr.length() > 0 && !effectStr.equalsIgnoreCase("N") && !effectStr.equals(" ")) {
-                    MiscUtils.getLogger().debug("interactingDrugName=" + interactingDrugName);
-                    RxPrescriptionData.Prescription rrx = findRxFromDrugNameOrGN(rxs, interactingDrugName);
-
-                    if (rrx != null && !uniqueDrugNameList.contains(rrx.getDrugName())) {
-                        MiscUtils.getLogger().debug("rrx.getDrugName()=" + rrx.getDrugName());
-                        uniqueDrugNameList.add(rrx.getDrugName());
-
-                        String key = sigStr + "_" + rxItem.getRandomId();
-
-                        if (rethm.containsKey(key)) {
-                            String val = (String) rethm.get(key);
-                            val += ";" + rrx.getDrugName();
-                            rethm.put(key, val);
-                        } else {
-                            rethm.put(key, rrx.getDrugName());
-                        }
-
-                        key = sigStr + "_" + rrx.getRandomId();
-                        if (rethm.containsKey(key)) {
-                            String val = (String) rethm.get(key);
-                            val += ";" + rxItem.getDrugName();
-                            rethm.put(key, val);
-                        } else {
-                            rethm.put(key, rxItem.getDrugName());
-                        }
-                    }
-                }
-            }
-            MiscUtils.getLogger().debug("***next rxItem***");
-        }
-        MiscUtils.getLogger().debug("rethm=" + rethm);
-        retStr = rethm.toString();
-        retStr = retStr.replace("}", "");
-        retStr = retStr.replace("{", "");
-
-        return retStr;
+        // External drug interaction service (MyDrugRef) has been removed
+        // Local MediSpan drug interactions are handled by DrugrefUtil instead
+        logger.debug("External drug interaction checking disabled - using local MediSpan via DrugrefUtil");
+        return "";
     }
 
     private static RxPrescriptionData.Prescription findRxFromDrugNameOrGN(final RxPrescriptionData.Prescription[] rxs, String interactingDrugName) {
@@ -1615,8 +1526,7 @@ public class RxUtil {
 
     }
 
-    // MyDrugRef service has been removed
-    // TODO: Implement alternative drug interaction checking service
+    // External drug interaction service removed - local MediSpan used via DrugrefUtil
 
     private static final Logger log2 = MiscUtils.getLogger();
 

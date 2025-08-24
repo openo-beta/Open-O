@@ -289,8 +289,7 @@
                 var url = "<c:out value="${ctx}"/>" + "/oscarRx/deleteRx.do?parameterValue=clearReRxDrugList";
                 var data = "rand=" + rand;
                 new Ajax.Request(url, {
-                    method: 'post', parameters: data, onSuccess: function (transport) {
-                    }
+                    method: 'post', parameters: data
                 });
             }
 
@@ -628,9 +627,7 @@
                 var data = "drugId=" + drugId + "&rand=" + Math.floor(Math.random() * 10001);
                 var url = '<c:out value="${ctx}"/>/oscarRx/rePrescribe2.do?method=saveReRxDrugIdToStash';
                 new Ajax.Updater('rxText', url, {
-                    method: 'get', parameters: data, evalScripts: true, insertion: Insertion.Bottom,
-                    onSuccess: function (transport) {
-                    }
+                    method: 'get', parameters: data, evalScripts: true, insertion: Insertion.Bottom
                 });
 
             }
@@ -1602,8 +1599,7 @@
             var url = "<c:out value="${ctx}"/>" + "/oscarRx/deleteRx.do?parameterValue=clearStash";
             var data = "rand=" + Math.floor(Math.random() * 10001);
             new Ajax.Request(url, {
-                method: 'post', parameters: data, onSuccess: function (transport) {
-                }
+                method: 'post', parameters: data
             });
             $('rxText').innerHTML = "";//make pending prescriptions disappear.
             $("searchString").focus();
@@ -1856,9 +1852,7 @@
                 method: 'get',
                 parameters: data,
                 asynchronous: true,
-                insertion: Insertion.Bottom,
-                onSuccess: function (transport) {
-                }
+                insertion: Insertion.Bottom
             });
             return false;
         }
@@ -1919,9 +1913,7 @@
             var quantity = "quantity_" + rand;
             var repeat = "repeats_" + rand;
             new Ajax.Request(url, {
-                method: 'get', parameters: data, onSuccess: function (transport) {
-
-                }
+                method: 'get', parameters: data
             });
         }
 
@@ -2183,9 +2175,7 @@
                 parameters: params,
                 asynchronous: true,
                 evalScripts: true,
-                insertion: Insertion.Bottom,
-                onSuccess: function (transport) {
-                }
+                insertion: Insertion.Bottom
             });
             $('searchString').value = "";
         }
