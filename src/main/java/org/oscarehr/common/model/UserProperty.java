@@ -33,7 +33,6 @@ public class UserProperty extends AbstractModel<Integer> implements Serializable
     public static final String MYOSCAR_ID = "MyOscarId";
     public static final String STALE_NOTEDATE = "cme_note_date";
     public static final String STALE_FORMAT = "cme_note_format";
-    public static final String MYDRUGREF_ID = "mydrugref_id";
     public static final String ONTARIO_MD_USERNAME = "ontario_md_username";
     public static final String ONTARIO_MD_PASSWORD = "ontario_md_password";
     public static final String CONSULTATION_TIME_PERIOD_WARNING = "consultation_time_period_warning";
@@ -101,7 +100,6 @@ public class UserProperty extends AbstractModel<Integer> implements Serializable
     public static final String INCOMING_DOCUMENT_DEFAULT_QUEUE = "incoming_document_default_queue";
     public static final String INCOMING_DOCUMENT_ENTRY_MODE = "incoming_document_entry_mode";
     public static final String DISPLAY_DOCUMENT_AS = "display_document_as";
-    public static final String COBALT = "cobalt";
     public static final String PDF = "PDF";
     public static final String IMAGE = "Image";
     public static final String DOCUMENT_DESCRIPTION_TEMPLATE = "document_description_template";

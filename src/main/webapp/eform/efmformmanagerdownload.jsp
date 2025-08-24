@@ -78,7 +78,7 @@
             <td valign="middle">
                 <form action="../eform/manageEForm.do" method="POST">
                     <input type="hidden" name="method"
-                           value="importEFormFromRemote"/> <%--Look at just sending the filename from mydrugref  --%>
+                           value="importEFormFromRemote"/>
                     <input type="hidden" name="url" value="<%=stripDrugref(ht.get("url"))%>"/>
                     <input type="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.download.btnLoadEform"/>"/>
                 </form>

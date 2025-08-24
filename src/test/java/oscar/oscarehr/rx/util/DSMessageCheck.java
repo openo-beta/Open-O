@@ -86,7 +86,6 @@ public class DSMessageCheck extends DaoTestFixtures {
 
         OscarProperties.getInstance().setProperty("RX_INTERACTION_LOCAL_DRUGREF_REGIONAL_IDENTIFIER", "yes");
 
-        OscarProperties.getInstance().setProperty("mydrugref_id", "jaygallagher@gmail.com");
 
         Locale locale = Locale.CANADA;
 

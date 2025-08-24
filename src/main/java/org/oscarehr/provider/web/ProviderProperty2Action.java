@@ -2244,76 +2244,6 @@ public class ProviderProperty2Action extends ActionSupport {
         return "genDisplayDocumentAs";
     }
 
-    public String viewCobalt() {
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.COBALT);
-
-        String propValue = "";
-        if (prop == null) {
-            prop = new UserProperty();
-        } else {
-            propValue = prop.getValue();
-        }
-
-        boolean checked;
-        if (propValue.equalsIgnoreCase("yes"))
-            checked = true;
-        else
-            checked = false;
-
-        prop.setChecked(checked);
-        request.setAttribute("cobaltProperty", prop);
-        request.setAttribute("providertitle", "provider.cobalt.title"); //=Select if you want to use Rx3
-        request.setAttribute("providermsgPrefs", "provider.cobalt.msgPrefs"); //=Preferences
-        request.setAttribute("providermsgProvider", "provider.cobalt.msgProfileView"); //=Use Rx3
-        request.setAttribute("providermsgEdit", "provider.cobalt.msgEdit"); //=Do you want to use Rx3?
-        request.setAttribute("providerbtnSubmit", "provider.cobalt.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.cobalt.msgSuccess"); //=Rx3 Selection saved
-        request.setAttribute("method", "saveCobalt");
-
-        this.setCobaltProperty(prop);
-
-        return "genCobalt";
-    }
-
-
-    public String saveCobalt() {
-        String checkboxValue = request.getParameter("cobaltProperty.checked");
-
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-        UserProperty Uprop = this.getCobaltProperty();
-
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.COBALT);
-        if (prop == null) {
-            prop = new UserProperty();
-            prop.setName(UserProperty.COBALT);
-            prop.setProviderNo(providerNo);
-        }
-        boolean checked = checkboxValue != null;
-        String propValue = "no";
-        if (checked)
-            propValue = "yes";
-
-        prop.setValue(propValue);
-        this.userPropertyDAO.saveProp(prop);
-
-        request.setAttribute("status", "success");
-        request.setAttribute("cobaltProperty", prop);
-        request.setAttribute("providertitle", "provider.cobalt.title");
-        request.setAttribute("providermsgPrefs", "provider.cobalt.msgPrefs");
-        request.setAttribute("providermsgProvider", "provider.cobalt.msgProfileView");
-        request.setAttribute("providermsgEdit", "provider.cobalt.msgEdit");
-        request.setAttribute("providerbtnSubmit", "provider.cobalt.btnSubmit");
-        if (checked)
-            request.setAttribute("providermsgSuccess", "provider.cobalt.msgSuccess_selected");
-        else
-            request.setAttribute("providermsgSuccess", "provider.cobalt.msgSuccess_unselected");
-        request.setAttribute("method", "saveCobalt");
-
-        return "genCobalt";
-    }
 
 
     public String viewHideOldEchartLinkInAppt() {
@@ -2871,8 +2801,6 @@ public class ProviderProperty2Action extends ActionSupport {
         methodMap.put("savePatientNameLength", this::savePatientNameLength);
         methodMap.put("viewDisplayDocumentAs", this::viewDisplayDocumentAs);
         methodMap.put("saveDisplayDocumentAs", this::saveDisplayDocumentAs);
-        methodMap.put("viewCobalt", this::viewCobalt);
-        methodMap.put("saveCobalt", this::saveCobalt);
         methodMap.put("viewBornPrefs", this::viewBornPrefs);
         methodMap.put("saveBornPrefs", this::saveBornPrefs);
         methodMap.put("viewAppointmentCardPrefs", this::viewAppointmentCardPrefs);
@@ -2916,7 +2844,6 @@ public class ProviderProperty2Action extends ActionSupport {
     private UserProperty quickChartSize;
     private UserProperty patientNameLength;
     private UserProperty displayDocumentAsProperty;
-    private UserProperty cobaltProperty;
     private UserProperty hideOldEchartLinkInApptProperty;
     private UserProperty dashboardShareProperty;
     private UserProperty appointmentCardName;
@@ -3146,13 +3073,6 @@ public class ProviderProperty2Action extends ActionSupport {
         this.displayDocumentAsProperty = displayDocumentAsProperty;
     }
 
-    public UserProperty getCobaltProperty() {
-        return cobaltProperty;
-    }
-
-    public void setCobaltProperty(UserProperty cobaltProperty) {
-        this.cobaltProperty = cobaltProperty;
-    }
 
     public UserProperty getHideOldEchartLinkInApptProperty() {
         return hideOldEchartLinkInApptProperty;

@@ -119,7 +119,6 @@ public class DrugrefUtil {
 
                     if (hiddenList != null && hiddenList.containsKey("medispan" + dsMessage.getId())) {
                         logger.error("idWARNING medispan" + dsMessage.getId() + "  time value in warning " + hiddenList.get("medispan" + dsMessage.getId()) + " medispan update time " + dsMessage.getUpdated_at().getTime());
-                        //if(hiddenList.get("mydrugref"+dsMessage.getId()).equals(dsMessage.getUpdated_at().getTime())) {
                         dsMessage.setHidden(true);
                         //}
                     } else {
