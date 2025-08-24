@@ -608,75 +608,7 @@ public class ProviderProperty2Action extends ActionSupport {
         return "genShowPatientDOB";
     }
 
-    public String viewUseMyMeds() {
 
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.USE_MYMEDS);
-        String propValue = "";
-        if (prop == null) {
-            prop = new UserProperty();
-        } else {
-            propValue = prop.getValue();
-        }
-
-        boolean checked;
-        if (propValue.equalsIgnoreCase("yes"))
-            checked = true;
-        else
-            checked = false;
-
-        prop.setChecked(checked);
-        request.setAttribute("useMyMedsProperty", prop);
-        request.setAttribute("providertitle", "provider.setUseMyMeds.title"); //=Select if you want to use MyMeds
-        request.setAttribute("providermsgPrefs", "provider.setUseMyMeds.msgPrefs"); //=Preferences
-        request.setAttribute("providermsgProvider", "provider.setUseMyMeds.msgProfileView"); //=Use MyMeds
-        request.setAttribute("providermsgEdit", "provider.setUseMyMeds.msgEdit"); //=Do you want to use MyMeds?
-        request.setAttribute("providerbtnSubmit", "provider.setUseMyMeds.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setUseMyMeds.msgSuccess"); //=MyMeds Selection saved
-        request.setAttribute("method", "saveUseMyMeds");
-
-        this.setUseMyMedsProperty(prop);
-        return "genUseMyMeds";
-    }
-
-    public String saveUseMyMeds() {
-        String checkboxValue = request.getParameter("useMyMedsProperty.checked");
-
-        UserProperty UUseMyMeds = this.getUseMyMedsProperty();
-
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.USE_MYMEDS);
-        if (prop == null) {
-            prop = new UserProperty();
-            prop.setName(UserProperty.USE_MYMEDS);
-            prop.setProviderNo(providerNo);
-        }
-        boolean checked = checkboxValue != null;
-        String propValue = "no";
-        if (checked)
-            propValue = "yes";
-
-        prop.setValue(propValue);
-        this.userPropertyDAO.saveProp(prop);
-
-        request.setAttribute("status", "success");
-        request.setAttribute("useMyMedsProperty", prop);
-        request.setAttribute("providertitle", "provider.setUseMyMeds.title"); //=Select if you want to use Rx3
-        request.setAttribute("providermsgPrefs", "provider.setUseMyMeds.msgPrefs"); //=Preferences
-        request.setAttribute("providermsgProvider", "provider.setUseMyMeds.msgProfileView"); //=Use Rx3
-        request.setAttribute("providermsgEdit", "provider.setUseMyMeds.msgEdit"); //=Check if you want to use Rx3
-        request.setAttribute("providerbtnSubmit", "provider.setUseMyMeds.btnSubmit"); //=Save
-        if (checked)
-            request.setAttribute("providermsgSuccess", "provider.setUseMyMeds.msgSuccess_selected"); //=Rx3 is selected
-        else
-            request.setAttribute("providermsgSuccess", "provider.setUseMyMeds.msgSuccess_unselected"); //=Rx3 is unselected
-        request.setAttribute("method", "saveUseMyMeds");
-        return "genUseMyMeds";
-    }
 
     public String viewUseRx3() {
 
@@ -2783,8 +2715,6 @@ public class ProviderProperty2Action extends ActionSupport {
         methodMap.put("saveFavouriteEformGroup", this::saveFavouriteEformGroup);
         methodMap.put("viewHCType", this::viewHCType);
         methodMap.put("saveHCType", this::saveHCType);
-        methodMap.put("viewUseMyMeds", this::viewUseMyMeds);
-        methodMap.put("saveUseMyMeds", this::saveUseMyMeds);
         methodMap.put("viewCommentLab", this::viewCommentLab);
         methodMap.put("saveCommentLab", this::saveCommentLab);
         methodMap.put("viewLabRecall", this::viewLabRecall);
@@ -2824,7 +2754,6 @@ public class ProviderProperty2Action extends ActionSupport {
     private UserProperty newDefaultDocQueueProperty;
     private UserProperty rxProfileViewProperty;
     private UserProperty rxShowPatientDOBProperty;
-    private UserProperty useMyMedsProperty;
     private UserProperty rxUseRx3Property;
     private UserProperty rxDefaultQuantityProperty;
     private UserProperty dateProperty2;
@@ -2913,13 +2842,6 @@ public class ProviderProperty2Action extends ActionSupport {
         this.rxShowPatientDOBProperty = rxShowPatientDOBProperty;
     }
 
-    public UserProperty getUseMyMedsProperty() {
-        return useMyMedsProperty;
-    }
-
-    public void setUseMyMedsProperty(UserProperty useMyMedsProperty) {
-        this.useMyMedsProperty = useMyMedsProperty;
-    }
 
     public UserProperty getRxUseRx3Property() {
         return rxUseRx3Property;

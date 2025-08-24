@@ -139,7 +139,6 @@ public class ProviderSettings {
 
     private String olisDefaultReportingLab = "";
     private String olisDefaultExcludeReportingLab = "";
-    private boolean useMyMeds;
     private boolean disableBornPrompts;
     private boolean dashboardShare;
 
@@ -787,13 +786,6 @@ public class ProviderSettings {
     }
 
 
-    public boolean isUseMyMeds() {
-        return useMyMeds;
-    }
-
-    public void setUseMyMeds(boolean useMyMeds) {
-        this.useMyMeds = useMyMeds;
-    }
 
 
     public boolean isDisableBornPrompts() {

@@ -940,12 +940,6 @@
                                             <input id="reset" type="button" class="ControlPushButton"
                                                    title="Clear pending prescriptions" onclick="resetStash();"
                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgResetPrescriptionRx3"/>"/>
-                                            <% if (!OscarProperties.getInstance().getProperty("rx.drugofchoice.hide", "false").equals("true")) { %>
-                                            <input type="button" class="ControlPushButton"
-                                                   onclick="callTreatments('searchString','treatmentsMyD')"
-                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgDrugOfChoiceRx3"/>"
-                                                   title="<fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.help.DrugOfChoice"/>"/>
-                                            <%} %>
                                             <%if (OscarProperties.getInstance().hasProperty("ONTARIO_MD_INCOMINGREQUESTOR")) {%>
                                             <a href="javascript:goOMD();"
                                                title="<fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.help.OMD"/>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgOMDLookup"/></a>
@@ -1231,18 +1225,12 @@
 
             </td>
             <td width="300px" valign="top">
-                <div id="interactionsRxMyD" style="float:right;"></div>
             </td>
         </tr>
 
     </table>
 
 
-    <div id="treatmentsMyD"
-         style="position: absolute; left: 1px; top: 1px; width: 800px; height: 600px; display:none; z-index: 1">
-        <a href="javascript: function myFunction() {return false; }" onclick="$('treatmentsMyD').toggle();"
-           style="text-decoration: none;">X</a>
-    </div>
 
 
     <div id="dragifm" style="top:0px;left:0px;"></div>
@@ -1990,14 +1978,6 @@
             //oscarLog("bottom of popForm");
         }
 
-        function callTreatments(textId, id) {
-            var ele = $(textId);
-            var url = '<c:out value="${ctx}"/>/oscarRx/TreatmentMyD.jsp';
-            var ran_number = Math.round(Math.random() * 1000000);
-            var params = "demographicNo=<%=demoNo%>&cond=" + ele.value + "&rand=" + ran_number;  //hack to get around ie caching the page
-            new Ajax.Updater(id, url, {method: 'get', parameters: params, asynchronous: true});
-            $('treatmentsMyD').toggle();
-        }
 
         function callAdditionWebService(url, id) {
             var contextPath = '<c:out value="${ctx}"/>';

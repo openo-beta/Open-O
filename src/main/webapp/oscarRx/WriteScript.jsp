@@ -1547,9 +1547,6 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                                 <div id="interactionsRx"></div>
                                 <div id="renalDosing"></div>
                                 --%>
-                                        <div id="interactionsRxMyD"></div>
-                                        <div id="warningsRxMyD"></div>
-                                        <div id="bulletinsRxMyD"></div>
                                         &nbsp;
                                     </td>
                                 </tr>
@@ -1625,11 +1622,6 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
 
                 // callReplacementWebService("InteractionDisplay.jsp",'interactionsRx');
 
-                <%--  OLD CALLS TO THE WEB SERVICES
-                callReplacementWebService("InteractionDisplayMyD.jsp",'interactionsRxMyD');
-                callReplacementWebService("WarningDisplayMyD.jsp",'warningsRxMyD');
-                callReplacementWebService("BulletinDisplayMyD.jsp",'bulletinsRxMyD');
-                --%>
             </script>
         </td>
     </tr>

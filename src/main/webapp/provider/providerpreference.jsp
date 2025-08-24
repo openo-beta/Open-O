@@ -664,10 +664,6 @@
                 </tr>
                 <%}%>
             </oscar:oscarPropertiesCheck>
-            <tr>
-                <td align="center"><a href=#
-                                      onClick="popupPage(230,860,'../setProviderStaleDate.do?method=viewUseMyMeds');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetUseMyMeds"/></a></td>
-            </tr>
 
             <tr>
                 <td align="center"><a href=# onClick="popupPage(400,860,'../provider/CppPreferences.do');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.cppPrefs"/></a></td>

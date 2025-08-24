@@ -1442,7 +1442,6 @@
             <result name="genRxUseRx3">/provider/setToUseRx3.jsp</result>
             <result name="genDefaultDocQueue">/provider/setDocDefaultQueue.jsp</result>
             <result name="genShowPatientDOB">/provider/setShowPatientDOB.jsp</result>
-            <result name="genUseMyMeds">/provider/setToUseMyMeds.jsp</result>
             <result name="genCppSingleLine">/provider/setCppSingleLine.jsp</result>
             <result name="genAckCommentLab">/provider/setLabAckComment.jsp</result>
             <result name="genLabRecallPrefs">/provider/setLabRecallPrefs.jsp</result>

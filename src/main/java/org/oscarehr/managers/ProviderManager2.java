@@ -410,9 +410,6 @@ public class ProviderManager2 {
 
 
 
-        if (map.get("use_mymeds") != null) {
-            settings.setUseMyMeds(Boolean.valueOf(map.get("use_mymeds").getValue()));
-        }
 
         if (map.get("disable_born_prompts") != null) {
             settings.setDisableBornPrompts("Y".equals(map.get("disable_born_prompts").getValue()));
@@ -685,8 +682,6 @@ public class ProviderManager2 {
         p.setValue(settings.getOlisDefaultReportingLab());
         p = getMappedOrNewProperty(map, "olis_exreportingLab", providerNo);
         p.setValue(settings.getOlisDefaultExcludeReportingLab());
-        p = getMappedOrNewProperty(map, "use_mymeds", providerNo);
-        p.setValue(String.valueOf(settings.isUseMyMeds()));
         p = getMappedOrNewProperty(map, "disable_born_prompts", providerNo);
         p.setValue(String.valueOf(settings.isDisableBornPrompts()));
         p = getMappedOrNewProperty(map, "dashboard_share", providerNo);

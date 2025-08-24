@@ -155,14 +155,6 @@
                 else return false;
             }
 
-            function callTreatments(textId, id) {
-                var ele = $(textId);
-                var url = "TreatmentMyD.jsp"
-                var ran_number = Math.round(Math.random() * 1000000);
-                var params = "demographicNo=<%=bean.getDemographicNo()%>&cond=" + ele.value + "&rand=" + ran_number;  //hack to get around ie caching the page
-                new Ajax.Updater(id, url, {method: 'get', parameters: params, asynchronous: true});
-                $('treatmentsMyD').toggle();
-            }
 
 
         </script>
@@ -219,10 +211,6 @@
                                             <!--<input type="hidden" name="otcExcluded" value="true"/>OTC Excluded-->
                                         </td>
                                         <td width=100>
-                                            <% if (!OscarProperties.getInstance().getProperty("rx.drugofchoice.hide", "false").equals("true")) { %>
-                                            <a href="#"
-                                               onclick="callTreatments('searchString','treatmentsMyD');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.msgDrugOfChoice"/></a>
-                                            <%} %>
                                         </td>
                                         <td>
                                             <oscar:oscarPropertiesCheck property="drugref_route_search" value="on">
@@ -406,11 +394,6 @@
         </tr>
     </table>
 
-    <div id="treatmentsMyD"
-         style="position: absolute; left: 1px; top: 1px; width: 800px; height: 600px; display:none; z-index: 1">
-        <a href="javascript: function myFunction() {return false; }" onclick="$('treatmentsMyD').toggle();"
-           style="text-decoration: none;">X</a>
-    </div>
 
 
     </body>

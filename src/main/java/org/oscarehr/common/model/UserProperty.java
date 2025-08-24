@@ -44,7 +44,6 @@ public class UserProperty extends AbstractModel<Integer> implements Serializable
     public static final String RX_DEFAULT_QUANTITY = "rx_default_quantity";
     public static final String RX_PROFILE_VIEW = "rx_profile_view";
     public static final String RX_USE_RX3 = "rx_use_rx3";
-    public static final String USE_MYMEDS = "use_mymeds";
     public static final String DMFLOW_SHEET_VIEW = "DMFlowsheet_view";
     public static final String DOC_DEFAULT_QUEUE = "doc_default_queue";
     public static final String HC_TYPE = "HC_Type";
@@ -78,7 +77,6 @@ public class UserProperty extends AbstractModel<Integer> implements Serializable
     public static final String ENCOUNTER_FORM_NAME = "encounter.form_name";
     public static final String EFORM_NAME = "encounter.eform_name";
     public static final String RX_SHOW_QR_CODE = "rx_show_qr_code";
-    public static final String MYMEDS = "mymeds";
     public static final String NEW_TICKLER_WARNING_WINDOW = "new_tickler_warning_window";
     public static final String CAISI_DEFAULT_PMM = "caisi.default_pmm";
     public static final String CAISI_PREV_BILLING = "caisi.prev_billing";

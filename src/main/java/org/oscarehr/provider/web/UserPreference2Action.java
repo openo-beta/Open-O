@@ -295,10 +295,6 @@ public class UserPreference2Action extends ActionSupport {
             options.add(new LabelValueBean("Single Line", "single"));
             options.add(new LabelValueBean("Multi Line", "multi"));
         }
-        if (key.equals("pref." + UserProperty.MYMEDS)) {
-            options.add(new LabelValueBean("Yes", "yes"));
-            options.add(new LabelValueBean("No", "no"));
-        }
         if (key.equals("pref." + UserProperty.NEW_TICKLER_WARNING_WINDOW)) {
             options.add(new LabelValueBean("Yes", "yes"));
             options.add(new LabelValueBean("No", "no"));
