@@ -209,12 +209,6 @@
                                    size="25" <%=UserPreference2Action.getTextData(prefs, "pref." + UserProperty.FAX)%>/>
                         </td>
                     </tr>
-                    <tr>
-                        <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.general.drugrefid"/>:</td>
-                        <td><input type="text"
-                                   size="25" <%=UserPreference2Action.getTextData(prefs, "pref." + UserProperty.MYDRUGREF_ID)%> />
-                        </td>
-                    </tr>
                     <tr style="height:20px">
                         <td colspan="2"></td>
                     </tr>

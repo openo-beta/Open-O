@@ -332,12 +332,6 @@
             <result name="close">/oscarRx/close.html</result>
             <result name="success">/oscarRx/SelectReason.jsp</result>
         </action>
-        <action name="oscarRx/GetmyDrugrefInfo" class="oscar.oscarRx.pageUtil.RxMyDrugrefInfo2Action">
-            <result name="success">/oscarRx/MyDrugrefDisplay.jsp</result>
-            <result name="failure">/oscarRx/MyDrugrefError.jsp</result>
-            <result name="updateInteractions">/oscarRx/InteractionDisplay2.jsp</result>
-            <result name="updateResources">/oscarRx/updateMyDrugrefResource.jsp</result>
-        </action>
         <action name="oscarRx/GetRxPageSizeInfo" class="oscar.oscarRx.pageUtil.RxRxPageSizeInfo2Action">
             <result name="success">/oscarRx/ViewScript2.jsp</result>
         </action>
@@ -1448,7 +1442,6 @@
             <result name="genRxUseRx3">/provider/setToUseRx3.jsp</result>
             <result name="genDefaultDocQueue">/provider/setDocDefaultQueue.jsp</result>
             <result name="genShowPatientDOB">/provider/setShowPatientDOB.jsp</result>
-            <result name="genUseMyMeds">/provider/setToUseMyMeds.jsp</result>
             <result name="genCppSingleLine">/provider/setCppSingleLine.jsp</result>
             <result name="genAckCommentLab">/provider/setLabAckComment.jsp</result>
             <result name="genLabRecallPrefs">/provider/setLabRecallPrefs.jsp</result>

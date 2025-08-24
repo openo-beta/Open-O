@@ -541,10 +541,6 @@ public final class Login2Action extends ActionSupport {
             LoggedInInfo loggedInInfo = LoggedInUserFilter.generateLoggedInInfoFromSession(request);
 
             if (where.equals("provider")) {
-                UserProperty drugrefProperty = propDao.getProp(UserProperty.MYDRUGREF_ID);
-                if (drugrefProperty != null) {
-                    dsService.fetchGuidelinesFromServiceInBackground(loggedInInfo);
-                }
             }
 
             List<Integer> facilityIds = providerDao.getFacilityIds(provider.getProviderNo());

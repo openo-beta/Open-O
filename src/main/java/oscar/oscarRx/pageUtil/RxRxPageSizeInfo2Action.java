@@ -65,7 +65,7 @@ public final class RxRxPageSizeInfo2Action extends ActionSupport {
         }
 
         request.getSession().setAttribute("rxPageSize", rxPageSize);
-        logger.debug("MyDrugref return time " + (System.currentTimeMillis() - start));
+        logger.debug("Processing time " + (System.currentTimeMillis() - start));
         return SUCCESS;
     }
 }

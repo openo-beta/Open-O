@@ -33,7 +33,6 @@ public class UserProperty extends AbstractModel<Integer> implements Serializable
     public static final String MYOSCAR_ID = "MyOscarId";
     public static final String STALE_NOTEDATE = "cme_note_date";
     public static final String STALE_FORMAT = "cme_note_format";
-    public static final String MYDRUGREF_ID = "mydrugref_id";
     public static final String ONTARIO_MD_USERNAME = "ontario_md_username";
     public static final String ONTARIO_MD_PASSWORD = "ontario_md_password";
     public static final String CONSULTATION_TIME_PERIOD_WARNING = "consultation_time_period_warning";
@@ -45,7 +44,6 @@ public class UserProperty extends AbstractModel<Integer> implements Serializable
     public static final String RX_DEFAULT_QUANTITY = "rx_default_quantity";
     public static final String RX_PROFILE_VIEW = "rx_profile_view";
     public static final String RX_USE_RX3 = "rx_use_rx3";
-    public static final String USE_MYMEDS = "use_mymeds";
     public static final String DMFLOW_SHEET_VIEW = "DMFlowsheet_view";
     public static final String DOC_DEFAULT_QUEUE = "doc_default_queue";
     public static final String HC_TYPE = "HC_Type";
@@ -79,7 +77,6 @@ public class UserProperty extends AbstractModel<Integer> implements Serializable
     public static final String ENCOUNTER_FORM_NAME = "encounter.form_name";
     public static final String EFORM_NAME = "encounter.eform_name";
     public static final String RX_SHOW_QR_CODE = "rx_show_qr_code";
-    public static final String MYMEDS = "mymeds";
     public static final String NEW_TICKLER_WARNING_WINDOW = "new_tickler_warning_window";
     public static final String CAISI_DEFAULT_PMM = "caisi.default_pmm";
     public static final String CAISI_PREV_BILLING = "caisi.prev_billing";
@@ -101,7 +98,6 @@ public class UserProperty extends AbstractModel<Integer> implements Serializable
     public static final String INCOMING_DOCUMENT_DEFAULT_QUEUE = "incoming_document_default_queue";
     public static final String INCOMING_DOCUMENT_ENTRY_MODE = "incoming_document_entry_mode";
     public static final String DISPLAY_DOCUMENT_AS = "display_document_as";
-    public static final String COBALT = "cobalt";
     public static final String PDF = "PDF";
     public static final String IMAGE = "Image";
     public static final String DOCUMENT_DESCRIPTION_TEMPLATE = "document_description_template";

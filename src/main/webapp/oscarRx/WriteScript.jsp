@@ -793,16 +793,6 @@
             }
 
 
-            function HideW(id, resourceId, updated) {
-                var url = 'GetmyDrugrefInfo.do?method=setWarningToHide';
-                //callReplacementWebService("GetmyDrugrefInfo.do?method=setWarningToHide",'interactionsRxMyD');function callReplacementWebService(url,id){
-                var ran_number = Math.round(Math.random() * 1000000);
-                var params = "resId=" + resourceId + "&updatedat=" + updated + "&rand=" + ran_number;  //hack to get around ie caching the page
-
-                //console.log("params: "+params);
-                new Ajax.Updater(id, url, {method: 'get', parameters: params, asynchronous: true});
-
-            }
 
 
             var resHidden2 = 0;
@@ -1557,9 +1547,6 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                                 <div id="interactionsRx"></div>
                                 <div id="renalDosing"></div>
                                 --%>
-                                        <div id="interactionsRxMyD"></div>
-                                        <div id="warningsRxMyD"></div>
-                                        <div id="bulletinsRxMyD"></div>
                                         &nbsp;
                                     </td>
                                 </tr>
@@ -1634,16 +1621,7 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                 }
 
                 // callReplacementWebService("InteractionDisplay.jsp",'interactionsRx');
-                callReplacementWebService("GetmyDrugrefInfo.do?method=view&target=interactionsRx", 'interactionsRx');
-                <oscar:oscarPropertiesCheck property="MYDRUGREF_DS" value="yes">
-                callReplacementWebService("GetmyDrugrefInfo.do?method=view", 'interactionsRxMyD');
-                </oscar:oscarPropertiesCheck>
 
-                <%--  OLD CALLS TO THE WEB SERVICES
-                callReplacementWebService("InteractionDisplayMyD.jsp",'interactionsRxMyD');
-                callReplacementWebService("WarningDisplayMyD.jsp",'warningsRxMyD');
-                callReplacementWebService("BulletinDisplayMyD.jsp",'bulletinsRxMyD');
-                --%>
             </script>
         </td>
     </tr>

@@ -32,3 +32,5 @@ tmp/
 *.venv
 .env
 /.smarttomcat/
+.editorconfig
+.claude

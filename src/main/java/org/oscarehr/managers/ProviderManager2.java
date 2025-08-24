@@ -408,17 +408,8 @@ public class ProviderManager2 {
             settings.setOlisDefaultExcludeReportingLab(map.get("olis_exreportingLab").getValue());
         }
 
-        if (map.get("mydrugref_id") != null) {
-            settings.setMyDrugRefId(map.get("mydrugref_id").getValue());
-        }
 
-        if (map.get("cobalt") != null) {
-            settings.setUseCobaltOnLogin("yes".equals(map.get("cobalt").getValue()) ? true : false);
-        }
 
-        if (map.get("use_mymeds") != null) {
-            settings.setUseMyMeds(Boolean.valueOf(map.get("use_mymeds").getValue()));
-        }
 
         if (map.get("disable_born_prompts") != null) {
             settings.setDisableBornPrompts("Y".equals(map.get("disable_born_prompts").getValue()));
@@ -691,10 +682,6 @@ public class ProviderManager2 {
         p.setValue(settings.getOlisDefaultReportingLab());
         p = getMappedOrNewProperty(map, "olis_exreportingLab", providerNo);
         p.setValue(settings.getOlisDefaultExcludeReportingLab());
-        p = getMappedOrNewProperty(map, "mydrugref_id", providerNo);
-        p.setValue(settings.getMyDrugRefId());
-        p = getMappedOrNewProperty(map, "use_mymeds", providerNo);
-        p.setValue(String.valueOf(settings.isUseMyMeds()));
         p = getMappedOrNewProperty(map, "disable_born_prompts", providerNo);
         p.setValue(String.valueOf(settings.isDisableBornPrompts()));
         p = getMappedOrNewProperty(map, "dashboard_share", providerNo);
@@ -703,8 +690,6 @@ public class ProviderManager2 {
         p = getMappedOrNewProperty(map, "hide_old_echart_link_in_appointment", providerNo);
         p.setValue(settings.isHideOldEchartLinkInAppointment() ? "Y" : "N");
 
-        p = getMappedOrNewProperty(map, "cobalt", providerNo);
-        p.setValue(settings.isUseCobaltOnLogin() ? "yes" : "no");
 
         if (map.get("rx_use_rx3") != null) {
             settings.setUseRx3("yes".equals(map.get("rx_use_rx3").getValue()) ? true : false);

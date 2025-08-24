@@ -43,7 +43,6 @@ import org.oscarehr.util.SpringUtils;
 import oscar.OscarProperties;
 import oscar.oscarRx.data.RxCodesData;
 import oscar.oscarRx.data.RxPrescriptionData;
-import oscar.oscarRx.pageUtil.RxMyDrugrefInfoAction;
 import oscar.oscarRx.pageUtil.RxSessionBean;
 import oscar.oscarRx.util.TimingOutCallback.TimeoutException;
 
@@ -1508,104 +1507,10 @@ public class RxUtil {
     }
 
     public static String findInterDrugStr(final UserPropertyDAO propDAO, String provider, final RxSessionBean bean) {
-        //quiry mydrugref database to get a vector with all interacting drugs
-        //if effect is not null or effect is not empty string
-        //get a list of all pending prescriptions' ATC codes
-        //compare if anyone match,
-        //if yes, get it's randomId and set an session attribute
-        //if not, do nothing
-
-        UserProperty prop = propDAO.getProp(provider, UserProperty.MYDRUGREF_ID);
-        String myDrugrefId = null;
-        if (prop != null) {
-            myDrugrefId = prop.getValue();
-            MiscUtils.getLogger().debug("3myDrugrefId" + myDrugrefId);
-        }
-        RxPrescriptionData.Prescription[] rxs = bean.getStash();
-        //acd contains all atccodes in stash
-        Vector<String> acd = new Vector<String>();
-        for (RxPrescriptionData.Prescription rxItem : rxs) {
-            acd.add(rxItem.getAtcCode());
-        }
-        logger.debug("3acd=" + acd);
-
-        String[] str = new String[]{"warnings_byATC,bulletins_byATC,interactions_byATC,get_guidelines"}; //NEW more efficent way of sending multiple requests at the same time.
-        Vector allInteractions = new Vector();
-        for (String command : str) {
-            try {
-                Vector v = getMyDrugrefInfo(command, acd, myDrugrefId);
-                MiscUtils.getLogger().debug("2v in for loop: " + v);
-                if (v != null && v.size() > 0) {
-                    allInteractions.addAll(v);
-                }
-                MiscUtils.getLogger().debug("3after all.addAll(v): " + allInteractions);
-            } catch (Exception e) {
-                log2.debug("3command :" + command + " " + e.getMessage());
-                MiscUtils.getLogger().error("Error", e);
-            }
-        }
-        String retStr = "";
-        HashMap rethm = new HashMap();
-        for (RxPrescriptionData.Prescription rxItem : rxs) {
-            MiscUtils.getLogger().debug("rxItem=" + rxItem.getDrugName());
-            Vector uniqueDrugNameList = new Vector();
-            for (int i = 0; i < allInteractions.size(); i++) {
-                Hashtable hb = (Hashtable) allInteractions.get(i);
-                String interactingAtc = (String) hb.get("atc");
-                String interactingDrugName = (String) hb.get("drug2");
-                String effectStr = (String) hb.get("effect");
-                String sigStr = (String) hb.get("significance");
-                MiscUtils.getLogger().debug("findInterDrugStr=" + hb);
-                if (sigStr != null) {
-                    if (sigStr.equals("1")) {
-                        sigStr = "minor";
-                    } else if (sigStr.equals("2")) {
-                        sigStr = "moderate";
-                    } else if (sigStr.equals("3")) {
-                        sigStr = "major";
-                    } else {
-                        sigStr = "unknown";
-                    }
-                } else {
-                    sigStr = "unknown";
-                }
-                if (interactingAtc != null && interactingDrugName != null && rxItem.getAtcCode().equals(interactingAtc) && effectStr != null && effectStr.length() > 0 && !effectStr.equalsIgnoreCase("N") && !effectStr.equals(" ")) {
-                    MiscUtils.getLogger().debug("interactingDrugName=" + interactingDrugName);
-                    RxPrescriptionData.Prescription rrx = findRxFromDrugNameOrGN(rxs, interactingDrugName);
-
-                    if (rrx != null && !uniqueDrugNameList.contains(rrx.getDrugName())) {
-                        MiscUtils.getLogger().debug("rrx.getDrugName()=" + rrx.getDrugName());
-                        uniqueDrugNameList.add(rrx.getDrugName());
-
-                        String key = sigStr + "_" + rxItem.getRandomId();
-
-                        if (rethm.containsKey(key)) {
-                            String val = (String) rethm.get(key);
-                            val += ";" + rrx.getDrugName();
-                            rethm.put(key, val);
-                        } else {
-                            rethm.put(key, rrx.getDrugName());
-                        }
-
-                        key = sigStr + "_" + rrx.getRandomId();
-                        if (rethm.containsKey(key)) {
-                            String val = (String) rethm.get(key);
-                            val += ";" + rxItem.getDrugName();
-                            rethm.put(key, val);
-                        } else {
-                            rethm.put(key, rxItem.getDrugName());
-                        }
-                    }
-                }
-            }
-            MiscUtils.getLogger().debug("***next rxItem***");
-        }
-        MiscUtils.getLogger().debug("rethm=" + rethm);
-        retStr = rethm.toString();
-        retStr = retStr.replace("}", "");
-        retStr = retStr.replace("{", "");
-
-        return retStr;
+        // External drug interaction service (MyDrugRef) has been removed
+        // Local MediSpan drug interactions are handled by DrugrefUtil instead
+        logger.debug("External drug interaction checking disabled - using local MediSpan via DrugrefUtil");
+        return "";
     }
 
     private static RxPrescriptionData.Prescription findRxFromDrugNameOrGN(final RxPrescriptionData.Prescription[] rxs, String interactingDrugName) {
@@ -1621,70 +1526,11 @@ public class RxUtil {
 
     }
 
-    private static Vector getMyDrugrefInfo(String command, Vector drugs, String myDrugrefId) {
-        MiscUtils.getLogger().debug("3in getMyDrugrefInfo");
-        RxMyDrugrefInfoAction.removeNullFromVector(drugs);
-        Vector params = new Vector();
-        MiscUtils.getLogger().debug("3command,drugs,myDrugrefId= " + command + "--" + drugs + "--" + myDrugrefId);
-        params.addElement(command);
-        params.addElement(drugs);
-        if (myDrugrefId != null && !myDrugrefId.trim().equals("")) {
-            log2.debug("putting >" + myDrugrefId + "< in the request");
-            params.addElement(myDrugrefId);
-            //params.addElement("true");
-        }
-        Vector vec = new Vector();
-        Object obj = callWebserviceLite("Fetch", params);
-        log2.debug("RETURNED " + obj);
-        if (obj instanceof Vector) {
-            MiscUtils.getLogger().debug("3obj is instance of vector");
-            vec = (Vector) obj;
-            MiscUtils.getLogger().debug(vec);
-        } else if (obj instanceof Hashtable) {
-            MiscUtils.getLogger().debug("3obj is instace of hashtable");
-            Object holbrook = ((Hashtable) obj).get("Holbrook Drug Interactions");
-            if (holbrook instanceof Vector) {
-                MiscUtils.getLogger().debug("3holbrook is instance of vector ");
-                vec = (Vector) holbrook;
-                MiscUtils.getLogger().debug(vec);
-            }
-            Enumeration e = ((Hashtable) obj).keys();
-            while (e.hasMoreElements()) {
-                String s = (String) e.nextElement();
-                MiscUtils.getLogger().debug(s);
-                log2.debug(s + " " + ((Hashtable) obj).get(s) + " " + ((Hashtable) obj).get(s).getClass().getName());
-            }
-        }
-        return vec;
-    }
+    // External drug interaction service removed - local MediSpan used via DrugrefUtil
 
     private static final Logger log2 = MiscUtils.getLogger();
 
-    public static Object callWebserviceLite(String procedureName, Vector params) {
-        log2.debug("#CALLmyDRUGREF-" + procedureName);
-        Object object = null;
-
-        String server_url = OscarProperties.getInstance().getProperty("MY_DRUGREF_URL", "");
-        MiscUtils.getLogger().debug("server_url: " + server_url);
-        TimingOutCallback callback = new TimingOutCallback(30 * 1000);
-        try {
-            log2.debug("server_url :" + server_url);
-            if (!System.getProperty("http.proxyHost", "").isEmpty()) {
-                //The Lite client won't recgonize JAVA_OPTS as it uses a customized http
-                XmlRpcClient server = new XmlRpcClient(server_url);
-                server.executeAsync(procedureName, params, callback);
-            } else {
-                XmlRpcClientLite server = new XmlRpcClientLite(server_url);
-                server.executeAsync(procedureName, params, callback);
-            }
-            object = callback.waitForResponse();
-        } catch (TimeoutException e) {
-            log2.debug("No response from server." + server_url);
-        } catch (Throwable ethrow) {
-            log2.debug("Throwing error." + ethrow.getMessage());
-        }
-        return object;
-    }
+    // MyDrugRef callWebserviceLite method removed - no longer needed
 
     public static <T> HashMap<Long, T> createKeyValPair(List<T> lst) {
         HashMap<Long, T> ret = new HashMap<Long, T>();

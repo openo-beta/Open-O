@@ -44,9 +44,6 @@ import javax.persistence.Transient;
 @Table(name = "user_ds_message_prefs")
 public class UserDSMessagePrefs extends AbstractModel<Integer> implements Serializable {
     @Transient
-    public final static String MYDRUGREF = "mydrugref";
-
-    @Transient
     public final static String MEDISPAN = "medispan";
 
     @Id

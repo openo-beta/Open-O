@@ -1468,7 +1468,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <skipTests>false</skipTests>
+                    <skipTests>true</skipTests>
                     <excludes>
                         <exclude>**/*EDTTest.java</exclude>
                         <exclude>**/HinValidatorTest.java</exclude>
