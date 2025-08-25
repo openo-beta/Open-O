@@ -1732,6 +1732,8 @@ public class Demographic extends AbstractModel<Integer> implements Serializable 
             sb.append(" ").append("(").append(getTitle()).append(")");
         }
         sb.append("<br/>");
+        // birthday: Born <b>DATE_OF_BIRTH</b>
+        sb.append("Born ").append("<b>").append(getFormattedDob()).append("</b>");
 
         // hin: <br/>HC <b>HIN VER (TYPE)</b>
         if (getHin() != null && getHin().length() > 0) {

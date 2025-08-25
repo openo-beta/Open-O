@@ -1837,6 +1837,8 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             <tr>
                                 <td width="20%"><span class="small9">Newborn:</span></td>
                                 <td>
+                                    <input type="text" name="ar2_proNewBorn" style="width:100%" size="40" maxlength="50"
+                                           value="<%= props.getProperty("ar2_proNewBorn", "") %>" @oscar.formDB/>
                                 </td>
                             </tr>
                         </table>

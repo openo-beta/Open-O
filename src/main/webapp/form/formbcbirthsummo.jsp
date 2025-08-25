@@ -539,7 +539,10 @@
 
                                 <table width="100%" border="1" cellspacing="0" cellpadding="0">
                                     <tr>
+                                        <td width="40%" rowspan="2" valign="top">NEWBORN ID NUMBER<br>
+                                            <input type="text" name="c_newBornID" style="width: 100%"
                                                    size="30" maxlength="30"
+                                                   value="<%= props.getProperty("c_newBornID", "") %>"
                                                    @oscar.formDB/></td>
                                         <td width="20%" valign="top"><input type="checkbox"
                                                                             name="singleton"
@@ -1380,6 +1383,7 @@
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
                             <td colspan="2"><B>
+                                <div class="small10">4. BIRTH AND NEWBORN</div>
                             </B></td>
                         </tr>
                         <tr>
@@ -1432,6 +1436,7 @@
                                                                                       id="birTimeDate3_cal"></td>
                                     </tr>
                                     <tr>
+                                        <td align="right">NEWBORN DELIVERED</td>
                                         <td><input type="text" name="birTimeHour4"
                                                    style="width: 100%" size="5" maxlength="5"
                                                    value="<%= props.getProperty("birTimeHour4", "") %>"
