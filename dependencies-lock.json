@@ -8,30 +8,6 @@
     "optional" : false,
     "integrity" : "sha512:MRwxFfn2ZR0XEcUtFzniWnDyVFbKy5os3edidJjDCxPXIRM8x1s5RirRiBKoJHLvGzudZPq1q7A3fBK/ggQ6dA=="
   }, {
-    "groupId" : "ca.bornontario",
-    "artifactId" : "BORNWB",
-    "version" : "2.1.5",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:j39WYiI+i1+axu1XQNqW5w7/yDE3/s93ptSJGwVLsNoi4k9NDosH8O0unXF9fIeD1vrLV1VE9Ajhn0yx+YDD1g=="
-  }, {
-    "groupId" : "ca.bornontario",
-    "artifactId" : "BORNWBCSD",
-    "version" : "2.2.1",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:DVKwwZ/jsbfCTkwEOgc/Ijq5CAlQ53qUbwfFqgCCTwuf9phCoPpEaqkzbyfh8hWLKqkRhzB2E6OQAeAK+/OcWw=="
-  }, {
-    "groupId" : "ca.bornontario",
-    "artifactId" : "x18MEWBV",
-    "version" : "1.8.2",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:74WCjDctTayFSsqUHDI3F4fe3BtVa1JIqAlcKy8dcdVG/Gqrbq2hc4l0kjuAu51NP7+8us7G41KLtU/Ky+iyOA=="
-  }, {
     "groupId" : "ca.ssha.www",
     "artifactId" : "olis-service",
     "version" : "20111111",

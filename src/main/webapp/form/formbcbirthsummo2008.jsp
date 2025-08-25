@@ -593,10 +593,7 @@
 
                                 <table width="100%" border="1" cellspacing="0" cellpadding="0">
                                     <tr>
-                                        <td width="40%" rowspan="2" valign="top">NEWBORN ID NUMBER<br>
-                                            <input type="text" name="c_newBornID" style="width: 100%"
                                                    size="30" maxlength="30"
-                                                   value="<%= props.getProperty("c_newBornID", "") %>"
                                                    @oscar.formDB/></td>
                                         <td width="20%" valign="top"><input type="checkbox"
                                                                             name="singleton"

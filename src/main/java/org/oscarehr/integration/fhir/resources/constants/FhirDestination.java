@@ -29,7 +29,6 @@ package org.oscarehr.integration.fhir.resources.constants;
 public enum FhirDestination {
 
     // add more locations here in this format: ID (["Title or Description"], ["endpoint"] )
-    BORN("BORN Immunization Data Centre", "https://the.datacentre.com/fhir/immun/data/"),
     DHIR("DHIR", "https://wsgateway.prod.ehealthontario.ca/API/FHIR/Immunizations/v3/clinician/");
 
     private final String title;

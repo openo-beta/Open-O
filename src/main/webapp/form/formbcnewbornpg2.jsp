@@ -17,7 +17,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%
-    String formClass = "BCNewBorn";
     String formLink = "formbcnewbornpg2.jsp";
 
     int demoNo = Integer.parseInt(request.getParameter("demographic_no"));
@@ -52,7 +51,6 @@
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title>New Born Record (Baby)</title>
         <link rel="stylesheet" type="text/css"
               href="<%=bView?"bcArStyleView.css" : "bcArStyle.css"%>">
         <!-- calendar stylesheet -->

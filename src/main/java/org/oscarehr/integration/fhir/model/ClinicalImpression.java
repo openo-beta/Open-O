@@ -52,7 +52,7 @@ import org.oscarehr.common.model.AbstractModel;
  * name "investigations" further
  * <p>
  * For the time being, this class is written with the intention to map patient encounter notes or various text messages
- * such as BORN transmissions.
+ * such as health registry transmissions.
  */
 public class ClinicalImpression extends AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.ClinicalImpression, AbstractModel<?>> {
 

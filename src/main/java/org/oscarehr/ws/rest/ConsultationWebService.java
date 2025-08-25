@@ -47,12 +47,10 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang.StringUtils;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.casemgmt.service.CaseManagementManager;
-import org.oscarehr.common.dao.BORNPathwayMappingDao;
 import org.oscarehr.common.dao.ClinicDAO;
 import org.oscarehr.common.dao.ConsultationServiceDao;
 import org.oscarehr.common.dao.FaxConfigDao;
 import org.oscarehr.common.dao.UserPropertyDAO;
-import org.oscarehr.common.model.BORNPathwayMapping;
 import org.oscarehr.common.model.Clinic;
 import org.oscarehr.common.model.ConsultDocs;
 import org.oscarehr.common.model.ConsultResponseDoc;
@@ -438,25 +436,10 @@ public class ConsultationWebService extends AbstractServiceImpl {
     public ReferralResponse getReferralPathwaysByService(@QueryParam("serviceName") String serviceName) {
         ReferralResponse response = new ReferralResponse();
 
-        //check for a mapping, or else just use the BORN service name.
-        BORNPathwayMappingDao bornPathwayMappingDao = SpringUtils.getBean(BORNPathwayMappingDao.class);
-        List<BORNPathwayMapping> mappings = bornPathwayMappingDao.findByBornPathway(serviceName);
-        List<ProfessionalSpecialist> specs = new ArrayList<ProfessionalSpecialist>();
-
-        if (mappings.isEmpty()) {
-            specs = consultationManager.findByService(getLoggedInInfo(), serviceName);
-            ConsultationServices cs = consultationServiceDao.findByDescription(serviceName);
-            if (cs != null) {
-                response.getServices().add(serviceConverter.getAsTransferObject(getLoggedInInfo(), cs));
-            }
-        } else {
-            for (BORNPathwayMapping mapping : mappings) {
-                specs.addAll(consultationManager.findByServiceId(getLoggedInInfo(), mapping.getServiceId()));
-                ConsultationServices cs = consultationServiceDao.find(mapping.getServiceId());
-                if (cs != null) {
-                    response.getServices().add(serviceConverter.getAsTransferObject(getLoggedInInfo(), cs));
-                }
-            }
+        List<ProfessionalSpecialist> specs = consultationManager.findByService(getLoggedInInfo(), serviceName);
+        ConsultationServices cs = consultationServiceDao.findByDescription(serviceName);
+        if (cs != null) {
+            response.getServices().add(serviceConverter.getAsTransferObject(getLoggedInInfo(), cs));
         }
 
         ProfessionalSpecialistConverter converter = new ProfessionalSpecialistConverter();

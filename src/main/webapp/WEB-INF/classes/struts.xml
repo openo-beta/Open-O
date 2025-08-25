@@ -1452,7 +1452,6 @@
             <result name="genEDocBrowserInMasterFile">/provider/setEDocBrowserInMasterFile.jsp</result>
             <result name="genPatientNameLength">/provider/setPatientNameLength.jsp</result>
             <result name="genDisplayDocumentAs">/provider/setDisplayDocumentAs.jsp</result>
-            <result name="genBornPrefs">/provider/setBornPrefs.jsp</result>
             <result name="genAppointmentCardPrefs">/provider/setAppointmentCardPrefs.jsp</result>
             <result name="genDashboardPrefs">/provider/setDashboardPrefs.jsp</result>
             <result name="genPreventionPrefs">/provider/setPreventionPrefs.jsp</result>
