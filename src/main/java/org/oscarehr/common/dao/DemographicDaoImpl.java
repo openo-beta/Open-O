@@ -2980,35 +2980,6 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
     }
 
-    /**
-     * This method war written for BORN Kid eConnect job to figure out which eforms
-     * don't have an eform_value present
-     * <p>
-     * This method will be refined a bit during QA
-     */
-    @Override
-    public List<Integer> getBORNKidsMissingExtKey(String keyName) {
-        Calendar cal = Calendar.getInstance();
-        // TODO: change this to use a similar AGE calculation like in
-        // RptDemographicQueryBuilder
-        int year = cal.get(Calendar.YEAR) - 18;
-        // Session session = getSession();
-        Session session = currentSession();
-        try {
-            SQLQuery sqlQuery = session.createSQLQuery(
-                "select distinct d.demographic_no from demographic d where d.year_of_birth >= :year1 and  d.demographic_no not in (select distinct d.demographic_no from demographic d, demographicExt e where d.demographic_no = e.demographic_no and d.year_of_birth >= :year2 and key_val=:key)");
-            sqlQuery.setInteger("year1", year);
-            sqlQuery.setInteger("year2", year);
-            sqlQuery.setString("key", keyName);
-            List<Integer> ids = sqlQuery.list();
-
-            return ids;
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
-        }
-
-    }
 
     @Override
     public List<Demographic> getActiveDemographicAfter(Date afterDatetimeExclusive) {

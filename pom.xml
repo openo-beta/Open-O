@@ -643,23 +643,6 @@
             </exclusions>
         </dependency>
 
-        <!-- FOR BORN18MWBV Project - Rourke, NDDS, 18M Summary in XML format -->
-        <!-- can be found in the local_repo folder -->
-        <dependency>
-            <groupId>ca.bornontario</groupId>
-            <artifactId>x18MEWBV</artifactId>
-            <version>1.8.2</version>
-        </dependency>
-        <dependency>
-            <groupId>ca.bornontario</groupId>
-            <artifactId>BORNWB</artifactId>
-            <version>2.1.5</version>
-        </dependency>
-        <dependency>
-            <groupId>ca.bornontario</groupId>
-            <artifactId>BORNWBCSD</artifactId>
-            <version>2.2.1</version>
-        </dependency>
 
         <!-- FOR ORN Project - CKD config in XML format -->
         <!-- can be found in the local_repo folder -->

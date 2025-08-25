@@ -1331,10 +1331,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                                        value="<%= props.getProperty("ar2_proPostPartum", "") %>"/>
                         </tr>
                         <tr>
-                            <td width="20%"><span class="small9">NEWBORN:</span></td>
                             <td>
-                                <input type="text" name="ar2_proNewBorn" style="width:100%" size="40" maxlength="50"
-                                       value="<%= props.getProperty("ar2_proNewBorn", "") %>"/>
                             </td>
                         </tr>
                     </table>
@@ -2302,7 +2299,6 @@ if (!fedb.equals("") && fedb.length()==10 ) {
         <br>
         <table width="100%" border="0" cellspacing="2" cellpadding="0">
             <tr>
-                <td colspan="2"><span class="small9">CONSULTATION FOR MOTHER OR NEWBORN</span></td>
                 <td nowrap colspan="2"><span class="small9">SIGNATURE</span></td>
             </tr>
             <tr>

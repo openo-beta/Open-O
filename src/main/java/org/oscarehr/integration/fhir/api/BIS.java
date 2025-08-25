@@ -38,7 +38,7 @@ import org.oscarehr.util.LoggedInInfo;
 
 public class BIS {
 
-    private static Settings settings = new Settings(FhirDestination.BORN, Region.ON);
+    private static Settings settings = new Settings(FhirDestination.DHIR, Region.ON);
 
     public static synchronized FhirCommunicationBuilder getFhirCommunicationBuilder(LoggedInInfo loggedInInfo, int demographicNo, String wbData, String wbCsdData, String arData, Clinic clinic) {
 

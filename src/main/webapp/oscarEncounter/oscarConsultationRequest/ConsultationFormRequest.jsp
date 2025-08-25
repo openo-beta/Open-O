@@ -2784,7 +2784,6 @@ if (userAgent != null) {
                                 onSelectSpecialist(document.EctConsultationFormRequest2Form.specialist);
 
                                 <%
-		            	//new with BORN referrals. Allow form to be loaded with service and
 		            	//specialist pre-selected
 		            	String reqService = request.getParameter("service");
 

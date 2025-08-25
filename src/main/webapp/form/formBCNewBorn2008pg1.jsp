@@ -47,8 +47,6 @@
              scope="session"/>
 
 <%
-    String formClass = "BCNewBorn2008";
-    String formLink = "formBCNewBorn2008pg1.jsp";
 
     int demoNo = Integer.parseInt(request.getParameter("demographic_no"));
     int formId = Integer.parseInt(request.getParameter("formId"));
@@ -83,7 +81,6 @@
 
     <head>
 
-        <title>British Columbia New Born Record 2008 - Page 1</title>
 
 
         <link rel="stylesheet" type="text/css" href="bcArStyle.css">
@@ -119,7 +116,6 @@
             // var ret = checkAllDates();
             var ret = true;
             if (ret == true) {
-                document.forms[0].action = "<%= request.getContextPath() %>/form/createpdf?__title=British+Columbia+Newborn+Record+2008+Part+2&__cfgfile=bcNB2008PrintCfgPg1&__template=bcNewBorn2008pg1";
 
                 document.forms[0].target = "_blank";
             }
@@ -415,7 +411,6 @@
 
     <body onLoad="setfocus()">
         <%--
-    @oscar.formDB Table="formBCNewBorn2008"
     @oscar.formDB Field="ID" Type="int(10)" Null="NOT NULL" Key="PRI" Default="" Extra="auto_increment"
     @oscar.formDB Field="demographic_no" Type="int(10)" Null="NOT NULL" Default="'0'"
     @oscar.formDB Field="provider_no" Type="int(10)" Null="" Default="NULL"
@@ -462,9 +457,7 @@
 
                 <td align="right">
                 <td align="right"><b>Edit:</b>Part1 | <a
-                        href="formBCNewBorn2008pg2.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">Part2
                     <font size=-2>(pg.1)</font></a> | <a
-                        href="formBCNewBorn2008pg3.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">Part2
                     <font size=-2>(pg.2)</font></a> |
                 </td>
                 <%
@@ -500,8 +493,6 @@
                                                                             @oscar.formDB/></td>
                         </tr>
                         <tr>
-                            <td>Surname of newborn<br><input name="SurNewBorn"
-                                                             value="<%= props.getProperty("SurNewBorn", "") %>"
                                                              @oscar.formDB/></td>
                             <td>Partner's Name<br><input name="FathersName"
                                                          value="<%= props.getProperty("FathersName", "") %>"
@@ -929,8 +920,6 @@
                                     </option>
                                 </select>
                             </td>
-                            <td>Newborn Hospital # <input name="Section4NewBornHospital" type="text"
-                                                          value="<%= props.getProperty("Section4NewBornHospital", "") %>"
                                                           @oscar.formDB/></td>
                         </tr>
                         <tr>

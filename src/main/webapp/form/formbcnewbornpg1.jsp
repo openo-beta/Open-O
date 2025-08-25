@@ -19,7 +19,6 @@
 <% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
 
 <%
-    String formClass = "BCNewBorn";
     String formLink = "formbcnewbornpg1.jsp";
 
     int demoNo = Integer.parseInt(request.getParameter("demographic_no"));
@@ -54,7 +53,6 @@
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title>New Born Record (Baby)</title>
         <link rel="stylesheet" type="text/css"
               href="<%=bView?"bcArStyleView.css" : "bcArStyle.css"%>">
         <!-- calendar stylesheet -->
@@ -392,7 +390,6 @@
     <body bgproperties="fixed" topmargin="0" leftmargin="1" rightmargin="1"
           onLoad="setfocus()">
         <%--
-        @oscar.formDB Table="formBCNewBorn"
         @oscar.formDB Field="ID" Type="int(10)" Null="NOT NULL" Key="PRI" Default="" Extra="auto_increment"
         @oscar.formDB Field="demographic_no" Type="int(10)" Null="NOT NULL" Default="'0'"
         @oscar.formDB Field="provider_no" Type="int(10)" Null="" Default="NULL"
@@ -483,10 +480,7 @@
 
                     <table width="100%" border="1" cellspacing="0" cellpadding="0">
                         <tr>
-                            <td width="40%">SURNAME OF NEWBORN<br>
-                                <input type="text" name="c_newBornSurname" style="width: 100%"
                                        size="30" maxlength="60"
-                                       value="<%= props.getProperty("c_newBornSurname", "") %>"
                                        @oscar.formDB/></td>
                             <td width="50%">PARTNER'S NAME<br>
                                 <input type="text" name="c_partnerName" style="width: 100%"
@@ -813,7 +807,6 @@
                                     </option>
                                     <%}%>
                                 </select></td>
-                            <td>NEWBORN HOSPITAL #<br>
                                 <input type="text" name="pg1_delRomHospNo" style="width: 100%"
                                        size="10" maxlength="20"
                                        value="<%= props.getProperty("pg1_delRomHospNo", "") %>"

@@ -206,7 +206,7 @@ public class FhirMessageBuilderTest {
     //     loggedInInfo.setLoggedInProvider(provider);
     //     loggedInInfo.setLoggedInSecurity(security);
 
-    //     Settings settings = new Settings(FhirDestination.BORN, Region.ON);
+    //     Settings settings = new Settings(FhirDestination.DHIR, Region.ON);
 
     //     OscarFhirConfigurationManager configurationManager = new OscarFhirConfigurationManager(loggedInInfo, settings);
     //     // normally this is done inside the Configuration manager but this test will not instantiate a DAO
