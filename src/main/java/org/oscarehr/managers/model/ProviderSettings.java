@@ -139,7 +139,6 @@ public class ProviderSettings {
 
     private String olisDefaultReportingLab = "";
     private String olisDefaultExcludeReportingLab = "";
-    private boolean disableBornPrompts;
     private boolean dashboardShare;
 
 
@@ -788,13 +787,6 @@ public class ProviderSettings {
 
 
 
-    public boolean isDisableBornPrompts() {
-        return disableBornPrompts;
-    }
-
-    public void setDisableBornPrompts(boolean disableBornPrompts) {
-        this.disableBornPrompts = disableBornPrompts;
-    }
 
     public boolean isDashboardShare() {
         return dashboardShare;

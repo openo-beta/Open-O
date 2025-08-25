@@ -3672,7 +3672,6 @@
                                     </td>
                         </td>
 
-                        <!-- Added for the item-35 in the  BORN-RFP-->
                         <td>
                             <select name="pg1_geneticA_riskLevel">
                                 <option value=""></option>
@@ -3688,7 +3687,6 @@
                                    value="<%= UtilMisc.htmlEscape(props.getProperty("pg1_geneticB", "")) %>">
                         </td>
 
-                        <!-- Added for the item-35 in the  BORN-RFP-->
                         <td>
                             <select name="pg1_geneticB_riskLevel">
                                 <option value=""></option>
@@ -3704,7 +3702,6 @@
                                    value="<%= UtilMisc.htmlEscape(props.getProperty("pg1_geneticC", "")) %>">
                         </td>
 
-                        <!-- Added for the item-35 in the  BORN-RFP-->
                         <td>
                             <select name="pg1_geneticC_riskLevel">
                                 <option value=""></option>
@@ -3721,7 +3718,6 @@
                                    value="<%= UtilMisc.htmlEscape(props.getProperty("pg1_labCustom3Result", "")) %>"/>
                         </td>
 
-                        <!-- Added for the item-35 in the  BORN-RFP-->
                         <td>
                             <select name="pg1_labCustom3Result_riskLevel">
                                 <option value=""></option>
@@ -3751,7 +3747,6 @@
 
                     <tr>
                         <td>
-                            e) Born Resources
                         </td>
 
                         <td>

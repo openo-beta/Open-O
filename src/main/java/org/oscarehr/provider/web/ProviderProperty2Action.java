@@ -2397,69 +2397,7 @@ public class ProviderProperty2Action extends ActionSupport {
         return "genAppointmentCardPrefs";
     }
 
-    public String viewBornPrefs() {
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.DISABLE_BORN_PROMPTS);
 
-        String propValue = "";
-        if (prop == null) {
-            prop = new UserProperty();
-        } else {
-            propValue = prop.getValue();
-        }
-
-        boolean checked;
-        if (propValue.equals("Y"))
-            checked = true;
-        else
-            checked = false;
-
-        prop.setChecked(checked);
-        request.setAttribute("bornPromptsProperty", prop);
-        request.setAttribute("providertitle", "provider.bornPrefs.title");
-        request.setAttribute("providermsgPrefs", "provider.bornPrefs.msgPrefs"); //=Preferences
-        request.setAttribute("providerbtnSubmit", "provider.bornPrefs.btnSubmit"); //=Save
-        request.setAttribute("providerbtnCancel", "provider.bornPrefs.btnCancel"); //=Cancel
-        request.setAttribute("method", "saveBornPrefs");
-
-        this.setBornPromptsProperty(prop);
-
-        return "genBornPrefs";
-    }
-
-    public String saveBornPrefs() {
-        String checkboxValue = request.getParameter("bornPromptsProperty.checked");
-
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-        UserProperty Uprop = this.getBornPromptsProperty();
-
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.DISABLE_BORN_PROMPTS);
-        if (prop == null) {
-            prop = new UserProperty();
-            prop.setName(UserProperty.DISABLE_BORN_PROMPTS);
-            prop.setProviderNo(providerNo);
-        }
-        boolean checked = checkboxValue != null;
-        String propValue = "N";
-        if (checked) propValue = "Y";
-        prop.setValue(propValue);
-        this.userPropertyDAO.saveProp(prop);
-
-        request.setAttribute("status", "success");
-        request.setAttribute("bornPromptsProperty", prop);
-        request.setAttribute("providertitle", "provider.bornPrefs.title");
-        request.setAttribute("providermsgPrefs", "provider.bornPrefs.msgPrefs"); //=Preferences
-        request.setAttribute("providerbtnClose", "provider.bornPrefs.btnClose"); //=Close
-        if (checked)
-            request.setAttribute("providermsgSuccess", "provider.bornPrefs.msgSuccess_selected");
-        else
-            request.setAttribute("providermsgSuccess", "provider.bornPrefs.msgSuccess_unselected");
-        request.setAttribute("method", "saveBornPrefs");
-
-        return "genBornPrefs";
-    }
 
 
     public String viewPreventionPrefs() {
@@ -2731,8 +2669,6 @@ public class ProviderProperty2Action extends ActionSupport {
         methodMap.put("savePatientNameLength", this::savePatientNameLength);
         methodMap.put("viewDisplayDocumentAs", this::viewDisplayDocumentAs);
         methodMap.put("saveDisplayDocumentAs", this::saveDisplayDocumentAs);
-        methodMap.put("viewBornPrefs", this::viewBornPrefs);
-        methodMap.put("saveBornPrefs", this::saveBornPrefs);
         methodMap.put("viewAppointmentCardPrefs", this::viewAppointmentCardPrefs);
         methodMap.put("saveAppointmentCardPrefs", this::saveAppointmentCardPrefs);
         methodMap.put("viewDashboardPrefs", this::viewDashboardPrefs);
@@ -2778,7 +2714,6 @@ public class ProviderProperty2Action extends ActionSupport {
     private UserProperty appointmentCardName;
     private UserProperty appointmentCardPhone;
     private UserProperty appointmentCardFax;
-    private UserProperty bornPromptsProperty;
     private UserProperty preventionSSOWarningProperty;
     private UserProperty preventionISPAWarningProperty;
     private UserProperty preventionNonISPAWarningProperty;
@@ -3036,13 +2971,6 @@ public class ProviderProperty2Action extends ActionSupport {
         this.appointmentCardFax = appointmentCardFax;
     }
 
-    public UserProperty getBornPromptsProperty() {
-        return bornPromptsProperty;
-    }
-
-    public void setBornPromptsProperty(UserProperty bornPromptsProperty) {
-        this.bornPromptsProperty = bornPromptsProperty;
-    }
 
     public UserProperty getPreventionSSOWarningProperty() {
         return preventionSSOWarningProperty;

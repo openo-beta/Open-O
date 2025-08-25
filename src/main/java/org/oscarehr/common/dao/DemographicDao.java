@@ -472,7 +472,6 @@ public interface DemographicDao {
 
     public List<Integer> getMissingExtKey(String keyName);
 
-    public List<Integer> getBORNKidsMissingExtKey(String keyName);
 
     public List<Demographic> getActiveDemographicAfter(Date afterDatetimeExclusive);
 

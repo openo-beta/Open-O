@@ -714,7 +714,6 @@
             </tr>
             <tr>
                 <td align="center"><a href=#
-                                      onClick="popupPage(230,860,'../setProviderStaleDate.do?method=viewBornPrefs');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnViewBornPrefs"/></a></td>
             </tr>
             <tr>
                 <td align="center"><a href=#

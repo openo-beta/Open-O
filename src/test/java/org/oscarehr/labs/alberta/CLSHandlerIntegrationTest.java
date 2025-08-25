@@ -73,7 +73,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 // 		p.setProperty("db_uri", ConfigUtils.getProperty("db_url_prefix"));
 // 		p.setProperty("db_driver", ConfigUtils.getProperty("db_driver"));
 // 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext();
-// 		context.setConfigLocations(new String[]{"/applicationContext.xml","/applicationContextBORN.xml"});
+// 		context.setConfigLocations(new String[]{"/applicationContext.xml"});
 // 		context.refresh();
 // 		SpringUtils.setBeanFactory(context);
 
