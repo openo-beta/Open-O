@@ -1513,18 +1513,6 @@ public class RxUtil {
         return "";
     }
 
-    private static RxPrescriptionData.Prescription findRxFromDrugNameOrGN(final RxPrescriptionData.Prescription[] rxs, String interactingDrugName) {
-        RxPrescriptionData.Prescription returnRx = null;
-        for (RxPrescriptionData.Prescription rxItem : rxs) {
-            if (rxItem.getDrugName().contains(interactingDrugName)) {
-                returnRx = rxItem;
-            } else if (rxItem.getGenericName().contains(interactingDrugName)) {
-                returnRx = rxItem;
-            }
-        }
-        return returnRx;
-
-    }
 
     // External drug interaction service removed - local MediSpan used via DrugrefUtil
 

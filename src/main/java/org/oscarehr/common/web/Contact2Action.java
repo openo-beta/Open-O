@@ -1093,26 +1093,7 @@ public class Contact2Action extends ActionSupport {
         return demographicContact;
     }
 
-    private static void setPersonalEmergencyContacts(final LoggedInInfo loggedInInfo, HttpServletRequest request, final int demographicNo) {
-        Demographic demographic = demographicManager.getDemographic(loggedInInfo, demographicNo);
-        request.setAttribute("demographic", demographic);
-        request.setAttribute("personalEmergencyContacts", demographicManager.getPersonalEmergencyContacts(loggedInInfo, demographicNo));
-        request.setAttribute("relationships", ctlRelationshipsDao.findAllActive());
-        request.setAttribute("demographicNoString", demographic.getDemographicNo() + "");
-    }
 
-    private static void setHealthCareTeam(final LoggedInInfo loggedInInfo, HttpServletRequest request, final int demographicNo) {
-        Demographic demographic = demographicManager.getDemographic(loggedInInfo, demographicNo);
-        request.setAttribute("demographic", demographic);
-        request.setAttribute("pharmacies", pharmacyManager.getPharmacies(loggedInInfo, demographicNo));
-        request.setAttribute("healthCareTeam", demographicManager.getHealthCareTeam(loggedInInfo, demographicNo));
-        request.setAttribute("specialty", contactSpecialtyDao.findAll());
-        request.setAttribute("providerType", DemographicContact.TYPE_PROVIDER);
-        request.setAttribute("internalProvider", DemographicContact.TYPE_PROVIDER); // some pages use this as an identity.
-        request.setAttribute("professionalSpecialistType", DemographicContact.TYPE_PROFESSIONALSPECIALIST);
-        request.setAttribute("professionalContactType", DemographicContact.TYPE_CONTACT);
-        request.setAttribute("demographicNoString", demographic.getDemographicNo() + "");
-    }
 
     /**
      * Return a list of of all the contacts in Oscar's database.

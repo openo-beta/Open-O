@@ -169,34 +169,10 @@ public final class MisReportUIBean {
         return (dataRows);
     }
 
-    private boolean isProgramType(Integer programId, String programType) {
-        for (Program program : selectedPrograms) {
-            if (program.getId().equals(programId)) {
-                return (programType.equals(program.getType()));
-            }
-        }
-
-        return (false);
-    }
 
 
-    private boolean isNewAdmission(Admission admission) {
-        return (startDate.before(admission.getAdmissionCalendar()) && endDate.after(admission.getAdmissionCalendar()));
-    }
 
-    private boolean isNewDischarge(Admission admission) {
-        return (startDate.before(admission.getDischargeCalendar()) && endDate.after(admission.getDischargeCalendar()));
-    }
 
-    private int calculateResidentDays(Admission admission) {
-        GregorianCalendar startBound = startDate;
-        if (startBound.before(admission.getAdmissionCalendar())) startBound = admission.getAdmissionCalendar();
-
-        GregorianCalendar endBound = endDate;
-        if (endBound.after(admission.getDischargeCalendar())) endBound = admission.getDischargeCalendar();
-
-        return (DateUtils.calculateDayDifference(startBound, endBound));
-    }
 
     private DataRow getFaceToFace() {
         int visitsCount = 0;

@@ -142,20 +142,4 @@ public class GDMLHandler implements MessageHandler {
         }
     }
 
-    private boolean isDuplicate(LoggedInInfo loggedInInfo, String msg) {
-        //OLIS requirements - need to see if this is a duplicate
-        oscar.oscarLab.ca.all.parsers.MessageHandler h = Factory.getHandler("GDML", msg);
-        //if final
-        if (h.getOrderStatus().equals("F")) {
-            String acc = h.getAccessionNum();
-
-            //do we have this?
-            List<Hl7TextInfo> dupResults = hl7TextInfoDao.searchByAccessionNumber(acc);
-            if (!dupResults.isEmpty()) {
-                OscarAuditLogger.getInstance().log(loggedInInfo, "Lab", "Skip", "Duplicate lab skipped - accession " + acc + "\n" + msg);
-                return true;
-            }
-        }
-        return false;
-    }
 }

@@ -226,13 +226,6 @@ public class MeasurementMapConfig {
         return maps.size() > 0;
     }
 
-    private String getString(String input) {
-        String ret = "";
-        if (input != null) {
-            ret = input;
-        }
-        return ret;
-    }
 
     public class mapping {
         public String code;

@@ -46,48 +46,7 @@ public class WriteNewMeasurements {
     private static MeasurementTypeDao measurementTypeDao = SpringUtils.getBean(MeasurementTypeDao.class);
     private static MeasurementDao dao = SpringUtils.getBean(MeasurementDao.class);
 
-    static private int getMeasurement(Vector measures, String type) {
-        for (int i = 0; i < measures.size(); i++) {
-            Hashtable curmeasure = (Hashtable) measures.get(i);
-            if (((String) curmeasure.get("type")).equals(type)) {
-                return i;
-            }
-        }
-        return -1;
-    }
 
-    static private void preProcess(Vector measures) {
-        // fills in required values
-
-        for (int i = 0; i < measures.size(); i++) {
-            Hashtable curmeasure = (Hashtable) measures.get(i);
-            String type = (String) curmeasure.get("type");
-            String measuringInst = (String) curmeasure.get("measuringInstruction");
-            String comments = (String) curmeasure.get("comments");
-            String dateObserved = (String) curmeasure.get("dateObserved");
-            java.util.Date now = new Date();
-            String dateEntered = UtilDateUtilities.DateToString(now, "yyyy-MM-dd HH:mm:ss");
-            String sql;
-            if (measuringInst == null || measuringInst.equals("")) {
-                List<MeasurementType> tmp = measurementTypeDao.findByType(type);
-                if (tmp.size() > 0) {
-                    measuringInst = tmp.get(0).getMeasuringInstruction();
-                    curmeasure.put("measuringInstruction", measuringInst);
-                } else {
-                    continue;
-                }
-
-            }
-            if (comments == null) {
-                curmeasure.put("comments", "");
-            }
-            if (dateObserved == null || dateObserved.equals("")) {
-                curmeasure.put("dateObserved", dateEntered);
-            }
-            curmeasure.put("dateEntered", dateEntered);
-        }
-
-    }
 
     static public void write(Vector measures, String demographicNo, String providerNo) {
 

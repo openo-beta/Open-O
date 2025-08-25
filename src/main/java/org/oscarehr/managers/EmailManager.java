@@ -292,18 +292,6 @@ public class EmailManager {
         }
     }
 
-    private Path concatPDFs(List<EmailAttachment> attachments) throws PDFGenerationException {
-        if (attachments == null || attachments.isEmpty()) {
-            return null;
-        }
-
-        List<Path> attachmentPathList = new ArrayList<>();
-        for (EmailAttachment emailAttachment : attachments) {
-            attachmentPathList.add(Paths.get(emailAttachment.getFilePath()));
-        }
-
-        return documentAttachmentManager.concatPDF(attachmentPathList);
-    }
 
     private Date parseDate(String date, String format, String time) {
         if (date == null) {
