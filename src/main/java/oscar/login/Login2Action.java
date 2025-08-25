@@ -205,7 +205,7 @@ public final class Login2Action extends ActionSupport {
 
                 // Error Handling
                 if (errorStr != null && !errorStr.isEmpty()) {
-                    String newURL = "/forcepasswordreset.jsp";
+                    String newURL = request.getContextPath() + "/forcepasswordreset.jsp";
                     newURL = newURL + errorStr;
                     response.sendRedirect(newURL);
                     return NONE;
@@ -344,7 +344,7 @@ public final class Login2Action extends ActionSupport {
                     security.isForcePasswordReset() != null && security.isForcePasswordReset()
                     && forcedpasswordchange) {
 
-                String newURL = "/forcepasswordreset.jsp";
+                String newURL = request.getContextPath() + "/forcepasswordreset.jsp";
 
                 try {
                     setUserInfoToSession(request, userName, password, pin, nextPage);

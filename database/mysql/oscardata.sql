@@ -1346,7 +1346,7 @@ insert into ProviderPreference (providerNo, startHour, endHour, everyMin, myGrou
 -- Dumping data for table 'provider'
 --
 
-INSERT INTO provider VALUES ('999998','oscardoc','doctor','doctor',null,'','','','0001-01-01','','','','','','','','1','','','','','','','','',now(),'0001-01-01','');
+INSERT INTO provider VALUES ('999998','openodoc','doctor','doctor',null,'','','','0001-01-01','','','','','','','','1','','','','','','','','',now(),'0001-01-01','');
 
 --
 -- Dumping data for table 'quickList'
@@ -1427,7 +1427,7 @@ INSERT INTO scheduletemplatecode (code,description,duration,color,confirm,bookin
 -- Dumping data for table 'security'
 --
 
-INSERT INTO security(security_no,user_name,password,provider_no,pin,forcePasswordReset) VALUES (128,'oscardoc','-51-282443-97-5-9410489-60-1021-45-127-12435464-32','999998','1117',1);
+INSERT INTO security(security_no,user_name,password,provider_no,pin,forcePasswordReset) VALUES (128,'openodoc','{bcrypt}$2b$12$9mdpjGHFmuVrW7uv7HlZter.6Gdqx.V/i.ba52e9VP6ZYnwJR6h96','999998','2025',1);
 
 --
 -- Dumping data for table 'specialistsJavascript'

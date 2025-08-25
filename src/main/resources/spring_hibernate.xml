@@ -47,7 +47,7 @@
 				<prop key="hibernate.cache.use_query_cache">false</prop>
 				<prop key="hibernate.flushMode">AUTO</prop>
 				<prop key="hibernate.allow_update_outside_transaction">true</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.hbm2ddl.auto">none</prop>
 			</props>
 		</property>
 		

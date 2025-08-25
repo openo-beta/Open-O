@@ -1131,11 +1131,11 @@
   }, {
     "groupId" : "net.bull.javamelody",
     "artifactId" : "javamelody-core",
-    "version" : "1.95.0",
+    "version" : "1.99.3",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:i4YJcxOiePsgrr0UhJ3WT3LrrnvrgMxb6OPlBjh3MqI5cPySJT5pA0kZjOXVKkoPY2OHqL9mRH/O7QheekwFPg=="
+    "integrity" : "sha512:nwUVMmSFnc5CCOiUbdf6rLpGbP5wwio/IZZ249bzLZmEYo1LqBMV64XDw5cRy5H0xw4pdAII2IsL02A1Zhjmpg=="
   }, {
     "groupId" : "net.bytebuddy",
     "artifactId" : "byte-buddy",
