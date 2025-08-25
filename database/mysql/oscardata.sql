@@ -1261,7 +1261,6 @@ INSERT INTO `measurementType` (`type`, `typeDisplayName`, `typeDescription`, `me
 ( 'RETI', 'Retinopathy', 'null', 'Discussed', '7', '2013-02-01 00:00:00'),
 ( 'RF', 'RF', 'Rheumatoid Factor', 'result', '17', '2014-05-09 00:00:00'),
 ( 'Rh', 'Rh', 'RhD blood type group', 'result', '11', '2014-05-09 00:00:00'),
-( 'RPHR', 'Review PHR', 'Review PHR', 'Yes/No', '7', '2013-02-01 00:00:00'),
 ( 'RPPT', 'Review Pathophysiology, Prognosis, Treatment with Patient', 'Review Pathophysiology, Prognosis, Treatment with Patient', 'Yes/No', '7', '2013-02-01 00:00:00'),
 ( 'RUB', 'Rubella', 'Rubella titre', 'titre', '11', '2014-05-09 00:00:00'),
 ( 'RVTN', 'Revascularization', 'Revascularization', 'Yes/No', '7', '2013-02-01 00:00:00'),

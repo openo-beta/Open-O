@@ -36,7 +36,6 @@ public class Patient {
     private String postal;
     private String phone2;
     private String email;
-    private int myOscarUserName;
     private String yearOfBirth;
     private String monthOfBirth;
     private String dateOfBirth;
@@ -130,13 +129,7 @@ public class Patient {
         this.email = email;
     }
 
-    public int getMyOscarUserName() {
-        return (myOscarUserName);
-    }
 
-    public void setMyOscarUserName(int myOscarUserName) {
-        this.myOscarUserName = myOscarUserName;
-    }
 
     public String getYearOfBirth() {
         return yearOfBirth;

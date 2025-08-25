@@ -457,7 +457,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayForms" class="oscar.oscarEncounter.pageUtil.EctDisplayForm2Action">
@@ -478,7 +478,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayEForms" class="oscar.oscarEncounter.pageUtil.EctDisplayEForm2Action">
@@ -499,7 +499,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayMessages" class="oscar.oscarEncounter.pageUtil.EctDisplayMsg2Action">
@@ -520,7 +520,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayBilling" class="oscar.oscarEncounter.pageUtil.EctDisplayBilling2Action">
@@ -541,7 +541,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayDocuments" class="oscar.oscarEncounter.pageUtil.EctDisplayDocs2Action">
@@ -562,7 +562,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayPhotos" class="oscar.oscarEncounter.pageUtil.EctDisplayPhotos2Action">
@@ -583,7 +583,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayMeasurements" class="oscar.oscarEncounter.pageUtil.EctDisplayMeasurements2Action">
@@ -604,7 +604,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayTickler" class="oscar.oscarEncounter.pageUtil.EctDisplayTickler2Action">
@@ -625,7 +625,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayDisease" class="oscar.oscarEncounter.pageUtil.EctDisplayDx2Action">
@@ -646,7 +646,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayPrevention" class="oscar.oscarEncounter.pageUtil.EctDisplayPrevention2Action">
@@ -667,7 +667,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayOcularProcedure" class="oscar.oscarEncounter.pageUtil.EctDisplayOcularProcedure2Action">
@@ -688,7 +688,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displaySpecsHistory" class="oscar.oscarEncounter.pageUtil.EctDisplaySpecsHistory2Action">
@@ -709,7 +709,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayMacro" class="oscar.oscarEncounter.pageUtil.EctDisplayMacro2Action">
@@ -730,7 +730,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayAppointmentHistory" class="oscar.oscarEncounter.pageUtil.EctDisplayAppointmentHistory2Action">
@@ -751,7 +751,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayConReport" class="oscar.oscarEncounter.pageUtil.EctDisplayConReport2Action">
@@ -772,7 +772,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayConsultation" class="oscar.oscarEncounter.pageUtil.EctDisplayConsult2Action">
@@ -793,7 +793,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayEconsultation" class="oscar.oscarEncounter.pageUtil.EctDisplayEconsult2Action">
@@ -814,7 +814,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayEHR" class="oscar.oscarEncounter.pageUtil.EctDisplayEHR2Action">
@@ -835,7 +835,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayAllergy" class="oscar.oscarEncounter.pageUtil.EctDisplayAllergy2Action">
@@ -856,7 +856,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayRx" class="oscar.oscarEncounter.pageUtil.EctDisplayRx2Action">
@@ -877,7 +877,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayIssues" class="oscar.oscarEncounter.pageUtil.EctDisplayIssues2Action">
@@ -898,7 +898,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayResolvedIssues" class="oscar.oscarEncounter.pageUtil.EctDisplayResolvedIssues2Action">
@@ -919,7 +919,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayDecisionSupportAlerts" class="oscar.oscarEncounter.pageUtil.EctDisplayDecisionSupportAlerts2Action">
@@ -940,7 +940,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="report/printLabDaySheetAction" class="oscar.oscarReport.pageUtil.printLabDaySheet2Action"/>
@@ -962,7 +962,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayExaminationHistory" class="oscar.oscarEncounter.pageUtil.EctDisplayExaminationHistory2Action">
@@ -983,7 +983,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/displayHRM" class="oscar.oscarEncounter.pageUtil.EctDisplayHRM2Action">
@@ -1004,7 +1004,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="oscarEncounter/decisionSupport/guidelineAction" class="org.oscarehr.decisionSupport.web.DSGuideline2Action" method="execute">
@@ -2188,7 +2188,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="Episode" class="org.oscarehr.common.web.Episode2Action">
@@ -2215,7 +2215,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="Pregnancy" class="org.oscarehr.common.web.Pregnancy2Action">
@@ -2272,7 +2272,7 @@
 			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
 			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
 			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			<result name="myoscar">/oscarEncounter/displayMyOscar.do</result>
+			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="renal/CkdDSA" class="org.oscarehr.renal.web.CkdDSA2Action">

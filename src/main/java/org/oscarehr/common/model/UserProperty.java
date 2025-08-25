@@ -30,7 +30,6 @@ import java.io.Serializable;
 @Table(name = "property")
 public class UserProperty extends AbstractModel<Integer> implements Serializable {
 
-    public static final String MYOSCAR_ID = "MyOscarId";
     public static final String STALE_NOTEDATE = "cme_note_date";
     public static final String STALE_FORMAT = "cme_note_format";
     public static final String ONTARIO_MD_USERNAME = "ontario_md_username";

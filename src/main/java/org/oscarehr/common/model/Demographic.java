@@ -67,7 +67,6 @@ public class Demographic extends AbstractModel<Integer> implements Serializable 
     private Date patientStatusDate;
     private String rosterStatus;
     private String providerNo;
-    private String myOscarUserName;
     private String hin;
     private String address;
     private String province;
@@ -392,13 +391,7 @@ public class Demographic extends AbstractModel<Integer> implements Serializable 
     }
 
 
-    public String getMyOscarUserName() {
-        return (myOscarUserName);
-    }
 
-    public void setMyOscarUserName(String myOscarUserName) {
-        this.myOscarUserName = StringUtils.trimToNull(myOscarUserName);
-    }
 
     /**
      * Return the value associated with the column: hin

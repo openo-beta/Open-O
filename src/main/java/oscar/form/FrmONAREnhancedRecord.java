@@ -117,20 +117,6 @@ public class FrmONAREnhancedRecord extends FrmRecord {
         return ((new FrmRecordHelp()).createActionURL(where, action, demoId, formId));
     }
 
-    public boolean isSendToPing(String demoNo) throws SQLException {
-        boolean ret = false;
-
-        if ("yes".equalsIgnoreCase(OscarProperties.getInstance().getProperty("PHR", ""))) {
-
-            if (this.demographic != null) {
-                String demoEmail = this.demographic.getEmail();
-                if (demoEmail != null && demoEmail.length() > 5 && demoEmail.matches(".*@.*")) {
-                    ret = true;
-                }
-            }
-        }
-        return ret;
-    }
 
 
     private List<String> getColumnNames(String table) throws SQLException {

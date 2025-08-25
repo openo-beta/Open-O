@@ -46,7 +46,6 @@ public class DemographicTo1 implements Serializable {
     private Date patientStatusDate;
     private String rosterStatus;
     private String providerNo;
-    //	private String myOscarUserName;
     private String hin;
     private String ver;
     private Date dateOfBirth;
@@ -174,13 +173,7 @@ public class DemographicTo1 implements Serializable {
         this.providerNo = providerNo;
     }
 
-//	public String getMyOscarUserName() {
-//		return myOscarUserName;
-//	}
 //
-//	public void setMyOscarUserName(String myOscarUserName) {
-//		this.myOscarUserName = myOscarUserName;
-//	}
 
     public String getHin() {
         return hin;

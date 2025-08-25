@@ -69,7 +69,6 @@ public class DemographicArchive extends AbstractModel<Long> implements Serializa
     private String phone2 = null;
     @Column(name = "email")
     private String email = null;
-    private String myOscarUserName = null;
     @Column(name = "year_of_birth")
     private String yearOfBirth = null;
     @Column(name = "month_of_birth")
@@ -197,7 +196,6 @@ public class DemographicArchive extends AbstractModel<Long> implements Serializa
         this.lastUpdateUser = demographic.getLastUpdateUser();
         this.middleNames = demographic.getMiddleNames();
         this.monthOfBirth = demographic.getMonthOfBirth();
-        this.myOscarUserName = demographic.getMyOscarUserName();
         this.newsletter = demographic.getNewsletter();
         this.officialLanguage = demographic.getOfficialLanguage();
         this.patientStatus = demographic.getPatientStatus();
@@ -317,13 +315,7 @@ public class DemographicArchive extends AbstractModel<Long> implements Serializa
         this.email = s;
     }
 
-    public String getMyOscarUserName() {
-        return (myOscarUserName);
-    }
 
-    public void setMyOscarUserName(String myOscarUserName) {
-        this.myOscarUserName = myOscarUserName;
-    }
 
     public String getYearOfBirth() {
         return this.yearOfBirth;

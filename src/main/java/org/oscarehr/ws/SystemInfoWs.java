@@ -40,7 +40,7 @@ import org.springframework.stereotype.Component;
 @GZIP(threshold = AbstractWs.GZIP_THRESHOLD)
 public class SystemInfoWs extends AbstractWs {
     /**
-     * http://127.0.0.1:8080/myoscar_server/ws/SystemInfoService/helloWorld
+     * System info web service hello world test method
      */
     public String helloWorld() {
         return ("Hello World! the configuration works! and your client works! :) " + (new java.util.Date()));

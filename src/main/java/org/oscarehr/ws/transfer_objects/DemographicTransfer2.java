@@ -42,7 +42,6 @@ public final class DemographicTransfer2 {
     private Date patientStatusDate;
     private String rosterStatus;
     private String providerNo;
-    private String myOscarUserName;
     private String hin;
     private String address;
     private String province;
@@ -155,13 +154,7 @@ public final class DemographicTransfer2 {
         this.providerNo = providerNo;
     }
 
-    public String getMyOscarUserName() {
-        return (myOscarUserName);
-    }
 
-    public void setMyOscarUserName(String myOscarUserName) {
-        this.myOscarUserName = myOscarUserName;
-    }
 
     public String getHin() {
         return (hin);
@@ -686,7 +679,6 @@ public final class DemographicTransfer2 {
             else if ("lastUpdateDate".equals(field)) dto.setLastUpdateDate(this.getLastUpdateDate());
             else if ("lastUpdateUser".equals(field)) dto.setLastUpdateUser(this.getLastUpdateUser());
             else if ("links".equals(field)) dto.setLinks(this.getLinks());
-            else if ("myOscarUserName".equals(field)) dto.setMyOscarUserName(this.getMyOscarUserName());
             else if ("officialLanguage".equals(field)) dto.setOfficialLanguage(this.getOfficialLanguage());
             else if ("patientStatus".equals(field)) dto.setPatientStatus(this.getPatientStatus());
             else if ("patientStatusDate".equals(field)) dto.setPatientStatusDate(this.getPatientStatusDate());

@@ -232,15 +232,6 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         return rs;
     }
 
-    @Override
-    public Demographic getDemographicByMyOscarUserName(String myOscarUserName) {
-        String q = "From Demographic d where d.myOscarUserName = ?0 ";
-        List<Demographic> rs = (List<Demographic>) getHibernateTemplate().find(q, new Object[]{myOscarUserName});
-        if (rs.size() > 0)
-            return (rs.get(0));
-        else
-            return (null);
-    }
 
     /*
      * get demographics according to their program, admit time, discharge time,
@@ -2969,24 +2960,6 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
     }
 
-    @Override
-    public List<Integer> getDemographicIdsWithMyOscarAccounts(Integer startDemographicIdExclusive, int itemsToReturn) {
-        // Session session = getSession();
-        Session session = currentSession();
-        try {
-            SQLQuery sqlQuery = session.createSQLQuery(
-                "select demographic_no from demographic where demographic_no>:startDemographicIdExclusive and myOscarUserName is not null order by demographic_no");
-            sqlQuery.setInteger("startDemographicIdExclusive", startDemographicIdExclusive);
-            sqlQuery.setMaxResults(itemsToReturn);
-
-            @SuppressWarnings("unchecked")
-            List<Integer> result = sqlQuery.list();
-            return (result);
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
-        }
-    }
 
     @SuppressWarnings("unchecked")
     @Override

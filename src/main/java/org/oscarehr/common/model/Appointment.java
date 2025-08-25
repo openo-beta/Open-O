@@ -34,8 +34,7 @@ import java.util.Date;
 public class Appointment extends AbstractModel<Integer> implements Serializable, DemographicData {
 
     public enum BookingSource {
-        OSCAR,
-        MYOSCAR_SELF_BOOKING
+        OSCAR
     }
 
     @Id

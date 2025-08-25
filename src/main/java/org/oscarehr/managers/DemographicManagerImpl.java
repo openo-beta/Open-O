@@ -178,19 +178,6 @@ public class DemographicManagerImpl implements DemographicManager {
         return (email);
     }
 
-    @Override
-    public Demographic getDemographicByMyOscarUserName(LoggedInInfo loggedInInfo, String myOscarUserName) {
-        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
-        Demographic result = demographicDao.getDemographicByMyOscarUserName(myOscarUserName);
-
-        // --- log action ---
-        if (result != null) {
-            LogAction.addLogSynchronous(loggedInInfo, "DemographicManager.getDemographic",
-                    "demographicId=" + result.getDemographicNo());
-        }
-
-        return (result);
-    }
 
     @Override
     public List<Demographic> searchDemographicByName(LoggedInInfo loggedInInfo, String searchString, int startIndex,
@@ -794,19 +781,6 @@ public class DemographicManagerImpl implements DemographicManager {
         return (demographicIds);
     }
 
-    @Override
-    public List<Integer> getDemographicIdsWithMyOscarAccounts(LoggedInInfo loggedInInfo,
-                                                              Integer startDemographicIdExclusive, int itemsToReturn) {
-        if (loggedInInfo == null)
-            throw (new SecurityException("user not logged in?"));
-
-        List<Integer> demographicIds = demographicDao.getDemographicIdsWithMyOscarAccounts(startDemographicIdExclusive,
-                itemsToReturn);
-
-        LogAction.addLogSynchronous(loggedInInfo, "DemographicManager.getDemographicIdsWithMyOscarAccounts", null);
-
-        return (demographicIds);
-    }
 
     @Override
     public List<Demographic> getDemographics(LoggedInInfo loggedInInfo, List<Integer> demographicIds) {

@@ -95,7 +95,6 @@ public class EctSessionBean implements java.io.Serializable {
     public String template = "";
     public String oscarMsgID;
     public String oscarMsg = "";
-    public String myoscarMsgId = null;
     public ArrayList<String> appointmentsIdArray;
     public ArrayList<String> appointmentsNamesArray;
     public ArrayList<String> templateNames;
@@ -230,9 +229,6 @@ public class EctSessionBean implements java.io.Serializable {
             }
         }
 
-        if (myoscarMsgId != null) {
-            oscarMsg = myoscarMsgId;
-        }
 
     }
 

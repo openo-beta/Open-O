@@ -123,7 +123,6 @@ public class ProviderPreference extends AbstractModel<String> implements Seriali
     private int appointmentScreenLinkNameDisplayLength = 3;
     private int defaultDoNotDeleteBilling = 0;
     private String defaultDxCode = null;
-    private byte[] encryptedMyOscarPassword = null;
 
     /**
      * Whether or not the provider has enabled the use of an external
@@ -464,13 +463,6 @@ public class ProviderPreference extends AbstractModel<String> implements Seriali
         this.eRx_SSO_URL = eRx_SSO_URL;
     }
 
-    public byte[] getEncryptedMyOscarPassword() {
-        return (encryptedMyOscarPassword);
-    }
-
-    public void setEncryptedMyOscarPassword(byte[] encryptedMyOscarPassword) {
-        this.encryptedMyOscarPassword = encryptedMyOscarPassword;
-    }
 
 
 }

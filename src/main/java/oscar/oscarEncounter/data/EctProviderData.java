@@ -43,8 +43,6 @@ public class EctProviderData {
         String clinicPostal;
         String clinicPhone;
         String clinicFax;
-        String indivoId;
-        String indivoPasswd;
 
         public String getProviderNo() {
             return providerNo;
@@ -82,13 +80,6 @@ public class EctProviderData {
             return clinicFax;
         }
 
-        public String getIndivoId() {
-            return indivoId;
-        }
-
-        public String getIndivoPasswd() {
-            return indivoPasswd;
-        }
 
         public Provider(String providerNo, String surname, String firstName, String clinicName, String clinicAddress, String clinicCity, String clinicPostal, String clinicPhone, String clinicFax) {
             this.providerNo = providerNo;
@@ -102,19 +93,6 @@ public class EctProviderData {
             this.clinicFax = clinicFax;
         }
 
-        public Provider(String providerNo, String surname, String firstName, String clinicName, String clinicAddress, String clinicCity, String clinicPostal, String clinicPhone, String clinicFax, String indivoId, String indivoPasswd) {
-            this.providerNo = providerNo;
-            this.surname = surname;
-            this.firstName = firstName;
-            this.clinicName = clinicName;
-            this.clinicAddress = clinicAddress;
-            this.clinicCity = clinicCity;
-            this.clinicPostal = clinicPostal;
-            this.clinicPhone = clinicPhone;
-            this.clinicFax = clinicFax;
-            this.indivoId = indivoId;
-            this.indivoPasswd = indivoPasswd;
-        }
     }
 
     public Provider getProvider(String providerNo) {
@@ -140,9 +118,7 @@ public class EctProviderData {
             String clinicPhone = clinic.getClinicPhone();
             String clinicFax = clinic.getClinicFax();
 
-            String myOscarLoginId = null;
-
-            provider = new Provider(providerNo, surname, firstName, clinicName, clinicAddress, clinicCity, clinicPostal, clinicPhone, clinicFax, myOscarLoginId, selfLearningPasswd);
+            provider = new Provider(providerNo, surname, firstName, clinicName, clinicAddress, clinicCity, clinicPostal, clinicPhone, clinicFax);
         }
 
         return provider;
