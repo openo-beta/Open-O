@@ -268,7 +268,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
             String Hour = Integer.toString(todayCal.get(Calendar.HOUR));
             String Min = Integer.toString(todayCal.get(Calendar.MINUTE));
 
-            // StringEncoderUtils.a();
             String default_view = OscarProperties.getInstance().getProperty("default_view", "");
             String contextPath = request.getContextPath();
 
@@ -423,7 +422,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         /* set issue checked list */
 
         // get issues for current demographic, based on provider rights
-
         Boolean useNewCaseMgmt = new Boolean((String) session.getAttribute("newCaseManagement"));
 
         CheckBoxBean[] checkedList = null;
@@ -437,11 +435,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
             caseManagementViewAction.sortIssuesByOrderId(checkBoxBeanList);
 
             checkedList = checkBoxBeanList.toArray(new CheckBoxBean[checkBoxBeanList.size()]);
-            /*
-             * List<CaseManagementIssue> issues = caseManagementMgr.filterIssues(caseManagementMgr.getIssues(Integer.parseInt(demono)), programIdString); checkedList = new CheckBoxBean[issues.size()]; // set issue checked list
-             * log.debug("Set Checked Issues " + String.valueOf(current-start)); List allNotes = this.caseManagementMgr.getNotes(demono); for (int i = 0; i < issues.size(); i++) { checkedList[i] = new CheckBoxBean(); CaseManagementIssue iss =
-             * issues.get(i); checkedList[i].setIssue(iss); checkedList[i].setUsed(haveIssue(iss.getId(), allNotes)); current = System.currentTimeMillis(); log.debug("Set Checked Issues " + String.valueOf(current-start)); start = current; }
-             */
             Iterator itr = note.getIssues().iterator();
             while (itr.hasNext()) {
                 int id = ((CaseManagementIssue) itr.next()).getId().intValue();
@@ -494,7 +487,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         session.setAttribute("casemgmtNoteLock" + demono, casemgmtNoteLock);
 
         String frmName = "caseManagementEntryForm" + demono;
-        //logger.debug("Setting session form - " + frmName + " - " + String.valueOf(cform != null));
         logger.debug("note in cform " + cform.getCaseNote_note());
         mySessionMap.put(frmName, cform);
 
@@ -681,9 +673,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         String noteId = request.getParameter("noteId");
         String demographicNo = request.getParameter("demographic_no");
         String issueCode = request.getParameter("issue_id");
-
         String issueAlphaCode = request.getParameter("issue_code");
-
         String archived = request.getParameter("archived");
 
         Date noteDate = new Date();
@@ -725,7 +715,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
             issueSet.add(cIssue);
             note.setIssues(issueSet);
-
             note.setCreate_date(noteDate);
             note.setObservation_date(noteDate);
             note.setRevision("1");
@@ -844,7 +833,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         String[] extNames = {"startdate", "resolutiondate", "proceduredate", "ageatonset", "problemstatus", "treatment", "exposuredetail", "relationship", "lifestage", "hidecpp", "problemdescription", "procedure"};
         String[] extKeys = {CaseManagementNoteExt.STARTDATE, CaseManagementNoteExt.RESOLUTIONDATE, CaseManagementNoteExt.PROCEDUREDATE, CaseManagementNoteExt.AGEATONSET, CaseManagementNoteExt.PROBLEMSTATUS, CaseManagementNoteExt.TREATMENT, CaseManagementNoteExt.EXPOSUREDETAIL, CaseManagementNoteExt.RELATIONSHIP, CaseManagementNoteExt.LIFESTAGE, CaseManagementNoteExt.HIDECPP, CaseManagementNoteExt.PROBLEMDESC, CaseManagementNoteExt.PROCEDURE};
 
-        // strNote = strNote.trim();
         logger.debug("Saving: " + strNote);
         strNote = org.apache.commons.lang.StringUtils.trimToNull(strNote);
         if (strNote == null || strNote.equals("")) return null;
@@ -864,7 +852,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         if (noteId.isEmpty()) noteId = "0";
 
         if (noteId.equals("0")) {
-
             note = new CaseManagementNote();
             note.setDemographic_no(demo);
             newNote = true;
@@ -909,7 +896,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         note.setProviderNo(loggedInInfo.getLoggedInProviderNo());
         note.setSigning_provider_no(loggedInInfo.getLoggedInProviderNo());
         note.setSigned(true);
-
         note.setProvider(loggedInInfo.getLoggedInProvider());
 
         String logAction = new String();
@@ -1122,15 +1108,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
             note.setPosition(newPos);
         }
 
-        /*
-         * Remove linked issue(s) and insert message into note
-         *
-         * if( removeIssue.equals("true") ) { issue_id = request.getParameterValues("issue_id"); issueSet = note.getIssues(); StringBuilder issueNames = new StringBuilder(); for( int idx = 0; idx < issue_id.length; ++idx ) { for(Iterator iter =
-         * issueSet.iterator();iter.hasNext();) { CaseManagementIssue cIssue = (CaseManagementIssue)iter.next(); if( cIssue.getIssue_id() == Long.parseLong(issue_id[idx]) ) { issueSet.remove(cIssue); issueNames.append(cIssue.getIssue().getDescription() +
-         * "\n"); break; } } } //Force hibernate to save rather than update Set tmpIssues = new HashSet(issueSet); note.setIssues(tmpIssues); strNote += "\n" + new SimpleDateFormat("dd-MMM-yyyy").format(new Date()) + " Removed following issue(s):\n" +
-         * issueNames.toString(); note.setNote(strNote); }
-         */
-
         int revision;
 
         if (note.getRevision() != null) {
@@ -1182,22 +1159,18 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         }
 
         /* Save annotation */
-
         String attrib_name = request.getParameter("annotation_attrib");
         CaseManagementNote cmn = (CaseManagementNote) session.getAttribute(attrib_name);
         if (cmn != null) {
             // new annotation created and got it in session attribute
-
             caseManagementMgr.saveNoteSimple(cmn);
             CaseManagementNoteLink cml = new CaseManagementNoteLink(CaseManagementNoteLink.CASEMGMTNOTE, note.getId(), cmn.getId());
             caseManagementMgr.saveNoteLink(cml);
             LogAction.addLog(providerNo, LogConst.ANNOTATE, LogConst.CON_CME_NOTE, String.valueOf(cmn.getId()), request.getRemoteAddr(), demo, cmn.getNote());
             session.removeAttribute(attrib_name);
-
         }
         if (!noteId.equals("0")) {
             // Not a new note, look for old annotation
-
             CaseManagementNoteLink cml_anno = null;
             CaseManagementNoteLink cml_dump = null;
             List<CaseManagementNoteLink> cmll = caseManagementMgr.getLinkByTableIdDesc(CaseManagementNoteLink.CASEMGMTNOTE, Long.valueOf(noteId));
@@ -1259,7 +1232,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         CasemgmtNoteLock casemgmtNoteLockSession = (CasemgmtNoteLock) session.getAttribute("casemgmtNoteLock" + demo);
 
         try {
-
             if (casemgmtNoteLockSession == null) {
                 throw new Exception("SESSION CASEMANAGEMENT NOTE LOCK OBJECT IS NULL");
             }
@@ -1366,7 +1338,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         // System.out.println("Checkedlist from sessionFrm: " + Arrays.toString(checkedlist));
         // this gets attached to the CaseManagementNote object
         Set<CaseManagementIssue> issueset = new HashSet<CaseManagementIssue>();
-        // wherever this is populated, it's not here...
         Set<CaseManagementNote> noteSet = new HashSet<CaseManagementNote>();
         String ongoing = "";
         if (checkedlist != null) {
@@ -1392,7 +1363,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
         /* remove signature and the related issues from note */
         String noteString = note.getNote();
-        // noteString = removeSignature(noteString);
         noteString = removeCurrentIssue(noteString);
         note.setNote(noteString);
 
@@ -1442,7 +1412,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
                 note.setNote(noteString + issueString);
             }
         }
-        //Ongoing
 
         // update appointment and add verify message to note if verified
         String strBeanName = "casemgmt_oscar_bean" + demo;
@@ -1459,7 +1428,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
             note.setPassword(passwd);
             note.setLocked(true);
         }
-
 
         Date now = new Date();
 
@@ -1500,11 +1468,9 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         }
 
         /* Save annotation */
-
         String attrib_name = request.getParameter("annotation_attribname");
         CaseManagementNote annotationNote = (CaseManagementNote) session.getAttribute(attrib_name);
 
-        //String ongoing = null; // figure out this
         note = caseManagementMgr.saveCaseManagementNote(loggedInInfo, note, issuelist, cpp, ongoing, verify, request.getLocale(), now, annotationNote, userName, (String) session.getAttribute("user"), request.getRemoteAddr(), lastSavedNoteString);
         caseManagementMgr.getEditors(note);
         this.setCaseNote(note);
@@ -1613,14 +1579,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
     }
 
     private String saveCheckedIssues_newCme(HttpServletRequest request, String demo, CaseManagementNote note, List issuelist, CheckBoxBean[] checkedlist, Set issueset, Set noteSet, String ongoing) {
-        /*
-         * for (int i = 0; i < checkedlist.length; i++) { if (!checkedlist[i].getIssue().isResolved()) ongoing = ongoing + checkedlist[i].getIssue().getIssue().getDescription() + "\n"; String ischecked = request.getParameter("issueCheckList[" + i +
-         * "].checked"); CaseManagementIssue iss = checkedlist[i].getIssue(); if (ischecked != null && ischecked.equalsIgnoreCase("on")) { checkedlist[i].setChecked("on"); checkedlist[i].setUsed(true); iss.setNotes(noteSet);
-         * issueset.add(checkedlist[i].getIssue()); } else { checkedlist[i].setChecked("off"); checkedlist[i].setUsed(caseManagementMgr.haveIssue(iss.getId(), note.getId(), demo)); checkedlist[i].setUsed(false); }
-         *
-         * issuelist.add(checkedlist[i].getIssue()); } return ongoing;
-         */
-
         int demographicNo = Integer.parseInt(demo);
 
         for (int i = 0; i < checkedlist.length; i++) {
@@ -1675,15 +1633,12 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
             if (!containsIssue(issuelist, caseManagementIssue)) issuelist.add(caseManagementIssue);
         }
         return ongoing;
-
     }
 
     public String save() throws Exception {
-
         HttpSession session = request.getSession();
         if (session == null || session.getAttribute("userrole") == null) return "expired";
 
-        // String providerNo = getProviderNo(request);
         request.setAttribute("change_flag", "false");
 
         String demono = getDemographicNo(request);
@@ -1694,42 +1649,14 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         request.setAttribute("from", request.getParameter("from"));
         long noteId = noteSave();
 
-        /*
-         * CaseManagementNote preNote=new CaseManagementNote(); if(this.getNoteId()!=null) { Long nId=Long.parseLong(this.getNoteId()); preNote.setId(nId); }
-         */
-
         /* prepare the message */
-
         addActionMessage(getText("note.saved"));
-
-        // are we in the new encounter and chaining actions?
         String chain = request.getParameter("chain");
 
         if (chain != null && !chain.equals("")) {
-        /*
-            if (noteId == -1) {
-
-                request.setAttribute("NoteLockError", props.getString("oscarEncounter.noteLockError.Msg"));
-            } else {
-                String varName = "newNote";
-                session.setAttribute(varName, false);
-                varName = "saveNote" + demono;
-                session.setAttribute(varName, new Boolean(true)); // tell CaseManagementView we have just saved note
-            }
-
-            if (request.getAttribute("DateError") != null) {
-                if (path.indexOf("?") == -1) path.append("?");
-                else path.append("&");
-
-                path.append("DateError=" + props.getString("oscarEncounter.futureDate.Msg"));
-            }
-
-            ActionForward forward = new ActionForward();
-            forward.setPath(path.toString());*/
             return chain;
         }
 
-        // this.caseManagementMgr.saveNote();
         return "view";
     }
 
@@ -1828,7 +1755,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         Set<CaseManagementNote> noteSet = new HashSet<CaseManagementNote>();
 
         int numIssues = Integer.parseInt(request.getParameter("numIssues"));
-        // CaseManagementEntryFormBean cform = (CaseManagementEntryFormBean) form;
 
         CheckBoxBean[] checkedlist = sessionFrm.getIssueCheckList();
         for (int i = 0; i < numIssues; i++) {
@@ -1881,7 +1807,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         }
 
         // check if previous note is doc note.
-
         Long prevNoteId = note.getId();
 
         this.caseManagementMgr.saveNoteSimple(note);
@@ -1917,7 +1842,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         LogAction.addLog((String) session.getAttribute("user"), logAction, LogConst.CON_CME_NOTE, String.valueOf(note.getId()), request.getRemoteAddr(), demo, note.getAuditString());
 
         return "issueList_ajax";
-
     }
 
     private void releaseNoteLock(String providerNo, Integer demographicNo, Long noteId) {
@@ -1928,7 +1852,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
     public String releaseNoteLock() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
-
         String demoNo = getDemographicNo(request);
         String noteId = request.getParameter("noteId");
         String forceRelease = request.getParameter("force");
@@ -1951,7 +1874,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         } catch (Exception e) {
             //nothing to do. lock was not found
         }
-
 
         return null;
     }
@@ -2175,7 +2097,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
         request.setAttribute("from", request.getParameter("from"));
 
-        // noteSave(cform, request);
         this.setShowList("false");
         this.setSearString("");
         return "IssueSearch";
@@ -2190,7 +2111,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String programId = (String) session.getAttribute("case_program_id");
-//		CaseManagementEntryFormBean cform = (CaseManagementEntryFormBean) form;
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
         // get the issue list have search string
@@ -2200,31 +2120,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         }
 
         List<Issue> searchResults = caseManagementMgr.searchIssues(providerNo, programId, search);
-
-        // Don't remove issues which we already have. But don't insert duplicate issues when save the issues.
-//		List<CaseManagementIssue> existingIssues = new ArrayList<>();
-//		List<Issue> filteredSearchResults;
-//
-//		if (request.getParameter("amp;all") != null) {
-//			filteredSearchResults = new ArrayList<>(searchResults);
-//		} else {
-//			filteredSearchResults = new ArrayList<>();
-//			Map<Long, CaseManagementIssue> existingIssuesMap = convertIssueListToMap(existingIssues);
-//			for (Issue issue : searchResults) {
-//				if (existingIssuesMap.get(issue.getId()) == null) {
-//					filteredSearchResults.add(issue);
-//				}
-//			}
-//
-//		}
-
-//		CheckIssueBoxBean[] issueList = new CheckIssueBoxBean[filteredSearchResults.size()];
-//		for (int i = 0; i < filteredSearchResults.size(); i++) {
-//			issueList[i] = new CheckIssueBoxBean();
-//			issueList[i].setIssue(filteredSearchResults.get(i));
-//		}
-//
-//		this.setNewIssueCheckList(issueList);
         JSONUtil.jsonResponse(response, JsonUtil.pojoCollectionToJson(searchResults));
         return null;
     }
@@ -2289,28 +2184,23 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
     // we need to convert single issue into checkbox array so we can play nicely with CaseManagementEntryFormBean
     public String makeIssue() throws Exception {
         HttpSession session = request.getSession();
-        // String programId = (String) session.getAttribute("case_program_id");
         // grab the issue we want to add
         String issueId = request.getParameter("newIssueId");
-        // String providerNo = getProviderNo(request);
 
         String sessionFrmName = "caseManagementEntryForm" + this.getDemographicNo(request);
         CaseManagementEntryFormBean sessionFrm = (CaseManagementEntryFormBean) session.getAttribute(sessionFrmName);
 
         // check to see if this issue has already been associated with this demographic
-        //boolean issueExists = false;
         long lIssueId = Long.parseLong(issueId);
         CheckBoxBean[] existingCaseIssueList = sessionFrm.getIssueCheckList();
         for (int idx = 0; idx < existingCaseIssueList.length; ++idx) {
             if (existingCaseIssueList[idx].getIssue().getIssue_id() == lIssueId) {
-                //issueExists = true;
                 break;
             }
         }
 
         // if issue hasn't been added, add it
         // if it has do nothing;-> change to if it's already added, still keep it but won't
-        //if (!issueExists) {
         CheckIssueBoxBean[] caseIssueList = new CheckIssueBoxBean[1];
 
         caseIssueList[0] = new CheckIssueBoxBean();
@@ -2320,7 +2210,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         sessionFrm.setNewIssueCheckList(caseIssueList);
 
         return issueAdd();
-        //} else return null;
     }
 
     public String issueAdd() throws Exception {
@@ -2408,7 +2297,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
             for (int i = 0; i < issueList.length; i++) {
                 if (issueList[i].isChecked()) {
                     if (caseManagementIssueDao.getIssuebyId(demono, String.valueOf(issueList[i].getIssue().getId())) != null) {
-                        //continue;
                         //issue already added
                         for (int j = 0; j < oldList.length; j++) {
                             if (oldList[j].getIssue().getIssue_id() == issueList[i].getIssue().getId().longValue()) { //find old issue and check it
@@ -2461,14 +2349,11 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         logger.debug("changeDiagnosis");
         if (request.getSession().getAttribute("userrole") == null) return "expired";
 
-
         String inds = this.getDeleteId();
-
         String demono = getDemographicNo(request);
         request.setAttribute("demoName", getDemoName(demono));
         request.setAttribute("demoAge", getDemoAge(demono));
         request.setAttribute("demoDOB", getDemoDOB(demono));
-
         request.setAttribute("from", request.getParameter("from"));
         request.setAttribute("change_diagnosis", new Boolean(true));
         request.setAttribute("change_diagnosis_id", inds);
@@ -2533,7 +2418,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         this.setIssueCheckList(oldList);
         if (substitution != null && origIssueDesc != null)
             this.caseManagementMgr.changeIssueInCPP(demono, origIssueDesc, newIssueDesc);
-        // updateIssueToConcern(cform);
 
         return "view";
     }
@@ -2572,9 +2456,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
         sessionFrm.setIssueCheckList(curIssues);
         request.setAttribute("caseManagementEntryForm", sessionFrm);
-        // updateIssueToConcern(cform);
 
-        // request.setAttribute("issueCheckList", curIssues);
         return "issueList_ajax";
     }
 
@@ -2587,15 +2469,12 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
             return null;
         }
 
-
         String demono = getDemographicNo(request);
         String sessionFrmName = "caseManagementEntryForm" + demono;
         CaseManagementEntryFormBean sessionFrm = (CaseManagementEntryFormBean) session.getAttribute(sessionFrmName);
 
-        // noteSave(cform, request);
         request.setAttribute("change_flag", "true");
         request.setAttribute("from", request.getParameter("from"));
-
         request.setAttribute("demoName", getDemoName(demono));
         request.setAttribute("demoAge", getDemoAge(demono));
         request.setAttribute("demoDOB", getDemoDOB(demono));
@@ -2635,7 +2514,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
         if (OscarProperties.getInstance().isCaisiLoaded() && iss != null) {
             // reset current concern in CPP
-            // updateIssueToConcern(cform);
             caseManagementMgr.removeIssueFromCPP(demono, iss);
         }
 
@@ -2673,7 +2551,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         request.setAttribute("demoAge", getDemoAge(demono));
         request.setAttribute("demoDOB", getDemoDOB(demono));
 
-        // noteSave(cform, request);
         CheckBoxBean[] oldList = sessionFrm.getIssueCheckList();
 
         String inds = this.getLineId();
@@ -2877,7 +2754,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
     }
 
     public void doDisplayNotes(HttpServletRequest request, PrintWriter out) throws Exception {
-
         String ids = request.getParameter("notes2print");
         String[] noteIds;
         String textStr;
@@ -2953,7 +2829,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         boolean printLabs = request.getParameter("printLabs") != null && request.getParameter("printLabs").equalsIgnoreCase("true");
         boolean printPreventions = request.getParameter("printPreventions") != null && request.getParameter("printPreventions").equalsIgnoreCase("true");
 
-
         CaseManagementPrint cmp = new CaseManagementPrint();
         cmp.doPrint(loggedInInfo, demographicNo, printAllNotes, noteIds, printCPP, printRx, printLabs, printPreventions, (pType != null && "dates".equals(pType)) ? true : false, cStartDate, cEndDate, request, response.getOutputStream());
 
@@ -2965,13 +2840,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         MacroDao macroDao = (MacroDao) SpringUtils.getBean(MacroDao.class);
         Macro macro = macroDao.find(Integer.parseInt(request.getParameter("macro.id")));
         logger.debug("loaded macro " + macro.getLabel());
-		/*
-		boolean cppFromMeasurements = false;
-		String cpp = request.getParameter("cpp");
-		if (cpp != null && cpp.equals("measurements")) {
-			cppFromMeasurements = true;
-		}
-		*/
         this.setCaseNote_note(this.getCaseNote_note() + "\n" + macro.getImpression());
 
         String fwd = saveAndExit();
@@ -3024,7 +2892,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
                     rec.setDemographicNo(Integer.parseInt(this.getDemographicNo()));
                     rec.setEye(parts[1]);
                     rec.setProvider(loggedInInfo.getLoggedInProviderNo());
-                    // rec.setStatus(null);
                     rec.setTestname(parts[0]);
                     rec.setUrgency(parts[2]);
                     testDao.save(rec);
@@ -3115,7 +2982,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
                 } else {
                     mockReq.setParameter("xml_slicode", macro.getSliCode());
                 }
-                // mockReq.addParameter("xml_billtype", "ODP | Bill OHIP");
                 mockReq.addParameter("hin", demo.getHin());
                 mockReq.addParameter("ver", demo.getVer());
                 mockReq.addParameter("demographic_dob", demo.getDateOfBirth());
@@ -3144,14 +3010,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
                 BillingSavePrep bObj = new BillingSavePrep();
                 boolean ret = bObj.addABillingRecord(bObj.getBillingClaimObj(mockReq));
-                /*
-                 * not applicable in macro context if (mockReq.getParameter("xml_billtype").substring(0, 3).matches( BillingDataHlp.BILLINGMATCHSTRING_3RDPARTY)) { mockReq.addParameter("billto", macro.getBillingBillto()); mockReq.addParameter("remitto",
-                 * macro.getBillingRemitto()); mockReq.addParameter("gstBilledTotal", macro .getBillingGstBilledTotal()); mockReq.addParameter("payment", macro.getBillingPayment()); mockReq.addParameter("refund", macro.getBillingRefund());
-                 * mockReq.addParameter("gst", macro.getBillingGst()); mockReq.addParameter("payMethod", macro.getBillingPayMethod());
-                 *
-                 * bObj.addPrivateBillExtRecord(mockReq); }
-                 */
-                // int billingNo = bObj.getBillingId();
 
                 // update appt and close the page
                 if (ret) {
@@ -3220,12 +3078,10 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         return map;
     }
 
-
     /*
      * Insert encounter reason for new note
      */
     protected void insertReason(HttpServletRequest request, CaseManagementNote note) {
-
         String encounterText = "";
         String apptDate = request.getParameter("appointmentDate");
         String reason = request.getParameter("reason");
@@ -3257,7 +3113,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         } else {
             note.setEncounter_type(encType);
         }
-
     }
 
     protected String convertDateFmt(String strOldDate, HttpServletRequest request) {
@@ -3356,7 +3211,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
     }
 
     public boolean haveIssue(Long issid, List allNotes) {
-
         Iterator itr = allNotes.iterator();
         while (itr.hasNext()) {
             CaseManagementNote note = (CaseManagementNote) itr.next();
@@ -3448,22 +3302,12 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         cmn.setEncounter_type(EncounterUtil.EncounterType.FACE_TO_FACE_WITH_CLIENT.getOldDbValue());
         cmn.setNote(strNote);
         cmn.setObservation_date(creationDate);
-		/*
-		String programIdStr = (String) request.getSession().getAttribute(SessionConstants.CURRENT_PROGRAM_ID);
-		if(programIdStr==null)
-			programIdStr = (String) request.getSession().getAttribute("case_program_id");
-		Integer programId = null;
-		if (programIdStr != null) programId = Integer.valueOf(programIdStr);
-		
-		cmn.setProgram_no(String.valueOf(programId));
-		*/
         cmn.setProviderNo(loggedInProvider.getProviderNo());
         cmn.setRevision(revision);
         cmn.setSigned(true);
         cmn.setSigning_provider_no(loggedInProvider.getProviderNo());
         cmn.setUpdate_date(creationDate);
         cmn.setHistory(history);
-        //just doing this because the other code does it.
         cmn.setReporter_program_team("null");
         cmn.setUuid(uuid);
 
@@ -3473,8 +3317,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         determineNoteRole(cmn, loggedInProvider.getProviderNo(), demographicNo);
 
         caseManagementMgr.saveNoteSimple(cmn);
-
-        //log.debug("note id is " + cmn.getId());
 
         //save link, so we know what tickler this note is linked to
         CaseManagementNoteLink link = new CaseManagementNoteLink();
@@ -3577,14 +3419,10 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         return programSet;
     }
 
-
     protected String relateIssueString = "Issues related to this note:";
-
-
     protected CaseManagementManager caseManagementMgr = SpringUtils.getBean(CaseManagementManager.class);
     protected ClientImageManager clientImageMgr = SpringUtils.getBean(ClientImageManager.class);
     protected ProviderManager providerMgr = SpringUtils.getBean(ProviderManager.class);
-
     protected String getDemographicNo(HttpServletRequest request) {
         String demono = request.getParameter("demographicNo");
         if (demono == null || "".equals(demono)) {
@@ -3618,7 +3456,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         if (demoNo == null) return "";
         return caseManagementMgr.getDemoDOB(demoNo);
     }
-
 
     protected boolean inCaseIssue(Issue iss, List<CaseManagementIssue> issues) {
         Iterator<CaseManagementIssue> itr = issues.iterator();
@@ -3654,7 +3491,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
     /* remove related issue list from note */
     protected String removeCurrentIssue(String noteString) {
-
         noteString = noteString.replaceAll("\r\n", "\n");
         noteString = noteString.replaceAll("\r", "\n");
         String rt = noteString;
@@ -3670,7 +3506,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
     /* remove signiature string */
     protected String removeSignature(String note) {
-
         note = note.replaceAll("\r\n", "\n");
         note = note.replaceAll("\r", "\n");
         String rt = note;
@@ -3722,16 +3557,12 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
     protected CaseManagementIssue newIssueToCIssue(String demographicNo, Issue iss, Integer programId) {
         CaseManagementIssue cIssue = new CaseManagementIssue();
-        // cIssue.setActive(true);
         cIssue.setAcute(false);
         cIssue.setCertain(false);
         cIssue.setDemographic_no(Integer.valueOf(demographicNo));
-
         cIssue.setIssue_id(iss.getId().longValue());
-
         cIssue.setIssue(iss);
         cIssue.setMajor(false);
-        // cIssue.setMedical_diagnosis(true);
         cIssue.setNotes(new HashSet());
         cIssue.setResolved(false);
         String issueType = iss.getRole();
@@ -3742,8 +3573,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         List<CaseManagementIssue> uList = new ArrayList<CaseManagementIssue>();
         uList.add(cIssue);
         caseManagementMgr.saveAndUpdateCaseIssues(uList);
-        // add new issues to ongoing concern
-        //caseManagementMgr.addNewIssueToConcern((String) this.getDemoNo(), iss.getDescription());
+
         return cIssue;
     }
 
@@ -3855,8 +3685,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
     private Integer minuteOfEncounterTime;
     private Integer hourOfEncTransportationTime;
     private Integer minuteOfEncTransportationTime;
-    private Integer OscarMsgType;
-    private Integer OscarMsgTypeLink;
 
     private String reloadUrl;
 
@@ -4163,34 +3991,5 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
     public void setReloadUrl(String reloadUrl) {
         this.reloadUrl = reloadUrl;
     }
-
-    /**
-     * @return the OscarMsgType
-     *
-    public Integer getOscarMsgType() {
-        return OscarMsgType;
-    }
-
-    /**
-     * @param OscarMsgType the OscarMsgType to set
-     *
-    public void setOscarMsgType(Integer OscarMsgType) {
-        this.OscarMsgType = OscarMsgType;
-    }
-
-
-    /**
-     * @return the OscarMsgTypeLink
-     *
-    public Integer getOscarMsgTypeLink() {
-        return OscarMsgTypeLink;
-    }
-
-    /**
-     * @param OscarMsgTypeLink the OscarMsgTypeLink to set
-     *
-    public void setOscarMsgTypeLink(Integer OscarMsgTypeLink) {
-        this.OscarMsgTypeLink = OscarMsgTypeLink;
-    }*/
 
 }
