@@ -1279,6 +1279,18 @@
                 <configuration>
                     <source>21</source>
                     <target>21</target>
+                    <fork>true</fork>
+                    <meminitial>256m</meminitial>
+                    <maxmem>2g</maxmem>
+                    <compilerArgs>
+                        <arg>-J-XX:+UseG1GC</arg>
+                        <arg>-J-XX:+UseStringDeduplication</arg>
+                        <arg>-J-XX:+OptimizeStringConcat</arg>
+                        <arg>-J-Xms256m</arg>
+                        <arg>-J-Xmx2g</arg>
+                        <arg>-J-XX:+TieredCompilation</arg>
+                        <arg>-J-XX:TieredStopAtLevel=1</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
 
