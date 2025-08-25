@@ -120,7 +120,7 @@
     int curMonth = (now.get(Calendar.MONTH) + 1);
     int curDay = now.get(Calendar.DAY_OF_MONTH);
 
-    String codes[] = {"W", "O", "P", "N", "X", "T", "D", "I"};
+    String[] codes = {"W", "O", "P", "N", "X", "T", "D", "I"};
     request.setAttribute("codes", codes);
     String serviceLocation = allFields.getProperty("serviceLocation");
 
@@ -785,7 +785,7 @@
                 <input type="text" style="font-size:80%;" name="service_code"
                        value="<%=allFields.getProperty("billingCode")%>" size="10">
                 <input type="button"
-                       onClick="javascript:popFeeItemList('reprocessBilling','service_code');return false;"
+                       onClick="popFeeItemList('reprocessBilling','service_code');return false;"
                        value="Search/Update"/>
             </td>
             <td width="50%" class="bCellData">
@@ -809,7 +809,7 @@
                     <input type="hidden" name="billing_amount" value="<%=allFields.getProperty("bilAmount")%>">
                     <input type="text" style="font-size:80%;" size="8" maxlength="8" name="billingAmount"
                            value="<%=allFields.getProperty("billAmount")%>"
-                           onChange="javascript:validateNum(this); calculateGst()" id="billingAmount">
+                           onChange="validateNum(this); calculateGst()" id="billingAmount">
                 </div>
             </td>
             <td>
@@ -895,7 +895,7 @@
                             </select>
                         </td>
                         <td class="bCellData">
-                            <input type="button" onClick="javascript:ReferralScriptAttach('referalPrac1')"
+                            <input type="button" onClick="ReferralScriptAttach('referalPrac1')"
                                    value="Search"/>
                             <input type="text" name="referalPrac1" value="<%=allFields.getProperty("referralNo1")%>"
                                    size="5" maxlength="5"/>
@@ -910,7 +910,7 @@
                             </select>
                         </td>
                         <td class="bCellData">
-                            <input type="button" onClick="javascript:ReferralScriptAttach('referalPrac2')"
+                            <input type="button" onClick="ReferralScriptAttach('referalPrac2')"
                                    value="Search"/>
                             <input type="text" name="referalPrac2" value="<%=allFields.getProperty("referralNo2")%>"
                                    size="5" maxlength="5"/>
@@ -1195,7 +1195,7 @@
 
     </table>
 </form>
-<a href="javascript: function myFunction() {return false; }" onClick="javascript: showRecord();">View Full Record</a>
+<a href="javascript: function myFunction() {return false; }" onClick="showRecord();">View Full Record</a>
 <div style="display: none;" id="SENDRECORD">
     <table border=1>
         <tr>

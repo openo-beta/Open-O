@@ -47,7 +47,7 @@ public class User {
         /**
          * @param text
          */
-        private Province(final String text) {
+        Province(final String text) {
             this.text = text;
         }
 

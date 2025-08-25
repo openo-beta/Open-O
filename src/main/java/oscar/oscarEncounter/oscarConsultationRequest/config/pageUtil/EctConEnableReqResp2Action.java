@@ -63,24 +63,24 @@ public class EctConEnableReqResp2Action extends ActionSupport {
 
         ConsultationManager manager = new ConsultationManagerImpl();
 
-        Property consultRequestEnabled = new Property(manager.CON_REQUEST_ENABLED);
-        Property consultResponseEnabled = new Property(manager.CON_RESPONSE_ENABLED);
+        Property consultRequestEnabled = new Property(ConsultationManager.CON_REQUEST_ENABLED);
+        Property consultResponseEnabled = new Property(ConsultationManager.CON_RESPONSE_ENABLED);
 
-        List<Property> results = propertyDao.findByName(manager.CON_REQUEST_ENABLED);
+        List<Property> results = propertyDao.findByName(ConsultationManager.CON_REQUEST_ENABLED);
         if (results.size() > 0) consultRequestEnabled = results.get(0);
-        results = propertyDao.findByName(manager.CON_RESPONSE_ENABLED);
+        results = propertyDao.findByName(ConsultationManager.CON_RESPONSE_ENABLED);
         if (results.size() > 0) consultResponseEnabled = results.get(0);
 
-        consultRequestEnabled.setValue(this.isConsultRequestEnabled() ? manager.ENABLED_YES : null);
-        consultResponseEnabled.setValue(this.isConsultResponseEnabled() ? manager.ENABLED_YES : null);
+        consultRequestEnabled.setValue(this.isConsultRequestEnabled() ? ConsultationManager.ENABLED_YES : null);
+        consultResponseEnabled.setValue(this.isConsultResponseEnabled() ? ConsultationManager.ENABLED_YES : null);
 
         propertyDao.merge(consultRequestEnabled);
         propertyDao.merge(consultResponseEnabled);
 
-        ConsultationServices referringDocService = serviceDao.findReferringDoctorService(serviceDao.WITH_INACTIVE);
-        if (referringDocService == null) referringDocService = new ConsultationServices(serviceDao.REFERRING_DOCTOR);
-        if (this.isConsultResponseEnabled()) referringDocService.setActive(serviceDao.ACTIVE);
-        else referringDocService.setActive(serviceDao.INACTIVE);
+        ConsultationServices referringDocService = serviceDao.findReferringDoctorService(ConsultationServiceDao.WITH_INACTIVE);
+        if (referringDocService == null) referringDocService = new ConsultationServices(ConsultationServiceDao.REFERRING_DOCTOR);
+        if (this.isConsultResponseEnabled()) referringDocService.setActive(ConsultationServiceDao.ACTIVE);
+        else referringDocService.setActive(ConsultationServiceDao.INACTIVE);
 
         serviceDao.merge(referringDocService);
 

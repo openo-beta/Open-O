@@ -38,15 +38,15 @@ import org.springframework.stereotype.Repository;
 
 public interface VacancyDao extends AbstractDao<Vacancy> {
 
-    public List<Vacancy> getVacanciesByWlProgramId(Integer wlProgramId);
+    List<Vacancy> getVacanciesByWlProgramId(Integer wlProgramId);
 
-    public List<Vacancy> getVacanciesByWlProgramIdAndStatus(Integer wlProgramId, String status);
+    List<Vacancy> getVacanciesByWlProgramIdAndStatus(Integer wlProgramId, String status);
 
-    public List<Vacancy> getVacanciesByName(String vacancyName);
+    List<Vacancy> getVacanciesByName(String vacancyName);
 
-    public List<Vacancy> findByStatusAndVacancyId(String status, int vacancyId);
+    List<Vacancy> findByStatusAndVacancyId(String status, int vacancyId);
 
-    public Vacancy getVacancyById(int vacancyId);
+    Vacancy getVacancyById(int vacancyId);
 
-    public List<Vacancy> findCurrent();
+    List<Vacancy> findCurrent();
 }

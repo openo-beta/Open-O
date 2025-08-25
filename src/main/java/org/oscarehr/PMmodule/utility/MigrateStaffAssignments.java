@@ -67,10 +67,7 @@ public class MigrateStaffAssignments {
         ResultSet rs = stmt.getResultSet();
         rs.next();
         long num = rs.getInt("num");
-        if (num > 0) {
-            return true;
-        }
-        return false;
+        return num > 0;
     }
 
     public boolean providerExists(long providerNo) throws Exception {
@@ -79,10 +76,7 @@ public class MigrateStaffAssignments {
         ResultSet rs = stmt.getResultSet();
         rs.next();
         long num = rs.getInt("num");
-        if (num > 0) {
-            return true;
-        }
-        return false;
+        return num > 0;
     }
 
     public long getRoleId(String name) throws Exception {
@@ -105,7 +99,7 @@ public class MigrateStaffAssignments {
         stmt.executeUpdate("insert into program_provider (program_id,provider_no,role_id,team_id) values (" + programId + "," + providerNo + "," + roleId + "," + "0)");
     }
 
-    public static void main(String args[]) throws Exception {
+    public static void main(String[] args) throws Exception {
         new MigrateStaffAssignments().run();
     }
 }

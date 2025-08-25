@@ -200,10 +200,7 @@
 
     //--- add integrator results ---
 
-    boolean searchIntegrator = false;
-    if (request.getParameter("includeIntegratedResults") != null && "true".equals(request.getParameter("includeIntegratedResults"))) {
-        searchIntegrator = true;
-    }
+    boolean searchIntegrator = request.getParameter("includeIntegratedResults") != null && "true".equals(request.getParameter("includeIntegratedResults"));
     MiscUtils.getLogger().debug("search Integrator: " + searchIntegrator);
 
 

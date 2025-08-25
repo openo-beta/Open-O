@@ -237,7 +237,7 @@ public final class RxSearchDrug2Action extends ActionSupport {
      * Utilty methods - should be split into a class if they get any bigger.
      */
 
-    private static final boolean wildCardRight(final String wildcard) {
+    private static boolean wildCardRight(final String wildcard) {
         if (!StringUtils.isBlank(wildcard)) {
             return Boolean.valueOf(wildcard);
         }

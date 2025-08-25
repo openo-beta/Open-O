@@ -189,7 +189,7 @@
             bARFilter = true;
             //"formBCAR.demographic_no in (select distinct demographic_no from formBCBirthSumMo)"
             if (strFilter.indexOf("formBCBirthSumMo") > 0) {
-                ResultSet rs = dbObj.searchDBRecord("select distinct demographic_no from formBCBirthSumMo");
+                ResultSet rs = DBHelp.searchDBRecord("select distinct demographic_no from formBCBirthSumMo");
                 String sBirthSumNo = "";
                 while (rs.next()) {
                     sBirthSumNo += (sBirthSumNo.length() > 0 ? "," : "") + rs.getInt("demographic_no");
@@ -248,9 +248,9 @@
                 vecSpecCaption.add(propSpecSelect.getProperty(temp[i].trim()));
                 sql = "select demographic_no,value from demographicExt where key_val='" + temp[i] + "' and demographic_no in (";
                 sql += strDemoNo + ") order by date_time desc limit 1";
-                ResultSet rs = dbObj.searchDBRecord(sql);
+                ResultSet rs = DBHelp.searchDBRecord(sql);
                 while (rs.next()) {
-                    propSpecValue.setProperty(dbObj.getString(rs, "demographic_no") + temp[i], dbObj.getString(rs, "value"));
+                    propSpecValue.setProperty(DBHelp.getString(rs, "demographic_no") + temp[i], DBHelp.getString(rs, "value"));
                 }
             }
 
@@ -265,7 +265,7 @@
             subQuery += " and " + sDemoFilter + sTempEle + "  ";
 
             String subFormDemoNo = "";
-            rs = dbObj.searchDBRecord(subQuery);
+            rs = DBHelp.searchDBRecord(subQuery);
             while (rs.next()) {
                 subFormDemoNo += (subFormDemoNo.length() > 0 ? "," : "") + rs.getInt("demographic.demographic_no");
             }
@@ -276,9 +276,9 @@
                 vecSpecCaption.add(propSpecSelect.getProperty(temp[i].trim()));
                 sql = "select demographic_no,value from demographicExt where key_val='" + temp[i] + "' and demographic_no in (";
                 sql += subFormDemoNo + ") order by date_time desc limit 1";
-                rs = dbObj.searchDBRecord(sql);
+                rs = DBHelp.searchDBRecord(sql);
                 while (rs.next()) {
-                    propSpecValue.setProperty(dbObj.getString(rs, "demographic_no") + temp[i], dbObj.getString(rs, "value"));
+                    propSpecValue.setProperty(DBHelp.getString(rs, "demographic_no") + temp[i], DBHelp.getString(rs, "value"));
                 }
             }
 
@@ -311,7 +311,7 @@
         subQuery += " and " + sDemoFilter + sTempEle + " group by " + ARTYPE + ".demographic_no," + ARTYPE + ".formCreated ";
 
         String subFormId = "";
-        ResultSet rs = dbObj.searchDBRecord(subQuery);
+        ResultSet rs = DBHelp.searchDBRecord(subQuery);
         while (rs.next()) {
             subFormId += (subFormId.length() > 0 ? "," : "") + rs.getInt("max(ID)");
         }
@@ -352,7 +352,7 @@
             subQuery += " and " + sDemoFilter + sTempEle + " group by " + ARTYPE + ".demographic_no," + ARTYPE + ".formCreated ";
 
             String subFormId = "";
-            ResultSet rs = dbObj.searchDBRecord(subQuery);
+            ResultSet rs = DBHelp.searchDBRecord(subQuery);
             while (rs.next()) {
                 subFormId += (subFormId.length() > 0 ? "," : "") + rs.getInt("max(ID)");
             }
@@ -392,9 +392,9 @@
                 vecSpecCaption.add(propSpecSelect.getProperty(temp[i].trim()));
                 sql = "select demographic_no,value from demographicExt where key_val='" + temp[i] + "' and demographic_no in (";
                 sql += strDemoNo + ") order by date_time ";
-                rs = dbObj.searchDBRecord(sql);
+                rs = DBHelp.searchDBRecord(sql);
                 while (rs.next()) {
-                    propSpecValue.setProperty(dbObj.getString(rs, "demographic_no") + temp[i], dbObj.getString(rs, "value"));
+                    propSpecValue.setProperty(DBHelp.getString(rs, "demographic_no") + temp[i], DBHelp.getString(rs, "value"));
                 }
             }
         }
@@ -411,7 +411,7 @@
             subQuery += " and " + sDemoFilter + sTempEle + "  ";
 
             String subFormDemoNo = "";
-            rs = dbObj.searchDBRecord(subQuery);
+            rs = DBHelp.searchDBRecord(subQuery);
             while (rs.next()) {
                 subFormDemoNo += (subFormDemoNo.length() > 0 ? "," : "") + rs.getInt("demographic.demographic_no");
             }
@@ -421,9 +421,9 @@
                 vecSpecCaption.add(propSpecSelect.getProperty(temp[i].trim()));
                 sql = "select demographic_no,value from demographicExt where key_val='" + temp[i] + "' and demographic_no in (";
                 sql += subFormDemoNo + ") order by date_time desc limit 1";
-                rs = dbObj.searchDBRecord(sql);
+                rs = DBHelp.searchDBRecord(sql);
                 while (rs.next()) {
-                    propSpecValue.setProperty(dbObj.getString(rs, "demographic_no") + temp[i], dbObj.getString(rs, "value"));
+                    propSpecValue.setProperty(DBHelp.getString(rs, "demographic_no") + temp[i], DBHelp.getString(rs, "value"));
                 }
             }
 
@@ -433,7 +433,7 @@
             subQuery += " and " + sDemoFilter + sTempEle + " group by " + ARTYPE + ".demographic_no," + ARTYPE + ".formCreated ";
 
             String subFormId = "";
-            rs = dbObj.searchDBRecord(subQuery);
+            rs = DBHelp.searchDBRecord(subQuery);
             while (rs.next()) {
                 subFormId += (subFormId.length() > 0 ? "," : "") + rs.getInt("max(ID)");
             }

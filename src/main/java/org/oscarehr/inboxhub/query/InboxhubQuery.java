@@ -283,7 +283,7 @@ public class InboxhubQuery {
     }
 
     public Boolean getAbnormalBool() {
-        return Objects.equals(AbnormalFilter.fromValue(abnormal), AbnormalFilter.ALL) ? null : Objects.equals(AbnormalFilter.fromValue(abnormal), AbnormalFilter.NORMAL_ONLY) ? false : true;
+        return Objects.equals(AbnormalFilter.fromValue(abnormal), AbnormalFilter.ALL) ? null : !Objects.equals(AbnormalFilter.fromValue(abnormal), AbnormalFilter.NORMAL_ONLY);
     }
 
     public Boolean getViewMode() {

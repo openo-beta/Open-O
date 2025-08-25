@@ -23,6 +23,7 @@
  */
 package org.oscarehr.common.dao;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -51,12 +52,12 @@ public class EFormGroupDaoTest extends DaoTestFixtures {
         populate();
 
         int count = dao.deleteByName("BLAHAMUHA");
-        assertTrue(count == 1);
+        assertEquals(1, count);
 
         populate();
 
         count = dao.deleteByNameAndFormId("BLAHAMUHA", 10);
-        assertTrue(count == 1);
+        assertEquals(1, count);
 
         negativeCheck = dao.find(negativeCheck.getId());
         assertNotNull(negativeCheck);

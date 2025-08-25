@@ -66,7 +66,7 @@
                 }
                 %>
             </select>
-            <input type="button" value="Go -->" onClick="javascript:setLocation();"/>
+            <input type="button" value="Go -->" onClick="setLocation();"/>
         </td>
     </tr>
 </table>

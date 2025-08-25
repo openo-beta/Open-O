@@ -69,11 +69,7 @@ public class CookieSecurity {
             for (int i = 0; i < 32; i++) {
                 adler32.update(Integer.parseInt(cookieValue.substring(i, i + 1)));
             }
-            if (Long.parseLong(cookieValue.substring(32, cookieValue.length())) == adler32.getValue()) {
-                return true;
-            } else {
-                return false;
-            }
+            return Long.parseLong(cookieValue.substring(32, cookieValue.length())) == adler32.getValue();
         } catch (Exception e) {
             return false;
         }

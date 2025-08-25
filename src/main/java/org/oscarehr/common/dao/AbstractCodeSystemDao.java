@@ -37,15 +37,15 @@ public interface AbstractCodeSystemDao<T extends AbstractCodeSystemModel<?>> ext
 
     // public static String getDaoName(codingSystem codeSystem);
 
-    public List<T> searchCode(String term);
+    List<T> searchCode(String term);
 
-    public T findByCode(String code);
+    T findByCode(String code);
 
-    public AbstractCodeSystemModel<?> findByCodingSystem(String codingSystem);
+    AbstractCodeSystemModel<?> findByCodingSystem(String codingSystem);
 
-    public static enum codingSystem {icd9, icd10, ichppccode, msp, SnomedCore}
+    enum codingSystem {icd9, icd10, ichppccode, msp, SnomedCore}
 
-    public static String getDaoName(codingSystem codeSystem) {
+    static String getDaoName(codingSystem codeSystem) {
         String object;
         switch (codeSystem) {
             case SnomedCore:

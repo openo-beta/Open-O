@@ -36,9 +36,9 @@ import org.springframework.stereotype.Repository;
 
 public interface DHIRSubmissionLogDao extends AbstractDao<DHIRSubmissionLog> {
 
-    public List<DHIRSubmissionLog> findAll();
+    List<DHIRSubmissionLog> findAll();
 
-    public DHIRSubmissionLog findLatestPendingByPreventionId(Integer preventionId);
+    DHIRSubmissionLog findLatestPendingByPreventionId(Integer preventionId);
 
-    public List<DHIRSubmissionLog> findByPreventionId(Integer preventionId);
+    List<DHIRSubmissionLog> findByPreventionId(Integer preventionId);
 }

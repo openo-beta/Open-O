@@ -184,7 +184,7 @@ dojo.extend(dojo.charting.PlotArea, {
         for (var i = 0; i < this.plots.length; i++) {
             this.plots[i].destroy();
         }
-        ;
+
         //	clean out any child nodes.
         for (var p in this.nodes) {
             var node = this.nodes[p];

@@ -104,7 +104,7 @@
                             <table class=messButtonsA cellspacing=0 cellpadding=3>
                                 <tr>
                                     <td class="messengerButtonsA"><a href="#"
-                                                                     onclick="javascript:top.window.close()"
+                                                                     onclick="top.window.close()"
                                                                      class="messengerButtons">
                                         Close Attachment </a></td>
                                 </tr>

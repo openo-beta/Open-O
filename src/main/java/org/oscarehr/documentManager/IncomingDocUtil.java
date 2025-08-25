@@ -460,7 +460,7 @@ public final class IncomingDocUtil {
                     }
                 }
             }
-            if (cancelExtract == true) {
+            if (cancelExtract) {
                 reader.close();
                 throw new Exception(myPdfName + " : Invalid Pages to Extract " + pageNumbersToExtract);
             }

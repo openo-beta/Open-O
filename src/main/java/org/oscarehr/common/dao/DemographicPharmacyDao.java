@@ -39,16 +39,16 @@ import org.springframework.stereotype.Repository;
 
 public interface DemographicPharmacyDao extends AbstractDao<DemographicPharmacy> {
 
-    public DemographicPharmacy addPharmacyToDemographic(Integer pharmacyId, Integer demographicNo,
-                                                        Integer preferredOrder);
+    DemographicPharmacy addPharmacyToDemographic(Integer pharmacyId, Integer demographicNo,
+                                                 Integer preferredOrder);
 
-    public void unlinkPharmacy(Integer pharmacyId, Integer demographicNo);
+    void unlinkPharmacy(Integer pharmacyId, Integer demographicNo);
 
-    public List<DemographicPharmacy> findByDemographicId(Integer demographicNo);
+    List<DemographicPharmacy> findByDemographicId(Integer demographicNo);
 
-    public List<DemographicPharmacy> findAllByDemographicId(Integer demographicNo);
+    List<DemographicPharmacy> findAllByDemographicId(Integer demographicNo);
 
-    public List<DemographicPharmacy> findAllByPharmacyId(Integer pharmacyId);
+    List<DemographicPharmacy> findAllByPharmacyId(Integer pharmacyId);
 
-    public Long getTotalDemographicsPreferedToPharmacyByPharmacyId(Integer pharmacyId);
+    Long getTotalDemographicsPreferedToPharmacyByPharmacyId(Integer pharmacyId);
 }

@@ -435,10 +435,7 @@ public class EctSessionBean implements java.io.Serializable {
     }
 
     public boolean isCurrentTeam() {
-        boolean retval = true;
-        if (currentTeam == null) {
-            retval = false;
-        }
+        boolean retval = currentTeam != null;
         return retval;
     }
 

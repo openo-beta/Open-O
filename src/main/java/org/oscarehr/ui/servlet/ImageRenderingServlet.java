@@ -58,12 +58,12 @@ public final class ImageRenderingServlet extends HttpServlet {
     private static Logger logger = MiscUtils.getLogger();
     private static ClientImageDAO clientImageDAO = (ClientImageDAO) SpringUtils.getBean(ClientImageDAO.class);
 
-    public static enum Source {
+    public enum Source {
         local_client, hnr_client, integrator_client, signature_preview, signature_stored, clinic_logo
     }
 
     @Override
-    public final void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             String source = request.getParameter("source");
 
@@ -104,7 +104,7 @@ public final class ImageRenderingServlet extends HttpServlet {
      * @param imageType image sub type of the contentType, i.e. "jpeg" "png"
      * @throws IOException
      */
-    private static final void renderImage(HttpServletResponse response, byte[] image, String imageType) throws IOException {
+    private static void renderImage(HttpServletResponse response, byte[] image, String imageType) throws IOException {
         response.setContentType("image/" + imageType);
         if (image != null)
             response.setContentLength(image.length);
@@ -113,7 +113,7 @@ public final class ImageRenderingServlet extends HttpServlet {
         bos.flush();
     }
 
-    private static final void renderIntegratorClient(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private static void renderIntegratorClient(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // this expects integratorFacilityId and caisiClientId as a parameter
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -144,7 +144,7 @@ public final class ImageRenderingServlet extends HttpServlet {
         response.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
 
-    private static final void renderHnrClient(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private static void renderHnrClient(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // this expects linkingId as a parameter
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);

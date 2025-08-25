@@ -30,11 +30,11 @@ import org.oscarehr.integration.fhir.resources.Settings;
 
 public final class DestinationFactory {
 
-    public static final Destination getDestination(org.oscarehr.integration.fhir.resources.constants.FhirDestination destination) {
+    public static Destination getDestination(org.oscarehr.integration.fhir.resources.constants.FhirDestination destination) {
         return new Destination(destination.title(), destination.endpoint());
     }
 
-    public static final Destination getDestination(Settings settings) {
+    public static Destination getDestination(Settings settings) {
         org.oscarehr.integration.fhir.resources.constants.FhirDestination destination = null;
         String title = "";
         String endpoint = "";

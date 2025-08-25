@@ -39,11 +39,11 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
  */
 public interface ProviderDAO {
 
-    public List<Provider> getProviders();
+    List<Provider> getProviders();
 
-    public Provider getProvider(String provider_no);
+    Provider getProvider(String provider_no);
 
-    public Provider getProviderByName(String lastName, String firstName);
+    Provider getProviderByName(String lastName, String firstName);
 
 }
  

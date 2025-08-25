@@ -50,57 +50,57 @@ import oscar.OscarProperties;
 
 public interface Hl7TextInfoDao extends AbstractDao<Hl7TextInfo> {
 
-    public List<Hl7TextInfo> findAll();
+    List<Hl7TextInfo> findAll();
 
-    public Hl7TextInfo findLabId(int labId);
+    Hl7TextInfo findLabId(int labId);
 
-    public List<Hl7TextInfo> findByHealthCardNo(String hin);
+    List<Hl7TextInfo> findByHealthCardNo(String hin);
 
-    public List<Hl7TextInfo> searchByAccessionNumber(String acc);
+    List<Hl7TextInfo> searchByAccessionNumber(String acc);
 
-    public List<Hl7TextInfo> searchByAccessionNumber(String acc1, String acc2);
+    List<Hl7TextInfo> searchByAccessionNumber(String acc1, String acc2);
 
-    public List<Hl7TextInfo> searchByAccessionNumberOrderByObrDate(String accessionNumber);
+    List<Hl7TextInfo> searchByAccessionNumberOrderByObrDate(String accessionNumber);
 
-    public Hl7TextInfo findLatestVersionByAccessionNumberOrFillerNumber(
-            String acc, String fillerNumber);
+    Hl7TextInfo findLatestVersionByAccessionNumberOrFillerNumber(
+        String acc, String fillerNumber);
 
-    public List<Hl7TextInfo> searchByFillerOrderNumber(String fon, String sending_facility);
+    List<Hl7TextInfo> searchByFillerOrderNumber(String fon, String sending_facility);
 
-    public void updateReportStatusByLabId(String reportStatus, int labNumber);
+    void updateReportStatusByLabId(String reportStatus, int labNumber);
 
-    public List<Hl7TextMessageInfo> getMatchingLabs(String hl7msg);
+    List<Hl7TextMessageInfo> getMatchingLabs(String hl7msg);
 
-    public List<Hl7TextMessageInfo2> getMatchingLabsByAccessionNo(String accession);
+    List<Hl7TextMessageInfo2> getMatchingLabsByAccessionNo(String accession);
 
-    public List<Hl7TextInfo> getAllLabsByLabNumberResultStatus();
+    List<Hl7TextInfo> getAllLabsByLabNumberResultStatus();
 
-    public void updateResultStatusByLabId(String resultStatus, int labNumber);
+    void updateResultStatusByLabId(String resultStatus, int labNumber);
 
-    public void createUpdateLabelByLabNumber(String label, int lab_no);
+    void createUpdateLabelByLabNumber(String label, int lab_no);
 
-    public List<Hl7TextInfo> findByLabId(Integer labNo);
+    List<Hl7TextInfo> findByLabId(Integer labNo);
 
-    public List<Object[]> findByLabIdViaMagic(Integer labNo);
+    List<Object[]> findByLabIdViaMagic(Integer labNo);
 
-    public List<Object[]> findByDemographicId(Integer demographicNo);
+    List<Object[]> findByDemographicId(Integer demographicNo);
 
-    public List<Hl7TextInfo> findByLabIdList(List<Integer> labIds);
+    List<Hl7TextInfo> findByLabIdList(List<Integer> labIds);
 
-    public List<Object[]> findLabsViaMagic(String status, String providerNo, String patientFirstName,
-                                           String patientLastName, String patientHealthNumber);
+    List<Object[]> findLabsViaMagic(String status, String providerNo, String patientFirstName,
+                                    String patientLastName, String patientHealthNumber);
 
-    public List<Object[]> findLabAndDocsViaMagic(String providerNo, String demographicNo, String patientFirstName,
-                                                 String patientLastName, String patientHealthNumber, String status, boolean isPaged, Integer page,
-                                                 Integer pageSize, boolean mixLabsAndDocs, Boolean isAbnormal, boolean searchProvider,
-                                                 boolean patientSearch);
+    List<Object[]> findLabAndDocsViaMagic(String providerNo, String demographicNo, String patientFirstName,
+                                          String patientLastName, String patientHealthNumber, String status, boolean isPaged, Integer page,
+                                          Integer pageSize, boolean mixLabsAndDocs, Boolean isAbnormal, boolean searchProvider,
+                                          boolean patientSearch);
 
-    public List<Object[]> findLabAndDocsViaMagic(String providerNo, String demographicNo, String patientFirstName,
-                                                 String patientLastName, String patientHealthNumber, String status, boolean isPaged, Integer page,
-                                                 Integer pageSize, boolean mixLabsAndDocs, Boolean isAbnormal, boolean searchProvider, boolean patientSearch,
-                                                 Date startDate, Date endDate);
+    List<Object[]> findLabAndDocsViaMagic(String providerNo, String demographicNo, String patientFirstName,
+                                          String patientLastName, String patientHealthNumber, String status, boolean isPaged, Integer page,
+                                          Integer pageSize, boolean mixLabsAndDocs, Boolean isAbnormal, boolean searchProvider, boolean patientSearch,
+                                          Date startDate, Date endDate);
 
-    public List<Object> findDisciplines(Integer labid);
+    List<Object> findDisciplines(Integer labid);
 
-    public List<Hl7TextInfo> findByFillerOrderNumber(String fillerOrderNum);
+    List<Hl7TextInfo> findByFillerOrderNumber(String fillerOrderNum);
 }

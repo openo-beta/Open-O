@@ -241,7 +241,7 @@
         java.util.Properties props = rec.getFormRecord(LoggedInInfo.getLoggedInInfoFromSession(request), demoNo, formId);
     %>
 
-    <BODY bgproperties="fixed" onLoad="javascript:window.focus()"
+    <BODY bgproperties="fixed" onLoad="window.focus()"
           topmargin="0" leftmargin="0" rightmargin="0">
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
@@ -264,15 +264,15 @@
         <!--class="hidePrint"-->
         <tr>
             <td align="left"><input type="submit" value="Save"
-                                    onclick="javascript:return onSave();"/> <input type="submit"
+                                    onclick="return onSave();"/> <input type="submit"
                                                                                    value="Save and Exit"
-                                                                                   onclick="javascript:return onSaveExit();"/>
+                                                                                   onclick="return onSaveExit();"/>
                 <input
-                        type="submit" value="Exit" onclick="javascript:return onExit();"/>
+                        type="submit" value="Exit" onclick="return onExit();"/>
                 <input type="button" value="Print"
-                       onclick="javascript:return onPrint();"/> <input type="button"
+                       onclick="return onPrint();"/> <input type="button"
                                                                        value="Consult"
-                                                                       onclick="javascript:popupOscarCon(700,960,'<%= request.getContextPath() %>/oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp?de=<%=demoNo%>');"/>
+                                                                       onclick="popupOscarCon(700,960,'<%= request.getContextPath() %>/oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp?de=<%=demoNo%>');"/>
 
             </td>
             <td align='right'><a
@@ -1455,13 +1455,13 @@
                 <table class="Head" class="hidePrint">
                     <tr>
                         <td align="left"><input type="submit" value="Save"
-                                                onclick="javascript:return onSave();"/> <input type="submit"
+                                                onclick="return onSave();"/> <input type="submit"
                                                                                                value="Save and Exit"
-                                                                                               onclick="javascript:return onSaveExit();"/>
+                                                                                               onclick="return onSaveExit();"/>
                             <input type="submit" value="Exit"
-                                   onclick="javascript:return onExit();"/> <input type="button"
+                                   onclick="return onExit();"/> <input type="button"
                                                                                   value="Print"
-                                                                                  onclick="javascript:return onPrint();"/>
+                                                                                  onclick="return onPrint();"/>
                         </td>
                         <td align='right'><a
                                 href="javascript: popupPage(700,950,'<%= request.getContextPath() %>/decision/annualreview/annualreviewplanner.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>');">Annual

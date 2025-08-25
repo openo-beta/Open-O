@@ -179,7 +179,7 @@ dojo.html.getElementsByClass = function (
             while (node = candidateNodes[i++]) {
                 var nodeClasses = dojo.html.getClasses(node);
                 if (nodeClasses.length == 0) {
-                    continue outer;
+                    continue;
                 }
                 var matches = 0;
 

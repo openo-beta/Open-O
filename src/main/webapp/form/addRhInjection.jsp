@@ -72,8 +72,7 @@
     java.util.Properties props = rec.getFormRecord(LoggedInInfo.getLoggedInInfoFromSession(request), demoNo, formId);
 
     String project_home = request.getContextPath().substring(1);
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 
     List providers = ProviderData.getProviderList();
     String prevDate = UtilDateUtilities.getToday("yyyy-MM-dd");
@@ -238,7 +237,7 @@
                 <label for="provider" class="fields">Provider:</label> <input
                         type="text" name="providerName" id="providerName"
                         value="<%=providerName%>"/> <select
-                        onchange="javascript:hideExtraName(this);" id="providerDrop"
+                        onchange="hideExtraName(this);" id="providerDrop"
                         name="provider">
                     <%
                         for (int i = 0; i < providers.size(); i++) {

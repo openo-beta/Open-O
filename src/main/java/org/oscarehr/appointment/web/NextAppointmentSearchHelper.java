@@ -270,12 +270,9 @@ public class NextAppointmentSearchHelper {
             }
             booked = true;
         }
-        if (booked) {
-            return false;
-        }
+        return !booked;
 
         //available
-        return true;
     }
 
     private static Date fixDate(Date day, Date time) {

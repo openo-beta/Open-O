@@ -34,5 +34,5 @@ import org.springframework.stereotype.Repository;
 
 public interface DemographicCustArchiveDao extends AbstractDao<DemographicCustArchive> {
 
-    public Integer archiveDemographicCust(DemographicCust dc);
+    Integer archiveDemographicCust(DemographicCust dc);
 }

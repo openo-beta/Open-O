@@ -23,6 +23,7 @@
  */
 package org.oscarehr.common.dao;
 
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class CdsHospitalisationDaysDaoTest extends DaoTestFixtures {
                 hospitalisationDays3
         ));
 
-        assertTrue(result.size() == expectedResult.size());
+        assertSame(result.size(), expectedResult.size());
         assertTrue(result.containsAll(expectedResult));
     }
 

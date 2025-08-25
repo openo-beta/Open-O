@@ -163,7 +163,7 @@
                         %>
                         <%
                             for (ClinicLocation clinicLocation : clinicLocations) {
-                                bodd = bodd ? false : true; //for the color of rows
+                                bodd = !bodd; //for the color of rows
                         %>
 
                         <tr>

@@ -111,7 +111,7 @@ public class EctConAddSpecialist2Action extends ActionSupport {
 
         this.resetForm();
 
-        String added = "" + professionalSpecialist.getFirstName() + " " + professionalSpecialist.getLastName();
+        String added = professionalSpecialist.getFirstName() + " " + professionalSpecialist.getLastName();
         request.setAttribute("Added", added);
         return SUCCESS;
     }

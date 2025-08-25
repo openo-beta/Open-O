@@ -24,7 +24,9 @@
 package org.oscarehr.integration.mchcv;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
 
 import ca.ontario.health.hcv.*;
 import org.junit.After;
@@ -64,7 +66,7 @@ public class HinValidatorTest {
 
         System.out.println(printOutput("testFAILED_MOD10", validationResult));
 
-        assertEquals(false, isValid);
+        assertFalse(isValid);
         assertEquals("10", rcode);
         assertEquals("FAILED_MOD10", responseID.value());
 
@@ -81,7 +83,7 @@ public class HinValidatorTest {
 
         System.out.println(printOutput("testIS_IN_DISTRIBUTED_STATUS", validationResult));
 
-        assertEquals(false, isValid);
+        assertFalse(isValid);
         assertEquals("15", rcode);
         assertEquals(ResponseID.IS_IN_DISTRIBUTED_STATUS.name(), responseID.value());
     }
@@ -96,7 +98,7 @@ public class HinValidatorTest {
 
         System.out.println(printOutput("testIS_NOT_ELIGIBLE", validationResult));
 
-        assertEquals(false, isValid);
+        assertFalse(isValid);
         assertEquals("20", rcode);
         assertEquals(ResponseID.IS_NOT_ELIGIBLE.name(), responseID.value());
     }
@@ -115,7 +117,7 @@ public class HinValidatorTest {
         assertEquals("The FSC entered by the provider is not valid.", validationResult.getFeeServiceResponseDescription("P108"));
         assertNull(validationResult.getFeeServiceDate("P108"));
 
-        assertEquals(true, isValid);
+        assertTrue(isValid);
         assertEquals("50", rcode);
         assertEquals(ResponseID.NOT_ON_ACTIVE_ROSTER.name(), responseID.value());
     }
@@ -130,7 +132,7 @@ public class HinValidatorTest {
 
         System.out.println(printOutput("testNOT_ON_ACTIVE_ROSTER_TWO", validationResult));
 
-        assertEquals(true, isValid);
+        assertTrue(isValid);
         assertEquals("50", rcode);
         assertEquals(ResponseID.NOT_ON_ACTIVE_ROSTER.name(), responseID.value());
     }
@@ -145,7 +147,7 @@ public class HinValidatorTest {
 
         System.out.println(printOutput("testIS_ON_ACTIVE_ROSTER", validationResult));
 
-        assertEquals(true, isValid);
+        assertTrue(isValid);
         assertEquals("51", rcode);
         assertEquals(ResponseID.IS_ON_ACTIVE_ROSTER.name(), responseID.value());
     }
@@ -160,7 +162,7 @@ public class HinValidatorTest {
 
         System.out.println(printOutput("testHAS_NOTICE", validationResult));
 
-        assertEquals(true, isValid);
+        assertTrue(isValid);
         assertEquals("52", rcode);
         assertEquals(ResponseID.HAS_NOTICE.name(), responseID.value());
     }
@@ -175,7 +177,7 @@ public class HinValidatorTest {
 
         System.out.println(printOutput("testIS_RQ_HAS_EXPIRED", validationResult));
 
-        assertEquals(true, isValid);
+        assertTrue(isValid);
         assertEquals("53", rcode);
         assertEquals(ResponseID.IS_RQ_HAS_EXPIRED.name(), responseID.value());
     }
@@ -190,7 +192,7 @@ public class HinValidatorTest {
 
         System.out.println(printOutput("testRETURNED_MAIL", validationResult));
 
-        assertEquals(true, isValid);
+        assertTrue(isValid);
         assertEquals("55", rcode);
         assertEquals(ResponseID.RETURNED_MAIL.name(), responseID.value());
     }
@@ -205,7 +207,7 @@ public class HinValidatorTest {
 
         System.out.println(printOutput("testINVALID_VERSION_CODE", validationResult));
 
-        assertEquals(false, isValid);
+        assertFalse(isValid);
         assertEquals("65", rcode);
         assertEquals(ResponseID.INVALID_VERSION_CODE.name(), responseID.value());
     }
@@ -220,7 +222,7 @@ public class HinValidatorTest {
 
         System.out.println(printOutput("testIS_STOLEN", validationResult));
 
-        assertEquals(false, isValid);
+        assertFalse(isValid);
         assertEquals("70", rcode);
         assertEquals(ResponseID.IS_STOLEN.name(), responseID.value());
     }
@@ -236,7 +238,7 @@ public class HinValidatorTest {
 
         System.out.println(printOutput("testIS_CANCELLED_OR_VOIDED", validationResult));
 
-        assertEquals(false, isValid);
+        assertFalse(isValid);
         assertEquals("75", rcode);
         assertEquals(ResponseID.IS_CANCELLED_OR_VOIDED.name(), responseID.value());
     }
@@ -251,7 +253,7 @@ public class HinValidatorTest {
 
         System.out.println(printOutput("testDAMAGED_STATE", validationResult));
 
-        assertEquals(false, isValid);
+        assertFalse(isValid);
         assertEquals("80", rcode);
         assertEquals(ResponseID.DAMAGED_STATE.name(), responseID.value());
     }
@@ -267,7 +269,7 @@ public class HinValidatorTest {
 
         System.out.println(printOutput("testLOST_STATE", validationResult));
 
-        assertEquals(false, isValid);
+        assertFalse(isValid);
         assertEquals("83", rcode);
         assertEquals(ResponseID.LOST_STATE.name(), responseID.value());
     }
@@ -327,7 +329,7 @@ public class HinValidatorTest {
 
         System.out.println(printOutput("testRejected_by_Policy", validationResult));
 
-        assertEquals(false, validationResult.isValid());
+        assertFalse(validationResult.isValid());
         assertEquals("https://204.41.14.78:1444/HCVService/HCValidationService: cvc-simple-type 1: element healthNumber value '1268J84402' is not a valid instance of type {http://hcv.health.ontario.ca/}hn", validationResult.getEbsFault().getMessage());
     }
 
@@ -338,7 +340,7 @@ public class HinValidatorTest {
 
         System.out.println(printOutput("testRejected_by_Policy_Two", validationResult));
 
-        assertEquals(false, validationResult.isValid());
+        assertFalse(validationResult.isValid());
         assertEquals("https://204.41.14.78:1444/HCVService/HCValidationService: cvc-simple-type 1: element versionCode value 'Y1' is not a valid instance of type {http://hcv.health.ontario.ca/}vc", validationResult.getEbsFault().getMessage());
     }
 

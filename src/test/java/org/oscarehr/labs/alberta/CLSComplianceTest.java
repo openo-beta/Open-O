@@ -122,7 +122,7 @@ public class CLSComplianceTest {
             assertEquals("AB", handler.getAssigningAuthority());
             assertEquals("F", handler.getSex());
             assertEquals("1970-10-27", handler.getDOB());
-            assertTrue(handler.getAge() != null);
+            assertNotNull(handler.getAge());
 
             i++;
             logger.info("Completed demo name compliance check for lab " + i + " successfully");

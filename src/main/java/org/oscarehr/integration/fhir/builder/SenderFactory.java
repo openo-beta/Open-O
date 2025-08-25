@@ -42,11 +42,11 @@ public final class SenderFactory {
     private static String softwareName = "Oscar";
 
 
-    public static final Sender getSender() {
+    public static Sender getSender() {
         return init(null);
     }
 
-    public static final Sender getSender(Settings settings) {
+    public static Sender getSender(Settings settings) {
         return init(settings);
     }
 

@@ -63,8 +63,7 @@
 //get project_home
     String project_home = request.getContextPath().substring(1);
 //sync
-    boolean bSync = false;
-    if (!props.getProperty("c_surname_cur", "").equals("") && !(props.getProperty("c_surname_cur", "").equals(props.getProperty("c_surname", ""))
+    boolean bSync = !props.getProperty("c_surname_cur", "").equals("") && !(props.getProperty("c_surname_cur", "").equals(props.getProperty("c_surname", ""))
             && props.getProperty("c_givenName_cur", "").equals(props.getProperty("c_givenName", ""))
             && props.getProperty("c_address_cur", "").equals(props.getProperty("c_address", ""))
             && props.getProperty("c_city_cur", "").equals(props.getProperty("c_city", ""))
@@ -74,13 +73,10 @@
             && props.getProperty("c_phone_cur", "").trim().equals(props.getProperty("c_phone", "").trim())
             && props.getProperty("c_phoneAlt1_cur", "").trim().equals(props.getProperty("c_phoneAlt1", "").trim())
             && props.getProperty("c_phoneAlt2_cur", "").trim().equals(props.getProperty("c_phoneAlt2", "").trim())
-    )) {
-        bSync = true;
-    }
+    );
 %>
 <%
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 
 //1. LMP from AR1 should copy over to AR2 #16 LMP
 //2. Age at EDD on AR1 should copy over to AR2 #16 'age'
@@ -259,7 +255,7 @@
                     // Check that current character is number.
                     var c = s.charAt(i);
                     if (c == '.') {
-                        continue;
+
                     } else if (((c < "0") || (c > "9"))) {
                         alert('Invalid ' + s + ' in field ' + ss.name);
                         ss.focus();
@@ -1158,16 +1154,16 @@
                     <%
                         if (!bView) {
                     %>
-                    <input type="submit" value="Save" onclick="javascript:return onSave();"/>
-                    <input type="submit" value="Save and Exit" onclick="javascript:return onSaveExit();"/>
+                    <input type="submit" value="Save" onclick="return onSave();"/>
+                    <input type="submit" value="Save and Exit" onclick="return onSaveExit();"/>
                     <%
                         }
                     %>
                     <input type="button" value="Exit" onclick="onExit();"/>
-                    <input type="submit" value="Print" onclick="javascript:return onPrint();"/>
-                    <input type="submit" value="Print EPDS/TWEAK" onclick="javascript:return onPrintScores();"/>
-                    <input type="submit" value="Print AR1 & AR2" onclick="javascript:return onPrint12();"/>
-                    <input type="submit" value="Print All" onclick="javascript:return onPrintAll();"/>
+                    <input type="submit" value="Print" onclick="return onPrint();"/>
+                    <input type="submit" value="Print EPDS/TWEAK" onclick="return onPrintScores();"/>
+                    <input type="submit" value="Print AR1 & AR2" onclick="return onPrint12();"/>
+                    <input type="submit" value="Print All" onclick="return onPrintAll();"/>
                 </td>
 
                 <%
@@ -3349,16 +3345,16 @@
                     <%
                         if (!bView) {
                     %>
-                    <input type="submit" value="Save" onclick="javascript:return onSave();"/>
-                    <input type="submit" value="Save and Exit" onclick="javascript:return onSaveExit();"/>
+                    <input type="submit" value="Save" onclick="return onSave();"/>
+                    <input type="submit" value="Save and Exit" onclick="return onSaveExit();"/>
                     <%
                         }
                     %>
                     <input type="button" value="Exit" onclick="onExit();"/>
-                    <input type="submit" value="Print" onclick="javascript:return onPrint();"/>
-                    <input type="submit" value="Print EPDS/TWEAK" onclick="javascript:return onPrintScores();"/>
-                    <input type="submit" value="Print AR1 & AR2" onclick="javascript:return onPrint12();"/>
-                    <input type="submit" value="Print All" onclick="javascript:return onPrintAll();"/>
+                    <input type="submit" value="Print" onclick="return onPrint();"/>
+                    <input type="submit" value="Print EPDS/TWEAK" onclick="return onPrintScores();"/>
+                    <input type="submit" value="Print AR1 & AR2" onclick="return onPrint12();"/>
+                    <input type="submit" value="Print All" onclick="return onPrintAll();"/>
                 </td>
 
                 <%

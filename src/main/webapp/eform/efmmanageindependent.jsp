@@ -145,7 +145,7 @@
                 </td>
                 <td align='center'><a
                         href="<%= request.getContextPath() %>/eform/removeEForm.do?callpage=independent&fdid=<%=curform.get("fdid")%>"
-                        onClick="javascript: return confirm('Are you sure you want to delete this eform?');"
+                        onClick="return confirm('Are you sure you want to delete this eform?');"
                         class="contentLink"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadimages.btnDelete"/></a></td>
             </tr>
             <%

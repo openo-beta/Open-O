@@ -69,7 +69,7 @@ public class ProfessionalContactDaoImpl extends AbstractDaoImpl<ProfessionalCont
             where.append("c." + StringEscapeUtils.escapeSql(searchMode) + " like ?1");
             paramList.add(keyword + "%");
         }
-        String sql = "SELECT c from ProfessionalContact c where " + where.toString() + " order by " + orderBy;
+        String sql = "SELECT c from ProfessionalContact c where " + where + " order by " + orderBy;
 
         Query query = entityManager.createQuery(sql);
         for (int x = 0; x < paramList.size(); x++) {

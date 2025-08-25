@@ -207,7 +207,7 @@ dojo.widget.defineWidget(
                     this.domNode.focus();
                 } catch (e2) {
                 }
-                ;
+
                 this.onClick(e);
             }
         },
@@ -429,7 +429,7 @@ dojo.widget.defineWidget(
                 this.domNode.focus();
             } catch (e2) {
             }
-            ;
+
             this._toggleMenu(this.menuId);
         },
 

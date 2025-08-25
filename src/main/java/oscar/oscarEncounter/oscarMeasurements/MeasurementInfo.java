@@ -158,18 +158,12 @@ public class MeasurementInfo {
 
 
     public boolean hasWarning(String measurement) {
-        boolean warn = false;
-        if (warningHash.get(measurement) != null) {
-            warn = true;
-        }
+        boolean warn = warningHash.get(measurement) != null;
         return warn;
     }
 
     public boolean hasRecommendation(String measurement) {
-        boolean warn = false;
-        if (recommendationHash.get(measurement) != null) {
-            warn = true;
-        }
+        boolean warn = recommendationHash.get(measurement) != null;
         return warn;
     }
 

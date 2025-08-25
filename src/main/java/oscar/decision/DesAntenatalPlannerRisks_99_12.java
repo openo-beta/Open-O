@@ -84,7 +84,7 @@ public class DesAntenatalPlannerRisks_99_12 {
         return null;
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         DesAntenatalPlannerRisks_99_12 aE = new DesAntenatalPlannerRisks_99_12();
         MiscUtils.getLogger().info(aE.doStuff("desantenatalplannerrisks_99_12.xml"));
     }// End of main

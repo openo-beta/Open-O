@@ -1416,7 +1416,7 @@ function closed(cal) {
     cal.hide();
 
     return true;
-};
+}
 
 Calendar.setup({
     align: "BR",

@@ -149,11 +149,7 @@
                 archivedDate = rx.getLastArchDate();
             }
 
-            if ((outsideProvOhip != null && !outsideProvOhip.equals("")) || (outsideProvName != null && !outsideProvName.equals(""))) {
-                isOutsideProvider = true;
-            } else {
-                isOutsideProvider = false;
-            }
+            isOutsideProvider = (outsideProvOhip != null && !outsideProvOhip.equals("")) || (outsideProvName != null && !outsideProvName.equals(""));
             if (route == null || route.equalsIgnoreCase("null")) route = "";
             String methodStr = method;
             String routeStr = route;

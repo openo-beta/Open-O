@@ -61,15 +61,15 @@ import org.w3c.dom.Document;
 
 public interface AppointmentSearchManager {
     //Right now these two methods return the same but in the future this could be customized based on the demographic
-    public List<AppointmentType> getAppointmentTypes(SearchConfig config, Integer demographicNo);
+    List<AppointmentType> getAppointmentTypes(SearchConfig config, Integer demographicNo);
 
-    public List<AppointmentType> getAppointmentTypes(SearchConfig config, String providerNo);
+    List<AppointmentType> getAppointmentTypes(SearchConfig config, String providerNo);
 
-    public SearchConfig getProviderSearchConfig(String providerNo);
+    SearchConfig getProviderSearchConfig(String providerNo);
 
-    public List<TimeSlot> findAppointment(LoggedInInfo loggedInInfo, SearchConfig config, Integer demographicNo, Long appointmentTypeId, Calendar startDate) throws java.lang.ClassNotFoundException, java.lang.InstantiationException, java.lang.IllegalAccessException;
+    List<TimeSlot> findAppointment(LoggedInInfo loggedInInfo, SearchConfig config, Integer demographicNo, Long appointmentTypeId, Calendar startDate) throws java.lang.ClassNotFoundException, java.lang.InstantiationException, java.lang.IllegalAccessException;
 
-    public static List<TimeSlot> getAllowedTimesByType(DayWorkSchedule dayWorkSchedule, Character[] codes, String providerNo) {
+    static List<TimeSlot> getAllowedTimesByType(DayWorkSchedule dayWorkSchedule, Character[] codes, String providerNo) {
         ArrayList<TimeSlot> allowedTimesFilteredByType = new ArrayList<TimeSlot>();
         for (CalendarScheduleCodePairTransfer entry : CalendarScheduleCodePairTransfer.toTransfer(dayWorkSchedule.getTimeSlots())) {
             char c = entry.getScheduleCode();

@@ -68,11 +68,7 @@
 
     String providerNo = request.getParameter("providerNo");
     UserProperty uProp = userPropertyDAO.getProp(providerNo, UserProperty.LAB_ACK_COMMENT);
-    boolean skipComment = false;
-
-    if (uProp != null && uProp.getValue().equalsIgnoreCase("yes")) {
-        skipComment = true;
-    }
+    boolean skipComment = uProp != null && uProp.getValue().equalsIgnoreCase("yes");
 
     uProp = userPropertyDAO.getProp(providerNo, UserProperty.DISPLAY_DOCUMENT_AS);
     String displayDocumentAs = UserProperty.IMAGE;
@@ -88,10 +84,7 @@
     String status = request.getParameter("status");
     String inQueue = request.getParameter("inQueue");
 
-    boolean inQueueB = false;
-    if (inQueue != null) {
-        inQueueB = true;
-    }
+    boolean inQueueB = inQueue != null;
 
     String defaultQueue = IncomingDocUtil.getAndSetIncomingDocQueue(providerNo, null);
     QueueDao queueDao = SpringUtils.getBean(QueueDao.class);
@@ -283,7 +276,7 @@
                 rptStatus = reportStatus.getStatus();
 
                 if (rptStatus != null) {
-                    ackedOrFiled = rptStatus.equalsIgnoreCase("A") ? true : rptStatus.equalsIgnoreCase("F") ? true : false;
+                    ackedOrFiled = rptStatus.equalsIgnoreCase("A") ? true : rptStatus.equalsIgnoreCase("F");
                 }
                 break;
             }
@@ -437,7 +430,7 @@
                                         }
                                     %>
                                 </oscar:oscarPropertiesCheck>
-                                <div style="<%=updatableContent==true?"":"visibility: hidden"%>">
+                                <div style="<%=updatableContent?"":"visibility: hidden"%>">
                                     <input onclick="split('<%=docId%>','<%=StringEscapeUtils.escapeJavaScript(demoName) %>')"
                                            type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.split"/>"/>
                                     <input id="rotate180btn_<%=docId %>" onclick="rotate180('<%=docId %>')"
@@ -674,12 +667,9 @@
                         <%
                             for (Appointment a : appointmentList) {
                                 prov = providerDao.getProvider(a.getProviderNo());
-                                HighlightUserAppt = false;
-                                if (creator.equals(a.getProviderNo())) {
-                                    HighlightUserAppt = true;
-                                }
+                                HighlightUserAppt = creator.equals(a.getProviderNo());
                         %>
-                        <tr bgcolor="<%=HighlightUserAppt == false ? "#FFFFFF" : "#CCFFCC"%>">
+                        <tr bgcolor="<%=!HighlightUserAppt ? "#FFFFFF" : "#CCFFCC"%>">
                             <td><%=ConversionUtils.toDateString(a.getAppointmentDate())%>
                             </td>
                             <td><%=ConversionUtils.toTimeString(a.getStartTime())%>

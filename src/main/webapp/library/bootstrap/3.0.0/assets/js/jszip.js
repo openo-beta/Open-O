@@ -1092,7 +1092,7 @@ JSZip.support = {
      */
     function identity(input) {
         return input;
-    };
+    }
 
     /**
      * Fill in an array with a string.
@@ -1105,7 +1105,7 @@ JSZip.support = {
             array[i] = str.charCodeAt(i) & 0xFF;
         }
         return array;
-    };
+    }
 
     /**
      * Transform an array-like object to a string.
@@ -1138,7 +1138,7 @@ JSZip.support = {
             }
         }
         return result.join("");
-    };
+    }
 
     /**
      * Copy the data from an array-like to an other array-like.
@@ -1151,7 +1151,7 @@ JSZip.support = {
             arrayTo[i] = arrayFrom[i];
         }
         return arrayTo;
-    };
+    }
 
     // a matrix containing functions to transform everything into everything.
     var transform = {};

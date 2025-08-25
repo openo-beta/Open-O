@@ -35,15 +35,15 @@ import org.oscarehr.util.MiscUtils;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 public interface ProgramQueueDao {
-    public ProgramQueue getProgramQueue(Long queueId);
+    ProgramQueue getProgramQueue(Long queueId);
 
-    public List<ProgramQueue> getProgramQueuesByProgramId(Long programId);
+    List<ProgramQueue> getProgramQueuesByProgramId(Long programId);
 
-    public List<ProgramQueue> getActiveProgramQueuesByProgramId(Long programId);
+    List<ProgramQueue> getActiveProgramQueuesByProgramId(Long programId);
 
-    public void saveProgramQueue(ProgramQueue programQueue);
+    void saveProgramQueue(ProgramQueue programQueue);
 
-    public ProgramQueue getQueue(Long programId, Long clientId);
+    ProgramQueue getQueue(Long programId, Long clientId);
 
-    public ProgramQueue getActiveProgramQueue(Long programId, Long demographicNo);
+    ProgramQueue getActiveProgramQueue(Long programId, Long demographicNo);
 }

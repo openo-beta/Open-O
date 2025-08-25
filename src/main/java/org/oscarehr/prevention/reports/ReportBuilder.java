@@ -519,7 +519,7 @@ public class ReportBuilder {
                         if (index == 0) {
                             logger.debug("fluData " + measurementData.getDataField());
                             logger.debug("lastFollowup " + measurementData.getDateObservedAsDate() + " last procedure " + measurementData.getDateObservedAsDate());
-                            logger.debug("toString: " + measurementData.toString());
+                            logger.debug("toString: " + measurementData);
                             item.setLastFollowup(observationDate);
                             item.setLastFollupProcedure(measurementData.getDataField());
 
@@ -769,7 +769,7 @@ public class ReportBuilder {
 */
 
 
-        logger.debug("SEARCH SQL STATEMENT \n" + stringBuffer.toString());
+        logger.debug("SEARCH SQL STATEMENT \n" + stringBuffer);
         java.util.ArrayList<ArrayList<String>> searchedArray = new java.util.ArrayList<ArrayList<String>>();
         try {
             MiscUtils.getLogger().info(stringBuffer.toString());
@@ -820,7 +820,7 @@ public class ReportBuilder {
 
     private boolean whereClause(StringBuilder stringBuffer, boolean theWhereFlag) {
         if (stringBuffer != null) {
-            logger.info("where " + stringBuffer.toString());
+            logger.info("where " + stringBuffer);
             if (theWhereFlag) {
                 stringBuffer.append(" where ");
                 theWhereFlag = false;

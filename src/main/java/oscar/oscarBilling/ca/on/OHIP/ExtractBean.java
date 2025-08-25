@@ -287,7 +287,7 @@ public class ExtractBean implements Serializable {
         if (referralDoc != null && referralDoc.length() != 6)
             errorPartMsg = "Header1: Referral Doc. No. wrong!<br>";
         if (visitType != null && visitType.compareTo("00") != 0) {
-            if ((outPatient != null && outPatient.length() != 4) || outPatient == null) {
+            if (outPatient == null || outPatient.length() != 4) {
                 errorPartMsg = "Header1: outPatient Visit. wrong!<br>";
             }
         }

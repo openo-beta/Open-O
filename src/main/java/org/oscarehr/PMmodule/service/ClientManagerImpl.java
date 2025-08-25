@@ -170,20 +170,14 @@ public class ClientManagerImpl implements ClientManager {
         if (clientId != null) {
             clientsJadm = getJointAdmission(Integer.valueOf(clientId.toString()));
         }
-        if (clientsJadm != null && clientsJadm.getHeadClientId() != null) {
-            return true;
-        }
-        return false;
+        return clientsJadm != null && clientsJadm.getHeadClientId() != null;
     }
 
 
     public boolean isClientFamilyHead(Integer clientId) {
 
         List<JointAdmission> dependentList = getDependents(Integer.valueOf(clientId.toString()));
-        if (dependentList != null && dependentList.size() > 0) {
-            return true;
-        }
-        return false;
+        return dependentList != null && dependentList.size() > 0;
     }
 
     public void removeJointAdmission(Integer clientId, String providerNo) {
@@ -310,6 +304,6 @@ public class ClientManagerImpl implements ClientManager {
 
     public boolean checkHealthCardExists(String hin, String hcType) {
         List<Demographic> results = this.dao.searchByHealthCard(hin, hcType);
-        return (results.size() > 0) ? true : false;
+        return results.size() > 0;
     }
 }

@@ -70,10 +70,7 @@ public class DSGuidelineProviderMapping extends AbstractModel<Integer> {
     @Override  //must have same hashcode, but oh well
     public boolean equals(Object object2) {
         DSGuidelineProviderMapping mapping2 = (DSGuidelineProviderMapping) object2;
-        if (mapping2.getProviderNo().equals(this.getProviderNo()) && mapping2.getGuidelineUUID().equals(this.getGuidelineUUID())) {
-            return true;
-        }
-        return false;
+        return mapping2.getProviderNo().equals(this.getProviderNo()) && mapping2.getGuidelineUUID().equals(this.getGuidelineUUID());
     }
 
     /**

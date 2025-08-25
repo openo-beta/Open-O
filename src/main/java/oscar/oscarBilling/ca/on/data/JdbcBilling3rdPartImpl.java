@@ -148,9 +148,7 @@ public class JdbcBilling3rdPartImpl {
     public boolean keyExists(String billingNo, String key) {
         List<BillingONExt> results = extDao.findByBillingNoAndKey(Integer.parseInt(billingNo),
                 StringEscapeUtils.escapeSql(key));
-        if (results.isEmpty())
-            return false;
-        return true;
+        return !results.isEmpty();
     }
 
     public boolean updateKeyStatus(String billingNo, String key, String status) {

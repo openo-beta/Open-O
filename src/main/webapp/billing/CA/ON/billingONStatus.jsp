@@ -297,7 +297,7 @@
                 var provider_no = document.serviceform.providerview[index].value;
 
                 <% for (int i = 0 ; i < pList.size(); i++) {
-                String temp[] = ( pList.get(i)).split("\\|");
+                String[] temp = ( pList.get(i)).split("\\|");
                 %>
 
                 var temp_provider_no = <%=temp[0]%>;
@@ -528,7 +528,7 @@
                             <select name="providerview" class="input-large" onchange="changeProvider(false);">
                                 <%
                                     if (pList.size() == 1) {
-                                        String temp[] = (pList.get(0)).split("\\|");
+                                        String[] temp = (pList.get(0)).split("\\|");
                                 %>
                                 <option value="<%=temp[0]%>"><%=temp[1]%>, <%=temp[2]%>
                                 </option>
@@ -537,7 +537,7 @@
                                 %>
                                 <option value="all">All Providers</option>
                                 <% for (int i = 0; i < pList.size(); i++) {
-                                    String temp[] = (pList.get(i)).split("\\|");
+                                    String[] temp = (pList.get(i)).split("\\|");
                                 %>
                                 <option value="<%=temp[0]%>" <%=providerNo.equals(temp[0]) ? "selected" : ""%>><%=temp[1]%>
                                     , <%=temp[2]%>
@@ -766,7 +766,7 @@
                             String color = "";
                             if (!invoiceNo.equals(bObj.getBilling_no())) {
                                 invoiceNo = bObj.getBilling_no();
-                                nC = nC ? false : true;
+                                nC = !nC;
                             }
                             color = nC ? "class='success'" : "";
                 %>
@@ -929,14 +929,10 @@
 
                             String color = "";
 
-                            if (invoiceNo.equals(ch1Obj.getId())) {
-                                newInvoice = false;
-                            } else {
-                                newInvoice = true;
-                            }
+                            newInvoice = !invoiceNo.equals(ch1Obj.getId());
                             if (!invoiceNo.equals(ch1Obj.getId())) {
                                 invoiceNo = ch1Obj.getId();
-                                nC = nC ? false : true;
+                                nC = !nC;
                             }
                             color = nC ? "class='success'" : "";
                             String settleDate = ch1Obj.getSettle_date();
@@ -947,10 +943,7 @@
                             }
 
                             String payProgram = ch1Obj.getPay_program();
-                            boolean b3rdParty = false;
-                            if (payProgram.equals("PAT") || payProgram.equals("OCF") || payProgram.equals("ODS") || payProgram.equals("CPP") || payProgram.equals("STD")) {
-                                b3rdParty = true;
-                            }
+                            boolean b3rdParty = payProgram.equals("PAT") || payProgram.equals("OCF") || payProgram.equals("ODS") || payProgram.equals("CPP") || payProgram.equals("STD");
 
                             String cash = formatter.format(ch1Obj.getCashTotal());
                             String debit = formatter.format(ch1Obj.getDebitTotal());

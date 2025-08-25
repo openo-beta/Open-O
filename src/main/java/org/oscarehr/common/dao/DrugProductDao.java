@@ -39,34 +39,34 @@ import org.springframework.stereotype.Repository;
 
 public interface DrugProductDao extends AbstractDao<DrugProduct> {
 
-    public List<DrugProduct> findAvailable();
+    List<DrugProduct> findAvailable();
 
-    public List<DrugProduct> findAvailableByCode(String code);
+    List<DrugProduct> findAvailableByCode(String code);
 
-    public List<Object[]> findAllAvailableUnique();
+    List<Object[]> findAllAvailableUnique();
 
-    public List<Object[]> findAllUnique();
+    List<Object[]> findAllUnique();
 
-    public List<String> findUniqueDrugProductNames();
+    List<String> findUniqueDrugProductNames();
 
-    public int getAvailableCount(String lotNumber, Date expiryDate, int amount);
+    int getAvailableCount(String lotNumber, Date expiryDate, int amount);
 
-    public List<DrugProduct> getAvailableDrugProducts(String lotNumber, Date expiryDate, int amount);
+    List<DrugProduct> getAvailableDrugProducts(String lotNumber, Date expiryDate, int amount);
 
-    public List<LotBean> findDistinctLotsAvailableByCode(String code);
+    List<LotBean> findDistinctLotsAvailableByCode(String code);
 
-    public DrugProduct findByCodeAndLotNumber(String code, String lotNumber);
+    DrugProduct findByCodeAndLotNumber(String code, String lotNumber);
 
-    public List<DrugProduct> findByDispensingId(Integer id);
+    List<DrugProduct> findByDispensingId(Integer id);
 
-    public List<DrugProduct> findByName(int offset, int limit, String name);
+    List<DrugProduct> findByName(int offset, int limit, String name);
 
-    public List<DrugProduct> findAll(int offset, int limit);
+    List<DrugProduct> findAll(int offset, int limit);
 
-    public List<DrugProduct> findByNameAndLot(int offset, int limit, String name, String lotNumber, Integer location,
-                                              boolean availableOnly);
+    List<DrugProduct> findByNameAndLot(int offset, int limit, String name, String lotNumber, Integer location,
+                                       boolean availableOnly);
 
-    public Integer findByNameAndLotCount(String name, String lotNumber, Integer location, boolean availableOnly);
+    Integer findByNameAndLotCount(String name, String lotNumber, Integer location, boolean availableOnly);
 
-    public List<String> findUniqueDrugProductLotsByName(String productName);
+    List<String> findUniqueDrugProductLotsByName(String productName);
 }

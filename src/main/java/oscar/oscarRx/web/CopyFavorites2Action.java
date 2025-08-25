@@ -66,7 +66,7 @@ public class CopyFavorites2Action extends ActionSupport {
         //LazyValidatorForm lazyForm = (LazyValidatorForm) form;
         String providerNo = request.getParameter("userProviderNo");//lazyForm.get("userProviderNo").toString();
         int share = Integer.parseInt(request.getParameter("rb_share"));//Integer.parseInt(lazyForm.get("rb_share").toString());
-        favoritesPrivilegeDao.setFavoritesPrivilege(providerNo, share==0?false:true, false);
+        favoritesPrivilegeDao.setFavoritesPrivilege(providerNo, share != 0, false);
 
         return SUCCESS;
     }

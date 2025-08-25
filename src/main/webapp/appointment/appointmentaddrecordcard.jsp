@@ -212,7 +212,7 @@
                                     if (iRow > iPageSize) break;
                                     appt_time = MyDateFormat.getTimeXX_XXampm(ConversionUtils.toTimeStringNoSeconds(ap.getStartTime()));
                                     pname = "" + p.getFirstName();
-                                    pname = "" + p.getLastName() + ", " + pname.substring(0, 1);
+                                    pname = p.getLastName() + ", " + pname.substring(0, 1);
                             %>
                             <tr bgcolor="#eeeeff">
                                 <td style="padding-right: 10px"><%=ConversionUtils.toDateString(ap.getAppointmentDate())%>

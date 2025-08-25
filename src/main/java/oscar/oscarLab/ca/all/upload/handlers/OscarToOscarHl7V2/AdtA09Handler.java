@@ -148,9 +148,7 @@ public final class AdtA09Handler {
         if ("H".equals(appointment.getStatus())) return (false);
         else if ("N".equals(appointment.getStatus())) return (false);
         else if ("C".equals(appointment.getStatus())) return (false);
-        else if ("B".equals(appointment.getStatus())) return (false);
-
-        return (true);
+        else return !"B".equals(appointment.getStatus());
     }
 
     /**

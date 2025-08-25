@@ -135,9 +135,7 @@
                         </tr>
                         <%
                             OscarProperties props = OscarProperties.getInstance();
-                            boolean bMoreAddr = bMultisites
-                                    ? true
-                                    : props.getProperty("scheduleSiteID", "").equals("") ? false : true;
+                            boolean bMoreAddr = bMultisites || !props.getProperty("scheduleSiteID", "").equals("");
                             String[] siteList;
                             if (bMultisites) {
                                 //multisite starts =====================

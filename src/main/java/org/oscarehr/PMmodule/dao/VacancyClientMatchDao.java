@@ -37,14 +37,14 @@ import org.springframework.stereotype.Repository;
 
 public interface VacancyClientMatchDao extends AbstractDao<VacancyClientMatch> {
 
-    public List<VacancyClientMatch> findByClientIdAndVacancyId(int clientId, int vacancyId);
+    List<VacancyClientMatch> findByClientIdAndVacancyId(int clientId, int vacancyId);
 
-    public List<VacancyClientMatch> findByClientId(int clientId);
+    List<VacancyClientMatch> findByClientId(int clientId);
 
-    public List<VacancyClientMatch> findBystatus(String status);
+    List<VacancyClientMatch> findBystatus(String status);
 
-    public void updateStatus(String status, int clientId, int vacancyId);
+    void updateStatus(String status, int clientId, int vacancyId);
 
-    public void updateStatusAndRejectedReason(String status, String rejectedReason, int clientId, int vacancyId);
+    void updateStatusAndRejectedReason(String status, String rejectedReason, int clientId, int vacancyId);
 
 }

@@ -44,17 +44,17 @@ import oscar.log.LogAction;
 
 public interface ProgramManager2 {
 
-    public Program getProgram(LoggedInInfo loggedInInfo, Integer programId);
+    Program getProgram(LoggedInInfo loggedInInfo, Integer programId);
 
-    public List<Program> getAllPrograms(LoggedInInfo loggedInInfo);
+    List<Program> getAllPrograms(LoggedInInfo loggedInInfo);
 
-    public List<ProgramProvider> getAllProgramProviders(LoggedInInfo loggedInInfo);
+    List<ProgramProvider> getAllProgramProviders(LoggedInInfo loggedInInfo);
 
-    public List<ProgramProvider> getProgramDomain(LoggedInInfo loggedInInfo, String providerNo);
+    List<ProgramProvider> getProgramDomain(LoggedInInfo loggedInInfo, String providerNo);
 
-    public ProgramProvider getCurrentProgramInDomain(LoggedInInfo loggedInInfo);
+    ProgramProvider getCurrentProgramInDomain(LoggedInInfo loggedInInfo);
 
-    public ProgramProvider getCurrentProgramInDomain(LoggedInInfo loggedInInfo, String providerNo);
+    ProgramProvider getCurrentProgramInDomain(LoggedInInfo loggedInInfo, String providerNo);
 
-    public void setCurrentProgramInDomain(String providerNo, Integer programId);
+    void setCurrentProgramInDomain(String providerNo, Integer programId);
 }

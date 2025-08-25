@@ -185,7 +185,7 @@ LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
                                    reverse="<%=false%>">
                     <br/>
                     <a href="#"
-                       onclick="javascript: return popup(600, 1200, '../administration/?show=Forms', 'manageeforms');"
+                       onclick="return popup(600, 1200, '../administration/?show=Forms', 'manageeforms');"
                        style="color: #835921;"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.msgManageEFrm"/></a>
                 </security:oscarSec>
                 <jsp:include page="efmviewgroups.jsp">
@@ -222,7 +222,7 @@ LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
                     <tr bgcolor="<%= ((i%2) == 1)?"#F2F2F2":"white"%>">
                         <td width="30%" style="padding-left: 7px">
                             <a HREF="#"
-                               ONCLICK="javascript: popupPage('efmformadd_data.jsp?fid=<%=curForm.get("fid")%>&demographic_no=<%=demographic_no%>&appointment=<%=appointment%>','<%=curForm.get("fid") + "_" + demographic_no %>'); return true;"
+                               ONCLICK="popupPage('efmformadd_data.jsp?fid=<%=curForm.get("fid")%>&demographic_no=<%=demographic_no%>&appointment=<%=appointment%>','<%=curForm.get("fid") + "_" + demographic_no %>'); return true;"
                                TITLE='Add This eForm' OnMouseOver="window.status='Add This eForm' ; return true">
                                 <%=curForm.get("formName")%>
                             </a></td>

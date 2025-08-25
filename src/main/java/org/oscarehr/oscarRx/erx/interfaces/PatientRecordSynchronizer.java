@@ -32,5 +32,5 @@ import org.oscarehr.common.model.Demographic;
  *
  */
 public interface PatientRecordSynchronizer {
-    public void sendRecord(Demographic patient, String providerId);
+    void sendRecord(Demographic patient, String providerId);
 }

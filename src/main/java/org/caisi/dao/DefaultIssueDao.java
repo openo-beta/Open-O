@@ -38,13 +38,13 @@ import org.oscarehr.common.dao.AbstractDao;
 
 public interface DefaultIssueDao extends AbstractDao<DefaultIssue> {
 
-    public DefaultIssue findDefaultIssue(Integer id);
+    DefaultIssue findDefaultIssue(Integer id);
 
-    public DefaultIssue getLastestDefaultIssue();
+    DefaultIssue getLastestDefaultIssue();
 
-    public List<DefaultIssue> findAll();
+    List<DefaultIssue> findAll();
 
-    public void saveDefaultIssue(DefaultIssue issue);
+    void saveDefaultIssue(DefaultIssue issue);
 
-    public String[] findAllDefaultIssueIds();
+    String[] findAllDefaultIssueIds();
 }

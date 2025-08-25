@@ -96,7 +96,7 @@ public class AuditLogManager {
 
         String filename = outputDirectory + "/OSCAR_AUDIR_LOG_PURGE_FILE_" + formatter3.format(endDateToPurge) + ".sql";
 
-        String vars[] = new String[9];
+        String[] vars = new String[9];
         vars[0] = mysqldump;
         vars[1] = "--user=" + user;
         vars[2] = "--password=" + password;

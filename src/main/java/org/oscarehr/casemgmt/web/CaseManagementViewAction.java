@@ -214,9 +214,7 @@ public class CaseManagementViewAction {
         if (issueDisplay1.certain != null && !issueDisplay1.certain.equals(issueDisplay2.certain)) return (false);
         if (issueDisplay1.major != null && !issueDisplay1.major.equals(issueDisplay2.major)) return (false);
         if (issueDisplay1.priority != null && !issueDisplay1.priority.equals(issueDisplay2.priority)) return (false);
-        if (issueDisplay1.resolved != null && !issueDisplay1.resolved.equals(issueDisplay2.resolved)) return (false);
-
-        return (true);
+        return issueDisplay1.resolved == null || issueDisplay1.resolved.equals(issueDisplay2.resolved);
     }
 
 
@@ -353,7 +351,7 @@ public class CaseManagementViewAction {
         if (prefsBean.getEnable() == null || !prefsBean.getEnable().equals("on")) {
             return new String();
         }
-        String issueCodeArr[] = issueCode.split(";");
+        String[] issueCodeArr = issueCode.split(";");
         StringBuilder sb = new StringBuilder();
         if (issueCodeArr[1].equals("SocHistory")) {
             if (prefsBean.getSocialHxStartDate().equals("on")) {

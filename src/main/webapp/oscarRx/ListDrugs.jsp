@@ -494,7 +494,7 @@
 
                 %>
                 <a href="javascript:void(0)"
-                   onclick="javascript:popupWindow(720,700,'<%=request.getContextPath()%>/oscarRx/Dispense.do?method=view&id=<%=prescriptDrug.getId()%>','Dispense<%=prescriptIdInt %>'); return false;">Dispense
+                   onclick="popupWindow(720,700,'<%=request.getContextPath()%>/oscarRx/Dispense.do?method=view&id=<%=prescriptDrug.getId()%>','Dispense<%=prescriptIdInt %>'); return false;">Dispense
                     (<%=dispensingStatus%>)</a>
                 <%
                         }

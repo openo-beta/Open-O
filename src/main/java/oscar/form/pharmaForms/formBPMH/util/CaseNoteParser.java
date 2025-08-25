@@ -100,7 +100,7 @@ public class CaseNoteParser {
 
             if (note.contains(COMMA)) {
 
-                String noteArray[] = note.split(COMMA);
+                String[] noteArray = note.split(COMMA);
 
                 for (int i = 0; i < noteArray.length; i++) {
 

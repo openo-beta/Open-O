@@ -121,7 +121,7 @@ public class LabManagerImpl implements LabManager {
             String fileName = System.currentTimeMillis() + "_" + segmentId + "_LabReport";
             File tempPDF = File.createTempFile(fileName, "pdf");
             try (FileOutputStream fileOutputStream = new FileOutputStream(tempPDF);
-                 ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();) {
+                 ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream()) {
                 LabPDFCreator labPDFCreator = new LabPDFCreator(fileOutputStream, String.valueOf(segmentId), null);
                 labPDFCreator.printPdf();
                 labPDFCreator.addEmbeddedDocuments(tempPDF, byteOutputStream);

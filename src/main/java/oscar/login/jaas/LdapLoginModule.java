@@ -72,7 +72,7 @@ public final class LdapLoginModule extends BaseLoginModule {
      * @see oscar.login.jaas.BaseLoginModule#authenticate(java.lang.String, char[])
      */
     @Override
-    protected final OscarPrincipal authenticate(String loginName, char[] password) throws Exception, LoginException {
+    protected OscarPrincipal authenticate(String loginName, char[] password) throws Exception, LoginException {
         if (logger.isDebugEnabled()) {
             logger.debug("Starting authentication for " + loginName);
         }
@@ -131,7 +131,7 @@ public final class LdapLoginModule extends BaseLoginModule {
      * @return Returns the loaded principal
      * @throws LoginException LoginException is thrown in case there are inconsistent security info for the specified user name or if provider doesn't exist
      */
-    protected final OscarPrincipal loadPrincipal(String loginName) throws LoginException {
+    protected OscarPrincipal loadPrincipal(String loginName) throws LoginException {
         // find unique security record for the validated login
         List<Security> securities = getSecurityDao().findByUserName(loginName);
         if (securities.size() < 1) {

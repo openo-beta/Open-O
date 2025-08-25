@@ -483,7 +483,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
                         if (!note.isReadOnly()) {
             %>
             <a title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.edit.msgEdit"/>" id="edit<%=globalNoteId%>"
-               href="javascript:void(0)" onclick="<%=editWarn?"noPrivs(event)":"editNote(event)"%> ;return false;"
+               href="javascript:void(0)" onclick="<%=editWarn?"noPrivs(event)":"editNote(event)"%> return false;"
                style="float: right; margin-right: 5px;">
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.edit.msgEdit"/>
             </a>
@@ -1000,7 +1000,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
     $(caseNote).value += "\n\n<%=org.apache.commons.lang.StringEscapeUtils.escapeJavaScript(noteBody)%>";
     <%}
 
-             if (found != true)
+             if (!found)
              {%>
     document.forms["caseManagementEntryForm"].newNoteIdx.value = <%=savedId%>;
     <%}

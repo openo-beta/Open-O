@@ -148,10 +148,7 @@ public class BillingAssociationPersistence {
      * @return boolean
      */
     public boolean assocExists(String code) {
-        if (dao.findByServiceCode(code).size() > 0) {
-            return true;
-        }
-        return false;
+        return dao.findByServiceCode(code).size() > 0;
     }
 
     /**
@@ -162,11 +159,7 @@ public class BillingAssociationPersistence {
      */
     public boolean dxcodeExists(String code) {
         List<DiagnosticCode> dcode = diagnosticCodeDao.findByDiagnosticCode(code);
-        if (dcode.size() > 0) {
-            return true;
-        }
-
-        return false;
+        return dcode.size() > 0;
     }
 
     /**
@@ -176,9 +169,7 @@ public class BillingAssociationPersistence {
      * @return boolean
      */
     public boolean serviceCodeExists(String code) {
-        if (billingServiceDao.findByServiceCode(code).size() > 0)
-            return true;
-        return false;
+        return billingServiceDao.findByServiceCode(code).size() > 0;
     }
 
     /**

@@ -160,7 +160,7 @@
 
             for (ReportTemp rt : reportTempDao.findGreateThanEdb(oscar.util.ConversionUtils.fromDateString(startDate), Integer.parseInt(strLimit1), Integer.parseInt(strLimit2))) {
 
-                bodd = bodd ? false : true; //for the color of rows
+                bodd = !bodd; //for the color of rows
                 nItems++;
         %>
         <tr bgcolor="<%=bodd?"ivory":"white"%>">

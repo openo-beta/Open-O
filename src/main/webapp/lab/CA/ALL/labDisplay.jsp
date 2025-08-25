@@ -104,10 +104,7 @@ String showLatest = request.getParameter("showLatest");
 
     UserPropertyDAO userPropertyDAO = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
     UserProperty uProp = userPropertyDAO.getProp(providerNo, UserProperty.LAB_ACK_COMMENT);
-    boolean skipComment = false;
-    if (uProp != null && uProp.getValue().equalsIgnoreCase("yes")) {
-        skipComment = true;
-    }
+    boolean skipComment = uProp != null && uProp.getValue().equalsIgnoreCase("yes");
 
     UserProperty getRecallDelegate = userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_DELEGATE);
     UserProperty getRecallTicklerAssignee = userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_TICKLER_ASSIGNEE);
@@ -148,7 +145,7 @@ Hl7TextMessage hl7TextMessage = null;
     String reqID = null, reqTableID = null;
     String remoteFacilityIdQueryString = "";
 
-    boolean bShortcutForm = OscarProperties.getInstance().getProperty("appt_formview", "").equalsIgnoreCase("on") ? true : false;
+    boolean bShortcutForm = OscarProperties.getInstance().getProperty("appt_formview", "").equalsIgnoreCase("on");
     String formName = bShortcutForm ? OscarProperties.getInstance().getProperty("appt_formview_name") : "";
     String formNameShort = formName.length() > 3 ? (formName.substring(0, 2) + ".") : formName;
     String formName2 = bShortcutForm ? OscarProperties.getInstance().getProperty("appt_formview_name2", "") : "";
@@ -1011,7 +1008,7 @@ request.setAttribute("missingTests", missingTests);
 
 </head>
 
-<body onLoad="javascript:matchMe();">
+<body onLoad="matchMe();">
 
 <!-- form forwarding of the lab -->
 <%
@@ -1176,7 +1173,7 @@ request.setAttribute("missingTests", missingTests);
     </form>
 
     <form name="acknowledgeForm_<%= Encode.forHtmlAttribute(segmentID) %>"
-          id="acknowledgeForm_<%= Encode.forHtmlAttribute(segmentID) %>" method="post" onsubmit="javascript:void(0);"
+          id="acknowledgeForm_<%= Encode.forHtmlAttribute(segmentID) %>" method="post" onsubmit="void(0);"
           method="post" action="javascript:void(0);">
 
         <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">

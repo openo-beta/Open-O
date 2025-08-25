@@ -421,10 +421,7 @@ public String saveDigitalSignature() throws IOException {
         Integer demoNo = Integer.parseInt(request.getParameter("demoNo"));
         String strShow = request.getParameter("showall");
 
-        boolean showall = false;
-        if (strShow.equalsIgnoreCase("true")) {
-            showall = true;
-        }
+        boolean showall = strShow.equalsIgnoreCase("true");
         // get a list of long term meds
         List<Drug> prescriptDrugs;
         if (showall) {

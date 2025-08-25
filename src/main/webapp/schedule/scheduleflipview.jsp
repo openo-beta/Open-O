@@ -381,12 +381,12 @@
 
             %>
             <td
-                    <%=DateTimeCodeBean.get("color" + temp.toString()) != null ? ("bgcolor=" + DateTimeCodeBean.get("color" + temp.toString())) : ""%>
+                    <%=DateTimeCodeBean.get("color" + temp) != null ? ("bgcolor=" + DateTimeCodeBean.get("color" + temp)) : ""%>
                     title="<%=hour+":"+(min<10?"0":"")+min%>">
                 <table style="display:inline; font-size:x-small;">
                     <tr>
                         <td rowspan="2" style="vertical-align:middle;"><a href=#
-                                                                          onClick="t(<%=cal.get(Calendar.YEAR)%>,<%=cal.get(Calendar.MONTH)+1%>,<%=cal.get(Calendar.DATE)%>,'<%=(hour<10?"0":"")+hour+":"+(min<10?"0":"")+min %>','<%=appointmentTime.get(Calendar.HOUR_OF_DAY)%>:<%=appointmentTime.get(Calendar.MINUTE)%>','<%=DateTimeCodeBean.get("duration"+temp.toString())%>','<%=DateTimeCodeBean.get("confirm"+scheduleCode)%>','<%=allowDay%>','<%=allowWeek%>');return false;">
+                                                                          onClick="t(<%=cal.get(Calendar.YEAR)%>,<%=cal.get(Calendar.MONTH)+1%>,<%=cal.get(Calendar.DATE)%>,'<%=(hour<10?"0":"")+hour+":"+(min<10?"0":"")+min %>','<%=appointmentTime.get(Calendar.HOUR_OF_DAY)%>:<%=appointmentTime.get(Calendar.MINUTE)%>','<%=DateTimeCodeBean.get("duration"+temp)%>','<%=DateTimeCodeBean.get("confirm"+scheduleCode)%>','<%=allowDay%>','<%=allowWeek%>');return false;">
                             <%=temp.toString()%>
                         </a></td>
                         <td title="<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduleflipview.msgbookings"/>"

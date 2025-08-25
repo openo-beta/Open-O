@@ -36,15 +36,15 @@ import org.springframework.stereotype.Repository;
 
 public interface MsgDemoMapDao extends AbstractDao<MsgDemoMap> {
 
-    public List<MsgDemoMap> findByDemographicNo(Integer demographicNo);
+    List<MsgDemoMap> findByDemographicNo(Integer demographicNo);
 
-    public List<MsgDemoMap> findByMessageId(Integer messageId);
+    List<MsgDemoMap> findByMessageId(Integer messageId);
 
-    public List<Object[]> getMessagesAndDemographicsByMessageId(Integer messageId);
+    List<Object[]> getMessagesAndDemographicsByMessageId(Integer messageId);
 
-    public List<Object[]> getMapAndMessagesByDemographicNo(Integer demoNo);
+    List<Object[]> getMapAndMessagesByDemographicNo(Integer demoNo);
 
-    public List<Object[]> getMapAndMessagesByDemographicNoAndType(Integer demoNo, Integer type);
+    List<Object[]> getMapAndMessagesByDemographicNoAndType(Integer demoNo, Integer type);
 
-    public void remove(Integer messageID, Integer demographicNo);
+    void remove(Integer messageID, Integer demographicNo);
 }

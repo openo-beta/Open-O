@@ -205,7 +205,7 @@ public class ClientReferralDAOImpl extends HibernateDaoSupport implements Client
         } else {
             String sSQL = "from ClientReferral cr where cr.ClientId = ?0 and (cr.Status = '?1' or cr.Status = '?2' or cr.Status = '?3')" +
                     " and ( (cr.FacilityId=?4) or (cr.ProgramId in (select s.id from Program s where s.facilityId=?5)))";
-            Object params[] = new Object[] {
+            Object[] params = new Object[] {
                 ClientReferral.STATUS_ACTIVE,
                 ClientReferral.STATUS_PENDING,
                 ClientReferral.STATUS_UNKNOWN,
@@ -235,7 +235,7 @@ public class ClientReferralDAOImpl extends HibernateDaoSupport implements Client
         List<ClientReferral> results;
 
         String sSQL = "from ClientReferral cr where cr.ClientId = ?0 and cr.ProgramId=?1 and (cr.Status = '?2' or cr.Status = '?3') order by cr.ReferralDate DESC";
-        Object params[] = new Object[] {
+        Object[] params = new Object[] {
             clientId,
             programId,
             ClientReferral.STATUS_ACTIVE,

@@ -50,7 +50,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 public class RemoteDataLog extends AbstractModel<Long> {
-    public static enum Action {
+    public enum Action {
         SEND, RETRIEVE
     }
 

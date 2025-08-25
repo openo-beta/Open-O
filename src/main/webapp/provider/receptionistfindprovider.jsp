@@ -153,7 +153,7 @@
             <TH width="40%"><fmt:setBundle basename="oscarResources"/><fmt:message key="receptionist.receptionistfindprovider.firstname"/></TH>
         </tr>
         <%
-            boolean bGrpSearch = providername.startsWith(".") ? true : false;
+            boolean bGrpSearch = providername.startsWith(".");
             String dboperation = bGrpSearch ? "search_providersgroup" : "search_provider";
             String field1 = bGrpSearch ? "mygroup_no" : "provider_no";
             providername = bGrpSearch ? providername.substring(1) : providername;
@@ -203,7 +203,7 @@
                         continue;
                     }
                 }
-                bColor = bColor ? false : true;
+                bColor = !bColor;
 
         %>
         <tr bgcolor="<%=bColor?bgcolordef:"white"%>">

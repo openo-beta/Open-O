@@ -46,9 +46,9 @@ import java.util.List;
 
 public interface FavoriteConverter {
 
-    public Favorite getAsDomainObject(LoggedInInfo loggedInInfo, FavoriteTo1 t) throws ConversionException;
+    Favorite getAsDomainObject(LoggedInInfo loggedInInfo, FavoriteTo1 t) throws ConversionException;
 
-    public FavoriteTo1 getAsTransferObject(LoggedInInfo loggedInInfo, Favorite f) throws ConversionException;
+    FavoriteTo1 getAsTransferObject(LoggedInInfo loggedInInfo, Favorite f) throws ConversionException;
 
-    public List<FavoriteTo1> getAllAsTransferObjects(LoggedInInfo loggedInInfo, List<Favorite> ds) throws ConversionException;
+    List<FavoriteTo1> getAllAsTransferObjects(LoggedInInfo loggedInInfo, List<Favorite> ds) throws ConversionException;
 }

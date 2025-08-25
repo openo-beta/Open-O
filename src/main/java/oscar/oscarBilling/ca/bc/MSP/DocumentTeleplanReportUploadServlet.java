@@ -53,10 +53,10 @@ public class DocumentTeleplanReportUploadServlet extends HttpServlet {
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
 
-        byte data[] = new byte[BUFFER];
-        byte data1[] = new byte[BUFFER / 2];
-        byte data2[] = new byte[BUFFER / 2];
-        byte enddata[] = new byte[2];
+        byte[] data = new byte[BUFFER];
+        byte[] data1 = new byte[BUFFER / 2];
+        byte[] data2 = new byte[BUFFER / 2];
+        byte[] enddata = new byte[2];
 
 
         HttpSession session = request.getSession(true);

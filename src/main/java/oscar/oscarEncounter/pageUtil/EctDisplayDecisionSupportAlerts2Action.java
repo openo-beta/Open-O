@@ -118,11 +118,13 @@ public class EctDisplayDecisionSupportAlerts2Action extends EctDisplayAction {
                     //we have an active one, we should notify
                     if (dr.getStatus() == 'A') {
                         notify = true;
+                        break;
                     }
                 }
                 for (Dxresearch dr : dxResearchDao.find(Integer.parseInt(bean.demographicNo), "icd9", "585")) {
                     if (dr.getStatus() == 'A') {
                         notify = false;
+                        break;
                     }
                 }
                 if (!notify) {

@@ -37,5 +37,5 @@ import org.springframework.stereotype.Repository;
 
 public interface GroupsDao extends AbstractDao<Groups> {
 
-    public List<Groups> findByParentId(int groupId);
+    List<Groups> findByParentId(int groupId);
 }

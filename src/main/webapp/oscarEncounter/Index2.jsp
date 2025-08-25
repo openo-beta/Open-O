@@ -192,7 +192,7 @@
     String patientSex = pd.getSex();
     String providerName = bean.userName;
 
-    String pAge = Integer.toString(dateConvert.calcAge(bean.yearOfBirth, bean.monthOfBirth, bean.dateOfBirth));
+    String pAge = Integer.toString(UtilDateUtilities.calcAge(bean.yearOfBirth, bean.monthOfBirth, bean.dateOfBirth));
 
     String province = (oscarVariables.getProperty("billregion", "")).trim().toUpperCase();
     Properties windowSizes = oscar.oscarEncounter.pageUtil.EctWindowSizes.getWindowSizes(provNo);
@@ -204,10 +204,7 @@
     EctSplitChart ectSplitChart = new EctSplitChart();
     Vector splitChart = ectSplitChart.getSplitCharts(demoNo);
 
-    boolean sChart = true;
-    if (splitChart == null || splitChart.size() == 0) {
-        sChart = false;
-    }
+    boolean sChart = splitChart != null && splitChart.size() != 0;
 
 
 %>
@@ -1182,7 +1179,7 @@
         <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
     </head>
 
-    <body onload="javascript:loader();" onunload="javascript:onClosing();"
+    <body onload="loader();" onunload="onClosing();"
           topmargin="0" leftmargin="0" bottommargin="0" rightmargin="0"
           vlink="#0000FF">
 
@@ -1317,27 +1314,27 @@
                                         <td>
                                             <div
                                                     style="display: inline; float: right; font-size: 8pt; text-align: right; vertical-align: bottom">
-                                                <a onMouseOver="javascript:window.status='Minimize'; return true;"
+                                                <a onMouseOver="window.status='Minimize'; return true;"
                                                    href="javascript:rowOneX();"
                                                    title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipClose"/>">
                                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.x"/></a> | <a
-                                                    onMouseOver="javascript:window.status='Small Size'; return true;"
+                                                    onMouseOver="window.status='Small Size'; return true;"
                                                     href="javascript:rowOneSmall();"
                                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipSmall"/>">
                                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.s"/></a> | <a
-                                                    onMouseOver="javascript:window.status='Medium Size'; return true;"
+                                                    onMouseOver="window.status='Medium Size'; return true;"
                                                     href="javascript:rowOneNormal();"
                                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipNormal"/>">
                                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.n"/></a> | <a
-                                                    onMouseOver="javascript:window.status='Large Size'; return true;"
+                                                    onMouseOver="window.status='Large Size'; return true;"
                                                     href="javascript:rowOneLarge();"
                                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipLarge"/>">
                                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.l"/></a> | <a
-                                                    onMouseOver="javascript:window.status='Full Size'; return true;"
+                                                    onMouseOver="window.status='Full Size'; return true;"
                                                     href="javascript:rowOneFull();"
                                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipFull"/>">
                                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.f"/></a> | <a
-                                                    onMouseOver="javascript:window.status='Full Size'; return true;"
+                                                    onMouseOver="window.status='Full Size'; return true;"
                                                     href="javascript:reset();"
                                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipReset"/>">
                                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.r"/></a></div>
@@ -1386,27 +1383,27 @@
                                         <td>
                                             <div
                                                     style="display: inline; float: right; font-size: 8pt; text-align: right; vertical-align: bottom">
-                                                <a onMouseOver="javascript:window.status='Minimize'; return true;"
+                                                <a onMouseOver="window.status='Minimize'; return true;"
                                                    href="javascript:rowTwoX();"
                                                    title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipClose"/>">
                                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.x"/></a> | <a
-                                                    onMouseOver="javascript:window.status='Small Size'; return true;"
+                                                    onMouseOver="window.status='Small Size'; return true;"
                                                     href="javascript:rowTwoSmall();"
                                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipSmall"/>">
                                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.s"/></a> | <a
-                                                    onMouseOver="javascript:window.status='Medium Size'; return true;"
+                                                    onMouseOver="window.status='Medium Size'; return true;"
                                                     href="javascript:rowTwoNormal();"
                                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipNormal"/>">
                                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.n"/></a> | <a
-                                                    onMouseOver="javascript:window.status='Large Size'; return true;"
+                                                    onMouseOver="window.status='Large Size'; return true;"
                                                     href="javascript:rowTwoLarge();"
                                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipLarge"/>">
                                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.l"/></a> | <a
-                                                    onMouseOver="javascript:window.status='Full Size'; return true;"
+                                                    onMouseOver="window.status='Full Size'; return true;"
                                                     href="javascript:rowTwoFull();"
                                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipFull"/>">
                                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.f"/></a> | <a
-                                                    onMouseOver="javascript:window.status='Full Size'; return true;"
+                                                    onMouseOver="window.status='Full Size'; return true;"
                                                     href="javascript:reset();"
                                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipReset"/>">
                                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.r"/></a></div>
@@ -1469,27 +1466,27 @@
                                                         <div
                                                                 style="font-size: 8pt; text-align: right; vertical-align: bottom">
                                                             <a
-                                                                    onMouseOver="javascript:window.status='Minimize'; return true;"
+                                                                    onMouseOver="window.status='Minimize'; return true;"
                                                                     href="javascript:presBoxX();"
                                                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipClose"/>">
                                                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.x"/></a> | <a
-                                                                onMouseOver="javascript:window.status='Small Size'; return true;"
+                                                                onMouseOver="window.status='Small Size'; return true;"
                                                                 href="javascript:presBoxSmall();"
                                                                 title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipSmall"/>">
                                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.s"/></a> | <a
-                                                                onMouseOver="javascript:window.status='Medium Size'; return true;"
+                                                                onMouseOver="window.status='Medium Size'; return true;"
                                                                 href="javascript:presBoxNormal();"
                                                                 title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipNormal"/>">
                                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.n"/></a> | <a
-                                                                onMouseOver="javascript:window.status='Large Size'; return true;"
+                                                                onMouseOver="window.status='Large Size'; return true;"
                                                                 href="javascript:presBoxLarge();"
                                                                 title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipLarge"/>">
                                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.l"/></a> | <a
-                                                                onMouseOver="javascript:window.status='Full Size'; return true;"
+                                                                onMouseOver="window.status='Full Size'; return true;"
                                                                 href="javascript:presBoxFull();"
                                                                 title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipFull"/>">
                                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.f"/></a> | <a
-                                                                onMouseOver="javascript:window.status='Full Size'; return true;"
+                                                                onMouseOver="window.status='Full Size'; return true;"
                                                                 href="javascript:reset();"
                                                                 title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipReset"/>">
                                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.r"/></a></div>
@@ -1510,7 +1507,7 @@
                                                             String rxP = arr[i].getFullOutLine().replaceAll(";", " ");
                                                             rxP = rxP + "   " + arr[i].getEndDate();
                                                             String styleColor = "";
-                                                            if (arr[i].isCurrent() == true) {
+                                                            if (arr[i].isCurrent()) {
                                                                 styleColor = "style='color:red;'";
                                                             }
                                                     %>
@@ -1581,9 +1578,9 @@
                                                         <input type="hidden" name="enInput"/></td>
                                                     <td width='5%'>
                                                         <%
-                                                            boolean bSplit = request.getParameter("splitchart") != null ? true : false;
+                                                            boolean bSplit = request.getParameter("splitchart") != null;
                                                             int nEctLen = bean.encounter.length();
-                                                            boolean bTruncate = bSplit && nEctLen > 5120 ? true : false;
+                                                            boolean bTruncate = bSplit && nEctLen > 5120;
                                                             int consumption = (int) ((bTruncate ? 5120 : nEctLen) / (10.24 * 32));
                                                             consumption = consumption == 0 ? 1 : consumption;
                                                             String ccolor = consumption >= 70 ? "red" : (consumption >= 50 ? "orange" : "green");
@@ -1612,31 +1609,31 @@
                                         <td nowrap>
                                             <div
                                                     style="font-size: 8pt; text-align: right; vertical-align: bottom">
-                                                <a onMouseOver="javascript:window.status='Minimize'; return true;"
+                                                <a onMouseOver="window.status='Minimize'; return true;"
                                                    href="javascript:rowThreeX();"
                                                    title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipClose"/>">
                                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.x"/></a> | <a
-                                                    onMouseOver="javascript:window.status='Small Size'; return true;"
+                                                    onMouseOver="window.status='Small Size'; return true;"
                                                     href="javascript:rowThreeSmall();"
                                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipSmall"/>">
                                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.s"/></a> | <a
-                                                    onMouseOver="javascript:window.status='Normal Size'; return true;"
+                                                    onMouseOver="window.status='Normal Size'; return true;"
                                                     href="javascript:rowThreeNormal();"
                                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipNormal"/>">
                                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.n"/></a> | <a
-                                                    onMouseOver="javascript:window.status='Medium Size'; return true;"
+                                                    onMouseOver="window.status='Medium Size'; return true;"
                                                     href="javascript:rowThreeMedium();"
                                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipMedium"/>">
                                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.m"/></a> | <a
-                                                    onMouseOver="javascript:window.status='Large Size'; return true;"
+                                                    onMouseOver="window.status='Large Size'; return true;"
                                                     href="javascript:rowThreeLarge();"
                                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipLarge"/>">
                                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.l"/></a> | <a
-                                                    onMouseOver="javascript:window.status='Full Size'; return true;"
+                                                    onMouseOver="window.status='Full Size'; return true;"
                                                     href="javascript:rowThreeFull();"
                                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipFull"/>">
                                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.f"/></a> | <a
-                                                    onMouseOver="javascript:window.status='Full Size'; return true;"
+                                                    onMouseOver="window.status='Full Size'; return true;"
                                                     href="javascript:reset();"
                                                     title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.tooltipReset"/>">
                                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.r"/></a></div>
@@ -1654,7 +1651,7 @@
                                             }
 
                                             if (bean.eChartTimeStamp == null) {
-                                                encounterText += "\n[" + dateConvert.DateToString(bean.currentDate) + " .: " + bean.reason + "] \n";
+                                                encounterText += "\n[" + UtilDateUtilities.DateToString(bean.currentDate) + " .: " + bean.reason + "] \n";
                                             } else if (bean.currentDate.compareTo(bean.eChartTimeStamp) > 0) {
                                                 encounterText += "\n__________________________________________________\n[" + ("".equals(bean.appointmentDate) ? UtilDateUtilities.getToday("yyyy-MM-dd") : bean.appointmentDate) + " .: " + bean.reason + "]\n";
                                             } else if ((bean.currentDate.compareTo(bean.eChartTimeStamp) == 0) && (bean.reason != null || bean.subject != null) && !bean.reason.equals(bean.subject)) {

@@ -69,11 +69,7 @@ public class EctViewConsultationRequests2Action extends ActionSupport {
 
         String defaultPattern = "yyyy-MM-dd";
         String includeCompleted = null;
-        boolean includedComp = false;
-
-        if (includeCompleted != null && includeCompleted.equals("include")) {
-            includedComp = true;
-        }
+        boolean includedComp = includeCompleted != null && includeCompleted.equals("include");
 
         SimpleDateFormat simpleDateFormat = null;
 

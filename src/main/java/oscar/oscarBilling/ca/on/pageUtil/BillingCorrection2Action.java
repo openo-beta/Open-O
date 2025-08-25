@@ -480,11 +480,8 @@ public class BillingCorrection2Action extends ActionSupport {
                 int index = bItemsExisting.indexOf(bItemCurrent);
                 BillingONItem bItemExisting = bItemsExisting.get(index);
 
-                boolean statusChanged = false;
-                if ((!bItemExisting.getStatus().equals("S") && bItemCurrent.getStatus().equals("S"))
-                        || (bItemExisting.getStatus().equals("S") && !bItemCurrent.getStatus().equals("S"))) {
-                    statusChanged = true;
-                }
+                boolean statusChanged = (!bItemExisting.getStatus().equals("S") && bItemCurrent.getStatus().equals("S"))
+                    || (bItemExisting.getStatus().equals("S") && !bItemCurrent.getStatus().equals("S"));
 
                 String fee = bItemCurrent.getFee();
                 String unit = bItemCurrent.getServiceCount();

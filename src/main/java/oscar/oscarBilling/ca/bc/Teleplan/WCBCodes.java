@@ -67,10 +67,7 @@ public class WCBCodes {
     public boolean isFormNeeded(String wcbCode) {
         String[] codes = getFormCodes();
         log.debug("codes " + codes + "  == " + wcbCode + "  - " + Arrays.binarySearch(codes, wcbCode));
-        if (Arrays.binarySearch(codes, wcbCode) < 0) {
-            return false;
-        }
-        return true;
+        return Arrays.binarySearch(codes, wcbCode) >= 0;
     }
 
     @Override

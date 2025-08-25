@@ -31,25 +31,25 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public interface ReportObject {
-    public String getTemplateId();
+    String getTemplateId();
 
-    public String getTitle();
+    String getTitle();
 
-    public String getDescription();
+    String getDescription();
 
-    public String getType();
+    String getType();
 
-    public ArrayList getParameters();
+    ArrayList getParameters();
 
-    public String getPreparedSQL(Map parameters);
+    String getPreparedSQL(Map parameters);
 
-    public int getActive();
+    int getActive();
 
-    public boolean isSequence();
+    boolean isSequence();
 
-    public String getPreparedSQL(int sequenceNo, Map parameters);
+    String getPreparedSQL(int sequenceNo, Map parameters);
 
-    public String getUuid();
+    String getUuid();
 
-    public void setUuid(String uuid);
+    void setUuid(String uuid);
 }

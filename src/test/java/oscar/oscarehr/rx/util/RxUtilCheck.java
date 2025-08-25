@@ -39,8 +39,7 @@ public class RxUtilCheck {
         File outputfile = new File("image.png");
         BufferedImage bufferedImage = RxUtil.getWaterMarkImage("COUMADIN TAB 3MG \n" +
                 "take 1 OD for 7 days\n" +
-                " Qty:7  Repeats:0\n" +
-                "");
+                " Qty:7  Repeats:0\n");
         ImageIO.write(bufferedImage, "png", outputfile);
     }
 }

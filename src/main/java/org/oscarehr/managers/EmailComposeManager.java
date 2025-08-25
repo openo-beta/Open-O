@@ -283,7 +283,7 @@ public class EmailComposeManager {
     }
 
     public Long getFileSize(Path filePath) {
-        Long fileSize = 0l;
+        Long fileSize = 0L;
         try {
             fileSize = Files.size(filePath);
         } catch (IOException e) {

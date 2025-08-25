@@ -36,7 +36,7 @@ import org.springframework.stereotype.Repository;
 
 public interface ContactSpecialtyDao extends AbstractDao<ContactSpecialty> {
 
-    public List<ContactSpecialty> findAll();
+    List<ContactSpecialty> findAll();
 
-    public ContactSpecialty findBySpecialty(String specialtyName);
+    ContactSpecialty findBySpecialty(String specialtyName);
 }

@@ -38,9 +38,9 @@ import org.springframework.stereotype.Repository;
 
 public interface MessageTblDao extends AbstractDao<MessageTbl> {
 
-    public List<MessageTbl> findByMaps(List<MsgDemoMap> m);
+    List<MessageTbl> findByMaps(List<MsgDemoMap> m);
 
-    public List<MessageTbl> findByProviderAndSendBy(String providerNo, Integer sendBy);
+    List<MessageTbl> findByProviderAndSendBy(String providerNo, Integer sendBy);
 
-    public List<MessageTbl> findByIds(List<Integer> ids);
+    List<MessageTbl> findByIds(List<Integer> ids);
 }

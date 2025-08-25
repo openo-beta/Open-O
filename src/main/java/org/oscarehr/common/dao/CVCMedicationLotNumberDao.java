@@ -36,9 +36,9 @@ import org.springframework.stereotype.Repository;
 
 public interface CVCMedicationLotNumberDao extends AbstractDao<CVCMedicationLotNumber> {
 
-    public void removeAll();
+    void removeAll();
 
-    public CVCMedicationLotNumber findByLotNumber(String lotNumber);
+    CVCMedicationLotNumber findByLotNumber(String lotNumber);
 
-    public List<CVCMedicationLotNumber> query(String term);
+    List<CVCMedicationLotNumber> query(String term);
 }

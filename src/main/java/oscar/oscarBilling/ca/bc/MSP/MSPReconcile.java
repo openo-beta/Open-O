@@ -288,7 +288,7 @@ public class MSPReconcile {
 
             try {
                 int i = Integer.parseInt(tc.getOfficeFolioClaimNo()); // this kludge rids leading zeros
-                String exp[] = tc.getExps();
+                String[] exp = tc.getExps();
                 String def = createCorrectionsString(exp);
                 String s = Integer.toString(i);
                 p.put(s, def);
@@ -304,7 +304,7 @@ public class MSPReconcile {
         String s = "";
         TeleplanS00Dao dao = SpringUtils.getBean(TeleplanS00Dao.class);
         for (TeleplanS00 ts : dao.findByOfficeNumber(forwardZero(billingMasterNo, 7))) {
-            String exp[] = ts.getExps();
+            String[] exp = ts.getExps();
             s = createCorrectionsString(exp);
         }
         return s;
@@ -341,7 +341,7 @@ public class MSPReconcile {
                 for (TeleplanS00 ts : dao.findByOfficeNumbers(officeNumbers)) {
                     try {
                         int i = Integer.parseInt(ts.getOfficeNo()); // this kludge rids leading zeros
-                        String exp[] = ts.getExps();
+                        String[] exp = ts.getExps();
                         String def = createCorrectionsString(exp);
                         String s = Integer.toString(i);
                         errorsProps.put(s, def);
@@ -537,10 +537,7 @@ public class MSPReconcile {
         }
 
         public boolean isWCB() {
-            boolean retval = false;
-            if (billingtype.equals("WCB")) {
-                retval = true;
-            }
+            boolean retval = billingtype.equals("WCB");
             return retval;
         }
 
@@ -711,7 +708,7 @@ public class MSPReconcile {
         TeleplanC12Dao dao = SpringUtils.getBean(TeleplanC12Dao.class);
 
         for (TeleplanC12 t : dao.findByOfficeClaimNo(forwardZero(billingNo, 7))) {
-            String exp[] = t.getExps();
+            String[] exp = t.getExps();
             String seq = t.getDataSeq();
 
             for (int i = 0; i < exp.length; i++) {
@@ -782,7 +779,7 @@ public class MSPReconcile {
 
         TeleplanS00Dao dao = SpringUtils.getBean(TeleplanS00Dao.class);
         for (TeleplanS00 s : dao.findByOfficeNumber(forwardZero(billingNo, 7))) {
-            String exp[] = s.getExps();
+            String[] exp = s.getExps();
             String seq = s.getDataSeq();
 
             for (int i = 0; i < exp.length; i++) {
@@ -830,8 +827,7 @@ public class MSPReconcile {
      */
     public void saveOrUpdateBillRecipient(BillRecipient recip) {
         List<BillRecipients> bs = billRecipientDao.findByBillingNo(Integer.parseInt(recip.getBillingNo()));
-        boolean existingBill = false;
-        if (bs.size() > 0) existingBill = true;
+        boolean existingBill = bs.size() > 0;
 
         if (existingBill) {
             for (BillRecipients b : bs) {

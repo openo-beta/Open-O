@@ -142,9 +142,9 @@
                 <td width="5%" align="right"><input type="hidden" name="id"
                                                     value="<%=itemId%>"> <% if (!bDeletedList) { %> <input
                         type="submit" name="submit" value="Delete"
-                        onclick="javascript:return onDelete();"> <% } else { %> <input
+                        onclick="return onDelete();"> <% } else { %> <input
                         type="submit" name="submit" value="Restore"
-                        onclick="javascript:return onRestore();"> <% } %>
+                        onclick="return onRestore();"> <% } %>
                 </td>
             </tr>
         </form>
@@ -161,7 +161,7 @@
                 <form method="post" name="baseurl" action="reportFormRecord.jsp">
                     <input type="text" name="name" value="" size="60"/> <input
                         type="submit" name="submit" value="Add"
-                        onclick="javascript:return onAdd();"/></form>
+                        onclick="return onAdd();"/></form>
             </td>
         </tr>
     </table>

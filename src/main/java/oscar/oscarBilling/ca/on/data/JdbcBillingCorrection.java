@@ -332,14 +332,14 @@ public class JdbcBillingCorrection {
         for (BillingONEAReport report : reports) {
             String error = report.getClaimError().trim();
             if (error.length() > 2) {
-                String temp[] = error.split("\\s");
+                String[] temp = error.split("\\s");
                 for (int i = 0; i < temp.length; i++) {
                     obj.add(temp[i]);
                 }
             }
             error = report.getCodeError().trim();
             if (error.length() > 1) {
-                String temp[] = error.split("\\s");
+                String[] temp = error.split("\\s");
                 for (int i = 0; i < temp.length; i++) {
                     obj.add(temp[i]);
                 }

@@ -86,9 +86,9 @@
     <table class="Head" class="hidePrint">
         <tr>
             <td align="left"><input type="button" value="Cancel"
-                                    onclick="javascript:return onCancel();"/> <input type="button"
+                                    onclick="return onCancel();"/> <input type="button"
                                                                                      value="Print"
-                                                                                     onclick="javascript:return onPrint();"/>
+                                                                                     onclick="return onPrint();"/>
             </td>
         </tr>
     </table>
@@ -746,9 +746,9 @@
     <table class="Head" class="hidePrint">
         <tr>
             <td align="left"><input type="button" value="Cancel"
-                                    onclick="javascript:return onCancel();"/> <input type="button"
+                                    onclick="return onCancel();"/> <input type="button"
                                                                                      value="Print"
-                                                                                     onclick="javascript:return onPrint();"/>
+                                                                                     onclick="return onPrint();"/>
             </td>
         </tr>
     </table>

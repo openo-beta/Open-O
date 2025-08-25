@@ -288,7 +288,7 @@ dojo.widget.manager = new function () {
         if (impl) {
             return (imps[lowerCaseWidgetName] = impl)
         }
-        ;
+
 
         // try to load a manifest to resolve this implemenation
         nsObj = dojo.ns.require(ns);
@@ -298,7 +298,7 @@ dojo.widget.manager = new function () {
             if (impl) {
                 return (imps[lowerCaseWidgetName] = impl)
             }
-            ;
+
         }
 
         // this is an error condition under new rules
@@ -314,7 +314,7 @@ dojo.widget.manager = new function () {
             if (impl) {
                 return (imps[lowerCaseWidgetName] = impl)
             }
-            ;
+
         }
 
         throw new Error('Could not locate widget implementation for "' + widgetName + '" in "' + nsObj.module + '" registered to namespace "' + nsObj.name + '"');

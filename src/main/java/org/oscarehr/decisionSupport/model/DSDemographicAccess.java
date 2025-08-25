@@ -461,8 +461,7 @@ public class DSDemographicAccess {
     public boolean noteContains(DSValue searchValue) {
         CaseManagementNoteDAO dao = (CaseManagementNoteDAO) SpringUtils.getBean(CaseManagementNoteDAO.class);
         List<CaseManagementNote> notes = dao.searchDemographicNotes(demographicNo, "%" + searchValue.getValue() + "%");
-        if (notes != null && notes.size() > 0) return true;
-        else return false;
+        return notes != null && notes.size() > 0;
     }
 
     public boolean noteContainsAny(String searchStrings) {
@@ -553,8 +552,6 @@ public class DSDemographicAccess {
     public boolean flowsheetUptoDateNotany(String flowsheetId) {
         return !flowsheetUptoDateAny(flowsheetId);
     }
-
-    ;
 
     public boolean paidAny(String searchStrings, Map<String, String> options) {
 
@@ -662,7 +659,7 @@ public class DSDemographicAccess {
             } else if (billregion.equalsIgnoreCase("ON")) {
                 billingONCHeader1Dao = (BillingONCHeader1Dao) SpringUtils.getBean(BillingONCHeader1Dao.class);
             }
-            String[] codes = searchStrings.replaceAll("\'", "").split(",");
+            String[] codes = searchStrings.replaceAll("'", "").split(",");
 
 
             /* Has any of these codes been billed for in the past number of days.   ( if any
@@ -703,7 +700,7 @@ public class DSDemographicAccess {
 
     public boolean billedForAny2(String searchStrings, Hashtable<String, String> options) {
         boolean retval = false;
-        String[] codes = searchStrings.replaceAll("\'", "").split(",");
+        String[] codes = searchStrings.replaceAll("'", "").split(",");
         for (String code : codes) {
 
             if (options.containsKey("payer") && options.get("payer").equals("MSP")) {

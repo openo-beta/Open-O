@@ -372,7 +372,7 @@
                 // check to ensure the alertify dialog element
                 // has been successfully created
                 var check = function () {
-                    if ((elLog && elLog.scrollTop !== null) && (elCover && elCover.scrollTop !== null)) return;
+                    if ((elLog && elLog.scrollTop !== null) && (elCover && elCover.scrollTop !== null))
                     else check();
                 };
                 // error catching
@@ -494,7 +494,7 @@
                 // check to ensure the alertify dialog element
                 // has been successfully created
                 var check = function () {
-                    if (elLog && elLog.scrollTop !== null) return;
+                    if (elLog && elLog.scrollTop !== null)
                     else check();
                 };
                 // initialize alertify if it hasn't already been done

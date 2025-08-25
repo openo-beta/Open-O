@@ -268,9 +268,7 @@ public class OscarRequestTokenService {
 
         // Check if callback URL has common root with application URI
         if (config.getApplicationURI() != null && !config.getApplicationURI().isEmpty()) {
-            if (callbackUrl.startsWith(config.getApplicationURI())) {
-                return true;
-            }
+            return callbackUrl.startsWith(config.getApplicationURI());
         }
 
         return false;

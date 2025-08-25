@@ -147,7 +147,7 @@ public class DSGuidelineFactory {
                 dsCondition.setDesc(conditionDescStr);
                 dsCondition.setListOperator(operator); //i.e. any, all, not
                 if (paramHashtable != null && !paramHashtable.isEmpty()) {
-                    _log.debug("THIS IS THE HASH STRING " + paramHashtable.toString());
+                    _log.debug("THIS IS THE HASH STRING " + paramHashtable);
                     dsCondition.setParam(paramHashtable);
                 }
 

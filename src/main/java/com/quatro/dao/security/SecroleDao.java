@@ -36,14 +36,14 @@ import com.quatro.model.security.Secrole;
 
 public interface SecroleDao {
 
-    public List<Secrole> getRoles();
+    List<Secrole> getRoles();
 
-    public Secrole getRole(Integer id);
+    Secrole getRole(Integer id);
 
-    public Secrole getRoleByName(String roleName);
+    Secrole getRoleByName(String roleName);
 
-    public List getDefaultRoles();
+    List getDefaultRoles();
 
-    public void save(Secrole secrole);
+    void save(Secrole secrole);
 
 }

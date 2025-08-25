@@ -32,7 +32,7 @@ ylib.util.FindValueInList = function (sValue, sList) {
     }
     var sArr;
     //find in list
-    eval("sArr = [" + sList + "];");
+    eval("sArr = [" + sList + "]");
     for (var i = 0; i < sArr.length; i++) {
         tValue = sArr[i].toString().replace(/^\s+|\s+$/, '');
         if (tValue == sValue) return true;

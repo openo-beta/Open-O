@@ -32,19 +32,19 @@ import java.util.List;
 import org.oscarehr.common.model.ConsultationServices;
 
 public interface ConsultationServiceDao extends AbstractDao<ConsultationServices> {
-    public String REFERRING_DOCTOR = "Referring Doctor";
-    public String ACTIVE = "1";
-    public String INACTIVE = "02";
-    public boolean ACTIVE_ONLY = true;
-    public boolean WITH_INACTIVE = false;
+    String REFERRING_DOCTOR = "Referring Doctor";
+    String ACTIVE = "1";
+    String INACTIVE = "02";
+    boolean ACTIVE_ONLY = true;
+    boolean WITH_INACTIVE = false;
 
-    public List<ConsultationServices> findAll();
+    List<ConsultationServices> findAll();
 
-    public List<ConsultationServices> findActive();
+    List<ConsultationServices> findActive();
 
-    public List<ConsultationServices> findActiveNames();
+    List<ConsultationServices> findActiveNames();
 
-    public ConsultationServices findByDescription(String description);
+    ConsultationServices findByDescription(String description);
 
-    public ConsultationServices findReferringDoctorService(boolean activeOnly);
+    ConsultationServices findReferringDoctorService(boolean activeOnly);
 }

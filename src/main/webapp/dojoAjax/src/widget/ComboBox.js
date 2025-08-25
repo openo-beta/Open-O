@@ -264,7 +264,7 @@ dojo.declare(
                         idx = dataLabel.indexOf(searchStr, idx + 1);
                     }
                     if (!matches) {
-                        continue;
+
                     } else {
                         ret.push(this._data[x]);
                     }
@@ -932,7 +932,7 @@ dojo.widget.defineWidget(
             } catch (e) {
                 // element isn't focusable if disabled, or not visible etc - not easy to test for.
             }
-            ;
+
         },
 
         _startSearchFromInput: function () {

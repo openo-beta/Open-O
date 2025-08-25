@@ -186,7 +186,7 @@
         <td style="text-align:left;"><%=v.getName() %>
         </td>
         <td style="text-align:left;" class="beright">
-            <a onclick="javascript:clickLink('Vacancy Add','Vacancy Add', '<%=v.getId() %>');return false;"
+            <a onclick="clickLink('Vacancy Add','Vacancy Add', '<%=v.getId() %>');return false;"
                href="javascript:void(0)"><%=(vt == null ? "No Template for This Vacancy" : vt.getName()) %>
             </a>
         </td>

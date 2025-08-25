@@ -515,7 +515,7 @@
                             <td colspan="2">
                                 <%
                                     String status = form.getStatus() != null ? form.getStatus() : "";
-                                    String statusCodes[] = {"O", "P", "N", "B", "X", "T", "C", "D"};
+                                    String[] statusCodes = {"O", "P", "N", "B", "X", "T", "C", "D"};
                                     request.setAttribute("codes", statusCodes);
 
                                 %>

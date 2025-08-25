@@ -149,11 +149,8 @@
 
 
     UserProperty up = pref.getProp(user_no, UserProperty.EDOC_BROWSER_IN_DOCUMENT_REPORT);
-    boolean DocumentBrowserLink = false;
+    boolean DocumentBrowserLink = up != null && up.getValue() != null && up.getValue().equals("yes");
 
-    if (up != null && up.getValue() != null && up.getValue().equals("yes")) {
-        DocumentBrowserLink = true;
-    }
 %>
 <html>
     <head>

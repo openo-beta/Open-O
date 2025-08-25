@@ -714,7 +714,7 @@ function includeHTML(elmnt) {
     xhttp.open("GET", file, true);
     xhttp.send();
     /* Exit the function: */
-    return;
+
 
 }
 

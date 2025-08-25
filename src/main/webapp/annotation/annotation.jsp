@@ -143,7 +143,7 @@
 //            if (p_cmn!=null && note !="") { //previous annotation exists
                 cmn.setUuid(uuid); //assign same UUID to new annotation
             }
-            if (tableName.equals(cml.CASEMGMTNOTE) || tableId.equals(0L)) {
+            if (tableName.equals(CaseManagementNoteLink.CASEMGMTNOTE) || tableId.equals(0L)) {
                 //new casemgmt_note may be saved AFTER annotation
                 if (!attrib_name.equals("")) se.setAttribute(attrib_name, cmn);
             }

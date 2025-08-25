@@ -394,11 +394,7 @@ public class HRM2Action extends ActionSupport {
 
         OscarJob job = getOscarJobForPolling();
 
-        if (job != null && job.isEnabled() && job.getOscarJobType().isEnabled() && !StringUtils.isEmpty(job.getCronExpression())) {
-            return true;
-        }
-
-        return false;
+        return job != null && job.isEnabled() && job.getOscarJobType().isEnabled() && !StringUtils.isEmpty(job.getCronExpression());
     }
 
     private String getPollingInterval() {

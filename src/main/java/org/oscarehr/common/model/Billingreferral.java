@@ -195,13 +195,10 @@ public class Billingreferral extends AbstractModel<Integer> implements java.io.S
             return false;
         }
         final Billingreferral other = (Billingreferral) obj;
-        if (this.billingreferralNo != other.billingreferralNo && (this.billingreferralNo == null || !this.billingreferralNo.equals(other.billingreferralNo))) {
+        if (!java.util.Objects.equals(this.billingreferralNo, other.billingreferralNo)) {
             return false;
         }
-        if ((this.referralNo == null) ? (other.referralNo != null) : !this.referralNo.equals(other.referralNo)) {
-            return false;
-        }
-        return true;
+        return java.util.Objects.equals(this.referralNo, other.referralNo);
     }
 
     @Override

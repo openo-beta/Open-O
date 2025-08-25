@@ -38,5 +38,5 @@ public interface AvailableTimeSlotFilter {
      * @return a list of available time slots, i.e. make a new array and copy the qualifying time slots into it. Probably best not to alter the passed in list contents.
      * @
      */
-    public List<TimeSlot> filterAvailableTimeSlots(SearchConfig clinic, String mrp, String providerId, Long appointmentTypeId, DayWorkSchedule dayWorkScheduleTransfer, List<TimeSlot> currentlyAllowedTimeSlots, Calendar date, Map<String, String> params);
+    List<TimeSlot> filterAvailableTimeSlots(SearchConfig clinic, String mrp, String providerId, Long appointmentTypeId, DayWorkSchedule dayWorkScheduleTransfer, List<TimeSlot> currentlyAllowedTimeSlots, Calendar date, Map<String, String> params);
 }

@@ -40,20 +40,20 @@ import org.oscarehr.common.model.QueueDocumentLink;
 
 public interface QueueDocumentLinkDao extends AbstractDao<QueueDocumentLink> {
 
-    public List<QueueDocumentLink> getQueueDocLinks();
+    List<QueueDocumentLink> getQueueDocLinks();
 
-    public List<QueueDocumentLink> getActiveQueueDocLink();
+    List<QueueDocumentLink> getActiveQueueDocLink();
 
-    public List<QueueDocumentLink> getQueueFromDocument(Integer docId);
+    List<QueueDocumentLink> getQueueFromDocument(Integer docId);
 
-    public List<QueueDocumentLink> getDocumentFromQueue(Integer qId);
+    List<QueueDocumentLink> getDocumentFromQueue(Integer qId);
 
-    public boolean hasQueueBeenLinkedWithDocument(Integer dId, Integer qId);
+    boolean hasQueueBeenLinkedWithDocument(Integer dId, Integer qId);
 
-    public boolean setStatusInactive(Integer docId);
+    boolean setStatusInactive(Integer docId);
 
-    public void addActiveQueueDocumentLink(Integer qId, Integer dId);
+    void addActiveQueueDocumentLink(Integer qId, Integer dId);
 
-    public void addToQueueDocumentLink(Integer qId, Integer dId);
+    void addToQueueDocumentLink(Integer qId, Integer dId);
 }
  

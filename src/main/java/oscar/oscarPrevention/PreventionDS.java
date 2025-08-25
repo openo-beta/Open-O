@@ -58,10 +58,10 @@ import oscar.OscarProperties;
 public interface PreventionDS {
 
 
-    public void reloadRuleBase();
+    void reloadRuleBase();
 
 
-    public Prevention getMessages(Prevention p) throws Exception;
+    Prevention getMessages(Prevention p) throws Exception;
 
 
     ///

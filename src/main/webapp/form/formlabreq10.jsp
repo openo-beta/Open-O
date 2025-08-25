@@ -422,11 +422,11 @@
             <tr>
                 <td nowrap="true">
                     <% if (!readOnly) { %>
-                    <input type="submit" value="Save" onclick="javascript:return onSave();"/>
-                    <input type="submit" value="Save and Exit" onclick="javascript:return onSaveExit();"/>
+                    <input type="submit" value="Save" onclick="return onSave();"/>
+                    <input type="submit" value="Save and Exit" onclick="return onSaveExit();"/>
                     <% } %>
-                    <input type="submit" value="Exit" onclick="javascript:return onExit();"/>
-                    <input type="submit" value="Print Pdf" onclick="javascript:return onPrintPDF();"/>
+                    <input type="submit" value="Exit" onclick="return onExit();"/>
+                    <input type="submit" value="Print Pdf" onclick="return onPrintPDF();"/>
 
                     <select name="letterhead" id="letterhead" onchange="switchProvider(this.value)">
                         <option value="-1"><%=clinic.getClinicName() %>
@@ -1415,13 +1415,13 @@
             <tr>
                 <td nowrap="true">
                     <% if (!readOnly) { %> <input type="submit" value="Save"
-                                                  onclick="javascript:return onSave();"/> <input type="submit"
+                                                  onclick="return onSave();"/> <input type="submit"
                                                                                                  value="Save and Exit"
-                                                                                                 onclick="javascript:return onSaveExit();"/> <% } %>
+                                                                                                 onclick="return onSaveExit();"/> <% } %>
                     <input type="submit" value="Exit"
-                           onclick="javascript:return onExit();"/> <input type="submit"
+                           onclick="return onExit();"/> <input type="submit"
                                                                           value="Print Pdf"
-                                                                          onclick="javascript:return onPrintPDF();"/>
+                                                                          onclick="return onPrintPDF();"/>
                 </td>
             </tr>
         </table>

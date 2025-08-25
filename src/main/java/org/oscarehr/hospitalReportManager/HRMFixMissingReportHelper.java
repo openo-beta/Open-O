@@ -155,10 +155,7 @@ public class HRMFixMissingReportHelper {
             return false;
         }
         Property prop = propList.get(0);
-        if (prop != null && "1".equals(prop.getValue())) {
-            return true;
-        }
-        return false;
+        return prop != null && "1".equals(prop.getValue());
     }
 
     private void setAsRun() {

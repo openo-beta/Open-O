@@ -298,18 +298,9 @@ public class DateUtils {
 
                 } else {
 
-                    if (((year % 4 == 0) && !(year % 100 == 0)) || (year % 400 == 0)) {
-
-                        leapyear = true;
-
-                    } else {
-
-                        leapyear = false;
-
-                        // in a leapyear 29 days
-
-                    }
-                    if (leapyear == true) {
+                    // in a leapyear 29 days
+                    leapyear = ((year % 4 == 0) && !(year % 100 == 0)) || (year % 400 == 0);
+                    if (leapyear) {
 
                         if (day == 28) {
 

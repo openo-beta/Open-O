@@ -41,7 +41,7 @@ public class RemoteAttachmentsDaoTest {
 
     @Before
     public void before() throws Exception {
-        SchemaUtils.restoreTable(new String[]{"remoteAttachments"});
+        SchemaUtils.restoreTable("remoteAttachments");
     }
 
     @Test

@@ -160,7 +160,7 @@ function insertEditControl() {
     if (editControlHTML == "[all]") {
         editControlHTML = "<div id=control>[select-block][select-face][select-size][select-template]|[bold][italic][underlined][unordered][ordered][rule]|[undo][redo]|[cut][copy][paste]|[left][center][full][right]|[indent][outdent][select-all][clean]|[image][link]|[clock][date][spell][help]</div>[edit-area]"
     }
-    ;
+
     if ((editControlHTML.indexOf("select-block") > -1) && (editControlHTML.indexOf("heading1") > -1)) {
         editControlHTML = editControlHTML.replace("[heading1]", "");
     } //only one id=formatblock tolerated
@@ -260,15 +260,15 @@ function seteditControlContents(editorname, value) {
     if (document.designMode) {
         if (isIE()) {
             window[editorname].document.body.innerHTML = value; //if browser supports M$ conventions
-            return
+
         } else {
             document.getElementById(editorname).contentWindow.document.body.innerHTML = value;
-            return
+
         }
     } else {
         // play nice and at least set the value to the <textarea> if document.designMode does not exist
         document.getElementById(cfg_editorname).value = value;
-        return
+
     }
 }
 
@@ -499,7 +499,7 @@ function doHtml(value) {
     } else {
         document.getElementById(cfg_editorname).contentWindow.document.execCommand("insertHtml", false, value);
     }
-    return;
+
 }
 
 function block(blockElements) {
@@ -615,7 +615,7 @@ function viewsource(source) {
         document.getElementById("control2").style.visibility = "visible";
         document.getElementById("control3").style.visibility = "visible";
     }
-    return;
+
 }
 
 function usecss(source) {

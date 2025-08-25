@@ -136,11 +136,7 @@ public class CMLHandler implements MessageHandler {
 
     public boolean isOBXAbnormal(int i, int j) {
         try {
-            if (getOBXAbnormalFlag(i, j).equals("A")) {
-                return (true);
-            } else {
-                return (false);
-            }
+            return getOBXAbnormalFlag(i, j).equals("A");
 
         } catch (Exception e) {
             return (false);

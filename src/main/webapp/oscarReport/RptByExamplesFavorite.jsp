@@ -81,7 +81,7 @@
                         <td><input type="button" value="Add" onclick="submit();"/> <input
                                 type="button"
                                 value="<fmt:setBundle basename='oscarResources'/><fmt:message key='oscarReport.RptByExample.MsgCancel'/>"
-                                onclick="javascript:history.back(1);"/></td>
+                                onclick="history.back(1);"/></td>
                     </tr>
                     <tr></tr>
 

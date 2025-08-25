@@ -42,7 +42,7 @@
 <%
     if (session.getAttribute("user") == null) response.sendRedirect("../logout.jsp");
     String deepcolor = "#CCCCFF", weakcolor = "#EEEEFF", tableTitle = "#99ccff";
-    boolean bEdit = request.getParameter("appointment_no") != null ? true : false;
+    boolean bEdit = request.getParameter("appointment_no") != null;
 %>
 <%@ page import="java.util.*, oscar.*, oscar.util.*, java.sql.*"
          errorPage="/errorpage.jsp" %>
@@ -166,7 +166,7 @@
                 param[0] = "C";
                 param[1] = createdDateTime;
                 param[2] = userName;
-                for (int k = 0; k < paramE.length; k++) param[k + 3] = paramE[k];
+                System.arraycopy(paramE, 0, param, 3, paramE.length);
 
                 // repeat doing
                 while (true) {
@@ -196,7 +196,7 @@
             // group delete
             if (request.getParameter("groupappt").equals("Group Delete")) {
                 Object[] param = new Object[10];
-                for (int k = 0; k < paramE.length; k++) param[k] = paramE[k];
+                System.arraycopy(paramE, 0, param, 0, paramE.length);
 
                 // repeat doing
                 while (true) {
@@ -232,8 +232,7 @@
                 param[9] = userName;
                 param[10] = request.getParameter("urgency");
                 param[11] = request.getParameter("reasonCode");
-                for (int k = 0; k < paramE.length; k++)
-                    param[k + 12] = paramE[k];
+                System.arraycopy(paramE, 0, param, 12, paramE.length);
 
                 // repeat doing
                 while (true) {

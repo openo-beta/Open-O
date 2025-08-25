@@ -1,6 +1,7 @@
 package org.oscarehr.integration.mcedt;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.math.BigInteger;
@@ -181,7 +182,6 @@ public class SubmitEDTTest extends EDTBaseTest {
             printFaultException(e);
             assertEquals("Rejected By Policy", e.getFaultInfo().getCode());
         } catch (NumberFormatException e) {
-            return;
         }
     }
 
@@ -200,12 +200,11 @@ public class SubmitEDTTest extends EDTBaseTest {
         try {
             edtDelegate = newDelegate("");
             ResourceResult resourceResult = edtDelegate.submit(ids);
-            assertEquals(null, resourceResult);
+            assertNull(resourceResult);
         } catch (Faultexception e) {
             printFaultException(e);
             fail("Test failed, expected response is: 'Rejected by Policy' but got: " + e.getFaultInfo().getCode());
         } catch (SOAPFaultException e) {
-            return;
         }
     }
 

@@ -46,7 +46,6 @@ public class ResourceAttributeFilter implements ResourceAttributeFilterInterface
             logger.debug("Loading FHIR resource filter from " + filterURL);
             readFromFile(filterURL);
         } catch (IOException e) {
-            return;
         }
     }
 

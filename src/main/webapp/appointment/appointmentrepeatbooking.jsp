@@ -42,7 +42,7 @@
 <%
     if (session.getAttribute("user") == null) response.sendRedirect("../logout.jsp");
     String deepcolor = "#CCCCFF", weakcolor = "#EEEEFF", tableTitle = "#99ccff";
-    boolean bEdit = request.getParameter("appointment_no") != null ? true : false;
+    boolean bEdit = request.getParameter("appointment_no") != null;
 %>
 <%@ page import="java.util.*, oscar.*, oscar.util.*"
          errorPage="/errorpage.jsp" %>

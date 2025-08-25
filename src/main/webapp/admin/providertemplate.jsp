@@ -139,7 +139,7 @@
                 </div>
 
                 <%
-                    boolean bEdit = request.getParameter("dboperation") != null && request.getParameter("dboperation").equals("Edit") ? true : false;
+                    boolean bEdit = request.getParameter("dboperation") != null && request.getParameter("dboperation").equals("Edit");
                     String tName = null;
                     String tValue = null;
                     if (bEdit) {

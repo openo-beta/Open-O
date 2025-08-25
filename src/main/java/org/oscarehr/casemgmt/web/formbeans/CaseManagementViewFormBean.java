@@ -31,7 +31,7 @@ import java.io.File;
 public class CaseManagementViewFormBean {
     private String demographicNo;
     private String providerNo;
-    private String issues[];
+    private String[] issues;
     private String note_view = "summary";
     private String prescipt_view = "current";
     private String tab;
@@ -54,8 +54,8 @@ public class CaseManagementViewFormBean {
 
     private String note_sort = null;
     private String filter_provider = "";
-    private String filter_providers[];
-    private String filter_roles[];
+    private String[] filter_providers;
+    private String[] filter_roles;
 
     private long formId;
 

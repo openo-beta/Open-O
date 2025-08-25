@@ -110,7 +110,6 @@ public class VacancyDaoImpl extends AbstractDaoImpl<Vacancy> implements VacancyD
 
         Query query = entityManager.createQuery(sqlCommand);
         query.setParameter(1, "ACTIVE");
-        ;
 
         return query.getResultList();
     }

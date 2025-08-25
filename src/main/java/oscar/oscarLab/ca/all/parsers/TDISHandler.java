@@ -267,10 +267,7 @@ public class TDISHandler implements MessageHandler {
 
     public boolean isOBXAbnormal(int i, int j) {
         String abnormalFlag = getOBXAbnormalFlag(i, j);
-        if (abnormalFlag.equals("") || abnormalFlag.equals("N"))
-            return (false);
-        else
-            return (true);
+        return !abnormalFlag.equals("") && !abnormalFlag.equals("N");
     }
 
     public String getOBXAbnormalFlag(int i, int j) {
@@ -756,7 +753,7 @@ public class TDISHandler implements MessageHandler {
                 return hin;
             } //return first instance that is not null
         } catch (HL7Exception e) {
-            logger.error("ERROR getting the health number for HL7 lab report patient: " + e.toString());
+            logger.error("ERROR getting the health number for HL7 lab report patient: " + e);
         }
 
         return "";

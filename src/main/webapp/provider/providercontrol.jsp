@@ -115,10 +115,7 @@
         OscarProperties props = OscarProperties.getInstance();
         String caisiView = null;
         caisiView = request.getParameter("GoToCaisiViewFromOscarView");
-        boolean viewAll_bool = true;  // false, restore original schedule view on appointment screen
-
-        if (props.getProperty("default_schedule_viewall", "").startsWith("false"))
-            viewAll_bool = false;
+        boolean viewAll_bool = !props.getProperty("default_schedule_viewall", "").startsWith("false");  // false, restore original schedule view on appointment screen
 
         if (caisiView != null && "true".equals(caisiView)) {
             if (viewAll_bool) {

@@ -63,7 +63,7 @@ int rCount = 0;
 
     for (CtlBillingService result:results) {
 
-      bodd=bodd?false:true; //for the color of rows
+      bodd= !bodd; //for the color of rows
       
       service_name = result.getServiceTypeName();
       if(rCount < 20) {

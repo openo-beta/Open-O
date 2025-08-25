@@ -61,8 +61,7 @@
     String project_home = request.getContextPath().substring(1);
 %>
 <%
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 %>
 <html>
     <head>
@@ -332,7 +331,7 @@
                                                                                       value="<%= props.getProperty("paidServiceHour1", "") %>"/>
                                                     </td>
                                                     <td width="35%">Cost $<input type="text"
-                                                                                 onchange="javascript:roundCost('23')"
+                                                                                 onchange="roundCost('23')"
                                                                                  name="paidServiceCost1"
                                                                                  size="20" class="textbox"
                                                                                  value="<%= props.getProperty("paidServiceCost1", "") %>"/>
@@ -348,7 +347,7 @@
                                                                           value="<%= props.getProperty("paidServiceHour2", "") %>"/>
                                                     </td>
                                                     <td>Cost $<input type="text"
-                                                                     onchange="javascript:roundCost('26')"
+                                                                     onchange="roundCost('26')"
                                                                      name="paidServiceCost2"
                                                                      size="20" class="textbox"
                                                                      value="<%= props.getProperty("paidServiceCost2", "") %>"/>
@@ -364,7 +363,7 @@
                                                                           value="<%= props.getProperty("paidServiceHour3", "") %>"/>
                                                     </td>
                                                     <td>Cost $<input type="text"
-                                                                     onchange="javascript:roundCost('29')"
+                                                                     onchange="roundCost('29')"
                                                                      name="paidServiceCost3"
                                                                      size="20" class="textbox"
                                                                      value="<%= props.getProperty("paidServiceCost3", "") %>"/>
@@ -743,15 +742,15 @@
                                 <%
                                     if (!bView) {
                                 %> <input type="submit" value="Save"
-                                          onclick="javascript: return onSave();"/> <input type="submit"
+                                          onclick="return onSave();"/> <input type="submit"
                                                                                           value="Save and Exit"
-                                                                                          onclick="javascript:if(checkBeforeSave()==true) return onSaveExit(); else return false;"/>
+                                                                                          onclick="if(checkBeforeSave()==true) return onSaveExit(); else return false;"/>
                                 <%
                                     }
                                 %> <input type="button" value="Exit"
-                                          onclick="javascript:return onExit();"/> <input type="button"
+                                          onclick="return onExit();"/> <input type="button"
                                                                                          value="Print"
-                                                                                         onclick="javascript:window.print();"/>
+                                                                                         onclick="window.print();"/>
                             </td>
                             <td align="right">Study ID: <%= props.getProperty("studyID", "N/A") %>
                                 <input type="hidden" name="studyID"

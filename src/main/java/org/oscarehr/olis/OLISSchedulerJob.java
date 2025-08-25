@@ -36,7 +36,6 @@ public class OLISSchedulerJob extends TimerTask {
         try {
             logger.info("starting OLIS poller job");
             OLISSystemPreferencesDao olisPrefDao = (OLISSystemPreferencesDao) SpringUtils.getBean(OLISSystemPreferencesDao.class);
-            ;
             OLISSystemPreferences olisPrefs = olisPrefDao.getPreferences();
             if (olisPrefs == null) {
                 // not set to run at all

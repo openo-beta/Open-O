@@ -764,10 +764,7 @@ public class AdmissionDaoImpl extends AbstractDaoImpl<Admission> implements Admi
 
     @Override
     public boolean wasInProgram(Integer programId, Integer clientId) {
-        if (getAdmission(programId, clientId) != null)
-            return true;
-        else
-            return false;
+        return getAdmission(programId, clientId) != null;
 
     }
 

@@ -54,7 +54,7 @@
                                                             name="submitXml" value="Submit to XML"> <input type="submit"
                                                                                                            name="submit"
                                                                                                            value="Submit"
-                                                                                                           onclick="javascript:form.action='SelectItems.jsp';">
+                                                                                                           onclick="form.action='SelectItems.jsp';">
     <input
             type="reset" value="Reset"></form>
 </body>

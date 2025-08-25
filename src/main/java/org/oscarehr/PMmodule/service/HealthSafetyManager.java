@@ -30,12 +30,12 @@ import org.oscarehr.PMmodule.model.HealthSafety;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface HealthSafetyManager {
-    public HealthSafetyDao getHealthSafetyDao();
+    HealthSafetyDao getHealthSafetyDao();
 
-    public void setHealthSafetyDao(HealthSafetyDao healthSafetyDao);
+    void setHealthSafetyDao(HealthSafetyDao healthSafetyDao);
 
-    public HealthSafety getHealthSafetyByDemographic(Long demographicNo);
+    HealthSafety getHealthSafetyByDemographic(Long demographicNo);
 
-    public void saveHealthSafetyByDemographic(HealthSafety healthsafety);
+    void saveHealthSafetyByDemographic(HealthSafety healthsafety);
 }
  

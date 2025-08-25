@@ -42,5 +42,5 @@ import org.springframework.stereotype.Repository;
 
 public interface GstControlDao extends AbstractDao<GstControl> {
 
-    public List<GstControl> findAll();
+    List<GstControl> findAll();
 }

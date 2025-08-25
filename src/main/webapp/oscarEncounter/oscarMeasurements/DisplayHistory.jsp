@@ -224,7 +224,7 @@
                         <tr>
                             <td><input type="button" name="Button" class="btn DoNotPrint"
                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.oldmesurementindex"/>"
-                                       onClick="javascript: popupPage(300,800,'oscarEncounter/oscarMeasurements/SetupHistoryIndex.do')"></td>
+                                       onClick="popupPage(300,800,'oscarEncounter/oscarMeasurements/SetupHistoryIndex.do')"></td>
                             <td><input type="button" name="Button" class="btn DoNotPrint"
                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>"
                                        onClick="window.print()"></td>
@@ -239,7 +239,7 @@
                             <c:if test="${not empty data.canPlot}">
                                 <td><input type="button" name="Button" class="btn DoNotPrint"
                                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarMeasurements.displayHistory.plot"/>"
-                                           onClick="javascript: popupPage(600,1000,'../../oscarEncounter/GraphMeasurements.do?demographic_no=<%=demo%>&type=
+                                           onClick="popupPage(600,1000,'../../oscarEncounter/GraphMeasurements.do?demographic_no=<%=demo%>&type=
                                                ${type}')">
                                 </td>
                             </c:if>

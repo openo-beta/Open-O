@@ -48,7 +48,7 @@ public class AppointmentArchiveDaoImpl extends AbstractDaoImpl<AppointmentArchiv
     @Override
     public AppointmentArchive archiveAppointment(Appointment appointment) {
         AppointmentArchive aa = new AppointmentArchive();
-        BeanUtils.copyProperties(appointment, aa, new String[]{"id"});
+        BeanUtils.copyProperties(appointment, aa, "id");
         aa.setAppointmentNo(appointment.getId());
         persist(aa);
         return aa;

@@ -36,12 +36,12 @@ import org.oscarehr.common.model.PreventionExt;
 
 public interface PreventionExtDao extends AbstractDao<PreventionExt> {
 
-    public List<PreventionExt> findByPreventionId(Integer preventionId);
+    List<PreventionExt> findByPreventionId(Integer preventionId);
 
-    public List<PreventionExt> findByKeyAndValue(String key, String value);
+    List<PreventionExt> findByKeyAndValue(String key, String value);
 
-    public List<PreventionExt> findByPreventionIdAndKey(Integer preventionId, String key);
+    List<PreventionExt> findByPreventionIdAndKey(Integer preventionId, String key);
 
-    public HashMap<String, String> getPreventionExt(Integer preventionId);
+    HashMap<String, String> getPreventionExt(Integer preventionId);
 }
  

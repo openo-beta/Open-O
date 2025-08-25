@@ -73,7 +73,7 @@ public class OLISAddToInbox2Action extends ActionSupport {
                     request.setAttribute("result", "Success");
                     if (doFile) {
                         ArrayList<String[]> labsToFile = new ArrayList<String[]>();
-                        String item[] = new String[]{String.valueOf(msgHandler.getLastSegmentId()), "HL7"};
+                        String[] item = new String[]{String.valueOf(msgHandler.getLastSegmentId()), "HL7"};
                         labsToFile.add(item);
                         CommonLabResultData.fileLabs(labsToFile, providerNo);
                     }

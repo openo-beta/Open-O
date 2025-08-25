@@ -867,7 +867,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
                 }
                 if (filled(val) && !extKeyMatched) { // new ext value(s) added
                     extChanged = true;
-                    break extNames;
+                    break;
                 }
             }
 
@@ -971,7 +971,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
                 issueNames.append(cIssue.getIssue().getDescription() + "\n");
             }
 
-            strNote += "\n" + new SimpleDateFormat("dd-MMM-yyyy", request.getLocale()).format(new Date()) + " " + props.getString("oscarEncounter.removedIssue.Msg") + ":\n" + issueNames.toString();
+            strNote += "\n" + new SimpleDateFormat("dd-MMM-yyyy", request.getLocale()).format(new Date()) + " " + props.getString("oscarEncounter.removedIssue.Msg") + ":\n" + issueNames;
             note.setNote(strNote);
             removed = true;
         } else {
@@ -996,7 +996,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
             // if we have removed an issue add it to message body
             if (issueNames.length() > 0) {
-                strNote += "\n" + new SimpleDateFormat("dd-MMM-yyyy", request.getLocale()).format(new Date()) + " " + props.getString("oscarEncounter.removedIssue.Msg") + ":\n" + issueNames.toString();
+                strNote += "\n" + new SimpleDateFormat("dd-MMM-yyyy", request.getLocale()).format(new Date()) + " " + props.getString("oscarEncounter.removedIssue.Msg") + ":\n" + issueNames;
                 note.setNote(strNote);
             }
 
@@ -1419,10 +1419,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         String strBeanName = "casemgmt_oscar_bean" + demo;
         EctSessionBean sessionBean = (EctSessionBean) session.getAttribute(strBeanName);
         String verifyStr = request.getParameter("verify");
-        boolean verify = false;
-        if (verifyStr != null && verifyStr.equalsIgnoreCase("on")) {
-            verify = true;
-        }
+        boolean verify = verifyStr != null && verifyStr.equalsIgnoreCase("on");
 
         // update password
         String passwd = this.getCaseNote().getPassword();
@@ -2075,7 +2072,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
                     + "&apptProvider_no=" + apptProvider
                     + "&appointment_date=" + date
                     + "&start_time=" + start_time
-                    + "&bNewForm=1" + dxCodes.toString();
+                    + "&bNewForm=1" + dxCodes;
             logger.debug("BILLING URL " + url);
             response.sendRedirect(url);
         }
@@ -2717,7 +2714,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         request.setAttribute("current", current);
 
         StringBuilder title = new StringBuilder();
-        String arrIssues[] = issueIds.split(",");
+        String[] arrIssues = issueIds.split(",");
         ResourceBundle props = ResourceBundle.getBundle("oscarResources");
         if (arrIssues != null) {
             for (int idx = 0; idx < arrIssues.length; ++idx) {
@@ -2916,7 +2913,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
 
         CaseManagementPrint cmp = new CaseManagementPrint();
-        cmp.doPrint(loggedInInfo, demographicNo, printAllNotes, noteIds, printCPP, printRx, printLabs, printPreventions, (pType != null && "dates".equals(pType)) ? true : false, cStartDate, cEndDate, request, response.getOutputStream());
+        cmp.doPrint(loggedInInfo, demographicNo, printAllNotes, noteIds, printCPP, printRx, printLabs, printPreventions, pType != null && "dates".equals(pType), cStartDate, cEndDate, request, response.getOutputStream());
 
         return null;
     }

@@ -194,7 +194,7 @@
             </li>
             <li>
                 <input type="button" id="submitSearch" name="submitSearch" value="Search"
-                       onclick="javascript:form.submit();"/>
+                       onclick="form.submit();"/>
             </li>
         </ul>
     </div>
@@ -348,8 +348,8 @@
     </div>
     </div>
     <div id="toolBar" class="bgLilac">
-        <input type="button" id="submitList" name="submitList" value="Submit" onclick="javascript:form.submit();"/>
-        <input type="button" id="cancelTrans" name="cancelTrans" value="Cancel" onclick="javascript:window.close();"/>
+        <input type="button" id="submitList" name="submitList" value="Submit" onclick="form.submit();"/>
+        <input type="button" id="cancelTrans" name="cancelTrans" value="Cancel" onclick="window.close();"/>
     </div>
 </form>
 </body>

@@ -24,11 +24,11 @@
 package org.caisi.tickler.prepared;
 
 public interface PreparedTickler {
-    public String getName();
+    String getName();
 
-    public String getViewPath();
+    String getViewPath();
 
-    public String execute() throws Exception;
+    String execute() throws Exception;
 
-    public void setDependency(String name, Object o);
+    void setDependency(String name, Object o);
 }

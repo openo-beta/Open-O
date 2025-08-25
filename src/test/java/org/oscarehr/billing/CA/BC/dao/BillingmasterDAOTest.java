@@ -60,7 +60,7 @@ public class BillingmasterDAOTest extends DaoTestFixtures {
         dao.save(master);
 
         int count = dao.updateBillingUnitForBillingNumber("NIHRENASEIBE", 99999);
-        assertTrue(count == 1);
+        assertEquals(1, count);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class BillingmasterDAOTest extends DaoTestFixtures {
         dao.save(b);
 
         int i = dao.updateBillingUnitForBillingNumber("BU", 999);
-        assertTrue(i == 1);
+        assertEquals(1, i);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class BillingmasterDAOTest extends DaoTestFixtures {
         dao.save(b);
 
         int i = dao.markListAsBilled(Arrays.asList(new String[]{String.valueOf(b.getBillingmasterNo())}));
-        assertTrue(i == 1);
+        assertEquals(1, i);
     }
 
     @Test

@@ -56,7 +56,7 @@ public class EctConAddService2Action extends ActionSupport {
         }
 
         ConsultationServices cs = new ConsultationServices();
-        cs.setActive(consultationServiceDao.ACTIVE);
+        cs.setActive(ConsultationServiceDao.ACTIVE);
         cs.setServiceDesc(service);
         consultationServiceDao.persist(cs);
         request.setAttribute("SERVADD", service);

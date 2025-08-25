@@ -874,8 +874,7 @@ public final class RxWriteScript2Action extends ActionSupport {
                     if (!val.equals("") && !val.equalsIgnoreCase("null")) rx.setRepeat(Integer.parseInt(val));
                 } else if (elem.equals("prnVal_" + num)) {
                     if (!val.equals("") && !val.equalsIgnoreCase("null")) {
-                        if (val.equalsIgnoreCase("true")) rx.setPrn(true);
-                        else rx.setPrn(false);
+                        rx.setPrn(val.equalsIgnoreCase("true"));
                     } else rx.setPrn(false);
                 }
             }
@@ -983,17 +982,9 @@ public final class RxWriteScript2Action extends ActionSupport {
                                 isLongTerm = false;
                             }
                         } else if (elem.equals("shortTerm_" + num)) {
-                            if (val.equals("on")) {
-                                isShortTerm = true;
-                            } else {
-                                isShortTerm = false;
-                            }
+                            isShortTerm = val.equals("on");
                         } else if (elem.equals("nonAuthoritativeN_" + num)) {
-                            if (val.equals("on")) {
-                                isNonAuthoritative = true;
-                            } else {
-                                isNonAuthoritative = false;
-                            }
+                            isNonAuthoritative = val.equals("on");
                         } else if (elem.equals("nosubs_" + num)) {
                             nosubs = "on".equals(val);
                         } else if (elem.equals("refillDuration_" + num)) {
@@ -1040,11 +1031,7 @@ public final class RxWriteScript2Action extends ActionSupport {
                                 rx.setOutsideProviderOhip(val);
                             }
                         } else if (elem.equals("ocheck_" + num)) {
-                            if (val.equals("on")) {
-                                isOutsideProvider = true;
-                            } else {
-                                isOutsideProvider = false;
-                            }
+                            isOutsideProvider = val.equals("on");
                         } else if (elem.equals("pastMed_" + num)) {
                             if ("yes".equals(val)) {
                                 isPastMed = true;
@@ -1052,17 +1039,9 @@ public final class RxWriteScript2Action extends ActionSupport {
                                 isPastMed = false;
                             }
                         } else if (elem.equals("dispenseInternal_" + num)) {
-                            if (val.equals("on")) {
-                                isDispenseInternal = true;
-                            } else {
-                                isDispenseInternal = false;
-                            }
+                            isDispenseInternal = val.equals("on");
                         } else if (elem.equals("startDateUnknown_" + num)) {
-                            if (val.equals("on")) {
-                                isStartDateUnknown = true;
-                            } else {
-                                isStartDateUnknown = false;
-                            }
+                            isStartDateUnknown = val.equals("on");
                         } else if (elem.equals("comment_" + num)) {
                             rx.setComment(val);
                         } else if (elem.equals("patientCompliance_" + num)) {
@@ -1124,12 +1103,12 @@ public final class RxWriteScript2Action extends ActionSupport {
                             special = rx.getCustomName() + newline + rx.getSpecial();
                             if (rx.getSpecialInstruction() != null && !rx.getSpecialInstruction().equalsIgnoreCase("null") && rx.getSpecialInstruction().trim().length() > 0)
                                 special += newline + rx.getSpecialInstruction();
-                            special += newline + "Qty:" + rx.getQuantity() + " Repeats:" + "" + rx.getRepeat();
+                            special += newline + "Qty:" + rx.getQuantity() + " Repeats:" + rx.getRepeat();
                         } else {
                             special = rx.getCustomName() + newline + rx.getSpecial();
                             if (rx.getSpecialInstruction() != null && !rx.getSpecialInstruction().equalsIgnoreCase("null") && rx.getSpecialInstruction().trim().length() > 0)
                                 special += newline + rx.getSpecialInstruction();
-                            special += newline + "Qty:" + rx.getQuantity() + " " + rx.getUnitName() + " Repeats:" + "" + rx.getRepeat();
+                            special += newline + "Qty:" + rx.getQuantity() + " " + rx.getUnitName() + " Repeats:" + rx.getRepeat();
                         }
                     } else {// non-custom drug
                         if (rx.getUnitName() == null) {
@@ -1137,12 +1116,12 @@ public final class RxWriteScript2Action extends ActionSupport {
                             if (rx.getSpecialInstruction() != null && !rx.getSpecialInstruction().equalsIgnoreCase("null") && rx.getSpecialInstruction().trim().length() > 0)
                                 special += newline + rx.getSpecialInstruction();
 
-                            special += newline + "Qty:" + rx.getQuantity() + " Repeats:" + "" + rx.getRepeat();
+                            special += newline + "Qty:" + rx.getQuantity() + " Repeats:" + rx.getRepeat();
                         } else {
                             special = rx.getBrandName() + newline + rx.getSpecial();
                             if (rx.getSpecialInstruction() != null && !rx.getSpecialInstruction().equalsIgnoreCase("null") && rx.getSpecialInstruction().trim().length() > 0)
                                 special += newline + rx.getSpecialInstruction();
-                            special += newline + "Qty:" + rx.getQuantity() + " " + rx.getUnitName() + " Repeats:" + "" + rx.getRepeat();
+                            special += newline + "Qty:" + rx.getQuantity() + " " + rx.getUnitName() + " Repeats:" + rx.getRepeat();
                         }
                     }
 
@@ -1327,7 +1306,6 @@ public final class RxWriteScript2Action extends ActionSupport {
         }
         LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ADD, LogConst.CON_PRESCRIPTION, scriptId, ip, "" + bean.getDemographicNo(), auditStr.toString());
 
-        return;
     }
 
     public String checkNoStashItem() throws IOException, Exception {
@@ -1369,10 +1347,7 @@ public final class RxWriteScript2Action extends ActionSupport {
 
         MiscUtils.getLogger().debug("addDrugReasonCalled codingSystem " + codingSystem + " code " + code + " drugIdStr " + drugId);
 
-        boolean primaryReasonFlag = true;
-        if (!"true".equals(primaryReasonFlagStr)) {
-            primaryReasonFlag = false;
-        }
+        boolean primaryReasonFlag = "true".equals(primaryReasonFlagStr);
 
         DrugReason dr = new DrugReason();
 

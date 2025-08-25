@@ -346,7 +346,7 @@
                 </tr>
 
                 <% if (oscarVariables.getProperty("demographicExt") != null) {
-                    boolean bExtForm = oscarVariables.getProperty("demographicExtForm") != null ? true : false;
+                    boolean bExtForm = oscarVariables.getProperty("demographicExtForm") != null;
                     String[] propDemoExtForm = bExtForm ? (oscarVariables.getProperty("demographicExtForm", "").split("\\|")) : null;
                     String[] propDemoExt = oscarVariables.getProperty("demographicExt", "").split("\\|");
                     for (int i = 1; i < propDemoExt.length; i++) {%>

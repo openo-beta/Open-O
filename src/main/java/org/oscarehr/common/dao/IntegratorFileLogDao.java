@@ -37,14 +37,14 @@ import org.springframework.stereotype.Repository;
 
 public interface IntegratorFileLogDao extends AbstractDao<IntegratorFileLog> {
 
-    public IntegratorFileLog getLastFileData();
+    IntegratorFileLog getLastFileData();
 
-    public List<IntegratorFileLog> getFileLogHistory();
+    List<IntegratorFileLog> getFileLogHistory();
 
-    public IntegratorFileLog findByFilenameAndChecksum(String filename, String checksum);
+    IntegratorFileLog findByFilenameAndChecksum(String filename, String checksum);
 
-    public List<IntegratorFileLog> findAllWithNoCompletedIntegratorStatus();
+    List<IntegratorFileLog> findAllWithNoCompletedIntegratorStatus();
 
-    public List<IntegratorFileLog> findAllWithNoCompletedOrErrorIntegratorStatus();
+    List<IntegratorFileLog> findAllWithNoCompletedOrErrorIntegratorStatus();
 
 }

@@ -55,23 +55,23 @@ public interface EFormReportToolManager {
     //protected EntityManager entityManager = null;
 
 
-    public List<EFormReportTool> findAll(LoggedInInfo loggedInInfo, Integer offset, Integer limit);
+    List<EFormReportTool> findAll(LoggedInInfo loggedInInfo, Integer offset, Integer limit);
 
     /*
      * Updates the eft_latest column to 1 for the latest form from each demographic. This is calculated by latest form date/form time, and in the
      * case that there's 2 results, the highest fdid will be marked.
      */
-    public void markLatest(LoggedInInfo loggedInInfo, Integer eformReportToolId);
+    void markLatest(LoggedInInfo loggedInInfo, Integer eformReportToolId);
 
-    public void addNew(LoggedInInfo loggedInInfo, EFormReportTool eformReportTool);
+    void addNew(LoggedInInfo loggedInInfo, EFormReportTool eformReportTool);
 
-    public void populateReportTable(LoggedInInfo loggedInInfo, Integer eformReportToolId);
+    void populateReportTable(LoggedInInfo loggedInInfo, Integer eformReportToolId);
 
-    public void deleteAllData(LoggedInInfo loggedInInfo, Integer eformReportToolId);
+    void deleteAllData(LoggedInInfo loggedInInfo, Integer eformReportToolId);
 
-    public void remove(LoggedInInfo loggedInInfo, Integer eformReportToolId);
+    void remove(LoggedInInfo loggedInInfo, Integer eformReportToolId);
 
-    public int getNumRecords(LoggedInInfo loggedInInfo, Integer eformReportToolId);
+    int getNumRecords(LoggedInInfo loggedInInfo, Integer eformReportToolId);
 
-    public Integer getNumRecords(LoggedInInfo loggedInInfo, EFormReportTool eformReportTool);
+    Integer getNumRecords(LoggedInInfo loggedInInfo, EFormReportTool eformReportTool);
 }

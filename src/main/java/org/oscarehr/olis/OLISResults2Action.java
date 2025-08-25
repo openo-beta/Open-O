@@ -96,7 +96,7 @@ public class OLISResults2Action extends ActionSupport {
 
 
             @SuppressWarnings("unchecked")
-            ArrayList<String> messages = Utilities.separateMessages(System.getProperty("java.io.tmpdir") + "/olis_" + uuid.toString() + ".response");
+            ArrayList<String> messages = Utilities.separateMessages(System.getProperty("java.io.tmpdir") + "/olis_" + uuid + ".response");
 
             List<String> resultList = new LinkedList<String>();
 

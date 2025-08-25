@@ -152,7 +152,7 @@ for(Object[] result : reportProviderDao.search_reportprovider("visitreport", ohi
     visitcount = vrd.getCreatorCount();
     apptvisitcount = vrd.getApptProviderCount();
 
-    if (oldteam.compareTo(team) != 0)  bodd=bodd?false:true; //for the color of rows
+    if (oldteam.compareTo(team) != 0)  bodd= !bodd; //for the color of rows
 
     %>
 	<tr>

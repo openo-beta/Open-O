@@ -891,7 +891,7 @@ Object.extend(Hash.prototype, {
 function $H(object) {
     if (object instanceof Hash) return object;
     return new Hash(object);
-};
+}
 
 // Safari iterates over shadowed properties
 if (function () {

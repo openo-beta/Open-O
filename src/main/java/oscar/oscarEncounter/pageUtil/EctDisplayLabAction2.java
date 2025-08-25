@@ -272,7 +272,7 @@ public class EctDisplayLabAction2 extends EctDisplayAction {
 
         private Date parseServiceDate(String serviceDate) {
             Date result = null;
-            String dateFormat[] = new String[]{"yyyy-MM-dd", "dd-MMM-yyyy"};
+            String[] dateFormat = new String[]{"yyyy-MM-dd", "dd-MMM-yyyy"};
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
 
             for (int idx = 0; idx < dateFormat.length; ++idx) {

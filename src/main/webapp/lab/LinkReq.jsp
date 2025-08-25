@@ -164,7 +164,7 @@
         if (linkReqId.equals("-1")) {
             LabRequestReportLink.delete(table, Long.valueOf(rptId));
         } else {
-            String parts[] = linkReqId.split(":");
+            String[] parts = linkReqId.split(":");
 
             if (parts[0].equals("form")) {
                 String req_date = "";

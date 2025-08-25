@@ -90,7 +90,7 @@ public class PFHTUtilities {
 
                             }
                             sb.append("\r\n");
-                            logger.info("MSH segment = " + sb.toString());
+                            logger.info("MSH segment = " + sb);
                         } else {
                             sb.append(line + "\r\n");
                         }
@@ -99,7 +99,7 @@ public class PFHTUtilities {
                         sb.append(line + "\r\n");
                 }
             }
-            logger.info("PFHT Message = " + sb.toString());
+            logger.info("PFHT Message = " + sb);
             // add the last message
             messages.add(sb.toString());
 

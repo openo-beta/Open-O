@@ -40,85 +40,85 @@ import org.oscarehr.util.MiscUtils;
 
 public interface DrugDao extends AbstractDao<Drug> {
 
-    public boolean addNewDrug(Drug d);
+    boolean addNewDrug(Drug d);
 
-    public List<Drug> findByPrescriptionId(Integer prescriptionId);
+    List<Drug> findByPrescriptionId(Integer prescriptionId);
 
-    public List<Drug> findByDemographicId(Integer demographicId);
+    List<Drug> findByDemographicId(Integer demographicId);
 
-    public List<Drug> findByDemographicId(Integer demographicId, Boolean archived);
+    List<Drug> findByDemographicId(Integer demographicId, Boolean archived);
 
-    public List<Drug> findByScriptNo(Integer scriptNo, Boolean archived);
+    List<Drug> findByScriptNo(Integer scriptNo, Boolean archived);
 
-    public List<Drug> findByDemographicIdOrderByDate(Integer demographicId, Boolean archived);
+    List<Drug> findByDemographicIdOrderByDate(Integer demographicId, Boolean archived);
 
-    public List<Drug> findByDemographicIdOrderByPositionForExport(Integer demographicId, Boolean archived);
+    List<Drug> findByDemographicIdOrderByPositionForExport(Integer demographicId, Boolean archived);
 
-    public List<Drug> findByDemographicIdOrderByPosition(Integer demographicId, Boolean archived);
+    List<Drug> findByDemographicIdOrderByPosition(Integer demographicId, Boolean archived);
 
-    public List<Drug> findByDemographicIdSimilarDrugOrderByDate(Integer demographicId, String regionalIdentifier,
-                                                                String customName);
+    List<Drug> findByDemographicIdSimilarDrugOrderByDate(Integer demographicId, String regionalIdentifier,
+                                                         String customName);
 
-    public List<Drug> findByDemographicIdSimilarDrugOrderByDate(Integer demographicId, String regionalIdentifier,
-                                                                String customName, String brandName);
+    List<Drug> findByDemographicIdSimilarDrugOrderByDate(Integer demographicId, String regionalIdentifier,
+                                                         String customName, String brandName);
 
-    public List<Drug> findByDemographicIdSimilarDrugOrderByDate(Integer demographicId, String regionalIdentifier,
-                                                                String customName, String brandName, String atc);
+    List<Drug> findByDemographicIdSimilarDrugOrderByDate(Integer demographicId, String regionalIdentifier,
+                                                         String customName, String brandName, String atc);
 
-    public List<Drug> getUniquePrescriptions(String demographic_no);
+    List<Drug> getUniquePrescriptions(String demographic_no);
 
-    public List<Drug> getPrescriptions(String demographic_no);
+    List<Drug> getPrescriptions(String demographic_no);
 
-    public List<Drug> getPrescriptions(String demographic_no, boolean all);
+    List<Drug> getPrescriptions(String demographic_no, boolean all);
 
-    public int getNumberOfDemographicsWithRxForProvider(String providerNo, Date startDate, Date endDate,
-                                                        boolean distinct);
+    int getNumberOfDemographicsWithRxForProvider(String providerNo, Date startDate, Date endDate,
+                                                 boolean distinct);
 
-    public List<Drug> findByDemographicIdUpdatedAfterDate(Integer demographicId, Date updatedAfterThisDate);
+    List<Drug> findByDemographicIdUpdatedAfterDate(Integer demographicId, Date updatedAfterThisDate);
 
-    public List<Drug> findByAtc(String atc);
+    List<Drug> findByAtc(String atc);
 
-    public List<Drug> findByAtc(List<String> atc);
+    List<Drug> findByAtc(List<String> atc);
 
-    public List<Drug> findByDemographicIdAndAtc(int demographicNo, String atc);
+    List<Drug> findByDemographicIdAndAtc(int demographicNo, String atc);
 
-    public List<Drug> findByDemographicIdAndRegion(int demographicNo, String regionalIdentifier);
+    List<Drug> findByDemographicIdAndRegion(int demographicNo, String regionalIdentifier);
 
-    public List<Drug> findByDemographicIdAndDrugId(int demographicNo, Integer drugId);
+    List<Drug> findByDemographicIdAndDrugId(int demographicNo, Integer drugId);
 
-    public List<Object[]> findDrugsAndPrescriptions(int demographicNo);
+    List<Object[]> findDrugsAndPrescriptions(int demographicNo);
 
-    public List<Object[]> findDrugsAndPrescriptionsByScriptNumber(int scriptNumber);
+    List<Object[]> findDrugsAndPrescriptionsByScriptNumber(int scriptNumber);
 
-    public int getMaxPosition(int demographicNo);
+    int getMaxPosition(int demographicNo);
 
-    public Drug findByEverything(String providerNo, int demographicNo, Date rxDate, Date endDate, Date writtenDate,
-                                 String brandName, int gcn_SEQNO, String customName, float takeMin, float takeMax, String frequencyCode,
-                                 String duration, String durationUnit, String quantity, String unitName, int repeat, Date lastRefillDate,
-                                 boolean nosubs, boolean prn, String escapedSpecial, String outsideProviderName, String outsideProviderOhip,
-                                 boolean customInstr, Boolean longTerm, boolean customNote, Boolean pastMed,
-                                 Boolean patientCompliance, String specialInstruction, String comment, boolean startDateUnknown);
+    Drug findByEverything(String providerNo, int demographicNo, Date rxDate, Date endDate, Date writtenDate,
+                          String brandName, int gcn_SEQNO, String customName, float takeMin, float takeMax, String frequencyCode,
+                          String duration, String durationUnit, String quantity, String unitName, int repeat, Date lastRefillDate,
+                          boolean nosubs, boolean prn, String escapedSpecial, String outsideProviderName, String outsideProviderOhip,
+                          boolean customInstr, Boolean longTerm, boolean customNote, Boolean pastMed,
+                          Boolean patientCompliance, String specialInstruction, String comment, boolean startDateUnknown);
 
-    public List<Object[]> findByParameter(String parameter, String value);
+    List<Object[]> findByParameter(String parameter, String value);
 
-    public List<Drug> findByRegionBrandDemographicAndProvider(String regionalIdentifier, String brandName,
-                                                              int demographicNo, String providerNo);
+    List<Drug> findByRegionBrandDemographicAndProvider(String regionalIdentifier, String brandName,
+                                                       int demographicNo, String providerNo);
 
-    public Drug findByBrandNameDemographicAndProvider(String brandName, int demographicNo, String providerNo);
+    Drug findByBrandNameDemographicAndProvider(String brandName, int demographicNo, String providerNo);
 
-    public Drug findByCustomNameDemographicIdAndProviderNo(String customName, int demographicNo, String providerNo);
+    Drug findByCustomNameDemographicIdAndProviderNo(String customName, int demographicNo, String providerNo);
 
-    public Integer findLastNotArchivedId(String brandName, String genericName, int demographicNo);
+    Integer findLastNotArchivedId(String brandName, String genericName, int demographicNo);
 
-    public Drug findByDemographicIdRegionalIdentifierAndAtcCode(String atcCode, String regionalIdentifier,
-                                                                int demographicNo);
+    Drug findByDemographicIdRegionalIdentifierAndAtcCode(String atcCode, String regionalIdentifier,
+                                                         int demographicNo);
 
-    public List<String> findSpecialInstructions();
+    List<String> findSpecialInstructions();
 
-    public List<Integer> findDemographicIdsUpdatedAfterDate(Date updatedAfterThisDate);
+    List<Integer> findDemographicIdsUpdatedAfterDate(Date updatedAfterThisDate);
 
-    public List<Integer> findNewDrugsSinceDemoKey(String keyName);
+    List<Integer> findNewDrugsSinceDemoKey(String keyName);
 
-    public List<Drug> findLongTermDrugsByDemographic(Integer demographicId);
+    List<Drug> findLongTermDrugsByDemographic(Integer demographicId);
 
 }

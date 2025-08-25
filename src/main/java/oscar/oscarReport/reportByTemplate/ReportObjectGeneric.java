@@ -150,7 +150,7 @@ public class ReportObjectGeneric implements ReportObject {
     public String getPreparedSQL(int sequenceNo, Map parameters) {
         String sql = (new ReportManager()).getSQL(this.templateId);
 
-        String parts[] = sql.split(";");
+        String[] parts = sql.split(";");
 
         if (parts.length <= sequenceNo) {
             return null;

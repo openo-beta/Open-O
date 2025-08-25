@@ -37,5 +37,5 @@ import org.springframework.stereotype.Repository;
 
 public interface MsgIntegratorDemoMapDao extends AbstractDao<MsgIntegratorDemoMap> {
 
-    public List<MsgIntegratorDemoMap> findByMessageIdandMsgDemoMapId(Integer messageId, long msgDemoMapId);
+    List<MsgIntegratorDemoMap> findByMessageIdandMsgDemoMapId(Integer messageId, long msgDemoMapId);
 }

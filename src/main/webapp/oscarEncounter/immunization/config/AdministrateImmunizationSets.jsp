@@ -46,7 +46,7 @@
     int stat = 0;
     stat = request.getParameter("stat") != null ? Integer.parseInt(request.getParameter("stat")) : stat;
     stat = request.getAttribute("stat") != null ? Integer.parseInt((String) request.getAttribute("stat")) : stat;
-    boolean deletedList = stat == 0 ? false : true;
+    boolean deletedList = stat != 0;
 
     oscar.oscarEncounter.immunization.config.data.EctImmImmunizationSetData immuSets = new oscar.oscarEncounter.immunization.config.data.EctImmImmunizationSetData();
     immuSets.estImmunizationVecs(stat);
@@ -139,18 +139,18 @@
                 <table width="50%" border=0 cellspacing=1>
                     <tr>
                         <td>
-                            <% if (deletedList == true) { %> <input type="submit" name="action"
-                                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.administrativeImmunizationSets.btnRestore"/>">
+                            <% if (deletedList) { %> <input type="submit" name="action"
+                                                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.administrativeImmunizationSets.btnRestore"/>">
                             <% } else { %> <input type="submit" name="action"
                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.administrativeImmunizationSets.btnDelete"/>">
                             <% } %>
                         </td>
                         <td align="right"><input type="button" name="Button"
                                                  value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.administrativeImmunizationSets.btnAddNew"/>"
-                                                 onClick="javascript:goURL('oscarEncounter/immunization/config/CreateImmunizationSetInit.jsp');">
-                            <% if (deletedList == true) { %> <input type="button" name="action"
-                                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.administrativeImmunizationSets.btnSetlist"/>"
-                                                                    onClick="goURL('oscarEncounter/immunization/config/AdministrateImmunizationSets.jsp');"> <% } else { %>
+                                                 onClick="goURL('oscarEncounter/immunization/config/CreateImmunizationSetInit.jsp');">
+                            <% if (deletedList) { %> <input type="button" name="action"
+                                                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.administrativeImmunizationSets.btnSetlist"/>"
+                                                            onClick="goURL('oscarEncounter/immunization/config/AdministrateImmunizationSets.jsp');"> <% } else { %>
                             <input type="button" name="action"
                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.administrativeImmunizationSets.btnDelList"/>"
                                    onClick="goURL('oscarEncounter/immunization/config/AdministrateImmunizationSets.jsp?stat=2');">

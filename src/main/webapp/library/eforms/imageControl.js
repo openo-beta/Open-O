@@ -12,7 +12,7 @@
             if (src == undefined || src == "" || src.search(imagePathTag) == -1) {
                 return;
             }
-            ;
+
             that.attr("template", src);
             that.attr("src", src.replace(imagePathTag, cfg_isrc));
         });

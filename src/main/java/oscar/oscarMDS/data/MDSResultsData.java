@@ -220,11 +220,7 @@ public class MDSResultsData {
                 lbData.reportStatus = lpp.getLabStatus();
                 lbData.accessionNumber = lpp.getAccessionNum();
 
-                if (lbData.reportStatus != null && lbData.reportStatus.equals("F")) {
-                    lbData.finalRes = true;
-                } else {
-                    lbData.finalRes = false;
-                }
+                lbData.finalRes = lbData.reportStatus != null && lbData.reportStatus.equals("F");
                 lbData.discipline = "Hem/Chem/Other";
                 labResults.add(lbData);
             }
@@ -568,11 +564,7 @@ public class MDSResultsData {
                 lData.requestingClient = ProviderData.beautifyProviderName(mdsPV1refDoctor);
                 lData.reportStatus = reportFormStatus;
 
-                if (lData.reportStatus != null && lData.reportStatus.equals("0")) {
-                    lData.finalRes = false;
-                } else {
-                    lData.finalRes = true;
-                }
+                lData.finalRes = lData.reportStatus == null || !lData.reportStatus.equals("0");
 
 
                 if (!lData.resultStatus.equals("0")) {

@@ -74,11 +74,11 @@ public interface DxresearchDAO extends AbstractDao<Dxresearch> {
 
     String getDescription(String codingSystem, String code);
 
-    public List<Dxresearch> findByDemographicNoResearchCodeAndCodingSystem(Integer demographicNo, String dxresearchCode, String codingSystem);
+    List<Dxresearch> findByDemographicNoResearchCodeAndCodingSystem(Integer demographicNo, String dxresearchCode, String codingSystem);
 
-    public List<dxCodeSearchBean> getQuickListItems(String quickListName);
+    List<dxCodeSearchBean> getQuickListItems(String quickListName);
 
-    public List<Object[]> getDataForInrReport(Date fromDate, Date toDate);
+    List<Object[]> getDataForInrReport(Date fromDate, Date toDate);
 
     Integer countResearches(String researchCode, Date sdate, Date edate);
 

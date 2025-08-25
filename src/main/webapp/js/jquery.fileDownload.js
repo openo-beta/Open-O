@@ -160,7 +160,7 @@ $.extend({
                 if ($preparingDialog) {
                     $preparingDialog.dialog('close');
                 }
-                ;
+
 
                 settings.successCallback(url);
 
@@ -172,7 +172,7 @@ $.extend({
                 if ($preparingDialog) {
                     $preparingDialog.dialog('close');
                 }
-                ;
+
 
                 //wire up a jquery dialog to display the fail message if specified
                 if (settings.failMessageHtml) {

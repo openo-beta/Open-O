@@ -553,10 +553,7 @@ public class ProviderProperty2Action extends ActionSupport {
 
         //String [] propertyArray= new String[7];
         boolean checked;
-        if (propValue.equalsIgnoreCase("yes"))
-            checked = true;
-        else
-            checked = false;
+        checked = propValue.equalsIgnoreCase("yes");
 
         prop.setChecked(checked);
         request.setAttribute("rxShowPatientDOBProperty", prop);
@@ -625,10 +622,7 @@ public class ProviderProperty2Action extends ActionSupport {
         }
 
         boolean checked;
-        if (propValue.equalsIgnoreCase("yes"))
-            checked = true;
-        else
-            checked = false;
+        checked = propValue.equalsIgnoreCase("yes");
 
         prop.setChecked(checked);
         request.setAttribute("rxUseRx3Property", prop);
@@ -1283,10 +1277,7 @@ public class ProviderProperty2Action extends ActionSupport {
         }
 
         boolean checked;
-        if (propValue.equalsIgnoreCase("yes"))
-            checked = true;
-        else
-            checked = false;
+        checked = propValue.equalsIgnoreCase("yes");
 
         prop.setChecked(checked);
         request.setAttribute("cppSingleLineProperty", prop);
@@ -1356,10 +1347,7 @@ public class ProviderProperty2Action extends ActionSupport {
         }
 
         boolean checked;
-        if (propValue.equalsIgnoreCase("yes"))
-            checked = true;
-        else
-            checked = false;
+        checked = propValue.equalsIgnoreCase("yes");
 
         prop.setChecked(checked);
         request.setAttribute("eDocBrowserInDocumentReportProperty", prop);
@@ -1429,10 +1417,7 @@ public class ProviderProperty2Action extends ActionSupport {
         }
 
         boolean checked;
-        if (propValue.equalsIgnoreCase("yes"))
-            checked = true;
-        else
-            checked = false;
+        checked = propValue.equalsIgnoreCase("yes");
 
         prop.setChecked(checked);
         request.setAttribute("eDocBrowserInMasterFileProperty", prop);
@@ -1502,10 +1487,7 @@ public class ProviderProperty2Action extends ActionSupport {
         }
 
         boolean checked;
-        if (propValue.equalsIgnoreCase("yes"))
-            checked = true;
-        else
-            checked = false;
+        checked = propValue.equalsIgnoreCase("yes");
 
         prop.setChecked(checked);
         request.setAttribute("labAckComment", prop);
@@ -1651,10 +1633,7 @@ public class ProviderProperty2Action extends ActionSupport {
 
         boolean assignee = request.getParameter("labRecallTicklerAssignee.checked") != null;
 
-        boolean delete = false;
-        if (delegate.equals("")) {
-            delete = true;
-        }
+        boolean delete = delegate.equals("");
 
         // Save delegate (dropdown)
         UserProperty dProperty = this.userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_DELEGATE);
@@ -1862,7 +1841,7 @@ public class ProviderProperty2Action extends ActionSupport {
             maximize = new UserProperty();
         }
         if (maximize.getValue() != null) {
-            maximize.setChecked(maximize.getValue().equals("yes") ? true : false);
+            maximize.setChecked(maximize.getValue().equals("yes"));
         }
 
         request.setAttribute("width", width);
@@ -2191,10 +2170,7 @@ public class ProviderProperty2Action extends ActionSupport {
         }
 
         boolean checked;
-        if (propValue.equals("Y"))
-            checked = true;
-        else
-            checked = false;
+        checked = propValue.equals("Y");
 
         prop.setChecked(checked);
         request.setAttribute("hideOldEchartLinkInApptProperty", prop);
@@ -2258,10 +2234,7 @@ public class ProviderProperty2Action extends ActionSupport {
         }
 
         boolean checked;
-        if (propValue.equals("yes"))
-            checked = true;
-        else
-            checked = false;
+        checked = propValue.equals("yes");
 
         prop.setChecked(checked);
         request.setAttribute("dashboardShareProperty", prop);
@@ -2456,10 +2429,7 @@ public class ProviderProperty2Action extends ActionSupport {
         }
 
         boolean checked;
-        if (propValue.equals("true"))
-            checked = true;
-        else
-            checked = false;
+        checked = propValue.equals("true");
 
         prop.setChecked(checked);
 

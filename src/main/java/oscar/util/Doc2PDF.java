@@ -124,7 +124,7 @@ public class Doc2PDF {
             return (process.waitFor());
         } catch (Exception e) {
             // An error occurred - send it to stderr for the web server...
-            logger.error(e.toString() + " caught while running:\n\n");
+            logger.error(e + " caught while running:\n\n");
             logger.error("    " + command + "\n");
             logger.error("", e);
             return (1);
@@ -149,7 +149,6 @@ public class Doc2PDF {
         // Convert the file to PDF and send to the web client...
         topdf(request, response, filename);
 
-        return;
     }
 
     public static void parseString2PDF(HttpServletRequest request, HttpServletResponse response, String docText) {
@@ -264,7 +263,6 @@ public class Doc2PDF {
             byte[] binDecodedArray = Base64.decodeBase64(docBin.getBytes());
 
             PrintPDFFromBytes(response, binDecodedArray);
-            return;
 
         } catch (Exception e) {
             logger.error("Unexpected error", e);
@@ -297,7 +295,6 @@ public class Doc2PDF {
 
             o.flush();
             o.close(); // *important* to ensure no more jsp output
-            return;
         } catch (Exception e) {
             logger.error("Unexpected error", e);
         }
@@ -334,7 +331,7 @@ public class Doc2PDF {
             absolutePath = "https://";
         }
 
-        absolutePath += request.getRemoteHost() + ":" + request.getServerPort() + "" + request.getContextPath() + "/";
+        absolutePath += request.getRemoteHost() + ":" + request.getServerPort() + request.getContextPath() + "/";
 
         docText = docText.replaceAll("src='", "src='" + absolutePath);
         docText = docText.replaceAll("src=\"", "src=\"" + absolutePath);

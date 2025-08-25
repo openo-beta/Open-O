@@ -169,7 +169,7 @@
                             <td colspan="2" class="Cell" align="center"><input
                                     type="submit" value=" Remap Measurement "> <input
                                     type="button" value=" Add New Loinc Code "
-                                    onclick="javascript:popupStart('300','600','newMeasurementMap.jsp','Add New Loinc Code')">
+                                    onclick="popupStart('300','600','newMeasurementMap.jsp','Add New Loinc Code')">
                             </td>
                         </tr>
                         <tr>

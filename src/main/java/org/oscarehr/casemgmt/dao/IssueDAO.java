@@ -47,30 +47,30 @@ import com.quatro.model.security.Secrole;
 
 public interface IssueDAO {
 
-    public Issue getIssue(Long id);
+    Issue getIssue(Long id);
 
-    public List<Issue> getIssues();
+    List<Issue> getIssues();
 
-    public List<Issue> findIssueByCode(String[] codes);
+    List<Issue> findIssueByCode(String[] codes);
 
-    public Issue findIssueByCode(String code);
+    Issue findIssueByCode(String code);
 
-    public Issue findIssueByTypeAndCode(String type, String code);
+    Issue findIssueByTypeAndCode(String type, String code);
 
-    public void saveIssue(Issue issue);
+    void saveIssue(Issue issue);
 
-    public void delete(Long issueId);
+    void delete(Long issueId);
 
-    public List<Issue> findIssueBySearch(String search);
+    List<Issue> findIssueBySearch(String search);
 
-    public List<Long> getIssueCodeListByRoles(List<Secrole> roles);
+    List<Long> getIssueCodeListByRoles(List<Secrole> roles);
 
-    public List<Issue> search(String search, List<Secrole> roles, final int startIndex, final int numToReturn);
+    List<Issue> search(String search, List<Secrole> roles, final int startIndex, final int numToReturn);
 
-    public Integer searchCount(String search, List<Secrole> roles);
+    Integer searchCount(String search, List<Secrole> roles);
 
-    public List searchNoRolesConcerned(String search);
+    List searchNoRolesConcerned(String search);
 
-    public List<String> getLocalCodesByCommunityType(String type);
+    List<String> getLocalCodesByCommunityType(String type);
 
 }

@@ -110,7 +110,7 @@ public class RxUtil {
     }
 
     public static int BoolToInt(boolean Expression) {
-        if (Expression == true) {
+        if (Expression) {
             return 1;
         } else {
             return 0;
@@ -136,7 +136,7 @@ public class RxUtil {
     }
 
     public static Object IIf(boolean Expression, Object TruePart, Object FalsePart) {
-        if (Expression == true) {
+        if (Expression) {
             return TruePart;
         } else {
             return FalsePart;
@@ -820,8 +820,7 @@ public class RxUtil {
         MiscUtils.getLogger().debug("in instrucParser,unitName=" + rx.getUnitName());
         boolean isUnitNameUsed = true;
         if (rx.getUnitName() == null || rx.getUnitName().trim().length() == 0) isUnitNameUsed = false;
-        else if (rx.getUnitName().equalsIgnoreCase("null")) isUnitNameUsed = false;
-        else isUnitNameUsed = true;
+        else isUnitNameUsed = !rx.getUnitName().equalsIgnoreCase("null");
         MiscUtils.getLogger().debug("isUnitNameUsed=" + isUnitNameUsed);
         //if duration is 0 or null or length==0,it means duration is not specified by user
         //if quantity,frequency, durationUnit are valid values,isUnitNameUsed==false
@@ -899,7 +898,6 @@ public class RxUtil {
         hm.put("policyViolations", policyViolations);
 
         MiscUtils.getLogger().debug("in parse instruction: " + hm);
-        return;
     }
 
     public static boolean isStringToNumber(String s) {//see if string contains decimal or integer
@@ -909,8 +907,7 @@ public class RxUtil {
         if (m1.find()) {
             String numStr = s.substring(m1.start(), m1.end());
             String restStr = s.replace(numStr, "").trim();
-            if (restStr != null && restStr.length() > 0) retBool = false;
-            else retBool = true;
+            retBool = restStr == null || restStr.length() <= 0;
         } else retBool = false;
 
         return retBool;
@@ -1390,11 +1387,7 @@ public class RxUtil {
         if (lastId != null) {
             int compareId = lastId.intValue();
             MiscUtils.getLogger().debug("compareId: " + compareId);
-            if (drugId > compareId) {
-                lastPrescribed = true;
-            } else {
-                lastPrescribed = false;
-            }
+            lastPrescribed = drugId > compareId;
         } else {
             lastPrescribed = true;
         }

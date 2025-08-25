@@ -114,11 +114,7 @@ public class EpsilonHandler extends CMLHandler implements MessageHandler {
 
     @Override
     public boolean isOBXAbnormal(int i, int j) {
-        if (("").equals(getOBXAbnormalFlag(i, j).trim())) {
-            return (false);
-        } else {
-            return (true);
-        }
+        return !("").equals(getOBXAbnormalFlag(i, j).trim());
 
     }
 

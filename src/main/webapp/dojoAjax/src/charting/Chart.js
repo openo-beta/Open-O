@@ -86,7 +86,7 @@ dojo.extend(dojo.charting.Chart, {
         for (var i = 0; i < this.plotAreas.length; i++) {
             this.plotAreas[i].plotArea.destroy();
         }
-        ;
+
         //	clean out any child nodes.
         while (this.node && this.node.childNodes && this.node.childNodes.length > 0) {
             this.node.removeChild(this.node.childNodes[0]);

@@ -52,7 +52,7 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.timeOut.title"/></title>
     </head>
-    <body onload="javascript:loadUp()">
+    <body onload="loadUp()">
 
     <!--  -->
     <table class="MainTable" id="scrollNumber1"

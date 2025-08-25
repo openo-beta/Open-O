@@ -56,48 +56,48 @@ import com.quatro.model.security.Secuserrole;
  */
 
 public interface SecuserroleDao {
-    public static final String PROVIDER_NO = "providerNo";
-    public static final String ROLE_NAME = "roleName";
-    public static final String ORGCD = "orgcd";
-    public static final String ACTIVEYN = "activeyn";
+    String PROVIDER_NO = "providerNo";
+    String ROLE_NAME = "roleName";
+    String ORGCD = "orgcd";
+    String ACTIVEYN = "activeyn";
 
-    public void saveAll(List list);
+    void saveAll(List list);
 
-    public void save(Secuserrole transientInstance);
+    void save(Secuserrole transientInstance);
 
-    public void updateRoleName(Integer id, String roleName);
+    void updateRoleName(Integer id, String roleName);
 
-    public void delete(Secuserrole persistentInstance);
+    void delete(Secuserrole persistentInstance);
 
-    public int deleteByOrgcd(String orgcd);
+    int deleteByOrgcd(String orgcd);
 
-    public int deleteByProviderNo(String providerNo);
+    int deleteByProviderNo(String providerNo);
 
-    public int deleteById(Integer id);
+    int deleteById(Integer id);
 
-    public int update(Secuserrole instance);
+    int update(Secuserrole instance);
 
-    public Secuserrole findById(java.lang.Integer id);
+    Secuserrole findById(java.lang.Integer id);
 
-    public List findByExample(Secuserrole instance);
+    List findByExample(Secuserrole instance);
 
-    public List findByProperty(String propertyName, Object value);
+    List findByProperty(String propertyName, Object value);
 
-    public List findByProviderNo(Object providerNo);
+    List findByProviderNo(Object providerNo);
 
-    public List findByRoleName(Object roleName);
+    List findByRoleName(Object roleName);
 
-    public List findByOrgcd(Object orgcd, boolean activeOnly);
+    List findByOrgcd(Object orgcd, boolean activeOnly);
 
-    public List searchByCriteria(StaffForm staffForm);
+    List searchByCriteria(StaffForm staffForm);
 
-    public List findByActiveyn(Object activeyn);
+    List findByActiveyn(Object activeyn);
 
-    public List findAll();
+    List findAll();
 
-    public Secuserrole merge(Secuserrole detachedInstance);
+    Secuserrole merge(Secuserrole detachedInstance);
 
-    public void attachDirty(Secuserrole instance);
+    void attachDirty(Secuserrole instance);
 
-    public void attachClean(Secuserrole instance);
+    void attachClean(Secuserrole instance);
 }

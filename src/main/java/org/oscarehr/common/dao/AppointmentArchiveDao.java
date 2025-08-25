@@ -40,7 +40,7 @@ import org.springframework.stereotype.Repository;
 
 public interface AppointmentArchiveDao extends AbstractDao<AppointmentArchive> {
 
-    public AppointmentArchive archiveAppointment(Appointment appointment);
+    AppointmentArchive archiveAppointment(Appointment appointment);
 
-    public List<AppointmentArchive> findByUpdateDate(Date updatedAfterThisDateExclusive, int itemsToReturn);
+    List<AppointmentArchive> findByUpdateDate(Date updatedAfterThisDateExclusive, int itemsToReturn);
 }

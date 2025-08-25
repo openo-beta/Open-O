@@ -262,7 +262,7 @@
                            value="<%=prop.getProperty("referral_no", "")%>" size='5'
                            maxlength='6'> (6 digits, e.g. 123456) <input type="submit"
                                                                          name="submit" value="Search"
-                                                                         onclick="javascript:return onSearch();">
+                                                                         onclick="return onSearch();">
                 </td>
             </tr>
             <tr>
@@ -362,7 +362,7 @@
                         type="hidden" name="action" value='<%=action%>'> <% if (!"search".equals(action)) {%>
                     <input type="submit" name="submit"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnSave"/>"
-                           onclick="javascript:return onSave();"> <% }%> <input
+                           onclick="return onSave();"> <% }%> <input
                             type="button" name="Cancel"
                             value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnExit"/>"
                             onClick="window.close()"></td>

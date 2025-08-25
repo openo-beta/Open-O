@@ -115,10 +115,7 @@ public class EctDisplayEHR2Action extends EctDisplayAction {
             return false;
         }
 
-        if (d.after(new Date())) {
-            return true;
-        }
-        return false;
+        return d.after(new Date());
     }
 
     protected Date retrieveSessionExpiration(String oneIdToken) {

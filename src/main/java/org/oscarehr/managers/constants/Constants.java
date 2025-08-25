@@ -32,29 +32,29 @@ public class Constants {
     public static class Cares {
 
         // OSCAR fields
-        public static enum Prevention {
+        public enum Prevention {
             HepAB, HepA, HepB, Td, Pneumovax, PneuC, Smoking, Flu, RZV, HZV, Zoster,
         }
 
-        public static enum Measurement {
+        public enum Measurement {
             EFI, EGFR, CRCL, id, date, score
         }
 
-        public static enum Problem {
+        public enum Problem {
             problems, id, startdate, code, description, active
         }
 
-        public static enum Medication {
+        public enum Medication {
             medications, id, rxDate, prescription, active
         }
 
-        public static enum Tickler {
+        public enum Tickler {
             tickler, saved, id, priorities, textSuggestions, providers, ticklerCategories, message, comments,
             categoryId, taskAssignedTo, priority, serviceDate, serviceTime, demographicNo, TicklerNote
         }
 
         // eCARES form fields
-        public static enum FormField {
+        public enum FormField {
             // preventions
             zoster, influenza, pneumococcal, tetanus_and_diphtheria, hep_a, hep_b, smoke,
 

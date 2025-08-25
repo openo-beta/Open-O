@@ -170,7 +170,7 @@
                     if (providerMap.get(rsdemo.getString("provider_no")) == null) continue;
                 }
 
-                bodd = bodd ? false : true;
+                bodd = !bodd;
                 if (!strTemp.equals(rsdemo.getString("provider_no"))) { //new provider for a new table
                     strTemp = rsdemo.getString("provider_no");
                     bFistL = true;

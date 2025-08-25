@@ -63,7 +63,7 @@ public class ProviderData {
                     return subStrings[1];
                 }
             } catch (Exception e) {
-                MiscUtils.getLogger().debug("Error in ProviderData: " + e.toString());
+                MiscUtils.getLogger().debug("Error in ProviderData: " + e);
                 return name.replace('^', ' ');
             }
         } else {

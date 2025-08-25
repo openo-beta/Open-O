@@ -35,7 +35,7 @@ import java.sql.SQLException;
 
 public interface PregnancyFormsDao {
 
-    public static Integer getLatestFormIdByPregnancy(Integer episodeId) {
+    static Integer getLatestFormIdByPregnancy(Integer episodeId) {
         String sql = "SELECT id from formONAREnhancedRecord WHERE episodeId=" + episodeId + " ORDER BY formEdited DESC";
         ResultSet rs = DBHelp.searchDBRecord(sql);
         try {
@@ -50,7 +50,7 @@ public interface PregnancyFormsDao {
         return 0;
     }
 
-    public static Integer getLatestFormIdByDemographicNo(Integer demographicNo) {
+    static Integer getLatestFormIdByDemographicNo(Integer demographicNo) {
         String sql = "SELECT id from formONAREnhancedRecord WHERE demographic_no=" + demographicNo + " ORDER BY formEdited DESC";
         ResultSet rs = DBHelp.searchDBRecord(sql);
         try {
@@ -65,7 +65,7 @@ public interface PregnancyFormsDao {
         return 0;
     }
 
-    public static Integer getLatestAR2005FormIdByDemographicNo(Integer demographicNo) {
+    static Integer getLatestAR2005FormIdByDemographicNo(Integer demographicNo) {
         String sql = "SELECT id from formONAR WHERE demographic_no=" + demographicNo + " ORDER BY formEdited DESC";
         ResultSet rs = DBHelp.searchDBRecord(sql);
         try {

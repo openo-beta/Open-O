@@ -103,10 +103,6 @@ public class CompositeFormBCAR2020TextId implements Serializable {
 
         if (field == null && other.getField() != null) {
             return false;
-        } else if (!field.equals(other.getField())) {
-            return false;
-        }
-
-        return true;
+        } else return field.equals(other.getField());
     }
 }

@@ -59,7 +59,7 @@
 
         String red = "form/graphics/redMark.gif";
         String blue = "form/graphics/blueMark.gif";
-        String chart = ((FrmRourkeRecord) rec).isFemale(demoNo) == true ? "form/graphics/girlLength36m.jpg" : "form/graphics/boyLength36m.jpg";
+        String chart = ((FrmRourkeRecord) rec).isFemale(demoNo) ? "form/graphics/girlLength36m.jpg" : "form/graphics/boyLength36m.jpg";
     %>
 
 
@@ -152,7 +152,7 @@
         function fData(col, line, name) {
             var size = name.length;
             if (size == 0) {
-                return;
+
             } else {
                 size = size - 3;
                 if (name.substring(0, size) != "") {
@@ -334,15 +334,15 @@
     </SCRIPT>
 
     <body class="graph">
-    <img name="chart" src="<%=chart%>" onLoad="javascript:graphChart();"
+    <img name="chart" src="<%=chart%>" onLoad="graphChart();"
          border="0"
          style="position: absolute; width: 943px; z-index: 0; top: 0; left: 0;"/>
     <a name="ctls" id="ctls"></a>
     <span class="hidePrint" class="Header"> <input type="button"
-                                                   value="print" onclick="javascript:window.print();"
+                                                   value="print" onclick="window.print();"
                                                    style="position: relative; width: 100px;"/> <input type="button"
                                                                                                       value="exit"
-                                                                                                      onclick="javascript: window.close();"
+                                                                                                      onclick="window.close();"
                                                                                                       style="position: relative; width: 100px;"/> </span>
     </body>
 </html>

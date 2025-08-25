@@ -58,8 +58,7 @@
     String project_home = request.getContextPath().substring(1);
 %>
 <%
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 %>
 <!--
 /*
@@ -337,15 +336,15 @@
                     <%
                         if (!bView) {
                     %> <input type="submit" value="Save"
-                              onclick="javascript:return onSave();"/> <input type="submit"
+                              onclick="return onSave();"/> <input type="submit"
                                                                              value="Save and Exit"
-                                                                             onclick="javascript:return onSaveExit();"/> <%
+                                                                             onclick="return onSaveExit();"/> <%
                     }
                 %> <input type="button" value="Exit"
-                          onclick="javascript:return onExit();"/> <%
+                          onclick="return onExit();"/> <%
                     String appPath = request.getContextPath();
                 %> <% if (formId > 0) { %> <input type="submit"
-                                                  value="Print Preview" onclick="javascript:return onPrintPreview();"/>
+                                                  value="Print Preview" onclick="return onPrintPreview();"/>
                     <!--
             <input type="button" value="Print Preview" onclick="location.href='<%= appPath %>/form/formDischargeSummaryPrint.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&user=<%=provNo%>' " />
             
@@ -777,14 +776,14 @@
                     <%
                         if (!bView) {
                     %> <input type="submit" value="Save"
-                              onclick="javascript:return onSave();"/> <input type="submit"
+                              onclick="return onSave();"/> <input type="submit"
                                                                              value="Save and Exit"
-                                                                             onclick="javascript:return onSaveExit();"/> <%
+                                                                             onclick="return onSaveExit();"/> <%
                     }
                 %> <input type="button" value="Exit"
-                          onclick="javascript:return onExit();"/> <% if (formId > 0) { %> <input
+                          onclick="return onExit();"/> <% if (formId > 0) { %> <input
                         type="submit" value="Print Preview"
-                        onclick="javascript:return onPrintPreview();"/> <%} %>
+                        onclick="return onPrintPreview();"/> <%} %>
                 </td>
             </tr>
         </table>

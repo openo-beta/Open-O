@@ -54,7 +54,7 @@
     </head>
     <body>
     <% if (!defaultPrinterNameAppointmentReceipt.isEmpty()) {
-        if (silentPrintAppointmentReceipt == true) {%>
+        if (silentPrintAppointmentReceipt) {%>
     <fmt:setBundle basename="oscarResources"/><fmt:message key="report.appointmentReceipt.SilentlyPrintToDefaultPrinter"/>
     <%} else {%>
     <fmt:setBundle basename="oscarResources"/><fmt:message key="report.appointmentReceipt.DefaultPrinter"/>

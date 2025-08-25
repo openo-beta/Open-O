@@ -1049,7 +1049,7 @@ public class CihiExportPHC_VRS2Action extends ActionSupport {
                                 String range = handler.getOBXReferenceRange(j, k);
                                 if (StringUtils.filled(range)) {
                                     LaboratoryResults.ReferenceRange refRange = labResults.addNewReferenceRange();
-                                    String rangeLimits[] = range.split("-");
+                                    String[] rangeLimits = range.split("-");
                                     if (rangeLimits.length == 2) {
                                         refRange.setLowLimit(rangeLimits[0]);
                                         refRange.setHighLimit(rangeLimits[1]);
@@ -1193,11 +1193,7 @@ public class CihiExportPHC_VRS2Action extends ActionSupport {
             }
 
             YnIndicator refusedIndicator = immunizations.addNewRefusedFlag();
-            if (prevention.isRefused()) {
-                refusedIndicator.setBoolean(true);
-            } else {
-                refusedIndicator.setBoolean(false);
-            }
+            refusedIndicator.setBoolean(prevention.isRefused());
         }
     }
 

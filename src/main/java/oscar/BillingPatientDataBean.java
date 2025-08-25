@@ -35,7 +35,7 @@ package oscar;
  * JavaDoc comment for this bean
  */
 
-public class BillingPatientDataBean extends java.lang.Object implements java.io.Serializable {
+public class BillingPatientDataBean implements java.io.Serializable {
 
     /*   *
      * Instance variable for the BillingData properties

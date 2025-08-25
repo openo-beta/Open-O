@@ -817,7 +817,7 @@ public class CaseManagementView2Action extends ActionSupport {
         // if no filter return everything
         if (Arrays.binarySearch(issueId, "a") >= 0) return notes;
 
-        boolean none = (Arrays.binarySearch(issueId, "n") >= 0) ? true : false;
+        boolean none = Arrays.binarySearch(issueId, "n") >= 0;
 
         List<CaseManagementNote> filteredNotes = new ArrayList<CaseManagementNote>();
 
@@ -1082,9 +1082,7 @@ public class CaseManagementView2Action extends ActionSupport {
         if (issueDisplay1.certain != null && !issueDisplay1.certain.equals(issueDisplay2.certain)) return (false);
         if (issueDisplay1.major != null && !issueDisplay1.major.equals(issueDisplay2.major)) return (false);
         if (issueDisplay1.priority != null && !issueDisplay1.priority.equals(issueDisplay2.priority)) return (false);
-        if (issueDisplay1.resolved != null && !issueDisplay1.resolved.equals(issueDisplay2.resolved)) return (false);
-
-        return (true);
+        return issueDisplay1.resolved == null || issueDisplay1.resolved.equals(issueDisplay2.resolved);
     }
 
     private IssueDisplay getIssueToDisplay(LoggedInInfo loggedInInfo, CachedDemographicIssue cachedDemographicIssue) throws MalformedURLException {
@@ -1636,7 +1634,7 @@ public class CaseManagementView2Action extends ActionSupport {
         if (prefsBean.getEnable() == null || !prefsBean.getEnable().equals("on")) {
             return new String();
         }
-        String issueCodeArr[] = issueCode.split(";");
+        String[] issueCodeArr = issueCode.split(";");
         StringBuilder sb = new StringBuilder();
         if (issueCodeArr[1].equals("SocHistory")) {
             if (prefsBean.getSocialHxStartDate().equals("on")) {
@@ -1861,7 +1859,7 @@ public class CaseManagementView2Action extends ActionSupport {
 
     private String demographicNo;
     private String providerNo;
-    private String issues[];
+    private String[] issues;
     private String note_view = "summary";
     private String prescipt_view = "current";
     private String tab;
@@ -1884,8 +1882,8 @@ public class CaseManagementView2Action extends ActionSupport {
 
     private String note_sort = null;
     private String filter_provider = "";
-    private String filter_providers[];
-    private String filter_roles[];
+    private String[] filter_providers;
+    private String[] filter_roles;
 
     private long formId;
 

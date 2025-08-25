@@ -182,7 +182,7 @@
                             <div class=DivContentPadding><input type=button
                                                                 value="Back to Search For Drug"
                                                                 class="ControlPushButton"
-                                                                onClick="javascript:window.location.href='oscarRx/SearchDrug.jsp';"/>
+                                                                onClick="window.location.href='oscarRx/SearchDrug.jsp';"/>
                             </div>
                         </td>
                     </tr>
@@ -296,11 +296,11 @@
                                             </td>
 
                                             <td><b>No Subs:</b><input type=checkbox
-                                                                      name="fldNosubs<%= i%>" <% if (f.getNosubs() == true) { %>
+                                                                      name="fldNosubs<%= i%>" <% if (f.getNosubs()) { %>
                                                                       checked
                                                     <%} %> class=tblRow size=1 value="on"/></td>
                                             <td><b>PRN:</b><input type=checkbox name="fldPrn<%= i%>"
-                                                    <% if (f.getPrn() == true) { %> checked <%} %> class=tblRow size=1
+                                                    <% if (f.getPrn()) { %> checked <%} %> class=tblRow size=1
                                                                   value="on"/></td>
                                         </tr>
                                         <tr <%= style %>>
@@ -353,7 +353,7 @@
                             <div class=DivContentPadding><input type=button
                                                                 value="Back to Search For Drug"
                                                                 class="ControlPushButton"
-                                                                onClick="javascript:window.location.href='oscarRx/SearchDrug.jsp';"/>
+                                                                onClick="window.location.href='oscarRx/SearchDrug.jsp';"/>
                             </div>
                         </td>
                     </tr>

@@ -38,13 +38,13 @@ import org.springframework.stereotype.Repository;
 
 public interface DemographicExtArchiveDao extends AbstractDao<DemographicExtArchive> {
 
-    public List<DemographicExtArchive> getDemographicExtArchiveByDemoAndKey(Integer demographicNo, String key);
+    List<DemographicExtArchive> getDemographicExtArchiveByDemoAndKey(Integer demographicNo, String key);
 
-    public DemographicExtArchive getDemographicExtArchiveByArchiveIdAndKey(Long archiveId, String key);
+    DemographicExtArchive getDemographicExtArchiveByArchiveIdAndKey(Long archiveId, String key);
 
-    public List<DemographicExtArchive> getDemographicExtArchiveByArchiveId(Long archiveId);
+    List<DemographicExtArchive> getDemographicExtArchiveByArchiveId(Long archiveId);
 
-    public List<DemographicExtArchive> getDemographicExtArchiveByDemoReverseCronological(Integer demographicNo);
+    List<DemographicExtArchive> getDemographicExtArchiveByDemoReverseCronological(Integer demographicNo);
 
-    public Integer archiveDemographicExt(DemographicExt de);
+    Integer archiveDemographicExt(DemographicExt de);
 }

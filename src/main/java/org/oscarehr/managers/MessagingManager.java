@@ -77,21 +77,21 @@ public interface MessagingManager {
      * @param limit
      * @return
      */
-    public List<MsgDisplayMessage> getInbox(LoggedInInfo loggedInInfo, String messageStatus, int offset, int limit);
+    List<MsgDisplayMessage> getInbox(LoggedInInfo loggedInInfo, String messageStatus, int offset, int limit);
 
-    public MsgDisplayMessage getInboxMessage(LoggedInInfo loggedInInfo, int messageId);
+    MsgDisplayMessage getInboxMessage(LoggedInInfo loggedInInfo, int messageId);
 
-    public MessageTbl getMessage(LoggedInInfo loggedInInfo, int messageId);
+    MessageTbl getMessage(LoggedInInfo loggedInInfo, int messageId);
 
-    public List<MessageList> getMyInboxMessages(LoggedInInfo loggedInInfo, String providerNo, int offset, int limit);
+    List<MessageList> getMyInboxMessages(LoggedInInfo loggedInInfo, String providerNo, int offset, int limit);
 
-    public List<MessageList> getMyInboxMessages(LoggedInInfo loggedInInfo, String providerNo, String status, int offset, int limit);
+    List<MessageList> getMyInboxMessages(LoggedInInfo loggedInInfo, String providerNo, String status, int offset, int limit);
 
-    public List<MessageTbl> getMessagesLinkedToDemographic(LoggedInInfo loggedInInfo, int demographicNo);
+    List<MessageTbl> getMessagesLinkedToDemographic(LoggedInInfo loggedInInfo, int demographicNo);
 
-    public Integer getMyInboxMessagesCount(LoggedInInfo loggedInInfo, String providerNo, String status);
+    Integer getMyInboxMessagesCount(LoggedInInfo loggedInInfo, String providerNo, String status);
 
-    public int getMyInboxMessageCount(LoggedInInfo loggedInInfo, String providerNo, boolean onlyWithPatientAttached);
+    int getMyInboxMessageCount(LoggedInInfo loggedInInfo, String providerNo, boolean onlyWithPatientAttached);
 
     /**
      * This is a short cut hack that returns a proper count in situations when multiple demographics are
@@ -102,9 +102,9 @@ public interface MessagingManager {
      * @param providerNo
      * @return
      */
-    public int getCountNewMessagesDemographicAttached(LoggedInInfo loggedInInfo, String providerNo);
+    int getCountNewMessagesDemographicAttached(LoggedInInfo loggedInInfo, String providerNo);
 
-    public Integer getMyInboxIntegratorMessagesCount(LoggedInInfo loggedInInfo, String providerNo);
+    Integer getMyInboxIntegratorMessagesCount(LoggedInInfo loggedInInfo, String providerNo);
 
     /**
      * Get the count of all messages attached to the given demographic Id.
@@ -113,7 +113,7 @@ public interface MessagingManager {
      * @param demographicNo
      * @return
      */
-    public int getInboxCountByDemographicNo(LoggedInInfo loggedInInfo, int demographicNo);
+    int getInboxCountByDemographicNo(LoggedInInfo loggedInInfo, int demographicNo);
 
     /**
      * Change the status of a message (sent, read, del, new)
@@ -122,7 +122,7 @@ public interface MessagingManager {
      * @param messageId
      * @param status
      */
-    public Long setMessageStatus(LoggedInInfo loggedInInfo, MessageList messageList, String status);
+    Long setMessageStatus(LoggedInInfo loggedInInfo, MessageList messageList, String status);
 
     /**
      * Set the message opened by this local provider from new to read. Matching provider numbers from
@@ -132,20 +132,20 @@ public interface MessagingManager {
      * @param messageId
      * @param providerNo
      */
-    public void setMessageRead(LoggedInInfo loggedInInfo, Long messageId, String providerNo);
+    void setMessageRead(LoggedInInfo loggedInInfo, Long messageId, String providerNo);
 
-    public void deleteMessage(LoggedInInfo loggedInInfo, int messageId);
+    void deleteMessage(LoggedInInfo loggedInInfo, int messageId);
 
-    public String getLabRecallMsgSubjectPref(LoggedInInfo loggedInInfo);
+    String getLabRecallMsgSubjectPref(LoggedInInfo loggedInInfo);
 
-    public String getLabRecallDelegatePref(LoggedInInfo loggedInInfo);
+    String getLabRecallDelegatePref(LoggedInInfo loggedInInfo);
 
-    public String getDelegateName(String delegate);
+    String getDelegateName(String delegate);
 
     /**
      * Use this method for sending messages from the Oscar system to Oscar users.
      */
-    public Integer sendSystemMessage(LoggedInInfo loggedInInfo, MessengerSystemMessage systemMessage);
+    Integer sendSystemMessage(LoggedInInfo loggedInInfo, MessengerSystemMessage systemMessage);
 
     /**
      * Attach all providers that should receive this message.
@@ -156,37 +156,37 @@ public interface MessagingManager {
      * @param destinationFacility
      * @param sourceFacilityId
      */
-    public void addRecipientsToMessage(LoggedInInfo loggedInInfo, int messageId, ContactIdentifier[] contactIdentifier, String status);
+    void addRecipientsToMessage(LoggedInInfo loggedInInfo, int messageId, ContactIdentifier[] contactIdentifier, String status);
 
-    public void addRecipientsToMessage(LoggedInInfo loggedInInfo, int messageId, ContactIdentifier[] contactIdentifier);
+    void addRecipientsToMessage(LoggedInInfo loggedInInfo, int messageId, ContactIdentifier[] contactIdentifier);
 
-    public void addRecipientToMessage(LoggedInInfo loggedInInfo, int messageId, ContactIdentifier contactIdentifier);
+    void addRecipientToMessage(LoggedInInfo loggedInInfo, int messageId, ContactIdentifier contactIdentifier);
 
-    public void addRecipientToMessage(LoggedInInfo loggedInInfo, int messageId, ContactIdentifier contactIdentifier, String status);
+    void addRecipientToMessage(LoggedInInfo loggedInInfo, int messageId, ContactIdentifier contactIdentifier, String status);
 
-    public void addRecipientsToMessage(LoggedInInfo loggedInInfo, int messageId, String[] providerNoArray, int clinicLocationNo, int facilityId, int sourceFacilityId);
+    void addRecipientsToMessage(LoggedInInfo loggedInInfo, int messageId, String[] providerNoArray, int clinicLocationNo, int facilityId, int sourceFacilityId);
 
-    public void addRecipientsToMessage(LoggedInInfo loggedInInfo, int messageId, String[] providerNoArray, int clinicLocationNo, int facilityId, int sourceFacilityId, String status);
+    void addRecipientsToMessage(LoggedInInfo loggedInInfo, int messageId, String[] providerNoArray, int clinicLocationNo, int facilityId, int sourceFacilityId, String status);
 
-    public void addRecipientToMessage(LoggedInInfo loggedInInfo, int messageId, String providerNo, int clinicLocationNo, int facilityId, int sourceFacilityId);
+    void addRecipientToMessage(LoggedInInfo loggedInInfo, int messageId, String providerNo, int clinicLocationNo, int facilityId, int sourceFacilityId);
 
-    public void addRecipientToMessage(LoggedInInfo loggedInInfo, int messageId, String providerNo, int clinicLocationNo, int facilityId, int sourceFacilityId, String status);
+    void addRecipientToMessage(LoggedInInfo loggedInInfo, int messageId, String providerNo, int clinicLocationNo, int facilityId, int sourceFacilityId, String status);
 
-    public void addRecipientToMessage(LoggedInInfo loggedInInfo, int messageId, String providerNo, int clinicLocationNo, int facilityId);
+    void addRecipientToMessage(LoggedInInfo loggedInInfo, int messageId, String providerNo, int clinicLocationNo, int facilityId);
 
-    public void addRecipientToMessage(LoggedInInfo loggedInInfo, int messageId, String providerNo, int clinicLocationNo, int facilityId, String status);
+    void addRecipientToMessage(LoggedInInfo loggedInInfo, int messageId, String providerNo, int clinicLocationNo, int facilityId, String status);
 
     /**
      * A combined result of both the local reply recipients and recipients located in remote
      * facilities including the original sender.
      */
-    public List<ContactIdentifier> getAllMessageReplyRecipients(LoggedInInfo loggedInInfo, final MessageTbl messageTbl);
+    List<ContactIdentifier> getAllMessageReplyRecipients(LoggedInInfo loggedInInfo, final MessageTbl messageTbl);
 
     /**
      * A combined result of both the local reply recipients and recipients located in remote
      * facilities inluding the original sender.
      */
-    public List<ContactIdentifier> getAllMessageReplyRecipients(LoggedInInfo loggedInInfo, int messageId);
+    List<ContactIdentifier> getAllMessageReplyRecipients(LoggedInInfo loggedInInfo, int messageId);
 
     /**
      * Get the only the sender's identifier for a message reply.
@@ -195,9 +195,9 @@ public interface MessagingManager {
      * @param messageId
      * @return
      */
-    public List<ContactIdentifier> getReplyToSender(LoggedInInfo loggedInInfo, int messageId);
+    List<ContactIdentifier> getReplyToSender(LoggedInInfo loggedInInfo, int messageId);
 
-    public List<ContactIdentifier> getReplyToSender(LoggedInInfo loggedInInfo, MessageTbl messageTbl);
+    List<ContactIdentifier> getReplyToSender(LoggedInInfo loggedInInfo, MessageTbl messageTbl);
 
 
     /**
@@ -208,7 +208,7 @@ public interface MessagingManager {
      * @param messageId
      * @return
      */
-    public List<ContactIdentifier> getAllLocalReplyRecipients(LoggedInInfo loggedInInfo, int messageId);
+    List<ContactIdentifier> getAllLocalReplyRecipients(LoggedInInfo loggedInInfo, int messageId);
 
     /**
      * Recipients that were copied in on the message but have an origin in one of the included
@@ -218,7 +218,7 @@ public interface MessagingManager {
      * @param messageId
      * @return
      */
-    public List<ContactIdentifier> getAllRemoteReplyRecipients(LoggedInInfo loggedInInfo, int messageId);
+    List<ContactIdentifier> getAllRemoteReplyRecipients(LoggedInInfo loggedInInfo, int messageId);
 
     /**
      * Save the message content.
@@ -227,14 +227,14 @@ public interface MessagingManager {
      * @param messageTbl
      * @return
      */
-    public Integer saveMessage(LoggedInInfo loggedInInfo, MessageTbl messageTbl);
+    Integer saveMessage(LoggedInInfo loggedInInfo, MessageTbl messageTbl);
 
     /**
      * Get the current address book location id for this clinic from the oscarcommlocations table.
      *
      * @return
      */
-    public int getCurrentLocationId();
+    int getCurrentLocationId();
     // HELPER METHODS.
 
     /**
@@ -243,6 +243,6 @@ public interface MessagingManager {
      * @param strarray
      * @return
      */
-    public String[] removeDuplicates(String[] strarray);
+    String[] removeDuplicates(String[] strarray);
 
 }

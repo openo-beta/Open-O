@@ -161,16 +161,16 @@
                                 <tr>
                                     <td><input type="submit" name="submit" value="Search" class="ControlPushButton"/></td>
                                     <td><input type=button class="ControlPushButton"
-                                               onclick="javascript:document.forms.RxSearchAllergyForm.searchString.value='';document.forms.RxSearchAllergyForm.searchString.focus();"
+                                               onclick="document.forms.RxSearchAllergyForm.searchString.value='';document.forms.RxSearchAllergyForm.searchString.focus();"
                                                value="Reset"/>
                                         <input type=button class="ControlPushButton"
-                                               onclick="javascript:addCustomAllergy();" value="Custom Allergy"/>
+                                               onclick="addCustomAllergy();" value="Custom Allergy"/>
                                         <input type=button class="ControlPushButton"
-                                               onclick="javascript:addCustomNKDA();" value="NKDA"/>
+                                               onclick="addCustomNKDA();" value="NKDA"/>
                                         <input type=button class="ControlPushButton"
-                                               onclick="javascript:addPenicillinAllergy();" value="Penicillin"/>
+                                               onclick="addPenicillinAllergy();" value="Penicillin"/>
                                         <input type=button class="ControlPushButton"
-                                               onclick="javascript:addSulfonamideAllergy();" value="Sulfa"/>
+                                               onclick="addSulfonamideAllergy();" value="Sulfa"/>
                                     </td>
                                 </tr>
                             </table>
@@ -211,10 +211,10 @@
                                             }
                                         </script>
                                         <input type=button
-                                               class="ControlPushButton" onclick="javascript:typeSelect();"
+                                               class="ControlPushButton" onclick="typeSelect();"
                                                value="Select All"/> <input type=button
                                                                            class="ControlPushButton"
-                                                                           onclick="javascript:typeClear();"
+                                                                           onclick="typeClear();"
                                                                            value="Clear All"/></td>
                                 </tr>
                             </table>
@@ -297,7 +297,7 @@
                                         <%
                                             String sBack = "ShowAllergies2.jsp";
                                         %> <input type=button class="ControlPushButton"
-                                                  onclick="javascript:window.location.href='<%=sBack%>';"
+                                                  onclick="window.location.href='<%=sBack%>';"
                                                   value="Back to View Allergies"/></td>
                                 </tr>
                             </table>

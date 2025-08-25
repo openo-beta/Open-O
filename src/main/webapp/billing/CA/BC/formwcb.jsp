@@ -57,10 +57,7 @@
         readonly = true;
     }
 
-    boolean hideToBill = false;
-    if (request.getParameter("hideToBill") != null) {
-        hideToBill = true;
-    }
+    boolean hideToBill = request.getParameter("hideToBill") != null;
 
     oscar.oscarBilling.ca.bc.pageUtil.WCBForm form = (oscar.oscarBilling.ca.bc.pageUtil.WCBForm) request.getAttribute("WCBForm");
     boolean haveClaims = false;
@@ -1020,8 +1017,7 @@
     }
 
     boolean isEmpty(ArrayList a) {
-        boolean isEmpty = false;
-        if (a.size() == 0) isEmpty = true;
+        boolean isEmpty = a.size() == 0;
         return isEmpty;
     }
 %>

@@ -134,7 +134,7 @@ dojo.widget.defineWidget("dojo.widget.Repeater", dojo.widget.HtmlWidget,
                     if (child.nodeType != 1) {
                         continue
                     }
-                    ;
+
                     if (child.getAttribute("rowFunction") != null) {
                         if (typeof (this.myObject[child.getAttribute("rowFunction")]) == "undefined") {
                             dojo.debug("Function " + child.getAttribute("rowFunction") + " not found");

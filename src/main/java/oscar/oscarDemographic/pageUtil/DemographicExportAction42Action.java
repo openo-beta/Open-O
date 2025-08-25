@@ -1866,7 +1866,7 @@ public class DemographicExportAction42Action extends ActionSupport {
 
                                             String range = labMeaValues.get("range");
                                             if (StringUtils.filled(range)) {
-                                                String rangeLimits[] = range.split("-");
+                                                String[] rangeLimits = range.split("-");
                                                 if (rangeLimits.length == 2) {
                                                     labMeaValues.put("minimum", rangeLimits[0]);
                                                     labMeaValues.put("maximum", rangeLimits[1]);
@@ -2868,9 +2868,7 @@ public class DemographicExportAction42Action extends ActionSupport {
         if (en != null && en.date != null && demographic.getRosterDate() != null) {
             //if(demographic.getRosterStatus().equals(en.status)) {
             if (DateUtils.isSameDay(demographic.getRosterDate(), en.date)) {
-                if (demographic.getRosterEnrolledTo() != null && demographic.getRosterEnrolledTo().equals(en.enrolledTo)) {
-                    return true;
-                }
+                return demographic.getRosterEnrolledTo() != null && demographic.getRosterEnrolledTo().equals(en.enrolledTo);
             }
             //}
         }
@@ -2881,9 +2879,7 @@ public class DemographicExportAction42Action extends ActionSupport {
         if (en != null && en.date != null && demographic.getRosterDate() != null) {
             //if(demographic.getRosterStatus().equals(en.status)) {
             if (DateUtils.isSameDay(demographic.getRosterDate(), en.date)) {
-                if (demographic.getRosterEnrolledTo() != null && demographic.getRosterEnrolledTo().equals(en.enrolledTo)) {
-                    return true;
-                }
+                return demographic.getRosterEnrolledTo() != null && demographic.getRosterEnrolledTo().equals(en.enrolledTo);
             }
             //}
         }
@@ -3212,10 +3208,7 @@ public class DemographicExportAction42Action extends ActionSupport {
 
     private boolean phoneNoValid(String phoneNo) {
         phoneNo = Util.onlyNum(phoneNo);
-        if (StringUtils.filled(phoneNo) && phoneNo.length() >= 7)
-            return true;
-        else
-            return false;
+        return StringUtils.filled(phoneNo) && phoneNo.length() >= 7;
     }
 
     private boolean addPhone(String phoneNo, String phoneExt, cdsDt.PhoneNumberType.Enum phoneNoType, cdsDt.PhoneNumber cdsDtPhoneNumber) {

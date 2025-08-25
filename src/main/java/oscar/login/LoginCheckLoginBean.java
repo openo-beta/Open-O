@@ -276,10 +276,9 @@ public final class LoginCheckLoginBean {
     }
 
     public boolean isWAN() {
-        boolean bWAN = true;
+        boolean bWAN = !LoginCheckLogin.ipFound(ip);
         //Properties p = OscarProperties.getInstance();
         //if (ip.startsWith(p.getProperty("login_local_ip"))) bWAN = false;
-        if (LoginCheckLogin.ipFound(ip)) bWAN = false;
         return bWAN;
     }
 

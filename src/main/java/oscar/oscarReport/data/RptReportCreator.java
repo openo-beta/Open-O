@@ -118,9 +118,7 @@ public final class RptReportCreator {
     }
 
     public static boolean isIncludeDemo(String value) {
-        boolean ret = false;
-        if (value.indexOf("demographic.") >= 0)
-            ret = true;
+        boolean ret = value.indexOf("demographic.") >= 0;
         return ret;
     }
 

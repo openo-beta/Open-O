@@ -304,7 +304,7 @@
                                                                        value="<fmt:setBundle basename='oscarResources'/><fmt:message key='demographic.demographiclabelprintsetting.btnPrintPreviewPrint'/>">
                         <input type="button" class="btn btn-link" name="button"
                                value="<fmt:setBundle basename='oscarResources'/><fmt:message key='global.btnBack'/>"
-                               onClick="javascript:history.go(-1);return false;"></td>
+                               onClick="history.go(-1);return false;"></td>
                 </tr>
             </table>
         </div>

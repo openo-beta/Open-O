@@ -134,7 +134,7 @@
                             </td>
                             <td align='right'><select name="name">
                                 <%
-                                    boolean bEdit = request.getParameter("dboperation") != null && request.getParameter("dboperation").equals(" Edit ") ? true : false;
+                                    boolean bEdit = request.getParameter("dboperation") != null && request.getParameter("dboperation").equals(" Edit ");
 
                                     if (bEdit) {
                                         for (ScheduleTemplate st : scheduleTemplateDao.findByProviderNoAndName(request.getParameter("providerid"), request.getParameter("name"))) {

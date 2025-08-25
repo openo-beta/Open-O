@@ -34,9 +34,9 @@ import org.oscarehr.common.model.Provider;
 import org.oscarehr.util.EncounterUtil.EncounterType;
 
 public interface PopulationReportDao {
-    public static final int LOW = 0;
-    public static final int MEDIUM = 1;
-    public static final int HIGH = 2;
+    int LOW = 0;
+    int MEDIUM = 1;
+    int HIGH = 2;
 
     int getCurrentPopulationSize();
 

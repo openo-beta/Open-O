@@ -71,8 +71,7 @@
 
 %>
 <%
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 %>
 
 <html>
@@ -271,7 +270,7 @@
                 // Check that current character is number.
                 var c = s.charAt(i)
                 if (c == '.') {
-                    continue;
+
                 } else if (((c < "0") || (c > "9"))) {
                     alert('Invalid ' + s + ' in field ' + ss.name);
                     ss.focus();
@@ -358,19 +357,19 @@
             <tr>
                 <td nowrap="true"><input type="submit"
                                          value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnSave"/>"
-                                         onclick="javascript:return onSave();"/> <input type="submit"
+                                         onclick="return onSave();"/> <input type="submit"
                                                                                         value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnSaveExit"/>"
-                                                                                        onclick="javascript:return onSaveExit();"/>
+                                                                                        onclick="return onSaveExit();"/>
                     <input type="submit"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnExit"/>"
-                           onclick="javascript:return onExit();"> <input type="submit"
+                           onclick="return onExit();"> <input type="submit"
                                                                          value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnPrint"/>"
-                                                                         onclick="javascript:return onPrint();"/> <input
+                                                                         onclick="return onPrint();"/> <input
                             type="submit"
                             value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.btnPrintAll"/>"
-                            onclick="javascript:return onPrintAll();"/> <input type="button"
+                            onclick="return onPrintAll();"/> <input type="button"
                                                                                value="About"
-                                                                               onclick="javascript:return popPage('form/formRourke2006intro.html','About Rourke');"/>
+                                                                               onclick="return popPage('form/formRourke2006intro.html','About Rourke');"/>
                 </td>
                 <td align="center" width="100%">
                     <% if (formId > 0) { %> <a name="length" href="#"
@@ -1310,19 +1309,19 @@
             <tr>
                 <td nowrap="true"><input type="submit"
                                          value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnSave"/>"
-                                         onclick="javascript:return onSave();"/> <input type="submit"
+                                         onclick="return onSave();"/> <input type="submit"
                                                                                         value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnSaveExit"/>"
-                                                                                        onclick="javascript:return onSaveExit();"/>
+                                                                                        onclick="return onSaveExit();"/>
                     <input type="submit"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnExit"/>"
-                           onclick="javascript:return onExit();"> <input type="submit"
+                           onclick="return onExit();"> <input type="submit"
                                                                          value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnPrint"/>"
-                                                                         onclick="javascript:return onPrint();"/> <input
+                                                                         onclick="return onPrint();"/> <input
                             type="submit"
                             value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2006.btnPrintAll"/>"
-                            onclick="javascript:return onPrintAll();"/> <input type="button"
+                            onclick="return onPrintAll();"/> <input type="button"
                                                                                value="About"
-                                                                               onclick="javascript:return popPage('form/formRourke2006intro.html','About Rourke');"/>
+                                                                               onclick="return popPage('form/formRourke2006intro.html','About Rourke');"/>
                 </td>
                 <td align="center" width="100%">
                     <% if (formId > 0) { %> <a name="length" href="#"

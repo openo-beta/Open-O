@@ -199,7 +199,7 @@
                         providerNo = d.getProviderNo();
                     }
 
-                    bodd = bodd ? false : true; //for the color of rows
+                    bodd = !bodd; //for the color of rows
                     nItems++;
 
             %>

@@ -73,9 +73,7 @@ public class SimpleHCValidator implements HCValidator {
             return false;
         }
         if (versionCode != null) {
-            if (versionCode.length() > 2 || !StringUtils.isAlpha(versionCode)) {
-                return false;
-            }
+            return versionCode.length() <= 2 && StringUtils.isAlpha(versionCode);
         }
         return true;
     }

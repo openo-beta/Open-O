@@ -271,7 +271,7 @@ public class Hl7TextInfoDaoImpl extends AbstractDaoImpl<Hl7TextInfo> implements 
             stringBuilder.append("'" + labId + "'");
         }
 
-        String sql = "SELECT x FROM " + modelClass.getName() + " x WHERE x.labNumber IN (" + stringBuilder.toString() + ") ORDER BY x.labNumber DESC";
+        String sql = "SELECT x FROM " + modelClass.getName() + " x WHERE x.labNumber IN (" + stringBuilder + ") ORDER BY x.labNumber DESC";
         Query query = entityManager.createQuery(sql);
         List<Hl7TextInfo> resultList = query.getResultList();
         if (resultList == null) {
@@ -425,7 +425,7 @@ public class Hl7TextInfoDaoImpl extends AbstractDaoImpl<Hl7TextInfo> implements 
                         + " 			FROM providerLabRouting plr, hl7TextInfo info "
                         + " 			WHERE info.first_name like :patientFirstName AND info.last_name like :patientLastName AND info.health_no like :patientHealthNumber "
                         + " 				AND plr.lab_type = 'HL7' AND plr.lab_no = info.lab_no "
-                         +					(isAbnormal != null ? " AND "+(isAbnormal? "info.result_status = 'A'": "(info.result_status IS NULL OR info.result_status != 'A')")+"" : " ")
+                         +					(isAbnormal != null ? " AND "+(isAbnormal? "info.result_status = 'A'": "(info.result_status IS NULL OR info.result_status != 'A')") : " ")
                         + " 				AND plr.status " + ("".equals(status) ? " IS NOT NULL " : " = :status ") + (searchProvider ? " AND plr.provider_no = :providerNo " : " ")
                         + " 				AND plr.lab_no NOT IN (SELECT DISTINCT lab_no FROM patientLabRouting WHERE lab_type = 'HL7' AND demographic_no != 0) "
                         + " 		) "

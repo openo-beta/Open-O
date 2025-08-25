@@ -39,7 +39,7 @@ import org.springframework.stereotype.Repository;
 
 public interface BillActivityDao extends AbstractDao<BillActivity> {
 
-    public List<BillActivity> findCurrentByMonthCodeAndGroupNo(String monthCode, String groupNo, Date updateDateTime);
+    List<BillActivity> findCurrentByMonthCodeAndGroupNo(String monthCode, String groupNo, Date updateDateTime);
 
-    public List<BillActivity> findCurrentByDateRange(Date startDate, Date endDate);
+    List<BillActivity> findCurrentByDateRange(Date startDate, Date endDate);
 }

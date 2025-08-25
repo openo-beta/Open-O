@@ -40,8 +40,7 @@
     String project_home = request.getContextPath().substring(1);
 %>
 <%
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 %>
 
 <%
@@ -280,7 +279,7 @@
                 // Check that current character is number.
                 var c = s.charAt(i);
                 if (c == '.') {
-                    continue;
+
                 } else if (((c < "0") || (c > "9"))) {
                     alert('Invalid ' + s + ' in field ' + ss.name);
                     ss.focus();
@@ -592,14 +591,14 @@
                     <%
                         if (!bView) {
                     %> <input type="submit" value="Save"
-                              onclick="javascript:return onSave();"/> <input type="submit"
+                              onclick="return onSave();"/> <input type="submit"
                                                                              value="Save and Exit"
-                                                                             onclick="javascript:return onSaveExit();"/> <%
+                                                                             onclick="return onSaveExit();"/> <%
                     }
                 %> <input type="submit" value="Exit"
-                          onclick="javascript:return onExit();"/> <input type="submit"
+                          onclick="return onExit();"/> <input type="submit"
                                                                          value="Print"
-                                                                         onclick="javascript:return onPrint();"/></td>
+                                                                         onclick="return onPrint();"/></td>
 
                 <%
                     if (!bView) {
@@ -1691,14 +1690,14 @@
                     <%
                         if (!bView) {
                     %> <input type="submit" value="Save"
-                              onclick="javascript:return onSave();"/> <input type="submit"
+                              onclick="return onSave();"/> <input type="submit"
                                                                              value="Save and Exit"
-                                                                             onclick="javascript:return onSaveExit();"/> <%
+                                                                             onclick="return onSaveExit();"/> <%
                     }
                 %> <input type="submit" value="Exit"
-                          onclick="javascript:return onExit();"/> <input type="submit"
+                          onclick="return onExit();"/> <input type="submit"
                                                                          value="Print"
-                                                                         onclick="javascript:return onPrint();"/></td>
+                                                                         onclick="return onPrint();"/></td>
                 <%
                     if (!bView) {
                 %>

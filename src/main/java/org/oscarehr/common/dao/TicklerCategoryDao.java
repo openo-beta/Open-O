@@ -36,5 +36,5 @@ import org.springframework.stereotype.Repository;
 
 public interface TicklerCategoryDao extends AbstractDao<TicklerCategory> {
 
-    public List<TicklerCategory> getActiveCategories();
+    List<TicklerCategory> getActiveCategories();
 }

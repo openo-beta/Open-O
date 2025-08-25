@@ -123,12 +123,12 @@ public class EFormReportToolDaoImpl extends AbstractDaoImpl<EFormReportTool> imp
         sb.append(" ) VALUES (");
         sb.append(fdid + ",");
         sb.append(demographicNo + ",");
-        sb.append("\'" + DateFormatUtils.format(dateFormCreated, "yyyy-MM-dd HH:mm:ss") + "\',");
-        sb.append("\'" + providerNo + "\',");
+        sb.append("'" + DateFormatUtils.format(dateFormCreated, "yyyy-MM-dd HH:mm:ss") + "',");
+        sb.append("'" + providerNo + "',");
         sb.append("0,");
         sb.append("now(),");
         for (EFormValue v : values) {
-            sb.append("\'" + StringEscapeUtils.escapeSql(v.getVarValue()) + "\'");
+            sb.append("'" + StringEscapeUtils.escapeSql(v.getVarValue()) + "'");
             sb.append(",");
         }
         sb.deleteCharAt(sb.length() - 1);

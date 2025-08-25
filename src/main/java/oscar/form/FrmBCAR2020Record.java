@@ -190,8 +190,7 @@ public class FrmBCAR2020Record extends FrmRecord {
                 "</td><td>\n" +
                 "<input type=\"checkbox\" name=\"c_" + fieldName + "Yes\" " + Encode.forHtmlAttribute(props.getProperty("c_" + fieldName + "Yes", "").equals("X") ? "checked" : "") + " />\n" +
                 "</td><td>\n" +
-                "<div class=\"divFlex\">\n" +
-                "" + description + "\n" +
+                "<div class=\"divFlex\">\n" + description + "\n" +
                 "<input type=\"text\" name=\"t_" + fieldName + "Details\" size=\"10\" maxlength=\"150\" value=\"" + UtilMisc.htmlEscape(props.getProperty("t_" + fieldName + "Details", "")) + "\" />\n" +
                 "</div></td></tr>";
     }

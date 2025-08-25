@@ -56,7 +56,7 @@ Required Parameters to plug-in:
     <tr>
         <td class="quickList">
             <select class="form-control" style="overflow:auto" name="quickList"
-                         onchange="javascript:changeList(this,'${ demographicNo }','${ providerNo }');">
+                         onchange="changeList(this,'${ demographicNo }','${ providerNo }');">
                 <c:forEach var="quickLists" items="${allQuickLists.dxQuickListBeanVector}">
                     <option value="${ quickLists.quickListName }" ${ quickLists.quickListName eq param.quickList || quickLists.lastUsed eq 'Selected' ? 'selected' : '' } >
                         <c:out value="${quickLists.quickListName}"/>
@@ -68,7 +68,7 @@ Required Parameters to plug-in:
                     <li class="list-group-item">
   					<span class="pull-right">
  						<a href="#" title="${ item.dxSearchCode }"
-                                   onclick="javascript:submitform( '${ item.dxSearchCode }', '${ item.type }' )">
+                                   onclick="submitform( '${ item.dxSearchCode }', '${ item.type }' )">
                             add
                         </a>
 					</span>

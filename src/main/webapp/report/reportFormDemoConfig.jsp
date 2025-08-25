@@ -125,7 +125,7 @@
                 <td align="center" width="45%"><a
                         href="reportFormConfig.jsp?id=<%=reportId%>">Form</a> | Patient
                     Profile <br/>
-                    <select size=28 name="selField" ondblclick="javascript:onSelField();">
+                    <select size=28 name="selField" ondblclick="onSelField();">
                         <%
                             String strMatchConfig = "";
                             for (int i = 0; i < vecConfigField.size(); i++) {
@@ -158,7 +158,7 @@
                 </td>
 
                 <td width="45%" align="center"><select size=28 name="selConfig"
-                                                       ondblclick="javascript:onSelField();">
+                                                       ondblclick="onSelField();">
                     <% for (int i = 0; i < vecConfigField.size(); i++) {
                         String captionName = (String) vecConfigField.get(i);
                         captionName = StringEscapeUtils.escapeHtml(captionName);

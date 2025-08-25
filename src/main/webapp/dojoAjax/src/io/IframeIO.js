@@ -185,7 +185,7 @@ dojo.io.IframeTransport = new function () {
         }
         this.requestQueue.push(kwArgs);
         this.fireNextRequest();
-        return;
+
     }
 
     this.setUpIframe = function () {

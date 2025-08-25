@@ -56,7 +56,7 @@
         function set(text1, text2) {
             document.forms[0].newQuery.value = text1;
             document.forms[0].newName.value = text2;
-        };
+        }
 
         function confirmDelete(id) {
             var answer = confirm("Are you sure you want to delete the selected query?");
@@ -65,7 +65,7 @@
                 document.forms[0].id.value = id;
                 document.forms[0].submit();
             }
-        };
+        }
 
         function closeAndRefresh() {
             self.opener.document.location.reload();
@@ -105,10 +105,10 @@
                             <td><c:out value="${favorite.query}"/></td>
                             <td><input type="button" name="editButton"
                                        value="<fmt:setBundle basename='oscarResources'/><fmt:message key='oscarReport.RptByExample.MsgEdit'/>"
-                                       onClick="javascript:set('${favorite.queryWithEscapeChar}','${favorite.queryName}'); submit(); return false;"/><input
+                                       onClick="set('${favorite.queryWithEscapeChar}','${favorite.queryName}'); submit(); return false;"/><input
                                     type="button" name="deleteButton"
                                     value="<fmt:setBundle basename='oscarResources'/><fmt:message key='oscarReport.RptByExample.MsgDelete'/>"
-                                    onClick="javascript:confirmDelete('${favorite.id}'); return false;"/>
+                                    onClick="confirmDelete('${favorite.id}'); return false;"/>
                             </td>
                 </td>
             </tr>
@@ -116,7 +116,7 @@
             <tr>
                 <td><input type="button"
                            value="<fmt:setBundle basename='oscarResources'/><fmt:message key='global.btnClose'/>"
-                           onClick="javascript:closeAndRefresh();"/>
+                           onClick="closeAndRefresh();"/>
             </tr>
         </table>
         </td>

@@ -60,7 +60,7 @@ function _rotater(e) {
     $(e).parent().addClass("rotated");
     $(e).parent().vAlign();
     resizeUl();
-};
+}
 
 function _resizeui() {
     $("#buildercontainer").height($(window).height() - 80);

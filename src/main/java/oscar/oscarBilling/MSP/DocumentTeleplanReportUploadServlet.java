@@ -51,10 +51,10 @@ public class DocumentTeleplanReportUploadServlet extends HttpServlet {
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         int c;
         int count;
-        byte data[] = new byte[BUFFER];
-        byte data1[] = new byte[BUFFER / 2];
-        byte data2[] = new byte[BUFFER / 2];
-        byte enddata[] = new byte[2];
+        byte[] data = new byte[BUFFER];
+        byte[] data1 = new byte[BUFFER / 2];
+        byte[] data2 = new byte[BUFFER / 2];
+        byte[] enddata = new byte[2];
 
 
         HttpSession session = request.getSession(true);
@@ -95,7 +95,7 @@ public class DocumentTeleplanReportUploadServlet extends HttpServlet {
         boolean bf = false;
 
 
-        while (bf ? true : ((count = sis.readLine(data, 0, BUFFER)) != -1)) {
+        while (bf || ((count = sis.readLine(data, 0, BUFFER)) != -1)) {
             bf = false;
             benddata = false;
             if (count == 2 && data[0] == 13 && data[1] == 10) {
@@ -126,10 +126,10 @@ public class DocumentTeleplanReportUploadServlet extends HttpServlet {
                     }
                     c = sis.readLine(data2, 0, BUFFER);
                     if ((c = sis.readLine(data2, 0, BUFFER)) != -1) {
-                        bwri = bfbo ? true : false;
+                        bwri = bfbo;
                     }
                 }
-                bfbo = bfbo ? false : true;
+                bfbo = !bfbo;
                 for (int i = 0; i < BUFFER; i++) data[i] = 0;
                 continue;
             } //end period

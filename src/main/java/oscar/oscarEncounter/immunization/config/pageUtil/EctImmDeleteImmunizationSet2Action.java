@@ -49,7 +49,7 @@ public class EctImmDeleteImmunizationSet2Action extends ActionSupport {
 
     public String execute()
             throws ServletException, IOException {
-        String sets[] = this.getImmuSets();
+        String[] sets = this.getImmuSets();
 
         for (String set : sets) {
             ConfigImmunization configImmunization = configImmunizationDao.find(Integer.parseInt(set));
@@ -66,9 +66,9 @@ public class EctImmDeleteImmunizationSet2Action extends ActionSupport {
         return immuSets;
     }
 
-    public void setImmuSets(String str[]) {
+    public void setImmuSets(String[] str) {
         immuSets = str;
     }
 
-    String immuSets[];
+    String[] immuSets;
 }

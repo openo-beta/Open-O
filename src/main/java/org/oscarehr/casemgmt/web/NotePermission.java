@@ -15,8 +15,6 @@ import org.oscarehr.PMmodule.model.ProgramProvider;
 public class NotePermission {
     public enum AccessType {ALL_ROLES, ROLE, ROLE_GLOBAL, NO_ACCESS}
 
-    ;
-
     private String providerLastName;
     private String providerFirstName;
     private String providerNo;

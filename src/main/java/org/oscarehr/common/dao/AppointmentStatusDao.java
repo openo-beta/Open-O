@@ -37,15 +37,15 @@ import org.springframework.stereotype.Repository;
 
 public interface AppointmentStatusDao extends AbstractDao<AppointmentStatus> {
 
-    public List<AppointmentStatus> findAll();
+    List<AppointmentStatus> findAll();
 
-    public List<AppointmentStatus> findActive();
+    List<AppointmentStatus> findActive();
 
-    public AppointmentStatus findByStatus(String status);
+    AppointmentStatus findByStatus(String status);
 
-    public void modifyStatus(int ID, String strDesc, String strColor);
+    void modifyStatus(int ID, String strDesc, String strColor);
 
-    public void changeStatus(int ID, int iActive);
+    void changeStatus(int ID, int iActive);
 
-    public int checkStatusUsuage(List<AppointmentStatus> allStatus);
+    int checkStatusUsuage(List<AppointmentStatus> allStatus);
 }

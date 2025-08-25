@@ -547,7 +547,7 @@
                         <td><br/>
                             <br/>
                             <input type="button" value="Close" class="ControlPushButton"
-                                   onclick="javascript:window.close();"/></td>
+                                   onclick="window.close();"/></td>
                     </tr>
                     <!----End new rows here-->
                     <tr height="100%">

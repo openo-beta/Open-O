@@ -94,11 +94,9 @@ public final class UserActivityFilter implements Filter {
     }
 
     private boolean isUserRequest(HttpServletRequest httpRequest) {
+        // is csrf servlet js
         if (Boolean.parseBoolean(httpRequest.getParameter("autoRefresh"))) { // is autorefresh
             return false;
-        } else if (httpRequest.getRequestURL().toString().endsWith(httpRequest.getContextPath() + "/JavaScriptServlet")) { // is csrf servlet js
-            return false;
-        }
-        return true;
+        } else return !httpRequest.getRequestURL().toString().endsWith(httpRequest.getContextPath() + "/JavaScriptServlet");
     }
 }

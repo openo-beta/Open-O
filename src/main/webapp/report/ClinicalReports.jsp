@@ -66,15 +66,15 @@
 
     Integer max_numerator = (Integer) request.getAttribute("max_numerator");
 
-    Hashtable arrRepNum[] = new Hashtable[11];
+    Hashtable[] arrRepNum = new Hashtable[11];
     for (int x = 0; x < 11; x++) {
         arrRepNum[x] = new Hashtable();
     }
-    Object numer_val[] = new Object[11];
-    Object numer_startDate[] = new Object[11];
-    Object numer_endDate[] = new Object[11];
+    Object[] numer_val = new Object[11];
+    Object[] numer_startDate = new Object[11];
+    Object[] numer_endDate = new Object[11];
 
-    String arrNumeratorId[] = new String[11];
+    String[] arrNumeratorId = new String[11];
     for (int x = 0; x < 11; x++) {
         arrNumeratorId[x] = (String) request.getAttribute("numerator" + x + "Id");
     }
@@ -364,7 +364,7 @@
                                 <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="report.ClinicalReports.msgNumerator"/></legend>
 
                                 <select name="numerator" id="numerator"
-                                        onchange="javascript:processExtraFieldsNumerator(this)">
+                                        onchange="processExtraFieldsNumerator(this)">
                                     <%
                                         for (Numerator n : numeratorList) {
                                             if (n.hasReplaceableValues()) {
@@ -431,7 +431,7 @@
                                 <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="report.ClinicalReports.msgNumerator"/></legend>
 
                                 <select name="numerator<%=i %>" id="numerator<%=i %>"
-                                        onchange="javascript:processExtraFieldsNumerator<%=i %>(this)">
+                                        onchange="processExtraFieldsNumerator<%=i %>(this)">
                                     <option value="">Select Below</option>
                                     <%
                                         for (Numerator n : numeratorList) {
@@ -501,7 +501,7 @@
                                 <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="report.ClinicalReports.msgDenominator"/></legend>
 
                                 <select id="denominator" name="denominator"
-                                        onchange="javascript:processExtraFields(this)">
+                                        onchange="processExtraFields(this)">
                                     <%
                                         for (Denominator d : denominatorList) {
                                             if (d.hasReplaceableValues()) {

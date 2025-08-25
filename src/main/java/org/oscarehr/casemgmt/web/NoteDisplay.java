@@ -32,7 +32,7 @@ import org.oscarehr.casemgmt.model.CaseManagementNoteLink;
 import oscar.oscarRx.data.RxPrescriptionData;
 
 public interface NoteDisplay {
-    public static Comparator<NoteDisplay> noteProviderComparator = new Comparator<NoteDisplay>() {
+    Comparator<NoteDisplay> noteProviderComparator = new Comparator<NoteDisplay>() {
         public int compare(NoteDisplay note1, NoteDisplay note2) {
             if (note1 == null || note2 == null) {
                 return 0;
@@ -42,7 +42,7 @@ public interface NoteDisplay {
         }
     };
 
-    public static Comparator<NoteDisplay> noteProgramComparator = new Comparator<NoteDisplay>() {
+    Comparator<NoteDisplay> noteProgramComparator = new Comparator<NoteDisplay>() {
         public int compare(NoteDisplay note1, NoteDisplay note2) {
             if (note1 == null || note1.getProgramName() == null || note2 == null || note2.getProgramName() == null) {
                 return 0;
@@ -51,7 +51,7 @@ public interface NoteDisplay {
         }
     };
 
-    public static Comparator<NoteDisplay> noteRoleComparator = new Comparator<NoteDisplay>() {
+    Comparator<NoteDisplay> noteRoleComparator = new Comparator<NoteDisplay>() {
         public int compare(NoteDisplay note1, NoteDisplay note2) {
             if (note1 == null || note2 == null) {
                 return 0;
@@ -60,7 +60,7 @@ public interface NoteDisplay {
         }
     };
 
-    public static Comparator<NoteDisplay> noteObservationDateComparator = new Comparator<NoteDisplay>() {
+    Comparator<NoteDisplay> noteObservationDateComparator = new Comparator<NoteDisplay>() {
         public int compare(NoteDisplay note1, NoteDisplay note2) {
             if (note1 == null || note2 == null) {
                 return 0;
@@ -74,80 +74,80 @@ public interface NoteDisplay {
         }
     };
 
-    public Integer getNoteId();
+    Integer getNoteId();
 
-    public boolean isSigned();
+    boolean isSigned();
 
-    public boolean isEditable();
+    boolean isEditable();
 
-    public Date getObservationDate();
+    Date getObservationDate();
 
-    public String getRevision();
+    String getRevision();
 
-    public Date getUpdateDate();
+    Date getUpdateDate();
 
-    public String getProviderName();
+    String getProviderName();
 
-    public String getProviderNo();
+    String getProviderNo();
 
-    public String getStatus();
+    String getStatus();
 
-    public String getProgramName();
+    String getProgramName();
 
-    public String getLocation();
+    String getLocation();
 
-    public String getRoleName();
+    String getRoleName();
 
-    public Integer getRemoteFacilityId();
+    Integer getRemoteFacilityId();
 
-    public String getUuid();
+    String getUuid();
 
-    public boolean getHasHistory();
+    boolean getHasHistory();
 
-    public boolean isLocked();
+    boolean isLocked();
 
-    public String getNote();
+    String getNote();
 
-    public boolean isDocument();
+    boolean isDocument();
 
-    public boolean isRxAnnotation();
+    boolean isRxAnnotation();
 
-    public boolean isEformData();
+    boolean isEformData();
 
-    public boolean isEncounterForm();
+    boolean isEncounterForm();
 
-    public boolean isInvoice();
+    boolean isInvoice();
 
-    public boolean isTicklerNote();
+    boolean isTicklerNote();
 
-    public boolean isExternalNote();
+    boolean isExternalNote();
 
 
-    public boolean isEmailNote();
+    boolean isEmailNote();
 
-    public CaseManagementNoteLink getNoteLink();
+    CaseManagementNoteLink getNoteLink();
 
-    public RxPrescriptionData.Prescription getRxFromAnnotation(CaseManagementNoteLink cmnl);
+    RxPrescriptionData.Prescription getRxFromAnnotation(CaseManagementNoteLink cmnl);
 
-    public String getEncounterType();
+    String getEncounterType();
 
-    public ArrayList<String> getEditorNames();
+    ArrayList<String> getEditorNames();
 
-    public ArrayList<String> getIssueDescriptions();
+    ArrayList<String> getIssueDescriptions();
 
     //not controlled by note attributes / business logic like "editable".
     //use this for a category of notes - like integrator, group notes, etc
-    public boolean isReadOnly();
+    boolean isReadOnly();
 
-    public boolean isGroupNote();
+    boolean isGroupNote();
 
-    public boolean isCpp();
+    boolean isCpp();
 
-    public boolean containsIssue(String issueCode);
+    boolean containsIssue(String issueCode);
 
-    public String getEncounterTime();
+    String getEncounterTime();
 
-    public String getEncounterTransportationTime();
+    String getEncounterTransportationTime();
 
-    public Integer getAppointmentNo();
+    Integer getAppointmentNo();
 }

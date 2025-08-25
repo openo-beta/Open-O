@@ -48,10 +48,10 @@ import org.oscarehr.ws.rest.to.model.DrugTo1;
 
 public interface DrugConverter {
 
-    public Drug getAsDomainObject(LoggedInInfo loggedInInfo, DrugTo1 t) throws ConversionException;
+    Drug getAsDomainObject(LoggedInInfo loggedInInfo, DrugTo1 t) throws ConversionException;
 
-    public DrugTo1 getAsTransferObject(LoggedInInfo loggedInInfo, Drug d) throws ConversionException;
+    DrugTo1 getAsTransferObject(LoggedInInfo loggedInInfo, Drug d) throws ConversionException;
 
-    public List<DrugTo1> getAllAsTransferObjects(LoggedInInfo loggedInInfo, List<Drug> ds) throws ConversionException;
+    List<DrugTo1> getAllAsTransferObjects(LoggedInInfo loggedInInfo, List<Drug> ds) throws ConversionException;
 
 }

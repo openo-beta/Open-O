@@ -954,7 +954,7 @@
             if (codeEntered(svcCode) == false) {
                 if (myform.xml_other1.value == "") {
                     myform.xml_other1.value = svcCode;
-                    return;
+
                     //myform.xml_diagnostic_detail1.value = "";
                 } else if (myform.xml_other2.value === "") {
                     myform.xml_other2.value = svcCode;

@@ -149,7 +149,7 @@
                                         <input type="submit" name="submit" value="Add Allergy" class="ControlPushButton"/>
                                         <input
                                                 type=button class="ControlPushButton"
-                                                onclick="javascript:document.forms.RxAddAllergyForm.reactionDescription.value='';document.forms.RxAddAllergyForm.startDate.value='';document.forms.RxAddAllergyForm.ageOfOnset.value='';document.forms.RxAddAllergyForm.reactionDescription.focus();"
+                                                onclick="document.forms.RxAddAllergyForm.reactionDescription.value='';document.forms.RxAddAllergyForm.startDate.value='';document.forms.RxAddAllergyForm.ageOfOnset.value='';document.forms.RxAddAllergyForm.reactionDescription.focus();"
                                                 value="Reset"/></td>
                                 </tr>
                             </table>
@@ -163,7 +163,7 @@
                             <%
                                 String sBack = "ShowAllergies.jsp";
                             %> <input type=button class="ControlPushButton"
-                                      onclick="javascript:window.location.href='oscarRx/<%=sBack%>';"
+                                      onclick="window.location.href='oscarRx/<%=sBack%>';"
                                       value="Back to View Allergies"/></td>
                     </tr>
                     <!----End new rows here-->

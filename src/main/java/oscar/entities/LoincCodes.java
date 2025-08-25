@@ -25,8 +25,6 @@
 
 package oscar.entities;
 
-;
-
 /**
  * Encapsulates data from table loincCodes
  */

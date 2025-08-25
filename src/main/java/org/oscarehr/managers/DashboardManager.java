@@ -65,7 +65,7 @@ import oscar.OscarProperties;
 import oscar.log.LogAction;
 
 public interface DashboardManager {
-    public static final boolean MULTI_THREAD_ON = Boolean.TRUE;
+    boolean MULTI_THREAD_ON = Boolean.TRUE;
 
     // static final boolean MULTI_THREAD_ON = Boolean.TRUE;
 

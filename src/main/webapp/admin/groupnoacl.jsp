@@ -58,7 +58,7 @@
 
     if (request.getParameter("method") != null && request.getParameter("method").equals("save")) {
         String chosen_group = request.getParameter("chosen_group");
-        String providerNos[] = request.getParameterValues("data");
+        String[] providerNos = request.getParameterValues("data");
         List<MyGroupAccessRestriction> fordel = myGroupAccessRestrictionDao.findByGroupId(chosen_group);
         for (MyGroupAccessRestriction m : fordel) {
             myGroupAccessRestrictionDao.remove(m.getId());

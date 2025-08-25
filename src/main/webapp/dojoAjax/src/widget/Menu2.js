@@ -492,7 +492,7 @@ dojo.widget.defineWidget(
             if (displayingSubMenu && focus) {
                 dojo.widget.getWidgetById(this.submenuId)._highlightOption(1);
             }
-            return;
+
         },
 
         onClick: function () {

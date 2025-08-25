@@ -107,7 +107,7 @@ import oscar.oscarEncounter.pageUtil.EctSessionBean;
 @Component("notesService")
 public class NotesService extends AbstractServiceImpl {
 
-    public static String cppCodes[] = {"OMeds", "SocHistory", "MedHistory", "Concerns", "FamHistory", "Reminders", "RiskFactors", "OcularMedication", "TicklerNote"};
+    public static String[] cppCodes = {"OMeds", "SocHistory", "MedHistory", "Concerns", "FamHistory", "Reminders", "RiskFactors", "OcularMedication", "TicklerNote"};
 
     private static Logger logger = MiscUtils.getLogger();
 
@@ -483,10 +483,7 @@ public class NotesService extends AbstractServiceImpl {
 
         // update appointment and add verify message to note if verified
 
-        boolean verify = false;
-        if (note.getIsVerified() != null && note.getIsVerified()) {
-            verify = true;
-        }
+        boolean verify = note.getIsVerified() != null && note.getIsVerified();
 
 
         // update password

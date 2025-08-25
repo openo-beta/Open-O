@@ -38,12 +38,12 @@ import org.springframework.stereotype.Repository;
 
 public interface RBTGroupDao extends AbstractDao<RBTGroup> {
 
-    public int deleteByNameAndTemplateId(String groupName, Integer templateId);
+    int deleteByNameAndTemplateId(String groupName, Integer templateId);
 
-    public int deleteByName(String groupName);
+    int deleteByName(String groupName);
 
-    public List<RBTGroup> getByGroupName(String groupName);
+    List<RBTGroup> getByGroupName(String groupName);
 
-    public List<String> getGroupNames();
+    List<String> getGroupNames();
 
 }

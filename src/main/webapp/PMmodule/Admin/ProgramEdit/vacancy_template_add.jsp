@@ -114,7 +114,7 @@
     <table cellpadding="3" cellspacing="0" border="0">
         <tr>
             <th title="Programs" class="nofocus"><a
-                    onclick="javascript:clickTab2('General', 'General');return false;"
+                    onclick="clickTab2('General', 'General');return false;"
                     href="javascript:void(0)">General Information</a></th>
             <th title="Templates">Vacancy Templates</th>
         </tr>
@@ -124,11 +124,11 @@
 <table width="100%" border="1" cellspacing="2" cellpadding="3">
     <tr class="b">
         <td width="30%" class="beright">Template
-            is <%=(template.getId() == null || template.getActive() == true) ? "active" : "inactive" %>:
+            is <%=(template.getId() == null || template.getActive()) ? "active" : "inactive" %>:
         </td>
         <td><input id="vacancy_tpl_status_ckbox" type="checkbox"
                    onchange="template_status_change(<%=template.getId()%>)"
-            <%if(template.getId()==null || template.getActive()==true){%>
+            <%if(template.getId()==null || template.getActive()){%>
             <%="checked"%>
             <%}%>
                    name="templateActive"></td>

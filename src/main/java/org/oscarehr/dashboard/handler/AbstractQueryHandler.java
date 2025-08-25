@@ -258,7 +258,7 @@ public abstract class AbstractQueryHandler extends HibernateDaoSupport {
         select.deleteCharAt(select.length() - 1);
         select.append(" ");
 
-        logger.debug("Replacing current select statement with " + select.toString());
+        logger.debug("Replacing current select statement with " + select);
 
         from = queryString.indexOf("FROM");
 

@@ -52,7 +52,7 @@ public class GroupNoteAction {
     public static int saveGroupNote(LoggedInInfo loggedInInfo, CaseManagementEntryFormBean cform, String programId) {
         logger.info("saving group note");
 
-        String ids[] = cform.getGroupNoteClientIds();
+        String[] ids = cform.getGroupNoteClientIds();
         int totalAnonymous = cform.getGroupNoteTotalAnonymous();
 
         //logger.info("group note will have " + ids.length + " clients, and " + totalAnonymous + " anonymous clients");

@@ -127,8 +127,6 @@ public class Secrole implements java.io.Serializable {
 
         Secrole r = (Secrole) obj;
         if (r.getId() == null || this.getId() == null) return false;
-        if (this.getId().longValue() == r.getId().longValue()) return true;
-
-        return false;
+        return this.getId().longValue() == r.getId().longValue();
     }
 }

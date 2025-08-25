@@ -119,7 +119,7 @@
                 // Check that current character is number.
                 var c = s.charAt(i);
                 if (c == '.') {
-                    continue;
+
                 } else if (((c < "0") || (c > "9"))) {
                     alert('Invalid ' + s + ' in field ' + ss.name);
                     ss.focus();
@@ -174,13 +174,13 @@
         <table class="Head" class="hidePrint">
             <tr>
                 <td align="left"><input type="submit" value="Save"
-                                        onclick="javascript:return onSave();"/> <input type="submit"
+                                        onclick="return onSave();"/> <input type="submit"
                                                                                        value="Save and Exit"
-                                                                                       onclick="javascript:return onSaveExit();"/>
+                                                                                       onclick="return onSaveExit();"/>
                     <input
-                            type="submit" value="Exit" onclick="javascript:return onExit();"/>
+                            type="submit" value="Exit" onclick="return onExit();"/>
                     <input type="submit" value="Print"
-                           onclick="javascript:return onPrint();return false;"/></td>
+                           onclick="return onPrint();return false;"/></td>
             </tr>
         </table>
 
@@ -323,13 +323,13 @@
         <table class="Head" class="hidePrint">
             <tr>
                 <td align="left"><input type="submit" value="Save"
-                                        onclick="javascript:return onSave();"/> <input type="submit"
+                                        onclick="return onSave();"/> <input type="submit"
                                                                                        value="Save and Exit"
-                                                                                       onclick="javascript:return onSaveExit();"/>
+                                                                                       onclick="return onSaveExit();"/>
                     <input
-                            type="submit" value="Exit" onclick="javascript:return onExit();"/>
+                            type="submit" value="Exit" onclick="return onExit();"/>
                     <input type="submit" value="Print"
-                           onclick="javascript:return onPrint();return false;"/></td>
+                           onclick="return onPrint();return false;"/></td>
             </tr>
         </table>
 

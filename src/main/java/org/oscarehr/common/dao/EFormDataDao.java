@@ -45,68 +45,68 @@ import org.springframework.stereotype.Repository;
 
 public interface EFormDataDao extends AbstractDao<EFormData> {
 
-    public static final String SORT_NAME = "form_name";
-    public static final String SORT_SUBJECT = "subject";
+    String SORT_NAME = "form_name";
+    String SORT_SUBJECT = "subject";
 
-    public List<EFormData> findByDemographicId(Integer demographicId);
+    List<EFormData> findByDemographicId(Integer demographicId);
 
-    public List<EFormData> findByDemographicIdSinceLastDate(Integer demographicId, Date lastDate);
+    List<EFormData> findByDemographicIdSinceLastDate(Integer demographicId, Date lastDate);
 
-    public List<Integer> findDemographicIdSinceLastDate(Date lastDate);
+    List<Integer> findDemographicIdSinceLastDate(Date lastDate);
 
-    public EFormData findByFormDataId(Integer formDataId);
+    EFormData findByFormDataId(Integer formDataId);
 
-    public List<EFormData> findByDemographicIdCurrent(Integer demographicId, Boolean current);
+    List<EFormData> findByDemographicIdCurrent(Integer demographicId, Boolean current);
 
-    public List<EFormData> findByDemographicIdCurrent(Integer demographicId, Boolean current, int startIndex,
-                                                      int numToReturn);
+    List<EFormData> findByDemographicIdCurrent(Integer demographicId, Boolean current, int startIndex,
+                                               int numToReturn);
 
-    public List<EFormData> findByDemographicIdCurrentAttachedToConsult(String consultationId);
+    List<EFormData> findByDemographicIdCurrentAttachedToConsult(String consultationId);
 
-    public List<EFormData> findByDemographicIdCurrentAttachedToEForm(String fdid);
+    List<EFormData> findByDemographicIdCurrentAttachedToEForm(String fdid);
 
-    public List<EFormData> findByDemographicIdCurrent(Integer demographicId, Boolean current, int startIndex,
-                                                      int numToReturn, String sortBy);
+    List<EFormData> findByDemographicIdCurrent(Integer demographicId, Boolean current, int startIndex,
+                                               int numToReturn, String sortBy);
 
-    public List<Map<String, Object>> findByDemographicIdCurrentNoData(Integer demographicId, Boolean current);
+    List<Map<String, Object>> findByDemographicIdCurrentNoData(Integer demographicId, Boolean current);
 
-    public List<EFormData> findPatientIndependent(Boolean current);
+    List<EFormData> findPatientIndependent(Boolean current);
 
-    public List<EFormData> findByFormId(Integer formId);
+    List<EFormData> findByFormId(Integer formId);
 
-    public List<Integer> findDemographicNosByFormId(Integer formId);
+    List<Integer> findDemographicNosByFormId(Integer formId);
 
-    public List<Integer> findAllFdidByFormId(Integer formId);
+    List<Integer> findAllFdidByFormId(Integer formId);
 
-    public List<Object[]> findMetaFieldsByFormId(Integer formId);
+    List<Object[]> findMetaFieldsByFormId(Integer formId);
 
-    public List<Integer> findAllCurrentFdidByFormId(Integer formId);
+    List<Integer> findAllCurrentFdidByFormId(Integer formId);
 
-    public List<EFormData> findByFormIdProviderNo(List<String> providerNo, Integer formId);
+    List<EFormData> findByFormIdProviderNo(List<String> providerNo, Integer formId);
 
-    public List<EFormData> findByDemographicIdAndFormName(Integer demographicNo, String formName);
+    List<EFormData> findByDemographicIdAndFormName(Integer demographicNo, String formName);
 
-    public List<EFormData> findByDemographicIdAndFormId(Integer demographicNo, Integer fid);
+    List<EFormData> findByDemographicIdAndFormId(Integer demographicNo, Integer fid);
 
-    public List<EFormData> findByFidsAndDates(TreeSet<Integer> fids, Date dateStart, Date dateEnd);
+    List<EFormData> findByFidsAndDates(TreeSet<Integer> fids, Date dateStart, Date dateEnd);
 
-    public List<EFormData> findByFdids(List<Integer> ids);
+    List<EFormData> findByFdids(List<Integer> ids);
 
-    public boolean isLatestShowLatestFormOnlyPatientForm(Integer fdid);
+    boolean isLatestShowLatestFormOnlyPatientForm(Integer fdid);
 
-    public List<EFormData> getFormsSameFidSamePatient(Integer fdid);
+    List<EFormData> getFormsSameFidSamePatient(Integer fdid);
 
-    public List<Integer> findemographicIdSinceLastDate(Date lastDate);
+    List<Integer> findemographicIdSinceLastDate(Date lastDate);
 
-    public List<EFormData> findInGroups(Boolean status, int demographicNo, String groupName, String sortBy, int offset,
-                                        int numToReturn, List<String> eformPerms);
+    List<EFormData> findInGroups(Boolean status, int demographicNo, String groupName, String sortBy, int offset,
+                                 int numToReturn, List<String> eformPerms);
 
-    public Integer getLatestFdid(Integer fid, Integer demographicNo);
+    Integer getLatestFdid(Integer fid, Integer demographicNo);
 
-    public List<Integer> getDemographicNosMissingVarName(int fid, String varName);
+    List<Integer> getDemographicNosMissingVarName(int fid, String varName);
 
-    public List<String> getProvidersForEforms(Collection<Integer> fdidList);
+    List<String> getProvidersForEforms(Collection<Integer> fdidList);
 
-    public Date getLatestFormDateAndTimeForEforms(Collection<Integer> fdidList);
+    Date getLatestFormDateAndTimeForEforms(Collection<Integer> fdidList);
 
 }

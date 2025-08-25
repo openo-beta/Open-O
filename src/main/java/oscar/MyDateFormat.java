@@ -226,7 +226,7 @@ public class MyDateFormat {
             return null;
         }
 
-        String parts[] = pDate.split(":");
+        String[] parts = pDate.split(":");
 
         if (parts.length != 2) {
             return null;

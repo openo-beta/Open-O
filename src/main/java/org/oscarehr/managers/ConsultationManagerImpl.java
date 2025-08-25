@@ -262,7 +262,7 @@ public class ConsultationManagerImpl implements ConsultationManager {
     public List<ConsultationServices> getConsultationServices() {
         List<ConsultationServices> services = serviceDao.findActive();
         for (ConsultationServices service : services) {
-            if (service.getServiceDesc().equals(serviceDao.REFERRING_DOCTOR)) {
+            if (service.getServiceDesc().equals(ConsultationServiceDao.REFERRING_DOCTOR)) {
                 services.remove(service);
                 break;
             }
@@ -272,7 +272,7 @@ public class ConsultationManagerImpl implements ConsultationManager {
 
     @Override
     public List<ProfessionalSpecialist> getReferringDoctorList() {
-        ConsultationServices service = serviceDao.findReferringDoctorService(serviceDao.ACTIVE_ONLY);
+        ConsultationServices service = serviceDao.findReferringDoctorService(ConsultationServiceDao.ACTIVE_ONLY);
         return (service == null) ? null : service.getSpecialists();
     }
 
@@ -381,10 +381,10 @@ public class ConsultationManagerImpl implements ConsultationManager {
         propertyDao.merge(consultRequestEnabled);
         propertyDao.merge(consultResponseEnabled);
 
-        ConsultationServices referringDocService = serviceDao.findReferringDoctorService(serviceDao.WITH_INACTIVE);
-        if (referringDocService == null) referringDocService = new ConsultationServices(serviceDao.REFERRING_DOCTOR);
-        if (conResponse) referringDocService.setActive(serviceDao.ACTIVE);
-        else referringDocService.setActive(serviceDao.INACTIVE);
+        ConsultationServices referringDocService = serviceDao.findReferringDoctorService(ConsultationServiceDao.WITH_INACTIVE);
+        if (referringDocService == null) referringDocService = new ConsultationServices(ConsultationServiceDao.REFERRING_DOCTOR);
+        if (conResponse) referringDocService.setActive(ConsultationServiceDao.ACTIVE);
+        else referringDocService.setActive(ConsultationServiceDao.INACTIVE);
 
         serviceDao.merge(referringDocService);
     }
@@ -392,15 +392,13 @@ public class ConsultationManagerImpl implements ConsultationManager {
     @Override
     public boolean isConsultRequestEnabled() {
         List<Property> results = propertyDao.findByName(CON_REQUEST_ENABLED);
-        if (results.size() > 0 && ENABLED_YES.equals(results.get(0).getValue())) return true;
-        return false;
+        return results.size() > 0 && ENABLED_YES.equals(results.get(0).getValue());
     }
 
     @Override
     public boolean isConsultResponseEnabled() {
         List<Property> results = propertyDao.findByName(CON_RESPONSE_ENABLED);
-        if (results.size() > 0 && ENABLED_YES.equals(results.get(0).getValue())) return true;
-        return false;
+        return results.size() > 0 && ENABLED_YES.equals(results.get(0).getValue());
     }
 
     /*
@@ -410,7 +408,7 @@ public class ConsultationManagerImpl implements ConsultationManager {
      */
     @Override
     public void doHl7Send(LoggedInInfo loggedInInfo, Integer consultationRequestId) throws InvalidKeyException, SignatureException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, IOException, HL7Exception, ServletException, com.lowagie.text.DocumentException {
-        checkPrivilege(loggedInInfo, securityInfoManager.READ);
+        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
 
         ConsultationRequest consultationRequest = consultationRequestDao.find(consultationRequestId);
         ProfessionalSpecialist professionalSpecialist = professionalSpecialistDao.find(consultationRequest.getSpecialistId());
@@ -677,7 +675,7 @@ public class ConsultationManagerImpl implements ConsultationManager {
     public Path renderConsultationForm(HttpServletRequest request) throws PDFGenerationException {
         Path path = null;
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();) {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             ConsultationPDFCreator consultationPDFCreator = new ConsultationPDFCreator(request, outputStream);
             consultationPDFCreator.printPdf(loggedInInfo);
             path = nioFileManager.saveTempFile("temporaryPDF" + new Date().getTime(), outputStream);

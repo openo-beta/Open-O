@@ -142,7 +142,7 @@
                                 <input type="hidden" id="destFolder" name="destFolder" value="<%=destFolder%>"/>
                                 <label style="font-family:Arial; font-weight:normal; font-size:12px"
                                        for="destinationDrop" class="fields"><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentUploader.destination"/>:</label>
-                                <select onchange="javascript:setDestination(this);" id="destinationDrop"
+                                <select onchange="setDestination(this);" id="destinationDrop"
                                         name="destinationDrop">
                                     <option value="pendingDocs" <%=(destination.equals("pendingDocs") ? " selected" : "")%> ><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.pendingDocs"/></option>
                                     <option value="incomingDocs" <%=(destination.equals("incomingDocs") ? " selected" : "")%> ><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.incomingDocs"/></option>
@@ -151,7 +151,7 @@
                                 <div id="providerDropDiv">
                                 <label style="font-family:Arial; font-weight:normal; font-size:12px" for="providerDrop"
                                        class="fields">Send to Provider:</label>
-				<select onchange="javascript:setProvider(this);" id="providerDrop" name="providerDrop">
+				<select onchange="setProvider(this);" id="providerDrop" name="providerDrop">
 					<option value="0" <%=("0".equals(provider) ? " selected" : "")%>>None</option>
 					<%
                         for (int i = 0; i < providers.size(); i++) {
@@ -164,7 +164,7 @@
 				</select>
                                 </div>
 				<label style="font-family:Arial; font-weight:normal; font-size:12px" for="queueDrop" class="fields">Queue:</label>
-				<select onchange="javascript:setQueue(this);" id="queueDrop" name="queueDrop">
+				<select onchange="setQueue(this);" id="queueDrop" name="queueDrop">
 					<%-- option value="0" <%=("0".equals(queueId) ? " selected" : "")%>>None</option  --%>
 					<%
                         for (Map.Entry<Integer, String> entry : queues.entrySet()) {
@@ -182,7 +182,7 @@
             <div id="destFolderDiv">
                 <label style="font-family:Arial; font-weight:normal; font-size:12px" for="destinationDrop"
                        class="fields"><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentUploader.folder"/>:</label>
-                <select onchange="javascript:setDestFolder(this);" id="destFolderDrop" name="destFolderDrop">
+                <select onchange="setDestFolder(this);" id="destFolderDrop" name="destFolderDrop">
                     <option value="Fax" <%=(destFolder.equals("Fax") ? " selected" : "")%> ><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.incomingDocs.fax"/></option>
                     <option value="Mail" <%=(destFolder.equals("Mail") ? " selected" : "")%> ><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.incomingDocs.mail"/></option>
                     <option value="File" <%=(destFolder.equals("File") ? " selected" : "")%> ><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.incomingDocs.file"/></option>

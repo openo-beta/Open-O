@@ -59,7 +59,7 @@ public class EctConDisplayService2Action extends ActionSupport {
         }
 
         String serviceId = this.getServiceId();
-        String specialists[] = this.getSpecialists();
+        String[] specialists = this.getSpecialists();
         MiscUtils.getLogger().debug("service id ".concat(String.valueOf(String.valueOf(serviceId))));
         MiscUtils.getLogger().debug("num specs".concat(String.valueOf(specialists.length)));
 
@@ -93,10 +93,10 @@ public class EctConDisplayService2Action extends ActionSupport {
         return specialists;
     }
 
-    public void setSpecialists(String str[]) {
+    public void setSpecialists(String[] str) {
         specialists = str;
     }
 
     String serviceId;
-    String specialists[];
+    String[] specialists;
 }

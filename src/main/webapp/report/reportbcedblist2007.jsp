@@ -141,7 +141,7 @@
 
                     if (demoProp.containsKey(demographicNo)) continue;
                     else demoProp.setProperty(demographicNo, "1");
-                    bodd = bodd ? false : true; //for the color of rows
+                    bodd = !bodd; //for the color of rows
                     nItems++;
             %>
             <tr bgcolor="<%=bodd?weakcolor:"white"%>">

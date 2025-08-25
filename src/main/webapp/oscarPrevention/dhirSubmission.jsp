@@ -358,7 +358,7 @@
                         String entity = EntityUtils.toString(httpResponse.getEntity());
 
                         JSONObject object = new JSONObject(entity);
-                        logger.info("object=" + object.toString());
+                        logger.info("object=" + object);
 
                         Integer code = (Integer) object.get("code");
 

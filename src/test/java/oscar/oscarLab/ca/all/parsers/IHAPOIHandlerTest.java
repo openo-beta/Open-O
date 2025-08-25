@@ -406,7 +406,7 @@ public class IHAPOIHandlerTest {
                 stringBuilder.append(" " + handler.getOBXAbnormalFlag(j, i));
             }
         }
-        logger.info("testGetOBXAbnormalFlag() " + stringBuilder.toString());
+        logger.info("testGetOBXAbnormalFlag() " + stringBuilder);
 
         Assert.assertEquals(getElement("OBX.8"), stringBuilder.toString().trim());
     }
@@ -428,7 +428,7 @@ public class IHAPOIHandlerTest {
             }
         }
 
-        logger.info("testGetObservationHeader() " + stringBuilder.toString());
+        logger.info("testGetObservationHeader() " + stringBuilder);
 
         String header = getElement("OBR.4", "CE.5");
         if (header.isEmpty()) {
@@ -455,7 +455,7 @@ public class IHAPOIHandlerTest {
             }
         }
 
-        logger.info("testGetOBXIdentifier() " + stringBuilder.toString());
+        logger.info("testGetOBXIdentifier() " + stringBuilder);
         Assert.assertEquals(sortStringToList(getElement("OBX.3", "CE.4")), sortStringToList(stringBuilder.toString()));
     }
 
@@ -473,7 +473,7 @@ public class IHAPOIHandlerTest {
             }
         }
 
-        logger.info("testGetOBXValueType() " + stringBuilder.toString());
+        logger.info("testGetOBXValueType() " + stringBuilder);
         Assert.assertEquals(getElement("OBX.2"), stringBuilder.toString().trim());
     }
 
@@ -491,7 +491,7 @@ public class IHAPOIHandlerTest {
             }
         }
 
-        logger.info("testGetOBXName() " + stringBuilder.toString());
+        logger.info("testGetOBXName() " + stringBuilder);
         Assert.assertEquals(getElement("OBX.3", "CE.2"), stringBuilder.toString().trim());
     }
 
@@ -513,7 +513,7 @@ public class IHAPOIHandlerTest {
             }
         }
 
-        logger.info("testGetOBXResult() " + stringBuilder.toString());
+        logger.info("testGetOBXResult() " + stringBuilder);
 
         Assert.assertEquals(sortStringToList(getElement("OBX.5")), sortStringToList(stringBuilder.toString()));
     }
@@ -530,7 +530,7 @@ public class IHAPOIHandlerTest {
             }
         }
 
-        logger.info("testGetOBXReferenceRange() " + stringBuilder.toString());
+        logger.info("testGetOBXReferenceRange() " + stringBuilder);
 
         Assert.assertEquals(sortStringToList(getElement("OBX.7")), sortStringToList(stringBuilder.toString().trim()));
     }
@@ -550,7 +550,7 @@ public class IHAPOIHandlerTest {
             }
         }
 
-        logger.info("testGetOBXUnits() " + stringBuilder.toString());
+        logger.info("testGetOBXUnits() " + stringBuilder);
 
         Assert.assertEquals(sortStringToList(getElement("OBX.6", "CE.1")), sortStringToList(stringBuilder.toString().trim()));
     }
@@ -568,7 +568,7 @@ public class IHAPOIHandlerTest {
             }
         }
 
-        logger.info("testGetOBXResultStatus() " + stringBuilder.toString());
+        logger.info("testGetOBXResultStatus() " + stringBuilder);
         Assert.assertEquals(getElement("OBX.11"), stringBuilder.toString().trim());
     }
 
@@ -620,7 +620,7 @@ public class IHAPOIHandlerTest {
             }
         }
 
-        logger.info("testGetComments() " + stringBuilder.toString());
+        logger.info("testGetComments() " + stringBuilder);
 
         Assert.assertEquals(getElement("NTE", "NTE.3"), stringBuilder.toString().trim());
     }

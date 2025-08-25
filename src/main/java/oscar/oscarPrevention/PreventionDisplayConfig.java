@@ -357,11 +357,7 @@ public class PreventionDisplayConfig {
 
                     if (sex != null && inAgeGroup) {
                         //log.debug("HERE4");
-                        if (sex.equals(demoSex)) {
-                            display = true;
-                        } else {
-                            display = false;
-                        }
+                        display = sex.equals(demoSex);
                     }
                 }
             }//end check if prevention has been hidden

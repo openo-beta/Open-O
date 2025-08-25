@@ -101,10 +101,7 @@ public class AddPrevention2Action extends ActionSupport {
 
         String action = request.getParameter("action");
 
-        boolean submitToDhir = false;
-        if (action != null && "Save & Submit".equals(action)) {
-            submitToDhir = true;
-        }
+        boolean submitToDhir = action != null && "Save & Submit".equals(action);
         MiscUtils.getLogger().debug("id " + id + "  delete " + delete);
 
         MiscUtils.getLogger().debug("prevention Type " + preventionType);

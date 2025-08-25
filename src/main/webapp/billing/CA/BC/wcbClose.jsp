@@ -77,8 +77,7 @@ v<%
     }
 
     boolean isEmpty(ArrayList a) {
-        boolean isEmpty = false;
-        if (a.size() == 0) isEmpty = true;
+        boolean isEmpty = a.size() == 0;
         return isEmpty;
     }
 %>

@@ -114,7 +114,7 @@ public final class EDocUtil {
 
         private String value;
 
-        private EDocSort(String value) {
+        EDocSort(String value) {
             this.value = value;
         }
 

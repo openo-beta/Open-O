@@ -92,7 +92,7 @@
                 + "' and (BINARY status NOT LIKE 'B%' AND BINARY status NOT LIKE 'C%' AND BINARY status NOT LIKE 'N%')"
                 + " and demographic_no != 0 order by appointment_date , start_time ";
 
-        rs = dbObj.searchDBRecord(sql);
+        rs = DBHelp.searchDBRecord(sql);
         while (rs.next()) {
             if (bMultisites) {
                 // skip record if location does not match the selected site, blank location always gets displayed for backward-compatibility
@@ -127,7 +127,7 @@
         sql = "select * from billing_on_cheader1 where provider_no='" + providerview + "' and billing_date >='" + xml_vdate
                 + "' and billing_date<='" + xml_appointment_date + "' and (status<>'D' and status<>'S' and status<>'B')"
                 + " order by billing_date , billing_time ";
-        rs = dbObj.searchDBRecord(sql);
+        rs = DBHelp.searchDBRecord(sql);
         while (rs.next()) {
             if (bMultisites) {
                 // skip record if clinic is not match the selected site, blank clinic always gets displayed for backward compatible
@@ -191,7 +191,7 @@
 
         // change 'S' to 'O' for testing
 
-        rs = dbObj.searchDBRecord(sql);
+        rs = DBHelp.searchDBRecord(sql);
         while (rs.next()) {
             vecBillingNo.add("" + rs.getInt("billing_no"));
             propTotal.setProperty("" + rs.getInt("billing_no"), rs.getString("total"));
@@ -210,7 +210,7 @@
 
         sql = "select billing_no, amountclaim, amountpay, hin, service_date from radetail where billing_no in ("
                 + tempStr + ") and raheader_no !=0 order by billing_no, radetail_no";
-        rs = dbObj.searchDBRecord(sql);
+        rs = DBHelp.searchDBRecord(sql);
         String sAmountclaim = "", sAmountpay = "", hin = "";
         int nNo = 0;
         while (rs.next()) {
@@ -287,7 +287,7 @@
                 + "' and billing_date<='" + xml_appointment_date + "' and (status<>'D' and status<>'S')"
                 + " order by billing_date , billing_time ";
         int nNo = 0;
-        rs = dbObj.searchDBRecord(sql);
+        rs = DBHelp.searchDBRecord(sql);
         while (rs.next()) {
             prop = new Properties();
             nNo++;
@@ -587,7 +587,7 @@ end broken -->
 
 <table style="width:100%">
     <tr>
-        <td><a href=# onClick="javascript:history.go(-1);return false;" class="btn btn-link">
+        <td><a href=# onClick="history.go(-1);return false;" class="btn btn-link">
             <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/></a></td>
         <td style="text-align:right;"><a href="" onClick="self.close();" class="btn btn-link">
             <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnExit"/></a></td>

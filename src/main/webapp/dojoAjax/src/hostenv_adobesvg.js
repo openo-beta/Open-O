@@ -32,12 +32,12 @@ with (dojo.render) {
             os.linux = true;
             break;
     }
-    ;
+
     svg.capable = true;
     svg.support.builtin = true;
     svg.adobe = true;
 }
-;
+
 
 // browserEval("alert(window.location);");
 
@@ -378,7 +378,7 @@ dojo.hostenv.loadModule = function (modulename, exact_only, omit_module_check) {
 
         this.loadPath(relpath, ((!omit_module_check) ? modulename : null), nextTry);
     }
-    return;
+
 }
 
 /**

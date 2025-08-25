@@ -151,6 +151,6 @@
         }
     %>
 </table>
-<input type="button" value="close" onclick="javascript:window.close();"/>
+<input type="button" value="close" onclick="window.close();"/>
 </body>
 </html>

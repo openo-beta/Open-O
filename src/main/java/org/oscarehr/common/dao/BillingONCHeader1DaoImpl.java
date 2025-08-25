@@ -96,7 +96,7 @@ public class BillingONCHeader1DaoImpl extends AbstractDaoImpl<BillingONCHeader1>
     public int getNumberOfDemographicsWithInvoicesForProvider(String providerNo, Date startDate, Date endDate,
                                                               boolean distinct) {
         String distinctStr = "distinct";
-        if (distinct == false) {
+        if (!distinct) {
             distinctStr = StringUtils.EMPTY;
         }
 

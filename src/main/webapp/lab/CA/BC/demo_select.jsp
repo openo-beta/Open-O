@@ -79,7 +79,7 @@
             window.opener.location = '<%=postTo.replaceAll("-","&")%>' + index;
             window.opener.focus();
             window.close();
-        };
+        }
     </SCRIPT>
 </head>
 <body>

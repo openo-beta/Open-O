@@ -284,7 +284,7 @@
     boolean erx_enable = providerPreference.isERxEnabled();
     boolean erx_training_mode = providerPreference.isERxTrainingMode();
 
-    boolean bShortcutIntakeForm = oscarVariables.getProperty("appt_intake_form", "").equalsIgnoreCase("on") ? true : false;
+    boolean bShortcutIntakeForm = oscarVariables.getProperty("appt_intake_form", "").equalsIgnoreCase("on");
 
     String newticklerwarningwindow = null;
     String default_pmm = null;
@@ -1559,7 +1559,7 @@
                                         else userAvail = false;
                                     }
                                 }
-                                bColor = bColor ? false : true;
+                                bColor = !bColor;
                         %>
                         <td valign="top" width="<%=isWeekView?100/7:100/numProvider%>%">
                             <!-- for the first provider's schedule -->
@@ -1707,7 +1707,7 @@
                                                     for (ih = startHour * 60; ih <= (endHour * 60 + (60 / depth - 1) * depth); ih += depth) { // use minutes as base
                                                         hourCursor = ih / 60;
                                                         minuteCursor = ih % 60;
-                                                        bColorHour = minuteCursor == 0 ? true : false; //every 00 minute, change color
+                                                        bColorHour = minuteCursor == 0; //every 00 minute, change color
 
                                                         //templatecode
                                                         if ((dateTimeCodeBean.get(curProvider_no[nProvider]) != null) && (dateTimeCodeBean.get(curProvider_no[nProvider]) != "") && confirmTimeCode.size() != 0) {

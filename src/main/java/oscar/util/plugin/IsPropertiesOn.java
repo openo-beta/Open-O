@@ -27,12 +27,9 @@ public class IsPropertiesOn {
 
         OscarProperties proper = OscarProperties.getInstance();
 
-        if (proper.getProperty(proName, "").equalsIgnoreCase("yes")
-                || proper.getProperty(proName, "").equalsIgnoreCase("true")
-                || proper.getProperty(proName, "").equalsIgnoreCase("on"))
-            return true;
-        else
-            return false;
+        return proper.getProperty(proName, "").equalsIgnoreCase("yes")
+            || proper.getProperty(proName, "").equalsIgnoreCase("true")
+            || proper.getProperty(proName, "").equalsIgnoreCase("on");
 
     }
 
@@ -40,12 +37,9 @@ public class IsPropertiesOn {
 
         OscarProperties proper = OscarProperties.getInstance();
 
-        if (proper.getProperty(proName, null) == null
-                || proper.getProperty(proName, "").equalsIgnoreCase("off")
-                || proper.getProperty(proName, "").equalsIgnoreCase("false"))
-            return true;
-        else
-            return false;
+        return proper.getProperty(proName, null) == null
+            || proper.getProperty(proName, "").equalsIgnoreCase("off")
+            || proper.getProperty(proName, "").equalsIgnoreCase("false");
 
     }
 

@@ -53,15 +53,15 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
  */
 public class MEDITECHHandler implements MessageHandler {
 
-    public static enum DIAGNOSTIC_ID {PTH, ITS, LAB, MIC, BBK, MB} // Pathology, Report, Lab, Microbiology, Blood Bank, Microbiology
+    public enum DIAGNOSTIC_ID {PTH, ITS, LAB, MIC, BBK, MB} // Pathology, Report, Lab, Microbiology, Blood Bank, Microbiology
 
-    public static enum UNSTRUCTURED {PTH, ITS} // Pathology, Report(dictation etc..)
+    public enum UNSTRUCTURED {PTH, ITS} // Pathology, Report(dictation etc..)
 
-    public static enum STRUCTURED {LAB, MIC, BBK} // Lab, Microbiology, Blood Bank
+    public enum STRUCTURED {LAB, MIC, BBK} // Lab, Microbiology, Blood Bank
 
-    public static enum OBX_DATA_TYPES {NM, ST, CE, TX, FT} // Numeric, String, Coded Element, Text, FreeText
+    public enum OBX_DATA_TYPES {NM, ST, CE, TX, FT} // Numeric, String, Coded Element, Text, FreeText
 
-    public static enum ORDER_STATUS {F, C, S, P, X, I} // complete(or final), corrected, signed, preliminary, cancelled, incomplete
+    public enum ORDER_STATUS {F, C, S, P, X, I} // complete(or final), corrected, signed, preliminary, cancelled, incomplete
 
     //	public static final boolean USE_OBR_HEADERS_FOR_OBR_NAME = Boolean.TRUE;
     public static final String DEFAULT_LAB_NAME = "LAB";
@@ -113,11 +113,8 @@ public class MEDITECHHandler implements MessageHandler {
      * not in the unstructured (PATH or ITS) lab types.
      */
     public boolean isReportData() {
-        if (OBX_DATA_TYPES.TX.name().equals(getOBXValueType(0, 0))
-                || OBX_DATA_TYPES.FT.name().equals(getOBXValueType(0, 0))) {
-            return true;
-        }
-        return false;
+        return OBX_DATA_TYPES.TX.name().equals(getOBXValueType(0, 0))
+            || OBX_DATA_TYPES.FT.name().equals(getOBXValueType(0, 0));
     }
 
     /**
@@ -279,11 +276,7 @@ public class MEDITECHHandler implements MessageHandler {
     public boolean isOBXAbnormal(int i, int j) {
         try {
             String abn = getOBXAbnormalFlag(i, j);
-            if (!abn.equals("") && !NORMAL_LAB.equalsIgnoreCase(abn)) {
-                return (true);
-            } else {
-                return (false);
-            }
+            return !abn.equals("") && !NORMAL_LAB.equalsIgnoreCase(abn);
         } catch (Exception e) {
             return (false);
         }

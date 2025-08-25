@@ -96,7 +96,7 @@
                         %>
                         <td style="background-color: #555;"><a
                                 href="javascript:void(0)"
-                                onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                                onclick="clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
                         </a>
                         </td>
                         <%
@@ -106,7 +106,7 @@
                         <security:oscarSec roleName="<%=roleName$%>"
                                            objectName="_pmm_editProgram.general" rights="r">
                             <td><a href="javascript:void(0)"
-                                   onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                                   onclick="clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
                             </a></td>
                         </security:oscarSec>
                         <%
@@ -115,7 +115,7 @@
                         <security:oscarSec roleName="<%=roleName$%>"
                                            objectName="_pmm_editProgram.staff" rights="r">
                             <td><a href="javascript:void(0)"
-                                   onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                                   onclick="clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
                             </a></td>
                         </security:oscarSec>
                         <%
@@ -124,7 +124,7 @@
                         <security:oscarSec roleName="<%=roleName$%>"
                                            objectName="_pmm_editProgram.functionUser" rights="r">
                             <td><a href="javascript:void(0)"
-                                   onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                                   onclick="clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
                             </a></td>
                         </security:oscarSec>
                         <%
@@ -133,7 +133,7 @@
                         <security:oscarSec roleName="<%=roleName$%>"
                                            objectName="_pmm_editProgram.teams" rights="r">
                             <td><a href="javascript:void(0)"
-                                   onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                                   onclick="clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
                             </a></td>
                         </security:oscarSec>
                         <%
@@ -142,7 +142,7 @@
                         <security:oscarSec roleName="<%=roleName$%>"
                                            objectName="_pmm_editProgram.clients" rights="r">
                             <td><a href="javascript:void(0)"
-                                   onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                                   onclick="clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
                             </a></td>
                         </security:oscarSec>
                         <%
@@ -151,7 +151,7 @@
                         <security:oscarSec roleName="<%=roleName$%>"
                                            objectName="_pmm_editProgram.queue" rights="r">
                             <td><a href="javascript:void(0)"
-                                   onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                                   onclick="clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
                             </a></td>
                         </security:oscarSec>
                         <%
@@ -160,7 +160,7 @@
                         <security:oscarSec roleName="<%=roleName$%>"
                                            objectName="_pmm_editProgram.access" rights="r">
                             <td><a href="javascript:void(0)"
-                                   onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                                   onclick="clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
                             </a></td>
                         </security:oscarSec>
                         <%
@@ -169,7 +169,7 @@
                         <security:oscarSec roleName="<%=roleName$%>"
                                            objectName="_pmm_editProgram.clientStatus" rights="r">
                             <td><a href="javascript:void(0)"
-                                   onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                                   onclick="clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
                             </a></td>
                         </security:oscarSec>
                         <%
@@ -178,7 +178,7 @@
                         <security:oscarSec roleName="<%=roleName$%>"
                                            objectName="_pmm_editProgram.serviceRestrictions" rights="r">
                             <td><a href="javascript:void(0)"
-                                   onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                                   onclick="clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
                             </a></td>
                         </security:oscarSec>
                         <%
@@ -187,7 +187,7 @@
                         <security:oscarSec roleName="<%=roleName$%>"
                                            objectName="_pmm_editProgram.vacancies" rights="r">
                             <td><a href="javascript:void(0)"
-                                   onclick="javascript:clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
+                                   onclick="clickTab('<%=ProgramManagerViewFormBean.tabs[i] %>');return false;"><%=ProgramManagerViewFormBean.tabs[i]%>
                             </a></td>
                         </security:oscarSec>
                         <%

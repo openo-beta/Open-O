@@ -41,23 +41,23 @@ import org.springframework.stereotype.Repository;
 public interface PharmacyInfoDao extends AbstractDao<PharmacyInfo> {
 
 
-    public void addPharmacy(String name, String address, String city, String province, String postalCode, String phone1, String phone2, String fax, String email, String serviceLocationIdentifier, String notes);
+    void addPharmacy(String name, String address, String city, String province, String postalCode, String phone1, String phone2, String fax, String email, String serviceLocationIdentifier, String notes);
 
-    public void updatePharmacy(Integer ID, String name, String address, String city, String province, String postalCode, String phone1, String phone2, String fax, String email, String serviceLocationIdentifier, String notes);
+    void updatePharmacy(Integer ID, String name, String address, String city, String province, String postalCode, String phone1, String phone2, String fax, String email, String serviceLocationIdentifier, String notes);
 
-    public void deletePharmacy(Integer ID);
+    void deletePharmacy(Integer ID);
 
-    public List<PharmacyInfo> getPharmacies(List<Integer> idList);
+    List<PharmacyInfo> getPharmacies(List<Integer> idList);
 
-    public PharmacyInfo getPharmacy(Integer ID);
+    PharmacyInfo getPharmacy(Integer ID);
 
-    public PharmacyInfo getPharmacyByRecordID(Integer recordID);
+    PharmacyInfo getPharmacyByRecordID(Integer recordID);
 
-    public List<PharmacyInfo> getAllPharmacies();
+    List<PharmacyInfo> getAllPharmacies();
 
-    public List<PharmacyInfo> searchPharmacyByNameAddressCity(String name, String city);
+    List<PharmacyInfo> searchPharmacyByNameAddressCity(String name, String city);
 
-    public List<String> searchPharmacyByCity(String city);
+    List<String> searchPharmacyByCity(String city);
 
     // public PharmacyInfo find(Integer id);
     // public void persist(PharmacyInfo pharmacyInfo);

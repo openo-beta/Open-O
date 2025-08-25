@@ -101,7 +101,7 @@ public class Episode2Action extends ActionSupport {
         } else {
             e = new Episode();
         }
-        BeanUtils.copyProperties(episode, e, new String[]{"id", "lastUpdateTime", "lastUpdateUser"});
+        BeanUtils.copyProperties(episode, e, "id", "lastUpdateTime", "lastUpdateUser");
         e.setLastUpdateUser(loggedInInfo.getLoggedInProviderNo());
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", e.getDemographicNo())) {

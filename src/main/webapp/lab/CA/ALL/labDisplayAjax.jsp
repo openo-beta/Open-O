@@ -77,10 +77,7 @@
 
     UserPropertyDAO userPropertyDAO = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
     UserProperty uProp = userPropertyDAO.getProp(providerNo, UserProperty.LAB_ACK_COMMENT);
-    boolean skipComment = false;
-    if (uProp != null && uProp.getValue().equalsIgnoreCase("yes")) {
-        skipComment = true;
-    }
+    boolean skipComment = uProp != null && uProp.getValue().equalsIgnoreCase("yes");
 
     UserProperty getRecallDelegate = userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_DELEGATE);
     UserProperty getRecallTicklerAssignee = userPropertyDAO.getProp(providerNo, UserProperty.LAB_RECALL_TICKLER_ASSIGNEE);
@@ -365,7 +362,7 @@
         <input type="hidden" id="labNum" name="lab_no" value="<%=lab_no%>">
         <input type="hidden" id="label" name="label" value="<%=label%>">
     </form>
-    <form name="acknowledgeForm" id="acknowledgeForm_<%=segmentID%>" onsubmit="javascript:void(0);" method="post"
+    <form name="acknowledgeForm" id="acknowledgeForm_<%=segmentID%>" onsubmit="void(0);" method="post"
           action="javascript:void(0);">
 
         <table width="100%" border="0" cellspacing="0" cellpadding="0">

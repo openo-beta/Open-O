@@ -153,10 +153,7 @@ public class SchemaUtils {
 
         logger.info("#------------>> createDatabaseAndTables()");
 
-        boolean skipDbInit = false;
-        if (System.getProperty("oscar.dbinit.skip") != null && System.getProperty("oscar.dbinit.skip").equalsIgnoreCase("true")) {
-            skipDbInit = true;
-        }
+        boolean skipDbInit = System.getProperty("oscar.dbinit.skip") != null && System.getProperty("oscar.dbinit.skip").equalsIgnoreCase("true");
 
         String schema = ConfigUtils.getProperty("db_schema");
         logger.info("using schema : " + schema);
@@ -307,7 +304,7 @@ public class SchemaUtils {
         logger.info("#------------>> loadFileIntoMySQL() : " + filename);
 
         String dir = new File(filename).getParent();
-        String env[] = null;
+        String[] env = null;
         String envStr = null;
         if (System.getProperty("os.name").startsWith("Windows")) {
             envStr = "SYSTEMROOT=" + System.getenv("SYSTEMROOT");
@@ -352,10 +349,7 @@ public class SchemaUtils {
     private static void runCreateTablesScript(Connection c) throws IOException, SQLException {
         logger.info("#------------>> runCreateTablesScript()");
 
-        boolean skipDbInit = false;
-        if (System.getProperty("oscar.dbinit.skip") != null && System.getProperty("oscar.dbinit.skip").equalsIgnoreCase("true")) {
-            skipDbInit = true;
-        }
+        boolean skipDbInit = System.getProperty("oscar.dbinit.skip") != null && System.getProperty("oscar.dbinit.skip").equalsIgnoreCase("true");
 
         if (!skipDbInit) {
             String baseDir = System.getProperty("user.dir");
@@ -463,10 +457,7 @@ public class SchemaUtils {
      * @throws NoSuchAlgorithmException
      */
     public static void dropAndRecreateDatabase() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
-        boolean skipDbInit = false;
-        if (System.getProperty("oscar.dbinit.skip") != null && System.getProperty("oscar.dbinit.skip").equalsIgnoreCase("true")) {
-            skipDbInit = true;
-        }
+        boolean skipDbInit = System.getProperty("oscar.dbinit.skip") != null && System.getProperty("oscar.dbinit.skip").equalsIgnoreCase("true");
         if (!skipDbInit) {
             dropDatabaseIfExists();
         }

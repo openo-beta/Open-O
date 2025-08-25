@@ -852,7 +852,7 @@ TF.prototype = {
         this.infDiv = tf_Id(this.prfxInfDiv + this.id);
         var ldiv = tf_CreateElm('div', ['id', this.prfxLDiv + this.id]);
         ldiv.className = this.lDivCssClass;
-        ;infdiv.appendChild(ldiv);
+        infdiv.appendChild(ldiv);
         this.lDiv = tf_Id(this.prfxLDiv + this.id);
         var rdiv = tf_CreateElm('div', ['id', this.prfxRDiv + this.id]);
         rdiv.className = this.rDivCssClass;

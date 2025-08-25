@@ -165,7 +165,7 @@
                                 <tr>
                                     <td><input type="button" name="button" class=mbttn
                                                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.btnCodeSearch"/>"
-                                               onClick="javascript: ResearchScriptAttach();" )></td>
+                                               onClick="ResearchScriptAttach();" )></td>
                                 </tr>
                             </table>
                         </td>
@@ -175,13 +175,13 @@
                                     <td><input type="hidden" name="forward" value="none"/> <input
                                             type="button" name="button" class=mbttn style="width: 80"
                                             value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ADD"/> >>"
-                                            onClick="javascript: submitform('add');"></td>
+                                            onClick="submitform('add');"></td>
                                 </tr>
                                 <tr>
                                     <td><input type="button" name="button" class=mbttn
                                                style="width: 80"
                                                value="<< <fmt:setBundle basename="oscarResources"/><fmt:message key="REMOVE"/>"
-                                               onClick="javascript: submitform('remove');"></td>
+                                               onClick="submitform('remove');"></td>
                                 </tr>
                             </table>
                         </td>

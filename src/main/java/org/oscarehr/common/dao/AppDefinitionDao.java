@@ -36,9 +36,9 @@ import org.springframework.stereotype.Repository;
 
 public interface AppDefinitionDao extends AbstractDao<AppDefinition> {
 
-    public List<AppDefinition> findAll();
+    List<AppDefinition> findAll();
 
-    public AppDefinition findByName(String name);
+    AppDefinition findByName(String name);
     
-    public AppDefinition findByConsumerKey(String consumerKey);
+    AppDefinition findByConsumerKey(String consumerKey);
 }

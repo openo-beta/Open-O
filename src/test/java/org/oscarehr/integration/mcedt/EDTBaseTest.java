@@ -147,7 +147,7 @@ public abstract class EDTBaseTest {
             // It loads the configurations defined in the specified XML files
             ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext();
             // Set the configuration files for the application context
-            context.setConfigLocations(new String[]{"/applicationContext.xml"});
+            context.setConfigLocations("/applicationContext.xml");
             context.refresh();
             // Set the application context in the Spring utility class, so it can be accessed throughout the application
             SpringUtils.setBeanFactory(context);

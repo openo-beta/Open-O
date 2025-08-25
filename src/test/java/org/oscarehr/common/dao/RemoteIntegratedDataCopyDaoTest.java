@@ -65,7 +65,7 @@ public class RemoteIntegratedDataCopyDaoTest extends DaoTestFixtures {
 
     @Before
     public void before() throws Exception {
-        SchemaUtils.restoreTable(new String[]{"RemoteIntegratedDataCopy"});
+        SchemaUtils.restoreTable("RemoteIntegratedDataCopy");
     }
 
     @Test

@@ -60,7 +60,7 @@ public class ConcatPDF {
 
 
     public static void concat(ArrayList<Object> alist, String filename) {
-        try (OutputStream os = new FileOutputStream(filename);) {
+        try (OutputStream os = new FileOutputStream(filename)) {
             concat(alist, os);
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);

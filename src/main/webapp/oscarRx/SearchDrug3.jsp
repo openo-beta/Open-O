@@ -441,7 +441,7 @@
                 if (typeof el == "undefined") {
                     return el
                 }
-                ;
+
                 if (el.innerText) return el.innerText;	//Not needed but it is faster
                 var str = "";
 
@@ -2604,7 +2604,7 @@ function getReRxCheckboxByUiRefId(uiRefId) {
                     jQuery(this).focus();
                     alert('Start Date cannot be in the future. (' + str1 + ')');
                     x = false;
-                    return;
+
                 }
             });
             return x;
@@ -2655,7 +2655,7 @@ function getReRxCheckboxByUiRefId(uiRefId) {
                     jQuery(this).focus();
                     alert('Written Date cannot be in the future. (' + str1 + ')');
                     x = false;
-                    return;
+
                 }
             });
             return x;

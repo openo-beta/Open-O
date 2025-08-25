@@ -227,7 +227,7 @@
         java.util.Properties props = rec.getFormRecord(LoggedInInfo.getLoggedInInfoFromSession(request), demoNo, formId);
     %>
 
-    <BODY bgproperties="fixed" onLoad="javascript:window.focus()"
+    <BODY bgproperties="fixed" onLoad="window.focus()"
           topmargin="0" leftmargin="0" rightmargin="0">
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
@@ -250,17 +250,17 @@
             <tr>
                 <td align="left"><input type="submit"
                                         value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnSave"/>"
-                                        onclick="javascript:return onSave();"/> <input type="submit"
+                                        onclick="return onSave();"/> <input type="submit"
                                                                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnSaveExit"/>"
-                                                                                       onclick="javascript:return onSaveExit();"/>
+                                                                                       onclick="return onSaveExit();"/>
                     <input type="submit"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnExit"/>"
-                           onclick="javascript:return onExit();"/> <input type="button"
+                           onclick="return onExit();"/> <input type="button"
                                                                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnPrint"/>"
-                                                                          onclick="javascript:return onPrint();"/>
+                                                                          onclick="return onPrint();"/>
                     <input type="button"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnPrintPage"/>"
-                           onclick="javascript: popupPage(700,950,'formannualfemaleprint.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>')"/>
+                           onclick="popupPage(700,950,'formannualfemaleprint.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>')"/>
                 </td>
                 <td align='right'><a
                         href="javascript: popupPage(700,950,'<%= request.getContextPath() %>/decision/annualreview/annualreviewplanner.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>');"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnAnnualReview"/></a></td>
@@ -791,14 +791,14 @@ o=<%=provNo%>');"><fmt:setBundle basename="oscarResources"/><fmt:message key="os
             <tr>
                 <td align="left"><input type="submit"
                                         value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnSave"/>"
-                                        onclick="javascript:return onSave();"/> <input type="submit"
+                                        onclick="return onSave();"/> <input type="submit"
                                                                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnSaveExit"/>"
-                                                                                       onclick="javascript:return onSaveExit();"/>
+                                                                                       onclick="return onSaveExit();"/>
                     <input type="submit"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnExit"/>"
-                           onclick="javascript:return onExit();"/> <input type="button"
+                           onclick="return onExit();"/> <input type="button"
                                                                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnPrint"/>"
-                                                                          onclick="javascript:return onPrint();"/></td>
+                                                                          onclick="return onPrint();"/></td>
                 <td align='right'><a
                         href="javascript: popupPage(700,950,'<%= request.getContextPath() %>/decision/annualreview/annualreviewplanner.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>');"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnAnnualReview"/></a></td>
             </tr>

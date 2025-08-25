@@ -24,6 +24,7 @@
 package org.oscarehr.common.dao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -82,7 +83,7 @@ public class CdsClientFormDataDaoTest extends DaoTestFixtures {
                 formData3
         ));
 
-        assertTrue(result.size() == expectedResult.size());
+        assertSame(result.size(), expectedResult.size());
         assertTrue(result.containsAll(expectedResult));
     }
 

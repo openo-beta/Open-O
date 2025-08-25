@@ -107,9 +107,7 @@ public class MeasurementMapConfig {
 
     public boolean isTypeMappedToLoinc(String measurementType) {
         int size = measurementMapDao.getMapsByIdent(measurementType).size();
-        if (size > 0)
-            return true;
-        return false;
+        return size > 0;
     }
 
     public LoincMapEntry getLoincMapEntryByIdentCode(String identCode) {

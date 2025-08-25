@@ -40,8 +40,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface CaseManagementIssueNotesDao {
 
-    public List<CaseManagementIssue> getNoteIssues(Integer noteId);
+    List<CaseManagementIssue> getNoteIssues(Integer noteId);
 
-    public List<Integer> getNoteIdsWhichHaveIssues(String[] issueId);
+    List<Integer> getNoteIdsWhichHaveIssues(String[] issueId);
 
 }

@@ -259,10 +259,7 @@ public class ActionUtils {
     public static boolean isOHIPFile(String filename) {
         String suffix = filename.substring(filename.lastIndexOf(".") + 1);
         String prefix = filename.substring(0, 2);
-        if (suffix.length() == 3 && suffix.matches("\\d+") && prefix.matches("H[A-L]")) {
-            return true;
-        }
-        return false;
+        return suffix.length() == 3 && suffix.matches("\\d+") && prefix.matches("H[A-L]");
     }
 
     public static boolean isOBECFile(String filename) {

@@ -41,13 +41,13 @@ import oscar.util.UtilDateUtilities;
 
 public interface DemographicArchiveDao extends AbstractDao<DemographicArchive> {
 
-    public List<DemographicArchive> findByDemographicNo(Integer demographicNo);
+    List<DemographicArchive> findByDemographicNo(Integer demographicNo);
 
-    public List<DemographicArchive> findRosterStatusHistoryByDemographicNo(Integer demographicNo);
+    List<DemographicArchive> findRosterStatusHistoryByDemographicNo(Integer demographicNo);
 
-    public Long archiveRecord(Demographic d);
+    Long archiveRecord(Demographic d);
 
-    public List<DemographicArchive> findByDemographicNoChronologically(Integer demographicNo);
+    List<DemographicArchive> findByDemographicNoChronologically(Integer demographicNo);
 
-    public List<Object[]> findMetaByDemographicNo(Integer demographicNo);
+    List<Object[]> findMetaByDemographicNo(Integer demographicNo);
 }

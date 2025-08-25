@@ -58,9 +58,7 @@
     int limit = Integer.parseInt(strLimit);
 
     String outcome = request.getParameter("outcome");
-    boolean mergedSearch = false;
-    if (request.getParameter("dboperation") != null && request.getParameter("dboperation").equals("demographic_search_merged"))
-        mergedSearch = true;
+    boolean mergedSearch = request.getParameter("dboperation") != null && request.getParameter("dboperation").equals("demographic_search_merged");
     if (outcome != null) {
         if (outcome.equals("success")) {
 %>
@@ -320,11 +318,9 @@
                     String head = dmDAO.getHead(demographicNo);
 
                     // default to head record
-                    boolean isHeadRecord = true;
+                    boolean isHeadRecord = demo.getHeadRecord() == null;
 
                     // if record has a head record, then it is not the head record
-                    if (demo.getHeadRecord() != null)
-                        isHeadRecord = false;
 
                     if (mergedSearch || isHeadRecord) {%>
                 <td align="center" width="5%" height="25"><input type="checkbox" name="records"

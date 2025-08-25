@@ -706,13 +706,13 @@
                cellspacing="0">
             <tr>
                 <td align="left"><input type="submit" value="Update VT"
-                                        onclick="javascript:onSave();"/> <input type="submit"
+                                        onclick="onSave();"/> <input type="submit"
                                                                                 value="Save and Exit"
-                                                                                onclick="javascript:return onSaveExit();"/>
+                                                                                onclick="return onSaveExit();"/>
                     <input
-                            type="submit" value="Exit" onclick="javascript:return onExit();"/>
+                            type="submit" value="Exit" onclick="return onExit();"/>
                     <input type="button" value="Print"
-                           onclick="javascript:return onPrint();"/></td>
+                           onclick="return onPrint();"/></td>
             </tr>
         </table>
         <table width="640px" border=0 cellpadding="0" cellspacing="0">
@@ -769,7 +769,7 @@
                                                     <td width="53%">
                                                         <table width="100%">
                                                             <tr>
-                                                                <td align="left" class="sixtyPercent"><input type="checkbox" name="value(DMValue)" onclick="javascript: DMCheck();"/></td>
+                                                                <td align="left" class="sixtyPercent"><input type="checkbox" name="value(DMValue)" onclick="DMCheck();"/></td>
                                                                 <td align="left" class="sixtyPercent"><input type="checkbox" name="value(HTNValue)"/></td>
                                                                 <td align="left" class="sixtyPercent"><input type="checkbox" name="value(HchlValue)"/></td>
                                                                 <td align="left" class="sixtyPercent"><input type="checkbox" name="value(MIValue)"/></td>
@@ -777,7 +777,7 @@
                                                                 <td align="left" class="sixtyPercent"><input type="checkbox" name="value(ACSValue)"/></td>
                                                                 <td align="left" class="sixtyPercent"><input type="checkbox" name="value(RVTNValue)"/></td>
                                                                 <td align="left" class="sixtyPercent"><input type="checkbox" name="value(CVDValue)"/></td>
-                                                                <td align="left" class="sixtyPercent"><input type="checkbox" name="value(PVDValue)" onclick="javascript: PVDCheck();"/></td>
+                                                                <td align="left" class="sixtyPercent"><input type="checkbox" name="value(PVDValue)" onclick="PVDCheck();"/></td>
                                                             </tr>
                                                             <tr>
                                                                 <td valign="top" align="center" class="sixtyPercent"
@@ -1348,7 +1348,7 @@
 
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
-                                                        <input type="text" name="value(WCValue)" size="5%" onchange="javascript: updateHipAndRatio();"/>
+                                                        <input type="text" name="value(WCValue)" size="5%" onchange="updateHipAndRatio();"/>
                                                     </td>
                                                     <td class="dataEntryTable" align="center">
                                                         <input type="text" name="value(WCComments)" size="30%" tabindex="9999" /></td>
@@ -1373,7 +1373,7 @@
                                                         </c:if>
                                                     </td>
                                                     <td width="18%" class="dataEntryTable" align="center">
-                                                        <input type="text" name="value(HCValue)" size="5%" onchange="javascript: updateWaistAndRatio();"/>
+                                                        <input type="text" name="value(HCValue)" size="5%" onchange="updateWaistAndRatio();"/>
                                                     </td>
                                                     <td width="33%" class="dataEntryTable" align="center">
                                                         <input type="text" name="value(HCComments)" size="30%" tabindex="9999"/>
@@ -1525,7 +1525,7 @@
                                                         </table>
                                                     </td>
                                                     <td class="dataEntryTable" align="center"><input type="radio" name="value(FTExValue)"
-                                                            onclick="javascript:controlFTExam();" value="yes"/>Yes
+                                                            onclick="controlFTExam();" value="yes"/>Yes
                                                         <input type="radio" name="="value(FTExValue)"
                                                                 onclick="javascript:controlFTExam();" value="no"/>No <a
                                                                 title="clear all"
@@ -2402,13 +2402,13 @@
         <table class="Head" class="hidePrint" width="640">
             <tr>
                 <td align="left"><input type="hidden" name="submit" value=""/>
-                    <input type="submit" value="Update VT" onclick="javascript:onSave();"/>
+                    <input type="submit" value="Update VT" onclick="onSave();"/>
                     <input type="submit" value="Save and Exit"
-                           onclick="javascript:return onSaveExit();"/> <input type="submit"
+                           onclick="return onSaveExit();"/> <input type="submit"
                                                                               value="Exit"
-                                                                              onclick="javascript:return onExit();"/>
+                                                                              onclick="return onExit();"/>
                     <input
-                            type="button" value="Print" onclick="javascript:return onPrint();"/>
+                            type="button" value="Print" onclick="return onPrint();"/>
                 </td>
             </tr>
         </table>

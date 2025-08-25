@@ -776,7 +776,6 @@ public class RxManagerTest extends RxManagerImpl {
         }
 
         public void persist(Drug d) {
-            return;
         }
 
         /**
@@ -820,8 +819,6 @@ public class RxManagerTest extends RxManagerImpl {
             // Sets this in the parent class so that we
             // can check it after the test.
             old = (Drug) o;
-
-            return;
 
         }
 

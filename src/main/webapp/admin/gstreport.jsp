@@ -137,7 +137,7 @@
                     <select name="providerview">
                         <%
                             if (pList.size() == 1) {
-                                String temp[] = ((String) pList.get(0)).split("\\|");
+                                String[] temp = ((String) pList.get(0)).split("\\|");
                         %>
                         <option value="<%=temp[0]%>"><%=temp[1]%>, <%=temp[2]%>
                         </option>
@@ -146,7 +146,7 @@
                         %>
                         <option value="all">-- Select a Provider --</option>
                         <% for (i = 0; i < pList.size(); i++) {
-                            String temp[] = ((String) pList.get(i)).split("\\|");
+                            String[] temp = ((String) pList.get(i)).split("\\|");
                         %>
                         <option value="<%=temp[0]%>"
                                 <%=providerNo.equals(temp[0]) ? "selected" : ""%>><%=temp[1]%>,

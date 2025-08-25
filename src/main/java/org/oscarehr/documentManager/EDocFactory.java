@@ -45,7 +45,7 @@ public class EDocFactory {
 
         char statusCharacter;
 
-        private Status(char statusCharacter) {
+        Status(char statusCharacter) {
             this.statusCharacter = statusCharacter;
         }
 
@@ -60,7 +60,7 @@ public class EDocFactory {
     }
 
     public enum Module {
-        demographic, provider;
+        demographic, provider
     }
 
     public EDoc createEDoc(String description, String type, String fileName, String contentType, String html, String creatorId, String responsibleId, String source, Status status, Date observationDate, String reviewerId, Date reviewDateTime, Module module, String moduleId) {

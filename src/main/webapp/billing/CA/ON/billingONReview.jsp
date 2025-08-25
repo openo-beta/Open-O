@@ -578,7 +578,7 @@
                     <tr>
                         <td style="white-space:nowrap; width:10%; text-align:center"><%=demoname%>
                             &nbsp;&nbsp; <%=demoSex.equals("1") ? "Male" : "Female"%> &nbsp;&nbsp;
-                            <%=" DOB: " + demoDOBYY + "/" + demoDOBMM + "/" + demoDOBDD + " &nbsp;&nbsp; HIN: " + demoHIN + "" + demoVer%>
+                            <%=" DOB: " + demoDOBYY + "/" + demoDOBMM + "/" + demoDOBDD + " &nbsp;&nbsp; HIN: " + demoHIN + demoVer%>
                         </td>
                         <td style="text-align:center"><%=wrongMsg%>
                         </td>
@@ -1040,7 +1040,7 @@
                 String tempLoc = "";
                 if (!bMultisites) {
                     OscarProperties props = OscarProperties.getInstance();
-                    boolean bMoreAddr = props.getProperty("scheduleSiteID", "").equals("") ? false : true;
+                    boolean bMoreAddr = !props.getProperty("scheduleSiteID", "").equals("");
                     if (bMoreAddr) {
                         tempLoc = request.getParameter("siteId").trim();
                     } else {
@@ -1207,7 +1207,7 @@
                    style="width: 150px;"/>
             <input type="submit" name="submit" id="settlePrintBtn" class="btn btn-primary"
                    value="Settle & Print Invoice"
-                   onClick="document.forms['titlesearch'].btnPressed.value='Settle'; document.forms['titlesearch'].submit();javascript:popupPage(700,720,'billingON3rdInv.jsp');"
+                   onClick="document.forms['titlesearch'].btnPressed.value='Settle'; document.forms['titlesearch'].submit();popupPage(700,720,'billingON3rdInv.jsp');"
                    style="width: 160px;"/>
             <input type="hidden" name="btnPressed" value="">
             <input type="hidden" name="total_payment" id="total_payment" value="0.00"/>

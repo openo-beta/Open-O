@@ -417,13 +417,10 @@ public class BillingONExtDaoImpl extends AbstractDaoImpl<BillingONExt> implement
 
     @Override
     public boolean isNumberKey(String key) {
-        if (KEY_PAYMENT.equalsIgnoreCase(key)
-                || KEY_DISCOUNT.equalsIgnoreCase(key)
-                || KEY_TOTAL.equalsIgnoreCase(key)
-                || KEY_REFUND.equalsIgnoreCase(key)
-                || KEY_CREDIT.equals(key)) {
-            return true;
-        }
-        return false;
+        return KEY_PAYMENT.equalsIgnoreCase(key)
+            || KEY_DISCOUNT.equalsIgnoreCase(key)
+            || KEY_TOTAL.equalsIgnoreCase(key)
+            || KEY_REFUND.equalsIgnoreCase(key)
+            || KEY_CREDIT.equals(key);
     }
 }

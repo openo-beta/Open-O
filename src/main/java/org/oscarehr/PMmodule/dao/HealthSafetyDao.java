@@ -34,9 +34,9 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 public interface HealthSafetyDao {
 
-    public HealthSafety getHealthSafetyByDemographic(Long demographicNo);
+    HealthSafety getHealthSafetyByDemographic(Long demographicNo);
 
-    public void saveHealthSafetyByDemographic(HealthSafety healthsafety);
+    void saveHealthSafetyByDemographic(HealthSafety healthsafety);
 
 }
  

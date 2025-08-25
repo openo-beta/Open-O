@@ -44,45 +44,45 @@ import org.springframework.stereotype.Repository;
 
 public interface PatientLabRoutingDao extends AbstractDao<PatientLabRouting> {
 
-    public static final Integer UNMATCHED = 0;
-    public static final String HL7 = "HL7";
+    Integer UNMATCHED = 0;
+    String HL7 = "HL7";
 
-    public PatientLabRouting findDemographicByLabId(Integer labId);
+    PatientLabRouting findDemographicByLabId(Integer labId);
 
-    public PatientLabRouting findDemographics(String labType, Integer labNo);
+    PatientLabRouting findDemographics(String labType, Integer labNo);
 
-    public List<PatientLabRouting> findDocByDemographic(Integer docNum);
+    List<PatientLabRouting> findDocByDemographic(Integer docNum);
 
-    public PatientLabRouting findByLabNo(int labNo);
+    PatientLabRouting findByLabNo(int labNo);
 
-    public List<PatientLabRouting> findByLabNoAndLabType(int labNo, String labType);
+    List<PatientLabRouting> findByLabNoAndLabType(int labNo, String labType);
 
-    public List<Object[]> findUniqueTestNames(Integer demoId, String labType);
+    List<Object[]> findUniqueTestNames(Integer demoId, String labType);
 
-    public List<Object[]> findTests(Integer demoId, String labType);
+    List<Object[]> findTests(Integer demoId, String labType);
 
-    public List<Object[]> findUniqueTestNamesForPatientExcelleris(Integer demoNo, String labType);
+    List<Object[]> findUniqueTestNamesForPatientExcelleris(Integer demoNo, String labType);
 
-    public List<PatientLabRouting> findByDemographicAndLabType(Integer demoNo, String labType);
+    List<PatientLabRouting> findByDemographicAndLabType(Integer demoNo, String labType);
 
-    public List<Object[]> findRoutingsAndTests(Integer demoNo, String labType, String testName);
+    List<Object[]> findRoutingsAndTests(Integer demoNo, String labType, String testName);
 
-    public List<Object[]> findRoutingsAndTests(Integer demoNo, String labType);
+    List<Object[]> findRoutingsAndTests(Integer demoNo, String labType);
 
-    public List<Object[]> findMdsRoutings(Integer demoNo, String testName, String labType);
+    List<Object[]> findMdsRoutings(Integer demoNo, String testName, String labType);
 
-    public List<Object[]> findHl7InfoForRoutingsAndTests(Integer demoNo, String labType, String testName);
+    List<Object[]> findHl7InfoForRoutingsAndTests(Integer demoNo, String labType, String testName);
 
-    public List<Object[]> findRoutingsAndConsultDocsByRequestId(Integer reqId, String docType);
+    List<Object[]> findRoutingsAndConsultDocsByRequestId(Integer reqId, String docType);
 
-    public List<Object[]> findResultsByDemographicAndLabType(Integer demographicNo, String labType);
+    List<Object[]> findResultsByDemographicAndLabType(Integer demographicNo, String labType);
 
-    public List<Object[]> findRoutingAndPhysicianInfoByTypeAndDemoNo(String labType, Integer demographicNo);
+    List<Object[]> findRoutingAndPhysicianInfoByTypeAndDemoNo(String labType, Integer demographicNo);
 
-    public List<Object[]> findRoutingsAndMdsMshByDemoNo(Integer demographicNo);
+    List<Object[]> findRoutingsAndMdsMshByDemoNo(Integer demographicNo);
 
-    public List<PatientLabRouting> findLabNosByDemographic(Integer demographicNo, String[] labTypes);
+    List<PatientLabRouting> findLabNosByDemographic(Integer demographicNo, String[] labTypes);
 
-    public List<Integer> findDemographicIdsSince(Date date);
+    List<Integer> findDemographicIdsSince(Date date);
 
 }

@@ -46,7 +46,7 @@
 
     String user_no = (String) session.getAttribute("user");
     String user_name = (String) session.getAttribute("userlastname") + "," + (String) session.getAttribute("userfirstname");
-    boolean bAlternate = (request.getParameter("alternate") != null && request.getParameter("alternate").equals("checked")) ? true : false;
+    boolean bAlternate = request.getParameter("alternate") != null && request.getParameter("alternate").equals("checked");
     int yearLimit = Integer.parseInt(session.getAttribute("schedule_yearlimit") != null ? ((String) session.getAttribute("schedule_yearlimit")) : "10");
     boolean scheduleOverlaps = false;
 %>
@@ -83,8 +83,8 @@
     int day = now.get(Calendar.DATE);
     int delta = 0; //add or minus month
     now = new GregorianCalendar(year, month - 1, 1);
-    String weekdaytag[] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
-    String reasontag[] = {"A7", "A1", "A2", "A3", "A4", "A5", "A6"};
+    String[] weekdaytag = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
+    String[] reasontag = {"A7", "A1", "A2", "A3", "A4", "A5", "A6"};
 
     if (request.getParameter("bFirstDisp") != null && request.getParameter("bFirstDisp").compareTo("0") == 0) {
         year = Integer.parseInt(request.getParameter("year"));

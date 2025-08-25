@@ -89,7 +89,7 @@
             <span>
 			<label style="font-family:Arial; font-weight:normal; font-size:12px" id="provLabel" for="providerDrop"
                    class="fields">Send to Provider:</label>
-			<select onchange="javascript:setProvider(this);" id="providerDrop" name="providerDrop">
+			<select onchange="setProvider(this);" id="providerDrop" name="providerDrop">
 				<option value="0" <%=("0".equals(provider) ? " selected" : "")%>>None</option>
 				<%
                     for (int i = 0; i < providers.size(); i++) {

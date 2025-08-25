@@ -966,11 +966,7 @@ public class IHAHandler implements MessageHandler {
     public boolean isOBXAbnormal(int i, int j) {
         try {
             String abnormalFlag = getOBXAbnormalFlag(i, j);
-            if (!abnormalFlag.equals("") && !abnormalFlag.equalsIgnoreCase("N")) {
-                return (true);
-            } else {
-                return (false);
-            }
+            return !abnormalFlag.equals("") && !abnormalFlag.equalsIgnoreCase("N");
 
         } catch (Exception e) {
             return (false);

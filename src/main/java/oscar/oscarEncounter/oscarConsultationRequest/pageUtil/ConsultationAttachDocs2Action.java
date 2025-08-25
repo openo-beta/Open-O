@@ -205,7 +205,7 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
             File tempLabPDF = File.createTempFile("lab" + segmentID, "pdf");
             try (
                     FileOutputStream fileOutputStream = new FileOutputStream(tempLabPDF);
-                    ByteOutputStream byteOutputStream = new ByteOutputStream();
+                    ByteOutputStream byteOutputStream = new ByteOutputStream()
             ) {
                 LabPDFCreator labPDFCreator = new LabPDFCreator(request, fileOutputStream);
                 labPDFCreator.printPdf();

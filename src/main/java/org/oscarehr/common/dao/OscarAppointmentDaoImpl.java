@@ -64,10 +64,7 @@ public class OscarAppointmentDaoImpl extends AbstractDaoImpl<Appointment> implem
 
         List<Facility> results = query.getResultList();
 
-        if (!results.isEmpty())
-            return true;
-
-        return false;
+        return !results.isEmpty();
     }
 
     @Override
@@ -708,8 +705,7 @@ public class OscarAppointmentDaoImpl extends AbstractDaoImpl<Appointment> implem
     @NativeSql({"demographic", "appointment", "drugs", "provider"})
     @Override
     public List<Object[]> findAppointmentsByDemographicIds(Set<String> demoIds, Date from, Date to) {
-        String sql = "" +
-                "select " +
+        String sql = "select " +
                 "a.appointment_date, " +
                 "concat(pAppt.first_name, ' ', pAppt.last_name), " +
                 "concat(pFam.first_name, ' ', pFam.last_name), " +
@@ -879,7 +875,7 @@ public class OscarAppointmentDaoImpl extends AbstractDaoImpl<Appointment> implem
         }
         idClean.deleteCharAt(idClean.length() - 1);
         Query q = entityManager
-                .createQuery("update Appointment set status=?1 where id in (" + idClean.toString() + ")");
+                .createQuery("update Appointment set status=?1 where id in (" + idClean + ")");
         q.setParameter(1, status);
         return q.executeUpdate();
     }

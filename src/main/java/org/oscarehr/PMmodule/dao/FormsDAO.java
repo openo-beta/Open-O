@@ -40,10 +40,10 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 public interface FormsDAO {
 
-    public void saveForm(Object o);
+    void saveForm(Object o);
 
-    public Object getCurrentForm(String clientId, Class clazz);
+    Object getCurrentForm(String clientId, Class clazz);
 
-    public List getFormInfo(String clientId, Class clazz);
+    List getFormInfo(String clientId, Class clazz);
 }
  

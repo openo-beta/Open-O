@@ -142,9 +142,7 @@ public class TicklerManagerImpl implements TicklerManager {
             return false;
         if (StringUtils.isEmpty(tickler.getTaskAssignedTo()))
             return false;
-        if (tickler.getDemographicNo() == null || tickler.getDemographicNo().intValue() == 0)
-            return false;
-        return true;
+        return tickler.getDemographicNo() != null && tickler.getDemographicNo().intValue() != 0;
     }
 
     @Override

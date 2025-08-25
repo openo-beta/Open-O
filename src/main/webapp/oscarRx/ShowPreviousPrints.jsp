@@ -132,13 +132,13 @@
                                             <%
                                                 String datesReprinted = prescription.getDatesReprinted();
                                                 if (datesReprinted == null) datesReprinted = "";
-                                                String datesReprintedArr[] = datesReprinted.split(",");
+                                                String[] datesReprintedArr = datesReprinted.split(",");
                                                 for (int x = 0; x < datesReprintedArr.length; x++) {
                                                     String drp = null;
                                                     String pn = null;
                                                     String providerName = "";
                                                     if (datesReprintedArr[x].indexOf(";") != -1) {
-                                                        String t[] = datesReprintedArr[x].split(";");
+                                                        String[] t = datesReprintedArr[x].split(";");
                                                         drp = t[0];
                                                         pn = t[1];
                                                         providerName = providerDao.getProvider(pn).getFormattedName();

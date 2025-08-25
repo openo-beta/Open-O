@@ -137,10 +137,7 @@ public class BillingFormData {
         List<BillingService> result = new ArrayList<BillingService>();
         BillingBCDao dao = SpringUtils.getBean(BillingBCDao.class);
         List<Object[]> services = dao.findBillingServicesByType(serviceType);
-        if (services == null || services.isEmpty()) {
-            return false;
-        }
-        return true;
+        return services != null && !services.isEmpty();
     }
 
     public Diagnostic[] getDiagnosticList(String serviceType, String billRegion) {

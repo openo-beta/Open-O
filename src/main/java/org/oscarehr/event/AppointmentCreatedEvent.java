@@ -71,14 +71,8 @@ public class AppointmentCreatedEvent extends ApplicationEvent {
             return false;
         }
         if (this.provider_no == null) {
-            if (other.provider_no != null) {
-                return false;
-            }
-        } else if (!this.provider_no.equals(other.provider_no)) {
-            return false;
-        }
-
-        return true;
+            return other.provider_no == null;
+        } else return this.provider_no.equals(other.provider_no);
     }
 
     /**

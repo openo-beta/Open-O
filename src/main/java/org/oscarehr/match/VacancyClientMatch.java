@@ -31,7 +31,7 @@ import java.util.Date;
  */
 public class VacancyClientMatch implements Comparable<VacancyClientMatch> {
     public enum VacancyClientMatchStatus {
-        ACCEPTED, FORWARDED, PENDING, REJECTED;
+        ACCEPTED, FORWARDED, PENDING, REJECTED
     }
 
     private int client_id;
@@ -135,10 +135,7 @@ public class VacancyClientMatch implements Comparable<VacancyClientMatch> {
         if (form_id != other.form_id) {
             return false;
         }
-        if (vacancy_id != other.vacancy_id) {
-            return false;
-        }
-        return true;
+        return vacancy_id == other.vacancy_id;
     }
 
     @Override

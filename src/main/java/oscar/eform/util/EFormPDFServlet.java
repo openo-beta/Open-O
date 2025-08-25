@@ -452,7 +452,7 @@ public class EFormPDFServlet extends HttpServlet {
             //section allows graphing of more than one measurement axis e.g. if top of page is different graph than bottom of page see rourke
             //page is the pdf page it should be plotted on
             if (temp.toString().startsWith("xVal_")) {
-                MiscUtils.getLogger().debug("Processing " + temp.toString());
+                MiscUtils.getLogger().debug("Processing " + temp);
 
                 index = temp.indexOf("_");
                 index2 = temp.indexOf("_", index + 1);
@@ -658,7 +658,7 @@ public class EFormPDFServlet extends HttpServlet {
             else if (temp.toString().equals("__className"))
                 className = tempValue;
             else {
-                MiscUtils.getLogger().debug("Adding xDate " + temp.toString() + " VAL: " + props.getProperty(temp.toString()));
+                MiscUtils.getLogger().debug("Adding xDate " + temp + " VAL: " + props.getProperty(temp.toString()));
                 MiscUtils.getLogger().debug("Adding yHeight " + tempValue + " VAL: " + props.getProperty(tempValue));
                 xDate.add(props.getProperty(temp.toString()));
                 yHeight.add(props.getProperty(tempValue));

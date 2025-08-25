@@ -29,7 +29,7 @@ dojo.html.getEventTarget = function (/* DOMEvent */evt) {
     if (!evt) {
         evt = dojo.global().event || {}
     }
-    ;
+
     var t = (evt.srcElement ? evt.srcElement : (evt.target ? evt.target : null));
     while ((t) && (t.nodeType != 1)) {
         t = t.parentNode;

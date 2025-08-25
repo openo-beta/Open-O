@@ -51,6 +51,6 @@ public class RoleProgramAccessDAOImpl extends HibernateDaoSupport implements Rol
     @Override
     public boolean hasAccess(String accessName, Long roleId) {
         String q = "from DefaultRoleAccess da where da.caisi_role.id=" + roleId + " and da.access_type.Name= ?0";
-        return getHibernateTemplate().find(q, accessName).isEmpty() ? false : true;
+        return !getHibernateTemplate().find(q, accessName).isEmpty();
     }
 }

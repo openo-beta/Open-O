@@ -40,15 +40,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.hibernate.SessionFactory;
 
 public interface ProgramClientStatusDAO {
-    public List<ProgramClientStatus> getProgramClientStatuses(Integer programId);
+    List<ProgramClientStatus> getProgramClientStatuses(Integer programId);
 
-    public void saveProgramClientStatus(ProgramClientStatus status);
+    void saveProgramClientStatus(ProgramClientStatus status);
 
-    public ProgramClientStatus getProgramClientStatus(String id);
+    ProgramClientStatus getProgramClientStatus(String id);
 
-    public void deleteProgramClientStatus(String id);
+    void deleteProgramClientStatus(String id);
 
-    public boolean clientStatusNameExists(Integer programId, String statusName);
+    boolean clientStatusNameExists(Integer programId, String statusName);
 
-    public List<Admission> getAllClientsInStatus(Integer programId, Integer statusId);
+    List<Admission> getAllClientsInStatus(Integer programId, Integer statusId);
 }

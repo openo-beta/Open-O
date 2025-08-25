@@ -43,5 +43,5 @@ import org.springframework.stereotype.Service;
 
 public interface DrugDispensingManager {
 
-    public String getStatus(Integer drugId);
+    String getStatus(Integer drugId);
 }

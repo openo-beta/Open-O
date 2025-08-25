@@ -100,7 +100,7 @@
                     String bCode = request.getParameter("bCode");
                     List list = null;
                     if (bCode != null) {
-                        list = (List) billingServiceDao.findBillingCodesByCode(bCode, billingServiceDao.BC, sortOrder.equals("desc") ? 1 : 0);
+                        list = (List) billingServiceDao.findBillingCodesByCode(bCode, BillingServiceDao.BC, sortOrder.equals("desc") ? 1 : 0);
                     }
                     if (list != null) {
                         String arrow = "";

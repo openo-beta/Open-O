@@ -124,18 +124,12 @@ public class Prevention {
     }
 
     public boolean isMale() {
-        boolean retval = false;
-        if (sex != null && sex.equals("M")) {
-            retval = true;
-        }
+        boolean retval = sex != null && sex.equals("M");
         return retval;
     }
 
     public boolean isFemale() {
-        boolean retval = false;
-        if (sex != null && sex.equals("F")) {
-            retval = true;
-        }
+        boolean retval = sex != null && sex.equals("F");
         return retval;
     }
 

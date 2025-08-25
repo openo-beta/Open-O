@@ -122,7 +122,7 @@
                 out.print("<td>" + provider.getLastName() + "</td>");
                 out.print("<td>" + provider.getFirstName() + "</td>");
                 out.print("<td>" + sdf.format(defaultIssue.getUpdatetime()) + "</td>");
-                out.print("<td>" + sb.toString() + "</td>");
+                out.print("<td>" + sb + "</td>");
                 out.print("</tr>");
 
             }

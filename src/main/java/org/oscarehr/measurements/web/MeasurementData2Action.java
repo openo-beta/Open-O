@@ -112,7 +112,7 @@ public class MeasurementData2Action extends ActionSupport {
         String fresh = request.getParameter("fresh");
         HashMap<String, Boolean> freshMap = new HashMap<String, Boolean>();
         if (fresh != null) {
-            String tmp[] = fresh.split(",");
+            String[] tmp = fresh.split(",");
             for (int x = 0; x < tmp.length; x++) {
                 freshMap.put(tmp[x], true);
             }
@@ -295,7 +295,7 @@ public class MeasurementData2Action extends ActionSupport {
 
             while (e.hasMoreElements()) {
                 String key = (String) e.nextElement();
-                String values[] = request.getParameterValues(key);
+                String[] values = request.getParameterValues(key);
                 if (key.equals("action") || key.equals("demographicNo") || key.equals("appointmentNo"))
                     continue;
                 //if(values.length>0 && values[0]!=null && values[0].length()>0) {

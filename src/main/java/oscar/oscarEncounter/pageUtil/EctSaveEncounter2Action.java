@@ -99,11 +99,7 @@ public class EctSaveEncounter2Action extends ActionSupport {
         try {
             Integer iLatestID = Integer.valueOf(latestID);
             Integer iUsrCopyID = Integer.valueOf(userEChartID);
-            if (iLatestID.longValue() > iUsrCopyID.longValue()) {
-                return true;
-            } else {
-                return false;
-            }
+            return iLatestID.longValue() > iUsrCopyID.longValue();
         } catch (NumberFormatException e) {
             // already handled the null/empy string case, so shouldn't ever get this
             // exception.

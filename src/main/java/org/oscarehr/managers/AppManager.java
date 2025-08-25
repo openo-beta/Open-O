@@ -50,16 +50,16 @@ import oscar.log.LogAction;
 public interface AppManager {
 
 
-    public List<AppDefinitionTo1> getAppDefinitions(LoggedInInfo loggedInInfo);
+    List<AppDefinitionTo1> getAppDefinitions(LoggedInInfo loggedInInfo);
 
-    public AppDefinition saveAppDefinition(LoggedInInfo loggedInInfo, AppDefinition appDef);
+    AppDefinition saveAppDefinition(LoggedInInfo loggedInInfo, AppDefinition appDef);
 
-    public AppDefinition updateAppDefinition(LoggedInInfo loggedInInfo, AppDefinition appDef);
+    AppDefinition updateAppDefinition(LoggedInInfo loggedInInfo, AppDefinition appDef);
 
-    public AppDefinition getAppDefinition(LoggedInInfo loggedInInfo, String appName);
+    AppDefinition getAppDefinition(LoggedInInfo loggedInInfo, String appName);
 
-    public boolean hasAppDefinition(LoggedInInfo loggedInInfo, String appName);
+    boolean hasAppDefinition(LoggedInInfo loggedInInfo, String appName);
 
-    public Integer getAppDefinitionConsentId(LoggedInInfo loggedInInfo, String appName);
+    Integer getAppDefinitionConsentId(LoggedInInfo loggedInInfo, String appName);
 
 }

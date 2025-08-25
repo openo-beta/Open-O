@@ -601,26 +601,26 @@
                                     type="checkbox" name="cbox_speakEnglish" value="Y"
                                     <%=(props.getProperty("cbox_speakEnglish", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_speakEnglish);">English</span>
+                                        onClick="clickCheckBox(document.forms[0].cbox_speakEnglish);">English</span>
                             </td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="checkbox" name="cbox_speakFrench" value="Y"
                                     <%=(props.getProperty("cbox_speakFrench", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_speakFrench);">French</span>
+                                        onClick="clickCheckBox(document.forms[0].cbox_speakFrench);">French</span>
                             </td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="checkbox" name="cbox_speakSpanish" value="Y"
                                     <%=(props.getProperty("cbox_speakSpanish", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_speakSpanish);">Spanish</span>
+                                        onClick="clickCheckBox(document.forms[0].cbox_speakSpanish);">Spanish</span>
                             </td>
 
                             <td colspan="3" align="left" class="style76"><input
                                     type="checkbox" name="cbox_speakOther" value="Y"
                                     <%=(props.getProperty("cbox_speakOther", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_speakOther);">Other:
+                                        onClick="clickCheckBox(document.forms[0].cbox_speakOther);">Other:
 					</span> <input type="text" name="speakOther" size="55"
                                    value="<%=props.getProperty("speakOther", "")%>"></td>
                         </tr>
@@ -697,12 +697,12 @@
                                         type="radio" name="radio_hasIDInFile" value="yes"
                                         <%=(props.getProperty("radio_hasIDInFile", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_hasIDInFile[0]);">Yes</span>
+                                        onClick="clickRadio(document.forms[0].radio_hasIDInFile[0]);">Yes</span>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="radio"
                                                                       name="radio_hasIDInFile" value="no"
                                         <%=(props.getProperty("radio_hasIDInFile", "")).equalsIgnoreCase("no")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_hasIDInFile[1]);">No
+                                        onClick="clickRadio(document.forms[0].radio_hasIDInFile[1]);">No
 					-->&nbsp;&nbsp; give status of securing ID in Case Management
 					Notes*</span></td>
                         </tr>
@@ -720,45 +720,45 @@
                                                 type="checkbox" name="cbox_assistWithSINCard" value="Y"
                                                 <%=(props.getProperty("cbox_assistWithSINCard", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_assistWithSINCard);">SIN
+                                                    onClick="clickCheckBox(document.forms[0].cbox_assistWithSINCard);">SIN
 							Card:</span> <br>
                                             <input type="checkbox" name="cbox_assistWithImmigrant" value="Y"
                                                     <%=(props.getProperty("cbox_assistWithImmigrant", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_assistWithImmigrant);">Landed
+                                                    onClick="clickCheckBox(document.forms[0].cbox_assistWithImmigrant);">Landed
 							Immigrant</span></td>
                                         <td colspan="1" align="left" class="style76"><input
                                                 type="checkbox" name="cbox_assistWithHealthCard" value="Y"
                                                 <%=(props.getProperty("cbox_assistWithHealthCard", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_assistWithHealthCard);">Ontario
+                                                    onClick="clickCheckBox(document.forms[0].cbox_assistWithHealthCard);">Ontario
 							Health Card</span><br>
                                             <input type="checkbox" name="cbox_assistWithRefugee" value="Y"
                                                     <%=(props.getProperty("cbox_assistWithRefugee", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_assistWithRefugee);">Convention
+                                                    onClick="clickCheckBox(document.forms[0].cbox_assistWithRefugee);">Convention
 							Refugee</span></td>
                                         <td colspan="1" align="left" class="style76"><input
                                                 type="checkbox" name="cbox_assistWithBirthCert" value="Y"
                                                 <%=(props.getProperty("cbox_assistWithBirthCert", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_assistWithBirthCert);">Birth
+                                                    onClick="clickCheckBox(document.forms[0].cbox_assistWithBirthCert);">Birth
 							Certificate</span><br>
                                             <input type="checkbox" name="cbox_assistWithNone" value="Y"
                                                     <%=(props.getProperty("cbox_assistWithNone", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_assistWithNone);">None</span>
+                                                    onClick="clickCheckBox(document.forms[0].cbox_assistWithNone);">None</span>
                                         </td>
                                         <td colspan="1" align="left" class="style76"><input
                                                 type="checkbox" name="cbox_assistWithCitizenCard" value="Y"
                                                 <%=(props.getProperty("cbox_assistWithCitizenCard", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_assistWithCitizenCard);">Citizenship
+                                                    onClick="clickCheckBox(document.forms[0].cbox_assistWithCitizenCard);">Citizenship
 							Card</span><br>
                                             <input type="checkbox" name="cbox_assistWithOther" value="Y"
                                                     <%=(props.getProperty("cbox_assistWithOther", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_assistWithOther);">Other</span>
+                                                    onClick="clickCheckBox(document.forms[0].cbox_assistWithOther);">Other</span>
                                             &nbsp;&nbsp; <input type="text" name="assistWithOther" size="35"
                                                                 value="<%=props.getProperty("assistWithOther", "")%>">
                                         </td>
@@ -794,13 +794,13 @@
                                                 <%=(props.getProperty("radio_haveHealthCoverage","")).equalsIgnoreCase("no")?"checked":""%>>
 
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_haveHealthCoverage[0]);">No</span>
+                                                    onClick="clickRadio(document.forms[0].radio_haveHealthCoverage[0]);">No</span>
                                         </td>
                                         <td colspan="1" align="left" class="style76"><input
                                                 type="radio" name="radio_haveHealthCoverage" value="yes"
                                                 <%=(props.getProperty("radio_haveHealthCoverage","")).equalsIgnoreCase("yes")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_haveHealthCoverage[1]);">Yes</span>
+                                                    onClick="clickRadio(document.forms[0].radio_haveHealthCoverage[1]);">Yes</span>
                                         </td>
                                         <td colspan="1" align="left" class="style76">If yes, what
                                             type:
@@ -809,7 +809,7 @@
                                                 type="checkbox" name="cbox_haveOHIP" value="Y"
                                                 <%=(props.getProperty("cbox_haveOHIP", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_haveOHIP);">OHIP</span>
+                                                    onClick="clickCheckBox(document.forms[0].cbox_haveOHIP);">OHIP</span>
                                         </td>
                                     </tr>
                                     <tr>
@@ -819,7 +819,7 @@
                                                                                 name="cbox_haveODSP" value="Y"
                                                 <%=(props.getProperty("cbox_haveODSP", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_haveODSP);">ODSP</span>
+                                                    onClick="clickCheckBox(document.forms[0].cbox_haveODSP);">ODSP</span>
                                         </td>
                                     </tr>
 
@@ -830,7 +830,7 @@
                                                                                 name="cbox_haveODB" value="Y"
                                                 <%=(props.getProperty("cbox_haveODB", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_haveODB);">ODB
+                                                    onClick="clickCheckBox(document.forms[0].cbox_haveODB);">ODB
 							Card</span></td>
                                     </tr>
                                     <tr>
@@ -840,7 +840,7 @@
                                                 type="checkbox" name="cbox_haveOther1" value="Y"
                                                 <%=(props.getProperty("cbox_haveOther1", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_haveOther1);">Other
+                                                    onClick="clickCheckBox(document.forms[0].cbox_haveOther1);">Other
 							(specify)</span> <input type="text" name="haveOther" size="27"
                                                     value="<%=props.getProperty("haveOther", "")%>"></td>
                                     </tr>
@@ -862,27 +862,27 @@
                                                                                value="yes"
                                                 <%=(props.getProperty("radio_haveMentalProblem", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_haveMentalProblem[0]);">Yes</span>
+                                                    onClick="clickRadio(document.forms[0].radio_haveMentalProblem[0]);">Yes</span>
                                         </td>
                                         <td colspan="1" class="style76"><input type="radio"
                                                                                name="radio_haveMentalProblem" value="no"
                                                 <%=(props.getProperty("radio_haveMentalProblem", "")).equalsIgnoreCase("no")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_haveMentalProblem[1]);">No</span>
+                                                    onClick="clickRadio(document.forms[0].radio_haveMentalProblem[1]);">No</span>
                                         </td>
                                         <td colspan="1" class="style76"><input type="radio"
                                                                                name="radio_haveMentalProblem"
                                                                                value="dontknow"
                                                 <%=(props.getProperty("radio_haveMentalProblem", "")).equalsIgnoreCase("dontknow")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_haveMentalProblem[2]);">Don't
+                                                    onClick="clickRadio(document.forms[0].radio_haveMentalProblem[2]);">Don't
 							know</span></td>
                                         <td colspan="1" class="style76"><input type="radio"
                                                                                name="radio_haveMentalProblem"
                                                                                value="refuse"
                                                 <%=(props.getProperty("radio_haveMentalProblem", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_haveMentalProblem[3]);">Refuse
+                                                    onClick="clickRadio(document.forms[0].radio_haveMentalProblem[3]);">Refuse
 							to answer</span></td>
                                     </tr>
 
@@ -901,31 +901,31 @@
                                             Schizophrenia <br>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_haveSchizophrenia);">If
+                                                    onClick="clickCheckBox(document.forms[0].cbox_haveSchizophrenia);">If
 							yes, is this being cared for by a doctor?</span></td>
                                         <td colspan="1" valign="bottom" class="style76"><input
                                                 type="radio" name="radio_caredForSchizophrenia" value="yes"
                                                 <%=(props.getProperty("radio_caredForSchizophrenia", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForSchizophrenia[0]);">Yes
+                                                    onClick="clickRadio(document.forms[0].radio_caredForSchizophrenia[0]);">Yes
 							--> Q4</span></td>
                                         <td colspan="1" valign="bottom" class="style76"><input
                                                 type="radio" name="radio_caredForSchizophrenia" value="no"
                                                 <%=(props.getProperty("radio_caredForSchizophrenia", "")).equalsIgnoreCase("no")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForSchizophrenia[1]);">No
+                                                    onClick="clickRadio(document.forms[0].radio_caredForSchizophrenia[1]);">No
 							--> Q5</span></td>
                                         <td colspan="1" valign="bottom" class="style76"><input
                                                 type="radio" name="radio_caredForSchizophrenia" value="dontKnow"
                                                 <%=(props.getProperty("radio_caredForSchizophrenia", "")).equalsIgnoreCase("dontKnow")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForSchizophrenia[2]);">Don't
+                                                    onClick="clickRadio(document.forms[0].radio_caredForSchizophrenia[2]);">Don't
 							know</span></td>
                                         <td colspan="1" valign="bottom" class="style76"><input
                                                 type="radio" name="radio_caredForSchizophrenia" value="refuse"
                                                 <%=(props.getProperty("radio_caredForSchizophrenia", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForSchizophrenia[3]);">Refuse
+                                                    onClick="clickRadio(document.forms[0].radio_caredForSchizophrenia[3]);">Refuse
 							to answer</span></td>
                                     </tr>
 
@@ -934,7 +934,7 @@
                                                                                name="cbox_haveManic" value="Y"
                                                 <%=(props.getProperty("cbox_haveManic", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_haveManic);">Manic
+                                                    onClick="clickCheckBox(document.forms[0].cbox_haveManic);">Manic
 							depression / bipolar disorder</span> <br>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             If yes, is this being cared for by a doctor?
@@ -943,25 +943,25 @@
                                                 type="radio" name="radio_caredForManic" value="yes"
                                                 <%=(props.getProperty("radio_caredForManic", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForManic[0]);">Yes
+                                                    onClick="clickRadio(document.forms[0].radio_caredForManic[0]);">Yes
 							--> Q4</span></td>
                                         <td colspan="1" valign="bottom" class="style76"><input
                                                 type="radio" name="radio_caredForManic" value="no"
                                                 <%=(props.getProperty("radio_caredForManic", "")).equalsIgnoreCase("no")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForManic[1]);">No
+                                                    onClick="clickRadio(document.forms[0].radio_caredForManic[1]);">No
 							--> Q5</span></td>
                                         <td colspan="1" valign="bottom" class="style76"><input
                                                 type="radio" name="radio_caredForManic" value="dontKnow"
                                                 <%=(props.getProperty("radio_caredForManic", "")).equalsIgnoreCase("dontKnow")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForManic[2]);">Don't
+                                                    onClick="clickRadio(document.forms[0].radio_caredForManic[2]);">Don't
 							know</span></td>
                                         <td colspan="1" valign="bottom" class="style76"><input
                                                 type="radio" name="radio_caredForManic" value="refuse"
                                                 <%=(props.getProperty("radio_caredForManic", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForManic[3]);">Refuse
+                                                    onClick="clickRadio(document.forms[0].radio_caredForManic[3]);">Refuse
 							to answer</span></td>
                                     </tr>
                                     <tr>
@@ -969,7 +969,7 @@
                                                                                name="cbox_haveDepression" value="Y"
                                                 <%=(props.getProperty("cbox_haveDepression", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_haveDepression);">Depression
+                                                    onClick="clickCheckBox(document.forms[0].cbox_haveDepression);">Depression
 							</span><br>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             If yes, is this being cared for by a doctor?
@@ -978,25 +978,25 @@
                                                 type="radio" name="radio_caredForDepression" value="yes"
                                                 <%=(props.getProperty("radio_caredForDepression", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForDepression[0]);">Yes
+                                                    onClick="clickRadio(document.forms[0].radio_caredForDepression[0]);">Yes
 							--> Q4</span></td>
                                         <td colspan="1" valign="bottom" class="style76"><input
                                                 type="radio" name="radio_caredForDepression" value="no"
                                                 <%=(props.getProperty("radio_caredForDepression", "")).equalsIgnoreCase("no")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForDepression[1]);">No
+                                                    onClick="clickRadio(document.forms[0].radio_caredForDepression[1]);">No
 							--> Q5</span></td>
                                         <td colspan="1" valign="bottom" class="style76"><input
                                                 type="radio" name="radio_caredForDepression" value="dontKnow"
                                                 <%=(props.getProperty("radio_caredForDepression", "")).equalsIgnoreCase("dontKnow")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForDepression[2]);">Don't
+                                                    onClick="clickRadio(document.forms[0].radio_caredForDepression[2]);">Don't
 							know</span></td>
                                         <td colspan="1" valign="bottom" class="style76"><input
                                                 type="radio" name="radio_caredForDepression" value="refuse"
                                                 <%=(props.getProperty("radio_caredForDepression", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForDepression[3]);">Refuse
+                                                    onClick="clickRadio(document.forms[0].radio_caredForDepression[3]);">Refuse
 							to answer</span></td>
                                     </tr>
                                     <tr>
@@ -1004,7 +1004,7 @@
                                                                                name="cbox_haveAnxiety" value="Y"
                                                 <%=(props.getProperty("cbox_haveAnxiety", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_haveAnxiety);">Anxiety
+                                                    onClick="clickCheckBox(document.forms[0].cbox_haveAnxiety);">Anxiety
 							disorder (panic attacks, generalized anxiety)</span> <br>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             If yes, is this being cared for by a doctor?
@@ -1013,25 +1013,25 @@
                                                 type="radio" name="radio_caredForAnxiety" value="yes"
                                                 <%=(props.getProperty("radio_caredForAnxiety", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForAnxiety[0]);">Yes
+                                                    onClick="clickRadio(document.forms[0].radio_caredForAnxiety[0]);">Yes
 							--> Q4</span></td>
                                         <td colspan="1" valign="bottom" class="style76"><input
                                                 type="radio" name="radio_caredForAnxiety" value="no"
                                                 <%=(props.getProperty("radio_caredForAnxiety", "")).equalsIgnoreCase("no")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForAnxiety[1]);">No
+                                                    onClick="clickRadio(document.forms[0].radio_caredForAnxiety[1]);">No
 							--> Q5</span></td>
                                         <td colspan="1" valign="bottom" class="style76"><input
                                                 type="radio" name="radio_caredForAnxiety" value="dontKnow"
                                                 <%=(props.getProperty("radio_caredForAnxiety", "")).equalsIgnoreCase("dontKnow")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForAnxiety[2]);">Don't
+                                                    onClick="clickRadio(document.forms[0].radio_caredForAnxiety[2]);">Don't
 							know</span></td>
                                         <td colspan="1" valign="bottom" class="style76"><input
                                                 type="radio" name="radio_caredForAnxiety" value="refuse"
                                                 <%=(props.getProperty("radio_caredForAnxiety", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForAnxiety[3]);">Refuse
+                                                    onClick="clickRadio(document.forms[0].radio_caredForAnxiety[3]);">Refuse
 							to answer</span></td>
                                     </tr>
                                     <tr>
@@ -1039,7 +1039,7 @@
                                                                                name="cbox_haveOther2" value="Y"
                                                 <%=(props.getProperty("cbox_haveOther2", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_haveOther2);">Other
+                                                    onClick="clickCheckBox(document.forms[0].cbox_haveOther2);">Other
 							(specify) </span><br>
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             If yes, is this being cared for by a doctor?
@@ -1048,25 +1048,25 @@
                                                 type="radio" name="radio_caredForOther" value="yes"
                                                 <%=(props.getProperty("radio_caredForOther", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForOther[0]);">Yes
+                                                    onClick="clickRadio(document.forms[0].radio_caredForOther[0]);">Yes
 							--> Q4</span></td>
                                         <td colspan="1" valign="bottom" class="style76"><input
                                                 type="radio" name="radio_caredForOther" value="no"
                                                 <%=(props.getProperty("radio_caredForOther", "")).equalsIgnoreCase("no")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForOther[1]);">No
+                                                    onClick="clickRadio(document.forms[0].radio_caredForOther[1]);">No
 							--> Q5</span></td>
                                         <td colspan="1" valign="bottom" class="style76"><input
                                                 type="radio" name="radio_caredForOther" value="dontKnow"
                                                 <%=(props.getProperty("radio_caredForOther", "")).equalsIgnoreCase("dontKnow")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForOther[2]);">Don't
+                                                    onClick="clickRadio(document.forms[0].radio_caredForOther[2]);">Don't
 							know</span></td>
                                         <td colspan="1" valign="bottom" class="style76"><input
                                                 type="radio" name="radio_caredForOther" value="refuse"
                                                 <%=(props.getProperty("radio_caredForOther", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_caredForOther[3]);">Refuse
+                                                    onClick="clickRadio(document.forms[0].radio_caredForOther[3]);">Refuse
 							to answer</span></td>
                                     </tr>
                                 </table>
@@ -1132,13 +1132,13 @@
                                                 type="radio" name="radio_needAssistWithMedication" value="yes"
                                                 <%=(props.getProperty("radio_needAssistWithMedication", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_needAssistWithMedication[0]);">Yes
+                                                    onClick="clickRadio(document.forms[0].radio_needAssistWithMedication[0]);">Yes
 							--> Q6</span></td>
                                         <td colspan="2" valign="bottom" class="style76"><input
                                                 type="radio" name="radio_needAssistWithMedication" value="no"
                                                 <%=(props.getProperty("radio_needAssistWithMedication", "")).equalsIgnoreCase("no")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_needAssistWithMedication[1]);">No
+                                                    onClick="clickRadio(document.forms[0].radio_needAssistWithMedication[1]);">No
 							--> Section 3</span></td>
                                     </tr>
                                 </table>
@@ -1154,29 +1154,29 @@
                                                 type="checkbox" name="cbox_rememberToTakeMedication" value="Y"
                                                 <%=(props.getProperty("cbox_rememberToTakeMedication", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_rememberToTakeMedication);">remembering
+                                                    onClick="clickCheckBox(document.forms[0].cbox_rememberToTakeMedication);">remembering
 							to take medication </span><br>
                                             <input type="checkbox" name="cbox_getMoreMedication" value="Y"
                                                     <%=(props.getProperty("cbox_getMoreMedication", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_getMoreMedication);">getting
+                                                    onClick="clickCheckBox(document.forms[0].cbox_getMoreMedication);">getting
 							more medication</span></td>
                                         <td colspan="2" valign="top" class="style76"><input
                                                 type="checkbox" name="cbox_storeMedication" value="Y"
                                                 <%=(props.getProperty("cbox_storeMedication", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_storeMedication);">safe
+                                                    onClick="clickCheckBox(document.forms[0].cbox_storeMedication);">safe
 							storage of medication </span><br>
                                             <input type="checkbox" name="cbox_needHelpInOther" value="Y"
                                                     <%=(props.getProperty("cbox_needHelpInOther", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_needHelpInOther);">Other
+                                                    onClick="clickCheckBox(document.forms[0].cbox_needHelpInOther);">Other
 							(specify)</span></td>
                                         <td colspan="2" valign="top" class="style76"><input
                                                 type="checkbox" name="cbox_takePrescribedMedication" value="Y"
                                                 <%=(props.getProperty("cbox_takePrescribedMedication", "")).equalsIgnoreCase("no")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_takePrescribedMedication);">taking
+                                                    onClick="clickCheckBox(document.forms[0].cbox_takePrescribedMedication);">taking
 							the medications as prescribed</span></td>
                                     </tr>
 
@@ -1211,19 +1211,19 @@
                                     type="radio" name="radio_doYouDrink" value="yes"
                                     <%=(props.getProperty("radio_doYouDrink", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_doYouDrink[0]);">Yes</span>
+                                        onClick="clickRadio(document.forms[0].radio_doYouDrink[0]);">Yes</span>
                             </td>
                             <td colspan="2" align="left" class="style76"><input
                                     type="radio" name="radio_doYouDrink" value="no"
                                     <%=(props.getProperty("radio_doYouDrink", "")).equalsIgnoreCase("no")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_doYouDrink[1]);">No
+                                        onClick="clickRadio(document.forms[0].radio_doYouDrink[1]);">No
 					--> Section 3.2</span></td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_doYouDrink" value="refuse"
                                     <%=(props.getProperty("radio_doYouDrink", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_doYouDrink[2]);">Refuse
+                                        onClick="clickRadio(document.forms[0].radio_doYouDrink[2]);">Refuse
 					to answer</span></td>
                         </tr>
 
@@ -1251,13 +1251,13 @@
                                     type="radio" name="radio_howMuchDrink" value="uncertain"
                                     <%=(props.getProperty("radio_howMuchDrink", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_howMuchDrink[0]);">Uncertain</span>
+                                        onClick="clickRadio(document.forms[0].radio_howMuchDrink[0]);">Uncertain</span>
                             </td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_howMuchDrink" value="refuse"
                                     <%=(props.getProperty("radio_howMuchDrink", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_howMuchDrink[1]);">Refuse
+                                        onClick="clickRadio(document.forms[0].radio_howMuchDrink[1]);">Refuse
 					to answer</span></td>
                         </tr>
 
@@ -1270,19 +1270,19 @@
                                     type="radio" name="radio_drinkThese" value="rubbingAlcohol"
                                     <%=(props.getProperty("radio_drinkThese", "")).equalsIgnoreCase("rubbingAlcohol")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_drinkThese[0]);">Rubbing
+                                        onClick="clickRadio(document.forms[0].radio_drinkThese[0]);">Rubbing
 					Alcohol</span></td>
                             <td colspan="2" align="left" class="style76"><input
                                     type="radio" name="radio_drinkThese" value="chineseCookingWine"
                                     <%=(props.getProperty("radio_drinkThese", "")).equalsIgnoreCase("chineseCookingWine")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_drinkThese[1]);">Chinese
+                                        onClick="clickRadio(document.forms[0].radio_drinkThese[1]);">Chinese
 					cooking wine</span></td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_drinkThese" value="mouthwash"
                                     <%=(props.getProperty("radio_drinkThese", "")).equalsIgnoreCase("mouthwash")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_drinkThese[2]);">Mouthwash</span>
+                                        onClick="clickRadio(document.forms[0].radio_drinkThese[2]);">Mouthwash</span>
                             </td>
                         </tr>
 
@@ -1294,25 +1294,25 @@
                                     type="radio" name="radio_seenDoctorRegAlcohol" value="yes"
                                     <%=(props.getProperty("radio_seenDoctorRegAlcohol", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_seenDoctorRegAlcohol[0]);">Yes</span>
+                                        onClick="clickRadio(document.forms[0].radio_seenDoctorRegAlcohol[0]);">Yes</span>
                             </td>
                             <td colspan="1" valign="top" class="style76"><input
                                     type="radio" name="radio_seenDoctorRegAlcohol" value="no"
                                     <%=(props.getProperty("radio_seenDoctorRegAlcohol", "")).equalsIgnoreCase("no")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_seenDoctorRegAlcohol[1]);">No</span>
+                                        onClick="clickRadio(document.forms[0].radio_seenDoctorRegAlcohol[1]);">No</span>
                             </td>
                             <td colspan="1" valign="top" class="style76"><input
                                     type="radio" name="radio_seenDoctorRegAlcohol" value="uncertain"
                                     <%=(props.getProperty("radio_seenDoctorRegAlcohol", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_seenDoctorRegAlcohol[2]);">Uncertain</span>
+                                        onClick="clickRadio(document.forms[0].radio_seenDoctorRegAlcohol[2]);">Uncertain</span>
                             </td>
                             <td colspan="1" valign="top" class="style76"><input
                                     type="radio" name="radio_seenDoctorRegAlcohol" value="refuse"
                                     <%=(props.getProperty("radio_seenDoctorRegAlcohol", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_seenDoctorRegAlcohol[3]);">Refuse
+                                        onClick="clickRadio(document.forms[0].radio_seenDoctorRegAlcohol[3]);">Refuse
 					to answer</span></td>
                         </tr>
 
@@ -1324,25 +1324,25 @@
                                     type="radio" name="radio_wantHelpQuit" value="yes"
                                     <%=(props.getProperty("radio_wantHelpQuit", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_wantHelpQuit[0]);">Yes</span>
+                                        onClick="clickRadio(document.forms[0].radio_wantHelpQuit[0]);">Yes</span>
                             </td>
                             <td colspan="1" valign="top" class="style76"><input
                                     type="radio" name="radio_wantHelpQuit" value="no"
                                     <%=(props.getProperty("radio_wantHelpQuit", "")).equalsIgnoreCase("no")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_wantHelpQuit[1]);">No</span>
+                                        onClick="clickRadio(document.forms[0].radio_wantHelpQuit[1]);">No</span>
                             </td>
                             <td colspan="1" valign="top" class="style76"><input
                                     type="radio" name="radio_wantHelpQuit" value="uncertain"
                                     <%=(props.getProperty("radio_wantHelpQuit", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_wantHelpQuit[2]);">Uncertain</span>
+                                        onClick="clickRadio(document.forms[0].radio_wantHelpQuit[2]);">Uncertain</span>
                             </td>
                             <td colspan="1" valign="top" class="style76"><input
                                     type="radio" name="radio_wantHelpQuit" value="refuse"
                                     <%=(props.getProperty("radio_wantHelpQuit", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_wantHelpQuit[3]);">Refuse
+                                        onClick="clickRadio(document.forms[0].radio_wantHelpQuit[3]);">Refuse
 					to answer</span></td>
                         </tr>
 
@@ -1369,19 +1369,19 @@
                                     type="radio" name="radio_useDrugs" value="yes"
                                     <%=(props.getProperty("radio_useDrugs", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_useDrugs[0]);">Yes</span>
+                                        onClick="clickRadio(document.forms[0].radio_useDrugs[0]);">Yes</span>
                             </td>
                             <td colspan="2" valign="top" class="style76"><input
                                     type="radio" name="radio_useDrugs" value="no"
                                     <%=(props.getProperty("radio_useDrugs", "")).equalsIgnoreCase("no")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_useDrugs[1]);">No
+                                        onClick="clickRadio(document.forms[0].radio_useDrugs[1]);">No
 					--> Section 4</span></td>
                             <td colspan="1" valign="top" class="style76"><input
                                     type="radio" name="radio_useDrugs" value="refuse"
                                     <%=(props.getProperty("radio_useDrugs", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_useDrugs[2]);">Refuse
+                                        onClick="clickRadio(document.forms[0].radio_useDrugs[2]);">Refuse
 					to answer</span></td>
                         </tr>
 
@@ -1391,13 +1391,13 @@
                                     type="radio" name="radio_drugUseFrequency" value="uncertain"
                                     <%=(props.getProperty("radio_drugUseFrequency", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_drugUseFrequency[0]);">Uncertain</span>
+                                        onClick="clickRadio(document.forms[0].radio_drugUseFrequency[0]);">Uncertain</span>
                             </td>
                             <td colspan="1" valign="top" class="style76"><input
                                     type="radio" name="radio_drugUseFrequency" value="refuse"
                                     <%=(props.getProperty("radio_drugUseFrequency", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_drugUseFrequency[1]);">Refuse
+                                        onClick="clickRadio(document.forms[0].radio_drugUseFrequency[1]);">Refuse
 					to answer</span></td>
                         </tr>
 
@@ -1409,26 +1409,26 @@
                                     type="radio" name="radio_wantHelpQuitDrug" value="yes"
                                     <%=(props.getProperty("radio_wantHelpQuitDrug", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_wantHelpQuitDrug[0]);">Yes</span>
+                                        onClick="clickRadio(document.forms[0].radio_wantHelpQuitDrug[0]);">Yes</span>
                             </td>
                             <td colspan="1" valign="top" class="style76"><input
                                     type="radio" name="radio_wantHelpQuitDrug" value="no"
                                     <%=(props.getProperty("radio_wantHelpQuitDrug", "")).equalsIgnoreCase("no")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_wantHelpQuitDrug[1]);">No</span>
+                                        onClick="clickRadio(document.forms[0].radio_wantHelpQuitDrug[1]);">No</span>
                             </td>
                             <td colspan="1" valign="top" class="style76"><input
                                     type="radio" name="radio_wantHelpQuitDrug" value="uncertain"
                                     <%=(props.getProperty("radio_wantHelpQuitDrug", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_wantHelpQuitDrug[2]);">Uncertain</span>
+                                        onClick="clickRadio(document.forms[0].radio_wantHelpQuitDrug[2]);">Uncertain</span>
                             </td>
 
                             <td colspan="1" valign="top" class="style76"><input
                                     type="radio" name="radio_wantHelpQuitDrug" value="refuse"
                                     <%=(props.getProperty("radio_wantHelpQuitDrug", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_wantHelpQuitDrug[3]);">Refuse
+                                        onClick="clickRadio(document.forms[0].radio_wantHelpQuitDrug[3]);">Refuse
 					to answer</span></td>
                         </tr>
                         <tr>
@@ -1464,19 +1464,19 @@
                                     type="radio" name="radio_wantAppmt" value="yes"
                                     <%=(props.getProperty("radio_wantAppmt", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_wantAppmt[0]);">Yes</span>
+                                        onClick="clickRadio(document.forms[0].radio_wantAppmt[0]);">Yes</span>
                             </td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_wantAppmt" value="no"
                                     <%=(props.getProperty("radio_wantAppmt", "")).equalsIgnoreCase("no")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_wantAppmt[1]);">No</span>
+                                        onClick="clickRadio(document.forms[0].radio_wantAppmt[1]);">No</span>
                             </td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_wantAppmt" value="uncertain"
                                     <%=(props.getProperty("radio_wantAppmt", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_wantAppmt[2]);">Uncertain</span>
+                                        onClick="clickRadio(document.forms[0].radio_wantAppmt[2]);">Uncertain</span>
                             </td>
                         </tr>
 
@@ -1520,25 +1520,25 @@
                                     type="radio" name="radio_livedInSubsidized" value="yes"
                                     <%=(props.getProperty("radio_livedInSubsidized", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_livedInSubsidized[0]);">Yes
+                                        onClick="clickRadio(document.forms[0].radio_livedInSubsidized[0]);">Yes
 					--> Q8</span></td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_livedInSubsidized" value="no"
                                     <%=(props.getProperty("radio_livedInSubsidized", "")).equalsIgnoreCase("no")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_livedInSubsidized[1]);">No
+                                        onClick="clickRadio(document.forms[0].radio_livedInSubsidized[1]);">No
 					--> Section 5</span></td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_livedInSubsidized" value="uncertain"
                                     <%=(props.getProperty("radio_livedInSubsidized", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_livedInSubsidized[2]);">Uncertain</span>
+                                        onClick="clickRadio(document.forms[0].radio_livedInSubsidized[2]);">Uncertain</span>
                             </td>
                             <td colspan="1" valign="top" class="style76"><input
                                     type="radio" name="radio_livedInSubsidized" value="refuse"
                                     <%=(props.getProperty("radio_livedInSubsidized", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_livedInSubsidized[3]);">Refuse
+                                        onClick="clickRadio(document.forms[0].radio_livedInSubsidized[3]);">Refuse
 					to answer</span></td>
 
                         </tr>
@@ -1551,25 +1551,25 @@
                                     type="radio" name="radio_owedRent" value="yes"
                                     <%=(props.getProperty("radio_owedRent", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_owedRent[0]);">Yes
+                                        onClick="clickRadio(document.forms[0].radio_owedRent[0]);">Yes
 					--> Q9</span></td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_owedRent" value="no"
                                     <%=(props.getProperty("radio_owedRent", "")).equalsIgnoreCase("no")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_owedRent[1]);">No
+                                        onClick="clickRadio(document.forms[0].radio_owedRent[1]);">No
 					--> Section 5</span></td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_owedRent" value="uncertain"
                                     <%=(props.getProperty("radio_owedRent", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_owedRent[2]);">Uncertain</span>
+                                        onClick="clickRadio(document.forms[0].radio_owedRent[2]);">Uncertain</span>
                             </td>
                             <td colspan="1" valign="top" class="style76"><input
                                     type="radio" name="radio_owedRent" value="refuse"
                                     <%=(props.getProperty("radio_owedRent", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_owedRent[3]);">Refuse
+                                        onClick="clickRadio(document.forms[0].radio_owedRent[3]);">Refuse
 					to answer</span></td>
 
                         </tr>
@@ -1621,25 +1621,25 @@
                                                 type="checkbox" name="cbox_haveHighSchool" value="Y"
                                                 <%=(props.getProperty("cbox_haveHighSchool", 	"")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_haveHighSchool);">High
+                                                    onClick="clickCheckBox(document.forms[0].cbox_haveHighSchool);">High
 							School diploma</span></td>
                                         <td colspan="1" align="left" class="style76"><input
                                                 type="checkbox" name="cbox_haveCollege" value="Y"
                                                 <%=(props.getProperty("cbox_haveCollege", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_haveCollege);">College
+                                                    onClick="clickCheckBox(document.forms[0].cbox_haveCollege);">College
 							diploma</span></td>
                                         <td colspan="2" align="left" class="style76"><input
                                                 type="checkbox" name="cbox_haveUniversity" value="Y"
                                                 <%=(props.getProperty("cbox_haveUniversity", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_haveUniversity);">University
+                                                    onClick="clickCheckBox(document.forms[0].cbox_haveUniversity);">University
 							undergraduate degree (BA, BSc etc)</span></td>
                                         <td colspan="2" valign="top" class="style76"><input
                                                 type="checkbox" name="cbox_haveOther3" value="Y"
                                                 <%=(props.getProperty("cbox_haveOther3", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickCheckBox(document.forms[0].cbox_haveOther3);">Other</span>
+                                                    onClick="clickCheckBox(document.forms[0].cbox_haveOther3);">Other</span>
                                         </td>
 
                                     </tr>
@@ -1655,25 +1655,25 @@
                                     type="radio" name="radio_interestBackToSchool" value="yes"
                                     <%=(props.getProperty("radio_interestBackToSchool", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_interestBackToSchool[0]);">Yes</span>
+                                        onClick="clickRadio(document.forms[0].radio_interestBackToSchool[0]);">Yes</span>
                             </td>
                             <td width="9%" colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_interestBackToSchool" value="no"
                                     <%=(props.getProperty("radio_interestBackToSchool", "")).equalsIgnoreCase("no")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_interestBackToSchool[1]);">No</span>
+                                        onClick="clickRadio(document.forms[0].radio_interestBackToSchool[1]);">No</span>
                             </td>
                             <td width="13%" colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_interestBackToSchool" value="uncertain"
                                     <%=(props.getProperty("radio_interestBackToSchool", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_interestBackToSchool[2]);">Uncertain</span>
+                                        onClick="clickRadio(document.forms[0].radio_interestBackToSchool[2]);">Uncertain</span>
                             </td>
                             <td colspan="1" valign="top" class="style76"><input
                                     type="radio" name="radio_interestBackToSchool" value="refuse"
                                     <%=(props.getProperty("radio_interestBackToSchool", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_interestBackToSchool[3]);">Refuse
+                                        onClick="clickRadio(document.forms[0].radio_interestBackToSchool[3]);">Refuse
 					to answer</span></td>
 
                         </tr>
@@ -1686,25 +1686,25 @@
                                     type="radio" name="radio_requireReferralToESL" value="yes"
                                     <%=(props.getProperty("radio_requireReferralToESL", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_requireReferralToESL[0]);">Yes</span>
+                                        onClick="clickRadio(document.forms[0].radio_requireReferralToESL[0]);">Yes</span>
                             </td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_requireReferralToESL" value="no"
                                     <%=(props.getProperty("radio_requireReferralToESL", "")).equalsIgnoreCase("no")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_requireReferralToESL[1]);">No</span>
+                                        onClick="clickRadio(document.forms[0].radio_requireReferralToESL[1]);">No</span>
                             </td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_requireReferralToESL" value="uncertain"
                                     <%=(props.getProperty("radio_requireReferralToESL", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_requireReferralToESL[2]);">Uncertain</span>
+                                        onClick="clickRadio(document.forms[0].radio_requireReferralToESL[2]);">Uncertain</span>
                             </td>
                             <td colspan="1" valign="top" class="style76"><input
                                     type="radio" name="radio_requireReferralToESL" value="refuse"
                                     <%=(props.getProperty("radio_requireReferralToESL", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_requireReferralToESL[3]);">Refuse
+                                        onClick="clickRadio(document.forms[0].radio_requireReferralToESL[3]);">Refuse
 					to answer</span></td>
 
                         </tr>
@@ -1732,25 +1732,25 @@
                                     type="radio" name="radio_currentlyEmployed" value="yes"
                                     <%=(props.getProperty("radio_currentlyEmployed", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_currentlyEmployed[0]);">Yes</span>
+                                        onClick="clickRadio(document.forms[0].radio_currentlyEmployed[0]);">Yes</span>
                             </td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_currentlyEmployed" value="no"
                                     <%=(props.getProperty("radio_currentlyEmployed", "")).equalsIgnoreCase("no")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_currentlyEmployed[1]);">No
+                                        onClick="clickRadio(document.forms[0].radio_currentlyEmployed[1]);">No
 					--> Skip to Q3</span></td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_currentlyEmployed" value="uncertain"
                                     <%=(props.getProperty("radio_currentlyEmployed", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_currentlyEmployed[2]);">Uncertain</span>
+                                        onClick="clickRadio(document.forms[0].radio_currentlyEmployed[2]);">Uncertain</span>
                             </td>
                             <td colspan="1" valign="top" class="style76"><input
                                     type="radio" name="radio_currentlyEmployed" value="refuse"
                                     <%=(props.getProperty("radio_currentlyEmployed", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_currentlyEmployed[3]);">Refuse
+                                        onClick="clickRadio(document.forms[0].radio_currentlyEmployed[3]);">Refuse
 					to answer</span></td>
 
                         </tr>
@@ -1786,25 +1786,25 @@
                                     type="radio" name="radio_interestedInTraining" value="yes"
                                     <%=(props.getProperty("radio_interestedInTraining", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_interestedInTraining[0]);">Yes</span>
+                                        onClick="clickRadio(document.forms[0].radio_interestedInTraining[0]);">Yes</span>
                             </td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_interestedInTraining" value="no"
                                     <%=(props.getProperty("radio_interestedInTraining", "")).equalsIgnoreCase("no")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_interestedInTraining[1]);">No</span>
+                                        onClick="clickRadio(document.forms[0].radio_interestedInTraining[1]);">No</span>
                             </td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_interestedInTraining" value="uncertain"
                                     <%=(props.getProperty("radio_interestedInTraining", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_interestedInTraining[2]);">Uncertain</span>
+                                        onClick="clickRadio(document.forms[0].radio_interestedInTraining[2]);">Uncertain</span>
                             </td>
                             <td colspan="1" valign="top" class="style76"><input
                                     type="radio" name="radio_interestedInTraining" value="refuse"
                                     <%=(props.getProperty("radio_interestedInTraining", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_interestedInTraining[3]);">Refuse
+                                        onClick="clickRadio(document.forms[0].radio_interestedInTraining[3]);">Refuse
 					to answer</span></td>
 
                         </tr>
@@ -1837,43 +1837,43 @@
                                     type="checkbox" name="cbox_OW" value="Y"
                                     <%=(props.getProperty("cbox_OW", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_OW);">OW:</span>
+                                        onClick="clickCheckBox(document.forms[0].cbox_OW);">OW:</span>
                             </td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="checkbox" name="cbox_ODSP" value="Y"
                                     <%=(props.getProperty("cbox_ODSP", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_ODSP);">ODSP</span>
+                                        onClick="clickCheckBox(document.forms[0].cbox_ODSP);">ODSP</span>
                             </td>
                             <td colspan="2" align="left" class="style76"><input
                                     type="checkbox" name="cbox_employment" value="Y"
                                     <%=(props.getProperty("cbox_employment", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_employment);">Employment
+                                        onClick="clickCheckBox(document.forms[0].cbox_employment);">Employment
 					--> Q2</span></td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="checkbox" name="cbox_UI" value="Y"
                                     <%=(props.getProperty("cbox_UI", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_UI);">UI
+                                        onClick="clickCheckBox(document.forms[0].cbox_UI);">UI
 					--> Q2</span></td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="checkbox" name="cbox_OAS" value="Y"
                                     <%=(props.getProperty("cbox_OAS", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_OAS);">OAS
+                                        onClick="clickCheckBox(document.forms[0].cbox_OAS);">OAS
 					--> Q2</span></td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="checkbox" name="cbox_CPP" value="Y"
                                     <%=(props.getProperty("cbox_CPP", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_CPP);">CPP
+                                        onClick="clickCheckBox(document.forms[0].cbox_CPP);">CPP
 					--> Q2</span></td>
                             <td colspan="2" align="left" class="style76"><input
                                     type="checkbox" name="cbox_other" value="Y"
                                     <%=(props.getProperty("cbox_other", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_other);">Other
+                                        onClick="clickCheckBox(document.forms[0].cbox_other);">Other
 					(specify) --> Q2</span></td>
                         </tr>
                         <tr>
@@ -1892,25 +1892,25 @@
                                     type="radio" name="radio_havePublicTrustee" value="yes"
                                     <%=(props.getProperty("radio_havePublicTrustee", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_havePublicTrustee[0]);">Yes
+                                        onClick="clickRadio(document.forms[0].radio_havePublicTrustee[0]);">Yes
 					--> Q4</span></td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_havePublicTrustee" value="no"
                                     <%=(props.getProperty("radio_havePublicTrustee", "")).equalsIgnoreCase("no")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_havePublicTrustee[1]);">No</span>
+                                        onClick="clickRadio(document.forms[0].radio_havePublicTrustee[1]);">No</span>
                             </td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_havePublicTrustee" value="uncertain"
                                     <%=(props.getProperty("radio_havePublicTrustee", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_havePublicTrustee[2]);">Uncertain</span>
+                                        onClick="clickRadio(document.forms[0].radio_havePublicTrustee[2]);">Uncertain</span>
                             </td>
                             <td colspan="1" align="left" class="style76"><input
                                     type="radio" name="radio_havePublicTrustee" value="refuse"
                                     <%=(props.getProperty("radio_havePublicTrustee", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_havePublicTrustee[3]);">Refuse
+                                        onClick="clickRadio(document.forms[0].radio_havePublicTrustee[3]);">Refuse
 					to answer</span></td>
                         </tr>
 
@@ -1931,7 +1931,7 @@
                                     type="radio" name="radio_entitledToOtherIncome" value="yes"
                                     <%=(props.getProperty("radio_entitledToOtherIncome", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_entitledToOtherIncome[0]);">Yes
+                                        onClick="clickRadio(document.forms[0].radio_entitledToOtherIncome[0]);">Yes
 					--></span></td>
                             <td colspan="2" align="left" class="style76">Type: <input
                                     type="text" name="typeOfIncome" size="35"
@@ -1940,7 +1940,7 @@
                                     type="radio" name="radio_entitledToOtherIncome" value="no"
                                     <%=(props.getProperty("radio_entitledToOtherIncome", "")).equalsIgnoreCase("no")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_entitledToOtherIncome[1]);">No</span>
+                                        onClick="clickRadio(document.forms[0].radio_entitledToOtherIncome[1]);">No</span>
                             </td>
                         </tr>
                         <tr>
@@ -1957,7 +1957,7 @@
                                                 type="radio" name="radio_everMadeAppforOtherIncome" value="no"
                                                 <%=(props.getProperty("radio_everMadeAppforOtherIncome", "")).equalsIgnoreCase("no")?"checked":""%>>
                                             <span
-                                                    onClick="javascript:clickRadio(document.forms[0].radio_everMadeAppforOtherIncome[0]);">No</span>
+                                                    onClick="clickRadio(document.forms[0].radio_everMadeAppforOtherIncome[0]);">No</span>
                                         </td>
 
                                         <td colspan="1" align="left" class="style76">
@@ -1965,7 +1965,7 @@
                                                     type="radio" name="radio_everMadeAppforOtherIncome" value="yes"
                                                     <%=(props.getProperty("radio_everMadeAppforOtherIncome", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                                 <span
-                                                        onClick="javascript:clickRadio(document.forms[0].radio_everMadeAppforOtherIncome[1]);">Yes
+                                                        onClick="clickRadio(document.forms[0].radio_everMadeAppforOtherIncome[1]);">Yes
 							--></span></nobr>
                                         </td>
                                         <td colspan="4" align="left" class="style76">Type: <input
@@ -2008,7 +2008,7 @@
                                     <input type="radio" name="radio_everBeenJailed" value="yes"
                                             <%=(props.getProperty("radio_everBeenJailed", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_everBeenJailed[0]);">Yes
+                                            onClick="clickRadio(document.forms[0].radio_everBeenJailed[0]);">Yes
 					--> Q2</span></nobr>
                             </td>
                             <td colspan="1" align="left" valign="top" class="style76">
@@ -2016,7 +2016,7 @@
                                     <input type="radio" name="radio_everBeenJailed" value="no"
                                             <%=(props.getProperty("radio_everBeenJailed", "")).equalsIgnoreCase("no")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_everBeenJailed[1]);">No
+                                            onClick="clickRadio(document.forms[0].radio_everBeenJailed[1]);">No
 					--> Q3</span></nobr>
                             </td>
 
@@ -2025,7 +2025,7 @@
                                     <input type="radio" name="radio_everBeenJailed" value="refuse"
                                             <%=(props.getProperty("radio_everBeenJailed", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_everBeenJailed[2]);">Refuse
+                                            onClick="clickRadio(document.forms[0].radio_everBeenJailed[2]);">Refuse
 					to answer</span></nobr>
                             </td>
                         </tr>
@@ -2051,7 +2051,7 @@
                                                 <input type="radio" name="radio_needAssistInLegal" value="yes"
                                                         <%=(props.getProperty("radio_needAssistInLegal", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                                 <span
-                                                        onClick="javascript:clickRadio(document.forms[0].radio_needAssistInLegal[0]);">Yes</span>
+                                                        onClick="clickRadio(document.forms[0].radio_needAssistInLegal[0]);">Yes</span>
                                             </nobr>
                                         </td>
                                         <td colspan="2" align="left" valign="top" class="style76">
@@ -2059,7 +2059,7 @@
                                                 <input type="radio" name="radio_needAssistInLegal" value="no"
                                                         <%=(props.getProperty("radio_needAssistInLegal", "")).equalsIgnoreCase("no")?"checked":""%>>
                                                 <span
-                                                        onClick="javascript:clickRadio(document.forms[0].radio_needAssistInLegal[1]);">No
+                                                        onClick="clickRadio(document.forms[0].radio_needAssistInLegal[1]);">No
 							--> Section11</span></nobr>
                                         </td>
 
@@ -2068,7 +2068,7 @@
                                                 <input type="radio" name="radio_needAssistInLegal" value="refuse"
                                                         <%=(props.getProperty("radio_needAssistInLegal", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                                 <span
-                                                        onClick="javascript:clickRadio(document.forms[0].radio_needAssistInLegal[2]);">Refuse
+                                                        onClick="clickRadio(document.forms[0].radio_needAssistInLegal[2]);">Refuse
 							to answer</span></nobr>
                                         </td>
                                     </tr>
@@ -2107,27 +2107,27 @@
                                     <input type="radio" name="radio_citizen" value="yes"
                                             <%=(props.getProperty("radio_citizen", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_citizen[0]);">Yes
+                                            onClick="clickRadio(document.forms[0].radio_citizen[0]);">Yes
 					--> Section 11</span></nobr>
                             </td>
                             <td colspan="1" align="left" valign="top" class="style76"><input
                                     type="radio" name="radio_citizen" value="no"
                                     <%=(props.getProperty("radio_citizen", "")).equalsIgnoreCase("no")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_citizen[1]);">No</span>
+                                        onClick="clickRadio(document.forms[0].radio_citizen[1]);">No</span>
                             </td>
                             <td colspan="1" align="left" valign="top" class="style76"><input
                                     type="radio" name="radio_citizen" value="uncertain"
                                     <%=(props.getProperty("radio_citizen", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_citizen[2]);">Uncertain</span>
+                                        onClick="clickRadio(document.forms[0].radio_citizen[2]);">Uncertain</span>
                             </td>
                             <td colspan="2" align="left" valign="top" class="style76">
                                 <nobr>
                                     <input type="radio" name="radio_citizen" value="refuse"
                                             <%=(props.getProperty("radio_citizen", "")).equalsIgnoreCase("refuse")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_citizen[3]);">Refuse
+                                            onClick="clickRadio(document.forms[0].radio_citizen[3]);">Refuse
 					to answer</span></nobr>
                             </td>
                         </tr>
@@ -2147,7 +2147,7 @@
                                                        value="immigrant"
                                                         <%=(props.getProperty("radio_yourCanadianStatus", "")).equalsIgnoreCase("immigrant")?"checked":""%>>
                                                 <span
-                                                        onClick="javascript:clickRadio(document.forms[0].radio_yourCanadianStatus[0]);">Landed
+                                                        onClick="clickRadio(document.forms[0].radio_yourCanadianStatus[0]);">Landed
 							Immigrant --> Q4</span></nobr>
                                         </td>
                                         <td colspan="2" align="left" valign="top" class="style76">
@@ -2156,7 +2156,7 @@
                                                        value="conventionRefugee"
                                                         <%=(props.getProperty("radio_yourCanadianStatus", "")).equalsIgnoreCase("conventionRefugee")?"checked":""%>>
                                                 <span
-                                                        onClick="javascript:clickRadio(document.forms[0].radio_yourCanadianStatus[1]);">Convention
+                                                        onClick="clickRadio(document.forms[0].radio_yourCanadianStatus[1]);">Convention
 							Refugee --> Q4</span></nobr>
                                         </td>
 
@@ -2166,7 +2166,7 @@
                                                        value="conventionRefugeeApp"
                                                         <%=(props.getProperty("radio_yourCanadianStatus", "")).equalsIgnoreCase("conventionRefugeeApp")?"checked":""%>>
                                                 <span
-                                                        onClick="javascript:clickRadio(document.forms[0].radio_yourCanadianStatus[2]);">Convention
+                                                        onClick="clickRadio(document.forms[0].radio_yourCanadianStatus[2]);">Convention
 							Refugee applicant --> Q4</span></nobr>
                                         </td>
                                         <td colspan="2" align="left" valign="top" class="style76">
@@ -2175,7 +2175,7 @@
                                                        value="sponsoredImmigrant"
                                                         <%=(props.getProperty("radio_yourCanadianStatus", "")).equalsIgnoreCase("sponsoredImmigrant")?"checked":""%>>
                                                 <span
-                                                        onClick="javascript:clickRadio(document.forms[0].radio_yourCanadianStatus[3]);">Sponsored
+                                                        onClick="clickRadio(document.forms[0].radio_yourCanadianStatus[3]);">Sponsored
 							Immigrant --> Q3</span></nobr>
                                         </td>
 
@@ -2187,7 +2187,7 @@
                                                        value="visitor"
                                                         <%=(props.getProperty("radio_yourCanadianStatus", "")).equalsIgnoreCase("visitor")?"checked":""%>>
                                                 <span
-                                                        onClick="javascript:clickRadio(document.forms[0].radio_yourCanadianStatus[4]);">Visitor
+                                                        onClick="clickRadio(document.forms[0].radio_yourCanadianStatus[4]);">Visitor
 							--> Q4</span></nobr>
                                         </td>
                                         <td colspan="2" align="left" valign="top" class="style76">
@@ -2196,7 +2196,7 @@
                                                        value="ministerPermit"
                                                         <%=(props.getProperty("radio_yourCanadianStatus", "")).equalsIgnoreCase("ministerPermit")?"checked":""%>>
                                                 <span
-                                                        onClick="javascript:clickRadio(document.forms[0].radio_yourCanadianStatus[5]);">Minister's
+                                                        onClick="clickRadio(document.forms[0].radio_yourCanadianStatus[5]);">Minister's
 							Permit --> Q4</span></nobr>
                                         </td>
 
@@ -2205,7 +2205,7 @@
                                                 <input type="radio" name="radio_yourCanadianStatus" value="other"
                                                         <%=(props.getProperty("radio_yourCanadianStatus", "")).equalsIgnoreCase("other")?"checked":""%>>
                                                 <span
-                                                        onClick="javascript:clickRadio(document.forms[0].radio_yourCanadianStatus[6]);">Other
+                                                        onClick="clickRadio(document.forms[0].radio_yourCanadianStatus[6]);">Other
 							(specify) --> Q4</span></nobr> &nbsp;&nbsp;&nbsp; <input type="text"
                                                                                      name="yourCanadianStatus"
                                                                                      value="<%=props.getProperty("yourCanadianStatus", "")%>">
@@ -2227,7 +2227,7 @@
                                                 <input type="radio" name="radio_sponsorshipBreakdown" value="yes"
                                                         <%=(props.getProperty("radio_sponsorshipBreakdown", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                                 <span
-                                                        onClick="javascript:clickRadio(document.forms[0].radio_sponsorshipBreakdown[0]);">Yes</span>
+                                                        onClick="clickRadio(document.forms[0].radio_sponsorshipBreakdown[0]);">Yes</span>
                                             </nobr>
                                         </td>
                                         <td colspan="1" align="left" valign="top" class="style76">
@@ -2235,7 +2235,7 @@
                                                 <input type="radio" name="radio_sponsorshipBreakdown" value="no"
                                                         <%=(props.getProperty("radio_sponsorshipBreakdown", "")).equalsIgnoreCase("no")?"checked":""%>>
                                                 <span
-                                                        onClick="javascript:clickRadio(document.forms[0].radio_sponsorshipBreakdown[1]);">No</span>
+                                                        onClick="clickRadio(document.forms[0].radio_sponsorshipBreakdown[1]);">No</span>
                                             </nobr>
                                         </td>
                                     </tr>
@@ -2294,14 +2294,14 @@
                                     <input type="radio" name="radio_involvedOtherAgencies" value="yes"
                                             <%=(props.getProperty("radio_involvedOtherAgencies", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_involvedOtherAgencies[0]);">Yes</span>
+                                            onClick="clickRadio(document.forms[0].radio_involvedOtherAgencies[0]);">Yes</span>
                                 </nobr>
                             </td>
                             <td colspan="1" align="left" valign="top" class="style76"><input
                                     type="radio" name="radio_involvedOtherAgencies" value="no"
                                     <%=(props.getProperty("radio_involvedOtherAgencies", "")).equalsIgnoreCase("no")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickRadio(document.forms[0].radio_involvedOtherAgencies[1]);">No</span>
+                                        onClick="clickRadio(document.forms[0].radio_involvedOtherAgencies[1]);">No</span>
                             </td>
                         </tr>
 
@@ -2492,7 +2492,7 @@
                                     <input type="radio" name="radio_mentalIllness" value="yes"
                                             <%=(props.getProperty("radio_mentalIllness", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_mentalIllness[0]);">Yes</span>
+                                            onClick="clickRadio(document.forms[0].radio_mentalIllness[0]);">Yes</span>
                                 </nobr>
                             </td>
                             <td colspan="1" align="left" valign="top" class="style76">
@@ -2500,7 +2500,7 @@
                                     <input type="radio" name="radio_mentalIllness" value="uncertain"
                                             <%=(props.getProperty("radio_mentalIllness", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_mentalIllness[1]);">Uncertain</span>
+                                            onClick="clickRadio(document.forms[0].radio_mentalIllness[1]);">Uncertain</span>
                                 </nobr>
                             </td>
 
@@ -2509,7 +2509,7 @@
                                     <input type="radio" name="radio_mentalIllness" value="no"
                                             <%=(props.getProperty("radio_mentalIllness", "")).equalsIgnoreCase("no")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_mentalIllness[2]);">No</span>
+                                            onClick="clickRadio(document.forms[0].radio_mentalIllness[2]);">No</span>
                                 </nobr>
                             </td>
                         </tr>
@@ -2523,7 +2523,7 @@
                                     <input type="radio" name="radio_drinking" value="yes"
                                             <%=(props.getProperty("radio_drinking", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_drinking[0]);">Yes</span>
+                                            onClick="clickRadio(document.forms[0].radio_drinking[0]);">Yes</span>
                                 </nobr>
                             </td>
                             <td colspan="1" align="left" valign="top" class="style76">
@@ -2531,7 +2531,7 @@
                                     <input type="radio" name="radio_drinking" value="uncertain"
                                             <%=(props.getProperty("radio_drinking", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_drinking[1]);">Uncertain</span>
+                                            onClick="clickRadio(document.forms[0].radio_drinking[1]);">Uncertain</span>
                                 </nobr>
                             </td>
 
@@ -2540,7 +2540,7 @@
                                     <input type="radio" name="radio_drinking" value="no"
                                             <%=(props.getProperty("radio_drinking", "")).equalsIgnoreCase("no")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_drinking[2]);">No</span>
+                                            onClick="clickRadio(document.forms[0].radio_drinking[2]);">No</span>
                                 </nobr>
                             </td>
                         </tr>
@@ -2554,7 +2554,7 @@
                                     <input type="radio" name="radio_drugUse" value="yes"
                                             <%=(props.getProperty("radio_drugUse", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_drugUse[0]);">Yes</span>
+                                            onClick="clickRadio(document.forms[0].radio_drugUse[0]);">Yes</span>
                                 </nobr>
                             </td>
                             <td colspan="1" align="left" valign="top" class="style76">
@@ -2562,7 +2562,7 @@
                                     <input type="radio" name="radio_drugUse" value="uncertain"
                                             <%=(props.getProperty("radio_drugUse", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_drugUse[1]);">Uncertain</span>
+                                            onClick="clickRadio(document.forms[0].radio_drugUse[1]);">Uncertain</span>
                                 </nobr>
                             </td>
 
@@ -2571,7 +2571,7 @@
                                     <input type="radio" name="radio_drugUse" value="no"
                                             <%=(props.getProperty("radio_drugUse", "")).equalsIgnoreCase("no")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_drugUse[2]);">No</span>
+                                            onClick="clickRadio(document.forms[0].radio_drugUse[2]);">No</span>
                                 </nobr>
                             </td>
                         </tr>
@@ -2586,7 +2586,7 @@
                                     <input type="radio" name="radio_healthProblem" value="yes"
                                             <%=(props.getProperty("radio_healthProblem", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_healthProblem[0]);">Yes</span>
+                                            onClick="clickRadio(document.forms[0].radio_healthProblem[0]);">Yes</span>
                                 </nobr>
                             </td>
                             <td colspan="1" align="left" valign="top" class="style76">
@@ -2594,7 +2594,7 @@
                                     <input type="radio" name="radio_healthProblem" value="uncertain"
                                             <%=(props.getProperty("radio_healthProblem", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_healthProblem[1]);">Uncertain</span>
+                                            onClick="clickRadio(document.forms[0].radio_healthProblem[1]);">Uncertain</span>
                                 </nobr>
                             </td>
 
@@ -2603,7 +2603,7 @@
                                     <input type="radio" name="radio_healthProblem" value="no"
                                             <%=(props.getProperty("radio_healthProblem", "")).equalsIgnoreCase("no")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_healthProblem[2]);">No</span>
+                                            onClick="clickRadio(document.forms[0].radio_healthProblem[2]);">No</span>
                                 </nobr>
                             </td>
                         </tr>
@@ -2618,7 +2618,7 @@
                                     <input type="radio" name="radio_behaviorProblem" value="yes"
                                             <%=(props.getProperty("radio_behaviorProblem", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_behaviorProblem[0]);">Yes</span>
+                                            onClick="clickRadio(document.forms[0].radio_behaviorProblem[0]);">Yes</span>
                                 </nobr>
                             </td>
                             <td colspan="1" align="left" valign="top" class="style76">
@@ -2626,7 +2626,7 @@
                                     <input type="radio" name="radio_behaviorProblem" value="uncertain"
                                             <%=(props.getProperty("radio_behaviorProblem", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_behaviorProblem[1]);">Uncertain</span>
+                                            onClick="clickRadio(document.forms[0].radio_behaviorProblem[1]);">Uncertain</span>
                                 </nobr>
                             </td>
 
@@ -2635,7 +2635,7 @@
                                     <input type="radio" name="radio_behaviorProblem" value="no"
                                             <%=(props.getProperty("radio_behaviorProblem", "")).equalsIgnoreCase("no")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_behaviorProblem[2]);">No</span>
+                                            onClick="clickRadio(document.forms[0].radio_behaviorProblem[2]);">No</span>
                                 </nobr>
                             </td>
                         </tr>
@@ -2651,7 +2651,7 @@
                                            value="yes"
                                             <%=(props.getProperty("radio_need60DaysSeatonServices", "")).equalsIgnoreCase("yes")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_need60DaysSeatonServices[0]);">Yes</span>
+                                            onClick="clickRadio(document.forms[0].radio_need60DaysSeatonServices[0]);">Yes</span>
                                 </nobr>
                             </td>
                             <td colspan="1" align="left" valign="top" class="style76">
@@ -2660,7 +2660,7 @@
                                            value="uncertain"
                                             <%=(props.getProperty("radio_need60DaysSeatonServices", "")).equalsIgnoreCase("uncertain")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_need60DaysSeatonServices[1]);">Uncertain</span>
+                                            onClick="clickRadio(document.forms[0].radio_need60DaysSeatonServices[1]);">Uncertain</span>
                                 </nobr>
                             </td>
 
@@ -2670,7 +2670,7 @@
                                            value="no"
                                             <%=(props.getProperty("radio_need60DaysSeatonServices", "")).equalsIgnoreCase("no")?"checked":""%>>
                                     <span
-                                            onClick="javascript:clickRadio(document.forms[0].radio_need60DaysSeatonServices[2]);">No</span>
+                                            onClick="clickRadio(document.forms[0].radio_need60DaysSeatonServices[2]);">No</span>
                                 </nobr>
                             </td>
                         </tr>
@@ -2756,7 +2756,7 @@
                                     type="checkbox" name="cbox_pamphletIssued" value="Y"
                                     <%=(props.getProperty("cbox_pamphletIssued", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_pamphletIssued);">Emergency
+                                        onClick="clickCheckBox(document.forms[0].cbox_pamphletIssued);">Emergency
 					Hostel Program</span>
                                 <ul>
                                     <li>Homeless man</li>
@@ -2791,7 +2791,7 @@
                                     type="checkbox" name="cbox_hostel" value="Y"
                                     <%=(props.getProperty("cbox_hostel", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_hostel);">Hostel
+                                        onClick="clickCheckBox(document.forms[0].cbox_hostel);">Hostel
 					- Fusion of Care Team</span>
                                 <ul>
                                     <li>Emergency Hostel Program client</li>
@@ -2814,7 +2814,7 @@
                                     type="checkbox" name="cbox_rotaryClub" value="Y"
                                     <%=(props.getProperty("cbox_rotaryClub", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_rotaryClub);">Rotary
+                                        onClick="clickCheckBox(document.forms[0].cbox_rotaryClub);">Rotary
 					Club of Toronto Infirmary</span>
                                 <ul>
                                     <li>Client is to be discharged from hospital and requires: <br>
@@ -2863,7 +2863,7 @@
                                     type="checkbox" name="cbox_annexHarm" value="Y"
                                     <%=(props.getProperty("cbox_annexHarm", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_annexHarm);">Annex
+                                        onClick="clickCheckBox(document.forms[0].cbox_annexHarm);">Annex
 					Harm Reduction Program</span>
                                 <ul>
                                     <li>Chronic alcohol, substance use (including non-palatable
@@ -2900,7 +2900,7 @@
                                     type="checkbox" name="cbox_longTermProgram" value="Y"
                                     <%=(props.getProperty("cbox_longTermProgram", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_longTermProgram);">Long
+                                        onClick="clickCheckBox(document.forms[0].cbox_longTermProgram);">Long
 					Term Program</span>
                                 <ul>
                                     <li>Age 65+ - refer direct from Reception</li>
@@ -2945,7 +2945,7 @@
                                     type="checkbox" name="cbox_birchmountResidence" value="Y"
                                     <%=(props.getProperty("cbox_birchmountResidence", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_birchmountResidence);">Birchmount
+                                        onClick="clickCheckBox(document.forms[0].cbox_birchmountResidence);">Birchmount
 					Residence</span>
                                 <ul>
                                     <li>Age 55+ (men aged 50-55 considered)</li>
@@ -3010,7 +3010,7 @@
                                     type="checkbox" name="cbox_oNeillHouse" value="Y"
                                     <%=(props.getProperty("cbox_oNeillHouse", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_oNeillHouse);">O'Neill
+                                        onClick="clickCheckBox(document.forms[0].cbox_oNeillHouse);">O'Neill
 					House</span>
                                 <ul>
                                     <li>Severe problems related to street drug use (Crack
@@ -3041,7 +3041,7 @@
                                     type="checkbox" name="cbox_fortYork" value="Y"
                                     <%=(props.getProperty("cbox_fortYork", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_fortYork);">Fort
+                                        onClick="clickCheckBox(document.forms[0].cbox_fortYork);">Fort
 					York Residence</span>
                                 <ul>
                                     <li>Willing and able to work</li>
@@ -3072,7 +3072,7 @@
                                     type="checkbox" name="cbox_downsviewDells" value="Y"
                                     <%=(props.getProperty("cbox_downsviewDells", "")).equalsIgnoreCase("Y")?"checked":""%>>
                                 <span
-                                        onClick="javascript:clickCheckBox(document.forms[0].cbox_downsviewDells);">Downsview
+                                        onClick="clickCheckBox(document.forms[0].cbox_downsviewDells);">Downsview
 					Dells</span>
                                 <ul>
                                     <li>Chemically dependent now wishing abstinence</li>
@@ -3109,13 +3109,13 @@
                     <table width="95%" border="0">
                         <tr>
                             <td align="center"><input type="submit" value="Save"
-                                                      onclick="javascript:return onSave();"/> <input type="submit"
+                                                      onclick="return onSave();"/> <input type="submit"
                                                                                                      value="Save and Exit"
-                                                                                                     onclick="javascript:return onSaveExit();"/>
+                                                                                                     onclick="return onSaveExit();"/>
                                 <input type="submit" value="Exit"
-                                       onclick="javascript:return onExit();"/> <input type="button"
+                                       onclick="return onExit();"/> <input type="button"
                                                                                       value="Print"
-                                                                                      onclick="javascript:return onPrint();"/>
+                                                                                      onclick="return onPrint();"/>
                             </td>
                         </tr>
                     </table>

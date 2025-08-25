@@ -108,10 +108,6 @@ public class ReadLabPK implements Serializable {
 
         if (labId == null && other.getLabId() != null) {
             return false;
-        } else if (!labId.equals(other.getLabId())) {
-            return false;
-        }
-
-        return true;
+        } else return labId.equals(other.getLabId());
     }
 }

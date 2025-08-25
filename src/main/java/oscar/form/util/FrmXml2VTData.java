@@ -179,11 +179,8 @@ public class FrmXml2VTData {
         if (xmlMethod.getName().matches(reg)) {
             Class tempC = xmlMethod.getReturnType();
             // Only interested in Classes (not drug part) rather than primitive data type
-            if ("java.lang.String".equals(tempC.getName()) || "boolean".equals(tempC.getName())
-                    || "getSitePatientVisitDrugArray".equals(xmlMethod.getName()))
-                ret = false;
-            else
-                ret = true;
+            ret = !"java.lang.String".equals(tempC.getName()) && !"boolean".equals(tempC.getName())
+                && !"getSitePatientVisitDrugArray".equals(xmlMethod.getName());
         }
         return ret;
     }

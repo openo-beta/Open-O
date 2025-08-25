@@ -69,7 +69,6 @@ public class OLISPoller {
         List<Provider> allProvidersList = providerDao.getActiveProviders();
 
         OLISSystemPreferencesDao olisSystemPreferencesDao = (OLISSystemPreferencesDao) SpringUtils.getBean(OLISSystemPreferencesDao.class);
-        ;
         OLISSystemPreferences olisSystemPreferences = olisSystemPreferencesDao.getPreferences();
 
         OLISProviderPreferencesDao olisProviderPreferencesDao = (OLISProviderPreferencesDao) SpringUtils.getBean(OLISProviderPreferencesDao.class);
@@ -202,7 +201,7 @@ public class OLISPoller {
             FileUtils.writeStringToFile(tempFile, response);
 
             @SuppressWarnings("unchecked")
-            ArrayList<String> messages = Utilities.separateMessages(System.getProperty("java.io.tmpdir") + "/olis_" + uuid.toString() + ".response");
+            ArrayList<String> messages = Utilities.separateMessages(System.getProperty("java.io.tmpdir") + "/olis_" + uuid + ".response");
 
             List<String> resultList = new LinkedList<String>();
 

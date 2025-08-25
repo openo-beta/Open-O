@@ -256,10 +256,7 @@ public class CaseManagementIssue extends BaseObject {
         }
 
         //global default role access
-        if (roleProgramAccessDAO.hasAccess(accessName, role.getId())) {
-            return (true);
-        }
-        return (false);
+        return roleProgramAccessDAO.hasAccess(accessName, role.getId());
     }
 
     private static boolean isRoleIncludedInAccess(ProgramAccess pa, Secrole role) {

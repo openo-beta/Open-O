@@ -636,10 +636,7 @@ public class DemographicService extends AbstractServiceImpl {
         req.setIntegrator(false); //this should be configurable by persona
 
         //caisi
-        boolean outOfDomain = true;
-        if (OscarProperties.getInstance().getProperty("ModuleNames", "").indexOf("Caisi") != -1) {
-            outOfDomain = false;
-        }
+        boolean outOfDomain = OscarProperties.getInstance().getProperty("ModuleNames", "").indexOf("Caisi") == -1;
         req.setOutOfDomain(outOfDomain);
 
 
@@ -682,10 +679,7 @@ public class DemographicService extends AbstractServiceImpl {
 
         DemographicSearchRequest req = convertFromJSON(json);
         //caisi
-        boolean outOfDomain = true;
-        if (OscarProperties.getInstance().getProperty("ModuleNames", "").indexOf("Caisi") != -1) {
-            outOfDomain = false;
-        }
+        boolean outOfDomain = OscarProperties.getInstance().getProperty("ModuleNames", "").indexOf("Caisi") == -1;
         req.setOutOfDomain(outOfDomain);
 
 
@@ -806,9 +800,7 @@ public class DemographicService extends AbstractServiceImpl {
             dsr.setSortMode(SORTMODE.Name);
             dsr.setSortDir(SORTDIR.asc);
 
-            if (demographicManager.searchPatientsCount(getLoggedInInfo(), dsr) > 0) {
-                return true;
-            }
+            return demographicManager.searchPatientsCount(getLoggedInInfo(), dsr) > 0;
         }
 
         return false;

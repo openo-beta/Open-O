@@ -85,7 +85,7 @@
     List<CdsFormOption> cdsFormOptions = Cds4ReportUIBean.getCdsFormOptions();
 
     StringBuilder providerNamesList = new StringBuilder();
-    if (providerIdList != null && providerIdList.length > 0) {
+    if (providerIdList != null) {
         for (String providerId : providerIdList) {
             Provider provider = providerManager.getProvider(loggedInInfo, providerId);
             providerNamesList.append(provider.getFormattedName() + " (" + provider.getProviderNo() + "), ");

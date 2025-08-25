@@ -134,11 +134,7 @@ public class InsideLabUpload2Action extends ActionSupport {
         if (fileType != null && !fileType.equals("OTHER")) {
             return fileType;
         }
-        if (otherFileType != null) {
-            return otherFileType;
-        }
-
-        return null;
+        return otherFileType;
     }
 
     private FileStatus processFile(LoggedInInfo loggedInInfo, HttpServletRequest request, String filePath, String fileType) {

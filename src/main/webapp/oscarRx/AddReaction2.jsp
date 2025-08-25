@@ -316,7 +316,7 @@
                             <%
                                 String sBack = "ShowAllergies2.jsp";
                             %> <input type=button class="ControlPushButton"
-                                      onclick="javascript:window.location.href='<%=sBack%>';"
+                                      onclick="window.location.href='<%=sBack%>';"
                                       value="Back to View Allergies"/></td>
                     </tr>
                     <!----End new rows here-->

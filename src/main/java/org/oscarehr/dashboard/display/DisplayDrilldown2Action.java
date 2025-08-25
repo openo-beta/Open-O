@@ -158,9 +158,9 @@ public class DisplayDrilldown2Action extends ActionSupport {
         DrilldownBean drilldown = null;
 
         if (metricLabel.equals("null")) { //local pie opens drill down list for whole pie, should use shared xml file
-            drilldown = dashboardManager.getDrilldownData(loggedInInfo, indicatorTemplate.getId(), providerNo != null ? providerNo : null, metricLabel);
+            drilldown = dashboardManager.getDrilldownData(loggedInInfo, indicatorTemplate.getId(), providerNo, metricLabel);
         } else { //common dashboard opens drill down list from pie slice, should use not-shared xml file for different metric label
-            drilldown = dashboardManager.getDrilldownData(loggedInInfo, indicatorTemplate.getId(), providerNo != null ? providerNo : null, metricLabel);
+            drilldown = dashboardManager.getDrilldownData(loggedInInfo, indicatorTemplate.getId(), providerNo, metricLabel);
         }
 
         // something must be returned. If not then something is very wrong.

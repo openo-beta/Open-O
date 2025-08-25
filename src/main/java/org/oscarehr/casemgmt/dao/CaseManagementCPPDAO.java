@@ -40,7 +40,7 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
  */
 public interface CaseManagementCPPDAO {
 
-    public CaseManagementCPP getCPP(String demographic_no);
+    CaseManagementCPP getCPP(String demographic_no);
 
-    public void saveCPP(CaseManagementCPP cpp);
+    void saveCPP(CaseManagementCPP cpp);
 }

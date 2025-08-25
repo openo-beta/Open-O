@@ -623,7 +623,7 @@ Calendar.cellClick = function (el, ev) {
                 date.setDate(max);
             }
             date.setMonth(m);
-        };
+        }
         switch (el.navtype) {
             case 400:
                 Calendar.removeClass(el, "hilite");
@@ -865,7 +865,7 @@ Calendar.prototype.create = function (_par) {
                 }
                 Calendar._add_evs(part);
                 return part;
-            };
+            }
             var hrs = cal.date.getHours();
             var mins = cal.date.getMinutes();
             var t12 = !cal.time24;
@@ -1006,19 +1006,19 @@ Calendar._keyEvent = function (ev) {
                     x = p & 15;
                     y = p >> 4;
                     ne = cal.ar_days[y][x];
-                };setVars();
+                }setVars();
 
                 function prevMonth() {
                     var date = new Date(cal.date);
                     date.setDate(date.getDate() - step);
                     cal.setDate(date);
-                };
+                }
 
                 function nextMonth() {
                     var date = new Date(cal.date);
                     date.setDate(date.getDate() + step);
                     cal.setDate(date);
-                };
+                }
                 while (1) {
                     switch (K) {
                         case 37: // KEY left
@@ -1404,7 +1404,7 @@ Calendar.prototype.showAtElement = function (el, opts) {
         if (tmp > 0) box.x -= tmp;
         tmp = box.y + box.height - br.y;
         if (tmp > 0) box.y -= tmp;
-    };
+    }
     this.element.style.display = "block";
     Calendar.continuation_for_the_fucking_khtml_browser = function () {
         var w = self.element.offsetWidth;
@@ -1499,7 +1499,7 @@ Calendar.prototype.hideShowCovered = function () {
                 value = '';
         }
         return value;
-    };
+    }
 
     var tags = new Array("applet", "iframe", "select");
     var el = this.element;

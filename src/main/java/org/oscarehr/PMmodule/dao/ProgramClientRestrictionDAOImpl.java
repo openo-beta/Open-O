@@ -92,7 +92,7 @@ public class ProgramClientRestrictionDAOImpl extends HibernateDaoSupport impleme
     public Collection<ProgramClientRestriction> findForClient(int demographicNo, int facilityId) {
         String sSQL = "from ProgramClientRestriction pcr where pcr.enabled = true and pcr.demographicNo = ?0" +
         " and pcr.programId in (select s.id from Program s where s.facilityId = ?1 or s.facilityId is null) order by pcr.programId";
-        Object params[] = new Object[]{Integer.valueOf(demographicNo), facilityId};
+        Object[] params = new Object[]{Integer.valueOf(demographicNo), facilityId};
         Collection<ProgramClientRestriction> pcrs = (Collection<ProgramClientRestriction>) getHibernateTemplate().find(sSQL, params);
         for (ProgramClientRestriction pcr : pcrs) {
             setRelationships(pcr);

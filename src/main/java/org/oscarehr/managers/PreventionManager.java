@@ -54,51 +54,51 @@ import oscar.util.StringUtils;
 
 public interface PreventionManager {
 
-    public List<Prevention> getUpdatedAfterDate(LoggedInInfo loggedInInfo, Date updatedAfterThisDateExclusive,
-                                                int itemsToReturn);
+    List<Prevention> getUpdatedAfterDate(LoggedInInfo loggedInInfo, Date updatedAfterThisDateExclusive,
+                                         int itemsToReturn);
 
-    public List<Prevention> getByDemographicIdUpdatedAfterDate(LoggedInInfo loggedInInfo, Integer demographicId,
-                                                               Date updatedAfterThisDateExclusive);
+    List<Prevention> getByDemographicIdUpdatedAfterDate(LoggedInInfo loggedInInfo, Integer demographicId,
+                                                        Date updatedAfterThisDateExclusive);
 
-    public Prevention getPrevention(LoggedInInfo loggedInInfo, Integer id);
+    Prevention getPrevention(LoggedInInfo loggedInInfo, Integer id);
 
-    public List<PreventionExt> getPreventionExtByPrevention(LoggedInInfo loggedInInfo, Integer preventionId);
+    List<PreventionExt> getPreventionExtByPrevention(LoggedInInfo loggedInInfo, Integer preventionId);
 
-    public ArrayList<String> getPreventionTypeList();
+    ArrayList<String> getPreventionTypeList();
 
-    public ArrayList<HashMap<String, String>> getPreventionTypeDescList();
+    ArrayList<HashMap<String, String>> getPreventionTypeDescList();
 
-    public boolean hideItem(String item);
+    boolean hideItem(String item);
 
-    public void addCustomPreventionItems(String items);
+    void addCustomPreventionItems(String items);
 
-    public void addPreventionWithExts(Prevention prevention, HashMap<String, String> exts);
+    void addPreventionWithExts(Prevention prevention, HashMap<String, String> exts);
 
-    public List<Prevention> getPreventionsByProgramProviderDemographicDate(LoggedInInfo loggedInInfo, Integer programId,
-                                                                           String providerNo, Integer demographicId, Calendar updatedAfterThisDateExclusive, int itemsToReturn);
+    List<Prevention> getPreventionsByProgramProviderDemographicDate(LoggedInInfo loggedInInfo, Integer programId,
+                                                                    String providerNo, Integer demographicId, Calendar updatedAfterThisDateExclusive, int itemsToReturn);
 
-    public List<Prevention> getPreventionsByDemographicNo(LoggedInInfo loggedInInfo, Integer demographicNo);
+    List<Prevention> getPreventionsByDemographicNo(LoggedInInfo loggedInInfo, Integer demographicNo);
 
-    public String getWarnings(LoggedInInfo loggedInInfo, String demo);
+    String getWarnings(LoggedInInfo loggedInInfo, String demo);
 
-    public String checkNames(String k);
+    String checkNames(String k);
 
-    public boolean isDisabled();
+    boolean isDisabled();
 
-    public boolean isCreated();
+    boolean isCreated();
 
-    public Set<String> getPreventionStopSigns();
+    Set<String> getPreventionStopSigns();
 
-    public boolean isPrevDisabled(String name);
+    boolean isPrevDisabled(String name);
 
-    public List<String> getDisabledPreventions();
+    List<String> getDisabledPreventions();
 
-    public boolean isHidePrevItemExist();
+    boolean isHidePrevItemExist();
 
-    public boolean setDisabledPreventions(List<String> newDisabledPreventions);
+    boolean setDisabledPreventions(List<String> newDisabledPreventions);
 
-    public List<Prevention> getImmunizationsByDemographic(LoggedInInfo loggedInInfo, Integer demographicNo);
+    List<Prevention> getImmunizationsByDemographic(LoggedInInfo loggedInInfo, Integer demographicNo);
 
-    public String getCustomPreventionItems();
+    String getCustomPreventionItems();
 
 }

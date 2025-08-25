@@ -313,7 +313,7 @@
                 <td><input type="text" name="company_name"
                            value="<%=prop.getProperty("company_name", "")%>" size='40'
                            maxlength='50'/> <input type="submit" name="submit" value="Search"
-                                                   onclick="javascript:return onSearch();"></td>
+                                                   onclick="return onSearch();"></td>
             </tr>
             <tr class="myIvory">
                 <td align="right"><b>Attention</b></td>
@@ -362,7 +362,7 @@
                         type="hidden" name="action" value='<%=action%>'> <input
                         type="submit" name="submit"
                         value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnSave"/>"
-                        onclick="javascript:return onSave();"> <input type="button"
+                        onclick="return onSave();"> <input type="button"
                                                                       name="Cancel"
                                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnExit"/>"
                                                                       onClick="window.close()"> <input type="hidden"

@@ -117,7 +117,7 @@ public class ErProgramDischargeTask extends TimerTask {
 
                         log.debug("difference = " + diff);
 
-                        if (diff > (lengthOfStay * 60 * 1000)) {
+                        if (diff > ((long) lengthOfStay * 60 * 1000)) {
                             admission.setDischargeDate(new Date());
                             admission.setDischargeNotes("Auto-Discharge");
                             admission.setAdmissionStatus(Admission.STATUS_DISCHARGED);

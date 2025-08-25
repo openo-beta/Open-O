@@ -278,13 +278,13 @@
         <table class="Head" class="hidePrint">
             <tr>
                 <td align="left"><input type="submit" value="Save"
-                                        onclick="javascript:return onSave();"/> <input type="submit"
+                                        onclick="return onSave();"/> <input type="submit"
                                                                                        value="Save and Exit"
-                                                                                       onclick="javascript:return onSaveExit();"/>
+                                                                                       onclick="return onSaveExit();"/>
                     <input
-                            type="submit" value="Exit" onclick="javascript:return onExit();"/>
+                            type="submit" value="Exit" onclick="return onExit();"/>
                     <input type="submit" value="Print"
-                           onclick="javascript:return onPrint();"/></td>
+                           onclick="return onPrint();"/></td>
                 <td align="right">Referral &nbsp;|&nbsp; <a
                         href="form/formmhassessment.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">Assessment</a>
                     &nbsp;|&nbsp; <a
@@ -370,7 +370,7 @@
                                     if (rps[i] != null) {
                             %> <a
                                     href="javascript: function myFunction() {return false; }"
-                                    class="mhlink" onclick="javascript:insert('r_rps', <%=i+1%>);"><%=i + 1%>.
+                                    class="mhlink" onclick="insert('r_rps', <%=i+1%>);"><%=i + 1%>.
                                 <%= rps[i] %>
                             </a><br>
                             <%
@@ -393,7 +393,7 @@
                                     if (rpi[i] != null) {
                             %> <a
                                     href="javascript: function myFunction() {return false; }"
-                                    class="mhlink" onclick="javascript:insert('r_rpi', <%=i+1%>);"><%=i + 1%>.
+                                    class="mhlink" onclick="insert('r_rpi', <%=i+1%>);"><%=i + 1%>.
                                 <%= rpi[i] %>
                             </a><br>
                             <%
@@ -416,7 +416,7 @@
                                     if (rmpi[i] != null) {
                             %> <a
                                     href="javascript: function myFunction() {return false; }"
-                                    class="mhlink" onclick="javascript:insert('r_rmpi', <%=i+1%>);"><%=i + 1%>.
+                                    class="mhlink" onclick="insert('r_rmpi', <%=i+1%>);"><%=i + 1%>.
                                 <%= rmpi[i] %>
                             </a><br>
                             <%
@@ -449,7 +449,7 @@
                                     if (ir[i] != null) {
                             %> <a
                                     href="javascript: function myFunction() {return false; }"
-                                    class="mhlink" onclick="javascript:insert('r_ir', <%=i+1%>);"><%=i + 1%>.
+                                    class="mhlink" onclick="insert('r_ir', <%=i+1%>);"><%=i + 1%>.
                                 <%= ir[i] %>
                             </a><br>
                             <%
@@ -472,7 +472,7 @@
                                     if (arm[i] != null) {
                             %> <a
                                     href="javascript: function myFunction() {return false; }"
-                                    class="mhlink" onclick="javascript:insert('r_arm', <%=i+1%>);"><%=i + 1%>.
+                                    class="mhlink" onclick="insert('r_arm', <%=i+1%>);"><%=i + 1%>.
                                 <%= arm[i] %>
                             </a><br>
                             <%
@@ -499,13 +499,13 @@
         <table class="Head" class="hidePrint">
             <tr>
                 <td align="left"><input type="submit" value="Save"
-                                        onclick="javascript:return onSave();"/> <input type="submit"
+                                        onclick="return onSave();"/> <input type="submit"
                                                                                        value="Save and Exit"
-                                                                                       onclick="javascript:return confirm('Are you sure you wish to save and close this window?');"/>
+                                                                                       onclick="return confirm('Are you sure you wish to save and close this window?');"/>
                     <input type="submit" value="Exit"
-                           onclick="javascript:return onExit();"/> <input type="submit"
+                           onclick="return onExit();"/> <input type="submit"
                                                                           value="Print"
-                                                                          onclick="javascript:return onPrint();"/></td>
+                                                                          onclick="return onPrint();"/></td>
                 <td align="right">Referral &nbsp;|&nbsp; <a
                         href="form/formmhassessment.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">Assessment</a>
                     &nbsp;|&nbsp; <a

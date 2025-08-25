@@ -258,13 +258,13 @@
         <table class="Head" class="hidePrint">
             <tr>
                 <td align="left"><input type="submit" value="Save"
-                                        onclick="javascript:return onSave();"/> <input type="submit"
+                                        onclick="return onSave();"/> <input type="submit"
                                                                                        value="Save and Exit"
-                                                                                       onclick="javascript:return onSaveExit();"/>
+                                                                                       onclick="return onSaveExit();"/>
                     <input
-                            type="submit" value="Exit" onclick="javascript:return onExit();"/>
+                            type="submit" value="Exit" onclick="return onExit();"/>
                     <input type="submit" value="Print"
-                           onclick="javascript:return onPrint();"/></td>
+                           onclick="return onPrint();"/></td>
                 <td align="right"><a
                         href="form/formmhreferral.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">Referral</a>
                     &nbsp;|&nbsp; Assessment &nbsp;|&nbsp; <a
@@ -361,7 +361,7 @@
                                     if (aps[i] != null) {
                             %> <a
                                     href="javascript: function myFunction() {return false; }"
-                                    class="mhlink" onclick="javascript:insert('a_aps', <%=i+1%>);"><%=i + 1%>.
+                                    class="mhlink" onclick="insert('a_aps', <%=i+1%>);"><%=i + 1%>.
                                 <%= aps[i] %>
                             </a><br>
                             <%
@@ -384,7 +384,7 @@
                                     if (api[i] != null) {
                             %> <a
                                     href="javascript: function myFunction() {return false; }"
-                                    class="mhlink" onclick="javascript:insert('a_api', <%=i+1%>);"><%=i + 1%>.
+                                    class="mhlink" onclick="insert('a_api', <%=i+1%>);"><%=i + 1%>.
                                 <%= api[i] %>
                             </a><br>
                             <%
@@ -407,7 +407,7 @@
                                     if (ampi[i] != null) {
                             %> <a
                                     href="javascript: function myFunction() {return false; }"
-                                    class="mhlink" onclick="javascript:insert('a_ampi', <%=i+1%>);"><%=i + 1%>.
+                                    class="mhlink" onclick="insert('a_ampi', <%=i+1%>);"><%=i + 1%>.
                                 <%= ampi[i] %>
                             </a><br>
                             <%
@@ -440,7 +440,7 @@
                                     if (tp[i] != null) {
                             %> <a
                                     href="javascript: function myFunction() {return false; }"
-                                    class="mhlink" onclick="javascript:insert('a_tp', <%=i+1%>);"><%=i + 1%>.
+                                    class="mhlink" onclick="insert('a_tp', <%=i+1%>);"><%=i + 1%>.
                                 <%= tp[i] %>
                             </a><br>
                             <%
@@ -465,13 +465,13 @@
         <table class="Head" class="hidePrint">
             <tr>
                 <td align="left"><input type="submit" value="Save"
-                                        onclick="javascript:return onSave();"/> <input type="submit"
+                                        onclick="return onSave();"/> <input type="submit"
                                                                                        value="Save and Exit"
-                                                                                       onclick="javascript:return onSaveExit();"/>
+                                                                                       onclick="return onSaveExit();"/>
                     <input
-                            type="submit" value="Exit" onclick="javascript:return onExit();"/>
+                            type="submit" value="Exit" onclick="return onExit();"/>
                     <input type="submit" value="Print"
-                           onclick="javascript:return onPrint();"/></td>
+                           onclick="return onPrint();"/></td>
                 <td align="right"><a
                         href="form/formmhreferral.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">Referral</a>
                     &nbsp;|&nbsp; Assessment &nbsp;|&nbsp; <a

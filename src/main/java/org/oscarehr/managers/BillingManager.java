@@ -38,9 +38,9 @@ import org.springframework.stereotype.Service;
 
 public interface BillingManager {
 
-    public List<ServiceType> getUniqueServiceTypes(LoggedInInfo loggedInInfo);
+    List<ServiceType> getUniqueServiceTypes(LoggedInInfo loggedInInfo);
 
-    public List<ServiceType> getUniqueServiceTypes(LoggedInInfo loggedInInfo, String type);
+    List<ServiceType> getUniqueServiceTypes(LoggedInInfo loggedInInfo, String type);
 }
 
 

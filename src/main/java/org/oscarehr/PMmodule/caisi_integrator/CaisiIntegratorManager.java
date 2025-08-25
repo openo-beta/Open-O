@@ -125,10 +125,7 @@ public class CaisiIntegratorManager {
 
     public static boolean isIntegratorOffline(HttpSession session) {
         Object object = session.getAttribute(SessionConstants.INTEGRATOR_OFFLINE);
-        if (object != null) {
-            return true;
-        }
-        return false;
+        return object != null;
     }
 
     public static boolean isEnableIntegratedReferrals(Facility facility) {

@@ -42,7 +42,7 @@ import org.springframework.stereotype.Repository;
 
 public interface TicklersDao extends AbstractDao<Tickler> {
 
-    public int getTicklersCount(PaginationQuery paginationQuery);
+    int getTicklersCount(PaginationQuery paginationQuery);
 
-    public List<Tickler> getTicklers(TicklerQuery ticklerQuery);
+    List<Tickler> getTicklers(TicklerQuery ticklerQuery);
 }

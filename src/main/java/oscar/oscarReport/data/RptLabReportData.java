@@ -255,8 +255,6 @@ public class RptLabReportData {
             public String proNo;
         }
 
-        ;
-
         public final class ConLetter {
             public String document_no;
             public String docdesc;
@@ -265,9 +263,6 @@ public class RptLabReportData {
             public java.sql.Date docDate;
         }
 
-        ;
-
     }
 
-    ;
 }

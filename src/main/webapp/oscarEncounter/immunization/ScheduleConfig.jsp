@@ -140,12 +140,12 @@
                             <input type="submit" name="submit"
                                     value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.ScheduleConfig.addTemplate"/>" />
                             <input type="button" value='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>'
-                                   onclick="javascript:location.href='loadSchedule.do?demographic_no=<%=demoNo%>';"/>
+                                   onclick="location.href='loadSchedule.do?demographic_no=<%=demoNo%>';"/>
                         </td>
                         <td align="right">
                             <input type="button"
                                    value='<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.ScheduleConfig.createTemplate"/>'
-                                   onclick="javascript:location.href='config/initConfig.do';"/>
+                                   onclick="location.href='config/initConfig.do';"/>
                         </td>
                     </tr>
                 </table>

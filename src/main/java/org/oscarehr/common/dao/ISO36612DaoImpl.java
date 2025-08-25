@@ -76,7 +76,7 @@ public class ISO36612DaoImpl extends AbstractDaoImpl<ISO36612> implements ISO366
         JSONObject topLevelObj = null;
         try {
             in = this.getClass().getClassLoader().getResourceAsStream("iso-3166-2.json");
-            String theString = IOUtils.toString(in, "UTF-8");
+            String theString = IOUtils.toString(in, java.nio.charset.StandardCharsets.UTF_8);
             topLevelObj = new JSONObject(theString);
         } catch (Exception e) {
             MiscUtils.getLogger().warn("Warning", e);

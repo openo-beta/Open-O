@@ -25,7 +25,7 @@ package oscar.caisi;
 
 public interface OscarMenuExtension {
 
-    public String getName();
+    String getName();
 
-    public String getLink();
+    String getLink();
 }

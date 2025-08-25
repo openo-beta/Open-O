@@ -61,7 +61,7 @@
 	<%
     for (Billing b:bs) {
      
-      bodd=bodd?false:true; //for the color of rows
+      bodd= !bodd; //for the color of rows
       nItems++; //to calculate if it is the end of records
       apptDoctorNo =b.getApptProviderNo();
       apptNo =String.valueOf(b.getAppointmentNo());

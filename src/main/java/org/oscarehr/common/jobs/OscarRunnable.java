@@ -35,9 +35,9 @@ import org.oscarehr.common.model.Security;
  */
 public interface OscarRunnable extends Runnable {
 
-    public void setLoggedInProvider(Provider provider);
+    void setLoggedInProvider(Provider provider);
 
-    public void setLoggedInSecurity(Security security);
+    void setLoggedInSecurity(Security security);
 
-    public void setConfig(String config);
+    void setConfig(String config);
 }

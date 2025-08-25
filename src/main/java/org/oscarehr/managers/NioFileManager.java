@@ -44,11 +44,11 @@ import oscar.OscarProperties;
  * in every single page of OSCAR code.
  */
 public interface NioFileManager {
-    public static final String DOCUMENT_DIRECTORY = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+    String DOCUMENT_DIRECTORY = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
 
-    public Path hasCacheVersion2(LoggedInInfo loggedInInfo, String filename, Integer pageNum);
+    Path hasCacheVersion2(LoggedInInfo loggedInInfo, String filename, Integer pageNum);
 
-    public Path getDocumentCacheDirectory(LoggedInInfo loggedInInfo);
+    Path getDocumentCacheDirectory(LoggedInInfo loggedInInfo);
 
     /**
      * First checks to see if a cache version is already available.  If one is not available then a
@@ -56,7 +56,7 @@ public interface NioFileManager {
      * <p>
      * Returns a file path to the cached version of the given PDF
      */
-    public Path createCacheVersion2(LoggedInInfo loggedInInfo, String sourceDirectory, String filename, Integer pageNum);
+    Path createCacheVersion2(LoggedInInfo loggedInInfo, String sourceDirectory, String filename, Integer pageNum);
 
     /**
      * Remove the given file from the cache directory.
@@ -65,50 +65,50 @@ public interface NioFileManager {
      * @param loggedInInfo
      * @param fileName
      */
-    public boolean removeCacheVersion(LoggedInInfo loggedInInfo, final String fileName);
+    boolean removeCacheVersion(LoggedInInfo loggedInInfo, final String fileName);
 
     /**
      * Save a file to the temporary directory from ByteArrayOutputStream
      *
      * @throws IOException
      */
-    public Path saveTempFile(final String fileName, ByteArrayOutputStream os, String fileType) throws IOException;
+    Path saveTempFile(final String fileName, ByteArrayOutputStream os, String fileType) throws IOException;
 
-    public Path saveTempFile(final String fileName, ByteArrayOutputStream os) throws IOException;
+    Path saveTempFile(final String fileName, ByteArrayOutputStream os) throws IOException;
 
     /**
      * Delete a temp file. Do this often.
      *
      * @param fileName
      */
-    public boolean deleteTempFile(final String fileName);
+    boolean deleteTempFile(final String fileName);
 
     /**
      * retrieve given filename from Oscar's document directory path as defined in
      * Oscar properties.
      * Filename string in File out
      */
-    public File getOscarDocument(String fileName);
+    File getOscarDocument(String fileName);
 
     /**
      * Path NIO object in Path out.
      * The incoming path could have been derived from a temporary file.
      */
-    public Path getOscarDocument(Path fileNamePath);
+    Path getOscarDocument(Path fileNamePath);
 
     /**
      * Copy file from given file path into the default OscarDocuments directory.
      * This method deletes the temporary file after successful copy
      */
-    public String copyFileToOscarDocuments(String tempFilePath);
+    String copyFileToOscarDocuments(String tempFilePath);
 
     /**
      * True if given filename exists in OscarDocument directory.
      * False if file not found.
      */
-    public boolean isOscarDocument(String fileName);
+    boolean isOscarDocument(String fileName);
 
-    public Path createTempFile(final String fileName, ByteArrayOutputStream os) throws IOException;
+    Path createTempFile(final String fileName, ByteArrayOutputStream os) throws IOException;
 
 }
  

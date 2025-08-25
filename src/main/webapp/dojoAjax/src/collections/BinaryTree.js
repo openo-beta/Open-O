@@ -188,7 +188,7 @@ dojo.collections.BinaryTree = function (data) {
                 s = postorderTraversal(root, sep);
                 break;
         }
-        ;
+
         if (s.length == 0) return "";
         else return s.substring(0, s.length - sep.length);
     };

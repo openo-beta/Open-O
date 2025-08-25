@@ -97,7 +97,7 @@
                 int ratio = (hourCursor*60+minuteCursor)/nLen;
                 //hourmin = new StringBuffer((String)dateTimeCodeBean.get(((String) dateTimeCodeBean.get(provider)).substring(ratio,ratio+1)));
                 hourmin = new StringBuffer(hourCode.substring(ratio,ratio+1));
-                bColorHour=minuteCursor==0?true:false;
+                bColorHour= minuteCursor == 0;
          %>
     <tr>
         <td style="color: white; font-size: xx-small" align="RIGHT"
@@ -106,9 +106,9 @@
         </td>
         </td>
         <td style="font-size: xx-small" width='1%'
-            <%=dateTimeCodeBean.get("color"+hourmin.toString())!=null?("bgcolor="+dateTimeCodeBean.get("color"+hourmin.toString()) ):""%>
-            title='<%=dateTimeCodeBean.get("description"+hourmin.toString())%>'><font
-                color='<%=(dateTimeCodeBean.get("color"+hourmin.toString())!=null && !dateTimeCodeBean.get("color"+hourmin.toString()).equals(bgcolordef) )?"black":"white" %>'><%=hourmin.toString() %>
+            <%=dateTimeCodeBean.get("color"+hourmin)!=null?("bgcolor="+dateTimeCodeBean.get("color"+hourmin) ):""%>
+            title='<%=dateTimeCodeBean.get("description"+hourmin)%>'><font
+                color='<%=(dateTimeCodeBean.get("color"+hourmin)!=null && !dateTimeCodeBean.get("color"+hourmin).equals(bgcolordef) )?"black":"white" %>'><%=hourmin.toString() %>
         </font>
     </tr>
         <%  }%>

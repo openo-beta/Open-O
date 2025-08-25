@@ -44,7 +44,7 @@ public class EFormValueDaoTest extends DaoTestFixtures {
 
     @Before
     public void before() throws Exception {
-        SchemaUtils.restoreTable(new String[]{"eform_values"});
+        SchemaUtils.restoreTable("eform_values");
     }
 
     @Test

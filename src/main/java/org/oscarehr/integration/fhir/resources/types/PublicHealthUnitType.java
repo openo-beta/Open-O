@@ -27,7 +27,7 @@ package org.oscarehr.integration.fhir.resources.types;
 
 public final class PublicHealthUnitType {
 
-    public static enum PhuKey {default_phu, phu}
+    public enum PhuKey {default_phu, phu}
 
     private String id;
     private String name;

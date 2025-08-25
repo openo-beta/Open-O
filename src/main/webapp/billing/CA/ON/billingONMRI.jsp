@@ -261,7 +261,7 @@
 
 
                         if (providerStr.size() == 1) {
-                            String temp[] = ((String) providerStr.get(0)).split("\\|");
+                            String[] temp = ((String) providerStr.get(0)).split("\\|");
                     %>
                     <option value="<%=temp[0]%>"><%=temp[1]%>, <%=temp[2]%>
                     </option>
@@ -272,7 +272,7 @@
 
                     <%
                         for (int i = 0; i < providerStr.size(); i++) {
-                            String temp[] = ((String) providerStr.get(i)).split("\\|");
+                            String[] temp = ((String) providerStr.get(i)).split("\\|");
                     %>
                     <option value="<%=temp[0]%>"><%=temp[1]%>, <%=temp[2]%>
                     </option>

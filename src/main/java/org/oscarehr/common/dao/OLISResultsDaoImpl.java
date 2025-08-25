@@ -47,11 +47,7 @@ public class OLISResultsDaoImpl extends AbstractDaoImpl<OLISResults> implements 
         query.setParameter(2, queryType);
         query.setParameter(3, hash);
 
-        if (!query.getResultList().isEmpty()) {
-            return true;
-        }
-
-        return false;
+        return !query.getResultList().isEmpty();
     }
 
     @Override

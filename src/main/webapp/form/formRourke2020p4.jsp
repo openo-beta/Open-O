@@ -93,15 +93,15 @@
     <tr>
         <td nowrap="true">
             <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnSave"/>"
-                   onclick="javascript:onSave(); return false;"/>
+                   onclick="onSave(); return false;"/>
             <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnSaveExit"/>"
-                   onclick="javascript:onSaveExit(); return false;"/>
+                   onclick="onSaveExit(); return false;"/>
             <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnExit"/>"
-                   onclick="javascript:onExit(); return false;"/><br/>
+                   onclick="onExit(); return false;"/><br/>
             <input type="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnPrint"/>"
-                   onclick="javascript:return onPrint();"/>
+                   onclick="return onPrint();"/>
             <input type="button" value="About"
-                   onclick="javascript:return popPage('http://rourkebabyrecord.ca','About Rourke');"/>
+                   onclick="return popPage('http://rourkebabyrecord.ca','About Rourke');"/>
         </td>
         <td width="100%">
             <div name="saveMessageDiv"></div>
@@ -1737,15 +1737,15 @@
     <tr>
         <td nowrap="true">
             <input type="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnSave"/>"
-                   onclick="javascript:return onSave();"/>
+                   onclick="return onSave();"/>
             <input type="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnSaveExit"/>"
-                   onclick="javascript:return onSaveExit();"/>
+                   onclick="return onSaveExit();"/>
             <input type="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnExit"/>"
-                   onclick="javascript:return onExit();"><br/>
+                   onclick="return onExit();"><br/>
             <input type="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnPrint"/>"
-                   onclick="javascript:return onPrint();"/>
+                   onclick="return onPrint();"/>
             <input type="button" value="About"
-                   onclick="javascript:return popPage('http://rourkebabyrecord.ca','About Rourke');"/>
+                   onclick="return popPage('http://rourkebabyrecord.ca','About Rourke');"/>
         </td>
         <td width="100%">
             <div name="saveMessageDiv"></div>

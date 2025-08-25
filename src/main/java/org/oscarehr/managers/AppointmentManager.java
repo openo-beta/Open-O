@@ -51,9 +51,9 @@ import oscar.log.LogAction;
 
 public interface AppointmentManager {
 
-    public List<Appointment> getAppointmentHistoryWithoutDeleted(LoggedInInfo loggedInInfo, Integer demographicNo, Integer offset, Integer limit);
+    List<Appointment> getAppointmentHistoryWithoutDeleted(LoggedInInfo loggedInInfo, Integer demographicNo, Integer offset, Integer limit);
 
-    public List<Object> getAppointmentHistoryWithDeleted(LoggedInInfo loggedInInfo, Integer demographicNo, Integer offset, Integer limit);
+    List<Object> getAppointmentHistoryWithDeleted(LoggedInInfo loggedInInfo, Integer demographicNo, Integer offset, Integer limit);
 
     /**
      * Returns appointment for display.
@@ -62,26 +62,26 @@ public interface AppointmentManager {
      * @param loggedInInfo
      * @return appointment data
      */
-    public void addAppointment(LoggedInInfo loggedInInfo, Appointment appointment);
+    void addAppointment(LoggedInInfo loggedInInfo, Appointment appointment);
 
-    public void updateAppointment(LoggedInInfo loggedInInfo, Appointment appointment);
+    void updateAppointment(LoggedInInfo loggedInInfo, Appointment appointment);
 
-    public void deleteAppointment(LoggedInInfo loggedInInfo, int apptNo);
+    void deleteAppointment(LoggedInInfo loggedInInfo, int apptNo);
 
-    public Appointment getAppointment(LoggedInInfo loggedInInfo, int apptNo);
+    Appointment getAppointment(LoggedInInfo loggedInInfo, int apptNo);
 
-    public Appointment updateAppointmentStatus(LoggedInInfo loggedInInfo, int apptNo, String status);
+    Appointment updateAppointmentStatus(LoggedInInfo loggedInInfo, int apptNo, String status);
 
 
-    public Appointment updateAppointmentType(LoggedInInfo loggedInInfo, int apptNo, String type);
+    Appointment updateAppointmentType(LoggedInInfo loggedInInfo, int apptNo, String type);
 
-    public Appointment updateAppointmentUrgency(LoggedInInfo loggedInInfo, int apptNo, String urgency);
+    Appointment updateAppointmentUrgency(LoggedInInfo loggedInInfo, int apptNo, String urgency);
 
-    public List<AppointmentStatus> getAppointmentStatuses();
+    List<AppointmentStatus> getAppointmentStatuses();
 
-    public List<LookupListItem> getReasons();
+    List<LookupListItem> getReasons();
 
-    public List<Appointment> findMonthlyAppointments(LoggedInInfo loggedInInfo, String providerNo, int year, int month);
+    List<Appointment> findMonthlyAppointments(LoggedInInfo loggedInInfo, String providerNo, int year, int month);
 
-    public String getNextAppointmentDate(Integer demographicNo);
+    String getNextAppointmentDate(Integer demographicNo);
 }

@@ -49,11 +49,11 @@ public final class DateTimeFormatUtils {
 
     // Timestamp
 
-    public static final Timestamp getPast(int numYears) {
+    public static Timestamp getPast(int numYears) {
         return getPast(Calendar.getInstance(), numYears);
     }
 
-    public static final Timestamp getPast(Calendar calendar, int numYears) {
+    public static Timestamp getPast(Calendar calendar, int numYears) {
         calendar.add(Calendar.YEAR, -numYears);
 
         return new Timestamp(calendar.getTimeInMillis());
@@ -61,7 +61,7 @@ public final class DateTimeFormatUtils {
 
     // Dates
 
-    public static final Date getFuture(Date start, Integer daysInFuture) {
+    public static Date getFuture(Date start, Integer daysInFuture) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, daysInFuture);
         Date future = calendar.getTime();
@@ -69,29 +69,29 @@ public final class DateTimeFormatUtils {
         return getDateFromDate(future);
     }
 
-    public static final String getStringFromDate(Date date) {
+    public static String getStringFromDate(Date date) {
         return getStringFromDate(date, DATE_FORMAT);
     }
 
-    public static final String getStringFromDate(Date date, DateFormat format) {
+    public static String getStringFromDate(Date date, DateFormat format) {
         return format(date, format);
     }
 
-    public static final Date getDateFromString(String date) {
+    public static Date getDateFromString(String date) {
         return getDateFromString(date, DATE_FORMAT);
     }
 
-    public static final Date getDateFromString(String date, DateFormat format) {
+    public static Date getDateFromString(String date, DateFormat format) {
         return parse(date, DATE_FORMAT);
     }
 
-    public static final Date getDateFromDate(Date date) {
+    public static Date getDateFromDate(Date date) {
         return parseFormat(date, DATE_FORMAT);
     }
 
     // Times
 
-    public static final Date getTimeFromLong(long time) {
+    public static Date getTimeFromLong(long time) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
         Date date = calendar.getTime();
@@ -99,29 +99,29 @@ public final class DateTimeFormatUtils {
         return getTimeFromDate(date);
     }
 
-    public static final String getStringFromTime(Date time) {
+    public static String getStringFromTime(Date time) {
         return format(time, TIME_FORMAT);
     }
 
-    public static final Date getTimeFromString(String time) {
+    public static Date getTimeFromString(String time) {
         return parse(time, TIME_FORMAT);
     }
 
-    public static final Date getTimeFromDate(Date date) {
+    public static Date getTimeFromDate(Date date) {
         return parse(format(date, TIME_FORMAT), TIME_FORMAT);
     }
 
     // Private methods
 
-    private static final Date parseFormat(Date date, DateFormat format) {
+    private static Date parseFormat(Date date, DateFormat format) {
         return parse(format(date, format), format);
     }
 
-    private static final String format(Date date, DateFormat format) {
+    private static String format(Date date, DateFormat format) {
         return (date != null) ? format.format(date) : new String();
     }
 
-    private static final Date parse(String s, DateFormat format) {
+    private static Date parse(String s, DateFormat format) {
         try {
             return (s != null && s.length() > 0) ? format.parse(s) : null;
         } catch (ParseException e) {

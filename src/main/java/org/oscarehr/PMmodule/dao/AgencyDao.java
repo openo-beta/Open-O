@@ -35,8 +35,8 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 public interface AgencyDao {
 
-    public Agency getLocalAgency();
+    Agency getLocalAgency();
 
-    public void saveAgency(Agency agency);
+    void saveAgency(Agency agency);
 
 }

@@ -279,7 +279,7 @@
                 // Check that current character is number.
                 var c = s.charAt(i);
                 if (c == '.') {
-                    continue;
+
                 } else if (((c < "0") || (c > "9"))) {
                     alert('Invalid ' + s + ' in field ' + ss.name);
                     ss.focus();
@@ -908,7 +908,7 @@
             <td class="field">
                 <a style="color: black; text-decoration : underline;"
                    href="javascript: function myFunction() {return false; }"
-                   onclick="javascript:popup(465,635,'<%=project%>/oscarEncounter/oscarMeasurements/AddMeasurementData.jsp?measurement=<%= response.encodeURL( measure) %>&amp;demographic_no=<%=demographic_no%>&amp;template=<%= URLEncoder.encode(temp,"UTF-8") %>','addMeasurementData<%=Math.abs(h.get("name").hashCode()) %>')">
+                   onclick="popup(465,635,'<%=project%>/oscarEncounter/oscarMeasurements/AddMeasurementData.jsp?measurement=<%= response.encodeURL( measure) %>&amp;demographic_no=<%=demographic_no%>&amp;template=<%= URLEncoder.encode(temp,"UTF-8") %>','addMeasurementData<%=Math.abs(h.get("name").hashCode()) %>')">
                     <b><%=child.flowSheetItem.getDisplayName()%>
                     </b>
                 </a>

@@ -319,7 +319,7 @@ dojo.uuid.Uuid.prototype.getTimestamp = function (/* misc. */ returnType) {
     if (!returnType) {
         returnType = null
     }
-    ;
+
     switch (returnType) {
         case "string":
         case String:

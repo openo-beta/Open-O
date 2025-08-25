@@ -49,20 +49,12 @@
     SecurityManager sm = new SecurityManager();
 
     // Check to see if the currently logged in role has write access, if so, disable input fields present in the page
-    if (sm.hasWriteAccess("_dx.code", roleName$)) {
-        disable = false;
-    } else {
-        disable = true;
-    }
+    disable = !sm.hasWriteAccess("_dx.code", roleName$);
 
     // Set a String based on the "disable" boolean for easy access to use html functionality of "disabled" attribute
     String disabled = disable ? "disabled" : "";
 
-    boolean showQuicklist = false;
-
-    if (sm.hasWriteAccess("_dx.quicklist", roleName$)) {
-        showQuicklist = true;
-    }
+    boolean showQuicklist = sm.hasWriteAccess("_dx.quicklist", roleName$);
 
     String user_no = (String) session.getAttribute("user");
     String color = "";
@@ -280,22 +272,22 @@
                                             <%if (!disable) { %>
                                             <input type="button" name="codeSearch" class="btn btn-primary"
                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.btnCodeSearch"/>"
-                                                   onClick="javascript: ResearchScriptAttach();" )>
+                                                   onClick="ResearchScriptAttach();" )>
 
                                             <input type="button" name="codeAdd" class="btn btn-primary"
                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ADD"/>"
-                                                   onClick="javascript: submitform('','');">
+                                                   onClick="submitform('','');">
 
                                             <% } else { %>
 
                                             <input type="button" name="button" class="btn btn-primary"
                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.btnCodeSearch"/>"
-                                                   onClick="javascript: ResearchScriptAttach();" )
+                                                   onClick="ResearchScriptAttach();" )
                                                    <%=disabled%>">
 
                                             <input type="button" name="button" class="btn btn-primary"
                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ADD"/>"
-                                                   onClick="javascript: submitform('','');" <%=disabled%>">
+                                                   onClick="submitform('','');" <%=disabled%>">
                                             <% } %>
                                         </td>
                                     </tr>
@@ -355,7 +347,7 @@
                                                                 <fmt:message key="oscarResearch.oscarDxResearch.dxResearch.btnResolve"/>
                                                             </a>
                                                             <a href="dxResearchUpdate.do?status=D&did=${diagnotics.dxResearchNo}&demographicNo=${demographicNo}&providerNo=${providerNo}"
-                                                               onclick="javascript: return confirm('Are you sure you would like to delete: ${diagnotics.description} ?')">
+                                                               onclick="return confirm('Are you sure you would like to delete: ${diagnotics.description} ?')">
                                                                 <fmt:message key="oscarResearch.oscarDxResearch.dxResearch.btnDelete"/>
                                                             </a>
                                                             <a href="#" onclick="update_date(${diagnotics.dxResearchNo}, ${demographicNo}, ${providerNo});">
@@ -375,7 +367,7 @@
                                                         <td>
                                                             <fmt:message key="oscarResearch.oscarDxResearch.dxResearch.btnResolve"/> |
                                                             <a href="dxResearchUpdate.do?status=D&did=${diagnotics.dxResearchNo}&demographicNo=${demographicNo}&providerNo=${providerNo}"
-                                                               onclick="javascript: return confirm('Are you sure you would like to delete this?')">
+                                                               onclick="return confirm('Are you sure you would like to delete this?')">
                                                                 <fmt:message key="oscarResearch.oscarDxResearch.dxResearch.btnDelete"/>
                                                             </a>
                                                         </td>

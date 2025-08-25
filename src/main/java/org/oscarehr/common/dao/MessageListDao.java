@@ -39,34 +39,34 @@ import org.springframework.stereotype.Repository;
 
 public interface MessageListDao extends AbstractDao<MessageList> {
 
-    public List<MessageList> findByProviderNoAndMessageNo(String providerNo, Long messageNo);
+    List<MessageList> findByProviderNoAndMessageNo(String providerNo, Long messageNo);
 
-    public List<MessageList> findByProviderNoAndLocationNo(String providerNo, Integer locationNo);
+    List<MessageList> findByProviderNoAndLocationNo(String providerNo, Integer locationNo);
 
-    public List<MessageList> findAllByMessageNoAndLocationNo(Long messageNo, Integer locationNo);
+    List<MessageList> findAllByMessageNoAndLocationNo(Long messageNo, Integer locationNo);
 
-    public List<MessageList> findByMessageNoAndLocationNo(Long messageNo, Integer locationNo);
+    List<MessageList> findByMessageNoAndLocationNo(Long messageNo, Integer locationNo);
 
-    public List<MessageList> findByMessage(Long messageNo);
+    List<MessageList> findByMessage(Long messageNo);
 
-    public List<MessageList> findByProviderAndStatus(String providerNo, String status);
+    List<MessageList> findByProviderAndStatus(String providerNo, String status);
 
-    public List<MessageList> findUnreadByProvider(String providerNo);
+    List<MessageList> findUnreadByProvider(String providerNo);
 
-    public int findUnreadByProviderAndAttachedCount(String providerNo);
+    int findUnreadByProviderAndAttachedCount(String providerNo);
 
-    public int countUnreadByProviderAndFromIntegratedFacility(String providerNo);
+    int countUnreadByProviderAndFromIntegratedFacility(String providerNo);
 
-    public int countUnreadByProvider(String providerNo);
+    int countUnreadByProvider(String providerNo);
 
-    public List<MessageList> search(String providerNo, String status, int start, int max);
+    List<MessageList> search(String providerNo, String status, int start, int max);
 
-    public Integer searchAndReturnTotal(String providerNo, String status);
+    Integer searchAndReturnTotal(String providerNo, String status);
 
-    public Integer messagesTotal(int type, String providerNo, Integer remoteLocation, String searchFilter);
+    Integer messagesTotal(int type, String providerNo, Integer remoteLocation, String searchFilter);
 
-    public List<MessageList> findByIntegratedFacility(int facilityId, String status);
+    List<MessageList> findByIntegratedFacility(int facilityId, String status);
 
-    public List<MessageList> findByMessageAndIntegratedFacility(Long messageNo, int facilityId);
+    List<MessageList> findByMessageAndIntegratedFacility(Long messageNo, int facilityId);
 
 }

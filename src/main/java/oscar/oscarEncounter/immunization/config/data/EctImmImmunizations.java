@@ -34,7 +34,7 @@ import org.oscarehr.util.MiscUtils;
 public class EctImmImmunizations {
 
     public void sortAgeVector() {
-        int tempIntArray[] = new int[indexAge.size()];
+        int[] tempIntArray = new int[indexAge.size()];
         Vector newVector = new Vector();
         newVector.setSize(indexAge.size());
         for (int r = 0; r < indexAge.size(); r++) {

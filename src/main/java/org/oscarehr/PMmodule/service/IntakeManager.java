@@ -24,7 +24,7 @@
 package org.oscarehr.PMmodule.service;
 
 public interface IntakeManager {
-    public boolean isNewClientForm();
+    boolean isNewClientForm();
 
-    public boolean getEnabled();
+    boolean getEnabled();
 }

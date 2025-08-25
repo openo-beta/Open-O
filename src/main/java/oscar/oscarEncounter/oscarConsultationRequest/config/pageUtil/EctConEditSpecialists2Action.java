@@ -60,7 +60,7 @@ public class EctConEditSpecialists2Action extends ActionSupport {
 
         String specId = this.getSpecId();
         String delete = this.getDelete();
-        String specialists[] = this.getSpecialists();
+        String[] specialists = this.getSpecialists();
 
         ResourceBundle oscarR = ResourceBundle.getBundle("oscarResources", request.getLocale());
 
@@ -144,12 +144,12 @@ public class EctConEditSpecialists2Action extends ActionSupport {
         return specialists;
     }
 
-    public void setSpecialists(String str[]) {
+    public void setSpecialists(String[] str) {
         MiscUtils.getLogger().debug("setter specialists");
         specialists = str;
     }
 
     String specId;
     String delete;
-    String specialists[];
+    String[] specialists;
 }

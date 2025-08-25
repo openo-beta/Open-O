@@ -81,7 +81,7 @@ int rCount = 0;
       java.util.Date bBillingDate = (java.util.Date)b[3];
       String bDemographicName = (String)b[4];
       
-      bodd=bodd?false:true; //for the color of rows
+      bodd= !bodd; //for the color of rows
       nItems++; //to calculate if it is the end of records
      demoName = bDemographicName;
        apptDate = ConversionUtils.toDateString(bBillingDate);

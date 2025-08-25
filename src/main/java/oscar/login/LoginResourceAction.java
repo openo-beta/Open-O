@@ -82,7 +82,6 @@ public class LoginResourceAction extends HttpServlet {
     }
 
     protected final void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        return;
     }
 
 }

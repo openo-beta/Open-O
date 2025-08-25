@@ -175,7 +175,7 @@
                                                 for (int i = 0; i < prescribedDrugs.length; i++) {
                                                     oscar.oscarRx.data.RxPrescriptionData.Prescription drug = prescribedDrugs[i];
                                                     String styleColor = "";
-                                                    if (drug.isCurrent() == true && drug.isArchived()) {
+                                                    if (drug.isCurrent() && drug.isArchived()) {
                                                         styleColor = "style=\"color:red;text-decoration: line-through;\"";
                                                     } else if (drug.isCurrent() && !drug.isArchived()) {
                                                         styleColor = "style=\"color:red;font-weight:bold;\"";

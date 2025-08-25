@@ -174,7 +174,7 @@
          STYLE="position: absolute; visibility: visible; z-index: 2; left: 620px; top: 24px; width: 70px; height: 20px;">
         <input type="button" name="button"
                value="<fmt:setBundle basename='oscarResources'/><fmt:message key='global.btnBack'/>"
-               onClick="javascript:history.go(-1);return false;"></div>
+               onClick="history.go(-1);return false;"></div>
 
     </body>
 </html>

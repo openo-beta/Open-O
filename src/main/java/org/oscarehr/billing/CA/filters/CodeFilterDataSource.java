@@ -27,5 +27,5 @@ package org.oscarehr.billing.CA.filters;
 import java.util.Map;
 
 public interface CodeFilterDataSource {
-    public Map<String, CodeFilter> getDataMap();
+    Map<String, CodeFilter> getDataMap();
 }

@@ -413,11 +413,7 @@ public class SpireHandler implements MessageHandler {
         try {
             String abnormalFlag = getOBXAbnormalFlag(i, j);
 
-            if (abnormalFlag.equals("ABN") || abnormalFlag.equals("HI") || abnormalFlag.equals("LOW") || abnormalFlag.equals("CRIT") || abnormalFlag.equals("NA") || abnormalFlag.equals("Unknown")) {
-                return (true);
-            } else {
-                return (false);
-            }
+            return abnormalFlag.equals("ABN") || abnormalFlag.equals("HI") || abnormalFlag.equals("LOW") || abnormalFlag.equals("CRIT") || abnormalFlag.equals("NA") || abnormalFlag.equals("Unknown");
 
         } catch (Exception e) {
             return (false);

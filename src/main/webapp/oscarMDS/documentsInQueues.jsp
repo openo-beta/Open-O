@@ -947,7 +947,7 @@
         function un_bold(ele) {
             //oscarLog('currentbold='+currentBold+'---ele.id='+ele.id);
             if (currentBold == ele.id) {
-                ;
+
             } else {
                 if ($(currentBold) != null)
                     $(currentBold).style.fontWeight = '';
@@ -1705,7 +1705,7 @@
                 updateSideNav(doclabid, inQueue);
                 //console.log('aa_aa11');
                 if (inQueue) {
-                    ;
+
                 } else hideRowUsingId(doclabid);
 //console.log('aa_aa');
                 //change typeDocLab

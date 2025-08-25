@@ -116,7 +116,7 @@
         extraReviewers = documentExtraReviewerDao.findByDocumentNo(Integer.parseInt(editDocumentNo));
     }
 
-    List<Map<String, String>> pdList = new ProviderData().getProviderList();
+    List<Map<String, String>> pdList = ProviderData.getProviderList();
     ArrayList doctypes = EDocUtil.getDoctypes(formdata.getFunction());
     String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_DOCUMENT;
     String annotation_tableid = editDocumentNo;
@@ -186,7 +186,7 @@
         window.onload = function () {
             new Autocompleter.Local('docSubClass', 'docSubClass_list', docSubClassList);
             if (!NiftyCheck())
-                return;
+
             //Rounded("div.leftplane","top", "transparent", "#CCCCFF","small border #ccccff");
             //Rounded("div.leftplane","bottom","transparent","#EEEEFF","small border #ccccff");
         }
@@ -387,12 +387,12 @@
             </oscar:oscarPropertiesCheck>
 
             <td>
-                <div style="<%=updatableContent==true?"":"visibility: hidden"%>">
+                <div style="<%=updatableContent?"":"visibility: hidden"%>">
                     File: <font class="comment">(blank to keep file)</font>
                 </div>
             </td>
             <td>
-                <div style="<%=updatableContent==true?"":"visibility: hidden"%>">
+                <div style="<%=updatableContent?"":"visibility: hidden"%>">
                     <input type="file" name="docFile" size="20"
                             <% if (docerrors.containsKey("uploaderror")) {%> class="warning"
                             <%}%>>

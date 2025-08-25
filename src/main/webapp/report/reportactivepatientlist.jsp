@@ -115,7 +115,7 @@
                 int nItems = 0;
 
                 while (rs.next()) {
-                    bodd = bodd ? false : true; //for the color of rows
+                    bodd = !bodd; //for the color of rows
                     nItems++;
                     int yearOfBirthInt = ConversionUtils.fromIntString(reportMainBean.getString(rs, "year_of_birth"));
                     int monthOfBirthInt = ConversionUtils.fromIntString(reportMainBean.getString(rs, "month_of_birth"));

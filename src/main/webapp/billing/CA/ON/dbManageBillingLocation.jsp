@@ -38,7 +38,7 @@
                 int f = location1desc.indexOf('\'');
                 if (f != -1) {
                     sotherBuffer.deleteCharAt(f);
-                    sotherBuffer.insert(f, "\'");
+                    sotherBuffer.insert(f, "'");
                 }
                 location1desc = sotherBuffer.toString();
 

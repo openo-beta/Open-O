@@ -162,7 +162,7 @@
                             </td>
                             <td align='center'><a
                                     href="<%= request.getContextPath() %>/eform/removeEForm.do?fdid=<%=curform.get("fdid")%>&demographic_no=<%=demographic_no%>&callpage=single&parentAjaxId=<%=parentAjaxId%>"
-                                    onClick="javascript: return confirm('Are you sure you want to delete this eform?');"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadimages.btnDelete"/></a></td>
+                                    onClick="return confirm('Are you sure you want to delete this eform?');"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadimages.btnDelete"/></a></td>
                         </tr>
                         <%
                             }

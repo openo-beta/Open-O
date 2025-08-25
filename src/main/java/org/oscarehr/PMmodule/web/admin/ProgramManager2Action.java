@@ -1156,7 +1156,7 @@ public class ProgramManager2Action extends ActionSupport {
             return "edit";
         }
 
-        String roles[] = request.getParameterValues("checked_role");
+        String[] roles = request.getParameterValues("checked_role");
         if (roles != null) {
             if (access.getRoles() == null) {
                 access.setRoles(new HashSet());
@@ -1385,7 +1385,7 @@ public class ProgramManager2Action extends ActionSupport {
 
     public String edit_status() {
         Program program = this.getProgram();
-        ProgramClientStatus status = this.getClient_status();;
+        ProgramClientStatus status = this.getClient_status();
 
         ProgramClientStatus pt = programManager.getProgramClientStatus(String.valueOf(status.getId()));
 
@@ -1402,7 +1402,7 @@ public class ProgramManager2Action extends ActionSupport {
 
     public String save_status() {
         Program program = this.getProgram();
-        ProgramClientStatus status = this.getClient_status();;
+        ProgramClientStatus status = this.getClient_status();
 
         status.setProgramId(program.getId());
 
@@ -1536,36 +1536,32 @@ public class ProgramManager2Action extends ActionSupport {
     }
 
     private boolean isChanged(Program program1, Program program2) {
-        boolean changed = false;
-
-        if (!eq(program1.getName(), program2.getName())
-                || !eq(program1.getType(), program2.getType())
-                || !eq(program1.getDescription(), program2.getDescription())
-                || !eq(program1.getAddress(), program2.getAddress())
-                || !eq(program1.getPhone(), program2.getPhone())
-                || !eq(program1.getFax(), program2.getFax())
-                || !eq(program1.getUrl(), program2.getUrl())
-                || !eq(program1.getEmail(), program2.getEmail())
-                || !eq(program1.getEmergencyNumber(), program2.getEmergencyNumber())
-                || !eq(program1.getLocation(), program2.getLocation())
-                || !eq(program1.getProgramStatus(), program2.getProgramStatus())
-                || !eq(program1.getManOrWoman(), program2.getManOrWoman())
-                || !eq(program1.getAbstinenceSupport(), program2.getAbstinenceSupport())
-                || !eq(program1.getExclusiveView(), program2.getExclusiveView())
-                || !eq(program1.getMaxAllowed(), program2.getMaxAllowed())
-                || (program1.isHoldingTank() ^ program2.isHoldingTank())
-                || (program1.isAllowBatchAdmission() ^ program2.isAllowBatchAdmission())
-                || (program1.isAllowBatchDischarge() ^ program2.isAllowBatchDischarge())
-                || (program1.isHic() ^ program2.isHic())
-                || (program1.isTransgender() ^ program2.isTransgender())
-                || (program1.isFirstNation() ^ program2.isFirstNation())
-                || (program1.isAlcohol() ^ program2.isAlcohol())
-                || (program1.isPhysicalHealth() ^ program2.isPhysicalHealth())
-                || (program1.isMentalHealth() ^ program2.isMentalHealth())
-                || (program1.getFacilityId() != program2.getFacilityId())
-                || (program1.isHousing() ^ program2.isHousing()))
-
-            changed = true;
+        boolean changed = !eq(program1.getName(), program2.getName())
+            || !eq(program1.getType(), program2.getType())
+            || !eq(program1.getDescription(), program2.getDescription())
+            || !eq(program1.getAddress(), program2.getAddress())
+            || !eq(program1.getPhone(), program2.getPhone())
+            || !eq(program1.getFax(), program2.getFax())
+            || !eq(program1.getUrl(), program2.getUrl())
+            || !eq(program1.getEmail(), program2.getEmail())
+            || !eq(program1.getEmergencyNumber(), program2.getEmergencyNumber())
+            || !eq(program1.getLocation(), program2.getLocation())
+            || !eq(program1.getProgramStatus(), program2.getProgramStatus())
+            || !eq(program1.getManOrWoman(), program2.getManOrWoman())
+            || !eq(program1.getAbstinenceSupport(), program2.getAbstinenceSupport())
+            || !eq(program1.getExclusiveView(), program2.getExclusiveView())
+            || !eq(program1.getMaxAllowed(), program2.getMaxAllowed())
+            || (program1.isHoldingTank() ^ program2.isHoldingTank())
+            || (program1.isAllowBatchAdmission() ^ program2.isAllowBatchAdmission())
+            || (program1.isAllowBatchDischarge() ^ program2.isAllowBatchDischarge())
+            || (program1.isHic() ^ program2.isHic())
+            || (program1.isTransgender() ^ program2.isTransgender())
+            || (program1.isFirstNation() ^ program2.isFirstNation())
+            || (program1.isAlcohol() ^ program2.isAlcohol())
+            || (program1.isPhysicalHealth() ^ program2.isPhysicalHealth())
+            || (program1.isMentalHealth() ^ program2.isMentalHealth())
+            || (program1.getFacilityId() != program2.getFacilityId())
+            || (program1.isHousing() ^ program2.isHousing());
 
         return changed;
     }

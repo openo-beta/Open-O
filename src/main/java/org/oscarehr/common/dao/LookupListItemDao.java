@@ -36,10 +36,10 @@ import javax.persistence.Query;
 
 public interface LookupListItemDao extends AbstractDao<LookupListItem> {
 
-    public List<LookupListItem> findActiveByLookupListId(int lookupListId);
+    List<LookupListItem> findActiveByLookupListId(int lookupListId);
 
-    public List<LookupListItem> findByLookupListId(int lookupListId, boolean active);
+    List<LookupListItem> findByLookupListId(int lookupListId, boolean active);
 
-    public LookupListItem findByLookupListIdAndValue(int lookupListId, String value);
+    LookupListItem findByLookupListIdAndValue(int lookupListId, String value);
 
 }

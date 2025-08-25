@@ -63,7 +63,7 @@ public class ContactDaoImpl extends AbstractDaoImpl<Contact> implements ContactD
             where.append("c." + StringEscapeUtils.escapeSql(searchMode) + " like ?1");
             paramList.add(keyword + "%");
         }
-        String sql = "SELECT c from Contact c where " + where.toString() + " order by " + orderBy;
+        String sql = "SELECT c from Contact c where " + where + " order by " + orderBy;
         MiscUtils.getLogger().debug(sql);
         Query query = entityManager.createQuery(sql);
         for (int x = 0; x < paramList.size(); x++) {

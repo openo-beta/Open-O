@@ -97,7 +97,7 @@ dojo.widget.defineWidget(
             // get value and display it
             if (this.value) {
                 this.editable.innerHTML = this.value;
-                return;
+
             } else {
                 this.value = dojo.string.trim(this.editable.innerHTML);
                 this.editable.innerHTML = this.value;

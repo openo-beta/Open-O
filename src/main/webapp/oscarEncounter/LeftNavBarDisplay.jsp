@@ -207,7 +207,7 @@
 <input type="hidden" id="<%=request.getAttribute("navbarName")%>num"
        value="<%=numDisplayed%>"/>
 <%
-    out.println("<script type=\"text/javascript\">" + jscode.toString() + "</script>");
+    out.println("<script type=\"text/javascript\">" + jscode + "</script>");
 %>
 
 <%!

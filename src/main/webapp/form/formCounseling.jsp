@@ -219,10 +219,10 @@
             </div>
 
             <div id="buttons">
-                <input id="savebut" type="submit" value="Save" onclick="javascript: return onSave();"/>
-                <input id="saveexitbut" type="submit" value="Save and Exit" onclick="javascript: return onSaveExit();"/>
-                <input id="exitbut" type="submit" value="Exit" onclick="javascript: return onExit();"/>
-                <input id="printPDF" type="submit" value="Print PDF" onclick="javascript: return onPrintPDF();"/>
+                <input id="savebut" type="submit" value="Save" onclick="return onSave();"/>
+                <input id="saveexitbut" type="submit" value="Save and Exit" onclick="return onSaveExit();"/>
+                <input id="exitbut" type="submit" value="Exit" onclick="return onExit();"/>
+                <input id="printPDF" type="submit" value="Print PDF" onclick="return onPrintPDF();"/>
             </div>
         </body>
 

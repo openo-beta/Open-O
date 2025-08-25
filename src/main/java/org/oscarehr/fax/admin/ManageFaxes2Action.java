@@ -277,7 +277,7 @@ public class ManageFaxes2Action extends ActionSupport {
 
         Calendar calendar = GregorianCalendar.getInstance();
         Date dateBegin = null, dateEnd = null;
-        String datePattern[] = new String[]{"yyyy-MM-dd"};
+        String[] datePattern = new String[]{"yyyy-MM-dd"};
 
         if (dateBeginStr != null && !dateBeginStr.isEmpty()) {
             try {

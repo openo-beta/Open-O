@@ -59,13 +59,12 @@ public class OLISPreferences2Action extends ActionSupport {
         Integer pollFrequency = oscar.Misc.getInt(request.getParameter("pollFrequency"), 30);
         String filterPatients = request.getParameter("filter_patients");
         OLISSystemPreferencesDao olisPrefDao = (OLISSystemPreferencesDao) SpringUtils.getBean(OLISSystemPreferencesDao.class);
-        ;
         OLISSystemPreferences olisPrefs = olisPrefDao.getPreferences();
 
         try {
             olisPrefs.setStartTime(startTime);
             olisPrefs.setEndTime(endTime);
-            olisPrefs.setFilterPatients((filterPatients != null) ? true : false);
+            olisPrefs.setFilterPatients(filterPatients != null);
             boolean restartTimer = !pollFrequency.equals(olisPrefs.getPollFrequency());
             olisPrefs.setPollFrequency(pollFrequency);
             olisPrefDao.save(olisPrefs);

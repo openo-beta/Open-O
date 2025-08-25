@@ -105,7 +105,7 @@ public class OscarJobService extends AbstractServiceImpl {
         OscarJobResponse response = new OscarJobResponse();
         for (OscarJob result : results) {
             OscarJobTo1 to = new OscarJobTo1();
-            BeanUtils.copyProperties(result, to, new String[]{"oscarJobType"});
+            BeanUtils.copyProperties(result, to, "oscarJobType");
             to.setOscarJobType(new OscarJobTypeTo1());
             BeanUtils.copyProperties(result.getOscarJobType(), to.getOscarJobType());
 
@@ -132,7 +132,7 @@ public class OscarJobService extends AbstractServiceImpl {
         OscarJobResponse response = new OscarJobResponse();
 
         OscarJobTo1 to = new OscarJobTo1();
-        BeanUtils.copyProperties(result, to, new String[]{"oscarJobType"});
+        BeanUtils.copyProperties(result, to, "oscarJobType");
         to.setOscarJobType(new OscarJobTypeTo1());
         BeanUtils.copyProperties(result.getOscarJobType(), to.getOscarJobType());
         response.getJobs().add(to);
@@ -149,7 +149,7 @@ public class OscarJobService extends AbstractServiceImpl {
         OscarJob job = new OscarJob();
         job.setId(Integer.parseInt(params.getFirst("job.id")));
         job.setDescription(params.getFirst("job.description"));
-        job.setEnabled("on".equals(params.getFirst("job.enabled")) ? true : false);
+        job.setEnabled("on".equals(params.getFirst("job.enabled")));
         job.setName(params.getFirst("job.name"));
         job.setOscarJobTypeId(Integer.parseInt(params.getFirst("job.oscarJobTypeId")));
         job.setProviderNo(params.getFirst("job.provider"));
@@ -304,7 +304,7 @@ public class OscarJobService extends AbstractServiceImpl {
         job.setName(params.getFirst("jobType.name"));
         job.setDescription(params.getFirst("jobType.description"));
         job.setClassName(params.getFirst("jobType.className"));
-        job.setEnabled("on".equals(params.getFirst("jobType.enabled")) ? true : false);
+        job.setEnabled("on".equals(params.getFirst("jobType.enabled")));
         job.setUpdated(new Date());
 
         OscarJobType result = null;

@@ -6208,7 +6208,7 @@
         settings._bLoadingState = false;
         _fnCallbackFire(settings, 'aoStateLoaded', 'stateLoaded', [settings, s]);
         callback();
-    };
+    }
 
 
     /**

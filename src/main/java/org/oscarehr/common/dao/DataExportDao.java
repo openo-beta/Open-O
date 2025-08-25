@@ -34,12 +34,12 @@ import org.oscarehr.common.model.DataExport;
 
 public interface DataExportDao extends AbstractDao<DataExport> {
 
-    public static final String ROURKE = "Rourke";
-    public static final String CIHI_OMD4 = "CIHI_OMD4";
-    public static final String CIHI_PHC_VRS = "CIHI_PHC_VRS";
+    String ROURKE = "Rourke";
+    String CIHI_OMD4 = "CIHI_OMD4";
+    String CIHI_PHC_VRS = "CIHI_PHC_VRS";
 
-    public List<DataExport> findAll();
+    List<DataExport> findAll();
 
-    public List<DataExport> findAllByType(String type);
+    List<DataExport> findAllByType(String type);
 
 }

@@ -40,10 +40,10 @@ import org.springframework.stereotype.Repository;
  */
 public interface ClinicDAO extends AbstractDao<Clinic> {
 
-    public List<Clinic> findAll();
+    List<Clinic> findAll();
 
-    public Clinic getClinic();
+    Clinic getClinic();
 
-    public void save(Clinic clinic);
+    void save(Clinic clinic);
 
 }

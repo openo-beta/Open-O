@@ -487,10 +487,6 @@ public class DefaultNoteService implements NoteService {
             // linkedNotes = IntegratorFallBackManager.getLinkedNotes(demographicNo);
         }
 
-        if (linkedNotes == null) {
-            return null;
-        }
-
         return linkedNotes;
 
     }

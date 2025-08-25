@@ -34,11 +34,11 @@ import java.util.List;
 import org.oscarehr.common.model.ResourceStorage;
 
 public interface ResourceStorageDao extends AbstractDao<ResourceStorage> {
-    public ResourceStorage findActive(String resourceType);
+    ResourceStorage findActive(String resourceType);
 
-    public List<ResourceStorage> findActiveAll(String resourceType);
+    List<ResourceStorage> findActiveAll(String resourceType);
 
-    public List<ResourceStorage> findAll(String resourceType);
+    List<ResourceStorage> findAll(String resourceType);
 
-    public List<ResourceStorage> findByUUID(String uuid);
+    List<ResourceStorage> findByUUID(String uuid);
 }

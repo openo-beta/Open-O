@@ -198,9 +198,8 @@ public class EDoc extends TagObject implements Comparable<EDoc> {
         if (getClass() != obj.getClass()) return false;
         EDoc other = (EDoc) obj;
         if (docId == null) {
-            if (other.docId != null) return false;
-        } else if (!docId.equals(other.docId)) return false;
-        return true;
+            return other.docId == null;
+        } else return docId.equals(other.docId);
     }
 
     private void preliminaryProcessing() {
@@ -450,10 +449,7 @@ public class EDoc extends TagObject implements Comparable<EDoc> {
      * Returns true if document a PDF.
      */
     public boolean isPDF() {
-        if (this.contentType != null && this.contentType.contains("/pdf")) {
-            return true;
-        }
-        return false;
+        return this.contentType != null && this.contentType.contains("/pdf");
     }
 
     /**

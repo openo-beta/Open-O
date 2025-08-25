@@ -528,7 +528,7 @@ maybe use jquery/ajax to post this data instead of submitting a form to send ALL
                     <a href="JavaScript:void(0);" class="btn btn-small back loading" title="Cancel"
                        data-loading-text="cancelling...">Cancel</a>
                     <button type="button" class="btn btn-small btn-success DoNotPrint"
-                            onclick="javascript:window.print();"><i class="icon-print icon-white"></i> Print
+                            onclick="window.print();"><i class="icon-print icon-white"></i> Print
                     </button>
                     <%} else {%>
 
@@ -711,7 +711,7 @@ maybe use jquery/ajax to post this data instead of submitting a form to send ALL
 
                         %>
                         <div class="preventionProcedure" <%=hider%>
-                             onclick="javascript:popup(465,635,'AddMeasurementData.jsp?measurement=<%= response.encodeURL( measure) %>&amp;id=<%=hdata.get("id")%>&amp;demographic_no=<%=demographic_no%>&amp;template=<%= URLEncoder.encode(temp,"UTF-8") %>','addMeasurementData')">
+                             onclick="popup(465,635,'AddMeasurementData.jsp?measurement=<%= response.encodeURL( measure) %>&amp;id=<%=hdata.get("id")%>&amp;demographic_no=<%=demographic_no%>&amp;template=<%= URLEncoder.encode(temp,"UTF-8") %>','addMeasurementData')">
 
                             <p <%=indColour%>
                                     title="Entered By: <%=mdb.getProviderFirstName()%> <%=mdb.getProviderLastName()%>">
@@ -800,7 +800,7 @@ maybe use jquery/ajax to post this data instead of submitting a form to send ALL
                             //////PREV END
                     %>
                     <div class="preventionProcedure" <%=hider%>
-                         onclick="javascript:popup(465,635,'../../oscarPrevention/AddPreventionData.jsp?id=<%=hdata.get("id")%>&amp;demographic_no=<%=demographic_no%>','addPreventionData')">
+                         onclick="popup(465,635,'../../oscarPrevention/AddPreventionData.jsp?id=<%=hdata.get("id")%>&amp;demographic_no=<%=demographic_no%>','addPreventionData')">
                         <p <%=r(hdata.get("refused"))%>
                                 title="fade=[on] header=[<%=hdata.get("age")%> -- Date:<%=hdata.get("prevention_date")%>] body=[<%=com%>]">
                             Age: <%=hdata.get("age")%> <br/>
@@ -891,7 +891,7 @@ maybe use jquery/ajax to post this data instead of submitting a form to send ALL
 
                     %>
                     <div class="preventionProcedure" <%=hider%>
-                         onclick="javascript:popup(465,635,'','addPreventionData')">
+                         onclick="popup(465,635,'','addPreventionData')">
                         <p <%=""/*r(hdata.get("refused"))*/%>
                                 title="fade=[on] header=[<%=""/*hdata.get("age")*/%> -- Date:<%=""/*hdata.get("prevention_date")*/%>] body=[<%=""/*com*/%>]"><%=pres.getBrandName()%>
                             <br/>

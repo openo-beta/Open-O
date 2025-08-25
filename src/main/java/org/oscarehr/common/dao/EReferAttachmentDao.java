@@ -7,5 +7,5 @@ import java.util.Date;
 
 
 public interface EReferAttachmentDao extends AbstractDao<EReferAttachment> {
-    public EReferAttachment getRecentByDemographic(Integer demographicNo, Date expiry);
+    EReferAttachment getRecentByDemographic(Integer demographicNo, Date expiry);
 }

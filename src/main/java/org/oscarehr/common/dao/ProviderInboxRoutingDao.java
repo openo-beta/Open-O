@@ -45,16 +45,16 @@ import oscar.oscarLab.ca.on.CommonLabResultData;
  */
 public interface ProviderInboxRoutingDao extends AbstractDao<ProviderInboxItem> {
 
-    public boolean removeLinkFromDocument(String docType, Integer docId, String providerNo);
+    boolean removeLinkFromDocument(String docType, Integer docId, String providerNo);
 
-    public List<ProviderInboxItem> getProvidersWithRoutingForDocument(String docType, Integer docId);
+    List<ProviderInboxItem> getProvidersWithRoutingForDocument(String docType, Integer docId);
 
-    public boolean hasProviderBeenLinkedWithDocument(String docType, Integer docId, String providerNo);
+    boolean hasProviderBeenLinkedWithDocument(String docType, Integer docId, String providerNo);
 
-    public int howManyDocumentsLinkedWithAProvider(String providerNo);
+    int howManyDocumentsLinkedWithAProvider(String providerNo);
 
-	public List<ProviderInboxItem> findDocumentsLinkedWithProvider(String docType, Integer docId, String providerNo);
+	List<ProviderInboxItem> findDocumentsLinkedWithProvider(String docType, Integer docId, String providerNo);
 
-    public void addToProviderInbox(String providerNo, Integer labNo, String labType);
+    void addToProviderInbox(String providerNo, Integer labNo, String labType);
 
 }

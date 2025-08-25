@@ -180,13 +180,8 @@ public class Result {
             return false;
         }
         if (this.url == null) {
-            if (other.url != null) {
-                return false;
-            }
-        } else if (!this.url.equals(other.url)) {
-            return false;
-        }
-        return true;
+            return other.url == null;
+        } else return this.url.equals(other.url);
     }
 
     /**

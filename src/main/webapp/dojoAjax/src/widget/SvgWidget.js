@@ -37,13 +37,13 @@ try {
             var rw = new function () {
                 dojo.widget.SvgWidget.call(this);
                 this.buildRendering = function () {
-                    return;
+
                 }
                 this.destroyRendering = function () {
-                    return;
+
                 }
                 this.postInitialize = function () {
-                    return;
+
                 }
                 this.widgetType = "SVGRootWidget";
                 this.domNode = document.documentElement;

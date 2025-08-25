@@ -36,9 +36,9 @@ import org.springframework.stereotype.Repository;
 
 public interface CVCMedicationDao extends AbstractDao<CVCMedication> {
 
-    public List<CVCMedication> findByDIN(String din);
+    List<CVCMedication> findByDIN(String din);
 
-    public CVCMedication findBySNOMED(String conceptId);
+    CVCMedication findBySNOMED(String conceptId);
 
-    public void removeAll();
+    void removeAll();
 }

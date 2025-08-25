@@ -374,7 +374,7 @@ dojo.lang.extend(dojo.widget.Editor, {
             }
             var cmd = item._name;
             if (cmd == "save" || cmd == "cancel") {
-                continue;
+
             } else if (cmd == "justifyGroup") {
                 try {
                     if (!this._richText.queryCommandEnabled("justifyleft")) {

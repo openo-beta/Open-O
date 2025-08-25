@@ -113,7 +113,7 @@ if (dojo.render.svg.capable) {
                 text.setAttribute("style", "text-anchor:" + anchor + ";font-family:sans-serif;font-size:" + textSize + "px;fill:#000;");
                 text.appendChild(document.createTextNode(label));
                 return text;
-            };
+            }
 
             //	wipe if needed
             if (this.nodes.labels) {

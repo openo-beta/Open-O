@@ -50,337 +50,337 @@ import java.util.*;
 
 public interface CaseManagementManager {
 
-    public enum IssueType {
+    enum IssueType {
         OMEDS, SOCHISTORY, MEDHISTORY, CONCERNS, REMINDERS, FAMHISTORY, RISKFACTORS
     }
 
-    public final int SIGNATURE_SIGNED = 1;
-    public final int SIGNATURE_VERIFY = 2;
+    int SIGNATURE_SIGNED = 1;
+    int SIGNATURE_VERIFY = 2;
 
-    public void setAppointmentArchiveDao(AppointmentArchiveDao appointmentArchiveDao);
+    void setAppointmentArchiveDao(AppointmentArchiveDao appointmentArchiveDao);
 
-    public void setDxDao(DxDao dxDao);
+    void setDxDao(DxDao dxDao);
 
-    public CaseManagementIssue getIssueByIssueCode(String demo, String issue_code);
+    CaseManagementIssue getIssueByIssueCode(String demo, String issue_code);
 
-    public CaseManagementIssue getIssueById(String demo, String issue_id);
+    CaseManagementIssue getIssueById(String demo, String issue_id);
 
-    public void setProgramManager(ProgramManager programManager);
+    void setProgramManager(ProgramManager programManager);
 
-    public void getEditors(CaseManagementNote note);
+    void getEditors(CaseManagementNote note);
 
-    public void getEditors(Collection<CaseManagementNote> notes);
+    void getEditors(Collection<CaseManagementNote> notes);
 
-    public List<Provider> getAllEditors(String demographicNo);
+    List<Provider> getAllEditors(String demographicNo);
 
-    public UserProperty getUserProperty(String provider_no, String name);
+    UserProperty getUserProperty(String provider_no, String name);
 
-    public void saveUserProperty(UserProperty prop);
+    void saveUserProperty(UserProperty prop);
 
-    public void saveEctWin(EncounterWindow ectWin);
+    void saveEctWin(EncounterWindow ectWin);
 
-    public EncounterWindow getEctWin(String provider);
+    EncounterWindow getEctWin(String provider);
 
-    public SecRole getSecRoleByRoleName(String roleName);
+    SecRole getSecRoleByRoleName(String roleName);
 
-    public void saveNoteExt(CaseManagementNoteExt cExt);
+    void saveNoteExt(CaseManagementNoteExt cExt);
 
-    public void updateNoteExt(CaseManagementNoteExt cExt);
+    void updateNoteExt(CaseManagementNoteExt cExt);
 
-    public void saveNoteLink(CaseManagementNoteLink cLink);
+    void saveNoteLink(CaseManagementNoteLink cLink);
 
-    public void updateNoteLink(CaseManagementNoteLink cLink);
+    void updateNoteLink(CaseManagementNoteLink cLink);
 
-    public String saveNote(CaseManagementCPP cpp, CaseManagementNote note, String cproviderNo, String userName,
-                           String lastStr, String roleName);
+    String saveNote(CaseManagementCPP cpp, CaseManagementNote note, String cproviderNo, String userName,
+                    String lastStr, String roleName);
 
-    public List getNotes(String demographic_no, UserProperty prop);
+    List getNotes(String demographic_no, UserProperty prop);
 
-    public List<CaseManagementNote> getCPP(String demoNo, long issueId, UserProperty prop);
+    List<CaseManagementNote> getCPP(String demoNo, long issueId, UserProperty prop);
 
-    public List<CaseManagementNote> getNotes(String demographic_no, String[] issues, UserProperty prop);
+    List<CaseManagementNote> getNotes(String demographic_no, String[] issues, UserProperty prop);
 
-    public List<CaseManagementNote> getNotes(LoggedInInfo loggedInInfo, String demographic_no, String[] issues,
-                                             UserProperty prop);
+    List<CaseManagementNote> getNotes(LoggedInInfo loggedInInfo, String demographic_no, String[] issues,
+                                      UserProperty prop);
 
-    public List<CaseManagementNote> getNotes(String demographic_no);
+    List<CaseManagementNote> getNotes(String demographic_no);
 
-    public List<CaseManagementNote> getNotes(String demographic_no, Integer maxNotes);
+    List<CaseManagementNote> getNotes(String demographic_no, Integer maxNotes);
 
-    public List<CaseManagementNote> getNotes(String demographic_no, String[] issues);
+    List<CaseManagementNote> getNotes(String demographic_no, String[] issues);
 
-    public List<CaseManagementNote> getNotes(LoggedInInfo loggedInInfo, String demographic_no, String[] issues);
+    List<CaseManagementNote> getNotes(LoggedInInfo loggedInInfo, String demographic_no, String[] issues);
 
-    public List<CaseManagementNote> getNotes(String demographic_no, String[] issues, Integer maxNotes);
+    List<CaseManagementNote> getNotes(String demographic_no, String[] issues, Integer maxNotes);
 
-    public List<CaseManagementNote> getNotesWithLimit(String demographic_no, Integer offset, Integer numToReturn);
+    List<CaseManagementNote> getNotesWithLimit(String demographic_no, Integer offset, Integer numToReturn);
 
-    public List<CaseManagementNote> getNotesInDateRange(String demographic_no, Date startDate, Date endDate);
+    List<CaseManagementNote> getNotesInDateRange(String demographic_no, Date startDate, Date endDate);
 
-    public List<CaseManagementNote> getActiveNotes(String demographic_no, String[] issues);
+    List<CaseManagementNote> getActiveNotes(String demographic_no, String[] issues);
 
-    public List<CaseManagementNote> getActiveNotes(LoggedInInfo loggedInInfo, String demographic_no, String[] issues);
+    List<CaseManagementNote> getActiveNotes(LoggedInInfo loggedInInfo, String demographic_no, String[] issues);
 
-    public List<CaseManagementIssue> getIssues(int demographic_no);
+    List<CaseManagementIssue> getIssues(int demographic_no);
 
-    public Issue getIssueIByCmnIssueId(int cmnIssueId);
+    Issue getIssueIByCmnIssueId(int cmnIssueId);
 
-    public List<CaseManagementIssue> getIssuesByNote(int noteId);
+    List<CaseManagementIssue> getIssuesByNote(int noteId);
 
-    public List<CaseManagementIssue> getIssues(int demographic_no, Boolean resolved);
+    List<CaseManagementIssue> getIssues(int demographic_no, Boolean resolved);
 
-    public List<CaseManagementIssue> getIssues(String demographic_no, List accessRight);
+    List<CaseManagementIssue> getIssues(String demographic_no, List accessRight);
 
-    public boolean inAccessRight(String right, String issueAccessType, List accessRight);
+    boolean inAccessRight(String right, String issueAccessType, List accessRight);
 
-    public Issue getIssue(String issue_id);
+    Issue getIssue(String issue_id);
 
-    public Issue getIssueByCode(IssueType issueCode);
+    Issue getIssueByCode(IssueType issueCode);
 
-    public Issue getIssueByCode(String issueCode);
+    Issue getIssueByCode(String issueCode);
 
-    public CaseManagementNote getNote(String note_id);
+    CaseManagementNote getNote(String note_id);
 
-    public List<CaseManagementNote> getNotesByUUID(String uuid);
+    List<CaseManagementNote> getNotesByUUID(String uuid);
 
-    public CaseManagementNote getMostRecentNote(String uuid);
+    CaseManagementNote getMostRecentNote(String uuid);
 
-    public CaseManagementNoteExt getNoteExt(Long id);
+    CaseManagementNoteExt getNoteExt(Long id);
 
-    public List<CaseManagementNoteExt> getExtByNote(Long noteId);
+    List<CaseManagementNoteExt> getExtByNote(Long noteId);
 
-    public List getExtByKeyVal(String keyVal);
+    List getExtByKeyVal(String keyVal);
 
-    public List getExtByValue(String keyVal, String value);
+    List getExtByValue(String keyVal, String value);
 
-    public List getExtBeforeDate(String keyVal, Date dateValue);
+    List getExtBeforeDate(String keyVal, Date dateValue);
 
-    public List getExtAfterDate(String keyVal, Date dateValue);
+    List getExtAfterDate(String keyVal, Date dateValue);
 
-    public CaseManagementNoteLink getNoteLink(Long id);
+    CaseManagementNoteLink getNoteLink(Long id);
 
-    public List getLinkByNote(Long noteId);
+    List getLinkByNote(Long noteId);
 
-    public CaseManagementNoteLink getLatestLinkByNote(Long noteId);
+    CaseManagementNoteLink getLatestLinkByNote(Long noteId);
 
-    public List getLinkByTableId(Integer tableName, Long tableId);
+    List getLinkByTableId(Integer tableName, Long tableId);
 
-    public List<CaseManagementNoteLink> getLinkByTableId(Integer tableName, Long tableId, String otherId);
+    List<CaseManagementNoteLink> getLinkByTableId(Integer tableName, Long tableId, String otherId);
 
-    public List<CaseManagementNoteLink> getLinkByTableIdDesc(Integer tableName, Long tableId);
+    List<CaseManagementNoteLink> getLinkByTableIdDesc(Integer tableName, Long tableId);
 
-    public List<CaseManagementNoteLink> getLinkByTableIdDesc(Integer tableName, Long tableId, String otherId);
+    List<CaseManagementNoteLink> getLinkByTableIdDesc(Integer tableName, Long tableId, String otherId);
 
-    public CaseManagementNoteLink getLatestLinkByTableId(Integer tableName, Long tableId, String otherId);
+    CaseManagementNoteLink getLatestLinkByTableId(Integer tableName, Long tableId, String otherId);
 
-    public CaseManagementNoteLink getLatestLinkByTableId(Integer tableName, Long tableId);
+    CaseManagementNoteLink getLatestLinkByTableId(Integer tableName, Long tableId);
 
-    public Integer getTableNameByDisplay(String disp);
+    Integer getTableNameByDisplay(String disp);
 
-    public CaseManagementCPP getCPP(String demographic_no);
+    CaseManagementCPP getCPP(String demographic_no);
 
-    public List<Allergy> getAllergies(String demographic_no);
+    List<Allergy> getAllergies(String demographic_no);
 
-    public List<Drug> getPrescriptions(String demographic_no, boolean all);
+    List<Drug> getPrescriptions(String demographic_no, boolean all);
 
-    public List<Drug> getCurrentPrescriptions(int demographic_no);
+    List<Drug> getCurrentPrescriptions(int demographic_no);
 
-    public List<Drug> getPrescriptions(LoggedInInfo loggedInInfo, int demographicId, boolean all);
+    List<Drug> getPrescriptions(LoggedInInfo loggedInInfo, int demographicId, boolean all);
 
-    public List<LabelValueBean> getMsgBeans(Integer demographicNo);
+    List<LabelValueBean> getMsgBeans(Integer demographicNo);
 
-    public void deleteIssueById(CaseManagementIssue issue);
+    void deleteIssueById(CaseManagementIssue issue);
 
-    public void saveAndUpdateCaseIssues(List issuelist);
+    void saveAndUpdateCaseIssues(List issuelist);
 
-    public void saveCaseIssue(CaseManagementIssue issue);
+    void saveCaseIssue(CaseManagementIssue issue);
 
-    public Issue getIssueInfo(Long l);
+    Issue getIssueInfo(Long l);
 
-    public List getAllIssueInfo();
+    List getAllIssueInfo();
 
-    public void saveCPP(CaseManagementCPP cpp, String providerNo);
+    void saveCPP(CaseManagementCPP cpp, String providerNo);
 
-    public List<Issue> getIssueInfoByCode(String providerNo, String[] codes);
+    List<Issue> getIssueInfoByCode(String providerNo, String[] codes);
 
-    public List<Issue> getIssueInfoByCode(String providerNo, String code);
+    List<Issue> getIssueInfoByCode(String providerNo, String code);
 
-    public Issue getIssueInfoByCode(String code);
+    Issue getIssueInfoByCode(String code);
 
-    public Issue getIssueInfoByTypeAndCode(String type, String code);
+    Issue getIssueInfoByTypeAndCode(String type, String code);
 
-    public List<Issue> getIssueInfoBySearch(String providerNo, String search, List accessRight);
+    List<Issue> getIssueInfoBySearch(String providerNo, String search, List accessRight);
 
-    public void addNewIssueToConcern(String demoNo, String issueName);
+    void addNewIssueToConcern(String demoNo, String issueName);
 
-    public void removeIssueFromCPP(String demoNo, CaseManagementIssue issue);
+    void removeIssueFromCPP(String demoNo, CaseManagementIssue issue);
 
-    public void changeIssueInCPP(String demoNo, String origIssueDesc, String newIssueDesc);
+    void changeIssueInCPP(String demoNo, String origIssueDesc, String newIssueDesc);
 
-    public void updateCurrentIssueToCPP(String demoNo, List issueList);
+    void updateCurrentIssueToCPP(String demoNo, List issueList);
 
-    public List<CaseManagementIssue> getFilteredNotes(String providerNo, String demographic_no);
+    List<CaseManagementIssue> getFilteredNotes(String providerNo, String demographic_no);
 
-    public boolean haveIssue(Long issid, Long noteId, String demoNo);
+    boolean haveIssue(Long issid, Long noteId, String demoNo);
 
-    public boolean haveIssue(Long issid, String demoNo);
+    boolean haveIssue(Long issid, String demoNo);
 
-    public boolean greaterEqualLevel(int level, String providerNo);
+    boolean greaterEqualLevel(int level, String providerNo);
 
-    public List<AccessType> getAccessRight(String providerNo, String demoNo, String programId);
+    List<AccessType> getAccessRight(String providerNo, String demoNo, String programId);
 
-    public boolean roleInAccess(Long roleId, ProgramAccess pa);
+    boolean roleInAccess(Long roleId, ProgramAccess pa);
 
-    public void addrt(List<AccessType> rt, AccessType at);
+    void addrt(List<AccessType> rt, AccessType at);
 
-    public boolean hasAccessRight(String accessName, String accessType, String providerNo, String demoNo, String pId);
+    boolean hasAccessRight(String accessName, String accessType, String providerNo, String demoNo, String pId);
 
-    public String getRoleName(String providerNo, String program_id);
+    String getRoleName(String providerNo, String program_id);
 
-    public String getDemoName(String demoNo);
+    String getDemoName(String demoNo);
 
-    public String getDemoGender(String demoNo);
+    String getDemoGender(String demoNo);
 
-    public String getDemoAge(String demoNo);
+    String getDemoAge(String demoNo);
 
-    public String getDemoPhn(String demoNo);
+    String getDemoPhn(String demoNo);
 
-    public String getDemoDOB(String demoNo);
+    String getDemoDOB(String demoNo);
 
-    public String getCaisiRoleById(String id);
+    String getCaisiRoleById(String id);
 
-    public List<CaseManagementNote> search(CaseManagementSearchBean searchBean);
+    List<CaseManagementNote> search(CaseManagementSearchBean searchBean);
 
-    public List<CaseManagementNote> filterNotesByAccess(List<CaseManagementNote> notes, String providerNo);
+    List<CaseManagementNote> filterNotesByAccess(List<CaseManagementNote> notes, String providerNo);
 
-    public void tmpSave(String providerNo, String demographicNo, String programId, String noteId, String note);
+    void tmpSave(String providerNo, String demographicNo, String programId, String noteId, String note);
 
-    public void deleteTmpSave(String providerNo, String demographicNo, String programId);
+    void deleteTmpSave(String providerNo, String demographicNo, String programId);
 
-    public CaseManagementTmpSave getTmpSave(String providerNo, String demographicNo, String programId);
+    CaseManagementTmpSave getTmpSave(String providerNo, String demographicNo, String programId);
 
-    public CaseManagementTmpSave restoreTmpSave(String providerNo, String demographicNo, String programId);
+    CaseManagementTmpSave restoreTmpSave(String providerNo, String demographicNo, String programId);
 
-    public CaseManagementTmpSave restoreTmpSave(String providerNo, String demographicNo, String programId, Date date);
+    CaseManagementTmpSave restoreTmpSave(String providerNo, String demographicNo, String programId, Date date);
 
-    public List getHistory(String note_id);
+    List getHistory(String note_id);
 
-    public List<CaseManagementNote> getIssueHistory(String issueIds, String demoNo);
+    List<CaseManagementNote> getIssueHistory(String issueIds, String demoNo);
 
-    public List<CaseManagementNote> filterNotes(LoggedInInfo loggedInInfo, String providerNo,
-                                                Collection<CaseManagementNote> notes, String programId);
+    List<CaseManagementNote> filterNotes(LoggedInInfo loggedInInfo, String providerNo,
+                                         Collection<CaseManagementNote> notes, String programId);
 
-    public List<EChartNoteEntry> filterNotes1(String providerNo, Collection<EChartNoteEntry> notes, String programId);
+    List<EChartNoteEntry> filterNotes1(String providerNo, Collection<EChartNoteEntry> notes, String programId);
 
-    public boolean hasRole(String providerNo, CachedDemographicNote cachedDemographicNote, String programId);
+    boolean hasRole(String providerNo, CachedDemographicNote cachedDemographicNote, String programId);
 
-    public boolean isRoleIncludedInAccess(ProgramAccess pa, Secrole role);
+    boolean isRoleIncludedInAccess(ProgramAccess pa, Secrole role);
 
-    public Map<String, ProgramAccess> convertProgramAccessListToMap(List<ProgramAccess> paList);
+    Map<String, ProgramAccess> convertProgramAccessListToMap(List<ProgramAccess> paList);
 
-    public Integer searchIssuesCount(String providerNo, String programId, String search);
+    Integer searchIssuesCount(String providerNo, String programId, String search);
 
-    public List<Issue> searchIssues(String providerNo, String programId, String search);
+    List<Issue> searchIssues(String providerNo, String programId, String search);
 
-    public List<Issue> searchIssues(String providerNo, String programId, String search, int startIndex,
-                                    int numToReturn);
+    List<Issue> searchIssues(String providerNo, String programId, String search, int startIndex,
+                             int numToReturn);
 
-    public List searchIssuesNoRolesConcerned(String providerNo, String programId, String search);
+    List searchIssuesNoRolesConcerned(String providerNo, String programId, String search);
 
-    public List<CaseManagementIssue> filterIssues(LoggedInInfo loggedInInfo, String providerNo,
-                                                  List<CaseManagementIssue> issues, String programId);
+    List<CaseManagementIssue> filterIssues(LoggedInInfo loggedInInfo, String providerNo,
+                                           List<CaseManagementIssue> issues, String programId);
 
-    public void updateNote(CaseManagementNote note);
+    void updateNote(CaseManagementNote note);
 
-    public void saveNoteSimple(CaseManagementNote note);
+    void saveNoteSimple(CaseManagementNote note);
 
-    public Long saveNoteSimpleReturnID(CaseManagementNote note);
+    Long saveNoteSimpleReturnID(CaseManagementNote note);
 
-    public boolean isClientInProgramDomain(String providerNo, String demographicNo);
+    boolean isClientInProgramDomain(String providerNo, String demographicNo);
 
-    public List<ProgramProvider> getProgramProviders(String providerNo);
+    List<ProgramProvider> getProgramProviders(String providerNo);
 
-    public List<Admission> getAdmission(Integer demographicNo);
+    List<Admission> getAdmission(Integer demographicNo);
 
-    public boolean isClientInProgramDomain(List<ProgramProvider> providerPrograms, List<Admission> allAdmissions);
+    boolean isClientInProgramDomain(List<ProgramProvider> providerPrograms, List<Admission> allAdmissions);
 
-    public boolean isClientReferredInProgramDomain(String providerNo, String demographicNo);
+    boolean isClientReferredInProgramDomain(String providerNo, String demographicNo);
 
-    public boolean unlockNote(int noteId, String password);
+    boolean unlockNote(int noteId, String password);
 
-    public void updateIssue(String demographicNo, Long originalIssueId, Long newIssueId);
+    void updateIssue(String demographicNo, Long originalIssueId, Long newIssueId);
 
-    public boolean getEnabled();
+    boolean getEnabled();
 
-    public void setEnabled(boolean enabled);
+    void setEnabled(boolean enabled);
 
-    public void setHashAuditDao(HashAuditDao dao);
+    void setHashAuditDao(HashAuditDao dao);
 
-    public void setCaseManagementNoteDAO(CaseManagementNoteDAO dao);
+    void setCaseManagementNoteDAO(CaseManagementNoteDAO dao);
 
-    public void setCaseManagementNoteExtDAO(CaseManagementNoteExtDAO dao);
+    void setCaseManagementNoteExtDAO(CaseManagementNoteExtDAO dao);
 
-    public void setCaseManagementNoteLinkDAO(CaseManagementNoteLinkDAO dao);
+    void setCaseManagementNoteLinkDAO(CaseManagementNoteLinkDAO dao);
 
-    public void setCaseManagementIssueDAO(CaseManagementIssueDAO dao);
+    void setCaseManagementIssueDAO(CaseManagementIssueDAO dao);
 
-    public void setProgramAccessDAO(ProgramAccessDAO programAccessDAO);
+    void setProgramAccessDAO(ProgramAccessDAO programAccessDAO);
 
-    public void setIssueDAO(IssueDAO dao);
+    void setIssueDAO(IssueDAO dao);
 
-    public void setCaseManagementCPPDAO(CaseManagementCPPDAO dao);
+    void setCaseManagementCPPDAO(CaseManagementCPPDAO dao);
 
-    public void setProgramProviderDao(ProgramProviderDAO programProviderDao);
+    void setProgramProviderDao(ProgramProviderDAO programProviderDao);
 
-    public void setProgramQueueDao(ProgramQueueDao programQueueDao);
+    void setProgramQueueDao(ProgramQueueDao programQueueDao);
 
-    public void setRolesManager(RolesManager mgr);
+    void setRolesManager(RolesManager mgr);
 
-    public void setProviderExtDao(ProviderExtDao providerExtDao);
+    void setProviderExtDao(ProviderExtDao providerExtDao);
 
-    public void setRoleProgramAccessDAO(RoleProgramAccessDAO roleProgramAccessDAO);
+    void setRoleProgramAccessDAO(RoleProgramAccessDAO roleProgramAccessDAO);
 
-    public void setDemographicDao(DemographicDao demographicDao);
+    void setDemographicDao(DemographicDao demographicDao);
 
-    public void setCaseManagementTmpSaveDao(CaseManagementTmpSaveDao dao);
+    void setCaseManagementTmpSaveDao(CaseManagementTmpSaveDao dao);
 
-    public void setAdmissionManager(AdmissionManager mgr);
+    void setAdmissionManager(AdmissionManager mgr);
 
-    public void setUserPropertyDAO(UserPropertyDAO dao);
+    void setUserPropertyDAO(UserPropertyDAO dao);
 
-    public void setDxresearchDAO(DxresearchDAO dao);
+    void setDxresearchDAO(DxresearchDAO dao);
 
-    public void setSecRoleDao(SecRoleDao secRoleDao);
+    void setSecRoleDao(SecRoleDao secRoleDao);
 
-    public void saveToDx(LoggedInInfo loggedInInfo, String demographicNo, String code, String codingSystem,
-                         boolean association);
+    void saveToDx(LoggedInInfo loggedInInfo, String demographicNo, String code, String codingSystem,
+                  boolean association);
 
-    public void saveToDx(LoggedInInfo loggedInInfo, String demographicNo, String code);
+    void saveToDx(LoggedInInfo loggedInInfo, String demographicNo, String code);
 
-    public List<Dxresearch> getDxByDemographicNo(String demographicNo);
+    List<Dxresearch> getDxByDemographicNo(String demographicNo);
 
-    public String getTemplateSignature(String template, ResourceBundle rc, Map<String, String> map);
+    String getTemplateSignature(String template, ResourceBundle rc, Map<String, String> map);
 
-    public String getSignature(String cproviderNo, String userName, String roleName, Locale locale, int type);
+    String getSignature(String cproviderNo, String userName, String roleName, Locale locale, int type);
 
-    public void seteChartDao(EChartDao eChartDao);
+    void seteChartDao(EChartDao eChartDao);
 
-    public void setEncounterWindowDao(EncounterWindowDao encounterWindowDao);
+    void setEncounterWindowDao(EncounterWindowDao encounterWindowDao);
 
-    public CaseManagementNote getLastSaved(String programId, String demono, String providerNo, Map unlockedNotesMap);
+    CaseManagementNote getLastSaved(String programId, String demono, String providerNo, Map unlockedNotesMap);
 
-    public CaseManagementNote makeNewNote(String providerNo, String demographicNo, String encType, String appointmentNo,
-                                          Locale locale);
+    CaseManagementNote makeNewNote(String providerNo, String demographicNo, String encType, String appointmentNo,
+                                   Locale locale);
 
-    public void addNewNoteLink(Long noteId);
+    void addNewNoteLink(Long noteId);
 
-    public CaseManagementNote saveCaseManagementNote(LoggedInInfo loggedInInfo, CaseManagementNote note,
-                                                     List<CaseManagementIssue> issuelist, CaseManagementCPP cpp, String ongoing, boolean verify, Locale locale,
-                                                     Date now, CaseManagementNote annotationNote, String userName, String user, String remoteAddr,
-                                                     String lastSavedNoteString) throws Exception;
+    CaseManagementNote saveCaseManagementNote(LoggedInInfo loggedInInfo, CaseManagementNote note,
+                                              List<CaseManagementIssue> issuelist, CaseManagementCPP cpp, String ongoing, boolean verify, Locale locale,
+                                              Date now, CaseManagementNote annotationNote, String userName, String user, String remoteAddr,
+                                              String lastSavedNoteString) throws Exception;
 
-    public void setCPPMedicalHistory(CaseManagementCPP cpp, String providerNo, List accessRight);
+    void setCPPMedicalHistory(CaseManagementCPP cpp, String providerNo, List accessRight);
 
-    public String listNotes(String code, String providerNo, String demoNo);
+    String listNotes(String code, String providerNo, String demoNo);
 
 }

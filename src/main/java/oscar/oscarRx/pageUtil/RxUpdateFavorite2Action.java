@@ -116,19 +116,10 @@ public final class RxUpdateFavorite2Action extends ActionSupport {
         fav.setDurationUnit(durationUnit);
         fav.setQuantity(quantity);
         fav.setRepeat(Integer.parseInt(repeat));
-        if (noSubs.equalsIgnoreCase("true"))
-            fav.setNosubs(true);
-        else
-            fav.setNosubs(false);
-        if (prn.equalsIgnoreCase("true"))
-            fav.setPrn(true);
-        else
-            fav.setPrn(false);
+        fav.setNosubs(noSubs.equalsIgnoreCase("true"));
+        fav.setPrn(prn.equalsIgnoreCase("true"));
         fav.setSpecial(special);
-        if (customInstr.equalsIgnoreCase("true"))
-            fav.setCustomInstr(true);
-        else
-            fav.setCustomInstr(false);
+        fav.setCustomInstr(customInstr.equalsIgnoreCase("true"));
 
         if (request.getParameter("dispenseInternal") != null && request.getParameter("dispenseInternal").length() > 0) {
             fav.setDispenseInternal(true);

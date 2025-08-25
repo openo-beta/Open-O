@@ -2398,7 +2398,7 @@
                     }
                 }
             }
-            return;
+
         },
 
         // *** Process table ***

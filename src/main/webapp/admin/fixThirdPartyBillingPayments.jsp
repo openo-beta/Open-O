@@ -217,10 +217,7 @@
                     double remainingRefund = dRefund;
 
                     for (BillingONItem item : items) {
-                        boolean deleted = false;
-                        if ("D".equals(item.getStatus())) {
-                            deleted = true;
-                        }
+                        boolean deleted = "D".equals(item.getStatus());
                         BillingOnItemPayment boip = billingOnItemPaymentDao.findByPaymentIdAndItemId(payment.getId(), item.getId());
                         if (boip == null) {
                             //add it..need to know how to handle a refund in the new system.

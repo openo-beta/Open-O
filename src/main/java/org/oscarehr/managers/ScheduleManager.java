@@ -82,43 +82,43 @@ public interface ScheduleManager {
      * The DayWorkSchedule returned will be in the server's local timezone.
      *
      */
-    public DayWorkSchedule getDayWorkSchedule(String providerNo, Calendar date);
+    DayWorkSchedule getDayWorkSchedule(String providerNo, Calendar date);
 
-    public List<Appointment> getDayAppointments(LoggedInInfo loggedInInfo, String providerNo, Date date);
+    List<Appointment> getDayAppointments(LoggedInInfo loggedInInfo, String providerNo, Date date);
 
-    public List<Appointment> getDayAppointments(LoggedInInfo loggedInInfo, String providerNo, Calendar date);
+    List<Appointment> getDayAppointments(LoggedInInfo loggedInInfo, String providerNo, Calendar date);
 
-    public List<ScheduleTemplateCode> getScheduleTemplateCodes();
+    List<ScheduleTemplateCode> getScheduleTemplateCodes();
 
-    public List<AppointmentType> getAppointmentTypes();
+    List<AppointmentType> getAppointmentTypes();
 
-    public void addAppointment(LoggedInInfo loggedInInfo, Security security, Appointment appointment);
+    void addAppointment(LoggedInInfo loggedInInfo, Security security, Appointment appointment);
 
-    public List<Appointment> getAppointmentsForPatient(LoggedInInfo loggedInInfo, Integer demographicId, int startIndex, int itemsToReturn);
+    List<Appointment> getAppointmentsForPatient(LoggedInInfo loggedInInfo, Integer demographicId, int startIndex, int itemsToReturn);
 
-    public List<Appointment> getAppointmentsByProgramProviderDemographicDate(LoggedInInfo loggedInInfo, Integer programId, String providerNo, Integer demographicId, Calendar updatedAfterThisDateExclusive, int itemsToReturn);
+    List<Appointment> getAppointmentsByProgramProviderDemographicDate(LoggedInInfo loggedInInfo, Integer programId, String providerNo, Integer demographicId, Calendar updatedAfterThisDateExclusive, int itemsToReturn);
 
-    public Appointment getAppointment(LoggedInInfo loggedInInfo, Integer appointmentId);
+    Appointment getAppointment(LoggedInInfo loggedInInfo, Integer appointmentId);
 
-    public void updateAppointment(LoggedInInfo loggedInInfo, Appointment appointment);
+    void updateAppointment(LoggedInInfo loggedInInfo, Appointment appointment);
 
-    public List<Appointment> getAppointmentsForDateRangeAndProvider(LoggedInInfo loggedInInfo, Date startTime, Date endTime, String providerNo);
+    List<Appointment> getAppointmentsForDateRangeAndProvider(LoggedInInfo loggedInInfo, Date startTime, Date endTime, String providerNo);
 
-    public List<Appointment> getAppointmentUpdatedAfterDate(LoggedInInfo loggedInInfo, Date updatedAfterThisDateExclusive, int itemsToReturn);
+    List<Appointment> getAppointmentUpdatedAfterDate(LoggedInInfo loggedInInfo, Date updatedAfterThisDateExclusive, int itemsToReturn);
 
-    public List<Appointment> getAppointmentByDemographicIdUpdatedAfterDate(LoggedInInfo loggedInInfo, Integer demographicId, Date updatedAfterThisDateExclusive);
+    List<Appointment> getAppointmentByDemographicIdUpdatedAfterDate(LoggedInInfo loggedInInfo, Integer demographicId, Date updatedAfterThisDateExclusive);
 
-    public List<AppointmentArchive> getAppointmentArchiveUpdatedAfterDate(LoggedInInfo loggedInInfo, Date updatedAfterThisDateExclusive, int itemsToReturn);
+    List<AppointmentArchive> getAppointmentArchiveUpdatedAfterDate(LoggedInInfo loggedInInfo, Date updatedAfterThisDateExclusive, int itemsToReturn);
 
-    public List<AppointmentStatus> getAppointmentStatuses(LoggedInInfo loggedInInfo);
+    List<AppointmentStatus> getAppointmentStatuses(LoggedInInfo loggedInInfo);
 
-    public List<Integer> getAllDemographicIdByProgramProvider(LoggedInInfo loggedInInfo, Integer programId, String providerNo);
+    List<Integer> getAllDemographicIdByProgramProvider(LoggedInInfo loggedInInfo, Integer programId, String providerNo);
 
-    public List<Object[]> listAppointmentsByPeriodProvider(LoggedInInfo loggedInInfo, Date sDate, Date eDate, String providers);
+    List<Object[]> listAppointmentsByPeriodProvider(LoggedInInfo loggedInInfo, Date sDate, Date eDate, String providers);
 
-    public List<Object[]> listProviderAppointmentCounts(LoggedInInfo loggedInInfo, String sDateStr, String eDateStr);
+    List<Object[]> listProviderAppointmentCounts(LoggedInInfo loggedInInfo, String sDateStr, String eDateStr);
 
-    public boolean removeIfDoubleBooked(LoggedInInfo loggedInInfo, Calendar startTime, Calendar endTime, String providerNo, Appointment appointment);
+    boolean removeIfDoubleBooked(LoggedInInfo loggedInInfo, Calendar startTime, Calendar endTime, String providerNo, Appointment appointment);
 
 }
  

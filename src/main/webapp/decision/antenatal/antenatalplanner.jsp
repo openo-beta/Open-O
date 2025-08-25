@@ -153,7 +153,7 @@
             <td align="left">
                 <input type="submit" name="submit" value=" Save "/>
                 <input type="submit" name="submit" value="Save and Exit"/>
-                <input type="button" value="  Exit  " onclick="javascript:return onExit();"/>
+                <input type="button" value="  Exit  " onclick="return onExit();"/>
                 <input type="button" name="submit" value="Print"
                        onclick="popupPage(700,800,'antenatalplannerprint.jsp?demographic_no=<%=demographic_no%>&formId=<%=form_no%>');return false;"/>
             </td>
@@ -226,7 +226,7 @@ else {
             <td align="left">
                 <input type="submit" name="submit" value=" Save "/>
                 <input type="submit" name="submit" value="Save and Exit"/>
-                <input type="button" value="  Exit  " onclick="javascript:return onExit();"/>
+                <input type="button" value="  Exit  " onclick="return onExit();"/>
                 <input type="button" name="submit" value="Print"
                        onclick="popupPage(700,800,'antenatalplannerprint.jsp?demographic_no=<%=demographic_no%>&formId=<%=form_no%>');return false;"/>
             </td>

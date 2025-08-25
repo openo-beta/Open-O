@@ -60,7 +60,7 @@ public class GroupPreference2Action extends ActionSupport {
 
         if (billingForm != null && !billingForm.isEmpty()) {
 
-            String selectedGroups[] = request.getParameterValues("data");
+            String[] selectedGroups = request.getParameterValues("data");
 
             if (selectedGroups != null) {
                 for (int i = 0; i < selectedGroups.length; i++) {

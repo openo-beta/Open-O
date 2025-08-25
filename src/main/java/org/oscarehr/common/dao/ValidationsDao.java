@@ -34,13 +34,13 @@ import org.oscarehr.common.model.Validations;
 
 public interface ValidationsDao extends AbstractDao<Validations> {
 
-    public List<Validations> findAll();
+    List<Validations> findAll();
 
-    public List<Validations> findByAll(String regularExpParam, Double minValueParam, Double maxValueParam,
-                                       Integer minLengthParam, Integer maxLengthParam, Boolean isNumericParam,
-                                       Boolean isDateParam);
+    List<Validations> findByAll(String regularExpParam, Double minValueParam, Double maxValueParam,
+                                Integer minLengthParam, Integer maxLengthParam, Boolean isNumericParam,
+                                Boolean isDateParam);
 
-    public List<Validations> findByName(String name);
+    List<Validations> findByName(String name);
 
-    public List<Object[]> findValidationsBy(Integer demo, String type, Integer validationId);
+    List<Object[]> findValidationsBy(Integer demo, String type, Integer validationId);
 }

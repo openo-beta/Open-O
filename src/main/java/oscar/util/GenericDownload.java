@@ -58,10 +58,7 @@ public class GenericDownload extends HttpServlet {
         String dir = oscarProps.getProperty(dir_property);
         String user = (String) session.getAttribute("user");
 
-        boolean bDo = false;
-        if (filename != null && dir_property != null && dir != null && user != null) {
-            bDo = true;
-        }
+        boolean bDo = filename != null && dir_property != null && dir != null && user != null;
         download(bDo, res, dir, filename, contentType);
 
     }

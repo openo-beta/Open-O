@@ -36,15 +36,15 @@ import org.springframework.stereotype.Repository;
 
 public interface CustomFilterDao extends AbstractDao<CustomFilter> {
 
-    public CustomFilter findByName(String name);
+    CustomFilter findByName(String name);
 
-    public CustomFilter findByNameAndProviderNo(String name, String providerNo);
+    CustomFilter findByNameAndProviderNo(String name, String providerNo);
 
-    public List<CustomFilter> getCustomFilters();
+    List<CustomFilter> getCustomFilters();
 
-    public List<CustomFilter> findByProviderNo(String providerNo);
+    List<CustomFilter> findByProviderNo(String providerNo);
 
-    public List<CustomFilter> getCustomFilterWithShortCut(String providerNo);
+    List<CustomFilter> getCustomFilterWithShortCut(String providerNo);
 
-    public void deleteCustomFilter(String name);
+    void deleteCustomFilter(String name);
 }

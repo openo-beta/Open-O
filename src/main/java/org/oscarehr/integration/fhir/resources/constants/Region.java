@@ -32,7 +32,7 @@ public enum Region {
 
     private String description;
 
-    private Region(String description) {
+    Region(String description) {
         this.description = description;
     }
 

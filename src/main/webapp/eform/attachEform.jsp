@@ -447,13 +447,13 @@
 											<%=truncatedDisplayName%></a>
 								        </span>
                                     <img title="<%= printTitle %>" src="<%= printImage %>" alt="<%= printAlt %>">
-                                    <a class="labPreview" href="#" onclick="javascript:previewHTML('<%=url%>');">
+                                    <a class="labPreview" href="#" onclick="previewHTML('<%=url%>');">
                                         <span class="text"><%=truncatedDisplayName%></span>
                                     </a>
 
                                 </div>
                                 <div style="float:right; height:25px; line-height:25px; white-space:nowrap;">
-                                    <a class="labPreview" href="#" onclick="javascript:previewHTML('<%=url%>');">
+                                    <a class="labPreview" href="#" onclick="previewHTML('<%=url%>');">
                                         <span style="float:right;">... <%=date%></span>
                                     </a>
                                 </div>
@@ -526,13 +526,13 @@
 											<%=truncatedDisplayName%></a>
 										</span>
                                     <img title="<%= printTitle %>" src="<%= printImage %>" alt="<%= printAlt %>">
-                                    <a class="hrmPreview" href="#" onclick="javascript:previewHTML('<%=url%>');">
+                                    <a class="hrmPreview" href="#" onclick="previewHTML('<%=url%>');">
                                         <span class="text"><%=truncatedDisplayName%></span>
                                     </a>
 
                                 </div>
                                 <div style="float:right; height:25px; line-height:25px; white-space:nowrap;">
-                                    <a class="hrmPreview" href="#" onclick="javascript:previewHTML('<%=url%>');">
+                                    <a class="hrmPreview" href="#" onclick="previewHTML('<%=url%>');">
                                         <span style="float:right;">... <%=date%></span>
                                     </a>
                                 </div>
@@ -568,14 +568,14 @@
 														</span>
                                     <img title="<%= printTitle %>" src="<%= printImage %>" alt="<%= printAlt %>">
                                     <a class="eFormPreview" href="#"
-                                       onclick="javascript:previewHTML('<%=url%>', true);">
+                                       onclick="previewHTML('<%=url%>', true);">
                                         <span class="text"><%=(eForm.getFormName().length() > 14) ? eForm.getFormName().substring(0, 11) + "..." : eForm.getFormName()%></span>
                                     </a>
 
                                 </div>
                                 <div style="float:right; height:25px; line-height:25px; white-space:nowrap;">
                                     <a class="eFormPreview" href="#"
-                                       onclick="javascript:previewHTML('<%=url%>', true);">
+                                       onclick="previewHTML('<%=url%>', true);">
                                         <span style="float:right;"><%=sdf.format(eForm.getFormDate())%></span>
                                     </a>
                                 </div>

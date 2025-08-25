@@ -86,7 +86,7 @@ public class EctImmImmunizationData {
         }
 
 
-        String ret[] = new String[vRet.size()];
+        String[] ret = new String[vRet.size()];
         ret = vRet.toArray(ret);
         return ret;
     }

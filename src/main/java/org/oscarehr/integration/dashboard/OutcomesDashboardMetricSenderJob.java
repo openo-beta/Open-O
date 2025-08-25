@@ -80,8 +80,6 @@ public class OutcomesDashboardMetricSenderJob implements OscarRunnable {
         } catch (Exception e) {
             logger.error("Error", e);
 
-        } finally {
-
         }
 
     }

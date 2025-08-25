@@ -148,7 +148,7 @@
                 $('#jobTypeTable').DataTable({
                     "order": []
                 });
-                return;
+
             }
 
             $(document).ready(function () {

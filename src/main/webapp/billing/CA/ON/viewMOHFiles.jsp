@@ -141,7 +141,7 @@
                     throw e;
                 }
                 for (int i = 0; i < contents.length; i++) {
-                    bodd = bodd ? false : true;
+                    bodd = !bodd;
                     if (contents[i].isDirectory() || contents[i].getName().startsWith(".")) continue;
                     if (contents[i].getName().endsWith(".sh")) continue;
                     String archiveElement = "<td ><input type='checkbox' name='mohFile' value='" + URLEncoder.encode(contents[i].getName()) + "' title='select to archive'/></td>";

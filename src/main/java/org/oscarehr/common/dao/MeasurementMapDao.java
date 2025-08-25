@@ -37,30 +37,30 @@ import org.springframework.stereotype.Repository;
 
 public interface MeasurementMapDao extends AbstractDao<MeasurementMap> {
 
-    public void addMeasurementMap(MeasurementMap measurementMap);
+    void addMeasurementMap(MeasurementMap measurementMap);
 
-    public List<MeasurementMap> getAllMaps();
+    List<MeasurementMap> getAllMaps();
 
-    public List<MeasurementMap> getMapsByIdent(String identCode);
+    List<MeasurementMap> getMapsByIdent(String identCode);
 
-    public List<MeasurementMap> findByLoincCode(String loincCode);
+    List<MeasurementMap> findByLoincCode(String loincCode);
 
-    public List<MeasurementMap> getMapsByLoinc(String loinc);
+    List<MeasurementMap> getMapsByLoinc(String loinc);
 
-    public List<MeasurementMap> findByLoincCodeAndLabType(String loincCode, String labType);
+    List<MeasurementMap> findByLoincCodeAndLabType(String loincCode, String labType);
 
-    public MeasurementMap findByLonicCodeLabTypeAndMeasurementName(String loincCode, String labType,
-                                                                   String measurementName);
+    MeasurementMap findByLonicCodeLabTypeAndMeasurementName(String loincCode, String labType,
+                                                            String measurementName);
 
-    public List<String> findDistinctLabTypes();
+    List<String> findDistinctLabTypes();
 
-    public List<String> findDistinctLoincCodes();
+    List<String> findDistinctLoincCodes();
 
-    public List<String> findDistinctLoincCodesByLabType(MeasurementMap.LAB_TYPE lab_type);
+    List<String> findDistinctLoincCodesByLabType(MeasurementMap.LAB_TYPE lab_type);
 
-    public List<Object[]> findMeasurements(String labType, String idCode, String name);
+    List<Object[]> findMeasurements(String labType, String idCode, String name);
 
-    public List<MeasurementMap> findMeasurementsByName(String searchString);
+    List<MeasurementMap> findMeasurementsByName(String searchString);
 
-    public List<MeasurementMap> searchMeasurementsByName(String searchString);
+    List<MeasurementMap> searchMeasurementsByName(String searchString);
 }

@@ -438,10 +438,10 @@
                                     <td>
                                         <input type="submit" name="submit" value="Search" class="ControlPushButton"/>
                                         <input type=button class="ControlPushButton"
-                                               onclick="javascript:document.forms.RxSearchAllergyForm.searchString.value='';document.forms.RxSearchAllergyForm.searchString.focus();"
+                                               onclick="document.forms.RxSearchAllergyForm.searchString.value='';document.forms.RxSearchAllergyForm.searchString.focus();"
                                                value="Reset"/>
                                         <input type=button class="ControlPushButton"
-                                               onclick="javascript:addCustomAllergy();" value="Custom Allergy"/>
+                                               onclick="addCustomAllergy();" value="Custom Allergy"/>
                                         <%
                                             String shPref;
                                             String showClose;
@@ -512,10 +512,10 @@
                                             initialTypeSelect();
                                         </script>
                                         <input type=button
-                                               class="ControlPushButton" onclick="javascript:typeSelect();"
+                                               class="ControlPushButton" onclick="typeSelect();"
                                                value="Select All"/> <input type=button
                                                                            class="ControlPushButton"
-                                                                           onclick="javascript:typeClear();"
+                                                                           onclick="typeClear();"
                                                                            value="Clear All"/></td>
                                 </tr>
                             </table>
@@ -528,7 +528,7 @@
                                     sBack = "SearchDrug3.jsp";
                                 }
                             %> <input type=button class="ControlPushButton"
-                                      onclick="javascript:window.location.href='<%=sBack%>';"
+                                      onclick="window.location.href='<%=sBack%>';"
                                       value="Back to Search Drug"/></td>
                     </tr>
                     <!----End new rows here-->

@@ -71,91 +71,91 @@ import oscar.util.SqlUtils;
 
 public interface CaseManagementNoteDAO {
 
-    public List<CaseManagementNote> findAll();
+    List<CaseManagementNote> findAll();
 
-    public List<Provider> getEditors(CaseManagementNote note);
+    List<Provider> getEditors(CaseManagementNote note);
 
-    public List<Provider> getAllEditors(String demographicNo);
+    List<Provider> getAllEditors(String demographicNo);
 
-    public List<CaseManagementNote> getHistory(CaseManagementNote note);
+    List<CaseManagementNote> getHistory(CaseManagementNote note);
 
-    public List<CaseManagementNote> getIssueHistory(String issueIds, String demoNo);
+    List<CaseManagementNote> getIssueHistory(String issueIds, String demoNo);
 
-    public CaseManagementNote getNote(Long id);
+    CaseManagementNote getNote(Long id);
 
-    public List<CaseManagementNote> getNotes(List<Long> ids);
+    List<CaseManagementNote> getNotes(List<Long> ids);
 
-    public CaseManagementNote getMostRecentNote(String uuid);
+    CaseManagementNote getMostRecentNote(String uuid);
 
-    public List<CaseManagementNote> getNotesByUUID(String uuid);
+    List<CaseManagementNote> getNotesByUUID(String uuid);
 
-    public List<CaseManagementNote> getCPPNotes(String demoNo, long issueId, String staleDate);
+    List<CaseManagementNote> getCPPNotes(String demoNo, long issueId, String staleDate);
 
-    public List<CaseManagementNote> getNotesByDemographic(String demographic_no, String[] issues, String staleDate);
+    List<CaseManagementNote> getNotesByDemographic(String demographic_no, String[] issues, String staleDate);
 
-    public List<CaseManagementNote> getNotesByDemographic(String demographic_no, String staleDate);
+    List<CaseManagementNote> getNotesByDemographic(String demographic_no, String staleDate);
 
-    public List<CaseManagementNote> getNotesByDemographic(String demographic_no);
+    List<CaseManagementNote> getNotesByDemographic(String demographic_no);
 
-    public List<CaseManagementNote> getNotesByDemographicSince(String demographic_no, Date date);
+    List<CaseManagementNote> getNotesByDemographicSince(String demographic_no, Date date);
 
-    public long getNotesCountByDemographicId(String demographic_no);
+    long getNotesCountByDemographicId(String demographic_no);
 
-    public List<Object[]> getRawNoteInfoByDemographic(String demographic_no);
+    List<Object[]> getRawNoteInfoByDemographic(String demographic_no);
 
-    public List<Map<String, Object>> getRawNoteInfoMapByDemographic(String demographic_no);
+    List<Map<String, Object>> getRawNoteInfoMapByDemographic(String demographic_no);
 
-    public List<Map<String, Object>> getUnsignedRawNoteInfoMapByDemographic(String demographic_no);
+    List<Map<String, Object>> getUnsignedRawNoteInfoMapByDemographic(String demographic_no);
 
-    public List<CaseManagementNote> getNotesByDemographic(String demographic_no, Integer maxNotes);
+    List<CaseManagementNote> getNotesByDemographic(String demographic_no, Integer maxNotes);
 
-    public List<CaseManagementNote> getActiveNotesByDemographic(String demographic_no, String[] issues);
+    List<CaseManagementNote> getActiveNotesByDemographic(String demographic_no, String[] issues);
 
-    public List<CaseManagementNote> getNotesByDemographic(String demographic_no, String[] issueIds, Integer maxNotes);
+    List<CaseManagementNote> getNotesByDemographic(String demographic_no, String[] issueIds, Integer maxNotes);
 
-    public List<CaseManagementNote> getNotesByDemographic(String demographic_no, String[] issueIds);
+    List<CaseManagementNote> getNotesByDemographic(String demographic_no, String[] issueIds);
 
-    public Collection<CaseManagementNote> findNotesByDemographicAndIssueCode(Integer demographic_no,
-                                                                             String[] issueCodes);
+    Collection<CaseManagementNote> findNotesByDemographicAndIssueCode(Integer demographic_no,
+                                                                      String[] issueCodes);
 
-    public List<CaseManagementNote> getNotesByDemographicDateRange(String demographic_no, Date startDate, Date endDate);
+    List<CaseManagementNote> getNotesByDemographicDateRange(String demographic_no, Date startDate, Date endDate);
 
-    public List<CaseManagementNote> getNotesByDemographicLimit(String demographic_no, Integer offset,
-                                                               Integer numToReturn);
+    List<CaseManagementNote> getNotesByDemographicLimit(String demographic_no, Integer offset,
+                                                        Integer numToReturn);
 
-    public void updateNote(CaseManagementNote note);
+    void updateNote(CaseManagementNote note);
 
-    public void saveNote(CaseManagementNote note);
+    void saveNote(CaseManagementNote note);
 
-    public Object saveAndReturn(CaseManagementNote note);
+    Object saveAndReturn(CaseManagementNote note);
 
-    public List<CaseManagementNote> search(CaseManagementSearchBean searchBean);
+    List<CaseManagementNote> search(CaseManagementSearchBean searchBean);
 
-    public List<Long> getAllNoteIds();
+    List<Long> getAllNoteIds();
 
-    public boolean haveIssue(Long issid, String demoNo);
+    boolean haveIssue(Long issid, String demoNo);
 
-    public boolean haveIssue(String issueCode, Integer demographicId);
+    boolean haveIssue(String issueCode, Integer demographicId);
 
-    public int getNoteCountForProviderForDateRange(String providerNo, Date startDate, Date endDate);
+    int getNoteCountForProviderForDateRange(String providerNo, Date startDate, Date endDate);
 
-    public int getNoteCountForProviderForDateRangeWithIssueId(String providerNo, Date startDate, Date endDate,
-                                                              String issueCode);
+    int getNoteCountForProviderForDateRangeWithIssueId(String providerNo, Date startDate, Date endDate,
+                                                       String issueCode);
 
-    public List<CaseManagementNote> searchDemographicNotes(String demographic_no, String searchString);
+    List<CaseManagementNote> searchDemographicNotes(String demographic_no, String searchString);
 
-    public List<CaseManagementNote> getCaseManagementNoteByProgramIdAndObservationDate(Integer programId,
-                                                                                       Date minObservationDate, Date maxObservationDate);
+    List<CaseManagementNote> getCaseManagementNoteByProgramIdAndObservationDate(Integer programId,
+                                                                                Date minObservationDate, Date maxObservationDate);
 
-    public List<CaseManagementNote> getMostRecentNotesByAppointmentNo(int appointmentNo);
+    List<CaseManagementNote> getMostRecentNotesByAppointmentNo(int appointmentNo);
 
-    public List<CaseManagementNote> getMostRecentNotes(Integer demographicNo);
+    List<CaseManagementNote> getMostRecentNotes(Integer demographicNo);
 
-    public Long findMaxNoteId();
+    Long findMaxNoteId();
 
-    public List<Integer> getNotesByFacilitySince(Date date, List<Program> programs);
+    List<Integer> getNotesByFacilitySince(Date date, List<Program> programs);
 
-    public static class EncounterCounts {
+    class EncounterCounts {
         public HashMap<EncounterUtil.EncounterType, Integer> uniqueCounts = new HashMap<EncounterUtil.EncounterType, Integer>();
         public HashMap<EncounterUtil.EncounterType, Integer> nonUniqueCounts = new HashMap<EncounterUtil.EncounterType, Integer>();
         public int totalUniqueCount = 0;
@@ -178,8 +178,8 @@ public interface CaseManagementNoteDAO {
      *
      * @param programId can be null at which point it's across the entire agency
      */
-    public static EncounterCounts getDemographicEncounterCountsByProgramAndRoleId(Integer programId, int roleId,
-                                                                                  Date startDate, Date endDate) {
+    static EncounterCounts getDemographicEncounterCountsByProgramAndRoleId(Integer programId, int roleId,
+                                                                           Date startDate, Date endDate) {
         Connection c = null;
         try {
             EncounterCounts results = new EncounterCounts();

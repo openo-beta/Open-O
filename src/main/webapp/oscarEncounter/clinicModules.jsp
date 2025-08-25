@@ -40,6 +40,7 @@
 %>
 
 <%@page import="java.net.URLEncoder" %>
+<%@ page import="oscar.util.UtilDateUtilities" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -47,12 +48,12 @@
     long startTime = System.currentTimeMillis();
     oscar.oscarEncounter.pageUtil.EctSessionBean bean = null;
     if ((bean = (oscar.oscarEncounter.pageUtil.EctSessionBean) request.getSession().getAttribute("EctSessionBean")) == null) {
-        response.sendError(response.SC_FORBIDDEN);
+        response.sendError(HttpServletResponse.SC_FORBIDDEN);
         //response.sendRedirect("error.jsp");
         return;
     }
     oscar.util.UtilDateUtilities dateConvert = new oscar.util.UtilDateUtilities();
-    String pAge = Integer.toString(dateConvert.calcAge(bean.yearOfBirth, bean.monthOfBirth, bean.dateOfBirth));
+    String pAge = Integer.toString(UtilDateUtilities.calcAge(bean.yearOfBirth, bean.monthOfBirth, bean.dateOfBirth));
     String winName = "";
 %>
 

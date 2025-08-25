@@ -240,11 +240,7 @@ public class CkdScreener {
         if (labs)
             reasons.add("Overdue EGFR Labs (>12 months)");
 
-        boolean isMatch = false;
-
-        if ((positiveDxMatch || positiveBP || positiveCppMatch || positiveAboriginalMatch || positiveDrugMatch) && labs) {
-            isMatch = true;
-        }
+        boolean isMatch = (positiveDxMatch || positiveBP || positiveCppMatch || positiveAboriginalMatch || positiveDrugMatch) && labs;
 
         logger.debug("patient match:" + isMatch);
 

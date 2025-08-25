@@ -310,7 +310,7 @@
                 <br>
                 <input type="hidden" name="pgpReady" id="pgpReady" value="<%=pgp_ready%>"/>
 
-                <% boolean pgpReady = pgp_ready.equals("Yes") ? true : false;
+                <% boolean pgpReady = pgp_ready.equals("Yes");
 //    pgpReady = true; //To be removed after CMS4
                     if (!pgpReady) { %>
 

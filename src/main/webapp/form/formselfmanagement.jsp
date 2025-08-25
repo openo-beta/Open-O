@@ -57,8 +57,7 @@
     String project_home = request.getContextPath().substring(1);
 %>
 <%
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 %>
 <html>
     <head>
@@ -411,19 +410,19 @@
                                             (ranges of motion, using weights, etc.)
                                         </td>
                                         <td align="center"><input type="text" name="ex1" size="5"
-                                                                  maxLength="1" onchange="javascript: exScore1();"
+                                                                  maxLength="1" onchange="exScore1();"
                                                                   value="<%= props.getProperty("ex1", "") %>"/></td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td colspan="4">2. Walk for exercise</td>
                                         <td align="center"><input type="text" name="ex2" size="5"
-                                                                  maxLength="1" onchange="javascript: exScore2();"
+                                                                  maxLength="1" onchange="exScore2();"
                                                                   value="<%= props.getProperty("ex2", "") %>"/></td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td colspan="4">3. Swimming or aquatic exercise</td>
                                         <td align="center"><input type="text" name="ex3" size="5"
-                                                                  maxLength="1" onchange="javascript: exScore2();"
+                                                                  maxLength="1" onchange="exScore2();"
                                                                   value="<%= props.getProperty("ex3", "") %>"/></td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -431,7 +430,7 @@
                                             bike)
                                         </td>
                                         <td align="center"><input type="text" name="ex4" size="5"
-                                                                  maxLength="1" onchange="javascript: exScore2();"
+                                                                  maxLength="1" onchange="exScore2();"
                                                                   value="<%= props.getProperty("ex4", "") %>"/></td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -439,7 +438,7 @@
                                             (stairmaster, rowing or skiing machine)
                                         </td>
                                         <td align="center"><input type="text" name="ex5" size="5"
-                                                                  maxLength="1" onchange="javascript: exScore2();"
+                                                                  maxLength="1" onchange="exScore2();"
                                                                   value="<%= props.getProperty("ex5", "") %>"/></td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -449,7 +448,7 @@
                                                                               value="<%= props.getProperty("ex6Spec", "") %>"/>
                                         </td>
                                         <td align="center"><input type="text" name="ex6" size="5"
-                                                                  maxLength="1" onchange="javascript: exScore2();"
+                                                                  maxLength="1" onchange="exScore2();"
                                                                   value="<%= props.getProperty("ex6", "") %>"/></td>
                                     </tr>
                                     <tr>
@@ -561,7 +560,7 @@
                                             and pretend that it is not part of your body?
                                         </td>
                                         <td align="center"><input type="text" name="cog1" size="5"
-                                                                  maxLength="1" onchange="javascript: cognitiveScore()"
+                                                                  maxLength="1" onchange="cognitiveScore()"
                                                                   value="<%= props.getProperty("cog1", "") %>"/></td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -569,7 +568,7 @@
                                             some other sensation, like a warm, numb feeling?
                                         </td>
                                         <td align="center"><input type="text" name="cog2" size="5"
-                                                                  maxLength="1" onchange="javascript: cognitiveScore()"
+                                                                  maxLength="1" onchange="cognitiveScore()"
                                                                   value="<%= props.getProperty("cog2", "") %>"/></td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -577,13 +576,13 @@
                                             your mind off the discomfort?
                                         </td>
                                         <td align="center"><input type="text" name="cog3" size="5"
-                                                                  maxLength="1" onchange="javascript: cognitiveScore()"
+                                                                  maxLength="1" onchange="cognitiveScore()"
                                                                   value="<%= props.getProperty("cog3", "") %>"/></td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td colspan="5">4. Practice progressive muscle relaxation?</td>
                                         <td align="center"><input type="text" name="cog4" size="5"
-                                                                  maxLength="1" onchange="javascript: cognitiveScore()"
+                                                                  maxLength="1" onchange="cognitiveScore()"
                                                                   value="<%= props.getProperty("cog4", "") %>"/></td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -591,13 +590,13 @@
                                             such as picturing yourself somewhere else?
                                         </td>
                                         <td align="center"><input type="text" name="cog5" size="5"
-                                                                  maxLength="1" onchange="javascript: cognitiveScore()"
+                                                                  maxLength="1" onchange="cognitiveScore()"
                                                                   value="<%= props.getProperty("cog5", "") %>"/></td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td colspan="5">6. Talk to yourself in positive ways?</td>
                                         <td align="center"><input type="text" name="cog6" size="5"
-                                                                  maxLength="1" onchange="javascript: cognitiveScore()"
+                                                                  maxLength="1" onchange="cognitiveScore()"
                                                                   value="<%= props.getProperty("cog6", "") %>"/></td>
                                     </tr>
                                     <tr>
@@ -656,7 +655,7 @@
                                     <tr bgcolor="white">
                                         <td width="35%"></td>
                                         <td width="65%"><input type="text" name="mentalStressTimes"
-                                                               onchange="javascript:calMentalStressScore()" size="5"
+                                                               onchange="calMentalStressScore()" size="5"
                                                                value="<%= props.getProperty("mentalStressTimes", "") %>"/>
                                             times
                                         </td>
@@ -752,77 +751,77 @@
                                     <tr bgcolor="white">
                                         <td>Housecleaning</td>
                                         <td align="center"><input type="checkbox" class="checkbox"
-                                                                  onchange="javascript:tangibleScore()"
+                                                                  onchange="tangibleScore()"
                                                                   name="tangibleHelpHouseN"
                                                 <%= props.getProperty("tangibleHelpHouseN", "") %> /></td>
                                         <td align="center"><input type="checkbox" class="checkbox"
-                                                                  onchange="javascript:tangibleScore()"
+                                                                  onchange="tangibleScore()"
                                                                   name="tangibleHelpHouseY"
                                                 <%= props.getProperty("tangibleHelpHouseY", "") %> /></td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td>Yard work</td>
                                         <td align="center"><input type="checkbox" class="checkbox"
-                                                                  onchange="javascript:tangibleScore()"
+                                                                  onchange="tangibleScore()"
                                                                   name="tangibleHelpYardN"
                                                 <%= props.getProperty("tangibleHelpYardN", "") %> /></td>
                                         <td align="center"><input type="checkbox" class="checkbox"
-                                                                  onchange="javascript:tangibleScore()"
+                                                                  onchange="tangibleScore()"
                                                                   name="tangibleHelpYardY"
                                                 <%= props.getProperty("tangibleHelpYardY", "") %> /></td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td>Home maintenance/repairs</td>
                                         <td align="center"><input type="checkbox" class="checkbox"
-                                                                  onchange="javascript:tangibleScore()"
+                                                                  onchange="tangibleScore()"
                                                                   name="tangibleHelpHomeN"
                                                 <%= props.getProperty("tangibleHelpHomeN", "") %> /></td>
                                         <td align="center"><input type="checkbox" class="checkbox"
-                                                                  onchange="javascript:tangibleScore()"
+                                                                  onchange="tangibleScore()"
                                                                   name="tangibleHelpHomeY"
                                                 <%= props.getProperty("tangibleHelpHomeY", "") %> /></td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td>Meals</td>
                                         <td align="center"><input type="checkbox" class="checkbox"
-                                                                  onchange="javascript:tangibleScore()"
+                                                                  onchange="tangibleScore()"
                                                                   name="tangibleHelpMealN"
                                                 <%= props.getProperty("tangibleHelpMealN", "") %> /></td>
                                         <td align="center"><input type="checkbox" class="checkbox"
-                                                                  onchange="javascript:tangibleScore()"
+                                                                  onchange="tangibleScore()"
                                                                   name="tangibleHelpMealY"
                                                 <%= props.getProperty("tangibleHelpMealY", "") %> /></td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td>Personal hygiene</td>
                                         <td align="center"><input type="checkbox" class="checkbox"
-                                                                  onchange="javascript:tangibleScore()"
+                                                                  onchange="tangibleScore()"
                                                                   name="tangibleHelpHygieneN"
                                                 <%= props.getProperty("tangibleHelpHygieneN", "") %> /></td>
                                         <td align="center"><input type="checkbox" class="checkbox"
-                                                                  onchange="javascript:tangibleScore()"
+                                                                  onchange="tangibleScore()"
                                                                   name="tangibleHelpHygieneY"
                                                 <%= props.getProperty("tangibleHelpHygieneY", "") %> /></td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td>Errands</td>
                                         <td align="center"><input type="checkbox" class="checkbox"
-                                                                  onchange="javascript:tangibleScore()"
+                                                                  onchange="tangibleScore()"
                                                                   name="tangibleHelpErrandsN"
                                                 <%= props.getProperty("tangibleHelpErrandsN", "") %> /></td>
                                         <td align="center"><input type="checkbox" class="checkbox"
-                                                                  onchange="javascript:tangibleScore()"
+                                                                  onchange="tangibleScore()"
                                                                   name="tangibleHelpErrandsY"
                                                 <%= props.getProperty("tangibleHelpErrandsY", "") %> /></td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td>Transportation</td>
                                         <td align="center"><input type="checkbox" class="checkbox"
-                                                                  onchange="javascript:tangibleScore()"
+                                                                  onchange="tangibleScore()"
                                                                   name="tangibleHelpTransportN"
                                                 <%= props.getProperty("tangibleHelpTransportN", "") %> /></td>
                                         <td align="center"><input type="checkbox" class="checkbox"
-                                                                  onchange="javascript:tangibleScore()"
+                                                                  onchange="tangibleScore()"
                                                                   name="tangibleHelpTransportY"
                                                 <%= props.getProperty("tangibleHelpTransportY", "") %> /></td>
                                     </tr>
@@ -870,11 +869,11 @@
                                     <tr bgcolor="white">
                                         <td>Emotional support or counselling</td>
                                         <td align="center"><input type="checkbox" class="checkbox"
-                                                                  onclick="javascript:emotionScore()"
+                                                                  onclick="emotionScore()"
                                                                   name="emotionalSupportN"
                                                 <%= props.getProperty("emotionalSupportN", "") %> /></td>
                                         <td align="center"><input type="checkbox" class="checkbox"
-                                                                  onclick="javascript:emotionScore()"
+                                                                  onclick="emotionScore()"
                                                                   name="emotionalSupportY"
                                                 <%= props.getProperty("emotionalSupportY", "") %> /></td>
                                     </tr>
@@ -936,12 +935,12 @@
                                     <tr bgcolor="white">
                                         <td width="5%">&nbsp;</td>
                                         <td width="15%"><input type="checkbox" class="checkbox"
-                                                               onchange="javascript: healthEdScore()"
+                                                               onchange="healthEdScore()"
                                                                name="healthEducationN"
                                                 <%= props.getProperty("healthEducationN", "") %> /> No
                                         </td>
                                         <td width="15%"><input type="checkbox" class="checkbox"
-                                                               onchange="javascript: healthEdScore()"
+                                                               onchange="healthEdScore()"
                                                                name="healthEducationY"
                                                 <%= props.getProperty("healthEducationY", "") %> /> Yes
                                         </td>
@@ -949,7 +948,7 @@
                                                 style="font-weight: bold">total</font> hours did attend in the <font
                                                 style="font-weight: bold">last 9 months</font>? <input
                                                 type="text" name="healthEducationHours"
-                                                onchange="javascript: healthEdScore()" size="10"
+                                                onchange="healthEdScore()" size="10"
                                                 value="<%= props.getProperty("healthEducationHours", "") %>"/>
                                         </td>
                                     </tr>
@@ -1010,18 +1009,18 @@
                                     <tr bgcolor="white">
                                         <td width="5%">&nbsp;</td>
                                         <td width="15%"><input type="checkbox" class="checkbox"
-                                                               onchange="javascript:exPrgmScore()" name="exercisePrgmN"
+                                                               onchange="exPrgmScore()" name="exercisePrgmN"
                                                 <%= props.getProperty("exercisePrgmN", "") %> /> No
                                         </td>
                                         <td width="15%"><input type="checkbox" class="checkbox"
-                                                               onchange="javascript:exPrgmScore()" name="exercisePrgmY"
+                                                               onchange="exPrgmScore()" name="exercisePrgmY"
                                                 <%= props.getProperty("exercisePrgmY", "") %> /> Yes
                                         </td>
                                         <td width="65%">If Yes, how many <font
                                                 style="font-weight: bold">total</font> hours did attend in the <font
                                                 style="font-weight: bold">last 9 months</font>? <input
                                                 type="text" name="exercisePrgmHours"
-                                                onchange="javascript:exPrgmScore()" size="10"
+                                                onchange="exPrgmScore()" size="10"
                                                 value="<%= props.getProperty("exercisePrgmHours", "") %>"/></td>
                                     </tr>
                                     <tr>
@@ -1125,7 +1124,7 @@
                                             doctor?
                                         </td>
                                         <td align="center"><input type="text" name="communicate1"
-                                                                  onchange="javascript: commScore()" size="5"
+                                                                  onchange="commScore()" size="5"
                                                                   value="<%= props.getProperty("communicate1", "") %>"/>
                                         </td>
                                     </tr>
@@ -1134,7 +1133,7 @@
                                             to know and the things you don't understand about your treatment?
                                         </td>
                                         <td align="center"><input type="text" name="communicate2"
-                                                                  onchange="javascript: commScore()" size="5"
+                                                                  onchange="commScore()" size="5"
                                                                   value="<%= props.getProperty("communicate2", "") %>"/>
                                         </td>
                                     </tr>
@@ -1143,7 +1142,7 @@
                                             related to your illness?
                                         </td>
                                         <td align="center"><input type="text" name="communicate3"
-                                                                  onchange="javascript: commScore()" size="5"
+                                                                  onchange="commScore()" size="5"
                                                                   value="<%= props.getProperty("communicate3", "") %>"/>
                                         </td>
                                     </tr>
@@ -1192,15 +1191,15 @@
                                 <%
                                     if (!bView) {
                                 %> <input type="submit" value="Save"
-                                          onclick="javascript: return onSave();"/> <input type="submit"
+                                          onclick="return onSave();"/> <input type="submit"
                                                                                           value="Save and Exit"
-                                                                                          onclick="javascript:if(checkBeforeSave()==true) return onSaveExit(); else return false;"/>
+                                                                                          onclick="if(checkBeforeSave()==true) return onSaveExit(); else return false;"/>
                                 <%
                                     }
                                 %> <input type="button" value="Exit"
-                                          onclick="javascript:return onExit();"/> <input type="button"
+                                          onclick="return onExit();"/> <input type="button"
                                                                                          value="Print"
-                                                                                         onclick="javascript:window.print();"/>
+                                                                                         onclick="window.print();"/>
                             </td>
                             <td align="right">Study ID: <%= props.getProperty("studyID", "N/A") %>
                                 <input type="hidden" name="studyID"

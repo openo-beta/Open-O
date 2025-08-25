@@ -76,7 +76,7 @@ public class IHAPOIHandler extends MEDITECHHandler implements MessageHandler {
         }
     }
 
-    public static enum STRUCTURED {LAB}
+    public enum STRUCTURED {LAB}
 
     public IHAPOIHandler() {
         // default
@@ -109,13 +109,10 @@ public class IHAPOIHandler extends MEDITECHHandler implements MessageHandler {
      */
     @Override
     public boolean isReportData() {
-        if (OBX_DATA_TYPES.TX.name().equals(getOBXValueType(0, 0))
-                || OBX_DATA_TYPES.FT.name().equals(getOBXValueType(0, 0))
-                || SENDING_APPLICATION.IHARAD.name().equals(getDiagnosticServiceId())
-                || SENDING_APPLICATION.OE.name().equals(getDiagnosticServiceId())) {
-            return true;
-        }
-        return false;
+        return OBX_DATA_TYPES.TX.name().equals(getOBXValueType(0, 0))
+            || OBX_DATA_TYPES.FT.name().equals(getOBXValueType(0, 0))
+            || SENDING_APPLICATION.IHARAD.name().equals(getDiagnosticServiceId())
+            || SENDING_APPLICATION.OE.name().equals(getDiagnosticServiceId());
     }
 
     /**

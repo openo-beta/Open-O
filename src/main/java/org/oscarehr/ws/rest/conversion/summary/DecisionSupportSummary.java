@@ -91,11 +91,13 @@ public class DecisionSupportSummary implements Summary {
             //we have an active one, we should notify
             if (dr.getStatus() == 'A') {
                 notify = true;
+                break;
             }
         }
         for (Dxresearch dr : dxResearchDao.find(demographicNo, "icd9", "585")) {
             if (dr.getStatus() == 'A') {
                 notify = false;
+                break;
             }
         }
         if (!notify) {

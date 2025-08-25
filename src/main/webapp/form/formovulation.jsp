@@ -376,7 +376,7 @@
                 // Check that current character is number.
                 var c = s.charAt(i);
                 if (c == '.') {
-                    continue;
+
                 } else if (((c < "0") || (c > "9"))) {
                     alert('Invalid ' + s + ' in field ' + ss.name);
                     ss.focus();
@@ -1275,7 +1275,7 @@
                         <td height="36" align="center" class="style76"><input
                                 type="text" name="e2Lh1a" size="3"
                                 value="<%=props.getProperty("e2Lh1a", "")%>" class="style71"
-                                onDblClick="javascript:changeColor(this);"> <input
+                                onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh1a"
                                 value="<%=props.getProperty("flag_e2Lh1a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh1a);</script>
@@ -1284,7 +1284,7 @@
                                                                   name="tshPrl1a" size="3"
                                                                   value="<%=props.getProperty("tshPrl1a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl1a"
                                 value="<%=props.getProperty("flag_tshPrl1a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl1a);</script>
@@ -1293,7 +1293,7 @@
                                                                   name="progBhog1a" size="3"
                                                                   value="<%=props.getProperty("progBhog1a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog1a"
                                 value="<%=props.getProperty("flag_progBhog1a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog1a);</script>
@@ -1337,7 +1337,7 @@
                         <td height="28" align="center" class="style76"><input
                                 type="text" name="e2Lh1b" size="3"
                                 value="<%=props.getProperty("e2Lh1b", "")%>" class="style71"
-                                onDblClick="javascript:changeColor(this);"> <input
+                                onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh1b"
                                 value="<%=props.getProperty("flag_e2Lh1b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh1b);</script>
@@ -1346,7 +1346,7 @@
                                                                   name="tshPrl1b" size="3"
                                                                   value="<%=props.getProperty("tshPrl1b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl1b"
                                 value="<%=props.getProperty("flag_tshPrl1b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl1b);</script>
@@ -1355,7 +1355,7 @@
                                                                   name="progBhog1b" size="3"
                                                                   value="<%=props.getProperty("progBhog1b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog1b"
                                 value="<%=props.getProperty("flag_progBhog1b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog1b);</script>
@@ -1364,17 +1364,17 @@
                                                                   name="rightCyst1b" size="5"
                                                                   value="<%=props.getProperty("rightCyst1b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"></td>
+                                                                  onDblClick="changeColor(this);"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst1b" size="5"
                                                                   value="<%=props.getProperty("leftCyst1b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"></td>
+                                                                  onDblClick="changeColor(this);"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX1b" size="5"
                                                                   value="<%=props.getProperty("etTEX1b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"></td>
+                                                                  onDblClick="changeColor(this);"></td>
                     </tr>
                     <tr>
                         <td rowspan="2" align="center" class="style76"><input
@@ -1541,7 +1541,7 @@
                         <td height="37" align="center" class="style76"><input
                                 type="text" name="e2Lh2a" size="3"
                                 value="<%=props.getProperty("e2Lh2a", "")%>" class="style71"
-                                onDblClick="javascript:changeColor(this);"> <input
+                                onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh2a"
                                 value="<%=props.getProperty("flag_e2Lh2a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh2a);</script>
@@ -1550,7 +1550,7 @@
                                                                   name="tshPrl2a" size="3"
                                                                   value="<%=props.getProperty("tshPrl2a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl2a"
                                 value="<%=props.getProperty("flag_tshPrl2a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl2a);</script>
@@ -1559,7 +1559,7 @@
                                                                   name="progBhog2a" size="3"
                                                                   value="<%=props.getProperty("progBhog2a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog2a"
                                 value="<%=props.getProperty("flag_progBhog2a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog2a);</script>
@@ -1602,7 +1602,7 @@
                         <td height="26" align="center" class="style76"><input
                                 type="text" name="e2Lh2b" size="3"
                                 value="<%=props.getProperty("e2Lh2b", "")%>" class="style71"
-                                onDblClick="javascript:changeColor(this);"> <input
+                                onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh2b"
                                 value="<%=props.getProperty("flag_e2Lh2b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh2b);</script>
@@ -1611,7 +1611,7 @@
                                                                   name="tshPrl2b" size="3"
                                                                   value="<%=props.getProperty("tshPrl2b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl2b"
                                 value="<%=props.getProperty("flag_tshPrl2b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl2b);</script>
@@ -1620,7 +1620,7 @@
                                                                   name="progBhog2b" size="3"
                                                                   value="<%=props.getProperty("progBhog2b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog2b"
                                 value="<%=props.getProperty("flag_progBhog2b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog2b);</script>
@@ -1803,7 +1803,7 @@
                         <td height="35" align="center" class="style76"><input
                                 type="text" name="e2Lh3a" size="3"
                                 value="<%=props.getProperty("e2Lh3a", "")%>" class="style71"
-                                onDblClick="javascript:changeColor(this);"> <input
+                                onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh3a"
                                 value="<%=props.getProperty("flag_e2Lh3a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh3a);</script>
@@ -1812,7 +1812,7 @@
                                                                   name="tshPrl3a" size="3"
                                                                   value="<%=props.getProperty("tshPrl3a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl3a"
                                 value="<%=props.getProperty("flag_tshPrl3a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl3a);</script>
@@ -1821,7 +1821,7 @@
                                                                   name="progBhog3a" size="3"
                                                                   value="<%=props.getProperty("progBhog3a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog3a"
                                 value="<%=props.getProperty("flag_progBhog3a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog3a);</script>
@@ -1863,7 +1863,7 @@
                         <td height="26" align="center" class="style76"><input
                                 type="text" name="e2Lh3b" size="3"
                                 value="<%=props.getProperty("e2Lh3b", "")%>" class="style71"
-                                onDblClick="javascript:changeColor(this);"> <input
+                                onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh3b"
                                 value="<%=props.getProperty("flag_e2Lh3b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh3b);</script>
@@ -1872,7 +1872,7 @@
                                                                   name="tshPrl3b" size="3"
                                                                   value="<%=props.getProperty("tshPrl3b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl3b"
                                 value="<%=props.getProperty("flag_tshPrl3b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl3b);</script>
@@ -1881,7 +1881,7 @@
                                                                   name="progBhog3b" size="3"
                                                                   value="<%=props.getProperty("progBhog3b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog3b"
                                 value="<%=props.getProperty("flag_progBhog3b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog3b);</script>
@@ -2064,7 +2064,7 @@
                         <td height="34" align="center" class="style76"><input
                                 type="text" name="e2Lh4a" size="3"
                                 value="<%=props.getProperty("e2Lh4a", "")%>" class="style71"
-                                onDblClick="javascript:changeColor(this);"> <input
+                                onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh4a"
                                 value="<%=props.getProperty("flag_e2Lh4a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh4a);</script>
@@ -2073,7 +2073,7 @@
                                                                   name="tshPrl4a" size="3"
                                                                   value="<%=props.getProperty("tshPrl4a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl4a"
                                 value="<%=props.getProperty("flag_tshPrl4a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl4a);</script>
@@ -2082,7 +2082,7 @@
                                                                   name="progBhog4a" size="3"
                                                                   value="<%=props.getProperty("progBhog4a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog4a"
                                 value="<%=props.getProperty("flag_progBhog4a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog4a);</script>
@@ -2125,7 +2125,7 @@
                                                                   name="e2Lh4b" size="3"
                                                                   value="<%=props.getProperty("e2Lh4b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh4b"
                                 value="<%=props.getProperty("flag_e2Lh4b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh4b);</script>
@@ -2134,7 +2134,7 @@
                                                                   name="tshPrl4b" size="3"
                                                                   value="<%=props.getProperty("tshPrl4b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl4b"
                                 value="<%=props.getProperty("flag_tshPrl4b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl4b);</script>
@@ -2143,7 +2143,7 @@
                                                                   name="progBhog4b" size="3"
                                                                   value="<%=props.getProperty("progBhog4b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog4b"
                                 value="<%=props.getProperty("flag_progBhog4b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog4b);</script>
@@ -2326,7 +2326,7 @@
                         <td height="38" align="center" class="style76"><input
                                 type="text" name="e2Lh5a" size="3"
                                 value="<%=props.getProperty("e2Lh5a", "")%>" class="style71"
-                                onDblClick="javascript:changeColor(this);"> <input
+                                onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh5a"
                                 value="<%=props.getProperty("flag_e2Lh5a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh5a);</script>
@@ -2335,7 +2335,7 @@
                                                                   name="tshPrl5a" size="3"
                                                                   value="<%=props.getProperty("tshPrl5a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl5a"
                                 value="<%=props.getProperty("flag_tshPrl5a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl5a);</script>
@@ -2344,7 +2344,7 @@
                                                                   name="progBhog5a" size="3"
                                                                   value="<%=props.getProperty("progBhog5a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog5a"
                                 value="<%=props.getProperty("flag_progBhog5a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog5a);</script>
@@ -2387,7 +2387,7 @@
                                                                   name="e2Lh5b" size="3"
                                                                   value="<%=props.getProperty("e2Lh5b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh5b"
                                 value="<%=props.getProperty("flag_e2Lh5b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh5b);</script>
@@ -2396,7 +2396,7 @@
                                                                   name="tshPrl5b" size="3"
                                                                   value="<%=props.getProperty("tshPrl5b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl5b"
                                 value="<%=props.getProperty("flag_tshPrl5b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl5b);</script>
@@ -2405,7 +2405,7 @@
                                                                   name="progBhog5b" size="3"
                                                                   value="<%=props.getProperty("progBhog5b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog5b"
                                 value="<%=props.getProperty("flag_progBhog5b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog5b);</script>
@@ -2588,7 +2588,7 @@
                         <td height="34" align="center" class="style76"><input
                                 type="text" name="e2Lh6a" size="3"
                                 value="<%=props.getProperty("e2Lh6a", "")%>" class="style71"
-                                onDblClick="javascript:changeColor(this);"> <input
+                                onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh6a"
                                 value="<%=props.getProperty("flag_e2Lh6a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh6a);</script>
@@ -2597,7 +2597,7 @@
                                                                   name="tshPrl6a" size="3"
                                                                   value="<%=props.getProperty("tshPrl6a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl6a"
                                 value="<%=props.getProperty("flag_tshPrl6a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl6a);</script>
@@ -2606,7 +2606,7 @@
                                                                   name="progBhog6a" size="3"
                                                                   value="<%=props.getProperty("progBhog6a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog6a"
                                 value="<%=props.getProperty("flag_progBhog6a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog6a);</script>
@@ -2649,7 +2649,7 @@
                                                                   name="e2Lh6b" size="3"
                                                                   value="<%=props.getProperty("e2Lh6b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh6b"
                                 value="<%=props.getProperty("flag_e2Lh6b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh6b);</script>
@@ -2658,7 +2658,7 @@
                                                                   name="tshPrl6b" size="3"
                                                                   value="<%=props.getProperty("tshPrl6b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl6b"
                                 value="<%=props.getProperty("flag_tshPrl6b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl6b);</script>
@@ -2667,7 +2667,7 @@
                                                                   name="progBhog6b" size="3"
                                                                   value="<%=props.getProperty("progBhog6b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog6b"
                                 value="<%=props.getProperty("flag_progBhog6b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog6b);</script>
@@ -2850,7 +2850,7 @@
                         <td height="36" align="center" class="style76"><input
                                 type="text" name="e2Lh7a" size="3"
                                 value="<%=props.getProperty("e2Lh7a", "")%>" class="style71"
-                                onDblClick="javascript:changeColor(this);"> <input
+                                onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh7a"
                                 value="<%=props.getProperty("flag_e2Lh7a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh7a);</script>
@@ -2859,7 +2859,7 @@
                                                                   name="tshPrl7a" size="3"
                                                                   value="<%=props.getProperty("tshPrl7a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl7a"
                                 value="<%=props.getProperty("flag_tshPrl7a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl7a);</script>
@@ -2868,7 +2868,7 @@
                                                                   name="progBhog7a" size="3"
                                                                   value="<%=props.getProperty("progBhog7a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog7a"
                                 value="<%=props.getProperty("flag_progBhog7a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog7a);</script>
@@ -2910,7 +2910,7 @@
                         <td height="27" align="center" class="style76"><input
                                 type="text" name="e2Lh7b" size="3"
                                 value="<%=props.getProperty("e2Lh7b", "")%>" class="style71"
-                                onDblClick="javascript:changeColor(this);"> <input
+                                onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh7b"
                                 value="<%=props.getProperty("flag_e2Lh7b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh7b);</script>
@@ -2919,7 +2919,7 @@
                                                                   name="tshPrl7b" size="3"
                                                                   value="<%=props.getProperty("tshPrl7b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl7b"
                                 value="<%=props.getProperty("flag_tshPrl7b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl7b);</script>
@@ -2928,7 +2928,7 @@
                                                                   name="progBhog7b" size="3"
                                                                   value="<%=props.getProperty("progBhog7b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog7b"
                                 value="<%=props.getProperty("flag_progBhog7b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog7b);</script>
@@ -3111,7 +3111,7 @@
                         <td height="34" align="center" class="style76"><input
                                 type="text" name="e2Lh8a" size="3"
                                 value="<%=props.getProperty("e2Lh8a", "")%>" class="style71"
-                                onDblClick="javascript:changeColor(this);"> <input
+                                onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh8a"
                                 value="<%=props.getProperty("flag_e2Lh8a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh8a);</script>
@@ -3120,7 +3120,7 @@
                                                                   name="tshPrl8a" size="3"
                                                                   value="<%=props.getProperty("tshPrl8a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl8a"
                                 value="<%=props.getProperty("flag_tshPrl8a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl8a);</script>
@@ -3129,7 +3129,7 @@
                                                                   name="progBhog8a" size="3"
                                                                   value="<%=props.getProperty("progBhog8a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog8a"
                                 value="<%=props.getProperty("flag_progBhog8a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog8a);</script>
@@ -3172,7 +3172,7 @@
                                                                   name="e2Lh8b" size="3"
                                                                   value="<%=props.getProperty("e2Lh8b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh8b"
                                 value="<%=props.getProperty("flag_e2Lh8b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh8b);</script>
@@ -3181,7 +3181,7 @@
                                                                   name="tshPrl8b" size="3"
                                                                   value="<%=props.getProperty("tshPrl8b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl8b"
                                 value="<%=props.getProperty("flag_tshPrl8b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl8b);</script>
@@ -3190,7 +3190,7 @@
                                                                   name="progBhog8b" size="3"
                                                                   value="<%=props.getProperty("progBhog8b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog8b"
                                 value="<%=props.getProperty("flag_progBhog8b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog8b);</script>
@@ -3373,7 +3373,7 @@
                         <td height="32" align="center" class="style76"><input
                                 type="text" name="e2Lh9a" size="3"
                                 value="<%=props.getProperty("e2Lh9a", "")%>" class="style71"
-                                onDblClick="javascript:changeColor(this);"> <input
+                                onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh9a"
                                 value="<%=props.getProperty("flag_e2Lh9a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh9a);</script>
@@ -3382,7 +3382,7 @@
                                                                   name="tshPrl9a" size="3"
                                                                   value="<%=props.getProperty("tshPrl9a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl9a"
                                 value="<%=props.getProperty("flag_tshPrl9a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl9a);</script>
@@ -3391,7 +3391,7 @@
                                                                   name="progBhog9a" size="3"
                                                                   value="<%=props.getProperty("progBhog9a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog9a"
                                 value="<%=props.getProperty("flag_progBhog9a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog9a);</script>
@@ -3434,7 +3434,7 @@
                         <td height="28" align="center" class="style76"><input
                                 type="text" name="e2Lh9b" size="3"
                                 value="<%=props.getProperty("e2Lh9b", "")%>" class="style71"
-                                onDblClick="javascript:changeColor(this);"> <input
+                                onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh9b"
                                 value="<%=props.getProperty("flag_e2Lh9b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh9b);</script>
@@ -3443,7 +3443,7 @@
                                                                   name="tshPrl9b" size="3"
                                                                   value="<%=props.getProperty("tshPrl9b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl9b"
                                 value="<%=props.getProperty("flag_tshPrl9b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl9b);</script>
@@ -3452,7 +3452,7 @@
                                                                   name="progBhog9b" size="3"
                                                                   value="<%=props.getProperty("progBhog9b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog9b"
                                 value="<%=props.getProperty("flag_progBhog9b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog9b);</script>
@@ -3635,7 +3635,7 @@
                         <td height="38" align="center" class="style76"><input
                                 type="text" name="e2Lh10a" size="3"
                                 value="<%=props.getProperty("e2Lh10a", "")%>" class="style71"
-                                onDblClick="javascript:changeColor(this);"> <input
+                                onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh10a"
                                 value="<%=props.getProperty("flag_e2Lh10a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh10a);</script>
@@ -3644,7 +3644,7 @@
                                                                   name="tshPrl10a" size="3"
                                                                   value="<%=props.getProperty("tshPrl10a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl10a"
                                 value="<%=props.getProperty("flag_tshPrl10a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl10a);</script>
@@ -3653,7 +3653,7 @@
                                                                   name="progBhog10a" size="3"
                                                                   value="<%=props.getProperty("progBhog10a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog10a"
                                 value="<%=props.getProperty("flag_progBhog10a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog10a);</script>
@@ -3698,7 +3698,7 @@
                                                                   name="e2Lh10b" size="3"
                                                                   value="<%=props.getProperty("e2Lh10b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh10b"
                                 value="<%=props.getProperty("flag_e2Lh10b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh10b);</script>
@@ -3707,7 +3707,7 @@
                                                                   name="tshPrl10b" size="3"
                                                                   value="<%=props.getProperty("tshPrl10b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl10b"
                                 value="<%=props.getProperty("flag_tshPrl10b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl10b);</script>
@@ -3716,7 +3716,7 @@
                                                                   name="progBhog10b" size="3"
                                                                   value="<%=props.getProperty("progBhog10b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog10b"
                                 value="<%=props.getProperty("flag_progBhog10b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog10b);</script>
@@ -3899,7 +3899,7 @@
                         <td height="36" align="center" class="style76"><input
                                 type="text" name="e2Lh11a" size="3"
                                 value="<%=props.getProperty("e2Lh11a", "")%>" class="style71"
-                                onDblClick="javascript:changeColor(this);"> <input
+                                onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh11a"
                                 value="<%=props.getProperty("flag_e2Lh11a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh11a);</script>
@@ -3908,7 +3908,7 @@
                                                                   name="tshPrl11a" size="3"
                                                                   value="<%=props.getProperty("tshPrl11a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl11a"
                                 value="<%=props.getProperty("flag_tshPrl11a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl11a);</script>
@@ -3917,7 +3917,7 @@
                                                                   name="progBhog11a" size="3"
                                                                   value="<%=props.getProperty("progBhog11a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog11a"
                                 value="<%=props.getProperty("flag_progBhog11a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog11a);</script>
@@ -3963,7 +3963,7 @@
                                                                   name="e2Lh11b" size="3"
                                                                   value="<%=props.getProperty("e2Lh11b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh11b"
                                 value="<%=props.getProperty("flag_e2Lh11b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh11b);</script>
@@ -3972,7 +3972,7 @@
                                                                   name="tshPrl11b" size="3"
                                                                   value="<%=props.getProperty("tshPrl11b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl11b"
                                 value="<%=props.getProperty("flag_tshPrl11b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl11b);</script>
@@ -3981,7 +3981,7 @@
                                                                   name="progBhog11b" size="3"
                                                                   value="<%=props.getProperty("progBhog11b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog11b"
                                 value="<%=props.getProperty("flag_progBhog11b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog11b);</script>
@@ -4164,7 +4164,7 @@
                         <td height="33" align="center" class="style76"><input
                                 type="text" name="e2Lh12a" size="3"
                                 value="<%=props.getProperty("e2Lh12a", "")%>" class="style71"
-                                onDblClick="javascript:changeColor(this);"> <input
+                                onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh12a"
                                 value="<%=props.getProperty("flag_e2Lh12a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh12a);</script>
@@ -4173,7 +4173,7 @@
                                                                   name="tshPrl12a" size="3"
                                                                   value="<%=props.getProperty("tshPrl12a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl12a"
                                 value="<%=props.getProperty("flag_tshPrl12a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl12a);</script>
@@ -4182,7 +4182,7 @@
                                                                   name="progBhog12a" size="3"
                                                                   value="<%=props.getProperty("progBhog12a", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog12a"
                                 value="<%=props.getProperty("flag_progBhog12a", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog12a);</script>
@@ -4223,7 +4223,7 @@
                         <td height="32" align="center" class="style76"><input
                                 type="text" name="e2Lh12b" size="3"
                                 value="<%=props.getProperty("e2Lh12b", "")%>" class="style71"
-                                onDblClick="javascript:changeColor(this);"> <input
+                                onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh12b"
                                 value="<%=props.getProperty("flag_e2Lh12b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh12b);</script>
@@ -4232,7 +4232,7 @@
                                                                   name="tshPrl12b" size="3"
                                                                   value="<%=props.getProperty("tshPrl12b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl12b"
                                 value="<%=props.getProperty("flag_tshPrl12b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl12b);</script>
@@ -4241,7 +4241,7 @@
                                                                   name="progBhog12b" size="3"
                                                                   value="<%=props.getProperty("progBhog12b", "")%>"
                                                                   class="style71"
-                                                                  onDblClick="javascript:changeColor(this);"> <input
+                                                                  onDblClick="changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog12b"
                                 value="<%=props.getProperty("flag_progBhog12b", "")%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog12b);</script>
@@ -4650,13 +4650,13 @@
                             <tr>
                                 <td align="center" class="style76"><input type="submit"
                                                                           value="Save"
-                                                                          onclick="javascript:return onSave('<%=request.getContextPath() %>/form/formname.do');"/>
+                                                                          onclick="return onSave('<%=request.getContextPath() %>/form/formname.do');"/>
                                     <input type="submit" value="Save and Exit"
-                                           onclick="javascript:return onSaveExit('<%=request.getContextPath() %>/form/formname.do');"/>
+                                           onclick="return onSaveExit('<%=request.getContextPath() %>/form/formname.do');"/>
                                     <input type="submit" value="Exit"
-                                           onclick="javascript:return onExit();"/> <input type="submit"
+                                           onclick="return onExit();"/> <input type="submit"
                                                                                           value="Print"
-                                                                                          onClick="javascript:return onPrint();"/>
+                                                                                          onClick="return onPrint();"/>
                                 </td>
                             </tr>
                         </table>

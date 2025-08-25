@@ -34,25 +34,25 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 public interface CaseManagementNoteLinkDAO {
 
-    public CaseManagementNoteLink getNoteLink(Long id);
+    CaseManagementNoteLink getNoteLink(Long id);
 
-    public List<CaseManagementNoteLink> getLinkByTableId(Integer tableName, Long tableId);
+    List<CaseManagementNoteLink> getLinkByTableId(Integer tableName, Long tableId);
 
-    public List<CaseManagementNoteLink> getLinkByTableId(Integer tableName, Long tableId, String otherId);
+    List<CaseManagementNoteLink> getLinkByTableId(Integer tableName, Long tableId, String otherId);
 
-    public List<CaseManagementNoteLink> getLinkByTableIdDesc(Integer tableName, Long tableId);
+    List<CaseManagementNoteLink> getLinkByTableIdDesc(Integer tableName, Long tableId);
 
-    public List<CaseManagementNoteLink> getLinkByTableIdDesc(Integer tableName, Long tableId, String otherId);
+    List<CaseManagementNoteLink> getLinkByTableIdDesc(Integer tableName, Long tableId, String otherId);
 
-    public List<CaseManagementNoteLink> getLinkByNote(Long noteId);
+    List<CaseManagementNoteLink> getLinkByNote(Long noteId);
 
-    public CaseManagementNoteLink getLastLinkByTableId(Integer tableName, Long tableId, String otherId);
+    CaseManagementNoteLink getLastLinkByTableId(Integer tableName, Long tableId, String otherId);
 
-    public CaseManagementNoteLink getLastLinkByTableId(Integer tableName, Long tableId);
+    CaseManagementNoteLink getLastLinkByTableId(Integer tableName, Long tableId);
 
-    public CaseManagementNoteLink getLastLinkByNote(Long noteId);
+    CaseManagementNoteLink getLastLinkByNote(Long noteId);
 
-    public void save(CaseManagementNoteLink cLink);
+    void save(CaseManagementNoteLink cLink);
 
-    public void update(CaseManagementNoteLink cLink);
+    void update(CaseManagementNoteLink cLink);
 }

@@ -226,11 +226,7 @@
         if (request.getParameter("submit") != null && providerNo != null) {
             // set dx/serviceCode mode
             boolean bDx = true;
-            if ("DxCode".equals(request.getParameter("codeType"))) {
-                bDx = true;
-            } else {
-                bDx = false;
-            }
+            bDx = "DxCode".equals(request.getParameter("codeType"));
 
             // get dx code list
             Vector vServiceCode = new Vector();

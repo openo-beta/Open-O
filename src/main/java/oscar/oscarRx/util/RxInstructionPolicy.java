@@ -122,7 +122,7 @@ public class RxInstructionPolicy {
             Pattern p1 = Pattern.compile(p);
             Matcher m1 = p1.matcher(instructions);
             if (m1.find()) {
-                errors.add("Policy Violation: '" + violation + ((replacement != null) ? "'\nPlease use: " + replacement + "" : ""));
+                errors.add("Policy Violation: '" + violation + ((replacement != null) ? "'\nPlease use: " + replacement : ""));
             }
         }
     }

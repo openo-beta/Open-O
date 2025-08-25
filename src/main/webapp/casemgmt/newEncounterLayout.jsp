@@ -288,7 +288,7 @@
                         }
                     }
                 );
-            };
+            }
 
             function addLeftNavDiv(name) {
                 var div = document.createElement("div");
@@ -380,7 +380,7 @@
             socHistoryLabel = "oscarEncounter.socHistory.title";
             medHistoryLabel = "oscarEncounter.medHistory.title";
             onGoingLabel = "oscarEncounter.onGoing.title";
-            ;
+
             remindersLabel = "oscarEncounter.reminders.title";
             oMedsLabel = "oscarEncounter.oMeds.title";
             famHistoryLabel = "oscarEncounter.famHistory.title";

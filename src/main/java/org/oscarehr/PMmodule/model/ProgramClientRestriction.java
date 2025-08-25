@@ -164,9 +164,7 @@ public class ProgramClientRestriction implements Serializable {
 
         ProgramClientRestriction that = (ProgramClientRestriction) o;
 
-        if (id != that.id) return false;
-
-        return true;
+        return id == that.id;
     }
 
     public int hashCode() {

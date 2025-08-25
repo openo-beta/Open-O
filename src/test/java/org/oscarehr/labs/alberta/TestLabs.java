@@ -81,23 +81,20 @@ public class TestLabs {
             "NTE|1|I|A D-Dimer level less than 0.51 mg/L FEU may be used with a standardized\r" +
             "NTE|2|I|clinical assessment and/or imaging studies to help exclude venous\r" +
             "NTE|3|I|thromboembolism.  Values above the cut-off are not diagnostically used for VTE\r" +
-            "NTE|4|I|assessment.\r" +
-            "";
+            "NTE|4|I|assessment.\r";
 
     final static String LAB06 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101203123040||ORU^R01|Q199816411T198313528|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
             "PV1|1|E|05031^^^88000|||||||||||||||E\r" +
             "OBR|1||0176439373^101LA|2921802^DRUG SCREEN URINE - TOXICOLOGY^L01N|||20101203121800|||||||20101203122000|^^|1001745^Test, Physician - p-Test Physician||||10-337-300043||20101203123037||LA|F||1^^^20101203121800^^RT~^^^20101203121800^^RT|\r" +
             "OBX|1|ST|4677619^URINE TOXICOLOGY REPORT^L01N||prelimiary findings show the presence of cannabiniods||||||F|||20101203123034\r" +
-            "NTE|1|I|Results are intended to be used for medical (i.e. treatment) purposes.\r" +
-            "";
+            "NTE|1|I|Results are intended to be used for medical (i.e. treatment) purposes.\r";
 
     final static String LAB07 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209094914||ORU^R01|Q199820946T198318041|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
             "PV1|1|E|05031^^^88000|||||||||||||||E\r" +
             "OBR|1||0176439468^101LA|12104818^DRUG SCREEN URINE - FINAL^L01N|||20101203121800|||||||20101203122000|^^|1001745^Test, Physician - p-Test Physician||||10-337-300043||20101209094921||LA|F||1^^^20101203121800^^RT~^^^^^RT|\r" +
-            "OBX|1|ST|12152702^Drug Screen Urine Final^L01N||The presence of Cannabiniods have been confirmed by GC-MS testing.||||||F|||20101209094915\r" +
-            "";
+            "OBX|1|ST|12152702^Drug Screen Urine Final^L01N||The presence of Cannabiniods have been confirmed by GC-MS testing.||||||F|||20101209094915\r";
 
     final static String LAB08 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209104801||ORU^R01|Q199821192T198318291|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -106,8 +103,7 @@ public class TestLabs {
             "OBX|1|ST|4677619^URINE TOXICOLOGY REPORT^L01N||prelimiary findings show the presence of cannabiniods  *************************************** ERROR - Disregard above report ***************************************||||||C|||20101209104802\r" +
             "NTE|1|I|Results are intended to be used for medical (i.e. treatment) purposes.\r" +
             "NTE|2|I|Results are intended to be used for medical (i.e. treatment) purposes.\r" +
-            "NTE|3||Corrected from   [NA] on 12/03/2010 12:30:34 MDT by MLTGL.\r" +
-            "";
+            "NTE|3||Corrected from   [NA] on 12/03/2010 12:30:34 MDT by MLTGL.\r";
 
     final static String LAB09 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209104801||ORU^R01|Q199821194T198318293|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -118,15 +114,13 @@ public class TestLabs {
             "OBX|3|ST|12152702^Drug Screen Urine Final^L01N||**********************************************||||||C|||20101209104802\r" +
             "OBX|4|ST|12152702^Drug Screen Urine Final^L01N||ERROR- Please disregard above report||||||C|||20101209104802\r" +
             "OBX|5|ST|12152702^Drug Screen Urine Final^L01N||**********************************************||||||C|||20101209104802\r" +
-            "OBX|6|ST|12152702^Drug Screen Urine Final^L01N||GC-MS testing has confirmed the presence of Barbiturate metabolites||||||C|||20101209104802\r" +
-            "";
+            "OBX|6|ST|12152702^Drug Screen Urine Final^L01N||GC-MS testing has confirmed the presence of Barbiturate metabolites||||||C|||20101209104802\r";
 
     final static String LAB10 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209121440||ORU^R01|Q199821404T198318506|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
             "PV1|1|E|05031^^^88000|||||||||||||||E\r" +
             "OBR|1||0176448776^101LA|2921521^FOLLICLE STIMULATING HORMONE^L01N|||20101209121300|||||||20101209121300|^^|1001745^Test, Physician - p-Test Physician||||10-343-300087||20101209121448||LA|F||1^^^20101209121300^^RT~^^^^^RT|\r" +
-            "OBX|1|NM|4673182^FSH^L01N||16|IU/L|||||F|||20101209121442\r" +
-            "";
+            "OBX|1|NM|4673182^FSH^L01N||16|IU/L|||||F|||20101209121442\r";
 
     final static String LAB11 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209121441||ORU^R01|Q199821406T198318508|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -139,8 +133,7 @@ public class TestLabs {
             "NTE|3|C|Mid-Cycle Peak:     3 - 33 IU/L\r" +
             "NTE|4|C|Luteal Phase:          1 - 9 IU/L\r" +
             "NTE|5|C|Post-Menopausal:   23 - 116 IU/L\r" +
-            "NTE|6|C|                                           .\r" +
-            "";
+            "NTE|6|C|                                           .\r";
 
     final static String LAB12 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209121937||ORU^R01|Q199821416T198318516|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -148,30 +141,26 @@ public class TestLabs {
             "OBR|1||0176448784^101LA|2921686^PHENYTOIN^L01N|||20101209121300|||||||20101209121800|^^|1001745^Test, Physician - p-Test Physician||||10-343-300088||20101209121944||LA|F||1^^^20101209121300^^RT~^^^^^RT|\r" +
             "OBX|1|NM|4673215^PHENYTOIN^L01N||76|umol/L|40-80||||F|||20101209121938\r" +
             "OBX|2|ST|4672225^DATE LAST PHENYTOIN^L01N||20101209||||||F|||20101209121938\r" +
-            "OBX|3|ST|4672915^TIME DOSE PHENYTOIN^L01N||0800||||||F|||20101209121938\r" +
-            "";
+            "OBX|3|ST|4672915^TIME DOSE PHENYTOIN^L01N||0800||||||F|||20101209121938\r";
 
     final static String LAB13 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209122130||ORU^R01|Q199821425T198318525|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
             "PV1|1|E|05031^^^88000|||||||||||||||E\r" +
             "OBR|1||0176448796^101LA|2921259^POTASSIUM^L01N|||20101209121300|||||||20101209122100|^^|1001745^Test, Physician - p-Test Physician||||10-343-300089||20101209122138||LA|F||1^^^20101209121300^^RT~^^^^^RT|\r" +
-            "OBX|1|NM|4673635^POTASSIUM^L01N||8.7|mmol/L|3.3-5.1|C|||F|||20101209122131\r" +
-            "";
+            "OBX|1|NM|4673635^POTASSIUM^L01N||8.7|mmol/L|3.3-5.1|C|||F|||20101209122131\r";
 
     final static String LAB14 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209130651||ORU^R01|Q199821475T198318570|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
             "PV1|1|E|05031^^^88000|||||||||||||||E\r" +
             "OBR|1||0176448827^101LA|8232642^HEMOGLOBIN AND HEMATOCRIT^L01N|||20101209130500|||||||20101209130500|^^|1001745^Test, Physician - p-Test Physician||||10-343-300090||20101209130658||LA|F||1^^^20101209130500^^RT~^^^^^RT|\r" +
             "OBX|1|NM|12152330^HEMOGLOBIN..^L01N||165|g/L|120-160|H|||F|||20101209130652\r" +
-            "OBX|2|NM|12332593^HEMATOCRIT..^L01N||0.42|L/L|0.36-0.48||||F|||20101209130652\r" +
-            "";
+            "OBX|2|NM|12332593^HEMATOCRIT..^L01N||0.42|L/L|0.36-0.48||||F|||20101209130652\r";
 
     final static String LAB15 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209131021||ORU^R01|Q199821483T198318577|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
             "PV1|1|E|05031^^^88000|||||||||||||||E\r" +
             "OBR|1||0176448835^101LA|4356874^IMMUNOGLOBULIN G^L01N|||20101209130500|||||||20101209130800|^^|1001745^Test, Physician - p-Test Physician||||10-343-300091||20101209131028||LA|F||1^^^20101209130500^^RT~^^^^^RT|\r" +
-            "OBX|1|ST|4674253^IMMUNOGLOBULIN G^L01N||<0.52|g/L|6.80-18.00|L|||F|||20101209131022\r" +
-            "";
+            "OBX|1|ST|4674253^IMMUNOGLOBULIN G^L01N||<0.52|g/L|6.80-18.00|L|||F|||20101209131022\r";
 
     final static String LAB16 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209134852||ORU^R01|Q199821620T198318714|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -184,8 +173,7 @@ public class TestLabs {
             "OBX|5|NM|4673047^MCHC^L01N||332|g/L|320 - 360||||F|||20101209134851\r" +
             "OBX|6|NM|4673476^RDW^L01N||18.0|%|11.0 - 16.0|H|||F|||20101209134851\r" +
             "OBX|7|NM|4673236^PLATELET COUNT^L01N||42|10E9/L|150 - 400|L|||F|||20101209134851\r" +
-            "OBX|8|NM|4673800^WBC^L01N||10.0|10E9/L|4.0 - 11.0||||F|||20101209134851\r" +
-            "";
+            "OBX|8|NM|4673800^WBC^L01N||10.0|10E9/L|4.0 - 11.0||||F|||20101209134851\r";
 
     final static String LAB17 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209134853||ORU^R01|Q199821622T198318716|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -203,8 +191,7 @@ public class TestLabs {
             "OBX|10|NM|4673014^LYMPHOCYTES^L01N||3.0|10E9/L|0.5 - 3.3||||F|||20101209134851\r" +
             "OBX|11|NM|4673074^MONOCYTES^L01N||1.0|10E9/L|0.0 - 1.0||||F|||20101209134851\r" +
             "OBX|12|NM|4674892^EOSINOPHILS^L01N||0.0|10E9/L|0.0 - 0.7||||F|||20101209134851\r" +
-            "OBX|13|NM|4673350^BASOPHILS^L01N||0.0|10E9/L|0.0 - 0.2||||F|||20101209134851\r" +
-            "";
+            "OBX|13|NM|4673350^BASOPHILS^L01N||0.0|10E9/L|0.0 - 0.2||||F|||20101209134851\r";
 
     final static String LAB18 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209140004||ORU^R01|Q199821652T198318746|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -225,8 +212,7 @@ public class TestLabs {
             "OBX|10|NM|4673014^LYMPHOCYTES^L01N||3.0|10E9/L|0.5 - 3.3||||F|||20101209134851\r" +
             "OBX|11|NM|4673074^MONOCYTES^L01N||1.0|10E9/L|0.0 - 1.0||||F|||20101209134851\r" +
             "OBX|12|NM|4674892^EOSINOPHILS^L01N||0.0|10E9/L|0.0 - 0.7||||F|||20101209134851\r" +
-            "OBX|13|NM|4673350^BASOPHILS^L01N||0.0|10E9/L|0.0 - 0.2||||F|||20101209134851\r" +
-            "";
+            "OBX|13|NM|4673350^BASOPHILS^L01N||0.0|10E9/L|0.0 - 0.2||||F|||20101209134851\r";
 
     final static String LAB19 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209144631||ORU^R01|Q199821750T198318838|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -234,16 +220,14 @@ public class TestLabs {
             "OBR|1||0176448997^101LA|4382056^DIFFERENTIAL^L01N|||20101209133700|||||||20101209133700|^^|1001745^Test, Physician - p-Test Physician||||10-343-300092||20101209144638||LA|F||1^^^20101209133700^^RT~^^^^^RT|\r" +
             "OBX|1|ST|4670050^SMUDGE CELLS^L01N||Present||||||F|||20101209144632\r" +
             "OBX|2|ST|4670053^ABNORMAL LYMPHOCYTES^L01N||Present||||||F|||20101209144632\r" +
-            "OBX|3|ST|4670056^AUER RODS^L01N||Present||||||F|||20101209144632\r" +
-            "";
+            "OBX|3|ST|4670056^AUER RODS^L01N||Present||||||F|||20101209144632\r";
 
     final static String LAB20 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209172228||ORU^R01|Q199821920T198318997|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
             "PV1|1|A|61^636^2^80016|||||||||||||||A\r" +
             "OBR|1||0176449247^101BA|4389639^ABO RH TYPE^L01N|||20101209171000|||||||20101209171000|^^|1001745^Test, Physician - p-Test Physician||||10-343-300110||20101209172235||BA|F||1^^^20101209171000^^RT~^^^^^RT|\r" +
             "NTE|1|C|Order level comment added to Type.\r" +
-            "OBX|1|TX|4600112^ABO RH TYPE^L01N||B Positive||||||F|||20101209172228\r" +
-            "";
+            "OBX|1|TX|4600112^ABO RH TYPE^L01N||B Positive||||||F|||20101209172228\r";
 
     final static String LAB21 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209172420||ORU^R01|Q199821924T198319001|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -251,23 +235,20 @@ public class TestLabs {
             "OBR|1||0176449250^101BA|4655785^ANTIBODY SCREEN^L01N|||20101209171000|||||||20101209171000|^^|1001745^Test, Physician - p-Test Physician||||10-343-300110||20101209172427||BA|F||1^^^20101209171000^^RT~^^^20101209171000^^RT|\r" +
             "OBX|1|TX|4600115^ANTIBODY SCREEN^L01N||Positive|||A|||F|||20101209172425\r" +
             "NTE|1|C|2010-12-09 17:24  JMARYKA\r" +
-            "NTE|2|C|Result level comment added to Antibody Screen.\r" +
-            "";
+            "NTE|2|C|Result level comment added to Antibody Screen.\r";
 
     final static String LAB22 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209172547||ORU^R01|Q199821930T198319007|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
             "PV1|1|A|61^636^2^80016|||||||||||||||A\r" +
             "OBR|1||0176449294^101BA|4389615^ANTIBODY IDENTIFICATION^L01N|||20101209171000|||||||20101209171000|^^|1001745^Test, Physician - p-Test Physician||||10-343-300110||20101209172429||BA|F||1^^^20101209171000^^RT~^^^^^RT|\r" +
             "OBX|1|TX|4600143^ANTIBODY IDENTIFICATION^L01N||Anti-K||||||F|||20101209172551\r" +
-            "OBX|2|TX|4600143^ANTIBODY IDENTIFICATION^L01N||Anti-Fya||||||F|||20101209172551\r" +
-            "";
+            "OBX|2|TX|4600143^ANTIBODY IDENTIFICATION^L01N||Anti-Fya||||||F|||20101209172551\r";
 
     final static String LAB23 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209173225||ORU^R01|Q199821960T198319035|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
             "PV1|1|A|61^636^2^80016|||||||||||||||A\r" +
             "OBR|1||0176449303^101BA|4655769^TYPE AND SCREEN^L01N|||20101209171000|||||||20101209172700|^^|1001745^Test, Physician - p-Test Physician||||10-343-300111||20101209173232||BA|F||1^^^20101209171000^^RT~^^^20101209171000^^RT|\r" +
-            "OBX|1|TX|4600112^ABO RH TYPE^L01N||B Positive||||||F|||20101209173231\r" +
-            "";
+            "OBX|1|TX|4600112^ABO RH TYPE^L01N||B Positive||||||F|||20101209173231\r";
 
     final static String LAB24 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209173225||ORU^R01|Q199821962T198319037|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -275,8 +256,7 @@ public class TestLabs {
             "OBR|1||0176449303^101BA|4655769^TYPE AND SCREEN^L01N|||20101209171000|||||||20101209172700|^^|1001745^Test, Physician - p-Test Physician||||10-343-300111||20101209173232||BA|F||1^^^20101209171000^^RT~^^^20101209171000^^RT|\r" +
             "OBX|1|TX|4600112^ABO RH TYPE^L01N||B Positive||||||F|||20101209173231\r" +
             "OBX|2|TX|4600115^ANTIBODY SCREEN^L01N||Negative||||||F|||20101209173231\r" +
-            "OBX|3|ST|5086280^Cancellation Date^L01N||20101215||||||F|||20101209173231\r" +
-            "";
+            "OBX|3|ST|5086280^Cancellation Date^L01N||20101215||||||F|||20101209173231\r";
 
     final static String LAB25 =
             "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209173226||ORU^R01|Q199821964T198319039|P|2.3\r" +
@@ -286,8 +266,7 @@ public class TestLabs {
                     "OBX|1|TX|4600112^ABO RH TYPE^L01N||B Positive||||||F|||20101209173231\r" +
                     "OBX|2|TX|4600115^ANTIBODY SCREEN^L01N||Negative||||||F|||20101209173231\r" +
                     "OBX|3|TX|5802574^RTSIS Number^L01N||TGG 0987||||||F|||20101209173231\r" +
-                    "OBX|4|ST|5086280^Cancellation Date^L01N||20101215||||||F|||20101209173231\r" +
-                    "";
+                    "OBX|4|ST|5086280^Cancellation Date^L01N||20101215||||||F|||20101209173231\r";
 
     final static String LAB26 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209173226||ORU^R01|Q199821966T198319041|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -296,15 +275,13 @@ public class TestLabs {
             "OBX|1|TX|4600112^ABO RH TYPE^L01N||B Positive||||||F|||20101209173231\r" +
             "OBX|2|TX|4600115^ANTIBODY SCREEN^L01N||Negative||||||F|||20101209173231\r" +
             "OBX|3|TX|5802574^RTSIS Number^L01N||TGG 0987||||||F|||20101209173231\r" +
-            "OBX|4|ST|5086280^Cancellation Date^L01N||20101215||||||F|||20101209173231\r" +
-            "";
+            "OBX|4|ST|5086280^Cancellation Date^L01N||20101215||||||F|||20101209173231\r";
 
     final static String LAB27 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209173228||ORU^R01|Q199821972T198319047|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
             "PV1|1|A|61^636^2^80016|||||||||||||||A\r" +
             "OBR|1||990176449303^101BA|4655769^TYPE AND SCREEN^L01N|||20101209171000|||||||20101209172700|^^|1001745^Test, Physician - p-Test Physician||||10-343-300111||20101209173236||BA|F||1^^0^20101209171000^^RT~^^^20101209171000^^RT|\r" +
-            "OBX|1|ST|8030877^COMMENT^L01N||Antibody Screen Comment: Red Cells available if required.||||||F|||20101209173236\r" +
-            "";
+            "OBX|1|ST|8030877^COMMENT^L01N||Antibody Screen Comment: Red Cells available if required.||||||F|||20101209173236\r";
 
     final static String LAB28 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101209174924||ORU^R01|Q199821974T198319049|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -313,8 +290,7 @@ public class TestLabs {
             "OBX|1|TX|4600115^ANTIBODY SCREEN^L01N||Negative||||||C|||20101209174931\r" +
             "NTE|1|C|2010-12-09 17:24  JMARYKA\r" +
             "NTE|2|C|Result level comment added to Antibody Screen.\r" +
-            "NTE|3||Corrected from Positive  [ABN] on 12/09/2010 17:24:25 MDT by JMARYKA.\r" +
-            "";
+            "NTE|3||Corrected from Positive  [ABN] on 12/09/2010 17:24:25 MDT by JMARYKA.\r";
 
     final static String LAB29 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101210074718||ORU^R01|Q199822400T198319473|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -324,8 +300,7 @@ public class TestLabs {
             "NTE|1|I|The Alberta Colorectal Screening Program recommends that the Fecal Occult Blood Test (FOBT) should primarily be used for annual colorectal cancer screening in asymptomatic 50-74 y individuals without risk factors for colorectal cancer. The use of the FOBT for the investigation of disease is of limited value. A Positive FOBT should be investigated by complete evaluation of the colon, preferably by colonoscopy. Repeating the FOBT is not recommended.\r" +
             "OBX|2|ST|4672069^COLLECTION DATE^L01N||07-DEC-2010||||||F|||20101210074717\r" +
             "OBX|3|TX|4669876^OCCULT BLOOD 2^L01N||Negative||Negative||||F|||20101210074717\r" +
-            "OBX|4|ST|4672027^COLLECTION DATE^L01N||08-DEC-2010||||||F|||20101210074717\r" +
-            "";
+            "OBX|4|ST|4672027^COLLECTION DATE^L01N||08-DEC-2010||||||F|||20101210074717\r";
 
     final static String LAB30 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101210074718||ORU^R01|Q199822402T198319476|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -335,8 +310,7 @@ public class TestLabs {
             "NTE|1|I|The Alberta Colorectal Screening Program recommends that the Fecal Occult Blood Test (FOBT) should primarily be used for annual colorectal cancer screening in asymptomatic 50-74 y individuals without risk factors for colorectal cancer. The use of the FOBT for the investigation of disease is of limited value. A Positive FOBT should be investigated by complete evaluation of the colon, preferably by colonoscopy. Repeating the FOBT is not recommended.\r" +
             "OBX|2|ST|4672069^COLLECTION DATE^L01N||07-DEC-2010||||||F|||20101210074717\r" +
             "OBX|3|TX|4669876^OCCULT BLOOD 2^L01N||Negative||Negative||||F|||20101210074717\r" +
-            "OBX|4|ST|4672027^COLLECTION DATE^L01N||08-DEC-2010||||||F|||20101210074717\r" +
-            "";
+            "OBX|4|ST|4672027^COLLECTION DATE^L01N||08-DEC-2010||||||F|||20101210074717\r";
 
     final static String LAB31 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101210074719||ORU^R01|Q199822404T198319479|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -348,16 +322,14 @@ public class TestLabs {
             "OBX|3|TX|4669876^OCCULT BLOOD 2^L01N||Negative||Negative||||F|||20101210074717\r" +
             "OBX|4|ST|4672027^COLLECTION DATE^L01N||08-DEC-2010||||||F|||20101210074717\r" +
             "OBX|5|TX|4670191^OCCULT BLOOD 3^L01N||Positive||Negative|A|||F|||20101210074717\r" +
-            "OBX|6|ST|4672072^COLLECTION DATE^L01N||09-DEC-2010||||||F|||20101210074717\r" +
-            "";
+            "OBX|6|ST|4672072^COLLECTION DATE^L01N||09-DEC-2010||||||F|||20101210074717\r";
 
     final static String LAB32 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101210075154||ORU^R01|Q199822411T198319487|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
             "PV1|1|E|05031^^^88000|||||||||||||||E\r" +
             "OBR|1||0176450392^101LA|2921210^GLUCOSE FASTING^L01N|||20101210074200|||||||20101210075000|^^|1001745^Test, Physician - p-Test Physician||||10-344-300007||20101210075201||LA|F||1^^^20101210074200^^RT~^^^^^RT|\r" +
             "OBX|1|NM|4673692^GLUCOSE, FASTING^L01N||5.9|mmol/L|3.9-6.1||||F|||20101210075155\r" +
-            "OBX|2|ST|13202828^Hours Fasting^L01N||11 hours||||||F|||20101210075155\r" +
-            "";
+            "OBX|2|ST|13202828^Hours Fasting^L01N||11 hours||||||F|||20101210075155\r";
 
     final static String LAB33 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101210140837||ORU^R01|Q199822847T198319920|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -376,8 +348,7 @@ public class TestLabs {
             "OBX|11|TX|4384243^THROAT BETA STREP TEST^L01N||||||||F|||20101210140834\r" +
             "OBX|12|TX|4384243^THROAT BETA STREP TEST^L01N||||||||F|||20101210140834\r" +
             "OBX|13|TX|4384243^THROAT BETA STREP TEST^L01N||||||||F|||20101210140834\r" +
-            "OBX|14|TX|4384243^THROAT BETA STREP TEST^L01N||     __________________________________________________________||||||F|||20101210140834\r" +
-            "";
+            "OBX|14|TX|4384243^THROAT BETA STREP TEST^L01N||     __________________________________________________________||||||F|||20101210140834\r";
 
     final static String LAB34 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101210141101||ORU^R01|Q199822850T198319923|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -404,8 +375,7 @@ public class TestLabs {
             "OBX|19|TX|4384298^WOUND BACTERIAL CULTURE^L01N||||||||P|||20101210141056\r" +
             "OBX|20|TX|4384298^WOUND BACTERIAL CULTURE^L01N||||||||P|||20101210141056\r" +
             "OBX|21|TX|4384298^WOUND BACTERIAL CULTURE^L01N||||||||P|||20101210141056\r" +
-            "OBX|22|TX|4384298^WOUND BACTERIAL CULTURE^L01N||     __________________________________________________________||||||P|||20101210141056\r" +
-            "";
+            "OBX|22|TX|4384298^WOUND BACTERIAL CULTURE^L01N||     __________________________________________________________||||||P|||20101210141056\r";
 
     final static String LAB35 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101210141124||ORU^R01|Q199822853T198319926|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -436,8 +406,7 @@ public class TestLabs {
             "OBX|23|TX|4384298^WOUND BACTERIAL CULTURE^L01N||||||||P|||20101210141121\r" +
             "OBX|24|TX|4384298^WOUND BACTERIAL CULTURE^L01N||||||||P|||20101210141121\r" +
             "OBX|25|TX|4384298^WOUND BACTERIAL CULTURE^L01N||||||||P|||20101210141121\r" +
-            "OBX|26|TX|4384298^WOUND BACTERIAL CULTURE^L01N||     __________________________________________________________||||||P|||20101210141121\r" +
-            "";
+            "OBX|26|TX|4384298^WOUND BACTERIAL CULTURE^L01N||     __________________________________________________________||||||P|||20101210141121\r";
 
     final static String LAB36 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101210141424||ORU^R01|Q199822860T198319933|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -478,8 +447,7 @@ public class TestLabs {
             "OBX|33|TX|4384297^URINE BACTERIAL CULTURE^L01N||     Cephalosporins.||||||P|||20101210141416\r" +
             "OBX|34|TX|4384297^URINE BACTERIAL CULTURE^L01N||||||||P|||20101210141416\r" +
             "OBX|35|TX|4384297^URINE BACTERIAL CULTURE^L01N||||||||P|||20101210141416\r" +
-            "OBX|36|TX|4384297^URINE BACTERIAL CULTURE^L01N||     __________________________________________________________||||||P|||20101210141416\r" +
-            "";
+            "OBX|36|TX|4384297^URINE BACTERIAL CULTURE^L01N||     __________________________________________________________||||||P|||20101210141416\r";
 
     final static String LAB37 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101210141648||ORU^R01|Q199822868T198319941|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -537,8 +505,7 @@ public class TestLabs {
             "OBX|50|TX|4384297^URINE BACTERIAL CULTURE^L01N||     Cephalosporins.|||A|||F|||20101210141652\r" +
             "OBX|51|TX|4384297^URINE BACTERIAL CULTURE^L01N|||||A|||F|||20101210141652\r" +
             "OBX|52|TX|4384297^URINE BACTERIAL CULTURE^L01N|||||A|||F|||20101210141652\r" +
-            "OBX|53|TX|4384297^URINE BACTERIAL CULTURE^L01N||     __________________________________________________________|||A|||F|||20101210141652\r" +
-            "";
+            "OBX|53|TX|4384297^URINE BACTERIAL CULTURE^L01N||     __________________________________________________________|||A|||F|||20101210141652\r";
 
     final static String LAB38 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101210141652||ORU^R01|Q199822870T198319943|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -596,8 +563,7 @@ public class TestLabs {
             "OBX|50|TX|4384297^URINE BACTERIAL CULTURE^L01N||     Cephalosporins.|||A|||F|||20101210141652\r" +
             "OBX|51|TX|4384297^URINE BACTERIAL CULTURE^L01N|||||A|||F|||20101210141652\r" +
             "OBX|52|TX|4384297^URINE BACTERIAL CULTURE^L01N|||||A|||F|||20101210141652\r" +
-            "OBX|53|TX|4384297^URINE BACTERIAL CULTURE^L01N||     __________________________________________________________|||A|||F|||20101210141652\r" +
-            "";
+            "OBX|53|TX|4384297^URINE BACTERIAL CULTURE^L01N||     __________________________________________________________|||A|||F|||20101210141652\r";
 
     final static String LAB39 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101210141804||ORU^R01|Q199822873T198319946|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -628,8 +594,7 @@ public class TestLabs {
             "OBX|23|TX|4384298^WOUND BACTERIAL CULTURE^L01N|||||A|||P|||20101210141746\r" +
             "OBX|24|TX|4384298^WOUND BACTERIAL CULTURE^L01N|||||A|||P|||20101210141746\r" +
             "OBX|25|TX|4384298^WOUND BACTERIAL CULTURE^L01N|||||A|||P|||20101210141746\r" +
-            "OBX|26|TX|4384298^WOUND BACTERIAL CULTURE^L01N||     __________________________________________________________|||A|||P|||20101210141746\r" +
-            "";
+            "OBX|26|TX|4384298^WOUND BACTERIAL CULTURE^L01N||     __________________________________________________________|||A|||P|||20101210141746\r";
 
     final static String LAB40 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101210142056||ORU^R01|Q199822876T198319949|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -701,8 +666,7 @@ public class TestLabs {
             "OBX|64|TX|4384297^URINE BACTERIAL CULTURE^L01N||     Cephalosporins.|||A|||C|||20101210142045\r" +
             "OBX|65|TX|4384297^URINE BACTERIAL CULTURE^L01N|||||A|||C|||20101210142045\r" +
             "OBX|66|TX|4384297^URINE BACTERIAL CULTURE^L01N|||||A|||C|||20101210142045\r" +
-            "OBX|67|TX|4384297^URINE BACTERIAL CULTURE^L01N||     __________________________________________________________|||A|||C|||20101210142045\r" +
-            "";
+            "OBX|67|TX|4384297^URINE BACTERIAL CULTURE^L01N||     __________________________________________________________|||A|||C|||20101210142045\r";
 
     final static String LAB41 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101210142320||ORU^R01|Q199822879T198319952|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -776,8 +740,7 @@ public class TestLabs {
             "OBX|66|TX|4384297^URINE BACTERIAL CULTURE^L01N||     Cephalosporins.|||A|||C|||20101210142315\r" +
             "OBX|67|TX|4384297^URINE BACTERIAL CULTURE^L01N|||||A|||C|||20101210142315\r" +
             "OBX|68|TX|4384297^URINE BACTERIAL CULTURE^L01N|||||A|||C|||20101210142315\r" +
-            "OBX|69|TX|4384297^URINE BACTERIAL CULTURE^L01N||     __________________________________________________________|||A|||C|||20101210142315\r" +
-            "";
+            "OBX|69|TX|4384297^URINE BACTERIAL CULTURE^L01N||     __________________________________________________________|||A|||C|||20101210142315\r";
 
     final static String LAB42 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101214100421||ORU^R01|Q199823599T198320671|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -817,8 +780,7 @@ public class TestLabs {
             "OBX|32|TX|4187233^NON-GYN CYTOLOGY REPORT^L01N||      Metastatic adenocarcinoma consistemt with Lung Primary.||||||F|||20101214100357\r" +
             "OBX|33|TX|4187233^NON-GYN CYTOLOGY REPORT^L01N||||||||F|||20101214100357\r" +
             "OBX|34|TX|4187233^NON-GYN CYTOLOGY REPORT^L01N||||||||F|||20101214100357\r" +
-            "OBX|35|TX|4187233^NON-GYN CYTOLOGY REPORT^L01N||      *****Microbiology Wound/Abscess*****||||||F|||20101214100357\r" +
-            "";
+            "OBX|35|TX|4187233^NON-GYN CYTOLOGY REPORT^L01N||      *****Microbiology Wound/Abscess*****||||||F|||20101214100357\r";
 
     final static String LAB43 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101214100752||ORU^R01|Q199823608T198320680|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -858,8 +820,7 @@ public class TestLabs {
             "OBX|32|TX|4187232^GYN CYTOLOGY REPORT^L01N||||||||F|||20101214100749\r" +
             "OBX|33|TX|4187232^GYN CYTOLOGY REPORT^L01N||      Reported by: Gates, Colleen||||||F|||20101214100749\r" +
             "OBX|34|TX|4187232^GYN CYTOLOGY REPORT^L01N||                            (Electronically signed by)||||||F|||20101214100749\r" +
-            "OBX|35|TX|4187232^GYN CYTOLOGY REPORT^L01N||                            2010/12/14 10:07||||||F|||20101214100749\r" +
-            "";
+            "OBX|35|TX|4187232^GYN CYTOLOGY REPORT^L01N||                            2010/12/14 10:07||||||F|||20101214100749\r";
 
     final static String LAB44 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101214104054||ORU^R01|Q199823626T198320698|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -1115,8 +1076,7 @@ public class TestLabs {
             "OBX|248|TX|4187235^SURGICAL PATHOLOGY REPORT^L01N||      metastases. As the lower lobe tumor is smaller than the upper lobe tumor and insitu||||||F|||20101214104043\r" +
             "OBX|249|TX|4187235^SURGICAL PATHOLOGY REPORT^L01N||      disease is noted in the upper lobe, the upper lobe would be regarded as the primary tumor||||||F|||20101214104043\r" +
             "OBX|250|TX|4187235^SURGICAL PATHOLOGY REPORT^L01N||      in this case. This means two separate primary tumors are present in the upper lobe with||||||F|||20101214104043\r" +
-            "OBX|251|TX|4187235^SURGICAL PATHOLOGY REPORT^L01N||      upper lobe and lower lobe metastases from one of the two primary tumors.||||||F|||20101214104043\r" +
-            "";
+            "OBX|251|TX|4187235^SURGICAL PATHOLOGY REPORT^L01N||      upper lobe and lower lobe metastases from one of the two primary tumors.||||||F|||20101214104043\r";
 
     final static String LAB45 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101214104724||ORU^R01|Q199823629T198320701|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -1190,8 +1150,7 @@ public class TestLabs {
             "OBX|66|TX|4187228^ADDENDUM REPORT^L01N||||||||F|||20101214104725\r" +
             "OBX|67|TX|4187228^ADDENDUM REPORT^L01N||||||||F|||20101214104725\r" +
             "OBX|68|TX|4187228^ADDENDUM REPORT^L01N||      Comment||||||F|||20101214104725\r" +
-            "OBX|69|TX|4187228^ADDENDUM REPORT^L01N||      Metastatic adenocarcinoma consistemt with Lung Primary.||||||F|||20101214104725\r" +
-            "";
+            "OBX|69|TX|4187228^ADDENDUM REPORT^L01N||      Metastatic adenocarcinoma consistemt with Lung Primary.||||||F|||20101214104725\r";
 
     final static String LAB46 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101214104908||ORU^R01|Q199823634T198320706|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -1278,8 +1237,7 @@ public class TestLabs {
             "OBX|79|TX|4788381^GYN ADDENDUM REPORT^L01N||||||||F|||20101214104912\r" +
             "OBX|80|TX|4788381^GYN ADDENDUM REPORT^L01N||      Reported by: Gates, Colleen||||||F|||20101214104912\r" +
             "OBX|81|TX|4788381^GYN ADDENDUM REPORT^L01N||                            (Electronically signed by)||||||F|||20101214104912\r" +
-            "OBX|82|TX|4788381^GYN ADDENDUM REPORT^L01N||                            2010/12/14 10:07||||||F|||20101214104912\r" +
-            "";
+            "OBX|82|TX|4788381^GYN ADDENDUM REPORT^L01N||                            2010/12/14 10:07||||||F|||20101214104912\r";
 
     final static String LAB47 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101214105653||ORU^R01|Q199823641T198320713|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -1354,8 +1312,7 @@ public class TestLabs {
             "OBX|67|TX|4788372^CONSULT REPORT^L01N||      is difficult to determine site of origin in this small biopsy fragment.  A pancreatic||||||F|||20101214105651\r" +
             "OBX|68|TX|4788372^CONSULT REPORT^L01N||      origin is a possibility, but a primary in other areas of the gastrointestinal tract||||||F|||20101214105651\r" +
             "OBX|69|TX|4788372^CONSULT REPORT^L01N||      (including gallbladder), lung, or other organs with metastasis to the upper abdomen||||||F|||20101214105651\r" +
-            "OBX|70|TX|4788372^CONSULT REPORT^L01N||      (liver, gallbladder) cannot be excluded.||||||F|||20101214105651\r" +
-            "";
+            "OBX|70|TX|4788372^CONSULT REPORT^L01N||      (liver, gallbladder) cannot be excluded.||||||F|||20101214105651\r";
 
     final static String LAB48 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101214110750||ORU^R01|Q199823648T198320720|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -1456,8 +1413,7 @@ public class TestLabs {
             "OBX|93|TX|4788369^CONSULTATION ADDENDUM REPORT^L01N||      is difficult to determine site of origin in this small biopsy fragment.  A pancreatic||||||F|||20101214110752\r" +
             "OBX|94|TX|4788369^CONSULTATION ADDENDUM REPORT^L01N||      origin is a possibility, but a primary in other areas of the gastrointestinal tract||||||F|||20101214110752\r" +
             "OBX|95|TX|4788369^CONSULTATION ADDENDUM REPORT^L01N||      (including gallbladder), lung, or other organs with metastasis to the upper abdomen||||||F|||20101214110752\r" +
-            "OBX|96|TX|4788369^CONSULTATION ADDENDUM REPORT^L01N||      (liver, gallbladder) cannot be excluded.||||||F|||20101214110752\r" +
-            "";
+            "OBX|96|TX|4788369^CONSULTATION ADDENDUM REPORT^L01N||      (liver, gallbladder) cannot be excluded.||||||F|||20101214110752\r";
 
     final static String LAB49 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20101214111339||ORU^R01|Q199823654T198320726|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^80016||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -1745,8 +1701,7 @@ public class TestLabs {
             "OBX|280|TX|5925225^CONSULTATIVE ADDENDUM REPORT^L01N||      metastases. As the lower lobe tumor is smaller than the upper lobe tumor and insitu||||||F|||20101214111336\r" +
             "OBX|281|TX|5925225^CONSULTATIVE ADDENDUM REPORT^L01N||      disease is noted in the upper lobe, the upper lobe would be regarded as the primary tumor||||||F|||20101214111336\r" +
             "OBX|282|TX|5925225^CONSULTATIVE ADDENDUM REPORT^L01N||      in this case. This means two separate primary tumors are present in the upper lobe with||||||F|||20101214111336\r" +
-            "OBX|283|TX|5925225^CONSULTATIVE ADDENDUM REPORT^L01N||      upper lobe and lower lobe metastases from one of the two primary tumors.||||||F|||20101214111336\r" +
-            "";
+            "OBX|283|TX|5925225^CONSULTATIVE ADDENDUM REPORT^L01N||      upper lobe and lower lobe metastases from one of the two primary tumors.||||||F|||20101214111336\r";
 
     static final String LAB50 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20110105150337||ORU^R01|Q199836608T198333711|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -1755,8 +1710,7 @@ public class TestLabs {
             "NTE|1|C|patient is feeling blue today\r" +
             "NTE|2|C|But it is friday\r" +
             "OBX|1|NM|4673500^SODIUM^L01N||135|mmol/L|133-145||||C|||20101203114908\r" +
-            "NTE|1||Corrected from 140 mmol/L on 12/03/10 11:49:08 MST by CDREWS02.\r" +
-            "";
+            "NTE|1||Corrected from 140 mmol/L on 12/03/10 11:49:08 MST by CDREWS02.\r";
 
     static final String LAB51 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20110105150927||ORU^R01|Q199836610T198333713|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -1767,8 +1721,7 @@ public class TestLabs {
             "OBX|1|NM|4673500^SODIUM^L01N||135|mmol/L|133-145||||C|||20110105150922\r" +
             "NTE|1|C|patient is red today\r" +
             "NTE|2||Corrected from 135 mmol/L on 01/05/11 15:09:22 MST by DATKINSON03.\r" +
-            "NTE|3||Corrected from 140 mmol/L on 12/03/10 11:49:08 MST by CDREWS02.\r" +
-            "";
+            "NTE|3||Corrected from 140 mmol/L on 12/03/10 11:49:08 MST by CDREWS02.\r";
 
     // Chart 17
     static final String LAB52 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20110107124858||ORU^R01|Q199837792T198334885|P|2.3\r" +
@@ -1791,15 +1744,13 @@ public class TestLabs {
             "NTE|10|I|< 5.0    or         < 6.0\r" +
             "NTE|11|I|GUIDELINE: CAN J CARDIOL 2006;  22:  913-927\r" +
             "OBX|5|NM|4671331^LDL, CALCULATED^L01N||5.00|mmol/L|2.00-3.40|H|||F|||20110107124852\r" +
-            "OBX|6|ST|6188004^HOURS  FASTING^L01N||10 hours||||||F|||20110107124852\r" +
-            "";
+            "OBX|6|ST|6188004^HOURS  FASTING^L01N||10 hours||||||F|||20110107124852\r";
 
     static final String LAB53 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20110107125544||ORU^R01|Q199837806T198334898|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
             "PV1|1|E|05031^^^88000|||||||||||||||E\r" +
             "OBR|1||0176479912^101LA|2921814^TROPONIN T^L01N|||20110107124300|||||||20110107124400|^^|1001745^Test, Physician - p-Test Physician||||11-007-300003||20110107125543||LA|F||1^^^20110107124300^^RT~^^^^^RT|\r" +
-            "OBX|1|NM|4674004^TROPONIN T^L01N||10.00|ug/L|0.00-0.02|C|||F|||20110107125540\r" +
-            "";
+            "OBX|1|NM|4674004^TROPONIN T^L01N||10.00|ug/L|0.00-0.02|C|||F|||20110107125540\r";
 
     static final String LAB54 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20110107143252||ORU^R01|Q199838016T198335107|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -1807,8 +1758,7 @@ public class TestLabs {
             "OBR|1||0176480449^101LA|5879562^TROPONIN I (VIDAS)^L01N|||20110107142300|||||||20110107143100|^^|1001745^Test, Physician - p-Test Physician||||11-007-300015||20110107143252||LA|F||1^^^20110107142300^^ST~^^^^^ST|\r" +
             "OBX|1|NM|4674001^TROPONIN I (VIDAS)^L01N||0.06|ug/L|<=0.01|H|||F|||20110107143248\r" +
             "NTE|1|C|Troponin I value is inconclusive for acute MI and may be due to myocardial\r" +
-            "NTE|2|C|injury.  Repeat ordering may be warranted in some clinical situations.\r" +
-            "";
+            "NTE|2|C|injury.  Repeat ordering may be warranted in some clinical situations.\r";
 
     static final String LAB55 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20110112095002||ORU^R01|Q199839856T198336943|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -1821,8 +1771,7 @@ public class TestLabs {
             "NTE|4|I|If one of three values is met or exceeded, the diagnosis is impaired glucose tolerance of pregnancy.  If two or three values are met or exceeded, the diagnosis of gestational diabetes mellitus has been established. Please see Canadian Diabetes Association 2008 practice guidelines.\r" +
             "OBX|2|NM|6187984^GLUCOSE DOSAGE.(G)^L01N||100|g|||||F|||20110112094955\r" +
             "OBX|3|TX|6187989^HOURS FASTING.^L01N||10 hours||||||F|||20110112094955\r" +
-            "OBX|4|NM|6388149^WEEKS GESTATION.^L01N||28|week(s)|||||F|||20110112094955\r" +
-            "";
+            "OBX|4|NM|6388149^WEEKS GESTATION.^L01N||28|week(s)|||||F|||20110112094955\r";
 
     static final String LAB56 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20110112095019||ORU^R01|Q199839858T198336945|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +
@@ -1836,8 +1785,7 @@ public class TestLabs {
             "OBX|2|NM|6187984^GLUCOSE DOSAGE.(G)^L01N||100|g|||||F|||20110112094955\r" +
             "OBX|3|TX|6187989^HOURS FASTING.^L01N||10 hours||||||F|||20110112094955\r" +
             "OBX|4|NM|6388149^WEEKS GESTATION.^L01N||28|week(s)|||||F|||20110112094955\r" +
-            "OBX|5|NM|4673668^GLUCOSE TOLERANCE 1.0H.^L01N||5.2|mmol/L|||||F|||20110112095015\r" +
-            "";
+            "OBX|5|NM|4673668^GLUCOSE TOLERANCE 1.0H.^L01N||5.2|mmol/L|||||F|||20110112095015\r";
 
     static final String LAB57 = "MSH|^~\\&|OPEN ENGINE|CLS|Egate|POSP|20110112095039||ORU^R01|Q199839860T198336947|P|2.3\r" +
             "PID|1|798274114^^^AB|2250008675^^^88000||MillMCK CB FSI, Karla||19701027|F||||83||\r" +

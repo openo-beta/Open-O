@@ -338,7 +338,7 @@
                 // Check that current character is number.
                 var c = s.charAt(i)
                 if (c == '.') {
-                    continue;
+
                 } else if (((c < "0") || (c > "9"))) {
                     alert('Invalid ' + s + ' in field ' + ss.name);
                     ss.focus();

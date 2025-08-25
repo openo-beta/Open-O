@@ -36,11 +36,11 @@ import org.springframework.stereotype.Repository;
 
 public interface DemographicMergedDao extends AbstractDao<DemographicMerged> {
 
-    public List<DemographicMerged> findCurrentByMergedTo(int demographicNo);
+    List<DemographicMerged> findCurrentByMergedTo(int demographicNo);
 
-    public List<DemographicMerged> findCurrentByDemographicNo(int demographicNo);
+    List<DemographicMerged> findCurrentByDemographicNo(int demographicNo);
 
-    public List<DemographicMerged> findByDemographicNo(int demographicNo);
+    List<DemographicMerged> findByDemographicNo(int demographicNo);
 
-    public List<DemographicMerged> findByParentAndChildIds(Integer parentId, Integer childId);
+    List<DemographicMerged> findByParentAndChildIds(Integer parentId, Integer childId);
 }

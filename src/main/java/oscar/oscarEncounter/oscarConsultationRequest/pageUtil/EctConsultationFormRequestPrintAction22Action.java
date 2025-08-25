@@ -157,7 +157,7 @@ public class EctConsultationFormRequestPrintAction22Action extends ActionSupport
                 // Storing the lab in PDF format inside a byte stream.
                 try (
                         FileOutputStream fileOutputStream = new FileOutputStream(tempLabPDF);
-                        ByteOutputStream byteOutputStream = new ByteOutputStream();
+                        ByteOutputStream byteOutputStream = new ByteOutputStream()
                 ) {
                     request.setAttribute("segmentID", labs.get(i).segmentID);
                     LabPDFCreator labPDFCreator = new LabPDFCreator(request, fileOutputStream);

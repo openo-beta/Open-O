@@ -170,83 +170,53 @@ public class LabResultData implements Comparable<LabResultData> {
     }
 
     public boolean isMDS() {
-        boolean ret = false;
-        if (MDS.equals(labType)) {
-            ret = true;
-        }
+        boolean ret = MDS.equals(labType);
         return ret;
     }
 
     public boolean isCML() {
-        boolean ret = false;
-        if (CML.equals(labType)) {
-            ret = true;
-        }
+        boolean ret = CML.equals(labType);
         return ret;
     }
 
     public boolean isHL7TEXT() {
-        boolean ret = false;
-        if (HL7TEXT.equals(labType)) {
-            ret = true;
-        }
+        boolean ret = HL7TEXT.equals(labType);
         return ret;
     }
 
     public boolean isDocument() {
-        boolean ret = false;
-        if (DOCUMENT.equals(labType)) {
-            ret = true;
-        }
+        boolean ret = DOCUMENT.equals(labType);
         return ret;
     }
 
     public boolean isHRM() {
-        boolean ret = false;
-        if (HRM.equals(labType)) {
-            ret = true;
-        }
+        boolean ret = HRM.equals(labType);
         return ret;
     }
     ////
 
     public static boolean isMDS(String type) {
-        boolean ret = false;
-        if (MDS.equals(type)) {
-            ret = true;
-        }
+        boolean ret = MDS.equals(type);
         return ret;
     }
 
     public static boolean isCML(String type) {
-        boolean ret = false;
-        if (CML.equals(type)) {
-            ret = true;
-        }
+        boolean ret = CML.equals(type);
         return ret;
     }
 
     public static boolean isHL7TEXT(String type) {
-        boolean ret = false;
-        if (HL7TEXT.equals(type)) {
-            ret = true;
-        }
+        boolean ret = HL7TEXT.equals(type);
         return ret;
     }
 
     public static boolean isDocument(String type) {
-        boolean ret = false;
-        if (DOCUMENT.equals(type)) {
-            ret = true;
-        }
+        boolean ret = DOCUMENT.equals(type);
         return ret;
     }
 
     public static boolean isHRM(String type) {
-        boolean ret = false;
-        if (HRM.equals(type)) {
-            ret = true;
-        }
+        boolean ret = HRM.equals(type);
         return ret;
     }
 

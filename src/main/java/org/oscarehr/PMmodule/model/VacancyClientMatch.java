@@ -179,10 +179,7 @@ public class VacancyClientMatch extends AbstractModel<Integer> implements Compar
         if (form_id != other.form_id) {
             return false;
         }
-        if (vacancy_id != other.vacancy_id) {
-            return false;
-        }
-        return true;
+        return vacancy_id == other.vacancy_id;
     }
 
     @Override

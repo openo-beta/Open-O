@@ -132,7 +132,7 @@
     <tr class="b">
         <td width="30%" class="beright">Requirement Template:</td>
         <td><select name="requiredVacancyTemplateId"
-                    onchange="chooseTemplate(this);" <%= (dontSave == true) ? "disabled" : "" %>>
+                    onchange="chooseTemplate(this);" <%= (dontSave) ? "disabled" : "" %>>
             <option value="0">&nbsp;</option>
             <%
                 Integer programId_int = null;
@@ -153,7 +153,7 @@
     <tr class="b">
         <td class="beright">Vacancy Name:</td>
         <td><input type="text" name="vacancyName" value="<%= vacancyName %>"
-                   size="40" <%=(dontSave == true) ? "disabled" : "" %>/></td>
+                   size="40" <%=(dontSave) ? "disabled" : "" %>/></td>
     </tr>
     <legend>Additional Criteria For this Vacancy/Service Opening</legend>
 

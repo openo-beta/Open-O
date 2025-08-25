@@ -127,7 +127,7 @@
         <td align="right"><input type="button" name="submit"
                                  value="Print" onclick="window.print();"/> <input type="button"
                                                                                   value="  Exit  "
-                                                                                  onclick="javascript:window.close();"/>
+                                                                                  onclick="window.close();"/>
         </td>
     </tr>
 </table>

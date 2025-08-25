@@ -56,13 +56,13 @@ public class EctConDeleteServices2Action extends ActionSupport {
             throw new SecurityException("missing required security object (_con)");
         }
 
-        String servs[] = this.getService();
+        String[] servs = this.getService();
         if (servs.length > 0) {
 
             for (String serv : this.getService()) {
                 ConsultationServices cs = consultationServiceDao.find(Integer.valueOf(serv));
                 if (cs != null) {
-                    cs.setActive(consultationServiceDao.INACTIVE);
+                    cs.setActive(ConsultationServiceDao.INACTIVE);
                     consultationServiceDao.merge(cs);
                 }
             }
@@ -77,9 +77,9 @@ public class EctConDeleteServices2Action extends ActionSupport {
         return service;
     }
 
-    public void setService(String str[]) {
+    public void setService(String[] str) {
         service = str;
     }
 
-    String service[];
+    String[] service;
 }

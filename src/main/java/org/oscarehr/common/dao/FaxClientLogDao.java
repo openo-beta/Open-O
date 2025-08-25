@@ -38,9 +38,9 @@ import org.springframework.stereotype.Repository;
 
 public interface FaxClientLogDao extends AbstractDao<FaxClientLog> {
 
-    public FaxClientLog findClientLogbyFaxId(int faxId);
+    FaxClientLog findClientLogbyFaxId(int faxId);
 
-    public List<FaxClientLog> findClientLogbyFaxIds(List<Integer> faxIds);
+    List<FaxClientLog> findClientLogbyFaxIds(List<Integer> faxIds);
 
-    public List<FaxClientLog> findClientLogbyRequestId(int requestId);
+    List<FaxClientLog> findClientLogbyRequestId(int requestId);
 }

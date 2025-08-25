@@ -406,9 +406,7 @@ public class AdmissionManagerImpl implements AdmissionManager {
 
     public boolean isActiveInCurrentFacility(LoggedInInfo loggedInInfo, int demographicId) {
         List<Admission> results = getCurrentAdmissionsByFacility(demographicId, loggedInInfo.getCurrentFacility().getId());
-        if (results != null && results.size() > 0) return (true);
-
-        return (false);
+        return results != null && results.size() > 0;
     }
 
     public List getActiveAnonymousAdmissions() {
@@ -416,10 +414,7 @@ public class AdmissionManagerImpl implements AdmissionManager {
     }
 
     public boolean wasInProgram(Integer programId, Integer clientId) {
-        if (dao.getAdmission(programId, clientId) != null)
-            return true;
-        else
-            return false;
+        return dao.getAdmission(programId, clientId) != null;
 
     }
 

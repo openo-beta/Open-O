@@ -141,14 +141,14 @@ public class MeasurementGraphAction22Action extends ActionSupport {
             String labType = request.getParameter("labType");
             String identifier = request.getParameter("identifier");
             String testName = request.getParameter("testName");
-            String drugs[] = request.getParameterValues("drug");
+            String[] drugs = request.getParameterValues("drug");
             if (drugs == null) {
                 chart = actualLabChartRef(demographicNo, labType, identifier, testName, patientName, chartTitle);
             } else {
                 chart = actualLabChartRefPlusMeds(demographicNo, labType, identifier, testName, patientName, chartTitle, drugs);
             }
         } else if (method.equals("ChartMeds")) {
-            String drugs[] = request.getParameterValues("drug");
+            String[] drugs = request.getParameterValues("drug");
             chart = ChartMeds(demographicNo, patientName, chartTitle, drugs);
             if (drugs != null && drugs.length > 10) {
                 height = (drugs.length * 30);

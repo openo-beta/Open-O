@@ -61,7 +61,7 @@
     ProviderPreference providerPreference = (ProviderPreference) session.getAttribute(SessionConstants.LOGGED_IN_PROVIDER_PREFERENCE);
     String mygroupno = providerPreference.getMyGroupNo();
     String deepcolor = "#CCCCFF", weakcolor = "#EEEEFF", tableTitle = "#99ccff";
-    boolean bEdit = request.getParameter("appointment_no") != null ? true : false;
+    boolean bEdit = request.getParameter("appointment_no") != null;
 %>
 <%@ page
         import="java.util.*, java.sql.*,java.net.*, oscar.*, oscar.util.*, org.oscarehr.common.OtherIdManager"
@@ -524,10 +524,10 @@
 
                         ScheduleDate sd = scheduleDateDao.findByProviderNoAndDate(provider.getProviderNo(), ConversionUtils.fromDateString(request.getParameter("appointment_date")));
 
-                        bAvailProvider = (sd != null) ? true : false;
+                        bAvailProvider = sd != null;
                         if (bAvailProvider == bLooperCon) continue;
 
-                        bDefProvider = curProvider_no.equals(provider.getProviderNo()) ? true : false;
+                        bDefProvider = curProvider_no.equals(provider.getProviderNo());
             %>
             <tr
                     BGCOLOR="<%=bDefProvider?deepcolor:(bAvailProvider?weakcolor:"#e0e0e0")%>">

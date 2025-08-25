@@ -46,22 +46,22 @@ import java.util.List;
  * @author jay
  */
 public interface WorkFlow {
-    public ArrayList getActiveWorkFlowList(String demographicNo);
+    ArrayList getActiveWorkFlowList(String demographicNo);
 
-    public ArrayList getActiveWorkFlowList();
+    ArrayList getActiveWorkFlowList();
 
-    public String getState(String state);
+    String getState(String state);
 
-    public List getStates();
+    List getStates();
 
-    public WorkFlowInfo executeRules(Hashtable hashtable);
+    WorkFlowInfo executeRules(Hashtable hashtable);
 
-    public WorkFlowInfo executeRules(WorkFlowDS wfDS, Hashtable hashtable);
+    WorkFlowInfo executeRules(WorkFlowDS wfDS, Hashtable hashtable);
 
-    public String getLink(String demographic, String workFlowId);
+    String getLink(String demographic, String workFlowId);
 
     int addToWorkFlow(String providerNo, String demographicNo, Date endDate);
 
-    public WorkFlowDS getWorkFlowDS();
+    WorkFlowDS getWorkFlowDS();
 
 }

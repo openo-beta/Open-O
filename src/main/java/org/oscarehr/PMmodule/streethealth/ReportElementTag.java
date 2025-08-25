@@ -57,7 +57,7 @@ public class ReportElementTag extends TagSupport {
         Map<StreetHealthReportKey, Integer> results = (Map<StreetHealthReportKey, Integer>) req.getAttribute("results");
 
 
-        String answerArray[] = null;
+        String[] answerArray = null;
 
         if (getAnswerProps() != null && getAnswerProps().length() > 0) {
             Properties p = new Properties();
@@ -130,7 +130,7 @@ public class ReportElementTag extends TagSupport {
         Map<StreetHealthReportKey, Integer> results = (Map<StreetHealthReportKey, Integer>) req.getAttribute("results");
 
 
-        String answerArray[] = null;
+        String[] answerArray = null;
 
         if (getAnswerProps() != null && getAnswerProps().length() > 0) {
             Properties p = new Properties();

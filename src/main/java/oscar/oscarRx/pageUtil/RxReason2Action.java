@@ -108,10 +108,7 @@ public final class RxReason2Action extends ActionSupport {
         MiscUtils.getLogger().debug("addDrugReasonCalled codingSystem " + codingSystem + " code " + code + " drugIdStr " + drugIdStr);
 
 
-        boolean primaryReasonFlag = true;
-        if (!"true".equals(primaryReasonFlagStr)) {
-            primaryReasonFlag = false;
-        }
+        boolean primaryReasonFlag = "true".equals(primaryReasonFlagStr);
 
         DrugReason dr = new DrugReason();
 

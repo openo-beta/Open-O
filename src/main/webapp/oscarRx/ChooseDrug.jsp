@@ -229,11 +229,11 @@
                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.msgSearch"/>" />
                                             &nbsp;&nbsp;&nbsp;
                                             <input type=button class="ControlPushButton"
-                                                   onclick="javascript:document.forms.RxSearchDrugForm.searchString.value='';document.forms.RxSearchDrugForm.searchString.focus();"
+                                                   onclick="document.forms.RxSearchDrugForm.searchString.value='';document.forms.RxSearchDrugForm.searchString.focus();"
                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.msgReset"/>"/>
                                             <%if (request.getParameter("rx2") == null || !request.getParameter("rx2").equals("true")) { %>
                                             <input type=button class="ControlPushButton"
-                                                   onclick="javascript:customWarning();"
+                                                   onclick="customWarning();"
                                                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.msgCustomDrug"/>"/>
                                             <%}%>
 

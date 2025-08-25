@@ -152,10 +152,7 @@ public class ReportMacro2Action extends ActionSupport {
     private boolean skipComment(String providerNo) {
         UserPropertyDAO userPropertyDAO = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
         UserProperty uProp = userPropertyDAO.getProp(providerNo, UserProperty.LAB_ACK_COMMENT);
-        boolean skipComment = false;
-        if (uProp != null && uProp.getValue().equalsIgnoreCase("yes")) {
-            skipComment = true;
-        }
+        boolean skipComment = uProp != null && uProp.getValue().equalsIgnoreCase("yes");
         return skipComment;
     }
 }

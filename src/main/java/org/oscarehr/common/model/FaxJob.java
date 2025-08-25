@@ -49,7 +49,7 @@ public class FaxJob extends AbstractModel<Integer> implements Comparable<FaxJob>
 
     public enum STATUS {RECEIVED, SENT, COMPLETE, ERROR, WAITING, CANCELLED, RESOLVED, UNKNOWN, RESENT}
 
-    public static enum Direction {IN, OUT}
+    public enum Direction {IN, OUT}
 
     public FaxJob() {
         // default

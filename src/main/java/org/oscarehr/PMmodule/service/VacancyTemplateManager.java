@@ -52,55 +52,55 @@ import org.oscarehr.util.SpringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface VacancyTemplateManager {
-    static VacancyTemplateDao vacancyTemplateDAO = SpringUtils.getBean(VacancyTemplateDao.class);
-    static CriteriaDao criteriaDAO = SpringUtils.getBean(CriteriaDao.class);
-    static CriteriaTypeDao criteriaTypeDAO = SpringUtils.getBean(CriteriaTypeDao.class);
-    static CriteriaTypeOptionDao criteriaTypeOptionDAO = SpringUtils.getBean(CriteriaTypeOptionDao.class);
-    static CriteriaSelectionOptionDao criteriaSelectionOptionDAO = SpringUtils.getBean(CriteriaSelectionOptionDao.class);
-    static ProgramDao programDao = (ProgramDao) SpringUtils.getBean(ProgramDao.class);
-    static VacancyDao vacancyDAO = SpringUtils.getBean(VacancyDao.class);
+    VacancyTemplateDao vacancyTemplateDAO = SpringUtils.getBean(VacancyTemplateDao.class);
+    CriteriaDao criteriaDAO = SpringUtils.getBean(CriteriaDao.class);
+    CriteriaTypeDao criteriaTypeDAO = SpringUtils.getBean(CriteriaTypeDao.class);
+    CriteriaTypeOptionDao criteriaTypeOptionDAO = SpringUtils.getBean(CriteriaTypeOptionDao.class);
+    CriteriaSelectionOptionDao criteriaSelectionOptionDAO = SpringUtils.getBean(CriteriaSelectionOptionDao.class);
+    ProgramDao programDao = (ProgramDao) SpringUtils.getBean(ProgramDao.class);
+    VacancyDao vacancyDAO = SpringUtils.getBean(VacancyDao.class);
 
-    public static List<Program> getPrograms(Integer facilityId) {
+    static List<Program> getPrograms(Integer facilityId) {
         return programDao.getProgramsByFacilityId(facilityId);
     }
 
-    public static List<VacancyTemplate> getVacancyTemplateByWlProgramId(Integer wlProgramId) {
+    static List<VacancyTemplate> getVacancyTemplateByWlProgramId(Integer wlProgramId) {
         List<VacancyTemplate> results = vacancyTemplateDAO.getVacancyTemplateByWlProgramId(wlProgramId);
         return (results);
     }
 
-    public static List<Vacancy> getVacanciesByWlProgramId(Integer wlProgramId) {
+    static List<Vacancy> getVacanciesByWlProgramId(Integer wlProgramId) {
         List<Vacancy> results = vacancyDAO.getVacanciesByWlProgramId(wlProgramId);
         return (results);
     }
 
-    public static List<Vacancy> getVacanciesByWlProgramIdAndStatus(Integer wlProgramId, String status) {
+    static List<Vacancy> getVacanciesByWlProgramIdAndStatus(Integer wlProgramId, String status) {
         List<Vacancy> results = vacancyDAO.getVacanciesByWlProgramIdAndStatus(wlProgramId, status);
         return (results);
     }
 
-    public static List<CriteriaTypeOption> getCriteriaTypeOptions(Integer typeId) {
+    static List<CriteriaTypeOption> getCriteriaTypeOptions(Integer typeId) {
         List<CriteriaTypeOption> results = criteriaTypeOptionDAO.getCriteriaTypeOptionByTypeId(typeId);
         return (results);
     }
 
-    public static List<CriteriaTypeOption> getAllCriteriaTypeOptions() {
+    static List<CriteriaTypeOption> getAllCriteriaTypeOptions() {
         List<CriteriaTypeOption> results = criteriaTypeOptionDAO.findAll();
         return (results);
     }
 
-    public static VacancyTemplate getVacancyTemplateByTemplateId(Integer templateId) {
+    static VacancyTemplate getVacancyTemplateByTemplateId(Integer templateId) {
         VacancyTemplate vacancyTemplate = vacancyTemplateDAO.find(templateId);
         return (vacancyTemplate);
     }
 
-    public static Criteria getCriteriaByCriteriaId(Integer id) {
+    static Criteria getCriteriaByCriteriaId(Integer id) {
         Criteria c = criteriaDAO.find(id);
         return (c);
     }
 
 
-    public static Criteria getSelectedCriteria(Integer templateId, Integer vacancyId, Integer typeId) {
+    static Criteria getSelectedCriteria(Integer templateId, Integer vacancyId, Integer typeId) {
         if (templateId == null && typeId == null)
             return null;
         if (vacancyId == null && typeId == null)
@@ -113,41 +113,41 @@ public interface VacancyTemplateManager {
             return criteriaDAO.getCriteriaByTemplateIdVacancyIdTypeId(templateId, vacancyId, typeId);
     }
 
-    public static List<CriteriaType> getAllCriteriaTypes() {
+    static List<CriteriaType> getAllCriteriaTypes() {
         return criteriaTypeDAO.getAllCriteriaTypes();
     }
 
-    public static List<CriteriaType> getAllCriteriaTypesByWlProgramId(Integer programId) {
+    static List<CriteriaType> getAllCriteriaTypesByWlProgramId(Integer programId) {
         return criteriaTypeDAO.getAllCriteriaTypesByWlProgramId(programId);
     }
 
-    public static List<Criteria> getRefinedCriteriasByVacancyId(Integer vacancyId) {
+    static List<Criteria> getRefinedCriteriasByVacancyId(Integer vacancyId) {
         return criteriaDAO.getRefinedCriteriasByVacancyId(vacancyId);
     }
 
-    public static List<Criteria> getCriteriasByVacancyId(Integer vacancyId) {
+    static List<Criteria> getCriteriasByVacancyId(Integer vacancyId) {
         return criteriaDAO.getCriteriasByVacancyId(vacancyId);
     }
 
-    public static List<Criteria> getRefinedCriteriasByTemplateId(Integer templateId) {
+    static List<Criteria> getRefinedCriteriasByTemplateId(Integer templateId) {
         return criteriaDAO.getRefinedCriteriasByTemplateId(templateId);
     }
 
-    public static List<VacancyTemplate> getActiveVacancyTemplatesByWlProgramId(Integer programId) {
+    static List<VacancyTemplate> getActiveVacancyTemplatesByWlProgramId(Integer programId) {
         if (programId == null)
             return null;
         return vacancyTemplateDAO.getActiveVacancyTemplatesByWlProgramId(programId);
     }
 
-    public static CriteriaType getCriteriaTypeById(Integer id) {
+    static CriteriaType getCriteriaTypeById(Integer id) {
         return criteriaTypeDAO.find(id);
     }
 
-    public static Vacancy getVacancyById(Integer id) {
+    static Vacancy getVacancyById(Integer id) {
         return vacancyDAO.find(id);
     }
 
-    public static Vacancy getVacancyByName(String vacancyName) {
+    static Vacancy getVacancyByName(String vacancyName) {
         List<Vacancy> v = vacancyDAO.getVacanciesByName(vacancyName);
         if (v.isEmpty())
             return null;
@@ -159,7 +159,7 @@ public interface VacancyTemplateManager {
      * This method is meant to return a bunch of html <option> tags for each list element.
      */
 
-    public static String renderAllSelectOptions(Integer templateId, Integer vacancyId, Integer typeId) {
+    static String renderAllSelectOptions(Integer templateId, Integer vacancyId, Integer typeId) {
         Criteria criteria = new Criteria();
         criteria = getSelectedCriteria(templateId, vacancyId, typeId);
         List<CriteriaSelectionOption> selectedOptions = new ArrayList<CriteriaSelectionOption>();
@@ -443,7 +443,7 @@ public interface VacancyTemplateManager {
         return (sb.toString());
     }
 
-    public static VacancyTemplate createVacancyTemplate(String templateId) {
+    static VacancyTemplate createVacancyTemplate(String templateId) {
         if (StringUtils.isBlank(String.valueOf(templateId)) || "0".equals(templateId) || templateId.equalsIgnoreCase("null")) {
             VacancyTemplate vt = new VacancyTemplate();
             vt.setActive(true);
@@ -453,7 +453,7 @@ public interface VacancyTemplateManager {
         }
     }
 
-    public static void saveVacancy(Vacancy v) {
+    static void saveVacancy(Vacancy v) {
         if (v.getId() != null) {
             vacancyDAO.merge(v);
         } else {
@@ -462,7 +462,7 @@ public interface VacancyTemplateManager {
 
     }
 
-    public static void saveVacancyTemplate(VacancyTemplate vt) {
+    static void saveVacancyTemplate(VacancyTemplate vt) {
         if (vt.getId() != null) {
             vacancyTemplateDAO.merge(vt);
         } else {
@@ -471,7 +471,7 @@ public interface VacancyTemplateManager {
 
     }
 
-    public static Criteria createCriteria(LoggedInInfo loggedInInfo, String criteriaId) {
+    static Criteria createCriteria(LoggedInInfo loggedInInfo, String criteriaId) {
         Criteria c = new Criteria();
         if (!(StringUtils.isBlank(criteriaId) || "0".equals(criteriaId))) {
             c = criteriaDAO.find(Integer.valueOf(criteriaId));
@@ -479,7 +479,7 @@ public interface VacancyTemplateManager {
         return (c);
     }
 
-    public static void saveCriteria(Criteria c) {
+    static void saveCriteria(Criteria c) {
         if (c.getId() != null) {
             criteriaDAO.merge(c);
         } else {
@@ -488,7 +488,7 @@ public interface VacancyTemplateManager {
 
     }
 
-    public static void saveCriteriaSelectedOption(CriteriaSelectionOption c) {
+    static void saveCriteriaSelectedOption(CriteriaSelectionOption c) {
         if (c.getId() != null) {
             criteriaSelectionOptionDAO.merge(c);
         } else {

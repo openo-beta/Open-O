@@ -129,7 +129,7 @@
                 </label>
 
                     <%-- If LIST field --%>
-                <%if (curparam.getParamType().equals(curparam.LIST)) {%>
+                <%if (curparam.getParamType().equals(Parameter.LIST)) {%>
                 <div class="controls">
                     <select name="<%=curparam.getParamId()%>" id="<%=curparam.getParamId()%>">
                         <%
@@ -144,13 +144,13 @@
                 </div>
 
                     <%--If TEXT field --%>
-                <% } else if (curparam.getParamType().equals(curparam.TEXT)) {%>
+                <% } else if (curparam.getParamType().equals(Parameter.TEXT)) {%>
                 <div class="controls">
                     <input type="text" name="<%=curparam.getParamId()%>" id="<%=curparam.getParamId()%>"/>
                 </div>
 
                     <%--If DATE field --%>
-                <% } else if (curparam.getParamType().equals(curparam.DATE)) {%>
+                <% } else if (curparam.getParamType().equals(Parameter.DATE)) {%>
                 <div class="controls">
                     <div class="input-append" id="<%=curparam.getParamId()%>">
                         <input type="text" class="datefield" id="datefield<%=i%>" name="<%=curparam.getParamId()%>"/>
@@ -173,7 +173,7 @@
                 </script>
 
                     <%--If CHECK field --%>
-                <% } else if (curparam.getParamType().equals(curparam.CHECK)) {%>
+                <% } else if (curparam.getParamType().equals(Parameter.CHECK)) {%>
                 <input type="hidden" name="<%=curparam.getParamId()%>:check" value=""/>
                 <div class="controls">
 
@@ -193,7 +193,7 @@
                     </label>
                     <%}%>
                 </div>
-                <% } else if (curparam.getParamType().equals(curparam.TEXTLIST)) {%>
+                <% } else if (curparam.getParamType().equals(Parameter.TEXTLIST)) {%>
                 <div class="controls">
                     <input type="text" placeholder="Comma Separated" name="<%=curparam.getParamId()%>:list"
                            id="<%=curparam.getParamId()%>"/>

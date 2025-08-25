@@ -403,10 +403,7 @@ public class PatientConsentManagerImpl implements PatientConsentManager {
 
     public boolean hasProviderSpecificConsent(LoggedInInfo loggedInInfo) {
         ConsentType conType = consentTypeDao.findConsentTypeForProvider(ConsentType.PROVIDER_CONSENT_FILTER, loggedInInfo.getLoggedInProviderNo());
-        if (conType == null) {
-            return false;
-        }
-        return true;
+        return conType != null;
     }
 
     public ConsentType getProviderSpecificConsent(LoggedInInfo loggedInInfo) {

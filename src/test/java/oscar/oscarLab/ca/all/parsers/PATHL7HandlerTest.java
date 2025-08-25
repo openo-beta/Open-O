@@ -413,7 +413,7 @@ public class PATHL7HandlerTest {
                 stringBuilder.append(handler.getOBXAbnormalFlag(j, i).trim());
             }
         }
-        logger.info("testGetOBXAbnormalFlag() " + stringBuilder.toString());
+        logger.info("testGetOBXAbnormalFlag() " + stringBuilder);
 
         Assert.assertEquals(getElement("OBX.8").trim(), stringBuilder.toString().trim());
     }
@@ -462,7 +462,7 @@ public class PATHL7HandlerTest {
             }
         }
 
-        logger.info("testGetOBXIdentifier() " + stringBuilder.toString());
+        logger.info("testGetOBXIdentifier() " + stringBuilder);
 
         Assert.assertEquals(sortStringToList(getElement("OBX.3", "CE.1").trim()), sortStringToList(stringBuilder.toString()));
     }
@@ -481,7 +481,7 @@ public class PATHL7HandlerTest {
             }
         }
 
-        logger.info("testGetOBXValueType() " + stringBuilder.toString());
+        logger.info("testGetOBXValueType() " + stringBuilder);
         Assert.assertEquals(getElement("OBX.2"), stringBuilder.toString().trim());
     }
 
@@ -499,7 +499,7 @@ public class PATHL7HandlerTest {
             }
         }
 
-        logger.info("testGetOBXName() " + stringBuilder.toString());
+        logger.info("testGetOBXName() " + stringBuilder);
         Assert.assertEquals(getElement("OBX.3", "CE.2"), stringBuilder.toString().trim());
     }
 
@@ -556,7 +556,7 @@ public class PATHL7HandlerTest {
             }
         }
 
-        logger.info("testGetOBXUnits() " + stringBuilder.toString());
+        logger.info("testGetOBXUnits() " + stringBuilder);
 
         Assert.assertEquals(sortStringToList(getElement("OBX.6", "CE.1")), sortStringToList(stringBuilder.toString().trim()));
     }
@@ -574,7 +574,7 @@ public class PATHL7HandlerTest {
             }
         }
 
-        logger.info("testGetOBXResultStatus() " + stringBuilder.toString());
+        logger.info("testGetOBXResultStatus() " + stringBuilder);
         Assert.assertEquals(getElement("OBX.11"), stringBuilder.toString().trim());
     }
 

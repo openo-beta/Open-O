@@ -262,9 +262,8 @@ public class TestClass {
         } else if (!shortObj.equals(other.shortObj)) return false;
         if (shortPrim != other.shortPrim) return false;
         if (stringObj == null) {
-            if (other.stringObj != null) return false;
-        } else if (!stringObj.equals(other.stringObj)) return false;
-        return true;
+            return other.stringObj == null;
+        } else return stringObj.equals(other.stringObj);
     }
 
     @Override

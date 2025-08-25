@@ -37,5 +37,5 @@ import org.springframework.stereotype.Repository;
 
 public interface WcbBpCodeDao extends AbstractDao<WcbBpCode> {
 
-    public List<WcbBpCode> findByCodeOrAnyLevel(String code);
+    List<WcbBpCode> findByCodeOrAnyLevel(String code);
 }

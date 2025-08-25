@@ -47,11 +47,11 @@ public class EntityDataGenerator {
 
     public static Object generateTestDataForModelClass(Object model) throws Exception {
 
-        Field f[] = model.getClass().getDeclaredFields();
+        Field[] f = model.getClass().getDeclaredFields();
         AccessibleObject.setAccessible(f, true);
         for (int i = 0; i < f.length; i++) {
             boolean isId = false;
-            Annotation annotations[] = f[i].getAnnotations();
+            Annotation[] annotations = f[i].getAnnotations();
             for (int j = 0; j < annotations.length; j++) {
                 if (annotations[j].annotationType() == Id.class) {
                     isId = true;

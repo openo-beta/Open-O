@@ -42,21 +42,21 @@ import org.hibernate.SessionFactory;
 
 public interface ProgramFunctionalUserDAO {
 
-    public List<FunctionalUserType> getFunctionalUserTypes();
+    List<FunctionalUserType> getFunctionalUserTypes();
 
-    public FunctionalUserType getFunctionalUserType(Long id);
+    FunctionalUserType getFunctionalUserType(Long id);
 
-    public void saveFunctionalUserType(FunctionalUserType fut);
+    void saveFunctionalUserType(FunctionalUserType fut);
 
-    public void deleteFunctionalUserType(Long id);
+    void deleteFunctionalUserType(Long id);
 
-    public List<FunctionalUserType> getFunctionalUsers(Long programId);
+    List<FunctionalUserType> getFunctionalUsers(Long programId);
 
-    public ProgramFunctionalUser getFunctionalUser(Long id);
+    ProgramFunctionalUser getFunctionalUser(Long id);
 
-    public void saveFunctionalUser(ProgramFunctionalUser pfu);
+    void saveFunctionalUser(ProgramFunctionalUser pfu);
 
-    public void deleteFunctionalUser(Long id);
+    void deleteFunctionalUser(Long id);
 
-    public Long getFunctionalUserByUserType(Long programId, Long userTypeId);
+    Long getFunctionalUserByUserType(Long programId, Long userTypeId);
 }

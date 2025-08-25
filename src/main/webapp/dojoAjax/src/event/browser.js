@@ -66,7 +66,7 @@ dojo._ie_clobber = new function () {
                 }
             } catch (e) { /* squelch! */
             }
-            ;
+
         }
         na = null;
     }

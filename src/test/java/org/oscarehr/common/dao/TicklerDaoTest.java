@@ -23,7 +23,9 @@
  */
 package org.oscarehr.common.dao;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -115,10 +117,10 @@ public class TicklerDaoTest extends DaoTestFixtures {
         dao.persist(this.createTickler(1, "I am coding", 10015, yesterday(), Tickler.STATUS.C, "2"));
         dao.persist(this.createTickler(2, "this today", 10015, tomorrow(), Tickler.STATUS.A, "1"));
 
-        assertTrue(1 == dao.findActiveByMessageForPatients(Arrays.asList(new Integer[]{1}), "hello").size());
-        assertTrue(1 == dao.findActiveByDemographicNoAndMessage(1, "hello there").size());
-        assertTrue(1 == dao.findByDemographicIdTaskAssignedToAndMessage(1, "1", "hello there").size());
-        assertTrue(1 == dao.search_tickler_bydemo(2, "A", tomorrow(), future(2)).size());
+        assertEquals(1, dao.findActiveByMessageForPatients(Arrays.asList(new Integer[]{1}), "hello").size());
+        assertEquals(1, dao.findActiveByDemographicNoAndMessage(1, "hello there").size());
+        assertEquals(1, dao.findByDemographicIdTaskAssignedToAndMessage(1, "1", "hello there").size());
+        assertEquals(1, dao.search_tickler_bydemo(2, "A", tomorrow(), future(2)).size());
     }
 
     @Test
@@ -187,13 +189,13 @@ public class TicklerDaoTest extends DaoTestFixtures {
 
 
         Tickler t = dao.find(entity.getId());
-        assertTrue(1 == t.getUpdates().size());
-        assertTrue(1 == t.getComments().size());
-        assertTrue(t.getDemographic() != null);
-        assertTrue(t.getProvider() != null);
-        assertTrue(t.getAssignee() != null);
-        assertTrue(t.getProgram() == null);
-        assertTrue(t.getUpdates().iterator().next().getProvider() != null);
-        assertTrue(t.getComments().iterator().next().getProvider() != null);
+        assertEquals(1, t.getUpdates().size());
+        assertEquals(1, t.getComments().size());
+        assertNotNull(t.getDemographic());
+        assertNotNull(t.getProvider());
+        assertNotNull(t.getAssignee());
+        assertNull(t.getProgram());
+        assertNotNull(t.getUpdates().iterator().next().getProvider());
+        assertNotNull(t.getComments().iterator().next().getProvider());
     }
 }

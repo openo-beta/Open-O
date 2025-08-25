@@ -234,10 +234,7 @@ public class ConversionUtils {
      * @return Returns false for empty, null or 0 or true otherwise.
      */
     public static boolean fromBoolString(String str) {
-        if (str == null || str.trim().isEmpty() || ZERO_STRING.equals(str)) {
-            return false;
-        }
-        return true;
+        return str != null && !str.trim().isEmpty() && !ZERO_STRING.equals(str);
     }
 
     /**

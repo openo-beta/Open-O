@@ -39,19 +39,19 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 public interface ProgramAccessDAO {
 
-    public List<ProgramAccess> getAccessListByProgramId(Long programId);
+    List<ProgramAccess> getAccessListByProgramId(Long programId);
 
-    public ProgramAccess getProgramAccess(Long id);
+    ProgramAccess getProgramAccess(Long id);
 
-    public ProgramAccess getProgramAccess(Long programId, Long accessTypeId);
+    ProgramAccess getProgramAccess(Long programId, Long accessTypeId);
 
-    public List<ProgramAccess> getProgramAccessListByType(Long programId, String accessType);
+    List<ProgramAccess> getProgramAccessListByType(Long programId, String accessType);
 
-    public void saveProgramAccess(ProgramAccess pa);
+    void saveProgramAccess(ProgramAccess pa);
 
-    public void deleteProgramAccess(Long id);
+    void deleteProgramAccess(Long id);
 
-    public List<AccessType> getAccessTypes();
+    List<AccessType> getAccessTypes();
 
-    public AccessType getAccessType(Long id);
+    AccessType getAccessType(Long id);
 }

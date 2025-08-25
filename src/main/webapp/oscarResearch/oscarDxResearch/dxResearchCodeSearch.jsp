@@ -127,9 +127,9 @@
 
         </table>
         <input type="button" name="confirm" value="Confirm"
-               onclick="javascript:CodesAttach();"><input type="button"
+               onclick="CodesAttach();"><input type="button"
                                                           name="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>" value="Cancel"
-                                                          onclick="javascript:window.close()">
+                                                          onclick="window.close()">
 
         <p></p>
         <p>&nbsp;</p>

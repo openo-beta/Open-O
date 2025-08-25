@@ -241,7 +241,7 @@
                     } else {
                         document.getElementById(hideelement).style.display = 'none';
                         document.getElementById(button).innerHTML = document.getElementById(button).innerHTML.replace(minus, plus);
-                        ;
+
                     }
                 }
             }
@@ -430,7 +430,7 @@
                 <form id="form1" action="../documentManager/addEditDocument.do" method="post"
                       enctype="multipart/form-data"><label for="provider"
                                                            class="fields">Send to Provider:</label> <select
-                        onchange="javascript:addProviderToPost(this);" id="providerDrop"
+                        onchange="addProviderToPost(this);" id="providerDrop"
                         name="provider">
                     <option value="-1" <%= ("-1".equals(provider) ? " selected" : "")%>>None</option>
                     <%

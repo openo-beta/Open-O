@@ -45,7 +45,7 @@ public interface BillingOnItemPaymentDao extends AbstractDao<BillingOnItemPaymen
 
     List<BillingOnItemPayment> findByBillingNo(int billingNo);
 
-    public static BigDecimal calculateItemPaymentTotal(List<BillingOnItemPayment> paymentRecords) {
+    static BigDecimal calculateItemPaymentTotal(List<BillingOnItemPayment> paymentRecords) {
 
         BigDecimal paidTotal = new BigDecimal("0.00");
         for (BillingOnItemPayment bPay : paymentRecords) {
@@ -56,7 +56,7 @@ public interface BillingOnItemPaymentDao extends AbstractDao<BillingOnItemPaymen
         return paidTotal;
     }
 
-    public static BigDecimal calculateItemRefundTotal(List<BillingOnItemPayment> paymentRecords) {
+    static BigDecimal calculateItemRefundTotal(List<BillingOnItemPayment> paymentRecords) {
 
         BigDecimal refundTotal = new BigDecimal("0.00");
         for (BillingOnItemPayment bPay : paymentRecords) {

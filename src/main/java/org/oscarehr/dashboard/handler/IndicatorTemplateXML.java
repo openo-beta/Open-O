@@ -65,13 +65,13 @@ public class IndicatorTemplateXML {
 
     private enum ActionAttribute {id, name, value}
 
-    private static enum ManditoryParameter {provider}
+    private enum ManditoryParameter {provider}
 
-    private static enum ProviderValueAlias {all, loggedinprovider}
+    private enum ProviderValueAlias {all, loggedinprovider}
 
-    private static enum ExcludedPatientAlias {none, excludedpatient}
+    private enum ExcludedPatientAlias {none, excludedpatient}
 
-    public static enum RangeType {upperLimit, lowerLimit}
+    public enum RangeType {upperLimit, lowerLimit}
 
     private Integer id;
     private Document xmlDocument;

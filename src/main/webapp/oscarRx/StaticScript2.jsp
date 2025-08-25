@@ -315,10 +315,10 @@
   </form> --%>
                             <input type="button" align="top" value="Represcribe" style="width: 100px"
                                    class="ControlPushButton"
-                                   onclick="javascript:reRxDrugSearch3('<%=drug.localDrugId%>');"/>
+                                   onclick="reRxDrugSearch3('<%=drug.localDrugId%>');"/>
                             <input type="button" align="top" value="Add to Favorites" style="width: 100px"
                                    class="ControlPushButton"
-                                   onclick="javascript:addFavorite2(<%=drug.localDrugId%>, '<%=StringEscapeUtils.escapeJavaScript((drug.customName!=null&&(!drug.customName.equalsIgnoreCase("null")))?drug.customName:drug.brandName)%>');"/>
+                                   onclick="addFavorite2(<%=drug.localDrugId%>, '<%=StringEscapeUtils.escapeJavaScript((drug.customName!=null&&(!drug.customName.equalsIgnoreCase("null")))?drug.customName:drug.brandName)%>');"/>
 
 
                             <%
@@ -351,7 +351,7 @@
             <td><br/>
                 <br/>
                 <input type="button" value="Back To Search Drug" class="ControlPushButton"
-                       onclick="javascript:window.location.href='<%= request.getContextPath() %>/oscarRx/SearchDrug3.jsp';"/></td>
+                       onclick="window.location.href='<%= request.getContextPath() %>/oscarRx/SearchDrug3.jsp';"/></td>
         </tr>
         <!----End new rows here-->
         <tr height="100%">

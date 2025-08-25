@@ -45,7 +45,7 @@ public final class EformViewForPdfGenerationServlet extends HttpServlet {
     private static final Logger logger = MiscUtils.getLogger();
 
     @Override
-    public final void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // ensure it's a local machine request... no one else should be calling this servlet.
         String remoteAddress = request.getRemoteAddr();
         logger.debug("EformPdfServlet request from : " + remoteAddress);

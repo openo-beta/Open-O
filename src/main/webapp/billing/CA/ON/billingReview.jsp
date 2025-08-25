@@ -102,12 +102,12 @@
     String dx = dxString.length() > 2 ? dxString.substring(0, 3) : " ";
 // add perc. setting
     boolean bPercS = false;
-    bPercS = "".equals(oscarVariables.getProperty("billing_pCode", "")) ? false : true;
+    bPercS = !"".equals(oscarVariables.getProperty("billing_pCode", ""));
     boolean bDbCode = false;
     String billing_pCode = "";
     String billing_E078A = oscarVariables.getProperty("billing_pCode_E078A", "");
     if (!"".equals(billing_E078A)) {
-        String dTemp[] = billing_E078A.split("@");
+        String[] dTemp = billing_E078A.split("@");
         billing_E078A = dx.matches(dTemp[2]) ? dTemp[0] : " ";
     }
     if (bPercS) {
@@ -991,7 +991,7 @@
     </p>
     <% session.setAttribute("content", content); %>
     <form><input type=button name=back value='Go Back and Change'
-                 onClick='javascript:location.href="billingOB.jsp?billForm=<%=request.getParameter("billForm")%>&hotclick=<%=URLEncoder.encode("")%>&appointment_no=<%=request.getParameter("appointment_no")%>&demographic_name=<%=URLEncoder.encode(demoname)%>&demographic_no=<%=request.getParameter("demographic_no")%>&user_no=<%=request.getParameter("user_no")%>&providerview=<%=request.getParameter("apptProvider_no")%>&apptProvider_no=<%=request.getParameter("apptProvider_no")%>&appointment_date=<%=request.getParameter("xml_appointment_date")%>&status=<%=request.getParameter("status")%>&start_time=<%=request.getParameter("start_time")%>&bNewForm=0"'>
+                 onClick='location.href="billingOB.jsp?billForm=<%=request.getParameter("billForm")%>&hotclick=<%=URLEncoder.encode("")%>&appointment_no=<%=request.getParameter("appointment_no")%>&demographic_name=<%=URLEncoder.encode(demoname)%>&demographic_no=<%=request.getParameter("demographic_no")%>&user_no=<%=request.getParameter("user_no")%>&providerview=<%=request.getParameter("apptProvider_no")%>&apptProvider_no=<%=request.getParameter("apptProvider_no")%>&appointment_date=<%=request.getParameter("xml_appointment_date")%>&status=<%=request.getParameter("status")%>&start_time=<%=request.getParameter("start_time")%>&bNewForm=0"'>
     </form>
 
     <%

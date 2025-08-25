@@ -156,7 +156,7 @@
                 appendChild(input);
                 appendChild(submit);
             }
-            ;
+
 
             // remove the form
             form.parentNode.removeChild(form);
@@ -332,7 +332,7 @@
         <input type="hidden" id="queue" value="<%=queueId%>"/>
         <input type="hidden" id="provider" value="<%=provider%>"/>
         <label for="queueDrop" class="fields">Send to Queue:</label>
-        <select onchange="javascript:addQueueToPost(this);" id="queueDrop" name="queueDrop">
+        <select onchange="addQueueToPost(this);" id="queueDrop" name="queueDrop">
 
             <%
                 for (Hashtable ht : queues) {
@@ -345,7 +345,7 @@
         </select>
         <br/>
         <label for="providerDrop" class="fields">Send to Provider:</label>
-        <select onchange="javascript:addProviderToPost(this);" id="providerDrop" name="providerDrop">
+        <select onchange="addProviderToPost(this);" id="providerDrop" name="providerDrop">
             <option value="-2" <%=("-2".equals(provider) ? " selected" : "")%> >None</option>
             <%
                 for (int i = 0; i < providers.size(); i++) {

@@ -50,7 +50,7 @@ import oscar.util.ConversionUtils;
 
 public interface DocumentDao extends AbstractDao<Document> {
 
-    public enum Module {
+    enum Module {
         DEMOGRAPHIC;
 
         public String getName() {
@@ -58,7 +58,7 @@ public interface DocumentDao extends AbstractDao<Document> {
         }
     }
 
-    public enum DocumentType {
+    enum DocumentType {
         CONSULT, LAB, ECONSULT;
 
         public String getName() {
@@ -66,59 +66,59 @@ public interface DocumentDao extends AbstractDao<Document> {
         }
     }
 
-    public List<Object[]> getCtlDocsAndDocsByDemoId(Integer demoId, Module moduleName, DocumentType docType);
+    List<Object[]> getCtlDocsAndDocsByDemoId(Integer demoId, Module moduleName, DocumentType docType);
 
-    public List<Document> findActiveByDocumentNo(Integer demoId);
+    List<Document> findActiveByDocumentNo(Integer demoId);
 
-    public List<Object[]> findCtlDocsAndDocsByModuleDocTypeAndModuleId(Module module, DocumentType docType,
-                                                                       Integer moduleId);
+    List<Object[]> findCtlDocsAndDocsByModuleDocTypeAndModuleId(Module module, DocumentType docType,
+                                                                Integer moduleId);
 
-    public List<Object[]> findCtlDocsAndDocsByModuleAndModuleId(Module module, Integer moduleId);
+    List<Object[]> findCtlDocsAndDocsByModuleAndModuleId(Module module, Integer moduleId);
 
-    public List<Object[]> findDocsAndConsultDocsByConsultId(Integer consultationId);
+    List<Object[]> findDocsAndConsultDocsByConsultId(Integer consultationId);
 
-    public List<Object[]> findDocsAndEFormDocsByFdid(Integer fdid);
+    List<Object[]> findDocsAndEFormDocsByFdid(Integer fdid);
 
-    public List<Object[]> findDocsAndConsultResponseDocsByConsultId(Integer consultationId);
+    List<Object[]> findDocsAndConsultResponseDocsByConsultId(Integer consultationId);
 
-    public List<Object[]> findCtlDocsAndDocsByDocNo(Integer documentNo);
+    List<Object[]> findCtlDocsAndDocsByDocNo(Integer documentNo);
 
-    public List<Object[]> findCtlDocsAndDocsByModuleCreatorResponsibleAndDates(Module module, String providerNo,
-                                                                               String responsible, Date from, Date to, boolean unmatchedDemographics);
+    List<Object[]> findCtlDocsAndDocsByModuleCreatorResponsibleAndDates(Module module, String providerNo,
+                                                                        String responsible, Date from, Date to, boolean unmatchedDemographics);
 
-    public List<Object[]> findConstultDocsDocsAndProvidersByModule(Module module, Integer moduleId);
+    List<Object[]> findConstultDocsDocsAndProvidersByModule(Module module, Integer moduleId);
 
-    public Integer findMaxDocNo();
+    Integer findMaxDocNo();
 
-    public Document getDocument(String documentNo);
+    Document getDocument(String documentNo);
 
-    public Demographic getDemoFromDocNo(String docNo);
+    Demographic getDemoFromDocNo(String docNo);
 
-    public int getNumberOfDocumentsAttachedToAProviderDemographics(String providerNo, Date startDate, Date endDate);
+    int getNumberOfDocumentsAttachedToAProviderDemographics(String providerNo, Date startDate, Date endDate);
 
-    public void subtractPages(String documentNo, Integer i);
+    void subtractPages(String documentNo, Integer i);
 
-    public List<Document> findByDemographicId(String demoNo);
+    List<Document> findByDemographicId(String demoNo);
 
-    public List<Object[]> findDocuments(String module, String moduleid, String docType, boolean includePublic,
-                                        boolean includeDeleted, boolean includeActive, EDocSort sort, Date since);
+    List<Object[]> findDocuments(String module, String moduleid, String docType, boolean includePublic,
+                                 boolean includeDeleted, boolean includeActive, EDocSort sort, Date since);
 
-    public List<Document> findByUpdateDate(Date updatedAfterThisDateExclusive, int itemsToReturn);
+    List<Document> findByUpdateDate(Date updatedAfterThisDateExclusive, int itemsToReturn);
 
-    public List<Document> findByDemographicUpdateDate(Integer demographicId, Date updatedAfterThisDateInclusive);
+    List<Document> findByDemographicUpdateDate(Integer demographicId, Date updatedAfterThisDateInclusive);
 
-    public List<Document> findByDemographicUpdateAfterDate(Integer demographicId, Date updatedAfterThisDate);
+    List<Document> findByDemographicUpdateAfterDate(Integer demographicId, Date updatedAfterThisDate);
 
-    public List<Document> findByProgramProviderDemographicUpdateDate(Integer programId, String providerNo,
-                                                                     Integer demographicId, Date updatedAfterThisDateExclusive, int itemsToReturn);
+    List<Document> findByProgramProviderDemographicUpdateDate(Integer programId, String providerNo,
+                                                              Integer demographicId, Date updatedAfterThisDateExclusive, int itemsToReturn);
 
-    public List<Integer> findDemographicIdsSince(Date since);
+    List<Integer> findDemographicIdsSince(Date since);
 
-    public List<Document> findByDoctype(String docType);
+    List<Document> findByDoctype(String docType);
 
-    public List<Document> findByDoctypeAndProviderNo(String docType, String provider_no, Integer isPublic);
+    List<Document> findByDoctypeAndProviderNo(String docType, String provider_no, Integer isPublic);
 
-    public List<Document> findByDemographicAndDoctype(int demographicId, DocumentType documentType);
+    List<Document> findByDemographicAndDoctype(int demographicId, DocumentType documentType);
 
-    public Document findByDemographicAndFilename(int demographicId, String fileName);
+    Document findByDemographicAndFilename(int demographicId, String fileName);
 }

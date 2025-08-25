@@ -663,7 +663,7 @@ public class OntarioMDSpec4DataTest extends DaoTestFixtures {
         Date referenceDate = cal.getTime();
 
         List<Admission> admissions = admissionDao.getAdmissionsByProgramAndAdmittedDate(oscarProgramID, referenceDate, today);
-        Assert.assertTrue("Admissions should not be empty", !admissions.isEmpty());
+        Assert.assertFalse("Admissions should not be empty", admissions.isEmpty());
 
     }
 

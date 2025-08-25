@@ -76,7 +76,7 @@
                     e.stopPropagation ? e.stopPropagation() : e.cancelBubble = true;
                     e.preventDefault ? e.preventDefault() : e.returnValue = false;
                 }
-                ;
+
                 return false;
             }
         },
@@ -140,7 +140,7 @@
                                             break;
                                         }
                                     }
-                                    ;
+
                                     return $.empty(e);
                                 };
                             })(li))
@@ -152,9 +152,9 @@
                         else
                             wrap.dom.ul.appendChild(li);
                     }
-                    ;
+
                 }
-                ;
+
                 input.value = "";
                 wrap.dom.input.parentNode.replaceChild(input, wrap.dom.input);
                 wrap.dom.input = input;
@@ -241,7 +241,7 @@
                             handler.onerror('file too big');
                         return;
                     }
-                    ;
+
                     for (var
                              xhr = new XMLHttpRequest,
                              upload = xhr.upload || {
@@ -320,7 +320,7 @@
                         };
                         upload.onloadstart(rpe);
                     }
-                    ;
+
                     var formdata;
                     try {
                         formdata = new FormData();
@@ -339,7 +339,7 @@
                         xhr.setRequestHeader("X-Filename", handler.file.fileName);
                         xhr.send(handler.file);
                     }
-                    ;
+
                     return handler;
                 };
             // Internet Explorer, Opera, others
@@ -383,7 +383,7 @@
                         iframe.setAttribute("name", iframe.id = target);
                         iframe.setAttribute("src", url);
                     }
-                    ;
+
                     iframe.style.position = "absolute";
                     iframe.style.left = iframe.style.top = "-10000px";
                     iframe.onload = onload;
@@ -418,7 +418,7 @@
                         appendChild(iframe);
                         appendChild(form).submit();
                     }
-                    ;
+
                     return handler;
                 };
             xhr = null;
@@ -468,7 +468,7 @@
                             handler.iframe.parentNode.removeChild(handler.iframe);
                             handler.iframe = null;
                         }
-                        ;
+
                         setTimeout(function () {
                             handler.file = handler.files[handler.current];
                             $.sendFile(handler, maxSize).onload = callee;
@@ -484,7 +484,7 @@
                     }
                 };
             }
-            ;
+
             return handler;
         },
 
@@ -500,7 +500,7 @@
                     bytes /= 1024;
                     ++i;
                 }
-                ;
+
                 return (i ? bytes.toFixed(2) : bytes) + info[i];
             };
         })([" bytes", " Kb", " Mb", " Gb", " Tb"]),
@@ -519,7 +519,7 @@
                     if (arguments.length)
                         node.appendChild(document.createElement("br"));
                 }
-                ;
+
             };
         })(Array.prototype.slice),
 
@@ -557,7 +557,7 @@
                 appendChild(ul);
                 appendChild(info);
             }
-            ;
+
 
             wrap.className = className;
             total.className = "total";
@@ -599,7 +599,7 @@
                         for (var key in handler)
                             this[key] = handler[key];
                     }
-                    ;
+
                     $.sendFiles(this, this.maxSize);
                     return this;
                 },
@@ -610,7 +610,7 @@
                         this.dom.disabled = false;
                         this.dom.input.removeAttribute("disabled");
                     }
-                    ;
+
                     total.style.visibility = current.style.visibility = "hidden";
                 },
 
@@ -625,7 +625,7 @@
                         this.dom.input.setAttribute("disabled", "disabled");
                         tstyle.visibility = cstyle.visibility = "";
                     }
-                    ;
+
                     tstyle[totalProp || "height"] = (total >> 0) + "px";
                     cstyle[currentProp || "height"] = (current >> 0) + "px";
                 }

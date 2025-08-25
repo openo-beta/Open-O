@@ -936,7 +936,7 @@ dojo.widget.defineWidget(
                     var row = self.createRow(arr[i]);
                     self.domNode.tBodies[0].appendChild(row);
                 }
-                ;
+
                 self.render();
             });
             dojo.event.connect(this.store, "onRemoveData", function (removedObject) {

@@ -270,9 +270,9 @@
                     }
                 } else if (request.getParameter("search_mode").equals("search_dob")) {
                     String[] param = new String[3];
-                    param[0] = "" + MyDateFormat.getYearFromStandardDate(keyword) + "%";//(",");
-                    param[1] = "" + MyDateFormat.getMonthFromStandardDate(keyword) + "%";
-                    param[2] = "" + MyDateFormat.getDayFromStandardDate(keyword) + "%";
+                    param[0] = MyDateFormat.getYearFromStandardDate(keyword) + "%";//(",");
+                    param[1] = MyDateFormat.getMonthFromStandardDate(keyword) + "%";
+                    param[2] = MyDateFormat.getDayFromStandardDate(keyword) + "%";
                     if (param[1].length() == 2) {
                         param[1] = "0" + param[1];
                     }
@@ -308,7 +308,7 @@
                             continue;
                         }
 
-                        bodd = bodd ? false : true; //for the color of rows
+                        bodd = !bodd; //for the color of rows
                         nItems++; //to calculate if it is the end of records
 
                         if (!(oscar.Misc.getString(rs, "month_of_birth").equals(""))) {//   ||oscar.Misc.getString(rs,"year_of_birth")||oscar.Misc.getString(rs,"date_of_birth")) {

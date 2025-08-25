@@ -389,7 +389,6 @@ public class JdbcBillingClaimImpl {
         if (paymentSumParam != null) {
             BillingONPaymentDao billingONPaymentDao = (BillingONPaymentDao) SpringUtils.getBean(BillingONPaymentDao.class);
             BillingPaymentTypeDao billingPaymentTypeDao = (BillingPaymentTypeDao) SpringUtils.getBean(BillingPaymentTypeDao.class);
-            ;
             BillingONCHeader1 ch1 = cheaderDao.find(id);
             Date paymentDate = null;
             try {

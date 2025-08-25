@@ -182,9 +182,7 @@ public class CodeFilterManager {
                         }
                     }
                 }
-                if (!patientHasCodeInDxReg) {
-                    return false;
-                }
+                return patientHasCodeInDxReg;
             }//cf.Dx
         }
 

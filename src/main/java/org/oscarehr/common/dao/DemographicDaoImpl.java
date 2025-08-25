@@ -127,15 +127,10 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         // must be refactored into JPA, then we will talk, ok?
         // Session session = getSession();
         Session session = currentSession();
-        try {
-            SQLQuery sqlQuery = session.createSQLQuery(
-                "select demographic_no from demographic_merged where merged_to = :parentId and deleted = 0");
-            sqlQuery.setInteger("parentId", demographicNo);
-            return sqlQuery.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
-        }
+        SQLQuery sqlQuery = session.createSQLQuery(
+            "select demographic_no from demographic_merged where merged_to = :parentId and deleted = 0");
+        sqlQuery.setInteger("parentId", demographicNo);
+        return sqlQuery.list();
     }
 
     @Override
@@ -271,14 +266,9 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         // Session s = getSession();
         Session s = currentSession();
-        try {
-            List rs = s.createCriteria(Demographic.class).add(Expression.eq("Hin", hcn))
-                .add(Expression.eq("HcType", hcnType)).add(Expression.eq("PatientStatus", "AC")).list();
-            return rs;
-        } finally {
-            // releaseSession(s);
-            //s.close();
-        }
+        List rs = s.createCriteria(Demographic.class).add(Expression.eq("Hin", hcn))
+            .add(Expression.eq("HcType", hcnType)).add(Expression.eq("PatientStatus", "AC")).list();
+        return rs;
     }
 
     @Override
@@ -410,41 +400,36 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         String ln = "";
         String fn = "";
         String where = "";
-        try {
-            if (searchString != null && searchString.length() > 0) {
-                String[] sh = searchString.split(",");
-                if (sh.length > 1) {
-                    if (sh[0] != null && sh[0].trim().length() > 0) {
-                        where = " x.LastName like :ln ";
-                        ln = sh[0].trim();
-                    }
-                    if (sh[1] != null && sh[1].trim().length() > 0) {
-                        if (where.length() > 0)
-                            where = where + " and ";
-                        where = where + " x.FirstName like :fn ";
-                        fn = sh[1].trim();
-                    }
-                } else {
-                    if (sh[0] != null && sh[0].trim().length() > 0) {
-                        where = " x.LastName like :ln ";
-                        ln = sh[0].trim();
-                    }
+        if (searchString != null && searchString.length() > 0) {
+            String[] sh = searchString.split(",");
+            if (sh.length > 1) {
+                if (sh[0] != null && sh[0].trim().length() > 0) {
+                    where = " x.LastName like :ln ";
+                    ln = sh[0].trim();
                 }
-                if (where.length() > 0)
-                    sqlCommand = sqlCommand + " where " + where;
+                if (sh[1] != null && sh[1].trim().length() > 0) {
+                    if (where.length() > 0)
+                        where = where + " and ";
+                    where = where + " x.FirstName like :fn ";
+                    fn = sh[1].trim();
+                }
+            } else {
+                if (sh[0] != null && sh[0].trim().length() > 0) {
+                    where = " x.LastName like :ln ";
+                    ln = sh[0].trim();
+                }
             }
-            Query q = session.createQuery(sqlCommand);
-            if (ln.length() > 0)
-                q.setParameter("ln", ln + "%");
-            if (fn.length() > 0)
-                q.setParameter("fn", fn + "%");
-            q.setFirstResult(startIndex);
-            q.setMaxResults(itemsToReturn);
-            return (q.list());
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
+            if (where.length() > 0)
+                sqlCommand = sqlCommand + " where " + where;
         }
+        Query q = session.createQuery(sqlCommand);
+        if (ln.length() > 0)
+            q.setParameter("ln", ln + "%");
+        if (fn.length() > 0)
+            q.setParameter("fn", fn + "%");
+        q.setFirstResult(startIndex);
+        q.setMaxResults(itemsToReturn);
+        return (q.list());
     }
 
     private final String PROGRAM_DOMAIN_RESTRICTION = "select distinct a.clientId from ProgramProvider pp,Admission a WHERE pp.ProgramId=a.programId AND pp.ProviderNo=:providerNo";
@@ -524,29 +509,24 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         // Session session = this.getSession();
         Session session = currentSession();
-        try {
-            Query q = session.createQuery(queryString);
-            q.setFirstResult(offset);
-            q.setMaxResults(limit);
+        Query q = session.createQuery(queryString);
+        q.setFirstResult(offset);
+        q.setMaxResults(limit);
 
-            q.setParameter("lastName", name[0].trim() + "%");
-            if (name.length == 2) {
-                q.setParameter("firstName", name[1].trim() + "%");
-            }
-
-            if (statuses != null) {
-                q.setParameterList("statuses", statuses);
-            }
-
-            if (providerNo != null && !outOfDomain) {
-                q.setParameter("providerNo", providerNo);
-            }
-
-            list = q.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
+        q.setParameter("lastName", name[0].trim() + "%");
+        if (name.length == 2) {
+            q.setParameter("firstName", name[1].trim() + "%");
         }
+
+        if (statuses != null) {
+            q.setParameterList("statuses", statuses);
+        }
+
+        if (providerNo != null && !outOfDomain) {
+            q.setParameter("providerNo", providerNo);
+        }
+
+        list = q.list();
         return list;
     }
 
@@ -564,21 +544,16 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         // Session session = this.getSession();
         Session session = currentSession();
-        try {
-            Query q = session.createQuery(queryString);
-            q.setFirstResult(offset);
-            q.setMaxResults(limit);
+        Query q = session.createQuery(queryString);
+        q.setFirstResult(offset);
+        q.setMaxResults(limit);
 
-            q.setParameter("lastName", name[0].trim() + "%");
-            if (name.length == 2) {
-                q.setParameter("firstName", name[1].trim() + "%");
-            }
-
-            list = q.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
+        q.setParameter("lastName", name[0].trim() + "%");
+        if (name.length == 2) {
+            q.setParameter("firstName", name[1].trim() + "%");
         }
+
+        list = q.list();
         return list;
     }
 
@@ -605,19 +580,14 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         // Session session = this.getSession();
         Session session = currentSession();
 
-        try {
-            Query q = session.createQuery(queryString);
-            q.setParameter("hin", hin.trim());
-            q.setParameter("gender", gender.trim());
-            q.setParameter("dateOfBirth", params[2].trim() + "%");
-            q.setParameter("monthOfBirth", params[1].trim() + "%");
-            q.setParameter("yearOfBirth", params[0].trim() + "%");
-            q.setParameter("lastName", lastName.toUpperCase());
-            list = q.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
-        }
+        Query q = session.createQuery(queryString);
+        q.setParameter("hin", hin.trim());
+        q.setParameter("gender", gender.trim());
+        q.setParameter("dateOfBirth", params[2].trim() + "%");
+        q.setParameter("monthOfBirth", params[1].trim() + "%");
+        q.setParameter("yearOfBirth", params[0].trim() + "%");
+        q.setParameter("lastName", lastName.toUpperCase());
+        list = q.list();
 
         return list;
     }
@@ -691,28 +661,23 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         // Session session = this.getSession();
         Session session = currentSession();
-        try {
-            Query q = session.createQuery(queryString);
-            q.setFirstResult(offset);
-            q.setMaxResults(limit);
+        Query q = session.createQuery(queryString);
+        q.setFirstResult(offset);
+        q.setMaxResults(limit);
 
-            q.setParameter("yearOfBirth", params[0].trim() + "%");
-            q.setParameter("monthOfBirth", params[1].trim() + "%");
-            q.setParameter("dateOfBirth", params[2].trim() + "%");
+        q.setParameter("yearOfBirth", params[0].trim() + "%");
+        q.setParameter("monthOfBirth", params[1].trim() + "%");
+        q.setParameter("dateOfBirth", params[2].trim() + "%");
 
-            if (statuses != null) {
-                q.setParameterList("statuses", statuses);
-            }
-
-            if (providerNo != null && !outOfDomain) {
-                q.setParameter("providerNo", providerNo);
-            }
-
-            list = q.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
+        if (statuses != null) {
+            q.setParameterList("statuses", statuses);
         }
+
+        if (providerNo != null && !outOfDomain) {
+            q.setParameter("providerNo", providerNo);
+        }
+
+        list = q.list();
         return list;
     }
 
@@ -730,20 +695,15 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         // Session session = this.getSession();
         Session session = currentSession();
-        try {
-            Query q = session.createQuery(queryString);
-            q.setFirstResult(offset);
-            q.setMaxResults(limit);
+        Query q = session.createQuery(queryString);
+        q.setFirstResult(offset);
+        q.setMaxResults(limit);
 
-            q.setParameter("yearOfBirth", params[0].trim() + "%");
-            q.setParameter("monthOfBirth", params[1].trim() + "%");
-            q.setParameter("dateOfBirth", params[2].trim() + "%");
+        q.setParameter("yearOfBirth", params[0].trim() + "%");
+        q.setParameter("monthOfBirth", params[1].trim() + "%");
+        q.setParameter("dateOfBirth", params[2].trim() + "%");
 
-            list = q.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
-        }
+        list = q.list();
         return list;
     }
 
@@ -838,26 +798,21 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         // Session session = this.getSession();
         Session session = currentSession();
-        try {
-            Query q = session.createQuery(queryString);
-            q.setFirstResult(offset);
-            q.setMaxResults(limit);
+        Query q = session.createQuery(queryString);
+        q.setFirstResult(offset);
+        q.setMaxResults(limit);
 
-            q.setParameter("phone", "%" + phoneStr.trim() + "%");
+        q.setParameter("phone", "%" + phoneStr.trim() + "%");
 
-            if (statuses != null) {
-                q.setParameterList("statuses", statuses);
-            }
-
-            if (providerNo != null && !outOfDomain) {
-                q.setParameter("providerNo", providerNo);
-            }
-
-            list = q.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
+        if (statuses != null) {
+            q.setParameterList("statuses", statuses);
         }
+
+        if (providerNo != null && !outOfDomain) {
+            q.setParameter("providerNo", providerNo);
+        }
+
+        list = q.list();
         return list;
     }
 
@@ -870,18 +825,13 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         String queryString = "From Demographic d where d.Phone like :phone and d.HeadRecord is not null ";
         // Session session = this.getSession();
         Session session = currentSession();
-        try {
-            Query q = session.createQuery(queryString);
-            q.setFirstResult(offset);
-            q.setMaxResults(limit);
+        Query q = session.createQuery(queryString);
+        q.setFirstResult(offset);
+        q.setMaxResults(limit);
 
-            q.setParameter("phone", "%" + phoneStr.trim() + "%");
+        q.setParameter("phone", "%" + phoneStr.trim() + "%");
 
-            list = q.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
-        }
+        list = q.list();
         return list;
     }
 
@@ -893,16 +843,11 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         // Session session = this.getSession();
         Session session = currentSession();
-        try {
-            Query q = session.createQuery(queryString);
+        Query q = session.createQuery(queryString);
 
-            q.setParameter("hin", hinStr.trim());
+        q.setParameter("hin", hinStr.trim());
 
-            list = q.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
-        }
+        list = q.list();
         return list;
     }
 
@@ -973,26 +918,21 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         // Session session = this.getSession();
         Session session = currentSession();
-        try {
-            Query q = session.createQuery(queryString);
-            q.setFirstResult(offset);
-            q.setMaxResults(limit);
+        Query q = session.createQuery(queryString);
+        q.setFirstResult(offset);
+        q.setMaxResults(limit);
 
-            q.setParameter("hin", hinStr.trim() + "%");
+        q.setParameter("hin", hinStr.trim() + "%");
 
-            if (statuses != null) {
-                q.setParameterList("statuses", statuses);
-            }
-
-            if (providerNo != null && !outOfDomain) {
-                q.setParameter("providerNo", providerNo);
-            }
-
-            list = q.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
+        if (statuses != null) {
+            q.setParameterList("statuses", statuses);
         }
+
+        if (providerNo != null && !outOfDomain) {
+            q.setParameter("providerNo", providerNo);
+        }
+
+        list = q.list();
         return list;
     }
 
@@ -1131,46 +1071,41 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         // Session session = this.getSession();
         Session session = currentSession();
-        try {
-            Query query = session.createQuery(sqlCommand);
+        Query query = session.createQuery(sqlCommand);
 
-            if (hin != null)
-                query.setParameter("hin", "%" + hin + "%");
-            if (firstName != null)
-                query.setParameter("firstName", "%" + firstName + "%");
-            if (lastName != null)
-                query.setParameter("lastName", "%" + lastName + "%");
-            if (gender != null)
-                query.setParameter("gender", gender.name());
+        if (hin != null)
+            query.setParameter("hin", "%" + hin + "%");
+        if (firstName != null)
+            query.setParameter("firstName", "%" + firstName + "%");
+        if (lastName != null)
+            query.setParameter("lastName", "%" + lastName + "%");
+        if (gender != null)
+            query.setParameter("gender", gender.name());
 
-            if (dateOfBirth != null) {
-                query.setParameter("yearOfBirth", ensure2DigitDateHack(dateOfBirth.get(Calendar.YEAR)));
-                query.setParameter("monthOfBirth", ensure2DigitDateHack(dateOfBirth.get(Calendar.MONTH) + 1));
-                query.setParameter("dateOfBirth", ensure2DigitDateHack(dateOfBirth.get(Calendar.DAY_OF_MONTH)));
-            }
-
-            if (city != null)
-                query.setParameter("city", "%" + city + "%");
-            if (province != null)
-                query.setParameter("province", province);
-            if (phone != null)
-                query.setParameter("phone", "%" + phone + "%");
-            if (email != null)
-                query.setParameter("email", "%" + email + "%");
-            if (alias != null)
-                query.setParameter("alias", "%" + alias + "%");
-
-            query.setFirstResult(startIndex);
-            query.setMaxResults(itemsToReturn);
-
-            @SuppressWarnings("unchecked")
-            List<Demographic> results = query.list();
-
-            return (results);
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
+        if (dateOfBirth != null) {
+            query.setParameter("yearOfBirth", ensure2DigitDateHack(dateOfBirth.get(Calendar.YEAR)));
+            query.setParameter("monthOfBirth", ensure2DigitDateHack(dateOfBirth.get(Calendar.MONTH) + 1));
+            query.setParameter("dateOfBirth", ensure2DigitDateHack(dateOfBirth.get(Calendar.DAY_OF_MONTH)));
         }
+
+        if (city != null)
+            query.setParameter("city", "%" + city + "%");
+        if (province != null)
+            query.setParameter("province", province);
+        if (phone != null)
+            query.setParameter("phone", "%" + phone + "%");
+        if (email != null)
+            query.setParameter("email", "%" + email + "%");
+        if (alias != null)
+            query.setParameter("alias", "%" + alias + "%");
+
+        query.setFirstResult(startIndex);
+        query.setMaxResults(itemsToReturn);
+
+        @SuppressWarnings("unchecked")
+        List<Demographic> results = query.list();
+
+        return (results);
     }
 
     @SuppressWarnings("unchecked")
@@ -1182,18 +1117,13 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         String queryString = "From Demographic d where d.Hin like :hin and d.HeadRecord is not null ";
         // Session session = this.getSession();
         Session session = currentSession();
-        try {
-            Query q = session.createQuery(queryString);
-            q.setFirstResult(offset);
-            q.setMaxResults(limit);
+        Query q = session.createQuery(queryString);
+        q.setFirstResult(offset);
+        q.setMaxResults(limit);
 
-            q.setParameter("hin", hinStr.trim() + "%");
+        q.setParameter("hin", hinStr.trim() + "%");
 
-            list = q.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
-        }
+        list = q.list();
         return list;
     }
 
@@ -1269,25 +1199,20 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         // Session session = this.getSession();
         Session session = currentSession();
-        try {
-            Query q = session.createQuery(queryString);
-            q.setFirstResult(offset);
-            q.setMaxResults(limit);
+        Query q = session.createQuery(queryString);
+        q.setFirstResult(offset);
+        q.setMaxResults(limit);
 
-            q.setParameter("address", "%" + addressStr.trim() + "%");
+        q.setParameter("address", "%" + addressStr.trim() + "%");
 
-            if (statuses != null) {
-                q.setParameterList("statuses", statuses);
-            }
-
-            if (providerNo != null && !outOfDomain) {
-                q.setParameter("providerNo", providerNo);
-            }
-            list = q.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
+        if (statuses != null) {
+            q.setParameterList("statuses", statuses);
         }
+
+        if (providerNo != null && !outOfDomain) {
+            q.setParameter("providerNo", providerNo);
+        }
+        list = q.list();
         return list;
     }
 
@@ -1378,26 +1303,21 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         // Session session = this.getSession();
         Session session = currentSession();
-        try {
-            SQLQuery query = session.createSQLQuery(queryString);
-            query.setFirstResult(offset);
-            query.setMaxResults(limit);
-            query.setParameter("key", key.name());
-            query.setParameter("value", "%" + value + "%");
+        SQLQuery query = session.createSQLQuery(queryString);
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        query.setParameter("key", key.name());
+        query.setParameter("value", "%" + value + "%");
 
-            if (statuses != null) {
-                query.setParameterList("statuses", statuses);
-            }
-            if (providerNo != null && !outOfDomain) {
-                query.setParameter("providerNo", providerNo);
-            }
-
-            query.addEntity("de", Demographic.class); // tried to define
-            list = query.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
+        if (statuses != null) {
+            query.setParameterList("statuses", statuses);
         }
+        if (providerNo != null && !outOfDomain) {
+            query.setParameter("providerNo", providerNo);
+        }
+
+        query.addEntity("de", Demographic.class); // tried to define
+        list = query.list();
         return list;
     }
 
@@ -1411,18 +1331,13 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         // Session session = this.getSession();
         Session session = currentSession();
-        try {
-            Query q = session.createQuery(queryString);
-            q.setFirstResult(offset);
-            q.setMaxResults(limit);
+        Query q = session.createQuery(queryString);
+        q.setFirstResult(offset);
+        q.setMaxResults(limit);
 
-            q.setParameter("address", addressStr.trim() + "%");
+        q.setParameter("address", addressStr.trim() + "%");
 
-            list = q.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
-        }
+        list = q.list();
         return list;
     }
 
@@ -1490,25 +1405,20 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         Session session = currentSession();
         List<Demographic> list = null;
 
-        try {
-            Query q = session.createQuery(queryString);
-            q.setFirstResult(offset);
-            q.setMaxResults(limit);
+        Query q = session.createQuery(queryString);
+        q.setFirstResult(offset);
+        q.setMaxResults(limit);
 
-            q.setParameter("chartNo", chartNoStr.trim() + "%");
+        q.setParameter("chartNo", chartNoStr.trim() + "%");
 
-            if (statuses != null) {
-                q.setParameterList("statuses", statuses);
-            }
-
-            if (providerNo != null && !outOfDomain) {
-                q.setParameter("providerNo", providerNo);
-            }
-            list = q.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
+        if (statuses != null) {
+            q.setParameterList("statuses", statuses);
         }
+
+        if (providerNo != null && !outOfDomain) {
+            q.setParameter("providerNo", providerNo);
+        }
+        list = q.list();
         return list;
     }
 
@@ -1584,26 +1494,21 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         Session session = currentSession();
         List<Demographic> list = null;
 
-        try {
-            Query q = session.createQuery(queryString);
-            q.setFirstResult(offset);
-            q.setMaxResults(limit);
+        Query q = session.createQuery(queryString);
+        q.setFirstResult(offset);
+        q.setMaxResults(limit);
 
-            if (val != null) {
-                q.setParameter("demographicNo", val);
-            }
-            if (statuses != null) {
-                q.setParameterList("statuses", statuses);
-            }
-
-            if (providerNo != null && !outOfDomain) {
-                q.setParameter("providerNo", providerNo);
-            }
-            list = q.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
+        if (val != null) {
+            q.setParameter("demographicNo", val);
         }
+        if (statuses != null) {
+            q.setParameterList("statuses", statuses);
+        }
+
+        if (providerNo != null && !outOfDomain) {
+            q.setParameter("providerNo", providerNo);
+        }
+        list = q.list();
         return list;
     }
 
@@ -1625,7 +1530,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         }
 
         // the new way
-        if (objExists == false) {
+        if (!objExists) {
             publisher.publishEvent(new DemographicCreateEvent(demographic, demographic.getDemographicNo()));
         } else {
             publisher.publishEvent(new DemographicUpdateEvent(demographic, demographic.getDemographicNo()));
@@ -2089,7 +1994,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
             String[] pIds = {};
             pIds = programIds.toString().split(",");
-            logger.info("programIds is " + programIds.toString());
+            logger.info("programIds is " + programIds);
 
             if (programIds.length() == 0) {
                 logger.info("provider not staff in any program, ie. can't see ANYONE.");
@@ -2160,7 +2065,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
             (new HL7A04Generator()).generateHL7A04(client);
 
         // the new way
-        if (objExists == false) {
+        if (!objExists) {
             publisher.publishEvent(new DemographicCreateEvent(client, client.getDemographicNo()));
         } else {
             publisher.publishEvent(new DemographicUpdateEvent(client, client.getDemographicNo()));
@@ -2482,16 +2387,11 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         // Session s = getSession();
         Session s = currentSession();
 
-        try {
-            Query q = s.createQuery(sql);
-            q.setParameter("status", rosterStatus);
-            q.setMaxResults(limit);
-            q.setFirstResult(offset);
-            return q.list();
-        } finally {
-            // this.releaseSession(s);
-            //s.close();
-        }
+        Query q = s.createQuery(sql);
+        q.setParameter("status", rosterStatus);
+        q.setMaxResults(limit);
+        q.setFirstResult(offset);
+        return q.list();
     }
 
     @SuppressWarnings("unchecked")
@@ -2510,23 +2410,17 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         // Session s = getSession();
         Session s = currentSession();
-        try {
-            Query q = s.createQuery(sql);
-            if (!isFieldValueEmpty) {
-                q.setParameter("fieldValue", fieldValue);
-            }
-
-            q.setMaxResults(10);
-
-            if (offset > 0) {
-                q.setFirstResult(offset);
-            }
-            return q.list();
-        } finally {
-            // this.releaseSession(s);
-            //s.close();
-
+        Query q = s.createQuery(sql);
+        if (!isFieldValueEmpty) {
+            q.setParameter("fieldValue", fieldValue);
         }
+
+        q.setMaxResults(10);
+
+        if (offset > 0) {
+            q.setFirstResult(offset);
+        }
+        return q.list();
     }
 
     @SuppressWarnings("unchecked")
@@ -2564,13 +2458,8 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         // Session session = getSession();
         Session session = currentSession();
-        try {
-            SQLQuery sqlQuery = session.createSQLQuery(sql);
-            return sqlQuery.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
-        }
+        SQLQuery sqlQuery = session.createSQLQuery(sql);
+        return sqlQuery.list();
     }
 
     @SuppressWarnings("unchecked")
@@ -2761,18 +2650,13 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         // Session session = getSession();
         Session session = currentSession();
-        try {
-            SQLQuery sqlQuery = session.createSQLQuery(demographicQuery);
-            for (String key : params.keySet()) {
-                sqlQuery.setParameter(key, params.get(key));
-                MiscUtils.getLogger().warn(key + "=" + params.get(key));
-            }
-            Integer result = ((BigInteger) sqlQuery.uniqueResult()).intValue();
-            return result;
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
+        SQLQuery sqlQuery = session.createSQLQuery(demographicQuery);
+        for (String key : params.keySet()) {
+            sqlQuery.setParameter(key, params.get(key));
+            MiscUtils.getLogger().warn(key + "=" + params.get(key));
         }
+        Integer result = ((BigInteger) sqlQuery.uniqueResult()).intValue();
+        return result;
     }
 
     @Override
@@ -2788,24 +2672,19 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         // Session session = getSession();
         Session session = currentSession();
-        try {
-            SQLQuery sqlQuery = session.createSQLQuery(demographicQuery);
+        SQLQuery sqlQuery = session.createSQLQuery(demographicQuery);
 
-            for (String key : params.keySet()) {
-                sqlQuery.setParameter(key, params.get(key));
-            }
-
-            sqlQuery.setFirstResult(startIndex);
-            DemographicSearchResultTransformer transformer = new DemographicSearchResultTransformer();
-            transformer.setDemographicDao(this);
-            sqlQuery.setResultTransformer(transformer);
-            setLimit(sqlQuery, itemsToReturn);
-
-            return sqlQuery.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
+        for (String key : params.keySet()) {
+            sqlQuery.setParameter(key, params.get(key));
         }
+
+        sqlQuery.setFirstResult(startIndex);
+        DemographicSearchResultTransformer transformer = new DemographicSearchResultTransformer();
+        transformer.setDemographicDao(this);
+        sqlQuery.setResultTransformer(transformer);
+        setLimit(sqlQuery, itemsToReturn);
+
+        return sqlQuery.list();
     }
 
     private String generateDemographicSearchQuery(LoggedInInfo loggedInInfo, DemographicSearchRequest searchRequest,
@@ -2966,17 +2845,12 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
     public List<Integer> getMissingExtKey(String keyName) {
         // Session session = getSession();
         Session session = currentSession();
-        try {
-            SQLQuery sqlQuery = session.createSQLQuery(
-                "select distinct d.demographic_no from demographic d where d.demographic_no not in (select distinct d.demographic_no from demographic d, demographicExt e where d.demographic_no = e.demographic_no and key_val=:key)");
-            sqlQuery.setString("key", keyName);
-            List<Integer> ids = sqlQuery.list();
+        SQLQuery sqlQuery = session.createSQLQuery(
+            "select distinct d.demographic_no from demographic d where d.demographic_no not in (select distinct d.demographic_no from demographic d, demographicExt e where d.demographic_no = e.demographic_no and key_val=:key)");
+        sqlQuery.setString("key", keyName);
+        List<Integer> ids = sqlQuery.list();
 
-            return ids;
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
-        }
+        return ids;
 
     }
 

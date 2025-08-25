@@ -269,7 +269,7 @@ public class DataUtils {
      * Enumeration of the supported types of entities
      */
     private enum EntityKind {
-        DEMO, PROVIDER;
+        DEMO, PROVIDER
     }
 
     /**

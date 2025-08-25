@@ -38,9 +38,9 @@ import org.springframework.stereotype.Repository;
 
 public interface BillingDetailDao extends AbstractDao<BillingDetail> {
 
-    public List<BillingDetail> findByBillingNo(int billingNo);
+    List<BillingDetail> findByBillingNo(int billingNo);
 
-    public List<BillingDetail> findByBillingNoAndStatus(Integer billingNo, String status);
+    List<BillingDetail> findByBillingNoAndStatus(Integer billingNo, String status);
 
-    public List<BillingDetail> findByBillingNo(Integer billingNo);
+    List<BillingDetail> findByBillingNo(Integer billingNo);
 }

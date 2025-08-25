@@ -86,8 +86,7 @@
     java.util.Properties props = rec.getFormRecord(LoggedInInfo.getLoggedInInfoFromSession(request), demoNo, formId);
 
     String project_home = request.getContextPath().substring(1);
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 
     List providers = ProviderData.getProviderList();
     String prevDate = UtilDateUtilities.getToday("yyyy-MM-dd");
@@ -576,7 +575,7 @@
         <input type="submit" value="Save"/> <%
                 if ( h != null && h.get("ID") != null){ %> <input
             type="button"
-            onClick="javascript: popup(700,600,'addRhInjection.jsp?demographic_no=<%=demographicNo%>&amp;workflowId=<%=h.get("ID")%>&amp;formId=<%=formId%>','addInjection');"
+            onClick="popup(700,600,'addRhInjection.jsp?demographic_no=<%=demographicNo%>&amp;workflowId=<%=h.get("ID")%>&amp;formId=<%=formId%>','addInjection');"
             value="Add Injection"/> <%-- a style="color:blue; " href="javascript: function myFunction() {return false; }" onClick="popup(700,600,'addRhInjection.jsp?demographic_no=<%=demographicNo%>&amp;workflowId=<%=h.get("ID")%>&amp;formId=<%=formId%>','addInjection')">Add Injection</a --%>
                 <%}%>
         </form>

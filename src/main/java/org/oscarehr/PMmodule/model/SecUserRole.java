@@ -117,13 +117,10 @@ public class SecUserRole implements Serializable {
                 return false;
             }
             if (null != this.getProviderNo() && null != mObj.getProviderNo()) {
-                if (!this.getProviderNo().equals(mObj.getProviderNo())) {
-                    return false;
-                }
+                return this.getProviderNo().equals(mObj.getProviderNo());
             } else {
                 return false;
             }
-            return true;
         }
     }
 

@@ -34,41 +34,41 @@ import java.util.List;
 
 public interface ProgramProviderDAO {
 
-    public List<ProgramProvider> getProgramProviderByProviderProgramId(String providerNo, Long programId);
+    List<ProgramProvider> getProgramProviderByProviderProgramId(String providerNo, Long programId);
 
-    public List<ProgramProvider> getAllProgramProviders();
+    List<ProgramProvider> getAllProgramProviders();
 
-    public List<ProgramProvider> getProgramProviderByProviderNo(String providerNo);
+    List<ProgramProvider> getProgramProviderByProviderNo(String providerNo);
 
-    public List<ProgramProvider> getProgramProviders(Long programId);
+    List<ProgramProvider> getProgramProviders(Long programId);
 
-    public List<ProgramProvider> getProgramProvidersByProvider(String providerNo);
+    List<ProgramProvider> getProgramProvidersByProvider(String providerNo);
 
-    public List getProgramProvidersByProviderAndFacility(String providerNo, Integer facilityId);
+    List getProgramProvidersByProviderAndFacility(String providerNo, Integer facilityId);
 
-    public ProgramProvider getProgramProvider(Long id);
+    ProgramProvider getProgramProvider(Long id);
 
-    public ProgramProvider getProgramProvider(String providerNo, Long programId);
+    ProgramProvider getProgramProvider(String providerNo, Long programId);
 
-    public ProgramProvider getProgramProvider(String providerNo, Long programId, Long roleId);
+    ProgramProvider getProgramProvider(String providerNo, Long programId, Long roleId);
 
-    public void saveProgramProvider(ProgramProvider pp);
+    void saveProgramProvider(ProgramProvider pp);
 
-    public void deleteProgramProvider(Long id);
+    void deleteProgramProvider(Long id);
 
-    public void deleteProgramProviderByProgramId(Long programId);
+    void deleteProgramProviderByProgramId(Long programId);
 
-    public List<ProgramProvider> getProgramProvidersInTeam(Integer programId, Integer teamId);
+    List<ProgramProvider> getProgramProvidersInTeam(Integer programId, Integer teamId);
 
-    public List<ProgramProvider> getProgramDomain(String providerNo);
+    List<ProgramProvider> getProgramDomain(String providerNo);
 
-    public List<ProgramProvider> getActiveProgramDomain(String providerNo);
+    List<ProgramProvider> getActiveProgramDomain(String providerNo);
 
-    public List<ProgramProvider> getProgramDomainByFacility(String providerNo, Integer facilityId);
+    List<ProgramProvider> getProgramDomainByFacility(String providerNo, Integer facilityId);
 
-    public boolean isThisProgramInProgramDomain(String providerNo, Integer programId);
+    boolean isThisProgramInProgramDomain(String providerNo, Integer programId);
 
-    public List<Facility> getFacilitiesInProgramDomain(String providerNo);
+    List<Facility> getFacilitiesInProgramDomain(String providerNo);
 
-    public void updateProviderRole(ProgramProvider pp, Long roleId);
+    void updateProviderRole(ProgramProvider pp, Long roleId);
 }

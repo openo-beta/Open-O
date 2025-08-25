@@ -227,7 +227,7 @@
                                         %>
                                         <tr>
                                             <td class="fieldBox" bgcolor="#deddff"><a href=#
-                                                                                      onclick="javascript:rs('new','../documentManager/documentGetFile.jsp?document=<%=demoLetter.docfileName%>&type=active&doc_no=<%=demoLetter.document_no%>', 480,480,1)"><%=demoLetter.docdesc%>
+                                                                                      onclick="rs('new','../documentManager/documentGetFile.jsp?document=<%=demoLetter.docfileName%>&type=active&doc_no=<%=demoLetter.document_no%>', 480,480,1)"><%=demoLetter.docdesc%>
                                             </a>
                                             </td>
                                             <td class="fieldBox" bgcolor="#deddff"><%=demoLetter.docDate.toString()%>
@@ -268,7 +268,7 @@
                                         %>
                                         <tr>
                                             <td class="fieldBox" bgcolor="#deddff"><a href=#
-                                                                                      onclick="javascript:rs('new2','<%=labURL%>', 850,600,1)">lab</a>
+                                                                                      onclick="rs('new2','<%=labURL%>', 850,600,1)">lab</a>
                                             </td>
                                             <td class="fieldBox"
                                                 bgcolor="#deddff"><%=((String) h.get("collectionDate"))%>

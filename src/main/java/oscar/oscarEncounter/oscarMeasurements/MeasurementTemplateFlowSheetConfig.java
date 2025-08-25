@@ -438,7 +438,7 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
                             ruleCount++;
                             ds.add(new Recommendation(reco, item_type + ruleCount, item_type));
                         }
-                        MiscUtils.getLogger().debug("" + item_type + " adding ds  " + ds);
+                        MiscUtils.getLogger().debug(item_type + " adding ds  " + ds);
                         item.setRecommendations(ds);
                     }
                     //<rules>
@@ -927,7 +927,7 @@ public class MeasurementTemplateFlowSheetConfig implements InitializingBean {
                     ruleCount++;
                     ds.add(new Recommendation(reco, "" + h.get("measurement_type") + ruleCount, "" + h.get("measurement_type")));
                 }
-                log.debug("" + h.get("measurement_type") + " adding ds  " + ds);
+                log.debug(h.get("measurement_type") + " adding ds  " + ds);
                 item.setRecommendations(ds);
             }
 

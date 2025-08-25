@@ -26,10 +26,7 @@
 <%
     String deepColor = "#CCCCFF", weakColor = "#EEEEFF";
     Vector<Hashtable> eforms = getEforms();
-    boolean gridlayout = false;
-    if (request.getParameter("grid") != null && request.getParameter("grid").equals("true")) {
-        gridlayout = true;
-    }
+    boolean gridlayout = request.getParameter("grid") != null && request.getParameter("grid").equals("true");
 %>
 <%@ page import="oscar.eform.data.*, oscar.eform.*, java.util.*, oscar.util.*" %>
 <%@ page import="java.util.*,oscar.oscarRx.data.*,oscar.oscarRx.pageUtil.*,java.io.*,org.apache.xmlrpc.*" %>
@@ -162,7 +159,7 @@
 
             throw new Exception("JavaClient: XML-RPC Fault #" +
                     Integer.toString(exception.code) + ": " +
-                    exception.toString());
+                    exception);
 
         } catch (Exception exception) {
             MiscUtils.getLogger().error("JavaClient: ", exception);

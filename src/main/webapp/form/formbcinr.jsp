@@ -32,8 +32,7 @@
 
     //get project_home
     String project_home = request.getContextPath().substring(1);
-    boolean bSync = false;
-    if (!props.getProperty("c_surname_cur", "").equals("") && !(props.getProperty("c_surname_cur", "").equals(props.getProperty("c_surname", ""))
+    boolean bSync = !props.getProperty("c_surname_cur", "").equals("") && !(props.getProperty("c_surname_cur", "").equals(props.getProperty("c_surname", ""))
             && props.getProperty("c_givenName_cur", "").equals(props.getProperty("c_givenName", ""))
             && props.getProperty("c_address_cur", "").equals(props.getProperty("c_address", ""))
             && props.getProperty("c_city_cur", "").equals(props.getProperty("c_city", ""))
@@ -42,13 +41,10 @@
             //&& props.getProperty("c_phn_cur", "").equals(props.getProperty("c_phn", ""))
             && props.getProperty("c_phone1_cur", "").trim().equals(props.getProperty("c_phone1", "").trim())
             && props.getProperty("c_phone2_cur", "").trim().equals(props.getProperty("c_phone2", "").trim())
-    )) {
-        bSync = true;
-    }
+    );
 %>
 <%
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 %>
 <html>
     <head>
@@ -421,14 +417,14 @@
                     <%
                         if (!bView) {
                     %> <input type="submit" value="Save"
-                              onclick="javascript:return onSave();"/> <input type="submit"
+                              onclick="return onSave();"/> <input type="submit"
                                                                              value="Save and Exit"
-                                                                             onclick="javascript:return onSaveExit();"/> <%
+                                                                             onclick="return onSaveExit();"/> <%
                     }
                 %> <input type="submit" value="Exit"
-                          onclick="javascript:return onExit();"/> <input type="button"
+                          onclick="return onExit();"/> <input type="button"
                                                                          value="Print"
-                                                                         onclick="javascript:window.print();return false()"/>
+                                                                         onclick="window.print();return false()"/>
                 </td>
             </tr>
         </table>
@@ -662,15 +658,15 @@
                     <%
                         if (!bView) {
                     %> <input type="submit" value="Save"
-                              onclick="javascript:return onSave();"/> <input type="submit"
+                              onclick="return onSave();"/> <input type="submit"
                                                                              value="Save and Exit"
-                                                                             onclick="javascript:return onSaveExit();"/> <%
+                                                                             onclick="return onSaveExit();"/> <%
                     }
                 %> <input type="submit" value="Exit"
-                          onclick="javascript:return onExit();"/>
+                          onclick="return onExit();"/>
                     <!-- input type="submit" value="Print" onclick="javascript:return onPrint();return false()"/ -->
                     <input type="button" value="Print"
-                           onclick="javascript:window.print();return false()"/></td>
+                           onclick="window.print();return false()"/></td>
             </tr>
         </table>
 

@@ -22,7 +22,7 @@ function addEvent(element, type, handler) {
     handlers[handler.$$guid] = handler;
     // assign a global event handler to do all the work
     element["on" + type] = handleEvent;
-};
+}
 // a counter used to create unique IDs
 addEvent.guid = 1;
 
@@ -31,7 +31,7 @@ function removeEvent(element, type, handler) {
     if (element.events && element.events[type]) {
         delete element.events[type][handler.$$guid];
     }
-};
+}
 
 function handleEvent(event) {
     var returnValue = true;
@@ -47,14 +47,14 @@ function handleEvent(event) {
         }
     }
     return returnValue;
-};
+}
 
 function fixEvent(event) {
     // add W3C standard event methods
     event.preventDefault = fixEvent.preventDefault;
     event.stopPropagation = fixEvent.stopPropagation;
     return event;
-};
+}
 fixEvent.preventDefault = function () {
     this.returnValue = false;
 };

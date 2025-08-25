@@ -77,9 +77,9 @@
     <table class="Header">
         <tr>
             <td align="left"><input type="button" value="Print"
-                                    onclick="javascript:return onPrint();"/> <input type="button"
+                                    onclick="return onPrint();"/> <input type="button"
                                                                                     value="Close"
-                                                                                    onclick="javascript:return onClose();"/>
+                                                                                    onclick="return onClose();"/>
             </td>
         </tr>
     </table>
@@ -184,9 +184,9 @@
     <table class="Header">
         <tr>
             <td align="left"><input type="button" value="Print"
-                                    onclick="javascript:return onPrint();"/> <input type="button"
+                                    onclick="return onPrint();"/> <input type="button"
                                                                                     value="Close"
-                                                                                    onclick="javascript:return onClose();"/>
+                                                                                    onclick="return onClose();"/>
             </td>
         </tr>
     </table>

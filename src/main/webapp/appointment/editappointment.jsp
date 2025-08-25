@@ -1003,7 +1003,7 @@
                         <%
 
 
-                            boolean bMoreAddr = bMultisites ? true : props.getProperty("scheduleSiteID", "").equals("") ? false : true;
+                            boolean bMoreAddr = bMultisites || !props.getProperty("scheduleSiteID", "").equals("");
 
                             String loc = bFirstDisp ? (appt.getLocation()) : request.getParameter("location");
                             String colo = bMultisites
@@ -1404,9 +1404,9 @@
                 java.text.SimpleDateFormat fm = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 for (int i = 0; i < cheader1s.size(); i++) {
                     if (cheader1s.get(i).getPayProgram().matches(BillingDataHlp.BILLINGMATCHSTRING_3RDPARTY)) {
-                        BigDecimal payment = billingOnExtDao.getAccountVal(cheader1s.get(i).getId(), billingOnExtDao.KEY_PAYMENT);
-                        BigDecimal discount = billingOnExtDao.getAccountVal(cheader1s.get(i).getId(), billingOnExtDao.KEY_DISCOUNT);
-                        BigDecimal credit = billingOnExtDao.getAccountVal(cheader1s.get(i).getId(), billingOnExtDao.KEY_CREDIT);
+                        BigDecimal payment = billingOnExtDao.getAccountVal(cheader1s.get(i).getId(), BillingONExtDao.KEY_PAYMENT);
+                        BigDecimal discount = billingOnExtDao.getAccountVal(cheader1s.get(i).getId(), BillingONExtDao.KEY_DISCOUNT);
+                        BigDecimal credit = billingOnExtDao.getAccountVal(cheader1s.get(i).getId(), BillingONExtDao.KEY_CREDIT);
                         BigDecimal total = cheader1s.get(i).getTotal();
                         BigDecimal balance = total.subtract(payment).subtract(discount).add(credit);
 

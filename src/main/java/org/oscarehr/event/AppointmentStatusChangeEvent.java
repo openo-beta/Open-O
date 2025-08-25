@@ -84,13 +84,8 @@ public class AppointmentStatusChangeEvent extends ApplicationEvent {
             return false;
         }
         if (this.status == null) {
-            if (other.status != null) {
-                return false;
-            }
-        } else if (!this.status.equals(other.status)) {
-            return false;
-        }
-        return true;
+            return other.status == null;
+        } else return this.status.equals(other.status);
     }
 
     /**

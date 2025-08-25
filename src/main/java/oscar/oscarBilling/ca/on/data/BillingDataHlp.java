@@ -49,8 +49,6 @@ public final class BillingDataHlp {
     // UH: update billing_on_cheader1, refer to issue#233 https://github.com/oscaremr/oscar/issues/233
     public enum ACTION_TYPE {C, R, U, D, UH}
 
-    ;
-
     public static Properties propMonthCode = new Properties();
     public static Properties propBillingCenter = new Properties();
     public static Properties propBillingType = new Properties();

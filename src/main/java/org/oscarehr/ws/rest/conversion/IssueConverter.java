@@ -34,7 +34,7 @@ public class IssueConverter extends AbstractConverter<Issue, IssueTo1> {
     @Override
     public Issue getAsDomainObject(LoggedInInfo loggedInInfo, IssueTo1 t) throws ConversionException {
         Issue d = new Issue();
-        BeanUtils.copyProperties(t, d, new String[]{"issueChange"});
+        BeanUtils.copyProperties(t, d, "issueChange");
         return d;
     }
 

@@ -101,7 +101,7 @@
     <table cellpadding="3" cellspacing="0" border="0">
         <tr>
             <th title="Programs" class="nofocus"><a
-                    onclick="javascript:clickTab2('General', 'General');return false;"
+                    onclick="clickTab2('General', 'General');return false;"
                     href="javascript:void(0)">General Information</a></th>
             <th title="Templates">Vacancy Templates</th>
         </tr>
@@ -111,7 +111,7 @@
 <table width="100%" border="1" cellspacing="2" cellpadding="3">
     <tr class="b">
         <td width="30%" class="beright">Template is active:</td>
-        <td><input type="checkbox" value="on" <%=template.getActive()==true?"checked":"" %>
+        <td><input type="checkbox" value="on" <%=template.getActive()?"checked":"" %>
                    name="templateActive"></td>
     </tr>
     <tr class="b">

@@ -37,7 +37,7 @@ import org.hl7.fhir.dstu3.model.codesystems.IdentifierUse;
 
 public final class FhirUtils {
 
-    public static final List<String> fhirAddressLineToString(List<Address> addresses) {
+    public static List<String> fhirAddressLineToString(List<Address> addresses) {
         List<String> addressList = null;
         for (Address address : addresses) {
             if (addressList == null) {
@@ -49,7 +49,7 @@ public final class FhirUtils {
         return addressList;
     }
 
-    public static final String fhirAddressLineToString(Address address) {
+    public static String fhirAddressLineToString(Address address) {
         List<StringType> addressLine = address.getLine();
         String street = "";
         for (StringType line : addressLine) {
@@ -58,19 +58,19 @@ public final class FhirUtils {
         return street;
     }
 
-    public static final String getFhirFax(List<ContactPoint> contactPointList) {
+    public static String getFhirFax(List<ContactPoint> contactPointList) {
         return loopContactPointList(contactPointList, ContactPointSystem.FAX);
     }
 
-    public static final String getFhirPhone(List<ContactPoint> contactPointList) {
+    public static String getFhirPhone(List<ContactPoint> contactPointList) {
         return loopContactPointList(contactPointList, ContactPointSystem.PHONE);
     }
 
-    public static final String getFhirEmail(List<ContactPoint> contactPointList) {
+    public static String getFhirEmail(List<ContactPoint> contactPointList) {
         return loopContactPointList(contactPointList, ContactPointSystem.EMAIL);
     }
 
-    private static final String loopContactPointList(List<ContactPoint> contactPointList, ContactPointSystem contactPointSystem) {
+    private static String loopContactPointList(List<ContactPoint> contactPointList, ContactPointSystem contactPointSystem) {
         String contact = "";
         for (ContactPoint contactPoint : contactPointList) {
             contact = getContactPointBySystem(contactPoint, contactPointSystem);
@@ -78,7 +78,7 @@ public final class FhirUtils {
         return contact;
     }
 
-    private static final String getContactPointBySystem(ContactPoint contactPoint, ContactPointSystem contactPointSystem) {
+    private static String getContactPointBySystem(ContactPoint contactPoint, ContactPointSystem contactPointSystem) {
         String contact = "";
         switch (contactPointSystem) {
             case EMAIL:
@@ -106,15 +106,15 @@ public final class FhirUtils {
         return contact;
     }
 
-    public static final String getFhirOfficialIdentifier(List<Identifier> identifierList) {
+    public static String getFhirOfficialIdentifier(List<Identifier> identifierList) {
         return loopIdentifierList(identifierList, IdentifierUse.OFFICIAL);
     }
 
-    public static final String getFhirSecondaryIdentifier(List<Identifier> identifierList) {
+    public static String getFhirSecondaryIdentifier(List<Identifier> identifierList) {
         return loopIdentifierList(identifierList, IdentifierUse.SECONDARY);
     }
 
-    private static final String loopIdentifierList(List<Identifier> identifierList, IdentifierUse identifierUse) {
+    private static String loopIdentifierList(List<Identifier> identifierList, IdentifierUse identifierUse) {
         String id = "";
         for (Identifier identifier : identifierList) {
             id = getIdentifierByIdentifierUse(identifier, identifierUse);
@@ -122,7 +122,7 @@ public final class FhirUtils {
         return id;
     }
 
-    private static final String getIdentifierByIdentifierUse(Identifier identifier, IdentifierUse identifierUse) {
+    private static String getIdentifierByIdentifierUse(Identifier identifier, IdentifierUse identifierUse) {
         String id = "";
         switch (identifierUse) {
             case NULL:

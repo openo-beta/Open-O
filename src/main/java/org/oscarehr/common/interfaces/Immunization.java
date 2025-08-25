@@ -30,112 +30,112 @@ import java.util.Date;
 
 
 public interface Immunization {
-    public enum ImmunizationProperty {lot, location, route, dose, comments, neverReason, manufacture, name, expiryDate, providerName, brandSnomedId}
+    enum ImmunizationProperty {lot, location, route, dose, comments, neverReason, manufacture, name, expiryDate, providerName, brandSnomedId}
 
-    public int getImmunizationId();
+    int getImmunizationId();
 
     /**
      * Get an immunization data value by ImmunizationProperty key
      */
-    public String getImmunizationProperty(ImmunizationProperty immunizationProperty);
+    String getImmunizationProperty(ImmunizationProperty immunizationProperty);
 
-    public boolean isImmunization();
+    boolean isImmunization();
 
-    public Integer getDemographicId();
+    Integer getDemographicId();
 
-    public boolean isComplete();
+    boolean isComplete();
 
-    public String getLotNo();
+    String getLotNo();
 
-    public void setLotNo(String lotNo);
+    void setLotNo(String lotNo);
 
-    public String getSite();
+    String getSite();
 
-    public void setSite(String site);
+    void setSite(String site);
 
-    public String getRoute();
+    String getRoute();
 
-    public void setRoute(String route);
+    void setRoute(String route);
 
-    public String getDose();
+    String getDose();
 
-    public void setDose(String dose);
+    void setDose(String dose);
 
-    public String getComment();
+    String getComment();
 
-    public void setComment(String comment);
+    void setComment(String comment);
 
-    public void setImmunizationRefused(boolean refused);
+    void setImmunizationRefused(boolean refused);
 
-    public boolean getImmunizationRefused();
+    boolean getImmunizationRefused();
 
-    public String getImmunizationRefusedReason();
+    String getImmunizationRefusedReason();
 
-    public void setImmunizationRefusedReason(String reason);
+    void setImmunizationRefusedReason(String reason);
 
-    public String getManufacture();
+    String getManufacture();
 
-    public void setManufacture(String manufacture);
+    void setManufacture(String manufacture);
 
-    public String getName();
+    String getName();
 
-    public void setName(String name);
+    void setName(String name);
 
-    public String getImmunizationType();
+    String getImmunizationType();
 
-    public void setImmunizationType(String immunizationType);
+    void setImmunizationType(String immunizationType);
 
-    public Date getImmunizationDate();
+    Date getImmunizationDate();
 
-    public void setImmunizationDate(Date immunizationDate);
+    void setImmunizationDate(Date immunizationDate);
 
     /**
      * The expire date of this immunization.
      * Returns NULL if no date is available.
      * Returns a Date object parsed from a string source.
      */
-    public Date getExpiryDate();
+    Date getExpiryDate();
 
     /**
      * Set the expiry date of this immunization
      * Sets an empty string field if the parameter is null.
      */
-    public void setExpiryDate(Date expiryDate);
+    void setExpiryDate(Date expiryDate);
 
     /**
      * Fixed to SNOMED codes only
      */
-    public String getVaccineCode();
+    String getVaccineCode();
 
     /**
      * Use SNOMED codes only
      */
-    public void setVaccineCode(String vaccineCode);
+    void setVaccineCode(String vaccineCode);
 
     /**
      * True if the Immunization was administered by this clinician at this clinic.
      * For now this is hard coded to True as there is no way in Oscar to determine this.
      */
-    public boolean isPrimarySource();
+    boolean isPrimarySource();
 
-    public void setPrimarySource(boolean truefalse);
+    void setPrimarySource(boolean truefalse);
 
     /**
      * This is the name of an external provider that administered the immunization.
      */
-    public String getProviderName();
+    String getProviderName();
 
-    public void setProviderName(String providerName);
+    void setProviderName(String providerName);
 
     /**
      * Fixed to SNOMED codes only
      */
-    public String getVaccineCode2();
+    String getVaccineCode2();
 
     /**
      * Use SNOMED codes only
      */
-    public void setVaccineCode2(String vaccineCode);
+    void setVaccineCode2(String vaccineCode);
 
     /**
      * This method subtracts the date of immunization from the current date and compares
@@ -146,5 +146,5 @@ public interface Immunization {
      * <p>
      * ie: [submission date] – [immunization date] > 14 days (2 weeks)
      */
-    public boolean isHistorical(int days);
+    boolean isHistorical(int days);
 }

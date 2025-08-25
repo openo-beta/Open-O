@@ -78,7 +78,7 @@
                 </c:forEach>
             </select></td>
             <td><input type="button" name="search" value="Search"
-                       onclick="javascript:submitForm('list')" ;/></td>
+                       onclick="submitForm('list')" ;/></td>
         </tr>
         <tr>
             <td colspan="4">&nbsp;</td>

@@ -57,38 +57,36 @@ import org.hibernate.SessionFactory;
 
 public interface LookupDao {
 
-    public List LoadCodeList(String tableId, boolean activeOnly, String code, String codeDesc);
+    List LoadCodeList(String tableId, boolean activeOnly, String code, String codeDesc);
 
-    public LookupCodeValue GetCode(String tableId, String code);
+    LookupCodeValue GetCode(String tableId, String code);
 
-    public List LoadCodeList(String tableId, boolean activeOnly, String parentCode, String code, String codeDesc);
+    List LoadCodeList(String tableId, boolean activeOnly, String parentCode, String code, String codeDesc);
 
-    public LookupTableDefValue GetLookupTableDef(String tableId);
+    LookupTableDefValue GetLookupTableDef(String tableId);
 
-    public List LoadFieldDefList(String tableId);
+    List LoadFieldDefList(String tableId);
 
-    public List GetCodeFieldValues(LookupTableDefValue tableDef, String code);
+    List GetCodeFieldValues(LookupTableDefValue tableDef, String code);
 
-    public List<List> GetCodeFieldValues(LookupTableDefValue tableDef);
+    List<List> GetCodeFieldValues(LookupTableDefValue tableDef);
 
-    public String SaveCodeValue(boolean isNew, LookupTableDefValue tableDef, List fieldDefList) throws SQLException;
+    String SaveCodeValue(boolean isNew, LookupTableDefValue tableDef, List fieldDefList) throws SQLException;
 
-    public String SaveCodeValue(boolean isNew, LookupCodeValue codeValue) throws SQLException;
+    String SaveCodeValue(boolean isNew, LookupCodeValue codeValue) throws SQLException;
 
-    public void SaveAsOrgCode(Program program) throws SQLException;
+    void SaveAsOrgCode(Program program) throws SQLException;
 
-    public boolean inOrg(String org1, String org2);
+    boolean inOrg(String org1, String org2);
 
-    public void SaveAsOrgCode(Facility facility) throws SQLException;
+    void SaveAsOrgCode(Facility facility) throws SQLException;
 
-    ;
+    void SaveAsOrgCode(LookupCodeValue orgVal, String tableId) throws SQLException;
 
-    public void SaveAsOrgCode(LookupCodeValue orgVal, String tableId) throws SQLException;
+    void runProcedure(String procName, String[] params) throws SQLException;
 
-    public void runProcedure(String procName, String[] params) throws SQLException;
+    int getCountOfActiveClient(String orgCd) throws SQLException;
 
-    public int getCountOfActiveClient(String orgCd) throws SQLException;
-
-    public void setProviderDao(ProviderDao providerDao);
+    void setProviderDao(ProviderDao providerDao);
 
 }

@@ -146,10 +146,7 @@
                         int hash = Math.abs(winName.hashCode());
 
                         // yellow highlight the key forms.
-                        boolean yellow = false;
-                        if (!current.equals(pfrm.getCreated())) {
-                            yellow = true;
-                        }
+                        boolean yellow = !current.equals(pfrm.getCreated());
             %>
             <tr bgcolor='<%= yellow ? "yellow" : j%2 == 0 ? (i%2 == 0 ?weakcolor:deepcolor) : (i%2 == 0 ?"white":"#eeeeee")%>'>
                 <td><a href=# onClick="popupPageK('<%=hash + "started"%>','<%=request.getContextPath()

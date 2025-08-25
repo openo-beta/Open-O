@@ -120,13 +120,10 @@ public class FluReport implements PreventionReport {
             } else {
                 Map<String, Object> h = noFutureItems.get(noFutureItems.size() - 1);
                 DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                boolean refused = false;
+                boolean refused = h.get("refused") != null && ((String) h.get("refused")).equals("1");
 
 
                 //This was commented out but it's need for spec 4
-                if (h.get("refused") != null && ((String) h.get("refused")).equals("1")) {
-                    refused = true;
-                }
 
                 String prevDateStr = (String) h.get("prevention_date");
 
@@ -166,7 +163,7 @@ public class FluReport implements PreventionReport {
                 String numMonths = "------";
                 if (prevDate != null) {
                     int num = UtilDateUtilities.getNumMonths(prevDate, asofDate);
-                    numMonths = "" + num + " months";
+                    numMonths = num + " months";
                 }
 
                 // if prevDate is in the previous year
@@ -193,9 +190,9 @@ public class FluReport implements PreventionReport {
                     }
                 }
                 //outcomes
-                log.debug("due Date " + dueDate.toString() + " cutoffDate " + cutoffDate.toString() + " prevDate " + prevDate.toString());
-                log.debug("due Date  (" + dueDate.toString() + " ) After Prev (" + prevDate.toString() + " ) " + dueDate.after(prevDate));
-                log.debug("cutoff Date  (" + cutoffDate.toString() + " ) before Prev (" + prevDate.toString() + " ) " + cutoffDate.before(prevDate));
+                log.debug("due Date " + dueDate.toString() + " cutoffDate " + cutoffDate + " prevDate " + prevDate.toString());
+                log.debug("due Date  (" + dueDate + " ) After Prev (" + prevDate + " ) " + dueDate.after(prevDate));
+                log.debug("cutoff Date  (" + cutoffDate + " ) before Prev (" + prevDate + " ) " + cutoffDate.before(prevDate));
                 if (!refused && dueDate.after(prevDate) && cutoffDate.before(prevDate)) { // overdue
                     prd.rank = 2;
                     prd.lastDate = prevDateStr;
@@ -240,7 +237,7 @@ public class FluReport implements PreventionReport {
                     log.debug("fluData " + fluData.getDataField());
                     log.debug("lastFollowup " + fluData.getDateObservedAsDate() + " last procedure " + fluData.getDateObservedAsDate());
 
-                    log.debug("toString: " + fluData.toString());
+                    log.debug("toString: " + fluData);
                     prd.lastFollowup = fluData.getDateObservedAsDate();
                     prd.lastFollupProcedure = fluData.getDataField();
                 }
@@ -276,10 +273,7 @@ public class FluReport implements PreventionReport {
 
 
     boolean ineligible(Hashtable<String, String> h) {
-        boolean ret = false;
-        if (h.get("refused") != null && (h.get("refused")).equals("2")) {
-            ret = true;
-        }
+        boolean ret = h.get("refused") != null && (h.get("refused")).equals("2");
         return ret;
     }
 
@@ -406,7 +400,7 @@ public class FluReport implements PreventionReport {
                     log.debug("fluData " + fluData.getDataField());
                     log.debug("lastFollowup " + fluData.getDateObservedAsDate() + " last procedure " + fluData.getDateObservedAsDate());
                     log.debug("CUTTOFF DATE : " + cuttoffDate);
-                    log.debug("toString: " + fluData.toString());
+                    log.debug("toString: " + fluData);
                     prd.lastFollowup = fluData.getDateObservedAsDate();
                     prd.lastFollupProcedure = fluData.getDataField();
                     if (fluData.getDateObservedAsDate().before(cuttoffDate)) {
@@ -440,7 +434,7 @@ public class FluReport implements PreventionReport {
                     log.debug("fluData " + fluData.getDataField());
                     log.debug("lastFollowup " + fluData.getDateObservedAsDate() + " last procedure " + fluData.getDateObservedAsDate());
                     log.debug("CUTTOFF DATE : " + cuttoffDate);
-                    log.debug("toString: " + fluData.toString());
+                    log.debug("toString: " + fluData);
                     prd.lastFollowup = fluData.getDateObservedAsDate();
                     prd.lastFollupProcedure = fluData.getDataField();
                 }

@@ -46,11 +46,11 @@
     String xml_vdate = request.getParameter("xml_vdate") == null ? "" : request.getParameter("xml_vdate");
     String xml_appointment_date = request.getParameter("xml_appointment_date") == null ? "" : request.getParameter("xml_appointment_date");
     String xml_demoNo = request.getParameter("demographicNo") == null ? "" : request.getParameter("demographicNo");
-    boolean defaultShow = request.getParameter("submitted") == null ? true : false;
-    boolean showMSP = request.getParameter("showMSP") == null ? defaultShow : !defaultShow; //request.getParameter("showMSP");
-    boolean showWCB = request.getParameter("showWCB") == null ? defaultShow : !defaultShow; //request.getParameter("showWCB");
-    boolean showPRIV = request.getParameter("showPRIV") == null ? defaultShow : !defaultShow; //request.getParameter("showPRIV");
-    boolean showICBC = request.getParameter("showICBC") == null ? defaultShow : !defaultShow; //request.getParameter("showPRIV");
+    boolean defaultShow = request.getParameter("submitted") == null;
+    boolean showMSP = (request.getParameter("showMSP") == null) == defaultShow; //request.getParameter("showMSP");
+    boolean showWCB = (request.getParameter("showWCB") == null) == defaultShow; //request.getParameter("showWCB");
+    boolean showPRIV = (request.getParameter("showPRIV") == null) == defaultShow; //request.getParameter("showPRIV");
+    boolean showICBC = (request.getParameter("showICBC") == null) == defaultShow; //request.getParameter("showPRIV");
 %>
 <html>
 <head>

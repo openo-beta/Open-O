@@ -33,20 +33,20 @@ import oscar.util.StringUtils;
 
 public interface InboxResultsDao {
 
-    public ArrayList populateHL7ResultsData(String demographicNo, String consultationId, boolean attached);
+    ArrayList populateHL7ResultsData(String demographicNo, String consultationId, boolean attached);
 
-    public boolean isSentToProvider(String docNo, String providerNo);
+    boolean isSentToProvider(String docNo, String providerNo);
 
-    public ArrayList populateDocumentResultsData(String providerNo, String demographicNo, String patientFirstName,
-                                                 String patientLastName, String patientHealthNumber, String status);
+    ArrayList populateDocumentResultsData(String providerNo, String demographicNo, String patientFirstName,
+                                          String patientLastName, String patientHealthNumber, String status);
 
-    public ArrayList<LabResultData> populateDocumentResultsData(String providerNo, String demographicNo, String patientFirstName,
-                                                                String patientLastName, String patientHealthNumber, String status, boolean isPaged, Integer page,
-                                                                Integer pageSize, boolean mixLabsAndDocs, Boolean isAbnormal);
+    ArrayList<LabResultData> populateDocumentResultsData(String providerNo, String demographicNo, String patientFirstName,
+                                                         String patientLastName, String patientHealthNumber, String status, boolean isPaged, Integer page,
+                                                         Integer pageSize, boolean mixLabsAndDocs, Boolean isAbnormal);
 
-    public ArrayList<LabResultData> populateDocumentResultsData(String providerNo, String demographicNo, String patientFirstName,
-                                                                String patientLastName, String patientHealthNumber, String status, boolean isPaged, Integer page,
-                                                                Integer pageSize, boolean mixLabsAndDocs, Boolean isAbnormal, Date startDate, Date endDate);
+    ArrayList<LabResultData> populateDocumentResultsData(String providerNo, String demographicNo, String patientFirstName,
+                                                         String patientLastName, String patientHealthNumber, String status, boolean isPaged, Integer page,
+                                                         Integer pageSize, boolean mixLabsAndDocs, Boolean isAbnormal, Date startDate, Date endDate);
 
     //String getStringValue(Object value);
 }

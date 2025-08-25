@@ -640,11 +640,11 @@
                                     <tr id="allergyQuickButtonRow">
                                         <td>
                                             <input type=button class="ControlPushButton"
-                                                   onclick="javascript:addCustomNKDA();" value="NKDA"/>
+                                                   onclick="addCustomNKDA();" value="NKDA"/>
                                             <input type=button class="ControlPushButton"
-                                                   onclick="javascript:addPenicillinAllergy();" value="Penicillin"/>
+                                                   onclick="addPenicillinAllergy();" value="Penicillin"/>
                                             <input type=button class="ControlPushButton"
-                                                   onclick="javascript:addSulfonamideAllergy();" value="Sulfa"/>
+                                                   onclick="addSulfonamideAllergy();" value="Sulfa"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -674,7 +674,7 @@
                                                    class="ControlPushButton"/>
                                             OR
                                             <input type=button class="ControlPushButton"
-                                                   onclick="javascript:addCustomAllergy();" value="Custom Allergy"/>
+                                                   onclick="addCustomAllergy();" value="Custom Allergy"/>
                                         </td>
                                     </tr>
                                 </table>

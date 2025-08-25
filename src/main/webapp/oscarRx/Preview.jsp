@@ -281,7 +281,7 @@
                         </tr>
                         <% if (rePrint.equalsIgnoreCase("true") && rx != null) { %>
                         <tr valign=bottom style="font-size: 6px;">
-                            <td height=25px colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgReprintBy"/> <%=user.getProviderName(strUser)%><span
+                            <td height=25px colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgReprintBy"/> <%=ProviderData.getProviderName(strUser)%><span
                                     style="float: left;">
 					<fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgOrigPrinted"/>:&nbsp;<%=rx.getPrintDate()%></span> <span
                                     style="float: right;"><fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgTimesPrinted"/>:&nbsp;<%=String.valueOf(rx.getNumPrints())%></span>

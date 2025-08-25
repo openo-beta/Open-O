@@ -233,33 +233,29 @@ public class ProgramDaoImpl extends AbstractDaoImpl<Program> implements ProgramD
     @Deprecated
     @Override
     public List<Program> getAllPrograms(String programStatus, String type, int facilityId) {
-        try {
-            StringBuilder queryStr = new StringBuilder("FROM Program p WHERE 1=1");
-            if (!"Any".equals(programStatus)) {
-                queryStr.append(" AND p.programStatus = :programStatus");
-            }
-            if (!"Any".equals(type)) {
-                queryStr.append(" AND p.type = :type");
-            }
-            if (facilityId > 0) {
-                queryStr.append(" AND p.facilityId = :facilityId");
-            }
-            TypedQuery<Program> query = entityManager.createQuery(queryStr.toString(), Program.class);
-
-            if (!"Any".equals(programStatus)) {
-                query.setParameter("programStatus", programStatus);
-            }
-            if (!"Any".equals(type)) {
-                query.setParameter("type", type);
-            }
-            if (facilityId > 0) {
-                query.setParameter("facilityId", facilityId);
-            }
-
-            return query.getResultList();
-        } finally {
-
+        StringBuilder queryStr = new StringBuilder("FROM Program p WHERE 1=1");
+        if (!"Any".equals(programStatus)) {
+            queryStr.append(" AND p.programStatus = :programStatus");
         }
+        if (!"Any".equals(type)) {
+            queryStr.append(" AND p.type = :type");
+        }
+        if (facilityId > 0) {
+            queryStr.append(" AND p.facilityId = :facilityId");
+        }
+        TypedQuery<Program> query = entityManager.createQuery(queryStr.toString(), Program.class);
+
+        if (!"Any".equals(programStatus)) {
+            query.setParameter("programStatus", programStatus);
+        }
+        if (!"Any".equals(type)) {
+            query.setParameter("type", type);
+        }
+        if (facilityId > 0) {
+            query.setParameter("facilityId", facilityId);
+        }
+
+        return query.getResultList();
     }
 
     /**

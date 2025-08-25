@@ -42,19 +42,19 @@ import java.util.List;
  * @author jay
  */
 public interface Denominator {
-    public List getDenominatorList();
+    List getDenominatorList();
 
-    public String getDenominatorName();
+    String getDenominatorName();
 
-    public String getId();
+    String getId();
 
-    public boolean hasReplaceableValues();
+    boolean hasReplaceableValues();
 
-    public String[] getReplaceableKeys();
+    String[] getReplaceableKeys();
 
-    public void setReplaceableValues(Hashtable vals);
+    void setReplaceableValues(Hashtable vals);
 
-    public Hashtable getReplaceableValues();
+    Hashtable getReplaceableValues();
 
 
 }

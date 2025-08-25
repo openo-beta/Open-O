@@ -459,13 +459,13 @@ public class CaseloadContent2Action extends ActionSupport {
         java.util.Date apptime = new java.util.Date();
 
         OscarProperties oscarProperties = OscarProperties.getInstance();
-        boolean bShortcutForm = oscarProperties.getProperty("appt_formview", "").equalsIgnoreCase("on") ? true : false;
+        boolean bShortcutForm = oscarProperties.getProperty("appt_formview", "").equalsIgnoreCase("on");
         String formName = bShortcutForm ? oscarProperties.getProperty("appt_formview_name") : "";
         String formNameShort = formName.length() > 3 ? (formName.substring(0, 2) + ".") : formName;
         String formName2 = bShortcutForm ? oscarProperties.getProperty("appt_formview_name2", "") : "";
         String formName2Short = formName2.length() > 3 ? (formName2.substring(0, 2) + ".") : formName2;
         boolean bShortcutForm2 = bShortcutForm && !formName2.equals("");
-        boolean bShortcutIntakeForm = oscarProperties.getProperty("appt_intake_form", "").equalsIgnoreCase("on") ? true : false;
+        boolean bShortcutIntakeForm = oscarProperties.getProperty("appt_intake_form", "").equalsIgnoreCase("on");
 
         String monthDay = String.format("%02d", month) + "-" + String.format("%02d", day);
 
@@ -876,11 +876,8 @@ public class CaseloadContent2Action extends ActionSupport {
 
     public boolean isModuleLoaded(HttpServletRequest request, String moduleName, boolean reverse) {
         OscarProperties proper = OscarProperties.getInstance();
-        boolean result = false;
-        if (proper.getProperty(moduleName, "").equalsIgnoreCase("yes") || proper.getProperty(moduleName, "").equalsIgnoreCase("true") || proper.getProperty(moduleName, "").equalsIgnoreCase("on")) {
-            result = true;
-        }
-        return reverse ? !result : result;
+        boolean result = proper.getProperty(moduleName, "").equalsIgnoreCase("yes") || proper.getProperty(moduleName, "").equalsIgnoreCase("true") || proper.getProperty(moduleName, "").equalsIgnoreCase("on");
+        return reverse != result;
     }
 
     /**

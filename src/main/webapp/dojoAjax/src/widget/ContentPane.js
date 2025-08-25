@@ -426,7 +426,7 @@ dojo.widget.defineWidget(
                     titles.push(match[1]);
                     s = s.substring(0, match.index) + s.substr(match.index + match[0].length);
                 }
-                ;
+
 
                 /************** adjust paths *****************/
                 if (this.adjustPaths) {

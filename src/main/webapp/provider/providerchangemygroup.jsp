@@ -115,7 +115,7 @@
                                 Collections.sort(myGroups, MyGroup.MyGroupNoComparator);
                                 for (MyGroup myGroup : myGroups) {
                                     if (!(oldNo.equals(myGroup.getId().getMyGroupNo()))) {
-                                        bNewNo = bNewNo ? false : true;
+                                        bNewNo = !bNewNo;
                                         oldNo = String.valueOf(myGroup.getId().getMyGroupNo());
                                     }
                             %>

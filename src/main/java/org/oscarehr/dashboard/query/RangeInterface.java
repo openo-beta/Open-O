@@ -28,20 +28,20 @@ public interface RangeInterface {
 
     enum Limit {RangeUpperLimit, RangeLowerLimit}
 
-    public String getId();
+    String getId();
 
-    public String getLabel();
+    String getLabel();
 
-    public String getName();
+    String getName();
 
-    public String getValue();
+    String getValue();
 
-    public void setId(String id);
+    void setId(String id);
 
-    public void setLabel(String label);
+    void setLabel(String label);
 
-    public void setName(String name);
+    void setName(String name);
 
-    public void setValue(String value);
+    void setValue(String value);
 
 }

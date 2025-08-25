@@ -26,7 +26,6 @@ package oscar.oscarDB;
 import java.util.Properties;
 
 import oscar.OscarProperties;
-;
 
 public class OscarHibernateProperties extends Properties {
     public OscarHibernateProperties() {

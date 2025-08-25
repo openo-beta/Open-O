@@ -64,8 +64,7 @@
     String project_home = request.getContextPath().substring(1);
 %>
 <%
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 %>
 
 <html>

@@ -224,7 +224,7 @@ dojo.undo.browser = {
             if ((hsl >= 2) && (this.historyStack[hsl - 2])) {
                 if (this.historyStack[hsl - 2].urlHash == window.location.hash) {
                     this.handleBackButton();
-                    return;
+
                 }
             }
         }

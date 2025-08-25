@@ -92,7 +92,7 @@ public abstract class Node {
     private String prepareString(String str) {
         return str
                 .replaceAll("\\\\", "\\\\\\\\")
-                .replaceAll("\\\'", "\\\\\'");
+                .replaceAll("\\'", "\\\\'");
 
     }
 

@@ -37,13 +37,13 @@ import org.springframework.stereotype.Repository;
 
 public interface TicklerLinkDao extends AbstractDao<TicklerLink> {
 
-    public TicklerLink getTicklerLink(Integer id);
+    TicklerLink getTicklerLink(Integer id);
 
-    public List<TicklerLink> getLinkByTableId(String tableName, Long tableId);
+    List<TicklerLink> getLinkByTableId(String tableName, Long tableId);
 
-    public List<TicklerLink> getLinkByTickler(Integer ticklerNo);
+    List<TicklerLink> getLinkByTickler(Integer ticklerNo);
 
-    public void save(TicklerLink cLink);
+    void save(TicklerLink cLink);
 
-    public void update(TicklerLink cLink);
+    void update(TicklerLink cLink);
 }

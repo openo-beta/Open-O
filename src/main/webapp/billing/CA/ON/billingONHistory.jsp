@@ -226,7 +226,7 @@
     <hr width="100%">
     <table border="0" cellspacing="0" cellpadding="0" width="100%">
         <tr>
-            <td><a href=# onClick="javascript:history.go(-1);return false;">
+            <td><a href=# onClick="history.go(-1);return false;">
                 <img src="images/leftarrow.gif" border="0" width="25" height="20"
                      align="absmiddle"> Back </a></td>
             <td align="right"><a href="" onClick="self.close();">Close

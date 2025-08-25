@@ -30,7 +30,7 @@
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 
 <%
-    boolean fromMessenger = request.getParameter("fromMessenger") == null ? false : (request.getParameter("fromMessenger")).equalsIgnoreCase("true") ? true : false;
+    boolean fromMessenger = request.getParameter("fromMessenger") == null ? false : (request.getParameter("fromMessenger")).equalsIgnoreCase("true");
     String roleName = session.getAttribute("userrole") + "," + session.getAttribute("user");
 %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>

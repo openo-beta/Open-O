@@ -331,7 +331,7 @@ public class ERxPrescriptionTranslator {
                     .append("\n[import error]: Could not parse prescription date "
                             + in.getPrescriptionDateTime()
                             + ". Setting to "
-                            + now.toString() + " (the date of the import).");
+                            + now + " (the date of the import).");
             // Set the dates to a sane default value
             out.setCreateDate(now);
             out.setRxDate(now);
@@ -402,9 +402,9 @@ public class ERxPrescriptionTranslator {
         out.setSpecialInstruction(specialInstructionsBuilder.toString());
 
         // Set the comment field
-        out.setComment(commentBuilder.toString()
+        out.setComment(commentBuilder
                 + "\n(Prescription imported from the External Prescriber on "
-                + new Date().toString() + ")");
+                + new Date() + ")");
 
         return out;
     }

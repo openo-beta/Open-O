@@ -49,66 +49,66 @@ import oscar.OscarProperties;
 public interface ProgramDao {
 
 
-    public boolean isServiceProgram(Integer programId);
+    boolean isServiceProgram(Integer programId);
 
-    public boolean isCommunityProgram(Integer programId);
+    boolean isCommunityProgram(Integer programId);
 
-    public boolean isExternalProgram(Integer programId);
+    boolean isExternalProgram(Integer programId);
 
-    public Program getProgram(Integer programId);
+    Program getProgram(Integer programId);
 
-    public Program getProgramForApptView(Integer programId);
+    Program getProgramForApptView(Integer programId);
 
-    public String getProgramName(Integer programId);
+    String getProgramName(Integer programId);
 
-    public Integer getProgramIdByProgramName(String programName);
+    Integer getProgramIdByProgramName(String programName);
 
-    public List<Program> findAll();
+    List<Program> findAll();
 
-    public List<Program> getAllPrograms();
+    List<Program> getAllPrograms();
 
-    public List<Program> getAllActivePrograms();
+    List<Program> getAllActivePrograms();
 
-    public List<Program> getAllPrograms(String programStatus, String type, int facilityId);
+    List<Program> getAllPrograms(String programStatus, String type, int facilityId);
 
-    public List<Program> getPrograms();
+    List<Program> getPrograms();
 
-    public List<Program> getActivePrograms();
+    List<Program> getActivePrograms();
 
-    public List<Program> getProgramsByFacilityId(Integer facilityId);
+    List<Program> getProgramsByFacilityId(Integer facilityId);
 
-    public List<Program> getProgramsByFacilityIdAndFunctionalCentreId(Integer facilityId, String functionalCentreId);
+    List<Program> getProgramsByFacilityIdAndFunctionalCentreId(Integer facilityId, String functionalCentreId);
 
-    public List<Program> getCommunityProgramsByFacilityId(Integer facilityId);
+    List<Program> getCommunityProgramsByFacilityId(Integer facilityId);
 
-    public List<Program> getProgramsByType(Integer facilityId, String type, Boolean active);
+    List<Program> getProgramsByType(Integer facilityId, String type, Boolean active);
 
-    public List<Program> getProgramByGenderType(String genderType);
+    List<Program> getProgramByGenderType(String genderType);
 
-    public void saveProgram(Program program);
+    void saveProgram(Program program);
 
-    public void removeProgram(Integer programId);
+    void removeProgram(Integer programId);
 
-    public List<Program> search(Program program);
+    List<Program> search(Program program);
 
-    public List<Program> searchByFacility(Program program, Integer facilityId);
+    List<Program> searchByFacility(Program program, Integer facilityId);
 
-    public void resetHoldingTank();
+    void resetHoldingTank();
 
-    public Program getHoldingTankProgram();
+    Program getHoldingTankProgram();
 
-    public boolean programExists(Integer programId);
+    boolean programExists(Integer programId);
 
 
-    public boolean isInSameFacility(Integer programId1, Integer programId2);
+    boolean isInSameFacility(Integer programId1, Integer programId2);
 
-    public Program getProgramBySiteSpecificField(String value);
+    Program getProgramBySiteSpecificField(String value);
 
-    public Program getProgramByName(String value);
+    Program getProgramByName(String value);
 
-    public List<Integer> getRecordsAddedAndUpdatedSinceTime(Integer facilityId, Date date);
+    List<Integer> getRecordsAddedAndUpdatedSinceTime(Integer facilityId, Date date);
 
-    public List<Integer> getRecordsByFacilityId(Integer facilityId);
+    List<Integer> getRecordsByFacilityId(Integer facilityId);
 
-    public List<String> getRecordsAddedAndUpdatedSinceTime(Date date);
+    List<String> getRecordsAddedAndUpdatedSinceTime(Date date);
 }

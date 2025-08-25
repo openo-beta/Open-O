@@ -45,8 +45,8 @@ public interface WaitListService {
     @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "listTopMatches", targetNamespace = "http://caisi.org/wl/", className = "org.caisi.wl.ListTopMatches")
     @ResponseWrapper(localName = "listTopMatchesResponse", targetNamespace = "http://caisi.org/wl/", className = "org.caisi.wl.ListTopMatchesResponse")
-    public List<MatchBO> listTopMatches(
-            @WebParam(name = "arg0", targetNamespace = "") TopMatchesQuery arg0);
+    List<MatchBO> listTopMatches(
+        @WebParam(name = "arg0", targetNamespace = "") TopMatchesQuery arg0);
 
     /**
      * @param arg0
@@ -56,8 +56,8 @@ public interface WaitListService {
     @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "getVacancy", targetNamespace = "http://caisi.org/wl/", className = "org.caisi.wl.GetVacancy")
     @ResponseWrapper(localName = "getVacancyResponse", targetNamespace = "http://caisi.org/wl/", className = "org.caisi.wl.GetVacancyResponse")
-    public VacancyDisplayBO getVacancy(
-            @WebParam(name = "arg0", targetNamespace = "") VacancyQuery arg0);
+    VacancyDisplayBO getVacancy(
+        @WebParam(name = "arg0", targetNamespace = "") VacancyQuery arg0);
 
     /**
      * @param arg0
@@ -67,8 +67,8 @@ public interface WaitListService {
     @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "listVacanciesForWaitListProgram", targetNamespace = "http://caisi.org/wl/", className = "org.caisi.wl.ListVacanciesForWaitListProgram")
     @ResponseWrapper(localName = "listVacanciesForWaitListProgramResponse", targetNamespace = "http://caisi.org/wl/", className = "org.caisi.wl.ListVacanciesForWaitListProgramResponse")
-    public List<VacancyDisplayBO> listVacanciesForWaitListProgram(
-            @WebParam(name = "arg0", targetNamespace = "") ProgramQuery arg0);
+    List<VacancyDisplayBO> listVacanciesForWaitListProgram(
+        @WebParam(name = "arg0", targetNamespace = "") ProgramQuery arg0);
 
     /**
      * @param arg0
@@ -78,8 +78,8 @@ public interface WaitListService {
     @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "listVacanciesForAgencyProgram", targetNamespace = "http://caisi.org/wl/", className = "org.caisi.wl.ListVacanciesForAgencyProgram")
     @ResponseWrapper(localName = "listVacanciesForAgencyProgramResponse", targetNamespace = "http://caisi.org/wl/", className = "org.caisi.wl.ListVacanciesForAgencyProgramResponse")
-    public List<VacancyDisplayBO> listVacanciesForAgencyProgram(
-            @WebParam(name = "arg0", targetNamespace = "") ProgramQuery arg0);
+    List<VacancyDisplayBO> listVacanciesForAgencyProgram(
+        @WebParam(name = "arg0", targetNamespace = "") ProgramQuery arg0);
 
     /**
      * @param arg0
@@ -89,8 +89,8 @@ public interface WaitListService {
     @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "listActiveContactAttempts", targetNamespace = "http://caisi.org/wl/", className = "org.caisi.wl.ListActiveContactAttempts")
     @ResponseWrapper(localName = "listActiveContactAttemptsResponse", targetNamespace = "http://caisi.org/wl/", className = "org.caisi.wl.ListActiveContactAttemptsResponse")
-    public List<ClientWLEntryBO> listActiveContactAttempts(
-            @WebParam(name = "arg0", targetNamespace = "") ClientQuery arg0);
+    List<ClientWLEntryBO> listActiveContactAttempts(
+        @WebParam(name = "arg0", targetNamespace = "") ClientQuery arg0);
 
     /**
      * @param arg0
@@ -98,8 +98,8 @@ public interface WaitListService {
     @WebMethod
     @RequestWrapper(localName = "recordContactAttempt", targetNamespace = "http://caisi.org/wl/", className = "org.caisi.wl.RecordContactAttempt")
     @ResponseWrapper(localName = "recordContactAttemptResponse", targetNamespace = "http://caisi.org/wl/", className = "org.caisi.wl.RecordContactAttemptResponse")
-    public void recordContactAttempt(
-            @WebParam(name = "arg0", targetNamespace = "") MatchParam arg0);
+    void recordContactAttempt(
+        @WebParam(name = "arg0", targetNamespace = "") MatchParam arg0);
 
     /**
      * @param arg0
@@ -107,8 +107,8 @@ public interface WaitListService {
     @WebMethod
     @RequestWrapper(localName = "recordClientContact", targetNamespace = "http://caisi.org/wl/", className = "org.caisi.wl.RecordClientContact")
     @ResponseWrapper(localName = "recordClientContactResponse", targetNamespace = "http://caisi.org/wl/", className = "org.caisi.wl.RecordClientContactResponse")
-    public void recordClientContact(
-            @WebParam(name = "arg0", targetNamespace = "") MatchParam arg0);
+    void recordClientContact(
+        @WebParam(name = "arg0", targetNamespace = "") MatchParam arg0);
 
     /**
      * @param arg0
@@ -116,8 +116,8 @@ public interface WaitListService {
     @WebMethod
     @RequestWrapper(localName = "recordMatchWasForwarded", targetNamespace = "http://caisi.org/wl/", className = "org.caisi.wl.RecordMatchWasForwarded")
     @ResponseWrapper(localName = "recordMatchWasForwardedResponse", targetNamespace = "http://caisi.org/wl/", className = "org.caisi.wl.RecordMatchWasForwardedResponse")
-    public void recordMatchWasForwarded(
-            @WebParam(name = "arg0", targetNamespace = "") MatchParam arg0);
+    void recordMatchWasForwarded(
+        @WebParam(name = "arg0", targetNamespace = "") MatchParam arg0);
 
     /**
      * @param arg0
@@ -125,7 +125,7 @@ public interface WaitListService {
     @WebMethod
     @RequestWrapper(localName = "recordReferralOutcome", targetNamespace = "http://caisi.org/wl/", className = "org.caisi.wl.RecordReferralOutcome")
     @ResponseWrapper(localName = "recordReferralOutcomeResponse", targetNamespace = "http://caisi.org/wl/", className = "org.caisi.wl.RecordReferralOutcomeResponse")
-    public void recordReferralOutcome(
-            @WebParam(name = "arg0", targetNamespace = "") ReferralOutcomeBO arg0);
+    void recordReferralOutcome(
+        @WebParam(name = "arg0", targetNamespace = "") ReferralOutcomeBO arg0);
 
 }

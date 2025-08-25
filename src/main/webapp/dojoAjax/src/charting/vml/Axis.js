@@ -132,7 +132,7 @@ if (dojo.render.vml.capable) {
                     s.textAlign = "right";
                 }
                 return text;
-            };
+            }
 
             //	wipe if needed
             if (this.nodes.labels) {

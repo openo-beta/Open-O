@@ -51,10 +51,7 @@ public class ProviderBillCenter {
     }
 
     public boolean hasProvider(String provider_no) {
-        boolean retval = false;
-        if (dao.find(provider_no) != null) {
-            retval = true;
-        }
+        boolean retval = dao.find(provider_no) != null;
         return retval;
     }
 

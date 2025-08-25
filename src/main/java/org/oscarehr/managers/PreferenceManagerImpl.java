@@ -72,9 +72,7 @@ public class PreferenceManagerImpl implements PreferenceManager {
                     value = result.getValue();
                 }
 
-                if (value.isEmpty() || value.equals("off")) {
-                    return false;
-                }
+                return !value.isEmpty() && !value.equals("off");
             } else {
                 //check if the old cpp position property exist
                 return isOldCppPosition(loggedInInfo, item);
@@ -179,10 +177,7 @@ public class PreferenceManagerImpl implements PreferenceManager {
 
 
     public boolean isCppItem(String issueCode) {
-        if (issueCode.equals(SOCHX) || issueCode.equals(MEDHX) || issueCode.equals(CONCERNS) || issueCode.equals(REMINDERS)) {
-            return true;
-        }
-        return false;
+        return issueCode.equals(SOCHX) || issueCode.equals(MEDHX) || issueCode.equals(CONCERNS) || issueCode.equals(REMINDERS);
     }
 
 
@@ -196,9 +191,7 @@ public class PreferenceManagerImpl implements PreferenceManager {
                 value = result.getValue();
             }
 
-            if (value.equals("on")) {
-                return true;
-            }
+            return value.equals("on");
         }
 
         return false;
@@ -214,9 +207,7 @@ public class PreferenceManagerImpl implements PreferenceManager {
                 value = result.getValue();
             }
 
-            if (value.equals("on")) {
-                return true;
-            }
+            return value.equals("on");
         }
         return false;
     }

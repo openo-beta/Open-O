@@ -2828,10 +2828,7 @@ public class ERxPrescription {
         if (this.treatmentDuration != other.treatmentDuration) {
             return false;
         }
-        if (this.treatmentDurationTimeUnit != other.treatmentDurationTimeUnit) {
-            return false;
-        }
-        return true;
+        return this.treatmentDurationTimeUnit == other.treatmentDurationTimeUnit;
     }
 
     /**

@@ -40,17 +40,17 @@ import org.springframework.stereotype.Repository;
 
 public interface ProviderDefaultProgramDao extends AbstractDao<ProviderDefaultProgram> {
 
-    public List<ProviderDefaultProgram> getProgramByProviderNo(String providerNo);
+    List<ProviderDefaultProgram> getProgramByProviderNo(String providerNo);
 
-    public void setDefaultProgram(String providerNo, int programId);
+    void setDefaultProgram(String providerNo, int programId);
 
-    public List<ProviderDefaultProgram> getProviderSig(String providerNo);
+    List<ProviderDefaultProgram> getProviderSig(String providerNo);
 
-    public void saveProviderDefaultProgram(ProviderDefaultProgram pdp);
+    void saveProviderDefaultProgram(ProviderDefaultProgram pdp);
 
-    public void toggleSig(String providerNo);
+    void toggleSig(String providerNo);
 
-    public List<Program> findProgramsByProvider(String providerNo);
+    List<Program> findProgramsByProvider(String providerNo);
 
-    public List<Program> findProgramsByFacilityId(Integer facilityId);
+    List<Program> findProgramsByFacilityId(Integer facilityId);
 }

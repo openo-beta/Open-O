@@ -175,8 +175,7 @@ public class HnrDataValidation extends AbstractModel<Integer> {
     }
 
     public static boolean isImageValidated(ClientImage clientImage) {
-        if (clientImage == null || clientImage.getImage_data() == null) return (false);
-        else return (true);
+        return clientImage != null && clientImage.getImage_data() != null;
     }
 
     public static byte[] getImageValidationBytes(ClientImage clientImage) {
@@ -199,9 +198,7 @@ public class HnrDataValidation extends AbstractModel<Integer> {
         HCValidator validator = HCValidationFactory.getHCValidator();
         HCValidationResult validationResult = validator.validate(demographic.getHin(), demographic.getHcType().toLowerCase());
         boolean hinValid = validationResult.isValid();
-        if (!hinValid) return false;
-
-        return true;
+        return hinValid;
     }
 
     public static byte[] getHcInfoValidationBytes(Demographic demographic) {
@@ -227,8 +224,7 @@ public class HnrDataValidation extends AbstractModel<Integer> {
         if (demographic == null) return (false);
         else if (demographic.getAddress() == null) return (false);
         else if (demographic.getCity() == null) return (false);
-        else if (demographic.getProvince() == null) return (false);
-        else return (true);
+        else return demographic.getProvince() != null;
 
     }
 

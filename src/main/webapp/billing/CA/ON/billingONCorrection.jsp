@@ -1005,7 +1005,7 @@
 
 
                                 for (int i = 0; i < pList.size(); i++) {
-                                    String temp[] = ((String) pList.get(i)).split("\\|");
+                                    String[] temp = ((String) pList.get(i)).split("\\|");
 
                             %>
                             <option value="<%=temp[0]%>"
@@ -1188,7 +1188,7 @@
                                                             value="<%=billAmount%>">
                             <input type="text" style="width: 100%" size="5" maxlength="6"
                                    id="billingamount<%=rowCount-1%>" name="billingamount<%=rowCount-1%>"
-                                   value="<%=billAmount%>" onchange="javascript:validateNum(this)"></th>
+                                   value="<%=billAmount%>" onchange="validateNum(this)"></th>
                         <td style="text-align:center"><input type="checkbox"
                                                              name="itemStatus<%=rowCount-1%>"
                                                              id="itemStatus<%=rowCount-1%>"

@@ -144,7 +144,7 @@
                     //find active lot number records only
                     List<PreventionsLotNrs> p = PreventionsLotNrsDao.findPagedData(prevention, false, Integer.parseInt(request.getParameter("limit1")), Integer.parseInt(request.getParameter("limit2")));
                     for (PreventionsLotNrs pRec : p) {
-                        bodd = bodd ? false : true;
+                        bodd = !bodd;
                         nItems++;
                 %>
                 <tr bgcolor="<%=bodd?"white":weakcolor%>">

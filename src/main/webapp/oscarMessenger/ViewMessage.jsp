@@ -239,7 +239,7 @@
                             <td style="text-align: right">
 
                                 <a href="javascript:void(0)"
-                                   onclick="javascript:popupPage(600,700,'../oscarEncounter/About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
+                                   onclick="popupPage(600,700,'../oscarEncounter/About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
                             </td>
                         </tr>
                     </table>
@@ -415,7 +415,7 @@
 
                                                                 <c:if test="${ demoattached.key eq demographic_no }">
                                                                     <input
-                                                                            onclick="javascript:popup('${ demographic_no }', '${ messageID }', '${ providerNo }');"
+                                                                            onclick="popup('${ demographic_no }', '${ messageID }', '${ providerNo }');"
                                                                             class="ControlPushButton" type="button"
                                                                             name="writeToEncounter"
                                                                             value="Write To Encounter"> <input

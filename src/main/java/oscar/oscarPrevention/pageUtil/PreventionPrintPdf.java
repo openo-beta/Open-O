@@ -328,10 +328,7 @@ public class PreventionPrintPdf {
                 float detailYPos = ct.getYLine();
                 status = ct.go(true);
 
-                boolean writeDetailOk = true;
-                if (ColumnText.hasMoreText(status)) {
-                    writeDetailOk = false;
-                }
+                boolean writeDetailOk = !ColumnText.hasMoreText(status);
 
                 //Comments
                 Phrase commentsPhrase = new Phrase(LEADING, "", font);
@@ -351,10 +348,7 @@ public class PreventionPrintPdf {
                 float commentYPos = ct.getYLine();
                 status = ct.go(true);
 
-                boolean writeCommentsOk = true;
-                if (ColumnText.hasMoreText(status)) {
-                    writeCommentsOk = false;
-                }
+                boolean writeCommentsOk = !ColumnText.hasMoreText(status);
 
                 boolean proceedWrite = true;
                 if (writeDetailOk && writeCommentsOk) {

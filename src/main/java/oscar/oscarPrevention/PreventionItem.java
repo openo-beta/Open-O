@@ -87,10 +87,7 @@ public class PreventionItem {
     }
 
     public boolean getNeverVal() {
-        boolean ret = false;
-        if (never != null && never.equals("1")) {
-            ret = true;
-        }
+        boolean ret = never != null && never.equals("1");
         return ret;
     }
 

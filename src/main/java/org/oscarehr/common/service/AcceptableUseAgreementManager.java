@@ -90,10 +90,7 @@ public class AcceptableUseAgreementManager {
             AcceptableUseAgreementManager.loadAUA();
         }
 
-        if (auaText == null) {
-            return false;
-        }
-        return true;
+        return auaText != null;
     }
 
     public boolean auaAlwaysShow() {
@@ -103,11 +100,7 @@ public class AcceptableUseAgreementManager {
             auaProp = "";
         }
 
-        if (auaProp.equals("always")) {
-            return true;
-        }
-
-        return false;
+        return auaProp.equals("always");
     }
 
     public static String getAUAText() {

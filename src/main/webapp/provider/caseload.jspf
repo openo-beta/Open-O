@@ -85,7 +85,7 @@ clH = ["<fmt:setBundle basename="oscarResources"/><fmt:message key="caseload.msg
 				<div id="leftSearch">
 					<form>
 						<b><fmt:setBundle basename="oscarResources"/><fmt:message key="caseload.msgNotes"/></b>
-						<input type='text' id='caseloadQ' size='20' onclick='this.value=""; document.getElementById("caseloadDx").value="";' value="<%=StringEscapeUtils.escapeHtml(caseloadQ).replace("'","\\\'")%>" />
+						<input type='text' id='caseloadQ' size='20' onclick='this.value=""; document.getElementById("caseloadDx").value="";' value="<%=StringEscapeUtils.escapeHtml(caseloadQ).replace("'", "\\'")%>" />
 						<input type='submit' value='<fmt:setBundle basename="oscarResources"/><fmt:message key="caseload.msgSearch"/>' onclick='search("noteSearch"); return false;'>
 					</form>
 				</div>
@@ -139,7 +139,7 @@ clH = ["<fmt:setBundle basename="oscarResources"/><fmt:message key="caseload.msg
 		} %>
 					</select>
 					<b>DxReg: </b>
-					<input type='text' id='caseloadDx' size='10' onclick='this.value=""; document.getElementById("caseloadQ").value="";' value="<%= StringEscapeUtils.escapeHtml(caseloadDx).replace("'","\\\'") %>" />
+					<input type='text' id='caseloadDx' size='10' onclick='this.value=""; document.getElementById("caseloadQ").value="";' value="<%= StringEscapeUtils.escapeHtml(caseloadDx).replace("'", "\\'") %>" />
 					<input type='submit' value='<fmt:setBundle basename="oscarResources"/><fmt:message key="caseload.msgSearch"/>' onclick='search("search"); return false;'>
 					</form>
 				</div>

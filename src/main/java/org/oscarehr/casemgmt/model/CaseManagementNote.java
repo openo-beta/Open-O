@@ -441,9 +441,7 @@ public class CaseManagementNote extends BaseObject {
 
     public boolean getHasHistory() {
         if (getHistory() != null) {
-            if (getHistory().indexOf("----------------History Record----------------") != -1) {
-                return true;
-            }
+            return getHistory().indexOf("----------------History Record----------------") != -1;
         }
         return false;
     }
@@ -537,10 +535,7 @@ public class CaseManagementNote extends BaseObject {
             cmnLinkRetrieved = true;
         }
 
-        if (cmnLink != null && cmnLink.getTableName().equals(tableName)) {
-            return true;
-        }
-        return false;
+        return cmnLink != null && cmnLink.getTableName().equals(tableName);
     }
 
     public RxPrescriptionData.Prescription getRxFromAnnotation(CaseManagementNoteLink cmnl) {

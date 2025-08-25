@@ -28,5 +28,5 @@ import java.util.Properties;
 
 public interface FrmPDFPostValueProcessor {
 
-    public Properties process(Properties p);
+    Properties process(Properties p);
 }

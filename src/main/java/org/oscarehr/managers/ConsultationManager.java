@@ -116,75 +116,75 @@ import oscar.oscarLab.ca.on.LabResultData;
 
 public interface ConsultationManager {
 
-    public final String CON_REQUEST_ENABLED = "consultRequestEnabled";
-    public final String CON_RESPONSE_ENABLED = "consultResponseEnabled";
-    public final String ENABLED_YES = "Y";
+    String CON_REQUEST_ENABLED = "consultRequestEnabled";
+    String CON_RESPONSE_ENABLED = "consultResponseEnabled";
+    String ENABLED_YES = "Y";
 
-    public List<ConsultationRequestSearchResult> search(LoggedInInfo loggedInInfo, ConsultationRequestSearchFilter filter);
+    List<ConsultationRequestSearchResult> search(LoggedInInfo loggedInInfo, ConsultationRequestSearchFilter filter);
 
-    public List<ConsultationResponseSearchResult> search(LoggedInInfo loggedInInfo, ConsultationResponseSearchFilter filter);
+    List<ConsultationResponseSearchResult> search(LoggedInInfo loggedInInfo, ConsultationResponseSearchFilter filter);
 
-    public int getConsultationCount(ConsultationRequestSearchFilter filter);
+    int getConsultationCount(ConsultationRequestSearchFilter filter);
 
-    public int getConsultationCount(ConsultationResponseSearchFilter filter);
+    int getConsultationCount(ConsultationResponseSearchFilter filter);
 
-    public boolean hasOutstandingConsultations(LoggedInInfo loggedInInfo, Integer demographicNo);
+    boolean hasOutstandingConsultations(LoggedInInfo loggedInInfo, Integer demographicNo);
 
-    public ConsultationRequest getRequest(LoggedInInfo loggedInInfo, Integer id);
+    ConsultationRequest getRequest(LoggedInInfo loggedInInfo, Integer id);
 
-    public ConsultationResponse getResponse(LoggedInInfo loggedInInfo, Integer id);
+    ConsultationResponse getResponse(LoggedInInfo loggedInInfo, Integer id);
 
-    public List<ConsultationServices> getConsultationServices();
+    List<ConsultationServices> getConsultationServices();
 
-    public List<ProfessionalSpecialist> getReferringDoctorList();
+    List<ProfessionalSpecialist> getReferringDoctorList();
 
-    public ProfessionalSpecialist getProfessionalSpecialist(Integer id);
+    ProfessionalSpecialist getProfessionalSpecialist(Integer id);
 
-    public void saveConsultationRequest(LoggedInInfo loggedInInfo, ConsultationRequest request);
+    void saveConsultationRequest(LoggedInInfo loggedInInfo, ConsultationRequest request);
 
-    public void saveConsultationResponse(LoggedInInfo loggedInInfo, ConsultationResponse response);
+    void saveConsultationResponse(LoggedInInfo loggedInInfo, ConsultationResponse response);
 
-    public List<ConsultDocs> getConsultRequestDocs(LoggedInInfo loggedInInfo, Integer requestId);
+    List<ConsultDocs> getConsultRequestDocs(LoggedInInfo loggedInInfo, Integer requestId);
 
-    public List<ConsultResponseDoc> getConsultResponseDocs(LoggedInInfo loggedInInfo, Integer responseId);
+    List<ConsultResponseDoc> getConsultResponseDocs(LoggedInInfo loggedInInfo, Integer responseId);
 
-    public void saveConsultRequestDoc(LoggedInInfo loggedInInfo, ConsultDocs doc);
+    void saveConsultRequestDoc(LoggedInInfo loggedInInfo, ConsultDocs doc);
 
-    public void saveConsultResponseDoc(LoggedInInfo loggedInInfo, ConsultResponseDoc doc);
+    void saveConsultResponseDoc(LoggedInInfo loggedInInfo, ConsultResponseDoc doc);
 
-    public void enableConsultRequestResponse(boolean conRequest, boolean conResponse);
+    void enableConsultRequestResponse(boolean conRequest, boolean conResponse);
 
-    public boolean isConsultRequestEnabled();
+    boolean isConsultRequestEnabled();
 
-    public boolean isConsultResponseEnabled();
+    boolean isConsultResponseEnabled();
 
-    public void doHl7Send(LoggedInInfo loggedInInfo, Integer consultationRequestId) throws InvalidKeyException, SignatureException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, IOException, HL7Exception, ServletException, com.lowagie.text.DocumentException;
+    void doHl7Send(LoggedInInfo loggedInInfo, Integer consultationRequestId) throws InvalidKeyException, SignatureException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, IOException, HL7Exception, ServletException, com.lowagie.text.DocumentException;
 
-    public void importEconsult(LoggedInInfo loggedInInfo, OtnEconsult otnEconsult) throws Exception;
+    void importEconsult(LoggedInInfo loggedInInfo, OtnEconsult otnEconsult) throws Exception;
 
-    public List<Document> getEconsultDocuments(LoggedInInfo loggedInInfo, int demographicNo);
+    List<Document> getEconsultDocuments(LoggedInInfo loggedInInfo, int demographicNo);
 
-    public List<ConsultationAttachment> getEReferAttachments(LoggedInInfo loggedInInfo, HttpServletRequest request, HttpServletResponse response, Integer demographicNo) throws PDFGenerationException;
+    List<ConsultationAttachment> getEReferAttachments(LoggedInInfo loggedInInfo, HttpServletRequest request, HttpServletResponse response, Integer demographicNo) throws PDFGenerationException;
 
-    public List<ProfessionalSpecialist> findByService(LoggedInInfo loggedInInfo, String serviceName);
+    List<ProfessionalSpecialist> findByService(LoggedInInfo loggedInInfo, String serviceName);
 
-    public List<ProfessionalSpecialist> findByServiceId(LoggedInInfo loggedInInfo, Integer serviceId);
+    List<ProfessionalSpecialist> findByServiceId(LoggedInInfo loggedInInfo, Integer serviceId);
 
-    public List<ConsultDocs> getAttachedDocumentsByType(LoggedInInfo loggedInInfo, Integer consultRequestId, String docType);
+    List<ConsultDocs> getAttachedDocumentsByType(LoggedInInfo loggedInInfo, Integer consultRequestId, String docType);
 
-    public Path renderConsultationForm(HttpServletRequest request) throws PDFGenerationException;
+    Path renderConsultationForm(HttpServletRequest request) throws PDFGenerationException;
 
-    public List<EctFormData.PatientForm> getAttachedForms(LoggedInInfo loggedInInfo, int consultRequestId, int demographicNo);
+    List<EctFormData.PatientForm> getAttachedForms(LoggedInInfo loggedInInfo, int consultRequestId, int demographicNo);
 
-    public List<EFormData> getAttachedEForms(String requestId);
+    List<EFormData> getAttachedEForms(String requestId);
 
-    public ArrayList<HashMap<String, ? extends Object>> getAttachedHRMDocuments(LoggedInInfo loggedInInfo, String demographicNo, String requestId);
+    ArrayList<HashMap<String, ? extends Object>> getAttachedHRMDocuments(LoggedInInfo loggedInInfo, String demographicNo, String requestId);
 
-    public void archiveConsultationRequest(Integer requestId);
+    void archiveConsultationRequest(Integer requestId);
 
-    public void saveOrUpdateExts(int requestId, List<ConsultationRequestExt> extras);
+    void saveOrUpdateExts(int requestId, List<ConsultationRequestExt> extras);
 
-    public Map<String, ConsultationRequestExt> getExtsAsMap(List<ConsultationRequestExt> extras);
+    Map<String, ConsultationRequestExt> getExtsAsMap(List<ConsultationRequestExt> extras);
 
-    public Map<String, String> getExtValuesAsMap(List<ConsultationRequestExt> extras);
+    Map<String, String> getExtValuesAsMap(List<ConsultationRequestExt> extras);
 }

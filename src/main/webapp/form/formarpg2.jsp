@@ -74,8 +74,7 @@
     }
 %>
 <%
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 %>
 
 <html>
@@ -522,14 +521,14 @@
                     <%
                         if (!bView) {
                     %> <input type="submit" value="Save"
-                              onclick="javascript:return onSave();"/> <input type="submit"
+                              onclick="return onSave();"/> <input type="submit"
                                                                              value="Save and Exit"
-                                                                             onclick="javascript:return onSaveExit();"/> <%
+                                                                             onclick="return onSaveExit();"/> <%
                     }
                 %> <input type="submit" value="Exit"
-                          onclick="javascript:return onExit();"/> <input type="submit"
+                          onclick="return onExit();"/> <input type="submit"
                                                                          value="Print"
-                                                                         onclick="javascript:return onPrint();"/></td>
+                                                                         onclick="return onPrint();"/></td>
 
                 <%
                     if (!bView) {
@@ -718,7 +717,7 @@
                     Ht.
                 </td>
                 <td width="7%"><a href=#
-                                  onclick="javascript:onWtSVG(); return false;">Wt.<br>
+                                  onclick="onWtSVG(); return false;">Wt.<br>
                     (Kg)</a></td>
                 <td width="7%">Presn<br>
                     Posn.
@@ -1603,14 +1602,14 @@
                     <%
                         if (!bView) {
                     %> <input type="submit" value="Save"
-                              onclick="javascript:return onSave();"/> <input type="submit"
+                              onclick="return onSave();"/> <input type="submit"
                                                                              value="Save and Exit"
-                                                                             onclick="javascript:return onSaveExit();"/> <%
+                                                                             onclick="return onSaveExit();"/> <%
                     }
                 %> <input type="submit" value="Exit"
-                          onclick="javascript:return onExit();"/> <input type="submit"
+                          onclick="return onExit();"/> <input type="submit"
                                                                          value="Print"
-                                                                         onclick="javascript:return onPrint();"/></td>
+                                                                         onclick="return onPrint();"/></td>
                 <%
                     if (!bView) {
                 %>

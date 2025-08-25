@@ -846,17 +846,17 @@
                                 <div><a href="<%= request.getContextPath() %>/PMmodule/ClientManager.do?method=getGeneralFormsReport"
                                         target="generalFormsReport">General Forms Reports</a></div>
                                 <div><a href="javascript:void(0);"
-                                        onclick="javascript:getIntakeReport('quick');return false;">Registration Intake
+                                        onclick="getIntakeReport('quick');return false;">Registration Intake
                                     Report</a></div>
                                 <div><a href="javascript:void(0);"
-                                        onclick="javascript:getIntakeReport('indepth');return false;">Follow-up Intake
+                                        onclick="getIntakeReport('indepth');return false;">Follow-up Intake
                                     Report</a></div>
                                 <div><a
                                         href="${pageContext.request.contextPath}/PMmodule/Reports/ProgramActivityReport.do">Activity Report</a></div>
                                 <div><a
                                         href="${pageContext.request.contextPath}/QuatroReport/ReportList.do">Quatro Report Runner</a></div>
                                 <div><a href="javascript:void(0);"
-                                        onclick="javascript:createStreetHealthReport();return false;">Street Health
+                                        onclick="createStreetHealthReport();return false;">Street Health
                                     Mental Health Report</a></div>
                             </caisi:isModuleLoad></div>
                     </c:if>

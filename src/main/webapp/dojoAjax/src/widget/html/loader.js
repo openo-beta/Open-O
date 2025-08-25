@@ -107,7 +107,7 @@ dojo.widget.html.loader = new (function () {
                 this.onSetContent(e.toString());
             }
         }
-    };
+    }
 
     // set up downloader, used by both scripts and content
     function downloader(bindArgs) {
@@ -125,7 +125,7 @@ dojo.widget.html.loader = new (function () {
             bindArgs.mimetype = "text/html";
         }
         this.loader.bindObj = dojo.io.bind(bindArgs);
-    };
+    }
 
     // runs addOnLoad/addOnUnLoad functions
     function stackRunner(st) {
@@ -143,7 +143,7 @@ dojo.widget.html.loader = new (function () {
             var name = (st == this.loader.addOnLoads) ? "addOnLoad" : "addOnUnLoad";
             handleDefaults.call(this, name + " failure\n " + err, "onExecError", true);
         }
-    };
+    }
 
     // push addOnLoad and addOnUnLoad functions onto stack
     function stackPusher(st, obj, func) {
@@ -154,14 +154,14 @@ dojo.widget.html.loader = new (function () {
                 obj[func]();
             });
         }
-    };
+    }
 
     // code saver, collects onLoad, onResized and isLoaded
     function refreshed() {
         this.onResized();
         this.onLoad();
         this.isLoaded = true;
-    };
+    }
 
     // runs scripts and starts the content parser
     function asyncParse(data) {
@@ -172,7 +172,7 @@ dojo.widget.html.loader = new (function () {
             this.onContentParse.call(this);
         }
         refreshed.call(this);
-    };
+    }
 
     // run java function
     function runHandler() {
@@ -183,7 +183,7 @@ dojo.widget.html.loader = new (function () {
             return false;
         }
         return true;
-    };
+    }
 
     // divided up splitAndFixPaths in different parts
     this.htmlContentBasicFix = function (/*string*/s, /*string||dojo.uri.Uri*/url) {
@@ -210,7 +210,7 @@ dojo.widget.html.loader = new (function () {
             }
             s = s.substring(0, match.index) + s.substr(match.index + match[0].length);
         }
-        ;
+
         return {'s': s, 'titles': titles, 'styles': styles};//object
     };
 

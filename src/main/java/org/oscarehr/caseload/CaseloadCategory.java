@@ -77,7 +77,7 @@ public enum CaseloadCategory {
     /**
      * Create a category with a label and an associated database query.
      */
-    private CaseloadCategory(String label, String query, String field) {
+    CaseloadCategory(String label, String query, String field) {
         this.label = label;
         this.query = query;
         this.field = field;

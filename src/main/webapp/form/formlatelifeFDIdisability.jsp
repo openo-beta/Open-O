@@ -57,8 +57,7 @@
     String project_home = request.getContextPath().substring(1);
 %>
 <%
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 %>
 <html>
     <head>
@@ -1301,15 +1300,15 @@
                                             <%
                                                 if (!bView) {
                                             %> <input type="submit" value="Save"
-                                                      onclick="javascript: return onSave();"/> <input type="submit"
+                                                      onclick="return onSave();"/> <input type="submit"
                                                                                                       value="Save and Exit"
-                                                                                                      onclick="javascript:if(checkBeforeSave()==true) return onSaveExit(); else return false;"/>
+                                                                                                      onclick="if(checkBeforeSave()==true) return onSaveExit(); else return false;"/>
                                             <%
                                                 }
                                             %> <input type="button" value="Exit"
-                                                      onclick="javascript:return onExit();"/> <input type="button"
+                                                      onclick="return onExit();"/> <input type="button"
                                                                                                      value="Print"
-                                                                                                     onclick="javascript:window.print();"/>
+                                                                                                     onclick="window.print();"/>
                                         </td>
                                         <td align="right">Study ID: <%= props.getProperty("studyID", "N/A") %>
                                             <input type="hidden" name="studyID"

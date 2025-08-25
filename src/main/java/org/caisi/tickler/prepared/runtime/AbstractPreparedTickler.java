@@ -34,7 +34,7 @@ public abstract class AbstractPreparedTickler implements PreparedTickler {
     public void setDependency(String name, Object o) {
         String methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1, name.length());
         try {
-            Method methods[] = this.getClass().getMethods();
+            Method[] methods = this.getClass().getMethods();
             for (int x = 0; x < methods.length; x++) {
                 if (methods[x].getName().equals(methodName)) {
                     methods[x].invoke(this, new Object[]{o});

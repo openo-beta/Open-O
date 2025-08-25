@@ -79,7 +79,7 @@
         </script>
     </head>
     <%
-        boolean bDob = oscarVariables.getProperty("daysheet_dob", "").equalsIgnoreCase("true") ? true : false;
+        boolean bDob = oscarVariables.getProperty("daysheet_dob", "").equalsIgnoreCase("true");
 
         GregorianCalendar now = new GregorianCalendar();
         String createtime = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DAY_OF_MONTH) + " " + now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
@@ -185,7 +185,7 @@
                 if (myGroupBean.getProperty(rsdemo.getString("provider_no")) == null) continue;
             }
 
-            bodd = bodd ? false : true;
+            bodd = !bodd;
             if (!strTemp.equals(rsdemo.getString("provider_no")) || !dateTemp.equals(rsdemo.getString("appointment_date"))) { //new provider for a new table
                 strTemp = rsdemo.getString("provider_no");
                 dateTemp = rsdemo.getString("appointment_date");

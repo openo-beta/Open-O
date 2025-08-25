@@ -36,5 +36,5 @@ import org.springframework.stereotype.Repository;
 
 public interface AppUserDao extends AbstractDao<AppUser> {
 
-    public AppUser findForProvider(int appId, String providerNo);
+    AppUser findForProvider(int appId, String providerNo);
 }

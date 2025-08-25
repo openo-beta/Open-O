@@ -183,7 +183,7 @@
     </table>
     <input type="submit" name="update" value="Confirm"><input
         type="button" name="cancel" value="Cancel"
-        onclick="javascript:window.close()"> <%
+        onclick="window.close()"> <%
     if (request.getParameter("nameF") != null) {
         out.println("<input type='hidden' name='nameF' value=\"" + request.getParameter("nameF") + "\"/>");
     }

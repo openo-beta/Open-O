@@ -212,7 +212,6 @@ public class UpdateEDTTest extends EDTBaseTest {
             if (e instanceof SOAPFaultException) {
                 logger.error(e);
             }
-            return;
         }
     }
 

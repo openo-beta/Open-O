@@ -986,7 +986,6 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
                 fullAddress = getFullAddress(address);
                 cell.setPhrase(new Phrase(fullAddress, font));
                 rInfoTable.addCell(cell);
-                ;
             }
         }
 

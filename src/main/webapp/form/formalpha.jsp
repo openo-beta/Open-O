@@ -103,14 +103,14 @@
             <tr>
                 <td align="left"><input type="submit"
                                         value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formAlpha.btnSave"/>"
-                                        onclick="javascript:return onSave();"/> <input type="submit"
+                                        onclick="return onSave();"/> <input type="submit"
                                                                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formAlpha.btnSaveExit"/>"
-                                                                                       onclick="javascript:return onSaveExit();"/>
+                                                                                       onclick="return onSaveExit();"/>
                     <input type="submit"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formAlpha.btnExit"/>"
-                           onclick="javascript:return onExit();"/> <input type="button"
+                           onclick="return onExit();"/> <input type="button"
                                                                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formAlpha.btnPrint"/>"
-                                                                          onclick="javascript:return onPrint();"/></td>
+                                                                          onclick="return onPrint();"/></td>
             </tr>
         </table>
 
@@ -380,14 +380,14 @@
             <tr>
                 <td align="left"><input type="submit"
                                         value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formAlpha.btnSave"/>"
-                                        onclick="javascript:return onSave();"/> <input type="submit"
+                                        onclick="return onSave();"/> <input type="submit"
                                                                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formAlpha.btnSaveExit"/>"
-                                                                                       onclick="javascript:return onSaveExit();"/>
+                                                                                       onclick="return onSaveExit();"/>
                     <input type="submit"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formAlpha.btnExit"/>"
-                           onclick="javascript:return onExit();"/> <input type="button"
+                           onclick="return onExit();"/> <input type="button"
                                                                           value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formAlpha.btnPrint"/>"
-                                                                          onclick="javascript:return onPrint();"/></td>
+                                                                          onclick="return onPrint();"/></td>
             </tr>
         </table>
 

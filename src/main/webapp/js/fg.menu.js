@@ -24,7 +24,7 @@ $.fn.menu = function (options) {
             if (!m.menuOpen) {
                 m.showLoading();
             }
-            ;
+
         })
         .click(function () {
             if (m.menuOpen == false) {
@@ -32,7 +32,7 @@ $.fn.menu = function (options) {
             } else {
                 m.kill();
             }
-            ;
+
             return false;
         });
 };
@@ -82,7 +82,7 @@ function Menu(caller, options) {
             if (allUIMenus[i].menuOpen) {
                 allUIMenus[i].kill();
             }
-            ;
+
         });
     };
 
@@ -95,19 +95,19 @@ function Menu(caller, options) {
         if (options.flyOutOnState) {
             container.find('li a').removeClass(options.flyOutOnState);
         }
-        ;
+
         if (options.callerOnState) {
             caller.removeClass(options.callerOnState);
         }
-        ;
+
         if (container.is('.fg-menu-ipod')) {
             menu.resetDrilldownMenu();
         }
-        ;
+
         if (container.is('.fg-menu-flyout')) {
             menu.resetFlyoutMenu();
         }
-        ;
+
         container.parent().hide();
         menu.menuOpen = false;
         $(document).unbind('click', killAllMenus);
@@ -123,7 +123,7 @@ function Menu(caller, options) {
         if (!menu.menuExists) {
             menu.create()
         }
-        ;
+
         caller
             .addClass('fg-menu-open');
         container.parent().show().click(function () {
@@ -155,26 +155,26 @@ function Menu(caller, options) {
                         if ($('.' + options.flyOutOnState).size() > 0) {
                             $('.' + options.flyOutOnState).trigger('mouseover');
                         }
-                        ;
+
                     }
-                    ;
+
 
                     if (menuType == 'ipod') {
                         $(event.target).trigger('mouseout');
                         if ($('.fg-menu-footer').find('a').size() > 0) {
                             $('.fg-menu-footer').find('a').trigger('click');
                         }
-                        ;
+
                         if ($('.fg-menu-header').find('a').size() > 0) {
                             $('.fg-menu-current-crumb').prev().find('a').trigger('click');
                         }
-                        ;
+
                         if ($('.fg-menu-current').prev().is('.fg-menu-indicator')) {
                             $('.fg-menu-current').prev().trigger('mouseover');
                         }
-                        ;
+
                     }
-                    ;
+
                     return false;
                     break;
 
@@ -185,7 +185,7 @@ function Menu(caller, options) {
                             $(event.target).trigger('mouseout');
                             prevLink.trigger('mouseover');
                         }
-                        ;
+
                     } else {
                         container.find('a:eq(0)').trigger('mouseover');
                     }
@@ -202,9 +202,9 @@ function Menu(caller, options) {
                                 $(event.target).next().find('a:eq(0)').trigger('mouseover');
                             }, options.crossSpeed);
                         }
-                        ;
+
                     }
-                    ;
+
                     return false;
                     break;
 
@@ -215,7 +215,7 @@ function Menu(caller, options) {
                             $(event.target).trigger('mouseout');
                             nextLink.trigger('mouseover');
                         }
-                        ;
+
                     } else {
                         container.find('a:eq(0)').trigger('mouseover');
                     }
@@ -233,10 +233,10 @@ function Menu(caller, options) {
                             $(event.target).next().find('a:eq(0)').trigger('mouseover');
                         }, options.crossSpeed);
                     }
-                    ;
+
                     break;
             }
-            ;
+
         });
     };
 
@@ -263,7 +263,7 @@ function Menu(caller, options) {
                 return false;
             });
         }
-        ;
+
 
         if (options.linkHover) {
             var allLinks = container.find('.fg-menu li a');
@@ -278,7 +278,7 @@ function Menu(caller, options) {
                 }
             );
         }
-        ;
+
 
         if (options.linkHoverSecondary) {
             container.find('.fg-menu li').hover(
@@ -294,7 +294,7 @@ function Menu(caller, options) {
                 }
             );
         }
-        ;
+
 
         menu.setPosition(container, caller, options);
         menu.menuExists = true;
@@ -306,7 +306,7 @@ function Menu(caller, options) {
         $('#menuSelection').text($(item).text());
         location.href = $(item).attr('href');
     };
-};
+}
 
 Menu.prototype.flyout = function (container, options) {
     var menu = this;
@@ -330,11 +330,11 @@ Menu.prototype.flyout = function (container, options) {
                 if (!fitVertical(subList, $(this).offset().top)) {
                     subList.css({top: 'auto', bottom: 0});
                 }
-                ;
+
                 if (!fitHorizontal(subList, $(this).offset().left + 100)) {
                     subList.css({left: 'auto', right: linkWidth, 'z-index': 999});
                 }
-                ;
+
                 showTimer = setTimeout(function () {
                     subList.addClass('ui-widget-content').show(options.showSpeed).attr('aria-expanded', 'true');
                 }, 300);
@@ -389,14 +389,14 @@ Menu.prototype.drilldown = function (container, options) {
     } else {
         breadcrumb.addClass('fg-menu-header').prependTo(container);
     }
-    ;
+
     breadcrumb.append(crumbDefaultHeader);
 
     var checkMenuHeight = function (el) {
         if (el.height() > options.maxHeight) {
             el.addClass('fg-menu-scroll')
         }
-        ;
+
         el.css({height: options.maxHeight});
     };
 
@@ -461,7 +461,7 @@ Menu.prototype.drilldown = function (container, options) {
                             b.remove();
                             footer.hide();
                         }
-                        ;
+
                     };
 
                     // initialize "back" link
@@ -507,12 +507,12 @@ Menu.prototype.drilldown = function (container, options) {
                                 $(this).parent().addClass('fg-menu-current-crumb').find('span').remove();
                                 $(this).parent().nextAll().remove();
                             }
-                            ;
+
                             return false;
                         });
                         newCrumb.prev().append(' <span class="ui-icon ' + options.nextCrumbLink + '"></span>');
                     }
-                    ;
+
                     return false;
                 });
         }
@@ -523,7 +523,7 @@ Menu.prototype.drilldown = function (container, options) {
                 return false;
             });
         }
-        ;
+
     });
 };
 
@@ -569,7 +569,7 @@ Menu.prototype.setPosition = function (widget, caller, options) {
             xVal = dims.refW;
             break;
     }
-    ;
+
 
     // get Y pos
     switch (options.positionOpts.posY) {
@@ -583,7 +583,7 @@ Menu.prototype.setPosition = function (widget, caller, options) {
             yVal = dims.refH;
             break;
     }
-    ;
+
 
     // add the offsets (zero by default)
     xVal += options.positionOpts.offsetX;
@@ -601,7 +601,7 @@ Menu.prototype.setPosition = function (widget, caller, options) {
             el.css({top: 'auto', bottom: yVal});
         }
     }
-    ;
+
 
     // and horizontally
     if (options.positionOpts.directionH == 'left') {
@@ -615,7 +615,7 @@ Menu.prototype.setPosition = function (widget, caller, options) {
             el.css({left: 'auto', right: xVal});
         }
     }
-    ;
+
 
     // if specified, clone the referring element and position it so that it appears on top of the menu
     if (options.positionOpts.linkToFront) {
@@ -629,7 +629,7 @@ Menu.prototype.setPosition = function (widget, caller, options) {
             height: referrer.height()
         }).insertAfter(el);
     }
-    ;
+
 };
 
 
@@ -637,7 +637,7 @@ Menu.prototype.setPosition = function (widget, caller, options) {
 
 function sortBigToSmall(a, b) {
     return b - a;
-};
+}
 
 jQuery.fn.getTotalWidth = function () {
     return $(this).width() + parseInt($(this).css('paddingRight')) + parseInt($(this).css('paddingLeft')) + parseInt($(this).css('borderRightWidth')) + parseInt($(this).css('borderLeftWidth'));
@@ -649,21 +649,21 @@ jQuery.fn.getTotalHeight = function () {
 
 function getScrollTop() {
     return self.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-};
+}
 
 function getScrollLeft() {
     return self.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft;
-};
+}
 
 function getWindowHeight() {
     var de = document.documentElement;
     return self.innerHeight || (de && de.clientHeight) || document.body.clientHeight;
-};
+}
 
 function getWindowWidth() {
     var de = document.documentElement;
     return self.innerWidth || (de && de.clientWidth) || document.body.clientWidth;
-};
+}
 
 /* Utilities to test whether an element will fit in the viewport
 	Parameters:
@@ -673,12 +673,12 @@ function getWindowWidth() {
 function fitHorizontal(el, leftOffset) {
     var leftVal = parseInt(leftOffset) || $(el).offset().left;
     return (leftVal + $(el).width() <= getWindowWidth() + getScrollLeft() && leftVal - getScrollLeft() >= 0);
-};
+}
 
 function fitVertical(el, topOffset) {
     var topVal = parseInt(topOffset) || $(el).offset().top;
     return (topVal + $(el).height() <= getWindowHeight() + getScrollTop() && topVal - getScrollTop() >= 0);
-};
+}
 
 /*-------------------------------------------------------------------- 
  * javascript method: "pxToEm"
@@ -733,7 +733,7 @@ Number.prototype.pxToEm = String.prototype.pxToEm = function (settings) {
     } else {
         scopeVal = parseFloat(jQuery(settings.scope).css("font-size"));
     }
-    ;
+
 
     var result = (settings.reverse == true) ? (pxVal * scopeVal).toFixed(2) + 'px' : (pxVal / scopeVal).toFixed(2) + 'em';
     return result;

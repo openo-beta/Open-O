@@ -200,10 +200,7 @@ public class PFHTHandler implements MessageHandler {
 
     public boolean isOBXAbnormal(int i, int j) {
         String abnormalFlag = getOBXAbnormalFlag(i, j);
-        if (abnormalFlag.equals("") || abnormalFlag.equals("N"))
-            return (false);
-        else
-            return (true);
+        return !abnormalFlag.equals("") && !abnormalFlag.equals("N");
     }
 
 

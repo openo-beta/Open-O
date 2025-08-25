@@ -100,11 +100,7 @@
     String annotation_display = CaseManagementNoteLink.DISP_PREV;
 
 
-    boolean dhirEnabled = false;
-
-    if ("true".equals(OscarProperties.getInstance().getProperty("dhir.enabled", "false"))) {
-        dhirEnabled = true;
-    }
+    boolean dhirEnabled = "true".equals(OscarProperties.getInstance().getProperty("dhir.enabled", "false"));
 
     if (id != null) {
 
@@ -849,7 +845,7 @@
                                                                                               name="providerName"
                                                                                               id="providerName"
                                                                                               value="<%=providerName%>"/>
-                                <select onchange="javascript:hideExtraName(this);" id="providerDrop" name="provider">
+                                <select onchange="hideExtraName(this);" id="providerDrop" name="provider">
                                     <%
                                         for (int i = 0; i < providers.size(); i++) {
                                             Map<String, String> h = providers.get(i);
@@ -1074,7 +1070,7 @@
                             <%if (!isCvc) { %>
                             <label for="lot">Lot:</label> <input type="text" name="lot" id="lot"
                                                                  value="<%=str(lot,"")%>"/>
-                            <select onchange="javascript:updateLotNr(this);" id="lotDrop" name="lotItem">
+                            <select onchange="updateLotNr(this);" id="lotDrop" name="lotItem">
                                 <%
                                     for (String lotnr : lotNrList) {
                                 %>
@@ -1088,7 +1084,7 @@
                                 <label for="cvcLot">Lot:</label>
                                 <input type="text" name="lot" id="lot" value="<%=str(lot,"")%>" style="display:block"/>
 
-                                <select onchange="javascript:updateCvcLot();" id="cvcLot" name="cvcLot"
+                                <select onchange="updateCvcLot();" id="cvcLot" name="cvcLot"
                                         style="display:none;">
 
                                 </select></div>
@@ -1141,7 +1137,7 @@
                                                                                               name="providerName"
                                                                                               id="providerName"
                                                                                               value="<%=providerName%>"/>
-                                <select onchange="javascript:hideExtraName(this);" id="providerDrop" name="provider">
+                                <select onchange="hideExtraName(this);" id="providerDrop" name="provider">
                                     <%
                                         for (int i = 0; i < providers.size(); i++) {
                                             Map<String, String> h = providers.get(i);
@@ -1263,18 +1259,15 @@
                                 type="checkbox" name="householdcontact"
                                 value="true" <%=checked(str((extraData.get("householdcontact")), ""), "true")%>/><br/>
                             <%
-                                boolean bothfirstresponders = false;
-                                if (str((extraData.get("firstresponder")), "").equalsIgnoreCase("true")) {
-                                    bothfirstresponders = true;
-                                }
+                                boolean bothfirstresponders = str((extraData.get("firstresponder")), "").equalsIgnoreCase("true");
 
                             %>
                             <label for="firstresponderpolice">First Responder Police:</label> <input type="checkbox"
                                                                                                      name="firstresponderpolice"
-                                                                                                     value="true" <%=bothfirstresponders == true ? "checked" : checked(str((extraData.get("firstresponderpolice")), ""), "true")%>/><br/>
+                                                                                                     value="true" <%=bothfirstresponders ? "checked" : checked(str((extraData.get("firstresponderpolice")), ""), "true")%>/><br/>
                             <label for="firstresponderfire">First Responder Fire:</label> <input type="checkbox"
                                                                                                  name="firstresponderfire"
-                                                                                                 value="true" <%=bothfirstresponders == true ? "checked" : checked(str((extraData.get("firstresponderfire")), ""), "true")%>/><br/>
+                                                                                                 value="true" <%=bothfirstresponders ? "checked" : checked(str((extraData.get("firstresponderfire")), ""), "true")%>/><br/>
                             <label for="swineworker">Swine Worker:</label> <input type="checkbox" name="swineworker"
                                                                                   value="true" <%=checked(str((extraData.get("swineworker")), ""), "true")%>/><br/>
                             <label for="poultryworker">Poultry Worker:</label> <input type="checkbox"
@@ -1321,7 +1314,7 @@
                                                                                               name="providerName"
                                                                                               id="providerName"
                                                                                               value="<%=providerName%>"/>
-                                <select onchange="javascript:hideExtraName(this);" id="providerDrop" name="provider">
+                                <select onchange="hideExtraName(this);" id="providerDrop" name="provider">
                                     <%
                                         for (int i = 0; i < providers.size(); i++) {
                                             Map<String, String> h = providers.get(i);
@@ -1390,7 +1383,7 @@
                                                                                               name="providerName"
                                                                                               id="providerName"
                                                                                               value="<%=providerName%>"/>
-                                <select onchange="javascript:hideExtraName(this);" id="providerDrop" name="provider">
+                                <select onchange="hideExtraName(this);" id="providerDrop" name="provider">
                                     <%
                                         for (int i = 0; i < providers.size(); i++) {
                                             Map<String, String> h = providers.get(i);

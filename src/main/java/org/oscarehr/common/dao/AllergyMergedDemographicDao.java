@@ -37,16 +37,16 @@ import org.springframework.stereotype.Repository;
 public interface AllergyMergedDemographicDao extends AbstractDao<Allergy> {
 
 
-    public List<Allergy> findAllergies(final Integer demographic_no);
+    List<Allergy> findAllergies(final Integer demographic_no);
 
 
-    public List<Allergy> findActiveAllergies(final Integer demographic_no);
+    List<Allergy> findActiveAllergies(final Integer demographic_no);
 
 
-    public List<Allergy> findActiveAllergiesOrderByDescription(final Integer demographic_no);
+    List<Allergy> findActiveAllergiesOrderByDescription(final Integer demographic_no);
 
-    public List<Allergy> findByDemographicIdUpdatedAfterDate(final Integer demographicId,
-                                                             final Date updatedAfterThisDate);
+    List<Allergy> findByDemographicIdUpdatedAfterDate(final Integer demographicId,
+                                                      final Date updatedAfterThisDate);
 
-    public List<Allergy> findAllCustomAllergiesWithNullNonDrugFlag(int start, int limit);
+    List<Allergy> findAllCustomAllergiesWithNullNonDrugFlag(int start, int limit);
 }

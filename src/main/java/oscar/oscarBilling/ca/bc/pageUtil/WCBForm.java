@@ -377,7 +377,7 @@ public final class WCBForm {
 
     public String getW_fname() {
         try {
-            MiscUtils.getLogger().debug("this.toString()=" + this.toString());
+            MiscUtils.getLogger().debug("this.toString()=" + this);
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         }

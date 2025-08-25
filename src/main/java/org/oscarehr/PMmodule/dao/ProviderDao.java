@@ -64,121 +64,121 @@ import com.quatro.model.security.SecProvider;
 @SuppressWarnings("unchecked")
 public interface ProviderDao {
 
-    public static final String PR_TYPE_DOCTOR = "doctor";
-    public static final String PR_TYPE_RESIDENT = "resident";
+    String PR_TYPE_DOCTOR = "doctor";
+    String PR_TYPE_RESIDENT = "resident";
 
-    public boolean providerExists(String providerNo);
+    boolean providerExists(String providerNo);
 
-    public Provider getProvider(String providerNo);
+    Provider getProvider(String providerNo);
 
-    public String getProviderName(String providerNo);
+    String getProviderName(String providerNo);
 
-    public String getProviderNameLastFirst(String providerNo);
+    String getProviderNameLastFirst(String providerNo);
 
-    public List<Provider> getProviders();
+    List<Provider> getProviders();
 
-    public List<Provider> getProviders(String[] providers);
+    List<Provider> getProviders(String[] providers);
 
-    public List<Provider> getProviderFromFirstLastName(String firstname, String lastname);
+    List<Provider> getProviderFromFirstLastName(String firstname, String lastname);
 
-    public List<Provider> getProviderLikeFirstLastName(String firstname, String lastname);
+    List<Provider> getProviderLikeFirstLastName(String firstname, String lastname);
 
-    public List<Provider> getActiveProviderLikeFirstLastName(String firstname, String lastname);
+    List<Provider> getActiveProviderLikeFirstLastName(String firstname, String lastname);
 
-    public List<SecProvider> getActiveProviders(Integer programId);
+    List<SecProvider> getActiveProviders(Integer programId);
 
-    public List<Provider> getActiveProviders(String facilityId, String programId);
+    List<Provider> getActiveProviders(String facilityId, String programId);
 
-    public List<Provider> getActiveProviders();
+    List<Provider> getActiveProviders();
 
-    public List<Provider> getActiveProviders(boolean filterOutSystemAndImportedProviders);
+    List<Provider> getActiveProviders(boolean filterOutSystemAndImportedProviders);
 
-    public List<Provider> getActiveProvidersByRole(String role);
+    List<Provider> getActiveProvidersByRole(String role);
 
-    public List<Provider> getDoctorsWithOhip();
+    List<Provider> getDoctorsWithOhip();
 
-    public List<Provider> getBillableProviders();
+    List<Provider> getBillableProviders();
 
-    public List<Provider> getBillableProvidersInBC(LoggedInInfo loggedInInfo);
+    List<Provider> getBillableProvidersInBC(LoggedInInfo loggedInInfo);
 
-    public List<Provider> getBillableProvidersInBC();
+    List<Provider> getBillableProvidersInBC();
 
-    public List<Provider> getProviders(boolean active);
+    List<Provider> getProviders(boolean active);
 
-    public List<Provider> getActiveProviders(String providerNo, Integer shelterId);
+    List<Provider> getActiveProviders(String providerNo, Integer shelterId);
 
-    public List<Provider> getActiveProvider(String providerNo);
+    List<Provider> getActiveProvider(String providerNo);
 
-    public List<Provider> search(String name);
+    List<Provider> search(String name);
 
-    public List<Provider> getProvidersByTypeWithNonEmptyOhipNo(String type);
+    List<Provider> getProvidersByTypeWithNonEmptyOhipNo(String type);
 
-    public List<Provider> getProvidersByType(String type);
+    List<Provider> getProvidersByType(String type);
 
-    public List<Provider> getProvidersByTypePattern(String typePattern);
+    List<Provider> getProvidersByTypePattern(String typePattern);
 
-    public List getShelterIds(String provider_no);
+    List getShelterIds(String provider_no);
 
-    public void addProviderToFacility(String provider_no, int facilityId);
+    void addProviderToFacility(String provider_no, int facilityId);
 
-    public void removeProviderFromFacility(String provider_no,
-                                           int facilityId);
+    void removeProviderFromFacility(String provider_no,
+                                    int facilityId);
 
-    public List<Integer> getFacilityIds(String provider_no);
+    List<Integer> getFacilityIds(String provider_no);
 
-    public List<String> getProviderIds(int facilityId);
+    List<String> getProviderIds(int facilityId);
 
-    public void updateProvider(Provider provider);
+    void updateProvider(Provider provider);
 
-    public void saveProvider(Provider provider);
+    void saveProvider(Provider provider);
 
-    public Provider getProviderByPractitionerNo(String practitionerNo);
+    Provider getProviderByPractitionerNo(String practitionerNo);
 
-    public Provider getProviderByPractitionerNo(String practitionerNoType, String practitionerNo);
+    Provider getProviderByPractitionerNo(String practitionerNoType, String practitionerNo);
 
-    public Provider getProviderByPractitionerNo(String[] practitionerNoTypes, String practitionerNo);
+    Provider getProviderByPractitionerNo(String[] practitionerNoTypes, String practitionerNo);
 
-    public List<String> getUniqueTeams();
+    List<String> getUniqueTeams();
 
-    public List<Provider> getBillableProvidersOnTeam(Provider p);
+    List<Provider> getBillableProvidersOnTeam(Provider p);
 
-    public List<Provider> getBillableProvidersByOHIPNo(String ohipNo);
+    List<Provider> getBillableProvidersByOHIPNo(String ohipNo);
 
-    public List<Provider> getProvidersWithNonEmptyOhip(LoggedInInfo loggedInInfo);
+    List<Provider> getProvidersWithNonEmptyOhip(LoggedInInfo loggedInInfo);
 
-    public List<Provider> getProvidersWithNonEmptyOhip();
+    List<Provider> getProvidersWithNonEmptyOhip();
 
-    public List<Provider> getCurrentTeamProviders(String providerNo);
+    List<Provider> getCurrentTeamProviders(String providerNo);
 
-    public List<String> getActiveTeams();
+    List<String> getActiveTeams();
 
-    public List<String> getActiveTeamsViaSites(String providerNo);
+    List<String> getActiveTeamsViaSites(String providerNo);
 
-    public List<Provider> getProviderByPatientId(Integer patientId);
+    List<Provider> getProviderByPatientId(Integer patientId);
 
-    public List<Provider> getDoctorsWithNonEmptyCredentials();
+    List<Provider> getDoctorsWithNonEmptyCredentials();
 
-    public List<Provider> getProvidersWithNonEmptyCredentials();
+    List<Provider> getProvidersWithNonEmptyCredentials();
 
-    public List<String> getProvidersInTeam(String teamName);
+    List<String> getProvidersInTeam(String teamName);
 
-    public List<Object[]> getDistinctProviders();
+    List<Object[]> getDistinctProviders();
 
-    public List<String> getRecordsAddedAndUpdatedSinceTime(Date date);
+    List<String> getRecordsAddedAndUpdatedSinceTime(Date date);
 
-    public List<Provider> searchProviderByNamesString(String searchString, int startIndex, int itemsToReturn);
+    List<Provider> searchProviderByNamesString(String searchString, int startIndex, int itemsToReturn);
 
-    public List<Provider> search(String term, boolean active, int startIndex, int itemsToReturn);
+    List<Provider> search(String term, boolean active, int startIndex, int itemsToReturn);
 
-    public List<String> getProviderNosWithAppointmentsOnDate(Date appointmentDate);
+    List<String> getProviderNosWithAppointmentsOnDate(Date appointmentDate);
 
-    public List<Provider> getOlisHicProviders();
+    List<Provider> getOlisHicProviders();
 
-    public Provider getProviderByPractitionerNoAndOlisType(String practitionerNo, String olisIdentifierType);
+    Provider getProviderByPractitionerNoAndOlisType(String practitionerNo, String olisIdentifierType);
 
-    public List<Provider> getOlisProvidersByPractitionerNo(List<String> practitionerNumbers);
+    List<Provider> getOlisProvidersByPractitionerNo(List<String> practitionerNumbers);
 
-    public List<Provider> getProvidersByIds(List<String> providerNumbers);
+    List<Provider> getProvidersByIds(List<String> providerNumbers);
 
-    public Map<String, String> getProviderNamesByIdsAsMap(List<String> providerNumbers);
+    Map<String, String> getProviderNamesByIdsAsMap(List<String> providerNumbers);
 }

@@ -381,7 +381,7 @@ public class Pregnancy2Action extends ActionSupport {
             rec = recorder.factory(request.getParameter("form_class"));
             Properties props = new Properties();
 
-            boolean bMulPage = request.getParameter("c_lastVisited") != null ? true : false;
+            boolean bMulPage = request.getParameter("c_lastVisited") != null;
             String name;
 
             if (bMulPage) {

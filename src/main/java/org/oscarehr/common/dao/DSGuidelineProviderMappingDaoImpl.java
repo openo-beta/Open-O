@@ -56,9 +56,6 @@ public class DSGuidelineProviderMappingDaoImpl extends AbstractDaoImpl<DSGuideli
         query.setParameter(2, dsGuidelineProviderMapping.getProviderNo());
         @SuppressWarnings("unchecked")
         List<DSGuidelineProviderMapping> list = query.getResultList();
-        if (list == null || list.size() == 0) {
-            return false;
-        }
-        return true;
+        return list != null && list.size() != 0;
     }
 }

@@ -3776,7 +3776,7 @@
 
             function add(key, value) {
                 s[s.length] = encodeURIComponent(key) + '=' + encodeURIComponent(value);
-            };
+            }
 
             // If an array was passed in, assume that it is an array
             // of form elements

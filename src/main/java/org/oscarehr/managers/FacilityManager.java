@@ -40,8 +40,8 @@ import oscar.log.LogAction;
 
 public interface FacilityManager {
 
-    public Facility getDefaultFacility(LoggedInInfo loggedInInfo);
+    Facility getDefaultFacility(LoggedInInfo loggedInInfo);
 
-    public List<Facility> getAllFacilities(LoggedInInfo loggedInInfo, Boolean active);
+    List<Facility> getAllFacilities(LoggedInInfo loggedInInfo, Boolean active);
 }
  

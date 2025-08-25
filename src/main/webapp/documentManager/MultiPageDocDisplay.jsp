@@ -912,7 +912,7 @@
                                                     if (curdoc.getCreatorId().equals(LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo())) {
                                                 %>
                                                 <input type="button" tabindex="<%=tabindex++%>" value="Delete"
-                                                       onClick="javascript: checkDelete('MultiPageDocDisplay.jsp?delDocumentNo=<%=curdoc.getDocId()%>','<%=curdoc.getDescription()%>')"/>
+                                                       onClick="checkDelete('MultiPageDocDisplay.jsp?delDocumentNo=<%=curdoc.getDocId()%>','<%=curdoc.getDescription()%>')"/>
 
                                                 <%
                                                 } else {
@@ -920,7 +920,7 @@
                                                 <security:oscarSec roleName="<%=roleName$%>"
                                                                    objectName="_admin,_admin.edocdelete" rights="r">
                                                     <input type="button" tabindex="<%=tabindex++%>" value="Delete"
-                                                           onClick="javascript: checkDelete('documentReport.jsp?delDocumentNo=1&amp;function=demographic&amp;functionid=1&amp;viewstatus=active','test')"/>
+                                                           onClick="checkDelete('documentReport.jsp?delDocumentNo=1&amp;function=demographic&amp;functionid=1&amp;viewstatus=active','test')"/>
                                                 </security:oscarSec>
                                                 <% } %>
                                                 <%}

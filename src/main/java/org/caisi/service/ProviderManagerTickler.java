@@ -33,14 +33,14 @@ import org.oscarehr.common.model.Provider;
  */
 public interface ProviderManagerTickler {
 
-    public void setProviderDAO(ProviderDAO dao);
+    void setProviderDAO(ProviderDAO dao);
 
     /**
      * Get all providers in the system
      *
      * @return a List of Provider objects
      */
-    public List getProviders();
+    List getProviders();
 
     /**
      * Find a specific provider
@@ -48,8 +48,8 @@ public interface ProviderManagerTickler {
      * @param provider_no
      * @return The provider
      */
-    public Provider getProvider(String provider_no);
+    Provider getProvider(String provider_no);
 
 
-    public List getProgramDomain(String providerNo);
+    List getProgramDomain(String providerNo);
 }

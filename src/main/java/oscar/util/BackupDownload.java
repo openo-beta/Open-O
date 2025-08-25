@@ -57,10 +57,7 @@ public class BackupDownload extends GenericDownload {
             adminPrivs = true;
         }
 
-        boolean bDownload = false;
-        if (filename != null && adminPrivs) {
-            bDownload = true;
-        }
+        boolean bDownload = filename != null && adminPrivs;
         download(bDownload, res, dir, filename, null);
     }
 

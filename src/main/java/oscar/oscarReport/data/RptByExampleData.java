@@ -61,7 +61,7 @@ public class RptByExampleData {
 
         if (sql.compareTo("") != 0) {
             sql = replaceSQLString(";", "", sql);
-            sql = replaceSQLString("\"", "\'", sql);
+            sql = replaceSQLString("\"", "'", sql);
         }
 
         this.sql = sql;
@@ -106,4 +106,4 @@ public class RptByExampleData {
     }
 
 
-};
+}

@@ -583,7 +583,7 @@ public class Contact2Action extends ActionSupport {
         if (id != null && id.length() > 0 && !"0".equals(id)) {
             Contact savedContact = contactDao.find(Integer.parseInt(id));
             if (savedContact != null) {
-                BeanUtils.copyProperties(contact, savedContact, new String[]{"id"});
+                BeanUtils.copyProperties(contact, savedContact, "id");
                 contactDao.merge(savedContact);
             }
         } else {
@@ -697,7 +697,7 @@ public class Contact2Action extends ActionSupport {
                 ProfessionalContact savedContact = proContactDao.find(contactId);
                 if (savedContact != null) {
 
-                    BeanUtils.copyProperties(contact, savedContact, new String[]{"id"});
+                    BeanUtils.copyProperties(contact, savedContact, "id");
                     proContactDao.merge(savedContact);
                     contactRole = savedContact.getSpecialty();
                 }

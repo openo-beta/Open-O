@@ -36,12 +36,12 @@ import org.springframework.stereotype.Repository;
 
 public interface AppointmentSearchDao extends AbstractDao<AppointmentSearch> {
 
-    public List<AppointmentSearch> findAll();
+    List<AppointmentSearch> findAll();
 
-    public List<AppointmentSearch> findActive();
+    List<AppointmentSearch> findActive();
 
-    public List<AppointmentSearch> findByUUID(String uuid, Boolean active);
+    List<AppointmentSearch> findByUUID(String uuid, Boolean active);
 
-    public AppointmentSearch findForProvider(String providerNo);
+    AppointmentSearch findForProvider(String providerNo);
 
 }

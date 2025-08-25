@@ -38,18 +38,18 @@ import org.springframework.stereotype.Repository;
 
 public interface DemographicContactDao extends AbstractDao<DemographicContact> {
 
-    public List<DemographicContact> findByDemographicNo(int demographicNo);
+    List<DemographicContact> findByDemographicNo(int demographicNo);
 
-    public List<DemographicContact> findActiveByDemographicNo(int demographicNo);
+    List<DemographicContact> findActiveByDemographicNo(int demographicNo);
 
-    public List<DemographicContact> findByDemographicNoAndCategory(int demographicNo, String category);
+    List<DemographicContact> findByDemographicNoAndCategory(int demographicNo, String category);
 
-    public List<DemographicContact> find(int demographicNo, int contactId);
+    List<DemographicContact> find(int demographicNo, int contactId);
 
-    public List<DemographicContact> findAllByContactIdAndCategoryAndType(int contactId, String category, int type);
+    List<DemographicContact> findAllByContactIdAndCategoryAndType(int contactId, String category, int type);
 
-    public List<DemographicContact> findAllByDemographicNoAndCategoryAndType(int demographicNo, String category,
-                                                                             int type);
+    List<DemographicContact> findAllByDemographicNoAndCategoryAndType(int demographicNo, String category,
+                                                                      int type);
 
-    public List<DemographicContact> findSDMByDemographicNo(int demographicNo);
+    List<DemographicContact> findSDMByDemographicNo(int demographicNo);
 }

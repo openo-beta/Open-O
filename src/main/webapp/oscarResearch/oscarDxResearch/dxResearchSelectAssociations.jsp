@@ -143,7 +143,7 @@
                        style="width: 180px" value="Export"/>
                 &nbsp;&nbsp;
                 <input id="close" type="button" class="mbttn"
-                       style="width: 180px" value="Close" onclick="javascript:window.close();"/>
+                       style="width: 180px" value="Close" onclick="window.close();"/>
                 <br/>
             </div>
         </tr>

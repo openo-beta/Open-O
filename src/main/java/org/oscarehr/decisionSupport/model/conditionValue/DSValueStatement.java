@@ -50,7 +50,7 @@ public class DSValueStatement extends DSValue {
 
         String symbol;
 
-        private Operator(String symbol) {
+        Operator(String symbol) {
             this.symbol = symbol;
         }
 

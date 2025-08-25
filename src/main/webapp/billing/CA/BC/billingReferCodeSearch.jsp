@@ -241,6 +241,6 @@
     </table>
     <input type="submit" name="update" value="Confirm"><input
             type="button" name="cancel" value="Cancel"
-            onclick="javascript:window.close()"></form>
+            onclick="window.close()"></form>
 </body>
 </html>

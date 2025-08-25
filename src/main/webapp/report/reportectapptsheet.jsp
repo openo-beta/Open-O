@@ -122,7 +122,7 @@
         itemp1[0] = Integer.parseInt(strLimit2);
         rsdemo = daySheetBean.queryResults(param, itemp1, "search_appt");
         while (rsdemo.next()) {
-            bodd = bodd ? false : true;
+            bodd = !bodd;
             nItems++;
     %>
     <tr bgcolor="<%=bodd?"#EEEEFF":"white"%>">

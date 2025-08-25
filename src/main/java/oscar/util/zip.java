@@ -65,10 +65,10 @@ public class zip {
             FileOutputStream dest = new FileOutputStream(form_record_path + "formRecords.zip");
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
             out.setMethod(ZipOutputStream.DEFLATED);
-            byte data[] = new byte[BUFFER];
+            byte[] data = new byte[BUFFER];
             //get a list of files from current directory
             File f = new File(form_record_path + ".");
-            String files[] = f.list();
+            String[] files = f.list();
 
             for (int i = 0; i < files.length; i++) {
                 MiscUtils.getLogger().debug("Adding: " + files[i]);
@@ -113,7 +113,7 @@ public class zip {
                 String zName = entry.getName();
                 is = new BufferedInputStream(zipfile.getInputStream(entry));
                 int count;
-                byte data[] = new byte[BUFFER];
+                byte[] data = new byte[BUFFER];
                 if (!zName.substring(zName.length() - 4).equalsIgnoreCase(".zip")) {
                     zName = zName + ".xml";
                 }

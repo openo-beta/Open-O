@@ -186,7 +186,7 @@
                             <%
                                 String sBack = "oscarRx/SearchDrug.jsp";
                             %> <input type=button class="ControlPushButton"
-                                      onclick="javascript:window.location.href='<%=sBack%>';"
+                                      onclick="window.location.href='<%=sBack%>';"
                                       value="Back to Search Drug"/></td>
                     </tr>
                     <!----End new rows here-->

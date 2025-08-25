@@ -38,11 +38,11 @@ import org.springframework.stereotype.Repository;
 
 public interface FaxJobDao extends AbstractDao<FaxJob> {
 
-    public List<FaxJob> getFaxStatusByDateDemographicProviderStatusTeam(String demographic_no, String provider_no,
-                                                                        String status, String team, Date beginDate, Date endDate);
+    List<FaxJob> getFaxStatusByDateDemographicProviderStatusTeam(String demographic_no, String provider_no,
+                                                                 String status, String team, Date beginDate, Date endDate);
 
-    public List<FaxJob> getReadyToSendFaxes(String number);
+    List<FaxJob> getReadyToSendFaxes(String number);
 
-    public List<FaxJob> getInprogressFaxesByJobId();
+    List<FaxJob> getInprogressFaxesByJobId();
 
 }

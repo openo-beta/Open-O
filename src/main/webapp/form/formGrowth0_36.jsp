@@ -34,7 +34,7 @@
     // boy/girl color
     String boyColor = "#99CCFF";
     String girlColor = "#FFccFF";
-    boolean bGirl = props.getProperty("patientSex", "").equals("F") ? true : false;
+    boolean bGirl = props.getProperty("patientSex", "").equals("F");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
@@ -275,7 +275,7 @@
                 // Check that current character is number.
                 var c = s.charAt(i);
                 if (c == '.') {
-                    continue;
+
                 } else if (((c < "0") || (c > "9"))) {
                     alert('Invalid ' + s + ' in field ' + ss.name);
                     ss.focus();
@@ -312,11 +312,11 @@
         <table class="Head" class="hidePrint">
             <tr>
                 <td align="left"><input type="submit" value="Save"
-                                        onclick="javascript:return onSave();"/> <input type="submit"
+                                        onclick="return onSave();"/> <input type="submit"
                                                                                        value="Save and Exit"
-                                                                                       onclick="javascript:return onSaveExit();"/>
+                                                                                       onclick="return onSaveExit();"/>
                     <input
-                            type="submit" value="Exit" onclick="javascript:return onExit();"/>
+                            type="submit" value="Exit" onclick="return onExit();"/>
                     <!--input type="submit" value="Print Growth" onclick="javascript:return onPrintStatureWeight();return false;"/>
                     <input type="submit" value="Print BMI" onclick="javascript:return onPrintBMI();return false;"/-->
                 </td>
@@ -440,11 +440,11 @@
                             <tr class="Head">
                                 <td align="center" colspan="6"><input type="submit"
                                                                       value="Print Growth"
-                                                                      onclick="javascript:return onPrintStatureWeight(1);return false;"/>
+                                                                      onclick="return onPrintStatureWeight(1);return false;"/>
                                     <input type="submit" value="Head Circ(1)"
-                                           onclick="javascript:return onPrintHeadCirc(15);return false;"/> <input
+                                           onclick="return onPrintHeadCirc(15);return false;"/> <input
                                             type="submit" value="Head Circ(2)"
-                                            onclick="javascript:return onPrintHeadCirc(25);return false;"/></td>
+                                            onclick="return onPrintHeadCirc(25);return false;"/></td>
                             </tr>
 
                         </table>
@@ -503,11 +503,11 @@
                             <tr class="Head">
                                 <td align="center" colspan="6"><input type="submit"
                                                                       value="Print Growth"
-                                                                      onclick="javascript:return onPrintStatureWeight(2);return false;"/>
+                                                                      onclick="return onPrintStatureWeight(2);return false;"/>
                                     <input type="submit" value="Head Circ(1)"
-                                           onclick="javascript:return onPrintHeadCirc(35);return false;"/> <input
+                                           onclick="return onPrintHeadCirc(35);return false;"/> <input
                                             type="submit" value="Head Circ(2)"
-                                            onclick="javascript:return onPrintHeadCirc(45);return false;"/></td>
+                                            onclick="return onPrintHeadCirc(45);return false;"/></td>
                             </tr>
                         </table>
 
@@ -521,11 +521,11 @@
         <table class="Head" class="hidePrint">
             <tr>
                 <td align="left"><input type="submit" value="Save"
-                                        onclick="javascript:return onSave();"/> <input type="submit"
+                                        onclick="return onSave();"/> <input type="submit"
                                                                                        value="Save and Exit"
-                                                                                       onclick="javascript:return onSaveExit();"/>
+                                                                                       onclick="return onSaveExit();"/>
                     <input
-                            type="submit" value="Exit" onclick="javascript:return onExit();"/>
+                            type="submit" value="Exit" onclick="return onExit();"/>
                     <!--input type="submit" value="Print Growth" onclick="javascript:return onPrintStatureWeight();return false;"/>
                     <input type="submit" value="Print BMI" onclick="javascript:return onPrintBMI();return false;"/-->
                 </td>

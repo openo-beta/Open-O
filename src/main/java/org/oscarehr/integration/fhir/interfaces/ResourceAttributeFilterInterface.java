@@ -29,7 +29,7 @@ import org.oscarehr.integration.fhir.resources.ResourceAttributeFilter;
 
 public interface ResourceAttributeFilterInterface {
 
-    public enum OptionalFHIRAttribute {
+    enum OptionalFHIRAttribute {
         address,
         telecom,
         fax,
@@ -47,7 +47,7 @@ public interface ResourceAttributeFilterInterface {
         language
     }
 
-    public enum MandatoryFHIRAttribute {
+    enum MandatoryFHIRAttribute {
         practitionerNo,
         oneid
     }
@@ -57,7 +57,7 @@ public interface ResourceAttributeFilterInterface {
      * true = include this parameter in every message.
      * false = do not include this paramter in every message.
      */
-    public abstract boolean include(OptionalFHIRAttribute attribute);
+    boolean include(OptionalFHIRAttribute attribute);
 
     /**
      * The OptionalFHIRAttribute optional selector works inversely in this situation. ie:
@@ -71,9 +71,9 @@ public interface ResourceAttributeFilterInterface {
      * practitionerNo = true : this value is not mandatory
      * empty : this value is not mandatory
      */
-    public abstract boolean isMandatory(MandatoryFHIRAttribute attribute);
+    boolean isMandatory(MandatoryFHIRAttribute attribute);
 
 
-    public abstract ResourceAttributeFilter getFilter(Class<?> targetResource);
+    ResourceAttributeFilter getFilter(Class<?> targetResource);
 
 }

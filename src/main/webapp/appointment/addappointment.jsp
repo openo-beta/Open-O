@@ -1190,7 +1190,7 @@ Ontario, Canada
                             </td>
                         </tr>
                         <%
-                            boolean bMoreAddr = bMultisites ? true : props.getProperty("scheduleSiteID", "").equals("") ? false : true;
+                            boolean bMoreAddr = bMultisites || !props.getProperty("scheduleSiteID", "").equals("");
                             String tempLoc = "";
                             if (bFirstDisp && bMoreAddr) {
                                 tempLoc = (new JdbcApptImpl()).getLocationFromSchedule(dateString2, curProvider_no);

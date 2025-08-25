@@ -47,7 +47,7 @@ public class RptDemographQueryFavouriteDelete2Action extends ActionSupport {
 
     public String execute() {
 
-        String queriesToDelete[] = request.getParameterValues("queryFavourite");
+        String[] queriesToDelete = request.getParameterValues("queryFavourite");
 
         if (queriesToDelete != null) {
             RptSearchData searchData = new RptSearchData();

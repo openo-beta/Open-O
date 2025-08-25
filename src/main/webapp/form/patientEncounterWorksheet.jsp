@@ -118,8 +118,7 @@
     String project_home = request.getContextPath().substring(1);
 %>
 <%
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 %>
 <html>
     <head>
@@ -330,7 +329,7 @@
                         <table class="Head" class="hidePrint" height="5%" border="0">
                             <tr>
                                 <td align="left">
-                                    <input type="button" value="Exit" onclick="javascript:return onExit();"/>
+                                    <input type="button" value="Exit" onclick="return onExit();"/>
                                     <input type="submit" value="Print"/></td>
                     </td>
                 </tr>

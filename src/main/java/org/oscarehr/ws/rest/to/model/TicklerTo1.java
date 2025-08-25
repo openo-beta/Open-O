@@ -38,7 +38,7 @@ public class TicklerTo1 implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public static enum STATUS {
+    public enum STATUS {
         A, C, D
     }
 

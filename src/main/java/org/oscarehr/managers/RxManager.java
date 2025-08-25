@@ -40,28 +40,28 @@ import java.util.List;
 public interface RxManager {
 
     //public static class PrescriptionDrugs{};
-    public List<Drug> getDrugs(LoggedInInfo info, int demographicNo, String status)
+    List<Drug> getDrugs(LoggedInInfo info, int demographicNo, String status)
             throws UnsupportedOperationException;
 
-    public List<Drug> getDrugs(LoggedInInfo info, int demographicNo, RxStatus status);
+    List<Drug> getDrugs(LoggedInInfo info, int demographicNo, RxStatus status);
 
-    public List<String> getCurrentSingleLineMedications(LoggedInInfo loggedInInfo, int demographicNo);
+    List<String> getCurrentSingleLineMedications(LoggedInInfo loggedInInfo, int demographicNo);
 
-    public Drug getDrug(LoggedInInfo info, int drugId) throws UnsupportedOperationException;
+    Drug getDrug(LoggedInInfo info, int drugId) throws UnsupportedOperationException;
 
-    public Drug addDrug(LoggedInInfo info, Drug d);
+    Drug addDrug(LoggedInInfo info, Drug d);
 
-    public Drug updateDrug(LoggedInInfo info, Drug d);
+    Drug updateDrug(LoggedInInfo info, Drug d);
 
-    public boolean discontinue(LoggedInInfo info, int drugId, int demographicId, String reason);
+    boolean discontinue(LoggedInInfo info, int drugId, int demographicId, String reason);
 
-    public RxManagerImpl.PrescriptionDrugs prescribe(LoggedInInfo info, List<Drug> drugs, Integer demoNo);
+    RxManagerImpl.PrescriptionDrugs prescribe(LoggedInInfo info, List<Drug> drugs, Integer demoNo);
 
-    public List<Drug> getHistory(Integer id, LoggedInInfo info, Integer demographicNo);
+    List<Drug> getHistory(Integer id, LoggedInInfo info, Integer demographicNo);
 
-    public List<Favorite> getFavorites(String pid);
+    List<Favorite> getFavorites(String pid);
 
-    public Boolean addFavorite(Favorite f);
+    Boolean addFavorite(Favorite f);
 
     /**
      * Archives a drug. This will remove the drug from the current list. The drug can still be found under the 'All' section.
@@ -74,13 +74,13 @@ public interface RxManager {
      */
     boolean archiveDrug(LoggedInInfo info, int drugId, int demographicId, String reason);
 
-    public List<Drug> getLongTermDrugs(LoggedInInfo info, int demographicNo);
+    List<Drug> getLongTermDrugs(LoggedInInfo info, int demographicNo);
 
 
     /**
      * Utility class for returning a prescription and associated drugs.
      */
-    public static class PrescriptionDrugs {
+    class PrescriptionDrugs {
         public Prescription prescription;
         public List<Drug> drugs;
 
@@ -92,8 +92,8 @@ public interface RxManager {
     }
 
     // statuses for drugs
-    public static final String ALL = "all";
-    public static final String CURRENT = "current";
-    public static final String ARCHIVED = "archived";
+    String ALL = "all";
+    String CURRENT = "current";
+    String ARCHIVED = "archived";
 
 }

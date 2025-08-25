@@ -95,9 +95,9 @@
         <tr>
             <td align="left"><input type="button"
                                     value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>"
-                                    onclick="javascript:return onPrint();"/> <input type="button"
+                                    onclick="return onPrint();"/> <input type="button"
                                                                                     value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>"
-                                                                                    onclick="javascript:return onClose();"/>
+                                                                                    onclick="return onClose();"/>
             </td>
         </tr>
     </table>
@@ -218,9 +218,9 @@
         <tr>
             <td align="left"><input type="button"
                                     value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/>"
-                                    onclick="javascript:return onPrint();"/> <input type="button"
+                                    onclick="return onPrint();"/> <input type="button"
                                                                                     value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>"
-                                                                                    onclick="javascript:return onClose();"/>
+                                                                                    onclick="return onClose();"/>
             </td>
         </tr>
     </table>

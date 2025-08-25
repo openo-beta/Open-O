@@ -79,7 +79,7 @@
                     bs.setValue(valuePara);
                     bs.setPercentage(request.getParameter("percentage"));
                     bs.setBillingserviceDate(MyDateFormat.getSysDate(request.getParameter("billingservice_date")));
-                    bs.setSliFlag("true".equals(request.getParameter("sliFlag")) ? true : false);
+                    bs.setSliFlag("true".equals(request.getParameter("sliFlag")));
                     bs.setTerminationDate(MyDateFormat.getSysDate(request.getParameter("termination_date")));
 
                     String servicecodeStyle = request.getParameter("servicecode_style");
@@ -151,7 +151,7 @@
                 bs.setRegion("ON");
                 bs.setAnaesthesia("00");
                 bs.setTerminationDate(MyDateFormat.getSysDate(request.getParameter("termination_date")));
-                bs.setSliFlag("true".equals(request.getParameter("sliFlag")) ? true : false);
+                bs.setSliFlag("true".equals(request.getParameter("sliFlag")));
 
                 String servicecodeStyle = request.getParameter("servicecode_style");
                 String styleId;
@@ -464,7 +464,7 @@
                     <input type="text" name="service_code" value="<%=prop.getProperty("service_code", "")%>"
                            class="span2" maxlength='5' onblur="upCaseCtrl(this)"/>
                     <button class="btn btn-primary" type="submit" name="submitFrm" value="Search"
-                            onclick="javascript:return onSearch();">Search
+                            onclick="return onSearch();">Search
                     </button>
                 </div>
                 <br/>

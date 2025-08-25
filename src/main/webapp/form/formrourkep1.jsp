@@ -264,14 +264,14 @@
             <tr>
                 <td nowrap="true"><input type="submit"
                                          value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnSave"/>"
-                                         onclick="javascript:return onSave();"/> <input type="submit"
+                                         onclick="return onSave();"/> <input type="submit"
                                                                                         value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnSaveExit"/>"
-                                                                                        onclick="javascript:return onSaveExit();"/>
+                                                                                        onclick="return onSaveExit();"/>
                     <input type="submit"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnExit"/>"
-                           onclick="javascript:return onExit();"> <input type="button"
+                           onclick="return onExit();"> <input type="button"
                                                                          value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnPrint"/>"
-                                                                         onclick="javascript:return onPrint();"/></td>
+                                                                         onclick="return onPrint();"/></td>
                 <td align="center" width="100%"><a name="length"
                                                    href="javascript:popup('form/graphLengthWeight.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>');">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnGraphLenghtWeight"/></a><br>
@@ -1288,14 +1288,14 @@
             <tr>
                 <td nowrap="true"><input type="submit"
                                          value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnSave"/>"
-                                         onclick="javascript:return onSave();"/> <input type="submit"
+                                         onclick="return onSave();"/> <input type="submit"
                                                                                         value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnSaveExit"/>"
-                                                                                        onclick="javascript:return onSaveExit();"/>
+                                                                                        onclick="return onSaveExit();"/>
                     <input type="submit"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnExit"/>"
-                           onclick="javascript:return onExit();"> <input type="button"
+                           onclick="return onExit();"> <input type="button"
                                                                          value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnPrint"/>"
-                                                                         onclick="javascript:return onPrint();"/></td>
+                                                                         onclick="return onPrint();"/></td>
                 <td align="center" width="100%"><a name="length"
                                                    href="javascript:popup('form/graphLengthWeight.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>');">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnGraphLenghtWeight"/></a><br>

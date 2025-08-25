@@ -54,7 +54,7 @@ dojo.declare("dojo.data.OpmlStore", dojo.data.core.Read, {
                 nodesToRemove.push(childNode);
             }
         }
-        ;
+
         // dojo.debug('trim: ' + childNodes.length + ' total, ' + nodesToRemove.length + ' junk');
         for (i = 0; i < nodesToRemove.length; ++i) {
             childNode = nodesToRemove[i];

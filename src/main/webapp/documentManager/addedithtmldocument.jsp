@@ -126,7 +126,7 @@
         oldDoc = false;
     }
 
-    List<Map<String, String>> pdList = new ProviderData().getProviderList();
+    List<Map<String, String>> pdList = ProviderData.getProviderList();
     ArrayList<String> doctypes = EDocUtil.getDoctypes(module);
     String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_DOCUMENT;
     String annotation_tableid = editDocumentNo;
@@ -200,7 +200,7 @@
     <script type="text/javascript" src="<%= request.getContextPath() %>/share/calendar/calendar-setup.js"></script>
     <script type="text/javascript">
         window.onload = function () {
-            if (!NiftyCheck()) return;
+            if (!NiftyCheck())
 
             //Rounded("div.leftplane","top", "transparent", "#CCCCFF","small border #ccccff");
             //Rounded("div.leftplane","bottom","transparent","#EEEEFF","small border #ccccff");

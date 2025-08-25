@@ -46,11 +46,11 @@ import org.springframework.stereotype.Repository;
 
 public interface ConsultRequestDao extends AbstractDao<ConsultationRequest> {
 
-    public int getConsultationCount(PaginationQuery paginationQuery);
+    int getConsultationCount(PaginationQuery paginationQuery);
 
-    public List<ConsultationRequest> listConsultationRequests(ConsultationQuery consultationQuery);
+    List<ConsultationRequest> listConsultationRequests(ConsultationQuery consultationQuery);
 
-    public int getConsultationCount2(ConsultationRequestSearchFilter filter);
+    int getConsultationCount2(ConsultationRequestSearchFilter filter);
 
-    public List<Object[]> search(ConsultationRequestSearchFilter filter);
+    List<Object[]> search(ConsultationRequestSearchFilter filter);
 }

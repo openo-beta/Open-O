@@ -44,27 +44,27 @@ import org.hibernate.SessionFactory;
 
 public interface ClientReferralDAO {
 
-    public List<ClientReferral> getReferrals();
+    List<ClientReferral> getReferrals();
 
-    public List<ClientReferral> getReferrals(Long clientId);
+    List<ClientReferral> getReferrals(Long clientId);
 
-    public List<ClientReferral> getReferralsByFacility(Long clientId, Integer facilityId);
+    List<ClientReferral> getReferralsByFacility(Long clientId, Integer facilityId);
 
     // [ 1842692 ] RFQ Feature - temp change for pmm referral history report
     // - suggestion: to add a new field to the table client_referral (Referring program/agency)
-    public List<ClientReferral> displayResult(List<ClientReferral> lResult);
+    List<ClientReferral> displayResult(List<ClientReferral> lResult);
 
-    public List<ClientReferral> getActiveReferrals(Long clientId, Integer facilityId);
+    List<ClientReferral> getActiveReferrals(Long clientId, Integer facilityId);
 
-    public List<ClientReferral> getActiveReferralsByClientAndProgram(Long clientId, Long programId);
+    List<ClientReferral> getActiveReferralsByClientAndProgram(Long clientId, Long programId);
 
-    public ClientReferral getClientReferral(Long id);
+    ClientReferral getClientReferral(Long id);
 
-    public void saveClientReferral(ClientReferral referral);
+    void saveClientReferral(ClientReferral referral);
 
-    public List<ClientReferral> search(ClientReferral referral);
+    List<ClientReferral> search(ClientReferral referral);
 
-    public List<ClientReferral> getClientReferralsByProgram(int programId);
+    List<ClientReferral> getClientReferralsByProgram(int programId);
 
 }
  

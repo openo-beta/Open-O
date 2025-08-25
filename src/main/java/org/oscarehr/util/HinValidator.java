@@ -37,8 +37,6 @@ public class HinValidator {
     private static boolean isValid_on(String hin) {
         if (hin == null) return (false);
         if (hin.length() != 10) return (false);
-        if (!StringUtils.isNumeric(hin)) return (false);
-
-        return (true);
+        return StringUtils.isNumeric(hin);
     }
 }

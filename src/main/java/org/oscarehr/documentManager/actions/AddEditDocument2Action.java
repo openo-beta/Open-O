@@ -517,7 +517,7 @@ this.getSource(), 'A', this.getObservationDate(), reviewerId, reviewDateTime, th
         FileInputStream fin = null;
         try {
             fin = new FileInputStream(file);
-            byte fileContents[] = new byte[(int) file.length()];
+            byte[] fileContents = new byte[(int) file.length()];
             fin.read(fileContents);
             DocumentStorage docStor = new DocumentStorage();
             docStor.setFileContents(fileContents);

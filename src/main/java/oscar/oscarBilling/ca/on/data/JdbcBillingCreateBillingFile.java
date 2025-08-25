@@ -361,7 +361,7 @@ public class JdbcBillingCreateBillingFile {
         if (!ch1Obj.getRef_num().equals("") && ch1Obj.getRef_num().length() != 6)
             errorPartMsg = "Header1: Referral Doc. No. wrong!<br>";
         if (ch1Obj.getVisittype() != null && ch1Obj.getVisittype().compareTo("00") != 0) {
-            if ((ch1Obj.getFacilty_num() != null && ch1Obj.getFacilty_num().length() != 4) || ch1Obj.getFacilty_num() == null) {
+            if (ch1Obj.getFacilty_num() == null || ch1Obj.getFacilty_num().length() != 4) {
                 errorPartMsg += "Header1: outPatient Visit. wrong!<br>";
             }
         }

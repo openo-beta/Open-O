@@ -947,7 +947,7 @@ dojo.widget.defineWidget(
 
         onKeyUp: function (e) {
             // summary: Fired on keyup
-            return;
+
         },
 
         KEY_CTRL: 1,

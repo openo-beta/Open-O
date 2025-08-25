@@ -182,11 +182,7 @@ public class SecurityInfoManagerImpl implements SecurityInfoManager {
         }
 
         v = OscarRoleObjectPrivilege.getPrivilegeProp("_eChart$" + demographicNo);
-        if (OscarRoleObjectPrivilege.checkPrivilege(roleNames, (Properties) v.get(0), (List<String>) v.get(1),
-                (List<String>) v.get(2), "o")) {
-            return false;
-        }
-
-        return true;
+        return !OscarRoleObjectPrivilege.checkPrivilege(roleNames, (Properties) v.get(0), (List<String>) v.get(1),
+            (List<String>) v.get(2), "o");
     }
 }

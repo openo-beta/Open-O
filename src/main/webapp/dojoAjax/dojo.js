@@ -4704,7 +4704,7 @@ dojo.html.getElementsByClass = function (_40e, _40f, _410, _411, _412) {
             while (node = _418[i++]) {
                 var _41e = dojo.html.getClasses(node);
                 if (_41e.length == 0) {
-                    continue outer;
+                    continue;
                 }
                 var _41f = 0;
                 for (var j = 0; j < _41e.length; j++) {
@@ -7917,7 +7917,7 @@ dojo.io.setIFrameSrc = function (_755, src, _757) {
             }
             if (!idoc) {
                 _755.location = src;
-                return;
+
             } else {
                 idoc.location.replace(src);
             }
@@ -8205,7 +8205,7 @@ dojo.undo.browser = {
             if ((hsl >= 2) && (this.historyStack[hsl - 2])) {
                 if (this.historyStack[hsl - 2].urlHash == window.location.hash) {
                     this.handleBackButton();
-                    return;
+
                 }
             }
         }
@@ -8771,7 +8771,7 @@ if (!dj_undef("window")) {
                 }
                 return http.abort();
             };
-            return;
+
         };
         dojo.io.transports.addTransport("XMLHTTPTransport");
     };

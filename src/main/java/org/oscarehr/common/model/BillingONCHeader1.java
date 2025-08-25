@@ -536,9 +536,7 @@ public class BillingONCHeader1 extends AbstractModel<Integer> implements Seriali
 
         BillingONCHeader1 bill = (BillingONCHeader1) o;
 
-        if (id != null ? !id.equals(bill.id) : bill.id != null) return false;
-
-        return true;
+        return java.util.Objects.equals(id, bill.id);
     }
 
     @Override

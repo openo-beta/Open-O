@@ -115,7 +115,7 @@ public class IssueDAOImpl extends HibernateDaoSupport implements IssueDAO {
             if (x != 0) {
                 buf.append(",");
             }
-            buf.append("\'" + StringEscapeUtils.escapeSql((roles.get(x)).getName()) + "\'");
+            buf.append("'" + StringEscapeUtils.escapeSql((roles.get(x)).getName()) + "'");
         }
         String roleList = buf.toString();
 
@@ -136,7 +136,7 @@ public class IssueDAOImpl extends HibernateDaoSupport implements IssueDAO {
             if (x != 0) {
                 buf.append(",");
             }
-            buf.append("\'" + StringEscapeUtils.escapeSql((roles.get(x)).getName()) + "\'");
+            buf.append("'" + StringEscapeUtils.escapeSql((roles.get(x)).getName()) + "'");
         }
         final String roleList = buf.toString();
 
@@ -171,7 +171,7 @@ public class IssueDAOImpl extends HibernateDaoSupport implements IssueDAO {
             if (x != 0) {
                 buf.append(",");
             }
-            buf.append("\'" + StringEscapeUtils.escapeSql((roles.get(x)).getName()) + "\'");
+            buf.append("'" + StringEscapeUtils.escapeSql((roles.get(x)).getName()) + "'");
         }
         final String roleList = buf.toString();
 

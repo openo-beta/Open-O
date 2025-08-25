@@ -88,7 +88,7 @@ dojo.lang.declare = function (	/*String*/ className,
         if ((init) && (!dojo.lang.isFunction(init))) {
             init = null
         }
-        ;
+
     }
     var ctor = dojo.lang.declare._makeConstructor();
     var scp = (superclass ? superclass.prototype : null);

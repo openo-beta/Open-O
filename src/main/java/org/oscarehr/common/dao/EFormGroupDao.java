@@ -37,11 +37,11 @@ import org.springframework.stereotype.Repository;
 
 public interface EFormGroupDao extends AbstractDao<EFormGroup> {
 
-    public int deleteByNameAndFormId(String groupName, Integer formId);
+    int deleteByNameAndFormId(String groupName, Integer formId);
 
-    public int deleteByName(String groupName);
+    int deleteByName(String groupName);
 
-    public List<EFormGroup> getByGroupName(String groupName);
+    List<EFormGroup> getByGroupName(String groupName);
 
-    public List<String> getGroupNames();
+    List<String> getGroupNames();
 }

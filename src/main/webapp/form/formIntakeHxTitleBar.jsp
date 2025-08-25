@@ -147,13 +147,13 @@
 
 <div class="buttonBar">
     <input type="submit" value="<fmt:setBundle basename='oscarResources'/><fmt:message key='oscarEncounter.formIntakeHx.save'/>"
-           onclick="javascript:return onSave();"/>
+           onclick="return onSave();"/>
     <input type="submit" value="<fmt:setBundle basename='oscarResources'/><fmt:message key='oscarEncounter.formIntakeHx.print'/>"
-           onclick="javascript:return onPrint();"/>
+           onclick="return onPrint();"/>
     <input type="submit" value="<fmt:setBundle basename='oscarResources'/><fmt:message key='oscarEncounter.formIntakeHx.saveAndExit'/>"
-           onclick="javascript:return onSaveExit();"/>
+           onclick="return onSaveExit();"/>
     <input type="submit" value="<fmt:setBundle basename='oscarResources'/><fmt:message key='oscarEncounter.formIntakeHx.exit'/>"
-           onclick="javascript:return onExit();"/>
+           onclick="return onExit();"/>
 </div>
 
 <input type="hidden" name="submit" value="exit"/>

@@ -34,7 +34,7 @@ if(bs==null) {
 	</tr>
 	<%
 	for (Appointment a:bs) {
-		bodd=bodd?false:true; //for the color of rows
+		bodd= !bodd; //for the color of rows
 		nItems++; //to calculate if it is the end of records
 		apptNo = a.getId().toString();
 		demoNo = String.valueOf(a.getDemographicNo());

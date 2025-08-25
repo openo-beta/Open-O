@@ -72,10 +72,7 @@ REM076 **                                                             **
             //06 - 12 Fee Schedule   N(7)  Fee for Service Amount        **
             //27 - 76 Fee Item       X(50)
 
-            boolean parse = true;
-            if (line == null) {
-                parse = false;
-            }
+            boolean parse = line != null;
             if (line.startsWith("REM")) {
                 parse = false;
             }

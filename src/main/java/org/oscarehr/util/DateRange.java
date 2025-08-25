@@ -68,9 +68,7 @@ public class DateRange implements Serializable {
         }
 
         if (getTo() != null) {
-            if (!getTo().after(date)) {
-                return false;
-            }
+            return getTo().after(date);
         }
 
         return true;
@@ -111,9 +109,8 @@ public class DateRange implements Serializable {
             if (other.from != null) return false;
         } else if (!from.equals(other.from)) return false;
         if (to == null) {
-            if (other.to != null) return false;
-        } else if (!to.equals(other.to)) return false;
-        return true;
+            return other.to == null;
+        } else return to.equals(other.to);
     }
 
 }

@@ -37,11 +37,11 @@ import org.springframework.stereotype.Repository;
 
 public interface GroupNoteDao extends AbstractDao<GroupNoteLink> {
 
-    public List<GroupNoteLink> findLinksByDemographic(Integer demographicNo);
+    List<GroupNoteLink> findLinksByDemographic(Integer demographicNo);
 
-    public List<GroupNoteLink> findLinksByDemographicSince(Integer demographicNo, Date lastDateUpdated);
+    List<GroupNoteLink> findLinksByDemographicSince(Integer demographicNo, Date lastDateUpdated);
 
-    public List<GroupNoteLink> findLinksByNoteId(Integer noteId);
+    List<GroupNoteLink> findLinksByNoteId(Integer noteId);
 
-    public int getNumberOfLinksByNoteId(Integer noteId);
+    int getNumberOfLinksByNoteId(Integer noteId);
 }

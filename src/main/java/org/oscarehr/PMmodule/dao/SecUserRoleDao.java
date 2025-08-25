@@ -37,18 +37,18 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 public interface SecUserRoleDao {
 
-    public List<SecUserRole> getUserRoles(String providerNo);
+    List<SecUserRole> getUserRoles(String providerNo);
 
-    public List<SecUserRole> getSecUserRolesByRoleName(String roleName);
+    List<SecUserRole> getSecUserRolesByRoleName(String roleName);
 
-    public List<SecUserRole> findByRoleNameAndProviderNo(String roleName, String providerNo);
+    List<SecUserRole> findByRoleNameAndProviderNo(String roleName, String providerNo);
 
-    public boolean hasAdminRole(String providerNo);
+    boolean hasAdminRole(String providerNo);
 
-    public SecUserRole find(Long id);
+    SecUserRole find(Long id);
 
-    public void save(SecUserRole sur);
+    void save(SecUserRole sur);
 
-    public List<String> getRecordsAddedAndUpdatedSinceTime(Date date);
+    List<String> getRecordsAddedAndUpdatedSinceTime(Date date);
 
 }

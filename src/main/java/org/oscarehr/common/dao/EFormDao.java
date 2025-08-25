@@ -37,29 +37,29 @@ import org.springframework.stereotype.Repository;
 
 public interface EFormDao extends AbstractDao<EForm> {
 
-    public enum EFormSortOrder {
-        DATE, NAME, SUBJECT, FILE_NAME;
+    enum EFormSortOrder {
+        DATE, NAME, SUBJECT, FILE_NAME
     }
 
-    public EForm findByName(String name);
+    EForm findByName(String name);
 
-    public List<EForm> findByNameSimilar(String name);
+    List<EForm> findByNameSimilar(String name);
 
-    public EForm findById(Integer formId);
+    EForm findById(Integer formId);
 
-    public List<EForm> findAll(Boolean current);
+    List<EForm> findAll(Boolean current);
 
-    public boolean isIndivicaRTLEnabled();
+    boolean isIndivicaRTLEnabled();
 
-    public void setIndivicaRTLEnabled(boolean enabled);
+    void setIndivicaRTLEnabled(boolean enabled);
 
-    public List<EForm> findByStatus(boolean status);
+    List<EForm> findByStatus(boolean status);
 
-    public List<EForm> findByStatus(boolean status, EFormSortOrder sortOrder);
+    List<EForm> findByStatus(boolean status, EFormSortOrder sortOrder);
 
-    public Integer findMaxIdForActiveForm(String formName);
+    Integer findMaxIdForActiveForm(String formName);
 
-    public Long countFormsOtherThanSpecified(String formName, Integer id);
+    Long countFormsOtherThanSpecified(String formName, Integer id);
 
-    public List<EForm> getEfromInGroupByGroupName(String groupName);
+    List<EForm> getEfromInGroupByGroupName(String groupName);
 }

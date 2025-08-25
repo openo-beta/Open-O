@@ -132,10 +132,7 @@ public class IntegratorPushManager {
         if (up == null) {
             return false;
         }
-        if (up.getValue().equals("true")) {
-            return true;
-        }
-        return false;
+        return up.getValue().equals("true");
     }
 
     public void togglePause(boolean pause) {

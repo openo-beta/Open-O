@@ -190,7 +190,7 @@ public final class DataTypeUtils {
      * @param providerRoleId          Note that this is not the oscar provider role, look in the method to see valid values
      * @param providerRoleDescription Note that this is not the oscar provider role, look in the method to see valid values
      */
-    public static void fillPrd(PRD prd, Provider provider, String providerRoleId, String providerRoleDescription, Clinic clinic) throws DataTypeException, HL7Exception {
+    public static void fillPrd(PRD prd, Provider provider, String providerRoleId, String providerRoleDescription, Clinic clinic) throws HL7Exception {
         // Value Description
         // -----------------
         // RP Referring Provider
@@ -247,7 +247,7 @@ public final class DataTypeUtils {
      * @param providerRoleId          Note that this is not the oscar provider role, look in the method to see valid values
      * @param providerRoleDescription Note that this is not the oscar provider role, look in the method to see valid values
      */
-    public static void fillPrd(PRD prd, ProfessionalSpecialist professionalSpecialist, String providerRoleId, String providerRoleDescription) throws DataTypeException, HL7Exception {
+    public static void fillPrd(PRD prd, ProfessionalSpecialist professionalSpecialist, String providerRoleId, String providerRoleDescription) throws HL7Exception {
         // Value Description
         // -----------------
         // RP Referring Provider

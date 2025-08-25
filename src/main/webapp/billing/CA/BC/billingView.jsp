@@ -419,11 +419,11 @@
                                 <td>&nbsp;</td>
                                 <td align="right"><form action="${pageContext.request.contextPath}/billing/CA/BC/SaveBilling.do" method="post">
                                     <input type="button" name="Submit3" value="Print Receipt"
-                                           onclick="javascript:gotoPrintReceipt();"/>
+                                           onclick="gotoPrintReceipt();"/>
                                     <input type="button" name="Submit" value="Print Bill"
-                                           onClick="javascript:window.print()">
+                                           onClick="window.print()">
                                     <input type="button" name="Submit2" value="Cancel"
-                                           onClick="javascript:window.close()">
+                                           onClick="window.close()">
                                 </form></td>
                             </tr>
                         </table>

@@ -194,9 +194,7 @@ public class HRMReport {
 
     public boolean isBinary() {
         if (hrmReport.getPatientRecord().getReportsReceived() != null || hrmReport.getPatientRecord().getReportsReceived().isEmpty()) {
-            if (hrmReport.getPatientRecord().getReportsReceived().get(0).getFormat() == ReportFormat.BINARY) {
-                return true;
-            }
+            return hrmReport.getPatientRecord().getReportsReceived().get(0).getFormat() == ReportFormat.BINARY;
         }
         return false;
     }

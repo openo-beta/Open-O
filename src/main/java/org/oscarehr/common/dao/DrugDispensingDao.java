@@ -36,6 +36,6 @@ import org.springframework.stereotype.Repository;
 
 public interface DrugDispensingDao extends AbstractDao<DrugDispensing> {
 
-    public List<DrugDispensing> findByDrugId(Integer drugId);
+    List<DrugDispensing> findByDrugId(Integer drugId);
 
 }

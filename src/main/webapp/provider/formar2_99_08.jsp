@@ -230,7 +230,7 @@
                 <%--=bNewList?"<a href=# onClick='onSave()'><img src="<%= request.getContextPath() %>/images/buttonsave.gif" align='top' width='75' height='25' ></a> ":""--%>
                 <%=bNewList ? "<input type='button' name='savetemp' value=' Save ' onClick='onSave()'> " : ""%>
                 <%--=bNewList&&!(request.getParameter("patientmaster")!=null)?"<input type='submit' name='saveexit' value='Save to Enc.& Exit' onClick='onSaveExit()'> ":""--%>
-                <%=bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : ""%>
+                <%=bNewList && request.getParameter("patientmaster") == null ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : ""%>
             </th>
             <th align=CENTER><font face="Helvetica" color="#FFFFFF">ANTENATAL
                 RECORD 2</font> <font color="orange">page <input type="text"
@@ -1352,7 +1352,7 @@
                     <tr>
                         <td width='90%'
                             align='center'><%=bNewList && (request.getParameter("patientmaster") != null) ? "<input type='submit' name='savetemp' value=' Save ' onClick='onSave()'> " : ""%>
-                            <%=bNewList && !(request.getParameter("patientmaster") != null) ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : ""%>
+                            <%=bNewList && request.getParameter("patientmaster") == null ? "<input type='submit' name='saveexit' value='Save & Exit' onClick='onSaveExit()'> " : ""%>
                             <%--=bNewList&&!(request.getParameter("patientmaster")!=null)?"<input type='submit' name='saveexit' value='Save to Enc.& Exit' onClick='onSaveExit()'> ":""--%>
                         </td>
                         <td align='right'><%=bNewList ? "<input type='button' name='Button' value=' Exit ' onClick='onExit();'>" : "<input type='button' name='Button' value=' Exit ' onClick='window.close();'>" %>

@@ -108,7 +108,7 @@ dojo.widget.defineWidget("dojo.widget.TreeRPCController", dojo.widget.TreeLoadin
             var args = [node, callObj, callFunc];
             dojo.widget.TreeLoadingController.prototype.doRemoveNode.apply(this, args);
 
-            return;
+
         } else if (dojo.lang.isObject(response)) {
             dojo.raise(response.error);
         } else {

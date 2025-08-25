@@ -403,7 +403,7 @@ public class MEDITECHHandlerTest {
                 stringBuilder.append(" " + handler.getOBXAbnormalFlag(j, i));
             }
         }
-        logger.info("testGetOBXAbnormalFlag() " + stringBuilder.toString());
+        logger.info("testGetOBXAbnormalFlag() " + stringBuilder);
 
         Assert.assertEquals(getElement("OBX.8"), stringBuilder.toString().trim());
     }
@@ -425,7 +425,7 @@ public class MEDITECHHandlerTest {
             }
         }
 
-        logger.info("testGetObservationHeader() " + stringBuilder.toString());
+        logger.info("testGetObservationHeader() " + stringBuilder);
 
         String header = getElement("OBR.4", "CE.2");
         if (header.isEmpty()) {
@@ -452,7 +452,7 @@ public class MEDITECHHandlerTest {
             }
         }
 
-        logger.info("testGetOBXIdentifier() " + stringBuilder.toString());
+        logger.info("testGetOBXIdentifier() " + stringBuilder);
 
         Assert.assertEquals(sortStringToList(getElement("OBX.3", "CE.1").trim()), sortStringToList(stringBuilder.toString()));
     }
@@ -471,7 +471,7 @@ public class MEDITECHHandlerTest {
             }
         }
 
-        logger.info("testGetOBXValueType() " + stringBuilder.toString());
+        logger.info("testGetOBXValueType() " + stringBuilder);
         Assert.assertEquals(getElement("OBX.2"), stringBuilder.toString().trim());
     }
 
@@ -489,7 +489,7 @@ public class MEDITECHHandlerTest {
             }
         }
 
-        logger.info("testGetOBXName() " + stringBuilder.toString());
+        logger.info("testGetOBXName() " + stringBuilder);
         Assert.assertEquals(getElement("OBX.3", "CE.2"), stringBuilder.toString().trim());
     }
 
@@ -506,7 +506,7 @@ public class MEDITECHHandlerTest {
                 stringBuilder.append(" " + handler.getOBXResult(i, j));
             }
         }
-        logger.info("testGetOBXResult() " + stringBuilder.toString());
+        logger.info("testGetOBXResult() " + stringBuilder);
 
         Assert.assertEquals(sortStringToList(getElement("OBX.5")), sortStringToList(stringBuilder.toString().trim()));
     }
@@ -523,7 +523,7 @@ public class MEDITECHHandlerTest {
             }
         }
 
-        logger.info("testGetOBXReferenceRange() " + stringBuilder.toString());
+        logger.info("testGetOBXReferenceRange() " + stringBuilder);
 
         Assert.assertEquals(sortStringToList(getElement("OBX.7")), sortStringToList(stringBuilder.toString().trim()));
     }
@@ -543,7 +543,7 @@ public class MEDITECHHandlerTest {
             }
         }
 
-        logger.info("testGetOBXUnits() " + stringBuilder.toString());
+        logger.info("testGetOBXUnits() " + stringBuilder);
 
         Assert.assertEquals(sortStringToList(getElement("OBX.6", "CE.1")), sortStringToList(stringBuilder.toString().trim()));
     }
@@ -561,7 +561,7 @@ public class MEDITECHHandlerTest {
             }
         }
 
-        logger.info("testGetOBXResultStatus() " + stringBuilder.toString());
+        logger.info("testGetOBXResultStatus() " + stringBuilder);
         Assert.assertEquals(getElement("OBX.11"), stringBuilder.toString().trim());
     }
 
@@ -613,7 +613,7 @@ public class MEDITECHHandlerTest {
             }
         }
 
-        logger.info("testGetComments() " + stringBuilder.toString());
+        logger.info("testGetComments() " + stringBuilder);
 
         Assert.assertEquals(getElement("NTE", "NTE.3"), stringBuilder.toString().trim());
     }

@@ -1817,7 +1817,7 @@
                         String status = handler.getOBXResultStatus(obr, obx).trim();
                         String statusMsg = "";
                         try {
-                            statusMsg = handler.getTestResultStatusMessage(handler.getOBXResultStatus(obr, obx).charAt(0));
+                            statusMsg = OLISHL7Handler.getTestResultStatusMessage(handler.getOBXResultStatus(obr, obx).charAt(0));
                         } catch (Exception e) {
                             statusMsg = "";
                         }

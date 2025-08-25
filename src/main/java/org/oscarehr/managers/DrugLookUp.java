@@ -31,12 +31,12 @@ import java.util.List;
 
 public interface DrugLookUp {
 
-    public List<DrugSearchTo1> search(String s);
+    List<DrugSearchTo1> search(String s);
 
-    public List<DrugSearchTo1> fullSearch(String s);
+    List<DrugSearchTo1> fullSearch(String s);
 
-    public List<DrugSearchTo1> searchByElement(String s);
+    List<DrugSearchTo1> searchByElement(String s);
 
-    public DrugSearchTo1 details(String id) throws Exception;
+    DrugSearchTo1 details(String id) throws Exception;
 
 }

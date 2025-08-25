@@ -346,7 +346,7 @@
                             }
 
                             for (int i = 0; i < providerStr.size(); i++) {
-                                String temp[] = ((String) providerStr.get(i)).split("\\|");
+                                String[] temp = ((String) providerStr.get(i)).split("\\|");
                         %>
                         <option value="<%=temp[0]%>"
                                 <%=providerview.equals(temp[0]) ? "selected" : (providerStr.size() == 1 ? "selected" : "")%>><%=temp[1]%>

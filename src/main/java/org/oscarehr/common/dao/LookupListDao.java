@@ -36,7 +36,7 @@ import org.springframework.stereotype.Repository;
 
 public interface LookupListDao extends AbstractDao<LookupList> {
 
-    public List<LookupList> findAllActive();
+    List<LookupList> findAllActive();
 
-    public LookupList findByName(String name);
+    LookupList findByName(String name);
 }

@@ -381,7 +381,7 @@
                         <label for="prevDate<%=iDate%>" class="fields">Obs Date/Time: </label>
 
                         <input type="text" name="value(date-<%=iDate%>)" id="prevDate<%=iDate%>" value="<%=prevDate%>"
-                               size="17" onchange="javascript:masterDateFill(this.value);">
+                               size="17" onchange="masterDateFill(this.value);">
                         <% if (id == null) { %>
                         <a id="date<%=iDate%>"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar"
                                                     border="0"/></a>

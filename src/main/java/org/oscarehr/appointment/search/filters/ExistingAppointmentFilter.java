@@ -81,8 +81,7 @@ public class ExistingAppointmentFilter implements AvailableTimeSlotFilter {
 
             long appointmentStart = appointment.getStartTimeAsFullDate().getTime();
             long appointmentEnd = appointment.getEndTimeAsFullDate().getTime();
-            boolean collide = false;
-            if (timeSlotStartTimeMs >= appointmentStart && timeSlotStartTimeMs <= appointmentEnd) collide = true;
+            boolean collide = timeSlotStartTimeMs >= appointmentStart && timeSlotStartTimeMs <= appointmentEnd;
             if (collide) return (true);
         }
         return (false);

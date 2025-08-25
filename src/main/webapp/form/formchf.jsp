@@ -180,7 +180,7 @@
                     // Check that current character is number.
                     var c = s.charAt(i);
                     if (c == '.') {
-                        continue;
+
                     } else if (((c < "0") || (c > "9"))) {
                         alert('Invalid ' + s + ' in field ' + ss.name + "\nPlease only use numbers");
                         ss.focus();
@@ -414,7 +414,7 @@
                     default:
                         document.forms[0].elements[NYHA[4]].checked = true;  // Cases 3,4,5
                 }
-                return;
+
             }
 
             function setTarget(drugClass, num) {
@@ -434,7 +434,7 @@
 
                 document.forms[0].elements[drugClass + "sel" + num].value = "";
 
-                return;
+
             }
 
 
@@ -466,7 +466,7 @@
     </head>
 
     <body bgproperties="fixed" class="chfform" bgcolor="#EEEEFF"
-          onLoad="javascript:window.focus()" topmargin="0" leftmargin="0"
+          onLoad="window.focus()" topmargin="0" leftmargin="0"
           rightmargin="0">
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
@@ -490,13 +490,13 @@
             <tr>
                 <td align="left"><input type="hidden" name="submit" value="exit"/>
                     <input type="submit" value="Save"
-                           onclick="javascript:return onSave();"/> <input type="submit"
+                           onclick="return onSave();"/> <input type="submit"
                                                                           value="Save and Exit"
-                                                                          onclick="javascript:return onSaveExit();"/>
+                                                                          onclick="return onSaveExit();"/>
                     <input
-                            type="submit" value="Exit" onclick="javascript:return onExit();"/>
+                            type="submit" value="Exit" onclick="return onExit();"/>
                     <input type="button" value="Print"
-                           onclick="javascript:return onPrint();"/></td>
+                           onclick="return onPrint();"/></td>
                 <td><a href="javascript: popupFixedPage(700,960,'form/chf.html');">Tips</a>&nbsp;&nbsp;
 
                     <a
@@ -1007,19 +1007,19 @@
 
                     <td width="23%"><input tabindex="64" type="text"
                                            class="CHFTextarea" name="creat1"
-                                           onchange="if (checkIt(this,'^\\d{2,3}$','Creatinine is usually between 62-115!\n Please use just numbers in the format NN or NNN')) {eGFR1.value=geteGFR(this.value);};"
+                                           onchange="if (checkIt(this,'^\\d{2,3}$','Creatinine is usually between 62-115!\n Please use just numbers in the format NN or NNN')) {eGFR1.value=geteGFR(this.value);}"
                                            maxlength="3" size="4"
                                            value="<%= props.getProperty("creat1", "") %>"/> mmol/L
                     </td>
                     <td width="24%"><input tabindex="164" type="text"
                                            class="CHFTextarea" name="creat2"
-                                           onchange="if (checkIt(this,'^\\d{2,3}$','Creatinine is usually between 62-115!\n Please use just numbers in the format NN or NNN')) {eGFR2.value=geteGFR(this.value);};"
+                                           onchange="if (checkIt(this,'^\\d{2,3}$','Creatinine is usually between 62-115!\n Please use just numbers in the format NN or NNN')) {eGFR2.value=geteGFR(this.value);}"
                                            maxlength="3" size="4"
                                            value="<%= props.getProperty("creat2", "") %>"/> mmol/L
                     </td>
                     <td width="25%"><input tabindex="264" type="text"
                                            class="CHFTextarea" name="creat3"
-                                           onchange="if (checkIt(this,'^\\d{2,3}$','Creatinine is usually between 62-115!\n Please use just numbers in the format NN or NNN')) {eGFR3.value=geteGFR(this.value);};"
+                                           onchange="if (checkIt(this,'^\\d{2,3}$','Creatinine is usually between 62-115!\n Please use just numbers in the format NN or NNN')) {eGFR3.value=geteGFR(this.value);}"
                                            maxlength="3" size="4"
                                            value="<%= props.getProperty("creat3", "") %>"/> mmol/L
                     </td>

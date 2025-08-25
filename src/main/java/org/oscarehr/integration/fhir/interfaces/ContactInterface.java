@@ -36,65 +36,65 @@ import java.io.Serializable;
  */
 public interface ContactInterface extends Serializable {
 
-    public void setContactRelationship(ContactRelationship contactRelationship);
+    void setContactRelationship(ContactRelationship contactRelationship);
 
-    public ContactRelationship getContactRelationship();
+    ContactRelationship getContactRelationship();
 
-    public void setContactType(ContactType contactType);
+    void setContactType(ContactType contactType);
 
-    public ContactType getContactType();
+    ContactType getContactType();
 
-    public Integer getId();
+    Integer getId();
 
-    public void setLocationCode(String locationCode);
+    void setLocationCode(String locationCode);
 
-    public String getLocationCode();
+    String getLocationCode();
 
-    public void setFirstName(String firstName);
+    void setFirstName(String firstName);
 
-    public String getFirstName();
+    String getFirstName();
 
-    public void setLastName(String lastName);
+    void setLastName(String lastName);
 
-    public String getLastName();
+    String getLastName();
 
-    public void setOrganizationName(String organizationName);
+    void setOrganizationName(String organizationName);
 
-    public String getOrganizationName();
+    String getOrganizationName();
 
-    public void setAddress(String address);
+    void setAddress(String address);
 
-    public String getAddress();
+    String getAddress();
 
-    public void setAddress2(String address2);
+    void setAddress2(String address2);
 
-    public String getAddress2();
+    String getAddress2();
 
-    public void setCity(String city);
+    void setCity(String city);
 
-    public String getCity();
+    String getCity();
 
-    public void setProvince(String province);
+    void setProvince(String province);
 
-    public String getProvince();
+    String getProvince();
 
-    public void setPostal(String postal);
+    void setPostal(String postal);
 
-    public String getPostal();
+    String getPostal();
 
-    public void setFax(String fax);
+    void setFax(String fax);
 
-    public String getFax();
+    String getFax();
 
-    public void setWorkPhone(String workphone);
+    void setWorkPhone(String workphone);
 
-    public String getWorkPhone();
+    String getWorkPhone();
 
-    public void setPhone(String phone);
+    void setPhone(String phone);
 
-    public String getPhone();
+    String getPhone();
 
-    public void setProviderCpso(String providerCPSO);
+    void setProviderCpso(String providerCPSO);
 
-    public String getProviderCpso();
+    String getProviderCpso();
 }

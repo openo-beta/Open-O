@@ -101,10 +101,7 @@ public class MammogramReport implements PreventionReport {
                 } catch (Exception e) {
                     //empty
                 }
-                boolean refused = false;
-                if (h.get("refused") != null && ((String) h.get("refused")).equals("1")) {
-                    refused = true;
-                }
+                boolean refused = h.get("refused") != null && ((String) h.get("refused")).equals("1");
 
                 Calendar cal = Calendar.getInstance();
                 cal.add(Calendar.YEAR, -2);
@@ -144,14 +141,14 @@ public class MammogramReport implements PreventionReport {
                 String numMonths = "------";
                 if (prevDate != null) {
                     int num = UtilDateUtilities.getNumMonths(prevDate, asofDate);
-                    numMonths = "" + num + " months";
+                    numMonths = num + " months";
                 }
 
 
                 //outcomes
-                log.debug("due Date " + dueDate.toString() + " cutoffDate " + cutoffDate.toString() + " prevDate " + prevDate.toString());
-                log.debug("due Date  (" + dueDate.toString() + " ) After Prev (" + prevDate.toString() + " ) " + dueDate.after(prevDate));
-                log.debug("cutoff Date  (" + cutoffDate.toString() + " ) before Prev (" + prevDate.toString() + " ) " + cutoffDate.before(prevDate));
+                log.debug("due Date " + dueDate.toString() + " cutoffDate " + cutoffDate + " prevDate " + prevDate.toString());
+                log.debug("due Date  (" + dueDate + " ) After Prev (" + prevDate + " ) " + dueDate.after(prevDate));
+                log.debug("cutoff Date  (" + cutoffDate + " ) before Prev (" + prevDate + " ) " + cutoffDate.before(prevDate));
                 if (!refused && dueDate.after(prevDate) && cutoffDate.before(prevDate)) { // overdue
                     prd.rank = 2;
                     prd.lastDate = prevDateStr;
@@ -226,10 +223,7 @@ public class MammogramReport implements PreventionReport {
     }
 
     boolean ineligible(Map<String, Object> h) {
-        boolean ret = false;
-        if (h.get("refused") != null && ((String) h.get("refused")).equals("2")) {
-            ret = true;
-        }
+        boolean ret = h.get("refused") != null && ((String) h.get("refused")).equals("2");
         return ret;
     }
 
@@ -338,7 +332,7 @@ public class MammogramReport implements PreventionReport {
                         if (index == 0) {
                             log.debug("fluData " + measurementData.getDataField());
                             log.debug("lastFollowup " + measurementData.getDateObservedAsDate() + " last procedure " + measurementData.getDateObservedAsDate());
-                            log.debug("toString: " + measurementData.toString());
+                            log.debug("toString: " + measurementData);
                             prd.lastFollowup = observationDate;
                             prd.lastFollupProcedure = measurementData.getDataField();
 

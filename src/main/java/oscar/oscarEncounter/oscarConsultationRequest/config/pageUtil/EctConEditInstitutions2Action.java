@@ -58,7 +58,7 @@ public class EctConEditInstitutions2Action extends ActionSupport {
 
         String id = this.getId();
         String delete = this.getDelete();
-        String specialists[] = this.getSpecialists();
+        String[] specialists = this.getSpecialists();
 
         ResourceBundle oscarR = ResourceBundle.getBundle("oscarResources", request.getLocale());
 
@@ -128,12 +128,12 @@ public class EctConEditInstitutions2Action extends ActionSupport {
         return specialists;
     }
 
-    public void setSpecialists(String str[]) {
+    public void setSpecialists(String[] str) {
         MiscUtils.getLogger().debug("setter specialists");
         specialists = str;
     }
 
     String id;
     String delete;
-    String specialists[];
+    String[] specialists;
 }

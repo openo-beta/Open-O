@@ -43,7 +43,7 @@
 <%@ page import="oscar.OscarProperties" %>
 <%
     String demographic_no = request.getParameter("demographic_no");
-    boolean firstSearch = request.getParameter("firstSearch") == null ? false : (request.getParameter("firstSearch")).equalsIgnoreCase("true") ? true : false;
+    boolean firstSearch = request.getParameter("firstSearch") == null ? false : (request.getParameter("firstSearch")).equalsIgnoreCase("true");
 
 %>
 <html>

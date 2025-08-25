@@ -54,7 +54,7 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
 public class CLSHandler implements MessageHandler {
 
     private enum NameType {
-        FIRST, MIDDLE, LAST;
+        FIRST, MIDDLE, LAST
     }
 
     private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();

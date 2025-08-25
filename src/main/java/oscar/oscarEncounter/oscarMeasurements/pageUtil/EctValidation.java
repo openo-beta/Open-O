@@ -142,12 +142,7 @@ public class EctValidation {
 
     public boolean isInteger(String inputValue) {
 
-        boolean validation = true;
-
-
-        if (!GenericValidator.isInt(inputValue)) {
-            validation = false;
-        }
+        boolean validation = GenericValidator.isInt(inputValue);
 
 
         return validation;

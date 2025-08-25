@@ -53,7 +53,7 @@ public class AlertTimer {
 
     private static AlertTimer alerts = null;
     private static Timer timer;
-    String alertCodes[] = null;
+    String[] alertCodes = null;
     oscar.oscarBilling.ca.bc.MSP.CDMReminderHlp hlp = null;
 
     private AlertTimer(String[] codes, long interval) {

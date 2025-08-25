@@ -30,8 +30,8 @@ public interface IMatchManager {
     /**
      * Defines possible {@link Event} for matches.
      */
-    public static enum Event {
-        CLIENT_CREATED, VACANCY_CREATED, SCHEDULED_EVENT;
+    enum Event {
+        CLIENT_CREATED, VACANCY_CREATED, SCHEDULED_EVENT
     }
 
     /**
@@ -42,5 +42,5 @@ public interface IMatchManager {
      * @param event
      * @return the result
      */
-    public <E> String processEvent(E entity, Event event) throws MatchManagerException;
+    <E> String processEvent(E entity, Event event) throws MatchManagerException;
 }

@@ -160,19 +160,19 @@
 
                         alert("Patient not in database.");
                         $("#ptName").focus();
-                        return;
+
 
                     } else if (($("#billingCode").val() == "") || ($("#billingCode").val() == null)) {
 
                         alert("Billing Code missing.");
                         $("#billingCode").focus();
-                        return;
+
 
                     } else if (($("#dxCode1").val() == "") || ($("#dxCode1").val() == null)) {
 
                         alert("DX code missing");
                         $("#dxCode1").focus();
-                        return;
+
 
                     } else if (
                         ($("#halfBilling").val() == "") ||
@@ -183,7 +183,7 @@
 
                         alert("Check unit value for accuracy.");
                         $("#halfBilling").focus();
-                        return;
+
 
                     } else {
 
@@ -213,7 +213,7 @@
                                         id: item.demographicNo
                                     }
                                 } else {
-                                    return;
+
                                 }
                             }))
                         }
@@ -448,7 +448,7 @@
                         <td>
 
                             <a id="removeBill"
-                               onclick="javascript:removeBill('<c:out value="${loop.index}"/>')">
+                               onclick="removeBill('<c:out value="${loop.index}"/>')">
                                 remove
                             </a>
 
@@ -463,8 +463,8 @@
         </div>
     </div>
     <div id="toolBar" class="bgLilac">
-        <input type="button" id="submitList" name="submitList" value="Submit" onclick="javascript:form.submit();"/>
-        <input type="button" id="cancelTrans" name="cancelTrans" value="Cancel" onclick="javascript:window.close();"/>
+        <input type="button" id="submitList" name="submitList" value="Submit" onclick="form.submit();"/>
+        <input type="button" id="cancelTrans" name="cancelTrans" value="Cancel" onclick="window.close();"/>
     </div>
 </form>
 </body>

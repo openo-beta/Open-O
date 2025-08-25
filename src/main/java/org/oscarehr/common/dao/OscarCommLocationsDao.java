@@ -38,9 +38,9 @@ import org.springframework.stereotype.Repository;
 
 public interface OscarCommLocationsDao extends AbstractDao<OscarCommLocations> {
 
-    public List<OscarCommLocations> findByCurrent1(int current1);
+    List<OscarCommLocations> findByCurrent1(int current1);
 
-    public List<Object[]> findFormLocationByMesssageId(String messId);
+    List<Object[]> findFormLocationByMesssageId(String messId);
 
-    public List<Object[]> findAttachmentsByMessageId(String messageId);
+    List<Object[]> findAttachmentsByMessageId(String messageId);
 }

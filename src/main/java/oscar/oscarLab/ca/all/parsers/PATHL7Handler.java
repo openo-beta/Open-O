@@ -75,7 +75,7 @@ public class PATHL7Handler implements MessageHandler {
 
     public static final String VIHARTF = "CELLPATHR";
 
-    public static enum OBX_DATA_TYPES {NM, ST, CE, TX, FT} // Numeric, String, Coded Element, Text, String
+    public enum OBX_DATA_TYPES {NM, ST, CE, TX, FT} // Numeric, String, Coded Element, Text, String
 
     /**
      * Creates a new instance of CMLHandler
@@ -635,11 +635,7 @@ public class PATHL7Handler implements MessageHandler {
     public boolean isOBXAbnormal(int i, int j) {
         try {
             String abnormalFlag = getOBXAbnormalFlag(i, j);
-            if (!abnormalFlag.equals("") && !abnormalFlag.equalsIgnoreCase("N")) {
-                return (true);
-            } else {
-                return (false);
-            }
+            return !abnormalFlag.equals("") && !abnormalFlag.equalsIgnoreCase("N");
 
         } catch (Exception e) {
             return (false);

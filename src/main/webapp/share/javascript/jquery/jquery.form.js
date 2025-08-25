@@ -784,6 +784,6 @@
                 window.opera.postError(msg);
             }
         }
-    };
+    }
 
 })(jQuery);

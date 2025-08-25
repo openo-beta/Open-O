@@ -94,7 +94,7 @@
 
             function setAction(target) {
                 document.forms[0].action.value = target;
-            };
+            }
 
             $(document).ready(function () {
                 $('#listview').DataTable({
@@ -175,7 +175,7 @@
                 <div class="row-fluid">
                     <input type="submit" class="btn btn-primary" value="Add" />
                     <input type="button" class="btn btn-danger" value="Clear"
-                           onclick="javascript:this.form.action='${pageContext.servletContext.contextPath}/report/DxresearchReport.do?method=clearSearchCode';this.form.submit()"/>
+                           onclick="this.form.action='${pageContext.servletContext.contextPath}/report/DxresearchReport.do?method=clearSearchCode';this.form.submit()"/>
                 </div>
             </form>
 
@@ -197,27 +197,27 @@
                 <label class="radio">
                     <input type="radio" name="SearchBy" value="patientRegistedDistincted"
                            id="SearchBy_Distincted" <c:if test="${radiostatus == 'patientRegistedDistincted'}">checked</c:if>
-                           onclick="javascript:this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedDistincted'">
+                           onclick="this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedDistincted'">
                     ALL(distincted)</label>
                 <label class="radio">
                     <input type="radio" name="SearchBy" value="patientRegistedAll"
                            id="SearchBy_All" <c:if test="${radiostatus == 'patientRegistedAll'}">checked</c:if>
-                           onclick="javascript:this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedAll'">
+                           onclick="this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedAll'">
                     ALL</label>
                 <label class="radio">
                     <input type="radio" name="SearchBy" value="patientRegistedActive"
                            id="SearchBy_Active" <c:if test="${radiostatus == 'patientRegistedActive'}">checked</c:if>
-                           onclick="javascript:this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedActive'">
+                           onclick="this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedActive'">
                     Active</label>
                 <label class="radio">
                     <input type="radio" name="SearchBy" value="patientRegistedDeleted"
                            id="SearchBy_Deleted" <c:if test="${radiostatus == 'patientRegistedDeleted'}">checked</c:if>
-                           onclick="javascript:this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedDeleted'">
+                           onclick="this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedDeleted'">
                     Deleted</label>
                 <label class="radio">
                     <input type="radio" name="SearchBy" value="patientRegistedResolve"
                            id="SearchBy_Resolved" <c:if test="${radiostatus == 'patientRegistedResolve'}">checked</c:if>
-                           onclick="javascript:this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedResolve'">
+                           onclick="this.form.action='<%= request.getContextPath()%>/report/DxresearchReport.do?method=patientRegistedResolve'">
                     Resolved</label>
 
 
@@ -285,7 +285,7 @@
 
             <c:if test="${ not empty listview and not empty listview.strCode }">
                 <input type="button" class="btn" value="Download Excel"
-                       onclick="javascript:this.form.action='${pageContext.servletContext.contextPath}/report/DxresearchReport.do?method=patientExcelReport';this.form.submit()">
+                       onclick="this.form.action='${pageContext.servletContext.contextPath}/report/DxresearchReport.do?method=patientExcelReport';this.form.submit()">
             </c:if>
 
         </form>

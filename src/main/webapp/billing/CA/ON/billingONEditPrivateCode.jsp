@@ -324,7 +324,7 @@
                     <input type="text" name="service_code"
                            value="<%=prop.getProperty("service_code", "?").substring(1)%>" class="span2" maxlength='10'
                            onblur="upCaseCtrl(this)" required/>
-                    <button type="submit" name="submit" class="btn btn-primary" onclick="javascript:return onSearch();"
+                    <button type="submit" name="submit" class="btn btn-primary" onclick="return onSearch();"
                             value="Search">Search
                     </button>
                 </div>
@@ -353,11 +353,11 @@
 
 
                 <br>
-                <input class="btn" type="submit" name="submit" value="Delete" onclick="javascript:return onDelete();">
+                <input class="btn" type="submit" name="submit" value="Delete" onclick="return onDelete();">
                 <input type="hidden" name="action" value='<%=action%>'>
                 <input class="btn" type="submit" name="submit"
                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnSave"/>"
-                       onclick="javascript:return onSave();">
+                       onclick="return onSave();">
             </form>
         </div><!--edit/add well-->
 

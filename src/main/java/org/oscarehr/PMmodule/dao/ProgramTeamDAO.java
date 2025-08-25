@@ -41,15 +41,15 @@ import org.hibernate.SessionFactory;
 
 public interface ProgramTeamDAO {
 
-    public boolean teamExists(Integer teamId);
+    boolean teamExists(Integer teamId);
 
-    public boolean teamNameExists(Integer programId, String teamName);
+    boolean teamNameExists(Integer programId, String teamName);
 
-    public ProgramTeam getProgramTeam(Integer id);
+    ProgramTeam getProgramTeam(Integer id);
 
-    public List<ProgramTeam> getProgramTeams(Integer programId);
+    List<ProgramTeam> getProgramTeams(Integer programId);
 
-    public void saveProgramTeam(ProgramTeam team);
+    void saveProgramTeam(ProgramTeam team);
 
-    public void deleteProgramTeam(Integer id);
+    void deleteProgramTeam(Integer id);
 }

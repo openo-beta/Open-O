@@ -59,7 +59,7 @@ public interface MessengerDemographicManager {
      * @param messageId
      * @return
      */
-    public List<Demographic> getAttachedDemographics(LoggedInInfo loggedInInfo, int messageId);
+    List<Demographic> getAttachedDemographics(LoggedInInfo loggedInInfo, int messageId);
 
     /**
      * Use this method if full demographic details are not required.
@@ -68,7 +68,7 @@ public interface MessengerDemographicManager {
      * @param messageId
      * @return
      */
-    public List<MsgDemoMap> getAttachedDemographicList(LoggedInInfo loggedInInfo, int messageId);
+    List<MsgDemoMap> getAttachedDemographicList(LoggedInInfo loggedInInfo, int messageId);
 
     /**
      * Retreive demographics from a remote Integrated facility that have not been linked with a local demographic.
@@ -79,11 +79,11 @@ public interface MessengerDemographicManager {
      * @param messageId
      * @return
      */
-    public List<MsgIntegratorDemoMap> getUnlinkedIntegratedDemographicList(LoggedInInfo loggedInInfo, int messageId);
+    List<MsgIntegratorDemoMap> getUnlinkedIntegratedDemographicList(LoggedInInfo loggedInInfo, int messageId);
 
-    public List<DemographicTransfer> getUnlinkedIntegratedDemographics(LoggedInInfo loggedInInfo, int messageId);
+    List<DemographicTransfer> getUnlinkedIntegratedDemographics(LoggedInInfo loggedInInfo, int messageId);
 
-    public DemographicTransfer getIntegratedDemographic(LoggedInInfo loggedInInfo, int demographicNo, int facilityId);
+    DemographicTransfer getIntegratedDemographic(LoggedInInfo loggedInInfo, int demographicNo, int facilityId);
 
     /**
      * This will extract a string of names and ages for each demographic attached to the given message id.
@@ -92,7 +92,7 @@ public interface MessengerDemographicManager {
      * @param messageId
      * @return
      */
-    public String getAttachedDemographicNamesAndAges(LoggedInInfo loggedInInfo, int messageId);
+    String getAttachedDemographicNamesAndAges(LoggedInInfo loggedInInfo, int messageId);
 
     /**
      * Returns a Map of a Key: demographic number and Value: demographic name
@@ -102,7 +102,7 @@ public interface MessengerDemographicManager {
      * @param messageId
      * @return
      */
-    public Map<Integer, String> getAttachedDemographicNameMap(LoggedInInfo loggedInInfo, int messageId);
+    Map<Integer, String> getAttachedDemographicNameMap(LoggedInInfo loggedInInfo, int messageId);
 
     /**
      * ONLY FOR USE WITH DEMOGRAPHICS THAT ARE REMOTELY ATTACHED TO A MESSAGE - INTEGRATOR ONLY.
@@ -112,7 +112,7 @@ public interface MessengerDemographicManager {
      * @param demographicNoArray
      * @return
      */
-    public Integer[] attachIntegratedDemographicToMessage(LoggedInInfo loggedInInfo, int messageId, Integer[] demographicNoArray, int sourceFacilityId);
+    Integer[] attachIntegratedDemographicToMessage(LoggedInInfo loggedInInfo, int messageId, Integer[] demographicNoArray, int sourceFacilityId);
 
     /**
      * ONLY FOR USE WITH DEMOGRAPHICS THAT ARE REMOTELY ATTACHED TO A MESSAGE - INTEGRATOR ONLY.
@@ -123,7 +123,7 @@ public interface MessengerDemographicManager {
      * @param facilityId
      * @return
      */
-    public Integer attachIntegratedDemographicToMessage(LoggedInInfo loggedInInfo, int messageId, int demographicNo, int sourceFacilityId);
+    Integer attachIntegratedDemographicToMessage(LoggedInInfo loggedInInfo, int messageId, int demographicNo, int sourceFacilityId);
 
 
     /**
@@ -135,7 +135,7 @@ public interface MessengerDemographicManager {
      * @param sourceFacilityId
      * @return List<Integer>
      */
-    public List<Integer> getLinkedDemographicIdsFromSourceFacility(LoggedInInfo loggedInInfo, final int demographicNo, int sourceFacilityId);
+    List<Integer> getLinkedDemographicIdsFromSourceFacility(LoggedInInfo loggedInInfo, final int demographicNo, int sourceFacilityId);
 
     /**
      * Search for the Integrated demographic entry and then update the associated msgDemoMapId. This helps indicate that the demographic
@@ -147,7 +147,7 @@ public interface MessengerDemographicManager {
      * @param facilityId
      * @return long
      */
-    public long updateAttachedIntegratedDemographic(LoggedInInfo loggedInInfo, int messageId, int demographicNo, int facilityId);
+    long updateAttachedIntegratedDemographic(LoggedInInfo loggedInInfo, int messageId, int demographicNo, int facilityId);
 
     /**
      * Attach an array of local Demographic numbers to the given message id
@@ -158,7 +158,7 @@ public interface MessengerDemographicManager {
      * @param demographicNoArray
      * @return
      */
-    public Long[] attachDemographicToMessage(LoggedInInfo loggedInInfo, int messageId, Integer[] demographicNoArray);
+    Long[] attachDemographicToMessage(LoggedInInfo loggedInInfo, int messageId, Integer[] demographicNoArray);
 
     /**
      * Attach a demographic number to the give message id.
@@ -169,7 +169,7 @@ public interface MessengerDemographicManager {
      * @param sourceFacilityId
      * @return
      */
-    public Long attachDemographicToMessage(LoggedInInfo loggedInInfo, int messageId, int demographicNo);
+    Long attachDemographicToMessage(LoggedInInfo loggedInInfo, int messageId, int demographicNo);
 
     /**
      * This method is hard-coded to the most common Integrator patient consent types.
@@ -180,7 +180,7 @@ public interface MessengerDemographicManager {
      * @param demographicNo
      * @return
      */
-    public boolean isPatientConsentedForIntegrator(LoggedInInfo loggedInInfo, int demographicNo);
+    boolean isPatientConsentedForIntegrator(LoggedInInfo loggedInInfo, int demographicNo);
 
     /**
      * Gets a list of messages attached to the given demographic number
@@ -189,7 +189,7 @@ public interface MessengerDemographicManager {
      * @param demographicNo
      * @return
      */
-    public List<MsgDemoMap> getMessageMapByDemographicNo(LoggedInInfo loggedInInfo, int demographicNo);
+    List<MsgDemoMap> getMessageMapByDemographicNo(LoggedInInfo loggedInInfo, int demographicNo);
 
     /**
      * Import a demographic file and/or linking it to another file on the Integrator.
@@ -197,8 +197,8 @@ public interface MessengerDemographicManager {
      *
      * @return
      */
-    public List<Demographic> importDemographic(LoggedInInfo loggedInInfo, int remoteFacilityId, int remoteDemographicNo, int messageId);
+    List<Demographic> importDemographic(LoggedInInfo loggedInInfo, int remoteFacilityId, int remoteDemographicNo, int messageId);
 
-    public boolean linkDemographicWithRemote(LoggedInInfo loggedInInfo, int demographicNo, int remoteFacilityId, int remoteDemographicNo, int messageId);
+    boolean linkDemographicWithRemote(LoggedInInfo loggedInInfo, int demographicNo, int remoteFacilityId, int remoteDemographicNo, int messageId);
 
 }

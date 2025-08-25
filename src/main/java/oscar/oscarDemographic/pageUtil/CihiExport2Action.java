@@ -976,11 +976,7 @@ public class CihiExport2Action extends ActionSupport {
             }
 
             YnIndicator refusedIndicator = immunizations.addNewRefusedFlag();
-            if (prevention.isRefused()) {
-                refusedIndicator.setBoolean(true);
-            } else {
-                refusedIndicator.setBoolean(false);
-            }
+            refusedIndicator.setBoolean(prevention.isRefused());
         }
     }
 

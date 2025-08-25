@@ -34,12 +34,12 @@ import org.oscarehr.common.model.ServiceAccessToken;
 
 public interface ServiceAccessTokenDao extends AbstractDao<ServiceAccessToken> {
 
-    public List<ServiceAccessToken> findAll();
+    List<ServiceAccessToken> findAll();
 
     void persist(ServiceAccessToken token);
 
     void remove(ServiceAccessToken token);
 
-    public ServiceAccessToken findByTokenId(String token);
+    ServiceAccessToken findByTokenId(String token);
 
 }

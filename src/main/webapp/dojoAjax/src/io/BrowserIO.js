@@ -698,7 +698,7 @@ if (!dj_undef("window")) {
                 return http.abort();
             }
 
-            return;
+
         }
         dojo.io.transports.addTransport("XMLHTTPTransport");
     }

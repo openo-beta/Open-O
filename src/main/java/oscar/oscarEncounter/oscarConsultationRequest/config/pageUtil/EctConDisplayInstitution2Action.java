@@ -56,7 +56,7 @@ public class EctConDisplayInstitution2Action extends ActionSupport {
         }
 
         String id = this.getId();
-        String specialists[] = this.getSpecialists();
+        String[] specialists = this.getSpecialists();
 
         for (InstitutionDepartment s : dao.findByInstitutionId(Integer.parseInt(id))) {
             dao.remove(s.getId());
@@ -87,10 +87,10 @@ public class EctConDisplayInstitution2Action extends ActionSupport {
         return specialists;
     }
 
-    public void setSpecialists(String str[]) {
+    public void setSpecialists(String[] str) {
         specialists = str;
     }
 
     String id;
-    String specialists[];
+    String[] specialists;
 }

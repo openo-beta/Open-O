@@ -41,8 +41,8 @@ public class RscheduleBean {
     public String avail_hour = "";
     public String creator = "";
     public String active = "A";
-    private String weekdaytag[] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
-    private String sitedaytag[] = {"A7", "A1", "A2", "A3", "A4", "A5", "A6"};
+    private String[] weekdaytag = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
+    private String[] sitedaytag = {"A7", "A1", "A2", "A3", "A4", "A5", "A6"};
 
     public RscheduleBean() {
     }
@@ -94,13 +94,13 @@ public class RscheduleBean {
     public boolean getEvenWeek(GregorianCalendar aDate) {
         int sWeek = (new GregorianCalendar(MyDateFormat.getYearFromStandardDate(this.sdate), MyDateFormat.getMonthFromStandardDate(this.sdate) - 1, MyDateFormat.getDayFromStandardDate(this.sdate))).get(Calendar.WEEK_OF_YEAR);
         int curWeek = aDate.get(Calendar.WEEK_OF_YEAR);
-        return ((curWeek - sWeek) % 2 == 0 ? true : false);
+        return ((curWeek - sWeek) % 2 == 0);
     }
 
     private boolean getEvenWeek(GregorianCalendar sDate, GregorianCalendar aDate) {
         int sWeek = sDate.get(Calendar.WEEK_OF_YEAR);
         int curWeek = aDate.get(Calendar.WEEK_OF_YEAR);
-        return ((curWeek - sWeek) % 2 == 0 ? true : false);
+        return ((curWeek - sWeek) % 2 == 0);
     }
 
     public boolean getDateAvail(GregorianCalendar aDate) {
@@ -119,8 +119,8 @@ public class RscheduleBean {
     }
 
     public boolean getSingleDateAvail(GregorianCalendar aDate, String aVailable, String aDOW) {
-        boolean bAvail = (aVailable.compareTo("1") == 0 || aVailable.compareTo("A") == 0) ? false : true;
-        boolean bAvailableTemp = (aVailable.compareTo("0") == 0) ? false : true;
+        boolean bAvail = aVailable.compareTo("1") != 0 && aVailable.compareTo("A") != 0;
+        boolean bAvailableTemp = aVailable.compareTo("0") != 0;
 
         //check if it is unavailable, then break
         StringTokenizer st = new StringTokenizer(aDOW);

@@ -486,16 +486,16 @@
                                                                        <input type="button" name="cmdAllergies"
                                                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgViewEditAllergies"/>"
                                                                               class="ControlPushButton"
-                                                                              onclick="javascript:window.location.href='oscarRx/ShowAllergies.jsp?demographicNo=<%=request.getParameter("demographicNo")%>';"
+                                                                              onclick="window.location.href='oscarRx/ShowAllergies.jsp?demographicNo=<%=request.getParameter("demographicNo")%>';"
                                                                               style="width: 100px"/>
 								       <input type="button" name="cmdRePrescribe"
                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgReprescribe"/>"
-                                              class="ControlPushButton" onclick="javascript:RePrescribe();"
+                                              class="ControlPushButton" onclick="RePrescribe();"
                                               style="width: 100px"/>
                                                                        <input type="button" name="cmdDelete"
                                                                               value="<fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgDelete"/>"
                                                                               class="ControlPushButton"
-                                                                              onclick="javascript:Delete();"
+                                                                              onclick="Delete();"
                                                                               style="width: 100px"/>
                                                                     </span>
                                                     </td>
@@ -665,7 +665,7 @@
                                 <br>
 
                                 <input type="button" class="ControlPushButton"
-                                       onclick="javascript:window.location.href='oscarRx/viewScript.do';"
+                                       onclick="window.location.href='oscarRx/viewScript.do';"
                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgSaveAndPrint"/>"/></td>
                         </tr>
                     </c:if>

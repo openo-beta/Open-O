@@ -237,7 +237,7 @@
 
 
     <body bgproperties="fixed" class="Type2DiabetesForm" bgcolor="#EEEEFF"
-          onLoad="javascript:window.focus()" topmargin="0" leftmargin="0"
+          onLoad="window.focus()" topmargin="0" leftmargin="0"
           rightmargin="0">
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
@@ -256,13 +256,13 @@
             <tr>
                 <td align="left"><input type="hidden" name="submit" value="exit"/>
                     <input type="submit" value="Save"
-                           onclick="javascript:return onSave();"/> <input type="submit"
+                           onclick="return onSave();"/> <input type="submit"
                                                                           value="Save and Exit"
-                                                                          onclick="javascript:return onSaveExit();"/>
+                                                                          onclick="return onSaveExit();"/>
                     <input
-                            type="submit" value="Exit" onclick="javascript:return onExit();"/>
+                            type="submit" value="Exit" onclick="return onExit();"/>
                     <input type="button" value="Print"
-                           onclick="javascript:return onPrint();"/></td>
+                           onclick="return onPrint();"/></td>
             </tr>
         </table>
 
@@ -844,13 +844,13 @@
         <table class="Head" class="hidePrint">
             <tr>
                 <td align="left"><input type="submit" value="Save"
-                                        onclick="javascript:return onSave();"/> <input type="submit"
+                                        onclick="return onSave();"/> <input type="submit"
                                                                                        value="Save and Exit"
-                                                                                       onclick="javascript:return onSaveExit();"/>
+                                                                                       onclick="return onSaveExit();"/>
                     <input
-                            type="submit" value="Exit" onclick="javascript:return onExit();"/>
+                            type="submit" value="Exit" onclick="return onExit();"/>
                     <input type="button" value="Print"
-                           onclick="javascript:return onPrint();"/></td>
+                           onclick="return onPrint();"/></td>
             </tr>
         </table>
 

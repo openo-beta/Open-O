@@ -114,9 +114,8 @@ public class CVCMedicationLotNumber extends AbstractModel<Integer> {
             if (other.expiryDate != null) return false;
         } else if (!expiryDate.equals(other.expiryDate)) return false;
         if (medication == null) {
-            if (other.medication != null) return false;
-        } else if (!medication.equals(other.medication)) return false;
-        return true;
+            return other.medication == null;
+        } else return medication.equals(other.medication);
     }
 
 

@@ -130,7 +130,7 @@ public class EmeraldHL7A04TransportTask extends TimerTask {
                 String messageReceived = this.getResponse(in);
 
                 // Process Emeralds response (returns false if error found in received message)
-                boolean emeraldError = (this.processResponse(listOfFiles[i], messageReceived) == false);
+                boolean emeraldError = (!this.processResponse(listOfFiles[i], messageReceived));
                 if (emeraldError)
                     numErrors++;
 
@@ -159,7 +159,7 @@ public class EmeraldHL7A04TransportTask extends TimerTask {
                 logger.info("Warning: " + numErrors + " error(s) occured during transmission.");
             }
         } catch (Exception e) {
-            logger.error("ERROR while sending HL7 A04 file: " + e.toString(), e);
+            logger.error("ERROR while sending HL7 A04 file: " + e, e);
         }
     }
 
@@ -189,10 +189,7 @@ public class EmeraldHL7A04TransportTask extends TimerTask {
      * @return true if no errors found in received message, false otherwise
      */
     private boolean checkResponse(String messageReceived) {
-        boolean success = true;
-
-        if (messageReceived.indexOf("java.lang.IllegalArgumentException") != -1)
-            success = false;
+        boolean success = messageReceived.indexOf("java.lang.IllegalArgumentException") == -1;
 
         return success;
     }

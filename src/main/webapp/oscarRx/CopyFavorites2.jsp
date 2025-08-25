@@ -114,7 +114,7 @@
                             <tr>
                                 <td>
                                     <div class="DivContentPadding">
-                                        <input type="button" value="Back to Search For Drug" class="ControlPushButton" onClick="javascript:window.location.href='oscarRx/SearchDrug3.jsp';"/>
+                                        <input type="button" value="Back to Search For Drug" class="ControlPushButton" onClick="window.location.href='oscarRx/SearchDrug3.jsp';"/>
                                     </div>
                                 </td>
                             </tr>

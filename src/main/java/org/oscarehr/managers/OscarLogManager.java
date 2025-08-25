@@ -38,7 +38,7 @@ import org.springframework.stereotype.Service;
 import oscar.log.LogAction;
 
 public interface OscarLogManager {
-    public List<Object[]> getRecentDemographicsViewedByProvider(LoggedInInfo loggedInInfo, String providerNo, int startPosition, int itemsToReturn);
+    List<Object[]> getRecentDemographicsViewedByProvider(LoggedInInfo loggedInInfo, String providerNo, int startPosition, int itemsToReturn);
 
-    public List<Object[]> getRecentDemographicsViewedByProviderAfterDateIncluded(LoggedInInfo loggedInInfo, String providerNo, Date date, int startPosition, int itemsToReturn);
+    List<Object[]> getRecentDemographicsViewedByProviderAfterDateIncluded(LoggedInInfo loggedInInfo, String providerNo, Date date, int startPosition, int itemsToReturn);
 }

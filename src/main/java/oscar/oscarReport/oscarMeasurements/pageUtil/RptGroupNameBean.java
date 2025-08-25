@@ -61,9 +61,8 @@ public class RptGroupNameBean {
         if (getClass() != obj.getClass()) return false;
         RptGroupNameBean other = (RptGroupNameBean) obj;
         if (groupName == null) {
-            if (other.groupName != null) return false;
-        } else if (!groupName.equals(other.groupName)) return false;
-        return true;
+            return other.groupName == null;
+        } else return groupName.equals(other.groupName);
     }
 
 

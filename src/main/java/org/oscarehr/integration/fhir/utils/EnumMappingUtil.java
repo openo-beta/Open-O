@@ -30,7 +30,7 @@ import org.oscarehr.common.Gender;
 
 public final class EnumMappingUtil {
 
-    public static final AdministrativeGender genderToAdministrativeGender(final Gender gender) {
+    public static AdministrativeGender genderToAdministrativeGender(final Gender gender) {
         AdministrativeGender genderCode = AdministrativeGender.UNKNOWN;
         switch (gender) {
             case M:
@@ -52,7 +52,7 @@ public final class EnumMappingUtil {
         return genderCode;
     }
 
-    public static final Gender administrativeGenderToGender(final AdministrativeGender gender) {
+    public static Gender administrativeGenderToGender(final AdministrativeGender gender) {
         Gender genderCode = Gender.U;
         switch (gender) {
             case MALE:

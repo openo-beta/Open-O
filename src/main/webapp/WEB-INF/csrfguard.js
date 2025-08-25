@@ -64,17 +64,17 @@
                     if (item[0].removeEventListener) {
                         item[0].removeEventListener(item[1], item[2], item[3]);
                     }
-                    ;
+
                     if (item[1].substring(0, 2) != "on") {
                         item[1] = "on" + item[1];
                     }
-                    ;
+
                     if (item[0].detachEvent) {
                         item[0].detachEvent(item[1], item[2]);
                     }
-                    ;
+
                 }
-                ;
+
             }
         };
     }();

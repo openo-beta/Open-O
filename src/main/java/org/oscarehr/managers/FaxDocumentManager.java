@@ -56,9 +56,9 @@ public interface FaxDocumentManager {
     /*
      * Returns a temporary path to a PDF version of the given eformId.
      */
-    public Path getEformFaxDocument(LoggedInInfo loggedInInfo, int eformId);
+    Path getEformFaxDocument(LoggedInInfo loggedInInfo, int eformId);
 
-    public Path getFormFaxDocument(LoggedInInfo loggedInInfo, FormTransportContainer formTransportContainer);
+    Path getFormFaxDocument(LoggedInInfo loggedInInfo, FormTransportContainer formTransportContainer);
 
     /**
      * Create a new cover page with the clinic heading with the
@@ -68,11 +68,11 @@ public interface FaxDocumentManager {
      * @param note
      * @return
      */
-    public byte[] createCoverPage(LoggedInInfo loggedInInfo, String note);
+    byte[] createCoverPage(LoggedInInfo loggedInInfo, String note);
 
-    public byte[] createCoverPage(LoggedInInfo loggedInInfo, String note, int numberPages);
+    byte[] createCoverPage(LoggedInInfo loggedInInfo, String note, int numberPages);
 
-    public byte[] createCoverPage(LoggedInInfo loggedInInfo, String note, FaxRecipient recipient, FaxAccount sender, int numberPages);
+    byte[] createCoverPage(LoggedInInfo loggedInInfo, String note, FaxRecipient recipient, FaxAccount sender, int numberPages);
 
 }
  

@@ -174,7 +174,7 @@ public class PathnetLabTest {
                 accessionNum = justGetAccessionNumber(obr.getFillerOrderNumber());
                 docName = p.getProperty("name", obr.getOrderingProvider());
                 String ccs = obr.getResultCopiesTo();
-                String docs[] = ccs.split("~");
+                String[] docs = ccs.split("~");
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < docs.length; i++) {
                     sb.append(justGetDocName(docs[i]));

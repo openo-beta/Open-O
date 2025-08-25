@@ -84,11 +84,7 @@ public class OscarLogDaoImpl extends AbstractDaoImpl<OscarLog> implements OscarL
 
         @SuppressWarnings("unchecked")
         List<OscarLog> results = query.getResultList();
-        if (results.size() == 0) {
-            return false;
-        }
-
-        return true;
+        return results.size() != 0;
     }
 
     @Override

@@ -54,11 +54,11 @@ public class Tickler extends AbstractModel<Integer> {
 
     public static final String NOT_APPLICABLE = "N/A";
 
-    public static enum STATUS {
+    public enum STATUS {
         A, C, D
     }
 
-    public static enum PRIORITY {
+    public enum PRIORITY {
         High, Normal, Low
     }
 

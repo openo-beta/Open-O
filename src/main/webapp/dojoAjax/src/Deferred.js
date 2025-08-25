@@ -209,7 +209,7 @@ dojo.lang.extend(dojo.Deferred, {
                 dojo.raise("already called!");
             }
             this.silentlyCancelled = false;
-            return;
+
         }
     },
 

@@ -288,7 +288,7 @@ function createCache(options) {
             });
             return null;
         };
-    };
+    }
 
     var _cache = new Cache(options);
     return _cache;

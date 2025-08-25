@@ -188,7 +188,7 @@ public class HL7A04Data {
             out.write(this.message);
             out.close();
         } catch (IOException e) {
-            logger.error("ERROR while saving HL7 A04 file: " + e.toString());
+            logger.error("ERROR while saving HL7 A04 file: " + e);
             return false;
         }
 

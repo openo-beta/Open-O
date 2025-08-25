@@ -70,10 +70,7 @@ public class DocumentResultsDaoImpl extends AbstractDaoImpl<Document> implements
                         return false;
                     else {
                         int pn = Integer.parseInt(pns);
-                        if (pn > 0) {
-                            return true;
-                        } else
-                            return false;
+                        return pn > 0;
                     }
                 } else return false;
             } catch (Exception e) {
@@ -92,10 +89,7 @@ public class DocumentResultsDaoImpl extends AbstractDaoImpl<Document> implements
                 Query query = entityManager.createQuery(sql);
                 @SuppressWarnings("unchecked")
                 List<ProviderInboxItem> r = query.getResultList();
-                if (r != null && r.size() > 0) {
-                    return true;
-                } else
-                    return false;
+                return r != null && r.size() > 0;
             } catch (Exception e) {
                 MiscUtils.getLogger().error("Error", e);
                 return false;
@@ -202,11 +196,7 @@ public class DocumentResultsDaoImpl extends AbstractDaoImpl<Document> implements
                 lbData.reportStatus = "F";
 
                 // the "C" is for corrected excelleris labs
-                if (lbData.reportStatus != null && (lbData.reportStatus.equals("F") || lbData.reportStatus.equals("C"))) {
-                    lbData.finalRes = true;
-                } else {
-                    lbData.finalRes = false;
-                }
+                lbData.finalRes = lbData.reportStatus != null && (lbData.reportStatus.equals("F") || lbData.reportStatus.equals("C"));
 
                 lbData.discipline = d.getDoctype();
                 if (lbData.discipline.trim().equals("")) {
@@ -310,11 +300,7 @@ public class DocumentResultsDaoImpl extends AbstractDaoImpl<Document> implements
                 lbData.reportStatus = "F";
 
                 // the "C" is for corrected excelleris labs
-                if (lbData.reportStatus != null && (lbData.reportStatus.equals("F") || lbData.reportStatus.equals("C"))) {
-                    lbData.finalRes = true;
-                } else {
-                    lbData.finalRes = false;
-                }
+                lbData.finalRes = lbData.reportStatus != null && (lbData.reportStatus.equals("F") || lbData.reportStatus.equals("C"));
 
                 lbData.discipline = StringUtils.trimToNull(d.getDoctype());
 
@@ -429,11 +415,7 @@ public class DocumentResultsDaoImpl extends AbstractDaoImpl<Document> implements
                 lbData.reportStatus = "F";
 
                 // the "C" is for corrected excelleris labs
-                if (lbData.reportStatus != null && (lbData.reportStatus.equals("F") || lbData.reportStatus.equals("C"))) {
-                    lbData.finalRes = true;
-                } else {
-                    lbData.finalRes = false;
-                }
+                lbData.finalRes = lbData.reportStatus != null && (lbData.reportStatus.equals("F") || lbData.reportStatus.equals("C"));
 
                 lbData.discipline = d.getDoctype();
                 if (lbData.discipline.trim().equals("")) {

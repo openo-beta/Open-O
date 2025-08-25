@@ -100,7 +100,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
             return (new ArrayList<LookupCodeValue>());
         List fields = LoadFieldDefList(tableId);
         DBPreparedHandlerParam[] params = new DBPreparedHandlerParam[100];
-        String fieldNames[] = new String[17];
+        String[] fieldNames = new String[17];
         String sSQL1 = "";
         String sSQL = "select distinct ";
         boolean activeFieldExists = true;
@@ -185,9 +185,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         sSQL += " order by 4,2";
         // }
         DBPreparedHandlerParam[] pars = new DBPreparedHandlerParam[i];
-        for (int j = 0; j < i; j++) {
-            pars[j] = params[j];
-        }
+        System.arraycopy(params, 0, pars, 0, i);
 
         DBPreparedHandler db = new DBPreparedHandler();
         ArrayList<LookupCodeValue> list = new ArrayList<LookupCodeValue>();
@@ -253,7 +251,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         String sSql = "from FieldDefValue s where s.tableId=?0 order by s.fieldIndex ";
         ArrayList<String> paramList = new ArrayList<String>();
         paramList.add(tableId);
-        Object params[] = paramList.toArray(new Object[paramList.size()]);
+        Object[] params = paramList.toArray(new Object[paramList.size()]);
 
         return getHibernateTemplate().find(sSql, params);
     }

@@ -34,11 +34,7 @@ import org.oscarehr.util.MiscUtils;
 
 public class Utility {
     public static boolean IsEmpty(String pStr) {
-        if (pStr == null || pStr.trim().equals("")) {
-            return true;
-        } else {
-            return false;
-        }
+        return pStr == null || pStr.trim().equals("");
     }
 
     public static boolean IsDate(String pStr) {
@@ -194,7 +190,7 @@ public class Utility {
             progSQL = "(select p.id from Program p where 'P' || p.id in (select a.code from LstOrgcd a, Secuserrole b " +
                     " where a.codecsv like '%' || b.orgcd || ',%' and b.providerNo='" + providerNo + "'))";
         } else {
-            progSQL = "(select p.id from Program p where p.shelterId =" + shelterId.toString() + " and 'P' || p.id in (select a.code from LstOrgcd a, Secuserrole b " +
+            progSQL = "(select p.id from Program p where p.shelterId =" + shelterId + " and 'P' || p.id in (select a.code from LstOrgcd a, Secuserrole b " +
                     " where a.codecsv like '%' || b.orgcd || ',%' and b.providerNo='" + providerNo + "'))";
         }
         return progSQL;
@@ -206,7 +202,7 @@ public class Utility {
             progSQL = "(select p.id from program p where 'P' || p.id in (select a.code from lst_orgcd a, secUserRole b " +
                     " where a.codecsv like '%' || b.orgcd || ',%' and b.provider_no='" + providerNo + "'))";
         } else {
-            progSQL = "(select p.id from program p where p.shelter_id =" + shelterId.toString() + " and 'P' || p.id in (select a.code from lst_orgcd a, secUserRole b " +
+            progSQL = "(select p.id from program p where p.shelter_id =" + shelterId + " and 'P' || p.id in (select a.code from lst_orgcd a, secUserRole b " +
                     " where a.codecsv like '%' || b.orgcd || ',%' and b.provider_no='" + providerNo + "'))";
         }
         return progSQL;
@@ -218,7 +214,7 @@ public class Utility {
             progSQL = "(select p.id from facility p where 'F' || p.id in (select a.code from lst_orgcd a, secUserRole b " +
                     " where a.codecsv like '%' || b.orgcd || ',%' and b.provider_no='" + providerNo + "'))";
         } else {
-            progSQL = "(select p.id from facility p where p.org_id =" + shelterId.toString() + " and 'F' || p.id in (select a.code from lst_orgcd a, secUserRole b " +
+            progSQL = "(select p.id from facility p where p.org_id =" + shelterId + " and 'F' || p.id in (select a.code from lst_orgcd a, secUserRole b " +
                     " where a.codecsv like '%' || b.orgcd || ',%' and b.provider_no='" + providerNo + "'))";
         }
         return progSQL;
@@ -303,7 +299,7 @@ public class Utility {
             if (pDate == null) return "";
 //    	if (pDate.getYear() < 1) pDate = Utility.SetDate(1,1,1);
             if (pDate.equals(Utility.SetDate(1, 1, 1))) return "";
-            else if (IsEmpty(fStr) == false) {
+            else if (!IsEmpty(fStr)) {
                 //yyyyMMdd
                 SimpleDateFormat formatter = new SimpleDateFormat(fStr);
                 return formatter.format(pDate);

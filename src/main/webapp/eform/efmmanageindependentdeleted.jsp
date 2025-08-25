@@ -137,7 +137,7 @@
                 </td>
                 <td align='center'>
                     <a href="<%=request.getContextPath()%>/eform/unRemoveEForm.do?callpage=independent&fdid=<%=curform.get("fdid")%>"
-                       onClick="javascript: return confirm('Are you sure you want to restore this eform?');"
+                       onClick="return confirm('Are you sure you want to restore this eform?');"
                        class="contentLink"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnRestore"/></a>
                 </td>
             </tr>

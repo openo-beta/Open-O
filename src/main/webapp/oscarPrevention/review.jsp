@@ -1047,9 +1047,6 @@
 
     boolean isHistorical(Date dateOfAdministration, Date timestamp) {
         int days = Days.daysBetween(new LocalDate(dateOfAdministration), new LocalDate(timestamp)).getDays();
-        if (days > 14) {
-            return true;
-        }
-        return false;
+        return days > 14;
     }
 %>

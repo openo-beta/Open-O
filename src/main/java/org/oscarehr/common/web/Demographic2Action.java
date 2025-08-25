@@ -82,7 +82,7 @@ public class Demographic2Action extends ActionSupport {
         try {
             InputStream in = this.getClass().getClassLoader()
                     .getResourceAsStream("iso-3166-2.json");
-            String theString = IOUtils.toString(in, "UTF-8");
+            String theString = IOUtils.toString(in, java.nio.charset.StandardCharsets.UTF_8);
             obj = new org.codehaus.jettison.json.JSONObject(theString);
         } catch (Exception e) {
             MiscUtils.getLogger().warn("Warning", e);
@@ -131,7 +131,7 @@ public class Demographic2Action extends ActionSupport {
         try {
             InputStream in = this.getClass().getClassLoader()
                     .getResourceAsStream("iso-3166-2.json");
-            String theString = IOUtils.toString(in, "UTF-8");
+            String theString = IOUtils.toString(in, java.nio.charset.StandardCharsets.UTF_8);
             obj = new org.codehaus.jettison.json.JSONObject(theString);
         } catch (Exception e) {
             MiscUtils.getLogger().warn("Warning", e);

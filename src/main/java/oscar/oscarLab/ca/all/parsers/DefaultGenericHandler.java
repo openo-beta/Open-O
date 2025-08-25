@@ -278,10 +278,7 @@ public class DefaultGenericHandler implements MessageHandler {
 
     public boolean isOBXAbnormal(int i, int j) {
         String abnormalFlag = getOBXAbnormalFlag(i, j);
-        if (abnormalFlag.equals("") || abnormalFlag.equals("N"))
-            return (false);
-        else
-            return (true);
+        return !abnormalFlag.equals("") && !abnormalFlag.equals("N");
     }
 
     public String getOBXAbnormalFlag(int i, int j) {

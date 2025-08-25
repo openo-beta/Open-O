@@ -28,11 +28,11 @@ import java.util.Date;
 
 public class ConsultationRequestSearchFilter {
 
-    public static enum SORTMODE {
+    public enum SORTMODE {
         Demographic, Service, Consultant, Team, Status, MRP, AppointmentDate, FollowUpDate, ReferralDate, Urgency
     }
 
-    public static enum SORTDIR {
+    public enum SORTDIR {
         asc, desc
     }
 

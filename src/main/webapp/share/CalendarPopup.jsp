@@ -187,8 +187,7 @@
                 if (dateGrid[i][j] == 0) out.println("<td></td>");
                 else {
                     now.add(now.DATE, 1);
-                    if (todayDate == now.get(Calendar.DATE)) bTodayDate = true;
-                    else bTodayDate = false;
+                    bTodayDate = todayDate == now.get(Calendar.DATE);
     %>
     <td align="center" bgcolor='<%=bTodayDate?"gold":"#EEEEFF"%>'><a
             href="#"

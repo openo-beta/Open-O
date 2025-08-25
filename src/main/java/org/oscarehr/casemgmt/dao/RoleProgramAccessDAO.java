@@ -34,9 +34,9 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 public interface RoleProgramAccessDAO {
 
-    public List<DefaultRoleAccess> getDefaultAccessRightByRole(Long roleId);
+    List<DefaultRoleAccess> getDefaultAccessRightByRole(Long roleId);
 
-    public List<DefaultRoleAccess> getDefaultSpecificAccessRightByRole(Long roleId, String accessType);
+    List<DefaultRoleAccess> getDefaultSpecificAccessRightByRole(Long roleId, String accessType);
 
-    public boolean hasAccess(String accessName, Long roleId);
+    boolean hasAccess(String accessName, Long roleId);
 }

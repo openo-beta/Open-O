@@ -72,7 +72,7 @@ public class MSPReconcile {
 
         for (TeleplanC12 t : dao.findCurrent()) {
             int i = Integer.parseInt(t.getOfficeFolioClaimNo()); // this kludge rids leading zeros
-            String exp[] = new String[7];
+            String[] exp = new String[7];
             exp[0] = t.getExp1();
             exp[1] = t.getExp2();
             exp[2] = t.getExp3();
@@ -94,7 +94,7 @@ public class MSPReconcile {
 
         TeleplanS00Dao dao = SpringUtils.getBean(TeleplanS00Dao.class);
         for (TeleplanS00 t : dao.findByBillingNo(forwardZero(billingNo, 7))) {
-            String exp[] = new String[7];
+            String[] exp = new String[7];
             exp[0] = t.getExp1();
             exp[1] = t.getExp2();
             exp[2] = t.getExp3();
@@ -142,7 +142,7 @@ public class MSPReconcile {
             TeleplanS00Dao dao = SpringUtils.getBean(TeleplanS00Dao.class);
             for (TeleplanS00 t : dao.findByOfficeNumbers(billingMasterIds)) {
                 int i = Integer.parseInt(t.getOfficeNo()); // this kludge rids leading zeros
-                String exp[] = new String[7];
+                String[] exp = new String[7];
                 exp[0] = t.getExp1();
                 exp[1] = t.getExp2();
                 exp[2] = t.getExp3();
@@ -298,7 +298,7 @@ public class MSPReconcile {
 
         TeleplanC12Dao dao = SpringUtils.getBean(TeleplanC12Dao.class);
         for (TeleplanC12 t : dao.findByOfficeClaimNo(forwardZero(billingNo, 7))) {
-            String exp[] = new String[7];
+            String[] exp = new String[7];
             String seq = t.getDataSeq();
             exp[0] = t.getExp1();
             exp[1] = t.getExp2();
@@ -328,7 +328,7 @@ public class MSPReconcile {
 
         TeleplanS00Dao dao = SpringUtils.getBean(TeleplanS00Dao.class);
         for (TeleplanS00 t : dao.findByOfficeNumbers(Arrays.asList(new String[]{forwardZero(billingNo, 7)}))) {
-            String exp[] = new String[7];
+            String[] exp = new String[7];
             String seq = t.getDataSeq();
             exp[0] = t.getExp1();
             exp[1] = t.getExp2();

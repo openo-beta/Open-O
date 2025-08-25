@@ -46,20 +46,20 @@ import oscar.oscarLab.ca.on.CommonLabResultData;
 import oscar.oscarLab.ca.on.LabResultData;
 
 public interface DocumentResultsDao {
-    public boolean isSentToValidProvider(String docNo);
+    boolean isSentToValidProvider(String docNo);
 
-    public boolean isSentToProvider(String docNo, String providerNo);
+    boolean isSentToProvider(String docNo, String providerNo);
 
-    public ArrayList<LabResultData> populateDocumentResultsDataOfAllProviders(String providerNo, String demographicNo,
-                                                                              String status);
+    ArrayList<LabResultData> populateDocumentResultsDataOfAllProviders(String providerNo, String demographicNo,
+                                                                       String status);
 
     //retrieve documents belonging to a provider
-    public ArrayList<LabResultData> populateDocumentResultsDataLinkToProvider(String providerNo, String demographicNo,
-                                                                              String status);
+    ArrayList<LabResultData> populateDocumentResultsDataLinkToProvider(String providerNo, String demographicNo,
+                                                                       String status);
 
     //retrieve all documents from database
-    public ArrayList<LabResultData> populateDocumentResultsData(String providerNo, String demographicNo, String status);
+    ArrayList<LabResultData> populateDocumentResultsData(String providerNo, String demographicNo, String status);
 
-    public List<Document> getPhotosByAppointmentNo(int appointmentNo);
+    List<Document> getPhotosByAppointmentNo(int appointmentNo);
 }
  

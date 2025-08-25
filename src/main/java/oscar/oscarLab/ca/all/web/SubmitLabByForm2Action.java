@@ -238,7 +238,7 @@ public class SubmitLabByForm2Action extends ActionSupport {
 				ccString.append(idName.length>2 ? idName[2] : "");
 			}
 		}
-		return "OBR|1|||UR^General Lab^L1^GENERAL LAB||"+sdf.format(lab.getLabReqDate())+"|"+sdf.format(lab.getTests().get(0).getDate())+"|||||||"+sdf.format(lab.getLabReqDate())+"||"+lab.getBillingNo()+"^"+lab.getProviderLastName()+"^"+lab.getProviderFirstName()+"||||||"+sdf.format(lab.getTests().get(0).getDate())+"||LAB|F|||"+ccString.toString();
+		return "OBR|1|||UR^General Lab^L1^GENERAL LAB||"+sdf.format(lab.getLabReqDate())+"|"+sdf.format(lab.getTests().get(0).getDate())+"|||||||"+sdf.format(lab.getLabReqDate())+"||"+lab.getBillingNo()+"^"+lab.getProviderLastName()+"^"+lab.getProviderFirstName()+"||||||"+sdf.format(lab.getTests().get(0).getDate())+"||LAB|F|||"+ ccString;
 	}
 	/**
 	 * OBR ||placer_order_id||uni_service_id|||obs_datetime|||||||specimen_received_datetime||||||CCK^CCK|||||||R

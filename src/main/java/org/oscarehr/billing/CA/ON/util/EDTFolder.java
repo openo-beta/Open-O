@@ -16,7 +16,7 @@ public enum EDTFolder {
     INBOX, OUTBOX, SENT, ARCHIVE;
     String path;
 
-    private EDTFolder() {
+    EDTFolder() {
         this.path = OscarProperties.getInstance().getProperty("ONEDT_" + name());
     }
 

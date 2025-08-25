@@ -38,15 +38,15 @@ import org.springframework.stereotype.Repository;
 
 public interface DemographicSetsDao extends AbstractDao<DemographicSets> {
 
-    public List<DemographicSets> findBySetName(String setName);
+    List<DemographicSets> findBySetName(String setName);
 
-    public List<DemographicSets> findBySetNames(Collection<String> setNameList);
+    List<DemographicSets> findBySetNames(Collection<String> setNameList);
 
-    public List<DemographicSets> findBySetNameAndEligibility(String setName, String eligibility);
+    List<DemographicSets> findBySetNameAndEligibility(String setName, String eligibility);
 
-    public List<String> findSetNamesByDemographicNo(Integer demographicNo);
+    List<String> findSetNamesByDemographicNo(Integer demographicNo);
 
-    public List<String> findSetNames();
+    List<String> findSetNames();
 
-    public List<DemographicSets> findBySetNameAndDemographicNo(String setName, int demographicNo);
+    List<DemographicSets> findBySetNameAndDemographicNo(String setName, int demographicNo);
 }

@@ -185,7 +185,7 @@ public class VacancyTemplateData {
         public Range(long min, long max) {
             this.min = min;
             this.max = max;
-            rangeString = new ArrayList<String>(Arrays.asList("" + min + "-" + max, "" + min + " to " + max));
+            rangeString = new ArrayList<String>(Arrays.asList(min + "-" + max, min + " to " + max));
         }
 
         boolean isInRange(long number) {

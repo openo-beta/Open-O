@@ -231,7 +231,7 @@ dojo.gfx.Colorspace.prototype.getWhitePoint = function () {
                 default:
                     dojo.debug('White point ' + this.whitePoint + " isn't defined for Std. Observer " + this.strObserver);
             }
-            ;
+
             break;
         case '10' :
             switch (this.whitePoint) {
@@ -293,7 +293,7 @@ dojo.gfx.Colorspace.prototype.getWhitePoint = function () {
                 default:
                     dojo.debug('White point ' + this.whitePoint + " isn't defined for Std. Observer " + this.strObserver);
             }
-            ;
+
             break;
         default:
             dojo.debug("Std. Observer " + this.strObserver + " isn't defined");

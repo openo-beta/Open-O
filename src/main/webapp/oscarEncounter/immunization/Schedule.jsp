@@ -262,10 +262,10 @@
                                             fontStyle = "style=\"text-decoration: line-through;\"";
                                         } %>
                             <div style="font-weight: bold">
-                                <input type="checkbox" onclick="javascript:showSet('tblSet<%=i%>', event);"
+                                <input type="checkbox" onclick="showSet('tblSet<%=i%>', event);"
                                        id="chkSet<%=i%>"/>
                                 <a href=#
-                                   onclick="javascript:showSetName('tblSet<%=i%>', 'chkSet<%=i%>');" <%=fontStyle%> >
+                                   onclick="showSetName('tblSet<%=i%>', 'chkSet<%=i%>');" <%=fontStyle%> >
                                     <%= set.getAttribute("name") %>
                                 </a>
                                 &nbsp;&nbsp;

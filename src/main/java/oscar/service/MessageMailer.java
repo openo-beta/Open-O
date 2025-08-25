@@ -34,5 +34,5 @@ package oscar.service;
  * @author mweston4
  */
 public interface MessageMailer {
-    public void send() throws Exception;
+    void send() throws Exception;
 }

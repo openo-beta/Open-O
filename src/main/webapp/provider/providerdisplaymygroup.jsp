@@ -89,7 +89,7 @@
 
                                     String groupNo = myGroup.getId().getMyGroupNo();
                                     if (!(groupNo.equals(oldNo))) {
-                                        bNewNo = bNewNo ? false : true;
+                                        bNewNo = !bNewNo;
                                         oldNo = groupNo;
                                     }
                             %>

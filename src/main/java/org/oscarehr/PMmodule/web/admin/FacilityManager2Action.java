@@ -148,11 +148,7 @@ public class FacilityManager2Action extends ActionSupport {
                         fdc.setProgramName(pName);
                         fdc.setDischargeDate(dDate);
 
-                        if (dischargeDate.after(oneDayAgo)) {
-                            fdc.setInOneDay(true);
-                        } else {
-                            fdc.setInOneDay(false);
-                        }
+                        fdc.setInOneDay(dischargeDate.after(oneDayAgo));
                         facilityClients.add(fdc);
 
                     }

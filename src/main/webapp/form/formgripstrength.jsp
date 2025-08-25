@@ -58,8 +58,7 @@
     String project_home = request.getContextPath().substring(1);
 %>
 <%
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 %>
 <html>
     <head>
@@ -154,36 +153,36 @@
                                     </tr>
                                     <tr>
                                         <td bgcolor="white" align="center">1 = <input type="text"
-                                                                                      onchange="javascript: calScore(domValues, domResult);"
+                                                                                      onchange="calScore(domValues, domResult);"
                                                                                       name="dom1"
                                                                                       value="<%= props.getProperty("dom1", "") %>"/>
                                         </td>
                                         <td bgcolor="white" align="center">1 = <input type="text"
-                                                                                      onchange="javascript: calScore(nonDomValues, nonDomResult);"
+                                                                                      onchange="calScore(nonDomValues, nonDomResult);"
                                                                                       name="nonDom1"
                                                                                       value="<%= props.getProperty("nonDom1", "") %>"/>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td bgcolor="white" align="center">2 = <input type="text"
-                                                                                      onchange="javascript: calScore(domValues, domResult);"
+                                                                                      onchange="calScore(domValues, domResult);"
                                                                                       name="dom2"
                                                                                       value="<%= props.getProperty("dom2", "") %>"/>
                                         </td>
                                         <td bgcolor="white" align="center">2 = <input type="text"
-                                                                                      onchange="javascript: calScore(nonDomValues, nonDomResult);"
+                                                                                      onchange="calScore(nonDomValues, nonDomResult);"
                                                                                       name="nonDom2"
                                                                                       value="<%= props.getProperty("nonDom2", "") %>"/>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td bgcolor="white" align="center">3 = <input type="text"
-                                                                                      onchange="javascript: calScore(domValues, domResult);"
+                                                                                      onchange="calScore(domValues, domResult);"
                                                                                       name="dom3"
                                                                                       value="<%= props.getProperty("dom3", "") %>"/>
                                         </td>
                                         <td bgcolor="white" align="center">3 = <input type="text"
-                                                                                      onchange="javascript: calScore(nonDomValues, nonDomResult);"
+                                                                                      onchange="calScore(nonDomValues, nonDomResult);"
                                                                                       name="nonDom3"
                                                                                       value="<%= props.getProperty("nonDom3", "") %>"/>
                                         </td>
@@ -213,15 +212,15 @@
                                 <%
                                     if (!bView) {
                                 %> <input type="submit" value="Save"
-                                          onclick="javascript: return onSave();"/> <input type="submit"
+                                          onclick="return onSave();"/> <input type="submit"
                                                                                           value="Save and Exit"
-                                                                                          onclick="javascript:if(checkBeforeSave()==true) return onSaveExit(); else return false;"/>
+                                                                                          onclick="if(checkBeforeSave()==true) return onSaveExit(); else return false;"/>
                                 <%
                                     }
                                 %> <input type="button" value="Exit"
-                                          onclick="javascript:return onExit();"/> <input type="button"
+                                          onclick="return onExit();"/> <input type="button"
                                                                                          value="Print"
-                                                                                         onclick="javascript:window.print();"/>
+                                                                                         onclick="window.print();"/>
                             </td>
                             <td align="right">Study ID: <%= props.getProperty("studyID", "N/A") %>
                                 <input type="hidden" name="studyID"

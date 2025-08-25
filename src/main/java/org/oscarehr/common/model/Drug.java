@@ -311,19 +311,13 @@ public class Drug extends AbstractModel<Integer> implements Serializable {
     }
 
     public boolean isDeleted() {
-        if (isArchived() && DELETED.equals(getArchivedReason())) {
-            return true;
-        }
-        return false;
+        return isArchived() && DELETED.equals(getArchivedReason());
     }
 
     public boolean isDiscontinued() {
         String ar = getArchivedReason();
-        if (isArchived()
-                && (UNKNOWN.equals(ar) || NOT_SELECTED.equals(ar) || DOSE_CHANGE.equals(ar) || ADVERSE_REACTION.equals(ar) || ALLERGY.equals(ar) || INEFFECTIVE_TREATMENT.equals(ar) || PRESCRIBING_ERROR.equals(ar) || NO_LONGER_NECESSARY.equals(ar) || SIMPLIFYING_TREATMENT.equals(ar) || PATIENT_REQUEST.equals(ar) || NEW_SCIENTIFIC_EVIDENCE.equals(ar) || INCREASED_RISK_BENEFIT_RATIO.equals(ar) || DISCONTINUED_BY_ANOTHER_PHYSICIAN.equals(ar) || COST.equals(ar) || DRUG_INTERACTION.equals(ar) || REPRESCRIBED.equals(ar) || OTHER.equals(ar))) {
-            return true;
-        }
-        return false;
+        return isArchived()
+            && (UNKNOWN.equals(ar) || NOT_SELECTED.equals(ar) || DOSE_CHANGE.equals(ar) || ADVERSE_REACTION.equals(ar) || ALLERGY.equals(ar) || INEFFECTIVE_TREATMENT.equals(ar) || PRESCRIBING_ERROR.equals(ar) || NO_LONGER_NECESSARY.equals(ar) || SIMPLIFYING_TREATMENT.equals(ar) || PATIENT_REQUEST.equals(ar) || NEW_SCIENTIFIC_EVIDENCE.equals(ar) || INCREASED_RISK_BENEFIT_RATIO.equals(ar) || DISCONTINUED_BY_ANOTHER_PHYSICIAN.equals(ar) || COST.equals(ar) || DRUG_INTERACTION.equals(ar) || REPRESCRIBED.equals(ar) || OTHER.equals(ar));
     }
 
     public Boolean isNonAuthoritative() {
@@ -721,9 +715,7 @@ public class Drug extends AbstractModel<Integer> implements Serializable {
     }
 
     public boolean isExternal() {// test if prescription is external
-        if (outsideProviderName == null || outsideProviderName.trim().length() == 0 || outsideProviderOhip == null || outsideProviderOhip.trim().length() == 0)
-            return false;
-        else return true;
+        return outsideProviderName != null && outsideProviderName.trim().length() != 0 && outsideProviderOhip != null && outsideProviderOhip.trim().length() != 0;
     }
 
     public String getOutsideProviderName() {
@@ -777,9 +769,7 @@ public class Drug extends AbstractModel<Integer> implements Serializable {
 
         Drug drug = (Drug) o;
 
-        if (id != null ? !id.equals(drug.id) : drug.id != null) return false;
-
-        return true;
+        return java.util.Objects.equals(id, drug.id);
     }
 
     public int hashCode() {

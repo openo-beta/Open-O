@@ -77,9 +77,8 @@ public class LookupCodeEdit2Action extends ActionSupport {
                 break;
             }
         }
-        boolean isReadOnly = false;
+        boolean isReadOnly = !editable;
 
-        if (!editable) isReadOnly = true;
         if (isReadOnly) request.setAttribute("isReadOnly", Boolean.valueOf(isReadOnly));
         return "edit";
     }

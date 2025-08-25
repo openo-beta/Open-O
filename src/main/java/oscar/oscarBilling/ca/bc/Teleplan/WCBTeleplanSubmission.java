@@ -132,7 +132,7 @@ public class WCBTeleplanSubmission {
                 + "<a href='#' onClick=\"openBrWindow('adjustBill.jsp?billingmaster_no="
                 + Misc.forwardZero("" + bm.getBillingmasterNo(), 7)
                 + "','','resizable=yes,scrollbars=yes,top=0,left=0,width=900,height=600'); return false;\">"
-                + m.toString() + "</a>" + "</td></tr>";
+                + m + "</a>" + "</td></tr>";
         if ("".equals(m.toString())) {
             return "";
         }

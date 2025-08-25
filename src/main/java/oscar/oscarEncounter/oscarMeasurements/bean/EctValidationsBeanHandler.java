@@ -103,10 +103,10 @@ public class EctValidationsBeanHandler {
             v.setMaxLength(Integer.parseInt(validation.getMaxLength()));
         }
         if (validation.isNumeric != null) {
-            v.setNumeric(validation.isNumeric.equals("1") ? true : false);
+            v.setNumeric(validation.isNumeric.equals("1"));
         }
         if (validation.isDate != null) {
-            v.setDate(validation.isDate.equals("1") ? true : false);
+            v.setDate(validation.isDate.equals("1"));
         }
 
         dao.persist(v);

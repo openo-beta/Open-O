@@ -61,11 +61,11 @@ import oscar.oscarEncounter.oscarConsultationRequest.pageUtil.ImagePDFCreator;
 
 public interface DocumentManager {
 
-    public Document getDocument(LoggedInInfo loggedInInfo, Integer id);
+    Document getDocument(LoggedInInfo loggedInInfo, Integer id);
 
-    public List<Document> getDocumentsByDemographicNo(LoggedInInfo loggedInInfo, Integer demographicNo);
+    List<Document> getDocumentsByDemographicNo(LoggedInInfo loggedInInfo, Integer demographicNo);
 
-    public CtlDocument getCtlDocumentByDocumentId(LoggedInInfo loggedInInfo, Integer documentId);
+    CtlDocument getCtlDocumentByDocumentId(LoggedInInfo loggedInInfo, Integer documentId);
 
     /**
      * Creates a document and saves it to the provided demographic
@@ -78,35 +78,35 @@ public interface DocumentManager {
      * @return Document record from the database once it has been created
      * @throws IOException If actions related to getting document data fail
      */
-    public Document createDocument(LoggedInInfo loggedInInfo, Document document, Integer demographicNo, String providerNo, byte[] documentData) throws IOException;
+    Document createDocument(LoggedInInfo loggedInInfo, Document document, Integer demographicNo, String providerNo, byte[] documentData) throws IOException;
 
-    public List<Document> getDocumentsUpdateAfterDate(LoggedInInfo loggedInInfo, Date updatedAfterThisDateExclusive, int itemsToReturn);
+    List<Document> getDocumentsUpdateAfterDate(LoggedInInfo loggedInInfo, Date updatedAfterThisDateExclusive, int itemsToReturn);
 
-    public List<Document> getDocumentsByDemographicIdUpdateAfterDate(LoggedInInfo loggedInInfo, Integer demographicId, Date updatedAfterThisDateExclusive);
+    List<Document> getDocumentsByDemographicIdUpdateAfterDate(LoggedInInfo loggedInInfo, Integer demographicId, Date updatedAfterThisDateExclusive);
 
-    public List<Document> getDocumentsByProgramProviderDemographicDate(LoggedInInfo loggedInInfo, Integer programId, String providerNo, Integer demographicId, Calendar updatedAfterThisDateExclusive, int itemsToReturn);
+    List<Document> getDocumentsByProgramProviderDemographicDate(LoggedInInfo loggedInInfo, Integer programId, String providerNo, Integer demographicId, Calendar updatedAfterThisDateExclusive, int itemsToReturn);
 
-    public Integer saveDocument(LoggedInInfo loggedInInfo, EDoc edoc);
-
-
-    public Integer saveDocument(LoggedInInfo loggedInInfo, Document document, CtlDocument ctlDocument);
-
-    public void moveDocumentToOscarDocuments(LoggedInInfo loggedInInfo, Document document, String fromPath);
-
-    public void moveDocument(LoggedInInfo loggedInInfo, Document document, String fromPath, String toPath);
+    Integer saveDocument(LoggedInInfo loggedInInfo, EDoc edoc);
 
 
-    public String getPathToDocument(LoggedInInfo loggedInInfo, int documentId);
+    Integer saveDocument(LoggedInInfo loggedInInfo, Document document, CtlDocument ctlDocument);
 
-    public String getFullPathToDocument(String filename);
+    void moveDocumentToOscarDocuments(LoggedInInfo loggedInInfo, Document document, String fromPath);
+
+    void moveDocument(LoggedInInfo loggedInInfo, Document document, String fromPath, String toPath);
+
+
+    String getPathToDocument(LoggedInInfo loggedInInfo, int documentId);
+
+    String getFullPathToDocument(String filename);
 
     /**
      * Fetch by demographic number and given document type
      * ie: get only LAB documents for the given demographic number.
      */
-    public List<Document> getDemographicDocumentsByDocumentType(LoggedInInfo loggedInInfo, int demographicNo, DocumentDao.DocumentType documentType);
+    List<Document> getDemographicDocumentsByDocumentType(LoggedInInfo loggedInInfo, int demographicNo, DocumentDao.DocumentType documentType);
 
-    public Document getDocumentByDemographicAndFilename(LoggedInInfo loggedInInfo, int demographicNo, String fileName);
+    Document getDocumentByDemographicAndFilename(LoggedInInfo loggedInInfo, int demographicNo, String fileName);
 
     /**
      * Add a document to Oscar's document library.
@@ -119,13 +119,13 @@ public interface DocumentManager {
      * @return
      * @throws Exception
      */
-    public Document addDocument(LoggedInInfo loggedInInfo, Document document, CtlDocument ctlDocument) throws Exception;
+    Document addDocument(LoggedInInfo loggedInInfo, Document document, CtlDocument ctlDocument) throws Exception;
 
-    public List<String> getProvidersThatHaveAcknowledgedDocument(LoggedInInfo loggedInInfo, Integer documentId);
+    List<String> getProvidersThatHaveAcknowledgedDocument(LoggedInInfo loggedInInfo, Integer documentId);
 
-    public Path renderDocument(LoggedInInfo loggedInInfo, EDoc eDoc) throws PDFGenerationException;
+    Path renderDocument(LoggedInInfo loggedInInfo, EDoc eDoc) throws PDFGenerationException;
 
-    public Path renderDocument(LoggedInInfo loggedInInfo, String documentId) throws PDFGenerationException;
+    Path renderDocument(LoggedInInfo loggedInInfo, String documentId) throws PDFGenerationException;
 
-     public Integer addDocumentToQueue(LoggedInInfo loggedInInfo, Integer documentId, Integer queueId);
+     Integer addDocumentToQueue(LoggedInInfo loggedInInfo, Integer documentId, Integer queueId);
 }

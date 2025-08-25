@@ -87,8 +87,7 @@
         labReqVer = "07";
     }
 
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 
     FrmAREnhancedBloodWorkTest ar1BloodWorkTest = new FrmAREnhancedBloodWorkTest(demoNo, formId);
     java.util.Properties ar1Props = ar1BloodWorkTest.getAr1Props();
@@ -990,7 +989,7 @@ if(bView) {
                     location.href = url;
                 }
 
-                return;
+
             }
 
             function onExit() {
@@ -1044,7 +1043,7 @@ if(bView) {
                     // Check that current character is number.
                     var c = s.charAt(i);
                     if (c == '.') {
-                        continue;
+
                     } else if (((c < "0") || (c > "9"))) {
                         alert('Invalid ' + s + ' in field ' + ss.name);
                         ss.focus();
@@ -2363,14 +2362,14 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             <%
                                 if (!bView) {
                             %> <input type="submit" value="Save" id="saveBtn"
-                                      onclick="javascript:return onSave();"/> <input type="submit"
+                                      onclick="return onSave();"/> <input type="submit"
                                                                                      value="Save & Exit"
-                                                                                     onclick="javascript:return onSaveExit();"/> <%
+                                                                                     onclick="return onSaveExit();"/> <%
                             }
                         %> <input type="submit" value="Exit"
-                                  onclick="javascript:return onExit();"/> <input type="submit"
+                                  onclick="return onExit();"/> <input type="submit"
                                                                                  value="Print"
-                                                                                 onclick="javascript:return onPrint2();"/>
+                                                                                 onclick="return onPrint2();"/>
                             <span style="display:none"><input id="printBtn" type="submit" value="PrintIt"/></span>
                             <%
                                 if (!bView) {
@@ -2889,14 +2888,14 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             <%
                                 if (!bView) {
                             %> <input type="submit" value="Save"
-                                      onclick="javascript:return onSave();"/> <input type="submit"
+                                      onclick="return onSave();"/> <input type="submit"
                                                                                      value="Save & Exit"
-                                                                                     onclick="javascript:return onSaveExit();"/> <%
+                                                                                     onclick="return onSaveExit();"/> <%
                             }
                         %> <input type="submit" value="Exit"
-                                  onclick="javascript:return onExit();"/> <input type="submit"
+                                  onclick="return onExit();"/> <input type="submit"
                                                                                  value="Print"
-                                                                                 onclick="javascript:return onPrint2();"/>
+                                                                                 onclick="return onPrint2();"/>
                             <%
                                 if (!bView) {
                             %>

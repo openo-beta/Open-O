@@ -65,7 +65,7 @@ var Holder = Holder || {};
             }
             i[e](f + "DOMContentLoaded", r, u), i[e](f + s, r, u), n[e](f + "load", r, u)
         }
-    };
+    }
 
 //https://gist.github.com/991057 by Jed Schmidt with modifications
     function selector(a) {
@@ -180,7 +180,7 @@ var Holder = Holder || {};
                 fluid_update(el);
             }
         }
-    };
+    }
 
     function fluid_update(element) {
         var images;
@@ -232,7 +232,7 @@ var Holder = Holder || {};
 
         return render ? ret : false;
 
-    };
+    }
 
 
     if (!canvas.getContext) {

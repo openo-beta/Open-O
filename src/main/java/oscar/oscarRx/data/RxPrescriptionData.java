@@ -795,9 +795,7 @@ public class RxPrescriptionData {
         }
 
         public boolean isMitte() {
-            if (unitName != null && (unitName.equalsIgnoreCase("D") || unitName.equalsIgnoreCase("W") || unitName.equalsIgnoreCase("M") || unitName.equalsIgnoreCase("day") || unitName.equalsIgnoreCase("week") || unitName.equalsIgnoreCase("month") || unitName.equalsIgnoreCase("days") || unitName.equalsIgnoreCase("weeks") || unitName.equalsIgnoreCase("months") || unitName.equalsIgnoreCase("mo")))
-                return true;
-            else return false;
+            return unitName != null && (unitName.equalsIgnoreCase("D") || unitName.equalsIgnoreCase("W") || unitName.equalsIgnoreCase("M") || unitName.equalsIgnoreCase("day") || unitName.equalsIgnoreCase("week") || unitName.equalsIgnoreCase("month") || unitName.equalsIgnoreCase("days") || unitName.equalsIgnoreCase("weeks") || unitName.equalsIgnoreCase("months") || unitName.equalsIgnoreCase("mo"));
         }
 
         public boolean isDurationSpecifiedByUser() {
@@ -1214,7 +1212,7 @@ public class RxPrescriptionData {
         }
 
         public int getNosubsInt() {
-            if (this.getNosubs() == true) {
+            if (this.getNosubs()) {
                 return 1;
             } else {
                 return 0;
@@ -1226,11 +1224,7 @@ public class RxPrescriptionData {
         }
 
         public void setNosubs(int RHS) {
-            if (RHS == 0) {
-                this.setNosubs(false);
-            } else {
-                this.setNosubs(true);
-            }
+            this.setNosubs(RHS != 0);
         }
 
         public boolean isPrn() {//conventional name for getter of boolean variable
@@ -1242,7 +1236,7 @@ public class RxPrescriptionData {
         }
 
         public int getPrnInt() {
-            if (this.getPrn() == true) {
+            if (this.getPrn()) {
                 return 1;
             } else {
                 return 0;
@@ -1254,11 +1248,7 @@ public class RxPrescriptionData {
         }
 
         public void setPrn(int RHS) {
-            if (RHS == 0) {
-                this.setPrn(false);
-            } else {
-                this.setPrn(true);
-            }
+            this.setPrn(RHS != 0);
         }
 
         public Boolean getLongTerm() {
@@ -1705,10 +1695,7 @@ public class RxPrescriptionData {
          * Checks to see if atcCode is not null or an emtpy string
          */
         public boolean isValidAtcCode() {
-            if (atcCode != null && !atcCode.trim().equals("")) {
-                return true;
-            }
-            return false;
+            return atcCode != null && !atcCode.trim().equals("");
         }
 
         /**
@@ -2102,7 +2089,7 @@ public class RxPrescriptionData {
         }
 
         public int getNosubsInt() {
-            if (this.getNosubs() == true) {
+            if (this.getNosubs()) {
                 return 1;
             } else {
                 return 0;
@@ -2118,7 +2105,7 @@ public class RxPrescriptionData {
         }
 
         public int getPrnInt() {
-            if (this.getPrn() == true) {
+            if (this.getPrn()) {
                 return 1;
             } else {
                 return 0;

@@ -284,8 +284,8 @@ Effect.Base.prototype = {
             codeForEvent(options, 'beforeSetup') +
             (this.setup ? 'this.setup();' : '') +
             codeForEvent(options, 'afterSetup') +
-            '};if(this.state=="running"){' +
-            'pos=this.options.transition(pos)*' + this.fromToDelta + '+' + this.options.from + ';' +
+            '}if(this.state=="running"){' +
+            'pos=this.options.transition(pos)*' + this.fromToDelta + '+' + this.options.from + '' +
             'this.position=pos;' +
             codeForEvent(options, 'beforeUpdate') +
             (this.update ? 'this.update(pos);' : '') +

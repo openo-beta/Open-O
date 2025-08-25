@@ -40,10 +40,10 @@ import java.util.List;
 
 public interface PrescriptionConverter {
 
-    public Prescription getAsDomainObject(LoggedInInfo loggedInInfo, PrescriptionTo1 t);
+    Prescription getAsDomainObject(LoggedInInfo loggedInInfo, PrescriptionTo1 t);
 
-    public PrescriptionTo1 getAsTransferObject(LoggedInInfo loggedInInfo, Prescription p);
+    PrescriptionTo1 getAsTransferObject(LoggedInInfo loggedInInfo, Prescription p);
 
-    public List<PrescriptionTo1> getAllAsTransferObjects(LoggedInInfo loggedInInfo, List<Prescription> ds) throws ConversionException;
+    List<PrescriptionTo1> getAllAsTransferObjects(LoggedInInfo loggedInInfo, List<Prescription> ds) throws ConversionException;
 
 }

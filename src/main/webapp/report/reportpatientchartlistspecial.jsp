@@ -169,7 +169,7 @@
 
                 if (rsdemo.getInt("demographic_no") != dnoTemp) dnoTemp = rsdemo.getInt("demographic_no");
                 else continue;
-                bodd = bodd ? false : true;
+                bodd = !bodd;
                 if (!strTemp.equals(param[0])) { //new provider for a new table
                     strTemp = param[0];
                     bFistL = true;

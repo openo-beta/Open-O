@@ -224,10 +224,7 @@ public class MDSHandler implements MessageHandler {
     }
 
     public boolean isOBXAbnormal(int i, int j) {
-        if (getOBXAbnormalFlag(i, j).equals(""))
-            return (false);
-        else
-            return (true);
+        return !getOBXAbnormalFlag(i, j).equals("");
     }
 
     public String getOBXAbnormalFlag(int i, int j) {

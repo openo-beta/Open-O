@@ -37,9 +37,9 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 public interface ProgramSignatureDao {
 
-    public ProgramSignature getProgramFirstSignature(Integer programId);
+    ProgramSignature getProgramFirstSignature(Integer programId);
 
-    public List<ProgramSignature> getProgramSignatures(Integer programId);
+    List<ProgramSignature> getProgramSignatures(Integer programId);
 
-    public void saveProgramSignature(ProgramSignature programSignature);
+    void saveProgramSignature(ProgramSignature programSignature);
 }

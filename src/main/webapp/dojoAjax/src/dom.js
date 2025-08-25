@@ -333,7 +333,7 @@ dojo.dom.createDocument = function () {
                 doc = new ActiveXObject(prefixes[i] + ".XMLDOM");
             } catch (e) { /* squelch */
             }
-            ;
+
 
             if (doc) {
                 break;

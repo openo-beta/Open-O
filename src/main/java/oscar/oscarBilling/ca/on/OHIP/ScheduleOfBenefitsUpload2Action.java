@@ -54,10 +54,7 @@ public class ScheduleOfBenefitsUpload2Action extends ActionSupport {
     Logger _logger = org.oscarehr.util.MiscUtils.getLogger();
 
     boolean checkBox(String str) {
-        boolean check = false;
-        if (str != null && str.equals("on")) {
-            check = true;
-        }
+        boolean check = str != null && str.equals("on");
         return check;
     }
 

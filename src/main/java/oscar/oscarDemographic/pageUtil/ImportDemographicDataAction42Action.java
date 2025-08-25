@@ -2060,8 +2060,7 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
                 drug.setFreqCode(freq);
 
                 drug.setFreqCode(medArray[i].getFrequency());
-                if (medArray[i].getFrequency() != null && medArray[i].getFrequency().contains("PRN")) drug.setPrn(true);
-                else drug.setPrn(false);
+                drug.setPrn(medArray[i].getFrequency() != null && medArray[i].getFrequency().contains("PRN"));
 
                 drug.setRegionalIdentifier(medArray[i].getDrugIdentificationNumber());
                 drug.setRoute(medArray[i].getRoute());
@@ -2596,7 +2595,7 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
                         if (obr[j].getObservationDateTime() != null)
                             hrmDocSc.setSubClassDateTime(dateTimeFPtoDate(obr[j].getObservationDateTime(), timeShiftInDays));
                         hrmDocSc.setHrmDocumentId(hrmDoc.getId());
-                        hrmDocSc.setActive(j == 0 ? true : false);
+                        hrmDocSc.setActive(j == 0);
                         hrmDocSubClassDao.persist(hrmDocSc);
                     }
                     HRMreports.clear();
@@ -3278,8 +3277,7 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
         if (filename.length() < ext.length() + 2) return false;
         if (filename.charAt(filename.length() - ext.length() - 1) != '.') return false;
 
-        if (filename.toLowerCase().substring(filename.length() - ext.length()).equals(ext.toLowerCase())) return true;
-        else return false;
+        return filename.toLowerCase().substring(filename.length() - ext.length()).equals(ext.toLowerCase());
     }
 
     String fillUp(String filled, char c, int size) {
@@ -3337,7 +3335,7 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
             try {
                 InputStream in = getClass().getClassLoader()
                         .getResourceAsStream("iso-3166-2.json");
-                String theString = IOUtils.toString(in, "UTF-8");
+                String theString = IOUtils.toString(in, java.nio.charset.StandardCharsets.UTF_8);
                 obj = new org.codehaus.jettison.json.JSONObject(theString);
             } catch (Exception e) {
                 MiscUtils.getLogger().error("Error", e);

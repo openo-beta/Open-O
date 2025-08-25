@@ -367,7 +367,7 @@
                                                                                                  value=" Edit "> <input
                         class="btn"
                         type="submit" name="action" value="Delete"
-                        onClick="javascript:return onDelete();"></td>
+                        onClick="return onDelete();"></td>
             </tr>
 
         </table>
@@ -380,7 +380,7 @@
                 <td><input class="input" type="text" name="name"
                            value="<%=prop.getProperty("name", "")%>" maxlength='50'/>
                     (e.g. Flu shot) <input class="btn" type="submit" name="submit" value="Search"
-                                           onclick="javascript:return onSearch();"></td>
+                                           onclick="return onSearch();"></td>
             </tr>
 
             <%
@@ -422,7 +422,7 @@
                         type="hidden" name="action" value='<%=action%>'> <input
                         type="submit" name="submit" class="btn btn-primary"
                         value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnSave"/>"
-                        onclick="javascript:return onSave();"> <input class="btn" type="button"
+                        onclick="return onSave();"> <input class="btn" type="button"
                                                                       name="Cancel"
                                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnExit"/>"
                                                                       onClick="window.close()"></td>

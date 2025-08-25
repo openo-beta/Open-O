@@ -85,13 +85,13 @@
                         %>
                         <td style="background-color: #555;"><a
                                 href="javascript:void(0)"
-                                onclick="javascript:clickTab('<%=StaffManagerViewFormBean.tabs[x] %>'); return false;"><%=StaffManagerViewFormBean.tabs[x]%>
+                                onclick="clickTab('<%=StaffManagerViewFormBean.tabs[x] %>'); return false;"><%=StaffManagerViewFormBean.tabs[x]%>
                         </a></td>
                         <%
                         } else {
                         %>
                         <td><a href="javascript:void(0)"
-                               onclick="javascript:clickTab('<%=StaffManagerViewFormBean.tabs[x] %>');return false;"><%=StaffManagerViewFormBean.tabs[x]%>
+                               onclick="clickTab('<%=StaffManagerViewFormBean.tabs[x] %>');return false;"><%=StaffManagerViewFormBean.tabs[x]%>
                         </a></td>
                         <%
                             }

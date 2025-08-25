@@ -37,16 +37,16 @@ import org.oscarehr.util.LoggedInInfo;
 
 public interface AllergyManager {
 
-    public Allergy getAllergy(LoggedInInfo loggedInInfo, Integer id);
+    Allergy getAllergy(LoggedInInfo loggedInInfo, Integer id);
 
-    public List<Allergy> getActiveAllergies(LoggedInInfo loggedInInfo, Integer demographicNo);
+    List<Allergy> getActiveAllergies(LoggedInInfo loggedInInfo, Integer demographicNo);
 
-    public List<Allergy> getUpdatedAfterDate(LoggedInInfo loggedInInfo, Date updatedAfterThisDateInclusive,
-                                             int itemsToReturn);
+    List<Allergy> getUpdatedAfterDate(LoggedInInfo loggedInInfo, Date updatedAfterThisDateInclusive,
+                                      int itemsToReturn);
 
-    public List<Allergy> getByDemographicIdUpdatedAfterDate(LoggedInInfo loggedInInfo, Integer demographicId,
-                                                            Date updatedAfterThisDate);
+    List<Allergy> getByDemographicIdUpdatedAfterDate(LoggedInInfo loggedInInfo, Integer demographicId,
+                                                     Date updatedAfterThisDate);
 
-    public List<Allergy> getAllergiesByProgramProviderDemographicDate(LoggedInInfo loggedInInfo, Integer programId,
-                                                                      String providerNo, Integer demographicId, Calendar updatedAfterThisDateInclusive, int itemsToReturn);
+    List<Allergy> getAllergiesByProgramProviderDemographicDate(LoggedInInfo loggedInInfo, Integer programId,
+                                                               String providerNo, Integer demographicId, Calendar updatedAfterThisDateInclusive, int itemsToReturn);
 }

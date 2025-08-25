@@ -31,6 +31,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface Reporter {
 
-    public boolean generateReport(HttpServletRequest request);
+    boolean generateReport(HttpServletRequest request);
 
 }

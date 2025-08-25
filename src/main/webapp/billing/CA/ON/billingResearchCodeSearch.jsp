@@ -160,7 +160,7 @@
     </table>
     <input type="submit" name="submit" value="Confirm"><input
         type="button" name="cancel" value="Cancel"
-        onclick="javascript:window.close()">
+        onclick="window.close()">
     <form>
         <p></p>
         <p>&nbsp;</p>

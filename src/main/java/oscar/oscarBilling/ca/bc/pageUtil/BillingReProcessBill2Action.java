@@ -270,7 +270,7 @@ public class BillingReProcessBill2Action extends ActionSupport {
                     }
                 }
             } else {
-                throw new RuntimeException("BILLING BC - " + new java.util.Date().toString() + " - billingmaster_no " + billingmasterNo + " doesnt't seem to have a type");
+                throw new RuntimeException("BILLING BC - " + new java.util.Date() + " - billingmaster_no " + billingmasterNo + " doesnt't seem to have a type");
             }
 
             //Multiply the bill amount by the units - Fixes bug where wrong amount being sent to MSP
@@ -431,7 +431,7 @@ public class BillingReProcessBill2Action extends ActionSupport {
     private String getPersistedBillType(String billingmasterNo) {
         String qry = "select billingstatus from billingmaster where billingmaster.billingmaster_no = " +
                 billingmasterNo;
-        String row[] = SqlUtils.getRow(qry);
+        String[] row = SqlUtils.getRow(qry);
         String ret = null;
         if (row != null) {
             ret = row[0];

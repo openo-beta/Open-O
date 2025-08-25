@@ -65,33 +65,33 @@ import javax.servlet.http.HttpServletResponse;
 public interface FormsManager {
 
 
-    public static final String EFORM = "eform";
-    public static final String FORM = "form";
+    String EFORM = "eform";
+    String FORM = "form";
 
-    public List<EForm> findByStatus(LoggedInInfo loggedInInfo, boolean status, EFormSortOrder sortOrder);
+    List<EForm> findByStatus(LoggedInInfo loggedInInfo, boolean status, EFormSortOrder sortOrder);
 
-    public List<EForm> getEfromInGroupByGroupName(LoggedInInfo loggedInInfo, String groupName);
-
-
-    public List<String> getGroupNames();
+    List<EForm> getEfromInGroupByGroupName(LoggedInInfo loggedInInfo, String groupName);
 
 
-    public List<EFormData> findByDemographicId(LoggedInInfo loggedInInfo, Integer demographicId);
+    List<String> getGroupNames();
 
-    public List<EncounterForm> getAllEncounterForms();
 
-    public List<EncounterForm> getSelectedEncounterForms();
+    List<EFormData> findByDemographicId(LoggedInInfo loggedInInfo, Integer demographicId);
 
-    public List<PatientForm> getEncounterFormsbyDemographicNumber(LoggedInInfo loggedInInfo, Integer demographicId, boolean getAllVersions, boolean getOnlyPDFReadyForms);
+    List<EncounterForm> getAllEncounterForms();
 
-    public Integer saveFormDataAsEDoc(LoggedInInfo loggedInInfo, FormTransportContainer formTransportContainer);
+    List<EncounterForm> getSelectedEncounterForms();
 
-    public Path renderForm(HttpServletRequest request, HttpServletResponse response, Integer formId, Integer demographicNo) throws PDFGenerationException;
+    List<PatientForm> getEncounterFormsbyDemographicNumber(LoggedInInfo loggedInInfo, Integer demographicId, boolean getAllVersions, boolean getOnlyPDFReadyForms);
 
-    public Path renderForm(LoggedInInfo loggedInInfo, FormTransportContainer formTransportContainer);
+    Integer saveFormDataAsEDoc(LoggedInInfo loggedInInfo, FormTransportContainer formTransportContainer);
 
-    public Path renderForm(HttpServletRequest request, HttpServletResponse response, EctFormData.PatientForm form) throws PDFGenerationException;
+    Path renderForm(HttpServletRequest request, HttpServletResponse response, Integer formId, Integer demographicNo) throws PDFGenerationException;
 
-    public PatientForm getFormById(LoggedInInfo loggedInInfo, Integer formId, Integer demographicNo);
+    Path renderForm(LoggedInInfo loggedInInfo, FormTransportContainer formTransportContainer);
+
+    Path renderForm(HttpServletRequest request, HttpServletResponse response, EctFormData.PatientForm form) throws PDFGenerationException;
+
+    PatientForm getFormById(LoggedInInfo loggedInInfo, Integer formId, Integer demographicNo);
 }
 

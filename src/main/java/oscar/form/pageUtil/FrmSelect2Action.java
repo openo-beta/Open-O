@@ -183,6 +183,7 @@ public class FrmSelect2Action extends ActionSupport {
             for (EncounterForm encounterForm : encounterForms) {
                 if (encounterForm.getDisplayOrder() > oldPosition) {
                     isLast = false;
+                    break;
                 }
             }
 

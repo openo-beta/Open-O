@@ -62,7 +62,7 @@ public final class ContentRenderingServlet extends HttpServlet {
     }
 
     @Override
-    public final void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
             Content content = getContent(request, loggedInInfo);
@@ -106,7 +106,7 @@ public final class ContentRenderingServlet extends HttpServlet {
         return null;
     }
 
-    private Content getOruR01Content(HttpServletRequest request, LoggedInInfo loggedInInfo) throws EncodingNotSupportedException, UnsupportedEncodingException, HL7Exception {
+    private Content getOruR01Content(HttpServletRequest request, LoggedInInfo loggedInInfo) throws UnsupportedEncodingException, HL7Exception {
         // for OruR01 we need segmentId.
         String segmentId = request.getParameter("segmentId");
 

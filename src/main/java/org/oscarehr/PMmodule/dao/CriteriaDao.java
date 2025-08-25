@@ -37,15 +37,15 @@ import org.oscarehr.common.dao.AbstractDao;
 import org.springframework.stereotype.Repository;
 
 public interface CriteriaDao extends AbstractDao<Criteria> {
-    public List<Criteria> getCriteriaByTemplateId(Integer templateId);
+    List<Criteria> getCriteriaByTemplateId(Integer templateId);
 
-    public Criteria getCriteriaByTemplateIdVacancyIdTypeId(Integer templateId, Integer vacancyId, Integer typeId);
+    Criteria getCriteriaByTemplateIdVacancyIdTypeId(Integer templateId, Integer vacancyId, Integer typeId);
 
-    public List<Criteria> getCriteriasByVacancyId(Integer vacancyId);
+    List<Criteria> getCriteriasByVacancyId(Integer vacancyId);
 
-    public List<Criteria> getRefinedCriteriasByVacancyId(Integer vacancyId);
+    List<Criteria> getRefinedCriteriasByVacancyId(Integer vacancyId);
 
-    public List<Criteria> getRefinedCriteriasByTemplateId(Integer templateId);
+    List<Criteria> getRefinedCriteriasByTemplateId(Integer templateId);
 
 
 }

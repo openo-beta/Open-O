@@ -385,7 +385,7 @@ public final class MessageUploader {
         }
 
         if (limit != null && limit.intValue() > 0) {
-            sqlLimit = " limit " + limit.toString();
+            sqlLimit = " limit " + limit;
         }
 
         if (orderByLength) {
@@ -403,7 +403,7 @@ public final class MessageUploader {
                                 practitionerNum.insert(0, "0");
                             }
                         }
-                        sql = "select provider_no from provider where " + sqlSearchOn + " = '" + practitionerNum.toString() + "'" + sqlOrderByLength + sqlLimit;
+                        sql = "select provider_no from provider where " + sqlSearchOn + " = '" + practitionerNum + "'" + sqlOrderByLength + sqlLimit;
                     } else {
                         sql = "select provider_no from provider where " + sqlSearchOn + " LIKE '" + ((String) docNums.get(i)) + "'" + sqlOrderByLength + sqlLimit;
                     }

@@ -215,7 +215,7 @@
                                    reverse="<%=false%>">
                     <br/>
                     <a href="#"
-                       onclick="javascript: return popup(600, 1200, '../administration/?show=Forms', 'manageeforms');"
+                       onclick="return popup(600, 1200, '../administration/?show=Forms', 'manageeforms');"
                        style="color: #835921;"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.msgManageEFrm"/></a>
                 </security:oscarSec>
 
@@ -263,7 +263,7 @@
                             </td>
                             <td align='center'><a
                                     href="<%= request.getContextPath() %>/eform/removeEForm.do?fdid=<%=curform.get("fdid")%>&group_view=<%=groupView%>&demographic_no=<%=demographic_no%>&parentAjaxId=<%=parentAjaxId%>"
-                                    onClick="javascript: return confirm('Are you sure you want to delete this eform?');"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadimages.btnDelete"/></a></td>
+                                    onClick="return confirm('Are you sure you want to delete this eform?');"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadimages.btnDelete"/></a></td>
                         </tr>
                         <%
                             }

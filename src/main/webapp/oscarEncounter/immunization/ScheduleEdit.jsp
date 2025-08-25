@@ -169,7 +169,7 @@
                 cmbMonth.selectedIndex = 0;
                 txtDay.value = '';
             }
-            return;
+
         }
 
         function loadPage() {
@@ -178,27 +178,27 @@
         .<%=node + "_givenDate"%>.
             value
         )
-            ;
+
             var vLot = (frm
         .<%=node + "_lot"%>.
             value
         )
-            ;
+
             var vProvider = (frm
         .<%=node + "_provider"%>.
             value
         )
-            ;
+
             var vRefusedDate = (frm
         .<%=node + "_refusedDate"%>.
             value
         )
-            ;
+
             var vComments = (frm
         .<%=node + "_comments"%>.
             value
         )
-            ;
+
             var editFrm = document.forms[0];
 
             if (vGivenDate.length > 0) {
@@ -298,7 +298,7 @@
                     </tr>
                     <tr>
                         <td style="font-weight: bold"><input type="radio"
-                                                             name="chkStatus" onclick="javascript:changeStatus(0);"
+                                                             name="chkStatus" onclick="changeStatus(0);"
                                                              value="0"
                                                              checked="checked"></input> <span
                                 onclick="chkStatus[0].click()">Not
@@ -306,7 +306,7 @@
                     </tr>
                     <tr>
                         <td style="font-weight: bold"><input type="radio"
-                                                             name="chkStatus" onclick="javascript:changeStatus(1);"
+                                                             name="chkStatus" onclick="changeStatus(1);"
                                                              value="1"></input>
                             <span onclick="chkStatus[1].click()">Immunization Given</span></td>
                     </tr>
@@ -349,7 +349,7 @@
                     </tr>
                     <tr>
                         <td style="font-weight: bold"><input type="radio"
-                                                             name="chkStatus" onclick="javascript:changeStatus(2);"
+                                                             name="chkStatus" onclick="changeStatus(2);"
                                                              value="2"></input>
                             <span onclick="chkStatus[2].click()">Refused</span></td>
                     </tr>
@@ -389,9 +389,9 @@
                     <tr>
                         <td align="right"><br/>
                             <input type="button" style="width: 120px"
-                                   onclick="javascript:saveClose();" value="Save and Close"/> <input
+                                   onclick="saveClose();" value="Save and Close"/> <input
                                     type="button" style="width: 120px"
-                                    onclick="javascript:window.close();" value="Cancel"/></td>
+                                    onclick="window.close();" value="Cancel"/></td>
                     </tr>
                 </table>
             </form>

@@ -39,12 +39,12 @@ import org.springframework.stereotype.Repository;
 
 public interface CriteriaTypeOptionDao extends AbstractDao<CriteriaTypeOption> {
 
-    public List<CriteriaTypeOption> findAll();
+    List<CriteriaTypeOption> findAll();
 
-    public List<CriteriaTypeOption> getCriteriaTypeOptionByTypeId(Integer typeId);
+    List<CriteriaTypeOption> getCriteriaTypeOptionByTypeId(Integer typeId);
 
-    public CriteriaTypeOption getByValue(String optionValue);
+    CriteriaTypeOption getByValue(String optionValue);
 
-    public CriteriaTypeOption getByValueAndTypeId(String optionValue, Integer typeId);
+    CriteriaTypeOption getByValueAndTypeId(String optionValue, Integer typeId);
 }
  

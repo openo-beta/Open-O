@@ -194,8 +194,6 @@ public class RptConsultReportData {
 
         }
 
-        ;
-
         public final class ConLetter {
             public String document_no;
             public String docdesc;
@@ -204,9 +202,6 @@ public class RptConsultReportData {
             public java.sql.Date docDate;
         }
 
-        ;
-
     }
 
-    ;
 }

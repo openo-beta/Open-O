@@ -43,30 +43,30 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 public interface CaseManagementIssueDAO {
 
-    public List<CaseManagementIssue> getIssuesByDemographic(String demographic_no);
+    List<CaseManagementIssue> getIssuesByDemographic(String demographic_no);
 
-    public List<CaseManagementIssue> getIssuesByDemographicOrderActive(Integer demographic_no, Boolean resolved);
+    List<CaseManagementIssue> getIssuesByDemographicOrderActive(Integer demographic_no, Boolean resolved);
 
-    public List<CaseManagementIssue> getIssuesByNote(Integer noteId, Boolean resolved);
+    List<CaseManagementIssue> getIssuesByNote(Integer noteId, Boolean resolved);
 
-    public Issue getIssueByCmnId(Integer cmnIssueId);
+    Issue getIssueByCmnId(Integer cmnIssueId);
 
-    public CaseManagementIssue getIssuebyId(String demo, String id);
+    CaseManagementIssue getIssuebyId(String demo, String id);
 
-    public CaseManagementIssue getIssuebyIssueCode(String demo, String issueCode);
+    CaseManagementIssue getIssuebyIssueCode(String demo, String issueCode);
 
-    public void deleteIssueById(CaseManagementIssue issue);
+    void deleteIssueById(CaseManagementIssue issue);
 
-    public void saveAndUpdateCaseIssues(List<CaseManagementIssue> issuelist);
+    void saveAndUpdateCaseIssues(List<CaseManagementIssue> issuelist);
 
-    public void saveIssue(CaseManagementIssue issue);
+    void saveIssue(CaseManagementIssue issue);
 
-    public List<CaseManagementIssue> getAllCertainIssues();
+    List<CaseManagementIssue> getAllCertainIssues();
 
-    public List<Integer> getIssuesByProgramsSince(Date date, List<Program> programs);
+    List<Integer> getIssuesByProgramsSince(Date date, List<Program> programs);
 
-    public List<CaseManagementIssue> getIssuesByDemographicSince(String demographic_no, Date date);
+    List<CaseManagementIssue> getIssuesByDemographicSince(String demographic_no, Date date);
 
-    public List<FacilityIdDemographicIssueCompositePk> getIssueIdsForIntegrator(Integer facilityId,
-                                                                                Integer demographicNo);
+    List<FacilityIdDemographicIssueCompositePk> getIssueIdsForIntegrator(Integer facilityId,
+                                                                         Integer demographicNo);
 }

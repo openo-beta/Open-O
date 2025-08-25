@@ -49,7 +49,6 @@ public class EcaresForm2Action extends ActionSupport {
 
     private final FormeCARESManager formeCARESManager = SpringUtils.getBean(FormeCARESManager.class);
     private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-    ;
 
     public String exexute() {
         if ("getTickler".equals(request.getParameter("method"))) {

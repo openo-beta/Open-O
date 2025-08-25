@@ -38,13 +38,13 @@ import org.springframework.stereotype.Repository;
 
 public interface Hl7TextMessageDao extends AbstractDao<Hl7TextMessage> {
 
-    public void updateIfFillerOrderNumberMatches(String base64EncodedeMessage, int fileUploadCheckId, Integer id);
+    void updateIfFillerOrderNumberMatches(String base64EncodedeMessage, int fileUploadCheckId, Integer id);
 
-    public List<Hl7TextMessage> findByFileUploadCheckId(int id);
+    List<Hl7TextMessage> findByFileUploadCheckId(int id);
 
-	public List<Hl7TextMessage> findByIds(List<Integer> ids);
+	List<Hl7TextMessage> findByIds(List<Integer> ids);
 
-    public List<Integer> getLabResultsSince(Integer demographicNo, Date updateDate);
+    List<Integer> getLabResultsSince(Integer demographicNo, Date updateDate);
 
-    public List<Hl7TextMessage> findByDemographicNo(Integer demographicNo, int offset, int limit);
+    List<Hl7TextMessage> findByDemographicNo(Integer demographicNo, int offset, int limit);
 }

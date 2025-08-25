@@ -49,7 +49,7 @@ public class RBTAddToGroup2Action extends ActionSupport {
         String[] templateIdArray = request.getParameterValues("tid");
         String groupName = request.getParameter("groupName");
 
-        if (templateIdArray != null && templateIdArray.length > 0) {
+        if (templateIdArray != null) {
             for (String templateId : templateIdArray) {
                 rbtGroupManager.addTemplateToGroup(loggedInInfo, groupName, Integer.parseInt(templateId));
             }

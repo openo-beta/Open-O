@@ -2200,7 +2200,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
 
 //customized key
                             if (oscarVariables.getProperty("demographicExt") != null) {
-                                boolean bExtForm = oscarVariables.getProperty("demographicExtForm") != null ? true : false;
+                                boolean bExtForm = oscarVariables.getProperty("demographicExtForm") != null;
                                 String[] propDemoExtForm = bExtForm ? (oscarVariables.getProperty("demographicExtForm", "").split("\\|")) : null;
                                 String[] propDemoExt = oscarVariables.getProperty("demographicExt", "").split("\\|");
                                 for (int k = 0; k < propDemoExt.length; k = k + 2) {

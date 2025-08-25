@@ -38,50 +38,50 @@ import org.springframework.stereotype.Repository;
 
 public interface DemographicExtDao extends AbstractDao<DemographicExt> {
 
-    public DemographicExt getDemographicExt(Integer id);
+    DemographicExt getDemographicExt(Integer id);
 
-    public List<DemographicExt> getDemographicExtByDemographicNo(Integer demographicNo);
+    List<DemographicExt> getDemographicExtByDemographicNo(Integer demographicNo);
 
-    public DemographicExt getDemographicExt(Integer demographicNo, DemographicExtKey demographicExtKey);
+    DemographicExt getDemographicExt(Integer demographicNo, DemographicExtKey demographicExtKey);
 
-    public DemographicExt getDemographicExt(Integer demographicNo, String key);
+    DemographicExt getDemographicExt(Integer demographicNo, String key);
 
-    public List<DemographicExt> getDemographicExtByKeyAndValue(DemographicExtKey demographicExtKey, String value);
+    List<DemographicExt> getDemographicExtByKeyAndValue(DemographicExtKey demographicExtKey, String value);
 
-    public List<DemographicExt> getDemographicExtByKeyAndValue(String key, String value);
+    List<DemographicExt> getDemographicExtByKeyAndValue(String key, String value);
 
-    public DemographicExt getLatestDemographicExt(Integer demographicNo, String key);
+    DemographicExt getLatestDemographicExt(Integer demographicNo, String key);
 
-    public void updateDemographicExt(DemographicExt de);
+    void updateDemographicExt(DemographicExt de);
 
-    public void saveDemographicExt(Integer demographicNo, String key, String value);
+    void saveDemographicExt(Integer demographicNo, String key, String value);
 
-    public void removeDemographicExt(Integer id);
+    void removeDemographicExt(Integer id);
 
-    public void removeDemographicExt(Integer demographicNo, String key);
+    void removeDemographicExt(Integer demographicNo, String key);
 
-    public Map<String, String> getAllValuesForDemo(Integer demo);
+    Map<String, String> getAllValuesForDemo(Integer demo);
 
-    public void addKey(String providerNo, Integer demo, String key, String value);
+    void addKey(String providerNo, Integer demo, String key, String value);
 
-    public void addKey(String providerNo, Integer demo, String key, String newValue, String oldValue);
+    void addKey(String providerNo, Integer demo, String key, String newValue, String oldValue);
 
-    public List<String[]> getListOfValuesForDemo(Integer demo);
+    List<String[]> getListOfValuesForDemo(Integer demo);
 
-    public String getValueForDemoKey(Integer demo, String key);
+    String getValueForDemoKey(Integer demo, String key);
 
-    public List<Integer> findDemographicIdsByKeyVal(DemographicExtKey demographicExtKey, String val);
+    List<Integer> findDemographicIdsByKeyVal(DemographicExtKey demographicExtKey, String val);
 
-    public List<Integer> findDemographicIdsByKeyVal(String key, String val);
+    List<Integer> findDemographicIdsByKeyVal(String key, String val);
 
-    public List<DemographicExt> getMultipleDemographicExtKeyForDemographicNumbersByProviderNumber(
-            final DemographicExtKey demographicExtKey,
-            final Collection<Integer> demographicNumbers,
-            final String midwifeNumber);
+    List<DemographicExt> getMultipleDemographicExtKeyForDemographicNumbersByProviderNumber(
+        final DemographicExtKey demographicExtKey,
+        final Collection<Integer> demographicNumbers,
+        final String midwifeNumber);
 
-    public List<Integer> getDemographicNumbersByDemographicExtKeyAndProviderNumberAndDemographicLastNameRegex(
-            final DemographicExtKey key,
-            final String providerNumber,
-            final String lastNameRegex);
+    List<Integer> getDemographicNumbersByDemographicExtKeyAndProviderNumberAndDemographicLastNameRegex(
+        final DemographicExtKey key,
+        final String providerNumber,
+        final String lastNameRegex);
 
 }

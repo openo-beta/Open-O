@@ -191,7 +191,7 @@ public class ChildImmunizationReport implements PreventionReport {
                 String numMonths = "------";
                 if (lastDate != null) {
                     int num = UtilDateUtilities.getNumMonths(lastDate, asofDate);
-                    numMonths = "" + num + " months";
+                    numMonths = num + " months";
                 }
 
                 Date dob = dd.getDemographicDOB(loggedInInfo, demo.toString());
@@ -281,10 +281,7 @@ public class ChildImmunizationReport implements PreventionReport {
     }
 
     boolean ineligible(Map<String, Object> h) {
-        boolean ret = false;
-        if (h.get("refused") != null && ((String) h.get("refused")).equals("2")) {
-            ret = true;
-        }
+        boolean ret = h.get("refused") != null && ((String) h.get("refused")).equals("2");
         return ret;
     }
 
@@ -340,7 +337,7 @@ public class ChildImmunizationReport implements PreventionReport {
                         if (index == 0) {
                             log.debug("fluData " + measurementData.getDataField());
                             log.debug("lastFollowup " + measurementData.getDateObservedAsDate() + " last procedure " + measurementData.getDateObservedAsDate());
-                            log.debug("toString: " + measurementData.toString());
+                            log.debug("toString: " + measurementData);
                             prd.lastFollowup = observationDate;
                             prd.lastFollupProcedure = measurementData.getDataField();
 

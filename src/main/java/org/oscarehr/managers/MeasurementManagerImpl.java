@@ -190,10 +190,7 @@ public class MeasurementManagerImpl implements MeasurementManager {
     public boolean isProperty(String prop) {
         PropertyDao propertyDao = (PropertyDao) SpringUtils.getBean(PropertyDao.class);
         Property props = propertyDao.checkByName(prop);
-        if (props != null) {
-            return true;
-        }
-        return false;
+        return props != null;
     }
 
     @Override

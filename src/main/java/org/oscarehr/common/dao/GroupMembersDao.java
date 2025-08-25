@@ -36,19 +36,19 @@ import java.util.List;
 
 public interface GroupMembersDao extends AbstractDao<GroupMembers> {
 
-    public List<GroupMembers> findRemoteByGroupId(int groupId);
+    List<GroupMembers> findRemoteByGroupId(int groupId);
 
-    public List<GroupMembers> findLocalByGroupId(int groupId);
+    List<GroupMembers> findLocalByGroupId(int groupId);
 
-    public List<GroupMembers> findByGroupId(int groupId);
+    List<GroupMembers> findByGroupId(int groupId);
 
-    public List<Object[]> findMembersByGroupId(int groupId);
+    List<Object[]> findMembersByGroupId(int groupId);
 
-    public List<GroupMembers> findByProviderNumberAndFacilityId(String providerNo, Integer facilityId);
+    List<GroupMembers> findByProviderNumberAndFacilityId(String providerNo, Integer facilityId);
 
-    public List<GroupMembers> findGroupMember(String providerNo, int groupId);
+    List<GroupMembers> findGroupMember(String providerNo, int groupId);
 
-    public List<GroupMembers> findByFacilityId(Integer facilityId);
+    List<GroupMembers> findByFacilityId(Integer facilityId);
 
-    public GroupMembers findByIdentity(ContactIdentifier contactIdentifier);
+    GroupMembers findByIdentity(ContactIdentifier contactIdentifier);
 }

@@ -36,12 +36,12 @@ import org.springframework.stereotype.Repository;
 
 public interface EncounterFormDao extends AbstractDao<EncounterForm> {
 
-    public List<EncounterForm> findAll();
+    List<EncounterForm> findAll();
 
-    public List<EncounterForm> findAllNotHidden();
+    List<EncounterForm> findAllNotHidden();
 
-    public List<EncounterForm> findByFormName(String formName);
+    List<EncounterForm> findByFormName(String formName);
 
-    public List<EncounterForm> findByFormTable(String formTable);
+    List<EncounterForm> findByFormTable(String formTable);
 
 }

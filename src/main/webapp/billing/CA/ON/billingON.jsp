@@ -71,7 +71,7 @@
     String sql0 = null;
     ResultSet rs0 = null;
     String strToday = UtilDateUtilities.getToday("yyyy-MM-dd");
-    boolean bSingleClick = oscarVariables.getProperty("onBillingSingleClick", "").equals("yes") ? true : false;
+    boolean bSingleClick = oscarVariables.getProperty("onBillingSingleClick", "").equals("yes");
     boolean bHospitalBilling = false;
     String clinicview = bHospitalBilling ? oscarVariables.getProperty("clinic_hospital", "") : oscarVariables.getProperty("clinic_view", "");
     String clinicNo = oscarVariables.getProperty("clinic_no", "").trim();
@@ -1756,7 +1756,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                 <%
                                     if (!org.oscarehr.common.IsPropertiesOn.isMultisitesEnable()) {
                                         OscarProperties props = OscarProperties.getInstance();
-                                        boolean bMoreAddr = props.getProperty("scheduleSiteID", "").equals("") ? false : true;
+                                        boolean bMoreAddr = !props.getProperty("scheduleSiteID", "").equals("");
                                         if (bMoreAddr) {
                                             BillingSiteIdPrep sitePrep = new BillingSiteIdPrep();
                                             String[] siteList = sitePrep.getSiteList();

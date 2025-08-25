@@ -23,6 +23,7 @@
  */
 package org.oscarehr.common.dao;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -60,8 +61,8 @@ public class CustomFilterDaoTest extends DaoTestFixtures {
         dao.persist(entity);
 
         CustomFilter cf = dao.find(entity.getId());
-        assertTrue(cf != null);
-        assertTrue(cf.getProgram() != null);
+        assertNotNull(cf);
+        assertNotNull(cf.getProgram());
         assertTrue(cf.getAssignees().size() == 1);
     }
 

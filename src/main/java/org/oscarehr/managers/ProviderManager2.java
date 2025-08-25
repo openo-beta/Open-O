@@ -182,11 +182,11 @@ public class ProviderManager2 {
         }
 
         if (map.get("rx_use_rx3") != null) {
-            settings.setUseRx3("yes".equals(map.get("rx_use_rx3").getValue()) ? true : false);
+            settings.setUseRx3("yes".equals(map.get("rx_use_rx3").getValue()));
         }
 
         if (map.get("rx_show_patient_dob") != null) {
-            settings.setShowPatientDob("yes".equals(map.get("rx_show_patient_dob").getValue()) ? true : false);
+            settings.setShowPatientDob("yes".equals(map.get("rx_show_patient_dob").getValue()));
         }
 
         if (map.get("rx_default_quantity") != null) {
@@ -218,14 +218,14 @@ public class ProviderManager2 {
             settings.setConsultationLetterHeadNameDefault(map.get("consultation_letterheadname_default").getValue());
         }
         if (map.get("edoc_browser_in_document_report") != null) {
-            settings.setDocumentBrowserInDocumentReport("yes".equals(map.get("edoc_browser_in_document_report").getValue()) ? true : false);
+            settings.setDocumentBrowserInDocumentReport("yes".equals(map.get("edoc_browser_in_document_report").getValue()));
         }
         if (map.get("edoc_browser_in_master_file") != null) {
-            settings.setDocumentBrowserInMasterFile("yes".equals(map.get("edoc_browser_in_master_file").getValue()) ? true : false);
+            settings.setDocumentBrowserInMasterFile("yes".equals(map.get("edoc_browser_in_master_file").getValue()));
         }
 
         if (map.get("cpp_single_line") != null) {
-            settings.setCppSingleLine("yes".equals(map.get("cpp_single_line").getValue()) ? true : false);
+            settings.setCppSingleLine("yes".equals(map.get("cpp_single_line").getValue()));
         }
 
         //custom summary display
@@ -240,7 +240,7 @@ public class ProviderManager2 {
         //cpp.pref.enable - use for now so changes in the new to hide or display cpp items reflect in the encounter as well as new ui
         //if this =on then enabled other wise disabled
         if (map.get("cpp.pref.enable") != null) {
-            settings.setSummaryItemCustomDisplay("on".equals(map.get("cpp.pref.enable").getValue()) ? true : false);
+            settings.setSummaryItemCustomDisplay("on".equals(map.get("cpp.pref.enable").getValue()));
         }
 
 
@@ -248,20 +248,20 @@ public class ProviderManager2 {
         //.position exists -> value off = disable
         //except for cpp.pref.enable if the absence of the property in the db the UI should display "true" or "Enable" for .position.
         if (map.get(PreferenceManagerImpl.ONGOING_POS) != null) {
-            settings.setCppDisplayOngoingConcerns("on".equals(map.get(PreferenceManagerImpl.ONGOING_POS).getValue()) ? true : false);
+            settings.setCppDisplayOngoingConcerns("on".equals(map.get(PreferenceManagerImpl.ONGOING_POS).getValue()));
         } else if (map.get(PreferenceManagerImpl.OLD_ONGOING_CONCERNS_POS) != null) {
-            settings.setCppDisplayOngoingConcerns(!"".equals(map.get(PreferenceManagerImpl.OLD_ONGOING_CONCERNS_POS).getValue()) ? true : false);
+            settings.setCppDisplayOngoingConcerns(!"".equals(map.get(PreferenceManagerImpl.OLD_ONGOING_CONCERNS_POS).getValue()));
         } else {
             settings.setCppDisplayOngoingConcerns(true);
         }
         if (map.get(PreferenceManagerImpl.ONGOING_START_DATE) != null) {
-            settings.setCppOngoingConcernsStartDate("on".equals(map.get(PreferenceManagerImpl.ONGOING_START_DATE).getValue()) ? true : false);
+            settings.setCppOngoingConcernsStartDate("on".equals(map.get(PreferenceManagerImpl.ONGOING_START_DATE).getValue()));
         }
         if (map.get(PreferenceManagerImpl.ONGOING_RES_DATE) != null) {
-            settings.setCppOngoingConcernsResDate("on".equals(map.get(PreferenceManagerImpl.ONGOING_RES_DATE).getValue()) ? true : false);
+            settings.setCppOngoingConcernsResDate("on".equals(map.get(PreferenceManagerImpl.ONGOING_RES_DATE).getValue()));
         }
         if (map.get(PreferenceManagerImpl.ONGOING_PROBLEM_STATUS) != null) {
-            settings.setCppOngoingConcernsProblemStatus("on".equals(map.get(PreferenceManagerImpl.ONGOING_PROBLEM_STATUS).getValue()) ? true : false);
+            settings.setCppOngoingConcernsProblemStatus("on".equals(map.get(PreferenceManagerImpl.ONGOING_PROBLEM_STATUS).getValue()));
         }
 
         /*
@@ -275,99 +275,99 @@ public class ProviderManager2 {
          *
          */
         if (map.get(PreferenceManagerImpl.MED_HX_POS) != null) {
-            settings.setCppDisplayMedHx("on".equals(map.get(PreferenceManagerImpl.MED_HX_POS).getValue()) ? true : false);
+            settings.setCppDisplayMedHx("on".equals(map.get(PreferenceManagerImpl.MED_HX_POS).getValue()));
         } else if (map.get(PreferenceManagerImpl.OLD_MEDICAL_HISTORY_POS) != null) {
-            settings.setCppDisplayMedHx(!"".equals(map.get(PreferenceManagerImpl.OLD_MEDICAL_HISTORY_POS).getValue()) ? true : false);
+            settings.setCppDisplayMedHx(!"".equals(map.get(PreferenceManagerImpl.OLD_MEDICAL_HISTORY_POS).getValue()));
         } else {
             settings.setCppDisplayMedHx(true);
         }
         if (map.get(PreferenceManagerImpl.MED_HX_START_DATE) != null) {
-            settings.setCppMedHxStartDate("on".equals(map.get(PreferenceManagerImpl.MED_HX_START_DATE).getValue()) ? true : false);
+            settings.setCppMedHxStartDate("on".equals(map.get(PreferenceManagerImpl.MED_HX_START_DATE).getValue()));
         }
         if (map.get(PreferenceManagerImpl.MED_HX_RES_DATE) != null) {
-            settings.setCppMedHxResDate("on".equals(map.get(PreferenceManagerImpl.MED_HX_RES_DATE).getValue()) ? true : false);
+            settings.setCppMedHxResDate("on".equals(map.get(PreferenceManagerImpl.MED_HX_RES_DATE).getValue()));
         }
         if (map.get(PreferenceManagerImpl.MED_HX_TREATMENT) != null) {
-            settings.setCppMedHxTreatment("on".equals(map.get(PreferenceManagerImpl.MED_HX_TREATMENT).getValue()) ? true : false);
+            settings.setCppMedHxTreatment("on".equals(map.get(PreferenceManagerImpl.MED_HX_TREATMENT).getValue()));
         }
         if (map.get(PreferenceManagerImpl.MED_HX_PROCEDURE_DATE) != null) {
-            settings.setCppMedHxProcedureDate("on".equals(map.get(PreferenceManagerImpl.MED_HX_PROCEDURE_DATE).getValue()) ? true : false);
+            settings.setCppMedHxProcedureDate("on".equals(map.get(PreferenceManagerImpl.MED_HX_PROCEDURE_DATE).getValue()));
         }
 
         if (map.get(PreferenceManagerImpl.SOC_HX_POS) != null) {
-            settings.setCppDisplaySocialHx("on".equals(map.get(PreferenceManagerImpl.SOC_HX_POS).getValue()) ? true : false);
+            settings.setCppDisplaySocialHx("on".equals(map.get(PreferenceManagerImpl.SOC_HX_POS).getValue()));
         } else if (map.get(PreferenceManagerImpl.OLD_SOCIAL_HISTORY_POS) != null) {
-            settings.setCppDisplaySocialHx(!"".equals(map.get(PreferenceManagerImpl.OLD_SOCIAL_HISTORY_POS).getValue()) ? true : false);
+            settings.setCppDisplaySocialHx(!"".equals(map.get(PreferenceManagerImpl.OLD_SOCIAL_HISTORY_POS).getValue()));
         } else {
             settings.setCppDisplaySocialHx(true);
         }
 
         if (map.get(PreferenceManagerImpl.SOC_HX_START_DATE) != null) {
-            settings.setCppSocialHxStartDate("on".equals(map.get(PreferenceManagerImpl.SOC_HX_START_DATE).getValue()) ? true : false);
+            settings.setCppSocialHxStartDate("on".equals(map.get(PreferenceManagerImpl.SOC_HX_START_DATE).getValue()));
         }
         if (map.get(PreferenceManagerImpl.SOC_HX_RES_DATE) != null) {
-            settings.setCppSocialHxResDate("on".equals(map.get(PreferenceManagerImpl.SOC_HX_RES_DATE).getValue()) ? true : false);
+            settings.setCppSocialHxResDate("on".equals(map.get(PreferenceManagerImpl.SOC_HX_RES_DATE).getValue()));
         }
 
         if (map.get(PreferenceManagerImpl.REMINDERS_POS) != null) {
-            settings.setCppDisplayReminders("on".equals(map.get(PreferenceManagerImpl.REMINDERS_POS).getValue()) ? true : false);
+            settings.setCppDisplayReminders("on".equals(map.get(PreferenceManagerImpl.REMINDERS_POS).getValue()));
         } else if (map.get(PreferenceManagerImpl.OLD_REMINDERS_POS) != null) {
-            settings.setCppDisplayReminders(!"".equals(map.get(PreferenceManagerImpl.OLD_REMINDERS_POS).getValue()) ? true : false);
+            settings.setCppDisplayReminders(!"".equals(map.get(PreferenceManagerImpl.OLD_REMINDERS_POS).getValue()));
         } else {
             settings.setCppDisplayReminders(true);
         }
         if (map.get(PreferenceManagerImpl.REMINDERS_START_DATE) != null) {
-            settings.setCppRemindersStartDate("on".equals(map.get(PreferenceManagerImpl.REMINDERS_START_DATE).getValue()) ? true : false);
+            settings.setCppRemindersStartDate("on".equals(map.get(PreferenceManagerImpl.REMINDERS_START_DATE).getValue()));
         }
         if (map.get(PreferenceManagerImpl.REMINDERS_RES_DATE) != null) {
-            settings.setCppRemindersResDate("on".equals(map.get(PreferenceManagerImpl.REMINDERS_RES_DATE).getValue()) ? true : false);
+            settings.setCppRemindersResDate("on".equals(map.get(PreferenceManagerImpl.REMINDERS_RES_DATE).getValue()));
         }
 
         if (map.get(PreferenceManagerImpl.PREVENTION_POS) != null) {
-            settings.setSummaryItemDisplayPreventions("on".equals(map.get(PreferenceManagerImpl.PREVENTION_POS).getValue()) ? true : false);
+            settings.setSummaryItemDisplayPreventions("on".equals(map.get(PreferenceManagerImpl.PREVENTION_POS).getValue()));
         } else {
             settings.setSummaryItemDisplayPreventions(true);
         }
         if (map.get(PreferenceManagerImpl.FAM_HX_POS) != null) {
-            settings.setSummaryItemDisplayFamHx("on".equals(map.get(PreferenceManagerImpl.FAM_HX_POS).getValue()) ? true : false);
+            settings.setSummaryItemDisplayFamHx("on".equals(map.get(PreferenceManagerImpl.FAM_HX_POS).getValue()));
         } else {
             settings.setSummaryItemDisplayFamHx(true);
         }
         if (map.get(PreferenceManagerImpl.RISK_FACTORS_POS) != null) {
-            settings.setSummaryItemDisplayRiskFactors("on".equals(map.get(PreferenceManagerImpl.RISK_FACTORS_POS).getValue()) ? true : false);
+            settings.setSummaryItemDisplayRiskFactors("on".equals(map.get(PreferenceManagerImpl.RISK_FACTORS_POS).getValue()));
         } else {
             settings.setSummaryItemDisplayRiskFactors(true);
         }
         if (map.get(PreferenceManagerImpl.ALLERGIES_POS) != null) {
-            settings.setSummaryItemDisplayAllergies("on".equals(map.get(PreferenceManagerImpl.ALLERGIES_POS).getValue()) ? true : false);
+            settings.setSummaryItemDisplayAllergies("on".equals(map.get(PreferenceManagerImpl.ALLERGIES_POS).getValue()));
         } else {
             settings.setSummaryItemDisplayAllergies(true);
         }
 
         if (map.get(PreferenceManagerImpl.MEDS_POS) != null) {
-            settings.setSummaryItemDisplayMeds("on".equals(map.get(PreferenceManagerImpl.MEDS_POS).getValue()) ? true : false);
+            settings.setSummaryItemDisplayMeds("on".equals(map.get(PreferenceManagerImpl.MEDS_POS).getValue()));
         } else {
             settings.setSummaryItemDisplayMeds(true);
         }
         if (map.get(PreferenceManagerImpl.OTHER_MEDS_POS) != null) {
-            settings.setSummaryItemDisplayOtherMeds("on".equals(map.get(PreferenceManagerImpl.OTHER_MEDS_POS).getValue()) ? true : false);
+            settings.setSummaryItemDisplayOtherMeds("on".equals(map.get(PreferenceManagerImpl.OTHER_MEDS_POS).getValue()));
         } else {
             settings.setSummaryItemDisplayOtherMeds(true);
         }
         if (map.get(PreferenceManagerImpl.ASSESSMENTS_POS) != null) {
-            settings.setSummaryItemDisplayAssessments("on".equals(map.get(PreferenceManagerImpl.ASSESSMENTS_POS).getValue()) ? true : false);
+            settings.setSummaryItemDisplayAssessments("on".equals(map.get(PreferenceManagerImpl.ASSESSMENTS_POS).getValue()));
         } else {
             settings.setSummaryItemDisplayAssessments(true);
         }
 
         if (map.get(PreferenceManagerImpl.INCOMING_POS) != null) {
-            settings.setSummaryItemDisplayIncoming("on".equals(map.get(PreferenceManagerImpl.INCOMING_POS).getValue()) ? true : false);
+            settings.setSummaryItemDisplayIncoming("on".equals(map.get(PreferenceManagerImpl.INCOMING_POS).getValue()));
         } else {
             settings.setSummaryItemDisplayIncoming(true);
         }
 
         if (map.get(PreferenceManagerImpl.DS_SUPPORT_POS) != null) {
-            settings.setSummaryItemDisplayDsSupport("on".equals(map.get(PreferenceManagerImpl.DS_SUPPORT_POS).getValue()) ? true : false);
+            settings.setSummaryItemDisplayDsSupport("on".equals(map.get(PreferenceManagerImpl.DS_SUPPORT_POS).getValue()));
         } else {
             settings.setSummaryItemDisplayDsSupport(true);
         }
@@ -377,7 +377,7 @@ public class ProviderManager2 {
         }
 
         if (map.get("cme_note_format") != null) {
-            settings.setCmeNoteFormat("yes".equals(map.get("cme_note_format").getValue()) ? true : false);
+            settings.setCmeNoteFormat("yes".equals(map.get("cme_note_format").getValue()));
         }
 
         if (map.get("quickChartsize") != null) {
@@ -391,14 +391,14 @@ public class ProviderManager2 {
             settings.setEncounterWindowHeight(map.get("encounterWindowHeight").getValue());
         }
         if (map.get("encounterWindowMaximize") != null) {
-            settings.setEncounterWindowMaximize("yes".equals(map.get("encounterWindowMaximize").getValue()) ? true : false);
+            settings.setEncounterWindowMaximize("yes".equals(map.get("encounterWindowMaximize").getValue()));
         }
         if (map.get("favourite_eform_group") != null) {
             settings.setFavoriteFormGroup(map.get("favourite_eform_group").getValue());
         }
 
         if (map.get("lab_ack_comment") != null) {
-            settings.setDisableCommentOnAck("yes".equals(map.get("lab_ack_comment").getValue()) ? true : false);
+            settings.setDisableCommentOnAck("yes".equals(map.get("lab_ack_comment").getValue()));
         }
 
         if (map.get("olis_reportingLab") != null) {
@@ -456,7 +456,7 @@ public class ProviderManager2 {
         settings.setDefaultServiceType(pp.getDefaultServiceType());
         settings.setDefaultDxCode(pp.getDefaultDxCode());
 
-        settings.setDefaultDoNotDeleteBilling(pp.getDefaultDoNotDeleteBilling() == 1 ? true : false);
+        settings.setDefaultDoNotDeleteBilling(pp.getDefaultDoNotDeleteBilling() == 1);
 
         settings.setPrintQrCodeOnPrescription(pp.isPrintQrCodeOnPrescriptions());
         settings.seteRxEnabled(pp.isERxEnabled());
@@ -690,11 +690,11 @@ public class ProviderManager2 {
 
 
         if (map.get("rx_use_rx3") != null) {
-            settings.setUseRx3("yes".equals(map.get("rx_use_rx3").getValue()) ? true : false);
+            settings.setUseRx3("yes".equals(map.get("rx_use_rx3").getValue()));
         }
 
         if (map.get("rx_show_patient_dob") != null) {
-            settings.setShowPatientDob("yes".equals(map.get("rx_show_patient_dob").getValue()) ? true : false);
+            settings.setShowPatientDob("yes".equals(map.get("rx_show_patient_dob").getValue()));
         }
 
         if (map.get("rx_default_quantity") != null) {

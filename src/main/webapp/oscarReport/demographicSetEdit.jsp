@@ -288,7 +288,7 @@
             var id = $(this).data('id');
             $('#delete-set-confirm').modal({backdrop: true});
             $('#delete-set-confirm').data('id', id).modal('show');
-        };
+        }
 
     </script>
     </body>

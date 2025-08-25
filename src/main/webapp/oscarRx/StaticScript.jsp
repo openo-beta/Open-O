@@ -194,7 +194,7 @@
                                                          value="Re-prescribe"/>
                                         </form> <input type="button" align="top" value="Add to Favorites"
                                                             style="width: 100px" class="ControlPushButton"
-                                                            onclick="javascript:addFavorite(<%=drug.localDrugId%>, '<%=(drug.customName!=null&&(!drug.customName.equalsIgnoreCase("null")))?drug.customName:drug.brandName%>');"/>
+                                                            onclick="addFavorite(<%=drug.localDrugId%>, '<%=(drug.customName!=null&&(!drug.customName.equalsIgnoreCase("null")))?drug.customName:drug.brandName%>');"/>
                                         <%
                                         } else {
                                         %>
@@ -227,7 +227,7 @@
                         <td><br/>
                             <br/>
                             <input type="button" value="Back To Search Drug" class="ControlPushButton"
-                                   onclick="javascript:window.location.href='oscarRx/SearchDrug.jsp';"/></td>
+                                   onclick="window.location.href='oscarRx/SearchDrug.jsp';"/></td>
                     </tr>
                     <!----End new rows here-->
                     <tr height="100%">

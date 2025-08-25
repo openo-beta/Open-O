@@ -69,7 +69,7 @@
     </head>
     <body>
     <% if (!defaultPrinterName.isEmpty()) {
-        if (silentPrint == true) {%>
+        if (silentPrint) {%>
     <fmt:setBundle basename="oscarResources"/><fmt:message key="report.printLabel.SilentlyPrintToDefaultPrinter"/>
     <%} else {%>
     <fmt:setBundle basename="oscarResources"/><fmt:message key="report.printLabel.DefaultPrinter"/>

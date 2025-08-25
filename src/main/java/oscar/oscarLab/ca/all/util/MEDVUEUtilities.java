@@ -83,7 +83,7 @@ public class MEDVUEUtilities {
 
                             }
                             sb.append("\r\n");
-                            logger.info("MSH segment = " + sb.toString());
+                            logger.info("MSH segment = " + sb);
                         } else {
                             sb.append(line + "\r\n");
                         }
@@ -92,7 +92,7 @@ public class MEDVUEUtilities {
                         sb.append(line + "\r\n");
                 }
             }
-            logger.info("MEDVUE Message = " + sb.toString());
+            logger.info("MEDVUE Message = " + sb);
             // add the last message
             messages.add(sb.toString());
 

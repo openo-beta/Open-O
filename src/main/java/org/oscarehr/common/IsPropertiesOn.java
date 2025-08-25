@@ -30,10 +30,7 @@ public class IsPropertiesOn {
     public static boolean propertiesOn(String proName) {
         OscarProperties proper = OscarProperties.getInstance();
 
-        if (proper.getProperty(proName, "").equalsIgnoreCase("yes") || proper.getProperty(proName, "").equalsIgnoreCase("true") || proper.getProperty(proName, "").equalsIgnoreCase("on"))
-            return true;
-        else
-            return false;
+        return proper.getProperty(proName, "").equalsIgnoreCase("yes") || proper.getProperty(proName, "").equalsIgnoreCase("true") || proper.getProperty(proName, "").equalsIgnoreCase("on");
 
     }
 

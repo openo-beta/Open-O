@@ -35,7 +35,7 @@ package oscar;
  * JavaDoc comment for this bean
  */
 
-public class DocumentBean extends java.lang.Object implements java.io.Serializable {
+public class DocumentBean implements java.io.Serializable {
 
     /*   *
      * Instance variable for the documentData properties

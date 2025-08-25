@@ -81,10 +81,7 @@ public class ReportHelper {
         //bp
         List<Measurement> bps = measurementDao.findByType(demographicNo, "BP", c.getTime());
 
-        if (ms.size() > 0 && bps.size() > 0)
-            return true;
-
-        return false;
+        return ms.size() > 0 && bps.size() > 0;
     }
 
     public static boolean patientScreened(int demographicNo) {
@@ -108,10 +105,7 @@ public class ReportHelper {
         //bp
         List<Measurement> bps = measurementDao.findByType(demographicNo, "BP");
 
-        if (ms.size() > 0 && bps.size() > 0)
-            return true;
-
-        return false;
+        return ms.size() > 0 && bps.size() > 0;
     }
 
     public static void getTotals(ReportDataContainer r) {

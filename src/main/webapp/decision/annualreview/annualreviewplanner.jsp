@@ -176,7 +176,7 @@
                                     value=" Save "/> <input type="submit" name="submit"
                                                             value="Save and Exit"/> <input type="button"
                                                                                            value="  Exit  "
-                                                                                           onclick="javascript:return onExit();"/>
+                                                                                           onclick="return onExit();"/>
                 <input type="button"
                        name="submit" value="Print"
                        onclick="popupPage(700,800,'annualreviewplannerprint.jsp?demographic_no=<%=demographic_no%>&formId=<%=form_no%>');return false;"/>
@@ -208,7 +208,7 @@
                                     value=" Save "/> <input type="submit" name="submit"
                                                             value="Save and Exit"/> <input type="button"
                                                                                            value="  Exit  "
-                                                                                           onclick="javascript:return onExit();"/>
+                                                                                           onclick="return onExit();"/>
                 <input type="button"
                        name="submit" value="Print"
                        onclick="popupPage(700,800,'annualreviewplannerprint.jsp?demographic_no=<%=demographic_no%>&formId=<%=form_no%>');return false;"/>

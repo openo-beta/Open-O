@@ -110,10 +110,7 @@ public class ConsultationServices extends AbstractModel<Integer> implements Seri
             return false;
         }
         ConsultationServices other = (ConsultationServices) object;
-        if ((this.serviceId == null && other.serviceId != null) || (this.serviceId != null && !this.serviceId.equals(other.serviceId))) {
-            return false;
-        }
-        return true;
+        return (this.serviceId != null || other.serviceId == null) && (this.serviceId == null || this.serviceId.equals(other.serviceId));
     }
 
     @Override

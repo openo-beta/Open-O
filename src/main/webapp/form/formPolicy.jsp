@@ -151,8 +151,8 @@
             <tr>
                 <td nowrap="true">
                     <input type="submit" value="Print Policy v.<%=props.getProperty("formVersion","")%>"
-                           onClick="javascript:return onPrintPDF();"/>
-                    <input id="exitbut" type="submit" value="Exit" onclick="javascript: return onExit();"/>
+                           onClick="return onPrintPDF();"/>
+                    <input id="exitbut" type="submit" value="Exit" onclick="return onExit();"/>
                 </td>
             </tr>
         </table>

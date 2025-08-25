@@ -187,17 +187,11 @@ public class SystemMessage extends AbstractModel<Integer> {
 
     public boolean getActive() {
         Date now = new Date();
-        if (now.before(getExpiryDate())) {
-            return true;
-        }
-        return false;
+        return now.before(getExpiryDate());
     }
 
     public boolean getExpired() {
         Date now = new Date();
-        if (now.after(getExpiryDate())) {
-            return true;
-        }
-        return false;
+        return now.after(getExpiryDate());
     }
 }

@@ -99,9 +99,8 @@ public class CVCMedicationGTIN extends AbstractModel<Integer> {
             if (other.id != null) return false;
         } else if (!id.equals(other.id)) return false;
         if (medication == null) {
-            if (other.medication != null) return false;
-        } else if (!medication.equals(other.medication)) return false;
-        return true;
+            return other.medication == null;
+        } else return medication.equals(other.medication);
     }
 
 

@@ -719,7 +719,7 @@
                     <security:oscarSec roleName="<%=roleName$%>"
                                        objectName="_admin,_admin.messenger" rights="r" reverse="<%=false%>">
                         <li><a href="#"
-                               onclick='popupOscarRx(600,900, "${pageContext.request.contextPath}/oscarMessenger/DisplayMessages.do"/>?providerNo=<%=curProvider_no%>&amp;userName=<%=userfirstname%>%20<%=userlastname%>&quot;);return false;'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.messages"/></a></li>
+                               onclick='popupOscarRx(600,900, "${pageContext.request.contextPath}/oscarMessenger/DisplayMessages.do"/>?providerNo=<%=curProvider_no%>&amp;userName=<%=userfirstname%>%20<%=userlastname%>&quot;)return false;'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.messages"/></a></li>
                         <li><a href="#"
                                onclick='popupOscarRx(600,900, "${pageContext.request.contextPath}/oscarMessenger/config/MessengerAdmin.jsp");return false;'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnMessengerAdmin"/></a></li>
 
@@ -785,13 +785,13 @@
                     <security:oscarSec roleName="<%=roleName$%>"
                                        objectName="_admin,_admin.securityLogReport" rights="r">
                         <li><a href="#"
-                               onclick='popupPage(500,800, "${pageContext.request.contextPath}/admin/logReport.jsp"/>?keyword=admin&quot;);return false;'>
+                               onclick='popupPage(500,800, "${pageContext.request.contextPath}/admin/logReport.jsp"/>?keyword=admin&quot;)return false;'>
                             <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.securityLogReport"/></a></li>
                     </security:oscarSec>
                     <security:oscarSec roleName="<%=roleName$%>"
                                        objectName="_admin, _admin.traceability" rights="r">
                         <li><a href="#"
-                               onclick='popupPage(500,800, "${pageContext.request.contextPath}/admin/traceReport.jsp"/>?keyword=admin&quot;);return false;'>
+                               onclick='popupPage(500,800, "${pageContext.request.contextPath}/admin/traceReport.jsp"/>?keyword=admin&quot;)return false;'>
                             <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.traceabilityReport"/></a></li>
                     </security:oscarSec>
 

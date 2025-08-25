@@ -514,7 +514,7 @@ String proFirst="", proLast="", proOHIP="", proNo="";
                     <input type="text" style="font-size: 80%;" size="8" maxlength="8"
                            name="billingamount<%=rowCount-1%>"
                            value="<%=billAmount.substring(0,billAmount.length()-2) + "." + billAmount.substring(billAmount.length()-2)%>"
-                           onchange="javascript:validateNum(this)"> </font></div>
+                           onchange="validateNum(this)"> </font></div>
             </td>
         </tr>
         <%
@@ -536,7 +536,7 @@ String proFirst="", proLast="", proOHIP="", proNo="";
                 <div align="right"><font face="Arial, Helvetica, sans-serif"
                                          size="2"> <input type="text" style="font-size: 80%;"
                                                           name="billingamount<%=i%>" value="" size="8" maxlength="8"
-                                                          onchange="javascript:validateNum(this)"> </font></div>
+                                                          onchange="validateNum(this)"> </font></div>
             </td>
         </tr>
         <% }

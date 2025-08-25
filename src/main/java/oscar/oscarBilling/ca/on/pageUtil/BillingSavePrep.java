@@ -153,7 +153,7 @@ public class BillingSavePrep {
             claim1Header.setDob(val.getParameter("demographic_dob"));
             claim1Header.setAppointment_no(val.getParameter("appointment_no")); // appointment_no;
             claim1Header.setDemographic_name(val.getParameter("demographic_name"));
-            String temp[] = getPatientLF(val.getParameter("demographic_name"));
+            String[] temp = getPatientLF(val.getParameter("demographic_name"));
             claim1Header.setLast_name(temp[0]);
             claim1Header.setFirst_name(temp[1]);
             claim1Header.setSex(val.getParameter("sex"));
@@ -293,7 +293,7 @@ public class BillingSavePrep {
 
         claim1Header.setAppointment_no(val.getParameter("appointment_no"));
         claim1Header.setDemographic_name(val.getParameter("demographic_name"));
-        String temp[] = getPatientLF(val.getParameter("demographic_name"));
+        String[] temp = getPatientLF(val.getParameter("demographic_name"));
         claim1Header.setLast_name(temp[0]);
         claim1Header.setFirst_name(temp[1]);
         claim1Header.setSex(val.getParameter("sex"));

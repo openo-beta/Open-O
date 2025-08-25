@@ -125,7 +125,7 @@ b<%--
 %>
 <p>No input selected</p>
 <input type="button" name="back" value="back"
-       onClick="javascript:history.go(-1);return false;">
+       onClick="history.go(-1);return false;">
 <%
 } else {
 %>

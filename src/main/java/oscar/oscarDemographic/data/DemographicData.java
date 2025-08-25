@@ -272,18 +272,12 @@ public class DemographicData {
     }
 
     public static boolean isFemale(Demographic d) {
-        boolean female = false;
-        if (d.getSex() != null && d.getSex().trim().equalsIgnoreCase("f")) {
-            female = true;
-        }
+        boolean female = d.getSex() != null && d.getSex().trim().equalsIgnoreCase("f");
         return female;
     }
 
     public static boolean isMale(Demographic d) {
-        boolean male = false;
-        if (d.getSex() != null && d.getSex().trim().equalsIgnoreCase("m")) {
-            male = true;
-        }
+        boolean male = d.getSex() != null && d.getSex().trim().equalsIgnoreCase("m");
         return male;
     }
 

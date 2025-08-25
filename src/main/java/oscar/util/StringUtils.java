@@ -173,11 +173,7 @@ public class StringUtils {
             return true;
         } else if (obj.trim().toUpperCase().equals("NULL")) {
             return true;
-        } else if (obj.trim().toLowerCase().equals("null")) {
-            return true;
-        } else {
-            return false;
-        }
+        } else return obj.trim().toLowerCase().equals("null");
     }
 
     public static String replaceChar(char oldChar, char newChar, String word) {
@@ -320,7 +316,6 @@ public class StringUtils {
      */
     public static String getCSV(List l) {
         StringBuilder ret = new StringBuilder();
-        ;
         if (l != null) {
             for (int i = 0; i < l.size(); i++) {
                 ret.append((String) l.get(i));

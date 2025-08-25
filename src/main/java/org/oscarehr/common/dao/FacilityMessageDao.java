@@ -36,13 +36,13 @@ import org.springframework.stereotype.Repository;
 
 public interface FacilityMessageDao extends AbstractDao<FacilityMessage> {
 
-    public List<FacilityMessage> getMessages();
+    List<FacilityMessage> getMessages();
 
-    public List<FacilityMessage> getMessagesByFacilityId(Integer facilityId);
+    List<FacilityMessage> getMessagesByFacilityId(Integer facilityId);
 
-    public List<FacilityMessage> getMessagesByFacilityIdOrNull(Integer facilityId);
+    List<FacilityMessage> getMessagesByFacilityIdOrNull(Integer facilityId);
 
-    public List<FacilityMessage> getMessagesByFacilityIdAndProgramId(Integer facilityId, Integer programId);
+    List<FacilityMessage> getMessagesByFacilityIdAndProgramId(Integer facilityId, Integer programId);
 
-    public List<FacilityMessage> getMessagesByFacilityIdOrNullAndProgramIdOrNull(Integer facilityId, Integer programId);
+    List<FacilityMessage> getMessagesByFacilityIdOrNullAndProgramIdOrNull(Integer facilityId, Integer programId);
 }

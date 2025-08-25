@@ -256,7 +256,7 @@
                            value="<%=Encode.forHtmlAttribute(prop.getProperty("role_name", ""))%>"
                            maxlength='30'>
                     <input type="submit" name="submit" value="Search" class="btn"
-                           onclick="javascript:return onSearch();">
+                           onclick="return onSearch();">
                 </div>
             </div>
             <div class="control-group">
@@ -265,7 +265,7 @@
                             type="hidden" name="action" value='<%=action%>'/> <% if (!"search".equals(action)) {%>
                     <input type="submit" name="submit" class="btn btn-primary"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnSave"/>"
-                           onclick="javascript:return onSave();"> <% }%>
+                           onclick="return onSave();"> <% }%>
                 </div>
             </div>
         </form>

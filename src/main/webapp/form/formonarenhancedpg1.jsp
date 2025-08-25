@@ -80,8 +80,7 @@
         labReqVer = "07";
     }
 
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 %>
 
 <html>
@@ -1180,7 +1179,7 @@
                     location.href = url;
                 }
 
-                return;
+
             }
 
             function onExit() {
@@ -1262,7 +1261,7 @@
                     // Check that current character is number.
                     var c = s.charAt(i);
                     if (c == '.') {
-                        continue;
+
                     } else if (((c < "0") || (c > "9"))) {
                         alert('Invalid ' + s + ' in field ' + ss.name);
                         ss.focus();
@@ -2232,12 +2231,12 @@
                             <%
                                 if (!bView) {
                             %>
-                            <input type="submit" value="Save" onclick="javascript:return onSave();"/>
-                            <input type="submit" value="Save & Exit" onclick="javascript:return onSaveExit();"/> <%
+                            <input type="submit" value="Save" onclick="return onSave();"/>
+                            <input type="submit" value="Save & Exit" onclick="return onSaveExit();"/> <%
                             }
                         %>
-                            <input type="submit" value="Exit" onclick="javascript:return onExit();"/>
-                            <input type="submit" value="Print" onclick="javascript:return onPrint2();"/>
+                            <input type="submit" value="Exit" onclick="return onExit();"/>
+                            <input type="submit" value="Print" onclick="return onPrint2();"/>
                             <span style="display:none"><input id="printBtn" type="submit" value="PrintIt"/></span>
 
 
@@ -3834,14 +3833,14 @@
                             <%
                                 if (!bView) {
                             %> <input type="submit" value="Save"
-                                      onclick="javascript:return onSave();"/> <input type="submit"
+                                      onclick="return onSave();"/> <input type="submit"
                                                                                      value="Save & Exit"
-                                                                                     onclick="javascript:return onSaveExit();"/> <%
+                                                                                     onclick="return onSaveExit();"/> <%
                             }
                         %> <input type="submit" value="Exit"
-                                  onclick="javascript:return onExit();"/> <input type="submit"
+                                  onclick="return onExit();"/> <input type="submit"
                                                                                  value="Print"
-                                                                                 onclick="javascript:return onPrint2();"/>
+                                                                                 onclick="return onPrint2();"/>
                             <%
                                 if (!bView) {
                             %>

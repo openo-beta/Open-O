@@ -56,11 +56,8 @@ public class Site extends AbstractModel<Integer> implements java.io.Serializable
             return false;
         Site other = (Site) obj;
         if (siteId == null) {
-            if (other.siteId != null)
-                return false;
-        } else if (!siteId.equals(other.siteId))
-            return false;
-        return true;
+            return other.siteId == null;
+        } else return siteId.equals(other.siteId);
     }
 
     @Id

@@ -32,7 +32,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 public interface AbstractDao<T extends AbstractModel<?>> {
-    public static final int MAX_LIST_RETURN_SIZE = 5000;
+    int MAX_LIST_RETURN_SIZE = 5000;
 
     void merge(AbstractModel<?> o);
 

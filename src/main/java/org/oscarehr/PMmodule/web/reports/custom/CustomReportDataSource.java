@@ -27,9 +27,9 @@ import oscar.util.LabelValueBean;
 
 public interface CustomReportDataSource {
 
-    public LabelValueBean[] getFormNames();
+    LabelValueBean[] getFormNames();
 
-    public LabelValueBean[] getItems(String formId);
+    LabelValueBean[] getItems(String formId);
 
-    public Item getItem(String formId, String id);
+    Item getItem(String formId, String id);
 }

@@ -447,7 +447,7 @@ public class CreateHRMFile {
 
             //OBRConent
             OBRContent[] OBRs = report.getOBRContentArray();
-            if (OBRs != null && OBRs.length > 0) {
+            if (OBRs != null) {
                 for (OBRContent OBR : OBRs) {
                     ReportsReceived.OBRContent HRMobr = HRMreport.addNewOBRContent();
 

@@ -37,16 +37,16 @@ import org.springframework.stereotype.Repository;
 
 public interface PrescriptionDao extends AbstractDao<Prescription> {
 
-    public List<Prescription> findByDemographicId(Integer demographicId);
+    List<Prescription> findByDemographicId(Integer demographicId);
 
-    public List<Prescription> findByDemographicIdUpdatedAfterDate(Integer demographicId, Date afterThisDate);
+    List<Prescription> findByDemographicIdUpdatedAfterDate(Integer demographicId, Date afterThisDate);
 
-    public List<Prescription> findByDemographicIdUpdatedAfterDateExclusive(Integer demographicId, Date afterThisDate);
+    List<Prescription> findByDemographicIdUpdatedAfterDateExclusive(Integer demographicId, Date afterThisDate);
 
-    public int updatePrescriptionsByScriptNo(Integer scriptNo, String comment);
+    int updatePrescriptionsByScriptNo(Integer scriptNo, String comment);
 
-    public List<Prescription> findByUpdateDate(Date updatedAfterThisDateExclusive, int itemsToReturn);
+    List<Prescription> findByUpdateDate(Date updatedAfterThisDateExclusive, int itemsToReturn);
 
-    public List<Prescription> findByProviderDemographicLastUpdateDate(String providerNo, Integer demographicId,
-                                                                      Date updatedAfterThisDateExclusive, int itemsToReturn);
+    List<Prescription> findByProviderDemographicLastUpdateDate(String providerNo, Integer demographicId,
+                                                               Date updatedAfterThisDateExclusive, int itemsToReturn);
 }

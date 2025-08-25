@@ -67,10 +67,7 @@ public class SearchDemographicAutoComplete2Action extends ActionSupport {
     public String execute() throws Exception {
         String providerNo = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo();
 
-        boolean outOfDomain = false;
-        if (request.getParameter("outofdomain") != null && request.getParameter("outofdomain").equals("true")) {
-            outOfDomain = true;
-        }
+        boolean outOfDomain = request.getParameter("outofdomain") != null && request.getParameter("outofdomain").equals("true");
 
         DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
         String searchStr = request.getParameter("demographicKeyword");

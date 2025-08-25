@@ -51,7 +51,7 @@
         <%for (LimitedUseCode limitedUseCode : luList) {%>
         <tr>
             <td valign="top">
-                <a onclick="javascript:addLuCode('instructions_<%=randomId%>','<%=limitedUseCode.getUseId()%>')"
+                <a onclick="addLuCode('instructions_<%=randomId%>','<%=limitedUseCode.getUseId()%>')"
                    href="javascript: return void();"><%=limitedUseCode.getUseId()%>
                 </a>&nbsp;
             </td>

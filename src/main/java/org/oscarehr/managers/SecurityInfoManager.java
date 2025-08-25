@@ -46,19 +46,19 @@ import com.quatro.model.security.Secuserrole;
 import javax.servlet.http.HttpSession;
 
 public interface SecurityInfoManager {
-    public static final String READ = "r";
-    public static final String WRITE = "w";
-    public static final String UPDATE = "u";
-    public static final String DELETE = "d";
-    public static final String NORIGHTS = "o";
+    String READ = "r";
+    String WRITE = "w";
+    String UPDATE = "u";
+    String DELETE = "d";
+    String NORIGHTS = "o";
 
-    public List<Secuserrole> getRoles(LoggedInInfo loggedInInfo);
+    List<Secuserrole> getRoles(LoggedInInfo loggedInInfo);
 
-    public List<Secobjprivilege> getSecurityObjects(LoggedInInfo loggedInInfo);
+    List<Secobjprivilege> getSecurityObjects(LoggedInInfo loggedInInfo);
 
-    public boolean hasPrivilege(LoggedInInfo loggedInInfo, String objectName, String privilege, int demographicNo);
+    boolean hasPrivilege(LoggedInInfo loggedInInfo, String objectName, String privilege, int demographicNo);
 
-    public boolean hasPrivilege(LoggedInInfo loggedInInfo, String objectName, String privilege, String demographicNo);
+    boolean hasPrivilege(LoggedInInfo loggedInInfo, String objectName, String privilege, String demographicNo);
 
-    public boolean isAllowedAccessToPatientRecord(LoggedInInfo loggedInInfo, Integer demographicNo);
+    boolean isAllowedAccessToPatientRecord(LoggedInInfo loggedInInfo, Integer demographicNo);
 }

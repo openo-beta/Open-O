@@ -36,8 +36,8 @@ import org.oscarehr.common.model.AppointmentType;
 public interface AppointmentTypeDao extends AbstractDao<AppointmentType> {
 
 
-    public List<AppointmentType> listAll();
+    List<AppointmentType> listAll();
 
-    public AppointmentType findByAppointmentTypeByName(String name);
+    AppointmentType findByAppointmentTypeByName(String name);
 
 }

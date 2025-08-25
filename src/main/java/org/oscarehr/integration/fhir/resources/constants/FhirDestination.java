@@ -34,7 +34,7 @@ public enum FhirDestination {
     private final String title;
     private final String endpoint;
 
-    private FhirDestination(String title, String endpoint) {
+    FhirDestination(String title, String endpoint) {
         this.title = title;
         this.endpoint = endpoint;
     }

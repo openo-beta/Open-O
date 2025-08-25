@@ -46,7 +46,7 @@ switch (navigator.platform) {
         dojo.render.os.linux = true;
         break;
 }
-;
+
 dojo.render.svg.capable = true;
 dojo.render.svg.support.builtin = true;
 //	FIXME the following two is a big-ass hack for now.
@@ -112,7 +112,7 @@ dojo.hostenv.loadModule = function (moduleName) {
             dojo.raise("dojo.require('" + moduleName + "'): module does not exist.");
         } else currentObj = currentObj[a[i]];
     }
-    return;
+
 };
 dojo.hostenv.startPackage = function (moduleName) {
     var a = moduleName.split(".");
@@ -124,7 +124,7 @@ dojo.hostenv.startPackage = function (moduleName) {
         if (!currentObj[a[i]]) currentObj[a[i]] = {};
         currentObj = currentObj[a[i]];
     }
-    return;
+
 };
 
 //	wrapper objects for ASVG
@@ -230,7 +230,7 @@ if (window.parseXML) {
         this.responseXML = null;
         this.responseText = null;
         this.abort = function () {
-            return;
+
         };
         this.getAllResponseHeaders = function () {
             return [];

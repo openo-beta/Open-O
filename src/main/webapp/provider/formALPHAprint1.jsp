@@ -29,9 +29,7 @@
     String user_no = (String) session.getAttribute("user");
 
     //if bNewForm is false (0), then it should be able to display xml data.
-    boolean bNew = true;
-    if (request.getParameter("bNewForm") != null && request.getParameter("bNewForm").compareTo("0") == 0)
-        bNew = false;
+    boolean bNew = request.getParameter("bNewForm") == null || request.getParameter("bNewForm").compareTo("0") != 0;
 %>
 <%@ page import="java.util.*, java.sql.*, oscar.*"
          errorPage="/errorpage.jsp" %>

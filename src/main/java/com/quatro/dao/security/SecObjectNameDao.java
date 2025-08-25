@@ -36,5 +36,5 @@ import com.quatro.model.security.Secobjectname;
  * @author jackson
  */
 public interface SecObjectNameDao {
-    public void saveOrUpdate(Secobjectname t);
+    void saveOrUpdate(Secobjectname t);
 }

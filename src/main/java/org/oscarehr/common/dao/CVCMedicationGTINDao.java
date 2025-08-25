@@ -34,7 +34,7 @@ import org.springframework.stereotype.Repository;
 
 public interface CVCMedicationGTINDao extends AbstractDao<CVCMedicationGTIN> {
 
-    public void removeAll();
+    void removeAll();
 
-    public List<CVCMedicationGTIN> query(String term);
+    List<CVCMedicationGTIN> query(String term);
 }

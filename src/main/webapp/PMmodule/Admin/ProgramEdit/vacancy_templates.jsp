@@ -43,7 +43,7 @@
     <table cellpadding="3" cellspacing="0" border="0">
         <tr>
             <th title="Programs" class="nofocus"><a
-                    onclick="javascript:clickTab2('General', 'General');return false;"
+                    onclick="clickTab2('General', 'General');return false;"
                     href="javascript:void(0)">General Information</a></th>
             <th title="Templates">Vacancy Templates</th>
         </tr>
@@ -58,16 +58,16 @@
     <% for (VacancyTemplate vt : templates) { %>
     <tr class="b">
         <td class="beright">
-            <a onclick="javascript:clickLink('General','Vacancy Template Add', '<%=vt.getId() %>');return false;"
+            <a onclick="clickLink('General','Vacancy Template Add', '<%=vt.getId() %>');return false;"
                href="javascript:void(0)"><%=vt.getName() %>
             </a>
-        <td><%=vt.getActive() == true ? "Yes" : "No" %>
+        <td><%=vt.getActive() ? "Yes" : "No" %>
         </td>
     </tr>
     <% } %>
     <tr class="b">
         <td class="beright">
-            <a onclick="javascript:clickLink('General','Vacancy Template Add', '');return false;"
+            <a onclick="clickLink('General','Vacancy Template Add', '');return false;"
                href="javascript:void(0)">Create New Vacancy Template</a>
         </td>
         <td></td>

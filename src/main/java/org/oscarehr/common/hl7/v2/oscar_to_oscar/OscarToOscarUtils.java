@@ -49,7 +49,7 @@ public final class OscarToOscarUtils {
         return (pipeParser);
     }
 
-    public static AbstractMessage pipeParserParse(String hl7Message) throws EncodingNotSupportedException, HL7Exception {
+    public static AbstractMessage pipeParserParse(String hl7Message) throws HL7Exception {
         try {
             try {
                 AbstractMessage message = (AbstractMessage) pipeParser.parse(hl7Message);

@@ -220,7 +220,7 @@
                             <li style="margin-top: 2px;"><%-- a title="fade=[on] header=[<%=prevName%>] body=[]"      href="javascript: function myFunction() {return false; }"  onclick="javascript:addLabToProfile2('<%=h.get("labType")%>','<%= java.net.URLEncoder.encode(prevName) %>');" --%>
                                 <a title="fade=[on] header=[<%=prevName%>] body=[]"
                                    href="javascript: function myFunction() {return false; }"
-                                   onclick="javascript:addLabToProfile2('<%=h.get("labType")%>','<%=prevNameEsc%>','<%= identCodeEsc %>');">
+                                   onclick="addLabToProfile2('<%=h.get("labType")%>','<%=prevNameEsc%>','<%= identCodeEsc %>');">
 
                                     <%=StringUtils.maxLenString(prevName, 13, 8, "...")%>
                                 </a></li>

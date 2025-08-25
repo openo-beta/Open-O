@@ -551,7 +551,7 @@
             function newStatus() {
                 newOpt = prompt("<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgPromptStatus"/>:", "");
                 if (newOpt == null) {
-                    return;
+
                 } else if (newOpt != "") {
                     document.updatedelete.patient_status.options[document.updatedelete.patient_status.length] = new Option(newOpt, newOpt);
                     document.updatedelete.patient_status.options[document.updatedelete.patient_status.length - 1].selected = true;
@@ -563,7 +563,7 @@
             function newStatus1() {
                 newOpt = prompt("<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgPromptStatus"/>:", "");
                 if (newOpt == null) {
-                    return;
+
                 } else if (newOpt != "") {
                     document.updatedelete.roster_status.options[document.updatedelete.roster_status.length] = new Option(newOpt, newOpt);
                     document.updatedelete.roster_status.options[document.updatedelete.roster_status.length - 1].selected = true;
@@ -2216,6 +2216,7 @@
                                                                                                     for (int n = 0; n < templateDuration / timecodeInterval; n++) {
                                                                                                         if (((i + n) < (schedArr.length - 1)) && (schedArr[i + n] != 1)) {
                                                                                                             enoughRoom = false;
+                                                                                                            break;
                                                                                                         }
                                                                                                     }
                                                                                                     if (enoughRoom) {
@@ -4382,7 +4383,7 @@
                                                     <% }
                                                     }
                                                         if (hasDemoExt) {
-                                                            boolean bExtForm = oscarProps.getProperty("demographicExtForm") != null ? true : false;
+                                                            boolean bExtForm = oscarProps.getProperty("demographicExtForm") != null;
                                                             String[] propDemoExtForm = bExtForm ? (oscarProps.getProperty("demographicExtForm", "").split("\\|")) : null;
                                                             for (int k = 0; k < propDemoExt.length; k = k + 2) {
                                                     %>
@@ -4797,10 +4798,7 @@
                                                                                     List<Program> servP = programManager.getServicePrograms();
 
                                                                                     for (Program _p : servP) {
-                                                                                        boolean readOnly = false;
-                                                                                        if (!pset.contains(_p)) {
-                                                                                            readOnly = true;
-                                                                                        }
+                                                                                        boolean readOnly = !pset.contains(_p);
                                                                                         String selected = isProgramSelected(serviceAdmissions, _p.getId());
 
                                                                                         if (readOnly && selected.length() == 0) {

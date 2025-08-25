@@ -178,7 +178,7 @@ dojo.widget.defineWidget("dojo.widget.Form", dojo.widget.HtmlWidget,
                 if (element.name == '') {
                     continue
                 }
-                ;
+
                 var namePath = new Array();
                 namePath = element.name.split(".");
                 var myObj = obj;
@@ -189,7 +189,7 @@ dojo.widget.defineWidget("dojo.widget.Form", dojo.widget.HtmlWidget,
                         myObj = undefined;
                         break;
                     }
-                    ;
+
                     myObj = myObj[p];
                 }
 
@@ -218,7 +218,7 @@ dojo.widget.defineWidget("dojo.widget.Form", dojo.widget.HtmlWidget,
                         if (typeof (myObj[name]) == 'undefined') {
                             continue
                         }
-                        ;
+
                         if (myObj[name] == element.value) {
                             element.checked = true;
                         }

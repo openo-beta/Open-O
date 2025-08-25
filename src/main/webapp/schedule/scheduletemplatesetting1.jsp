@@ -26,7 +26,7 @@
 
 <%
 
-    String weekdaytag[] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
+    String[] weekdaytag = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
 %>
 <%@ page import="java.util.*, java.sql.*, oscar.*, java.text.*, java.lang.*" errorPage="../appointment/errorpage.jsp" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>

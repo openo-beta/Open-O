@@ -165,29 +165,26 @@ public class Dxresearch extends AbstractModel<Integer> implements java.io.Serial
             return false;
         }
         final Dxresearch other = (Dxresearch) obj;
-        if (this.dxresearchNo != other.dxresearchNo && (this.dxresearchNo == null || !this.dxresearchNo.equals(other.dxresearchNo))) {
+        if (!java.util.Objects.equals(this.dxresearchNo, other.dxresearchNo)) {
             return false;
         }
-        if (this.demographicNo != other.demographicNo && (this.demographicNo == null || !this.demographicNo.equals(other.demographicNo))) {
+        if (!java.util.Objects.equals(this.demographicNo, other.demographicNo)) {
             return false;
         }
-        if (this.startDate != other.startDate && (this.startDate == null || !this.startDate.equals(other.startDate))) {
+        if (!java.util.Objects.equals(this.startDate, other.startDate)) {
             return false;
         }
-        if (this.updateDate != other.updateDate && (this.updateDate == null || !this.updateDate.equals(other.updateDate))) {
+        if (!java.util.Objects.equals(this.updateDate, other.updateDate)) {
             return false;
         }
-        if ((this.dxresearchCode == null) ? (other.dxresearchCode != null) : !this.dxresearchCode.equals(other.dxresearchCode)) {
+        if (!java.util.Objects.equals(this.dxresearchCode, other.dxresearchCode)) {
             return false;
         }
-        if ((this.codingSystem == null) ? (other.codingSystem != null) : !this.codingSystem.equals(other.codingSystem)) {
+        if (!java.util.Objects.equals(this.codingSystem, other.codingSystem)) {
             return false;
         }
 
-        if ((this.providerNo == null) ? (other.providerNo != null) : !this.providerNo.equals(other.providerNo)) {
-            return false;
-        }
-        return true;
+        return java.util.Objects.equals(this.providerNo, other.providerNo);
     }
 
     @Override

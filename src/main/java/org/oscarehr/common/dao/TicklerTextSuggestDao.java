@@ -36,7 +36,7 @@ import org.springframework.stereotype.Repository;
 
 public interface TicklerTextSuggestDao extends AbstractDao<TicklerTextSuggest> {
 
-    public List<TicklerTextSuggest> getActiveTicklerTextSuggests();
+    List<TicklerTextSuggest> getActiveTicklerTextSuggests();
 
-    public List<TicklerTextSuggest> getInactiveTicklerTextSuggests();
+    List<TicklerTextSuggest> getInactiveTicklerTextSuggests();
 }

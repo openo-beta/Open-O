@@ -317,7 +317,7 @@
                                 iRow++;
 
                                 if (iRow > iPageSize) break;
-                                bodd = bodd ? false : true; //for the color of rows
+                                bodd = !bodd; //for the color of rows
                                 nItems++; //to calculate if it is the end of records
 
                                 ProviderData provider = providerDao.findByProviderNo(appointment.getProviderNo());
@@ -406,7 +406,7 @@
                         if (cachedAppointments != null) {
                             Collections.sort(cachedAppointments, new CachedAppointmentComparator());
                             for (CachedAppointment a : cachedAppointments) {
-                                bodd = bodd ? false : true;
+                                bodd = !bodd;
                                 FacilityIdStringCompositePk providerPk = new FacilityIdStringCompositePk();
                                 providerPk.setIntegratorFacilityId(a.getFacilityIdIntegerCompositePk().getIntegratorFacilityId());
                                 providerPk.setCaisiItemId(a.getCaisiProviderId());

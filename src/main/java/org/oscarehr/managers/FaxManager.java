@@ -206,14 +206,14 @@ public interface FaxManager {
      */
     boolean resendFax(LoggedInInfo loggedInInfo, String jobId, String destination);
 
-    public void restartFaxScheduler(LoggedInInfo loggedInInfo);
+    void restartFaxScheduler(LoggedInInfo loggedInInfo);
 
-    public JSONObject getFaxSchedularStatus(LoggedInInfo loggedInInfo);
+    JSONObject getFaxSchedularStatus(LoggedInInfo loggedInInfo);
 
     /**
      * Check if fax services are enabled.
      */
-    public static boolean isEnabled() {
+    static boolean isEnabled() {
 
         FaxConfigDao faxConfigDao = SpringUtils.getBean(FaxConfigDao.class);
         List<FaxConfig> accounts = faxConfigDao.findAll(0, null);

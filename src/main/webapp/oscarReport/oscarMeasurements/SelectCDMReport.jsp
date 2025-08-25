@@ -54,7 +54,7 @@
         <script type="text/javascript">
             function set(target) {
                 document.forms[0].forward.value = target;
-            };
+            }
 
             function checkGroup() {
                 var cdmGroupSelect = document.forms[0].elements['value(CDMgroup)'];

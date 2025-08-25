@@ -132,7 +132,7 @@
 
                         <th style="vertical-align: middle">
                             <%
-                                String securityRole = "" + session.getAttribute("userrole") + "," + session.getAttribute("user");
+                                String securityRole = session.getAttribute("userrole") + "," + session.getAttribute("user");
                             %>
                             <security:oscarSec roleName="<%=securityRole%>"
                                                objectName="<%=KeyConstants.FUN_ADMIN_LOOKUP %>"

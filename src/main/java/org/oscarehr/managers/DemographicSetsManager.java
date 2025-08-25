@@ -38,9 +38,9 @@ import org.springframework.stereotype.Service;
 public interface DemographicSetsManager {
 
 
-    public List<DemographicSets> getAllDemographicSets(LoggedInInfo loggedInInfo, int offset, int itemsToReturn);
+    List<DemographicSets> getAllDemographicSets(LoggedInInfo loggedInInfo, int offset, int itemsToReturn);
 
-    public List<String> getNames(LoggedInInfo loggedInInfo);
+    List<String> getNames(LoggedInInfo loggedInInfo);
 
-    public List<DemographicSets> getByName(LoggedInInfo loggedInInfo, String setName);
+    List<DemographicSets> getByName(LoggedInInfo loggedInInfo, String setName);
 }

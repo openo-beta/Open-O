@@ -297,7 +297,7 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
     public int getNumberOfDemographicsWithRxForProvider(String providerNo, Date startDate, Date endDate,
                                                         boolean distinct) {
         String distinctStr = "distinct";
-        if (distinct == false) {
+        if (!distinct) {
             distinctStr = StringUtils.EMPTY;
         }
 

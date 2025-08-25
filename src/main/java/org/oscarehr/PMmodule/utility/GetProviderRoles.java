@@ -90,7 +90,7 @@ public class GetProviderRoles {
         return roles;
     }
 
-    public static void main(String args[]) throws Exception {
+    public static void main(String[] args) throws Exception {
         GetProviderRoles prog = new GetProviderRoles();
         prog.run();
     }

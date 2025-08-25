@@ -25,5 +25,5 @@
 package org.oscarehr.ws.rest.to.model;
 
 public enum Sex1 {
-    M, F;
+    M, F
 }

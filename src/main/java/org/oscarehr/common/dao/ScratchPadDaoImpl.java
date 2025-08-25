@@ -48,10 +48,7 @@ public class ScratchPadDaoImpl extends AbstractDaoImpl<ScratchPad> implements Sc
 
         @SuppressWarnings("unchecked")
         List<ScratchPad> results = query.getResultList();
-        if (results.size() > 0 && results.get(0).getText().trim().length() > 0) {
-            return true;
-        }
-        return false;
+        return results.size() > 0 && results.get(0).getText().trim().length() > 0;
     }
 
     @Override

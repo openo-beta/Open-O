@@ -40,7 +40,7 @@ public class PreventionReportBuilderTest extends DaoTestFixtures {
 
     @Before
     public void before() throws Exception {
-        SchemaUtils.restoreTable(new String[]{"demographic", "demographicArchive"});
+        SchemaUtils.restoreTable("demographic", "demographicArchive");
     }
 
     @Test

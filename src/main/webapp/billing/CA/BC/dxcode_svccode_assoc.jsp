@@ -88,7 +88,7 @@
             <tr>
                 <td width="78%"><font
                         face="Verdana, Arial, Helvetica, sans-serif" size="1"><%
-                    boolean state = mode.equals("edit") ? true : false;
+                    boolean state = mode.equals("edit");
                 %> <input type="text" name="xml_other1" size="40" readonly="<%=state%>"/> <a href="javascript:OtherScriptAttach()">
                     <img src="<%= request.getContextPath() %>/images/search_code.jpg" border="0"> </a> </font></td>
             </tr>

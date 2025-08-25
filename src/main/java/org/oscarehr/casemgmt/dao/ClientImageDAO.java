@@ -43,7 +43,7 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
  */
 public interface ClientImageDAO {
 
-    public void saveClientImage(ClientImage clientImage);
+    void saveClientImage(ClientImage clientImage);
 
-    public ClientImage getClientImage(Integer clientId);
+    ClientImage getClientImage(Integer clientId);
 }

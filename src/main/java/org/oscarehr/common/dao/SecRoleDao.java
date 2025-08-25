@@ -36,11 +36,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface SecRoleDao extends AbstractDao<SecRole> {
 
-    public List<SecRole> findAll();
+    List<SecRole> findAll();
 
-    public List<String> findAllNames();
+    List<String> findAllNames();
 
-    public SecRole findByName(String name);
+    SecRole findByName(String name);
 
-    public List<SecRole> findAllOrderByRole();
+    List<SecRole> findAllOrderByRole();
 }

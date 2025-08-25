@@ -157,7 +157,7 @@
                         <td style="text-align: right">
 
                             <a href="javascript:void(0)"
-                               onclick="javascript:popupPage(600,700,'../oscarEncounter/About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
+                               onclick="popupPage(600,700,'../oscarEncounter/About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
                         </td>
                     </tr>
                 </table>
@@ -279,7 +279,7 @@
                                 <table width="80%">
                                     <tr>
                                         <td><input type="button" value="Unlink Messages"
-                                                   onclick="javascript:unlink();"></td>
+                                                   onclick="unlink();"></td>
                                         <%
                                             if (moreMessages.equals("false") && theMessages2.size() >= INITIAL_DISPLAY) {
                                         %>

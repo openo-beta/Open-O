@@ -61,7 +61,7 @@ if (window.console) {
                 if (type) {
                     type = type[1]
                 }
-                ;
+
             }
             // if we got a viable type, use Firebug's interactive property dump feature
             if (type) {

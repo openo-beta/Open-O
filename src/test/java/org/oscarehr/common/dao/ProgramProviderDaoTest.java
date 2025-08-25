@@ -61,6 +61,6 @@ public class ProgramProviderDaoTest extends DaoTestFixtures {
 
         dao.saveProgramProvider(pp);
 
-        dao.updateProviderRole(pp, 19999l);
+        dao.updateProviderRole(pp, 19999L);
     }
 }

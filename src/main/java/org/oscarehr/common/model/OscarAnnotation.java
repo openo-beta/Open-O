@@ -84,10 +84,7 @@ public class OscarAnnotation extends AbstractModel<Integer> {
 
 
     public boolean isUuidSet() {
-        boolean uidSet = false;
-        if (uuid != null) {
-            uidSet = true;
-        }
+        boolean uidSet = uuid != null;
         return uidSet;
     }
 

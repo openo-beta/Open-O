@@ -73,9 +73,7 @@ public class RoleCache {
             return false;
         }
         Collection<Long> roles = defaultRoleAccessMap.getCollection(accessTypeId.longValue());
-        if (roles != null && roles.contains(roleId))
-            return true;
-        return false;
+        return roles != null && roles.contains(roleId);
     }
 
     public static Secrole getRole(Long id) {

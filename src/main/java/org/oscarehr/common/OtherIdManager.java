@@ -121,7 +121,7 @@ public class OtherIdManager {
     private static boolean doNotSave(OtherId oid, String otherId) {
         if (otherId == null) return true;
         if (oid == null) {
-            if (otherId.trim().equals("")) return true;
+            return otherId.trim().equals("");
         } else {
             if (oid.getOtherId().equals(otherId)) return true;
             else setDelete(oid);

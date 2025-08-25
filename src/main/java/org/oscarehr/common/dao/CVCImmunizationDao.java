@@ -37,13 +37,13 @@ import org.springframework.stereotype.Repository;
 
 public interface CVCImmunizationDao extends AbstractDao<CVCImmunization> {
 
-    public void removeAll();
+    void removeAll();
 
-    public List<CVCImmunization> findAllGeneric();
+    List<CVCImmunization> findAllGeneric();
 
-    public List<CVCImmunization> findByParent(String conceptCodeId);
+    List<CVCImmunization> findByParent(String conceptCodeId);
 
-    public CVCImmunization findBySnomedConceptId(String conceptCodeId);
+    CVCImmunization findBySnomedConceptId(String conceptCodeId);
 
-    public List<CVCImmunization> query(String term, boolean includeGenerics, boolean includeBrands);
+    List<CVCImmunization> query(String term, boolean includeGenerics, boolean includeBrands);
 }

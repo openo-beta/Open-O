@@ -125,7 +125,7 @@
                     int count1 = 0;
 
                     for (String myGroup : myGroupDao.getGroups()) {
-                        bodd = bodd ? false : true; //for the color of rows
+                        bodd = !bodd; //for the color of rows
 
 
                         for (MyGroup mg : myGroupDao.getGroupByGroupNo(myGroup)) {

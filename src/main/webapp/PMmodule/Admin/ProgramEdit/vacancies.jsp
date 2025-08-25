@@ -123,12 +123,12 @@
     %>
     <tr class="b">
         <td style="text-align:left;">
-            <a onclick="javascript:clickLink('Vacancy Add','Vacancy Add', '<%=v.getId() %>');return false;"
+            <a onclick="clickLink('Vacancy Add','Vacancy Add', '<%=v.getId() %>');return false;"
                href="javascript:void(0)"><%=v.getName() %>
             </a>
         </td>
         <td style="text-align:left;" class="beright">
-            <a onclick="javascript:clickLink('General','Vacancy Template Add', '<%=vt.getId() %>');return false;"
+            <a onclick="clickLink('General','Vacancy Template Add', '<%=vt.getId() %>');return false;"
                href="javascript:void(0)"><%=(vt == null ? "No Template for This Vacancy" : vt.getName()) %>
             </a>
         </td>
@@ -142,7 +142,7 @@
     </tbody>
 </table>
 
-<a onclick="javascript:clickLink('Vacancy Add','Vacancy Add', '');return false;" href="javascript:void(0)">Create New
+<a onclick="clickLink('Vacancy Add','Vacancy Add', '');return false;" href="javascript:void(0)">Create New
     Vacancy</a>
 
 

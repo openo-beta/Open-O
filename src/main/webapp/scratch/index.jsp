@@ -223,7 +223,7 @@
                         <td style="text-align: right">
 
                             <a href="javascript:void(0)"
-                               onclick="javascript:popup(600,700,'../oscarEncounter/About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
+                               onclick="popup(600,700,'../oscarEncounter/About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
                         </td>
                     </tr>
                 </table>
@@ -262,8 +262,8 @@
                            name="windowId" id="windowId" value="<%=uuid%>"/> <input
                             type="hidden" name="dirty" value="0" id="dirty"/> <textarea
                             name="scratchpad" id="thetext" style="width: 100%" rows="50"
-                            cols="50" onpaste="javascript: setDirty();" onkeypress="javascript: setDirty()"
-                            onkeydown="javascript: catchDel(event)"><%=text%></textarea> <textarea
+                            cols="50" onpaste="setDirty();" onkeypress="setDirty()"
+                            onkeydown="catchDel(event)"><%=text%></textarea> <textarea
                             style="display: none;" id="log" rows="100" cols="100"></textarea></form>
             </td>
         </tr>

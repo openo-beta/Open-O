@@ -330,8 +330,8 @@
                 <tr>
                     <td>
 
-                        <select name="selectCurrentForms" class="ControlSelect" onChange="javascript:selectBox(this)"
-                                onMouseOver="javascript:window.status='View any of <%=bean.patientLastName+","+bean.patientFirstName%>\'s current forms.';return true;">
+                        <select name="selectCurrentForms" class="ControlSelect" onChange="selectBox(this)"
+                                onMouseOver="window.status='View any of <%=bean.patientLastName+","+bean.patientFirstName%>\'s current forms.';return true;">
                             <option value="null" selected>-current forms-</option>
                             <c:forEach var="cf" items="${casemgmt_newFormBeans}">
                                 <c:if test="${cf.formTable ne ''}">
@@ -353,8 +353,8 @@
                 <!-- add new form -->
                 <tr>
                     <td>
-                        <select name="selectNewForms" class="ControlSelect" onChange="javascript:selectBox(this)"
-                                onMouseOver="javascript:window.status='View <%=bean.patientLastName+","+bean.patientFirstName%>\'s new forms list.';return true;">
+                        <select name="selectNewForms" class="ControlSelect" onChange="selectBox(this)"
+                                onMouseOver="window.status='View <%=bean.patientLastName+","+bean.patientFirstName%>\'s new forms list.';return true;">
                             <option value="null" selected>-add new form-</option>
                             <c:forEach var="cf" items="${casemgmt_newFormBeans}">
                                 <c:if test="${cf.hidden}">
@@ -385,7 +385,7 @@
                 <tr>
                     <td>
                         <select name="msgSelect" class="ControlSelect"
-                                onchange="javascript:popUpMsg(600,900,this.options[this.selectedIndex].value)">
+                                onchange="popUpMsg(600,900,this.options[this.selectedIndex].value)">
                             <option value="null" selected>-Select Message-</option>
                             <c:forEach var="cmb" items="casemgmt_msgBeans">
                                 <option value="${cmb.label}">${cmb.value}</option>
@@ -466,7 +466,7 @@
                             <%}%>
 
                             <select name="measurementGroupSelect" class="ControlSelect"
-                                    onchange="javascript:popUpMeasurements(500,1000,this,this.options[this.selectedIndex].value)">
+                                    onchange="popUpMeasurements(500,1000,this,this.options[this.selectedIndex].value)">
                                 <option value="null" selected>-select group-</option>
                                 <%
                                     for (int j = 0; j < bean.measurementGroupNames.size(); j++) {
@@ -555,8 +555,8 @@
                     <tr>
                         <td>
                             <select name="selectCurrentForms" class="ControlSelect"
-                                    onChange="javascript:selectBox(this)"
-                                    onMouseOver="javascript:window.status='View <%=bean.patientFirstName+" "+bean.patientLastName%>\'s lab results'; return true;">
+                                    onChange="selectBox(this)"
+                                    onMouseOver="window.status='View <%=bean.patientFirstName+" "+bean.patientLastName%>\'s lab results'; return true;">
                                 <option value="null" selected>-lab results-</option>
                                 <c:forEach var="labrst" items="${casemgmtLabsbeans}">
                                     <c:set var="lablable" value="${labrst.dateTime}${labrst.discipline}" />

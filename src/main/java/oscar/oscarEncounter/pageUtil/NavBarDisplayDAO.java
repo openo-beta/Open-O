@@ -409,10 +409,7 @@ public class NavBarDisplayDAO {
     }
 
     public boolean hasHeadingColour() {
-        boolean hasHeadingColour = false;
-        if (this.headingColour != null) {
-            hasHeadingColour = true;
-        }
+        boolean hasHeadingColour = this.headingColour != null;
         return hasHeadingColour;
     }
 

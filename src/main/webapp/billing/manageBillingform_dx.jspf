@@ -61,7 +61,7 @@ int rCount = 0;
 		<% 
    for (CtlDiagCode cdc:cdcs) {
      
-      bodd=bodd?false:true; //for the color of rows
+      bodd= !bodd; //for the color of rows
         service_code[rCount] = cdc.getDiagnosticCode();
      
       rCount = rCount + 1;

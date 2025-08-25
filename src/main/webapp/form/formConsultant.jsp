@@ -259,10 +259,10 @@
     </textarea>
             </div>
             <div id="buttons">
-                <input id="savebut" type="submit" value="Save" onclick="javascript: return onSave();"/>
-                <input id="saveexitbut" type="submit" value="Save and Exit" onclick="javascript: return onSaveExit();"/>
-                <input id="exitbut" type="submit" value="Exit" onclick="javascript: return onExit();"/>
-                <input id="printbut" type="submit" value="Print" onclick="javascript: return onPrint();"/>
+                <input id="savebut" type="submit" value="Save" onclick="return onSave();"/>
+                <input id="saveexitbut" type="submit" value="Save and Exit" onclick="return onSaveExit();"/>
+                <input id="exitbut" type="submit" value="Exit" onclick="return onExit();"/>
+                <input id="printbut" type="submit" value="Print" onclick="return onPrint();"/>
             </div>
         </body>
         <style type="text/css">

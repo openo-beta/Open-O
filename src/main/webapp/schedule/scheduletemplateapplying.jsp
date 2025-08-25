@@ -68,15 +68,13 @@
     <%! List<String> excludedSites = new ArrayList<>(); %>
     <%
 
-        String weekdaytag[] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
-        boolean bAlternate = (request.getParameter("alternate") != null && request.getParameter("alternate").equals("checked")) ? true : false;
+        String[] weekdaytag = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
+        boolean bAlternate = request.getParameter("alternate") != null && request.getParameter("alternate").equals("checked");
         boolean bOrigAlt = false;
 
         OscarProperties props = OscarProperties.getInstance();
 
-        boolean bMoreAddr = bMultisites
-                ? true
-                : (props.getProperty("scheduleSiteID", "").equals("") ? false : true);
+        boolean bMoreAddr = bMultisites || (!props.getProperty("scheduleSiteID", "").equals(""));
         String[] addr;
 
         if (bMultisites) {
@@ -646,7 +644,7 @@
                                                                    name="sunfrom1" size="20" value="<%=param3[0][0]%>"
                                                                    readonly>
                                                             <input type="button" class="btn" name="sunto1" value="<<"
-                                                                   onclick="javascript:tranbutton1_click();">
+                                                                   onclick="tranbutton1_click();">
                                                             <%=bMoreAddr ? getSelectAddr("sunaddr1", addr, param4[0][0]) : ""  %>
                                                         </td>
                                                     </tr>
@@ -658,7 +656,7 @@
                                                                    name="monfrom1" size="20" value="<%=param3[1][0]%>"
                                                                    readonly>
                                                             <input type="button" class="btn" name="monto1" value="<<"
-                                                                   onclick="javascript:tranbutton2_click();">
+                                                                   onclick="tranbutton2_click();">
                                                             <%=bMoreAddr ? getSelectAddr("monaddr1", addr, param4[1][0]) : ""  %>
                                                         </td>
                                                     </tr>
@@ -671,7 +669,7 @@
                                                                    name="tuefrom1" size="20" value="<%=param3[2][0]%>"
                                                                    readonly>
                                                             <input type="button" class="btn" name="tueto1" value="<<"
-                                                                   onclick="javascript:tranbutton3_click();">
+                                                                   onclick="tranbutton3_click();">
                                                             <%=bMoreAddr ? getSelectAddr("tueaddr1", addr, param4[2][0]) : ""  %>
                                                         </td>
                                                     </tr>
@@ -684,7 +682,7 @@
                                                                    name="wedfrom1" size="20" value="<%=param3[3][0]%>"
                                                                    readonly>
                                                             <input type="button" class="btn" name="wedto1" value="<<"
-                                                                   onclick="javascript:tranbutton4_click();">
+                                                                   onclick="tranbutton4_click();">
                                                             <%=bMoreAddr ? getSelectAddr("wedaddr1", addr, param4[3][0]) : ""  %>
                                                         </td>
                                                     </tr>
@@ -697,7 +695,7 @@
                                                                    name="thufrom1" size="20" value="<%=param3[4][0]%>"
                                                                    readonly>
                                                             <input type="button" class="btn" name="thuto1" value="<<"
-                                                                   onclick="javascript:tranbutton5_click();">
+                                                                   onclick="tranbutton5_click();">
                                                             <%=bMoreAddr ? getSelectAddr("thuaddr1", addr, param4[4][0]) : ""  %>
                                                         </td>
                                                     </tr>
@@ -709,7 +707,7 @@
                                                                    name="frifrom1" size="20" value="<%=param3[5][0]%>"
                                                                    readonly>
                                                             <input type="button" class="btn" name="frito1" value="<<"
-                                                                   onclick="javascript:tranbutton6_click();">
+                                                                   onclick="tranbutton6_click();">
                                                             <%=bMoreAddr ? getSelectAddr("friaddr1", addr, param4[5][0]) : ""  %>
                                                         </td>
                                                     </tr>
@@ -722,7 +720,7 @@
                                                                    name="satfrom1" size="20" value="<%=param3[6][0]%>"
                                                                    readonly>
                                                             <input type="button" class="btn" name="satto1" value="<<"
-                                                                   onclick="javascript:tranbutton7_click();">
+                                                                   onclick="tranbutton7_click();">
                                                             <%=bMoreAddr ? getSelectAddr("sataddr1", addr, param4[6][0]) : ""  %>
                                                         </td>
                                                     </tr>
@@ -814,7 +812,7 @@
                                                                    name="sunfrom2" size="20" value="<%=param3[0][0]%>">
                                                             <input
                                                                     type="button" name="sunto2" value="<<"
-                                                                    onclick="javascript:tranbuttonb1_click();">
+                                                                    onclick="tranbuttonb1_click();">
                                                             <%=bMoreAddr ? getSelectAddr("sunaddr2", addr, param4[0][0]) : ""  %>
                                                         </td>
                                                     </tr>
@@ -826,7 +824,7 @@
                                                                    name="monfrom2" size="20" value="<%=param3[1][0]%>">
                                                             <input
                                                                     type="button" name="monto2" value="<<"
-                                                                    onclick="javascript:tranbuttonb2_click();">
+                                                                    onclick="tranbuttonb2_click();">
                                                             <%=bMoreAddr ? getSelectAddr("monaddr2", addr, param4[1][0]) : ""  %>
                                                         </td>
                                                     </tr>
@@ -839,7 +837,7 @@
                                                                    name="tuefrom2" size="20" value="<%=param3[2][0]%>">
                                                             <input
                                                                     type="button" name="tueto2" value="<<"
-                                                                    onclick="javascript:tranbuttonb3_click();">
+                                                                    onclick="tranbuttonb3_click();">
                                                             <%=bMoreAddr ? getSelectAddr("tueaddr2", addr, param4[2][0]) : ""  %>
                                                         </td>
                                                     </tr>
@@ -852,7 +850,7 @@
                                                                    name="wedfrom2" size="20" value="<%=param3[3][0]%>">
                                                             <input
                                                                     type="button" name="wedto2" value="<<"
-                                                                    onclick="javascript:tranbuttonb4_click();">
+                                                                    onclick="tranbuttonb4_click();">
                                                             <%=bMoreAddr ? getSelectAddr("wedaddr2", addr, param4[3][0]) : ""  %>
                                                         </td>
                                                     </tr>
@@ -865,7 +863,7 @@
                                                                    name="thufrom2" size="20" value="<%=param3[4][0]%>">
                                                             <input
                                                                     type="button" name="thuto2" value="<<"
-                                                                    onclick="javascript:tranbuttonb5_click();">
+                                                                    onclick="tranbuttonb5_click();">
                                                             <%=bMoreAddr ? getSelectAddr("thuaddr2", addr, param4[4][0]) : ""  %>
                                                         </td>
                                                     </tr>
@@ -877,7 +875,7 @@
                                                                    name="frifrom2" size="20" value="<%=param3[5][0]%>">
                                                             <input
                                                                     type="button" name="frito2" value="<<"
-                                                                    onclick="javascript:tranbuttonb6_click();">
+                                                                    onclick="tranbuttonb6_click();">
                                                             <%=bMoreAddr ? getSelectAddr("friaddr2", addr, param4[5][0]) : ""  %>
                                                         </td>
                                                     </tr>
@@ -890,7 +888,7 @@
                                                                    name="satfrom2" size="20" value="<%=param3[6][0]%>">
                                                             <input
                                                                     type="button" name="satto2" value="<<"
-                                                                    onclick="javascript:tranbuttonb7_click();">
+                                                                    onclick="tranbuttonb7_click();">
                                                             <%=bMoreAddr ? getSelectAddr("sataddr2", addr, param4[6][0]) : ""  %>
                                                         </td>
                                                     </tr>
@@ -968,9 +966,8 @@
     </body>
     <%! String getSelectAddr(String s, String[] site, String sel) {
 
-        boolean isExcludedSiteSelected = false;
-        if (bMultisites && excludedSites.contains(sel))
-            isExcludedSiteSelected = true; //"; text-decoration:line-through;";
+        boolean isExcludedSiteSelected = bMultisites && excludedSites.contains(sel);
+        //"; text-decoration:line-through;";
 
         String ret = "<select name='" + s + "' " + (isExcludedSiteSelected ? " disabled style='text-decoration:line-through;'  " : "")
                 + " onchange='this.style.backgroundColor=this.options[this.selectedIndex].style.backgroundColor'>";
@@ -983,7 +980,7 @@
                 ind = i;
                 isSiteSel = true;
             }
-            if (i == site.length - 1 && isSiteSel == false) {
+            if (i == site.length - 1 && !isSiteSel) {
                 //if None of the site has been selected, default select to the last one "None"
                 ind = i;
                 t = " selected";

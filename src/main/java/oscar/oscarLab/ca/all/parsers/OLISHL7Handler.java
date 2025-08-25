@@ -984,7 +984,7 @@ public class OLISHL7Handler implements MessageHandler {
                         }
 
                         String weirdFixToGetObr1512 = null;
-                        Type obr15Types[] = obr.getField(15);
+                        Type[] obr15Types = obr.getField(15);
                         if (obr15Types != null && obr15Types.length > 0) {
                             Type obr15Type = obr.getField(15)[0];
                             if (obr15Type instanceof Varies) {
@@ -1635,8 +1635,7 @@ public class OLISHL7Handler implements MessageHandler {
     @Override
     public boolean isOBXAbnormal(int i, int j) {
         String abnormalFlag = getOBXAbnormalFlag(i, j);
-        if (abnormalFlag.equals("") || abnormalFlag.equals("N")) return (false);
-        else return (true);
+        return !abnormalFlag.equals("") && !abnormalFlag.equals("N");
     }
 
     @Override
@@ -3002,9 +3001,8 @@ public class OLISHL7Handler implements MessageHandler {
                 if (other.segment != null) return false;
             } else if (!segment.equals(other.segment)) return false;
             if (sequence == null) {
-                if (other.sequence != null) return false;
-            } else if (!sequence.equals(other.sequence)) return false;
-            return true;
+                return other.sequence == null;
+            } else return sequence.equals(other.sequence);
         }
 
         private OLISHL7Handler getOuterType() {
@@ -3016,10 +3014,6 @@ public class OLISHL7Handler implements MessageHandler {
     //for OMD validation
     public boolean isTestResultBlocked(int i, int j) {
         int obr = getMappedOBR(i);
-        if (isOBRBlocked(obr)) {
-            return true;
-        }
-
-        return false;
+        return isOBRBlocked(obr);
     }
 }

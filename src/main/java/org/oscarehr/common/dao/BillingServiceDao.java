@@ -32,7 +32,7 @@ import java.util.List;
 import org.oscarehr.common.model.BillingService;
 
 public interface BillingServiceDao extends AbstractDao<BillingService> {
-    static public final String BC = "BC";
+    String BC = "BC";
 
     List<BillingService> getBillingCodeAttr(String serviceCode);
 

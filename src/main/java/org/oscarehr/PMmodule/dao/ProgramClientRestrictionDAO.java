@@ -41,27 +41,27 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
  */
 public interface ProgramClientRestrictionDAO {
 
-    public Collection<ProgramClientRestriction> find(int programId, int demographicNo);
+    Collection<ProgramClientRestriction> find(int programId, int demographicNo);
 
-    public void save(ProgramClientRestriction restriction);
+    void save(ProgramClientRestriction restriction);
 
-    public ProgramClientRestriction find(int restrictionId);
+    ProgramClientRestriction find(int restrictionId);
 
-    public Collection<ProgramClientRestriction> findForProgram(int programId);
+    Collection<ProgramClientRestriction> findForProgram(int programId);
 
-    public Collection<ProgramClientRestriction> findDisabledForProgram(int programId);
+    Collection<ProgramClientRestriction> findDisabledForProgram(int programId);
 
-    public Collection<ProgramClientRestriction> findForClient(int demographicNo);
+    Collection<ProgramClientRestriction> findForClient(int demographicNo);
 
-    public Collection<ProgramClientRestriction> findForClient(int demographicNo, int facilityId);
+    Collection<ProgramClientRestriction> findForClient(int demographicNo, int facilityId);
 
-    public Collection<ProgramClientRestriction> findDisabledForClient(int demographicNo);
+    Collection<ProgramClientRestriction> findDisabledForClient(int demographicNo);
 
-    public void setDemographicDao(DemographicDao demographicDao);
+    void setDemographicDao(DemographicDao demographicDao);
 
-    public void setProgramDao(ProgramDao programDao);
+    void setProgramDao(ProgramDao programDao);
 
-    public void setProviderDao(ProviderDao providerDao);
+    void setProviderDao(ProviderDao providerDao);
 
 }
  

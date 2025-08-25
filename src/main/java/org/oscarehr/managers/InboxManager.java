@@ -62,13 +62,13 @@ import oscar.oscarLab.ca.on.LabResultData;
 import oscar.util.OscarRoleObjectPrivilege;
 
 public interface InboxManager {
-    public static final String NORMAL = "normal";
-    public static final String ALL = "all";
-    public static final String ABNORMAL = "abnormal";
-    public static final String LABS = "labs";
-    public static final String DOCUMENTS = "documents";
+    String NORMAL = "normal";
+    String ALL = "all";
+    String ABNORMAL = "abnormal";
+    String LABS = "labs";
+    String DOCUMENTS = "documents";
 
-    public InboxManagerResponse getInboxResults(LoggedInInfo loggedInInfo, InboxManagerQuery query);
+    InboxManagerResponse getInboxResults(LoggedInInfo loggedInInfo, InboxManagerQuery query);
 }
 
 

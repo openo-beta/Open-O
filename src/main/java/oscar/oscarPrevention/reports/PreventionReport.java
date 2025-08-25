@@ -36,5 +36,5 @@ import org.oscarehr.util.LoggedInInfo;
  * @author jay
  */
 public interface PreventionReport {
-    public Hashtable runReport(LoggedInInfo loggedInInfo, ArrayList<ArrayList<String>> list, Date asofDate);
+    Hashtable runReport(LoggedInInfo loggedInInfo, ArrayList<ArrayList<String>> list, Date asofDate);
 }

@@ -435,7 +435,7 @@ public class SFTPConnector {
             fin.close();
         }
 
-        byte keyBytes[] = toHex(decryptionKey);
+        byte[] keyBytes = toHex(decryptionKey);
         SecretKeySpec key = new SecretKeySpec(keyBytes, "AES");
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding", "SunJCE");
         cipher.init(Cipher.DECRYPT_MODE, key);
@@ -514,8 +514,8 @@ public class SFTPConnector {
         if ((encoded.length() % 2) != 0)
             throw new IllegalArgumentException("Input string must contain an even number of characters");
 
-        final byte result[] = new byte[encoded.length() / 2];
-        final char enc[] = encoded.toCharArray();
+        final byte[] result = new byte[encoded.length() / 2];
+        final char[] enc = encoded.toCharArray();
         for (int i = 0; i < enc.length; i += 2) {
             StringBuilder curr = new StringBuilder(2);
             curr.append(enc[i]).append(enc[i + 1]);

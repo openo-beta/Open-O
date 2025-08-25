@@ -229,7 +229,7 @@
 
                 <input type="submit" value="Generate Letters"/>
                 <input type="button" value="Generate Envelopes"
-                       onclick="javascript:genEnvelopes('listDemographic')"/>
+                       onclick="genEnvelopes('listDemographic')"/>
 
 
                 <%} else {%>

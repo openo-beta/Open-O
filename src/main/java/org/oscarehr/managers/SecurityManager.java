@@ -276,10 +276,6 @@ public class SecurityManager {
             return false;
         }
 
-        if (StringUtils.isEmpty(security.getUserName())) {
-            return false;
-        }
-
-        return true;
+        return !StringUtils.isEmpty(security.getUserName());
     }
 }

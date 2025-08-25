@@ -24,6 +24,7 @@
 package org.oscarehr.billing.CA.BC.dao;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -70,6 +71,6 @@ public class SupServiceCodeAssocDAOTest extends DaoTestFixtures {
         dao.deleteServiceCodeAssociation(fee.getId().toString());
 
         fee = dao.find(fee.getId());
-        assertTrue(fee == null);
+        assertNull(fee);
     }
 }

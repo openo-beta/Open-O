@@ -77,10 +77,7 @@ public class OscarPropertiesCheck extends TagSupport {
         String prop = getProperty();
         String val = getValue();
 
-        boolean rev = false;
-        if (getReverse() != null && getReverse().equalsIgnoreCase("true")) {
-            rev = true;
-        }
+        boolean rev = getReverse() != null && getReverse().equalsIgnoreCase("true");
 
         try {
             String oscarVal = OscarProperties.getInstance().getProperty(prop);

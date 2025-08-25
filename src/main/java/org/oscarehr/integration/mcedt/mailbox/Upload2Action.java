@@ -378,7 +378,7 @@ public class Upload2Action extends ActionSupport {
                 result.setResourceType(resourceTypes.get(i));
                 OscarProperties props = OscarProperties.getInstance();
                 File file = new File(props.getProperty("ONEDT_OUTBOX", "") + fileNames.get(i));
-                try (FileInputStream fis = new FileInputStream(file);) {
+                try (FileInputStream fis = new FileInputStream(file)) {
                     byte[] data = new byte[fis.available()];
                     fis.read(data);
                     fis.close();

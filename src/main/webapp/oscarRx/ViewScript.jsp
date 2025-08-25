@@ -352,7 +352,7 @@
                                             <td><span><input type=button
                                                              value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgPrint"/>"
                                                              class="ControlPushButton" style="width: 200px"
-                                                             onClick="javascript:printIframe();"/></span></td>
+                                                             onClick="printIframe();"/></span></td>
                                         </tr>
                                         <tr>
                                             <td width=10px></td>
@@ -374,7 +374,7 @@
                                             <td><span><input type=button
                                                              value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgBackToOscar"/>"
                                                              class="ControlPushButton" style="width: 200px"
-                                                             onClick="javascript:clearPending('close');"/></span></td>
+                                                             onClick="clearPending('close');"/></span></td>
                                         </tr>
 
                                         <%if (request.getAttribute("rePrint") == null) {%>
@@ -386,9 +386,9 @@
                                             <td width=10px></td>
                                             <td>
                                                 <textarea id="additionalNotes" style="width: 200px"
-                                                          onchange="javascript:addNotes();"></textarea>
+                                                          onchange="addNotes();"></textarea>
                                                 <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgAddToRx"/>"
-                                                       onclick="javascript:addNotes();"/>
+                                                       onclick="addNotes();"/>
                                             </td>
                                         </tr>
 

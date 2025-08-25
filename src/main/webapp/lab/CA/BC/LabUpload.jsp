@@ -96,7 +96,7 @@
             <td class="MainTableLeftColumn" valign="top">&nbsp;</td>
             <td valign="top" class="MainTableRightColumn">
                 <form action="${pageContext.request.contextPath}/lab/labUpload.do" method="POST" enctype="multipart/form-data"
-                    onsubmit="javascript: return displayAndDisable()">
+                    onsubmit="return displayAndDisable()">
                 <input type="file" name="importFile" value="">
                 <input type="submit" name="Submit" value="Import">
             </form> <%

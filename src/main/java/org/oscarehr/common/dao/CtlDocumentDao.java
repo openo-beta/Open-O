@@ -36,8 +36,8 @@ import org.springframework.stereotype.Repository;
 
 public interface CtlDocumentDao extends AbstractDao<CtlDocument> {
 
-    public CtlDocument getCtrlDocument(Integer docId);
+    CtlDocument getCtrlDocument(Integer docId);
 
-    public List<CtlDocument> findByDocumentNoAndModule(Integer ctlDocNo, String module);
+    List<CtlDocument> findByDocumentNoAndModule(Integer ctlDocNo, String module);
 
 }

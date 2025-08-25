@@ -52,7 +52,7 @@ public final class ViewOruR01UIBean {
     private Demographic demographic;
     private ObservationData observationData;
 
-    public ViewOruR01UIBean(String segmentId) throws EncodingNotSupportedException, HL7Exception, UnsupportedEncodingException {
+    public ViewOruR01UIBean(String segmentId) throws HL7Exception, UnsupportedEncodingException {
         this.segmentId = segmentId;
 
         String hl7Message = Factory.getHL7Body(segmentId);

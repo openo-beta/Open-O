@@ -94,10 +94,7 @@
     Demographic demographic = demographicManager.getDemographic(loggedInInfo, Integer.parseInt(demoNo));
     DemographicExt infoExt = demographicManager.getDemographicExt(loggedInInfo, Integer.parseInt(demoNo), "informedConsent");
     pageContext.setAttribute("demographic", demographic);
-    boolean showPopup = false;
-    if (infoExt == null || !"yes".equalsIgnoreCase(infoExt.getValue())) {
-        showPopup = true;
-    }
+    boolean showPopup = infoExt == null || !"yes".equalsIgnoreCase(infoExt.getValue());
 
     ProgramManager2 programManager2 = SpringUtils.getBean(ProgramManager2.class);
 
@@ -476,7 +473,7 @@
                 </security:oscarSec>
 
                 <security:oscarSec roleName="<%=roleName%>" objectName="_newCasemgmt.templates" rights="r">
-                <select onchange="javascript:popupPage(700,700,'Templates',this.value);">
+                <select onchange="popupPage(700,700,'Templates',this.value);">
                     <option value="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Header.Templates"/></option>
                     <option value="-1">------------------</option>
                     <security:oscarSec roleName="<%=roleName%>" objectName="_newCasemgmt.templates" rights="w">

@@ -137,9 +137,7 @@ public class DxAssociation extends AbstractModel<Integer> implements Serializabl
 
         DxAssociation assoc = (DxAssociation) o;
 
-        if (id != null ? !id.equals(assoc.id) : assoc.id != null) return false;
-
-        return true;
+        return java.util.Objects.equals(id, assoc.id);
     }
 
     public int hashCode() {

@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /*
  * Author: Dennis Warren
@@ -126,8 +127,8 @@ public class PDFControllerTest {
 
         Map<String, Method> getterMethods = PDFController.getGetterMethods(data);
 
-        assertEquals(null, PDFController.invokeValue("democratic.fakemethod", getterMethods, data));
-        assertEquals(null, PDFController.invokeValue("fakemethod", getterMethods, data));
+        assertNull(PDFController.invokeValue("democratic.fakemethod", getterMethods, data));
+        assertNull(PDFController.invokeValue("fakemethod", getterMethods, data));
 
     }
     @Ignore

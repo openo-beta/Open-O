@@ -161,7 +161,7 @@ public class ProfessionalSpecialistDaoImpl extends AbstractDaoImpl<ProfessionalS
                 paramList.add(temp[0] + "%");
             }
         }
-        String sql = "SELECT c from ProfessionalSpecialist c where " + where.toString() + " order by " + orderBy;
+        String sql = "SELECT c from ProfessionalSpecialist c where " + where + " order by " + orderBy;
 
         Query query = entityManager.createQuery(sql);
         for (int x = 0; x < paramList.size(); x++) {

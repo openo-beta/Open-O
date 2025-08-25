@@ -763,7 +763,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                                                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgPrint"/>"
                                                                                        class="ControlPushButton"
                                                                                        style="width: 210px"
-                                                                                       onClick="javascript:printIframe();"/></span>
+                                                                                       onClick="printIframe();"/></span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -820,14 +820,14 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                                              value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgCreateNewRx"/>"
                                                              class="ControlPushButton"
                                                              style="width: 210px"
-                                                             onClick="resetStash();resetReRxDrugList();javascript:parent.myLightWindow.deactivate();"/></span>
+                                                             onClick="resetStash();resetReRxDrugList();parent.myLightWindow.deactivate();"/></span>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td><span><input type=button
                                                              value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgBackToOscar"/>"
                                                              class="ControlPushButton" style="width: 210px"
-                                                             onClick="javascript:clearPending('close');parent.window.close();"/></span>
+                                                             onClick="clearPending('close');parent.window.close();"/></span>
                                             </td>
                                         </tr>
                                         <%
@@ -840,9 +840,9 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                             <!--td width=10px></td-->
                                             <td>
                                                 <textarea id="additionalNotes" style="width: 200px"
-                                                          onchange="javascript:addNotes();"></textarea>
+                                                          onchange="addNotes();"></textarea>
                                                 <input type="button" value="Additional Rx Notes"
-                                                       onclick="javascript:addNotes();"/>
+                                                       onclick="addNotes();"/>
                                             </td>
                                         </tr>
 

@@ -188,10 +188,7 @@ public class DroolsNumerator implements Numerator {
     }
 
     public boolean hasReplaceableValues() {
-        boolean repVal = false;
-        if (replaceKeys != null) {
-            repVal = true;
-        }
+        boolean repVal = replaceKeys != null;
         return repVal;
     }
 

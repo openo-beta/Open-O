@@ -245,7 +245,7 @@
     </script>
 
 
-    <body bgproperties="fixed" onLoad="javascript:window.focus()"
+    <body bgproperties="fixed" onLoad="window.focus()"
           topmargin="0" leftmargin="0" rightmargin="0">
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
@@ -267,13 +267,13 @@
         <table class="Header" class="hidePrint">
             <tr>
                 <td nowrap="true"><input type="submit" value="Save"
-                                         onclick="javascript:return onSave();"/> <input type="submit"
+                                         onclick="return onSave();"/> <input type="submit"
                                                                                         value="Save and Exit"
-                                                                                        onclick="javascript:return onSaveExit();"/>
+                                                                                        onclick="return onSaveExit();"/>
                     <input
-                            type="submit" value="Exit" onclick="javascript:return onExit();">
+                            type="submit" value="Exit" onclick="return onExit();">
                     <input type="button" value="Print"
-                           onclick="javascript:return onPrint();"/></td>
+                           onclick="return onPrint();"/></td>
                 <td align="center" width="100%"><a name="length"
                                                    href="javascript:popup('form/graphLengthWeight.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>');">
                     Graph Length and Weight</a><br>
@@ -311,7 +311,7 @@
                                     readonly="true"/> &nbsp;&nbsp; Birth Date (yyyy/mm/dd): <input
                             type="text" name="c_birthDate" size="10" maxlength="10"
                             value="<%= props.getProperty("c_birthDate", "") %>" readonly="true">
-                        &nbsp;&nbsp; <%= ((FrmRourkeRecord) rec).isFemale(demoNo) == true ? "Female" : "Male" %>
+                        &nbsp;&nbsp; <%= ((FrmRourkeRecord) rec).isFemale(demoNo) ? "Female" : "Male" %>
                     </p>
                     <p>Length: <input type="text" name="c_length" size="6"
                                       maxlength="6" value="<%= props.getProperty("c_length", "") %>"/> cm
@@ -1284,13 +1284,13 @@
         <table class="Header" class="hidePrint">
             <tr>
                 <td nowrap="true"><input type="submit" value="Save"
-                                         onclick="javascript:return onSave();"/> <input type="submit"
+                                         onclick="return onSave();"/> <input type="submit"
                                                                                         value="Save and Exit"
-                                                                                        onclick="javascript:return onSaveExit();"/>
+                                                                                        onclick="return onSaveExit();"/>
                     <input
-                            type="submit" value="Exit" onclick="javascript:return onExit();">
+                            type="submit" value="Exit" onclick="return onExit();">
                     <input type="button" value="Print"
-                           onclick="javascript:return onPrint();"/></td>
+                           onclick="return onPrint();"/></td>
                 <td align="center" width="100%">
                     <% if (formId > 0) { %> <a name="length"
                                                href="javascript:popup('form/graphLengthWeight.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>');">

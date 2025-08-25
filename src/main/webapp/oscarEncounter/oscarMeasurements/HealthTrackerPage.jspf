@@ -601,7 +601,7 @@ function fsPopup(width,height,url,window) {
             // Check that current character is number.
             var c = s.charAt(i);
 			if (c == '.') {
-				continue;
+
 			} else if (((c < "0") || (c > "9"))) {
                 alert('Invalid '+s+' in field ' + ss.name);
                 ss.focus();
@@ -703,7 +703,7 @@ function fsPopup(width,height,url,window) {
 					}
 
 
-					if(enabled && flowSheetGroups.isUniversal()!=true) {
+					if(enabled && !flowSheetGroups.isUniversal()) {
 
 						//out.print(flowsheets.size());
 						for (int f = 0; f < flowsheets.size(); f++) {
@@ -827,9 +827,9 @@ primaryMore="btn-primary";
     <strong>Warning!</strong>
  	You are using the <b><%=flowSheet%></b> without a diagnosis.
 		<%if(dxCodeQueryString!=""){ %>
-			To add a diagnosis use one of the available codes: <%=dxCodeQueryString%> or go to the <a href='javascript:void(0);' onclick="javascript:popup(700,900,'<%=request.getContextPath()%>/oscarResearch/oscarDxResearch/setupDxResearch.do?demographicNo=<%=demographic_no%>&providerNo=<%=providerNo%>&quickList=', 'dxAdd'); return false;">Disease Registry</a>.
+			To add a diagnosis use one of the available codes: <%=dxCodeQueryString%> or go to the <a href='javascript:void(0);' onclick="popup(700,900,'<%=request.getContextPath()%>/oscarResearch/oscarDxResearch/setupDxResearch.do?demographicNo=<%=demographic_no%>&providerNo=<%=providerNo%>&quickList=', 'dxAdd'); return false;">Disease Registry</a>.
 			<%}else{%>
-			Use the <a href='javascript:void(0);' onclick="javascript:popup(700,900,'<%=request.getContextPath()%>/oscarResearch/oscarDxResearch/setupDxResearch.do?demographicNo=<%=demographic_no%>&providerNo=<%=providerNo%>&quickList=', 'dxAdd'); return false;">Disease Registry</a> to add a diagnosis.
+			Use the <a href='javascript:void(0);' onclick="popup(700,900,'<%=request.getContextPath()%>/oscarResearch/oscarDxResearch/setupDxResearch.do?demographicNo=<%=demographic_no%>&providerNo=<%=providerNo%>&quickList=', 'dxAdd'); return false;">Disease Registry</a> to add a diagnosis.
 		<%}%>
     </div>
  <%}%>
@@ -918,7 +918,7 @@ primaryMore="btn-primary";
 					      <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
 					    </div>
 					   </div>
-					<input type="button" class="btn btn-default" value="go" onclick="javascript: loadDifferentElements()"/>
+					<input type="button" class="btn btn-default" value="go" onclick="loadDifferentElements()"/>
                     </span>
             </form>
 
@@ -1304,7 +1304,7 @@ $(document).ready(function(){ $(id).trigger('slid.bs.carousel'); });
 	        </span>
    		</div><!-- col-lg-5 -->
    		<div class="col-lg-7 data-input-area">
-   			<button type="button" class="btn btn-default" value="Add" onclick="javascript:fsPopup(465,635,'../../oscarPrevention/AddPreventionData.jsp?prevention=<%= response.encodeURL( prevType) %>&amp;demographic_no=<%=demographic_no%>','addPreventionData<%=Math.abs( prevType.hashCode() ) %>')"><span class="glyphicon glyphicon-plus"></span></button>
+   			<button type="button" class="btn btn-default" value="Add" onclick="fsPopup(465,635,'../../oscarPrevention/AddPreventionData.jsp?prevention=<%= response.encodeURL( prevType) %>&amp;demographic_no=<%=demographic_no%>','addPreventionData<%=Math.abs( prevType.hashCode() ) %>')"><span class="glyphicon glyphicon-plus"></span></button>
    		</div><!-- col-lg-7 -->
    	</div>
   </div>
@@ -1335,7 +1335,7 @@ $(document).ready(function(){ $(id).trigger('slid.bs.carousel'); });
 		        }
 		%>
 
-		<div class="preventionProcedure"  onclick="javascript:fsPopup(465,635,'../../oscarPrevention/AddPreventionData.jsp?id=<%=hdata.get("id")%>&amp;demographic_no=<%=demographic_no%>','addPreventionData')" >
+		<div class="preventionProcedure"  onclick="fsPopup(465,635,'../../oscarPrevention/AddPreventionData.jsp?id=<%=hdata.get("id")%>&amp;demographic_no=<%=demographic_no%>','addPreventionData')" >
 
 		<p align="center">
 		<span rel="popover" data-container="body" data-html="true" data-content='Entered by: <%=hdata.get("provider_name")%>'  data-trigger="hover">
@@ -1488,7 +1488,7 @@ function createAddAll(d,t){
 							%>
 
 								<tr>
-									<td><a href="javascript:void(0);" onclick="javascript:popup(700,900,'<%=request.getContextPath()%>/eform/efmshowform_data.jsp?fdid=<%=curformCompleted.get("fdid")%>&appointment=', '<%="FormP" + i%>'); return false;"
+									<td><a href="javascript:void(0);" onclick="popup(700,900,'<%=request.getContextPath()%>/eform/efmshowform_data.jsp?fdid=<%=curformCompleted.get("fdid")%>&appointment=', '<%="FormP" + i%>'); return false;"
 									TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.msgViewFrm"/>"
 									onmouseover="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.msgViewFrm"/>'; return true"><%=curformCompleted.get("formName")%></a>
 									</td>
@@ -1512,7 +1512,7 @@ function createAddAll(d,t){
 		        	HashMap<String, ? extends Object> curForm = eForms.get(i);
 		%>
 					<tr>
-		        	 <td><a href="javascript:void(0);" onclick="javascript:popup(700,900,'<%=request.getContextPath()%>/eform/efmformadd_data.jsp?fid=<%=curForm.get("fid")%>&demographic_no=<%=demographic_no%>')"><%=curForm.get("formName")%></a></td>
+		        	 <td><a href="javascript:void(0);" onclick="popup(700,900,'<%=request.getContextPath()%>/eform/efmformadd_data.jsp?fid=<%=curForm.get("fid")%>&demographic_no=<%=demographic_no%>')"><%=curForm.get("formName")%></a></td>
 		        	 <td class="hidden-md"><%=curForm.get("formSubject")%></td>
 					</tr>
 
@@ -1587,11 +1587,11 @@ function createAddAll(d,t){
 			out.print(dxCodeQueryString);
 
 			%>
-			or go to the <a href='javascript:void(0);' onclick="javascript:popup(700,900,'<%=request.getContextPath()%>/oscarResearch/oscarDxResearch/setupDxResearch.do?demographicNo=<%=demographic_no%>&providerNo=<%=providerNo%>&quickList=', 'dxAdd'); return false;">Disease Registry</a>.
+			or go to the <a href='javascript:void(0);' onclick="popup(700,900,'<%=request.getContextPath()%>/oscarResearch/oscarDxResearch/setupDxResearch.do?demographicNo=<%=demographic_no%>&providerNo=<%=providerNo%>&quickList=', 'dxAdd'); return false;">Disease Registry</a>.
 			<%
 			}else{
 			%>
-			Use the <a href='javascript:void(0);' onclick="javascript:popup(700,900,'<%=request.getContextPath()%>/oscarResearch/oscarDxResearch/setupDxResearch.do?demographicNo=<%=demographic_no%>&providerNo=<%=providerNo%>&quickList=', 'dxAdd'); return false;">Disease Registry</a> to add a diagnosis.
+			Use the <a href='javascript:void(0);' onclick="popup(700,900,'<%=request.getContextPath()%>/oscarResearch/oscarDxResearch/setupDxResearch.do?demographicNo=<%=demographic_no%>&providerNo=<%=providerNo%>&quickList=', 'dxAdd'); return false;">Disease Registry</a> to add a diagnosis.
 			<%
 			}
 			%>

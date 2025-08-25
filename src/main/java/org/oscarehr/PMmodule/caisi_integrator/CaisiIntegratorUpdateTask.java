@@ -696,10 +696,7 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
     private boolean isPushDisabled() {
         UserProperty prop = userPropertyDao.getProp(IntegratorPushManager.DISABLE_INTEGRATOR_PUSH_PROP);
 
-        if (prop != null && "true".equals(prop.getValue())) {
-            return true;
-        }
-        return false;
+        return prop != null && "true".equals(prop.getValue());
     }
 
     private boolean checkPatientConsent(int demographicNo) {
@@ -1009,7 +1006,7 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
         if (demographic.getLastUpdateDate().before(lastDataUpdated))
             return;
 
-        String ignoreProperties[] = {"lastUpdateDate"};
+        String[] ignoreProperties = {"lastUpdateDate"};
         BeanUtils.copyProperties(demographic, demographicTransfer, ignoreProperties);
 
         demographicTransfer.setCaisiDemographicId(demographic.getDemographicNo());
@@ -2398,10 +2395,7 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
                 if (name.startsWith(parentFile) && !name.equals(parentFile + COMPRESSED_DOCUMENTS_APPENDAGE + ".zip")) {
                     return true;
                 }
-                if (name.indexOf("documentMeta.txt") != -1) {
-                    return true;
-                }
-                return false;
+                return name.indexOf("documentMeta.txt") != -1;
             }
         });
         logger.info("CREATING ZIP FILE NOW");
@@ -2503,7 +2497,7 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
     private void addZipFile(final String source, final ZipOutputStream destination, final String filename)
             throws IOException {
 
-        byte data[] = new byte[1024];
+        byte[] data = new byte[1024];
         // out.putNextEntry(new ZipEntry(files[x].getName()));
         FileInputStream fi = new FileInputStream(source);
         BufferedInputStream origin = new BufferedInputStream(fi, 1024);

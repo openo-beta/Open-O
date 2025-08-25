@@ -434,7 +434,7 @@ public class AddEForm2Action extends ActionSupport {
             DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
             Demographic client = demographicManager.getDemographic(loggedInInfo, demographic_no);
             try {
-                matchManager.<Demographic>processEvent(client, IMatchManager.Event.CLIENT_CREATED);
+                matchManager.processEvent(client, IMatchManager.Event.CLIENT_CREATED);
             } catch (MatchManagerException e) {
                 MiscUtils.getLogger().error("Error while processing MatchManager.processEvent(Client)", e);
             }
@@ -478,12 +478,12 @@ public class AddEForm2Action extends ActionSupport {
     }
 
     private void addEmailAttachments(HttpServletRequest request, String[] attachedEForms, String[] attachedDocuments, String[] attachedLabs, String[] attachedHRMDocuments, String[] attachedForms) {
-        Boolean attachEFormItSelf = request.getParameter("attachEFormToEmail") == null || "true".equals(request.getParameter("attachEFormToEmail")) ? true : false;
-        Boolean openEFormAfterEmail = request.getParameter("openEFormAfterSendingEmail") == null || "false".equals(request.getParameter("openEFormAfterSendingEmail")) ? false : true;
-        Boolean isEmailEncrypted = request.getParameter("enableEmailEncryption") == null || "true".equals(request.getParameter("enableEmailEncryption")) ? true : false;
-        Boolean isEmailAttachmentEncrypted = request.getParameter("encryptEmailAttachments") == null || "true".equals(request.getParameter("encryptEmailAttachments")) ? true : false;
-        Boolean isEmailAutoSend = request.getParameter("autoSendEmail") == null || "false".equals(request.getParameter("autoSendEmail")) ? false : true;
-        Boolean deleteEFormAfterEmail = request.getParameter("deleteEFormAfterSendingEmail") == null || "false".equals(request.getParameter("deleteEFormAfterSendingEmail")) ? false : true;
+        Boolean attachEFormItSelf = request.getParameter("attachEFormToEmail") == null || "true".equals(request.getParameter("attachEFormToEmail"));
+        Boolean openEFormAfterEmail = request.getParameter("openEFormAfterSendingEmail") != null && !"false".equals(request.getParameter("openEFormAfterSendingEmail"));
+        Boolean isEmailEncrypted = request.getParameter("enableEmailEncryption") == null || "true".equals(request.getParameter("enableEmailEncryption"));
+        Boolean isEmailAttachmentEncrypted = request.getParameter("encryptEmailAttachments") == null || "true".equals(request.getParameter("encryptEmailAttachments"));
+        Boolean isEmailAutoSend = request.getParameter("autoSendEmail") != null && !"false".equals(request.getParameter("autoSendEmail"));
+        Boolean deleteEFormAfterEmail = request.getParameter("deleteEFormAfterSendingEmail") != null && !"false".equals(request.getParameter("deleteEFormAfterSendingEmail"));
         request.setAttribute("deleteEFormAfterEmail", deleteEFormAfterEmail);
         request.setAttribute("isEmailEncrypted", isEmailEncrypted);
         request.setAttribute("isEmailAttachmentEncrypted", isEmailAttachmentEncrypted);

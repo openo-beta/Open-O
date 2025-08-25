@@ -608,7 +608,7 @@ public class PDFController {
             }
 
             if (objectOne != null) {
-                _Logger.debug("MethodName [MapKey]: " + methodName + " ObjectOne [GenericObject]: " + objectOne.toString() + " Index [ListIndex]: " + index);
+                _Logger.debug("MethodName [MapKey]: " + methodName + " ObjectOne [GenericObject]: " + objectOne + " Index [ListIndex]: " + index);
 
                 if (objectOne instanceof java.util.List && index > -1) {
                     _Logger.debug("Method [ObjectList]: " + methodMap.get(methodName).toGenericString());

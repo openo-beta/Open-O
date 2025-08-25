@@ -57,7 +57,6 @@ public class WLWaitingListNameUtil {
         dao.merge(w);
 
 
-        return;
     }
 
     static public void createWaitingListName(String wlName, String groupNo, String providerNo)
@@ -91,7 +90,6 @@ public class WLWaitingListNameUtil {
         nameDao.persist(wln);
 
 
-        return;
     }
 
     /*
@@ -131,7 +129,6 @@ public class WLWaitingListNameUtil {
             nameDao.merge(wln);
         }
 
-        return;
     }
 
 
@@ -143,17 +140,11 @@ public class WLWaitingListNameUtil {
         }
 
         List<WaitingList> wls = dao.findByWaitingListId(Integer.parseInt(wlNameId));
-        if (wls.size() > 0)
-            return true;
-
-
-        return false;
+        return wls.size() > 0;
     }
 
     static private boolean isWaitingListNameExist(List<WaitingListName> wlns) {
-        if (wlns.size() > 0)
-            return true;
-        return false;
+        return wlns.size() > 0;
     }
 
     static private List<WaitingListName> getWaitingListNameRecords(String wlName, String groupNo) {

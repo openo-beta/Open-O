@@ -39,14 +39,14 @@ import org.springframework.stereotype.Repository;
 
 public interface ConsentDao extends AbstractDao<Consent> {
 
-    public Consent findByDemographicAndConsentTypeId(int demographic_no, int consentTypeId);
+    Consent findByDemographicAndConsentTypeId(int demographic_no, int consentTypeId);
 
-    public Consent findByDemographicAndConsentType(int demographic_no, String consentType);
+    Consent findByDemographicAndConsentType(int demographic_no, String consentType);
 
-    public List<Consent> findByDemographic(int demographic_no);
+    List<Consent> findByDemographic(int demographic_no);
 
-    public List<Consent> findLastEditedByConsentTypeId(int consentTypeId, Date lastEditDate);
+    List<Consent> findLastEditedByConsentTypeId(int consentTypeId, Date lastEditDate);
 
-    public List<Integer> findAllDemoIdsConsentedToType(int consentTypeId);
+    List<Integer> findAllDemoIdsConsentedToType(int consentTypeId);
 
 }

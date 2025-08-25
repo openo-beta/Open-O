@@ -38,7 +38,7 @@ import org.springframework.stereotype.Repository;
 
 public interface BillingInrDao extends AbstractDao<BillingInr> {
 
-    public List<Object[]> search_inrbilling_dt_billno(Integer billingInrNo);
+    List<Object[]> search_inrbilling_dt_billno(Integer billingInrNo);
 
-    public List<BillingInr> findCurrentByProviderNo(String providerNo);
+    List<BillingInr> findCurrentByProviderNo(String providerNo);
 }

@@ -57,8 +57,7 @@
     String project_home = request.getContextPath().substring(1);
 %>
 <%
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 %>
 <html>
     <head>
@@ -422,7 +421,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="ex1" size="5"
-                                                                  onchange="javascript:calExerScore()" maxLength="2"
+                                                                  onchange="calExerScore()" maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("ex1", "") %>"/></td>
                                     </tr>
@@ -439,7 +438,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="ex2" size="5"
-                                                                  onchange="javascript:calExerScore()" maxLength="2"
+                                                                  onchange="calExerScore()" maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("ex2", "") %>"/></td>
                                     </tr>
@@ -455,7 +454,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="ex3" size="5"
-                                                                  onchange="javascript:calExerScore()" maxLength="2"
+                                                                  onchange="calExerScore()" maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("ex3", "") %>"/></td>
                                     </tr>
@@ -521,7 +520,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="disease1"
-                                                                  size="5" onchange="javascript:calDiseaseScore()"
+                                                                  size="5" onchange="calDiseaseScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("disease1", "") %>"/>
@@ -618,7 +617,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="help1" size="5"
-                                                                  onchange="javascript:calHelpScore()" maxLength="2"
+                                                                  onchange="calHelpScore()" maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("help1", "") %>"/>
                                         </td>
@@ -636,7 +635,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="help2" size="5"
-                                                                  onchange="javascript:calHelpScore()" maxLength="2"
+                                                                  onchange="calHelpScore()" maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("help2", "") %>"/>
                                         </td>
@@ -653,7 +652,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="help3" size="5"
-                                                                  onchange="javascript:calHelpScore()" maxLength="2"
+                                                                  onchange="calHelpScore()" maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("help3", "") %>"/>
                                         </td>
@@ -672,7 +671,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="help4" size="5"
-                                                                  onchange="javascript:calHelpScore()" maxLength="2"
+                                                                  onchange="calHelpScore()" maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("help4", "") %>"/>
                                         </td>
@@ -774,7 +773,7 @@
                                         </td>
                                         <td align="center"><input type="text"
                                                                   name="communicateWithPhy1" size="5"
-                                                                  onchange="javascript: calCommScore()" maxLength="2"
+                                                                  onchange="calCommScore()" maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("communicateWithPhy1", "") %>"/>
                                         </td>
@@ -793,7 +792,7 @@
                                         </td>
                                         <td align="center"><input type="text"
                                                                   name="communicateWithPhy2" size="5"
-                                                                  onchange="javascript: calCommScore()" maxLength="2"
+                                                                  onchange="calCommScore()" maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("communicateWithPhy2", "") %>"/>
                                         </td>
@@ -811,7 +810,7 @@
                                         </td>
                                         <td align="center"><input type="text"
                                                                   name="communicateWithPhy3" size="5"
-                                                                  onchange="javascript: calCommScore()" maxLength="2"
+                                                                  onchange="calCommScore()" maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("communicateWithPhy3", "") %>"/>
                                         </td>
@@ -909,7 +908,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="manageDisease1"
-                                                                  size="5" onchange="javascript: calManDiseaseScore()"
+                                                                  size="5" onchange="calManDiseaseScore()"
                                                                   maxLength="2" class="textbox"
                                                                   value="<%= props.getProperty("manageDisease1", "") %>"/>
                                         </td>
@@ -926,7 +925,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="manageDisease2"
-                                                                  size="5" onchange="javascript: calManDiseaseScore()"
+                                                                  size="5" onchange="calManDiseaseScore()"
                                                                   maxLength="2" class="textbox"
                                                                   value="<%= props.getProperty("manageDisease2", "") %>"/>
                                         </td>
@@ -944,7 +943,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="manageDisease3"
-                                                                  size="5" onchange="javascript: calManDiseaseScore()"
+                                                                  size="5" onchange="calManDiseaseScore()"
                                                                   maxLength="2" class="textbox"
                                                                   value="<%= props.getProperty("manageDisease3", "") %>"/>
                                         </td>
@@ -962,7 +961,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="manageDisease4"
-                                                                  size="5" onchange="javascript: calManDiseaseScore()"
+                                                                  size="5" onchange="calManDiseaseScore()"
                                                                   maxLength="2" class="textbox"
                                                                   value="<%= props.getProperty("manageDisease4", "") %>"/>
                                         </td>
@@ -980,7 +979,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="manageDisease5"
-                                                                  size="5" onchange="javascript: calManDiseaseScore()"
+                                                                  size="5" onchange="calManDiseaseScore()"
                                                                   maxLength="2" class="textbox"
                                                                   value="<%= props.getProperty("manageDisease5", "") %>"/>
                                         </td>
@@ -1080,7 +1079,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="doChore1"
-                                                                  size="5" onchange="javascript:calChoresScore()"
+                                                                  size="5" onchange="calChoresScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("doChore1", "") %>"/>
@@ -1098,7 +1097,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="doChore2"
-                                                                  size="5" onchange="javascript:calChoresScore()"
+                                                                  size="5" onchange="calChoresScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("doChore2", "") %>"/>
@@ -1116,7 +1115,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="doChore3"
-                                                                  size="5" onchange="javascript:calChoresScore()"
+                                                                  size="5" onchange="calChoresScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("doChore3", "") %>"/>
@@ -1213,7 +1212,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="social1"
-                                                                  size="5" onchange="javascript:calSocialScore()"
+                                                                  size="5" onchange="calSocialScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("social1", "") %>"/>
@@ -1232,7 +1231,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="social2"
-                                                                  size="5" onchange="javascript:calSocialScore()"
+                                                                  size="5" onchange="calSocialScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("social2", "") %>"/>
@@ -1303,7 +1302,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="shortBreath1"
-                                                                  size="5" onchange="javascript:calBreathScore()"
+                                                                  size="5" onchange="calBreathScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("shortBreath1", "") %>"/>
@@ -1399,7 +1398,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="manageSymptoms1"
-                                                                  size="5" onchange="javascript: calManSymScore()"
+                                                                  size="5" onchange="calManSymScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("manageSymptoms1", "") %>"/>
@@ -1417,7 +1416,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="manageSymptoms2"
-                                                                  size="5" onchange="javascript: calManSymScore()"
+                                                                  size="5" onchange="calManSymScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("manageSymptoms2", "") %>"/>
@@ -1436,7 +1435,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="manageSymptoms3"
-                                                                  size="5" onchange="javascript: calManSymScore()"
+                                                                  size="5" onchange="calManSymScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("manageSymptoms3", "") %>"/>
@@ -1455,7 +1454,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="manageSymptoms4"
-                                                                  size="5" onchange="javascript: calManSymScore()"
+                                                                  size="5" onchange="calManSymScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("manageSymptoms4", "") %>"/>
@@ -1474,7 +1473,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="manageSymptoms5"
-                                                                  size="5" onchange="javascript: calManSymScore()"
+                                                                  size="5" onchange="calManSymScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("manageSymptoms5", "") %>"/>
@@ -1574,7 +1573,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="controlDepress1"
-                                                                  size="5" onchange="javascript:calManDprScore()"
+                                                                  size="5" onchange="calManDprScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("controlDepress1", "") %>"/>
@@ -1592,7 +1591,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="controlDepress2"
-                                                                  size="5" onchange="javascript:calManDprScore()"
+                                                                  size="5" onchange="calManDprScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("controlDepress2", "") %>"/>
@@ -1610,7 +1609,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="controlDepress3"
-                                                                  size="5" onchange="javascript:calManDprScore()"
+                                                                  size="5" onchange="calManDprScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("controlDepress3", "") %>"/>
@@ -1628,7 +1627,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="controlDepress4"
-                                                                  size="5" onchange="javascript:calManDprScore()"
+                                                                  size="5" onchange="calManDprScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("controlDepress4", "") %>"/>
@@ -1646,7 +1645,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="controlDepress5"
-                                                                  size="5" onchange="javascript:calManDprScore()"
+                                                                  size="5" onchange="calManDprScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("controlDepress5", "") %>"/>
@@ -1664,7 +1663,7 @@
                                             </table>
                                         </td>
                                         <td align="center"><input type="text" name="controlDepress6"
-                                                                  size="5" onchange="javascript:calManDprScore()"
+                                                                  size="5" onchange="calManDprScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
                                                                   value="<%= props.getProperty("controlDepress6", "") %>"/>
@@ -1717,15 +1716,15 @@
                                 <%
                                     if (!bView) {
                                 %> <input type="submit" value="Save"
-                                          onclick="javascript: return onSave();"/> <input type="submit"
+                                          onclick="return onSave();"/> <input type="submit"
                                                                                           value="Save and Exit"
-                                                                                          onclick="javascript:if(checkBeforeSave()==true) return onSaveExit(); else return false;"/>
+                                                                                          onclick="if(checkBeforeSave()==true) return onSaveExit(); else return false;"/>
                                 <%
                                     }
                                 %> <input type="button" value="Exit"
-                                          onclick="javascript:return onExit();"/> <input type="button"
+                                          onclick="return onExit();"/> <input type="button"
                                                                                          value="Print"
-                                                                                         onclick="javascript:window.print();"/>
+                                                                                         onclick="window.print();"/>
                             </td>
                             <td align="right">Study ID: <%= props.getProperty("studyID", "N/A") %>
                                 <input type="hidden" name="studyID"

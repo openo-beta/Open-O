@@ -96,392 +96,392 @@ import oscar.util.SqlUtils;
  */
 public interface DemographicDao {
 
-    public List<Integer> getMergedDemographics(Integer demographicNo);
+    List<Integer> getMergedDemographics(Integer demographicNo);
 
-    public Demographic getDemographic(String demographic_no);
+    Demographic getDemographic(String demographic_no);
 
-    public List getDemographics();
+    List getDemographics();
 
-    public List<Demographic> getDemographics(List<Integer> demographicIds);
+    List<Demographic> getDemographics(List<Integer> demographicIds);
 
-    public Long getActiveDemographicCount();
+    Long getActiveDemographicCount();
 
-    public List<Demographic> getActiveDemographics(final int offset, final int limit);
+    List<Demographic> getActiveDemographics(final int offset, final int limit);
 
-    public Demographic getDemographicById(Integer demographic_id);
+    Demographic getDemographicById(Integer demographic_id);
 
-    public List<Demographic> getDemographicByProvider(String providerNo);
+    List<Demographic> getDemographicByProvider(String providerNo);
 
-    public List<Demographic> getDemographicByProvider(String providerNo, boolean onlyActive);
+    List<Demographic> getDemographicByProvider(String providerNo, boolean onlyActive);
 
-    public List<Integer> getDemographicNosByProvider(String providerNo, boolean onlyActive);
+    List<Integer> getDemographicNosByProvider(String providerNo, boolean onlyActive);
 
 
-    public List getActiveDemographicByProgram(int programId, Date dt, Date defdt);
+    List getActiveDemographicByProgram(int programId, Date dt, Date defdt);
 
-    public List<Demographic> getActiveDemosByHealthCardNo(String hcn, String hcnType);
+    List<Demographic> getActiveDemosByHealthCardNo(String hcn, String hcnType);
 
-    public Set getArchiveDemographicByProgramOptimized(int programId, Date dt, Date defdt);
+    Set getArchiveDemographicByProgramOptimized(int programId, Date dt, Date defdt);
 
-    public List getProgramIdByDemoNo(Integer demoNo);
+    List getProgramIdByDemoNo(Integer demoNo);
 
-    public void clear();
+    void clear();
 
-    public List getDemoProgram(Integer demoNo);
+    List getDemoProgram(Integer demoNo);
 
-    public List getDemoProgramCurrent(Integer demoNo);
+    List getDemoProgramCurrent(Integer demoNo);
 
-    public List<Integer> getDemographicIdsAdmittedIntoFacility(int facilityId);
+    List<Integer> getDemographicIdsAdmittedIntoFacility(int facilityId);
 
-    public List<Demographic> searchDemographic(String searchStr);
+    List<Demographic> searchDemographic(String searchStr);
 
-    public List<Demographic> searchDemographicByNameString(String searchString, int startIndex, int itemsToReturn);
+    List<Demographic> searchDemographicByNameString(String searchString, int startIndex, int itemsToReturn);
 
-    public List<Demographic> searchDemographicByName(String searchStr, int limit, int offset, String providerNo,
+    List<Demographic> searchDemographicByName(String searchStr, int limit, int offset, String providerNo,
+                                              boolean outOfDomain);
+
+    List<Demographic> searchDemographicByNameAndNotStatus(String searchStr, List<String> statuses, int limit,
+                                                          int offset, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByNameAndStatus(String searchStr, List<String> statuses, int limit,
+                                                       int offset, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByName(String searchStr, int limit, int offset, String orderBy,
+                                              String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByNameAndNotStatus(String searchStr, List<String> statuses, int limit,
+                                                          int offset, String orderBy, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByNameAndStatus(String searchStr, List<String> statuses, int limit,
+                                                       int offset, String orderBy, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByNameAndStatus(String searchStr, List<String> statuses, int limit,
+                                                       int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses);
+
+    List<Demographic> searchDemographicByNameAndStatus(String searchStr, List<String> statuses, int limit,
+                                                       int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses,
+                                                       boolean ignoreMerged);
+
+    List<Demographic> searchMergedDemographicByName(String searchStr, int limit, int offset, String providerNo,
+                                                    boolean outOfDomain);
+
+    List<Demographic> searchDemographicByDOB(String dobStr, int limit, int offset, String providerNo,
+                                             boolean outOfDomain);
+
+    List<Demographic> searchDemographicByDOBWithMerged(String dobStr, int limit, int offset, String providerNo,
+                                                       boolean outOfDomain);
+
+    List<Demographic> getByHinAndGenderAndDobAndLastName(String hin, String gender, String dob, String lastName);
+
+    List<Demographic> searchDemographicByDOBAndNotStatus(String dobStr, List<String> statuses, int limit,
+                                                         int offset, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByDOBAndStatus(String dobStr, List<String> statuses, int limit,
+                                                      int offset, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByDOB(String dobStr, int limit, int offset, String orderBy,
+                                             String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByDOBAndNotStatus(String dobStr, List<String> statuses, int limit,
+                                                         int offset, String orderBy, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByDOBAndStatus(String dobStr, List<String> statuses, int limit,
+                                                      int offset, String orderBy, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByDOBAndStatus(String dobStr, List<String> statuses, int limit,
+                                                      int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses);
+
+    List<Demographic> searchDemographicByDOBAndStatus(String dobStr, List<String> statuses, int limit,
+                                                      int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses,
+                                                      boolean ignoreMerged);
+
+    List<Demographic> searchMergedDemographicByDOB(String dobStr, int limit, int offset, String providerNo,
+                                                   boolean outOfDomain);
+
+    List<Demographic> searchDemographicByPhone(String phoneStr, int limit, int offset, String providerNo,
+                                               boolean outOfDomain);
+
+    List<Demographic> searchDemographicByPhoneAndNotStatus(String phoneStr, List<String> statuses, int limit,
+                                                           int offset, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByPhoneAndStatus(String phoneStr, List<String> statuses, int limit,
+                                                        int offset, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByPhone(String phoneStr, int limit, int offset, String orderBy,
+                                               String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByPhoneAndNotStatus(String phoneStr, List<String> statuses, int limit,
+                                                           int offset, String orderBy, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByPhoneAndStatus(String phoneStr, List<String> statuses, int limit,
+                                                        int offset, String orderBy, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByPhoneAndStatus(String phoneStr, List<String> statuses, int limit,
+                                                        int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses);
+
+    List<Demographic> searchDemographicByPhoneAndStatus(String phoneStr, List<String> statuses, int limit,
+                                                        int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses,
+                                                        boolean ignoreMerged);
+
+    List<Demographic> searchMergedDemographicByPhone(String phoneStr, int limit, int offset, String providerNo,
                                                      boolean outOfDomain);
 
-    public List<Demographic> searchDemographicByNameAndNotStatus(String searchStr, List<String> statuses, int limit,
-                                                                 int offset, String providerNo, boolean outOfDomain);
+    List<Demographic> searchDemographicByHIN(String hinStr);
 
-    public List<Demographic> searchDemographicByNameAndStatus(String searchStr, List<String> statuses, int limit,
-                                                              int offset, String providerNo, boolean outOfDomain);
+    List<Demographic> searchDemographicByHIN(String hinStr, int limit, int offset, String providerNo,
+                                             boolean outOfDomain);
 
-    public List<Demographic> searchDemographicByName(String searchStr, int limit, int offset, String orderBy,
+    List<Demographic> searchDemographicByHINAndNotStatus(String hinStr, List<String> statuses, int limit,
+                                                         int offset, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByHINAndStatus(String hinStr, List<String> statuses, int limit,
+                                                      int offset, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByHIN(String hinStr, int limit, int offset, String orderBy,
+                                             String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByHINAndNotStatus(String hinStr, List<String> statuses, int limit,
+                                                         int offset, String orderBy, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByHINAndStatus(String hinStr, List<String> statuses, int limit,
+                                                      int offset, String orderBy, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByHINAndStatus(String hinStr, List<String> statuses, int limit,
+                                                      int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses);
+
+    List<Demographic> searchDemographicByHINAndStatus(String hinStr, List<String> statuses, int limit,
+                                                      int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses,
+                                                      boolean ignoreMerged);
+
+    List<Demographic> findByAttributes(
+        String hin,
+        String firstName,
+        String lastName,
+        Gender gender,
+        Calendar dateOfBirth,
+        String city,
+        String province,
+        String phone,
+        String email,
+        String alias,
+        int startIndex,
+        int itemsToReturn);
+
+    List<Demographic> findByAttributes(
+        String hin,
+        String firstName,
+        String lastName,
+        Gender gender,
+        Calendar dateOfBirth,
+        String city,
+        String province,
+        String phone,
+        String email,
+        String alias,
+        int startIndex,
+        int itemsToReturn,
+        boolean orderByName);
+
+    List<Demographic> searchMergedDemographicByHIN(String hinStr, int limit, int offset, String providerNo,
+                                                   boolean outOfDomain);
+
+    List<Demographic> searchDemographicByAddress(String addressStr, int limit, int offset, String providerNo,
+                                                 boolean outOfDomain);
+
+    List<Demographic> searchDemographicByAddressAndStatus(String addressStr, List<String> statuses, int limit,
+                                                          int offset, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByAddressAndNotStatus(String addressStr, List<String> statuses, int limit,
+                                                             int offset, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByAddress(String addressStr, int limit, int offset, String orderBy,
+                                                 String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByAddressAndStatus(String addressStr, List<String> statuses, int limit,
+                                                          int offset, String orderBy, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByAddressAndNotStatus(String addressStr, List<String> statuses, int limit,
+                                                             int offset, String orderBy, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByAddressAndStatus(String addressStr, List<String> statuses, int limit,
+                                                          int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses);
+
+    List<Demographic> searchDemographicByAddressAndStatus(String addressStr, List<String> statuses, int limit,
+                                                          int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses,
+                                                          boolean ignoreMerged);
+
+    List<Demographic> searchDemographicByExtKeyAndValueLike(DemographicExt.DemographicProperty key, String value,
+                                                            int limit, int offset, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByExtKeyAndValueLikeAndNotStatus(DemographicExt.DemographicProperty key,
+                                                                        String value, List<String> statuses, int limit, int offset, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByExtKeyAndValueLikeAndStatus(DemographicExt.DemographicProperty key,
+                                                                     String value, List<String> statuses, int limit, int offset, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByExtKeyAndValueLike(DemographicExt.DemographicProperty key, String value,
+                                                            int limit, int offset, String orderBy, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByExtKeyAndValueLikeWithMerged(DemographicExt.DemographicProperty key,
+                                                                      String value, int limit, int offset, String orderBy, String providerNo, boolean outOfDomain);
+
+    List<Demographic> searchDemographicByExtKeyAndValueLikeAndNotStatus(DemographicExt.DemographicProperty key,
+                                                                        String value, List<String> statuses, int limit, int offset, String orderBy, String providerNo,
+                                                                        boolean outOfDomain);
+
+    List<Demographic> searchDemographicByExtKeyAndValueLikeAndStatus(DemographicExt.DemographicProperty key,
+                                                                     String value, List<String> statuses, int limit, int offset, String orderBy, String providerNo,
+                                                                     boolean outOfDomain);
+
+    List<Demographic> searchDemographicByExtKeyAndValueLikeAndStatus(DemographicExt.DemographicProperty key,
+                                                                     String value, List<String> statuses, int limit, int offset, String orderBy, String providerNo,
+                                                                     boolean outOfDomain, boolean ignoreStatuses);
+
+    List<Demographic> searchDemographicByExtKeyAndValueLikeAndStatus(DemographicExt.DemographicProperty key,
+                                                                     String value, List<String> statuses, int limit, int offset, String orderBy, String providerNo,
+                                                                     boolean outOfDomain, boolean ignoreStatuses, boolean ignoreMerged);
+
+    List<Demographic> searchMergedDemographicByAddress(String addressStr, int limit, int offset,
+                                                       String providerNo, boolean outOfDomain);
+
+    List<Demographic> findDemographicByChartNo(String chartNoStr, int limit, int offset, String providerNo,
+                                               boolean outOfDomain);
+
+    List<Demographic> findDemographicByChartNoAndStatus(String chartNoStr, List<String> statuses, int limit,
+                                                        int offset, String providerNo, boolean outOfDomain);
+
+    List<Demographic> findDemographicByChartNoAndNotStatus(String chartNoStr, List<String> statuses, int limit,
+                                                           int offset, String providerNo, boolean outOfDomain);
+
+    List<Demographic> findDemographicByChartNo(String chartNoStr, int limit, int offset, String orderBy,
+                                               String providerNo, boolean outOfDomain);
+
+    List<Demographic> findDemographicByChartNoAndStatus(String chartNoStr, List<String> statuses, int limit,
+                                                        int offset, String orderBy, String providerNo, boolean outOfDomain);
+
+    List<Demographic> findDemographicByChartNoAndNotStatus(String chartNoStr, List<String> statuses, int limit,
+                                                           int offset, String orderBy, String providerNo, boolean outOfDomain);
+
+    List<Demographic> findDemographicByChartNoAndStatus(String chartNoStr, List<String> statuses, int limit,
+                                                        int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses);
+
+    List<Demographic> findDemographicByDemographicNo(String demographicNoStr, int limit, int offset,
                                                      String providerNo, boolean outOfDomain);
 
-    public List<Demographic> searchDemographicByNameAndNotStatus(String searchStr, List<String> statuses, int limit,
-                                                                 int offset, String orderBy, String providerNo, boolean outOfDomain);
+    List<Demographic> findDemographicByDemographicNoAndStatus(String demographicNoStr, List<String> statuses,
+                                                              int limit, int offset, String providerNo, boolean outOfDomain);
 
-    public List<Demographic> searchDemographicByNameAndStatus(String searchStr, List<String> statuses, int limit,
-                                                              int offset, String orderBy, String providerNo, boolean outOfDomain);
+    List<Demographic> findDemographicByDemographicNoAndNotStatus(String demographicNoStr, List<String> statuses,
+                                                                 int limit, int offset, String providerNo, boolean outOfDomain);
 
-    public List<Demographic> searchDemographicByNameAndStatus(String searchStr, List<String> statuses, int limit,
-                                                              int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses);
+    List<Demographic> findDemographicByDemographicNo(String demographicNoStr, int limit, int offset,
+                                                     String orderBy, String providerNo, boolean outOfDomain);
 
-    public List<Demographic> searchDemographicByNameAndStatus(String searchStr, List<String> statuses, int limit,
-                                                              int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses,
-                                                              boolean ignoreMerged);
+    List<Demographic> findDemographicByDemographicNoAndStatus(String demographicNoStr, List<String> statuses,
+                                                              int limit, int offset, String orderBy, String providerNo, boolean outOfDomain);
 
-    public List<Demographic> searchMergedDemographicByName(String searchStr, int limit, int offset, String providerNo,
-                                                           boolean outOfDomain);
+    List<Demographic> findDemographicByDemographicNoAndNotStatus(String demographicNoStr, List<String> statuses,
+                                                                 int limit, int offset, String orderBy, String providerNo, boolean outOfDomain);
 
-    public List<Demographic> searchDemographicByDOB(String dobStr, int limit, int offset, String providerNo,
-                                                    boolean outOfDomain);
+    List<Demographic> findDemographicByDemographicNoAndStatus(String demographicNoStr, List<String> statuses,
+                                                              int limit, int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses);
 
-    public List<Demographic> searchDemographicByDOBWithMerged(String dobStr, int limit, int offset, String providerNo,
-                                                              boolean outOfDomain);
+    void save(Demographic demographic);
 
-    public List<Demographic> getByHinAndGenderAndDobAndLastName(String hin, String gender, String dob, String lastName);
+    String getOrderField(String orderBy, boolean nativeQuery);
 
-    public List<Demographic> searchDemographicByDOBAndNotStatus(String dobStr, List<String> statuses, int limit,
-                                                                int offset, String providerNo, boolean outOfDomain);
+    String getOrderField(String orderBy);
 
-    public List<Demographic> searchDemographicByDOBAndStatus(String dobStr, List<String> statuses, int limit,
-                                                             int offset, String providerNo, boolean outOfDomain);
+    List<Integer> getDemographicIdsAlteredSinceTime(Date value);
 
-    public List<Demographic> searchDemographicByDOB(String dobStr, int limit, int offset, String orderBy,
-                                                    String providerNo, boolean outOfDomain);
+    List<Integer> getDemographicIdsOpenedChartSinceTime(String value);
 
-    public List<Demographic> searchDemographicByDOBAndNotStatus(String dobStr, List<String> statuses, int limit,
-                                                                int offset, String orderBy, String providerNo, boolean outOfDomain);
+    List<String> getRosterStatuses();
 
-    public List<Demographic> searchDemographicByDOBAndStatus(String dobStr, List<String> statuses, int limit,
-                                                             int offset, String orderBy, String providerNo, boolean outOfDomain);
+    List<String> getAllRosterStatuses();
 
-    public List<Demographic> searchDemographicByDOBAndStatus(String dobStr, List<String> statuses, int limit,
-                                                             int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses);
+    List<String> getAllPatientStatuses();
 
-    public List<Demographic> searchDemographicByDOBAndStatus(String dobStr, List<String> statuses, int limit,
-                                                             int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses,
-                                                             boolean ignoreMerged);
+    List<String> search_ptstatus();
 
-    public List<Demographic> searchMergedDemographicByDOB(String dobStr, int limit, int offset, String providerNo,
-                                                          boolean outOfDomain);
+    List<String> getAllProviderNumbers();
 
-    public List<Demographic> searchDemographicByPhone(String phoneStr, int limit, int offset, String providerNo,
-                                                      boolean outOfDomain);
+    boolean clientExists(Integer demographicNo);
 
-    public List<Demographic> searchDemographicByPhoneAndNotStatus(String phoneStr, List<String> statuses, int limit,
-                                                                  int offset, String providerNo, boolean outOfDomain);
+    boolean clientExistsThenEvict(Integer demographicNo);
 
-    public List<Demographic> searchDemographicByPhoneAndStatus(String phoneStr, List<String> statuses, int limit,
-                                                               int offset, String providerNo, boolean outOfDomain);
+    Demographic getClientByDemographicNo(Integer demographicNo);
 
-    public List<Demographic> searchDemographicByPhone(String phoneStr, int limit, int offset, String orderBy,
-                                                      String providerNo, boolean outOfDomain);
+    List<Demographic> getClients();
 
-    public List<Demographic> searchDemographicByPhoneAndNotStatus(String phoneStr, List<String> statuses, int limit,
-                                                                  int offset, String orderBy, String providerNo, boolean outOfDomain);
+    List<Demographic> search(ClientSearchFormBean bean, boolean returnOptinsOnly, boolean excludeMerged);
 
-    public List<Demographic> searchDemographicByPhoneAndStatus(String phoneStr, List<String> statuses, int limit,
-                                                               int offset, String orderBy, String providerNo, boolean outOfDomain);
+    List<Demographic> search(ClientSearchFormBean bean);
 
-    public List<Demographic> searchDemographicByPhoneAndStatus(String phoneStr, List<String> statuses, int limit,
-                                                               int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses);
-
-    public List<Demographic> searchDemographicByPhoneAndStatus(String phoneStr, List<String> statuses, int limit,
-                                                               int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses,
-                                                               boolean ignoreMerged);
-
-    public List<Demographic> searchMergedDemographicByPhone(String phoneStr, int limit, int offset, String providerNo,
-                                                            boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByHIN(String hinStr);
-
-    public List<Demographic> searchDemographicByHIN(String hinStr, int limit, int offset, String providerNo,
-                                                    boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByHINAndNotStatus(String hinStr, List<String> statuses, int limit,
-                                                                int offset, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByHINAndStatus(String hinStr, List<String> statuses, int limit,
-                                                             int offset, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByHIN(String hinStr, int limit, int offset, String orderBy,
-                                                    String providerNo, boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByHINAndNotStatus(String hinStr, List<String> statuses, int limit,
-                                                                int offset, String orderBy, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByHINAndStatus(String hinStr, List<String> statuses, int limit,
-                                                             int offset, String orderBy, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByHINAndStatus(String hinStr, List<String> statuses, int limit,
-                                                             int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses);
-
-    public List<Demographic> searchDemographicByHINAndStatus(String hinStr, List<String> statuses, int limit,
-                                                             int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses,
-                                                             boolean ignoreMerged);
-
-    public List<Demographic> findByAttributes(
-            String hin,
-            String firstName,
-            String lastName,
-            Gender gender,
-            Calendar dateOfBirth,
-            String city,
-            String province,
-            String phone,
-            String email,
-            String alias,
-            int startIndex,
-            int itemsToReturn);
-
-    public List<Demographic> findByAttributes(
-            String hin,
-            String firstName,
-            String lastName,
-            Gender gender,
-            Calendar dateOfBirth,
-            String city,
-            String province,
-            String phone,
-            String email,
-            String alias,
-            int startIndex,
-            int itemsToReturn,
-            boolean orderByName);
-
-    public List<Demographic> searchMergedDemographicByHIN(String hinStr, int limit, int offset, String providerNo,
-                                                          boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByAddress(String addressStr, int limit, int offset, String providerNo,
-                                                        boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByAddressAndStatus(String addressStr, List<String> statuses, int limit,
-                                                                 int offset, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByAddressAndNotStatus(String addressStr, List<String> statuses, int limit,
-                                                                    int offset, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByAddress(String addressStr, int limit, int offset, String orderBy,
-                                                        String providerNo, boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByAddressAndStatus(String addressStr, List<String> statuses, int limit,
-                                                                 int offset, String orderBy, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByAddressAndNotStatus(String addressStr, List<String> statuses, int limit,
-                                                                    int offset, String orderBy, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByAddressAndStatus(String addressStr, List<String> statuses, int limit,
-                                                                 int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses);
-
-    public List<Demographic> searchDemographicByAddressAndStatus(String addressStr, List<String> statuses, int limit,
-                                                                 int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses,
-                                                                 boolean ignoreMerged);
-
-    public List<Demographic> searchDemographicByExtKeyAndValueLike(DemographicExt.DemographicProperty key, String value,
-                                                                   int limit, int offset, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByExtKeyAndValueLikeAndNotStatus(DemographicExt.DemographicProperty key,
-                                                                               String value, List<String> statuses, int limit, int offset, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByExtKeyAndValueLikeAndStatus(DemographicExt.DemographicProperty key,
-                                                                            String value, List<String> statuses, int limit, int offset, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByExtKeyAndValueLike(DemographicExt.DemographicProperty key, String value,
-                                                                   int limit, int offset, String orderBy, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByExtKeyAndValueLikeWithMerged(DemographicExt.DemographicProperty key,
-                                                                             String value, int limit, int offset, String orderBy, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByExtKeyAndValueLikeAndNotStatus(DemographicExt.DemographicProperty key,
-                                                                               String value, List<String> statuses, int limit, int offset, String orderBy, String providerNo,
-                                                                               boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByExtKeyAndValueLikeAndStatus(DemographicExt.DemographicProperty key,
-                                                                            String value, List<String> statuses, int limit, int offset, String orderBy, String providerNo,
-                                                                            boolean outOfDomain);
-
-    public List<Demographic> searchDemographicByExtKeyAndValueLikeAndStatus(DemographicExt.DemographicProperty key,
-                                                                            String value, List<String> statuses, int limit, int offset, String orderBy, String providerNo,
-                                                                            boolean outOfDomain, boolean ignoreStatuses);
-
-    public List<Demographic> searchDemographicByExtKeyAndValueLikeAndStatus(DemographicExt.DemographicProperty key,
-                                                                            String value, List<String> statuses, int limit, int offset, String orderBy, String providerNo,
-                                                                            boolean outOfDomain, boolean ignoreStatuses, boolean ignoreMerged);
-
-    public List<Demographic> searchMergedDemographicByAddress(String addressStr, int limit, int offset,
-                                                              String providerNo, boolean outOfDomain);
-
-    public List<Demographic> findDemographicByChartNo(String chartNoStr, int limit, int offset, String providerNo,
-                                                      boolean outOfDomain);
-
-    public List<Demographic> findDemographicByChartNoAndStatus(String chartNoStr, List<String> statuses, int limit,
-                                                               int offset, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> findDemographicByChartNoAndNotStatus(String chartNoStr, List<String> statuses, int limit,
-                                                                  int offset, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> findDemographicByChartNo(String chartNoStr, int limit, int offset, String orderBy,
-                                                      String providerNo, boolean outOfDomain);
-
-    public List<Demographic> findDemographicByChartNoAndStatus(String chartNoStr, List<String> statuses, int limit,
-                                                               int offset, String orderBy, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> findDemographicByChartNoAndNotStatus(String chartNoStr, List<String> statuses, int limit,
-                                                                  int offset, String orderBy, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> findDemographicByChartNoAndStatus(String chartNoStr, List<String> statuses, int limit,
-                                                               int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses);
-
-    public List<Demographic> findDemographicByDemographicNo(String demographicNoStr, int limit, int offset,
-                                                            String providerNo, boolean outOfDomain);
-
-    public List<Demographic> findDemographicByDemographicNoAndStatus(String demographicNoStr, List<String> statuses,
-                                                                     int limit, int offset, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> findDemographicByDemographicNoAndNotStatus(String demographicNoStr, List<String> statuses,
-                                                                        int limit, int offset, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> findDemographicByDemographicNo(String demographicNoStr, int limit, int offset,
-                                                            String orderBy, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> findDemographicByDemographicNoAndStatus(String demographicNoStr, List<String> statuses,
-                                                                     int limit, int offset, String orderBy, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> findDemographicByDemographicNoAndNotStatus(String demographicNoStr, List<String> statuses,
-                                                                        int limit, int offset, String orderBy, String providerNo, boolean outOfDomain);
-
-    public List<Demographic> findDemographicByDemographicNoAndStatus(String demographicNoStr, List<String> statuses,
-                                                                     int limit, int offset, String orderBy, String providerNo, boolean outOfDomain, boolean ignoreStatuses);
-
-    public void save(Demographic demographic);
-
-    public String getOrderField(String orderBy, boolean nativeQuery);
-
-    public String getOrderField(String orderBy);
-
-    public List<Integer> getDemographicIdsAlteredSinceTime(Date value);
-
-    public List<Integer> getDemographicIdsOpenedChartSinceTime(String value);
-
-    public List<String> getRosterStatuses();
-
-    public List<String> getAllRosterStatuses();
-
-    public List<String> getAllPatientStatuses();
-
-    public List<String> search_ptstatus();
-
-    public List<String> getAllProviderNumbers();
-
-    public boolean clientExists(Integer demographicNo);
-
-    public boolean clientExistsThenEvict(Integer demographicNo);
-
-    public Demographic getClientByDemographicNo(Integer demographicNo);
-
-    public List<Demographic> getClients();
-
-    public List<Demographic> search(ClientSearchFormBean bean, boolean returnOptinsOnly, boolean excludeMerged);
-
-    public List<Demographic> search(ClientSearchFormBean bean);
-
-    public void saveClient(Demographic client);
+    void saveClient(Demographic client);
 
     // public Map<String, ClientListsReportResults>
     // findByReportCriteria(ClientListsReportFormBean x);
 
-    public List<Demographic> getClientsByChartNo(String chartNo);
+    List<Demographic> getClientsByChartNo(String chartNo);
 
-    public List<Demographic> getClientsByHealthCard(String num, String type);
+    List<Demographic> getClientsByHealthCard(String num, String type);
 
-    public List<Demographic> searchByHealthCard(String hin, String hcType);
+    List<Demographic> searchByHealthCard(String hin, String hcType);
 
-    public List<Demographic> searchByHealthCard(String hin);
+    List<Demographic> searchByHealthCard(String hin);
 
-    public Demographic getDemographicByNamePhoneEmail(String firstName, String lastName, String hPhone, String wPhone,
-                                                      String email);
+    Demographic getDemographicByNamePhoneEmail(String firstName, String lastName, String hPhone, String wPhone,
+                                               String email);
 
-    public List<Demographic> getDemographicWithLastFirstDOB(String lastname, String firstname, String year_of_birth,
-                                                            String month_of_birth, String date_of_birth);
+    List<Demographic> getDemographicWithLastFirstDOB(String lastname, String firstname, String year_of_birth,
+                                                     String month_of_birth, String date_of_birth);
 
-    public List<Demographic> getDemographicWithLastFirstDOBExact(String lastname, String firstname,
-                                                                 String year_of_birth, String month_of_birth, String date_of_birth);
+    List<Demographic> getDemographicWithLastFirstDOBExact(String lastname, String firstname,
+                                                          String year_of_birth, String month_of_birth, String date_of_birth);
 
-    public List<Demographic> getDemographicsByHealthNum(String hin);
+    List<Demographic> getDemographicsByHealthNum(String hin);
 
-    public List<Integer> getActiveDemographicIds();
+    List<Integer> getActiveDemographicIds();
 
-    public List<Integer> getDemographicIds();
+    List<Integer> getDemographicIds();
 
-    public List<Demographic> getDemographicWithGreaterThanYearOfBirth(int yearOfBirth);
+    List<Demographic> getDemographicWithGreaterThanYearOfBirth(int yearOfBirth);
 
-    public List<Demographic> search_catchment(String rosterStatus, int offset, int limit);
+    List<Demographic> search_catchment(String rosterStatus, int offset, int limit);
 
-    public List<Demographic> findByField(String fieldName, Object fieldValue, String orderBy, int offset);
+    List<Demographic> findByField(String fieldName, Object fieldValue, String orderBy, int offset);
 
     // public List<Demographic> findByCriterion(DemographicCriterion c);
 
-    public List<Object[]> findDemographicsForFluReport(String providerNo);
+    List<Object[]> findDemographicsForFluReport(String providerNo);
 
-    public List<Integer> getActiveDemographicIdsOlderThan(int age);
+    List<Integer> getActiveDemographicIdsOlderThan(int age);
 
-    public void setApplicationEventPublisher(ApplicationEventPublisher publisher);
+    void setApplicationEventPublisher(ApplicationEventPublisher publisher);
 
-    public List<Integer> getDemographicIdsAddedSince(Date value);
+    List<Integer> getDemographicIdsAddedSince(Date value);
 
-    public List<Demographic> getDemographicByRosterStatus(String rosterStatus, String patientStatus);
+    List<Demographic> getDemographicByRosterStatus(String rosterStatus, String patientStatus);
 
-    public Integer searchPatientCount(LoggedInInfo loggedInInfo, DemographicSearchRequest searchRequest);
+    Integer searchPatientCount(LoggedInInfo loggedInInfo, DemographicSearchRequest searchRequest);
 
-    public List<DemographicSearchResult> searchPatients(LoggedInInfo loggedInInfo,
-                                                        DemographicSearchRequest searchRequest, int startIndex, int itemsToReturn);
-
-
-    public List<Integer> getMissingExtKey(String keyName);
+    List<DemographicSearchResult> searchPatients(LoggedInInfo loggedInInfo,
+                                                 DemographicSearchRequest searchRequest, int startIndex, int itemsToReturn);
 
 
-    public List<Demographic> getActiveDemographicAfter(Date afterDatetimeExclusive);
+    List<Integer> getMissingExtKey(String keyName);
 
-    public List<Demographic> findByLastNameAndDob(String lastName, Calendar dateOfBirth);
 
-    public List<Demographic> findByFirstAndLastName(String name, String start, String end);
+    List<Demographic> getActiveDemographicAfter(Date afterDatetimeExclusive);
 
-    public List<Demographic> findByDob(Calendar dateOfBirth, String start, int numToReturn);
+    List<Demographic> findByLastNameAndDob(String lastName, Calendar dateOfBirth);
 
-    public List<Demographic> findByPhone(String phone, String start, int numToReturn);
+    List<Demographic> findByFirstAndLastName(String name, String start, String end);
 
-    public List<Demographic> findByHin(String hin, String start, int numToReturn);
+    List<Demographic> findByDob(Calendar dateOfBirth, String start, int numToReturn);
+
+    List<Demographic> findByPhone(String phone, String start, int numToReturn);
+
+    List<Demographic> findByHin(String hin, String start, int numToReturn);
 }

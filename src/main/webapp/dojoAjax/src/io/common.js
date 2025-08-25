@@ -470,7 +470,7 @@ dojo.io.setIFrameSrc = function (/*DOMNode*/ iframe, /*String*/ src, /*Boolean*/
             //use iframe.location and return.
             if (!idoc) {
                 iframe.location = src;
-                return;
+
             } else {
                 idoc.location.replace(src);
             }

@@ -93,7 +93,7 @@ public class PreventionManager {
 
                     k = "[" + me.getKey() + "=" + me.getValue() + "]";
                     boolean prevCheck = PreventionManager.isPrevDisabled(me.getKey().toString());
-                    if (prevCheck == false) {
+                    if (!prevCheck) {
                         ret = ret + k;
                     }
 
@@ -126,7 +126,7 @@ public class PreventionManager {
             String[] key = matcher.group(2).split("=");
             boolean prevCheck = PreventionManager.isPrevDisabled(key[0]);
 
-            if (prevCheck == false) {
+            if (!prevCheck) {
                 rebuilt = rebuilt + "[" + key[1] + "]";
             }
         }
@@ -149,11 +149,7 @@ public class PreventionManager {
         }
 
         //disable all preventions warnings if result is master
-        if (getStatus.equals("master")) {
-            return true;
-        } else {
-            return false;
-        }
+        return getStatus.equals("master");
 
     }
 
@@ -171,11 +167,7 @@ public class PreventionManager {
 
         }
 
-        if (getStatus.equals("hide_prevention_stop_signs")) {
-            return true;
-        } else {
-            return false;
-        }
+        return getStatus.equals("hide_prevention_stop_signs");
 
     }
 
@@ -211,11 +203,7 @@ public class PreventionManager {
 
         }
 
-        if (x > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return x > 0;
 
 
     }

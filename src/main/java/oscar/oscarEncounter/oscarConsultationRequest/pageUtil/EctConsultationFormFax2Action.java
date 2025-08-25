@@ -165,7 +165,7 @@ public class EctConsultationFormFax2Action extends ActionSupport {
                         faxJob.setUser(faxConfig.getFaxUser());
                         sender.setFaxNumberOwner(faxConfig.getAccountName());
                         validFaxNumber = true;
-                        break inner;
+                        break;
                     }
                 }
 

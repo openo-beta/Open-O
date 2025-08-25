@@ -117,7 +117,7 @@ public class BillingSpecPrep {
                 val.getParameter("provider").indexOf("|") + 1));
         claim1Header.setAppointment_no(val.getParameter("appointment_no")); // appointment_no;
         claim1Header.setDemographic_name(val.getParameter("demo_name"));
-        String temp[] = getPatientLF(val.getParameter("demo_name"));
+        String[] temp = getPatientLF(val.getParameter("demo_name"));
         claim1Header.setLast_name(temp[0]);
         claim1Header.setFirst_name(temp[1]);
         claim1Header.setSex(val.getParameter("demo_sex"));
@@ -215,7 +215,7 @@ public class BillingSpecPrep {
                 val.getParameter("provider").indexOf("|") + 1));
         claim1Header.setAppointment_no(val.getParameter("appointment_no")); // appointment_no;
         claim1Header.setDemographic_name(val.getParameter("demo_name"));
-        String temp[] = getPatientLF(val.getParameter("demo_name"));
+        String[] temp = getPatientLF(val.getParameter("demo_name"));
         claim1Header.setLast_name(temp[0]);
         claim1Header.setFirst_name(temp[1]);
         claim1Header.setSex(val.getParameter("demo_sex"));

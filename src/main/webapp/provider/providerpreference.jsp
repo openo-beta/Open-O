@@ -342,7 +342,7 @@
                                 for (ProviderPreference.EformLink eformLink : checkedEFormIds) {
                                     if (eform.getId().equals(eformLink.getAppointmentScreenEForm())) {
                                         checkedString = "checked";
-                                        break inner;
+                                        break;
                                     }
                                 }
 

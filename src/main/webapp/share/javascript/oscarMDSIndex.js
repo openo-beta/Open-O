@@ -612,7 +612,7 @@ function showhideSubCat(plus_minus, patientId) {
 function un_bold(ele) {
     //oscarLog('currentbold='+currentBold+'---ele.id='+ele.id);
     if (ele == null || currentBold == ele.id) {
-        ;
+
     } else {
         if (currentBold && $(currentBold) != null) {
             $(currentBold).style.fontWeight = '';

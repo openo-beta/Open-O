@@ -82,7 +82,6 @@ public final class FrmPdfGraphicAR extends FrmPdfGraphic {
         yNum = deltaY * (yNum - fStartY);
 
         prop.setProperty("" + xNum, "" + yNum);
-        return;
     }
 
     public Properties getGraphicXYProp(List xDate, List yHeight) {

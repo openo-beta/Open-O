@@ -121,7 +121,7 @@ Refresh.Web.ColorPicker.prototype = {
             yMinValue: 255,
             arrowImage: this.settings.clientFilesPath + 'rangearrows.gif'
         });
-        ;
+
 
         // attach color values
         this._cvp = new Refresh.Web.ColorValuePicker(this.id);

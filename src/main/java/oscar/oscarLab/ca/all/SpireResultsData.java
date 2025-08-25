@@ -150,11 +150,7 @@ public class SpireResultsData {
                 lbData.reportStatus = hl7.getReportStatus();
 
                 // the "C" is for corrected excelleris labs
-                if (lbData.reportStatus != null && (lbData.reportStatus.equals("F") || lbData.reportStatus.equals("C"))) {
-                    lbData.finalRes = true;
-                } else {
-                    lbData.finalRes = false;
-                }
+                lbData.finalRes = lbData.reportStatus != null && (lbData.reportStatus.equals("F") || lbData.reportStatus.equals("C"));
 
                 lbData.discipline = hl7.getDiscipline();
                 lbData.finalResultsCount = hl7.getFinalResultCount();

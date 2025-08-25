@@ -132,11 +132,7 @@ public class PageMonitoring2Action extends ActionSupport {
                 }
             }
 
-            boolean toLock = false;
-
-            if (reqLock != null && reqLock.equals("true") && !locked) {
-                toLock = true;
-            }
+            boolean toLock = reqLock != null && reqLock.equals("true") && !locked;
 
             //if existing is null, likely an invalid date was passed, and we shouldn't be updating.
             if (existing != null) {

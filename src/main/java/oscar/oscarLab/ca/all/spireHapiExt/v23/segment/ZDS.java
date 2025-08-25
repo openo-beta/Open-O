@@ -119,7 +119,7 @@ public class ZDS extends AbstractSegment {
             text += super.getField(3, 0).encode() + " | ";
             text += super.getField(4, 0).encode() + " | ";
         } catch (Exception e) {
-            logger.error("Error converting ZDS segment to string: " + e.toString());
+            logger.error("Error converting ZDS segment to string: " + e);
         }
         return text;
     }

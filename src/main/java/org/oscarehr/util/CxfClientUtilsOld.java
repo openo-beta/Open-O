@@ -204,7 +204,7 @@ public class CxfClientUtilsOld {
                 Throwable causeCause = cause.getCause();
                 if (causeCause != null && causeCause instanceof WSDLException) {
                     Throwable causeCauseCaise = causeCause.getCause();
-                    if (causeCauseCaise != null && causeCauseCaise instanceof ConnectException) return (true);
+                    return causeCauseCaise != null && causeCauseCaise instanceof ConnectException;
                 }
             }
         }

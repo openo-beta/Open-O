@@ -103,7 +103,7 @@ public class UtilMisc {
                     if (i + 3 < N) temp += S.charAt(i + 3);//&#??
                     if (i + 4 < N) temp += S.charAt(i + 4);//&#???
                     if (temp.equals("&#39;")) {//'
-                        sb.append("\'");
+                        sb.append("'");
                         i += 5;
                         continue;
                     }
@@ -307,7 +307,7 @@ public class UtilMisc {
         }
     }
 
-    public static String joinArray(Object array[]) {
+    public static String joinArray(Object[] array) {
         String ret = "";
         for (int i = 0; i < array.length; i++) {
             ret = String.valueOf(ret)

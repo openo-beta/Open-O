@@ -25,7 +25,7 @@ function dateStatus(date, y, m, d) {
     }
 
     return false;
-};
+}
 
 window.onload = function () {
     Calendar.setup({

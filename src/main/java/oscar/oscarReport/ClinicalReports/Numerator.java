@@ -43,22 +43,22 @@ import org.oscarehr.util.LoggedInInfo;
  * @author jay
  */
 public interface Numerator {
-    public boolean evaluate(LoggedInInfo loggedInInfo, String demographicNo);
+    boolean evaluate(LoggedInInfo loggedInInfo, String demographicNo);
 
-    public String getId();
+    String getId();
 
-    public String getNumeratorName();
+    String getNumeratorName();
 
-    public Hashtable getOutputValues();
+    Hashtable getOutputValues();
 
-    public String[] getOutputFields();
+    String[] getOutputFields();
 
-    public boolean hasReplaceableValues();
+    boolean hasReplaceableValues();
 
-    public String[] getReplaceableKeys();
+    String[] getReplaceableKeys();
 
-    public void setReplaceableValues(Hashtable vals);
+    void setReplaceableValues(Hashtable vals);
 
-    public Hashtable getReplaceableValues();
+    Hashtable getReplaceableValues();
 
 }

@@ -42,25 +42,25 @@ import com.quatro.model.security.Secobjprivilege;
 
 public interface SecobjprivilegeDao {
 
-    public void save(Secobjprivilege secobjprivilege);
+    void save(Secobjprivilege secobjprivilege);
 
-    public void saveAll(List list);
+    void saveAll(List list);
 
-    public int update(Secobjprivilege instance);
+    int update(Secobjprivilege instance);
 
-    public int deleteByRoleName(String roleName);
+    int deleteByRoleName(String roleName);
 
-    public void delete(Secobjprivilege persistentInstance);
+    void delete(Secobjprivilege persistentInstance);
 
-    public String getFunctionDesc(String function_code);
+    String getFunctionDesc(String function_code);
 
-    public String getAccessDesc(String accessType_code);
+    String getAccessDesc(String accessType_code);
 
-    public List getFunctions(String roleName);
+    List getFunctions(String roleName);
 
-    public List findByProperty(String propertyName, Object value);
+    List findByProperty(String propertyName, Object value);
 
-    public List<Secobjprivilege> getByObjectNameAndRoles(String o, List<String> roles);
+    List<Secobjprivilege> getByObjectNameAndRoles(String o, List<String> roles);
 
-    public List<Secobjprivilege> getByRoles(List<String> roles);
+    List<Secobjprivilege> getByRoles(List<String> roles);
 }

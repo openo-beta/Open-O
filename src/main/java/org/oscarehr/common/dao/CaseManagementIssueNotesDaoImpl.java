@@ -71,7 +71,7 @@ public class CaseManagementIssueNotesDaoImpl implements CaseManagementIssueNotes
             placeholders.append("?").append(i + 1);
         }
 
-        String sql = "select note_id from casemgmt_issue_notes where id in (" + placeholders.toString() + ")";
+        String sql = "select note_id from casemgmt_issue_notes where id in (" + placeholders + ")";
 
         Query query = entityManager.createNativeQuery(sql);
 

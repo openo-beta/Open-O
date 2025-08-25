@@ -39,12 +39,12 @@ import org.springframework.stereotype.Repository;
 
 public interface CriteriaTypeDao extends AbstractDao<CriteriaType> {
 
-    public List<CriteriaType> findAll();
+    List<CriteriaType> findAll();
 
-    public CriteriaType findByName(String fieldName);
+    CriteriaType findByName(String fieldName);
 
-    public List<CriteriaType> getAllCriteriaTypes();
+    List<CriteriaType> getAllCriteriaTypes();
 
-    public List<CriteriaType> getAllCriteriaTypesByWlProgramId(Integer wlProgramId);
+    List<CriteriaType> getAllCriteriaTypesByWlProgramId(Integer wlProgramId);
 }
  

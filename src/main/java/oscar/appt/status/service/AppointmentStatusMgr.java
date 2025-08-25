@@ -32,17 +32,17 @@ import org.oscarehr.common.model.AppointmentStatus;
  * @author toby
  */
 public interface AppointmentStatusMgr {
-    public List<AppointmentStatus> getAllStatus();
+    List<AppointmentStatus> getAllStatus();
 
-    public List<AppointmentStatus> getAllActiveStatus();
+    List<AppointmentStatus> getAllActiveStatus();
 
-    public AppointmentStatus getStatus(int ID);
+    AppointmentStatus getStatus(int ID);
 
-    public void changeStatus(int ID, int iActive);
+    void changeStatus(int ID, int iActive);
 
-    public void modifyStatus(int ID, String strDesc, String strColor);
+    void modifyStatus(int ID, String strDesc, String strColor);
 
-    public int checkStatusUsuage(List<AppointmentStatus> allStatus);
+    int checkStatusUsuage(List<AppointmentStatus> allStatus);
 
-    public void reset();
+    void reset();
 }

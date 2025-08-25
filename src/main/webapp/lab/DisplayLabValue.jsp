@@ -81,8 +81,8 @@
     %>
     <div style="text-align: justify;"
          title="fade=[on] header=[<%=hMap.get("result")%>] body=[<%=hMap.get("units")%> <%=hMap.get("range")%>]"
-         class="preventionProcedure" id="preventionProcedure<%=""+k+""+ran%>"
-         onclick="javascript:popup(660,960,'<%= labDisplayLink %>','labReport')">
+         class="preventionProcedure" id="preventionProcedure<%=""+k+ran%>"
+         onclick="popup(660,960,'<%= labDisplayLink %>','labReport')">
         <p <%=r(hMap.get("abn"))%>><%=hMap.get("result")%>
             &nbsp;&nbsp;&nbsp; <%=hMap.get("collDate")%>
         </p>
@@ -96,8 +96,8 @@
     //var ele = document.getElementById("preventionSection<%=ran%>");
     //alert(ele);
     <%for (int k =0; k < list.size(); k++){ %>
-    Rounded("div#preventionProcedure<%=""+k+""+ran%>", "all", "#CCF", "#efeadc", "small border blue");
-    scanDOM(document.getElementById("preventionProcedure<%=""+k+""+ran%>"));
+    Rounded("div#preventionProcedure<%=""+k+ran%>", "all", "#CCF", "#efeadc", "small border blue");
+    scanDOM(document.getElementById("preventionProcedure<%=""+k+ran%>"));
     <%}%>
     Rounded("div#headPrevention<%=ran%>", "all", "transparent", "#F0F0E7", "small border #999");
 

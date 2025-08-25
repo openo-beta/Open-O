@@ -35,23 +35,23 @@ import org.springframework.stereotype.Repository;
 
 public interface IndicatorTemplateDao extends AbstractDao<IndicatorTemplate> {
 
-    public List<IndicatorTemplate> getActiveIndicatorTemplates();
+    List<IndicatorTemplate> getActiveIndicatorTemplates();
 
-    public List<IndicatorTemplate> getIndicatorTemplatesByStatus(boolean status);
+    List<IndicatorTemplate> getIndicatorTemplatesByStatus(boolean status);
 
-    public List<IndicatorTemplate> getIndicatorTemplates();
+    List<IndicatorTemplate> getIndicatorTemplates();
 
-    public List<IndicatorTemplate> getNotSharedIndicatorTemplates();
+    List<IndicatorTemplate> getNotSharedIndicatorTemplates();
 
-    public List<IndicatorTemplate> getSharedIndicatorTemplates();
+    List<IndicatorTemplate> getSharedIndicatorTemplates();
 
-    public List<IndicatorTemplate> getIndicatorTemplatesByDashboardId(int id);
+    List<IndicatorTemplate> getIndicatorTemplatesByDashboardId(int id);
 
-    public List<String> getIndicatorCategories();
+    List<String> getIndicatorCategories();
 
-    public List<String> getIndicatorSubCategories();
+    List<String> getIndicatorSubCategories();
 
-    public List<IndicatorTemplate> getIndicatorTemplatesByCategory(String category);
+    List<IndicatorTemplate> getIndicatorTemplatesByCategory(String category);
 
-    public List<IndicatorTemplate> getIndicatorTemplatesBySubcategory(String subCategory);
+    List<IndicatorTemplate> getIndicatorTemplatesBySubcategory(String subCategory);
 }

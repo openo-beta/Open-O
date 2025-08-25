@@ -34,8 +34,7 @@
 
     //get project_home
     String project_home = request.getContextPath().substring(1);
-    boolean bSync = false;
-    if (!props.getProperty("c_surname_cur", "").equals("") && !(props.getProperty("c_surname_cur", "").equals(props.getProperty("c_surname", ""))
+    boolean bSync = !props.getProperty("c_surname_cur", "").equals("") && !(props.getProperty("c_surname_cur", "").equals(props.getProperty("c_surname", ""))
             && props.getProperty("c_givenName_cur", "").equals(props.getProperty("c_givenName", ""))
             && props.getProperty("c_address_cur", "").equals(props.getProperty("c_address", ""))
             && props.getProperty("c_city_cur", "").equals(props.getProperty("c_city", ""))
@@ -43,13 +42,10 @@
             && props.getProperty("c_postal_cur", "").equals(props.getProperty("c_postal", ""))
             //&& props.getProperty("c_phn_cur", "").equals(props.getProperty("c_phn", ""))
             && props.getProperty("c_phone_cur", "").trim().equals(props.getProperty("c_phone", "").trim())
-    )) {
-        bSync = true;
-    }
+    );
 %>
 <%
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 %>
 <html>
     <head>
@@ -396,12 +392,12 @@
                     <%
                         if (!bView) {
                     %> <input type="submit" value="Save"
-                              onclick="javascript:return onSave();"/> <input type="submit"
+                              onclick="return onSave();"/> <input type="submit"
                                                                              value="Save and Exit"
-                                                                             onclick="javascript:return onSaveExit();"/> <%
+                                                                             onclick="return onSaveExit();"/> <%
                     }
                 %> <input type="submit" value="Exit"
-                          onclick="javascript:return onExit();"/> <input type="button"
+                          onclick="return onExit();"/> <input type="button"
                                                                          value="Print" onclick="window.print();"/></td>
             </tr>
         </table>
@@ -475,7 +471,7 @@
                 <th colspan='4'>Consult/Hx/PE visits</th>
             </tr>
             <%
-                String descCon[] = {
+                String[] descCon = {
                         "Contact #s/when to call",
                         "Letter to GP completed",
                         "Release of med info form",
@@ -521,7 +517,7 @@
                 <td colspan='4'>Initial Labs</td>
             </tr>
             <%
-                String descConA[] = {
+                String[] descConA = {
                         "Type/screen",
                         "Hematology Panel",
                         "Urine culture ",
@@ -574,7 +570,7 @@
       <th>Description</th>
     </tr-->
             <%
-                String desc1st[] = {
+                String[] desc1st = {
                         "Genetic counseling",
                         "MSS ordered (16 wk)",
                         "Amniocentesis",
@@ -629,7 +625,7 @@
                 <td colspan='4'>24 weeks</td>
             </tr>
             <%
-                String desc2nd[] = {
+                String[] desc2nd = {
                         "Review dates (22wks)",
                         "Quickening",
                         "Gestational diabetes  (20-24 wks)",
@@ -682,7 +678,7 @@
                 <td colspan='4'>28 weeks</td>
             </tr>
             <%
-                String desc3rd1[] = {
+                String[] desc3rd1 = {
                         "home birth consent signed",
                         "S/Sx preterm labour",
                         "Birth Planning",
@@ -733,7 +729,7 @@
                 <td colspan='4'>32 - 35 weeks</td>
             </tr>
             <%
-                String desc3rd2[] = {
+                String[] desc3rd2 = {
                         "Mother's cordial",
                         "GBS",
                         "Pain management",
@@ -901,7 +897,7 @@
                 <td colspan='4'>36 weeks</td>
             </tr>
             <%
-                String desc3rd3[] = {
+                String[] desc3rd3 = {
                         "Active mgt 3rd stage",
                         "Home birth - home visit",
                         "Home birth - supplies checked",
@@ -965,7 +961,7 @@
                 <td colspan='4'>38 - 40 weeks</td>
             </tr>
             <%
-                String desc3rd4[] = {
+                String[] desc3rd4 = {
                         "Postdates discussion",
                         "<input type='text' name='desc3rd40' size='70' maxlength='70' value='" + props.getProperty("desc3rd40", "") + "'",
                         "<input type='text' name='desc3rd41' size='70' maxlength='70' value='" + props.getProperty("desc3rd41", "") + "'",
@@ -1006,7 +1002,7 @@
                 <td colspan='4'>41+ weeks</td>
             </tr>
             <%
-                String desc3rd5[] = {
+                String[] desc3rd5 = {
                         "Sweeps",
                         "FM counts",
                         "NST scheduled",
@@ -1050,7 +1046,7 @@
                 <th colspan='4'>Other</th>
             </tr>
             <%
-                String descOther[] = {
+                String[] descOther = {
                         "",
                         "",
                         "",
@@ -1091,12 +1087,12 @@
                     <%
                         if (!bView) {
                     %> <input type="submit" value="Save"
-                              onclick="javascript:return onSave();"/> <input type="submit"
+                              onclick="return onSave();"/> <input type="submit"
                                                                              value="Save and Exit"
-                                                                             onclick="javascript:return onSaveExit();"/> <%
+                                                                             onclick="return onSaveExit();"/> <%
                     }
                 %> <input type="submit" value="Exit"
-                          onclick="javascript:return onExit();"/> <input type="button"
+                          onclick="return onExit();"/> <input type="button"
                                                                          value="Print" onclick="window.print();"/></td>
             </tr>
         </table>

@@ -109,19 +109,13 @@ public class EctFindMeasurementTypeUtil {
     }
 
     static public boolean measurementTypeIsFound(EctMeasurementTypesBean mt, String formName) {
-        boolean verdict = true;
-        if (dao.findByTypeAndMeasuringInstruction(mt.getType(), mt.getMeasuringInstrc()).size() == 0) {
-            verdict = false;
-        }
+        boolean verdict = dao.findByTypeAndMeasuringInstruction(mt.getType(), mt.getMeasuringInstrc()).size() != 0;
 
         return verdict;
     }
 
     static public boolean measurementTypeKeyIsFound(EctMeasurementTypesBean mt) {
-        boolean verdict = true;
-        if (dao.findByType(mt.getType()).size() == 0) {
-            verdict = false;
-        }
+        boolean verdict = dao.findByType(mt.getType()).size() != 0;
 
         return verdict;
     }

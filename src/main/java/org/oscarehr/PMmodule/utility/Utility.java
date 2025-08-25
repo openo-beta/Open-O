@@ -310,7 +310,7 @@ public class Utility {
                 }
             }
 
-            if (nothingChecked == true) {
+            if (nothingChecked) {
                 // Display an error message saying that at least 1 checkbox
                 // should be checked!
                 return null;
@@ -371,7 +371,7 @@ public class Utility {
                 }
             }
 
-            if (nothingChecked == true) {
+            if (nothingChecked) {
                 // Display an error message saying that at least 1 checkbox
                 // should be checked!
                 return null;
@@ -439,7 +439,7 @@ public class Utility {
                 }
             }
 
-            if (nothingChecked == true) {
+            if (nothingChecked) {
                 // Display an error message saying that at least 1 checkbox
                 // should be checked!
                 return null;
@@ -805,10 +805,7 @@ public class Utility {
 
     // ############################################################################
     public static boolean isNotNullOrEmptyStr(String str) {
-        if (str != null && !str.equals("")) {
-            return true;
-        }
-        return false;
+        return str != null && !str.equals("");
     }
 
     // ############################################################################

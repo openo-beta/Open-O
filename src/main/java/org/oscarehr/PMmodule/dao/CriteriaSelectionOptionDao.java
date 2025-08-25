@@ -39,7 +39,7 @@ import org.springframework.stereotype.Repository;
 
 public interface CriteriaSelectionOptionDao extends AbstractDao<CriteriaSelectionOption> {
 
-    public List<CriteriaSelectionOption> getCriteriaSelectedOptionsByCriteriaId(Integer criteriaId);
+    List<CriteriaSelectionOption> getCriteriaSelectedOptionsByCriteriaId(Integer criteriaId);
 
 }
  

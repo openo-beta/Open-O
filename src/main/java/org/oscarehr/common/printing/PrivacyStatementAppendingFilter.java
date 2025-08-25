@@ -239,7 +239,7 @@ public class PrivacyStatementAppendingFilter implements Filter {
 
         public DelegatingServletResponse(HttpServletResponse response) {
             super(response);
-            response.setBufferSize(1024 * 1024 * 1); // 1 Megs
+            response.setBufferSize(1024 * 1024); // 1 Megs
         }
 
         @Override

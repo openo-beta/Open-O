@@ -56,7 +56,7 @@
         <script type="text/javascript">
             function set(text) {
                 document.forms[1].newQuery.value = text;
-            };
+            }
 
             function submitFavouriteForm() {
                 document.getElementById("favouriteForm").submit();

@@ -91,7 +91,7 @@ public class SqlUtils {
      * @return String[]
      */
     public static String[] getRow(String qry) {
-        String ret[] = null;
+        String[] ret = null;
         List<String[]> list = getQueryResultsList(qry);
         if (list != null) {
             ret = list.get(0);
@@ -155,7 +155,7 @@ public class SqlUtils {
      */
     public static String constructInClauseString(String[] criteria, boolean useQuotes) {
         StringBuilder ret = new StringBuilder();
-        String quote = useQuotes == true ? "'" : "";
+        String quote = useQuotes ? "'" : "";
         if (criteria.length != 0) {
             ret.append("in (");
             for (int i = 0; i < criteria.length; i++) {

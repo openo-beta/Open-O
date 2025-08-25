@@ -65,190 +65,190 @@ import java.util.regex.Pattern;
 
 public interface DemographicManager {
 
-    public Demographic getDemographic(LoggedInInfo loggedInInfo, Integer demographicId)
+    Demographic getDemographic(LoggedInInfo loggedInInfo, Integer demographicId)
             throws PatientDirectiveException;
 
-    public Demographic getDemographic(LoggedInInfo loggedInInfo, String demographicNo);
+    Demographic getDemographic(LoggedInInfo loggedInInfo, String demographicNo);
 
-    public Demographic getDemographicWithExt(LoggedInInfo loggedInInfo, Integer demographicId);
+    Demographic getDemographicWithExt(LoggedInInfo loggedInInfo, Integer demographicId);
 
-    public String getDemographicFormattedName(LoggedInInfo loggedInInfo, Integer demographicId);
+    String getDemographicFormattedName(LoggedInInfo loggedInInfo, Integer demographicId);
 
-    public String getDemographicEmail(LoggedInInfo loggedInInfo, Integer demographicId);
-
-
-    public List<Demographic> searchDemographicByName(LoggedInInfo loggedInInfo, String searchString, int startIndex,
-                                                     int itemsToReturn);
-
-    public List<Demographic> getActiveDemographicAfter(LoggedInInfo loggedInInfo, Date afterDateExclusive);
-
-    public List<DemographicExt> getDemographicExts(LoggedInInfo loggedInInfo, Integer id);
-
-    public DemographicExt getDemographicExt(LoggedInInfo loggedInInfo, Integer demographicNo,
-                                            DemographicExt.DemographicProperty key);
-
-    public DemographicExt getDemographicExt(LoggedInInfo loggedInInfo, Integer demographicNo, String key);
-
-    public DemographicCust getDemographicCust(LoggedInInfo loggedInInfo, Integer id);
-
-    public void createUpdateDemographicCust(LoggedInInfo loggedInInfo, DemographicCust demoCust);
-
-    public List<DemographicContact> getDemographicContacts(LoggedInInfo loggedInInfo, Integer id, String category);
-
-    public List<DemographicContact> getDemographicContacts(LoggedInInfo loggedInInfo, Integer id);
-
-    public List<Provider> getDemographicMostResponsibleProviders(LoggedInInfo loggedInInfo, int demographicNo);
-
-    public List<Demographic> getDemographicsNameRangeByProvider(LoggedInInfo loggedInInfo, Provider provider,
-                                                                String regex);
-
-    public List<Demographic> getDemographicsByProvider(LoggedInInfo loggedInInfo, Provider provider);
-
-    public void createDemographic(LoggedInInfo loggedInInfo, Demographic demographic, Integer admissionProgramId);
-
-    public void updateDemographic(LoggedInInfo loggedInInfo, Demographic demographic);
-
-    public Demographic findExactMatchToDemographic(LoggedInInfo loggedInInfo, Demographic demographic);
-
-    public List<Demographic> findFuzzyMatchToDemographic(LoggedInInfo loggedInInfo, Demographic demographic);
-
-    public void addDemographic(LoggedInInfo loggedInInfo, Demographic demographic);
-
-    public void createExtension(LoggedInInfo loggedInInfo, DemographicExt ext);
-
-    public void updateExtension(LoggedInInfo loggedInInfo, DemographicExt ext);
-
-    public void archiveExtension(DemographicExt ext);
-
-    public void createUpdateDemographicContact(LoggedInInfo loggedInInfo, DemographicContact demoContact);
-
-    public void deleteDemographic(LoggedInInfo loggedInInfo, Demographic demographic);
-
-    public void deleteExtension(LoggedInInfo loggedInInfo, DemographicExt ext);
-
-    public void mergeDemographics(LoggedInInfo loggedInInfo, Integer parentId, List<Integer> children);
-
-    public void unmergeDemographics(LoggedInInfo loggedInInfo, Integer parentId, List<Integer> children);
-
-    public Long getActiveDemographicCount(LoggedInInfo loggedInInfo);
-
-    public List<Demographic> getActiveDemographics(LoggedInInfo loggedInInfo, int offset, int limit);
-
-    public List<DemographicMerged> getMergedDemographics(LoggedInInfo loggedInInfo, Integer parentId);
+    String getDemographicEmail(LoggedInInfo loggedInInfo, Integer demographicId);
 
 
-    public String getDemographicWorkPhoneAndExtension(LoggedInInfo loggedInInfo, Integer demographicNo);
+    List<Demographic> searchDemographicByName(LoggedInInfo loggedInInfo, String searchString, int startIndex,
+                                              int itemsToReturn);
 
-    public List<Demographic> searchDemographicsByAttributes(LoggedInInfo loggedInInfo, String hin, String firstName,
-                                                            String lastName, Gender gender, Calendar dateOfBirth, String city, String province, String phone,
-                                                            String email, String alias, int startIndex, int itemsToReturn);
+    List<Demographic> getActiveDemographicAfter(LoggedInInfo loggedInInfo, Date afterDateExclusive);
 
-    public List<String> getPatientStatusList();
+    List<DemographicExt> getDemographicExts(LoggedInInfo loggedInInfo, Integer id);
 
-    public List<String> getRosterStatusList();
+    DemographicExt getDemographicExt(LoggedInInfo loggedInInfo, Integer demographicNo,
+                                     DemographicExt.DemographicProperty key);
 
-    public List<DemographicSearchResult> searchPatients(LoggedInInfo loggedInInfo,
-                                                        DemographicSearchRequest searchRequest, int startIndex, int itemsToReturn);
+    DemographicExt getDemographicExt(LoggedInInfo loggedInInfo, Integer demographicNo, String key);
 
-    public int searchPatientsCount(LoggedInInfo loggedInInfo, DemographicSearchRequest searchRequest);
+    DemographicCust getDemographicCust(LoggedInInfo loggedInInfo, Integer id);
 
-    public List<Integer> getAdmittedDemographicIdsByProgramAndProvider(LoggedInInfo loggedInInfo, Integer programId,
-                                                                       String providerNo);
+    void createUpdateDemographicCust(LoggedInInfo loggedInInfo, DemographicCust demoCust);
+
+    List<DemographicContact> getDemographicContacts(LoggedInInfo loggedInInfo, Integer id, String category);
+
+    List<DemographicContact> getDemographicContacts(LoggedInInfo loggedInInfo, Integer id);
+
+    List<Provider> getDemographicMostResponsibleProviders(LoggedInInfo loggedInInfo, int demographicNo);
+
+    List<Demographic> getDemographicsNameRangeByProvider(LoggedInInfo loggedInInfo, Provider provider,
+                                                         String regex);
+
+    List<Demographic> getDemographicsByProvider(LoggedInInfo loggedInInfo, Provider provider);
+
+    void createDemographic(LoggedInInfo loggedInInfo, Demographic demographic, Integer admissionProgramId);
+
+    void updateDemographic(LoggedInInfo loggedInInfo, Demographic demographic);
+
+    Demographic findExactMatchToDemographic(LoggedInInfo loggedInInfo, Demographic demographic);
+
+    List<Demographic> findFuzzyMatchToDemographic(LoggedInInfo loggedInInfo, Demographic demographic);
+
+    void addDemographic(LoggedInInfo loggedInInfo, Demographic demographic);
+
+    void createExtension(LoggedInInfo loggedInInfo, DemographicExt ext);
+
+    void updateExtension(LoggedInInfo loggedInInfo, DemographicExt ext);
+
+    void archiveExtension(DemographicExt ext);
+
+    void createUpdateDemographicContact(LoggedInInfo loggedInInfo, DemographicContact demoContact);
+
+    void deleteDemographic(LoggedInInfo loggedInInfo, Demographic demographic);
+
+    void deleteExtension(LoggedInInfo loggedInInfo, DemographicExt ext);
+
+    void mergeDemographics(LoggedInInfo loggedInInfo, Integer parentId, List<Integer> children);
+
+    void unmergeDemographics(LoggedInInfo loggedInInfo, Integer parentId, List<Integer> children);
+
+    Long getActiveDemographicCount(LoggedInInfo loggedInInfo);
+
+    List<Demographic> getActiveDemographics(LoggedInInfo loggedInInfo, int offset, int limit);
+
+    List<DemographicMerged> getMergedDemographics(LoggedInInfo loggedInInfo, Integer parentId);
 
 
-    public List<Demographic> getDemographics(LoggedInInfo loggedInInfo, List<Integer> demographicIds);
+    String getDemographicWorkPhoneAndExtension(LoggedInInfo loggedInInfo, Integer demographicNo);
 
-    public List<Demographic> searchDemographic(LoggedInInfo loggedInInfo, String searchStr);
+    List<Demographic> searchDemographicsByAttributes(LoggedInInfo loggedInInfo, String hin, String firstName,
+                                                     String lastName, Gender gender, Calendar dateOfBirth, String city, String province, String phone,
+                                                     String email, String alias, int startIndex, int itemsToReturn);
 
-    public List<Demographic> getActiveDemosByHealthCardNo(LoggedInInfo loggedInInfo, String hcn, String hcnType);
+    List<String> getPatientStatusList();
 
-    public List<Integer> getMergedDemographicIds(LoggedInInfo loggedInInfo, Integer demographicNo);
+    List<String> getRosterStatusList();
 
-    public List<Demographic> getDemosByChartNo(LoggedInInfo loggedInInfo, String chartNo);
+    List<DemographicSearchResult> searchPatients(LoggedInInfo loggedInInfo,
+                                                 DemographicSearchRequest searchRequest, int startIndex, int itemsToReturn);
 
-    public List<Demographic> searchByHealthCard(LoggedInInfo loggedInInfo, String hin);
+    int searchPatientsCount(LoggedInInfo loggedInInfo, DemographicSearchRequest searchRequest);
 
-    public Demographic getDemographicByNamePhoneEmail(LoggedInInfo loggedInInfo, String firstName, String lastName,
-                                                      String hPhone, String wPhone, String email);
+    List<Integer> getAdmittedDemographicIdsByProgramAndProvider(LoggedInInfo loggedInInfo, Integer programId,
+                                                                String providerNo);
 
-    public List<Demographic> getDemographicWithLastFirstDOB(LoggedInInfo loggedInInfo, String lastname,
-                                                            String firstname, String year_of_birth, String month_of_birth, String date_of_birth);
 
-    public List<Integer> getDemographicNumbersByMidwifeNumberAndDemographicLastNameRegex(
-            LoggedInInfo loggedInInfo,
-            final String midwifeNumber,
-            final String lastNameRegex);
+    List<Demographic> getDemographics(LoggedInInfo loggedInInfo, List<Integer> demographicIds);
 
-    public List<Integer> getDemographicNumbersByNurseNumberAndDemographicLastNameRegex(
-            LoggedInInfo loggedInInfo,
-            final String nurseNumber,
-            final String lastNameRegex);
+    List<Demographic> searchDemographic(LoggedInInfo loggedInInfo, String searchStr);
 
-    public List<Integer> getDemographicNumbersByResidentNumberAndDemographicLastNameRegex(
-            LoggedInInfo loggedInInfo,
-            final String residentNumber,
-            final String lastNameRegex);
+    List<Demographic> getActiveDemosByHealthCardNo(LoggedInInfo loggedInInfo, String hcn, String hcnType);
 
-    public List<DemographicExt> getMultipleMidwifeForDemographicNumbersByProviderNumber(
-            LoggedInInfo loggedInInfo,
-            final Collection<Integer> demographicNumbers,
-            final String midwifeNumber);
+    List<Integer> getMergedDemographicIds(LoggedInInfo loggedInInfo, Integer demographicNo);
 
-    public List<DemographicExt> getMultipleNurseForDemographicNumbersByProviderNumber(
-            LoggedInInfo loggedInInfo,
-            final Collection<Integer> demographicNumbers,
-            final String nurseNumber);
+    List<Demographic> getDemosByChartNo(LoggedInInfo loggedInInfo, String chartNo);
 
-    public List<DemographicExt> getMultipleResidentForDemographicNumbersByProviderNumber(
-            LoggedInInfo loggedInInfo,
-            final Collection<Integer> demographicNumbers,
-            final String residentNumber);
+    List<Demographic> searchByHealthCard(LoggedInInfo loggedInInfo, String hin);
 
-    public Demographic getRemoteDemographic(LoggedInInfo loggedInInfo, int remoteFacilityId, int remoteDemographicId);
+    Demographic getDemographicByNamePhoneEmail(LoggedInInfo loggedInInfo, String firstName, String lastName,
+                                               String hPhone, String wPhone, String email);
 
-    public Demographic copyRemoteDemographic(LoggedInInfo loggedInInfo, Demographic remoteDemographic,
-                                             int remoteFacilityId, int remoteDemographicId);
+    List<Demographic> getDemographicWithLastFirstDOB(LoggedInInfo loggedInInfo, String lastname,
+                                                     String firstname, String year_of_birth, String month_of_birth, String date_of_birth);
 
-    public void updatePatientConsent(LoggedInInfo loggedInInfo, int demographic_no, String consentType,
-                                     boolean consented);
+    List<Integer> getDemographicNumbersByMidwifeNumberAndDemographicLastNameRegex(
+        LoggedInInfo loggedInInfo,
+        final String midwifeNumber,
+        final String lastNameRegex);
 
-    public List<DemographicContact> findSDMByDemographicNo(LoggedInInfo loggedInInfo, int demographicNo);
+    List<Integer> getDemographicNumbersByNurseNumberAndDemographicLastNameRegex(
+        LoggedInInfo loggedInInfo,
+        final String nurseNumber,
+        final String lastNameRegex);
 
-    public boolean isPatientConsented(LoggedInInfo loggedInInfo, int demographic_no, String consentType);
+    List<Integer> getDemographicNumbersByResidentNumberAndDemographicLastNameRegex(
+        LoggedInInfo loggedInInfo,
+        final String residentNumber,
+        final String lastNameRegex);
 
-    public boolean linkDemographicToRemoteDemographic(LoggedInInfo loggedInInfo, int demographicNo,
-                                                      int remoteFacilityId, int remoteDemographicNo);
+    List<DemographicExt> getMultipleMidwifeForDemographicNumbersByProviderNumber(
+        LoggedInInfo loggedInInfo,
+        final Collection<Integer> demographicNumbers,
+        final String midwifeNumber);
 
-    public List<Integer> getLinkedDemographicIds(LoggedInInfo loggedInInfo, int demographicNo, int sourceFacilityId);
+    List<DemographicExt> getMultipleNurseForDemographicNumbersByProviderNumber(
+        LoggedInInfo loggedInInfo,
+        final Collection<Integer> demographicNumbers,
+        final String nurseNumber);
 
-    public List<DemographicTransfer> getLinkedDemographics(LoggedInInfo loggedInInfo, int demographicNo);
+    List<DemographicExt> getMultipleResidentForDemographicNumbersByProviderNumber(
+        LoggedInInfo loggedInInfo,
+        final Collection<Integer> demographicNumbers,
+        final String residentNumber);
+
+    Demographic getRemoteDemographic(LoggedInInfo loggedInInfo, int remoteFacilityId, int remoteDemographicId);
+
+    Demographic copyRemoteDemographic(LoggedInInfo loggedInInfo, Demographic remoteDemographic,
+                                      int remoteFacilityId, int remoteDemographicId);
+
+    void updatePatientConsent(LoggedInInfo loggedInInfo, int demographic_no, String consentType,
+                              boolean consented);
+
+    List<DemographicContact> findSDMByDemographicNo(LoggedInInfo loggedInInfo, int demographicNo);
+
+    boolean isPatientConsented(LoggedInInfo loggedInInfo, int demographic_no, String consentType);
+
+    boolean linkDemographicToRemoteDemographic(LoggedInInfo loggedInInfo, int demographicNo,
+                                               int remoteFacilityId, int remoteDemographicNo);
+
+    List<Integer> getLinkedDemographicIds(LoggedInInfo loggedInInfo, int demographicNo, int sourceFacilityId);
+
+    List<DemographicTransfer> getLinkedDemographics(LoggedInInfo loggedInInfo, int demographicNo);
 
     void checkPrivilege(LoggedInInfo loggedInInfo, String privilege);
 
     void checkPrivilege(LoggedInInfo loggedInInfo, String privilege, int demographicNo);
 
-    public List<DemographicContact> getHealthCareTeam(LoggedInInfo loggedInInfo, Integer demographicNo);
+    List<DemographicContact> getHealthCareTeam(LoggedInInfo loggedInInfo, Integer demographicNo);
 
-    public List<Object[]> getArchiveMeta(LoggedInInfo loggedInInfo, Integer demographicNo);
+    List<Object[]> getArchiveMeta(LoggedInInfo loggedInInfo, Integer demographicNo);
 
-    public DemographicContact getMostResponsibleProviderFromHealthCareTeam(LoggedInInfo loggedInInfo,
-                                                                           Integer demographicNo);
+    DemographicContact getMostResponsibleProviderFromHealthCareTeam(LoggedInInfo loggedInInfo,
+                                                                    Integer demographicNo);
 
-    public DemographicContact getHealthCareMemberbyRole(LoggedInInfo loggedInInfo, Integer demographicNo, String role);
+    DemographicContact getHealthCareMemberbyRole(LoggedInInfo loggedInInfo, Integer demographicNo, String role);
 
-    public DemographicContact getHealthCareMemberbyId(LoggedInInfo loggedInInfo, Integer demographicContactId);
+    DemographicContact getHealthCareMemberbyId(LoggedInInfo loggedInInfo, Integer demographicContactId);
 
-    public List<DemographicContact> getPersonalEmergencyContacts(LoggedInInfo loggedInInfo, Integer demographicNo);
+    List<DemographicContact> getPersonalEmergencyContacts(LoggedInInfo loggedInInfo, Integer demographicNo);
 
-    public DemographicContact getPersonalEmergencyContactById(LoggedInInfo loggedInInfo, Integer demographicContactId);
+    DemographicContact getPersonalEmergencyContactById(LoggedInInfo loggedInInfo, Integer demographicContactId);
 
-    public List<DemographicContact> getEmergencyContacts(LoggedInInfo loggedInInfo, Integer demographicNo);
+    List<DemographicContact> getEmergencyContacts(LoggedInInfo loggedInInfo, Integer demographicNo);
 
-    public Provider getMRP(LoggedInInfo loggedInInfo, Integer demographicNo);
+    Provider getMRP(LoggedInInfo loggedInInfo, Integer demographicNo);
 
-    public Provider getMRP(LoggedInInfo loggedInInfo, Demographic demographic);
+    Provider getMRP(LoggedInInfo loggedInInfo, Demographic demographic);
 
-    public String getNextAppointmentDate(LoggedInInfo loggedInInfo, Integer demographicNo);
+    String getNextAppointmentDate(LoggedInInfo loggedInInfo, Integer demographicNo);
 
-    public String getNextAppointmentDate(LoggedInInfo loggedInInfo, Demographic demographic);
+    String getNextAppointmentDate(LoggedInInfo loggedInInfo, Demographic demographic);
 }

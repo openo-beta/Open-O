@@ -203,11 +203,7 @@ public class PathnetResultsData {
                 lbData.requestingClient = justGetDocName(orc.getOrderingProvider());
                 lbData.reportStatus = "" + stat;
 
-                if (lbData.reportStatus != null && lbData.reportStatus.equals("F")) {
-                    lbData.finalRes = true;
-                } else {
-                    lbData.finalRes = false;
-                }
+                lbData.finalRes = lbData.reportStatus != null && lbData.reportStatus.equals("F");
 
                 labResults.add(lbData);
             }

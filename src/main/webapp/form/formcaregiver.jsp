@@ -59,8 +59,7 @@
     String project_home = request.getContextPath().substring(1);
 %>
 <%
-    boolean bView = false;
-    if (request.getParameter("view") != null && request.getParameter("view").equals("1")) bView = true;
+    boolean bView = request.getParameter("view") != null && request.getParameter("view").equals("1");
 %>
 <html>
     <head>
@@ -366,7 +365,7 @@
                                             because _____ is in and out of bed or wanders around at night)
                                         </td>
                                         <td class="answerYN" width="9%"><input type="checkbox"
-                                                                               onchange="javascript: calScore();"
+                                                                               onchange="calScore();"
                                                                                class="checkbox" name="Q1Y"
                                                 <%= props.getProperty("Q1Y", "") %> /></td>
                                         <td class="answerYN" width="9%"><input type="checkbox"
@@ -381,7 +380,7 @@
                                             helping takes so much time or it's a long drive over to help)
                                         </td>
                                         <td class="answerYN"><input type="checkbox"
-                                                                    onchange="javascript: calScore();" class="checkbox"
+                                                                    onchange="calScore();" class="checkbox"
                                                                     name="Q2Y"
                                                 <%= props.getProperty("Q2Y", "") %> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
@@ -396,7 +395,7 @@
                                             required)
                                         </td>
                                         <td class="answerYN"><input type="checkbox"
-                                                                    onchange="javascript: calScore();" class="checkbox"
+                                                                    onchange="calScore();" class="checkbox"
                                                                     name="Q3Y"
                                                 <%= props.getProperty("Q3Y", "") %> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
@@ -409,7 +408,7 @@
                                             restricts free time or canno go visiting)
                                         </td>
                                         <td class="answerYN"><input type="checkbox"
-                                                                    onchange="javascript: calScore();" class="checkbox"
+                                                                    onchange="calScore();" class="checkbox"
                                                                     name="Q4Y"
                                                 <%= props.getProperty("Q4Y", "") %> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
@@ -423,7 +422,7 @@
                                             privacy)
                                         </td>
                                         <td class="answerYN"><input type="checkbox"
-                                                                    onchange="javascript: calScore();" class="checkbox"
+                                                                    onchange="calScore();" class="checkbox"
                                                                     name="Q5Y"
                                                 <%= props.getProperty("Q5Y", "") %> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
@@ -436,7 +435,7 @@
                                             plans (e.g. had to turn down a job; could not go on vacation)
                                         </td>
                                         <td class="answerYN"><input type="checkbox"
-                                                                    onchange="javascript: calScore();" class="checkbox"
+                                                                    onchange="calScore();" class="checkbox"
                                                                     name="Q6Y"
                                                 <%= props.getProperty("Q6Y", "") %> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
@@ -449,7 +448,7 @@
                                             time (e.g., from other family members)
                                         </td>
                                         <td class="answerYN"><input type="checkbox"
-                                                                    onchange="javascript: calScore();" class="checkbox"
+                                                                    onchange="calScore();" class="checkbox"
                                                                     name="Q7Y"
                                                 <%= props.getProperty("Q7Y", "") %> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
@@ -462,7 +461,7 @@
                                             (e.g., because of severe arguments)
                                         </td>
                                         <td class="answerYN"><input type="checkbox"
-                                                                    onchange="javascript: calScore();" class="checkbox"
+                                                                    onchange="calScore();" class="checkbox"
                                                                     name="Q8Y"
                                                 <%= props.getProperty("Q8Y", "") %> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
@@ -476,7 +475,7 @@
                                             _____ accuses people of taking things
                                         </td>
                                         <td class="answerYN"><input type="checkbox"
-                                                                    onchange="javascript: calScore();" class="checkbox"
+                                                                    onchange="calScore();" class="checkbox"
                                                                     name="Q9Y"
                                                 <%= props.getProperty("Q9Y", "") %> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
@@ -490,7 +489,7 @@
                                             different person than he/she used to be)
                                         </td>
                                         <td class="answerYN"><input type="checkbox"
-                                                                    onchange="javascript: calScore();" class="checkbox"
+                                                                    onchange="calScore();" class="checkbox"
                                                                     name="Q10Y"
                                                 <%= props.getProperty("Q10Y", "") %> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
@@ -503,7 +502,7 @@
                                             because of having to take time off)
                                         </td>
                                         <td class="answerYN"><input type="checkbox"
-                                                                    onchange="javascript: calScore();" class="checkbox"
+                                                                    onchange="calScore();" class="checkbox"
                                                                     name="Q11Y"
                                                 <%= props.getProperty("Q11Y", "") %> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
@@ -514,7 +513,7 @@
                                         <td class="question">12.</td>
                                         <td class="question">It is a financial strain</td>
                                         <td class="answerYN"><input type="checkbox"
-                                                                    onchange="javascript: calScore();" class="checkbox"
+                                                                    onchange="calScore();" class="checkbox"
                                                                     name="Q12Y"
                                                 <%= props.getProperty("Q12Y", "") %> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
@@ -527,7 +526,7 @@
                                             because of worry about _____; concerns about how you will manage)
                                         </td>
                                         <td class="answerYN"><input type="checkbox"
-                                                                    onchange="javascript: calScore();" class="checkbox"
+                                                                    onchange="calScore();" class="checkbox"
                                                                     name="Q13Y"
                                                 <%= props.getProperty("Q13Y", "") %> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
@@ -601,15 +600,15 @@
                                 <%
                                     if (!bView) {
                                 %> <input type="submit" value="Save"
-                                          onclick="javascript: return onSave();"/> <input type="submit"
+                                          onclick="return onSave();"/> <input type="submit"
                                                                                           value="Save and Exit"
-                                                                                          onclick="javascript:if(checkBeforeSave()==true) return onSaveExit(); else return false;"/>
+                                                                                          onclick="if(checkBeforeSave()==true) return onSaveExit(); else return false;"/>
                                 <%
                                     }
                                 %> <input type="button" value="Exit"
-                                          onclick="javascript:return onExit();"/> <input type="button"
+                                          onclick="return onExit();"/> <input type="button"
                                                                                          value="Print"
-                                                                                         onclick="javascript:window.print();"/>
+                                                                                         onclick="window.print();"/>
                             </td>
                             <td align="right">Study ID: <%= props.getProperty("studyID", "N/A") %>
                                 <input type="hidden" name="studyID"

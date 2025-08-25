@@ -34,18 +34,18 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 public interface DefaultRoleAccessDAO {
 
-    public void deleteDefaultRoleAccess(Long id);
+    void deleteDefaultRoleAccess(Long id);
 
-    public DefaultRoleAccess getDefaultRoleAccess(Long id);
+    DefaultRoleAccess getDefaultRoleAccess(Long id);
 
-    public List<DefaultRoleAccess> getDefaultRoleAccesses();
+    List<DefaultRoleAccess> getDefaultRoleAccesses();
 
-    public List<DefaultRoleAccess> findAll();
+    List<DefaultRoleAccess> findAll();
 
-    public void saveDefaultRoleAccess(DefaultRoleAccess dra);
+    void saveDefaultRoleAccess(DefaultRoleAccess dra);
 
-    public DefaultRoleAccess find(Long roleId, Long accessTypeId);
+    DefaultRoleAccess find(Long roleId, Long accessTypeId);
 
-    public List<Object[]> findAllRolesAndAccessTypes();
+    List<Object[]> findAllRolesAndAccessTypes();
 }
  

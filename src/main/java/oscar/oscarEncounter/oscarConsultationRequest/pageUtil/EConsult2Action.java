@@ -98,7 +98,7 @@ public class EConsult2Action extends ActionSupport {
         try {
             response.sendRedirect(stringBuilder.toString());
         } catch (IOException e) {
-            MiscUtils.getLogger().error("There was a problem with the redirect of " + stringBuilder.toString(), e);
+            MiscUtils.getLogger().error("There was a problem with the redirect of " + stringBuilder, e);
         }
 
         return null;
@@ -159,7 +159,7 @@ public class EConsult2Action extends ActionSupport {
             stringBuilder.append(String.format("?%1$s=%2$s", "loginStart", new Date().getTime() / 1000));
             response.sendRedirect(stringBuilder.toString());
         } catch (IOException e) {
-            MiscUtils.getLogger().error("There was a problem with the redirect of " + stringBuilder.toString(), e);
+            MiscUtils.getLogger().error("There was a problem with the redirect of " + stringBuilder, e);
         }
 
         return null;

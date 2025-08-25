@@ -96,10 +96,7 @@
     String percent = gstProp.getProperty("gstPercent", "");
 
     String filePath = DisplayInvoiceLogo2Action.getLogoImgAbsPath();
-    boolean isLogoImgExisted = true;
-    if (filePath.isEmpty()) {
-        isLogoImgExisted = false;
-    }
+    boolean isLogoImgExisted = !filePath.isEmpty();
 
     if (bCh1 != null) {
         BillingONExtDao billExtDao = (BillingONExtDao) SpringUtils.getBean(BillingONExtDao.class);

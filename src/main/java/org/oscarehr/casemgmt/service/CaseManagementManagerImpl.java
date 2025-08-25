@@ -1587,11 +1587,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
         // global default role access
         String accessName = "read " + noteRoleName + " notes";
-        if (roleProgramAccessDAO.hasAccess(accessName, role.getId())) {
-            return (true);
-        }
-
-        return (false);
+        return roleProgramAccessDAO.hasAccess(accessName, role.getId());
     }
 
     @Override
@@ -1955,9 +1951,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     public boolean unlockNote(int noteId, String password) {
         CaseManagementNote note = this.caseManagementNoteDAO.getNote(Long.valueOf(noteId));
         if (note != null) {
-            if (note.isLocked() && note.getPassword().equals(password)) {
-                return true;
-            }
+            return note.isLocked() && note.getPassword().equals(password);
         }
         return false;
     }

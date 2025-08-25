@@ -55,11 +55,11 @@ import oscar.util.StringUtils;
 
 
 public interface LabManager {
-    public List<Hl7TextMessage> getHl7Messages(LoggedInInfo loggedInInfo, Integer demographicNo, int offset, int limit);
+    List<Hl7TextMessage> getHl7Messages(LoggedInInfo loggedInInfo, Integer demographicNo, int offset, int limit);
 
-    public List<Hl7TextInfo> getHl7TextInfo(LoggedInInfo loggedInInfo, int demographicNo);
+    List<Hl7TextInfo> getHl7TextInfo(LoggedInInfo loggedInInfo, int demographicNo);
 
-    public Hl7TextMessage getHl7Message(LoggedInInfo loggedInInfo, int labId);
+    Hl7TextMessage getHl7Message(LoggedInInfo loggedInInfo, int labId);
 
-    public Path renderLab(LoggedInInfo loggedInInfo, Integer segmentId) throws PDFGenerationException;
+    Path renderLab(LoggedInInfo loggedInInfo, Integer segmentId) throws PDFGenerationException;
 }

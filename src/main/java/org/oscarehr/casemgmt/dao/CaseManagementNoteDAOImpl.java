@@ -454,15 +454,11 @@ public class CaseManagementNoteDAOImpl extends HibernateDaoSupport implements Ca
                 + " and casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_issue_notes.note_id=casemgmt_note.note_id";
         Session session = currentSession();
         List<CaseManagementNote> notes = new ArrayList<CaseManagementNote>();
-        try {
-            SQLQuery query = session.createSQLQuery(sqlCommand);
-            @SuppressWarnings("unchecked")
-            List<Integer> ids = query.list();
-            for (Integer id : ids)
-                notes.add(getNote(id.longValue()));
-        } finally {
-            //session.close();
-        }
+        SQLQuery query = session.createSQLQuery(sqlCommand);
+        @SuppressWarnings("unchecked")
+        List<Integer> ids = query.list();
+        for (Integer id : ids)
+            notes.add(getNote(id.longValue()));
 
         // make unique for uuid
         HashMap<String, CaseManagementNote> uniqueForUuid = new HashMap<String, CaseManagementNote>();
@@ -570,8 +566,6 @@ public class CaseManagementNoteDAOImpl extends HibernateDaoSupport implements Ca
 
         } catch (ParseException e) {
             log.warn("Warning", e);
-        } finally {
-            //session.close();
         }
 
         return results;
@@ -589,34 +583,26 @@ public class CaseManagementNoteDAOImpl extends HibernateDaoSupport implements Ca
     public boolean haveIssue(Long issid, String demoNo) {
         // Session session = getSession();
         Session session = currentSession();
-        try {
-            SQLQuery query = session.createSQLQuery("select * from casemgmt_issue_notes where id=" + issid.longValue());
-            List results = query.list();
-            // log.info("haveIssue - DAO - # of results = " + results.size());
-            if (results.size() > 0)
-                return true;
-            return false;
-        } finally {
-            //session.close();
-        }
+        SQLQuery query = session.createSQLQuery("select * from casemgmt_issue_notes where id=" + issid.longValue());
+        List results = query.list();
+        // log.info("haveIssue - DAO - # of results = " + results.size());
+        if (results.size() > 0)
+            return true;
+        return false;
     }
 
     @Override
     public boolean haveIssue(String issueCode, Integer demographicId) {
         // Session session=getSession();
         Session session = currentSession();
-        try {
-            SQLQuery query = session.createSQLQuery(
-                    "select casemgmt_issue.id from casemgmt_issue_notes,casemgmt_issue,issue   where issue.issue_id=casemgmt_issue.issue_id and casemgmt_issue.id=casemgmt_issue_notes.id and demographic_no="
-                            + demographicId + " and issue.code='" + issueCode + "'");
-            List results = query.list();
-            // log.info("haveIssue - DAO - # of results = " + results.size());
-            if (results.size() > 0)
-                return true;
-            return false;
-        } finally {
-            //session.close();
-        }
+        SQLQuery query = session.createSQLQuery(
+                "select casemgmt_issue.id from casemgmt_issue_notes,casemgmt_issue,issue   where issue.issue_id=casemgmt_issue.issue_id and casemgmt_issue.id=casemgmt_issue_notes.id and demographic_no="
+                        + demographicId + " and issue.code='" + issueCode + "'");
+        List results = query.list();
+        // log.info("haveIssue - DAO - # of results = " + results.size());
+        if (results.size() > 0)
+            return true;
+        return false;
     }
 
     /*
@@ -757,7 +743,7 @@ public class CaseManagementNoteDAOImpl extends HibernateDaoSupport implements Ca
             sb.append(p.getId());
         }
         String hql = "select distinct cmn.demographic_no from CaseManagementNote cmn where cmn.program_no in ("
-                + sb.toString()
+                + sb
                 + ") and cmn.update_date > ?0 and cmn.locked != '1' and cmn.id = (select max(cmn2.id) from CaseManagementNote cmn2 where cmn2.uuid = cmn.uuid) order by cmn.observation_date";
         List<String> results = (List<String>) getHibernateTemplate().find(hql, date);
 

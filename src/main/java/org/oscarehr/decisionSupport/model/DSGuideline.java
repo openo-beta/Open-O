@@ -141,8 +141,7 @@ public abstract class DSGuideline extends AbstractModel<Integer> {
     public abstract List<DSConsequence> evaluate(LoggedInInfo loggedInInfo, String demographicNo, String providerNo, List<Object> dynamicArgs) throws DecisionSupportException;
 
     public boolean evaluateBoolean(LoggedInInfo loggedInInfo, String demographicNo) throws DecisionSupportException {
-        if (evaluate(loggedInInfo, demographicNo) == null) return false;
-        return true;
+        return evaluate(loggedInInfo, demographicNo) != null;
     }
 
     private void tryParseFromXml() {

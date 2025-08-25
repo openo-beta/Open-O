@@ -466,12 +466,9 @@ public class AlphaHandler extends DefaultGenericHandler implements MessageHandle
 
     public boolean isOBXAbnormal(int i, int j) {
         try {
-            if (getOBXAbnormalFlag(i, j).equals("H") || getOBXAbnormalFlag(i,
-                    j).equals("L") || getOBXAbnormalFlag(i, j).equals("HH") ||
-                    getOBXAbnormalFlag(i, j).equals("LL"))
-                return (true);
-            else
-                return (false);
+            return getOBXAbnormalFlag(i, j).equals("H") || getOBXAbnormalFlag(i,
+                j).equals("L") || getOBXAbnormalFlag(i, j).equals("HH") ||
+                getOBXAbnormalFlag(i, j).equals("LL");
 
         } catch (Exception e) {
             return (false);

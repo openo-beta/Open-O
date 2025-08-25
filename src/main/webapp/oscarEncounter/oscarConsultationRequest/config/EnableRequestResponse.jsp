@@ -54,10 +54,10 @@
     boolean consultRequestEnabled = false;
     boolean consultResponseEnabled = false;
 
-    List<Property> results = dao.findByName(manager.CON_REQUEST_ENABLED);
-    if (results.size() > 0 && manager.ENABLED_YES.equals(results.get(0).getValue())) consultRequestEnabled = true;
-    results = dao.findByName(manager.CON_RESPONSE_ENABLED);
-    if (results.size() > 0 && manager.ENABLED_YES.equals(results.get(0).getValue())) consultResponseEnabled = true;
+    List<Property> results = dao.findByName(ConsultationManager.CON_REQUEST_ENABLED);
+    if (results.size() > 0 && ConsultationManager.ENABLED_YES.equals(results.get(0).getValue())) consultRequestEnabled = true;
+    results = dao.findByName(ConsultationManager.CON_RESPONSE_ENABLED);
+    if (results.size() > 0 && ConsultationManager.ENABLED_YES.equals(results.get(0).getValue())) consultResponseEnabled = true;
 
     if (!consultRequestEnabled && !consultResponseEnabled) consultRequestEnabled = true;
 %>

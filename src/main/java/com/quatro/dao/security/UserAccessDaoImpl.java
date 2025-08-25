@@ -34,7 +34,7 @@ public class UserAccessDaoImpl extends HibernateDaoSupport implements UserAccess
     public List GetUserAccessList(String providerNo, Integer shelterId) {
         String sSQL = "";
         if (shelterId != null && shelterId.intValue() > 0) {
-            String s = "'%S" + shelterId.toString() + ",%'";
+            String s = "'%S" + shelterId + ",%'";
             sSQL = "from UserAccessValue s where s.providerNo= ?0 " +
                     " and s.orgCdcsv like " + s + " order by s.functionCd, s.privilege desc, s.orgCd";
         } else {
@@ -50,7 +50,7 @@ public class UserAccessDaoImpl extends HibernateDaoSupport implements UserAccess
         if (shelterId != null && shelterId.intValue() > 0) {
             sSQL = "select distinct o.codecsv from UserAccessValue s, LstOrgcd o " +
                     "where s.providerNo= ?0 and s.privilege>='r' and s.orgCd=o.code " +
-                    " and o.codecsv like '%S" + shelterId.toString() + ",%'" +
+                    " and o.codecsv like '%S" + shelterId + ",%'" +
                     " order by o.codecsv";
             return getHibernateTemplate().find(sSQL, providerNo);
         } else {

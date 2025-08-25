@@ -120,7 +120,7 @@ public class OscarFhirResourceManager {
 
         if (demographic != null) {
             patient = new org.oscarehr.integration.fhir.model.Patient(demographic, configurationManager);
-            LogAction.addLogSynchronous(configurationManager.getLoggedInInfo(), "OscarFhirResourceManager.getPatientByDemographicNumber", "Retrieved demographic " + demographic_no + " " + patient.toString());
+            LogAction.addLogSynchronous(configurationManager.getLoggedInInfo(), "OscarFhirResourceManager.getPatientByDemographicNumber", "Retrieved demographic " + demographic_no + " " + patient);
         }
 
         return patient;
@@ -139,7 +139,7 @@ public class OscarFhirResourceManager {
         List<org.oscarehr.integration.fhir.model.Patient> patientList = null;
 
         if (demographicList != null) {
-            LogAction.addLogSynchronous(configurationManager.getLoggedInInfo(), "OscarFhirResourceManager.getPatientsByPHN", "Retrieved demographic hcn " + hcn + " " + demographicList.toString());
+            LogAction.addLogSynchronous(configurationManager.getLoggedInInfo(), "OscarFhirResourceManager.getPatientsByPHN", "Retrieved demographic hcn " + hcn + " " + demographicList);
 
             for (Demographic demographic : demographicList) {
 
@@ -189,7 +189,7 @@ public class OscarFhirResourceManager {
 
         if (provider != null) {
             practitioner = new org.oscarehr.integration.fhir.model.PerformingPractitioner(provider, configurationManager);
-            LogAction.addLogSynchronous(configurationManager.getLoggedInInfo(), "OscarFhirResourceManager.getProviderByProviderNumber", "Retrieved provider " + providerNo + " " + provider.toString());
+            LogAction.addLogSynchronous(configurationManager.getLoggedInInfo(), "OscarFhirResourceManager.getProviderByProviderNumber", "Retrieved provider " + providerNo + " " + provider);
         }
 
         return practitioner;
@@ -208,7 +208,7 @@ public class OscarFhirResourceManager {
 
         if (provider != null) {
             practitioner = new org.oscarehr.integration.fhir.model.Practitioner(provider, configurationManager);
-            LogAction.addLogSynchronous(configurationManager.getLoggedInInfo(), "OscarFhirResourceManager.getProviderByProviderNumber", "Retrieved provider " + providerNo + " " + provider.toString());
+            LogAction.addLogSynchronous(configurationManager.getLoggedInInfo(), "OscarFhirResourceManager.getProviderByProviderNumber", "Retrieved provider " + providerNo + " " + provider);
         }
 
         return practitioner;

@@ -136,18 +136,12 @@ public class MeasurementDSHelper {
     }
 
     public boolean isMale() {
-        boolean ismale = false;
-        if (sex != null && sex.trim().equalsIgnoreCase("M")) {
-            ismale = true;
-        }
+        boolean ismale = sex != null && sex.trim().equalsIgnoreCase("M");
         return ismale;
     }
 
     public boolean isFemale() {
-        boolean isfemale = false;
-        if (sex != null && sex.trim().equalsIgnoreCase("F")) {
-            isfemale = true;
-        }
+        boolean isfemale = sex != null && sex.trim().equalsIgnoreCase("F");
         return isfemale;
     }
 

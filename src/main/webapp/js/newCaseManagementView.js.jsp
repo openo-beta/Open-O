@@ -915,7 +915,7 @@
             for (var j = 0; j < exFields.length; j++) {
                 if (extsArr[i] == exKeys[j]) {
                     $(exFields[j]).value = extsArr[i + 1];
-                    continue;
+
                 }
             }
         }

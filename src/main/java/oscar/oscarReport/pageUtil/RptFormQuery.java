@@ -56,7 +56,7 @@ public class RptFormQuery {
         // sql:from
         reportSql += " from ";
         String tableName = reportCreator.getFromTableFirst(reportId);
-        boolean bDemo = tableName.indexOf("demographic") >= 0 ? true : false;
+        boolean bDemo = tableName.indexOf("demographic") >= 0;
         reportSql += tableName;
 
         // get value param string
@@ -66,7 +66,7 @@ public class RptFormQuery {
 
         for (int i = 0; i < vecVarValue.size(); i++) {
             String tempVal = (String) vecVarValue.get(i);
-            bDemo = RptReportCreator.isIncludeDemo(tempVal) ? true : bDemo;
+            bDemo = RptReportCreator.isIncludeDemo(tempVal) || bDemo;
         }
 
         // sql:subquery
