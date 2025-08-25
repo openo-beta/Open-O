@@ -19,7 +19,6 @@
 	<rule ref="category/java/bestpractices.xml/UnusedFormalParameter" />
 	
 	<!-- Other important best practices -->
-	<rule ref="category/java/bestpractices.xml/AvoidReassigningParameters" />
 	<rule ref="category/java/bestpractices.xml/LooseCoupling" />
 	<rule ref="category/java/bestpractices.xml/MethodReturnsInternalArray" />
 	<rule ref="category/java/bestpractices.xml/ArrayIsStoredDirectly" />
@@ -51,7 +50,6 @@
 	<!-- ============================================ -->
 	
 	<rule ref="category/java/performance.xml/BigIntegerInstantiation" />
-	<rule ref="category/java/performance.xml/StringInstantiation" />
 	<rule ref="category/java/performance.xml/StringToString" />
 	<rule ref="category/java/performance.xml/AppendCharacterWithChar" />
 	<rule ref="category/java/performance.xml/InsufficientStringBufferDeclaration" />
