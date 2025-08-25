@@ -512,17 +512,29 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
         String[] filterRoles = request.getParameterValues("filter_roles");
         if (filterRoles != null) {
-            session.setAttribute("filter_roles", filterRoles);
+            if (filterRoles.length > 0) {
+                session.setAttribute("filter_roles", filterRoles);
+            } else {
+                session.removeAttribute("filter_roles");
+            }
         }
 
         String[] filterProviders = request.getParameterValues("filter_providers");
         if (filterProviders != null) {
-            session.setAttribute("filter_provider", filterProviders);
+            if (filterProviders.length > 0) {
+                session.setAttribute("filter_provider", filterProviders);
+            } else {
+                session.removeAttribute("filter_provider");
+            }
         }
 
         String[] issues = request.getParameterValues("issues");
         if (issues != null) {
-            session.setAttribute("issues", issues);
+            if (issues.length > 0) {
+                session.setAttribute("issues", issues);
+            } else {
+                session.removeAttribute("issues");
+            }
         }
 
         return fwd;
