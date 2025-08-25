@@ -128,11 +128,11 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/net.bull.javamelody/javamelody-core -->
-        <!-- throws a 404 error when removed/uncommented -->
+        <!-- Updated to latest javax.servlet compatible version -->
         <dependency>
             <groupId>net.bull.javamelody</groupId>
             <artifactId>javamelody-core</artifactId>
-            <version>1.95.0</version>
+            <version>1.99.3</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>

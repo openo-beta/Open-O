@@ -54,7 +54,7 @@ import org.oscarehr.PMmodule.model.Program;
  */
 @Entity
 @Table(name = "admission")
-public class Admission extends AbstractModel<Integer> implements Serializable {
+public class Admission extends AbstractModel<Long> implements Serializable {
     private static final long serialVersionUID = 1L;
     public static final String STATUS_CURRENT = "current";
     public static final String STATUS_DISCHARGED = "discharged";
@@ -96,7 +96,7 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "am_id", unique = true, nullable = false)
-    private Integer id;
+    private Long id;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "admission_date")
@@ -164,26 +164,26 @@ public class Admission extends AbstractModel<Integer> implements Serializable {
      * Constructor for primary key
      */
     public Admission(Long id) {
-        Integer intId = id.intValue();
-        this.setId(intId);
+        Long longId = id.longValue();
+        this.setId(longId);
     }
 
     /**
      * Constructor for required fields
      */
     public Admission(Long id, String providerNo, Integer clientId, Integer programId) {
-        Integer intId = id.intValue();
-        this.setId(intId);
+        Long longId = id.longValue();
+        this.setId(longId);
         this.setProviderNo(providerNo);
         this.setClientId(clientId);
         this.setProgramId(programId);
     }
 
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer amId) {
+    public void setId(Long amId) {
         this.id = amId;
     }
 
