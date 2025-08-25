@@ -96,25 +96,4 @@ public class CMLHandler implements MessageHandler {
 
     }
 
-    private boolean isDuplicate(LoggedInInfo loggedInInfo, String msg) {
-        //OLIS requirements - need to see if this is a duplicate
-        oscar.oscarLab.ca.all.parsers.MessageHandler h = Factory.getHandler("CML", msg);
-        //if final
-        if (h.getOrderStatus().equals("CM")) {
-            String acc = h.getAccessionNum();
-            //do we have this?
-            List<Hl7TextInfo> dupResults = hl7TextInfoDao.searchByAccessionNumber(acc);
-
-            if (!dupResults.isEmpty()) {
-                //if(h.getHealthNum().equals(dupResult.getHealthNumber())) {
-                OscarAuditLogger.getInstance().log(loggedInInfo, "Lab", "Skip", "Duplicate lab skipped - accession " + acc + "\n" + msg);
-                return true;
-                //}
-
-            }
-
-
-        }
-        return false;
-    }
 }

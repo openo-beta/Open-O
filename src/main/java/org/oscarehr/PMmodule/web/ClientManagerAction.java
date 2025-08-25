@@ -142,33 +142,6 @@ public class ClientManagerAction {
     }
 
 
-    private void populateCdsData(HttpServletRequest request, Integer demographicNo, Integer facilityId) {
-        List<Admission> admissions = admissionDao.getAdmissions(demographicNo);
-        List<Program> domain = null;
-
-
-        ArrayList<CdsClientForm> allLatestCdsForms = new ArrayList<CdsClientForm>();
-
-        boolean restrict = "true".equals(OscarProperties.getInstance().getProperty("caisi.cds.restrict_by_program_domain", "false"));
-        if (restrict) {
-            domain = programManager.getProgramDomain(LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo());
-        }
-
-        for (Admission admission : admissions) {
-            CdsClientForm cdsClientForm = cdsClientFormDao.findLatestByFacilityAdmissionId(facilityId, admission.getId().intValue(), null);
-            if (cdsClientForm != null) {
-                if (restrict) {
-                    if (isAdmissionInDomain(admission, domain)) {
-                        allLatestCdsForms.add(cdsClientForm);
-                    }
-                } else {
-                    allLatestCdsForms.add(cdsClientForm);
-                }
-            }
-        }
-
-        request.setAttribute("allLatestCdsForms", allLatestCdsForms);
-    }
 
     private boolean isAdmissionInDomain(Admission admission, List<Program> domain) {
         for (Program p : domain) {

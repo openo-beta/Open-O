@@ -155,40 +155,7 @@ public class MethadoneBillingBCHandler {
      *
      * @param numberSaved
      */
-    private void setNumberSaved(int numberSaved) {
-        this.numberSaved = numberSaved;
-    }
 
-    /**
-     * Class borrowed from BillingSaveBilling2Action
-     *
-     * @param bean
-     * @param billingAccountStatus
-     * @return
-     */
-    private Billing getBillingObj(BillingSessionBean bean, char billingAccountStatus) {
-
-        Billing bill = new Billing();
-
-        bill.setDemographicNo(Integer.parseInt(bean.getPatientNo()));
-        bill.setProviderNo(bean.getApptProviderNo());
-        bill.setAppointmentNo(APPOINTMENT_NO);
-        bill.setDemographicName(bean.getPatientName());
-        bill.setHin(bean.getPatientPHN());
-        bill.setUpdateDate(today);
-        bill.setBillingDate(UtilDateUtilities.StringToDate(bean.getServiceDate(), "yyyyMMdd"));
-        bill.setTotal(bean.getGrandtotal());
-        bill.setStatus("" + billingAccountStatus);
-        bill.setDob(bean.getPatientDoB());
-        bill.setVisitDate(UtilDateUtilities.StringToDate(bean.getServiceDate(), "yyyyMMdd"));
-        bill.setVisitType(bean.getVisitType());
-        bill.setProviderOhipNo(bean.getBillingPracNo());
-        bill.setApptProviderNo(bean.getApptProviderNo());
-        bill.setCreator(bean.getCreator());
-        bill.setBillingtype(bean.getBillingType());
-
-        return bill;
-    }
 
     /**
      * Again method borrowed from BillingSaveBilling2Action.
@@ -203,97 +170,6 @@ public class MethadoneBillingBCHandler {
      * @param serviceCode
      * @return
      */
-    private Billingmaster saveBill(
-            String billingid,
-            String billingAccountStatus,
-            String dataCenterId,
-            String billedAmount,
-            String paymentMode,
-            BillingSessionBean bean,
-            String billingUnit,
-            String serviceCode
-    ) {
-        Billingmaster bill = new Billingmaster();
-
-        bill.setBillingNo(Integer.parseInt(billingid));
-        bill.setCreatedate(today);
-        bill.setBillingstatus(billingAccountStatus);
-        bill.setDemographicNo(Integer.parseInt(bean.getPatientNo()));
-        bill.setAppointmentNo(Integer.parseInt(bean.getApptNo()));
-        bill.setClaimcode(CLAIM_CODE);
-        bill.setDatacenter(dataCenterId);
-        bill.setPayeeNo(bean.getBillingProvider());
-        bill.setPractitionerNo(bean.getBillingPracNo());
-        bill.setPhn(bean.getPatientPHN());
-
-        bill.setNameVerify(bean.getPatientFirstName(), bean.getPatientLastName());
-        bill.setDependentNum(bean.getDependent());
-        bill.setBillingUnit(billingUnit); //"" + billItem.getUnit());
-        bill.setClarificationCode(bean.getVisitLocation().substring(0, 2));
-
-        bill.setAnatomicalArea(ANATOMICAL_AREA);
-        bill.setAfterHour(AFTERHOUR_CODE);
-
-        bill.setNewProgram(NEW_PROGRAM);
-        bill.setBillingCode(serviceCode);//billItem.getServiceCode());
-        bill.setBillAmount(billedAmount);
-
-        bill.setPaymentMode(paymentMode);
-
-        bill.setServiceDate(convertDate8Char(bean.getServiceDate()));
-        bill.setServiceToDay(bean.getService_to_date());
-
-        bill.setSubmissionCode(bean.getSubmissionCode());
-
-        bill.setExtendedSubmissionCode(" ");
-        bill.setDxCode1(bean.getDx1());
-        bill.setDxCode2(bean.getDx2());
-        bill.setDxCode3(bean.getDx3());
-        bill.setDxExpansion(" ");
-
-        bill.setServiceLocation(BILLINGVISIT);
-        bill.setReferralFlag1(bean.getReferType1());
-        bill.setReferralNo1(bean.getReferral1());
-        bill.setReferralFlag2(bean.getReferType2());
-        bill.setReferralNo2(bean.getReferral2());
-        bill.setTimeCall(bean.getTimeCall());
-        bill.setServiceStartTime(bean.getStartTime());
-        bill.setServiceEndTime(bean.getEndTime());
-        bill.setBirthDate(convertDate8Char(bean.getPatientDoB()));
-        bill.setOfficeNumber("");
-        bill.setCorrespondenceCode(bean.getCorrespondenceCode());
-        bill.setClaimComment(bean.getShortClaimNote());
-        bill.setMvaClaimCode(bean.getMva_claim_code());
-        bill.setIcbcClaimNo(bean.getIcbc_claim_no());
-        bill.setFacilityNo(bean.getFacilityNum());
-        bill.setFacilitySubNo(bean.getFacilitySubNum());
-
-        bill.setPaymentMethod(Integer.parseInt(bean.getPaymentType()));
-
-        if (!bean.getPatientHCType().trim().equals(bean.getBillRegion().trim())) {
-
-            bill.setOinInsurerCode(bean.getPatientHCType());
-            bill.setOinRegistrationNo(bean.getPatientPHN());
-            bill.setOinBirthdate(convertDate8Char(bean.getPatientDoB()));
-            bill.setOinFirstName(bean.getPatientFirstName());
-            bill.setOinSecondName(" ");
-            bill.setOinSurname(bean.getPatientLastName());
-            bill.setOinSexCode(bean.getPatientSex());
-            bill.setOinAddress(bean.getPatientAddress1());
-            bill.setOinAddress2(bean.getPatientAddress2());
-            bill.setOinAddress3("");
-            bill.setOinAddress4("");
-            bill.setOinPostalcode(bean.getPatientPostal());
-
-            bill.setPhn("0000000000");
-            bill.setNameVerify("0000");
-            bill.setDependentNum("00");
-            bill.setBirthDate("00000000");
-
-        }
-
-        return bill;
-    }
 
 
     /**

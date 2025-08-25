@@ -4212,48 +4212,7 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
     /*
      * MSH segment for a dummy GDML record
      */
-    private static void fillMsh(MSH msh, Date dateOfMessage, String messageCode, String triggerEvent, String messageControlId, String hl7VersionId, String facility) throws DataTypeException {
-        msh.getFieldSeparator().setValue("|");
-        msh.getEncodingCharacters().setValue("^~\\&");
-        msh.getVersionID().setValue(hl7VersionId);
 
-        msh.getSendingApplication().getHd1_NamespaceID().setValue(facility);
-        msh.getSendingFacility().getNamespaceID().setValue(facility);
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(dateOfMessage);
-        msh.getDateTimeOfMessage().getTimeOfAnEvent().setDateSecondPrecision(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
-        msh.getMessageType().getMessageType().setValue(messageCode);
-        msh.getMessageType().getTriggerEvent().setValue(triggerEvent);
-        msh.getMessageControlID().setValue(messageControlId);
-        msh.getProcessingID().getProcessingID().setValue("P");
-
-    }
-
-    /*
-     * PID segment for a dummy GDML record
-     */
-    private static void fillPid(PID pid, String demographicNo, String accession) throws DataTypeException, HL7Exception {
-        DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
-        Demographic demographic = demographicDao.getDemographic(demographicNo);
-
-        pid.getSetIDPatientID().setValue("1");
-        pid.getPatientName().getFamilyName().setValue(demographic.getLastName());
-        pid.getPatientName().getGivenName().setValue(demographic.getFirstName());
-
-        Calendar dobCal = demographic.getBirthDay();
-        pid.getDateOfBirth().getTimeOfAnEvent().setDatePrecision(dobCal.get(Calendar.YEAR), dobCal.get(Calendar.MONTH) + 1, dobCal.get(Calendar.DAY_OF_MONTH));
-
-        pid.getSex().setValue(demographic.getSex());
-        pid.getPatientIDExternalID().getID().setValue(demographic.getHin());
-        XTN homePhone = pid.insertPhoneNumberHome(0);
-        homePhone.getPhoneNumber().setValue(demographic.getPhone());
-        XTN busPhone = pid.insertPhoneNumberBusiness(0);
-        busPhone.getPhoneNumber().setValue(demographic.getPhone2());
-
-        CX cx = pid.insertPatientIDInternalID(0);
-        cx.getID().setValue(accession);
-    }
 
     /*
      * Get a new array of only the results which have a matching accessing number

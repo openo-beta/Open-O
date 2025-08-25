@@ -64,17 +64,6 @@ public class SearchConfigTo1 {
         this.defaultAppointmentCount = defaultAppointmentCount;
     }
 
-    private static List<String> removeBlanks(List<String> strList) {
-        List<String> retval = new ArrayList<String>();
-        if (strList != null) {
-            for (String str : strList) {
-                if (!str.equals("")) {
-                    retval.add(str);
-                }
-            }
-        }
-        return retval;
-    }
 
     public static SearchConfigTo1 fromClinic(SearchConfig clinic) {
         SearchConfigTo1 clinicTransfer = new SearchConfigTo1();
