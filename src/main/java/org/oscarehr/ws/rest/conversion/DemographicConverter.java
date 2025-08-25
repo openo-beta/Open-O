@@ -57,7 +57,6 @@ public class DemographicConverter extends AbstractConverter<Demographic, Demogra
         d.setPatientStatusDate(t.getPatientStatusDate());
         d.setRosterStatus(t.getRosterStatus());
         d.setProviderNo(t.getProviderNo());
-//		d.setMyOscarUserName(t.getMyOscarUserName());
         d.setHin(t.getHin());
         d.setAddress(t.getAddress().getAddress());
         d.setProvince(t.getAddress().getProvince());
@@ -137,7 +136,6 @@ public class DemographicConverter extends AbstractConverter<Demographic, Demogra
         t.setPatientStatusDate(d.getPatientStatusDate());
         t.setRosterStatus(d.getRosterStatus());
         t.setProviderNo(d.getProviderNo());
-//		t.setMyOscarUserName(d.getMyOscarUserName());
         t.setHin(d.getHin());
         t.getAddress().setAddress(d.getAddress());
         t.getAddress().setProvince(d.getProvince());

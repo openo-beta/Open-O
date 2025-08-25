@@ -71,10 +71,6 @@ public class DemographicWs extends AbstractWs {
         return (DemographicTransfer2.toTransfer(demographic));
     }
 
-    public DemographicTransfer getDemographicByMyOscarUserName(String myOscarUserName) {
-        Demographic demographic = demographicManager.getDemographicByMyOscarUserName(getLoggedInInfo(), myOscarUserName);
-        return (DemographicTransfer.toTransfer(demographic));
-    }
 
     public DemographicTransfer[] searchDemographicByName(String searchString, int startIndex, int itemsToReturn) {
         List<Demographic> demographics = demographicManager.searchDemographicByName(getLoggedInInfo(), searchString, startIndex, itemsToReturn);
@@ -100,10 +96,6 @@ public class DemographicWs extends AbstractWs {
         return (results.toArray(new Integer[0]));
     }
 
-    public Integer[] getDemographicIdsWithMyOscarAccounts(@WebParam(name = "startDemographicIdExclusive") Integer startDemographicIdExclusive, @WebParam(name = "itemsToReturn") int itemsToReturn) {
-        List<Integer> results = demographicManager.getDemographicIdsWithMyOscarAccounts(getLoggedInInfo(), startDemographicIdExclusive, itemsToReturn);
-        return (results.toArray(new Integer[0]));
-    }
 
     public DemographicTransfer[] getDemographics(Integer[] demographicIds) {
         ArrayList<Integer> ids = new ArrayList<Integer>();
@@ -157,17 +149,6 @@ public class DemographicWs extends AbstractWs {
         return result.toArray(new DemographicTransfer2[0]);
     }
 
-    public String writePHRId(@WebParam(name = "demographicNo") Integer demographicNo, @WebParam(name = "phrId") String phrId) {
-
-        if (demographicNo != null && phrId != null) {
-            Demographic demo = demographicManager.getDemographic(getLoggedInInfo(), demographicNo);
-            demo.setMyOscarUserName(phrId);
-            demographicManager.updateDemographic(getLoggedInInfo(), demo);
-
-            return "success";
-        }
-        return "fail";
-    }
 
     public Integer[] getConsentedDemographicIdsAfter(@WebParam(name = "lastUpdate") Calendar lastUpdate) {
         LoggedInInfo loggedInInfo = getLoggedInInfo();

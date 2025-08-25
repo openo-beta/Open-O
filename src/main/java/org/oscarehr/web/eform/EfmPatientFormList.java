@@ -40,18 +40,4 @@ public final class EfmPatientFormList {
         // not meant to instantiate this
     }
 
-    /**
-     * MyOscar is only available if 2 conditions are met :
-     * - the given demographic must have a myoscar account i.e. demographic.pin
-     */
-    public static boolean isMyOscarAvailable(int demographicId) {
-
-        Demographic demographic = demographicDao.getDemographicById(demographicId);
-        if (demographic != null) {
-            String temp = StringUtils.trimToNull(demographic.getMyOscarUserName());
-            return (temp != null);
-        }
-
-        return (false);
-    }
 }

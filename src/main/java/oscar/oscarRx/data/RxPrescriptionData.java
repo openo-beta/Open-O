@@ -645,8 +645,6 @@ public class RxPrescriptionData {
         String outsideProviderName = null;
         String outsideProviderOhip = null;
         boolean custom = false;
-        private String indivoIdx = null; // indivo document index for this prescription
-        private boolean registerIndivo = false;
         private final String docType = "Rx";
         private boolean discontinued = false;//indicate if the rx has isDisontinued before.
         private String lastArchDate = null;
@@ -905,21 +903,6 @@ public class RxPrescriptionData {
             return this.script_no;
         }
 
-        public void setIndivoIdx(String idx) {
-            indivoIdx = idx;
-        }
-
-        public String getIndivoIdx() {
-            return indivoIdx;
-        }
-
-        public void setRegisterIndivo() {
-            registerIndivo = true;
-        }
-
-        public boolean isRegisteredIndivo() {
-            return registerIndivo;
-        }
 
         public String getGenericName() {
             return genericName;
@@ -1588,10 +1571,6 @@ public class RxPrescriptionData {
             return Save(null);
         }
 
-        public boolean registerIndivo() {
-            // Indivo functionality removed
-            return false;
-        }
 
         public boolean Print(LoggedInInfo loggedInInfo) {
             PrescriptionDao dao = SpringUtils.getBean(PrescriptionDao.class);

@@ -83,8 +83,6 @@ public final class RxDeleteRx2Action extends ActionSupport {
             return clearStash();
         } else if ("clearReRxDrugList".equals(method)) {
             return clearReRxDrugList();
-        } else if ("clearPHRMeds".equals(method)) {
-            return clearPHRMeds();
         } else if ("Discontinue".equals(method)) {
             return Discontinue();
         }
@@ -221,18 +219,6 @@ public final class RxDeleteRx2Action extends ActionSupport {
         return null;
     }
 
-    public String clearPHRMeds()
-            throws IOException {
-        checkPrivilege(request, PRIVILEGE_UPDATE);
-
-        RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
-        if (bean == null) {
-            response.sendRedirect("error.html");
-            return null;
-        }
-        //return "successClearStash";
-        return null;
-    }
 
     /**
      * The action to discontinue a drug.

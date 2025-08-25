@@ -116,7 +116,6 @@ public interface DemographicDao {
 
     public List<Integer> getDemographicNosByProvider(String providerNo, boolean onlyActive);
 
-    public Demographic getDemographicByMyOscarUserName(String myOscarUserName);
 
     public List getActiveDemographicByProgram(int programId, Date dt, Date defdt);
 
@@ -470,7 +469,6 @@ public interface DemographicDao {
     public List<DemographicSearchResult> searchPatients(LoggedInInfo loggedInInfo,
                                                         DemographicSearchRequest searchRequest, int startIndex, int itemsToReturn);
 
-    public List<Integer> getDemographicIdsWithMyOscarAccounts(Integer startDemographicIdExclusive, int itemsToReturn);
 
     public List<Integer> getMissingExtKey(String keyName);
 
