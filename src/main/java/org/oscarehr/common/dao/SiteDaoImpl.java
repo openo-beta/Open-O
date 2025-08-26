@@ -128,7 +128,10 @@ public class SiteDaoImpl extends AbstractDaoImpl<Site> implements SiteDao {
 
         List<Site> rs = new ArrayList<Site>();
         for (ProviderSite ps : pss) {
-            rs.add(find(ps.getId().getSiteId()));
+            Site site = find(ps.getId().getSiteId());
+            if (site != null) {
+                rs.add(site);
+            }
         }
 
         Iterator<Site> it = rs.iterator();

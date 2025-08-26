@@ -73,6 +73,7 @@ public class ContextStartupListener implements javax.servlet.ServletContextListe
             MiscUtils.registerShutdownHook();
 
             createOscarProgramIfNecessary();
+            createDefaultSiteIfNecessary();
 
             if (oscarProperties.getBooleanProperty("INTEGRATOR_ENABLED", "true")) {
                 CaisiIntegratorUpdateTask.startTask();
@@ -135,6 +136,34 @@ public class ContextStartupListener implements javax.servlet.ServletContextListe
         pp.setRoleId(secRoleDao.getRoleByName("doctor").getId());
         programProviderDao.saveProgramProvider(pp);
 
+    }
+
+    private void createDefaultSiteIfNecessary() {
+        org.oscarehr.common.dao.SiteDao siteDao = SpringUtils.getBean(org.oscarehr.common.dao.SiteDao.class);
+        org.oscarehr.common.dao.ProviderSiteDao providerSiteDao = SpringUtils.getBean(org.oscarehr.common.dao.ProviderSiteDao.class);
+        
+        java.util.List<org.oscarehr.common.model.Site> sites = siteDao.getAllSites();
+        if (!sites.isEmpty()) {
+            return;
+        }
+        
+        // Create default site
+        org.oscarehr.common.model.Site defaultSite = new org.oscarehr.common.model.Site();
+        defaultSite.setName("Main Clinic");
+        defaultSite.setShortName("MAIN");
+        defaultSite.setBgColor("white");
+        defaultSite.setStatus((byte)1);
+        siteDao.persist(defaultSite);
+        
+        // Link default provider (999998) to the site
+        org.oscarehr.common.model.ProviderSite ps = new org.oscarehr.common.model.ProviderSite();
+        org.oscarehr.common.model.ProviderSitePK psId = new org.oscarehr.common.model.ProviderSitePK();
+        psId.setProviderNo("999998");
+        psId.setSiteId(defaultSite.getSiteId());
+        ps.setId(psId);
+        providerSiteDao.persist(ps);
+        
+        logger.info("Created default site: " + defaultSite.getName() + " (ID: " + defaultSite.getSiteId() + ")");
     }
 
     @Override
