@@ -431,27 +431,6 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
         return results;
     }
 
-    @Override
-    public List getShelterIds(String provider_no) {
-
-        String sql = "select distinct c.id as shelter_id from lst_shelter c, lst_orgcd a, secUserRole b " +
-        "where instr('RO',substr(b.orgcd,1,1)) = 0 and a.codecsv like '%' || b.orgcd || ',%'" +
-        " and b.provider_no=?1 and a.codecsv like '%S' || c.id  || ',%'";
-        Session session = currentSession();
-
-        Query query = session.createSQLQuery(sql);
-        ((SQLQuery) query).addScalar("shelter_id", StandardBasicTypes.INTEGER);
-        query.setParameter(1, provider_no);
-        List lst = new ArrayList();
-        try {
-            lst = query.list();
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
-        }
-        return lst;
-
-    }
 
     @Override
     public void addProviderToFacility(String provider_no, int facilityId) {

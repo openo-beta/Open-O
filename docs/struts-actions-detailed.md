@@ -1001,7 +1001,6 @@ Shelter selection functionality.
 
 | Action Name | Class Name | Description |
 |-------------|------------|-------------|
-| shelterSelection | oscar.login.ShelterSelection2Action | Selects shelter for login |
 
 ## SSO Module
 

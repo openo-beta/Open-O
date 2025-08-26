@@ -514,10 +514,6 @@ public final class Login2Action extends ActionSupport {
                 where = "programLocation";
             }
 
-            String quatroShelter = OscarProperties.getInstance().getProperty("QUATRO_SHELTER");
-            if (quatroShelter != null && quatroShelter.equals("on")) {
-                where = "shelterSelection";
-            }
 
             /*
              * if (OscarProperties.getInstance().isTorontoRFQ()) { where = "caisiPMM"; }

@@ -117,7 +117,6 @@ public interface ProviderDao {
 
     public List<Provider> getProvidersByTypePattern(String typePattern);
 
-    public List getShelterIds(String provider_no);
 
     public void addProviderToFacility(String provider_no, int facilityId);
 

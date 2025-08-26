@@ -106,7 +106,6 @@
             <result name="failure">/logout.jsp</result>
             <result name="error">/loginfailed.jsp</result>
             <result name="caisiPMM">/PMmodule/ProviderInfo.do</result>
-            <result name="shelterSelection">/shelterSelection.do</result>
             <result name="forcepasswordreset">/forcepasswordreset.jsp</result>
             <result name="programLocation">/location.jsp</result>
             <result name="ssoLogin">/ssoLogin.do</result>
@@ -119,7 +118,6 @@
             <result name="ssoLoginError">/index.jsp</result>
             <result name="error">/loginfailed.jsp</result>
             <result name="caisiPMM">/PMmodule/ProviderInfo.do</result>
-            <result name="shelterSelection">/shelterSelection.do</result>
             <result name="LoginTest">/login/LoginTest.jsp</result>
             <result name="programLocation">/location.jsp</result>
             <result name="logout">/logout.jsp</result>
@@ -130,11 +128,6 @@
             <result name="ssoLoginError">/index.jsp</result>
         </action>
         <action name="login/recordLogin" class="oscar.login.LoginAgreement2Action"/>
-        <action name="shelterSelection" class="oscar.login.ShelterSelection2Action">
-            <result name="shelterSelection">page.pmm.shelterSelection</result>
-            <result name="home">/Home.do</result>
-            <result name="login">/index.jsp</result>
-        </action>
         <action name="oscarMessenger/ImportDemographic" class="oscar.oscarMessenger.pageUtil.ImportDemographic2Action">
             <result name="success">/oscarMessenger/ViewMessage.do</result>
         </action>

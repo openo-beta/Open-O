@@ -24,8 +24,6 @@ package com.quatro.common;
 
 public class KeyConstants {
     public static final String SYSTEM_USER_PROVIDER_NO = "1111";
-    public static final String SESSION_KEY_SHELTERID = "currentShelterId";
-    public static final String SESSION_KEY_SHELTER = "currentShelter";
     public static final String SESSION_KEY_PROVIDERNO = "user";
     public static final String SESSION_KEY_PROVIDERNAME = "username";
     public static final String SESSION_KEY_SECURITY_MANAGER = "secMgr";
@@ -45,12 +43,9 @@ public class KeyConstants {
     public static final String SESSION_KEY_CURRENT_MODULE = "curModule";
     public static final String SESSION_KEY_CURRENT_RECORD = "curRec";
     public static final Integer MODULE_ID_CLIENT = Integer.valueOf(1);
-    public static final Integer MODULE_ID_SHELTER = Integer.valueOf(2);
     public static final Integer MODULE_ID_CASE = Integer.valueOf(3);
     public static final Integer MODULE_ID_SYSTEM = Integer.valueOf(4);
     public static final Integer MODULE_ID_REPORT = Integer.valueOf(5);
-    public static final Integer MODULE_ID_INTAKE = Integer.valueOf(6);
-    public static final Integer MODULE_ID_AGENCY = Integer.valueOf(7);
 
     public static final String PROGRAM_TYPE_Service = "Service";
     public static final String PROGRAM_TYPE_External = "external";
