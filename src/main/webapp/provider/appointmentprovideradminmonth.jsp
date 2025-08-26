@@ -303,7 +303,7 @@
 %>
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.oscarehr.common.model.Site" %>
-<%@page import="oscar.appt.ApptUtil" %>
+<%@page import="ca.openosp.openo.appt.ApptUtil" %>
 
     <body bgcolor="#EEEEFF" onLoad="refreshAllTabAlerts();">
 

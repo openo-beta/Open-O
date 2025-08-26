@@ -38,7 +38,7 @@ import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.oscarehr.common.model.OscarLog;
 import org.oscarehr.util.LoggedInInfo;
 
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 
 public class AuthenticationInInterceptor extends AbstractPhaseInterceptor<Message> {
 

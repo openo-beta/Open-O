@@ -2,7 +2,7 @@
 package org.oscarehr.documentManager.actions;
 
 import net.sf.json.JSONObject;
-import oscar.eform.EFormUtil;
+import ca.openosp.openo.eform.EFormUtil;
 import oscar.oscarEncounter.data.EctFormData;
 
 import org.apache.logging.log4j.Logger;

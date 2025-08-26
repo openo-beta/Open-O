@@ -39,7 +39,7 @@ import org.springframework.stereotype.Component;
 
 import com.github.scribejava.core.model.Verb;
 
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 
 /**
  * REST helpers that perform OAuth1-protected calls and audit them.

@@ -35,11 +35,10 @@ import org.oscarehr.PMmodule.utility.RoleCache;
 import org.oscarehr.common.jobs.OscarJobUtils;
 import org.oscarehr.hospitalReportManager.HRMFixMissingReportHelper;
 import org.oscarehr.integration.mcedt.mailbox.CidPrefixResourceResolver;
-import org.oscarehr.threads.WaitListEmailThread;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
 
-import ca.openosp.quatro.dao.security.SecroleDao;
+import ca.openosp.openo.dao.security.SecroleDao;
 import oscar.OscarProperties;
 
 public class ContextStartupListener implements javax.servlet.ServletContextListener {
@@ -74,6 +73,7 @@ public class ContextStartupListener implements javax.servlet.ServletContextListe
             MiscUtils.registerShutdownHook();
 
             createOscarProgramIfNecessary();
+            createDefaultSiteIfNecessary();
 
             if (oscarProperties.getBooleanProperty("INTEGRATOR_ENABLED", "true")) {
                 CaisiIntegratorUpdateTask.startTask();
@@ -81,7 +81,6 @@ public class ContextStartupListener implements javax.servlet.ServletContextListe
 
             OscarJobUtils.initializeJobExecutionFramework();
 
-            WaitListEmailThread.startTaskIfEnabled();
 
             if (oscarProperties.isPropertyActive("encrypted_xml.remove_cid_prefix")) {
                 ResourceResolver.register(new CidPrefixResourceResolver(), true);
@@ -139,11 +138,38 @@ public class ContextStartupListener implements javax.servlet.ServletContextListe
 
     }
 
+    private void createDefaultSiteIfNecessary() {
+        org.oscarehr.common.dao.SiteDao siteDao = SpringUtils.getBean(org.oscarehr.common.dao.SiteDao.class);
+        org.oscarehr.common.dao.ProviderSiteDao providerSiteDao = SpringUtils.getBean(org.oscarehr.common.dao.ProviderSiteDao.class);
+        
+        java.util.List<org.oscarehr.common.model.Site> sites = siteDao.getAllSites();
+        if (!sites.isEmpty()) {
+            return;
+        }
+        
+        // Create default site
+        org.oscarehr.common.model.Site defaultSite = new org.oscarehr.common.model.Site();
+        defaultSite.setName("Main Clinic");
+        defaultSite.setShortName("MAIN");
+        defaultSite.setBgColor("white");
+        defaultSite.setStatus((byte)1);
+        siteDao.persist(defaultSite);
+        
+        // Link default provider (999998) to the site
+        org.oscarehr.common.model.ProviderSite ps = new org.oscarehr.common.model.ProviderSite();
+        org.oscarehr.common.model.ProviderSitePK psId = new org.oscarehr.common.model.ProviderSitePK();
+        psId.setProviderNo("999998");
+        psId.setSiteId(defaultSite.getSiteId());
+        ps.setId(psId);
+        providerSiteDao.persist(ps);
+        
+        logger.info("Created default site: " + defaultSite.getName() + " (ID: " + defaultSite.getSiteId() + ")");
+    }
+
     @Override
     public void contextDestroyed(javax.servlet.ServletContextEvent sce) {
         logger.info("Server processes stopping. context=" + sce.getServletContext().getContextPath());
 
-        WaitListEmailThread.stopTask();
         CaisiIntegratorUpdateTask.stopTask();
 
         try {

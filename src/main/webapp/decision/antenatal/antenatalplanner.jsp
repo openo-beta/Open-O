@@ -34,8 +34,8 @@
 %>
 <%@ page import="java.util.*, java.sql.*, oscar.*, java.text.*, java.lang.*,java.net.*,java.io.*" %>
 <jsp:useBean id="riskDataBean" class="java.util.Properties" scope="page"/>
-<jsp:useBean id="risks" class="oscar.decision.DesAntenatalPlannerRisks_99_12" scope="page"/>
-<jsp:useBean id="checklist" class="oscar.decision.DesAntenatalPlannerChecklist_99_12" scope="page"/>
+<jsp:useBean id="risks" class="ca.openosp.openo.decision.DesAntenatalPlannerRisks_99_12" scope="page"/>
+<jsp:useBean id="checklist" class="ca.openosp.openo.decision.DesAntenatalPlannerChecklist_99_12" scope="page"/>
 <%@ include file="../../admin/dbconnection.jsp" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Desaprisk" %>

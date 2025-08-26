@@ -29,6 +29,7 @@
 <%@ page
         import="oscar.appt.*"
         errorPage="/errorpage.jsp" %>
+<%@ page import="ca.openosp.openo.appt.ApptUtil" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

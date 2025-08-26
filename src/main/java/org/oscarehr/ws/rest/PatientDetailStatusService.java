@@ -46,7 +46,6 @@ import org.oscarehr.ws.rest.to.model.PatientDetailStatusTo1;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import oscar.OscarProperties;
-import oscar.oscarDemographic.data.DemographicData;
 
 
 @Path("/patientDetailStatusService")

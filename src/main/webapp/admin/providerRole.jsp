@@ -37,8 +37,8 @@
 <%@ page import="org.oscarehr.PMmodule.dao.ProgramProviderDAO" %>
 <%@ page import="org.oscarehr.common.model.SecRole" %>
 <%@ page import="org.oscarehr.common.dao.SecRoleDao" %>
-<%@ page import="ca.openosp.quatro.model.security.Secuserrole" %>
-<%@ page import="ca.openosp.quatro.dao.security.SecuserroleDao" %>
+<%@ page import="ca.openosp.openo.model.security.Secuserrole" %>
+<%@ page import="ca.openosp.openo.dao.security.SecuserroleDao" %>
 <%@ page import="org.oscarehr.common.model.RecycleBin" %>
 <%@ page import="org.oscarehr.common.model.ProviderData" %>
 <%@ page import="org.oscarehr.common.dao.RecycleBinDao" %>
@@ -47,6 +47,8 @@
 <%@ page import="org.springframework.web.context.WebApplicationContext" %>
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@ page import="org.oscarehr.PMmodule.service.ProgramProviderService" %>
+<%@ page import="ca.openosp.openo.log.LogAction" %>
+<%@ page import="ca.openosp.openo.log.LogConst" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     ProgramDao programDao = SpringUtils.getBean(ProgramDao.class);

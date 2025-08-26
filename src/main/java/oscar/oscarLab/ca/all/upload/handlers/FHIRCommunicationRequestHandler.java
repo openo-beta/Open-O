@@ -57,8 +57,8 @@ import org.oscarehr.util.SpringUtils;
 
 import org.oscarehr.documentManager.EDoc;
 import org.oscarehr.documentManager.EDocUtil;
-import oscar.log.LogAction;
-import oscar.log.LogConst;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.log.LogConst;
 import oscar.oscarLab.ca.all.util.Utilities;
 
 public class FHIRCommunicationRequestHandler implements MessageHandler {

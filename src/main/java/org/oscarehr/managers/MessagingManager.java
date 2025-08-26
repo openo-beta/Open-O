@@ -28,40 +28,16 @@
 package org.oscarehr.managers;
 
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import org.oscarehr.common.dao.MessageListDao;
-import org.oscarehr.common.dao.MessageTblDao;
-import org.oscarehr.common.dao.OscarCommLocationsDao;
-import org.oscarehr.common.dao.UserPropertyDAO;
-import org.oscarehr.common.dao.ProviderDataDao;
-import org.oscarehr.common.model.ProviderData;
 import org.oscarehr.common.model.MessageList;
 import org.oscarehr.common.model.MessageTbl;
-import org.oscarehr.common.model.MsgDemoMap;
-import org.oscarehr.common.model.OscarCommLocations;
 
-import org.oscarehr.common.model.UserProperty;
 import org.oscarehr.util.LoggedInInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import org.oscarehr.util.SpringUtils;
-
-import oscar.log.LogAction;
 import oscar.oscarMessenger.data.ContactIdentifier;
 import oscar.oscarMessenger.data.MessengerSystemMessage;
 import oscar.oscarMessenger.data.MsgDisplayMessage;
-import oscar.oscarMessenger.data.MsgMessageData;
-import oscar.oscarMessenger.data.MsgProviderData;
 
 
 public interface MessagingManager {

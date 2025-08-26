@@ -71,6 +71,7 @@
 
 <%@taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.log.LogAction" %>
 <%!
     java.util.Properties oscarVariables = oscar.OscarProperties.getInstance();
 

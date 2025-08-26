@@ -227,7 +227,7 @@
 
 %>
 <%@page import="org.oscarehr.common.model.Site" %>
-<%@page import="oscar.appt.ApptUtil" %>
+<%@page import="ca.openosp.openo.appt.ApptUtil" %>
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <html>

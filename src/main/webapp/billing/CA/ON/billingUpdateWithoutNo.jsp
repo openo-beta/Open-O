@@ -37,6 +37,8 @@
 <%@page import="org.oscarehr.common.dao.AppointmentArchiveDao" %>
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
 <%@page import="org.oscarehr.common.model.Appointment" %>
+<%@ page import="ca.openosp.openo.appt.ApptStatusData" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.on.pageUtil.BillingCorrectionPrep" %>
 
 <%
     BillingDao billingDao = SpringUtils.getBean(BillingDao.class);
@@ -117,7 +119,7 @@
 
 
         if (rowsAffected == 1) {
-            oscar.appt.ApptStatusData as = new oscar.appt.ApptStatusData();
+            ApptStatusData as = new ApptStatusData();
             String unbillStatus = as.unbillStatus(request.getParameter("status"));
             Appointment appt = appointmentDao.find(Integer.parseInt(request.getParameter("appointment_no")));
             appointmentArchiveDao.archiveAppointment(appt);

@@ -65,7 +65,7 @@
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
-<%@ page import="oscar.oscarDemographic.data.DemographicMerged" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicMerged" %>
 <%@page import="org.oscarehr.common.dao.OscarLogDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>

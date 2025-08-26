@@ -27,7 +27,6 @@
 
 package org.oscarehr.casemgmt.dao;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +42,7 @@ import org.oscarehr.util.MiscUtils;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
-import ca.openosp.quatro.model.security.Secrole;
+import ca.openosp.openo.model.security.Secrole;
 
 public class IssueDAOImpl extends HibernateDaoSupport implements IssueDAO {
     private static Logger logger = MiscUtils.getLogger();

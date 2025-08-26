@@ -25,7 +25,7 @@
 --%>
 
 <%@ page import="oscar.oscarResearch.oscarDxResearch.util.dxResearchCodingSystem" %>
-<%@ page import="ca.openosp.quatro.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.service.security.SecurityManager" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>

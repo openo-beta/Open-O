@@ -37,8 +37,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.oscarehr.util.MiscUtils;
 
-import oscar.log.LogAction;
-import oscar.log.LogConst;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.log.LogConst;
 
 /**
  * Upload 'trace', process it,

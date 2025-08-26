@@ -27,8 +27,9 @@
 
 package org.oscarehr.casemgmt.service;
 
-import ca.openosp.quatro.model.security.Secrole;
-import ca.openosp.quatro.service.security.RolesManager;
+import ca.openosp.openo.appt.ApptStatusData;
+import ca.openosp.openo.model.security.Secrole;
+import ca.openosp.openo.service.security.RolesManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
@@ -57,8 +58,8 @@ import org.oscarehr.util.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import oscar.OscarProperties;
-import oscar.log.LogAction;
-import oscar.log.LogConst;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.log.LogConst;
 import oscar.util.ConversionUtils;
 import oscar.util.DateUtils;
 import oscar.util.LabelValueBean;
@@ -2370,7 +2371,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
     // Move this out of here.
     private String updateApptStatus(String status, String type) {
-        oscar.appt.ApptStatusData as = new oscar.appt.ApptStatusData();
+        ApptStatusData as = new ApptStatusData();
         as.setApptStatus(status);
 
         if (type.equalsIgnoreCase("sign"))

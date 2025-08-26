@@ -115,7 +115,7 @@
 </security:oscarSec>
 
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
-<jsp:useBean id="as" class="oscar.appt.ApptStatusData"/>
+<jsp:useBean id="as" class="ca.openosp.openo.appt.ApptStatusData"/>
 <jsp:useBean id="dateTimeCodeBean" class="java.util.HashMap"/>
 
 <c:set var="rand"><%= java.lang.Math.round(java.lang.Math.random() * 2345) %>
@@ -221,7 +221,6 @@
         }
         session.setAttribute("infirmaryView_OscarQue", reqstr);
     %>
-    <c:import url="/infirm.do?action=showProgram"/>
 </caisi:isModuleLoad>
 
 <%
@@ -1304,11 +1303,6 @@
                                         %>
                                     </caisi:isModuleLoad>
 
-                                    <caisi:isModuleLoad moduleName="oscarClinic">
-                                        <%
-                                            session.setAttribute("infirmaryView_isOscar", "true");
-                                        %>
-                                    </caisi:isModuleLoad>
                                     <!-- caisi infirmary view extension add end ffffffffffffff-->
 
 

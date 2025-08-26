@@ -28,7 +28,7 @@
 package org.oscarehr.common.dao;
 
 import org.oscarehr.util.MiscUtils;
-import oscar.login.DBHelp;
+import ca.openosp.openo.login.DBHelp;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

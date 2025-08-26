@@ -49,6 +49,8 @@
 <%@page import="org.oscarehr.common.model.Appointment" %>
 <%@page import="oscar.util.ConversionUtils" %>
 <%@page import="oscar.util.UtilDateUtilities" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicMerged" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
 <%
     OscarAppointmentDao appointmentDao = (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class);
 

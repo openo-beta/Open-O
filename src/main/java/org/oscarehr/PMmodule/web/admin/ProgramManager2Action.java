@@ -89,9 +89,9 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 import org.springframework.beans.factory.annotation.Required;
 
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 
-import ca.openosp.quatro.service.security.RolesManager;
+import ca.openosp.openo.service.security.RolesManager;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

@@ -28,7 +28,7 @@ package oscar.oscarEncounter.pageUtil;
 
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
-import oscar.eform.EFormUtil;
+import ca.openosp.openo.eform.EFormUtil;
 import oscar.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;

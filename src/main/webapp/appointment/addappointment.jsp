@@ -53,9 +53,9 @@ Ontario, Canada
 <%@ page import="java.util.*, java.lang.*, oscar.appt.*" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@ page import="oscar.appt.status.service.AppointmentStatusMgr" %>
-<%@ page import="oscar.appt.status.service.impl.AppointmentStatusMgrImpl" %>
-<%@ page import="oscar.oscarBilling.ca.bc.decisionSupport.BillingGuidelines" %>
+<%@ page import="ca.openosp.openo.appt.status.service.AppointmentStatusMgr" %>
+<%@ page import="ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImpl" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.decisionSupport.BillingGuidelines" %>
 <%@ page import="oscar.oscarEncounter.data.EctFormData" %>
 <%@ page import="oscar.util.ConversionUtils" %>
 <%@ page import="oscar.OscarProperties" %>
@@ -93,6 +93,9 @@ Ontario, Canada
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.appt.JdbcApptImpl" %>
+<%@ page import="ca.openosp.openo.appt.ApptUtil" %>
+<%@ page import="ca.openosp.openo.appt.ApptData" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

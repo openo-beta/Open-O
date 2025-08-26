@@ -70,6 +70,9 @@
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page import="org.oscarehr.common.model.ConsentType" %>
 <%@page import="oscar.OscarProperties" %>
+<%@ page import="ca.openosp.openo.log.LogAction" %>
+<%@ page import="ca.openosp.openo.log.LogConst" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicNameAgeString" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -350,7 +353,7 @@
             demographicDao.save(demographic);
 
             try {
-                oscar.oscarDemographic.data.DemographicNameAgeString.resetDemographic(request.getParameter("demographic_no"));
+                DemographicNameAgeString.resetDemographic(request.getParameter("demographic_no"));
             } catch (Exception nameAgeEx) {
                 MiscUtils.getLogger().error("ERROR RESETTING NAME AGE", nameAgeEx);
             }

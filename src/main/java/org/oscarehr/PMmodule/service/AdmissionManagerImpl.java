@@ -54,7 +54,7 @@ import org.oscarehr.util.SpringUtils;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 
 @Transactional
 public class AdmissionManagerImpl implements AdmissionManager {

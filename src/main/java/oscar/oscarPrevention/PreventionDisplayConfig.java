@@ -51,7 +51,7 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 import oscar.OscarProperties;
-import oscar.oscarDemographic.data.DemographicData;
+import ca.openosp.openo.oscarDemographic.data.DemographicData;
 
 public class PreventionDisplayConfig {
     private static Logger log = MiscUtils.getLogger();

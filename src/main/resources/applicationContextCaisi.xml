@@ -39,16 +39,12 @@
 	</bean>
 
 	<!-- DAO -->
-	<bean id="healthSafetyDao" class="org.oscarehr.PMmodule.dao.HealthSafetyDaoImpl" autowire="byName" />
 	<bean id="formsDAO" class="org.oscarehr.PMmodule.dao.FormsDAOImpl" autowire="byName" />
 	<bean id="populationReportDao" class="org.oscarehr.common.dao.PopulationReportDaoImpl" autowire="byName" />
 
 
 	<!-- managers  -->
-	<bean id="issueAdminManager" class="ca.openosp.service.IssueAdminManager" autowire="byName" />
-	<bean id="healthSafetyManager" class="org.oscarehr.PMmodule.service.HealthSafetyManagerImpl">
-		<property name="healthSafetyDao" ref="healthSafetyDao" />
-	</bean>
+	<bean id="issueAdminManager" class="ca.openosp.openo.service.IssueAdminManager" autowire="byName" />
 
 	<bean id="oscarSecurityManager" class="org.oscarehr.PMmodule.service.impl.OscarSecurityManagerImpl" autowire="byName" />
 	<bean id="formsManagerCaisi" class="org.oscarehr.PMmodule.service.impl.FormsManagerImpl" autowire="byName" />

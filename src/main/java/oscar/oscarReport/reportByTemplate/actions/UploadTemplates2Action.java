@@ -36,7 +36,7 @@
 package oscar.oscarReport.reportByTemplate.actions;
 
 
-import ca.openosp.quatro.service.security.SecurityManager;
+import ca.openosp.openo.service.security.SecurityManager;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 import org.oscarehr.util.LoggedInInfo;

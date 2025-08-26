@@ -28,7 +28,7 @@ import java.util.List;
 
 import org.oscarehr.common.model.Provider;
 
-import ca.openosp.quatro.model.security.Secrole;
+import ca.openosp.openo.model.security.Secrole;
 
 /**
  * This is the object class that relates to the program_provider table.

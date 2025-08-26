@@ -27,30 +27,12 @@
  */
 package org.oscarehr.managers;
 
-import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicDrug;
-import org.oscarehr.common.dao.DrugDao;
-import org.oscarehr.common.dao.PrescriptionDao;
-import org.oscarehr.common.exception.AccessDeniedException;
-import org.oscarehr.common.model.ConsentType;
 import org.oscarehr.common.model.Drug;
 import org.oscarehr.common.model.Prescription;
 import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import oscar.log.LogAction;
-import oscar.oscarProvider.data.ProSignatureData;
-import oscar.oscarRx.data.RxPatientData;
-import oscar.oscarRx.data.RxProviderData;
-import oscar.util.DateUtils;
 
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Calendar;
 
 public interface PrescriptionManager {

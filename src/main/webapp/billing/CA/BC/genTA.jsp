@@ -59,6 +59,7 @@
 <%@ page import="org.oscarehr.billing.CA.BC.dao.TeleplanS22Dao" %>
 <%@ page import="org.oscarehr.billing.CA.BC.model.TeleplanC12" %>
 <%@ page import="org.oscarehr.billing.CA.BC.dao.TeleplanC12Dao" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.MSP.MSPReconcile" %>
 <%
     TeleplanS21Dao teleplanS21Dao = SpringUtils.getBean(TeleplanS21Dao.class);
     TeleplanS00Dao teleplanS00Dao = SpringUtils.getBean(TeleplanS00Dao.class);

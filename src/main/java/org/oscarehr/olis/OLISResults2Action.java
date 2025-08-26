@@ -33,13 +33,13 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import ca.openosp.olis.Driver;
-import ca.openosp.olis.queries.Query;
-import ca.openosp.olis.queries.QueryType;
-import ca.openosp.olis.queries.Z01Query;
+import ca.openosp.openo.olis.Driver;
+import ca.openosp.openo.olis.queries.Query;
+import ca.openosp.openo.olis.queries.QueryType;
+import ca.openosp.openo.olis.queries.Z01Query;
 
 import oscar.OscarProperties;
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 import oscar.oscarLab.ca.all.parsers.Factory;
 import oscar.oscarLab.ca.all.parsers.MessageHandler;
 import oscar.oscarLab.ca.all.parsers.OLISHL7Handler;

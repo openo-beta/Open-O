@@ -34,7 +34,7 @@
 <%@page import="org.oscarehr.common.model.PharmacyInfo" %>
 <%@page import="org.oscarehr.util.WebUtils" %>
 <%@page import="org.oscarehr.util.LocaleUtils" %>
-<%@page import="oscar.oscarRx.data.*,oscar.oscarDemographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
+<%@page import="oscar.oscarRx.data.*,ca.openosp.openo.oscarDemographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
 <%@page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
 <%@page import="java.text.SimpleDateFormat" %>
 <%@page import="java.util.*" %>
@@ -51,7 +51,7 @@
 <%@page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
 <%@page import="org.oscarehr.casemgmt.model.CaseManagementNote" %>
 <%@page import="org.oscarehr.casemgmt.model.Issue" %>
-<%@ page import="ca.openosp.quatro.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.service.security.SecurityManager" %>
 
 <%
     oscar.oscarRx.pageUtil.RxSessionBean bean = null;

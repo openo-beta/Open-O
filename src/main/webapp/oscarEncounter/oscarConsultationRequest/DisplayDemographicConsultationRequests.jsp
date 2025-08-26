@@ -47,18 +47,19 @@
 <%@page
         import="oscar.oscarEncounter.pageUtil.*,oscar.oscarEncounter.data.*" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
 
 <%
     String demo = request.getParameter("de");
     String proNo = (String) session.getAttribute("user");
-    oscar.oscarDemographic.data.DemographicData demoData = null;
+    DemographicData demoData = null;
     org.oscarehr.common.model.Demographic demographic = null;
 
     oscar.oscarProvider.data.ProviderData pdata = new oscar.oscarProvider.data.ProviderData(proNo);
     String team = pdata.getTeam();
 
     if (demo != null) {
-        demoData = new oscar.oscarDemographic.data.DemographicData();
+        demoData = new DemographicData();
         demographic = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demo);
     } else
         response.sendRedirect("../error.jsp");

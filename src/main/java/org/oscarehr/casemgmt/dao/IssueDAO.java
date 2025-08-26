@@ -27,13 +27,11 @@
 
 package org.oscarehr.casemgmt.dao;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.oscarehr.casemgmt.model.Issue;
 
-import ca.openosp.quatro.model.security.Secrole;
+import ca.openosp.openo.model.security.Secrole;
 
 public interface IssueDAO {
 

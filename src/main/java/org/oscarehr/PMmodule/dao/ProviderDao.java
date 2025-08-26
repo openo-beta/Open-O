@@ -27,17 +27,14 @@
 
 package org.oscarehr.PMmodule.dao;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.util.LoggedInInfo;
 
-import ca.openosp.quatro.model.security.SecProvider;
+import ca.openosp.openo.model.security.SecProvider;
 
 @SuppressWarnings("unchecked")
 public interface ProviderDao {

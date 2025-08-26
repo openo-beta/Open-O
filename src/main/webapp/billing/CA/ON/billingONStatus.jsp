@@ -32,6 +32,8 @@
 <%@page import="oscar.oscarBilling.ca.on.data.*" %>
 <%@page import="oscar.oscarBilling.ca.on.pageUtil.*" %>
 <%@page import="oscar.util.*" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.*" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.on.pageUtil.BillingStatusPrep" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%--
     The taglib directive below imports the JSTL library. If you uncomment it,

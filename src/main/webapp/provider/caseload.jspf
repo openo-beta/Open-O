@@ -21,11 +21,11 @@
 <%@ page import="org.oscarehr.util.LocaleUtils" %>
 <%@ page import="java.util.Locale" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.web.Infirm2Action" %>
+<%@ page import="ca.openosp.openo.web.Infirm2Action" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session" />
-<jsp:useBean id="as" class="oscar.appt.ApptStatusData" />
+<jsp:useBean id="as" class="ca.openosp.openo.appt.ApptStatusData" />
 <jsp:useBean id="dateTimeCodeBean" class="java.util.HashMap" />
 <%
 
@@ -365,24 +365,7 @@ function draw(json) {
 }
 
 function change_program_lists(){
-	var url="<%=request.getContextPath()%>/infirm.do?action=getProgramList";
-	//var params = "{providerNo:'"+escape(document.getElementById("caseloadProv").value)+"',facilityId:'<%=facilityId %>'}"
-	var params="providerNo="+escape(document.getElementById("caseloadProv").value)+"&facilityId=<%=facilityId %>";
-	jQuery.ajax({
-		type: 'post',
-		data: params,
-		url: url,
-		async: false,
-		success: function(data){
-			jQuery("#program").empty();
-			jQuery("#program").html(data);
-			jQuery("#program").val("all");
-		},
-		error: function(data){
-			alert(data);
-		}
-	}
-	);
+	// Function disabled - infirm.do action no longer exists
 }
 
 jQuery(document).ready(function(){

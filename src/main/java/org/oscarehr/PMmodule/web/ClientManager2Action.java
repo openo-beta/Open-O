@@ -60,7 +60,6 @@ import org.oscarehr.PMmodule.exception.ClientAlreadyRestrictedException;
 import org.oscarehr.PMmodule.exception.ProgramFullException;
 import org.oscarehr.PMmodule.exception.ServiceRestrictionException;
 import org.oscarehr.PMmodule.model.ClientReferral;
-import org.oscarehr.PMmodule.model.HealthSafety;
 import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.PMmodule.model.ProgramClientRestriction;
 import org.oscarehr.PMmodule.model.ProgramProvider;
@@ -68,7 +67,6 @@ import org.oscarehr.PMmodule.model.Vacancy;
 import org.oscarehr.PMmodule.service.AdmissionManager;
 import org.oscarehr.PMmodule.service.ClientManager;
 import org.oscarehr.PMmodule.service.ClientRestrictionManager;
-import org.oscarehr.PMmodule.service.HealthSafetyManager;
 import org.oscarehr.PMmodule.service.ProgramManager;
 import org.oscarehr.PMmodule.service.ProgramQueueManager;
 import org.oscarehr.PMmodule.service.ProviderManager;
@@ -98,10 +96,10 @@ import org.oscarehr.util.WebUtils;
 import org.springframework.beans.factory.annotation.Required;
 
 import oscar.OscarProperties;
-import oscar.log.LogAction;
-import oscar.oscarDemographic.data.DemographicRelationship;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.oscarDemographic.data.DemographicRelationship;
 
-import ca.openosp.quatro.service.LookupManager;
+import ca.openosp.openo.service.LookupManager;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -113,7 +111,6 @@ public class ClientManager2Action extends ActionSupport {
 
     private static final Logger logger = MiscUtils.getLogger();
 
-    private HealthSafetyManager healthSafetyManager = SpringUtils.getBean(HealthSafetyManager.class);
     private ClientRestrictionManager clientRestrictionManager = SpringUtils.getBean(ClientRestrictionManager.class);
     private LookupManager lookupManager = SpringUtils.getBean(LookupManager.class);
     private CaseManagementManager caseManagementManager = SpringUtils.getBean(CaseManagementManager.class);
@@ -1026,8 +1023,6 @@ public class ClientManager2Action extends ActionSupport {
             // Intake functionality removed
             request.setAttribute("mostRecentQuickIntake", null);
 
-            HealthSafety healthsafety = healthSafetyManager.getHealthSafetyByDemographic(Long.valueOf(demographicNo));
-            request.setAttribute("healthsafety", healthsafety);
 
             request.setAttribute("referrals", getReferralsForSummary(loggedInInfo, Integer.parseInt(demographicNo), facilityId));
 
@@ -1401,9 +1396,6 @@ public class ClientManager2Action extends ActionSupport {
         this.clientRestrictionManager = clientRestrictionManager;
     }
 
-    public void setHealthSafetyManager(HealthSafetyManager healthSafetyManager) {
-        this.healthSafetyManager = healthSafetyManager;
-    }
 
     public void setLookupManager(LookupManager lookupManager) {
         this.lookupManager = lookupManager;

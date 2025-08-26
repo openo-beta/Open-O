@@ -12,7 +12,7 @@ import org.oscarehr.common.model.Clinic;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.login.DBHelp;
+import ca.openosp.openo.login.DBHelp;
 import oscar.oscarDB.DBHandler;
 import oscar.util.UtilDateUtilities;
 

@@ -27,31 +27,13 @@
  */
 package org.oscarehr.managers;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.common.dao.Hl7TextInfoDao;
-import org.oscarehr.common.dao.Hl7TextMessageDao;
-import org.oscarehr.common.dao.PatientLabRoutingDao;
 import org.oscarehr.common.model.Hl7TextInfo;
 import org.oscarehr.common.model.Hl7TextMessage;
-import org.oscarehr.common.model.PatientLabRouting;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.PDFGenerationException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.lowagie.text.DocumentException;
-
-import oscar.log.LogAction;
-import oscar.oscarLab.ca.all.pageUtil.LabPDFCreator;
-import oscar.util.StringUtils;
 
 
 public interface LabManager {

@@ -29,6 +29,7 @@
 
 <%@page import="java.util.*,oscar.eform.*" %>
 <%@page import="org.oscarehr.web.eform.EfmPatientFormList" %>
+<%@ page import="ca.openosp.openo.eform.EFormUtil" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%

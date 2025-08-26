@@ -54,7 +54,7 @@
 <%@page import="java.util.Date" %>
 <%@page import="oscar.util.DateUtils" %>
 <%@page import="oscar.util.StringUtils" %>
-<%@page import="oscar.oscarDemographic.pageUtil.Util" %>
+<%@page import="ca.openosp.openo.oscarDemographic.pageUtil.Util" %>
 <html>
     <head>
         <title>Enrollment History</title>

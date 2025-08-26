@@ -56,7 +56,7 @@ import org.springframework.stereotype.Service;
 
 import org.oscarehr.util.SpringUtils;
 
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 import oscar.oscarMessenger.data.ContactIdentifier;
 import oscar.oscarMessenger.data.MessengerSystemMessage;
 import oscar.oscarMessenger.data.MsgDisplayMessage;

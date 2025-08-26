@@ -46,6 +46,9 @@
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page
         import="java.util.*,oscar.oscarDemographic.data.*,oscar.oscarPrevention.*,oscar.oscarProvider.data.*,oscar.util.*,oscar.oscarReport.data.*,oscar.oscarPrevention.pageUtil.*,oscar.oscarDemographic.pageUtil.*" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.pageUtil.Util" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.pageUtil.DemographicExportAction42Action" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.pageUtil.PGPEncrypt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>

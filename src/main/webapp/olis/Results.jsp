@@ -13,7 +13,7 @@
 <%@page import="org.oscarehr.olis.dao.OLISResultNomenclatureDao" %>
 <%@page import="org.oscarehr.common.model.OLISResults" %>
 <%@page import="org.oscarehr.common.dao.OLISResultsDao" %>
-<%@page import="oscar.log.LogAction" %>
+<%@page import="ca.openosp.openo.log.LogAction" %>
 <%@page import="org.oscarehr.common.model.OscarLog" %>
 <%@page import="java.io.File" %>
 <%@page import="org.oscarehr.olis.OLISUtils" %>

@@ -34,7 +34,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -42,7 +41,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
-import ca.openosp.dao.DefaultIssueDao;
+import ca.openosp.openo.dao.DefaultIssueDao;
 import org.oscarehr.PMmodule.dao.ProgramAccessDAO;
 import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
 import org.oscarehr.PMmodule.model.ProgramAccess;
@@ -63,8 +62,8 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SessionConstants;
 import org.oscarehr.util.SpringUtils;
 
-import ca.openosp.quatro.dao.security.SecroleDao;
-import ca.openosp.quatro.model.security.Secrole;
+import ca.openosp.openo.dao.security.SecroleDao;
+import ca.openosp.openo.model.security.Secrole;
 
 import oscar.OscarProperties;
 import oscar.util.UtilDateUtilities;

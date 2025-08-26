@@ -34,21 +34,14 @@
 <%@ page import="java.util.*,java.net.*, oscar.util.*"
          errorPage="/errorpage.jsp" %>
 <%@ page import="oscar.OscarProperties" %>
-<%@ page import="ca.openosp.web.Infirm2Action" %>
 
 <caisi:isModuleLoad moduleName="caisi">
     <%
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String isOscar = request.getParameter("infirmaryView_isOscar");
-        if (session.getAttribute("infirmaryView_isOscar") == null) isOscar = "false";
-        if (isOscar != null) session.setAttribute("infirmaryView_isOscar", isOscar);
         if (request.getParameter(SessionConstants.CURRENT_PROGRAM_ID) != null) {
             session.setAttribute(SessionConstants.CURRENT_PROGRAM_ID, request.getParameter(SessionConstants.CURRENT_PROGRAM_ID));
-            Infirm2Action.updateCurrentProgram(request.getParameter(SessionConstants.CURRENT_PROGRAM_ID), loggedInInfo.getLoggedInProviderNo());
         }
-        session.setAttribute("infirmaryView_OscarURL", request.getRequestURL());
-
-    %><c:import url="/infirm.do?action=getSig"/>
+    %>
 </caisi:isModuleLoad>
 
 <%

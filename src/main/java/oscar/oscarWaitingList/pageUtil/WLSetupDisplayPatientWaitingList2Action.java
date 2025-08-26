@@ -34,7 +34,7 @@ import org.oscarehr.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarDemographic.data.DemographicData;
+import ca.openosp.openo.oscarDemographic.data.DemographicData;
 import oscar.oscarWaitingList.bean.WLPatientWaitingListBeanHandler;
 
 import com.opensymphony.xwork2.ActionSupport;

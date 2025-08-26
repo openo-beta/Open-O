@@ -41,7 +41,7 @@ import org.oscarehr.util.SpringUtils;
 import org.springframework.stereotype.Service;
 
 import oscar.OscarProperties;
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 
 @Service
 public class AuditLogManager {

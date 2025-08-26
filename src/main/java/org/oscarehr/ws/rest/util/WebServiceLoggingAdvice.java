@@ -37,7 +37,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.oscarehr.common.model.OscarLog;
 import org.springframework.stereotype.Component;
 
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 
 
 // TODO Consider moving this configuration into XML

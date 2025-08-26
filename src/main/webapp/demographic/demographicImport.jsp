@@ -40,7 +40,7 @@
     }
 %>
 
-<%@page import="oscar.oscarDemographic.data.*,java.util.*,oscar.oscarDemographic.pageUtil.Util" %>
+<%@page import="oscar.oscarDemographic.data.*,java.util.*,ca.openosp.openo.oscarDemographic.pageUtil.Util" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProgramDao, org.oscarehr.util.SpringUtils,org.oscarehr.PMmodule.model.Program" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

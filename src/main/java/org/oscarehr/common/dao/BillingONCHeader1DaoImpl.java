@@ -59,8 +59,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import oscar.OscarProperties;
-import oscar.oscarBilling.ca.on.data.BillingDataHlp;
-import oscar.oscarBilling.ca.on.pageUtil.BillingStatusPrep;
+import ca.openosp.openo.oscarBilling.ca.on.data.BillingDataHlp;
+import ca.openosp.openo.oscarBilling.ca.on.pageUtil.BillingStatusPrep;
 import oscar.util.ParamAppender;
 
 /**

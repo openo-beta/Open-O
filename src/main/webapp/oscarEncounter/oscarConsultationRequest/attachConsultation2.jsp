@@ -48,7 +48,7 @@
 <%@page import="org.oscarehr.hospitalReportManager.model.HRMDocumentToDemographic" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="org.oscarehr.common.model.EFormData" %>
-<%@ page import="oscar.eform.EFormUtil" %>
+<%@ page import="ca.openosp.openo.eform.EFormUtil" %>
 <%@ page import="org.oscarehr.documentManager.EDocUtil" %>
 <%@ page import="org.oscarehr.documentManager.EDoc" %>
 

@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ca.openosp.model.BaseObject;
+import ca.openosp.openo.model.BaseObject;
 import org.oscarehr.PMmodule.dao.ProgramAccessDAO;
 import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
 import org.oscarehr.PMmodule.model.ProgramAccess;
@@ -39,7 +39,7 @@ import org.oscarehr.PMmodule.model.ProgramProvider;
 import org.oscarehr.casemgmt.dao.RoleProgramAccessDAO;
 import org.oscarehr.util.SpringUtils;
 
-import ca.openosp.quatro.model.security.Secrole;
+import ca.openosp.openo.model.security.Secrole;
 
 public class CaseManagementIssue extends BaseObject {
 

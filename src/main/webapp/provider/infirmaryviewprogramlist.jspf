@@ -122,11 +122,9 @@ function submitStatus(ctrl) {// only place other than infirmaction.java to set i
 
 <c:if test="${infirmaryView_isOscar == 'true'}">
 	<caisi:ProgramExclusiveView providerNo="<%=((LoggedInInfo)LoggedInInfo.getLoggedInInfoFromSession(request)).getLoggedInProviderNo()%>" value="no">
-		<caisi:isModuleLoad moduleName="oscarClinic" reverse="true">
 		<div align="right"><a
 			href='providercontrol.jsp?infirmaryView_isOscar=false&GoToCaisiViewFromOscarView=true&<%=session.getAttribute("infirmaryView_OscarQue") %>'>|
 		Case Management View</a></div>
-		</caisi:isModuleLoad>
 	</caisi:ProgramExclusiveView>
 </c:if>
 </td>

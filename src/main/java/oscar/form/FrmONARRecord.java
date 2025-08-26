@@ -9,9 +9,7 @@ import java.util.Properties;
 
 import org.oscarehr.util.LoggedInInfo;
 
-import oscar.OscarProperties;
-import oscar.login.DBHelp;
-import oscar.oscarDB.DBHandler;
+import ca.openosp.openo.login.DBHelp;
 import oscar.util.UtilDateUtilities;
 
 public class FrmONARRecord extends FrmRecord {

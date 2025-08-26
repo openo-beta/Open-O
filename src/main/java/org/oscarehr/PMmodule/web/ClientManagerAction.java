@@ -23,7 +23,7 @@
 
 package org.oscarehr.PMmodule.web;
 
-import ca.openosp.quatro.service.LookupManager;
+import ca.openosp.openo.service.LookupManager;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.logging.log4j.Logger;
@@ -43,7 +43,6 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +50,6 @@ public class ClientManagerAction {
 
     private static final Logger logger = MiscUtils.getLogger();
 
-    private HealthSafetyManager healthSafetyManager;
     private ClientRestrictionManager clientRestrictionManager;
     private LookupManager lookupManager;
     private CaseManagementManager caseManagementManager;
@@ -104,9 +102,6 @@ public class ClientManagerAction {
         this.clientRestrictionManager = clientRestrictionManager;
     }
 
-    public void setHealthSafetyManager(HealthSafetyManager healthSafetyManager) {
-        this.healthSafetyManager = healthSafetyManager;
-    }
 
     public void setLookupManager(LookupManager lookupManager) {
         this.lookupManager = lookupManager;

@@ -42,8 +42,8 @@ import org.oscarehr.common.model.ProviderDefaultProgram;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
-import ca.openosp.quatro.dao.security.SecroleDao;
-import ca.openosp.quatro.model.security.Secrole;
+import ca.openosp.openo.dao.security.SecroleDao;
+import ca.openosp.openo.model.security.Secrole;
 
 /**
  * This class describes a servlet that allows one to change and view the permissions and scope of a CaseManagementNote object.

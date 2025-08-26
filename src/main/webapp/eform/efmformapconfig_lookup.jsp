@@ -8,8 +8,11 @@
     and "gnu.org/licenses/gpl-2.0.html".
 
 --%>
-<%@ page import="java.io.*, java.util.*, oscar.eform.*, oscar.eform.data.*, oscar.eform.EFormUtil"
+<%@ page import="java.io.*, java.util.*, oscar.eform.*, oscar.eform.data.*, ca.openosp.openo.eform.EFormUtil"
 %>
+<%@ page import="ca.openosp.openo.eform.data.DatabaseAP" %>
+<%@ page import="ca.openosp.openo.eform.data.EForm" %>
+<%@ page import="ca.openosp.openo.eform.EFormLoader" %>
 <input type="hidden" name="oscarAPCacheLookupType" value="<%= request.getParameter("oscarAPCacheLookupType") %>"/><%
     String[] keys = request.getParameterValues("key");
     if (keys == null) {

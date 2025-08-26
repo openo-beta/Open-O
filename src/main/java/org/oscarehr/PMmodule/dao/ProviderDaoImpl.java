@@ -58,7 +58,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-import ca.openosp.quatro.model.security.SecProvider;
+import ca.openosp.openo.model.security.SecProvider;
 
 @SuppressWarnings("unchecked")
 @Transactional

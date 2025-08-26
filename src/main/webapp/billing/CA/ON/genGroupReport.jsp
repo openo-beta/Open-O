@@ -28,6 +28,7 @@
 <%@ page import="org.oscarehr.common.model.Provider" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@ page import="oscar.util.ConversionUtils" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.on.OHIP.ExtractBean" %>
 <%
     BillActivityDao billActivityDao = SpringUtils.getBean(BillActivityDao.class);
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
@@ -85,7 +86,7 @@
                     billinggroup_no = "0000";
                 }
 
-                oscar.oscarBilling.ca.on.OHIP.ExtractBean extract = new oscar.oscarBilling.ca.on.OHIP.ExtractBean();
+                ExtractBean extract = new ExtractBean();
                 extract.seteFlag("1");
                 //extract.setOscarHome(oscar_home);
                 extract.setOhipVer(request.getParameter("verCode"));
@@ -166,7 +167,7 @@
                         billinggroup_no = "0000";
                     }
 
-                    oscar.oscarBilling.ca.on.OHIP.ExtractBean extract = new oscar.oscarBilling.ca.on.OHIP.ExtractBean();
+                    ExtractBean extract = new ExtractBean();
                     //extract.setOscarHome(oscar_home);
                     extract.seteFlag("1");
                     extract.setOhipVer(request.getParameter("verCode"));

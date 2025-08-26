@@ -53,9 +53,18 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.oscarehr.common.dao.PropertyDao" %>
 <%@ page import="org.oscarehr.common.model.Property" %>
-<%@ page import="org.oscarehr.managers.DemographicManager,oscar.oscarBilling.ca.bc.MSP.ServiceCodeValidationLogic" %>
+<%@ page import="org.oscarehr.managers.DemographicManager,ca.openosp.openo.oscarBilling.ca.bc.MSP.ServiceCodeValidationLogic" %>
 <%@ page import="org.oscarehr.common.model.Demographic" %>
 <%@ page import="org.apache.commons.lang3.StringUtils" %>
+<%@ page import="ca.openosp.openo.entities.PaymentType" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingSessionBean" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingPreferencesDAO" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.ServiceCodeAssociation" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingAssociationPersistence" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingCreateBillingForm" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.SupServiceCodeAssocDAO" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingFormData" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingPreference" %>
 
 <%!
 

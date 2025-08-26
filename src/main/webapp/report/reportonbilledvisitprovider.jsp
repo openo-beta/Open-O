@@ -22,8 +22,8 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
-<%@ page import="ca.openosp.quatro.model.security.Secuserrole" %>
-<%@ page import="ca.openosp.quatro.dao.security.SecuserroleDao" %>
+<%@ page import="ca.openosp.openo.model.security.Secuserrole" %>
+<%@ page import="ca.openosp.openo.dao.security.SecuserroleDao" %>
 <%
     SecuserroleDao secuserroleDao = (SecuserroleDao) SpringUtils.getBean(SecuserroleDao.class);
 %>

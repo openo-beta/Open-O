@@ -23,7 +23,6 @@
 
 package org.oscarehr.PMmodule.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,9 +35,9 @@ import org.oscarehr.casemgmt.dao.CaseManagementNoteDAO;
 import org.oscarehr.casemgmt.model.CaseManagementNote;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 
-import ca.openosp.quatro.service.LookupManager;
+import ca.openosp.openo.service.LookupManager;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

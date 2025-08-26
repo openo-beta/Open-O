@@ -28,7 +28,7 @@
 <%@page import="java.util.*,java.net.*,java.sql.*,oscar.*,oscar.util.*,oscar.appt.*" %>
 <%@page import="oscar.oscarBilling.ca.on.data.*" %>
 <%@page import="oscar.oscarBilling.ca.on.pageUtil.*" %>
-<%@page import="oscar.oscarBilling.ca.bc.decisionSupport.BillingGuidelines" %>
+<%@page import="ca.openosp.openo.oscarBilling.ca.bc.decisionSupport.BillingGuidelines" %>
 <%@page import="org.oscarehr.common.dao.CSSStylesDAO, org.oscarehr.common.model.ProviderPreference, org.oscarehr.common.model.CssStyle" %>
 <%@page import="org.oscarehr.common.dao.BillingServiceDao, org.oscarehr.common.model.BillingService" %>
 <%@page import="org.oscarehr.common.dao.ClinicNbrDao, org.oscarehr.common.model.ClinicNbr" %>
@@ -561,6 +561,10 @@
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference"%>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.appt.JdbcApptImpl" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.*" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.on.pageUtil.BillingSiteIdPrep" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
 <html>
 <head>
     <title>Ontario Billing</title>
@@ -1727,7 +1731,7 @@ function toggleDiv(selectedBillForm, selectedBillFormName,billType)
                                             String inPatient = oscarVariables.getProperty("inPatient");
                                             try {
                                                 if (inPatient != null && inPatient.trim().equalsIgnoreCase("YES")) {
-                                                    oscar.oscarDemographic.data.DemographicData demoData = new oscar.oscarDemographic.data.DemographicData();
+                                                    DemographicData demoData = new DemographicData();
                                                     admDate = demoData.getDemographicDateJoined(loggedInInfo, demo_no);
                                                 }
                                             } catch (Exception inPatientEx) {

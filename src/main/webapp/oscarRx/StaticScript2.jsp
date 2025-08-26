@@ -43,7 +43,7 @@
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 
 <%@page import="java.util.ArrayList" %>
-<%@ page import="ca.openosp.quatro.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.service.security.SecurityManager" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%

@@ -28,7 +28,6 @@
 package org.oscarehr.managers;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -68,9 +67,9 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 import oscar.OscarProperties;
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 
-import ca.openosp.quatro.model.security.Secrole;
+import ca.openosp.openo.model.security.Secrole;
 
 @Service
 public class TicklerManagerImpl implements TicklerManager {

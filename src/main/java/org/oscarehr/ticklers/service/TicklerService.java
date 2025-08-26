@@ -34,7 +34,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 
 @Component
 public class TicklerService {

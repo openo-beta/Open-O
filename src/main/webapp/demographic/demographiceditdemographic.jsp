@@ -83,9 +83,9 @@
 
 %>
 <%@ page
-        import="java.util.*, java.net.*,java.text.DecimalFormat, oscar.*, oscar.oscarDemographic.data.ProvinceNames, oscar.oscarWaitingList.WaitingList, oscar.oscarReport.data.DemographicSets,oscar.log.*" %>
+        import="java.util.*, java.net.*,java.text.DecimalFormat, oscar.*, ca.openosp.openo.oscarDemographic.data.ProvinceNames, oscar.oscarWaitingList.WaitingList, oscar.oscarReport.data.DemographicSets,oscar.log.*" %>
 <%@ page import="oscar.oscarDemographic.data.*" %>
-<%@ page import="oscar.oscarDemographic.pageUtil.Util" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.pageUtil.Util" %>
 <%@ page import="oscar.OscarProperties" %>
 <%@ page import="org.oscarehr.common.dao.*,org.oscarehr.common.model.*" %>
 <%@ page import="org.oscarehr.common.OtherIdManager" %>
@@ -245,6 +245,10 @@
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.log.LogAction" %>
+<%@ page import="ca.openosp.openo.log.LogConst" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicMerged" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicRelationship" %>
 <!DOCTYPE html>
 <html>
 
@@ -1337,7 +1341,7 @@
                                         <tr>
                                             <td>
                                                 <%
-                                                    oscar.oscarDemographic.data.DemographicMerged dmDAO = new oscar.oscarDemographic.data.DemographicMerged();
+                                                    DemographicMerged dmDAO = new DemographicMerged();
                                                     String dboperation = "search_detail";
                                                     String head = dmDAO.getHead(demographic_no);
                                                     ArrayList records = dmDAO.getTail(head);

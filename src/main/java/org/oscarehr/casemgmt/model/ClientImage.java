@@ -32,7 +32,7 @@ import java.util.Date;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.apache.commons.codec.binary.Base64;
-import ca.openosp.model.BaseObject;
+import ca.openosp.openo.model.BaseObject;
 import org.oscarehr.util.MiscUtils;
 
 public class ClientImage extends BaseObject {

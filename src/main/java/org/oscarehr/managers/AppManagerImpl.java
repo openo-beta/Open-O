@@ -31,10 +31,7 @@ package org.oscarehr.managers;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.json.JSONObject;
-
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.app.OAuth1Utils;
 import org.oscarehr.common.dao.AppDefinitionDao;
 import org.oscarehr.common.dao.AppUserDao;
 import org.oscarehr.common.model.AppDefinition;
@@ -45,7 +42,7 @@ import org.oscarehr.ws.rest.to.model.AppDefinitionTo1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 
 @Service
 public class AppManagerImpl implements AppManager {

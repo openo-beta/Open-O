@@ -38,7 +38,7 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.OscarAuditLogger;
 import org.oscarehr.util.SpringUtils;
 import oscar.form.JSONUtil;
-import oscar.log.LogConst;
+import ca.openosp.openo.log.LogConst;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

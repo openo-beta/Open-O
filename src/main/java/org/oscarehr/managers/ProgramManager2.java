@@ -30,17 +30,9 @@ package org.oscarehr.managers;
 
 import java.util.List;
 
-import org.oscarehr.PMmodule.dao.ProgramDao;
-import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
 import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.PMmodule.model.ProgramProvider;
-import org.oscarehr.common.dao.ProviderDefaultProgramDao;
-import org.oscarehr.common.model.ProviderDefaultProgram;
 import org.oscarehr.util.LoggedInInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import oscar.log.LogAction;
 
 public interface ProgramManager2 {
 

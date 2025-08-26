@@ -45,7 +45,7 @@ import org.oscarehr.common.model.ReportTableFieldCaption;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.login.DBHelp;
+import ca.openosp.openo.login.DBHelp;
 
 /**
  * @author yilee18

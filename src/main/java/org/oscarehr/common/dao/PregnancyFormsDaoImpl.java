@@ -27,13 +27,6 @@
  */
 package org.oscarehr.common.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.oscarehr.util.MiscUtils;
-
-import oscar.login.DBHelp;
-
 public class PregnancyFormsDaoImpl implements PregnancyFormsDao {
 
 }

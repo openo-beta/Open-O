@@ -30,7 +30,7 @@
 <%@page import="oscar.oscarRx.pageUtil.AllergyDisplay" %>
 <%@page import="java.util.List" %>
 <%@page import="oscar.OscarProperties" %>
-<%@ page import="ca.openosp.quatro.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.service.security.SecurityManager" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>

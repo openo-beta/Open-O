@@ -47,7 +47,7 @@ import org.oscarehr.ws.rest.to.model.DemographicSearchRequest;
 import org.oscarehr.ws.rest.to.model.DemographicSearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 import oscar.util.StringUtils;
 
 import java.net.MalformedURLException;

@@ -35,10 +35,10 @@ import javax.security.auth.login.LoginContext;
 
 import org.junit.Test;
 
-import oscar.login.jaas.BaseLoginModule;
-import oscar.login.jaas.OscarCallbackHandler;
-import oscar.login.jaas.OscarConfiguration;
-import oscar.login.jaas.OscarPrincipal;
+import ca.openosp.openo.login.jaas.BaseLoginModule;
+import ca.openosp.openo.login.jaas.OscarCallbackHandler;
+import ca.openosp.openo.login.jaas.OscarConfiguration;
+import ca.openosp.openo.login.jaas.OscarPrincipal;
 
 public class BaseLoginModuleTest {
 

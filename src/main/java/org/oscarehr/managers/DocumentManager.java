@@ -28,36 +28,19 @@
 
 package org.oscarehr.managers;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.itextpdf.text.DocumentException;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.Logger;
-import org.apache.pdfbox.pdmodel.PDDocument;
 import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;
 
 import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.PDFGenerationException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import oscar.OscarProperties;
 import org.oscarehr.documentManager.EDoc;
-
-import org.oscarehr.documentManager.EDocUtil;
-import oscar.log.LogAction;
-import oscar.oscarEncounter.oscarConsultationRequest.pageUtil.ImagePDFCreator;
 
 public interface DocumentManager {
 

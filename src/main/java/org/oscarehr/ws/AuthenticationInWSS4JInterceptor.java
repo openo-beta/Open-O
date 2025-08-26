@@ -43,7 +43,7 @@ import org.oscarehr.common.model.OscarLog;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 
 /**
  * As of WSS 1.6 we no longer need InInterceptors for authentication, that's now moved to the Validator classes.

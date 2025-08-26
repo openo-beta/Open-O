@@ -24,6 +24,7 @@
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
 <%@page import="org.oscarehr.common.model.Appointment" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="ca.openosp.openo.appt.ApptStatusData" %>
 
 <%
     OscarAppointmentDao appointmentDao =
@@ -47,7 +48,7 @@
     <%
 
 
-        oscar.appt.ApptStatusData as = new oscar.appt.ApptStatusData();
+        ApptStatusData as = new ApptStatusData();
         String unbillStatus = as.unbillStatus(request.getParameter("status"));
         Appointment appt = appointmentDao.find(
                 Integer.parseInt(request.getParameter("appointment_no")));

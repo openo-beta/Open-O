@@ -34,8 +34,8 @@ import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.SchemaUtils;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.entities.PrivateBillTransaction;
-import oscar.oscarBilling.ca.bc.data.PrivateBillTransactionsDAO;
+import ca.openosp.openo.entities.PrivateBillTransaction;
+import ca.openosp.openo.oscarBilling.ca.bc.data.PrivateBillTransactionsDAO;
 
 public class PrivateBillTransactionsDaoTest extends DaoTestFixtures {
     ;

@@ -50,10 +50,13 @@
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@ page import="org.oscarehr.billing.CA.model.BillingDetail" %>
 <%@ page import="org.oscarehr.billing.CA.dao.BillingDetailDao" %>
-<%@ page import="oscar.entities.Billingmaster" %>
-<%@ page import="oscar.oscarBilling.ca.bc.data.BillingmasterDAO" %>
+<%@ page import="ca.openosp.openo.entities.Billingmaster" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingmasterDAO" %>
 <%@ page import="org.oscarehr.billing.CA.BC.model.TeleplanC12" %>
 <%@ page import="org.oscarehr.billing.CA.BC.dao.TeleplanC12Dao" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.administration.TeleplanCorrectionFormWCB" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.MSP.MspErrorCodes" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingFormData" %>
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
     DiagnosticCodeDao diagnosticCodeDao = SpringUtils.getBean(DiagnosticCodeDao.class);

@@ -30,6 +30,7 @@
 <%@page import="oscar.oscarDemographic.data.*,org.oscarehr.common.model.Demographic" %>
 <%@page import="oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler,java.util.*,oscar.oscarRx.util.*" %>
 <%@page import="oscar.oscarLab.ca.on.*,oscar.util.*,oscar.oscarLab.*" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%

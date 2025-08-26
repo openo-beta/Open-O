@@ -10,11 +10,9 @@ import org.hibernate.Session;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.hibernate.HibernateException;
 
-import java.sql.SQLException;
-
 import org.hibernate.Query;
 
-import ca.openosp.quatro.model.security.Secrole;
+import ca.openosp.openo.model.security.Secrole;
 import org.oscarehr.common.model.Provider;
 
 public class HibernateTestDao {

@@ -24,7 +24,7 @@
 
 --%>
 
-<%@page import="oscar.appt.ApptData" %>
+<%@page import="ca.openosp.openo.appt.ApptData" %>
 <%@page import="org.oscarehr.util.SessionConstants" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
@@ -98,11 +98,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
-<%@page import="oscar.appt.JdbcApptImpl" %>
+<%@page import="ca.openosp.openo.appt.JdbcApptImpl" %>
 <%@page import="org.oscarehr.common.model.Site" %>
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
-<%@page import="oscar.appt.ApptUtil" %>
+<%@page import="ca.openosp.openo.appt.ApptUtil" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <html>
     <head>

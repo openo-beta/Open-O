@@ -39,7 +39,7 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.util.MiscUtils;
 
 import oscar.OscarProperties;
-import oscar.login.DBHelp;
+import ca.openosp.openo.login.DBHelp;
 import oscar.oscarReport.data.RptReportConfigData;
 import oscar.oscarReport.data.RptReportCreator;
 import oscar.oscarReport.data.RptReportItem;
