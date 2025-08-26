@@ -226,11 +226,11 @@
   }, {
     "groupId" : "com.fasterxml.woodstox",
     "artifactId" : "woodstox-core",
-    "version" : "6.4.0",
+    "version" : "6.5.1",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:faTNUfcILlmzy3iYjNp4vxYuKwJFfK8XJCy5zqm4ACraFdTf53TKA1Ws3qlciLZ8TQaiemFlPLhMmkbSeycmxg=="
+    "integrity" : "sha512:2bPPaqrIXYw0nnokrTD34jt3ZfG3zi/fMBvyJAucfuGEvdk45Yvm35rJDpfjuMezT4+p2ifR7Y3nh2WoNFsY8g=="
   }, {
     "groupId" : "com.fasterxml",
     "artifactId" : "classmate",
@@ -971,11 +971,11 @@
   }, {
     "groupId" : "jakarta.xml.bind",
     "artifactId" : "jakarta.xml.bind-api",
-    "version" : "2.3.3",
+    "version" : "3.0.1",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:rfZDanqdxvZLlxJ4Ydeom3joK+pn9yvagA7yhRY63NhNvwBvZ5EIoqjC7tAT4Ldx2iNUCH4IRUef8rYxi4gUQg=="
+    "integrity" : "sha512:fHTO33wLqqUWYxGkxDAKcusJrigOwzdlU92GUebj1fEAeUQhumR7MoGV38+Yps92IxaaC4fePxOYTddDbChIBw=="
   }, {
     "groupId" : "jakarta.xml.soap",
     "artifactId" : "jakarta.xml.soap-api",
@@ -2108,11 +2108,11 @@
   }, {
     "groupId" : "org.apache.santuario",
     "artifactId" : "xmlsec",
-    "version" : "2.3.4",
+    "version" : "3.0.4",
     "scope" : "compile",
     "type" : "jar",
     "optional" : false,
-    "integrity" : "sha512:qUjhmI9bus998XNNR3nj3WAi3tIS7ag8eEspU3GtK4m15+R2zBZz5ZKr56Pw/BUyVSUUZ657Aj/5isIvR2seLg=="
+    "integrity" : "sha512:KBXdfdCM1WnYlLfZxBZbpgNMiFJmKN/422QTKISVgyWHPBEr1meyBIDRdcV+8KHizKY+UV1FExPuOJ4KMvejuQ=="
   }, {
     "groupId" : "org.apache.struts",
     "artifactId" : "struts2-core",

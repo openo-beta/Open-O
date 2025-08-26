@@ -119,6 +119,13 @@
     </reporting>
 
     <dependencies>
+        <!-- Apache Santuario XML Security for Java -->
+        <dependency>
+            <groupId>org.apache.santuario</groupId>
+            <artifactId>xmlsec</artifactId>
+            <version>3.0.4</version>
+        </dependency>
+
         <!-- For Jasper Reports and backwards compatibility -->
         <!-- throws an compilation error when removed/commented -->
         <dependency>
@@ -349,10 +356,6 @@
             <artifactId>java-saml</artifactId>
             <version>2.9.0</version>
             <exclusions>
-                <exclusion>
-                    <groupId>org.apache.santuario</groupId>
-                    <artifactId>xmlsec</artifactId>
-                </exclusion>
                 <exclusion>
                     <groupId>org.codehaus.woodstox</groupId>
                     <artifactId>woodstox-core</artifactId>
