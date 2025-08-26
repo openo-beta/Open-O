@@ -5,11 +5,12 @@
 <%@ page import="org.oscarehr.managers.TicklerManager" %>
 <%@ page import="org.oscarehr.common.model.Tickler" %>
 <%@ page import="oscar.*, org.oscarehr.util.*,oscar.util.*,java.net.URLEncoder"%>
+<%@ page import="ca.openosp.web.Infirm2Action" %>
 <c:if test="${infirmaryView_isOscar == 'false'}">
 <%
 	LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
 	session.setAttribute("case_program_id", session.getAttribute(SessionConstants.CURRENT_PROGRAM_ID));
-	org.caisi.core.web.Infirm2Action.updateCurrentProgram((String)session.getAttribute(SessionConstants.CURRENT_PROGRAM_ID),loggedInInfo.getLoggedInProviderNo());
+	Infirm2Action.updateCurrentProgram((String)session.getAttribute(SessionConstants.CURRENT_PROGRAM_ID),loggedInInfo.getLoggedInProviderNo());
 	java.util.Date todayDate=new java.util.Date();
 	todayDate.setHours(23);
 	todayDate.setMinutes(59);

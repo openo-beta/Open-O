@@ -45,7 +45,7 @@
 
 
 	<!-- managers  -->
-	<bean id="issueAdminManager" class="org.caisi.service.IssueAdminManager" autowire="byName" />
+	<bean id="issueAdminManager" class="ca.openosp.service.IssueAdminManager" autowire="byName" />
 	<bean id="healthSafetyManager" class="org.oscarehr.PMmodule.service.HealthSafetyManagerImpl">
 		<property name="healthSafetyDao" ref="healthSafetyDao" />
 	</bean>

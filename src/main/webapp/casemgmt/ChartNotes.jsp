@@ -45,7 +45,7 @@
 <%@page import="org.oscarehr.casemgmt.common.Colour" %>
 <%@page import="org.oscarehr.documentManager.EDoc" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
-<%@page import="com.quatro.dao.security.*,com.quatro.model.security.Secrole" %>
+<%@page import="com.quatro.dao.security.*,ca.openosp.quatro.model.security.Secrole" %>
 <%@page import="org.oscarehr.util.EncounterUtil" %>
 <%@page import="org.apache.cxf.common.i18n.UncheckedException" %>
 <%@page import="org.oscarehr.casemgmt.web.NoteDisplay" %>

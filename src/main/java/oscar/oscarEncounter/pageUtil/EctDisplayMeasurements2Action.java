@@ -25,6 +25,7 @@
 
 package oscar.oscarEncounter.pageUtil;
 
+import ca.openosp.quatro.service.security.SecurityManager;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.AdmissionDao;
 import org.oscarehr.common.dao.FlowsheetDao;
@@ -77,7 +78,7 @@ public class EctDisplayMeasurements2Action extends EctDisplayAction {
             Dao.setMenuHeader(getText("oscarEncounter.LeftNavBar.InputGrps"));
             Dao.setRightURL("return !showMenu('" + menuId + "', event);");
 
-            com.quatro.service.security.SecurityManager securityMgr = new com.quatro.service.security.SecurityManager();
+            SecurityManager securityMgr = new SecurityManager();
 
             ArrayList<String> flowsheets = MeasurementTemplateFlowSheetConfig.getInstance().getUniveralFlowsheets();
 

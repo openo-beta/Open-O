@@ -26,8 +26,8 @@
 
 package org.oscarehr.documentManager.actions;
 
-import com.quatro.dao.security.SecObjectNameDao;
-import com.quatro.model.security.Secobjectname;
+import ca.openosp.quatro.dao.security.SecObjectNameDao;
+import ca.openosp.quatro.model.security.Secobjectname;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.http.impl.cookie.DateUtils;

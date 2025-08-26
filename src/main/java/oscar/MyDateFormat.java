@@ -34,7 +34,7 @@ import java.util.GregorianCalendar;
 import org.apache.commons.lang.StringUtils;
 import org.oscarehr.util.MiscUtils;
 
-import com.quatro.common.KeyConstants;
+import ca.openosp.quatro.common.KeyConstants;
 
 public class MyDateFormat {
     //private int aDateTime;

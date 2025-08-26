@@ -33,10 +33,10 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import com.indivica.olis.Driver;
-import com.indivica.olis.queries.Query;
-import com.indivica.olis.queries.QueryType;
-import com.indivica.olis.queries.Z01Query;
+import ca.openosp.olis.Driver;
+import ca.openosp.olis.queries.Query;
+import ca.openosp.olis.queries.QueryType;
+import ca.openosp.olis.queries.Z01Query;
 
 import oscar.OscarProperties;
 import oscar.log.LogAction;

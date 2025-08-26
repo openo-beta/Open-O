@@ -39,7 +39,7 @@ import org.oscarehr.threads.WaitListEmailThread;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
 
-import com.quatro.dao.security.SecroleDao;
+import ca.openosp.quatro.dao.security.SecroleDao;
 import oscar.OscarProperties;
 
 public class ContextStartupListener implements javax.servlet.ServletContextListener {

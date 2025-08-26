@@ -41,6 +41,7 @@
 <%@page import="org.oscarehr.util.SpringUtils"%>
 <%@page import="org.oscarehr.util.LoggedInInfo"%>
 <%@page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.quatro.service.security.SecurityManager" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -68,7 +69,7 @@
 <h3>
 <%
 	LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);
-	com.quatro.service.security.SecurityManager securityManager = new com.quatro.service.security.SecurityManager();
+	SecurityManager securityManager = new SecurityManager();
 	if(securityManager.hasWriteAccess("_" + request.getParameter("issue_code"),roleName$)) {
 %>
 <a href="javascript:void(0)" title='Add Item' onclick="return showEdit(event,'<fmt:setBundle basename="oscarResources"/><fmt:message key="${param.title}" />','',0,'','','','<%=request.getAttribute("addUrl")%>0', '<c:out value="${param.cmd}"/>','<%=request.getAttribute("identUrl")%>','<%=request.getAttribute("cppIssue")%>','','<c:out value="${param.demographicNo}"/>');">+</a>

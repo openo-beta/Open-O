@@ -51,6 +51,7 @@
 <%@page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
 <%@page import="org.oscarehr.casemgmt.model.CaseManagementNote" %>
 <%@page import="org.oscarehr.casemgmt.model.Issue" %>
+<%@ page import="ca.openosp.quatro.service.security.SecurityManager" %>
 
 <%
     oscar.oscarRx.pageUtil.RxSessionBean bean = null;
@@ -68,7 +69,7 @@
 <%
         }
     }
-    com.quatro.service.security.SecurityManager securityManager = new com.quatro.service.security.SecurityManager();
+    SecurityManager securityManager = new SecurityManager();
 %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>

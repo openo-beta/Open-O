@@ -28,7 +28,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import java.util.Date;
-import com.quatro.model.LookupCodeValue;
+import ca.openosp.quatro.model.LookupCodeValue;
 import org.oscarehr.common.model.AbstractModel;
 
 /**

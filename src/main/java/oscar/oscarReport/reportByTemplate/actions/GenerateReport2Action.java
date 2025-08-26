@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
+import ca.openosp.quatro.service.security.SecurityManager;
 import oscar.oscarReport.reportByTemplate.ReportFactory;
 import oscar.oscarReport.reportByTemplate.Reporter;
 
@@ -49,7 +50,7 @@ public class GenerateReport2Action extends ActionSupport {
     public String execute() {
 
         String roleName$ = (String) request.getSession().getAttribute("userrole") + "," + (String) request.getSession().getAttribute("user");
-        if (!com.quatro.service.security.SecurityManager.hasPrivilege("_admin", roleName$) && !com.quatro.service.security.SecurityManager.hasPrivilege("_report", roleName$)) {
+        if (!SecurityManager.hasPrivilege("_admin", roleName$) && !SecurityManager.hasPrivilege("_report", roleName$)) {
             throw new SecurityException("Insufficient Privileges");
         }
 

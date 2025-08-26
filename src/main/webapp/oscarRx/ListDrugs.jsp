@@ -52,6 +52,7 @@
 <%@page import="org.oscarehr.managers.DrugDispensingManager" %>
 <%@page import="org.oscarehr.managers.CodingSystemManager" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.quatro.service.security.SecurityManager" %>
 
 <%
     oscar.oscarRx.data.RxPatientData.Patient patient = null;
@@ -168,7 +169,7 @@
 
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-    com.quatro.service.security.SecurityManager securityManager = new com.quatro.service.security.SecurityManager();
+    SecurityManager securityManager = new SecurityManager();
     PartialDateDao partialDateDao = SpringUtils.getBean(PartialDateDao.class);
 
     boolean showall = false;

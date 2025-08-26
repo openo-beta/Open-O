@@ -31,6 +31,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.quatro.service.security.SecurityManager;
 import net.sf.json.JSONObject;
 
 import org.oscarehr.PMmodule.web.forms.IntegratorPushItem;
@@ -68,7 +69,7 @@ public class IntegratorPush2Action extends ActionSupport {
 
         JSONObject json = null;
 
-        com.quatro.service.security.SecurityManager securityMgr = new com.quatro.service.security.SecurityManager();
+        SecurityManager securityMgr = new SecurityManager();
         if (securityMgr.hasReadAccess("_admin", request.getSession().getAttribute("userrole") + "," + request.getSession().getAttribute("user"))) {
             List<IntegratorProgress> ipList = integratorPushManager.findAll();
             List<IntegratorPushItem> results = new ArrayList<IntegratorPushItem>();
@@ -110,7 +111,7 @@ public class IntegratorPush2Action extends ActionSupport {
 
         JSONObject json = new JSONObject();
 
-        com.quatro.service.security.SecurityManager securityMgr = new com.quatro.service.security.SecurityManager();
+        SecurityManager securityMgr = new SecurityManager();
         if (securityMgr.hasReadAccess("_admin", request.getSession().getAttribute("userrole") + "," + request.getSession().getAttribute("user"))) {
 
             String strType = request.getParameter("type");
@@ -153,7 +154,7 @@ public class IntegratorPush2Action extends ActionSupport {
         if (in != null) {
             doPause = Boolean.valueOf(in);
 
-            com.quatro.service.security.SecurityManager securityMgr = new com.quatro.service.security.SecurityManager();
+            SecurityManager securityMgr = new SecurityManager();
             if (securityMgr.hasReadAccess("_admin", request.getSession().getAttribute("userrole") + "," + request.getSession().getAttribute("user"))) {
 
                 UserProperty prop = userPropertyDao.getProp(IntegratorPushManager.INTEGRATOR_PAUSE_FULL_PUSH);

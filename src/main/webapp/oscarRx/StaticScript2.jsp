@@ -43,6 +43,7 @@
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 
 <%@page import="java.util.ArrayList" %>
+<%@ page import="ca.openosp.quatro.service.security.SecurityManager" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -96,7 +97,7 @@
             if (rxBean == null) {
                 rxBean = (oscar.oscarRx.pageUtil.RxSessionBean) pageContext.findAttribute("bean");
             }
-            com.quatro.service.security.SecurityManager securityManager = new com.quatro.service.security.SecurityManager();
+            SecurityManager securityManager = new SecurityManager();
         %>
 
 

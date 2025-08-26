@@ -39,6 +39,7 @@
 <%@page import="org.oscarehr.casemgmt.model.CaseManagementNoteLink" %>
 <%@page import="org.oscarehr.common.dao.PartialDateDao" %>
 <%@page import="org.oscarehr.common.model.PartialDate" %>
+<%@ page import="ca.openosp.quatro.service.security.SecurityManager" %>
 
 <%
     String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -76,7 +77,7 @@
 <%
     String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_ALLERGY;
     oscar.oscarRx.data.RxPatientData.Patient patient = (oscar.oscarRx.data.RxPatientData.Patient) session.getAttribute("Patient");
-    com.quatro.service.security.SecurityManager securityManager = new com.quatro.service.security.SecurityManager();
+    SecurityManager securityManager = new SecurityManager();
 %>
 <html>
     <head>

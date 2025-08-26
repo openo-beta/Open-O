@@ -31,19 +31,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.oscarehr.casemgmt.model.Issue;
-import org.oscarehr.common.dao.AbstractDaoImpl;
-import org.oscarehr.util.MiscUtils;
-import org.springframework.orm.hibernate5.HibernateCallback;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
-import com.quatro.model.security.Secrole;
+import ca.openosp.quatro.model.security.Secrole;
 
 public interface IssueDAO {
 

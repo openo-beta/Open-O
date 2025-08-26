@@ -29,7 +29,7 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.quatro.model.LookupCodeValue;
+import ca.openosp.quatro.model.LookupCodeValue;
 
 @XmlRootElement
 public class ProgramTo1 implements Serializable {

@@ -47,6 +47,7 @@ import java.util.TreeMap;
 
 import javax.persistence.PersistenceException;
 
+import ca.openosp.quatro.util.Utility;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
@@ -69,7 +70,6 @@ import org.oscarehr.caisi_integrator.ws.MatchingDemographicParameters;
 import org.oscarehr.common.DemographicSearchResultTransformer;
 import org.oscarehr.common.Gender;
 import org.oscarehr.common.NativeSql;
-import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.model.Admission;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.DemographicExt;
@@ -1869,7 +1869,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         if (excludeMerged)
             criteria.add(Expression.eq("merged", Boolean.FALSE));
         if (clientNo != null && !"".equals(clientNo)) {
-            if (com.quatro.util.Utility.IsInt(clientNo)) {
+            if (Utility.IsInt(clientNo)) {
                 criteria.add(Expression.eq("DemographicNo", Integer.valueOf(clientNo)));
                 results = criteria.list();
             } else {
@@ -1996,7 +1996,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         String clientNo = bean.getDemographicNo();
         if (clientNo != null && !"".equals(clientNo)) {
-            if (com.quatro.util.Utility.IsInt(clientNo)) {
+            if (Utility.IsInt(clientNo)) {
                 criteria.add(Expression.eq("DemographicNo", Integer.valueOf(clientNo).intValue()));
                 results = criteria.list();
             } else {

@@ -27,6 +27,7 @@ package oscar.oscarReport.reportByTemplate.actions;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.quatro.service.security.SecurityManager;
 import org.oscarehr.util.MiscUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -39,7 +40,7 @@ public class ExportTemplate2Action extends ActionSupport {
     public String execute() {
         MiscUtils.getLogger().debug("Entered manage template action");
         String roleName$ = (String) request.getSession().getAttribute("userrole") + "," + (String) request.getSession().getAttribute("user");
-        if (!com.quatro.service.security.SecurityManager.hasPrivilege("_admin", roleName$) && !com.quatro.service.security.SecurityManager.hasPrivilege("_report", roleName$)) {
+        if (!SecurityManager.hasPrivilege("_admin", roleName$) && !SecurityManager.hasPrivilege("_report", roleName$)) {
             throw new SecurityException("Insufficient Privileges");
         }
 

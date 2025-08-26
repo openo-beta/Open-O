@@ -44,10 +44,11 @@
 <%@page
         import="oscar.oscarEncounter.pageUtil.NavBarDisplayDAO, oscar.util.*, java.util.ArrayList, java.util.Date, java.util.Calendar, java.io.IOException" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
-<%@ page import="com.quatro.dao.security.SecobjprivilegeDao" %>
-<%@ page import="com.quatro.model.security.Secobjprivilege" %>
+<%@ page import="ca.openosp.quatro.dao.security.SecobjprivilegeDao" %>
+<%@ page import="ca.openosp.quatro.model.security.Secobjprivilege" %>
 <%@ page import="java.util.List, java.util.regex.Pattern, java.util.regex.Matcher" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.quatro.service.security.SecurityManager" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"
        scope="request"/>
@@ -70,7 +71,7 @@
     //Do we have a '+' command to display on the right of the module header?
     String rh = dao.getRightHeadingID();
     String rhid = dao.getRightHeadingID();
-    com.quatro.service.security.SecurityManager securityMgr = new com.quatro.service.security.SecurityManager();
+    SecurityManager securityMgr = new SecurityManager();
 
     if (!rh.equals("") && securityMgr.hasWriteAccess("_" + ((String) request.getAttribute("cmd")).toLowerCase(), roleName$)) {
 %>

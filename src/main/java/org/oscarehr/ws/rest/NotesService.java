@@ -39,8 +39,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-import com.quatro.dao.security.SecroleDao;
-import com.quatro.model.security.Secrole;
+import ca.openosp.quatro.dao.security.SecroleDao;
+import ca.openosp.quatro.model.security.Secrole;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProgramAccessDAO;
@@ -99,7 +99,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import oscar.OscarProperties;
 import oscar.oscarEncounter.pageUtil.EctSessionBean;
 
 

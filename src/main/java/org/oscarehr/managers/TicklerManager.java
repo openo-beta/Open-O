@@ -37,46 +37,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.velocity.VelocityContext;
-import org.oscarehr.PMmodule.dao.ProgramAccessDAO;
-import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.PMmodule.model.ProgramAccess;
-import org.oscarehr.PMmodule.model.ProgramProvider;
-import org.oscarehr.PMmodule.service.ProgramManager;
-import org.oscarehr.casemgmt.service.CaseManagementManager;
-import org.oscarehr.common.dao.ClinicDAO;
-import org.oscarehr.common.dao.CustomFilterDao;
-import org.oscarehr.common.dao.TicklerCategoryDao;
-import org.oscarehr.common.dao.TicklerCommentDao;
-import org.oscarehr.common.dao.TicklerDao;
-import org.oscarehr.common.dao.TicklerLinkDao;
-import org.oscarehr.common.dao.TicklerTextSuggestDao;
-import org.oscarehr.common.dao.TicklerUpdateDao;
-import org.oscarehr.common.model.Clinic;
 import org.oscarehr.common.model.CustomFilter;
 import org.oscarehr.common.model.Tickler;
 import org.oscarehr.common.model.TicklerCategory;
-import org.oscarehr.common.model.TicklerComment;
 import org.oscarehr.common.model.TicklerLink;
 import org.oscarehr.common.model.TicklerTextSuggest;
-import org.oscarehr.common.model.TicklerUpdate;
 import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import org.oscarehr.util.VelocityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-
-import oscar.OscarProperties;
-import oscar.log.LogAction;
-
-import com.quatro.model.security.Secrole;
 
 public interface TicklerManager {
 

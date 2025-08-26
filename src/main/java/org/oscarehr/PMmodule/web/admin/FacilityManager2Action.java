@@ -50,7 +50,7 @@ import org.oscarehr.util.WebUtils;
 
 import oscar.log.LogAction;
 
-import com.quatro.service.LookupManager;
+import ca.openosp.quatro.service.LookupManager;
 
 /**
  *
