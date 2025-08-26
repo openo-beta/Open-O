@@ -100,7 +100,6 @@
             <result name="list">/caisicore/issueAdminList.jsp</result>
             <result name="edit">/caisicore/issueAdminForm.jsp</result>
         </action>
-        <action name="infirm" class="ca.openosp.openo.web.Infirm2Action"/>
         <action name="login" class="ca.openosp.openo.login.Login2Action">
             <result name="provider" type="redirect">/provider/providercontrol.jsp</result>
             <result name="failure">/logout.jsp</result>

@@ -154,11 +154,12 @@
 		</jaxws:inInterceptors>
 	</jaxws:endpoint>	
 	
-	<context:component-scan base-package="oscar.login"/>
+	<context:component-scan base-package="ca.openosp.openo.login"/>
 	
 	<context:component-scan base-package="org.oscarehr.ws.rest"/>
 	<context:component-scan base-package="org.oscarehr.ws.rest.util"/>
 	<context:component-scan base-package="org.oscarehr.ws.rest.conversion"/>
+	<context:component-scan base-package="org.oscarehr.ws.oauth.util"/>
 
 	<aop:aspectj-autoproxy/>
 	

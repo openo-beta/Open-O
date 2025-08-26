@@ -221,7 +221,6 @@
         }
         session.setAttribute("infirmaryView_OscarQue", reqstr);
     %>
-    <c:import url="/infirm.do?action=showProgram"/>
 </caisi:isModuleLoad>
 
 <%
@@ -1304,11 +1303,6 @@
                                         %>
                                     </caisi:isModuleLoad>
 
-                                    <caisi:isModuleLoad moduleName="oscarClinic">
-                                        <%
-                                            session.setAttribute("infirmaryView_isOscar", "true");
-                                        %>
-                                    </caisi:isModuleLoad>
                                     <!-- caisi infirmary view extension add end ffffffffffffff-->
 
 

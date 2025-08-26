@@ -145,6 +145,6 @@
             <entry key="json" value="application/json" />
         </jaxrs:extensionMappings>
     </jaxrs:server>
-<context:component-scan base-package="oscar.login" />
+<context:component-scan base-package="ca.openosp.openo.login" />
 
 </beans>
