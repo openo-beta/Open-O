@@ -52,7 +52,7 @@
 <%@page import="org.oscarehr.managers.DrugDispensingManager" %>
 <%@page import="org.oscarehr.managers.CodingSystemManager" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.quatro.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.service.security.SecurityManager" %>
 
 <%
     oscar.oscarRx.data.RxPatientData.Patient patient = null;

@@ -3,7 +3,7 @@
 	"-//Hibernate/Hibernate Mapping DTD//EN"
 	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd" >
 <hibernate-mapping>
-	<class name="ca.openosp.quatro.model.LookupTableDefValue" table="app_lookuptable"
+	<class name="ca.openosp.model.LookupTableDefValue" table="app_lookuptable"
            mutable="false">
 		<id name="tableId" unsaved-value="0">
 			<generator class="native" />

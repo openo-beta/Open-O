@@ -28,7 +28,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.UserRoleTo1;
 import org.springframework.stereotype.Component;
 
-import ca.openosp.quatro.model.security.Secuserrole;
+import ca.openosp.model.security.Secuserrole;
 
 @Component
 public class SecuserroleConverter extends AbstractConverter<Secuserrole, UserRoleTo1> {

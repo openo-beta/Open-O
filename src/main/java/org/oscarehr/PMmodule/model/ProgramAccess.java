@@ -28,7 +28,7 @@
  import javax.persistence.Table;
  
  import java.util.Set;
- import ca.openosp.quatro.model.security.Secrole;
+ import ca.openosp.model.security.Secrole;
 
 import org.oscarehr.common.model.AbstractModel;
  

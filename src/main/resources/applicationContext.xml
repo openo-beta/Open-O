@@ -98,7 +98,7 @@
 	<bean id="allergyDao" class="org.oscarehr.common.dao.AllergyMergedDemographicDaoImpl" autowire="byName" />
 	<bean id="secRoleDao" class="org.oscarehr.common.dao.SecRoleDaoImpl" autowire="byName" />
 	<bean id="IssueDAO" class="org.oscarehr.casemgmt.dao.IssueDAOImpl" autowire="byName" />
-	<bean id="secroleDao" class="ca.openosp.quatro.dao.security.SecroleDaoImpl" autowire="byName"/>
+	<bean id="secroleDao" class="ca.openosp.dao.security.SecroleDaoImpl" autowire="byName"/>
 	<bean id="RoleProgramAccessDAO" class="org.oscarehr.casemgmt.dao.RoleProgramAccessDAOImpl" autowire="byName" />
 	<bean id="clientImageDAO" class="org.oscarehr.casemgmt.dao.ClientImageDAOImpl" autowire="byName" />
 	<bean id="programProviderDAO" class="org.oscarehr.PMmodule.dao.ProgramProviderDAOImpl" autowire="byName" />
@@ -127,9 +127,9 @@
 	
 	<bean id="rourke2009Dao" class="org.oscarehr.common.dao.forms.Rourke2009DAO" autowire="byName" />
 
-	<bean id="lookupDao" class="ca.openosp.quatro.dao.LookupDaoImpl" autowire="byName" />
+	<bean id="lookupDao" class="ca.openosp.dao.LookupDaoImpl" autowire="byName" />
 	<bean id="documentDao" class="org.oscarehr.common.dao.DocumentMergeDemographicDAOImpl" autowire="byName" />
-	<bean id="userAccessDao" class="ca.openosp.quatro.dao.security.UserAccessDaoImpl" autowire="byName" />
+	<bean id="userAccessDao" class="ca.openosp.dao.security.UserAccessDaoImpl" autowire="byName" />
 	<bean id="demographicExtDao" class="org.oscarehr.common.dao.DemographicExtDaoImpl" autowire="byName" />
 	<bean id="providerDefaultProgramDao" class="org.oscarehr.common.dao.ProviderDefaultProgramDaoImpl" autowire="byName" />
 	<bean id="providerInboxRoutingDAO" class="org.oscarehr.common.dao.ProviderInboxRoutingDaoImpl" autowire="byName"/>
@@ -168,10 +168,10 @@
 	<!-- OscarSuperManager manager provides business logic facade for jsp layer -->
 	<bean id="oscarSuperManager" class="oscar.service.OscarSuperManagerImpl" autowire="byName" init-method="init"/>
 
-	<bean id="lookupManager" class="ca.openosp.quatro.service.LookupManagerImpl" autowire="byName">
+	<bean id="lookupManager" class="ca.openosp.service.LookupManagerImpl" autowire="byName">
 		<property name="lookupDao" ref="lookupDao" />
 	</bean>
-	<bean id="userAccessManager" class="ca.openosp.quatro.service.security.UserAccessManagerImpl" autowire="byName">
+	<bean id="userAccessManager" class="ca.openosp.service.security.UserAccessManagerImpl" autowire="byName">
 		<property name="userAccessDao" ref="userAccessDao" />
 	</bean>
 
@@ -262,12 +262,12 @@
 	<bean id="clientRestrictionManager" class="org.oscarehr.PMmodule.service.ClientRestrictionManagerImpl" autowire="byName" />
 	
 	<!-- Admin Start -->
-	<bean id="secobjprivilegeDao" class="ca.openosp.quatro.dao.security.SecobjprivilegeDaoImpl" autowire="byName" />
-	<bean id="secProviderDao" class="ca.openosp.quatro.dao.security.SecProviderDaoImpl" autowire="byName" />
-	<bean id="secuserroleDao" class="ca.openosp.quatro.dao.security.SecuserroleDaoImpl" autowire="byName" />
-        <bean id="secObjectNameDao" class="ca.openosp.quatro.dao.security.SecObjectNameDaoImpl" autowire="byName"/>
+	<bean id="secobjprivilegeDao" class="ca.openosp.dao.security.SecobjprivilegeDaoImpl" autowire="byName" />
+	<bean id="secProviderDao" class="ca.openosp.dao.security.SecProviderDaoImpl" autowire="byName" />
+	<bean id="secuserroleDao" class="ca.openosp.dao.security.SecuserroleDaoImpl" autowire="byName" />
+        <bean id="secObjectNameDao" class="ca.openosp.dao.security.SecObjectNameDaoImpl" autowire="byName"/>
 
-	<bean id="rolesManager" class="ca.openosp.quatro.service.security.RolesManagerImpl" autowire="byName">
+	<bean id="rolesManager" class="ca.openosp.service.security.RolesManagerImpl" autowire="byName">
 		<property name="secroleDao" ref="secroleDao" />
 		<property name="secobjprivilegeDao" ref="secobjprivilegeDao" />
 	</bean>

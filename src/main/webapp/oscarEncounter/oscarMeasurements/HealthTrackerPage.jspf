@@ -47,7 +47,7 @@
 <%@ include file="/common/webAppContextAndSuperMgr.jsp"%>
 
 <%@ page import="java.util.*,java.net.*" %>
-<%@ page import="ca.openosp.quatro.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.service.security.SecurityManager" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

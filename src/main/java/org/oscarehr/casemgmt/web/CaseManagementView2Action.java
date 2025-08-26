@@ -23,10 +23,10 @@
 
 package org.oscarehr.casemgmt.web;
 
-import ca.openosp.quatro.service.security.SecurityManager;
+import ca.openosp.service.security.SecurityManager;
 import com.opensymphony.xwork2.ActionSupport;
-import ca.openosp.quatro.model.security.Secrole;
-import ca.openosp.quatro.service.security.RolesManager;
+import ca.openosp.model.security.Secrole;
+import ca.openosp.service.security.RolesManager;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsDateJsonBeanProcessor;

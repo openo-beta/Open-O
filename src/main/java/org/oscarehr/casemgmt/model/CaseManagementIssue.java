@@ -39,7 +39,7 @@ import org.oscarehr.PMmodule.model.ProgramProvider;
 import org.oscarehr.casemgmt.dao.RoleProgramAccessDAO;
 import org.oscarehr.util.SpringUtils;
 
-import ca.openosp.quatro.model.security.Secrole;
+import ca.openosp.model.security.Secrole;
 
 public class CaseManagementIssue extends BaseObject {
 

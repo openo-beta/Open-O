@@ -91,7 +91,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import oscar.log.LogAction;
 
-import ca.openosp.quatro.service.security.RolesManager;
+import ca.openosp.service.security.RolesManager;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

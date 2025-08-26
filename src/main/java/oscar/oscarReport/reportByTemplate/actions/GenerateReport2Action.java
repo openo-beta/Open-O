@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-import ca.openosp.quatro.service.security.SecurityManager;
+import ca.openosp.service.security.SecurityManager;
 import oscar.oscarReport.reportByTemplate.ReportFactory;
 import oscar.oscarReport.reportByTemplate.Reporter;
 

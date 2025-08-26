@@ -40,7 +40,7 @@
 -->		
 		<set name="roles" table="program_access_roles" lazy="false">
 			<key column="id" />
-			<many-to-many column="role_id" class="ca.openosp.quatro.model.security.Secrole" />
+			<many-to-many column="role_id" class="ca.openosp.model.security.Secrole" />
 		</set>
 				
 	</class>

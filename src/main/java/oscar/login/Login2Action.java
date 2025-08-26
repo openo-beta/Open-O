@@ -26,7 +26,7 @@
 package oscar.login;
 
 import com.opensymphony.xwork2.ActionSupport;
-import ca.openosp.quatro.model.security.LdapSecurity;
+import ca.openosp.model.security.LdapSecurity;
 import net.sf.json.JSONObject;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;

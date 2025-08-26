@@ -25,7 +25,7 @@
 
 package oscar.oscarEncounter.pageUtil;
 
-import ca.openosp.quatro.service.security.SecurityManager;
+import ca.openosp.service.security.SecurityManager;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.AdmissionDao;
 import org.oscarehr.common.dao.FlowsheetDao;

@@ -46,7 +46,7 @@
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
 <%@page import="oscar.OscarProperties"%>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.quatro.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.service.security.SecurityManager" %>
 
 <%
 	if(session.getValue("user") == null) response.sendRedirect("${ pageContext.request.contextPath }/logout.jsp");

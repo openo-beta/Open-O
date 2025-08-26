@@ -1898,16 +1898,16 @@
             <result name="form">page.pmm.admin.defaultroleaccess.form</result>
             <result name="rlist">/PMmodule/Admin/DefaultRoleAccess.do?method=list</result>
         </action>
-        <action name="Lookup/LookupList" class="ca.openosp.quatro.web.lookup.LookupList2Action" method="execute">
+        <action name="Lookup/LookupList" class="ca.openosp.web.lookup.LookupList2Action" method="execute">
             <result name="list">/PMmodule/lookup/LookupList.jsp</result>
         </action>
-        <action name="Lookup/LookupTableList" class="ca.openosp.quatro.web.lookup.LookupTableList2Action" method="execute">
+        <action name="Lookup/LookupTableList" class="ca.openosp.web.lookup.LookupTableList2Action" method="execute">
             <result name="list">/PMmodule/lookup/LookupTableList.jsp</result>
         </action>
-        <action name="Lookup/LookupCodeList" class="ca.openosp.quatro.web.lookup.LookupCodeList2Action" method="execute">
+        <action name="Lookup/LookupCodeList" class="ca.openosp.web.lookup.LookupCodeList2Action" method="execute">
             <result name="list">/PMmodule/lookup/LookupCodeList.jsp</result>
         </action>
-        <action name="Lookup/LookupCodeEdit" class="ca.openosp.quatro.web.lookup.LookupCodeEdit2Action" method="execute">
+        <action name="Lookup/LookupCodeEdit" class="ca.openosp.web.lookup.LookupCodeEdit2Action" method="execute">
             <result name="edit">/PMmodule/lookup/LookupCodeEdit.jsp</result>
         </action>
         <action name="PMmodule/Reports/ProgramActivityReport" class="org.oscarehr.PMmodule.web.reports.ActivityReport2Action" method="execute">

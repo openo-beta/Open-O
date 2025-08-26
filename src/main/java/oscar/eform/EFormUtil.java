@@ -25,7 +25,7 @@
 
 package oscar.eform;
 
-import ca.openosp.quatro.model.security.Secobjprivilege;
+import ca.openosp.model.security.Secobjprivilege;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;

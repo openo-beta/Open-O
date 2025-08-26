@@ -65,7 +65,7 @@
 	<bean id="allergyDao" class="org.oscarehr.common.dao.AllergyMergedDemographicDao" autowire="byName" />
 	
 	<bean id="IssueDAO" class="org.oscarehr.casemgmt.dao.IssueDAO" autowire="byName" />
-	<bean id="secroleDao" class="ca.openosp.quatro.dao.security.SecroleDao" autowire="byName"/>
+	<bean id="secroleDao" class="ca.openosp.dao.security.SecroleDao" autowire="byName"/>
 	<bean id="RoleProgramAccessDAO" class="org.oscarehr.casemgmt.dao.RoleProgramAccessDAO" autowire="byName" />
 	<bean id="clientImageDAO" class="org.oscarehr.casemgmt.dao.ClientImageDAO" autowire="byName" />
 	<bean id="programProviderDAO" class="org.oscarehr.PMmodule.dao.ProgramProviderDAO" autowire="byName" />
@@ -99,9 +99,9 @@
 	<!-- bean id="Perinatal2017Dao" class="oscar.form.dao.ONPerinatal2017Dao" autowire="byName"/ -->
 	<!-- bean id="Perinatal2017CommentDao" class="oscar.form.dao.ONPerinatal2017CommentDao" autowire="byName"/ -->
 
-	<bean id="lookupDao" class="ca.openosp.quatro.dao.LookupDao" autowire="byName" />
+	<bean id="lookupDao" class="ca.openosp.dao.LookupDao" autowire="byName" />
 	<!-- <bean id="documentDao" class="org.oscarehr.document.dao.DocumentMergeDemographicDAO" autowire="byName" /> -->
-	<bean id="userAccessDao" class="ca.openosp.quatro.dao.security.UserAccessDao" autowire="byName" />
+	<bean id="userAccessDao" class="ca.openosp.dao.security.UserAccessDao" autowire="byName" />
 	<bean id="providerInboxRoutingDAO" class="org.oscarehr.common.dao.ProviderInboxRoutingDao" autowire="byName"/>
 	<bean id="ProviderLabRoutingFavoritesDao" class="org.oscarehr.common.dao.ProviderLabRoutingFavoritesDao" autowire="byName"/>
 

@@ -24,7 +24,7 @@
 package org.oscarehr.casemgmt.web;
 
 import com.opensymphony.xwork2.ActionSupport;
-import ca.openosp.quatro.model.security.Secrole;
+import ca.openosp.model.security.Secrole;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsDateJsonBeanProcessor;
@@ -70,7 +70,6 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.lang.reflect.Array;
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;

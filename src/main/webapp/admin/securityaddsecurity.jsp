@@ -24,7 +24,7 @@
 
 --%>
 
-<%@page import="ca.openosp.quatro.web.admin.SecurityAddSecurityHelper" %>
+<%@page import="ca.openosp.web.admin.SecurityAddSecurityHelper" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");

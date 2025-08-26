@@ -27,8 +27,8 @@
 
 package org.oscarehr.casemgmt.service;
 
-import ca.openosp.quatro.model.security.Secrole;
-import ca.openosp.quatro.service.security.RolesManager;
+import ca.openosp.model.security.Secrole;
+import ca.openosp.service.security.RolesManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;

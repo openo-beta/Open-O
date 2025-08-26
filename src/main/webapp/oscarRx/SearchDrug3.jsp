@@ -51,7 +51,7 @@
 <%@page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
 <%@page import="org.oscarehr.casemgmt.model.CaseManagementNote" %>
 <%@page import="org.oscarehr.casemgmt.model.Issue" %>
-<%@ page import="ca.openosp.quatro.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.service.security.SecurityManager" %>
 
 <%
     oscar.oscarRx.pageUtil.RxSessionBean bean = null;

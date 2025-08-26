@@ -39,7 +39,7 @@
 <%@page import="org.oscarehr.casemgmt.model.CaseManagementNoteLink" %>
 <%@page import="org.oscarehr.common.dao.PartialDateDao" %>
 <%@page import="org.oscarehr.common.model.PartialDate" %>
-<%@ page import="ca.openosp.quatro.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.service.security.SecurityManager" %>
 
 <%
     String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");

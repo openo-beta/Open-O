@@ -99,7 +99,7 @@ import oscar.OscarProperties;
 import oscar.log.LogAction;
 import oscar.oscarDemographic.data.DemographicRelationship;
 
-import ca.openosp.quatro.service.LookupManager;
+import ca.openosp.service.LookupManager;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

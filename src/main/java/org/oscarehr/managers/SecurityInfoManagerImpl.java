@@ -38,10 +38,10 @@ import org.springframework.stereotype.Service;
 
 import oscar.util.OscarRoleObjectPrivilege;
 
-import ca.openosp.quatro.dao.security.SecobjprivilegeDao;
-import ca.openosp.quatro.dao.security.SecuserroleDao;
-import ca.openosp.quatro.model.security.Secobjprivilege;
-import ca.openosp.quatro.model.security.Secuserrole;
+import ca.openosp.dao.security.SecobjprivilegeDao;
+import ca.openosp.dao.security.SecuserroleDao;
+import ca.openosp.model.security.Secobjprivilege;
+import ca.openosp.model.security.Secuserrole;
 
 import javax.servlet.http.HttpSession;
 

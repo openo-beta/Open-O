@@ -25,7 +25,7 @@
 
 package oscar.oscarEncounter.pageUtil;
 
-import ca.openosp.quatro.service.security.SecurityManager;
+import ca.openosp.service.security.SecurityManager;
 import com.opensymphony.xwork2.ActionSupport;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
