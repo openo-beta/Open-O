@@ -113,12 +113,12 @@ public class FacilityManager2Action extends ActionSupport {
 
         List<FacilityDischargedClients> facilityClients = new ArrayList<FacilityDischargedClients>();
 
-        // Get program list by facility id in table room.
+        // Get program list by facility id
         for (Program program : programManager.getPrograms(id)) {
             if (program != null) {
                 // Get admission list by program id and automatic_discharge=true
 
-                List<Admission> admissions = admissionDao.getAdmissionsByProgramId(program.getId(), new Boolean(true), new Integer(-7));
+                List<Admission> admissions = admissionDao.getAdmissionsByProgramId(program.getId(), Boolean.valueOf(true), Integer.valueOf(-7));
                 if (admissions != null) {
                     Iterator<Admission> it = admissions.iterator();
                     while (it.hasNext()) {

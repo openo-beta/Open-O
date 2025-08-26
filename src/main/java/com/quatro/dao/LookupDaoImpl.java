@@ -219,7 +219,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
             rs.close();
             // filter by programId for user
             if ("USR".equals(tableId) && !Utility.IsEmpty(pCd)) {
-                List userLst = providerDao.getActiveProviders(new Integer(pCd));
+                List userLst = providerDao.getActiveProviders(Integer.valueOf(pCd));
                 ArrayList<LookupCodeValue> newLst = new ArrayList<LookupCodeValue>();
                 for (int n = 0; n < userLst.size(); n++) {
                     SecProvider sp = (SecProvider) userLst.get(n);

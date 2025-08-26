@@ -114,9 +114,6 @@ public class EctDisplayTickler2Action extends EctDisplayAction {
         return true;
     }
 
-    private String encode(EctSessionBean bean) {
-        return encode(bean.patientLastName + "," + bean.patientFirstName);
-    }
 
     private String encode(String str) {
         try {

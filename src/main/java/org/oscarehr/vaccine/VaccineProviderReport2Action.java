@@ -67,7 +67,7 @@ public class VaccineProviderReport2Action extends ActionSupport {
      * Client Name
      * DOB
      * Health Card
-     * List of current Bed and Service programs (+contact info)
+     * List of current Service programs (+contact info)
      * list of current issues
      * list of medications
      *

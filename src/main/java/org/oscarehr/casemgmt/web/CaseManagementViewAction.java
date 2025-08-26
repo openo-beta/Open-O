@@ -189,17 +189,6 @@ public class CaseManagementViewAction {
         }
     }
 
-    private void sortIssues(ArrayList<CheckBoxBean> checkBoxBeanList) {
-        Comparator<CheckBoxBean> cbbComparator = new Comparator<CheckBoxBean>() {
-            public int compare(CheckBoxBean o1, CheckBoxBean o2) {
-                if (o1.getIssueDisplay() != null && o2.getIssueDisplay() != null && o1.getIssueDisplay().code != null) {
-                    return (o1.getIssueDisplay().code.compareTo(o2.getIssueDisplay().code));
-                } else return (0);
-            }
-        };
-
-        Collections.sort(checkBoxBeanList, cbbComparator);
-    }
 
     public void sortIssuesByOrderId(ArrayList<CheckBoxBean> checkBoxBeanList) {
         Comparator<CheckBoxBean> cbbComparator = new Comparator<CheckBoxBean>() {
@@ -213,111 +202,11 @@ public class CaseManagementViewAction {
         Collections.sort(checkBoxBeanList, cbbComparator);
     }
 
-    private void fetchInvoices(ArrayList<NoteDisplay> notes, String demographicNo) {
-        List<BillingONCHeader1> bills = billingONCHeader1Dao.getInvoices(Integer.parseInt(demographicNo), MAX_INVOICES);
 
-        for (BillingONCHeader1 h1 : bills) {
-            notes.add(new NoteDisplayNonNote(h1));
-        }
-    }
 
-    private List<CaseManagementNote> applyRoleFilter(List<CaseManagementNote> notes, String[] roleId) {
 
-        // if no filter return everything
-        if (Arrays.binarySearch(roleId, "a") >= 0) return notes;
 
-        List<CaseManagementNote> filteredNotes = new ArrayList<CaseManagementNote>();
 
-        for (Iterator<CaseManagementNote> iter = notes.listIterator(); iter.hasNext(); ) {
-            CaseManagementNote note = iter.next();
-
-            if (Arrays.binarySearch(roleId, note.getReporter_caisi_role()) >= 0) filteredNotes.add(note);
-        }
-
-        return filteredNotes;
-    }
-
-    private List<CaseManagementNote> applyIssueFilter(List<CaseManagementNote> notes, String[] issueId) {
-
-        // if no filter return everything
-        if (Arrays.binarySearch(issueId, "a") >= 0) return notes;
-
-        boolean none = (Arrays.binarySearch(issueId, "n") >= 0) ? true : false;
-
-        List<CaseManagementNote> filteredNotes = new ArrayList<CaseManagementNote>();
-
-        for (Iterator<CaseManagementNote> iter = notes.listIterator(); iter.hasNext(); ) {
-            CaseManagementNote note = iter.next();
-            List<CaseManagementIssue> issues = cmeIssueNotesDao.getNoteIssues((Integer.valueOf(note.getId().toString())));
-            if (issues.size() == 0 && none) {
-                filteredNotes.add(note);
-            } else {
-                for (CaseManagementIssue issue : issues) {
-                    if (Arrays.binarySearch(issueId, String.valueOf(issue.getId())) >= 0) {
-                        filteredNotes.add(note);
-                        break;
-                    }
-                }
-            }
-        }
-
-        return filteredNotes;
-    }
-
-    private List<CaseManagementNote> manageLockedNotes(List<CaseManagementNote> notes, boolean removeLockedNotes, Map<Long, Boolean> unlockedNotesMap) {
-        List<CaseManagementNote> notesNoLocked = new ArrayList<CaseManagementNote>();
-        for (CaseManagementNote note : notes) {
-            if (note.isLocked()) {
-                if (unlockedNotesMap.get(note.getId()) != null) {
-                    note.setLocked(false);
-                }
-            }
-            if (removeLockedNotes && !note.isLocked()) {
-                notesNoLocked.add(note);
-            }
-        }
-        if (removeLockedNotes) {
-            return notesNoLocked;
-        }
-        return notes;
-    }
-
-    private List<CaseManagementNote> applyProviderFilters(List<CaseManagementNote> notes, String[] providerNo) {
-        boolean filter = false;
-        List<CaseManagementNote> filteredNotes = new ArrayList<CaseManagementNote>();
-
-        if (providerNo != null && Arrays.binarySearch(providerNo, "a") < 0) {
-            filter = true;
-        }
-
-        for (Iterator<CaseManagementNote> iter = notes.iterator(); iter.hasNext(); ) {
-            CaseManagementNote note = iter.next();
-            if (!filter) {
-                // no filter, add all
-                filteredNotes.add(note);
-
-            } else {
-                if (Arrays.binarySearch(providerNo, note.getProviderNo()) >= 0)
-                    // correct provider
-                    filteredNotes.add(note);
-            }
-        }
-
-        return filteredNotes;
-    }
-
-    private static boolean hasRole(List<SecUserRole> roles, String role) {
-        if (roles == null) return (false);
-
-        logger.debug("Note Role : " + role);
-
-        for (SecUserRole roleTmp : roles) {
-            logger.debug("Provider Roles : " + roleTmp.getRoleName());
-            if (roleTmp.getRoleName().equals(role)) return (true);
-        }
-
-        return (false);
-    }
 
     public static boolean hasSameAttributes(IssueDisplay issueDisplay1, IssueDisplay issueDisplay2) {
         if (issueDisplay1.code != null && !issueDisplay1.code.equals(issueDisplay2.code)) return (false);
@@ -330,41 +219,6 @@ public class CaseManagementViewAction {
         return (true);
     }
 
-    private IssueDisplay getIssueToDisplay(LoggedInInfo loggedInInfo, CachedDemographicIssue cachedDemographicIssue) throws MalformedURLException {
-        IssueDisplay issueDisplay = new IssueDisplay();
-
-        issueDisplay.writeAccess = true;
-        issueDisplay.acute = cachedDemographicIssue.isAcute() ? "acute" : "chronic";
-        issueDisplay.certain = cachedDemographicIssue.isCertain() ? "certain" : "uncertain";
-        issueDisplay.code = cachedDemographicIssue.getFacilityDemographicIssuePk().getIssueCode();
-        issueDisplay.codeType = "ICD10"; // temp hard coded hack till issue is resolved
-
-        Issue issue = null;
-        // temp hard coded icd hack till issue is resolved
-        if ("ICD10".equalsIgnoreCase(OscarProperties.getInstance().getProperty("COMMUNITY_ISSUE_CODETYPE").toUpperCase())) {
-            issue = issueDao.findIssueByCode(cachedDemographicIssue.getFacilityDemographicIssuePk().getIssueCode());
-        }
-
-        if (issue != null) {
-            issueDisplay.description = issue.getDescription();
-            issueDisplay.priority = issue.getPriority();
-            issueDisplay.role = issue.getRole();
-        } else {
-            issueDisplay.description = "Not Available";
-            issueDisplay.priority = "Not Available";
-            issueDisplay.role = "Not Available";
-        }
-
-        Integer remoteFacilityId = cachedDemographicIssue.getFacilityDemographicIssuePk().getIntegratorFacilityId();
-        CachedFacility remoteFacility = CaisiIntegratorManager.getRemoteFacility(loggedInInfo, loggedInInfo.getCurrentFacility(), remoteFacilityId);
-        if (remoteFacility != null) issueDisplay.location = "remote: " + remoteFacility.getName();
-        else issueDisplay.location = "remote: name unavailable";
-
-        issueDisplay.major = cachedDemographicIssue.isMajor() ? "major" : "not major";
-        issueDisplay.resolved = cachedDemographicIssue.isResolved() ? "resolved" : "unresolved";
-
-        return (issueDisplay);
-    }
 
     protected void addLocalIssues(String providerNo, ArrayList<CheckBoxBean> checkBoxBeanList, Integer demographicNo, boolean hideInactiveIssues, Integer programId) {
         List<CaseManagementIssue> localIssues = caseManagementManager.getIssues(demographicNo, hideInactiveIssues ? false : null);
@@ -407,13 +261,6 @@ public class CaseManagementViewAction {
         return issueDisplay;
     }
 
-    private static boolean hasRole(String[] roleId, String role) {
-        for (String s : roleId) {
-            if (s.equals(role)) return (true);
-        }
-
-        return (false);
-    }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean hasPrivilege(String objectName, String roleName) {

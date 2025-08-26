@@ -75,10 +75,10 @@ public class CreateBillingReport2Action extends ActionSupport {
         String startDate = this.getXml_vdate();
         String endDate = this.getXml_appointment_date();
         String repDef = docFmt + "_" + this.reportCfg.getProperty(repType);
-        boolean showICBC = new Boolean(this.getShowICBC()).booleanValue();
-        boolean showMSP = new Boolean(this.getShowMSP()).booleanValue();
-        boolean showPriv = new Boolean(this.getShowPRIV()).booleanValue();
-        boolean showWCB = new Boolean(this.getShowWCB()).booleanValue();
+        boolean showICBC = Boolean.valueOf(this.getShowICBC()).booleanValue();
+        boolean showMSP = Boolean.valueOf(this.getShowMSP()).booleanValue();
+        boolean showPriv = Boolean.valueOf(this.getShowPRIV()).booleanValue();
+        boolean showWCB = Boolean.valueOf(this.getShowWCB()).booleanValue();
         String insurers = createInsurerList(showICBC, showMSP, showPriv, showWCB);
 
         //Map of insurer types to be used in bill search criteria

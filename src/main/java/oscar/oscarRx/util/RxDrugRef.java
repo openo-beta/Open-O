@@ -168,7 +168,7 @@ public class RxDrugRef {
     public Vector interaction(Vector atclist, int minimum_significance) {
         Vector params = new Vector();
         params.addElement(atclist);
-        params.addElement(new Integer(minimum_significance));
+        params.addElement(Integer.valueOf(minimum_significance));
         Vector vec = (Vector) callWebservice("interaction", params);
         return vec;
     }
@@ -176,7 +176,7 @@ public class RxDrugRef {
     public Vector interactionByRegionalIdentifier(List regionalIdentifierList, int minimum_significance) {
         Vector params = new Vector();
         params.addElement(new Vector(regionalIdentifierList));
-        params.addElement(new Integer(minimum_significance));
+        params.addElement(Integer.valueOf(minimum_significance));
         Vector vec = (Vector) callWebservice("interaction_by_regional_identifier", params);
         return vec;
     }
@@ -260,7 +260,7 @@ public class RxDrugRef {
     public Vector interaction_by_drugnames(Vector druglist, int minimum_significance) {
         Vector params = new Vector();
         params.addElement(druglist);
-        params.addElement(new Integer(minimum_significance));
+        params.addElement(Integer.valueOf(minimum_significance));
         Vector vec = (Vector) callWebservice("interaction_by_drugnames", params);
         return vec;
     }
@@ -533,14 +533,14 @@ public class RxDrugRef {
 
     public Hashtable tagCreatorEx(int sources, String languages, String countries, int authors, Date modified_after, boolean return_tags) {
         Hashtable retHash = new Hashtable();
-        retHash.put("source", new Integer(0));
-        retHash.put("sources", new Integer(sources));
+        retHash.put("source", Integer.valueOf(0));
+        retHash.put("sources", Integer.valueOf(sources));
         retHash.put("language", "");
-        retHash.put("languages", new Integer(languages));
+        retHash.put("languages", Integer.valueOf(languages));
         retHash.put("country", "");
-        retHash.put("countries", new Integer(countries));
-        retHash.put("author", new Integer(0));
-        retHash.put("authors", new Integer(authors));
+        retHash.put("countries", Integer.valueOf(countries));
+        retHash.put("author", Integer.valueOf(0));
+        retHash.put("authors", Integer.valueOf(authors));
         try {
             retHash.put("modified_after", new SimpleDateFormat("yyyy-MM-dd").parse(modified_after.toString()));
         } catch (Exception e) {
@@ -552,14 +552,14 @@ public class RxDrugRef {
 
     public Hashtable tagCreatorEx(int sources, String languages, String countries, int authors, boolean return_tags) {
         Hashtable retHash = new Hashtable();
-        retHash.put("source", new Integer(0));
-        retHash.put("sources", new Integer(sources));
+        retHash.put("source", Integer.valueOf(0));
+        retHash.put("sources", Integer.valueOf(sources));
         retHash.put("language", "");
-        retHash.put("languages", new Integer(languages));
+        retHash.put("languages", Integer.valueOf(languages));
         retHash.put("country", "");
-        retHash.put("countries", new Integer(countries));
-        retHash.put("author", new Integer(0));
-        retHash.put("authors", new Integer(authors));
+        retHash.put("countries", Integer.valueOf(countries));
+        retHash.put("author", Integer.valueOf(0));
+        retHash.put("authors", Integer.valueOf(authors));
         retHash.put("return_tags", Boolean.toString(return_tags));      //If true, the values returned by a query will include applicable tag bitstrings for each returned value (will slow down query considerably, but allows client-side sub-filtering)
         return retHash;
     }
@@ -578,10 +578,10 @@ public class RxDrugRef {
      */
     public Hashtable tagCreator(int source, String language, String country, int author, Date modified_after, boolean return_tags) {
         Hashtable retHash = new Hashtable();
-        retHash.put("source", new Integer(source));
+        retHash.put("source", Integer.valueOf(source));
         retHash.put("language", language);
         retHash.put("country", country);
-        retHash.put("author", new Integer(author));
+        retHash.put("author", Integer.valueOf(author));
         try {
             retHash.put("modified_after", new SimpleDateFormat("yyyy-MM-dd").parse(modified_after.toString()));
         } catch (Exception e) {
@@ -604,10 +604,10 @@ public class RxDrugRef {
      */
     public Hashtable tagCreator(int source, String language, String country, int author, boolean return_tags) {
         Hashtable retHash = new Hashtable();
-        retHash.put("source", new Integer(source));
+        retHash.put("source", Integer.valueOf(source));
         retHash.put("language", language);
         retHash.put("country", country);
-        retHash.put("author", new Integer(author));
+        retHash.put("author", Integer.valueOf(author));
         retHash.put("return_tags", Boolean.toString(return_tags));      //If true, the values returned by a query will include applicable tag bitstrings for each returned value (will slow down query considerably, but allows client-side sub-filtering)
         return retHash;
     }

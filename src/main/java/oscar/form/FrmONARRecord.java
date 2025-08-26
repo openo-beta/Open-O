@@ -78,23 +78,5 @@ public class FrmONARRecord extends FrmRecord {
         return ((new FrmRecordHelp()).createActionURL(where, action, demoId, formId));
     }
 
-    public boolean isSendToPing(String demoNo) throws SQLException {
-        boolean ret = false;
-        if ("yes".equalsIgnoreCase(OscarProperties.getInstance().getProperty("PHR", ""))) {
-
-            String demographic_no = demoNo;
-
-            String sql = "select email from demographic where demographic_no=" + demographic_no;
-            ResultSet rs = DBHandler.GetSQL(sql);
-            if (rs.next()) {
-                if (oscar.Misc.getString(rs, "email") != null && oscar.Misc.getString(rs, "email").length() > 5
-                        && oscar.Misc.getString(rs, "email").matches(".*@.*"))
-                    ret = true;
-            }
-
-            rs.close();
-        }
-        return ret;
-    }
 
 }

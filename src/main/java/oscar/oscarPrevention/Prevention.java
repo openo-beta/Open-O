@@ -389,7 +389,7 @@ public class Prevention {
             diffDays = timeDiff / (24 * 60 * 60 * 1000);
         } catch (Exception e) {
         }
-        return new Long(diffDays).intValue();
+        return Long.valueOf(diffDays).intValue();
     }
 
     public static void main(String[] args) {

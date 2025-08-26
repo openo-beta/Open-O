@@ -64,10 +64,6 @@ import java.util.regex.Pattern;
  */
 
 public interface DemographicManager {
-    public static final String PHR_VERIFICATION_LEVEL_3 = "+3";
-    public static final String PHR_VERIFICATION_LEVEL_2 = "+2";
-    public static final String PHR_VERIFICATION_LEVEL_1 = "+1";
-
 
     public Demographic getDemographic(LoggedInInfo loggedInInfo, Integer demographicId)
             throws PatientDirectiveException;
@@ -80,7 +76,6 @@ public interface DemographicManager {
 
     public String getDemographicEmail(LoggedInInfo loggedInInfo, Integer demographicId);
 
-    public Demographic getDemographicByMyOscarUserName(LoggedInInfo loggedInInfo, String myOscarUserName);
 
     public List<Demographic> searchDemographicByName(LoggedInInfo loggedInInfo, String searchString, int startIndex,
                                                      int itemsToReturn);
@@ -160,8 +155,6 @@ public interface DemographicManager {
     public List<Integer> getAdmittedDemographicIdsByProgramAndProvider(LoggedInInfo loggedInInfo, Integer programId,
                                                                        String providerNo);
 
-    public List<Integer> getDemographicIdsWithMyOscarAccounts(LoggedInInfo loggedInInfo,
-                                                              Integer startDemographicIdExclusive, int itemsToReturn);
 
     public List<Demographic> getDemographics(LoggedInInfo loggedInInfo, List<Integer> demographicIds);
 

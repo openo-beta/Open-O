@@ -234,40 +234,20 @@
                 var data = "";
                 new Ajax.Request(url, {
                     method: 'post', parameters: data, onSuccess: function (transport) {
-                        updateCurrentInteractions();
+                        parent.document.getElementById('rxText').innerHTML = "";//make pending prescriptions disappear.
+                        parent.document.getElementById('searchString').focus();
                     }
                 });
-                parent.document.getElementById('rxText').innerHTML = "";//make pending prescriptions disappear.
-                parent.document.getElementById('searchString').focus();
             }
 
             function resetReRxDrugList() {
                 var url = "<c:out value="${ctx}"/>" + "/oscarRx/deleteRx.do?parameterValue=clearReRxDrugList";
                 var data = "";
                 new Ajax.Request(url, {
-                    method: 'post', parameters: data, onSuccess: function (transport) {
-                    }
+                    method: 'post', parameters: data
                 });
             }
 
-            function updateCurrentInteractions() {
-                new Ajax.Request("GetmyDrugrefInfo.do?method=findInteractingDrugList", {
-                    method: 'get', onSuccess: function (transport) {
-                        new Ajax.Request("UpdateInteractingDrugs.jsp", {
-                            method: 'get', onSuccess: function (transport) {
-                                var str = transport.responseText;
-                                str = str.replace('<script type="text/javascript">', '');
-                                str = str.replace(/<\/script>/, '');
-                                eval(str);
-                                //oscarLog("str="+str);
-                                <oscar:oscarPropertiesCheck property="MYDRUGREF_DS" value="yes">
-                                callReplacementWebService("GetmyDrugrefInfo.do?method=view", 'interactionsRxMyD');
-                                </oscar:oscarPropertiesCheck>
-                            }
-                        });
-                    }
-                });
-            }
 
             function onPrint2(method, scriptId) {
                 var useSC = false;
@@ -867,7 +847,8 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                         </tr>
 
                                         <%}%>
-                                        <% if (OscarProperties.getInstance().isRxSignatureEnabled() && !OscarProperties.getInstance().getBooleanProperty("signature_tablet", "yes")) { %>
+                                        <% if (OscarProperties.getInstance().isRxSignatureEnabled()) { %>
+                                        <%-- Topaz signature pad check removed - HTML5 signature is now standard --%>
 						<% if (bean.getStashSize() == 0 || Objects.isNull(bean.getStashItem(0).getDigitalSignatureId())) { %>
                                         <tr>
                                             <td colspan=2 style="font-weight: bold"><span>Signature</span></td>

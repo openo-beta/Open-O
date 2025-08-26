@@ -228,9 +228,9 @@ public class ClientManagerImpl implements ClientManager {
         }
 
         saveClientReferral(referral);
-        List<JointAdmission> dependents = getDependents(new Long(referral.getClientId()).intValue());
+        List<JointAdmission> dependents = getDependents(Long.valueOf(referral.getClientId()).intValue());
         for (JointAdmission jadm : dependents) {
-            referral.setClientId(new Long(jadm.getClientId()));
+            referral.setClientId(Long.valueOf(jadm.getClientId()));
             saveClientReferral(referral);
         }
 

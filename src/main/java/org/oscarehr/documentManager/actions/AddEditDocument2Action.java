@@ -473,16 +473,6 @@ this.getSource(), 'A', this.getObservationDate(), reviewerId, reviewDateTime, th
         return "successEdit";
     }
 
-    private File writeLocalFile(File docFile, String fileName) throws Exception {
-        InputStream fis = null;
-        File file = null;
-        try {
-            file = writeLocalFile(Files.newInputStream(docFile.toPath()), fileName);
-        } finally {
-            if (fis != null) fis.close();
-        }
-        return file;
-    }
 
     public static File writeLocalFile(InputStream is, String fileName) throws Exception {
         FileOutputStream fos = null;

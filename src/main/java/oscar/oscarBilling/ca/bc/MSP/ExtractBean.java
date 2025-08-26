@@ -297,10 +297,6 @@ public class ExtractBean extends Object implements Serializable {
      *
      * @param newInvNo String
      */
-    private void createBillArchive(String newInvNo) {
-        BillingHistoryDAO dao = new BillingHistoryDAO();
-        dao.createBillingHistoryArchive(newInvNo);
-    }
 
     public void setLog(String x, String logValue) {
         if (eFlag.equals("1")) {

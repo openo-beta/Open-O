@@ -73,24 +73,6 @@ public final class FrmPdfGraphicGrowthChart extends FrmPdfGraphic {
         fEndY = isDigitNum(str) ? Float.parseFloat(str) : 0f;
     }
 
-    private boolean isDigit(String str) {
-        boolean ret = true;
-        if (str == null || str.length() == 0)
-            return false;
-
-        int N = str.length();
-        StringBuilder sb = new StringBuilder(N);
-        for (int i = 0; i < N; i++) {
-            char c = str.charAt(i);
-            if (c >= '0' && c <= '9')
-                continue;
-            else {
-                ret = false;
-                break;
-            }
-        }
-        return ret;
-    }
 
     private boolean isDigitNum(String str) {
         boolean ret = true;

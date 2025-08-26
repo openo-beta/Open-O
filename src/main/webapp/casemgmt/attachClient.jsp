@@ -167,21 +167,6 @@
                                                 onclick="popupHelp('soundex')">?</a></th>
                         <td><input type="checkbox" name="criteria.searchUsingSoundex"/></td>
                     </tr>
-                    <%--
-                        <tr>
-                            <th>Bed Program</th>
-                              <td>
-                                <select name="criteria.bedProgramId" id="criteria.bedProgramId">
-                                    <option value="">
-                                <c:forEach var="allBedProgram" items="${allBedPrograms}">
-                                    <option value="${allBedProgram.id}">
-                                        ${allBedProgram.name}
-                                    </option>
-                                </c:forEach>
-                                </select>
-                              </td>
-                        </tr>
-                         --%>
                     <tr>
                         <th>Admission Date From</th>
                         <td><input type="checkbox" name="criteria.dateFrom" size="12" /><br/><font size="1">yyyy/mm/dd</font>
@@ -254,7 +239,7 @@
             <display:column sortable="true" title="Chart No" sortProperty="chartNo">
                 <c:out value="${client.chartNo}"/>
             </display:column>
-            <display:column sortable="true" title="Admitted to Bed Program">
+            <display:column sortable="true" title="Admitted to Program">
                 <c:choose>
                     <c:when test="${client.activeCount == 0}">No</c:when>
                     <c:otherwise>Yes</c:otherwise>

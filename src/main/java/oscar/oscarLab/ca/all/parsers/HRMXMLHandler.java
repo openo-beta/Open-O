@@ -95,40 +95,6 @@ public class HRMXMLHandler implements MessageHandler {
 
     }
 
-    private ArrayList<String> getMatchingHL7Labs(String hl7Body) {
-        Base64 base64 = new Base64(0);
-        ArrayList<String> ret = new ArrayList<String>();
-        int monthsBetween = 0;
-        Hl7TextInfoDao hl7TextInfoDao = (Hl7TextInfoDao) SpringUtils.getBean(Hl7TextInfoDao.class);
-
-        try {
-            List<Hl7TextMessageInfo> matchingLabs = hl7TextInfoDao.getMatchingLabs(hl7Body);
-            for (Hl7TextMessageInfo l : matchingLabs) {
-                Date dateA = UtilDateUtilities.StringToDate(l.labDate_A, "yyyy-MM-dd hh:mm:ss");
-                Date dateB = UtilDateUtilities.StringToDate(l.labDate_B, "yyyy-MM-dd hh:mm:ss");
-                if (dateA.before(dateB)) {
-                    monthsBetween = UtilDateUtilities.getNumMonths(dateA, dateB);
-                } else {
-                    monthsBetween = UtilDateUtilities.getNumMonths(dateB, dateA);
-                }
-                if (monthsBetween < 4) {
-                    ret.add(new String(base64.decode(l.message.getBytes("ASCII")), "ASCII"));
-                }
-                if (l.lab_no_A == l.lab_no_B)
-                    break;
-            }
-
-
-        } catch (Exception e) {
-            logger.error("Exception in HL7 getMatchingLabs: ", e);
-        }
-
-        // if there have been no labs added to the database yet just return this
-        // lab
-        if (ret.size() == 0)
-            ret.add(hl7Body);
-        return ret;
-    }
 
     public String getMsgType() {
         return ("HRMXML");
@@ -233,10 +199,6 @@ public class HRMXMLHandler implements MessageHandler {
         return ret;
     }
 
-    private boolean isReport(int i, int j) {
-        String obxName = getOBXName(i, j, true);
-        return obxName.indexOf("REPORT") != -1;
-    }
 
     public String getOBXResult(int i, int j) {
 
@@ -422,56 +384,8 @@ public class HRMXMLHandler implements MessageHandler {
         return "";
     }
 
-    private String getFullDocName(ca.uhn.hl7v2.model.v25.datatype.XCN xcn) {
-        String docName = "";
 
-        if (xcn.getPrefixEgDR().getValue() != null) docName = xcn.getPrefixEgDR().getValue();
 
-        if (xcn.getGivenName().getValue() != null) {
-            if (docName.equals("")) docName = xcn.getGivenName().getValue();
-            else docName = docName + " " + xcn.getGivenName().getValue();
-
-        }
-        if (xcn.getSecondAndFurtherGivenNamesOrInitialsThereof().getValue() != null) {
-            if (docName.equals("")) docName = xcn.getSecondAndFurtherGivenNamesOrInitialsThereof().getValue();
-            else docName = docName + " " + xcn.getSecondAndFurtherGivenNamesOrInitialsThereof().getValue();
-        }
-        if (xcn.getFamilyName().getSurname().getValue() != null) {
-            if (docName.equals("")) docName = xcn.getFamilyName().getSurname().getValue();
-            else docName = docName + " " + xcn.getFamilyName().getSurname().getValue();
-
-        }
-        if (xcn.getSuffixEgJRorIII().getValue() != null) {
-            if (docName.equals("")) docName = xcn.getSuffixEgJRorIII().getValue();
-            else docName = docName + " " + xcn.getSuffixEgJRorIII().getValue();
-        }
-        if (xcn.getDegreeEgMD().getValue() != null) {
-            if (docName.equals("")) docName = xcn.getDegreeEgMD().getValue();
-            else docName = docName + " " + xcn.getDegreeEgMD().getValue();
-        }
-
-        return docName;
-    }
-
-    private String formatDateTime(String plain) {
-        if (plain == null || plain.trim().equals("")) return "";
-
-        String dateFormat = "yyyyMMddHHmmss";
-        dateFormat = dateFormat.substring(0, plain.length());
-        String stringFormat = "yyyy-MM-dd HH:mm:ss";
-        stringFormat = stringFormat.substring(0, stringFormat.lastIndexOf(dateFormat.charAt(dateFormat.length() - 1)) + 1);
-
-        Date date = UtilDateUtilities.StringToDate(plain, dateFormat);
-        return UtilDateUtilities.DateToString(date, stringFormat);
-    }
-
-    private String getString(String retrieve) {
-        if (retrieve != null) {
-            return (retrieve.trim());
-        } else {
-            return "";
-        }
-    }
 
     private String getFormattedDate(XMLGregorianCalendar date, boolean omitTime) {
         if (date == null) {

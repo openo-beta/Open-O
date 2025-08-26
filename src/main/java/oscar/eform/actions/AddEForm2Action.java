@@ -254,7 +254,7 @@ public class AddEForm2Action extends ActionSupport {
 
             String fdid = eformDataManager.saveEformData(loggedInInfo, curForm) + "";
 
-            EFormUtil.addEFormValues(paramNames, paramValues, new Integer(fdid), new Integer(fid), new Integer(demographic_no)); //adds parsed values
+            EFormUtil.addEFormValues(paramNames, paramValues, Integer.valueOf(fdid), Integer.valueOf(fid), Integer.valueOf(demographic_no)); //adds parsed values
 
             attachToEForm(loggedInInfo, attachedEForms, attachedDocuments, attachedLabs, attachedHRMDocuments, attachedForms, fdid, demographic_no, providerNo);
 

@@ -104,23 +104,4 @@ public class MDSHandler implements MessageHandler {
 
     }
 
-    private boolean isDuplicate(LoggedInInfo loggedInInfo, String msg) {
-        //OLIS requirements - need to see if this is a duplicate
-        oscar.oscarLab.ca.all.parsers.MessageHandler h = Factory.getHandler("MDS", msg);
-        //if final
-        if (h.getOrderStatus().equals("F")) {
-            String fullAcc = h.getAccessionNum();
-
-            //do we have this?
-            List<Hl7TextInfo> dupResults = hl7TextInfoDao.searchByAccessionNumber(fullAcc);
-
-            if (!dupResults.isEmpty()) {
-                //if(h.getHealthNum().equals(dupResult.getHealthNumber())) {
-                OscarAuditLogger.getInstance().log(loggedInInfo, "Lab", "Skip", "Duplicate lab skipped - accession " + fullAcc + "\n" + msg);
-                return true;
-                //}
-            }
-        }
-        return false;
-    }
 }

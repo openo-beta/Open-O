@@ -42,6 +42,7 @@ import oscar.util.ConversionUtils;
 /**
  * @deprecated use MeasurementTypeDao instead (2012-01-23)
  */
+@Deprecated
 public class MeasurementTypes {
 
     private static Logger log = MiscUtils.getLogger();

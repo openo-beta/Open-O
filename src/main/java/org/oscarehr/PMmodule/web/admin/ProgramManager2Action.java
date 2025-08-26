@@ -78,11 +78,9 @@ import org.oscarehr.caisi_integrator.ws.ReferralWs;
 import org.oscarehr.common.dao.FacilityDao;
 import org.oscarehr.common.dao.FunctionalCentreDao;
 import org.oscarehr.common.model.Admission;
-import org.oscarehr.common.model.BedCheckTime;
 import org.oscarehr.common.model.Facility;
 import org.oscarehr.common.model.FunctionalCentre;
 import org.oscarehr.common.model.Tickler;
-import org.oscarehr.managers.BedCheckTimeManager;
 import org.oscarehr.managers.TicklerManager;
 import org.oscarehr.match.IMatchManager;
 import org.oscarehr.match.MatchManager;
@@ -110,7 +108,6 @@ public class ProgramManager2Action extends ActionSupport {
     private ClientRestrictionManager clientRestrictionManager = SpringUtils.getBean(ClientRestrictionManager.class);
     private FacilityDao facilityDao = SpringUtils.getBean(FacilityDao.class);
     private AdmissionManager admissionManager = SpringUtils.getBean(AdmissionManager.class);
-    private BedCheckTimeManager bedCheckTimeManager = SpringUtils.getBean(BedCheckTimeManager.class);
     private ProgramManager programManager = SpringUtils.getBean(ProgramManager.class);
     private ProviderManager providerManager = SpringUtils.getBean(ProviderManager.class);
     private ProgramQueueManager programQueueManager = SpringUtils.getBean(ProgramQueueManager.class);
@@ -140,7 +137,6 @@ public class ProgramManager2Action extends ActionSupport {
     private ProgramProvider provider;
     private Admission admission;
     private ProgramAccess access;
-    private BedCheckTime[] bedCheckTimes;
     private ProgramFunctionalUser function;
     private ProgramQueue queue;
     private ProgramClientStatus client_status;
@@ -220,13 +216,6 @@ public class ProgramManager2Action extends ActionSupport {
         this.access = access;
     }
 
-    public BedCheckTime[] getBedCheckTimes() {
-        return bedCheckTimes;
-    }
-
-    public void setBedCheckTimes(BedCheckTime[] bedCheckTimes) {
-        this.bedCheckTimes = bedCheckTimes;
-    }
 
     public String execute() {
         String method = request.getParameter("method");
@@ -236,8 +225,6 @@ public class ProgramManager2Action extends ActionSupport {
             return programSignatures();
         } else if ("add".equals(method)) {
             return add();
-        } else if ("addBedCheckTime".equals(method)) {
-            return addBedCheckTime();
         } else if ("assign_role".equals(method)) {
             return assign_role();
         } else if ("assign_team".equals(method)) {
@@ -262,8 +249,6 @@ public class ProgramManager2Action extends ActionSupport {
             return edit_provider();
         } else if ("edit_team".equals(method)) {
             return edit_team();
-        } else if ("removeBedCheckTime".equals(method)) {
-            return removeBedCheckTime();
         } else if ("remove_queue".equals(method)) {
             return remove_queue();
         } else if ("remove_remote_queue".equals(method)) {
@@ -374,7 +359,6 @@ public class ProgramManager2Action extends ActionSupport {
             request.setAttribute("functionalCentres", functionalCentres);
 
             // request.setAttribute("programFirstSignature",programManager.getProgramFirstSignature(Integer.valueOf(id)));
-            this.setBedCheckTimes(bedCheckTimeManager.getBedCheckTimesByProgram(Integer.valueOf(id)));
 
             // programForm.set("programFirstSignature",programManager.getProgramFirstSignature(Integer.valueOf(id)));
 
@@ -411,15 +395,6 @@ public class ProgramManager2Action extends ActionSupport {
         return "edit";
     }
 
-    public String addBedCheckTime() {
-        String programId = request.getParameter("id");
-        String addTime = request.getParameter("addTime");
-
-        BedCheckTime bedCheckTime = BedCheckTime.create(Integer.valueOf(programId), addTime);
-        bedCheckTimeManager.addBedCheckTime(bedCheckTime);
-
-        return edit();
-    }
 
     public String assign_role() {
 
@@ -664,14 +639,6 @@ public class ProgramManager2Action extends ActionSupport {
         return "edit";
     }
 
-    public String removeBedCheckTime() {
-
-        String removeId = request.getParameter("removeId");
-
-        bedCheckTimeManager.removeBedCheckTime(Integer.valueOf(removeId));
-
-        return edit();
-    }
 
     public String remove_queue() {
         Program program = this.getProgram();
@@ -810,8 +777,6 @@ public class ProgramManager2Action extends ActionSupport {
         }
         if (request.getParameter("program.transgender") == null) program.setTransgender(false);
         if (request.getParameter("program.firstNation") == null) program.setFirstNation(false);
-        if (request.getParameter("program.bedProgramAffiliated") == null) program.setBedProgramAffiliated(false);
-        if (request.getParameter("program.bedProgramLinkId") == null) program.setBedProgramLinkId(0);
         if (request.getParameter("program.alcohol") == null) program.setAlcohol(false);
         if (request.getParameter("program.physicalHealth") == null) program.setPhysicalHealth(false);
         if (request.getParameter("program.mentalHealth") == null) program.setMentalHealth(false);
@@ -842,7 +807,7 @@ public class ProgramManager2Action extends ActionSupport {
             }
         }
 
-        if (!program.getType().equalsIgnoreCase("bed") && program.isHoldingTank()) {
+        if (program.isHoldingTank()) {
             addActionMessage(getText("program.invalid_holding_tank"));
             setEditAttributes(request, String.valueOf(program.getId()));
             return "edit";
@@ -877,7 +842,6 @@ public class ProgramManager2Action extends ActionSupport {
         oldProgram.setEmergencyNumber(request.getParameter("old_emergencyNumber"));
         oldProgram.setLocation(request.getParameter("old_location"));
         oldProgram.setProgramStatus(request.getParameter("old_programStatus"));
-        oldProgram.setBedProgramLinkId(getParameterAsInteger(request, "old_bedProgramLinkId", 0));
         oldProgram.setManOrWoman(request.getParameter("old_manOrWoman"));
         oldProgram.setAbstinenceSupport(request.getParameter("old_abstinenceSupport"));
         oldProgram.setExclusiveView(request.getParameter("old_exclusiveView"));
@@ -888,7 +852,6 @@ public class ProgramManager2Action extends ActionSupport {
         oldProgram.setHic(getParameterAsBoolean(request, "old_hic"));
         oldProgram.setTransgender(getParameterAsBoolean(request, "old_transgender"));
         oldProgram.setFirstNation(getParameterAsBoolean(request, "old_firstNation"));
-        oldProgram.setBedProgramAffiliated(getParameterAsBoolean(request, "old_bedProgramAffiliated"));
         oldProgram.setAlcohol(getParameterAsBoolean(request, "old_alcohol"));
         oldProgram.setPhysicalHealth(getParameterAsBoolean(request, "old_physicalHealth"));
         oldProgram.setMentalHealth(getParameterAsBoolean(request, "old_mentalHealth"));
@@ -1305,7 +1268,7 @@ public class ProgramManager2Action extends ActionSupport {
             }
 
             request.setAttribute("teams", teams);
-            request.setAttribute("client_statuses", programManager.getProgramClientStatuses(new Integer(programId)));
+            request.setAttribute("client_statuses", programManager.getProgramClientStatuses(Integer.valueOf(programId)));
 
             //this can be pretty big
             if (request.getAttribute("view.tab") != null && request.getAttribute("view.tab").equals("Clients"))
@@ -1325,7 +1288,6 @@ public class ProgramManager2Action extends ActionSupport {
         request.setAttribute("functionalUserTypes", programManager.getFunctionalUserTypes());
 
         request.setAttribute("accessTypes", programManager.getAccessTypes());
-        request.setAttribute("bed_programs", programManager.getBedPrograms());
 
         request.setAttribute("facilities", facilityDao.findAll(true));
     }
@@ -1590,7 +1552,6 @@ public class ProgramManager2Action extends ActionSupport {
                 || !eq(program1.getManOrWoman(), program2.getManOrWoman())
                 || !eq(program1.getAbstinenceSupport(), program2.getAbstinenceSupport())
                 || !eq(program1.getExclusiveView(), program2.getExclusiveView())
-                || !eq(program1.getBedProgramLinkId(), program2.getBedProgramLinkId())
                 || !eq(program1.getMaxAllowed(), program2.getMaxAllowed())
                 || (program1.isHoldingTank() ^ program2.isHoldingTank())
                 || (program1.isAllowBatchAdmission() ^ program2.isAllowBatchAdmission())
@@ -1598,7 +1559,6 @@ public class ProgramManager2Action extends ActionSupport {
                 || (program1.isHic() ^ program2.isHic())
                 || (program1.isTransgender() ^ program2.isTransgender())
                 || (program1.isFirstNation() ^ program2.isFirstNation())
-                || (program1.isBedProgramAffiliated() ^ program2.isBedProgramAffiliated())
                 || (program1.isAlcohol() ^ program2.isAlcohol())
                 || (program1.isPhysicalHealth() ^ program2.isPhysicalHealth())
                 || (program1.isMentalHealth() ^ program2.isMentalHealth())
@@ -1627,9 +1587,6 @@ public class ProgramManager2Action extends ActionSupport {
         this.admissionManager = mgr;
     }
 
-    public void setBedCheckTimeManager(BedCheckTimeManager bedCheckTimeManager) {
-        this.bedCheckTimeManager = bedCheckTimeManager;
-    }
 
     public void setProgramManager(ProgramManager mgr) {
         this.programManager = mgr;

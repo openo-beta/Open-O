@@ -55,19 +55,6 @@ public class ProgramDaoImpl extends AbstractDaoImpl<Program> implements ProgramD
         super(Program.class);
     }
 
-    /**
-     * Checks if the specified program is a bed program.
-     *
-     * @param programId the ID of the program to check
-     * @return true if the program is a bed program, false otherwise
-     */
-    @Override
-    public boolean isBedProgram(Integer programId) {
-        Program result = getProgram(programId);
-        if (result == null)
-            return (false);
-        return (result.isBed());
-    }
 
     /**
      * Checks if the specified program is a service program.
@@ -203,6 +190,7 @@ public class ProgramDaoImpl extends AbstractDaoImpl<Program> implements ProgramD
      *
      * @deprecated 2013-12-09 don't use this anymore it's misleading
      */
+    @Deprecated
     @Override
     public List<Program> getAllPrograms() {
         String queryStr = "FROM Program p WHERE p.type != ?1 ORDER BY p.name";
@@ -242,6 +230,7 @@ public class ProgramDaoImpl extends AbstractDaoImpl<Program> implements ProgramD
      * @param facilityId the facility ID filter (0 for any facility)
      * @return a list of Program objects matching the specified criteria
      */
+    @Deprecated
     @Override
     public List<Program> getAllPrograms(String programStatus, String type, int facilityId) {
         try {
@@ -279,6 +268,7 @@ public class ProgramDaoImpl extends AbstractDaoImpl<Program> implements ProgramD
      *
      * @deprecated 2013-12-09 don't use this anymore it's misleading
      */
+    @Deprecated
     @Override
     public List<Program> getPrograms() {
         String queryStr = "FROM Program p WHERE p.type != ?1 ORDER BY p.name";
@@ -294,6 +284,7 @@ public class ProgramDaoImpl extends AbstractDaoImpl<Program> implements ProgramD
      *
      * @deprecated 2013-12-09 don't use this anymore it's misleading
      */
+    @Deprecated
     @Override
     public List<Program> getActivePrograms() {
         String queryStr = "FROM Program p WHERE p.type <> ?1 AND p.programStatus = ?2";
@@ -504,9 +495,6 @@ public class ProgramDaoImpl extends AbstractDaoImpl<Program> implements ProgramD
             predicates.add(cb.isTrue(root.get("firstNation")));
         }
 
-        if (program.isBedProgramAffiliated()) {
-            predicates.add(cb.isTrue(root.get("bedProgramAffiliated")));
-        }
 
         if (program.isAlcohol()) {
             predicates.add(cb.isTrue(root.get("alcohol")));
@@ -610,9 +598,6 @@ public class ProgramDaoImpl extends AbstractDaoImpl<Program> implements ProgramD
             predicates.add(cb.isTrue(root.get("firstNation")));
         }
 
-        if (program.isBedProgramAffiliated()) {
-            predicates.add(cb.isTrue(root.get("bedProgramAffiliated")));
-        }
 
         if (program.isAlcohol()) {
             predicates.add(cb.isTrue(root.get("alcohol")));
@@ -710,23 +695,6 @@ public class ProgramDaoImpl extends AbstractDaoImpl<Program> implements ProgramD
         return (getProgram(programId) != null);
     }
 
-    /**
-     * Retrieves the linked service programs for a bed program and client.
-     *
-     * @param bedProgramId the ID of the bed program
-     * @param clientId the ID of the client
-     * @return a list of Program objects representing the linked service programs
-     */
-    public List<Program> getLinkedServicePrograms(Integer bedProgramId, Integer clientId) {
-        String queryStr = "SELECT p FROM Admission a JOIN Program p ON a.programId = p.id "
-                 + "WHERE p.type = ?1 AND p.bedProgramLinkId = ?2 AND a.clientId = ?3";
-        TypedQuery<Program> query = entityManager.createQuery(queryStr, Program.class);
-        query.setParameter(1, Program.SERVICE_TYPE);
-        query.setParameter(2, bedProgramId);
-        query.setParameter(3, clientId);
-
-        return query.getResultList();
-    }
 
     /**
      * Checks if two programs are in the same facility.

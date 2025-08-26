@@ -232,15 +232,6 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         return rs;
     }
 
-    @Override
-    public Demographic getDemographicByMyOscarUserName(String myOscarUserName) {
-        String q = "From Demographic d where d.myOscarUserName = ?0 ";
-        List<Demographic> rs = (List<Demographic>) getHibernateTemplate().find(q, new Object[]{myOscarUserName});
-        if (rs.size() > 0)
-            return (rs.get(0));
-        else
-            return (null);
-    }
 
     /*
      * get demographics according to their program, admit time, discharge time,
@@ -255,7 +246,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
             + " order by d.LastName,d.FirstName";
 
         String status = "AC"; // only show active clients
-        List rs = getHibernateTemplate().find(q, new Object[]{status, new Integer(programId), dt, dt, defdt});
+        List rs = getHibernateTemplate().find(q, new Object[]{status, Integer.valueOf(programId), dt, dt, defdt});
 
         List clients = new ArrayList<Demographic>();
         Integer clientNo = 0;
@@ -1852,7 +1843,6 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
         String lastName = "";
         String firstNameL = "";
         String lastNameL = "";
-        String bedProgramId = "";
         String assignedToProviderNo = "";
 
         String active = "";
@@ -1939,12 +1929,6 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
             criteria.add(Expression.eq("Ver", bean.getHealthCardVersion()));
         }
 
-        if (bean.getBedProgramId() != null && bean.getBedProgramId().length() > 0) {
-            bedProgramId = bean.getBedProgramId();
-            sql = " demographic_no in (select decode(dm.merged_to,null,i.client_id,dm.merged_to) from intake i,demographic_merged dm where i.client_id=dm.demographic_no(+) and i.program_id in ("
-                + bedProgramId + "))";
-            criteria.add(Restrictions.sqlRestriction(sql));
-        }
         if (bean.getAssignedToProviderNo() != null && bean.getAssignedToProviderNo().length() > 0) {
             assignedToProviderNo = bean.getAssignedToProviderNo();
             sql = " demographic_no in (select decode(dm.merged_to,null,a.client_id,dm.merged_to) from admission a,demographic_merged dm where a.client_id=dm.demographic_no(+)and a.primaryWorker='"
@@ -1954,9 +1938,9 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         active = bean.getActive();
         if ("1".equals(active)) {
-            criteria.add(Expression.ge("activeCount", new Integer(1)));
+            criteria.add(Expression.ge("activeCount", Integer.valueOf(1)));
         } else if ("0".equals(active)) {
-            criteria.add(Expression.eq("activeCount", new Integer(0)));
+            criteria.add(Expression.eq("activeCount", Integer.valueOf(0)));
         }
 
         gender = bean.getGender();
@@ -2118,7 +2102,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
             }
 
             if (pIdi.length > 0) {
-                subq.add(Restrictions.in("programId", pIdi));
+                subq.add(Restrictions.in("programId", (Object[]) pIdi));
             }
 
             if (bean.getDateFrom() != null && bean.getDateFrom().length() > 0) {
@@ -2393,7 +2377,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
         @SuppressWarnings("unchecked")
         List<Demographic> demographics = (List<Demographic>) this.getHibernateTemplate().find(sql,
-            params.toArray(new String[params.size()]));
+            (Object[]) params.toArray(new String[params.size()]));
 
         if (!demographics.isEmpty()) {
             return demographics.get(0);
@@ -2434,7 +2418,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
             params.add(date_of_birth);
         }
 
-        return (List<Demographic>) this.getHibernateTemplate().find(sql, params.toArray(new String[params.size()]));
+        return (List<Demographic>) this.getHibernateTemplate().find(sql, (Object[]) params.toArray(new String[params.size()]));
     }
 
     @SuppressWarnings("unchecked")
@@ -2460,7 +2444,7 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
             params.add(date_of_birth);
         }
 
-        return (List<Demographic>) this.getHibernateTemplate().find(sql, params.toArray(new String[params.size()]));
+        return (List<Demographic>) this.getHibernateTemplate().find(sql, (Object[]) params.toArray(new String[params.size()]));
     }
 
     @SuppressWarnings("unchecked")
@@ -2976,24 +2960,6 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
     }
 
-    @Override
-    public List<Integer> getDemographicIdsWithMyOscarAccounts(Integer startDemographicIdExclusive, int itemsToReturn) {
-        // Session session = getSession();
-        Session session = currentSession();
-        try {
-            SQLQuery sqlQuery = session.createSQLQuery(
-                "select demographic_no from demographic where demographic_no>:startDemographicIdExclusive and myOscarUserName is not null order by demographic_no");
-            sqlQuery.setInteger("startDemographicIdExclusive", startDemographicIdExclusive);
-            sqlQuery.setMaxResults(itemsToReturn);
-
-            @SuppressWarnings("unchecked")
-            List<Integer> result = sqlQuery.list();
-            return (result);
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
-        }
-    }
 
     @SuppressWarnings("unchecked")
     @Override
@@ -3014,35 +2980,6 @@ public class DemographicDaoImpl extends HibernateDaoSupport implements Applicati
 
     }
 
-    /**
-     * This method war written for BORN Kid eConnect job to figure out which eforms
-     * don't have an eform_value present
-     * <p>
-     * This method will be refined a bit during QA
-     */
-    @Override
-    public List<Integer> getBORNKidsMissingExtKey(String keyName) {
-        Calendar cal = Calendar.getInstance();
-        // TODO: change this to use a similar AGE calculation like in
-        // RptDemographicQueryBuilder
-        int year = cal.get(Calendar.YEAR) - 18;
-        // Session session = getSession();
-        Session session = currentSession();
-        try {
-            SQLQuery sqlQuery = session.createSQLQuery(
-                "select distinct d.demographic_no from demographic d where d.year_of_birth >= :year1 and  d.demographic_no not in (select distinct d.demographic_no from demographic d, demographicExt e where d.demographic_no = e.demographic_no and d.year_of_birth >= :year2 and key_val=:key)");
-            sqlQuery.setInteger("year1", year);
-            sqlQuery.setInteger("year2", year);
-            sqlQuery.setString("key", keyName);
-            List<Integer> ids = sqlQuery.list();
-
-            return ids;
-        } finally {
-            // this.releaseSession(session);
-            //session.close();
-        }
-
-    }
 
     @Override
     public List<Demographic> getActiveDemographicAfter(Date afterDatetimeExclusive) {

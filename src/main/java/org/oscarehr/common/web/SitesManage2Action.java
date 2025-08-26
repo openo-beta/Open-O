@@ -87,7 +87,7 @@ public class SitesManage2Action extends ActionSupport {
     public String update() throws Exception {
 
         String siteId = request.getParameter("siteId");
-        Site s = siteDao.getById(new Integer(siteId));
+        Site s = siteDao.getById(Integer.valueOf(siteId));
 
         this.setS(s);
         return "details";

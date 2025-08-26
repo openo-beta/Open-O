@@ -1175,7 +1175,7 @@ public final class RxWriteScript2Action extends ActionSupport {
         }
 
         saveDrug(request);
-        return null;
+        return "refresh";
     }
 
     public String getDemoNameAndHIN() throws IOException, Exception {

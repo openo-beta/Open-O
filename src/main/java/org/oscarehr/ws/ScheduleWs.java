@@ -68,6 +68,7 @@ public class ScheduleWs extends AbstractWs {
     /**
      * @deprecated you should use the method with the useGMTTime option
      */
+    @Deprecated
     public AppointmentTransfer getAppointment(Integer appointmentId) {
         Appointment appointment = scheduleManager.getAppointment(getLoggedInInfo(), appointmentId);
         return (AppointmentTransfer.toTransfer(appointment, false));
@@ -76,6 +77,7 @@ public class ScheduleWs extends AbstractWs {
     /**
      * @deprecated you should use the method with the useGMTTime option
      */
+    @Deprecated
     public AppointmentTransfer[] getAppointmentsForProvider(String providerNo, Calendar date) {
         List<Appointment> appointments = scheduleManager.getDayAppointments(getLoggedInInfo(), providerNo, date);
         return (AppointmentTransfer.toTransfers(appointments, false));
@@ -84,6 +86,7 @@ public class ScheduleWs extends AbstractWs {
     /**
      * @deprecated you should use the method with the useGMTTime option
      */
+    @Deprecated
     public AppointmentTransfer[] getAppointmentsForPatient(Integer demographicId, int startIndex, int itemsToReturn) {
         List<Appointment> appointments = scheduleManager.getAppointmentsForPatient(getLoggedInInfo(), demographicId, startIndex, itemsToReturn);
         return (AppointmentTransfer.toTransfers(appointments, false));
@@ -137,6 +140,7 @@ public class ScheduleWs extends AbstractWs {
     /**
      * @deprecated you should use the method with the useGMTTime option
      */
+    @Deprecated
     public AppointmentTransfer[] getAppointmentsForDateRangeAndProvider(Date startTime, Date endTime, String providerNo) {
         List<Appointment> appointments = scheduleManager.getAppointmentsForDateRangeAndProvider(getLoggedInInfo(), startTime, endTime, providerNo);
         return (AppointmentTransfer.toTransfers(appointments, false));

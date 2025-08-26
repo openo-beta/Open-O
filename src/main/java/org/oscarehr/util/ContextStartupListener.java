@@ -84,7 +84,7 @@ public class ContextStartupListener implements javax.servlet.ServletContextListe
             WaitListEmailThread.startTaskIfEnabled();
 
             if (oscarProperties.isPropertyActive("encrypted_xml.remove_cid_prefix")) {
-                ResourceResolver.register(CidPrefixResourceResolver.class, true);
+                ResourceResolver.register(new CidPrefixResourceResolver(), true);
             }
 
             //Run some optimizations
@@ -127,7 +127,7 @@ public class ContextStartupListener implements javax.servlet.ServletContextListe
         p.setFacilityId(1);
         p.setName("OSCAR");
         p.setMaxAllowed(99999);
-        p.setType("Bed");
+        p.setType("Service");
         p.setProgramStatus("active");
         programDao.saveProgram(p);
 

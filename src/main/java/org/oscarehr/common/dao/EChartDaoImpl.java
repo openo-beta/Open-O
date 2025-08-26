@@ -67,7 +67,7 @@ public class EChartDaoImpl extends AbstractDaoImpl<EChart> implements EChartDao 
         String demoNo = note.getDemographic_no();
         String sql = "select e from EChart e where e.demographicNo=?1 order by e.id";
         Query q = entityManager.createQuery(sql);
-        q.setParameter(1, new Integer(demoNo));
+        q.setParameter(1, Integer.valueOf(demoNo));
         @SuppressWarnings("unchecked")
         List<EChart> list = q.getResultList();
         EChart oldec;
@@ -78,7 +78,7 @@ public class EChartDaoImpl extends AbstractDaoImpl<EChart> implements EChartDao 
         }
 
         EChart ec = new EChart();
-        ec.setDemographicNo(new Integer(demoNo).intValue());
+        ec.setDemographicNo(Integer.valueOf(demoNo).intValue());
         ec.setProviderNo(note.getProviderNo());
         ec.setSubject("");
 
@@ -136,7 +136,7 @@ public class EChartDaoImpl extends AbstractDaoImpl<EChart> implements EChartDao 
         String demoNo = cpp.getDemographic_no();
         String sql = "select e from EChart e where e.demographicNo=?1 order by e.id";
         Query q = entityManager.createQuery(sql);
-        q.setParameter(1, new Integer(demoNo));
+        q.setParameter(1, Integer.valueOf(demoNo));
         List<EChart> list = q.getResultList();
         EChart oldec;
         if (list.size() != 0) oldec = list.get(list.size() - 1);
@@ -162,7 +162,7 @@ public class EChartDaoImpl extends AbstractDaoImpl<EChart> implements EChartDao 
             ec = list.get(list.size() - 1);
         else {
             ec = new EChart();
-            ec.setDemographicNo(new Integer(demoNo).intValue());
+            ec.setDemographicNo(Integer.valueOf(demoNo).intValue());
             ec.setProviderNo(providerNo);
             ec.setEncounter("");
         }

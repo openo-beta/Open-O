@@ -48,7 +48,6 @@ import oscar.OscarProperties;
 
 public interface ProgramDao {
 
-    public boolean isBedProgram(Integer programId);
 
     public boolean isServiceProgram(Integer programId);
 
@@ -100,7 +99,6 @@ public interface ProgramDao {
 
     public boolean programExists(Integer programId);
 
-    public List<Program> getLinkedServicePrograms(Integer bedProgramId, Integer clientId);
 
     public boolean isInSameFacility(Integer programId1, Integer programId2);
 

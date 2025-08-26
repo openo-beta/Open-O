@@ -649,7 +649,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
         DrugDao drugDao = (DrugDao) SpringUtils.getBean(DrugDao.class);
 
         if (all) {
-            return (drugDao.findByDemographicIdOrderByPosition(new Integer(demographic_no), null));
+            return (drugDao.findByDemographicIdOrderByPosition(Integer.valueOf(demographic_no), null));
         }
         return (drugDao.getUniquePrescriptions(demographic_no));
     }
@@ -658,7 +658,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     public List<Drug> getCurrentPrescriptions(int demographic_no) {
         DrugDao drugDao = (DrugDao) SpringUtils.getBean(DrugDao.class);
 
-        return (drugDao.findByDemographicIdOrderByPosition(new Integer(demographic_no), false));
+        return (drugDao.findByDemographicIdOrderByPosition(Integer.valueOf(demographic_no), false));
     }
 
     /**
@@ -778,7 +778,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         while (iter.hasNext()) {
             MessageTbl mtbl = iter.next();
-            al.add(new LabelValueBean(new Integer(i).toString(), mtbl.getSubject() + "-" + sdf.format(mtbl.getDate())));
+            al.add(new LabelValueBean(Integer.valueOf(i).toString(), mtbl.getSubject() + "-" + sdf.format(mtbl.getDate())));
             i++;
         }
         return al;
@@ -1156,7 +1156,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     public boolean hasAccessRight(String accessName, String accessType, String providerNo, String demoNo, String pId) {
         if (accessName == null || accessType == null || !filled(pId))
             return false;
-        if (new Long(pId).intValue() == 0)
+        if (Long.valueOf(pId).intValue() == 0)
             pId = null;
         List arList = getAccessRight(providerNo, demoNo, pId);
         for (int i = 0; i < arList.size(); i++) {
@@ -1174,7 +1174,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
         if (program_id == null || "".equalsIgnoreCase(program_id) || "null".equalsIgnoreCase(program_id))
             ppList = programProviderDao.getProgramProviderByProviderNo(providerNo);
         else {
-            Long pid = new Long(program_id);
+            Long pid = Long.valueOf(program_id);
             ppList = programProviderDao.getProgramProviderByProviderProgramId(providerNo, pid);
         }
         if (ppList != null && ppList.size() > 0)
@@ -1185,7 +1185,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     @Override
     public String getDemoName(String demoNo) {
 
-        Demographic dg = demographicDao.getClientByDemographicNo(new Integer(demoNo));
+        Demographic dg = demographicDao.getClientByDemographicNo(Integer.valueOf(demoNo));
         if (dg == null)
             return "";
         else
@@ -1196,7 +1196,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     public String getDemoGender(String demoNo) {
         String gender = "";
 
-        Demographic demo = demographicDao.getClientByDemographicNo(new Integer(demoNo));
+        Demographic demo = demographicDao.getClientByDemographicNo(Integer.valueOf(demoNo));
         if (demo != null) {
             gender = demo.getSex();
         }
@@ -1208,7 +1208,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     public String getDemoAge(String demoNo) {
         String age = "";
 
-        Demographic demo = demographicDao.getClientByDemographicNo(new Integer(demoNo));
+        Demographic demo = demographicDao.getClientByDemographicNo(Integer.valueOf(demoNo));
         if (demo != null) {
             age = demo.getAge();
         }
@@ -1218,14 +1218,14 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
     @Override
     public String getDemoPhn(String demoNo) {
-        Demographic dg = demographicDao.getClientByDemographicNo(new Integer(demoNo));
+        Demographic dg = demographicDao.getClientByDemographicNo(Integer.valueOf(demoNo));
         if (dg == null) return "";
         else return dg.getHin();
     }
 
     @Override
     public String getDemoDOB(String demoNo) {
-        Demographic dg = demographicDao.getClientByDemographicNo(new Integer(demoNo));
+        Demographic dg = demographicDao.getClientByDemographicNo(Integer.valueOf(demoNo));
         if (dg == null)
             return "";
         else
@@ -1260,8 +1260,8 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     public void tmpSave(String providerNo, String demographicNo, String programId, String noteId, String note) {
         CaseManagementTmpSave tmp = new CaseManagementTmpSave();
         tmp.setProviderNo(providerNo);
-        tmp.setDemographicNo(new Integer(demographicNo).intValue());
-        tmp.setProgramId(new Integer(programId).intValue());
+        tmp.setDemographicNo(Integer.valueOf(demographicNo).intValue());
+        tmp.setProgramId(Integer.valueOf(programId).intValue());
         if (noteId == null || "".equals(noteId)) {
             noteId = "0";
         }
@@ -1300,7 +1300,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
         if(demographicNo != null && ! demographicNo.isEmpty() && StringUtils.isNumeric(demographicNo)
                 && programId != null && ! programId.isEmpty() && StringUtils.isNumeric(programId)) {
-            obj = caseManagementTmpSaveDao.find(providerNo, new Integer(demographicNo), new Integer(programId));
+            obj = caseManagementTmpSaveDao.find(providerNo, Integer.valueOf(demographicNo), Integer.valueOf(programId));
         }
 
 
@@ -1326,8 +1326,8 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     // we want to load a temp saved note only if it's more recent than date
     @Override
     public CaseManagementTmpSave restoreTmpSave(String providerNo, String demographicNo, String programId, Date date) {
-        CaseManagementTmpSave obj = caseManagementTmpSaveDao.find(providerNo, new Integer(demographicNo),
-                new Integer(programId), date);
+        CaseManagementTmpSave obj = caseManagementTmpSaveDao.find(providerNo, Integer.valueOf(demographicNo),
+                Integer.valueOf(programId), date);
         return obj;
     }
 
@@ -1363,7 +1363,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
         // Get Role - if no ProgramProvider record found, show no issues.
         @SuppressWarnings("unchecked")
-        List ppList = programProviderDao.getProgramProviderByProviderProgramId(providerNo, new Long(programId));
+        List ppList = programProviderDao.getProgramProviderByProviderProgramId(providerNo, Long.valueOf(programId));
         if (ppList == null || ppList.isEmpty()) {
             return new ArrayList<CaseManagementNote>();
         }
@@ -1371,7 +1371,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
         ProgramProvider pp = (ProgramProvider) ppList.get(0);
         Secrole role = pp.getRole();
 
-        Map programAccessMap = ProgramAccessCache.getAccessMap(new Long(programId));
+        Map programAccessMap = ProgramAccessCache.getAccessMap(Long.valueOf(programId));
         // Load up access list from program
         // @SuppressWarnings("unchecked")
         // List programAccessList = programAccessDAO.getAccessListByProgramId(new
@@ -1441,9 +1441,14 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
             return filteredNotes;
         }
 
+        // If no valid program ID, return all notes unfiltered
+        if (programId == null || programId.equals("0") || programId.isEmpty()) {
+            return new ArrayList<EChartNoteEntry>(notes);
+        }
+
         // Get Role - if no ProgramProvider record found, show no issues.
         @SuppressWarnings("unchecked")
-        List ppList = programProviderDao.getProgramProviderByProviderProgramId(providerNo, new Long(programId));
+        List ppList = programProviderDao.getProgramProviderByProviderProgramId(providerNo, Long.valueOf(programId));
         if (ppList == null || ppList.isEmpty()) {
             for (EChartNoteEntry note : notes) {
                 if (!note.getType().equals("local_note") && !note.getType().equals("remote_note"))
@@ -1455,7 +1460,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
         ProgramProvider pp = (ProgramProvider) ppList.get(0);
         Secrole role = pp.getRole();
 
-        Map programAccessMap = ProgramAccessCache.getAccessMap(new Long(programId));
+        Map programAccessMap = ProgramAccessCache.getAccessMap(Long.valueOf(programId));
 
         // iterate through the issue list
         for (EChartNoteEntry cmNote : notes) {
@@ -1536,7 +1541,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
         // Get Role - if no ProgramProvider record found, show no issues.
         @SuppressWarnings("unchecked")
-        List ppList = programProviderDao.getProgramProviderByProviderProgramId(providerNo, new Long(programId));
+        List ppList = programProviderDao.getProgramProviderByProviderProgramId(providerNo, Long.valueOf(programId));
         if (ppList == null || ppList.isEmpty()) {
             return (false);
         }
@@ -1546,7 +1551,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
         // Load up access list from program
         @SuppressWarnings("unchecked")
-        List programAccessList = programAccessDAO.getAccessListByProgramId(new Long(programId));
+        List programAccessList = programAccessDAO.getAccessListByProgramId(Long.valueOf(programId));
         @SuppressWarnings("unchecked")
         Map programAccessMap = convertProgramAccessListToMap(programAccessList);
 
@@ -1619,7 +1624,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     public Integer searchIssuesCount(String providerNo, String programId, String search) {
         // Get Role - if no ProgramProvider record found, show no issues.
         List<ProgramProvider> ppList = programProviderDao.getProgramProviderByProviderProgramId(providerNo,
-                new Long(programId));
+                Long.valueOf(programId));
         if (ppList == null || ppList.isEmpty()) {
             return 0;
         }
@@ -1628,7 +1633,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
         // get program accesses... program allows either all roles or not all roles
         // (does this mean no roles?)
-        List<ProgramAccess> paList = programAccessDAO.getAccessListByProgramId(new Long(programId));
+        List<ProgramAccess> paList = programAccessDAO.getAccessListByProgramId(Long.valueOf(programId));
         Map<String, ProgramAccess> paMap = convertProgramAccessListToMap(paList);
 
         // get all roles
@@ -1678,7 +1683,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
         // Get Role - if no ProgramProvider record found, show no issues.
         List<ProgramProvider> ppList = programProviderDao.getProgramProviderByProviderProgramId(providerNo,
-                new Long(programId));
+                Long.valueOf(programId));
         if (ppList == null || ppList.isEmpty()) {
             return new ArrayList<Issue>();
         }
@@ -1687,7 +1692,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
         // get program accesses... program allows either all roles or not all roles
         // (does this mean no roles?)
-        List<ProgramAccess> paList = programAccessDAO.getAccessListByProgramId(new Long(programId));
+        List<ProgramAccess> paList = programAccessDAO.getAccessListByProgramId(Long.valueOf(programId));
         Map<String, ProgramAccess> paMap = convertProgramAccessListToMap(paList);
 
         // get all roles
@@ -1741,7 +1746,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
         // Get Role - if no ProgramProvider record found, show no issues.
         List<ProgramProvider> ppList = programProviderDao.getProgramProviderByProviderProgramId(providerNo,
-                new Long(programId));
+                Long.valueOf(programId));
         if (ppList == null || ppList.isEmpty()) {
             return new ArrayList<CaseManagementIssue>();
         }
@@ -1750,7 +1755,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
         Secrole role = pp.getRole();
 
         // Load up access list from program
-        List<ProgramAccess> programAccessList = programAccessDAO.getAccessListByProgramId(new Long(programId));
+        List<ProgramAccess> programAccessList = programAccessDAO.getAccessListByProgramId(Long.valueOf(programId));
         Map<String, ProgramAccess> programAccessMap = convertProgramAccessListToMap(programAccessList);
 
         // iterate through the issue list
@@ -1948,7 +1953,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
     @Override
     public boolean unlockNote(int noteId, String password) {
-        CaseManagementNote note = this.caseManagementNoteDAO.getNote(new Long(noteId));
+        CaseManagementNote note = this.caseManagementNoteDAO.getNote(Long.valueOf(noteId));
         if (note != null) {
             if (note.isLocked() && note.getPassword().equals(password)) {
                 return true;
@@ -2449,10 +2454,16 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
         note.setReporter_caisi_role(role);
 
         try {
-            Admission admission = admissionManager.getAdmission(note.getProgram_no(),
-                    Integer.valueOf(note.getDemographic_no()));
-            if (admission != null) {
-                team = String.valueOf(admission.getTeamId());
+            // Only get admission if we have a valid programId
+            String programNo = note.getProgram_no();
+            if (programNo != null && !programNo.equals("0") && !programNo.isEmpty()) {
+                Admission admission = admissionManager.getAdmission(programNo,
+                        Integer.valueOf(note.getDemographic_no()));
+                if (admission != null) {
+                    team = String.valueOf(admission.getTeamId());
+                } else {
+                    team = "0";
+                }
             } else {
                 team = "0";
             }

@@ -24,19 +24,15 @@
 package org.oscarehr.PMmodule.web.formbean;
 
 import org.oscarehr.PMmodule.model.ProgramClientRestriction;
-import org.oscarehr.common.model.Bed;
 
 public class ProgramManagerViewFormBean {
 
-    public static final String[] tabs = {"General", "Staff", "Teams", "Clients", "Queue", "Access", "Bed Check", "Client Status", "Service Restrictions", "Vacancies"};
+    public static final String[] tabs = {"General", "Staff", "Teams", "Clients", "Queue", "Access", "Client Status", "Service Restrictions", "Vacancies"};
 
     private String tab;
     private String subtab;
     private String clientId;
     private String queueId;
-    private Bed[] reservedBeds;
-    private String switchBed1;
-    private String switchBed2;
     private String vacancyOrTemplateId;
 
     private String radioRejectionReason;
@@ -100,36 +96,12 @@ public class ProgramManagerViewFormBean {
         this.queueId = queueId;
     }
 
-    public Bed[] getReservedBeds() {
-        return reservedBeds;
-    }
-
-    public void setReservedBeds(Bed[] reservedBeds) {
-        this.reservedBeds = reservedBeds;
-    }
-
     public ProgramClientRestriction getServiceRestriction() {
         return serviceRestriction;
     }
 
     public void setServiceRestriction(ProgramClientRestriction serviceRestriction) {
         this.serviceRestriction = serviceRestriction;
-    }
-
-    public String getSwitchBed1() {
-        return switchBed1;
-    }
-
-    public void setSwitchBed1(String switchBed1) {
-        this.switchBed1 = switchBed1;
-    }
-
-    public String getSwitchBed2() {
-        return switchBed2;
-    }
-
-    public void setSwitchBed2(String switchBed2) {
-        this.switchBed2 = switchBed2;
     }
 
     public String getVacancyOrTemplateId() {

@@ -37,21 +37,7 @@ public class Condition
     // Constructors
     // Accessor Methods
 
-    /**
-     * Get the value of coMorbidConditions
-     *
-     * @return the value of coMorbidConditions
-     */
-    private java.util.Collection getCoMorbidConditions() {
-        return coMorbidConditions;
-    }
 
-    /**
-     * Set the value of coMorbidConditions
-     */
-    private void setCoMorbidConditions(java.util.Collection value) {
-        coMorbidConditions = value;
-    }
 }
 
 // Operations

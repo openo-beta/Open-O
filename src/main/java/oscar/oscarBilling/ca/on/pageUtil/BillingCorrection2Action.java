@@ -184,7 +184,7 @@ public class BillingCorrection2Action extends ActionSupport {
                 billExt.setDateTime(new Date());
                 billExt.setDemographicNo(bCh1.getDemographicNo());
                 billExt.setKeyVal("billTo");
-                billExt.setPaymentId(new Integer(0));
+                billExt.setPaymentId(Integer.valueOf(0));
                 billExt.setStatus('1');
                 billExt.setValue(request.getParameter("billTo"));
 
@@ -206,7 +206,7 @@ public class BillingCorrection2Action extends ActionSupport {
                 billExt.setDateTime(new Date());
                 billExt.setDemographicNo(bCh1.getDemographicNo());
                 billExt.setKeyVal("dueDate");
-                billExt.setPaymentId(new Integer(0));
+                billExt.setPaymentId(Integer.valueOf(0));
                 billExt.setStatus('1');
                 billExt.setValue(request.getParameter("invoiceDueDate"));
 
@@ -231,7 +231,7 @@ public class BillingCorrection2Action extends ActionSupport {
             billExt.setDateTime(new Date());
             billExt.setDemographicNo(bCh1.getDemographicNo());
             billExt.setKeyVal("useBillTo");
-            billExt.setPaymentId(new Integer(0));
+            billExt.setPaymentId(Integer.valueOf(0));
             billExt.setValue(request.getParameter("overrideUseDemoContact"));
             billExt.setStatus('1');
 

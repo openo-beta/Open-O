@@ -83,15 +83,11 @@ public interface ProgramManager {
 
     List<Program> getPrograms();
 
-    Program[] getBedPrograms();
-
-    Program[] getBedPrograms(Integer facilityId);
 
     List<Program> getServicePrograms();
 
     Program[] getExternalPrograms();
 
-    boolean isBedProgram(String programId);
 
     boolean isServiceProgram(String programId);
 

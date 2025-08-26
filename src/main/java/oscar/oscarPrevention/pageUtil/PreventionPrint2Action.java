@@ -76,11 +76,11 @@ public class PreventionPrint2Action extends ActionSupport {
 
         } catch (com.lowagie.text.DocumentException de) {
             logger.error("", de);
-            request.setAttribute("printError", new Boolean(true));
+            request.setAttribute("printError", Boolean.valueOf(true));
             return "error";
         } catch (IOException ioe) {
             logger.error("", ioe);
-            request.setAttribute("printError", new Boolean(true));
+            request.setAttribute("printError", Boolean.valueOf(true));
             return "error";
         }
 

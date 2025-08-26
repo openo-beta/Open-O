@@ -187,7 +187,7 @@ public class BookingWs extends AbstractWs {
             appointment.setProviderNo(timeslot.getProviderNo());
             appointment.setType(reason);
             appointment.setStatus("t"); // dunno what that means but seems to be what everyone else uses
-            appointment.setBookingSource(BookingSource.MYOSCAR_SELF_BOOKING);
+            appointment.setBookingSource(BookingSource.OSCAR);
             if (appointmentLocation != null) {
                 appointment.setLocation(appointmentLocation);
             }

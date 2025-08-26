@@ -39,6 +39,7 @@ public class UtilMisc {
     /**
      * @deprecated use apache's StringEscapeUtils instead.
      */
+    @Deprecated
     public static String htmlEscape(String S) {
 
         if (null == S) {
@@ -135,6 +136,7 @@ public class UtilMisc {
     /**
      * @deprecated use apache's StringEscapeUtils instead.
      */
+    @Deprecated
     public static String htmlJsEscape(String S) {
         if (null == S) {
             return S;
@@ -194,6 +196,7 @@ public class UtilMisc {
     /**
      * @deprecated use apache's StringEscapeUtils instead.
      */
+    @Deprecated
     public static String JSEscape(String S) {
         if (null == S) {
             return S;
@@ -266,7 +269,7 @@ public class UtilMisc {
     }
 
     public static String FloatToString(float value) {
-        Float f = new Float(value);
+        Float f = Float.valueOf(value);
         NumberFormat fmt = NumberFormat.getNumberInstance();
         String s = fmt.format(f.doubleValue());
         return s;

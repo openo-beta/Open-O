@@ -433,7 +433,7 @@ public class CaseManagementNote extends BaseObject {
                     return 0;
                 }
 
-                return new Integer(note1.getPosition()).compareTo(new Integer(note2.getPosition()));
+                return Integer.valueOf(note1.getPosition()).compareTo(Integer.valueOf(note2.getPosition()));
             }
         };
 

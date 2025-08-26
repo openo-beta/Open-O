@@ -62,6 +62,7 @@ public class BillingPreferencesDAO extends AbstractDaoImpl<BillingPreference> {
      * @param pref the preferences
      * @deprecated
      */
+    @Deprecated
     public void saveUserPreferences(BillingPreference pref) {
         saveEntity(pref);
     }

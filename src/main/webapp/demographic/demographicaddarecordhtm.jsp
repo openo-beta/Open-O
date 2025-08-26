@@ -2391,7 +2391,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                                             <select id="rsid" name="rps">
                                                 <%
                                                     String _pvid = loggedInInfo.getLoggedInProviderNo();
-                                                    Program[] bedP = pm.getBedPrograms(loggedInInfo.getCurrentFacility().getId());
+                                                    Program[] bedP = new Program[0];
                                                     Program oscarProgram = programDao.getProgramByName("OSCAR");
                                                     
                                                     // Always use OSCAR program as default if it exists

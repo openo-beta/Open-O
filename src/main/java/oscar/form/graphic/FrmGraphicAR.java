@@ -105,9 +105,6 @@ public class FrmGraphicAR {
         return ret;
     }
 
-    private boolean checkDateStr(String strDate) {
-        return true;
-    }
 
     private void setWeekNum(String sDate, String eDate) {
         GregorianCalendar sg = getCalendarObj(sDate);

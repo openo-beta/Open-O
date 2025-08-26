@@ -83,7 +83,7 @@ public class DemographicContactDaoImpl extends AbstractDaoImpl<DemographicContac
                 + " x where x.demographicNo=?1 and x.contactId = ?2 and x.deleted=false";
         Query query = entityManager.createQuery(sql);
         query.setParameter(1, demographicNo);
-        query.setParameter(2, new Integer(contactId).toString());
+        query.setParameter(2, Integer.valueOf(contactId).toString());
         @SuppressWarnings("unchecked")
         List<DemographicContact> dContacts = query.getResultList();
         return dContacts;
@@ -94,7 +94,7 @@ public class DemographicContactDaoImpl extends AbstractDaoImpl<DemographicContac
         String sql = "select x from " + this.modelClass.getName()
                 + " x where x.contactId = ?1 and x.category = ?2 and x.type = ?3";
         Query query = entityManager.createQuery(sql);
-        query.setParameter(1, new Integer(contactId).toString());
+        query.setParameter(1, Integer.valueOf(contactId).toString());
         query.setParameter(2, category);
         query.setParameter(3, type);
 

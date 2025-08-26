@@ -229,7 +229,7 @@ public class CaseManagementIssue extends BaseObject {
     }
 
     private boolean calculateWriteAccess(String providerNo, int programId) {
-        List<ProgramProvider> ppList = programProviderDao.getProgramProviderByProviderProgramId(providerNo, new Long(programId));
+        List<ProgramProvider> ppList = programProviderDao.getProgramProviderByProviderProgramId(providerNo, Long.valueOf(programId));
         if (ppList == null || ppList.isEmpty()) {
             return (false);
         }
@@ -237,7 +237,7 @@ public class CaseManagementIssue extends BaseObject {
         ProgramProvider pp = ppList.get(0);
         Secrole role = pp.getRole();
 
-        List<ProgramAccess> programAccessList = programAccessDao.getAccessListByProgramId(new Long(programId));
+        List<ProgramAccess> programAccessList = programAccessDao.getAccessListByProgramId(Long.valueOf(programId));
         Map<String, ProgramAccess> programAccessMap = convertProgramAccessListToMap(programAccessList);
 
         String issueRole = getIssue().getRole().toLowerCase();

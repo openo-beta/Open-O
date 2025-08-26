@@ -79,13 +79,6 @@ public class DemographicData {
         return date;
     }
 
-    public String getDemographicNoByIndivoId(LoggedInInfo loggedInInfo, String myOscarUserName) {
-        org.oscarehr.common.model.Demographic demographic = demographicManager.getDemographicByMyOscarUserName(loggedInInfo, myOscarUserName);
-        if (demographic != null) {
-            return demographic.getDemographicNo().toString();
-        }
-        return "";
-    }
 
     public String getDemoNoByNamePhoneEmail(LoggedInInfo loggedInInfo, String firstName, String lastName, String hPhone, String wPhone, String email) {
         org.oscarehr.common.model.Demographic demographic = demographicManager.getDemographicByNamePhoneEmail(loggedInInfo, firstName, lastName, hPhone, wPhone, email);
@@ -201,13 +194,6 @@ public class DemographicData {
         return demographic;
     }
 
-    public String getDemographicNoByMyOscarUserName(LoggedInInfo loggedInInfo, String myOscarUserName) {
-        org.oscarehr.common.model.Demographic d = demographicManager.getDemographicByMyOscarUserName(loggedInInfo, myOscarUserName);
-        if (d != null) {
-            return d.getDemographicNo().toString();
-        }
-        return "";
-    }
 
     public String getDemographicDateJoined(LoggedInInfo loggedInInfo, String demographicNo) {
         org.oscarehr.common.model.Demographic d = demographicManager.getDemographic(loggedInInfo, demographicNo);
@@ -218,13 +204,6 @@ public class DemographicData {
         return null;
     }
 
-    public void setDemographicPin(LoggedInInfo loggedInInfo, String demographicNo, String myOscarUserName) {
-        org.oscarehr.common.model.Demographic d = demographicManager.getDemographic(loggedInInfo, demographicNo);
-        if (d != null) {
-            d.setMyOscarUserName(myOscarUserName);
-            demographicManager.updateDemographic(loggedInInfo, d);
-        }
-    }
 
     public void setDemographic(LoggedInInfo loggedInInfo, Demographic dm) {
         if (dm.getDemographicNo() == null) return;
@@ -327,7 +306,7 @@ public class DemographicData {
                                                String patient_status, String patient_status_date, String date_joined, String chart_no,
                                                String official_lang, String spoken_lang, String provider_no, String sex, String end_date,
                                                String eff_date, String pcn_indicator, String hc_type, String hc_renew_date, String family_doctor,
-                                               String email, String myOscarUserName, String alias, String previousAddress, String children,
+                                               String email, String alias, String previousAddress, String children,
                                                String sourceOfIncome, String citizenship, String sin) throws Exception {
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -386,7 +365,6 @@ public class DemographicData {
         }
         demographic.setFamilyDoctor(family_doctor);
         demographic.setEmail(email);
-        demographic.setMyOscarUserName(myOscarUserName);
         demographic.setAlias(alias);
         demographic.setPreviousAddress(previousAddress);
         demographic.setChildren(children);

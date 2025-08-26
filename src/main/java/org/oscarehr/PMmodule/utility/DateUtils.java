@@ -36,6 +36,7 @@ import org.oscarehr.util.MiscUtils;
 /**
  * @deprecated 2013-12-09 use org.oscarehr.util.DateUtils instead
  */
+@Deprecated
 public class DateUtils {
 
 
@@ -216,7 +217,7 @@ public class DateUtils {
 
     public static String sumDate(String format, String pSum) {
 
-        int iSum = new Integer(pSum).intValue();
+        int iSum = Integer.valueOf(pSum).intValue();
 
         cat.debug("[DateUtils] - sumDate: iSum = " + iSum);
 

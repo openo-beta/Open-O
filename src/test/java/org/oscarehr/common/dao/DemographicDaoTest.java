@@ -88,16 +88,6 @@ public class DemographicDaoTest extends DaoTestFixtures {
         assertEquals(1, dao.getDemographicByProvider(entity.getProviderNo(), false).size());
     }
 
-    @Ignore //Skipping until issue is resolved
-    public void testGetDemographicByMyOscarUserName() throws Exception {
-        Demographic entity = new Demographic();
-        EntityDataGenerator.generateTestDataForModelClass(entity);
-        entity.setDemographicNo(null);
-        entity.setMyOscarUserName("marc");
-        dao.save(entity);
-
-        assertNotNull(dao.getDemographicByMyOscarUserName("marc"));
-    }
 
     @Test
     public void testGetActiveDemosByHealthCardNo() throws Exception {

@@ -145,7 +145,7 @@ public class OscarProperties extends Properties {
     }
 
     /*
-     * Comma delimited spring configuration modules Options: Caisi,Indivo Caisi - Required to run the Caisi Shelter Management System Indivo - Indivo PHR record. Required for integration with Indivo.
+     * Comma delimited spring configuration modules Options: Caisi Caisi - Required to run the Caisi Shelter Management System.
      */
 
     /*

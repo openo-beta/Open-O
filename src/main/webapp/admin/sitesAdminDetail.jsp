@@ -46,8 +46,6 @@
               href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css">
 
         <script type="text/javascript" language="JavaScript"
-                src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
-        <script type="text/javascript" language="JavaScript"
                 src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
         <link href="${request.contextPath}/css/displaytag.css" rel="stylesheet"></link>
         <style>.button {
@@ -56,7 +54,7 @@
 
     </head>
 
-    <body vlink="#0000FF" class="BodyStyle" onload="$('colorField').style.backgroundColor=$('colorField').value;">
+    <body vlink="#0000FF" class="BodyStyle" onload="document.getElementById('colorField').style.backgroundColor = document.getElementById('colorField').value;">
     <nested:form action="/admin/ManageSites">
         <table class="MainTable">
             <tr class="MainTableTopRow">
@@ -91,8 +89,8 @@
                         </tr>
                         <tr>
                             <td>Theme Color:<sup style="color:red">*</sup></td>
-                            <td><nested:text styleId="colorField" property="site.bgColor"
-                                             onclick="popup(350,450,'../colorpicker/colorpicker.htm','colorpicker');return false;"></nested:text>
+                            <td><nested:text styleId="colorField" property="site.bgColor" type="color"
+                                             onchange="this.style.backgroundColor = this.value;"></nested:text>
                             </td>
                         </tr>
                         <tr>

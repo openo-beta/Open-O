@@ -50,6 +50,7 @@ import oscar.util.ConversionUtils;
  * Used to access data in provider table
  * @deprecated use {@link org.oscarehr.common.model.ProviderData} instead
  */
+@Deprecated
 public class ProviderData {
     private static final int EXTERNAL_PROVIDER_ID_CONSTRAINT = -1000;
 	/*

@@ -308,33 +308,6 @@ public class ProviderProperty2Action extends ActionSupport {
 
     /////
 
-    public String viewMyDrugrefId() {
-
-
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.MYDRUGREF_ID);
-
-
-        if (prop == null) {
-            prop = new UserProperty();
-        }
-
-        request.setAttribute("dateProperty", prop);
-
-
-        request.setAttribute("providertitle", "provider.setmyDrugrefId.title"); //=Set myDrugref ID
-        request.setAttribute("providermsgPrefs", "provider.setmyDrugrefId.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setmyDrugrefId.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setmyDrugrefId.msgEdit"); //=Enter your desired login for myDrugref
-        request.setAttribute("providerbtnSubmit", "provider.setmyDrugrefId.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setmyDrugrefId.msgSuccess"); //=myDrugref Id saved
-        request.setAttribute("method", "saveMyDrugrefId");
-
-        this.setDateProperty(prop);
-        return "gen";
-    }
 
     public String viewRxPageSize() {
 
@@ -635,75 +608,7 @@ public class ProviderProperty2Action extends ActionSupport {
         return "genShowPatientDOB";
     }
 
-    public String viewUseMyMeds() {
 
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.USE_MYMEDS);
-        String propValue = "";
-        if (prop == null) {
-            prop = new UserProperty();
-        } else {
-            propValue = prop.getValue();
-        }
-
-        boolean checked;
-        if (propValue.equalsIgnoreCase("yes"))
-            checked = true;
-        else
-            checked = false;
-
-        prop.setChecked(checked);
-        request.setAttribute("useMyMedsProperty", prop);
-        request.setAttribute("providertitle", "provider.setUseMyMeds.title"); //=Select if you want to use MyMeds
-        request.setAttribute("providermsgPrefs", "provider.setUseMyMeds.msgPrefs"); //=Preferences
-        request.setAttribute("providermsgProvider", "provider.setUseMyMeds.msgProfileView"); //=Use MyMeds
-        request.setAttribute("providermsgEdit", "provider.setUseMyMeds.msgEdit"); //=Do you want to use MyMeds?
-        request.setAttribute("providerbtnSubmit", "provider.setUseMyMeds.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setUseMyMeds.msgSuccess"); //=MyMeds Selection saved
-        request.setAttribute("method", "saveUseMyMeds");
-
-        this.setUseMyMedsProperty(prop);
-        return "genUseMyMeds";
-    }
-
-    public String saveUseMyMeds() {
-        String checkboxValue = request.getParameter("useMyMedsProperty.checked");
-
-        UserProperty UUseMyMeds = this.getUseMyMedsProperty();
-
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.USE_MYMEDS);
-        if (prop == null) {
-            prop = new UserProperty();
-            prop.setName(UserProperty.USE_MYMEDS);
-            prop.setProviderNo(providerNo);
-        }
-        boolean checked = checkboxValue != null;
-        String propValue = "no";
-        if (checked)
-            propValue = "yes";
-
-        prop.setValue(propValue);
-        this.userPropertyDAO.saveProp(prop);
-
-        request.setAttribute("status", "success");
-        request.setAttribute("useMyMedsProperty", prop);
-        request.setAttribute("providertitle", "provider.setUseMyMeds.title"); //=Select if you want to use Rx3
-        request.setAttribute("providermsgPrefs", "provider.setUseMyMeds.msgPrefs"); //=Preferences
-        request.setAttribute("providermsgProvider", "provider.setUseMyMeds.msgProfileView"); //=Use Rx3
-        request.setAttribute("providermsgEdit", "provider.setUseMyMeds.msgEdit"); //=Check if you want to use Rx3
-        request.setAttribute("providerbtnSubmit", "provider.setUseMyMeds.btnSubmit"); //=Save
-        if (checked)
-            request.setAttribute("providermsgSuccess", "provider.setUseMyMeds.msgSuccess_selected"); //=Rx3 is selected
-        else
-            request.setAttribute("providermsgSuccess", "provider.setUseMyMeds.msgSuccess_unselected"); //=Rx3 is unselected
-        request.setAttribute("method", "saveUseMyMeds");
-        return "genUseMyMeds";
-    }
 
     public String viewUseRx3() {
 
@@ -829,41 +734,6 @@ public class ProviderProperty2Action extends ActionSupport {
         return "genRxDefaultQuantity";
     }
 
-    public String saveMyDrugrefId() {
-
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-
-
-        UserProperty UdrugrefId = this.getDateProperty();
-        String drugrefId = "";
-
-        if (UdrugrefId != null) {
-            drugrefId = UdrugrefId.getValue();
-        }
-
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.MYDRUGREF_ID);
-
-        if (prop == null) {
-            prop = new UserProperty();
-            prop.setName(UserProperty.MYDRUGREF_ID);
-            prop.setProviderNo(providerNo);
-        }
-        prop.setValue(drugrefId);
-
-        this.userPropertyDAO.saveProp(prop);
-
-        request.setAttribute("status", "success");
-        request.setAttribute("drugrefId", prop);
-        request.setAttribute("providertitle", "provider.setmyDrugrefId.title"); //=Set myDrugref ID
-        request.setAttribute("providermsgPrefs", "provider.setmyDrugrefId.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setmyDrugrefId.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setmyDrugrefId.msgEdit"); //=Enter your desired login for myDrugref
-        request.setAttribute("providerbtnSubmit", "provider.setmyDrugrefId.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setmyDrugrefId.msgSuccess"); //=myDrugref Id saved
-        request.setAttribute("method", "saveMyDrugrefId");
-        return "gen";
-    }
     /////
 
 
@@ -888,12 +758,12 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("dateProperty2", prop2);
 
 
-        request.setAttribute("providertitle", "provider.setOntarioMD.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.setOntarioMD.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.setOntarioMD.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setOntarioMD.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setOntarioMD.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.setOntarioMD.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.setOntarioMD.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.setOntarioMD.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setOntarioMD.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.setOntarioMD.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveOntarioMDId");
 
         this.setDateProperty(prop);
@@ -947,12 +817,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("status", "success");
         request.setAttribute("dateProperty", prop);
-        request.setAttribute("providertitle", "provider.setOntarioMD.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.setOntarioMD.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.setOntarioMD.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setOntarioMD.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setOntarioMD.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.setOntarioMD.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.setOntarioMD.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.setOntarioMD.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setOntarioMD.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.setOntarioMD.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveOntarioMDId");
         return "gen";
     }
@@ -971,12 +841,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("dateProperty", prop);
 
-        request.setAttribute("providertitle", "provider.setConsultationCutOffDate.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.setConsultationCutOffDate.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.setConsultationCutOffDate.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setConsultationCutOffDate.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setConsultationCutOffDate.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.setConsultationCutOffDate.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.setConsultationCutOffDate.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.setConsultationCutOffDate.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setConsultationCutOffDate.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.setConsultationCutOffDate.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveConsultationRequestCuffOffDate");
 
         this.setDateProperty(prop);
@@ -1009,12 +879,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("status", "success");
         request.setAttribute("dateProperty", prop);
-        request.setAttribute("providertitle", "provider.setConsultationCutOffDate.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.setConsultationCutOffDate.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.setConsultationCutOffDate.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setConsultationCutOffDate.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setConsultationCutOffDate.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.setConsultationCutOffDate.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.setConsultationCutOffDate.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.setConsultationCutOffDate.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setConsultationCutOffDate.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.setConsultationCutOffDate.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveConsultationRequestCuffOffDate");
         return "gen";
     }
@@ -1052,12 +922,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("dateProperty", prop);
 
-        request.setAttribute("providertitle", "provider.setConsultationTeamWarning.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.setConsultationTeamWarning.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.setConsultationTeamWarning.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setConsultationTeamWarning.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setConsultationTeamWarning.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.setConsultationTeamWarning.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.setConsultationTeamWarning.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.setConsultationTeamWarning.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setConsultationTeamWarning.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.setConsultationTeamWarning.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveConsultationRequestTeamWarning");
 
         this.setDateProperty(prop);
@@ -1104,12 +974,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("status", "success");
         request.setAttribute("dateProperty", prop);
-        request.setAttribute("providertitle", "provider.setConsultationTeamWarning.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.setConsultationTeamWarning.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.setConsultationTeamWarning.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setConsultationTeamWarning.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setConsultationTeamWarning.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.setConsultationTeamWarning.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.setConsultationTeamWarning.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.setConsultationTeamWarning.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setConsultationTeamWarning.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.setConsultationTeamWarning.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveConsultationRequestTeamWarning");
         return "gen";
     }
@@ -1135,12 +1005,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("UdrugrefId", UdrugrefId);
 
-        request.setAttribute("providertitle", "provider.setWorkLoadManagement.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.setWorkLoadManagement.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.setWorkLoadManagement.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setWorkLoadManagement.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setWorkLoadManagement.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.setWorkLoadManagement.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.setWorkLoadManagement.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.setWorkLoadManagement.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setWorkLoadManagement.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.setWorkLoadManagement.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveWorkLoadManagement");
 
         this.setDateProperty(UdrugrefId);
@@ -1173,12 +1043,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("status", "success");
         request.setAttribute("dateProperty", prop);
-        request.setAttribute("providertitle", "provider.setWorkLoadManagement.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.setWorkLoadManagement.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.setWorkLoadManagement.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.setWorkLoadManagement.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.setWorkLoadManagement.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.setWorkLoadManagement.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.setWorkLoadManagement.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.setWorkLoadManagement.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.setWorkLoadManagement.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.setWorkLoadManagement.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveWorkLoadManagement");
         return "gen";
     }
@@ -2000,12 +1870,12 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("maximize", maximize);
 
 
-        request.setAttribute("providertitle", "provider.encounterWindowSize.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.encounterWindowSize.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.encounterWindowSize.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.encounterWindowSize.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.encounterWindowSize.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.encounterWindowSize.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.encounterWindowSize.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.encounterWindowSize.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.encounterWindowSize.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.encounterWindowSize.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveEncounterWindowSize");
 
         this.setEncounterWindowWidth(width);
@@ -2060,12 +1930,12 @@ public class ProviderProperty2Action extends ActionSupport {
         userPropertyDAO.saveProp(mProperty);
 
         request.setAttribute("status", "success");
-        request.setAttribute("providertitle", "provider.encounterWindowSize.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.encounterWindowSize.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.encounterWindowSize.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.encounterWindowSize.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.encounterWindowSize.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.encounterWindowSize.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.encounterWindowSize.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.encounterWindowSize.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.encounterWindowSize.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.encounterWindowSize.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveEncounterWindowSize");
 
         return "genEncounterWindowSize";
@@ -2084,12 +1954,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
         request.setAttribute("size", size);
 
-        request.setAttribute("providertitle", "provider.quickChartSize.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.quickChartSize.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.quickChartSize.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.quickChartSize.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.quickChartSize.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.quickChartSize.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.quickChartSize.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.quickChartSize.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.quickChartSize.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.quickChartSize.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveQuickChartSize");
 
         this.setQuickChartSize(size);
@@ -2116,12 +1986,12 @@ public class ProviderProperty2Action extends ActionSupport {
         userPropertyDAO.saveProp(wProperty);
 
         request.setAttribute("status", "success");
-        request.setAttribute("providertitle", "provider.quickChartSize.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.quickChartSize.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.quickChartSize.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.quickChartSize.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.quickChartSize.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.quickChartSize.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.quickChartSize.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.quickChartSize.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.quickChartSize.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.quickChartSize.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveQuickChartSize");
 
         return "genQuickChartSize";
@@ -2237,12 +2107,12 @@ public class ProviderProperty2Action extends ActionSupport {
 
 
         request.setAttribute("status", "success");
-        request.setAttribute("providertitle", "provider.patientNameLength.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.patientNameLength.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.patientNameLength.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.patientNameLength.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.patientNameLength.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.patientNameLength.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.patientNameLength.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.patientNameLength.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.patientNameLength.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.patientNameLength.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "savePatientNameLength");
 
         return "genPatientNameLength";
@@ -2306,76 +2176,6 @@ public class ProviderProperty2Action extends ActionSupport {
         return "genDisplayDocumentAs";
     }
 
-    public String viewCobalt() {
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.COBALT);
-
-        String propValue = "";
-        if (prop == null) {
-            prop = new UserProperty();
-        } else {
-            propValue = prop.getValue();
-        }
-
-        boolean checked;
-        if (propValue.equalsIgnoreCase("yes"))
-            checked = true;
-        else
-            checked = false;
-
-        prop.setChecked(checked);
-        request.setAttribute("cobaltProperty", prop);
-        request.setAttribute("providertitle", "provider.cobalt.title"); //=Select if you want to use Rx3
-        request.setAttribute("providermsgPrefs", "provider.cobalt.msgPrefs"); //=Preferences
-        request.setAttribute("providermsgProvider", "provider.cobalt.msgProfileView"); //=Use Rx3
-        request.setAttribute("providermsgEdit", "provider.cobalt.msgEdit"); //=Do you want to use Rx3?
-        request.setAttribute("providerbtnSubmit", "provider.cobalt.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.cobalt.msgSuccess"); //=Rx3 Selection saved
-        request.setAttribute("method", "saveCobalt");
-
-        this.setCobaltProperty(prop);
-
-        return "genCobalt";
-    }
-
-
-    public String saveCobalt() {
-        String checkboxValue = request.getParameter("cobaltProperty.checked");
-
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-        UserProperty Uprop = this.getCobaltProperty();
-
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.COBALT);
-        if (prop == null) {
-            prop = new UserProperty();
-            prop.setName(UserProperty.COBALT);
-            prop.setProviderNo(providerNo);
-        }
-        boolean checked = checkboxValue != null;
-        String propValue = "no";
-        if (checked)
-            propValue = "yes";
-
-        prop.setValue(propValue);
-        this.userPropertyDAO.saveProp(prop);
-
-        request.setAttribute("status", "success");
-        request.setAttribute("cobaltProperty", prop);
-        request.setAttribute("providertitle", "provider.cobalt.title");
-        request.setAttribute("providermsgPrefs", "provider.cobalt.msgPrefs");
-        request.setAttribute("providermsgProvider", "provider.cobalt.msgProfileView");
-        request.setAttribute("providermsgEdit", "provider.cobalt.msgEdit");
-        request.setAttribute("providerbtnSubmit", "provider.cobalt.btnSubmit");
-        if (checked)
-            request.setAttribute("providermsgSuccess", "provider.cobalt.msgSuccess_selected");
-        else
-            request.setAttribute("providermsgSuccess", "provider.cobalt.msgSuccess_unselected");
-        request.setAttribute("method", "saveCobalt");
-
-        return "genCobalt";
-    }
 
 
     public String viewHideOldEchartLinkInAppt() {
@@ -2531,12 +2331,12 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("phone", phone);
         request.setAttribute("fax", fax);
 
-        request.setAttribute("providertitle", "provider.appointmentCardPrefs.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.appointmentCardPrefs.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.appointmentCardPrefs.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.appointmentCardPrefs.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.appointmentCardPrefs.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.appointmentCardPrefs.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.appointmentCardPrefs.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.appointmentCardPrefs.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.appointmentCardPrefs.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.appointmentCardPrefs.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveAppointmentCardPrefs");
 
         this.setAppointmentCardName(name);
@@ -2586,80 +2386,18 @@ public class ProviderProperty2Action extends ActionSupport {
         userPropertyDAO.saveProp(mProperty);
 
         request.setAttribute("status", "success");
-        request.setAttribute("providertitle", "provider.appointmentCardPrefs.title"); //=Set myDrugref ID
+        request.setAttribute("providertitle", "provider.appointmentCardPrefs.title"); //=Set Configuration
         request.setAttribute("providermsgPrefs", "provider.appointmentCardPrefs.msgPrefs"); //=Preferences"); //
-        request.setAttribute("providermsgProvider", "provider.appointmentCardPrefs.msgProvider"); //=myDrugref ID
-        request.setAttribute("providermsgEdit", "provider.appointmentCardPrefs.msgEdit"); //=Enter your desired login for myDrugref
+        request.setAttribute("providermsgProvider", "provider.appointmentCardPrefs.msgProvider"); //=Configuration ID
+        request.setAttribute("providermsgEdit", "provider.appointmentCardPrefs.msgEdit"); //=Enter configuration value
         request.setAttribute("providerbtnSubmit", "provider.appointmentCardPrefs.btnSubmit"); //=Save
-        request.setAttribute("providermsgSuccess", "provider.appointmentCardPrefs.msgSuccess"); //=myDrugref Id saved
+        request.setAttribute("providermsgSuccess", "provider.appointmentCardPrefs.msgSuccess"); //=Configuration saved
         request.setAttribute("method", "saveAppointmentCardPrefs");
 
         return "genAppointmentCardPrefs";
     }
 
-    public String viewBornPrefs() {
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.DISABLE_BORN_PROMPTS);
 
-        String propValue = "";
-        if (prop == null) {
-            prop = new UserProperty();
-        } else {
-            propValue = prop.getValue();
-        }
-
-        boolean checked;
-        if (propValue.equals("Y"))
-            checked = true;
-        else
-            checked = false;
-
-        prop.setChecked(checked);
-        request.setAttribute("bornPromptsProperty", prop);
-        request.setAttribute("providertitle", "provider.bornPrefs.title");
-        request.setAttribute("providermsgPrefs", "provider.bornPrefs.msgPrefs"); //=Preferences
-        request.setAttribute("providerbtnSubmit", "provider.bornPrefs.btnSubmit"); //=Save
-        request.setAttribute("providerbtnCancel", "provider.bornPrefs.btnCancel"); //=Cancel
-        request.setAttribute("method", "saveBornPrefs");
-
-        this.setBornPromptsProperty(prop);
-
-        return "genBornPrefs";
-    }
-
-    public String saveBornPrefs() {
-        String checkboxValue = request.getParameter("bornPromptsProperty.checked");
-
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-        UserProperty Uprop = this.getBornPromptsProperty();
-
-        UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.DISABLE_BORN_PROMPTS);
-        if (prop == null) {
-            prop = new UserProperty();
-            prop.setName(UserProperty.DISABLE_BORN_PROMPTS);
-            prop.setProviderNo(providerNo);
-        }
-        boolean checked = checkboxValue != null;
-        String propValue = "N";
-        if (checked) propValue = "Y";
-        prop.setValue(propValue);
-        this.userPropertyDAO.saveProp(prop);
-
-        request.setAttribute("status", "success");
-        request.setAttribute("bornPromptsProperty", prop);
-        request.setAttribute("providertitle", "provider.bornPrefs.title");
-        request.setAttribute("providermsgPrefs", "provider.bornPrefs.msgPrefs"); //=Preferences
-        request.setAttribute("providerbtnClose", "provider.bornPrefs.btnClose"); //=Close
-        if (checked)
-            request.setAttribute("providermsgSuccess", "provider.bornPrefs.msgSuccess_selected");
-        else
-            request.setAttribute("providermsgSuccess", "provider.bornPrefs.msgSuccess_unselected");
-        request.setAttribute("method", "saveBornPrefs");
-
-        return "genBornPrefs";
-    }
 
 
     public String viewPreventionPrefs() {
@@ -2903,8 +2641,6 @@ public class ProviderProperty2Action extends ActionSupport {
         methodMap.put("saveShowPatientDOB", this::saveShowPatientDOB);
         methodMap.put("viewDefaultQuantity", this::viewDefaultQuantity);
         methodMap.put("saveDefaultQuantity", this::saveDefaultQuantity);
-        methodMap.put("viewMyDrugrefId", this::viewMyDrugrefId);
-        methodMap.put("saveMyDrugrefId", this::saveMyDrugrefId);
         methodMap.put("viewConsultationRequestCuffOffDate", this::viewConsultationRequestCuffOffDate);
         methodMap.put("saveConsultationRequestCuffOffDate", this::saveConsultationRequestCuffOffDate);
         methodMap.put("viewConsultationRequestTeamWarning", this::viewConsultationRequestTeamWarning);
@@ -2917,8 +2653,6 @@ public class ProviderProperty2Action extends ActionSupport {
         methodMap.put("saveFavouriteEformGroup", this::saveFavouriteEformGroup);
         methodMap.put("viewHCType", this::viewHCType);
         methodMap.put("saveHCType", this::saveHCType);
-        methodMap.put("viewUseMyMeds", this::viewUseMyMeds);
-        methodMap.put("saveUseMyMeds", this::saveUseMyMeds);
         methodMap.put("viewCommentLab", this::viewCommentLab);
         methodMap.put("saveCommentLab", this::saveCommentLab);
         methodMap.put("viewLabRecall", this::viewLabRecall);
@@ -2935,10 +2669,6 @@ public class ProviderProperty2Action extends ActionSupport {
         methodMap.put("savePatientNameLength", this::savePatientNameLength);
         methodMap.put("viewDisplayDocumentAs", this::viewDisplayDocumentAs);
         methodMap.put("saveDisplayDocumentAs", this::saveDisplayDocumentAs);
-        methodMap.put("viewCobalt", this::viewCobalt);
-        methodMap.put("saveCobalt", this::saveCobalt);
-        methodMap.put("viewBornPrefs", this::viewBornPrefs);
-        methodMap.put("saveBornPrefs", this::saveBornPrefs);
         methodMap.put("viewAppointmentCardPrefs", this::viewAppointmentCardPrefs);
         methodMap.put("saveAppointmentCardPrefs", this::saveAppointmentCardPrefs);
         methodMap.put("viewDashboardPrefs", this::viewDashboardPrefs);
@@ -2960,7 +2690,6 @@ public class ProviderProperty2Action extends ActionSupport {
     private UserProperty newDefaultDocQueueProperty;
     private UserProperty rxProfileViewProperty;
     private UserProperty rxShowPatientDOBProperty;
-    private UserProperty useMyMedsProperty;
     private UserProperty rxUseRx3Property;
     private UserProperty rxDefaultQuantityProperty;
     private UserProperty dateProperty2;
@@ -2980,13 +2709,11 @@ public class ProviderProperty2Action extends ActionSupport {
     private UserProperty quickChartSize;
     private UserProperty patientNameLength;
     private UserProperty displayDocumentAsProperty;
-    private UserProperty cobaltProperty;
     private UserProperty hideOldEchartLinkInApptProperty;
     private UserProperty dashboardShareProperty;
     private UserProperty appointmentCardName;
     private UserProperty appointmentCardPhone;
     private UserProperty appointmentCardFax;
-    private UserProperty bornPromptsProperty;
     private UserProperty preventionSSOWarningProperty;
     private UserProperty preventionISPAWarningProperty;
     private UserProperty preventionNonISPAWarningProperty;
@@ -3050,13 +2777,6 @@ public class ProviderProperty2Action extends ActionSupport {
         this.rxShowPatientDOBProperty = rxShowPatientDOBProperty;
     }
 
-    public UserProperty getUseMyMedsProperty() {
-        return useMyMedsProperty;
-    }
-
-    public void setUseMyMedsProperty(UserProperty useMyMedsProperty) {
-        this.useMyMedsProperty = useMyMedsProperty;
-    }
 
     public UserProperty getRxUseRx3Property() {
         return rxUseRx3Property;
@@ -3210,13 +2930,6 @@ public class ProviderProperty2Action extends ActionSupport {
         this.displayDocumentAsProperty = displayDocumentAsProperty;
     }
 
-    public UserProperty getCobaltProperty() {
-        return cobaltProperty;
-    }
-
-    public void setCobaltProperty(UserProperty cobaltProperty) {
-        this.cobaltProperty = cobaltProperty;
-    }
 
     public UserProperty getHideOldEchartLinkInApptProperty() {
         return hideOldEchartLinkInApptProperty;
@@ -3258,13 +2971,6 @@ public class ProviderProperty2Action extends ActionSupport {
         this.appointmentCardFax = appointmentCardFax;
     }
 
-    public UserProperty getBornPromptsProperty() {
-        return bornPromptsProperty;
-    }
-
-    public void setBornPromptsProperty(UserProperty bornPromptsProperty) {
-        this.bornPromptsProperty = bornPromptsProperty;
-    }
 
     public UserProperty getPreventionSSOWarningProperty() {
         return preventionSSOWarningProperty;

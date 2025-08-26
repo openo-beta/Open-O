@@ -214,7 +214,7 @@ public class RunClinicalReport2Action extends ActionSupport {
             request.setAttribute("numerator" + x + "Id", numeratorIds[x]);
         }
         request.setAttribute("denominatorId", denominatorId);
-        request.setAttribute("percentage", Integer.toString(new Float(percentage).intValue()));
+        request.setAttribute("percentage", Integer.toString(Float.valueOf(percentage).intValue()));
         request.setAttribute("csv", re.getCSV());
         request.setAttribute("list", re.getReportResultList());
         request.setAttribute("outputfields", n.getOutputFields());

@@ -102,7 +102,6 @@ public class RecordUxService extends AbstractServiceImpl {
      * {id : 6,name : 'Forms',url : 'partials/formview.html'},
      * {id : 7,name : 'Prevs/Measurements',url : 'partials/summary.html'},
      * {id : 8,name : 'Ticklers',url : 'partials/summary.html'},
-     * {id : 9,name : 'MyOscar',url : 'partials/blank.jsp'},
      * {id : 10,name : 'Allergies',url : 'partials/summary.html'},
      * {id : 11,name : 'CPP',url : 'partials/cpp.html'},
      * {id : 12,name : 'Labs/Docs',url : 'partials/labview.html'},
@@ -172,7 +171,6 @@ public class RecordUxService extends AbstractServiceImpl {
                 menulist.add(new MenuItemTo1(idCounter++, "Consultations", "record.consultRequests." + demographicNo, outstanding));
             }
         }
-        //END PHR
 
         MenuItemTo1 moreMenu = new MenuItemTo1(idCounter++, "More", null);
         moreMenu.setDropdown(true);

@@ -57,12 +57,10 @@ public final class ProgramTransfer {
     private boolean hic;
     private String programStatus;
     private Integer intakeProgram;
-    private Integer bedProgramLinkId;
     private String manOrWoman;
     private String genderDesc;
     private boolean transgender;
     private boolean firstNation;
-    private boolean bedProgramAffiliated;
     private boolean alcohol;
     private String abstinenceSupport;
     private boolean physicalHealth;
@@ -78,7 +76,6 @@ public final class ProgramTransfer {
 
     private String facilityDesc;
     private String orgCd;
-    private Integer totalUsedRoom;
     private String lastUpdateUser;
     private Date lastUpdateDate;
     private String siteSpecificField;
@@ -271,13 +268,6 @@ public final class ProgramTransfer {
         this.intakeProgram = intakeProgram;
     }
 
-    public Integer getBedProgramLinkId() {
-        return (bedProgramLinkId);
-    }
-
-    public void setBedProgramLinkId(Integer bedProgramLinkId) {
-        this.bedProgramLinkId = bedProgramLinkId;
-    }
 
     public String getManOrWoman() {
         return (manOrWoman);
@@ -311,13 +301,6 @@ public final class ProgramTransfer {
         this.firstNation = firstNation;
     }
 
-    public boolean isBedProgramAffiliated() {
-        return (bedProgramAffiliated);
-    }
-
-    public void setBedProgramAffiliated(boolean bedProgramAffiliated) {
-        this.bedProgramAffiliated = bedProgramAffiliated;
-    }
 
     public boolean isAlcohol() {
         return (alcohol);
@@ -431,13 +414,6 @@ public final class ProgramTransfer {
         this.orgCd = orgCd;
     }
 
-    public Integer getTotalUsedRoom() {
-        return (totalUsedRoom);
-    }
-
-    public void setTotalUsedRoom(Integer totalUsedRoom) {
-        this.totalUsedRoom = totalUsedRoom;
-    }
 
     public String getLastUpdateUser() {
         return (lastUpdateUser);

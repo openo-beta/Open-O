@@ -61,7 +61,7 @@ public class BillRecipient {
 
     public void setId(int id) {
         MiscUtils.getLogger().debug("int id");
-        this.id = new Integer(id);
+        this.id = Integer.valueOf(id);
     }
 
     public void setName(String name) {

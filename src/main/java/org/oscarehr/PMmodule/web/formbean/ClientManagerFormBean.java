@@ -27,7 +27,7 @@ import java.io.Serializable;
 
 public class ClientManagerFormBean implements Serializable {
 
-    public static final String[] tabs = {"Summary", "History", "Bed/Room Reservation", "Forms", "Refer", "Refer to vacancy", "Discharge", "Service Restrictions"};
+    public static final String[] tabs = {"Summary", "History", "Forms", "Refer", "Refer to vacancy", "Discharge", "Service Restrictions"};
 
     private String tab;
 

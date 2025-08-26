@@ -111,6 +111,7 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
      * @deprecated ordering should be done after in java not on the db when all
      * items are returns, use the findByDemographicId() instead.
      */
+    @Deprecated
     @Override
     public List<Drug> findByDemographicIdOrderByDate(Integer demographicId, Boolean archived) {
         // build sql string
@@ -243,7 +244,7 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
     @Override
     public List<Drug> getUniquePrescriptions(String demographic_no) {
 
-        List<Drug> rs = findByDemographicIdOrderByPosition(new Integer(demographic_no), false);
+        List<Drug> rs = findByDemographicIdOrderByPosition(Integer.valueOf(demographic_no), false);
 
         List<Drug> rt = new ArrayList<Drug>();
         for (Drug drug : rs) {
@@ -279,7 +280,7 @@ public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
 
     @Override
     public List<Drug> getPrescriptions(String demographic_no) {
-        List<Drug> rs = findByDemographicIdOrderByDate(new Integer(demographic_no), null);
+        List<Drug> rs = findByDemographicIdOrderByDate(Integer.valueOf(demographic_no), null);
         return rs;
 
     }

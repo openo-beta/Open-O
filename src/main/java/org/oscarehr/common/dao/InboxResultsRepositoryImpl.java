@@ -584,11 +584,4 @@ public class InboxResultsRepositoryImpl implements InboxResultsRepository {
         return whereSql;
     }
 
-    private static String testFillQueryParams(String sqlQuery, Map<String, String> whereValues) {
-        String result = sqlQuery;
-        for (String key : whereValues.keySet()) {
-            result = result.replaceAll(":" + key, "'" + whereValues.get(key) + "'");
-        }
-        return result;
-    }
 }

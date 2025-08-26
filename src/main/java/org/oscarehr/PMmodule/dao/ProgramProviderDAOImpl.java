@@ -157,8 +157,8 @@ public class ProgramProviderDAOImpl extends HibernateDaoSupport implements Progr
 
 
         ProgramProvider result = null;
-        List results = this.getHibernateTemplate().find(
-                "from ProgramProvider pp where pp.ProviderNo = ? and pp.ProgramId = ? and pp.RoleId = ?", new Object[] { providerNo, programId, roleId });
+        String queryStr = "from ProgramProvider pp where pp.ProviderNo = ?0 and pp.ProgramId = ?1 and pp.RoleId = ?2";
+        List results = this.getHibernateTemplate().find(queryStr, new Object[] { providerNo, programId, roleId });
 
         if (!results.isEmpty()) {
             result = (ProgramProvider) results.get(0);
@@ -342,8 +342,8 @@ public class ProgramProviderDAOImpl extends HibernateDaoSupport implements Progr
         if (providerNo == null || Long.valueOf(providerNo) == null) {
             throw new IllegalArgumentException();
         }
-        String sSQL = "select distinct f from Facility f, Room r, ProgramProvider pp " +
-        "where pp.ProgramId = r.programId and f.id = r.facilityId and pp.ProviderNo = ?0";
+        String sSQL = "select distinct f from Facility f, Program p, ProgramProvider pp " +
+        "where pp.ProgramId = p.id and f.id = p.facilityId and pp.ProviderNo = ?0";
         List results = this.getHibernateTemplate().find(sSQL, providerNo);
 
         return results;

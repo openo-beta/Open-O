@@ -43,7 +43,6 @@ public class ProviderSettings {
     private String workloadManagement;
     private String ticklerWarningProvider;
 
-    private boolean useCobaltOnLogin;
 
     private int startHour = 8;
     private int endHour = 18;
@@ -140,9 +139,6 @@ public class ProviderSettings {
 
     private String olisDefaultReportingLab = "";
     private String olisDefaultExcludeReportingLab = "";
-    private String myDrugRefId;
-    private boolean useMyMeds;
-    private boolean disableBornPrompts;
     private boolean dashboardShare;
 
 
@@ -788,37 +784,9 @@ public class ProviderSettings {
         this.olisDefaultExcludeReportingLab = olisDefaultExcludeReportingLab;
     }
 
-    public String getMyDrugRefId() {
-        return myDrugRefId;
-    }
 
-    public void setMyDrugRefId(String myDrugRefId) {
-        this.myDrugRefId = myDrugRefId;
-    }
 
-    public boolean isUseMyMeds() {
-        return useMyMeds;
-    }
 
-    public void setUseMyMeds(boolean useMyMeds) {
-        this.useMyMeds = useMyMeds;
-    }
-
-    public boolean isUseCobaltOnLogin() {
-        return useCobaltOnLogin;
-    }
-
-    public void setUseCobaltOnLogin(boolean useCobaltOnLogin) {
-        this.useCobaltOnLogin = useCobaltOnLogin;
-    }
-
-    public boolean isDisableBornPrompts() {
-        return disableBornPrompts;
-    }
-
-    public void setDisableBornPrompts(boolean disableBornPrompts) {
-        this.disableBornPrompts = disableBornPrompts;
-    }
 
     public boolean isDashboardShare() {
         return dashboardShare;

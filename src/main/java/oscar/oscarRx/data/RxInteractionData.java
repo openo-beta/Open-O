@@ -51,7 +51,7 @@ public class RxInteractionData {
     public void preloadInteraction(Vector atccodes) {
         //launch thread that searches database for them
         MiscUtils.getLogger().debug("PRELOADING" + atccodes.hashCode());
-        if (!htable.containsKey(new Integer(atccodes.hashCode()))) {
+        if (!htable.containsKey(Integer.valueOf(atccodes.hashCode()))) {
             RxInteractionWorker worker = new RxInteractionWorker(rxInteractionData, atccodes);
             worker.start();
             addToWorking(atccodes, worker);
@@ -59,21 +59,21 @@ public class RxInteractionData {
     }
 
     public void addToHash(Vector atccodes, RxDrugData.Interaction[] interact) {
-        htable.put(new Integer(atccodes.hashCode()), interact);
+        htable.put(Integer.valueOf(atccodes.hashCode()), interact);
     }
 
     public void addToWorking(Vector atccodes, RxInteractionWorker worker) {
-        working.put(new Integer(atccodes.hashCode()), worker);
+        working.put(Integer.valueOf(atccodes.hashCode()), worker);
     }
 
     public void removeFromWorking(Vector atccodes) {
-        working.remove(new Integer(atccodes.hashCode()));
+        working.remove(Integer.valueOf(atccodes.hashCode()));
     }
 
     public RxDrugData.Interaction[] getInteractions(Vector atccodes) {
         RxDrugData.Interaction[] interact = null;
         MiscUtils.getLogger().debug("h table size " + htable.size() + "RxInteractionData.getInteraction atc code val  " + atccodes.hashCode());
-        Integer i = new Integer(atccodes.hashCode());
+        Integer i = Integer.valueOf(atccodes.hashCode());
         if (htable.containsKey(i)) {
             MiscUtils.getLogger().debug("Already been searched!");
             interact = (RxDrugData.Interaction[]) htable.get(i);

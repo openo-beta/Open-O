@@ -37,6 +37,7 @@ import org.oscarehr.util.MiscUtils;
 /**
  * @deprecated 2013-12-09 use org.oscarehr.util.DateUtils instead
  */
+@Deprecated
 public final class DateTimeFormatUtils {
 
     private static final Logger log = MiscUtils.getLogger();

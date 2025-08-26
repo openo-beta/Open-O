@@ -184,7 +184,7 @@ public class EctConsultationFormRequestPrintPdf {
                 dynamicHeight = LINEHEIGHT - 152;
             }
 
-            ct.setSimpleColumn(new Float(85), height - 264 - dynamicHeight - lineCount * LINEHEIGHT, new Float(526), height - 250 - dynamicHeight, LINEHEIGHT, Element.ALIGN_LEFT);
+            ct.setSimpleColumn(Float.valueOf(85), height - 264 - dynamicHeight - lineCount * LINEHEIGHT, Float.valueOf(526), height - 250 - dynamicHeight, LINEHEIGHT, Element.ALIGN_LEFT);
             ct.addText(new Phrase(name, boldFont));
             ct.addText(new Phrase(text, font));
             ct.go();
@@ -209,7 +209,7 @@ public class EctConsultationFormRequestPrintPdf {
         cb.showTextAligned(PdfContentByte.ALIGN_LEFT, reqForm.specPhone, 190, height - 166, 0);
         cb.showTextAligned(PdfContentByte.ALIGN_LEFT, reqForm.specFax, 190, height - 181, 0);
         cb.endText();
-        ct.setSimpleColumn(new Float(190), height - 223, new Float(290), height - 181, LINEHEIGHT, Element.ALIGN_LEFT);
+        ct.setSimpleColumn(Float.valueOf(190), height - 223, Float.valueOf(290), height - 181, LINEHEIGHT, Element.ALIGN_LEFT);
         ct.addText(new Phrase(reqForm.specAddr.replaceAll("<br>", "\n"), font));
         ct.go();
 
@@ -218,7 +218,7 @@ public class EctConsultationFormRequestPrintPdf {
         cb.setFontAndSize(bf, FONTSIZE);
         cb.showTextAligned(PdfContentByte.ALIGN_LEFT, reqForm.patientName, 385, height - 112, 0);
         cb.endText();
-        ct.setSimpleColumn(new Float(385), height - 153, new Float(585), height - 112, LINEHEIGHT, Element.ALIGN_LEFT);
+        ct.setSimpleColumn(Float.valueOf(385), height - 153, Float.valueOf(585), height - 112, LINEHEIGHT, Element.ALIGN_LEFT);
         ct.addText(new Phrase(reqForm.patientAddress.replaceAll("<br>", " "), font));
         ct.go();
 
@@ -293,7 +293,7 @@ public class EctConsultationFormRequestPrintPdf {
                 pdf.printPdf();
                 pdfDocs.add(fileName);
             } catch (Exception e) {
-                request.setAttribute("printError", new Boolean(true));
+                request.setAttribute("printError", Boolean.valueOf(true));
                 MiscUtils.getLogger().error("Failed while printing lab document " + p.getLabNo(), e);
                 break;
             }

@@ -75,7 +75,7 @@ public class QuickBillingBCSave2Action extends ActionSupport {
 
         } else {
 
-            request.setAttribute("saved", new Boolean(false));
+            request.setAttribute("saved", Boolean.valueOf(false));
             return "error";
 
         }

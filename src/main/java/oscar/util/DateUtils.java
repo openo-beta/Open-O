@@ -43,6 +43,7 @@ import oscar.OscarProperties;
 /**
  * @deprecated 2013-12-09 use org.oscarehr.util.DateUtils instead
  */
+@Deprecated
 public final class DateUtils {
 
     private static Logger logger = MiscUtils.getLogger();
@@ -149,6 +150,7 @@ public final class DateUtils {
      *
      * @deprecated use apache commons DateUtils.truncate()
      */
+    @Deprecated
     public static void zeroTimeFields(Calendar cal) {
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
@@ -179,11 +181,13 @@ public final class DateUtils {
     /**
      * @deprecated use formatDate() parseDate() instead
      */
+    @Deprecated
     private static SimpleDateFormat sdf;
 
     /**
      * @deprecated use formatDate() parseDate() instead
      */
+    @Deprecated
     private static String formatDate = "dd/MM/yyyy";
 
     public static String getISODateTimeFormatNoT(Calendar cal) {
@@ -193,6 +197,7 @@ public final class DateUtils {
     /**
      * @deprecated use formatDate() parseDate() instead
      */
+    @Deprecated
     public static SimpleDateFormat getDateFormatter() {
 
         if (sdf == null) {
@@ -252,6 +257,7 @@ public final class DateUtils {
     /**
      * @deprecated use formatDate(Date,Locale) instead.
      */
+    @Deprecated
     public static String formatDate(String date, String format,
 
                                     String formatAtual) {
@@ -283,6 +289,7 @@ public final class DateUtils {
     /**
      * @deprecated use formatDate(Date,Locale) instead.
      */
+    @Deprecated
     public static String formatDate(String date, String format) {
 
         try {
@@ -323,7 +330,7 @@ public final class DateUtils {
 
     public static String sumDate(String format, String pSum) {
 
-        int iSum = new Integer(pSum).intValue();
+        int iSum = Integer.valueOf(pSum).intValue();
 
         logger.debug("[DateUtils] - sumDate: iSum = " + iSum);
 

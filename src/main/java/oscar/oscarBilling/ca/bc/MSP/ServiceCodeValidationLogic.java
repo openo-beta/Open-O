@@ -259,8 +259,8 @@ public class ServiceCodeValidationLogic {
         }
 
         HashMap<String, Double> availableUnits = new HashMap<String, Double>();
-        availableUnits.put(DAILY_AVAILABLE_UNITS, new Double(currentDayAvailable));
-        availableUnits.put(ANNUAL_AVAILABLE_UNITS, new Double(currentYearAvailable));
+        availableUnits.put(DAILY_AVAILABLE_UNITS, Double.valueOf(currentDayAvailable));
+        availableUnits.put(ANNUAL_AVAILABLE_UNITS, Double.valueOf(currentYearAvailable));
         return availableUnits;
     }
 

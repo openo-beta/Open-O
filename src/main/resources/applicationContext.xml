@@ -108,7 +108,6 @@
 	<bean id="defaultRoleAccessDAO" class="org.oscarehr.PMmodule.dao.DefaultRoleAccessDAOImpl" autowire="byName" />
 	<bean id="programClientStatusDAO" class="org.oscarehr.PMmodule.dao.ProgramClientStatusDAOImpl" autowire="byName" />
 	<bean id="programTeamDAO" class="org.oscarehr.PMmodule.dao.ProgramTeamDAOImpl" autowire="byName" />
-	<bean id="bedProgramDao" class="org.caisi.dao.BedProgramDaoImpl" autowire="byName" />
 	<bean id="demographicDao" class="org.oscarehr.common.dao.DemographicDaoImpl" autowire="byName" />
 	<bean id="secUserRoleDao" class="org.oscarehr.PMmodule.dao.SecUserRoleDaoImpl" autowire="byName"/>
 	<bean id="programSignatureDao" class="org.oscarehr.PMmodule.dao.ProgramSignatureDaoImpl" autowire="byName" />
@@ -160,7 +159,7 @@
 	<bean id="encounterWindowDao" class="org.oscarehr.common.dao.EncounterWindowDaoImpl" autowire="byName" />
 
 	<!-- OSCAR Desicion Support -->
-	<bean id="dsService" class="org.oscarehr.decisionSupport.service.DSServiceMyDrugref">
+	<bean id="dsService" class="org.oscarehr.decisionSupport.service.DSServiceImpl">
 	</bean>
 
 	<!--Container for holding preventions -->
@@ -254,11 +253,6 @@
 		<property name="demographicExtDao" ref="demographicExtDao" />
 		<property name="outsideOfDomainEnabled" value="${pmm.client.search.outside.of.domain.enabled}" />
 	</bean>
-	<bean id="infirmBedProgramManager" class="org.caisi.service.InfirmBedProgramManagerImpl" autowire="byName">
-		<property name="programProviderDAOT" ref="programProviderDAO" />
-		<property name="demographicDao" ref="demographicDao" />
-		<property name="providerDefaultProgramDao" ref="providerDefaultProgramDao" />
-	</bean>
 
 	
  	<bean id="demographicManagerT" class="org.caisi.service.DemographicManagerTickler">
@@ -291,10 +285,6 @@
 	<bean id="FormBCAR2020DataDao" class="org.oscarehr.common.dao.forms.FormBCAR2020DataDao" autowire="byName"/>
 	<bean id="FormBCAR2020TextDao" class="org.oscarehr.common.dao.forms.FormBCAR2020TextDao" autowire="byName"/>
 
-	<!-- Bed Program DAO (Used for Accessing Caseload in the dashboard)-->
-	<!-- <bean id="bedProgramDao" class="org.caisi.dao.BedProgramDaoImpl" autowire="byName">
-    	<property name="sessionFactory" ref="sessionFactory"/>
-	</bean> -->
 
 
 	<!--<bean id="preventionMgr" class="org.oscarehr.managers.PreventionManagerImpl"></bean>-->
@@ -341,8 +331,7 @@
 <!--<bean id="nioFileManager" class="org.oscarehr.managers.NioFileManagerImpl"></bean> -->
 <!-- <bean id="preventionDS" class="oscar.oscarPrevention.PreventionDSImpl"></bean>
 <bean id="integratorProgressDao" class="org.oscarehr.common.dao.IntegratorProgressDaoImpl"></bean> -->
-<!-- <bean id="messengerDemographicManager" class="org.oscarehr.managers.MessengerDemographicManagerImpl"></bean>
-<bean id="roomDemographicManager" class="org.oscarehr.managers.RoomDemographicManagerImpl"></bean> -->
+<!-- <bean id="messengerDemographicManager" class="org.oscarehr.managers.MessengerDemographicManagerImpl"></bean> -->
 <!-- <bean id="documentAttachmentManager" class="org.oscarehr.documentManager.DocumentAttachmentManagerImpl"></bean> -->
 <!-- <bean id="faxDocumentManager" class="org.oscarehr.managers.FaxDocumentManagerImpl"></bean> -->
 

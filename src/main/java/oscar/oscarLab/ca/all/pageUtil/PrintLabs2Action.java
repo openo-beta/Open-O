@@ -94,11 +94,11 @@ public class PrintLabs2Action extends ActionSupport {
             }
         } catch (IOException ioe) {
             logger.error("IOException occurred inside PrintLabs2Action", ioe);
-            request.setAttribute("printError", new Boolean(true));
+            request.setAttribute("printError", Boolean.valueOf(true));
             return "error";
         } catch (Exception e) {
             logger.error("Unknown Exception occurred inside PrintLabs2Action", e);
-            request.setAttribute("printError", new Boolean(true));
+            request.setAttribute("printError", Boolean.valueOf(true));
             return "error";
         }
 

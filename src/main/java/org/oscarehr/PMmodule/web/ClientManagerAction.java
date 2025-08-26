@@ -39,10 +39,6 @@ import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.Admission;
 import org.oscarehr.common.model.CdsClientForm;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.managers.BedDemographicManager;
-import org.oscarehr.managers.BedManager;
-import org.oscarehr.managers.RoomDemographicManager;
-import org.oscarehr.managers.RoomManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
@@ -63,8 +59,6 @@ public class ClientManagerAction {
     private LookupManager lookupManager;
     private CaseManagementManager caseManagementManager;
     private AdmissionManager admissionManager;
-    private BedDemographicManager bedDemographicManager = SpringUtils.getBean(BedDemographicManager.class);
-    private BedManager bedManager = SpringUtils.getBean(BedManager.class);
     private ClientManager clientManager;
     private ProgramManager programManager;
     private ProviderManager providerManager;
@@ -79,8 +73,6 @@ public class ClientManagerAction {
     private VacancyTemplateDao vacancyTemplateDao = (VacancyTemplateDao) SpringUtils.getBean(VacancyTemplateDao.class);
     private MatchingManager matchingManager = new MatchingManager();
 
-    private RoomDemographicManager roomDemographicManager = SpringUtils.getBean(RoomDemographicManager.class);
-    private RoomManager roomManager = SpringUtils.getBean(RoomManager.class);
 
     public static String getEscapedAdmissionSelectionDisplay(int admissionId) {
         Admission admission = admissionDao.getAdmission((long) admissionId);
@@ -132,17 +124,6 @@ public class ClientManagerAction {
     }
 
 
-    public void setBedDemographicManager(BedDemographicManager demographicBedManager) {
-        this.bedDemographicManager = demographicBedManager;
-    }
-
-    public void setRoomDemographicManager(RoomDemographicManager roomDemographicManager) {
-        this.roomDemographicManager = roomDemographicManager;
-    }
-
-    public void setBedManager(BedManager bedManager) {
-        this.bedManager = bedManager;
-    }
 
     public void setClientManager(ClientManager mgr) {
         this.clientManager = mgr;
@@ -160,37 +141,7 @@ public class ClientManagerAction {
         this.providerManager = mgr;
     }
 
-    public void setRoomManager(RoomManager roomManager) {
-        this.roomManager = roomManager;
-    }
 
-    private void populateCdsData(HttpServletRequest request, Integer demographicNo, Integer facilityId) {
-        List<Admission> admissions = admissionDao.getAdmissions(demographicNo);
-        List<Program> domain = null;
-
-
-        ArrayList<CdsClientForm> allLatestCdsForms = new ArrayList<CdsClientForm>();
-
-        boolean restrict = "true".equals(OscarProperties.getInstance().getProperty("caisi.cds.restrict_by_program_domain", "false"));
-        if (restrict) {
-            domain = programManager.getProgramDomain(LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo());
-        }
-
-        for (Admission admission : admissions) {
-            CdsClientForm cdsClientForm = cdsClientFormDao.findLatestByFacilityAdmissionId(facilityId, admission.getId().intValue(), null);
-            if (cdsClientForm != null) {
-                if (restrict) {
-                    if (isAdmissionInDomain(admission, domain)) {
-                        allLatestCdsForms.add(cdsClientForm);
-                    }
-                } else {
-                    allLatestCdsForms.add(cdsClientForm);
-                }
-            }
-        }
-
-        request.setAttribute("allLatestCdsForms", allLatestCdsForms);
-    }
 
     private boolean isAdmissionInDomain(Admission admission, List<Program> domain) {
         for (Program p : domain) {

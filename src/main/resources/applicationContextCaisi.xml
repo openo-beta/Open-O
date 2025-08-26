@@ -58,22 +58,7 @@
 	</bean>
 	<!-- ========================= SCHEDULED JOBS ========================= -->
 
-	 <bean id="scheduledBedProgramDischargeTask" class="org.oscarehr.PMmodule.task.BedProgramDischargeTask" autowire="byType">
-		<property name="programManager" ref="programManager" />
-	</bean>
     <!-- Define the scheduled executor factory bean -->
-	<bean id="schedulerBedProgramDischarge" class="org.springframework.scheduling.concurrent.ScheduledExecutorFactoryBean">
-		<property name="scheduledExecutorTasks">
-			<list>
-				<!-- Configure the scheduled task -->
-				<bean class="org.springframework.scheduling.concurrent.ScheduledExecutorTask">
-					<property name="delay" value="120000" />
-					<property name="period" value="3600000" />
-					<property name="runnable" ref="scheduledBedProgramDischargeTask" />
-				</bean>
-			</list>
-		</property>
-	</bean>
 
 	
 
@@ -115,9 +100,6 @@
 	<bean id="schedulerCaisi" class="org.springframework.scheduling.concurrent.ScheduledExecutorFactoryBean">
     <property name="scheduledExecutorTasks">
         <list>
-            <bean class="org.springframework.scheduling.concurrent.ScheduledExecutorTask">
-                <property name="runnable" ref="scheduledBedProgramDischargeTask" />
-            </bean>
             <bean class="org.springframework.scheduling.concurrent.ScheduledExecutorTask">
                 <property name="runnable" ref="scheduledAnonymousClientDischargeTask" />
             </bean>
