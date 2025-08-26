@@ -1578,7 +1578,6 @@
         <action name="demographic/printDemoLabelAction" class="oscar.oscarDemographic.PrintDemoLabel2Action"/>
         <action name="demographic/printDemoAddressLabelAction" class="oscar.oscarDemographic.PrintDemoAddressLabel2Action"/>
         <action name="demographic/printDemoChartLabelAction" class="oscar.oscarDemographic.PrintDemoChartLabel2Action"/>
-        <action name="demographic/printBarcodeAction" class="oscar.oscarDemographic.PrintBarcode2Action"/>
         <action name="demographic/printClientLabLabelAction" class="oscar.oscarDemographic.PrintClientLabLabel2Action"/>
         <action name="billing/CA/BC/createBillingReportAction" class="oscar.oscarBilling.ca.bc.MSP.CreateBillingReport2Action"/>
         <action name="oscarPrevention/AddPrevention" class="oscar.oscarPrevention.pageUtil.AddPrevention2Action">
