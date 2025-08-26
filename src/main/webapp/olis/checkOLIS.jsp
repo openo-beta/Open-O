@@ -28,6 +28,12 @@
         import="oscar.OscarProperties,java.net.InetAddress,java.io.*,java.util.List,java.util.*,javax.net.ssl.*,java.security.*,java.security.cert.*" %>
 <%@page
         import="org.oscarehr.util.DbConnectionFilter,java.sql.*,org.oscarehr.util.SpringUtils,org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="ca.openosp.olis.Driver" %>
+<%@ page import="ca.openosp.olis.parameters.OBR22" %>
+<%@ page import="ca.openosp.olis.parameters.ZRP1" %>
+<%@ page import="ca.openosp.olis.parameters.PID3" %>
+<%@ page import="ca.openosp.olis.queries.Query" %>
+<%@ page import="ca.openosp.olis.queries.Z01Query" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     if (session.getAttribute("userrole") == null) {
@@ -195,7 +201,7 @@
         ((Z01Query) query).setRequestingHic(zrp1);
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        com.indivica.olis.Driver.submitOLISQuery(loggedInInfo, request, query);
+        Driver.submitOLISQuery(loggedInInfo, request, query);
         String msgInXML = (String) request.getAttribute("msgInXML");
         String signedRequest = (String) request.getAttribute("signedRequest");
         String signedData = (String) request.getAttribute("signedData");

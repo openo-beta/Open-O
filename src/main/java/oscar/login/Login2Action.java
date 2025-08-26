@@ -26,7 +26,7 @@
 package oscar.login;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.quatro.model.security.LdapSecurity;
+import ca.openosp.quatro.model.security.LdapSecurity;
 import net.sf.json.JSONObject;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -34,7 +34,6 @@ import org.jboss.aerogear.security.otp.Totp;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.PMmodule.service.ProviderManager;
 import org.oscarehr.PMmodule.web.utils.UserRoleUtils;
-import org.oscarehr.common.IsPropertiesOn;
 import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;
 import org.oscarehr.decisionSupport.service.DSService;

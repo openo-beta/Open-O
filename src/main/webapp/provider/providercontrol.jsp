@@ -34,6 +34,7 @@
 <%@ page import="java.util.*,java.net.*, oscar.util.*"
          errorPage="/errorpage.jsp" %>
 <%@ page import="oscar.OscarProperties" %>
+<%@ page import="ca.openosp.web.Infirm2Action" %>
 
 <caisi:isModuleLoad moduleName="caisi">
     <%
@@ -43,7 +44,7 @@
         if (isOscar != null) session.setAttribute("infirmaryView_isOscar", isOscar);
         if (request.getParameter(SessionConstants.CURRENT_PROGRAM_ID) != null) {
             session.setAttribute(SessionConstants.CURRENT_PROGRAM_ID, request.getParameter(SessionConstants.CURRENT_PROGRAM_ID));
-            org.caisi.core.web.Infirm2Action.updateCurrentProgram(request.getParameter(SessionConstants.CURRENT_PROGRAM_ID), loggedInInfo.getLoggedInProviderNo());
+            Infirm2Action.updateCurrentProgram(request.getParameter(SessionConstants.CURRENT_PROGRAM_ID), loggedInInfo.getLoggedInProviderNo());
         }
         session.setAttribute("infirmaryView_OscarURL", request.getRequestURL());
 

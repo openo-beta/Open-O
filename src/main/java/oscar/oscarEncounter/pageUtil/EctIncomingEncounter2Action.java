@@ -41,9 +41,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.Logger;
-import org.caisi.dao.DefaultIssueDao;
+import ca.openosp.dao.DefaultIssueDao;
 import org.oscarehr.PMmodule.dao.ProgramAccessDAO;
 import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
 import org.oscarehr.PMmodule.model.ProgramAccess;
@@ -64,11 +63,10 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SessionConstants;
 import org.oscarehr.util.SpringUtils;
 
-import com.quatro.dao.security.SecroleDao;
-import com.quatro.model.security.Secrole;
+import ca.openosp.quatro.dao.security.SecroleDao;
+import ca.openosp.quatro.model.security.Secrole;
 
 import oscar.OscarProperties;
-import oscar.util.DateUtils;
 import oscar.util.UtilDateUtilities;
 
 import com.opensymphony.xwork2.ActionSupport;

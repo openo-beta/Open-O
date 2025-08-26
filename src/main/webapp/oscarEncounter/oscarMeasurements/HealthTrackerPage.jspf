@@ -47,6 +47,7 @@
 <%@ include file="/common/webAppContextAndSuperMgr.jsp"%>
 
 <%@ page import="java.util.*,java.net.*" %>
+<%@ page import="ca.openosp.quatro.service.security.SecurityManager" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -536,7 +537,7 @@ div.preventionSection {
 
     function fsPopup(width,height,url,window) {
     	<%
-    		com.quatro.service.security.SecurityManager securityMgr = new com.quatro.service.security.SecurityManager();
+    		SecurityManager securityMgr = new SecurityManager();
     		if(securityMgr.hasWriteAccess("_flowsheet."+mFlowsheet.getName(),roleName$)) {
     	%>
 

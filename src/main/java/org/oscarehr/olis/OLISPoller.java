@@ -42,12 +42,12 @@ import oscar.oscarLab.ca.all.parsers.MessageHandler;
 import oscar.oscarLab.ca.all.parsers.OLISHL7Handler;
 import oscar.oscarLab.ca.all.util.Utilities;
 
-import com.indivica.olis.Driver;
-import com.indivica.olis.parameters.OBR22;
-import com.indivica.olis.parameters.ORC21;
-import com.indivica.olis.parameters.ZRP1;
-import com.indivica.olis.queries.Z04Query;
-import com.indivica.olis.queries.Z06Query;
+import ca.openosp.olis.Driver;
+import ca.openosp.olis.parameters.OBR22;
+import ca.openosp.olis.parameters.ORC21;
+import ca.openosp.olis.parameters.ZRP1;
+import ca.openosp.olis.queries.Z04Query;
+import ca.openosp.olis.queries.Z06Query;
 
 /**
  * @author Indivica

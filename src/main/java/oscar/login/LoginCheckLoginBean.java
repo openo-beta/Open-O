@@ -41,7 +41,7 @@ import org.oscarehr.managers.SecurityManager;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SSOUtility;
 import org.oscarehr.util.SpringUtils;
-import com.quatro.model.security.LdapSecurity;
+import ca.openosp.quatro.model.security.LdapSecurity;
 import org.owasp.encoder.Encode;
 import oscar.OscarProperties;
 import oscar.log.LogAction;

@@ -23,9 +23,10 @@
 
 package org.oscarehr.casemgmt.web;
 
+import ca.openosp.quatro.service.security.SecurityManager;
 import com.opensymphony.xwork2.ActionSupport;
-import com.quatro.model.security.Secrole;
-import com.quatro.service.security.RolesManager;
+import ca.openosp.quatro.model.security.Secrole;
+import ca.openosp.quatro.service.security.RolesManager;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsDateJsonBeanProcessor;
@@ -1185,7 +1186,7 @@ public class CaseManagementView2Action extends ActionSupport {
         String appointmentNo = request.getParameter("appointment_no");
 
         String[] codes = request.getParameterValues("issue_code");
-        com.quatro.service.security.SecurityManager securityManager = new com.quatro.service.security.SecurityManager();
+        SecurityManager securityManager = new SecurityManager();
         //these are the ones on the right nav bar. - generic implementation of view access
         if (codes != null && codes.length > 0) {
             if (!securityManager.hasReadAccess("_" + codes[0], request.getSession().getAttribute("userrole") + "," + request.getSession().getAttribute("user"))) {

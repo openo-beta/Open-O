@@ -64,7 +64,6 @@ import org.oscarehr.PMmodule.model.HealthSafety;
 import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.PMmodule.model.ProgramClientRestriction;
 import org.oscarehr.PMmodule.model.ProgramProvider;
-import org.oscarehr.PMmodule.model.ProgramQueue;
 import org.oscarehr.PMmodule.model.Vacancy;
 import org.oscarehr.PMmodule.service.AdmissionManager;
 import org.oscarehr.PMmodule.service.ClientManager;
@@ -74,7 +73,6 @@ import org.oscarehr.PMmodule.service.ProgramManager;
 import org.oscarehr.PMmodule.service.ProgramQueueManager;
 import org.oscarehr.PMmodule.service.ProviderManager;
 import org.oscarehr.PMmodule.web.formbean.ClientManagerFormBean;
-import org.oscarehr.PMmodule.web.utils.UserRoleUtils;
 import org.oscarehr.PMmodule.wlmatch.MatchBO;
 import org.oscarehr.PMmodule.wlmatch.MatchingManager;
 import org.oscarehr.PMmodule.wlmatch.VacancyDisplayBO;
@@ -103,7 +101,7 @@ import oscar.OscarProperties;
 import oscar.log.LogAction;
 import oscar.oscarDemographic.data.DemographicRelationship;
 
-import com.quatro.service.LookupManager;
+import ca.openosp.quatro.service.LookupManager;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

@@ -25,7 +25,7 @@ package org.oscarehr.casemgmt.model;
 
 import java.util.Date;
 
-import org.caisi.model.BaseObject;
+import ca.openosp.model.BaseObject;
 import org.oscarehr.util.MiscUtils;
 
 public class Issue extends BaseObject {

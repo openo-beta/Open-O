@@ -25,6 +25,7 @@
 
 package oscar.oscarEncounter.pageUtil;
 
+import ca.openosp.quatro.service.security.SecurityManager;
 import com.opensymphony.xwork2.ActionSupport;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
@@ -171,7 +172,7 @@ public class EctDisplayAction extends ActionSupport {
                 Dao.setReloadUrl(request.getRequestURL().toString() + "?" + request.getQueryString());
                 Dao.setDivId(cmd);
 
-                com.quatro.service.security.SecurityManager securityMgr = new com.quatro.service.security.SecurityManager();
+                SecurityManager securityMgr = new SecurityManager();
                 if (securityMgr.hasReadAccess("_" + cmd.toLowerCase(), request.getSession().getAttribute("userrole") + "," + request.getSession().getAttribute("user"))) {
 
                     if (getInfo(bean, request, Dao)) {

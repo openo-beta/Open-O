@@ -85,7 +85,7 @@
 </tag>
 <tag>
   <name>ProgramExclusiveView</name>
-  <tagclass>org.caisi.core.web.tld.programExclusiveViewTag</tagclass>
+  <tagclass>ca.openosp.web.tld.programExclusiveViewTag</tagclass>
   <bodycontent>jsp</bodycontent>
   <attribute>
     <name>providerNo</name>

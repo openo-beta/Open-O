@@ -36,6 +36,7 @@
 package oscar.oscarReport.reportByTemplate.actions;
 
 
+import ca.openosp.quatro.service.security.SecurityManager;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 import org.oscarehr.util.LoggedInInfo;
@@ -55,7 +56,7 @@ public class UploadTemplates2Action extends ActionSupport {
     public String execute() {
 
         String roleName$ = request.getSession().getAttribute("userrole") + "," + request.getSession().getAttribute("user");
-        if (!com.quatro.service.security.SecurityManager.hasPrivilege("_admin", roleName$) && !com.quatro.service.security.SecurityManager.hasPrivilege("_report", roleName$)) {
+        if (!SecurityManager.hasPrivilege("_admin", roleName$) && !SecurityManager.hasPrivilege("_report", roleName$)) {
             throw new SecurityException("Insufficient Privileges");
         }
 

@@ -27,7 +27,7 @@ package org.oscarehr.ws.rest.conversion;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.UserPrivilegeTo1;
 
-import com.quatro.model.security.Secobjprivilege;
+import ca.openosp.quatro.model.security.Secobjprivilege;
 
 public class SecobjprivilegeConverter extends AbstractConverter<Secobjprivilege, UserPrivilegeTo1> {
 

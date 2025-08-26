@@ -34,32 +34,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
-import org.oscarehr.common.NativeSql;
-import org.oscarehr.common.dao.ProviderFacilityDao;
-import org.oscarehr.common.dao.UserPropertyDAO;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.ProviderFacility;
-import org.oscarehr.common.model.ProviderFacilityPK;
-import org.oscarehr.common.model.UserProperty;
 import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
-import org.hibernate.type.StandardBasicTypes;
-import oscar.OscarProperties;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.hibernate.SessionFactory;
 
-import com.quatro.model.security.SecProvider;
+import ca.openosp.quatro.model.security.SecProvider;
 
 @SuppressWarnings("unchecked")
 public interface ProviderDao {

@@ -24,7 +24,7 @@
 		<property name="mappingDirectoryLocations">
 			<!-- only *.hbm.xml will be loaded -->
 			<list>
-				<value>classpath:/org/caisi/model</value>
+				<value>classpath:/ca/openosp/model</value>
 				<value>classpath:/org/oscarehr/PMmodule/model</value>
 				<value>classpath:/org/oscarehr/casemgmt/model</value>
 				<value>classpath:/org/oscarehr/common/model</value>

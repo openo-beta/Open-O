@@ -38,9 +38,9 @@
     }
 %>
 
-<%@page import="java.util.List,org.caisi.model.DefaultIssue" %>
+<%@page import="java.util.List,ca.openosp.model.DefaultIssue" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.caisi.model.DefaultIssue" %>
+<%@page import="ca.openosp.model.DefaultIssue" %>
 <%@page import="org.oscarehr.casemgmt.dao.IssueDAO" %>
 <%@page import="org.oscarehr.casemgmt.model.Issue" %>
 <%@page import="java.lang.NumberFormatException" %>

@@ -81,26 +81,26 @@
         <action name="Home" class="org.oscarehr.PMmodule.web.Home2Action">
             <result name="home">/PMmodule/layout_quatro.jsp</result>
         </action>
-        <action name="SystemMessage" class="org.caisi.core.web.SystemMessage2Action" method="execute">
+        <action name="SystemMessage" class="ca.openosp.web.SystemMessage2Action" method="execute">
             <result name="view">/caisicore/SystemMessage.jsp</result>
             <result name="list">/caisicore/SystemMessageList.jsp</result>
             <result name="edit">/caisicore/SystemMessageForm.jsp</result>
         </action>
-        <action name="DefaultEncounterIssue" class="org.caisi.core.web.DefaultEncounterIssue2Action" method="execute">
+        <action name="DefaultEncounterIssue" class="ca.openosp.web.DefaultEncounterIssue2Action" method="execute">
             <result name="list">/caisicore/DefaultEncounterIssueList.jsp</result>
             <result name="edit">/caisicore/DefaultEncounterIssueForm.jsp</result>
             <result name="editRemove">/caisicore/DefaultEncounterIssueFormRemove.jsp</result>
         </action>
-        <action name="FacilityMessage" class="org.caisi.core.web.FacilityMessage2Action" method="execute">
+        <action name="FacilityMessage" class="ca.openosp.web.OrganizationMessage2Action" method="execute">
             <result name="view">/caisicore/FacilityMessage.jsp</result>
             <result name="list">/caisicore/FacilityMessageList.jsp</result>
             <result name="edit">/caisicore/FacilityMessageForm.jsp</result>
         </action>
-        <action name="issueAdmin" class="org.caisi.core.web.IssueAdmin2Action">
+        <action name="issueAdmin" class="ca.openosp.web.IssueAdmin2Action">
             <result name="list">/caisicore/issueAdminList.jsp</result>
             <result name="edit">/caisicore/issueAdminForm.jsp</result>
         </action>
-        <action name="infirm" class="org.caisi.core.web.Infirm2Action"/>
+        <action name="infirm" class="ca.openosp.web.Infirm2Action"/>
         <action name="login" class="oscar.login.Login2Action">
             <result name="provider" type="redirect">/provider/providercontrol.jsp</result>
             <result name="failure">/logout.jsp</result>
@@ -1902,16 +1902,16 @@
             <result name="form">page.pmm.admin.defaultroleaccess.form</result>
             <result name="rlist">/PMmodule/Admin/DefaultRoleAccess.do?method=list</result>
         </action>
-        <action name="Lookup/LookupList" class="com.quatro.web.lookup.LookupList2Action" method="execute">
+        <action name="Lookup/LookupList" class="ca.openosp.quatro.web.lookup.LookupList2Action" method="execute">
             <result name="list">/PMmodule/lookup/LookupList.jsp</result>
         </action>
-        <action name="Lookup/LookupTableList" class="com.quatro.web.lookup.LookupTableList2Action" method="execute">
+        <action name="Lookup/LookupTableList" class="ca.openosp.quatro.web.lookup.LookupTableList2Action" method="execute">
             <result name="list">/PMmodule/lookup/LookupTableList.jsp</result>
         </action>
-        <action name="Lookup/LookupCodeList" class="com.quatro.web.lookup.LookupCodeList2Action" method="execute">
+        <action name="Lookup/LookupCodeList" class="ca.openosp.quatro.web.lookup.LookupCodeList2Action" method="execute">
             <result name="list">/PMmodule/lookup/LookupCodeList.jsp</result>
         </action>
-        <action name="Lookup/LookupCodeEdit" class="com.quatro.web.lookup.LookupCodeEdit2Action" method="execute">
+        <action name="Lookup/LookupCodeEdit" class="ca.openosp.quatro.web.lookup.LookupCodeEdit2Action" method="execute">
             <result name="edit">/PMmodule/lookup/LookupCodeEdit.jsp</result>
         </action>
         <action name="PMmodule/Reports/ProgramActivityReport" class="org.oscarehr.PMmodule.web.reports.ActivityReport2Action" method="execute">

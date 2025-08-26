@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.caisi.model.BaseObject;
+import ca.openosp.model.BaseObject;
 import org.oscarehr.casemgmt.dao.CaseManagementNoteLinkDAO;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.util.SpringUtils;
