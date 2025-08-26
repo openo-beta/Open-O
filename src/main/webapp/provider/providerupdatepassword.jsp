@@ -44,8 +44,8 @@
 	SecurityManager securityManager = SpringUtils.getBean(SecurityManager.class);
 
 %>
-<%@ page import="oscar.log.LogAction" %>
-<%@ page import="oscar.log.LogConst" %>
+<%@ page import="ca.openosp.openo.log.LogAction" %>
+<%@ page import="ca.openosp.openo.log.LogConst" %>
 
 <%
     SecurityDao securityDao = SpringUtils.getBean(SecurityDao.class);

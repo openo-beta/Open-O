@@ -31,7 +31,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ca.openosp.service.security.SecurityManager;
+import ca.openosp.openo.service.security.SecurityManager;
 import net.sf.json.JSONObject;
 
 import org.oscarehr.PMmodule.web.forms.IntegratorPushItem;

@@ -26,7 +26,6 @@
 
 package oscar.oscarTickler.pageUtil;
 
-import java.util.Hashtable;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +36,7 @@ import org.oscarehr.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 import org.owasp.encoder.Encode;
-import oscar.oscarDemographic.data.DemographicNameAgeString;
+import ca.openosp.openo.oscarDemographic.data.DemographicNameAgeString;
 
 /**
  * This class is used to forward to the add tickler screen with the demographic preselected

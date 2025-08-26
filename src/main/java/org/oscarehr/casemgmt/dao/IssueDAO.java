@@ -31,7 +31,7 @@ import java.util.List;
 
 import org.oscarehr.casemgmt.model.Issue;
 
-import ca.openosp.model.security.Secrole;
+import ca.openosp.openo.model.security.Secrole;
 
 public interface IssueDAO {
 

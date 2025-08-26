@@ -41,7 +41,7 @@
 <%@page import="org.oscarehr.util.SpringUtils"%>
 <%@page import="org.oscarehr.util.LoggedInInfo"%>
 <%@page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.service.security.SecurityManager" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>

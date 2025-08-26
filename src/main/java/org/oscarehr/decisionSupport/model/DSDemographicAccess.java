@@ -50,8 +50,8 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 import oscar.OscarProperties;
-import oscar.oscarBilling.ca.bc.MSP.ServiceCodeValidationLogic;
-import oscar.oscarDemographic.data.DemographicData;
+import ca.openosp.openo.oscarBilling.ca.bc.MSP.ServiceCodeValidationLogic;
+import ca.openosp.openo.oscarDemographic.data.DemographicData;
 import oscar.oscarEncounter.oscarMeasurements.MeasurementFlowSheet;
 import oscar.oscarEncounter.oscarMeasurements.MeasurementInfo;
 import oscar.oscarEncounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig;

@@ -33,6 +33,8 @@
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Security" %>
 <%@ page import="org.oscarehr.common.dao.SecurityDao" %>
+<%@ page import="ca.openosp.openo.log.LogAction" %>
+<%@ page import="ca.openosp.openo.login.LoginCheckLogin" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     SecurityDao securityDao = SpringUtils.getBean(SecurityDao.class);

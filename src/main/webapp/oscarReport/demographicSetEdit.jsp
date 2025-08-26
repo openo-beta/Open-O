@@ -44,6 +44,7 @@
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page
         import="oscar.oscarDemographic.data.*,java.util.*,oscar.oscarPrevention.*,oscar.oscarProvider.data.*,oscar.util.*,oscar.oscarReport.data.*,oscar.oscarPrevention.pageUtil.*" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -194,7 +195,7 @@
                                 </td>
                                 <td><%=demo.getLastName()%>, <%=demo.getFirstName()%>
                                 </td>
-                                <td><%=oscar.oscarDemographic.data.DemographicData.getDob(demo, "-")%>
+                                <td><%=DemographicData.getDob(demo, "-")%>
                                 </td>
                                 <td><%=demo.getAge()%>
                                 </td>

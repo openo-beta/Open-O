@@ -21,6 +21,8 @@
 <%@page import="org.oscarehr.common.dao.AllergyDao" %>
 <%@page import="org.oscarehr.common.model.Allergy" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="ca.openosp.openo.log.LogAction" %>
+<%@ page import="ca.openosp.openo.log.LogConst" %>
 
 <%@ include file="/common/webAppContextAndSuperMgr.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>

@@ -37,7 +37,7 @@
 <%@page import="org.oscarehr.hospitalReportManager.dao.HRMDocumentDao" %>
 <%@page import="org.oscarehr.common.model.OscarLog" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="oscar.log.LogAction" %>
+<%@page import="ca.openosp.openo.log.LogAction" %>
 <%@page import="java.util.Enumeration" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>

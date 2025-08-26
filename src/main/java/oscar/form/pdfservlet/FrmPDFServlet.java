@@ -29,11 +29,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperRunManager;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-
-import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.printing.FontSettings;
 import org.oscarehr.common.printing.PdfWriterFactory;
@@ -45,7 +40,7 @@ import oscar.form.FrmRecord;
 import oscar.form.FrmRecordFactory;
 import oscar.form.graphic.FrmGraphicFactory;
 import oscar.form.graphic.FrmPdfGraphic;
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 import oscar.util.ConcatPDF;
 
 import com.lowagie.text.Document;

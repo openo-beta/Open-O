@@ -34,7 +34,7 @@
 <%@ page import="java.util.*,java.net.*, oscar.util.*"
          errorPage="/errorpage.jsp" %>
 <%@ page import="oscar.OscarProperties" %>
-<%@ page import="ca.openosp.web.Infirm2Action" %>
+<%@ page import="ca.openosp.openo.web.Infirm2Action" %>
 
 <caisi:isModuleLoad moduleName="caisi">
     <%

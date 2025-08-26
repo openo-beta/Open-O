@@ -66,7 +66,7 @@ import org.oscarehr.util.CxfClientUtilsOld;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.AbstractMessage;
 

@@ -160,7 +160,7 @@
     </listener>
 	
 	<listener>
-		<listener-class>oscar.login.Startup</listener-class>
+		<listener-class>ca.openosp.openo.login.Startup</listener-class>
 	</listener>
 	<listener>
 		<listener-class>org.oscarehr.common.web.OscarSpringContextLoader</listener-class>
@@ -274,7 +274,7 @@
 	</servlet>
 	<servlet>
 		<servlet-name>pdfCreatorEform</servlet-name>
-		<servlet-class>oscar.eform.util.EFormPDFServlet</servlet-class>
+		<servlet-class>ca.openosp.openo.eform.util.EFormPDFServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet>
@@ -299,7 +299,7 @@
 	</servlet>
 	<servlet>
 		<servlet-name>UploadTeleplanServlet</servlet-name>
-		<servlet-class>oscar.oscarBilling.ca.bc.MSP.DocumentTeleplanReportUploadServlet</servlet-class>
+		<servlet-class>ca.openosp.openo.oscarBilling.ca.bc.MSP.DocumentTeleplanReportUploadServlet</servlet-class>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet>
@@ -330,7 +330,7 @@
 
 	<servlet>
 		<servlet-name>EFormViewForPdfGenerationServlet</servlet-name>
-		<servlet-class>oscar.eform.util.EFormViewForPdfGenerationServlet</servlet-class>
+		<servlet-class>ca.openosp.openo.eform.util.EFormViewForPdfGenerationServlet</servlet-class>
 	</servlet>
 
 	<servlet>
@@ -352,7 +352,7 @@
 
 	<servlet>
 		<servlet-name>EFormSignatureViewForPdfGenerationServlet</servlet-name>
-		<servlet-class>oscar.eform.util.EFormSignatureViewForPdfGenerationServlet</servlet-class>
+		<servlet-class>ca.openosp.openo.eform.util.EFormSignatureViewForPdfGenerationServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -362,7 +362,7 @@
 
 	<servlet>
 		<servlet-name>EFormImageViewForPdfGenerationServlet</servlet-name>
-		<servlet-class>oscar.eform.util.EFormImageViewForPdfGenerationServlet</servlet-class>
+		<servlet-class>ca.openosp.openo.eform.util.EFormImageViewForPdfGenerationServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -466,7 +466,7 @@
 	
 	<servlet>
 		<servlet-name>LoginResourceAction</servlet-name>
-		<servlet-class>oscar.login.LoginResourceAction</servlet-class>
+		<servlet-class>ca.openosp.openo.login.LoginResourceAction</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>

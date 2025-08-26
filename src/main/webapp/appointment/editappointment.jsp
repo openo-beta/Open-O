@@ -44,7 +44,7 @@
 <%@page import="org.oscarehr.common.dao.ProviderDataDao" %>
 <%@page import="org.oscarehr.managers.DemographicManager" %>
 
-<%@page import="oscar.appt.status.service.impl.AppointmentStatusMgrImpl" %>
+<%@page import="ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImpl" %>
 <%
     if (session.getAttribute("user") == null) response.sendRedirect("../logout.jsp");
 
@@ -60,7 +60,7 @@
 <%@ page import="java.time.ZoneId" %>
 <%@ page import="oscar.appt.*" %>
 <%@ page import="oscar.util.*" %>
-<%@ page import="oscar.appt.status.service.AppointmentStatusMgr" %>
+<%@ page import="ca.openosp.openo.appt.status.service.AppointmentStatusMgr" %>
 <%@ page import="oscar.OscarProperties" %>
 <%@ page import="org.oscarehr.common.OtherIdManager" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
@@ -91,9 +91,12 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="oscar.oscarEncounter.data.EctFormData" %>
-<%@ page import="oscar.oscarBilling.ca.on.data.BillingDataHlp" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingDataHlp" %>
 <%@ page import="org.oscarehr.common.dao.AppointmentTypeDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.appt.ApptUtil" %>
+<%@ page import="ca.openosp.openo.appt.ApptData" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -858,7 +861,7 @@
         //Else if we are coming back from search this has been done for us
         //Else how did we get here?
         if (bFirstDisp) {
-            oscar.oscarDemographic.data.DemographicData dd = new oscar.oscarDemographic.data.DemographicData();
+            DemographicData dd = new DemographicData();
             org.oscarehr.common.model.Demographic demo = dd.getDemographic(loggedInInfo, String.valueOf(appt.getDemographicNo()));
             doctorNo = demo != null ? (demo.getProviderNo()) : "";
         } else if (!request.getParameter("doctor_no").equals("")) {

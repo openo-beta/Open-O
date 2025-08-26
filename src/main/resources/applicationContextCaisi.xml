@@ -44,7 +44,7 @@
 
 
 	<!-- managers  -->
-	<bean id="issueAdminManager" class="ca.openosp.service.IssueAdminManager" autowire="byName" />
+	<bean id="issueAdminManager" class="ca.openosp.openo.service.IssueAdminManager" autowire="byName" />
 
 	<bean id="oscarSecurityManager" class="org.oscarehr.PMmodule.service.impl.OscarSecurityManagerImpl" autowire="byName" />
 	<bean id="formsManagerCaisi" class="org.oscarehr.PMmodule.service.impl.FormsManagerImpl" autowire="byName" />

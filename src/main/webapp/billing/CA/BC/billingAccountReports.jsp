@@ -21,6 +21,7 @@
 <%@page import="org.oscarehr.common.dao.ReportProviderDao" %>
 <%@page import="org.oscarehr.common.model.ReportProvider" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.MSP.MSPReconcile" %>
 
 <%
     ReportProviderDao reportProviderDao = SpringUtils.getBean(ReportProviderDao.class);

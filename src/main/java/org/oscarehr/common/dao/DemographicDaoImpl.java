@@ -47,7 +47,7 @@ import java.util.TreeMap;
 
 import javax.persistence.PersistenceException;
 
-import ca.openosp.util.Utility;
+import ca.openosp.openo.util.Utility;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;

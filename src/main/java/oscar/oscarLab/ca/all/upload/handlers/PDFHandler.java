@@ -41,8 +41,8 @@ import org.oscarehr.util.SpringUtils;
 import oscar.OscarProperties;
 import org.oscarehr.documentManager.EDoc;
 import org.oscarehr.documentManager.EDocUtil;
-import oscar.log.LogAction;
-import oscar.log.LogConst;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.log.LogConst;
 
 /**
  * @author mweston4

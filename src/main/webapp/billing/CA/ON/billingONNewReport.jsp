@@ -53,6 +53,7 @@
 <%@ page import="org.oscarehr.common.model.Site" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="ca.openosp.openo.login.DBHelp" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

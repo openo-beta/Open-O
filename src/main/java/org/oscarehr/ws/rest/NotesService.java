@@ -39,8 +39,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-import ca.openosp.dao.security.SecroleDao;
-import ca.openosp.model.security.Secrole;
+import ca.openosp.openo.dao.security.SecroleDao;
+import ca.openosp.openo.model.security.Secrole;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProgramAccessDAO;

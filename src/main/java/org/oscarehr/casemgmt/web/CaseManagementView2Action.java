@@ -23,10 +23,10 @@
 
 package org.oscarehr.casemgmt.web;
 
-import ca.openosp.service.security.SecurityManager;
+import ca.openosp.openo.service.security.SecurityManager;
 import com.opensymphony.xwork2.ActionSupport;
-import ca.openosp.model.security.Secrole;
-import ca.openosp.service.security.RolesManager;
+import ca.openosp.openo.model.security.Secrole;
+import ca.openosp.openo.service.security.RolesManager;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsDateJsonBeanProcessor;
@@ -57,7 +57,7 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 import org.oscarehr.casemgmt.web.CaseManagementViewAction.IssueDisplay;
 import oscar.OscarProperties;
-import oscar.eform.EFormUtil;
+import ca.openosp.openo.eform.EFormUtil;
 import oscar.oscarEncounter.data.EctFormData;
 import oscar.oscarEncounter.data.EctFormData.PatientForm;
 import oscar.oscarRx.pageUtil.RxSessionBean;

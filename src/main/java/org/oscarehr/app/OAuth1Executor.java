@@ -16,7 +16,7 @@ import com.github.scribejava.core.oauth.OAuth10aService;
 import org.oscarehr.common.model.AppDefinition;
 import org.oscarehr.common.model.AppUser;
 import org.oscarehr.common.model.ServiceClient;
-import oscar.login.OscarOAuthDataProvider;
+import ca.openosp.openo.login.OscarOAuthDataProvider;
 
 /**
  * Helper to execute OAuth1 requests with minimal boilerplate.

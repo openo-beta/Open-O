@@ -21,11 +21,11 @@
 <%@ page import="org.oscarehr.util.LocaleUtils" %>
 <%@ page import="java.util.Locale" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.web.Infirm2Action" %>
+<%@ page import="ca.openosp.openo.web.Infirm2Action" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session" />
-<jsp:useBean id="as" class="oscar.appt.ApptStatusData" />
+<jsp:useBean id="as" class="ca.openosp.openo.appt.ApptStatusData" />
 <jsp:useBean id="dateTimeCodeBean" class="java.util.HashMap" />
 <%
 

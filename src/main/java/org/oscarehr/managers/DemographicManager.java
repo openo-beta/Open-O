@@ -28,33 +28,15 @@
 
 package org.oscarehr.managers;
 
-import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.PMmodule.model.ProgramProvider;
 import org.oscarehr.caisi_integrator.ws.DemographicTransfer;
-import org.oscarehr.caisi_integrator.ws.DemographicWs;
-import org.oscarehr.caisi_integrator.ws.GetConsentTransfer;
 import org.oscarehr.common.Gender;
-import org.oscarehr.common.dao.*;
 import org.oscarehr.common.exception.PatientDirectiveException;
 import org.oscarehr.common.model.*;
-import org.oscarehr.common.model.Demographic.PatientStatus;
-import org.oscarehr.common.model.enumerator.DemographicExtKey;
-import org.oscarehr.util.DemographicContactCreator;
 import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
 import org.oscarehr.ws.rest.to.model.DemographicSearchRequest;
 import org.oscarehr.ws.rest.to.model.DemographicSearchResult;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import oscar.log.LogAction;
-import oscar.util.StringUtils;
 
-import java.net.MalformedURLException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Will provide access to demographic data, as well as closely related data such as

@@ -27,8 +27,8 @@
 package org.oscarehr.util;
 
 import org.apache.logging.log4j.Logger;
-import oscar.log.LogAction;
-import oscar.log.LogConst;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.log.LogConst;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

@@ -25,6 +25,7 @@
 --%>
 <!DOCTYPE html>
 <%@ page import="oscar.eform.data.*, oscar.eform.*, java.util.*" %>
+<%@ page import="ca.openosp.openo.eform.EFormUtil" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

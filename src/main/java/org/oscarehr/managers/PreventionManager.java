@@ -28,29 +28,11 @@
 
 package org.oscarehr.managers;
 
-import java.io.Serializable;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.oscarehr.common.dao.PreventionDao;
-import org.oscarehr.common.dao.PreventionExtDao;
-import org.oscarehr.common.dao.PropertyDao;
-import org.oscarehr.common.interfaces.Immunization.ImmunizationProperty;
 import org.oscarehr.common.model.Prevention;
 import org.oscarehr.common.model.PreventionExt;
-import org.oscarehr.common.model.Property;
 import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import oscar.log.LogAction;
-import oscar.oscarPrevention.PreventionDS;
-import oscar.oscarPrevention.PreventionData;
-import oscar.oscarPrevention.PreventionDisplayConfig;
-import oscar.util.StringUtils;
 
 public interface PreventionManager {
 

@@ -50,7 +50,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 import oscar.OscarProperties;
-import oscar.oscarDemographic.data.DemographicMerged;
+import ca.openosp.openo.oscarDemographic.data.DemographicMerged;
 import oscar.oscarLab.ca.all.Hl7textResultsData;
 import oscar.oscarLab.ca.all.parsers.*;
 import oscar.util.UtilDateUtilities;

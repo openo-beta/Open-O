@@ -27,28 +27,17 @@
  */
 package org.oscarehr.managers;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.oscarehr.common.dao.EFormDataDao;
 import org.oscarehr.common.model.EFormData;
-import org.oscarehr.common.model.enumerator.DocumentType;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.PDFGenerationException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.oscarehr.documentManager.ConvertToEdoc;
-import org.oscarehr.documentManager.DocumentAttachmentManager;
-import org.oscarehr.documentManager.EDoc;
-import org.oscarehr.hospitalReportManager.HRMUtil;
 
-import oscar.eform.EFormUtil;
-import oscar.eform.data.EForm;
-import oscar.log.LogAction;
+import ca.openosp.openo.eform.data.EForm;
 import oscar.oscarEncounter.data.EctFormData;
 
 public interface EformDataManager {

@@ -32,7 +32,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.springframework.stereotype.Component;
 import oscar.OscarProperties;
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 import oscar.oscarLab.FileUploadCheck;
 import oscar.oscarLab.ca.all.upload.HandlerClassFactory;
 import oscar.oscarLab.ca.all.upload.handlers.MessageHandler;

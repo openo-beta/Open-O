@@ -41,11 +41,12 @@ import java.util.regex.Matcher;
 //import java.util.List;
 
 
+import ca.openosp.openo.oscarDemographic.data.DemographicData;
 import org.apache.commons.codec.binary.Base64;
 import org.oscarehr.util.LoggedInInfo;
 
 import oscar.util.UtilMisc;
-import oscar.oscarBilling.data.BillingFormData;
+import ca.openosp.openo.oscarBilling.data.BillingFormData;
 import oscar.OscarProperties;
 
 //import org.oscarehr.casemgmt.dao.CaseManagementIssueDAO;
@@ -79,8 +80,8 @@ public class ClinicaidCommunication {
             String service_recipient_oscar_number = request.getParameter("demographic_no");
             String appointment_provider_no = request.getParameter("apptProvider_no");
 
-            oscar.oscarDemographic.data.DemographicData demoData =
-                    new oscar.oscarDemographic.data.DemographicData();
+            DemographicData demoData =
+                    new DemographicData();
             org.oscarehr.common.model.Demographic demo =
                     demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), service_recipient_oscar_number);
 

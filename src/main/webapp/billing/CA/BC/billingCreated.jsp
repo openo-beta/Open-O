@@ -54,6 +54,11 @@
 <%@page import="org.oscarehr.common.dao.BillingreferralDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingSessionBean" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingBillingManager" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.WCBForm" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingFormData" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
 <%
     BillingreferralDao billingReferralDao = (BillingreferralDao) SpringUtils.getBean(BillingreferralDao.class);
 %>
@@ -61,7 +66,7 @@
 
     String color = "", colorflag = "";
     BillingSessionBean bean = (BillingSessionBean) pageContext.findAttribute("billingSessionBean");
-    oscar.oscarDemographic.data.DemographicData demoData = new oscar.oscarDemographic.data.DemographicData();
+    DemographicData demoData = new DemographicData();
     org.oscarehr.common.model.Demographic demo = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), bean.getPatientNo());
 
     ArrayList billItem = bean.getBillItem();

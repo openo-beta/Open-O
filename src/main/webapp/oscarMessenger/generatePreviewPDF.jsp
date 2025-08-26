@@ -63,6 +63,7 @@
 %>
 
 <%@ page import="oscar.util.*" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
 
 
 <%

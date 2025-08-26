@@ -27,6 +27,8 @@
 <%@page import="org.oscarehr.managers.SecurityInfoManager" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingClaimHeader1Data" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.on.pageUtil.BillingCorrectionPrep" %>
 
 
 <%

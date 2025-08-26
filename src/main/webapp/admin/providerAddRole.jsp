@@ -37,6 +37,8 @@
 <%@ page import="org.oscarehr.common.dao.SecRoleDao" %>
 <%@ page import="org.oscarehr.PMmodule.utility.RoleCache" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.log.LogAction" %>
+<%@ page import="ca.openosp.openo.log.LogConst" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>

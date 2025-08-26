@@ -26,6 +26,7 @@
 
 <%@ page
         import="java.math.*,java.util.*, java.sql.*, oscar.*, java.net.*,oscar.oscarBilling.ca.bc.MSP.*,oscar.util.*,oscar.oscarProvider.data.*,oscar.oscarBilling.ca.on.data.*" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.RAData" %>
 
 <%
     String billingNo = request.getParameter("billing_no");

@@ -28,45 +28,17 @@
 
 package org.oscarehr.managers;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.TreeMap;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
-import org.apache.commons.lang.time.DateUtils;
-import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.AppointmentArchiveDao;
-import org.oscarehr.common.dao.AppointmentStatusDao;
-import org.oscarehr.common.dao.AppointmentTypeDao;
-import org.oscarehr.common.dao.OscarAppointmentDao;
-import org.oscarehr.common.dao.ScheduleDateDao;
-import org.oscarehr.common.dao.ScheduleHolidayDao;
-import org.oscarehr.common.dao.ScheduleTemplateCodeDao;
-import org.oscarehr.common.dao.ScheduleTemplateDao;
 import org.oscarehr.common.model.Appointment;
 import org.oscarehr.common.model.AppointmentArchive;
 import org.oscarehr.common.model.AppointmentStatus;
 import org.oscarehr.common.model.AppointmentType;
-import org.oscarehr.common.model.ConsentType;
-import org.oscarehr.common.model.ScheduleDate;
-import org.oscarehr.common.model.ScheduleHoliday;
-import org.oscarehr.common.model.ScheduleTemplate;
 import org.oscarehr.common.model.ScheduleTemplateCode;
-import org.oscarehr.common.model.ScheduleTemplatePrimaryKey;
 import org.oscarehr.common.model.Security;
 import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import oscar.log.LogAction;
 
 public interface ScheduleManager {
 

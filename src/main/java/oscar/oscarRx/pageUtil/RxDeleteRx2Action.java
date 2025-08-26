@@ -54,8 +54,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import org.oscarehr.documentManager.EDocUtil;
-import oscar.log.LogAction;
-import oscar.log.LogConst;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.log.LogConst;
 import oscar.oscarEncounter.data.EctProgram;
 
 

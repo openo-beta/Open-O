@@ -35,22 +35,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.common.dao.MeasurementDao;
-import org.oscarehr.common.dao.MeasurementGroupStyleDao;
-import org.oscarehr.common.dao.MeasurementMapDao;
 import org.oscarehr.common.dao.PropertyDao;
-import org.oscarehr.common.model.ConsentType;
 import org.oscarehr.common.model.Measurement;
-import org.oscarehr.common.model.MeasurementGroupStyle;
 import org.oscarehr.common.model.MeasurementMap;
 import org.oscarehr.common.model.Property;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import oscar.OscarProperties;
-import oscar.log.LogAction;
 import oscar.oscarEncounter.oscarMeasurements.MeasurementFlowSheet;
 
 public interface MeasurementManager {

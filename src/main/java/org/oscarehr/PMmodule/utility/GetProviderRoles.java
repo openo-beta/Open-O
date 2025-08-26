@@ -35,7 +35,7 @@ import org.oscarehr.common.model.Provider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import ca.openosp.model.security.Secrole;
+import ca.openosp.openo.model.security.Secrole;
 
 public class GetProviderRoles {
 

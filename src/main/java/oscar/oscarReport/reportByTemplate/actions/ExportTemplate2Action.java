@@ -27,7 +27,7 @@ package oscar.oscarReport.reportByTemplate.actions;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ca.openosp.service.security.SecurityManager;
+import ca.openosp.openo.service.security.SecurityManager;
 import org.oscarehr.util.MiscUtils;
 
 import com.opensymphony.xwork2.ActionSupport;

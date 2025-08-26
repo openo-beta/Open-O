@@ -115,7 +115,7 @@
 </security:oscarSec>
 
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
-<jsp:useBean id="as" class="oscar.appt.ApptStatusData"/>
+<jsp:useBean id="as" class="ca.openosp.openo.appt.ApptStatusData"/>
 <jsp:useBean id="dateTimeCodeBean" class="java.util.HashMap"/>
 
 <c:set var="rand"><%= java.lang.Math.round(java.lang.Math.random() * 2345) %>

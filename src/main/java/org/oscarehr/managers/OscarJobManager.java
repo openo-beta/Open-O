@@ -27,21 +27,11 @@
  */
 package org.oscarehr.managers;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.common.dao.AbstractDaoImpl;
-import org.oscarehr.common.dao.OscarJobDao;
-import org.oscarehr.common.dao.OscarJobTypeDao;
-import org.oscarehr.common.jobs.OscarJobUtils;
 import org.oscarehr.common.model.OscarJob;
 import org.oscarehr.common.model.OscarJobType;
 import org.oscarehr.util.LoggedInInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import oscar.log.LogAction;
 
 public interface OscarJobManager {
 

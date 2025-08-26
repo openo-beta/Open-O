@@ -29,7 +29,7 @@
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@include file="/layouts/caisi_html_top.jspf" %>
-<%@ page import="oscar.login.Login2Action" %>
+<%@ page import="ca.openosp.openo.login.Login2Action" %>
 <h2>Please select which facility you would like to currently work in</h2>
 <%
     FacilityDao facilityDao = (FacilityDao) SpringUtils.getBean(FacilityDao.class);

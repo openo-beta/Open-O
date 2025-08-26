@@ -96,10 +96,10 @@ import org.oscarehr.util.WebUtils;
 import org.springframework.beans.factory.annotation.Required;
 
 import oscar.OscarProperties;
-import oscar.log.LogAction;
-import oscar.oscarDemographic.data.DemographicRelationship;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.oscarDemographic.data.DemographicRelationship;
 
-import ca.openosp.service.LookupManager;
+import ca.openosp.openo.service.LookupManager;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

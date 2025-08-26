@@ -38,9 +38,9 @@
 	
 	<!-- <bean class="org.ServletContextConfig"/> -->
 	
-	<bean id="oauthProvider" class="oscar.login.OscarOAuthDataProvider" autowire="byName"/>
+	<bean id="oauthProvider" class="ca.openosp.openo.login.OscarOAuthDataProvider" autowire="byName"/>
 
-	<bean id="requestTokenService" class="oscar.login.OscarRequestTokenService">
+	<bean id="requestTokenService" class="ca.openosp.openo.login.OscarRequestTokenService">
 	   <property name="dataProvider" ref="oauthProvider"/>
 	</bean>
 	

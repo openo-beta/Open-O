@@ -12,7 +12,7 @@ import org.hibernate.HibernateException;
 
 import org.hibernate.Query;
 
-import ca.openosp.model.security.Secrole;
+import ca.openosp.openo.model.security.Secrole;
 import org.oscarehr.common.model.Provider;
 
 public class HibernateTestDao {

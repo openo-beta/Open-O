@@ -46,7 +46,7 @@ import org.oscarehr.decisionSupport.service.DSService;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarDemographic.data.DemographicData;
+import ca.openosp.openo.oscarDemographic.data.DemographicData;
 
 /**
  * @author apavel

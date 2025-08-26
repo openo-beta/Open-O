@@ -33,7 +33,7 @@ import javax.persistence.Query;
 
 import org.oscarehr.common.model.BillingONEAReport;
 import org.springframework.stereotype.Repository;
-import oscar.oscarBilling.ca.on.data.BillingProviderData;
+import ca.openosp.openo.oscarBilling.ca.on.data.BillingProviderData;
 import oscar.util.ParamAppender;
 
 @Repository

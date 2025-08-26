@@ -52,12 +52,12 @@ import oscar.OscarProperties;
 import oscar.oscarLab.FileUploadCheck;
 import oscar.oscarLab.ca.all.util.Utilities;
 
-import ca.openosp.olis.Driver;
-import ca.openosp.olis.parameters.OBR22;
-import ca.openosp.olis.parameters.ORC21;
-import ca.openosp.olis.parameters.ZRP1;
-import ca.openosp.olis.queries.Z04Query;
-import ca.openosp.olis.queries.Z06Query;
+import ca.openosp.openo.olis.Driver;
+import ca.openosp.openo.olis.parameters.OBR22;
+import ca.openosp.openo.olis.parameters.ORC21;
+import ca.openosp.openo.olis.parameters.ZRP1;
+import ca.openosp.openo.olis.queries.Z04Query;
+import ca.openosp.openo.olis.queries.Z06Query;
 
 public class OLISPollingUtil {
 

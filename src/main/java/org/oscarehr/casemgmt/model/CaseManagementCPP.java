@@ -24,7 +24,7 @@ package org.oscarehr.casemgmt.model;
 
 import java.util.Date;
 
-import ca.openosp.model.BaseObject;
+import ca.openosp.openo.model.BaseObject;
 
 public class CaseManagementCPP extends BaseObject {
     private Long id;

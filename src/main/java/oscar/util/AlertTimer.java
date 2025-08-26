@@ -28,6 +28,7 @@ package oscar.util;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import ca.openosp.openo.oscarBilling.ca.bc.MSP.CDMReminderHlp;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.model.Provider;
@@ -54,12 +55,12 @@ public class AlertTimer {
     private static AlertTimer alerts = null;
     private static Timer timer;
     String alertCodes[] = null;
-    oscar.oscarBilling.ca.bc.MSP.CDMReminderHlp hlp = null;
+    CDMReminderHlp hlp = null;
 
     private AlertTimer(String[] codes, long interval) {
         timer = new Timer("AlertTimer", true);
         alertCodes = codes;
-        hlp = new oscar.oscarBilling.ca.bc.MSP.CDMReminderHlp();
+        hlp = new CDMReminderHlp();
         //triggers alerts 5 seconds after instantiation
         timer.scheduleAtFixedRate(new ReminderClass(), 5000, interval);
     }

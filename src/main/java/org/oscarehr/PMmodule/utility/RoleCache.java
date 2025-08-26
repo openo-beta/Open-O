@@ -36,8 +36,8 @@ import org.oscarehr.common.model.CaisiAccessType;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import ca.openosp.dao.security.SecroleDao;
-import ca.openosp.model.security.Secrole;
+import ca.openosp.openo.dao.security.SecroleDao;
+import ca.openosp.openo.model.security.Secrole;
 
 public class RoleCache {
 

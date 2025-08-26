@@ -24,7 +24,7 @@
 
 --%>
 
-<%@page import="ca.openosp.web.admin.SecurityAddSecurityHelper" %>
+<%@page import="ca.openosp.openo.web.admin.SecurityAddSecurityHelper" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -44,7 +44,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ page import="java.sql.*, java.util.*,java.security.*,oscar.*,oscar.oscarDB.*" errorPage="/errorpage.jsp" %>
-<%@ page import="oscar.log.LogAction,oscar.log.LogConst" %>
+<%@ page import="ca.openosp.openo.log.LogAction,ca.openosp.openo.log.LogConst" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Security" %>
 <%@ page import="org.oscarehr.common.dao.SecurityDao" %>

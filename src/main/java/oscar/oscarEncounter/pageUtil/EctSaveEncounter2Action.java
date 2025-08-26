@@ -35,6 +35,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.openo.appt.ApptStatusData;
+import ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingSessionBean;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.AppointmentArchiveDao;
 import org.oscarehr.common.dao.EChartDao;
@@ -49,8 +51,8 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 import oscar.OscarProperties;
-import oscar.log.LogAction;
-import oscar.log.LogConst;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.log.LogConst;
 import oscar.util.ConversionUtils;
 import oscar.util.UtilDateUtilities;
 
@@ -234,7 +236,7 @@ public class EctSaveEncounter2Action extends ActionSupport {
 
                 //change the appt status
                 if (sessionbean.status != null && !sessionbean.status.equals("")) {
-                    oscar.appt.ApptStatusData as = new oscar.appt.ApptStatusData();
+                    ApptStatusData as = new ApptStatusData();
                     as.setApptStatus(sessionbean.status);
 
                     if (httpservletrequest.getParameter("btnPressed").equals(
@@ -283,8 +285,7 @@ public class EctSaveEncounter2Action extends ActionSupport {
             String billRegion = OscarProperties.getInstance().getProperty(
                     "billregion");
             //
-            oscar.oscarBilling.ca.bc.pageUtil.BillingSessionBean bean = new oscar.
-                    oscarBilling.ca.bc.pageUtil.BillingSessionBean();
+            BillingSessionBean bean = new BillingSessionBean();
             bean.setApptProviderNo(sessionbean.providerNo);
             bean.setPatientName(sessionbean.getPatientFirstName() + " " +
                     sessionbean.getPatientLastName());

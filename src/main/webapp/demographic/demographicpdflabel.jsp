@@ -56,7 +56,7 @@
     }
 %>
 <%@ page
-        import="java.util.*, java.sql.*, java.net.*,java.text.DecimalFormat, oscar.*, oscar.oscarDemographic.data.ProvinceNames, oscar.oscarWaitingList.WaitingList" %>
+        import="java.util.*, java.sql.*, java.net.*,java.text.DecimalFormat, oscar.*, ca.openosp.openo.oscarDemographic.data.ProvinceNames, oscar.oscarWaitingList.WaitingList" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.ProfessionalSpecialist" %>
 <%@page import="org.oscarehr.common.dao.ProfessionalSpecialistDao" %>

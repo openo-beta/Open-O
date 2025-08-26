@@ -28,37 +28,20 @@
 package org.oscarehr.managers;
 
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.EFormDao;
 import org.oscarehr.common.dao.EFormDao.EFormSortOrder;
-import org.oscarehr.common.dao.EFormDataDao;
-import org.oscarehr.common.dao.EFormGroupDao;
-import org.oscarehr.common.dao.EncounterFormDao;
 import org.oscarehr.common.model.EForm;
 import org.oscarehr.common.model.EFormData;
 import org.oscarehr.common.model.EncounterForm;
 import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.PDFGenerationException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import org.oscarehr.documentManager.ConvertToEdoc;
-import org.oscarehr.documentManager.EDoc;
 import oscar.form.util.FormTransportContainer;
-import oscar.log.LogAction;
 import oscar.oscarEncounter.data.EctFormData;
 import oscar.oscarEncounter.data.EctFormData.PatientForm;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

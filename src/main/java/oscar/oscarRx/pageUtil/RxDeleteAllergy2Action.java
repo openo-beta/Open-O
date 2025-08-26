@@ -37,8 +37,8 @@ import org.oscarehr.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.log.LogAction;
-import oscar.log.LogConst;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.log.LogConst;
 import oscar.oscarRx.data.RxPatientData;
 
 

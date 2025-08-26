@@ -28,7 +28,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.logging.log4j.Logger;
-import ca.openosp.service.IssueAdminManager;
+import ca.openosp.openo.service.IssueAdminManager;
 import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
 import org.oscarehr.PMmodule.model.ProgramProvider;
 import org.oscarehr.casemgmt.dao.CaseManagementNoteLinkDAO;

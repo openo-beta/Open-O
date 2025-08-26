@@ -79,6 +79,7 @@ LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 %>
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.eform.EFormUtil" %>
 <html>
     <head>
         <title>

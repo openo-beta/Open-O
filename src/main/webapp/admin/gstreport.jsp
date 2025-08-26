@@ -21,6 +21,8 @@
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page
         import="java.math.*, java.util.*, oscar.util.*, oscar.oscarBilling.ca.on.administration.*, oscar.oscarBilling.ca.on.data.*" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.JdbcBillingPageUtil" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.on.administration.GstReport" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 

@@ -5,7 +5,7 @@
 <%@ page import="org.oscarehr.managers.TicklerManager" %>
 <%@ page import="org.oscarehr.common.model.Tickler" %>
 <%@ page import="oscar.*, org.oscarehr.util.*,oscar.util.*,java.net.URLEncoder"%>
-<%@ page import="ca.openosp.web.Infirm2Action" %>
+<%@ page import="ca.openosp.openo.web.Infirm2Action" %>
 <c:if test="${infirmaryView_isOscar == 'false'}">
 <%
 	LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);

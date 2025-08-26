@@ -56,8 +56,8 @@ import org.oscarehr.common.model.BillingPaymentType;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarBilling.ca.on.data.BillingItemData;
-import oscar.oscarBilling.ca.on.data.JdbcBilling3rdPartImpl;
+import ca.openosp.openo.oscarBilling.ca.on.data.BillingItemData;
+import ca.openosp.openo.oscarBilling.ca.on.data.JdbcBilling3rdPartImpl;
 
 
 /**

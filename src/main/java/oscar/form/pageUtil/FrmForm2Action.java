@@ -53,7 +53,7 @@ import oscar.OscarProperties;
 import oscar.form.FrmRecordHelp;
 import oscar.form.data.FrmData;
 import oscar.form.util.FrmToXMLUtil;
-import oscar.oscarDemographic.data.DemographicData;
+import ca.openosp.openo.oscarDemographic.data.DemographicData;
 import oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementTypesBean;
 import oscar.oscarEncounter.oscarMeasurements.bean.EctValidationsBean;
 import oscar.oscarEncounter.oscarMeasurements.pageUtil.EctValidation;

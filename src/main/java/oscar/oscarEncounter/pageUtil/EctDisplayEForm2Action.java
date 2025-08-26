@@ -31,7 +31,7 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.EFormData;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
-import oscar.eform.EFormUtil;
+import ca.openosp.openo.eform.EFormUtil;
 import oscar.util.DateUtils;
 import oscar.util.OscarRoleObjectPrivilege;
 import oscar.util.StringUtils;

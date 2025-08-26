@@ -42,13 +42,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
-import com.itextpdf.text.pdf.draw.LineSeparator;
-import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
-
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperRunManager;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.FaxConfigDao;
@@ -67,8 +61,8 @@ import org.oscarehr.web.PrescriptionQrCodeUIBean;
 
 import org.owasp.encoder.Encode;
 import oscar.OscarProperties;
-import oscar.log.LogAction;
-import oscar.log.LogConst;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.log.LogConst;
 import oscar.oscarRx.data.RxPharmacyData;
 
 public class FrmCustomedPDFServlet extends HttpServlet {

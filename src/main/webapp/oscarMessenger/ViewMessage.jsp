@@ -63,6 +63,7 @@
 <%@ page
         import="oscar.oscarDemographic.data.*, java.util.Enumeration" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

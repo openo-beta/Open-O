@@ -48,9 +48,9 @@ import org.oscarehr.util.SessionConstants;
 import org.oscarehr.util.SpringUtils;
 import org.oscarehr.util.WebUtils;
 
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 
-import ca.openosp.service.LookupManager;
+import ca.openosp.openo.service.LookupManager;
 
 /**
  *

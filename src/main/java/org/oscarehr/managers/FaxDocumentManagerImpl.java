@@ -41,7 +41,7 @@ import org.springframework.stereotype.Service;
 
 import org.oscarehr.documentManager.ConvertToEdoc;
 import oscar.form.util.FormTransportContainer;
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 
 @Service
 public class FaxDocumentManagerImpl implements FaxDocumentManager {

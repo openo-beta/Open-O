@@ -56,8 +56,8 @@ import org.oscarehr.util.SpringUtils;
 
 import oscar.util.DateUtils;
 import oscar.OscarProperties;
-import oscar.eform.util.GraphicalCanvasToImage;
-import oscar.eform.APExecute;
+import ca.openosp.openo.eform.util.GraphicalCanvasToImage;
+import ca.openosp.openo.eform.APExecute;
 
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;

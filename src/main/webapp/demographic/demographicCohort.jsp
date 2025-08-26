@@ -42,7 +42,7 @@
 %>
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="oscar.oscarReport.data.DemographicSets, oscar.oscarDemographic.data.DemographicData" %>
+<%@ page import="oscar.oscarReport.data.DemographicSets, ca.openosp.openo.oscarDemographic.data.DemographicData" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 

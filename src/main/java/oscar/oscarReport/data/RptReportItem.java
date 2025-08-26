@@ -38,7 +38,7 @@ import org.oscarehr.common.dao.ReportItemDao;
 import org.oscarehr.common.model.ReportItem;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.login.DBHelp;
+import ca.openosp.openo.login.DBHelp;
 
 /**
  * @author yilee18

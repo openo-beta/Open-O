@@ -27,8 +27,8 @@
 
 package org.oscarehr.casemgmt.service;
 
-import ca.openosp.model.security.Secrole;
-import ca.openosp.service.security.RolesManager;
+import ca.openosp.openo.model.security.Secrole;
+import ca.openosp.openo.service.security.RolesManager;
 import org.oscarehr.PMmodule.dao.ProgramAccessDAO;
 import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
 import org.oscarehr.PMmodule.dao.ProgramQueueDao;

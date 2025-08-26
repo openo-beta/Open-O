@@ -61,7 +61,7 @@ import org.oscarehr.ws.rest.to.model.RxStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 
 import javax.imageio.ImageIO;
 import javax.naming.OperationNotSupportedException;

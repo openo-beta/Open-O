@@ -50,7 +50,7 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 import oscar.OscarProperties;
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 
 public class ClinicalConnectUtil {
     private static Logger logger = MiscUtils.getLogger();

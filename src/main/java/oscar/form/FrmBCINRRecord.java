@@ -10,7 +10,7 @@ import java.util.Vector;
 
 import org.oscarehr.util.LoggedInInfo;
 
-import oscar.login.DBHelp;
+import ca.openosp.openo.login.DBHelp;
 import oscar.oscarDB.DBHandler;
 import oscar.util.UtilDateUtilities;
 

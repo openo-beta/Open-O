@@ -46,8 +46,8 @@ import org.oscarehr.util.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import oscar.login.OscarOAuthDataProvider;
-import oscar.login.AppOAuth1Config;
+import ca.openosp.openo.login.OscarOAuthDataProvider;
+import ca.openosp.openo.login.AppOAuth1Config;
 
 import org.oscarehr.PMmodule.dao.ProviderDao;
 

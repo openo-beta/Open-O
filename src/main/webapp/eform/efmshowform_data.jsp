@@ -35,6 +35,7 @@
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="oscar.util.StringUtils" %>
 <%@ page import="java.util.List" %>
+<%@ page import="ca.openosp.openo.eform.data.EForm" %>
 
 <%!
     public void addHiddenEFormAttachments(LoggedInInfo loggedInInfo, EForm eForm, String eFormId) {

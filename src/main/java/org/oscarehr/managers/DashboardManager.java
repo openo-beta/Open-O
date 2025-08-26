@@ -27,42 +27,15 @@
  */
 package org.oscarehr.managers;
 
-import java.security.Security;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.logging.log4j.Logger;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.util.encoders.Base64;
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import org.oscarehr.common.dao.ClinicDAO;
-import org.oscarehr.common.dao.DashboardDao;
-import org.oscarehr.common.dao.IndicatorTemplateDao;
 import org.oscarehr.common.model.Dashboard;
 import org.oscarehr.common.model.IndicatorTemplate;
-import org.oscarehr.common.model.Provider;
 import org.oscarehr.dashboard.display.beans.DashboardBean;
 import org.oscarehr.dashboard.display.beans.DrilldownBean;
 import org.oscarehr.dashboard.display.beans.IndicatorBean;
-import org.oscarehr.dashboard.factory.DashboardBeanFactory;
-import org.oscarehr.dashboard.factory.DrilldownBeanFactory;
-import org.oscarehr.dashboard.factory.IndicatorBeanFactory;
-import org.oscarehr.dashboard.handler.ExportQueryHandler;
-import org.oscarehr.dashboard.handler.IndicatorTemplateHandler;
 import org.oscarehr.dashboard.handler.IndicatorTemplateXML;
-import org.oscarehr.integration.dashboard.model.Clinic;
-import org.oscarehr.integration.dashboard.model.User;
-import org.oscarehr.integration.dashboard.model.User.Province;
 import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import net.sf.json.JSONObject;
-import oscar.OscarProperties;
-import oscar.log.LogAction;
 
 public interface DashboardManager {
     public static final boolean MULTI_THREAD_ON = Boolean.TRUE;

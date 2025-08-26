@@ -5,7 +5,7 @@ import java.security.MessageDigest;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
-import oscar.login.AppOAuth1Config;
+import ca.openosp.openo.login.AppOAuth1Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
-import oscar.login.OscarOAuthDataProvider;
+import ca.openosp.openo.login.OscarOAuthDataProvider;
 
 @Service
 public class OAuth1SignatureVerifier {

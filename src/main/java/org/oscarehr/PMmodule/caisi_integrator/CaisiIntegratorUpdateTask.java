@@ -189,7 +189,7 @@ import oscar.OscarProperties;
 import org.oscarehr.documentManager.EDoc;
 import org.oscarehr.documentManager.EDocUtil;
 import oscar.form.FrmLabReq07Record;
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 import oscar.oscarLab.ca.all.web.LabDisplayHelper;
 import oscar.oscarLab.ca.on.CommonLabResultData;
 import oscar.oscarLab.ca.on.LabResultData;

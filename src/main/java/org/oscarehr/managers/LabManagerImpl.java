@@ -49,7 +49,7 @@ import org.springframework.stereotype.Service;
 
 import com.lowagie.text.DocumentException;
 
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 import oscar.oscarLab.ca.all.pageUtil.LabPDFCreator;
 import oscar.util.StringUtils;
 

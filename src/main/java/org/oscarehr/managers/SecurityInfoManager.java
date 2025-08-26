@@ -31,8 +31,8 @@ import java.util.*;
 
 import org.oscarehr.util.LoggedInInfo;
 
-import ca.openosp.model.security.Secobjprivilege;
-import ca.openosp.model.security.Secuserrole;
+import ca.openosp.openo.model.security.Secobjprivilege;
+import ca.openosp.openo.model.security.Secuserrole;
 
 public interface SecurityInfoManager {
     public static final String READ = "r";

@@ -29,18 +29,11 @@ package org.oscarehr.managers;
 
 import java.util.Date;
 import java.util.List;
-import java.util.ListIterator;
 
-import org.oscarehr.common.dao.ConsentDao;
-import org.oscarehr.common.dao.ConsentTypeDao;
 import org.oscarehr.common.model.Consent;
 import org.oscarehr.common.model.ConsentType;
 import org.oscarehr.common.model.DemographicData;
 import org.oscarehr.util.LoggedInInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import oscar.log.LogAction;
 
 /**
  * Manages the various consents required from patients for participation in specific programs

@@ -40,7 +40,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 
 /**
  * Manages the various consents required from patients for participation in specific programs

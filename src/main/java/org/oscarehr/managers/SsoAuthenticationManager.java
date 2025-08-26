@@ -40,7 +40,7 @@ import org.oscarehr.util.SSOUtility;
 import org.oscarehr.util.SessionConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import oscar.login.LoginCheckLogin;
+import ca.openosp.openo.login.LoginCheckLogin;
 
 import java.io.IOException;
 import java.io.InputStream;

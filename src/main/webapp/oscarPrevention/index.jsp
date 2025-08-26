@@ -145,6 +145,7 @@
 
 
 <%@page import="org.oscarehr.util.SessionConstants" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
 <html>
 
     <head>

@@ -59,6 +59,8 @@
 <%@ page import="org.oscarehr.documentManager.EDocUtil" %>
 <%@ page import="org.oscarehr.documentManager.EDoc" %>
 <%@ page import="org.oscarehr.documentManager.IncomingDocUtil" %>
+<%@ page import="ca.openosp.openo.log.LogAction" %>
+<%@ page import="ca.openosp.openo.log.LogConst" %>
 <%
 
     ProviderInboxRoutingDao providerInboxRoutingDao = SpringUtils.getBean(ProviderInboxRoutingDao.class);
@@ -687,7 +689,7 @@
                             <td><%=prov == null ? "N/A" : prov.getFormattedName()%>
                             </td>
                             <td><% if (a.getStatus() == null) {%>
-                                "" <% } else if (a.getStatus().equals("N")) {%><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.appt.ApptStatusData.msgNoShow"/><% } else if (a.getStatus().equals("C")) {%><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.appt.ApptStatusData.msgCanceled"/> <%}%>
+                                "" <% } else if (a.getStatus().equals("N")) {%><fmt:setBundle basename="oscarResources"/><fmt:message key="ca.openosp.openo.appt.ApptStatusData.msgNoShow"/><% } else if (a.getStatus().equals("C")) {%><fmt:setBundle basename="oscarResources"/><fmt:message key="ca.openosp.openo.appt.ApptStatusData.msgCanceled"/> <%}%>
                             </td>
                         </tr>
                         <%}%>

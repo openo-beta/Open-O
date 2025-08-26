@@ -36,7 +36,7 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.util.MiscUtils;
 
 import oscar.OscarProperties;
-import oscar.appt.ApptData;
+import ca.openosp.openo.appt.ApptData;
 import oscar.oscarClinic.ClinicData;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.v23.message.ADT_A04;

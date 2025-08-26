@@ -60,7 +60,7 @@
 <%@page import="org.oscarehr.common.model.BillingONExt" %>
 <%@page import="org.oscarehr.common.dao.BillingOnItemPaymentDao" %>
 <%@page import="org.oscarehr.billing.CA.ON.model.*" %>
-<%@page import="oscar.oscarBilling.ca.on.data.BillingItemData" %>
+<%@page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingItemData" %>
 <%@page import="java.math.BigDecimal" %>
 <%@page import="org.oscarehr.common.dao.BillingPaymentTypeDao" %>
 <%@page import="org.oscarehr.common.model.BillingPaymentType" %>

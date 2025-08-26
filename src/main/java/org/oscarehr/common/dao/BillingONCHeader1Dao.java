@@ -27,41 +27,15 @@
 
 package org.oscarehr.common.dao;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import javax.persistence.Query;
-
-import org.apache.commons.lang.StringUtils;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.PMmodule.utility.DateUtils;
-import org.oscarehr.billing.CA.ON.model.BillingPercLimit;
-import org.oscarehr.billing.CA.dao.GstControlDao;
-import org.oscarehr.billing.CA.model.GstControl;
 import org.oscarehr.common.model.BillingONCHeader1;
 import org.oscarehr.common.model.BillingONItem;
-import org.oscarehr.common.model.BillingService;
-import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.util.DateRange;
-import org.oscarehr.util.MiscUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
-import oscar.OscarProperties;
-import oscar.oscarBilling.ca.on.data.BillingDataHlp;
-import oscar.oscarBilling.ca.on.pageUtil.BillingStatusPrep;
-import oscar.util.ParamAppender;
 
 /**
  * @author Eugene Katyukhin

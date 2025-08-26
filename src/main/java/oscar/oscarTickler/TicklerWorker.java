@@ -33,7 +33,7 @@ import org.oscarehr.common.model.ConsultationRequest;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarDemographic.data.DemographicNameAgeString;
+import ca.openosp.openo.oscarDemographic.data.DemographicNameAgeString;
 import oscar.util.ConversionUtils;
 import oscar.util.UtilDateUtilities;
 

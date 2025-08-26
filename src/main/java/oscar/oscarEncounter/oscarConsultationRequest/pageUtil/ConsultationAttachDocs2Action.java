@@ -54,7 +54,7 @@ import org.oscarehr.util.SpringUtils;
 import oscar.OscarProperties;
 import org.oscarehr.documentManager.EDoc;
 import org.oscarehr.documentManager.EDocUtil;
-import oscar.eform.EFormUtil;
+import ca.openosp.openo.eform.EFormUtil;
 import oscar.form.util.FormTransportContainer;
 import oscar.oscarEncounter.data.EctFormData;
 import oscar.oscarLab.ca.all.pageUtil.LabPDFCreator;

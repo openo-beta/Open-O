@@ -37,9 +37,8 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 import oscar.OscarProperties;
 import oscar.form.*;
-import oscar.log.LogAction;
-import oscar.log.LogConst;
-import oscar.oscarEncounter.data.EctFormData;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.log.LogConst;
 import oscar.util.LabelValueBean;
 
 import javax.imageio.ImageIO;

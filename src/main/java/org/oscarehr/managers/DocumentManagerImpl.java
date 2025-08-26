@@ -56,7 +56,7 @@ import oscar.OscarProperties;
 import org.oscarehr.documentManager.EDoc;
 
 import org.oscarehr.documentManager.EDocUtil;
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 import oscar.oscarEncounter.oscarConsultationRequest.pageUtil.ImagePDFCreator;
 
 @Service

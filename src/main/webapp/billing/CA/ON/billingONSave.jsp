@@ -28,6 +28,9 @@
 <%@ page import="oscar.oscarBilling.ca.on.pageUtil.*" %>
 <%@ page import="oscar.oscarBilling.ca.on.data.*,org.oscarehr.common.model.*,org.oscarehr.common.dao.*" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="ca.openosp.openo.appt.ApptStatusData" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingDataHlp" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.on.pageUtil.BillingSavePrep" %>
 <%
     WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
     UserPropertyDAO userPropertyDAO = (UserPropertyDAO) ctx.getBean(UserPropertyDAO.class);
@@ -91,7 +94,7 @@
         if (ret) {
             if (apptNo != null && apptNo.length() > 0 && !apptNo.equals("0")) {
                 String apptCurStatus = bObj.getApptStatus(apptNo);
-                oscar.appt.ApptStatusData as = new oscar.appt.ApptStatusData();
+                ApptStatusData as = new ApptStatusData();
                 String billStatus = as.billStatus(apptCurStatus);
                 bObj.updateApptStatus(apptNo, billStatus, (String) session.getAttribute("user"));
             }

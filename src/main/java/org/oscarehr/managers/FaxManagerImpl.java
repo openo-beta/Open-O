@@ -47,7 +47,7 @@ import org.oscarehr.util.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import oscar.form.util.FormTransportContainer;
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 import oscar.util.ConcatPDF;
 
 import java.io.ByteArrayInputStream;

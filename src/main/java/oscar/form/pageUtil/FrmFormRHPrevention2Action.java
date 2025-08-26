@@ -43,8 +43,8 @@ import org.oscarehr.util.SpringUtils;
 
 import oscar.form.FrmRecord;
 import oscar.form.FrmRecordFactory;
-import oscar.log.LogAction;
-import oscar.log.LogConst;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.log.LogConst;
 import oscar.oscarWorkflow.WorkFlow;
 import oscar.oscarWorkflow.WorkFlowFactory;
 import oscar.oscarWorkflow.WorkFlowState;

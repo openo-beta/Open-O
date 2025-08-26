@@ -23,7 +23,7 @@
 
 package org.oscarehr.PMmodule.web;
 
-import ca.openosp.service.LookupManager;
+import ca.openosp.openo.service.LookupManager;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.logging.log4j.Logger;

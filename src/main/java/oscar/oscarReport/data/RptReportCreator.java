@@ -40,7 +40,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.oscarehr.util.MiscUtils;
 
-import oscar.login.DBHelp;
+import ca.openosp.openo.login.DBHelp;
 
 /**
  * @author yilee18

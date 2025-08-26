@@ -23,7 +23,7 @@
 
 package org.oscarehr.PMmodule.model;
 
-import ca.openosp.model.security.Secrole;
+import ca.openosp.openo.model.security.Secrole;
 
 import java.io.Serializable;
 

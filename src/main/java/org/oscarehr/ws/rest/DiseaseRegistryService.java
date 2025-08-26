@@ -44,7 +44,7 @@ import org.oscarehr.ws.rest.to.model.DxQuickList;
 import org.oscarehr.ws.rest.to.model.IssueTo1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 
 @Path("/dxRegisty")
 public class DiseaseRegistryService extends AbstractServiceImpl {

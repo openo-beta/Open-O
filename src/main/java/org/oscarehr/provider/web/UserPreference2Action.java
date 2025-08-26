@@ -26,6 +26,7 @@
 
 package org.oscarehr.provider.web;
 
+import ca.openosp.openo.entities.Provider;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -38,7 +39,7 @@ import org.oscarehr.common.model.UserProperty;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
-import oscar.oscarBilling.ca.bc.MSP.MSPReconcile;
+import ca.openosp.openo.oscarBilling.ca.bc.MSP.MSPReconcile;
 import oscar.util.LabelValueBean;
 
 import javax.servlet.http.HttpServletRequest;
@@ -528,9 +529,9 @@ public class UserPreference2Action extends ActionSupport {
 
         MSPReconcile rec = new MSPReconcile();
         @SuppressWarnings("unchecked")
-        List<oscar.entities.Provider> providers = rec.getAllProviders();
+        List<Provider> providers = rec.getAllProviders();
 
-        for (oscar.entities.Provider provider : providers) {
+        for (Provider provider : providers) {
             results.add(new LabelValueBean(provider.getLastName() + "," + provider.getFirstName(), provider.getProviderNo()));
         }
 

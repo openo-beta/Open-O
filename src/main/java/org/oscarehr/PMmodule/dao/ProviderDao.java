@@ -34,7 +34,7 @@ import java.util.Map;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.util.LoggedInInfo;
 
-import ca.openosp.model.security.SecProvider;
+import ca.openosp.openo.model.security.SecProvider;
 
 @SuppressWarnings("unchecked")
 public interface ProviderDao {

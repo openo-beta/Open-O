@@ -53,7 +53,7 @@ import org.springframework.stereotype.Service;
 import org.oscarehr.documentManager.ConvertToEdoc;
 import org.oscarehr.documentManager.EDoc;
 import oscar.form.util.FormTransportContainer;
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 import oscar.oscarEncounter.data.EctFormData;
 import oscar.oscarEncounter.data.EctFormData.PatientForm;
 

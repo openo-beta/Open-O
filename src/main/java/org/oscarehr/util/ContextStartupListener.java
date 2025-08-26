@@ -38,7 +38,7 @@ import org.oscarehr.integration.mcedt.mailbox.CidPrefixResourceResolver;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
 
-import ca.openosp.dao.security.SecroleDao;
+import ca.openosp.openo.dao.security.SecroleDao;
 import oscar.OscarProperties;
 
 public class ContextStartupListener implements javax.servlet.ServletContextListener {

@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@page import="oscar.log.LogAction" %>
+<%@page import="ca.openosp.openo.log.LogAction" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%
     if (session.getAttribute("user") == null) response.sendRedirect("../logout.jsp");

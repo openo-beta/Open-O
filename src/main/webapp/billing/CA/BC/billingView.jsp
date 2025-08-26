@@ -52,11 +52,15 @@
 <%@ page
         import="oscar.oscarBilling.ca.bc.data.*,oscar.oscarBilling.ca.bc.pageUtil.*" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingBillingManager" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingViewBean" %>
+<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingFormData" %>
+<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
 <%
 
     String color = "", colorflag = "";
     BillingViewBean bean = (BillingViewBean) pageContext.findAttribute("billingViewBean");
-    oscar.oscarDemographic.data.DemographicData demoData = new oscar.oscarDemographic.data.DemographicData();
+    DemographicData demoData = new DemographicData();
     org.oscarehr.common.model.Demographic demo = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), bean.getPatientNo());
 
     List<BillingBillingManager.BillingItem> billItem = bean.getBillItem();

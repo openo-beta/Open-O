@@ -32,16 +32,9 @@ import java.nio.file.Path;
 
 import org.oscarehr.fax.core.FaxAccount;
 import org.oscarehr.fax.core.FaxRecipient;
-import org.oscarehr.fax.util.PdfCoverPageCreator;
 import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.PDFGenerationException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import org.oscarehr.documentManager.ConvertToEdoc;
 import oscar.form.util.FormTransportContainer;
-import oscar.log.LogAction;
 
 public interface FaxDocumentManager {
 

@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.oscarehr.common.model.OscarLog;
 import org.oscarehr.util.LoggedInInfo;
 
-import oscar.log.LogAction;
+import ca.openosp.openo.log.LogAction;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

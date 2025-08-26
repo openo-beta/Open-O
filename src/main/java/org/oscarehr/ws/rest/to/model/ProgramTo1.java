@@ -29,7 +29,7 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import ca.openosp.model.LookupCodeValue;
+import ca.openosp.openo.model.LookupCodeValue;
 
 @XmlRootElement
 public class ProgramTo1 implements Serializable {
