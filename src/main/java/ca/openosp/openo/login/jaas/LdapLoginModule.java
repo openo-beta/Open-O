@@ -69,7 +69,7 @@ public final class LdapLoginModule extends BaseLoginModule {
     /**
      * Authenticates login against LDAP.
      *
-     * @see BaseLoginModule#authenticate(java.lang.String, char[])
+     * @see ca.openosp.openo.login.jaas.BaseLoginModule#authenticate(java.lang.String, char[])
      */
     @Override
     protected final OscarPrincipal authenticate(String loginName, char[] password) throws Exception, LoginException {
