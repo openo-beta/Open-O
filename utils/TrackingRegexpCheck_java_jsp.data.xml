@@ -15,8 +15,6 @@
         <ViolationValue>/src/main/java/org/oscarehr/PMmodule/dao/ProviderDao.java:List lst = new ArrayList();</ViolationValue>
         <ViolationValue>/src/main/java/org/oscarehr/PMmodule/model/ProgramAccess.java:if (null == this._roles) this._roles = new java.util.HashSet();</ViolationValue>
         <ViolationValue>/src/main/java/org/oscarehr/PMmodule/service/ProgramManager.java:* Iterator iter = programProviderDAOT.getProgramProvidersByProvider(new Long(providerNo)).iterator(); ArrayList pList = new ArrayList(); while (iter.hasNext()) { ProgramProvider p = (ProgramProvider) iter.next(); if (p!=null &amp;&amp; p.getProgramId() !=</ViolationValue>
-        <ViolationValue>/src/main/java/org/oscarehr/PMmodule/service/impl/StreetHealthReportManagerImpl.java:List results = new ArrayList();</ViolationValue>
-        <ViolationValue>/src/main/java/org/oscarehr/PMmodule/service/impl/StreetHealthReportManagerImpl.java:return new ArrayList();</ViolationValue>
         <ViolationValue>/src/main/java/org/oscarehr/PMmodule/utility/GetProviderRoles.java:Set roles = new HashSet();</ViolationValue>
         <ViolationValue>/src/main/java/org/oscarehr/PMmodule/utility/Utility.java:List arr_keyNameSuffix = new ArrayList();</ViolationValue>
         <ViolationValue>/src/main/java/org/oscarehr/PMmodule/utility/Utility.java:List arr_keyNames = new ArrayList();</ViolationValue>

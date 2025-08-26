@@ -513,12 +513,6 @@
             <version>2.19.2</version>
         </dependency>
 
-        <!-- barbecue: can be found in the local_repo folder -->
-        <dependency>
-            <groupId>net.sourceforge.barbecue</groupId>
-            <artifactId>barbecue</artifactId>
-            <version>1.0.6b</version>
-        </dependency>
 
         <!-- caisi integrator: can be found in the local_repo folder -->
         <dependency>

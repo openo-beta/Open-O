@@ -71,7 +71,6 @@
 	<bean id="agencyDao" class="org.oscarehr.PMmodule.dao.AgencyDaoImpl" autowire="byName" />
 	<bean id="admissionDao" class="org.oscarehr.common.dao.AdmissionDaoImpl" autowire="byName" />
 	<bean id="providerDao" class="org.oscarehr.PMmodule.dao.ProviderDaoImpl" autowire="byName" />
-	<bean id="streetHealthDao" class="org.oscarehr.PMmodule.dao.StreetHealthDaoImpl" autowire="byName" />
 	<bean id="otherIdDao" class="org.oscarehr.common.dao.OtherIdDAOImpl" autowire="byName" />
 
 	<bean id="CaseManagementIssueDAO" class="org.oscarehr.casemgmt.dao.CaseManagementIssueDAOImpl" autowire="byName" />

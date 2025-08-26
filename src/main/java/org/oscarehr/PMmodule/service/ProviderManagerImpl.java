@@ -103,9 +103,6 @@ public class ProviderManagerImpl implements ProviderManager {
         return programProviderDAO.getFacilitiesInProgramDomain(providerNo);
     }
 
-    public List getShelterIds(String provider_no) {
-        return providerDao.getShelterIds(provider_no);
-    }
 
     public List<Agency> getAgencyDomain(String providerNo) {
         Agency localAgency = agencyDao.getLocalAgency();

@@ -106,7 +106,6 @@
             <result name="failure">/logout.jsp</result>
             <result name="error">/loginfailed.jsp</result>
             <result name="caisiPMM">/PMmodule/ProviderInfo.do</result>
-            <result name="shelterSelection">/shelterSelection.do</result>
             <result name="forcepasswordreset">/forcepasswordreset.jsp</result>
             <result name="programLocation">/location.jsp</result>
             <result name="ssoLogin">/ssoLogin.do</result>
@@ -119,7 +118,6 @@
             <result name="ssoLoginError">/index.jsp</result>
             <result name="error">/loginfailed.jsp</result>
             <result name="caisiPMM">/PMmodule/ProviderInfo.do</result>
-            <result name="shelterSelection">/shelterSelection.do</result>
             <result name="LoginTest">/login/LoginTest.jsp</result>
             <result name="programLocation">/location.jsp</result>
             <result name="logout">/logout.jsp</result>
@@ -130,11 +128,6 @@
             <result name="ssoLoginError">/index.jsp</result>
         </action>
         <action name="login/recordLogin" class="oscar.login.LoginAgreement2Action"/>
-        <action name="shelterSelection" class="oscar.login.ShelterSelection2Action">
-            <result name="shelterSelection">page.pmm.shelterSelection</result>
-            <result name="home">/Home.do</result>
-            <result name="login">/index.jsp</result>
-        </action>
         <action name="oscarMessenger/ImportDemographic" class="oscar.oscarMessenger.pageUtil.ImportDemographic2Action">
             <result name="success">/oscarMessenger/ViewMessage.do</result>
         </action>
@@ -1578,7 +1571,6 @@
         <action name="demographic/printDemoLabelAction" class="oscar.oscarDemographic.PrintDemoLabel2Action"/>
         <action name="demographic/printDemoAddressLabelAction" class="oscar.oscarDemographic.PrintDemoAddressLabel2Action"/>
         <action name="demographic/printDemoChartLabelAction" class="oscar.oscarDemographic.PrintDemoChartLabel2Action"/>
-        <action name="demographic/printBarcodeAction" class="oscar.oscarDemographic.PrintBarcode2Action"/>
         <action name="demographic/printClientLabLabelAction" class="oscar.oscarDemographic.PrintClientLabLabel2Action"/>
         <action name="billing/CA/BC/createBillingReportAction" class="oscar.oscarBilling.ca.bc.MSP.CreateBillingReport2Action"/>
         <action name="oscarPrevention/AddPrevention" class="oscar.oscarPrevention.pageUtil.AddPrevention2Action">

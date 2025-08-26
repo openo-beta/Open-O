@@ -7,20 +7,6 @@ function getIntakeReport(type) {
 }
 
 
-function createStreetHealthReport() {
-    var startDate = "";
-
-    while (startDate.length != 10 || startDate.substring(4, 5) != "-" || startDate.substring(7, 8) != "-") {
-        startDate = prompt("Please enter start date (e.g. 2006-01-01)", "<%=dateStr%>");
-        if (startDate == null) {
-            return false;
-        }
-    }
-
-    alert('Generating report for date ' + startDate);
-
-    popupPage2("../PMmodule/StreetHealthIntakeReportAction.do?startDate=" + startDate, "StreetHealthReport");
-}
 
 
 function popupPage2(varpage, windowname) {

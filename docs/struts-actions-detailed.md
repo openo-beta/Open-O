@@ -199,7 +199,6 @@ Patient demographic management and related functions.
 | demographic/DemographicExport | oscar.oscarDemographic.pageUtil.DemographicExportAction42Action | Exports demographic data |
 | demographic/eRourkeExport | oscar.oscarDemographic.pageUtil.RourkeExport2Action | Exports Rourke assessment data |
 | DemographicExtService | org.oscarehr.common.web.DemographicExtService2Action | Provides external demographic services |
-| demographic/printBarcodeAction | oscar.oscarDemographic.PrintBarcode2Action | Prints patient barcodes |
 | demographic/printClientLabLabelAction | oscar.oscarDemographic.PrintClientLabLabel2Action | Prints client lab labels |
 | demographic/printDemoAddressLabelAction | oscar.oscarDemographic.PrintDemoAddressLabel2Action | Prints patient address labels |
 | demographic/printDemoChartLabelAction | oscar.oscarDemographic.PrintDemoChartLabel2Action | Prints patient chart labels |
@@ -1002,7 +1001,6 @@ Shelter selection functionality.
 
 | Action Name | Class Name | Description |
 |-------------|------------|-------------|
-| shelterSelection | oscar.login.ShelterSelection2Action | Selects shelter for login |
 
 ## SSO Module
 

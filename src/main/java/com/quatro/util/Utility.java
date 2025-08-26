@@ -188,53 +188,9 @@ public class Utility {
         }
     }
 
-    public static String getUserOrgQueryString(String providerNo, Integer shelterId) {
-        String progSQL = "";
-        if (shelterId == null || shelterId.intValue() == 0) {
-            progSQL = "(select p.id from Program p where 'P' || p.id in (select a.code from LstOrgcd a, Secuserrole b " +
-                    " where a.codecsv like '%' || b.orgcd || ',%' and b.providerNo='" + providerNo + "'))";
-        } else {
-            progSQL = "(select p.id from Program p where p.shelterId =" + shelterId.toString() + " and 'P' || p.id in (select a.code from LstOrgcd a, Secuserrole b " +
-                    " where a.codecsv like '%' || b.orgcd || ',%' and b.providerNo='" + providerNo + "'))";
-        }
-        return progSQL;
-    }
 
-    public static String getUserOrgSqlString(String providerNo, Integer shelterId) {
-        String progSQL = "";
-        if (shelterId == null || shelterId.intValue() == 0) {
-            progSQL = "(select p.id from program p where 'P' || p.id in (select a.code from lst_orgcd a, secUserRole b " +
-                    " where a.codecsv like '%' || b.orgcd || ',%' and b.provider_no='" + providerNo + "'))";
-        } else {
-            progSQL = "(select p.id from program p where p.shelter_id =" + shelterId.toString() + " and 'P' || p.id in (select a.code from lst_orgcd a, secUserRole b " +
-                    " where a.codecsv like '%' || b.orgcd || ',%' and b.provider_no='" + providerNo + "'))";
-        }
-        return progSQL;
-    }
 
-    public static String getUserOrgSqlStringByFac(String providerNo, Integer shelterId) {
-        String progSQL = "";
-        if (shelterId == null || shelterId.intValue() == 0) {
-            progSQL = "(select p.id from facility p where 'F' || p.id in (select a.code from lst_orgcd a, secUserRole b " +
-                    " where a.codecsv like '%' || b.orgcd || ',%' and b.provider_no='" + providerNo + "'))";
-        } else {
-            progSQL = "(select p.id from facility p where p.org_id =" + shelterId.toString() + " and 'F' || p.id in (select a.code from lst_orgcd a, secUserRole b " +
-                    " where a.codecsv like '%' || b.orgcd || ',%' and b.provider_no='" + providerNo + "'))";
-        }
-        return progSQL;
-    }
 
-    public static String getUserOrgStringByFac(String providerNo, Integer shelterId) {
-        String progSQL = "";
-        if (shelterId == null || shelterId.intValue() == 0) {
-            progSQL = "(select p.id from Facility p where 'F' || p.id in (select a.code from LstOrgcd a, Secuserrole b " +
-                    " where a.codecsv like '%' || b.orgcd || ',%' and b.providerNo='" + providerNo + "'))";
-        } else {
-            progSQL = "(select p.id from Facility p where p.orgId =" + shelterId + " and 'F' || p.id in (select a.code from LstOrgcd a, Secuserrole b " +
-                    " where a.codecsv like '%' || b.orgcd || ',%' and b.providerNo='" + providerNo + "'))";
-        }
-        return progSQL;
-    }
 
     public static String FormatDate(String pDate, Integer len) {
         String retVal = "";

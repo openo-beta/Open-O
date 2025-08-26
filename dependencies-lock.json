@@ -1170,14 +1170,6 @@
     "optional" : false,
     "integrity" : "sha512:4au63KYDxrIDNSxBLUrkUATz+DPhsjZmQRYSICBGbc2Gj2q5ZTrb4ZB5R5V8zR7faGqV0qYX6UhPr1+nqf9kSw=="
   }, {
-    "groupId" : "net.sourceforge.barbecue",
-    "artifactId" : "barbecue",
-    "version" : "1.0.6b",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:4iIIGmIVvnwnVerdb+RBn8agNhKjlWZvjgfYBZZZstmQG5OXkrWsdHdrn34iesSWGs9DYCC9wkIrhYGdaiMo0w=="
-  }, {
     "groupId" : "net.sourceforge.serp",
     "artifactId" : "serp",
     "version" : "1.15.1",

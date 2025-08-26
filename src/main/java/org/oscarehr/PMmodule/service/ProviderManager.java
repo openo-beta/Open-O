@@ -69,7 +69,6 @@ public interface ProviderManager {
 
     List<Facility> getFacilitiesInProgramDomain(String providerNo);
 
-    List getShelterIds(String provider_no);
 
     List<Agency> getAgencyDomain(String providerNo);
 
