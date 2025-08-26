@@ -35,7 +35,6 @@ import org.oscarehr.PMmodule.utility.RoleCache;
 import org.oscarehr.common.jobs.OscarJobUtils;
 import org.oscarehr.hospitalReportManager.HRMFixMissingReportHelper;
 import org.oscarehr.integration.mcedt.mailbox.CidPrefixResourceResolver;
-import org.oscarehr.threads.WaitListEmailThread;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
 
@@ -81,7 +80,6 @@ public class ContextStartupListener implements javax.servlet.ServletContextListe
 
             OscarJobUtils.initializeJobExecutionFramework();
 
-            WaitListEmailThread.startTaskIfEnabled();
 
             if (oscarProperties.isPropertyActive("encrypted_xml.remove_cid_prefix")) {
                 ResourceResolver.register(new CidPrefixResourceResolver(), true);
@@ -143,7 +141,6 @@ public class ContextStartupListener implements javax.servlet.ServletContextListe
     public void contextDestroyed(javax.servlet.ServletContextEvent sce) {
         logger.info("Server processes stopping. context=" + sce.getServletContext().getContextPath());
 
-        WaitListEmailThread.stopTask();
         CaisiIntegratorUpdateTask.stopTask();
 
         try {

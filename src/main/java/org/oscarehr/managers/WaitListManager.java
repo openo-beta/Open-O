@@ -60,8 +60,6 @@ public class WaitListManager {
     private static final String WAIT_LIST_VACANCY_EMAIL_TEMPLATE_FILE = "/wait_list_immediate_vacancy_email_template.txt";
 
     protected static Properties waitListProperties = getWaitListProperties();
-    private static boolean enableEmailNotifications = Boolean.parseBoolean(OscarProperties.getInstance().getProperty("enable_wait_list_email_notifications"));
-    private static long waitListNotificationPeriod = Long.parseLong(OscarProperties.getInstance().getProperty("wait_list_email_notification_period"));
 
     @Autowired
     private ProgramDao programDao;
@@ -144,49 +142,6 @@ public class WaitListManager {
         // sendAdmissionNotification(emailSubject, emailTemplate, program, notes, null, null, admissionDemographicPairs);
     }
 
-    /*
-     * This method is deprecated because EmailUtilOld.java has been removed.
-     * Currently, a new email feature (EmailManager.java) is in production.
-     *
-     * TODO: Once the new emailing feature is fully implemented, refactor and update this method to make it compatible with the latest email handling in EmailManager.java.
-     */
-    @Deprecated
-    public void sendProxyEformNotification(Program program, String app_ctx_path, String fid) throws IOException {
-        throw new UnsupportedOperationException("This method is no longer supported.");
-        // if (!enableEmailNotifications) return;
-
-        // InputStream is = null;
-        // String emailTemplate = null;
-        // try {
-        // 	is = WaitListManager.class.getResourceAsStream(WAIT_LIST_A_NEW_APP_TEMPLATE_FILE);
-        // 	emailTemplate = IOUtils.toString(is);
-        // } finally {
-        // 	if (is != null) is.close();
-        // }
-
-        // String emailSubject = waitListProperties.getProperty("proxy_eform_notification_subject");
-
-        // String temp = StringUtils.trimToNull(program.getEmailNotificationAddressesCsv());
-        // if (temp != null) {
-        // 	String fromAddress = waitListProperties.getProperty("from_address");
-        // 	VelocityContext velocityContext = VelocityUtils.createVelocityContextWithTools();
-        // 	if (null != app_ctx_path) velocityContext.put("app_ctx_path", app_ctx_path);
-        // 	if (null != fid) velocityContext.put("fid", fid);
-
-        // 	String mergedSubject = VelocityUtils.velocityEvaluate(velocityContext, emailSubject);
-        // 	String mergedBody = VelocityUtils.velocityEvaluate(velocityContext, emailTemplate);
-
-        // 	String[] splitEmailAddresses = temp.split(",");
-        // 	for (String emailAddress : splitEmailAddresses) {
-        // 		try {
-        // 			EmailUtilsOld.sendEmail(emailAddress, emailAddress, fromAddress, fromAddress, mergedSubject, mergedBody, null);
-        // 		} catch (EmailException e) {
-        // 			logger.error("Unexpected error.", e);
-        // 			throw new EmailException(e.toString());
-        // 		}
-        // 	}
-        // }
-    }
 
     /*
      * This method is deprecated as it relies on WaitListManager's sendAdmissionNotification method.
