@@ -1889,10 +1889,6 @@
         <action name="PMmodule/ProviderInfo" class="org.oscarehr.PMmodule.web.ProviderInfo2Action" method="execute">
             <result name="view">page.pmm.provider.view</result>
         </action>
-        <action name="PMmodule/HealthSafety" class="org.oscarehr.PMmodule.web.HealthSafety2Action" method="execute">
-            <result name="edit">/PMmodule/HealthSafety.jsp</result>
-            <result name="success">/PMmodule/HealthSafetyExit.jsp</result>
-        </action>
         <action name="PMmodule/StaffManager" class="org.oscarehr.PMmodule.web.admin.StaffManager2Action" method="execute">
             <result name="list">page.pmm.staff.list</result>
             <result name="edit">page.pmm.staff.edit</result>

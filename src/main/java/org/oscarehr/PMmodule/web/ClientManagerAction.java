@@ -51,7 +51,6 @@ public class ClientManagerAction {
 
     private static final Logger logger = MiscUtils.getLogger();
 
-    private HealthSafetyManager healthSafetyManager;
     private ClientRestrictionManager clientRestrictionManager;
     private LookupManager lookupManager;
     private CaseManagementManager caseManagementManager;
@@ -104,9 +103,6 @@ public class ClientManagerAction {
         this.clientRestrictionManager = clientRestrictionManager;
     }
 
-    public void setHealthSafetyManager(HealthSafetyManager healthSafetyManager) {
-        this.healthSafetyManager = healthSafetyManager;
-    }
 
     public void setLookupManager(LookupManager lookupManager) {
         this.lookupManager = lookupManager;
