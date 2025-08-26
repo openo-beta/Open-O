@@ -6,7 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.ServletActionContext;
@@ -87,11 +88,12 @@ public class MoveMOHFiles2Action extends ActionSupport {
     private boolean validateFileLocation(File file) {
     boolean result = false;
     try {
-        String filePath = file.getCanonicalPath();
-        for(EDTFolder folder : EDTFolder.values()) {
-            String edtFolderPath = new File(folder.getPath()).getCanonicalPath();
+        Path filePath = file.toPath().toRealPath().normalize();
+        for (EDTFolder folder : EDTFolder.values()) {
+            Path edtFolderPath = Paths.get(folder.getPath()).toRealPath().normalize();
             if (filePath.startsWith(edtFolderPath)) {
                 result = true;
+                break;
             }
         }
     } catch (Exception e) {
