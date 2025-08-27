@@ -58,6 +58,7 @@
 <%@ page import="org.oscarehr.documentManager.EDocUtil" %>
 <%@ page import="org.oscarehr.documentManager.EDoc" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <%
     DocumentExtraReviewerDao documentExtraReviewerDao = SpringUtils.getBean(DocumentExtraReviewerDao.class);
     List<DocumentExtraReviewer> extraReviewers = new ArrayList<DocumentExtraReviewer>();
@@ -118,7 +119,7 @@
 
     List<Map<String, String>> pdList = new ProviderData().getProviderList();
     ArrayList doctypes = EDocUtil.getDoctypes(formdata.getFunction());
-    String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_DOCUMENT;
+    String annotation_display = CaseManagementNoteLink.DISP_DOCUMENT;
     String annotation_tableid = editDocumentNo;
 
     CtlDocClassDao docClassDao = (CtlDocClassDao) SpringUtils.getBean(CtlDocClassDao.class);

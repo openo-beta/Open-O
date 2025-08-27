@@ -36,7 +36,7 @@ import org.oscarehr.PMmodule.service.ProviderManager;
 import org.oscarehr.PMmodule.web.utils.UserRoleUtils;
 import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;
-import org.oscarehr.decisionSupport.service.DSService;
+import ca.openosp.openo.decisionSupport.service.DSService;
 import org.oscarehr.managers.AppManager;
 import org.oscarehr.managers.MfaManager;
 import org.oscarehr.managers.SecurityManager;

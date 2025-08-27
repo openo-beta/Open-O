@@ -41,8 +41,8 @@
 <%@ page import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, java.net.*,oscar.MyDateFormat" %>
 <%@page import="org.oscarehr.util.MiscUtils" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.billing.CA.BC.dao.TeleplanS00Dao" %>
-<%@page import="org.oscarehr.billing.CA.BC.model.TeleplanS00" %>
+<%@page import="ca.openosp.openo.billing.CA.BC.dao.TeleplanS00Dao" %>
+<%@page import="ca.openosp.openo.billing.CA.BC.model.TeleplanS00" %>
 
 <%
     TeleplanS00Dao teleplanS00Dao = SpringUtils.getBean(TeleplanS00Dao.class);

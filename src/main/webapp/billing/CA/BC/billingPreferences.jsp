@@ -9,8 +9,8 @@
 <%@ page import="org.oscarehr.common.model.Provider" %>
 <%@ page import="org.oscarehr.common.dao.SystemPreferencesDao" %>
 <%@ page import="ca.openosp.openo.clinic.ClinicData" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.data.BillingPreference" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.data.BillingPreferencesDAO" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingPreference" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingPreferencesDAO" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%
     SystemPreferencesDao systemPreferencesDao = SpringUtils.getBean(SystemPreferencesDao.class);

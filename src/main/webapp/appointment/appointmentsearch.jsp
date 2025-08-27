@@ -34,9 +34,9 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="org.oscarehr.common.dao.ScheduleTemplateCodeDao" %>
 <%@ page import="org.oscarehr.common.model.ScheduleTemplateCode" %>
-<%@ page import="org.oscarehr.appointment.web.NextAppointmentSearchHelper" %>
-<%@ page import="org.oscarehr.appointment.web.NextAppointmentSearchBean" %>
-<%@ page import="org.oscarehr.appointment.web.NextAppointmentSearchResult" %>
+<%@ page import="ca.openosp.openo.appointment.web.NextAppointmentSearchHelper" %>
+<%@ page import="ca.openosp.openo.appointment.web.NextAppointmentSearchBean" %>
+<%@ page import="ca.openosp.openo.appointment.web.NextAppointmentSearchResult" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="oscar.util.LabelValueBean" %>
 <%

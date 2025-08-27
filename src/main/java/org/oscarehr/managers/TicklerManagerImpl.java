@@ -44,7 +44,7 @@ import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.PMmodule.model.ProgramAccess;
 import org.oscarehr.PMmodule.model.ProgramProvider;
 import org.oscarehr.PMmodule.service.ProgramManager;
-import org.oscarehr.casemgmt.service.CaseManagementManager;
+import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import org.oscarehr.common.dao.CustomFilterDao;
 import org.oscarehr.common.dao.TicklerCategoryDao;
 import org.oscarehr.common.dao.TicklerCommentDao;

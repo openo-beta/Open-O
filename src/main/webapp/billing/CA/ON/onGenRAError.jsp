@@ -22,7 +22,7 @@
 <%@ page import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, java.net.*,oscar.MyDateFormat"
          errorPage="/errorpage.jsp" %>
 <%@ page import="oscar.oscarBilling.ca.on.pageUtil.*" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.pageUtil.BillingRAPrep" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingRAPrep" %>
 
 <html>
 <head>

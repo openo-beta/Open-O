@@ -49,8 +49,8 @@
 <%@ page import="java.util.*, java.sql.*, oscar.*, oscar.util.*, java.net.*" errorPage="/errorpage.jsp" %>
 <%@ page import="oscar.oscarBilling.ca.on.pageUtil.*" %>
 <%@ page import="oscar.oscarBilling.ca.on.data.*" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.data.*" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.pageUtil.BillingReviewPrep" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.*" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingReviewPrep" %>
 <jsp:useBean id="SxmlMisc" class="oscar.SxmlMisc" scope="session"/>
 
 <head>

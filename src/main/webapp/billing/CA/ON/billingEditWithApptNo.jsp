@@ -31,9 +31,9 @@
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
 <%@page import="org.oscarehr.common.dao.ProviderPreferenceDao" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.data.BillingItemData" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.data.JdbcBillingReviewImpl" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.data.BillingClaimHeader1Data" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.BillingItemData" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.JdbcBillingReviewImpl" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data" %>
 
 <%
     String prov = request.getParameter("billRegion");

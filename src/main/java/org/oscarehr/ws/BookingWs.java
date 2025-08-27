@@ -35,11 +35,11 @@ import javax.jws.WebService;
 
 import org.apache.cxf.annotations.GZIP;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.appointment.search.AppointmentType;
-import org.oscarehr.appointment.search.SearchConfig;
-import org.oscarehr.appointment.search.TimeSlot;
-import org.oscarehr.appointment.search.BookingError;
-import org.oscarehr.appointment.search.BookingType;
+import ca.openosp.openo.appointment.search.AppointmentType;
+import ca.openosp.openo.appointment.search.SearchConfig;
+import ca.openosp.openo.appointment.search.TimeSlot;
+import ca.openosp.openo.appointment.search.BookingError;
+import ca.openosp.openo.appointment.search.BookingType;
 import org.oscarehr.common.model.Appointment;
 import org.oscarehr.common.model.Appointment.BookingSource;
 import org.oscarehr.common.model.Demographic;
@@ -47,9 +47,9 @@ import org.oscarehr.managers.AppointmentSearchManager;
 import org.oscarehr.managers.DemographicManager;
 import org.oscarehr.managers.ScheduleManager;
 
-import org.oscarehr.appointment.search.AppointmentOptionTransfer;
-import org.oscarehr.appointment.search.AppointmentResults;
-import org.oscarehr.appointment.search.AppointmentConfirmationTransfer;
+import ca.openosp.openo.appointment.search.AppointmentOptionTransfer;
+import ca.openosp.openo.appointment.search.AppointmentResults;
+import ca.openosp.openo.appointment.search.AppointmentConfirmationTransfer;
 import org.oscarehr.util.MiscUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;

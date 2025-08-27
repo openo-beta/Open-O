@@ -36,8 +36,10 @@
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@ page import="oscar.OscarProperties" %>
 <%@ page import="org.apache.logging.log4j.Logger" %>
-<%@page import="org.oscarehr.casemgmt.web.CaseManagementViewAction" %>
-<%@page import="org.oscarehr.casemgmt.web.NoteDisplay" %>
+<%@page import="ca.openosp.openo.casemgmt.web.CaseManagementViewAction" %>
+<%@page import="ca.openosp.openo.casemgmt.web.NoteDisplay" %>
+<%@ page import="ca.openosp.openo.casemgmt.web.formbeans.CaseManagementViewFormBean" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementCPP" %>
 <%
     Logger logger = org.oscarehr.util.MiscUtils.getLogger();
 

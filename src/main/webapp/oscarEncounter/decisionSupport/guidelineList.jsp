@@ -53,7 +53,7 @@
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<%@ page import="org.oscarehr.decisionSupport.model.DSGuideline" %>
+<%@ page import="ca.openosp.openo.decisionSupport.model.DSGuideline" %>
 
 <%
     pageContext.setAttribute("demographic_no", request.getParameter("demographic_no"));

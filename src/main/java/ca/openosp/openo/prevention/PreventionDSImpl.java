@@ -44,7 +44,7 @@ import org.drools.WorkingMemory;
 import org.drools.io.RuleBaseLoader;
 import org.oscarehr.common.dao.ResourceStorageDao;
 import org.oscarehr.common.model.ResourceStorage;
-import org.oscarehr.decisionSupport.prevention.DSPreventionDrools;
+import ca.openosp.openo.decisionSupport.prevention.DSPreventionDrools;
 import org.oscarehr.util.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

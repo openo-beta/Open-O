@@ -29,9 +29,9 @@
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.managers.CodingSystemManager" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
-<%@page import="org.oscarehr.casemgmt.model.Issue" %>
-<%@page import="org.oscarehr.casemgmt.model.CaseManagementNote" %>
+<%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
+<%@page import="ca.openosp.openo.casemgmt.model.Issue" %>
+<%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
 <%@page import="java.util.List" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>

@@ -45,11 +45,11 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 import oscar.OscarProperties;
-import ca.openosp.openo.billing.ca.bc.MSP.MSPReconcile;
-import ca.openosp.openo.billing.ca.bc.MSP.MSPReconcile.Bill;
-import ca.openosp.openo.billing.ca.on.data.BillingClaimHeader1Data;
-import ca.openosp.openo.billing.ca.on.data.BillingItemData;
-import ca.openosp.openo.billing.ca.on.data.JdbcBillingReviewImpl;
+import ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile;
+import ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile.Bill;
+import ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data;
+import ca.openosp.openo.billings.ca.on.data.BillingItemData;
+import ca.openosp.openo.billings.ca.on.data.JdbcBillingReviewImpl;
 
 public class EctDisplayBilling2Action extends EctDisplayAction {
 

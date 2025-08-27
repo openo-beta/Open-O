@@ -49,7 +49,7 @@
 <%@page import="org.oscarehr.common.dao.OscarLogDao" %>
 <%@page import="org.oscarehr.caisi_integrator.ws.DemographicTransfer" %>
 <%@page import="org.oscarehr.caisi_integrator.ws.MatchingDemographicTransferScore" %>
-<%@page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
+<%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

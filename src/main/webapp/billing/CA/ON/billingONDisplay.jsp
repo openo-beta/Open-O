@@ -70,8 +70,8 @@
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.ClinicNbr" %>
 <%@page import="org.oscarehr.common.dao.ClinicNbrDao" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.pageUtil.BillingCorrectionPrep" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.data.*" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingCorrectionPrep" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.*" %>
 
 <%
     GregorianCalendar now = new GregorianCalendar();

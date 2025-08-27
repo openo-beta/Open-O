@@ -23,8 +23,8 @@
 
 <%@page import="java.sql.*, java.util.*,java.net.*, oscar.MyDateFormat" errorPage="../../errorpage.jsp" %>
 
-<%@page import="org.oscarehr.billing.CA.model.BillingInr" %>
-<%@page import="org.oscarehr.billing.CA.dao.BillingInrDao" %>
+<%@page import="ca.openosp.openo.billing.CA.model.BillingInr" %>
+<%@page import="ca.openosp.openo.billing.CA.dao.BillingInrDao" %>
 <%@page import="org.oscarehr.common.model.BillingService" %>
 <%@page import="org.oscarehr.common.dao.BillingServiceDao" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>

@@ -29,8 +29,8 @@
 <%@page import="java.util.List" %>
 <%@page import="org.oscarehr.PMmodule.service.ProgramManager" %>
 <%@page import="org.oscarehr.PMmodule.service.AdmissionManager" %>
-<%@page import="org.oscarehr.casemgmt.web.formbeans.CaseManagementEntryFormBean" %>
-<%@page import="org.oscarehr.casemgmt.web.GroupNoteAction" %>
+<%@page import="ca.openosp.openo.casemgmt.web.formbeans.CaseManagementEntryFormBean" %>
+<%@page import="ca.openosp.openo.casemgmt.web.GroupNoteAction" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%

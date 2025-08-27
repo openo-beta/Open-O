@@ -28,8 +28,8 @@
 <%@page import="org.oscarehr.common.dao.BillingServiceDao" %>
 <%@page import="org.oscarehr.common.model.ClinicLocation" %>
 <%@page import="org.oscarehr.common.dao.ClinicLocationDao" %>
-<%@page import="org.oscarehr.billing.CA.model.BillingDetail" %>
-<%@page import="org.oscarehr.billing.CA.dao.BillingDetailDao" %>
+<%@page import="ca.openosp.openo.billing.CA.model.BillingDetail" %>
+<%@page import="ca.openosp.openo.billing.CA.dao.BillingDetailDao" %>
 <%@page import="oscar.util.ConversionUtils" %>
 <%@page import="org.oscarehr.common.model.Billing" %>
 <%@page import="org.oscarehr.common.dao.BillingDao" %>
@@ -69,9 +69,9 @@
 <%@page import="org.oscarehr.common.model.ProfessionalSpecialist" %>
 <%@page import="org.oscarehr.common.dao.ProfessionalSpecialistDao" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.data.BillingItemData" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.data.JdbcBillingReviewImpl" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.data.BillingClaimHeader1Data" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.BillingItemData" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.JdbcBillingReviewImpl" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data" %>
 <%
     ProfessionalSpecialistDao professionalSpecialistDao = (ProfessionalSpecialistDao) SpringUtils.getBean(ProfessionalSpecialistDao.class);
 %>

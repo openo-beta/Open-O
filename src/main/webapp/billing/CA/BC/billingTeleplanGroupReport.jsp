@@ -47,9 +47,9 @@
 <%@ page import="java.util.*, java.sql.*, oscar.util.*,oscar.*" errorPage="/errorpage.jsp" %>
 <%@ include file="../../../admin/dbconnection.jsp" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.billing.CA.model.BillActivity" %>
+<%@page import="ca.openosp.openo.billing.CA.model.BillActivity" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
-<%@page import="org.oscarehr.billing.CA.dao.BillActivityDao" %>
+<%@page import="ca.openosp.openo.billing.CA.dao.BillActivityDao" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@page import="oscar.util.ConversionUtils" %>
 

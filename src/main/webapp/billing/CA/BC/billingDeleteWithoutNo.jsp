@@ -50,7 +50,7 @@
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.BillingDao" %>
 <%@page import="org.oscarehr.common.model.Billing" %>
-<%@page import="ca.openosp.openo.billing.ca.bc.data.BillingmasterDAO" %>
+<%@page import="ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO" %>
 <%@page import="ca.openosp.openo.entities.Billingmaster" %>
 <%@ page import="ca.openosp.openo.appt.ApptStatusData" %>
 

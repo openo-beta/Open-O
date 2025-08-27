@@ -29,8 +29,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.billing.CA.BC.dao.Hl7PidDao;
-import org.oscarehr.billing.CA.BC.model.Hl7Pid;
+import ca.openosp.openo.billing.CA.BC.dao.Hl7PidDao;
+import ca.openosp.openo.billing.CA.BC.model.Hl7Pid;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 

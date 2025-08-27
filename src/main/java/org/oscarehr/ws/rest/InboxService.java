@@ -34,8 +34,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import org.oscarehr.common.dao.ProviderLabRoutingDao;
-import org.oscarehr.inbox.InboxManagerQuery;
-import org.oscarehr.inbox.InboxManagerResponse;
+import ca.openosp.openo.inbox.InboxManagerQuery;
+import ca.openosp.openo.inbox.InboxManagerResponse;
 import org.oscarehr.managers.InboxManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;

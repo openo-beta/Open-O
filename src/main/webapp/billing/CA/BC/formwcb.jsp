@@ -45,10 +45,10 @@
 %>
 <%@ page
         import="oscar.form.*, java.util.*,oscar.oscarBilling.ca.bc.pageUtil.*,oscar.oscarDB.*,oscar.oscarBilling.ca.bc.MSP.*, oscar.oscarBilling.ca.bc.Teleplan.*" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.pageUtil.WCBForm" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.data.BillingFormData" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.Teleplan.WCBCodes" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.MSP.WcbHelper" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.WCBForm" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingFormData" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.Teleplan.WCBCodes" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.MSP.WcbHelper" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 

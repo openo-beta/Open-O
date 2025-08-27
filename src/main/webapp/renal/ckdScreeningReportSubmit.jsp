@@ -28,8 +28,8 @@
 <%@page import="java.text.DecimalFormat" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.renal.ReportHelper" %>
-<%@page import="org.oscarehr.renal.ReportDataContainer" %>
+<%@page import="ca.openosp.openo.renal.ReportHelper" %>
+<%@page import="ca.openosp.openo.renal.ReportDataContainer" %>
 <%@page import="org.oscarehr.common.model.ORNCkdScreeningReportLog" %>
 <%@page import="org.oscarehr.common.dao.ORNCkdScreeningReportLogDao" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>

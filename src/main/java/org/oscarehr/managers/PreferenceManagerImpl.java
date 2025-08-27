@@ -30,7 +30,7 @@ package org.oscarehr.managers;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import org.oscarehr.casemgmt.model.CaseManagementNoteExt;
+import ca.openosp.openo.casemgmt.model.CaseManagementNoteExt;
 import org.oscarehr.common.model.Property;
 import org.oscarehr.util.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;

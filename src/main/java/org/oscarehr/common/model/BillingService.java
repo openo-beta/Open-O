@@ -42,7 +42,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
-import org.oscarehr.billing.CA.ON.model.BillingPercLimit;
+import ca.openosp.openo.billing.CA.ON.model.BillingPercLimit;
 
 @Entity
 @Table(name = "billingservice")

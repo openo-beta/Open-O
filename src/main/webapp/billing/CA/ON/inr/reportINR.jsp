@@ -27,8 +27,8 @@
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@ page import="org.oscarehr.billing.CA.model.BillingInr" %>
-<%@ page import="org.oscarehr.billing.CA.dao.BillingInrDao" %>
+<%@ page import="ca.openosp.openo.billing.CA.model.BillingInr" %>
+<%@ page import="ca.openosp.openo.billing.CA.dao.BillingInrDao" %>
 <%@ page import="oscar.util.ConversionUtils" %>
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);

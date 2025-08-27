@@ -31,7 +31,7 @@ import javax.xml.bind.DatatypeConverter;
 import org.hl7.fhir.dstu3.model.Attachment;
 import org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus;
 import org.oscarehr.util.MiscUtils;
-import org.oscarehr.casemgmt.model.CaseManagementNote;
+import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import org.oscarehr.common.model.AbstractModel;
 
 
@@ -71,7 +71,7 @@ public class ClinicalImpression extends AbstractOscarFhirResource<org.hl7.fhir.d
         mapAttributes(clinicalImpression);
     }
 
-    public ClinicalImpression(org.oscarehr.casemgmt.model.CaseManagementNote caseManagementNote) {
+    public ClinicalImpression(CaseManagementNote caseManagementNote) {
         setCaseManagementNote(caseManagementNote);
         setFhirResource(new org.hl7.fhir.dstu3.model.ClinicalImpression());
         // mapAttributes( getFhirResource(), getFilter( this.getClass() ) );

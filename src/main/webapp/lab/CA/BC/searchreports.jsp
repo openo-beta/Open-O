@@ -42,7 +42,7 @@
 <%@page import="java.util.List" %>
 <%@page import="oscar.util.ConversionUtils" %>
 <%@page import="java.util.Date" %>
-<%@page import="org.oscarehr.billing.CA.BC.dao.Hl7LinkDao" %>
+<%@page import="ca.openosp.openo.billing.CA.BC.dao.Hl7LinkDao" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%

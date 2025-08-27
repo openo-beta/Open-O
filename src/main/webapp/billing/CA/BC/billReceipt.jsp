@@ -54,10 +54,10 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.oscarehr.common.model.Property" %>
 <%@ page import="ca.openosp.openo.entities.BillHistory" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.pageUtil.BillingBillingManager" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.pageUtil.BillingViewBean" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.data.BillingHistoryDAO" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.data.BillingFormData" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.BillingBillingManager" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.BillingViewBean" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingHistoryDAO" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingFormData" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.clinic.ClinicData" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

@@ -39,7 +39,7 @@ import org.oscarehr.common.model.UserProperty;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
-import ca.openosp.openo.billing.ca.bc.MSP.MSPReconcile;
+import ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile;
 import oscar.util.LabelValueBean;
 
 import javax.servlet.http.HttpServletRequest;

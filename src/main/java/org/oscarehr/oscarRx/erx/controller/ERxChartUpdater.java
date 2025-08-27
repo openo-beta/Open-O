@@ -30,9 +30,9 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.oscarehr.PMmodule.service.ProgramManager;
-import org.oscarehr.casemgmt.model.CaseManagementNote;
-import org.oscarehr.casemgmt.model.CaseManagementNoteLink;
-import org.oscarehr.casemgmt.service.CaseManagementManager;
+import ca.openosp.openo.casemgmt.model.CaseManagementNote;
+import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
+import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import org.oscarehr.common.dao.DrugDao;
 import org.oscarehr.common.model.Drug;
 import org.oscarehr.util.SpringUtils;

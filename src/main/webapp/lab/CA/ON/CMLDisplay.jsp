@@ -44,7 +44,7 @@
 <%@page import="org.oscarehr.common.dao.PatientLabRoutingDao" %>
 <%@page errorPage="../provider/errorpage.jsp" %>
 <%@ page
-        import="java.util.*, oscar.oscarMDS.data.*,oscar.oscarLab.ca.on.CML.*,ca.openosp.openo.lab.LabRequestReportLink,oscar.oscarDB.*,java.sql.*,oscar.log.*,org.oscarehr.util.SpringUtils,org.oscarehr.casemgmt.service.CaseManagementManager,org.oscarehr.casemgmt.model.*" %>
+        import="java.util.*, oscar.oscarMDS.data.*,oscar.oscarLab.ca.on.CML.*,ca.openosp.openo.lab.LabRequestReportLink,oscar.oscarDB.*,java.sql.*,oscar.log.*,org.oscarehr.util.SpringUtils,ca.openosp.openo.casemgmt.service.CaseManagementManager,org.oscarehr.casemgmt.model.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%
@@ -60,7 +60,7 @@
     reqIDL = LabRequestReportLink.getRequestTableIdByReport("labPatientPhysicianInfo", Long.valueOf(segmentID));
     String reqTableID = reqIDL == null ? "" : reqIDL.toString();
 
-    String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_LABTEST2;
+    String annotation_display = CaseManagementNoteLink.DISP_LABTEST2;
     CaseManagementManager caseManagementManager = (CaseManagementManager) SpringUtils.getBean(CaseManagementManager.class);
 
 %>
@@ -98,6 +98,8 @@
 <%@ page import="ca.openosp.openo.lab.ca.on.CML.CMLLabTest" %>
 <%@ page import="ca.openosp.openo.mds.data.ReportStatus" %>
 <%@ page import="ca.openosp.openo.mds.data.MDSSegmentData" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

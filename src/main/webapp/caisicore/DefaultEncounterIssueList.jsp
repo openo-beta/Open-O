@@ -41,8 +41,8 @@
 <%@page import="java.util.List,ca.openosp.openo.model.DefaultIssue" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="ca.openosp.openo.model.DefaultIssue" %>
-<%@page import="org.oscarehr.casemgmt.dao.IssueDAO" %>
-<%@page import="org.oscarehr.casemgmt.model.Issue" %>
+<%@page import="ca.openosp.openo.casemgmt.dao.IssueDAO" %>
+<%@page import="ca.openosp.openo.casemgmt.model.Issue" %>
 <%@page import="java.lang.NumberFormatException" %>
 <%@page import="java.lang.Exception" %>
 <%@page import="java.text.SimpleDateFormat" %>

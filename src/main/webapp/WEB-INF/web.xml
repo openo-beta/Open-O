@@ -299,7 +299,7 @@
 	</servlet>
 	<servlet>
 		<servlet-name>UploadTeleplanServlet</servlet-name>
-		<servlet-class>ca.openosp.openo.billing.ca.bc.MSP.DocumentTeleplanReportUploadServlet</servlet-class>
+		<servlet-class>ca.openosp.openo.billings.ca.bc.MSP.DocumentTeleplanReportUploadServlet</servlet-class>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet>

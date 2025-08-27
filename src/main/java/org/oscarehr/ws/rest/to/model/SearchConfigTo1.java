@@ -29,8 +29,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.oscarehr.appointment.search.Provider;
-import org.oscarehr.appointment.search.SearchConfig;
+import ca.openosp.openo.appointment.search.AppointmentType;
+import ca.openosp.openo.appointment.search.Provider;
+import ca.openosp.openo.appointment.search.SearchConfig;
 
 
 public class SearchConfigTo1 {
@@ -84,7 +85,7 @@ public class SearchConfigTo1 {
         }
 
         if (clinic.getAppointmentTypes() != null) {
-            for (org.oscarehr.appointment.search.AppointmentType appointmentType : clinic.getAppointmentTypes()) {
+            for (AppointmentType appointmentType : clinic.getAppointmentTypes()) {
                 clinicTransfer.bookingAppointmentTypes.add(AppointmentTypeTransfer.getFromTransfer(appointmentType));
             }
         }

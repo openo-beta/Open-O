@@ -27,8 +27,7 @@
  */
 package org.oscarehr.common.dao;
 
-import org.oscarehr.casemgmt.model.ProviderExt;
-import org.springframework.stereotype.Repository;
+import ca.openosp.openo.casemgmt.model.ProviderExt;
 
 public interface ProviderExtDao extends AbstractDao<ProviderExt> {
 

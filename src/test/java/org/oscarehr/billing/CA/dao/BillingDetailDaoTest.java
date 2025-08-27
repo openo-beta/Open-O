@@ -25,9 +25,10 @@ package org.oscarehr.billing.CA.dao;
 
 import static org.junit.Assert.assertNotNull;
 
+import ca.openosp.openo.billing.CA.dao.BillingDetailDao;
 import org.junit.Before;
 import org.junit.Test;
-import org.oscarehr.billing.CA.model.BillingDetail;
+import ca.openosp.openo.billing.CA.model.BillingDetail;
 import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;

@@ -31,8 +31,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.oscarehr.PMmodule.service.ClientManager;
 import org.oscarehr.PMmodule.service.ProgramManager;
 import org.oscarehr.PMmodule.web.formbean.ClientSearchFormBean;
-import org.oscarehr.casemgmt.dao.CaseManagementNoteDAO;
-import org.oscarehr.casemgmt.model.CaseManagementNote;
+import ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO;
+import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import org.oscarehr.util.SpringUtils;
 
 import ca.openosp.openo.log.LogAction;

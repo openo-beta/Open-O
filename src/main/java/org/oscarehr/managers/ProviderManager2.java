@@ -29,7 +29,7 @@ import java.util.*;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.casemgmt.model.ProviderExt;
+import ca.openosp.openo.casemgmt.model.ProviderExt;
 import org.oscarehr.common.dao.PropertyDao;
 import org.oscarehr.common.dao.ProviderExtDao;
 import org.oscarehr.common.dao.ProviderPreferenceDao;

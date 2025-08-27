@@ -85,8 +85,8 @@
 <%@ page import="org.oscarehr.common.dao.DiagnosticCodeDao" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@page import="org.oscarehr.billing.CA.model.BillingDetail" %>
-<%@page import="org.oscarehr.billing.CA.dao.BillingDetailDao" %>
+<%@page import="ca.openosp.openo.billing.CA.model.BillingDetail" %>
+<%@page import="ca.openosp.openo.billing.CA.dao.BillingDetailDao" %>
 <%@ page import="org.oscarehr.common.model.Demographic" %>
 <%@ page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="org.oscarehr.common.model.Billing" %>

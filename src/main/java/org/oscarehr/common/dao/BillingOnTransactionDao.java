@@ -31,7 +31,7 @@ import org.oscarehr.common.model.BillingONCHeader1;
 import org.oscarehr.common.model.BillingONItem;
 import org.oscarehr.common.model.BillingONPayment;
 import org.oscarehr.common.model.BillingOnTransaction;
-import ca.openosp.openo.billing.ca.on.data.BillingClaimHeader1Data;
+import ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data;
 
 public interface BillingOnTransactionDao extends AbstractDao<BillingOnTransaction> {
     BillingOnTransaction getTransTemplate(BillingONCHeader1 cheader1, BillingONItem billItem, BillingONPayment billPayment, String curProviderNo, int itempaymentId);

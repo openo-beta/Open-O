@@ -38,6 +38,7 @@
 <%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.rx.util.LimitedUseLookup" %>
 <%@ page import="ca.openosp.openo.rx.pageUtil.RxWriteScriptForm" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 
 <%long start = System.currentTimeMillis();%>
 
@@ -91,7 +92,7 @@
             boolean isCustom = true;
             String atcCode = null;
             String regionalIdentifier = "";
-            String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_PRESCRIP;
+            String annotation_display = CaseManagementNoteLink.DISP_PRESCRIP;
             Long now = new Date().getTime();
             String annotation_attrib = "";// = "anno"+now;
 

@@ -28,7 +28,7 @@
 <%@page import="java.util.*,java.net.*,java.sql.*,oscar.*,oscar.util.*,oscar.appt.*" %>
 <%@page import="oscar.oscarBilling.ca.on.data.*" %>
 <%@page import="oscar.oscarBilling.ca.on.pageUtil.*" %>
-<%@page import="ca.openosp.openo.billing.ca.bc.decisionSupport.BillingGuidelines" %>
+<%@page import="ca.openosp.openo.billings.ca.bc.decisionSupport.BillingGuidelines" %>
 <%@page import="org.oscarehr.common.dao.CSSStylesDAO, org.oscarehr.common.model.ProviderPreference, org.oscarehr.common.model.CssStyle" %>
 <%@page import="org.oscarehr.common.dao.BillingServiceDao, org.oscarehr.common.model.BillingService" %>
 <%@page import="org.oscarehr.common.dao.ClinicNbrDao, org.oscarehr.common.model.ClinicNbr" %>
@@ -43,11 +43,11 @@
 <%@page import="org.oscarehr.common.dao.UserPropertyDAO, org.oscarehr.common.model.UserProperty" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao, org.oscarehr.common.model.ProviderPreference" %>
-<%@page import="org.oscarehr.decisionSupport.model.DSConsequence" %>
+<%@page import="ca.openosp.openo.decisionSupport.model.DSConsequence" %>
 <%@page import="org.oscarehr.web.admin.ProviderPreferencesUIBean" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 
-<%@page import="org.oscarehr.managers.DemographicManager,org.oscarehr.billing.CA.filters.CodeFilterManager" %>
+<%@page import="org.oscarehr.managers.DemographicManager,ca.openosp.openo.billing.CA.filters.CodeFilterManager" %>
 
 <%
 	ProfessionalSpecialistDao professionalSpecialistDao = SpringUtils.getBean(ProfessionalSpecialistDao.class);
@@ -562,8 +562,8 @@
 <%@page import="org.oscarehr.common.model.ProviderPreference"%>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.appt.JdbcApptImpl" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.data.*" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.pageUtil.BillingSiteIdPrep" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.*" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingSiteIdPrep" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <html>
 <head>

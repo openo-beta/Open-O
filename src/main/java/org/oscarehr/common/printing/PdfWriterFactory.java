@@ -28,8 +28,8 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.oscarehr.casemgmt.service.PageNumberStamper;
-import org.oscarehr.casemgmt.service.PromoTextStamper;
+import ca.openosp.openo.casemgmt.service.PageNumberStamper;
+import ca.openosp.openo.casemgmt.service.PromoTextStamper;
 import org.oscarehr.util.MiscUtils;
 
 import oscar.OscarProperties;

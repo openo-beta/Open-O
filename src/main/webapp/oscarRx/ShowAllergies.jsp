@@ -33,6 +33,7 @@
 <%@ page import="ca.openosp.openo.service.security.SecurityManager" %>
 <%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -78,7 +79,7 @@
     %>
 </c:if>
 <%
-    String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_ALLERGY;
+    String annotation_display = CaseManagementNoteLink.DISP_ALLERGY;
 
     SecurityManager securityManager = new SecurityManager();
 %>

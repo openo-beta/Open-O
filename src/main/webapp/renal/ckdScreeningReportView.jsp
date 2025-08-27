@@ -46,13 +46,13 @@
 <%@page import="java.util.*" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
-<%@page import="org.oscarehr.renal.CkdScreener" %>
-<%@page import="org.oscarehr.renal.CkdScreenerReportHandler" %>
-<%@page import="org.oscarehr.renal.CKDReportContainer" %>
+<%@page import="ca.openosp.openo.renal.CkdScreener" %>
+<%@page import="ca.openosp.openo.renal.CkdScreenerReportHandler" %>
+<%@page import="ca.openosp.openo.renal.CKDReportContainer" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@page import="javax.xml.bind.JAXBContext" %>
 <%@page import="javax.xml.bind.Unmarshaller" %>
-<%@page import="org.oscarehr.renal.CkdScreeningReportContainer" %>
+<%@page import="ca.openosp.openo.renal.CkdScreeningReportContainer" %>
 <%@page import="org.oscarehr.common.dao.ORNCkdScreeningReportLogDao" %>
 <%@page import="org.oscarehr.common.model.ORNCkdScreeningReportLog" %>
 

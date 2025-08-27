@@ -24,7 +24,7 @@ package org.oscarehr.ws.rest.to.model;
  * Ontario, Canada
  */
 
-import org.oscarehr.appointment.search.AppointmentType;
+import ca.openosp.openo.appointment.search.AppointmentType;
 
 public class AppointmentTypeTransfer {
 

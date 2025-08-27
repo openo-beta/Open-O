@@ -26,8 +26,8 @@
 package ca.openosp.openo.rx.pageUtil;
 
 import org.oscarehr.PMmodule.service.ProgramManager;
-import org.oscarehr.casemgmt.model.CaseManagementNote;
-import org.oscarehr.casemgmt.service.CaseManagementManager;
+import ca.openosp.openo.casemgmt.model.CaseManagementNote;
+import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import org.oscarehr.common.dao.CaseManagementTmpSaveDao;
 import org.oscarehr.common.model.CaseManagementTmpSave;
 import org.oscarehr.managers.SecurityInfoManager;

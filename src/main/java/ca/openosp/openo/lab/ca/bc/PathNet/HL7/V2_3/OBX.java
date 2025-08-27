@@ -30,8 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.billing.CA.BC.dao.Hl7ObxDao;
-import org.oscarehr.billing.CA.BC.model.Hl7Obx;
+import ca.openosp.openo.billing.CA.BC.dao.Hl7ObxDao;
+import ca.openosp.openo.billing.CA.BC.model.Hl7Obx;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 

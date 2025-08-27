@@ -26,7 +26,7 @@
 
 <%@page import="org.oscarehr.common.model.PartialDate" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.casemgmt.web.PrescriptDrug" %>
+<%@page import="ca.openosp.openo.casemgmt.web.PrescriptDrug" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -35,11 +35,11 @@
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ page
         import="oscar.oscarRx.data.*,ca.openosp.openo.demographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
-<%@page import="org.oscarehr.casemgmt.service.CaseManagementManager,
+<%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager,
                 org.springframework.web.context.WebApplicationContext,
                 org.springframework.web.context.support.WebApplicationContextUtils,
-                org.oscarehr.casemgmt.model.CaseManagementNoteLink,
-                org.oscarehr.casemgmt.model.CaseManagementNote" %>
+                ca.openosp.openo.casemgmt.model.CaseManagementNoteLink,
+                ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
 <%@page import="java.text.SimpleDateFormat" %>
 <%@page import="java.util.Calendar" %>
 <%@page import="java.util.Enumeration" %>
@@ -185,7 +185,7 @@
     CodingSystemManager codingSystemManager = SpringUtils.getBean(CodingSystemManager.class);
 
     boolean integratorEnabled = loggedInInfo.getCurrentFacility().isIntegratorEnabled();
-    String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_PRESCRIP;
+    String annotation_display = CaseManagementNoteLink.DISP_PRESCRIP;
     String heading = request.getParameter("heading");
 
     if (heading != null) {

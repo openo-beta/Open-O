@@ -25,9 +25,10 @@ package org.oscarehr.billing.CA.BC.dao;
 
 import static org.junit.Assert.assertNotNull;
 
+import ca.openosp.openo.billing.CA.BC.dao.Hl7MessageDao;
 import org.junit.Before;
 import org.junit.Test;
-import org.oscarehr.billing.CA.BC.model.Hl7Message;
+import ca.openosp.openo.billing.CA.BC.model.Hl7Message;
 import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;

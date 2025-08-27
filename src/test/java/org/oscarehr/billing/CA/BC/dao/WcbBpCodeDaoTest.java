@@ -30,8 +30,8 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.oscarehr.billing.CA.BC.model.WcbBpCode;
-import org.oscarehr.billing.CA.dao.WcbBpCodeDao;
+import ca.openosp.openo.billing.CA.BC.model.WcbBpCode;
+import ca.openosp.openo.billing.CA.dao.WcbBpCodeDao;
 import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;

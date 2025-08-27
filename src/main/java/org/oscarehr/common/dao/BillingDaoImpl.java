@@ -36,7 +36,7 @@ import org.oscarehr.common.model.Billing;
 import org.oscarehr.util.DateRange;
 import org.springframework.stereotype.Repository;
 import ca.openosp.openo.entities.Billingmaster;
-import ca.openosp.openo.billing.ca.bc.MSP.MSPReconcile;
+import ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile;
 import oscar.util.ConversionUtils;
 
 @Repository

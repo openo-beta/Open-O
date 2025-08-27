@@ -27,7 +27,7 @@
 package ca.openosp.openo.provider.data;
 
 
-import org.oscarehr.casemgmt.model.ProviderExt;
+import ca.openosp.openo.casemgmt.model.ProviderExt;
 import org.oscarehr.common.dao.ProviderExtDao;
 
 import org.oscarehr.util.SpringUtils;

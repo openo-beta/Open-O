@@ -34,8 +34,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.dao.DefaultIssueDao;
 import ca.openosp.openo.model.DefaultIssue;
-import org.oscarehr.casemgmt.dao.IssueDAO;
-import org.oscarehr.casemgmt.model.Issue;
+import ca.openosp.openo.casemgmt.dao.IssueDAO;
+import ca.openosp.openo.casemgmt.model.Issue;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

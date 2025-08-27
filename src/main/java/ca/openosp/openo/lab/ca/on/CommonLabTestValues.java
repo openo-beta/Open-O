@@ -32,9 +32,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.billing.CA.BC.model.Hl7Obx;
-import org.oscarehr.billing.CA.BC.model.Hl7Orc;
-import org.oscarehr.billing.CA.BC.model.Hl7Pid;
+import ca.openosp.openo.billing.CA.BC.model.Hl7Obx;
+import ca.openosp.openo.billing.CA.BC.model.Hl7Orc;
+import ca.openosp.openo.billing.CA.BC.model.Hl7Pid;
 import org.oscarehr.common.dao.LabTestResultsDao;
 import org.oscarehr.common.dao.MdsZMNDao;
 import org.oscarehr.common.dao.MeasurementDao;

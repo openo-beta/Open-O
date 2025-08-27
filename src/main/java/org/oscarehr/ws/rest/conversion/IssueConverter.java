@@ -24,7 +24,7 @@
  */
 package org.oscarehr.ws.rest.conversion;
 
-import org.oscarehr.casemgmt.model.Issue;
+import ca.openosp.openo.casemgmt.model.Issue;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.IssueTo1;
 import org.springframework.beans.BeanUtils;

@@ -90,8 +90,8 @@
 <%@ page import="org.oscarehr.common.dao.*,org.oscarehr.common.model.*" %>
 <%@ page import="org.oscarehr.common.OtherIdManager" %>
 <%@ page import="org.oscarehr.common.web.Contact2Action" %>
-<%@ page import="org.oscarehr.casemgmt.model.CaseManagementNoteLink" %>
-<%@ page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
+<%@ page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.ProfessionalSpecialist" %>
 <%@page import="org.oscarehr.common.dao.ProfessionalSpecialistDao" %>

@@ -44,7 +44,7 @@
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="oscar.util.UtilMisc" %>
-<%@ page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
+<%@ page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="oscar.util.StringUtils" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>

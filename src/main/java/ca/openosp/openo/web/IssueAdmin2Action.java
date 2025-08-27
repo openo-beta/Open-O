@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.service.IssueAdminManager;
-import org.oscarehr.casemgmt.model.Issue;
+import ca.openosp.openo.casemgmt.model.Issue;
 import org.oscarehr.common.dao.SecRoleDao;
 import org.oscarehr.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;

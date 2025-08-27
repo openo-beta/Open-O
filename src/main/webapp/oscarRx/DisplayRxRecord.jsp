@@ -29,8 +29,8 @@
 <%@page import="org.oscarehr.common.dao.PartialDateDao" %>
 <%@page import="org.oscarehr.managers.CodingSystemManager" %>
 <%@page import="org.oscarehr.managers.PharmacyManager" %>
-<%@page import="org.oscarehr.casemgmt.model.CaseManagementNoteLink" %>
-<%@page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
+<%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
+<%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
 <%@page import="org.oscarehr.common.model.PharmacyInfo" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page import="java.text.SimpleDateFormat" %>
@@ -497,7 +497,7 @@
             <br/>
 
             <input type="button" value="Annotation" title="Annotation" class="ControlPushButton"
-                   onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_PRESCRIP%>&table_id=<%=drug.getId()%>&demo=<%=drug.getDemographicId()%>','anwin','width=400,height=500');">
+                   onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=ca.openosp.openo.casemgmt.model.CaseManagementNoteLink.DISP_PRESCRIP%>&table_id=<%=drug.getId()%>&demo=<%=drug.getDemographicId()%>','anwin','width=400,height=500');">
 
 
             <%--

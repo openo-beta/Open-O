@@ -47,7 +47,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.util.DateUtils;
-import org.oscarehr.appointment.search.SearchConfig;
+import ca.openosp.openo.appointment.search.SearchConfig;
 import org.oscarehr.common.dao.AppointmentSearchDao;
 import org.oscarehr.common.dao.BillingONCHeader1Dao;
 import org.oscarehr.common.dao.OscarAppointmentDao;

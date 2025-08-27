@@ -23,6 +23,7 @@
  */
 package org.oscarehr.billing.CA.BC.dao;
 
+import ca.openosp.openo.billing.CA.BC.dao.BillingNoteDao;
 import org.junit.Before;
 import org.junit.Test;
 import org.oscarehr.common.dao.DaoTestFixtures;

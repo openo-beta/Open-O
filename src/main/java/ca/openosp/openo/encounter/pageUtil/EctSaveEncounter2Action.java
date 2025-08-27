@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.appt.ApptStatusData;
-import ca.openosp.openo.billing.ca.bc.pageUtil.BillingSessionBean;
+import ca.openosp.openo.billings.ca.bc.pageUtil.BillingSessionBean;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.AppointmentArchiveDao;
 import org.oscarehr.common.dao.EChartDao;

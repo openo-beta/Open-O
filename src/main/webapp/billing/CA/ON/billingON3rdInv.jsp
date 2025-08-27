@@ -37,9 +37,9 @@
 <%@page import="oscar.OscarProperties" %>
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.oscarehr.common.model.Site" %>
-<%@page import="ca.openosp.openo.billing.ca.on.pageUtil.Billing3rdPartPrep" %>
-<%@page import="ca.openosp.openo.billing.ca.on.administration.GstControl2Action" %>
-<%@ page import="org.oscarehr.billing.CA.ON.util.DisplayInvoiceLogo2Action" %>
+<%@page import="ca.openosp.openo.billings.ca.on.pageUtil.Billing3rdPartPrep" %>
+<%@page import="ca.openosp.openo.billings.ca.on.administration.GstControl2Action" %>
+<%@ page import="ca.openosp.openo.billing.CA.ON.util.DisplayInvoiceLogo2Action" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

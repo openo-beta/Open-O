@@ -39,7 +39,7 @@
     String user_no = (String) session.getAttribute("user");
     String demographicNo = (String) session.getAttribute("casemgmt_DemoNo");
 
-    String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_DOCUMENT;
+    String annotation_display = CaseManagementNoteLink.DISP_DOCUMENT;
     String appointment = request.getParameter("appointmentNo");
     int appointmentNo = 0;
     if (appointment != null && !appointment.isEmpty()) {
@@ -62,6 +62,7 @@
 <%@page import="org.oscarehr.util.SessionConstants" %>
 <%@ page import="org.oscarehr.documentManager.EDocUtil" %>
 <%@ page import="org.oscarehr.documentManager.EDoc" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 
 

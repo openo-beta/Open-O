@@ -45,9 +45,9 @@ import javax.persistence.Query;
 import org.apache.commons.lang.StringUtils;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.PMmodule.utility.DateUtils;
-import org.oscarehr.billing.CA.ON.model.BillingPercLimit;
-import org.oscarehr.billing.CA.dao.GstControlDao;
-import org.oscarehr.billing.CA.model.GstControl;
+import ca.openosp.openo.billing.CA.ON.model.BillingPercLimit;
+import ca.openosp.openo.billing.CA.dao.GstControlDao;
+import ca.openosp.openo.billing.CA.model.GstControl;
 import org.oscarehr.common.model.BillingONCHeader1;
 import org.oscarehr.common.model.BillingONItem;
 import org.oscarehr.common.model.BillingService;
@@ -59,8 +59,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import oscar.OscarProperties;
-import ca.openosp.openo.billing.ca.on.data.BillingDataHlp;
-import ca.openosp.openo.billing.ca.on.pageUtil.BillingStatusPrep;
+import ca.openosp.openo.billings.ca.on.data.BillingDataHlp;
+import ca.openosp.openo.billings.ca.on.pageUtil.BillingStatusPrep;
 import oscar.util.ParamAppender;
 
 /**

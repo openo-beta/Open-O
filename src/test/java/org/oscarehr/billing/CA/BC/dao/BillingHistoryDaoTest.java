@@ -27,9 +27,10 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
+import ca.openosp.openo.billing.CA.BC.dao.BillingHistoryDao;
 import org.junit.Before;
 import org.junit.Test;
-import org.oscarehr.billing.CA.BC.model.BillingHistory;
+import ca.openosp.openo.billing.CA.BC.model.BillingHistory;
 import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;

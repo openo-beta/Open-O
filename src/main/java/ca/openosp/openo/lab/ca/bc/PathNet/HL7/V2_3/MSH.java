@@ -28,8 +28,8 @@ package ca.openosp.openo.lab.ca.bc.PathNet.HL7.V2_3;
 import java.sql.SQLException;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.billing.CA.BC.dao.Hl7MshDao;
-import org.oscarehr.billing.CA.BC.model.Hl7Msh;
+import ca.openosp.openo.billing.CA.BC.dao.Hl7MshDao;
+import ca.openosp.openo.billing.CA.BC.model.Hl7Msh;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 

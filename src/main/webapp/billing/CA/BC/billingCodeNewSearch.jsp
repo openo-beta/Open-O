@@ -30,8 +30,8 @@
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.BillingService" %>
 <%@page import="org.oscarehr.common.dao.BillingServiceDao" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.pageUtil.ServiceCodeAssociation" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.pageUtil.BillingAssociationPersistence" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.ServiceCodeAssociation" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.BillingAssociationPersistence" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");

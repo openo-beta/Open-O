@@ -48,10 +48,8 @@ import javax.ws.rs.core.StreamingOutput;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.casemgmt.service.CaseManagementPrint;
-import org.oscarehr.common.dao.DemographicDao;
+import ca.openosp.openo.casemgmt.service.CaseManagementPrint;
 import org.oscarehr.common.dao.EncounterTemplateDao;
-import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.EncounterTemplate;
 import org.oscarehr.managers.ConsultationManager;
 import org.oscarehr.managers.PreferenceManager;

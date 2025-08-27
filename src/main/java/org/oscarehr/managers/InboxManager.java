@@ -27,8 +27,8 @@
  */
 package org.oscarehr.managers;
 
-import org.oscarehr.inbox.InboxManagerQuery;
-import org.oscarehr.inbox.InboxManagerResponse;
+import ca.openosp.openo.inbox.InboxManagerQuery;
+import ca.openosp.openo.inbox.InboxManagerResponse;
 import org.oscarehr.util.LoggedInInfo;
 
 public interface InboxManager {

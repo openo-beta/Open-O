@@ -49,7 +49,7 @@
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
 <%@page import="oscar.util.*" %>
 <%@page import="java.util.Date" %>
-<%@page import="org.oscarehr.casemgmt.dao.CaseManagementNoteDAO" %>
+<%@page import="ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO" %>
 <%@page import="org.oscarehr.common.dao.BillingDao" %>
 <%@page import="org.oscarehr.common.model.Drug" %>
 <%@page import="org.oscarehr.common.dao.DrugDao" %>

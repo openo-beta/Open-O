@@ -35,29 +35,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.AppointmentArchiveDao;
-import org.oscarehr.common.dao.AppointmentSearchDao;
-import org.oscarehr.common.dao.AppointmentStatusDao;
-import org.oscarehr.common.dao.LookupListDao;
-import org.oscarehr.common.dao.OscarAppointmentDao;
-import org.oscarehr.common.model.AppointmentSearch;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.appointment.search.SearchConfig;
-import org.oscarehr.appointment.search.TimeSlot;
-import org.oscarehr.appointment.search.AppointmentType;
-import org.oscarehr.appointment.search.FilterDefinition;
-import org.oscarehr.appointment.search.Provider;
-import org.oscarehr.appointment.search.filters.AvailableTimeSlotFilter;
+import ca.openosp.openo.appointment.search.SearchConfig;
+import ca.openosp.openo.appointment.search.TimeSlot;
+import ca.openosp.openo.appointment.search.AppointmentType;
 import org.oscarehr.util.LoggedInInfo;
 //import org.oscarehr.oscar_clinic_component.manager.BookingLearningManager;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.XmlUtils;
 import org.oscarehr.ws.transfer_objects.CalendarScheduleCodePairTransfer;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.w3c.dom.Document;
 
 public interface AppointmentSearchManager {
     //Right now these two methods return the same but in the future this could be customized based on the demographic

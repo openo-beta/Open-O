@@ -26,8 +26,8 @@ package ca.openosp.openo.service;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.casemgmt.dao.IssueDAO;
-import org.oscarehr.casemgmt.model.Issue;
+import ca.openosp.openo.casemgmt.dao.IssueDAO;
+import ca.openosp.openo.casemgmt.model.Issue;
 import org.oscarehr.util.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 

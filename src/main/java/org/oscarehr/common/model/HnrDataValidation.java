@@ -37,7 +37,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.oscarehr.casemgmt.model.ClientImage;
+import ca.openosp.openo.casemgmt.model.ClientImage;
 import org.oscarehr.integration.mchcv.HCValidationFactory;
 import org.oscarehr.integration.mchcv.HCValidationResult;
 import org.oscarehr.integration.mchcv.HCValidator;

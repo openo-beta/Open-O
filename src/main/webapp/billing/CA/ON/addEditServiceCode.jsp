@@ -31,8 +31,8 @@
         import="org.oscarehr.util.SpringUtils, org.oscarehr.common.dao.CSSStylesDAO, org.oscarehr.common.model.CssStyle, java.util.List" %>
 <%@ page import="org.oscarehr.common.model.BillingService" %>
 <%@ page import="org.oscarehr.common.dao.BillingServiceDao" %>
-<%@ page import="org.oscarehr.billing.CA.ON.model.BillingPercLimit" %>
-<%@ page import="org.oscarehr.billing.CA.ON.dao.BillingPercLimitDao" %>
+<%@ page import="ca.openosp.openo.billing.CA.ON.model.BillingPercLimit" %>
+<%@ page import="ca.openosp.openo.billing.CA.ON.dao.BillingPercLimitDao" %>
 <%
     BillingServiceDao billingServiceDao = SpringUtils.getBean(BillingServiceDao.class);
     BillingPercLimitDao billingPercLimitDao = SpringUtils.getBean(BillingPercLimitDao.class);

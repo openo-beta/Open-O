@@ -34,9 +34,9 @@ import java.util.Set;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.casemgmt.model.CaseManagementIssue;
-import org.oscarehr.casemgmt.model.CaseManagementNote;
-import org.oscarehr.casemgmt.model.Issue;
+import ca.openosp.openo.casemgmt.model.CaseManagementIssue;
+import ca.openosp.openo.casemgmt.model.CaseManagementNote;
+import ca.openosp.openo.casemgmt.model.Issue;
 import org.oscarehr.common.dao.DxresearchDAO;
 import org.oscarehr.common.model.Dxresearch;
 import org.oscarehr.common.model.Provider;

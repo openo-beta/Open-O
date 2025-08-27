@@ -40,24 +40,24 @@
 <%@page import="org.oscarehr.documentManager.EDocUtil" %>
 <%@page import="org.springframework.web.context.WebApplicationContext" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
-<%@page import="org.oscarehr.casemgmt.common.Colour" %>
+<%@page import="ca.openosp.openo.casemgmt.common.Colour" %>
 <%@page import="org.oscarehr.documentManager.EDoc" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="com.quatro.dao.security.*,ca.openosp.openo.model.security.Secrole" %>
 <%@page import="org.oscarehr.util.EncounterUtil" %>
 <%@page import="org.apache.cxf.common.i18n.UncheckedException" %>
-<%@page import="org.oscarehr.casemgmt.web.NoteDisplay" %>
-<%@page import="org.oscarehr.casemgmt.web.CaseManagementViewAction" %>
+<%@page import="ca.openosp.openo.casemgmt.web.NoteDisplay" %>
+<%@page import="ca.openosp.openo.casemgmt.web.CaseManagementViewAction" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
-<%@page import="org.oscarehr.casemgmt.dao.CaseManagementNoteLinkDAO" %>
+<%@page import="ca.openosp.openo.casemgmt.dao.CaseManagementNoteLinkDAO" %>
 <%@page import="org.oscarehr.common.dao.ProfessionalSpecialistDao" %>
 <%@page import="oscar.OscarProperties" %>
 <%@page import="org.oscarehr.util.MiscUtils" %>
 <%@page import="oscar.util.UtilDateUtilities" %>
-<%@page import="org.oscarehr.casemgmt.web.NoteDisplayNonNote" %>
+<%@page import="ca.openosp.openo.casemgmt.web.NoteDisplayNonNote" %>
 <%@page import="org.oscarehr.common.dao.EncounterTemplateDao" %>
-<%@page import="org.oscarehr.casemgmt.web.CheckBoxBean" %>
+<%@page import="ca.openosp.openo.casemgmt.web.CheckBoxBean" %>
 
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>

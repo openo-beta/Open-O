@@ -26,15 +26,15 @@
 
 <%@page import="org.apache.commons.lang.StringEscapeUtils"%>
 <%@page import="oscar.util.ConversionUtils"%>
-<%@page import="org.oscarehr.casemgmt.web.NoteDisplay"%>
+<%@page import="ca.openosp.openo.casemgmt.web.NoteDisplay"%>
 <%  long start = System.currentTimeMillis(); %>
 <%@include file="/casemgmt/taglibs.jsp"%>
 <%@page
-	import="java.util.List, java.util.Set, java.util.Iterator, org.oscarehr.casemgmt.model.CaseManagementIssue, org.oscarehr.casemgmt.model.CaseManagementNoteExt, org.oscarehr.casemgmt.model.CaseManagementNote"%>
+	import="java.util.List, java.util.Set, java.util.Iterator, ca.openosp.openo.casemgmt.model.CaseManagementIssue, ca.openosp.openo.casemgmt.model.CaseManagementNoteExt, ca.openosp.openo.casemgmt.model.CaseManagementNote"%>
 <%@page import="org.oscarehr.common.model.Provider"%>
 <%@page import="org.oscarehr.provider.web.CppPreferencesUIBean"%>
 <%@page import="org.oscarehr.util.LoggedInInfo"%>
-<%@page import="org.oscarehr.casemgmt.web.CaseManagementViewAction"%>
+<%@page import="ca.openosp.openo.casemgmt.web.CaseManagementViewAction"%>
 <%@page import="org.oscarehr.common.dao.UserPropertyDAO"%>
 <%@page import="org.oscarehr.common.model.UserProperty"%>
 <%@page import="org.oscarehr.common.model.PartialDate"%>
@@ -199,8 +199,8 @@
   <c:forEach var="remoteNote" items="${remoteNotes}" varStatus="status">
     <% 
        // pull the JSP var "remoteNote" into a Java variable
-       org.oscarehr.casemgmt.web.NoteDisplay note =
-         (org.oscarehr.casemgmt.web.NoteDisplay) pageContext.getAttribute("remoteNote");
+       NoteDisplay note =
+         (NoteDisplay) pageContext.getAttribute("remoteNote");
 
        // now you can use 'note' in your scriptlet
        String rawText   = note.getNote().replaceAll("\n","<br>");

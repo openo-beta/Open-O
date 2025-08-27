@@ -33,12 +33,12 @@ import java.util.List;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.billing.CA.BC.dao.Hl7MessageDao;
-import org.oscarehr.billing.CA.BC.dao.Hl7ObrDao;
-import org.oscarehr.billing.CA.BC.dao.Hl7PidDao;
-import org.oscarehr.billing.CA.BC.model.Hl7Message;
-import org.oscarehr.billing.CA.BC.model.Hl7Obr;
-import org.oscarehr.billing.CA.BC.model.Hl7Pid;
+import ca.openosp.openo.billing.CA.BC.dao.Hl7MessageDao;
+import ca.openosp.openo.billing.CA.BC.dao.Hl7ObrDao;
+import ca.openosp.openo.billing.CA.BC.dao.Hl7PidDao;
+import ca.openosp.openo.billing.CA.BC.model.Hl7Message;
+import ca.openosp.openo.billing.CA.BC.model.Hl7Obr;
+import ca.openosp.openo.billing.CA.BC.model.Hl7Pid;
 import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.dao.DemographicDaoImpl;
 import org.oscarehr.common.dao.PatientLabRoutingDao;

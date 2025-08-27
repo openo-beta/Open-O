@@ -35,8 +35,8 @@
 
 <%@page import="java.util.List" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
-<%@page import="org.oscarehr.casemgmt.model.CaseManagementNoteLink" %>
+<%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
+<%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <%@page import="org.oscarehr.common.dao.PartialDateDao" %>
 <%@page import="org.oscarehr.common.model.PartialDate" %>
 <%@ page import="ca.openosp.openo.service.security.SecurityManager" %>
@@ -77,7 +77,7 @@
     %>
 </c:if>
 <%
-    String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_ALLERGY;
+    String annotation_display = CaseManagementNoteLink.DISP_ALLERGY;
     RxPatientData.Patient patient = (RxPatientData.Patient) session.getAttribute("Patient");
     SecurityManager securityManager = new SecurityManager();
 %>
@@ -581,7 +581,7 @@
                                                 <%
                                                     CaseManagementManager cmm = (CaseManagementManager) SpringUtils.getBean(CaseManagementManager.class);
                                                     @SuppressWarnings("unchecked")
-                                                    List<CaseManagementNoteLink> existingAnnots = cmm.getLinkByTableId(org.oscarehr.casemgmt.model.CaseManagementNoteLink.ALLERGIES, Long.valueOf(allergy.getAllergyId()));
+                                                    List<CaseManagementNoteLink> existingAnnots = cmm.getLinkByTableId(CaseManagementNoteLink.ALLERGIES, Long.valueOf(allergy.getAllergyId()));
                                                 %>
                                                 <td>
                                                     <%

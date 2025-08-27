@@ -16,10 +16,10 @@
             <result name="success">/index.jsp</result>
             <result name="logoutsso">/ssoLogin.do?method=ssoLogout</result>
         </action>
-        <action name="lookupListManagerAction" class="org.oscarehr.admin.lookUpLists.LookupListManager2Action">
+        <action name="lookupListManagerAction" class="ca.openosp.openo.admin.lookUpLists.LookupListManager2Action">
             <result name="success">/admin/lookUpLists/</result>
         </action>
-        <action name="admin/oncallClinic" class="org.oscarehr.admin.reports.SaveOnCallClinic2Action"/>
+        <action name="admin/oncallClinic" class="ca.openosp.openo.admin.reports.SaveOnCallClinic2Action"/>
         <action name="web/dashboard/display/DashboardDisplay" class="org.oscarehr.dashboard.display.DisplayDashboard2Action">
             <result name="success">/web/dashboard/display/DashboardDisplay.jsp</result>
             <result name="unauthorized">/securityError.jsp</result>
@@ -58,12 +58,12 @@
             <result name="tickler">/tickler/ticklerAddWidget.jsp</result>
         </action>
         <action name="notification/create" class="org.oscarehr.common.web.ProviderNotification2Action"/>
-        <action name="quickBillingBC" class="ca.openosp.openo.billing.ca.bc.quickbilling.QuickBillingBC2Action">
+        <action name="quickBillingBC" class="ca.openosp.openo.billings.ca.bc.quickbilling.QuickBillingBC2Action">
             <result name="success">/billing/CA/BC/quickBillingBC.jsp</result>
             <result name="searchdx">billing/CA/BC/billingDigNewSearch.jsp</result>
             <result name="error">/billing/CA/BC/quickBillingBC.jsp</result>
         </action>
-        <action name="saveQuickBillingBC" class="ca.openosp.openo.billing.ca.bc.quickbilling.QuickBillingBCSave2Action">
+        <action name="saveQuickBillingBC" class="ca.openosp.openo.billings.ca.bc.quickbilling.QuickBillingBCSave2Action">
             <result name="saved">/quickBillingBC.do</result>
             <result name="error">/billing/CA/BC/quickBillingBC.jsp?saved=false</result>
         </action>
@@ -999,7 +999,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/decisionSupport/guidelineAction" class="org.oscarehr.decisionSupport.web.DSGuideline2Action" method="execute">
+        <action name="oscarEncounter/decisionSupport/guidelineAction" class="ca.openosp.openo.decisionSupport.web.DSGuideline2Action" method="execute">
             <result name="guidelineList">/oscarEncounter/decisionSupport/guidelineList.jsp</result>
             <result name="guidelineDetail">/oscarEncounter/decisionSupport/guidelineDetail.jsp</result>
         </action>
@@ -1320,10 +1320,10 @@
         <action name="oscarReport/RptByExample" class="ca.openosp.openo.report.pageUtil.RptByExample2Action">
             <result name="success">/oscarReport/RptByExample.jsp</result>
         </action>
-        <action name="admin/GstControl" class="ca.openosp.openo.billing.ca.on.administration.GstControl2Action">
+        <action name="admin/GstControl" class="ca.openosp.openo.billings.ca.on.administration.GstControl2Action">
             <result name="success">/admin/gstControl.jsp</result>
         </action>
-        <action name="admin/manageCSSStyles" class="org.oscarehr.billing.CA.ON.web.ManageCSS2Action">
+        <action name="admin/manageCSSStyles" class="ca.openosp.openo.billing.CA.ON.web.ManageCSS2Action">
             <result name="init">/admin/manageCSSStyles.jsp</result>
         </action>
         <action name="admin/MergeRecords" class="ca.openosp.openo.demographic.pageUtil.DemographicMergeRecord2Action">
@@ -1485,19 +1485,19 @@
             <interceptor-ref name="defaultStack"/>
             <result name="success">/oscarResearch/oscarDxResearch/dxResearchSelectAssociations.jsp</result>
         </action>
-        <action name="billing" class="ca.openosp.openo.billing.ca.bc.pageUtil.Billing2Action">
+        <action name="billing" class="ca.openosp.openo.billings.ca.bc.pageUtil.Billing2Action">
             <result name="BC">/billing/CA/BC/billingBC.jsp</result>
             <result name="ON">/billing/CA/ON/billingOB.jsp</result>
         </action>
-        <action name="billing/CA/BC/CreateBilling" class="ca.openosp.openo.billing.ca.bc.pageUtil.BillingCreateBilling2Action">
+        <action name="billing/CA/BC/CreateBilling" class="ca.openosp.openo.billings.ca.bc.pageUtil.BillingCreateBilling2Action">
             <result name="success">/billing/CA/BC/billingCreated.jsp</result>
             <result name="WCB">/billing/CA/BC/formwcb.jsp?fromBilling=true</result>
         </action>
-        <action name="billing/CA/BC/SaveBilling" class="ca.openosp.openo.billing.ca.bc.pageUtil.BillingSaveBilling2Action">
+        <action name="billing/CA/BC/SaveBilling" class="ca.openosp.openo.billings.ca.bc.pageUtil.BillingSaveBilling2Action">
             <result name="success">/billing/CA/BC/billingSaved.jsp</result>
             <result name="anotherBill">/billing/CA/BC/billingBC.jsp</result>
         </action>
-        <action name="billing/CA/BC/billingView" class="ca.openosp.openo.billing.ca.bc.pageUtil.BillingView2Action">
+        <action name="billing/CA/BC/billingView" class="ca.openosp.openo.billings.ca.bc.pageUtil.BillingView2Action">
             <result name="success">/billing/CA/BC/billingView.jsp</result>
             <result name="ON">/billing/CA/ON/billingOB2.jsp</result>
             <result name="private">/billing/CA/BC/billReceipt.jsp</result>
@@ -1505,47 +1505,47 @@
         <!--action name="billing/CA/BC/billingStatement" class="oscar.oscarBilling.ca.bc.pageUtil.CreateBillingStatement2Action">
             <result name="success">/billing/CA/BC/billStatement.jsp</result>
         </action-->
-        <action name="billing/CA/ON/BatchBill" class="org.oscarehr.billing.CA.ON.web.BatchBill2Action">
+        <action name="billing/CA/ON/BatchBill" class="ca.openosp.openo.billing.CA.ON.web.BatchBill2Action">
             <result name="saved">/billing/CA/ON/batchsaved.jsp</result>
             <result name="error">/billing/CA/ON/batcherror.jsp</result>
             <result name="success">/billing/CA/ON/batchBilling.jsp</result>
         </action>
-        <action name="billing/CA/BC/formwcb" class="ca.openosp.openo.billing.ca.bc.pageUtil.WCBAction22Action">
+        <action name="billing/CA/BC/formwcb" class="ca.openosp.openo.billings.ca.bc.pageUtil.WCBAction22Action">
             <result name="success">/billing/CA/BC/billingCreated.jsp</result>
             <result name="newbill">/billing.do?newWCBClaim=1</result>
             <result name="viewformwcb">/billing/CA/BC/viewformwcb.do</result>
             <result name="saveAndClose">/billing/CA/BC/wcbClose.jsp</result>
         </action>
-        <action name="billing/CA/BC/viewformwcb" class="ca.openosp.openo.billing.ca.bc.pageUtil.ViewWCB2Action">
+        <action name="billing/CA/BC/viewformwcb" class="ca.openosp.openo.billings.ca.bc.pageUtil.ViewWCB2Action">
             <result name="success">/billing/CA/BC/formwcb.jsp</result>
         </action>
-        <action name="billing/CA/BC/billingTeleplanCorrectionWCB" class="ca.openosp.openo.billing.ca.bc.administration.TeleplanCorrectionActionWCB2Action">
+        <action name="billing/CA/BC/billingTeleplanCorrectionWCB" class="ca.openosp.openo.billings.ca.bc.administration.TeleplanCorrectionActionWCB2Action">
             <result name="success">/billing/CA/BC/billingTeleplanCorrectionWCB.jsp</result>
             <result name="failure">/billing/CA/BC/billingTeleplanCorrectionWCB.jsp</result>
         </action>
-        <action name="billing/CA/BC/reprocessBill" class="ca.openosp.openo.billing.ca.bc.pageUtil.BillingReProcessBill2Action">
+        <action name="billing/CA/BC/reprocessBill" class="ca.openosp.openo.billings.ca.bc.pageUtil.BillingReProcessBill2Action">
             <result name="success">/billing/CA/BC/adjustBill.jsp</result>
             <result name="save">/billing/CA/BC/billStatus.jsp</result>
         </action>
-        <action name="billing/CA/BC/reprocessBill" class="ca.openosp.openo.billing.ca.bc.pageUtil.BillingReProcessBill2Action">
+        <action name="billing/CA/BC/reprocessBill" class="ca.openosp.openo.billings.ca.bc.pageUtil.BillingReProcessBill2Action">
             <result name="success">/billing/CA/BC/adjustBill.jsp</result>
             <result name="save">/billing/CA/BC/billStatus.jsp</result>
         </action>
-        <action name="billing/CA/BC/billingEditCode" class="ca.openosp.openo.billing.ca.bc.pageUtil.BillingEditCode2Action">
+        <action name="billing/CA/BC/billingEditCode" class="ca.openosp.openo.billings.ca.bc.pageUtil.BillingEditCode2Action">
             <result name="success">/billing/CA/BC/billingCodeAdjust.jsp</result>
             <result name="private">/billing/CA/BC/billingPrivateCodeAdjust.jsp</result>
         </action>
-        <action name="billing/CA/BC/billingAddCode" class="ca.openosp.openo.billing.ca.bc.pageUtil.BillingAddCode2Action">
+        <action name="billing/CA/BC/billingAddCode" class="ca.openosp.openo.billings.ca.bc.pageUtil.BillingAddCode2Action">
             <result name="success">/billing/CA/BC/billingCodeAdjust.jsp</result>
             <result name="normalCodeError">/billing/CA/BC/billingAddCode.jsp</result>
             <result name="private">/billing/CA/BC/billingPrivateCodeAdjust.jsp</result>
             <result name="privateCodeError">/billing/CA/BC/billingAddPrivateCode.jsp</result>
         </action>
-        <action name="billing/CA/BC/UpdateBilling" class="ca.openosp.openo.billing.ca.bc.pageUtil.BillingUpdateBilling2Action">
+        <action name="billing/CA/BC/UpdateBilling" class="ca.openosp.openo.billings.ca.bc.pageUtil.BillingUpdateBilling2Action">
             <result name="success">/billing/CA/BC/billReceipt.jsp</result>
             <result name="successAndClose">/billing/CA/BC/billingSaved.jsp</result>
         </action>
-        <action name="oscarBilling/DocumentErrorReportUpload" class="ca.openosp.openo.billing.ca.on.pageUtil.BillingDocumentErrorReportUpload2Action">
+        <action name="oscarBilling/DocumentErrorReportUpload" class="ca.openosp.openo.billings.ca.on.pageUtil.BillingDocumentErrorReportUpload2Action">
             <result name="success">/billing/CA/ON/billingEAreport.jsp</result>
             <result name="outside">/billing/CA/ON/billingLreport.jsp</result>
         </action>
@@ -1571,7 +1571,7 @@
         <action name="demographic/printDemoAddressLabelAction" class="ca.openosp.openo.demographic.PrintDemoAddressLabel2Action"/>
         <action name="demographic/printDemoChartLabelAction" class="ca.openosp.openo.demographic.PrintDemoChartLabel2Action"/>
         <action name="demographic/printClientLabLabelAction" class="ca.openosp.openo.demographic.PrintClientLabLabel2Action"/>
-        <action name="billing/CA/BC/createBillingReportAction" class="ca.openosp.openo.billing.ca.bc.MSP.CreateBillingReport2Action"/>
+        <action name="billing/CA/BC/createBillingReportAction" class="ca.openosp.openo.billings.ca.bc.MSP.CreateBillingReport2Action"/>
         <action name="oscarPrevention/AddPrevention" class="ca.openosp.openo.prevention.pageUtil.AddPrevention2Action">
             <result name="success">/oscarPrevention/close.jsp</result>
             <result name="review">/oscarPrevention/review.jsp</result>
@@ -1691,22 +1691,22 @@
         </action>
         <action name="eform/displayImage" class="ca.openosp.openo.eform.actions.DisplayImage2Action"/>
         <action name="eform/FetchUpdatedData" class="ca.openosp.openo.eform.actions.FetchUpdatedData2Action"/>
-        <action name="billing/CA/BC/associateCodesAction" class="ca.openosp.openo.billing.ca.bc.pageUtil.AssociateCodes2Action">
+        <action name="billing/CA/BC/associateCodesAction" class="ca.openosp.openo.billings.ca.bc.pageUtil.AssociateCodes2Action">
             <result name="success">/billing/CA/BC/showServiceCodeAssocs.do</result>
         </action>
-        <action name="billing/CA/BC/showServiceCodeAssocs" class="ca.openosp.openo.billing.ca.bc.pageUtil.ShowServiceCodeAssocs2Action">
+        <action name="billing/CA/BC/showServiceCodeAssocs" class="ca.openosp.openo.billings.ca.bc.pageUtil.ShowServiceCodeAssocs2Action">
             <result name="success">/billing/CA/BC/manageSVCDXAssoc.jsp</result>
         </action>
-        <action name="billing/CA/BC/deleteServiceCodeAssoc" class="ca.openosp.openo.billing.ca.bc.pageUtil.DeleteServiceCodeAssoc2Action">
+        <action name="billing/CA/BC/deleteServiceCodeAssoc" class="ca.openosp.openo.billings.ca.bc.pageUtil.DeleteServiceCodeAssoc2Action">
             <result name="success">/billing/CA/BC/showServiceCodeAssocs.do</result>
         </action>
-        <action name="billing/CA/BC/editServiceCodeAssocAction" class="ca.openosp.openo.billing.ca.bc.pageUtil.EditServiceCodeAssoc2Action">
+        <action name="billing/CA/BC/editServiceCodeAssocAction" class="ca.openosp.openo.billings.ca.bc.pageUtil.EditServiceCodeAssoc2Action">
             <result name="success">/billing/CA/BC/dxcode_svccode_assoc.jsp</result>
         </action>
-        <action name="billing/CA/BC/saveAssocAction" class="ca.openosp.openo.billing.ca.bc.pageUtil.SaveAssoc2Action">
+        <action name="billing/CA/BC/saveAssocAction" class="ca.openosp.openo.billings.ca.bc.pageUtil.SaveAssoc2Action">
             <result name="success">/billing/CA/BC/showServiceCodeAssocs.do</result>
         </action>
-        <action name="billing/CA/BC/AddReferralDoc" class="ca.openosp.openo.billing.ca.bc.pageUtil.AddReferralDoc2Action">
+        <action name="billing/CA/BC/AddReferralDoc" class="ca.openosp.openo.billings.ca.bc.pageUtil.AddReferralDoc2Action">
             <result name="success">/billing/CA/BC/billingManageReferralDoc.jsp</result>
             <result name="error">/billing/CA/BC/billingAddReferralDoc.jsp</result>
         </action>
@@ -1727,14 +1727,14 @@
         <action name="lab/CMLlabUpload" class="ca.openosp.openo.lab.ca.on.CML.Upload.LabUpload2Action">
             <result name="success">/lab/CA/ON/uploadComplete.jsp</result>
         </action>
-        <action name="billing/CA/ON/benefitScheduleUpload" class="ca.openosp.openo.billing.ca.on.OHIP.ScheduleOfBenefitsUpload2Action">
+        <action name="billing/CA/ON/benefitScheduleUpload" class="ca.openosp.openo.billings.ca.on.OHIP.ScheduleOfBenefitsUpload2Action">
             <result name="forceUpdate">/billing/CA/ON/benefitScheduleChange.do</result>
             <result name="success">/billing/CA/ON/ScheduleOfBenefitsUpload.jsp</result>
         </action>
         <action name="admin/uploadEntryText" class="ca.openosp.openo.login.UploadLoginText2Action">
             <result name="success">/admin/uploadEntryText.jsp</result>
         </action>
-        <action name="billing/CA/ON/benefitScheduleChange" class="ca.openosp.openo.billing.ca.on.OHIP.ScheduleOfBenefitsUpdate2Action">
+        <action name="billing/CA/ON/benefitScheduleChange" class="ca.openosp.openo.billings.ca.on.OHIP.ScheduleOfBenefitsUpdate2Action">
             <result name="success">/billing/CA/ON/ScheduleOfBenefitsUpload.jsp</result>
         </action>
         <!--action name="billing/CA/BC/receivePaymentAction" class="oscar.oscarBilling.ca.bc.pageUtil.BillingReceivePaymentActionForm2Action">
@@ -1742,16 +1742,16 @@
             <result name="internalAdjustment">/billing/CA/BC/adjustBill.jsp</result>
             <result name="internalAdjustmentWCB">/billing/CA/BC/billingTeleplanCorrectionWCB.jsp</result>
         </action-->
-        <action name="billing/CA/BC/receivePaymentAction" class="ca.openosp.openo.billing.ca.bc.pageUtil.ReceivePayment2Action">
+        <action name="billing/CA/BC/receivePaymentAction" class="ca.openosp.openo.billings.ca.bc.pageUtil.ReceivePayment2Action">
             <result name="success">/billing/CA/BC/receivePayment.jsp</result>
         </action>
-        <action name="billing/CA/BC/viewReceivePaymentAction" class="ca.openosp.openo.billing.ca.bc.pageUtil.ViewReceivePayment2Action">
+        <action name="billing/CA/BC/viewReceivePaymentAction" class="ca.openosp.openo.billings.ca.bc.pageUtil.ViewReceivePayment2Action">
             <result name="success">/billing/CA/BC/receivePayment.jsp</result>
         </action>
-        <action name="billing/CA/BC/saveBillingPreferencesAction" class="ca.openosp.openo.billing.ca.bc.pageUtil.SaveBillingPreferences2Action">
+        <action name="billing/CA/BC/saveBillingPreferencesAction" class="ca.openosp.openo.billings.ca.bc.pageUtil.SaveBillingPreferences2Action">
             <result name="success">/billing/CA/BC/viewBillingPreferencesAction.do</result>
         </action>
-        <action name="billing/CA/BC/viewBillingPreferencesAction" class="ca.openosp.openo.billing.ca.bc.pageUtil.ViewBillingPreferences2Action">
+        <action name="billing/CA/BC/viewBillingPreferencesAction" class="ca.openosp.openo.billings.ca.bc.pageUtil.ViewBillingPreferences2Action">
             <result name="success">/billing/CA/BC/billingPreferences.jsp</result>
         </action>
         <action name="RunClinicalReport" class="ca.openosp.openo.report.ClinicalReports.PageUtil.RunClinicalReport2Action">
@@ -1760,7 +1760,7 @@
         <action name="report/RemoveClinicalReport" class="ca.openosp.openo.report.ClinicalReports.PageUtil.RemoveClinicalReportFromHistory2Action">
             <result name="success">/report/ClinicalReports.jsp</result>
         </action>
-        <action name="billing/CA/BC/supServiceCodeAssocAction" class="ca.openosp.openo.billing.ca.bc.pageUtil.SupServiceCodeAssoc2Action">
+        <action name="billing/CA/BC/supServiceCodeAssocAction" class="ca.openosp.openo.billings.ca.bc.pageUtil.SupServiceCodeAssoc2Action">
             <result name="success">/billing/CA/BC/billingSVCTrayAssoc.jsp</result>
         </action>
         <action name="documentManager/addEditDocument" class="org.oscarehr.documentManager.actions.AddEditDocument2Action">
@@ -1816,17 +1816,17 @@
         <action name="form/AddRHWorkFlow" class="oscar.form.pageUtil.FrmFormAddRHWorkFlow2Action">
             <result name="success">/form/RHPrevention.do</result>
         </action>
-        <action name="billing/CA/BC/GenerateTeleplanFile" class="ca.openosp.openo.billing.ca.bc.pageUtil.GenerateTeleplanFile2Action">
+        <action name="billing/CA/BC/GenerateTeleplanFile" class="ca.openosp.openo.billings.ca.bc.pageUtil.GenerateTeleplanFile2Action">
             <result name="success">/billing/CA/BC/TeleplanSubmission.jsp</result>
         </action>
-        <action name="billing/CA/BC/ProcessRemittance" class="ca.openosp.openo.billing.ca.bc.MSP.GenTa2Action">
+        <action name="billing/CA/BC/ProcessRemittance" class="ca.openosp.openo.billings.ca.bc.MSP.GenTa2Action">
             <result name="C12">/billing/CA/BC/billStatus.jsp</result>
             <result name="S21">/billing/CA/BC/viewReconcileReports.jsp</result>
         </action>
-        <action name="billing/CA/BC/SimulateTeleplanFile" class="ca.openosp.openo.billing.ca.bc.pageUtil.SimulateTeleplanFile2Action">
+        <action name="billing/CA/BC/SimulateTeleplanFile" class="ca.openosp.openo.billings.ca.bc.pageUtil.SimulateTeleplanFile2Action">
             <result name="success">/billing/CA/BC/TeleplanSimulation.jsp</result>
         </action>
-        <action name="billing/CA/BC/ManageTeleplan" class="ca.openosp.openo.billing.ca.bc.pageUtil.ManageTeleplan2Action">
+        <action name="billing/CA/BC/ManageTeleplan" class="ca.openosp.openo.billings.ca.bc.pageUtil.ManageTeleplan2Action">
             <result name="success">/billing/CA/BC/teleplan/ManageTeleplan.jsp</result>
             <result name="codelist">/billing/CA/BC/teleplan/ManageBillingCodes.jsp</result>
             <result name="submission">/billing/CA/BC/TeleplanSubmission.jsp</result>
@@ -1920,7 +1920,7 @@
             <result name="form">/PMmodule/reports/ClientListsReportForm.jsp</result>
             <result name="report">/PMmodule/reports/ClientListsReport.jsp</result>
         </action>
-        <action name="CaseManagementView" class="org.oscarehr.casemgmt.web.CaseManagementView2Action" method="execute">
+        <action name="CaseManagementView" class="ca.openosp.openo.casemgmt.web.CaseManagementView2Action" method="execute">
             <result name="view">/casemgmt/CaseManagementView.jsp</result>
             <result name="ajaxView">/casemgmt/ChartNotes.jsp</result>
             <result name="ajaxDisplayNotes">/casemgmt/ChartNotesAjax.jsp</result>
@@ -1937,7 +1937,7 @@
             <result name="displayNote">/casemgmt/displayNote.jsp</result>
             <result name="clientHistoryPrintPreview">/casemgmt/client_history_printPreview.jsp</result>
         </action>
-        <action name="CaseManagementEntry" class="org.oscarehr.casemgmt.web.CaseManagementEntry2Action" method="execute">
+        <action name="CaseManagementEntry" class="ca.openosp.openo.casemgmt.web.CaseManagementEntry2Action" method="execute">
             <result name="setUpMainEncounterPage">/casemgmt/newEncounterLayout.jsp</result>
             <result name="view">/casemgmt/CaseManagementEntry.jsp</result>
             <result name="list">/CaseManagementView.do?method=view</result>
@@ -1954,15 +1954,15 @@
             <result name="issueList_ajax">/casemgmt/noteIssueList.jsp</result>
             <result name="expired">/casemgmt/expired.jsp</result>
         </action>
-        <action name="OscarChartPrint" class="org.oscarehr.casemgmt.web.EChartPrint2Action"/>
-        <action name="ClientImage" class="org.oscarehr.casemgmt.web.ClientImage2Action" method="execute">
+        <action name="OscarChartPrint" class="ca.openosp.openo.casemgmt.web.EChartPrint2Action"/>
+        <action name="ClientImage" class="ca.openosp.openo.casemgmt.web.ClientImage2Action" method="execute">
             <interceptor-ref name="defaultStack"/>
             <interceptor-ref name="fileUpload">
                 <param name="allowedTypes">image/jpeg,image/gif</param>
             </interceptor-ref>
             <result name="success">/casemgmt/uploadimage.jsp</result>
         </action>
-        <action name="OnCallQuestionnaire" class="org.oscarehr.casemgmt.web.OnCallQuestionnaire2Action">
+        <action name="OnCallQuestionnaire" class="ca.openosp.openo.casemgmt.web.OnCallQuestionnaire2Action">
             <result name="form">/casemgmt/OnCallQuestionnaireForm.jsp</result>
             <result name="windowClose">/casemgmt/close.jsp</result>
         </action>
@@ -2004,8 +2004,8 @@
         <action name="oscarReport/reportByTemplate/actions/delGroup" class="ca.openosp.openo.report.reportByTemplate.actions.RBTDeleteGroup2Action">
             <result name="success">/oscarReport/reportByTemplate/rbtGroup.do</result>
         </action>
-        <action name="casemgmt/ExtPrintRegistry" class="org.oscarehr.casemgmt.web.ExtPrintRegistry2Action"/>
-        <action name="casemgmt/RegisterCppCode" class="org.oscarehr.casemgmt.web.RegisterCppCode2Action"/>
+        <action name="casemgmt/ExtPrintRegistry" class="ca.openosp.openo.casemgmt.web.ExtPrintRegistry2Action"/>
+        <action name="casemgmt/RegisterCppCode" class="ca.openosp.openo.casemgmt.web.RegisterCppCode2Action"/>
         <action name="provider/UserPreference" class="org.oscarehr.provider.web.UserPreference2Action">
             <result name="form">/provider/UserPreferences.jsp</result>
         </action>
@@ -2016,8 +2016,8 @@
         <action name="provider/OlisPreferences" class="org.oscarehr.provider.web.OlisPreferences2Action">
             <result name="form">/provider/olis_preferences.jsp</result>
         </action>
-        <action name="searchProfessionalSpecialist" class="org.oscarehr.contactRegistry.ProfessionalSpecialist2Action"/>
-        <action name="getProfessionalSpecialist" class="org.oscarehr.contactRegistry.ProfessionalSpecialist2Action"/>
+        <action name="searchProfessionalSpecialist" class="ca.openosp.openo.contactRegistry.ProfessionalSpecialist2Action"/>
+        <action name="getProfessionalSpecialist" class="ca.openosp.openo.contactRegistry.ProfessionalSpecialist2Action"/>
         <action name="demographic/Contact" class="org.oscarehr.common.web.Contact2Action">
             <result name="pForm">/demographic/addEditProfessionalContact.jsp</result>
             <result name="cForm">/demographic/addEditContact.jsp</result>
@@ -2029,7 +2029,7 @@
         <action name="oscarMDS/SubmitLab" class="ca.openosp.openo.lab.ca.all.web.SubmitLabByForm2Action">
             <result name="manage">/oscarMDS/CreateLab.jsp</result>
         </action>
-        <action name="ArchiveView" class="org.oscarehr.casemgmt.web.ArchiveView2Action" method="execute">
+        <action name="ArchiveView" class="ca.openosp.openo.casemgmt.web.ArchiveView2Action" method="execute">
             <result name="view">/provider/providercontrol.jsp</result>
         </action>
         <action name="VaccineProviderReport" class="org.oscarehr.vaccine.VaccineProviderReport2Action" method="execute">
@@ -2097,13 +2097,13 @@
         <action name="admin/oscarStatus" class="oscar.util.OscarStatus2Action">
             <result name="success">/admin/oscarStatus.jsp</result>
         </action>
-        <action name="billing/CA/ON/moveMOHFiles" class="org.oscarehr.billing.CA.ON.web.MoveMOHFiles2Action">
+        <action name="billing/CA/ON/moveMOHFiles" class="ca.openosp.openo.billing.CA.ON.web.MoveMOHFiles2Action">
             <result name="success">/billing/CA/ON/viewMOHFiles.jsp</result>
         </action>
-        <action name="billing/CA/ON/managePaymentType" class="ca.openosp.openo.billing.ca.on.pageUtil.PaymentType2Action" method="execute">
+        <action name="billing/CA/ON/managePaymentType" class="ca.openosp.openo.billings.ca.on.pageUtil.PaymentType2Action" method="execute">
             <result name="success">/billing/CA/ON/manageBillingPaymentType.jsp</result>
         </action>
-        <action name="billing/CA/ON/endYearStatement" class="ca.openosp.openo.billing.ca.on.pageUtil.PatientEndYearStatement2Action">
+        <action name="billing/CA/ON/endYearStatement" class="ca.openosp.openo.billings.ca.on.pageUtil.PatientEndYearStatement2Action">
             <result name="success">/billing/CA/ON/endYearStatement.jsp</result>
             <result name="failure">/billing/CA/ON/endYearStatement.jsp</result>
         </action>
@@ -2145,7 +2145,7 @@
         <action name="hospitalReportManager/PrintHRMReport" class="org.oscarehr.hospitalReportManager.PrintHRMReport2Action">
             <result name="error">/hospitalReportManager/displayHRMReport.jsp</result>
         </action>
-        <action name="caseload/CaseloadContent" class="org.oscarehr.caseload.CaseloadContent2Action"/>
+        <action name="caseload/CaseloadContent" class="ca.openosp.openo.caseload.CaseloadContent2Action"/>
         <action name="tickler/EditTickler" class="ca.openosp.openo.oscarTickler.pageUtil.EditTickler2Action">
             <result name="close">/closenreload.html</result>
             <result name="failure">/failure.jsp</result>
@@ -2219,7 +2219,7 @@
             <result name="exit">/oscarEncounter/close.jsp</result>
         </action>
         <action name="PageMonitoringService" class="org.oscarehr.common.web.PageMonitoring2Action"/>
-        <action name="casemgmt/NotePermissions" class="org.oscarehr.casemgmt.web.NotePermissions2Action"/>
+        <action name="casemgmt/NotePermissions" class="ca.openosp.openo.casemgmt.web.NotePermissions2Action"/>
         <action name="BillingInvoice" class="org.oscarehr.common.web.BillingInvoice2Action">
             <result name="success">/billing/CA/ON/billingONCorrection.jsp</result>
             <result name="listSuccess">/billing/CA/ON/billingONStatus.jsp</result>
@@ -2229,7 +2229,7 @@
             <result name="saved">/admin/groupPreferences.jsp</result>
             <result name="changedForm">/admin/groupPreferences.jsp</result>
         </action>
-        <action name="billing/CA/ON/BillingONCorrection" class="ca.openosp.openo.billing.ca.on.pageUtil.BillingCorrection2Action">
+        <action name="billing/CA/ON/BillingONCorrection" class="ca.openosp.openo.billings.ca.on.pageUtil.BillingCorrection2Action">
             <result name="success">/billing/CA/ON/billingONCorrection.jsp</result>
             <result name="failure">/failure.jsp</result>
             <result name="submitClose">/close.html</result>
@@ -2261,12 +2261,12 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="renal/CkdDSA" class="org.oscarehr.renal.web.CkdDSA2Action">
+        <action name="renal/CkdDSA" class="ca.openosp.openo.renal.web.CkdDSA2Action">
             <result name="detail">/renal/ckd_dsa_detail.jsp</result>
         </action>
-        <action name="renal/Renal" class="org.oscarehr.renal.web.Renal2Action"/>
-        <action name="admin/GenerateTraceAction" class="org.oscarehr.admin.traceability.GenerateTrace2Action"/>
-        <action name="admin/GenerateTraceabilityReportAction" class="org.oscarehr.admin.traceability.GenerateTraceabilityReport2Action">
+        <action name="renal/Renal" class="ca.openosp.openo.renal.web.Renal2Action"/>
+        <action name="admin/GenerateTraceAction" class="ca.openosp.openo.admin.traceability.GenerateTrace2Action"/>
+        <action name="admin/GenerateTraceabilityReportAction" class="ca.openosp.openo.admin.traceability.GenerateTraceabilityReport2Action">
             <interceptor-ref name="fileUpload" />
             <interceptor-ref name="defaultStack"/>
         </action>
@@ -2344,7 +2344,7 @@
         <action name="DemographicExtService" class="org.oscarehr.common.web.DemographicExtService2Action"/>
         <action name="integrator/IntegratorPush" class="org.oscarehr.common.web.IntegratorPush2Action"/>
         <action name="printReferralLabelAction" class="org.oscarehr.common.web.PrintReferralLabel2Action"/>
-        <action name="billing/CA/ON/billingON3rdPayments" class="org.oscarehr.billing.CA.ON.web.BillingONPayments2Action" method="execute">
+        <action name="billing/CA/ON/billingON3rdPayments" class="ca.openosp.openo.billing.CA.ON.web.BillingONPayments2Action" method="execute">
             <result name="success">/billing/CA/ON/billingON3rdPayments.jsp</result>
             <result name="failure">/billing/CA/ON/billingON3rdPayments.jsp</result>
             <result name="viewPayment">/billing/CA/ON/billingON3rdViewPayment.jsp</result>
@@ -2356,9 +2356,9 @@
         <action name="billing/CA/ON/moveMOHFiles" class="org.oscarehr.billing.CA.ON.web.ArchiveMOHFile2Action">
             <result name="showInbox">/billing/CA/ON/viewMOHFiles.jsp</result>
         </action-->
-        <action name="billing/ca/on/DisplayInvoiceLogo" class="org.oscarehr.billing.CA.ON.util.DisplayInvoiceLogo2Action"/>
+        <action name="billing/ca/on/DisplayInvoiceLogo" class="ca.openosp.openo.billing.CA.ON.util.DisplayInvoiceLogo2Action"/>
         <action name="cvc" class="org.oscarehr.integration.born.CVCTester2Action"/>
-        <action name="admin/AuditLogPurge" class="org.oscarehr.admin.web.AuditLogPurge2Action">
+        <action name="admin/AuditLogPurge" class="ca.openosp.openo.admin.web.AuditLogPurge2Action">
             <result name="success">/admin/auditLogPurge.jsp</result>
         </action>
         <action name="lab/DownloadEmbeddedDocumentFromLab" class="ca.openosp.openo.lab.ca.all.pageUtil.DownloadEmbeddedDocumentFromLab2Action"/>

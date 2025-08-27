@@ -28,8 +28,8 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.Map.Entry;
 
-import org.oscarehr.casemgmt.dao.IssueDAO;
-import org.oscarehr.casemgmt.model.Issue;
+import ca.openosp.openo.casemgmt.dao.IssueDAO;
+import ca.openosp.openo.casemgmt.model.Issue;
 import org.oscarehr.common.dao.PopulationReportDao;
 import org.oscarehr.common.model.Mortalities;
 import org.oscarehr.common.model.ReportStatistic;

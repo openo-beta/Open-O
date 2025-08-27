@@ -52,9 +52,9 @@
 <%@ page
         import="oscar.oscarBilling.ca.bc.data.*,oscar.oscarBilling.ca.bc.pageUtil.*" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.pageUtil.BillingBillingManager" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.pageUtil.BillingViewBean" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.data.BillingFormData" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.BillingBillingManager" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.BillingViewBean" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingFormData" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%
 

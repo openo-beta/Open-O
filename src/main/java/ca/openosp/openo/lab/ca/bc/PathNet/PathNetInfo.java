@@ -34,7 +34,7 @@ package ca.openosp.openo.lab.ca.bc.PathNet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.oscarehr.billing.CA.BC.dao.Hl7PidDao;
+import ca.openosp.openo.billing.CA.BC.dao.Hl7PidDao;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 

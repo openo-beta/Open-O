@@ -38,7 +38,7 @@ import java.util.Locale;
 import ca.openosp.openo.rx.data.RxPrescriptionData;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.casemgmt.model.CaseManagementNote;
+import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import org.oscarehr.common.dao.EFormValueDao;
 import org.oscarehr.common.model.Allergy;
 import org.oscarehr.common.model.Appointment;

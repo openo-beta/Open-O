@@ -26,8 +26,8 @@
 --%>
 
 <%@page import="oscar.oscarDemographic.data.*,java.util.*,oscar.oscarBilling.ca.bc.Teleplan.*" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.Teleplan.TeleplanSequenceDAO" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.Teleplan.TeleplanUserPassDAO" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.Teleplan.TeleplanSequenceDAO" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.Teleplan.TeleplanUserPassDAO" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>

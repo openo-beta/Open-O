@@ -24,7 +24,7 @@
 --%>
 <%@page import="java.math.*, java.util.*,  oscar.*, java.net.*,oscar.oscarBilling.ca.bc.data.*,org.oscarehr.common.model.*,oscar.util.*" %>
 <%@page import="org.springframework.web.context.WebApplicationContext,org.springframework.web.context.support.WebApplicationContextUtils, oscar.entities.*" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.data.BillingCodeData" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingCodeData" %>
 <%
     if (session.getAttribute("user") == null) {
         response.sendRedirect("../../logout.jsp");

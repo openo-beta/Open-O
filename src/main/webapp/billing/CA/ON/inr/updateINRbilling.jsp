@@ -19,10 +19,10 @@
 --%>
 
 <%@ page import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, java.net.*,oscar.MyDateFormat" %>
-<%@page import="org.oscarehr.billing.CA.model.BillingInr" %>
+<%@page import="ca.openosp.openo.billing.CA.model.BillingInr" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
-<%@page import="org.oscarehr.billing.CA.dao.BillingInrDao" %>
+<%@page import="ca.openosp.openo.billing.CA.dao.BillingInrDao" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="oscar.util.ConversionUtils" %>
 <%

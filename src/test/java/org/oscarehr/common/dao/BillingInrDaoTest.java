@@ -27,8 +27,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.oscarehr.billing.CA.dao.BillingInrDao;
-import org.oscarehr.billing.CA.model.BillingInr;
+import ca.openosp.openo.billing.CA.dao.BillingInrDao;
+import ca.openosp.openo.billing.CA.model.BillingInr;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
 import org.oscarehr.util.SpringUtils;

@@ -55,7 +55,7 @@ Ontario, Canada
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.appt.status.service.AppointmentStatusMgr" %>
 <%@ page import="ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImpl" %>
-<%@ page import="ca.openosp.openo.billing.ca.bc.decisionSupport.BillingGuidelines" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.decisionSupport.BillingGuidelines" %>
 <%@ page import="ca.openosp.openo.encounter.data.EctFormData" %>
 <%@ page import="oscar.util.ConversionUtils" %>
 <%@ page import="oscar.OscarProperties" %>
@@ -77,7 +77,7 @@ Ontario, Canada
 <%@ page import="org.oscarehr.PMmodule.service.ProviderManager" %>
 <%@ page import="org.oscarehr.PMmodule.service.ProgramManager" %>
 <%@ page import="org.oscarehr.managers.ProgramManager2" %>
-<%@ page import="org.oscarehr.decisionSupport.model.DSConsequence" %>
+<%@ page import="ca.openosp.openo.decisionSupport.model.DSConsequence" %>
 
 <%@ page import="org.oscarehr.util.MiscUtils" %>
 <%@ page import="org.oscarehr.util.SessionConstants" %>

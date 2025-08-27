@@ -44,8 +44,8 @@
          errorPage="/errorpage.jsp" %>
 
 <%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.billing.CA.BC.dao.TeleplanS21Dao" %>
-<%@page import="org.oscarehr.billing.CA.BC.model.TeleplanS21" %>
+<%@page import="ca.openosp.openo.billing.CA.BC.dao.TeleplanS21Dao" %>
+<%@page import="ca.openosp.openo.billing.CA.BC.model.TeleplanS21" %>
 
 <%
     TeleplanS21Dao teleplanS21Dao = SpringUtils.getBean(TeleplanS21Dao.class);

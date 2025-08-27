@@ -23,15 +23,15 @@
 <%@ page import="java.util.*,java.sql.*,oscar.util.*,oscar.*,oscar.oscarBilling.ca.on.data.*"
          errorPage="../../../errorpage.jsp" %>
 
-<%@page import="org.oscarehr.billing.CA.model.BillingInr" %>
+<%@page import="ca.openosp.openo.billing.CA.model.BillingInr" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
-<%@page import="org.oscarehr.billing.CA.dao.BillingInrDao" %>
+<%@page import="ca.openosp.openo.billing.CA.dao.BillingInrDao" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="oscar.util.ConversionUtils" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.data.BillingItemData" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.data.BillingClaimHeader1Data" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.data.BillingDataHlp" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.data.JdbcBillingClaimImpl" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.BillingItemData" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.BillingDataHlp" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.JdbcBillingClaimImpl" %>
 <%
     BillingInrDao billingInrDao = SpringUtils.getBean(BillingInrDao.class);
 %>

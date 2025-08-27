@@ -25,6 +25,7 @@ package org.oscarehr.billing.CA.BC.dao;
 
 import static org.junit.Assert.assertNotNull;
 
+import ca.openosp.openo.billing.CA.BC.dao.WcbNoiCodeDao;
 import org.junit.Before;
 import org.junit.Test;
 import org.oscarehr.common.dao.DaoTestFixtures;

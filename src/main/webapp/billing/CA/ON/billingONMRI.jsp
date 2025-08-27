@@ -27,8 +27,8 @@
 <%@ page import="org.oscarehr.common.model.Provider" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 
-<%@ page import="org.oscarehr.billing.CA.model.BillActivity" %>
-<%@ page import="org.oscarehr.billing.CA.dao.BillActivityDao" %>
+<%@ page import="ca.openosp.openo.billing.CA.model.BillActivity" %>
+<%@ page import="ca.openosp.openo.billing.CA.dao.BillActivityDao" %>
 
 <%@ page import="org.oscarehr.common.model.ProviderData" %>
 <%@ page import="org.oscarehr.common.dao.ProviderDataDao" %>
@@ -42,10 +42,10 @@
 <%@page import="org.oscarehr.common.model.ProviderBillCenter" %>
 <%@page import="org.oscarehr.common.dao.ProviderBillCenterDao" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.data.BillingDataHlp" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.data.BillingDiskNameData" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.data.JdbcBillingPageUtil" %>
-<%@ page import="ca.openosp.openo.billing.ca.on.pageUtil.BillingReviewPrep" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.BillingDataHlp" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.BillingDiskNameData" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.JdbcBillingPageUtil" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingReviewPrep" %>
 
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);

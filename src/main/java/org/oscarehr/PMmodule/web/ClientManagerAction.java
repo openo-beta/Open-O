@@ -34,7 +34,7 @@ import org.oscarehr.PMmodule.dao.VacancyTemplateDao;
 import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.PMmodule.service.*;
 import org.oscarehr.PMmodule.wlmatch.MatchingManager;
-import org.oscarehr.casemgmt.service.CaseManagementManager;
+import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.Admission;
 import org.oscarehr.common.model.CdsClientForm;
