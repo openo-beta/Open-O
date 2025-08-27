@@ -33,7 +33,7 @@ import org.oscarehr.common.model.Allergy;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import oscar.OscarProperties;
-import oscar.oscarRx.data.*;
+import ca.openosp.openo.rx.data.*;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;

@@ -41,7 +41,7 @@ import ca.openosp.openo.report.data.RptDemographicQuery2Saver;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 
-import oscar.oscarReport.data.*;
+import ca.openosp.openo.report.data.*;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;

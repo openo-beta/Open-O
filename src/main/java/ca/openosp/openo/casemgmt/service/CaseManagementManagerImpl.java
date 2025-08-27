@@ -48,7 +48,7 @@ import org.oscarehr.caisi_integrator.ws.CachedDemographicDrug;
 import org.oscarehr.caisi_integrator.ws.CachedDemographicNote;
 import org.oscarehr.caisi_integrator.ws.CachedFacility;
 import ca.openosp.openo.casemgmt.common.EChartNoteEntry;
-import org.oscarehr.casemgmt.dao.*;
+import ca.openosp.openo.casemgmt.dao.*;
 import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;
 import org.oscarehr.documentManager.EDocUtil;

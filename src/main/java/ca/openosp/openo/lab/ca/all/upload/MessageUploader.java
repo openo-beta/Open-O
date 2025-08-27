@@ -53,7 +53,7 @@ import org.oscarehr.util.SpringUtils;
 import oscar.OscarProperties;
 import ca.openosp.openo.demographic.data.DemographicMerged;
 import ca.openosp.openo.lab.ca.all.Hl7textResultsData;
-import oscar.oscarLab.ca.all.parsers.*;
+import ca.openosp.openo.lab.ca.all.parsers.*;
 import oscar.util.UtilDateUtilities;
 
 import java.sql.Connection;

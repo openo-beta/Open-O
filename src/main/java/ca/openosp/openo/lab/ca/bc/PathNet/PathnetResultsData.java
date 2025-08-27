@@ -28,7 +28,6 @@ package ca.openosp.openo.lab.ca.bc.PathNet;
 import ca.openosp.openo.billing.CA.BC.dao.*;
 import ca.openosp.openo.billing.CA.BC.model.*;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.billing.CA.BC.dao.*;
 import ca.openosp.openo.billing.CA.BC.util.PathNetLabResults;
 import org.oscarehr.common.dao.ConsultDocsDao;
 import org.oscarehr.common.dao.ConsultResponseDocDao;

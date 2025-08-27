@@ -28,9 +28,11 @@
     <context:component-scan base-package="org.oscarehr.PMmodule.service"/>
     <context:component-scan base-package="org.oscarehr.ticklers.service"/>
     <context:component-scan base-package="org.oscarehr.consultations"/>
-    <context:component-scan base-package="oscar.oscarPrevention"/>
+    <context:component-scan base-package="org.oscarehr.prevention"/>
     <context:component-scan base-package="org.oscarehr.billing.CA.filters"/>
     <context:component-scan base-package="org.oscarehr.integration.fhir.manager"/>
+    <!-- ca.openosp.openo namespace components -->
+    <context:component-scan base-package="ca.openosp.openo"/>
 <!--
     I have a sample listener in here. Leaving commented for now.    
     <context:component-scan base-package="org.oscarehr.listeners" />

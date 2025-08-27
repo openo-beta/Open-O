@@ -29,7 +29,7 @@ import ca.openosp.openo.billing.CA.BC.model.*;
 import ca.openosp.openo.entities.S21;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.billing.CA.BC.dao.*;
+import ca.openosp.openo.billing.CA.BC.dao.*;
 import org.oscarehr.common.dao.BillingDao;
 import org.oscarehr.common.dao.BillingPaymentTypeDao;
 import org.oscarehr.common.model.Billing;

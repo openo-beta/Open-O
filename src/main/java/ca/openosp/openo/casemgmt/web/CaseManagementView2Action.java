@@ -47,7 +47,7 @@ import org.oscarehr.caisi_integrator.ws.*;
 import ca.openosp.openo.casemgmt.common.Colour;
 import ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO;
 import ca.openosp.openo.casemgmt.dao.IssueDAO;
-import org.oscarehr.casemgmt.service.*;
+import ca.openosp.openo.casemgmt.service.*;
 import ca.openosp.openo.casemgmt.web.formbeans.CaseManagementViewFormBean;
 import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;

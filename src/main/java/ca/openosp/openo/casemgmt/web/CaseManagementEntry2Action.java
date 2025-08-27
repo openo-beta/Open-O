@@ -42,7 +42,7 @@ import org.oscarehr.PMmodule.model.ProgramProvider;
 import org.oscarehr.PMmodule.service.AdmissionManager;
 import org.oscarehr.PMmodule.service.ProgramManager;
 import org.oscarehr.PMmodule.service.ProviderManager;
-import org.oscarehr.casemgmt.dao.*;
+import ca.openosp.openo.casemgmt.dao.*;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import ca.openosp.openo.casemgmt.service.CaseManagementPrint;
 import ca.openosp.openo.casemgmt.service.ClientImageManager;
