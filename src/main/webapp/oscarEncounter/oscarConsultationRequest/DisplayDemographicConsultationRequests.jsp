@@ -47,7 +47,9 @@
 <%@page
         import="oscar.oscarEncounter.pageUtil.*,oscar.oscarEncounter.data.*" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil" %>
+<%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewConsultationRequestsUtil" %>
 
 <%
     String demo = request.getParameter("de");
@@ -64,12 +66,12 @@
     } else
         response.sendRedirect("../error.jsp");
 
-    oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil consultUtil;
-    consultUtil = new oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil();
+    EctConsultationFormRequestUtil consultUtil;
+    consultUtil = new EctConsultationFormRequestUtil();
     consultUtil.estPatient(LoggedInInfo.getLoggedInInfoFromSession(request), demo);
 
-    oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctViewConsultationRequestsUtil theRequests;
-    theRequests = new oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctViewConsultationRequestsUtil();
+    EctViewConsultationRequestsUtil theRequests;
+    theRequests = new EctViewConsultationRequestsUtil();
     theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demo);
 %>
 

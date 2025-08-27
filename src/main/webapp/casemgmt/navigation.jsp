@@ -32,20 +32,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@ page import="oscar.oscarEncounter.oscarMeasurements.MeasurementFlowSheet" %>
-<%@ page import="oscar.oscarEncounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig" %>
-<%@ page import="oscar.oscarEncounter.oscarMeasurements.util.MeasurementHelper" %>
+<%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet" %>
+<%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig" %>
+<%@ page import="ca.openosp.openo.encounter.oscarMeasurements.util.MeasurementHelper" %>
 <%@ page import="oscar.oscarResearch.oscarDxResearch.bean.dxResearchBeanHandler" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Vector" %>
+<%@ page import="ca.openosp.openo.encounter.immunization.data.EctImmImmunizationData" %>
+<%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
 
 <% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
 <%
     String province = ((String) oscarVariables.getProperty("billregion", "")).trim().toUpperCase();
-    oscar.oscarEncounter.pageUtil.EctSessionBean bean = null;
+    EctSessionBean bean = null;
     if ("true".equalsIgnoreCase((String) session.getAttribute("casemgmt_bean_flag"))) {
-        oscar.oscarEncounter.pageUtil.EctSessionBean bean1 = (oscar.oscarEncounter.pageUtil.EctSessionBean) session.getAttribute("EctSessionBean");
-        bean = new oscar.oscarEncounter.pageUtil.EctSessionBean();
+        EctSessionBean bean1 = (EctSessionBean) session.getAttribute("EctSessionBean");
+        bean = new EctSessionBean();
         bean.providerNo = bean1.providerNo;
         bean.demographicNo = bean1.demographicNo;
         bean.appointmentNo = bean1.appointmentNo;
@@ -64,8 +66,8 @@
     }
 //bean=(oscar.oscarEncounter.pageUtil.EctSessionBean)session.getAttribute("EctSessionBean");
 //session.setAttribute("casemgmt_bean", bean);
-    bean = (oscar.oscarEncounter.pageUtil.EctSessionBean) session.getAttribute("casemgmt_bean");
-    if (bean == null) bean = new oscar.oscarEncounter.pageUtil.EctSessionBean();
+    bean = (EctSessionBean) session.getAttribute("casemgmt_bean");
+    if (bean == null) bean = new EctSessionBean();
     if (bean.appointmentNo == null) bean.appointmentNo = "0";
     String bsurl = (String) session.getAttribute("casemgmt_oscar_baseurl");
     String backurl = bsurl + "/oscarEncounter/IncomingEncounter.do?";
@@ -254,7 +256,7 @@
                                           programId="<%=pgId%>">
                     <!-- IMMUNIZATION -->
                     <oscar:oscarPropertiesCheck property="IMMUNIZATION" value="yes" defaultVal="true">
-                        <% if (oscar.oscarEncounter.immunization.data.EctImmImmunizationData.hasImmunizations(bean.demographicNo)) { %>
+                        <% if (EctImmImmunizationData.hasImmunizations(bean.demographicNo)) { %>
                         <tr>
                             <td><a style="color:red" href="javascript:void(0)"
                                    onClick="popupPage('<%=bsurl%>/oscarEncounter/immunization/initSchedule.do');return false;">Immunizations</a>

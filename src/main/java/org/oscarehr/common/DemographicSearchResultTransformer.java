@@ -35,7 +35,7 @@ import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.ws.rest.to.model.DemographicSearchResult;
 
-import ca.openosp.openo.oscarDemographic.data.DemographicMerged;
+import ca.openosp.openo.demographic.data.DemographicMerged;
 
 public class DemographicSearchResultTransformer implements ResultTransformer {
 

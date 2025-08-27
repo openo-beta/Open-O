@@ -34,7 +34,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarPrevention.reports.PreventionReportUtil;
+import ca.openosp.openo.prevention.reports.PreventionReportUtil;
 import oscar.oscarReport.pageUtil.RptDemographicReport2Form;
 import oscar.util.DateUtils;
 import oscar.util.UtilDateUtilities;

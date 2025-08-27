@@ -57,7 +57,7 @@ import org.oscarehr.documentManager.EDoc;
 
 import org.oscarehr.documentManager.EDocUtil;
 import ca.openosp.openo.log.LogAction;
-import oscar.oscarEncounter.oscarConsultationRequest.pageUtil.ImagePDFCreator;
+import ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.ImagePDFCreator;
 
 @Service
 public class DocumentManagerImpl implements DocumentManager {

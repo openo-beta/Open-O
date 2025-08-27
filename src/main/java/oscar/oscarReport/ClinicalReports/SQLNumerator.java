@@ -32,7 +32,7 @@ import java.util.Hashtable;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 
-import oscar.oscarDB.DBHandler;
+import ca.openosp.openo.db.DBHandler;
 
 /**
  * The class should evaluate a query that has a count returned.  If the count is = 0 then false is returned if >0 is returned true

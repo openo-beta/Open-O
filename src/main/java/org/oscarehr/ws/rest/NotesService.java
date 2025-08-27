@@ -99,7 +99,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import oscar.oscarEncounter.pageUtil.EctSessionBean;
+import ca.openosp.openo.encounter.pageUtil.EctSessionBean;
 
 
 @Path("/notes")

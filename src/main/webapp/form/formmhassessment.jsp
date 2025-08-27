@@ -43,6 +43,7 @@
 <%@ page import="java.io.FileInputStream" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.encounter.util.EctFileUtil" %>
 
 <% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
 
@@ -67,7 +68,7 @@
             if (formId == 0) {
                 props = ((FrmMentalHealthRecord) rec).getFormCustRecord(props, provNo);
             }
-            oscar.oscarEncounter.util.EctFileUtil list = new oscar.oscarEncounter.util.EctFileUtil();
+            EctFileUtil list = new EctFileUtil();
             props.setProperty("c_lastVisited", "assessment");
 
             String projecthome = oscarVariables.getProperty("project_home");

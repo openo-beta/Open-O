@@ -90,13 +90,13 @@
 <%@ page import="org.oscarehr.common.model.LookupList" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@ page import="oscar.oscarEncounter.data.EctFormData" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingDataHlp" %>
+<%@ page import="ca.openosp.openo.encounter.data.EctFormData" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.data.BillingDataHlp" %>
 <%@ page import="org.oscarehr.common.dao.AppointmentTypeDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.appt.ApptUtil" %>
 <%@ page import="ca.openosp.openo.appt.ApptData" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>

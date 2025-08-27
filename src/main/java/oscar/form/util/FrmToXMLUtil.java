@@ -44,7 +44,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementTypesBean;
+import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean;
 import oscar.oscarProvider.data.ProviderData;
 import oscar.oscarRx.data.RxPatientData;
 import oscar.oscarRx.data.RxPrescriptionData;

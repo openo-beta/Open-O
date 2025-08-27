@@ -54,7 +54,7 @@ import org.oscarehr.util.SpringUtils;
 import org.oscarehr.documentManager.EDoc;
 import org.oscarehr.documentManager.EDocUtil;
 import ca.openosp.openo.eform.APExecute;
-import oscar.oscarPrevention.reports.FollowupManagement;
+import ca.openosp.openo.prevention.reports.FollowupManagement;
 import oscar.oscarReport.data.ManageLetters;
 import oscar.util.ConcatPDF;
 import oscar.util.UtilDateUtilities;

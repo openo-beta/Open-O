@@ -35,7 +35,7 @@ import java.util.Properties;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 
-import oscar.oscarDB.DBHandler;
+import ca.openosp.openo.db.DBHandler;
 import oscar.util.UtilDateUtilities;
 
 public class FrmGripStrengthRecord extends FrmRecord {

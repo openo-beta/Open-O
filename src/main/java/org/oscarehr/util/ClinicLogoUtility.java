@@ -36,7 +36,7 @@ import org.oscarehr.common.dao.DocumentDao;
 import org.oscarehr.common.dao.SiteDao;
 import org.oscarehr.common.model.Site;
 import oscar.OscarProperties;
-import oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil;
+import ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

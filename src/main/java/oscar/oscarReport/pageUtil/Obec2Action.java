@@ -39,7 +39,7 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 import oscar.OscarProperties;
-import oscar.oscarEncounter.oscarMeasurements.pageUtil.EctValidation;
+import ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctValidation;
 import oscar.oscarReport.data.ObecData;
 import oscar.util.DateUtils;
 

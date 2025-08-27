@@ -53,7 +53,7 @@
 <%@ page import="org.oscarehr.common.dao.BillingDao" %>
 <%@ page import="org.oscarehr.billing.CA.model.BillingDetail" %>
 <%@ page import="org.oscarehr.billing.CA.dao.BillingDetailDao" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.pageUtil.BillingSavePrep" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.pageUtil.BillingSavePrep" %>
 <%
     BillingDao billingDao = SpringUtils.getBean(BillingDao.class);
     BillingDetailDao billingDetailDao = SpringUtils.getBean(BillingDetailDao.class);

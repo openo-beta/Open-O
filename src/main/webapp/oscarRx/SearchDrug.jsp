@@ -30,7 +30,7 @@
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ page
-        import="oscar.oscarRx.data.*,ca.openosp.openo.oscarDemographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
+        import="oscar.oscarRx.data.*,ca.openosp.openo.demographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
 <%@ page import="org.oscarehr.common.model.*" %>
 <%@page import="java.util.Enumeration" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>

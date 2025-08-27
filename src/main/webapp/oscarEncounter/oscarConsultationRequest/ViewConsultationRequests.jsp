@@ -55,6 +55,8 @@
 <%@ page import="org.oscarehr.common.dao.ProviderDataDao" %>
 
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil" %>
+<%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewConsultationRequestsUtil" %>
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -175,8 +177,8 @@
             searchDate = "0";
         }
 
-        oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil consultUtil;
-        consultUtil = new oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil();
+        EctConsultationFormRequestUtil consultUtil;
+        consultUtil = new EctConsultationFormRequestUtil();
 
         if (isTeamAccessPrivacy) {
             consultUtil.estTeamsByTeam(curProvider_no);
@@ -455,8 +457,8 @@ background-color:rgb(212, 212, 254);
                                     <%} %>
                                 </tr>
                                 <%
-                                    oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctViewConsultationRequestsUtil theRequests;
-                                    theRequests = new oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctViewConsultationRequestsUtil();
+                                    EctViewConsultationRequestsUtil theRequests;
+                                    theRequests = new EctViewConsultationRequestsUtil();
                                     theRequests.estConsultationVecByTeam(LoggedInInfo.getLoggedInInfoFromSession(request), team, includeCompleted, startDate, endDate, orderby, desc, searchDate, offset, limit);
                                     boolean overdue;
                                     UserPropertyDAO pref = (UserPropertyDAO) WebApplicationContextUtils.getWebApplicationContext(pageContext.getServletContext()).getBean(UserPropertyDAO.class);

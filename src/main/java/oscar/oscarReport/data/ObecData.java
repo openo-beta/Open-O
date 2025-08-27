@@ -41,7 +41,7 @@ import org.oscarehr.integration.mcedt.mailbox.ActionUtils;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarDB.DBPreparedHandler;
+import ca.openosp.openo.db.DBPreparedHandler;
 import oscar.util.ConversionUtils;
 
 /**

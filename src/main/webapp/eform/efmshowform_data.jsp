@@ -27,7 +27,7 @@
 
 <%@ page import="oscar.eform.data.*" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="oscar.oscarEncounter.data.EctFormData" %>
+<%@ page import="ca.openosp.openo.encounter.data.EctFormData" %>
 <%@ page import="org.oscarehr.common.model.enumerator.DocumentType" %>
 <%@ page import="org.oscarehr.documentManager.DocumentAttachmentManager" %>
 <%@ page import="org.oscarehr.managers.EmailComposeManager" %>

@@ -54,8 +54,8 @@ import org.oscarehr.documentManager.ConvertToEdoc;
 import org.oscarehr.documentManager.EDoc;
 import oscar.form.util.FormTransportContainer;
 import ca.openosp.openo.log.LogAction;
-import oscar.oscarEncounter.data.EctFormData;
-import oscar.oscarEncounter.data.EctFormData.PatientForm;
+import ca.openosp.openo.encounter.data.EctFormData;
+import ca.openosp.openo.encounter.data.EctFormData.PatientForm;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

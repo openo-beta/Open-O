@@ -57,7 +57,7 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 import oscar.OscarProperties;
-import oscar.oscarDB.DBHandler;
+import ca.openosp.openo.db.DBHandler;
 import oscar.util.UtilDateUtilities;
 
 public class FrmLabReq07Record extends FrmRecord {

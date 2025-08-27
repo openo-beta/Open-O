@@ -52,16 +52,16 @@
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.administration.GstControl2Action" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.administration.GstReport" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.administration.GstControl2Action" %>
+<%@ page import="ca.openosp.openo.billing.ca.bc.administration.GstReport" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.entities.Billingmaster" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingmasterDAO" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.MSP.MSPBillingNote" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.MSP.MSPReconcile" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingFormData" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingCodeData" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingNote" %>
+<%@ page import="ca.openosp.openo.billing.ca.bc.data.BillingmasterDAO" %>
+<%@ page import="ca.openosp.openo.billing.ca.bc.MSP.MSPBillingNote" %>
+<%@ page import="ca.openosp.openo.billing.ca.bc.MSP.MSPReconcile" %>
+<%@ page import="ca.openosp.openo.billing.ca.bc.data.BillingFormData" %>
+<%@ page import="ca.openosp.openo.billing.ca.bc.data.BillingCodeData" %>
+<%@ page import="ca.openosp.openo.billing.ca.bc.data.BillingNote" %>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
 
 

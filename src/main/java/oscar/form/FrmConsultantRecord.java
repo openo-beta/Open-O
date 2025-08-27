@@ -31,8 +31,7 @@ import org.oscarehr.common.model.ProfessionalSpecialist;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.OscarProperties;
-import oscar.oscarDB.DBHandler;
+import ca.openosp.openo.db.DBHandler;
 import oscar.util.UtilDateUtilities;
 
 

@@ -50,7 +50,7 @@ import org.springframework.context.annotation.Lazy;
 import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.eform.data.EForm;
 import ca.openosp.openo.log.LogAction;
-import oscar.oscarEncounter.data.EctFormData;
+import ca.openosp.openo.encounter.data.EctFormData;
 
 @Service
 public class EformDataManagerImpl implements EformDataManager {

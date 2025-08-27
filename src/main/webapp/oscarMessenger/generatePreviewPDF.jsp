@@ -28,7 +28,7 @@
         import="oscar.oscarMessenger.docxfer.send.*,
                 oscar.oscarMessenger.docxfer.util.*,
                 oscar.oscarEncounter.data.*,
-                oscar.oscarEncounter.pageUtil.EctSessionBean,
+                ca.openosp.openo.encounter.pageUtil.EctSessionBean,
                 oscar.oscarRx.pageUtil.RxSessionBean,
                 oscar.oscarRx.data.RxPatientData,
                 oscar.oscarMessenger.pageUtil.MsgSessionBean,
@@ -63,7 +63,7 @@
 %>
 
 <%@ page import="oscar.util.*" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 
 
 <%

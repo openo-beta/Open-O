@@ -45,8 +45,8 @@ import org.oscarehr.util.SpringUtils;
 import org.owasp.encoder.Encode;
 import ca.openosp.openo.eform.EFormLoader;
 import ca.openosp.openo.eform.EFormUtil;
-import oscar.oscarEncounter.data.EctFormData;
-import oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
+import ca.openosp.openo.encounter.data.EctFormData;
+import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
 import oscar.util.StringBuilderUtils;
 import oscar.util.UtilDateUtilities;
 

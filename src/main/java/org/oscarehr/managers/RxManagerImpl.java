@@ -41,7 +41,7 @@ import org.oscarehr.ws.rest.to.model.RxStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ca.openosp.openo.log.LogAction;
-import ca.openosp.openo.oscarDemographic.data.RxInformation;
+import ca.openosp.openo.demographic.data.RxInformation;
 
 import java.util.*;
 

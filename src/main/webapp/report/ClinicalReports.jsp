@@ -45,8 +45,11 @@
 <%@page import="oscar.oscarReport.data.DemographicSets, oscar.oscarDemographic.data.*,java.util.*,oscar.oscarPrevention.*,oscar.oscarProvider.data.*,oscar.util.*,oscar.oscarReport.ClinicalReports.*,oscar.oscarEncounter.oscarMeasurements.*,oscar.oscarEncounter.oscarMeasurements.bean.*" %>
 <%@page import="com.Ostermiller.util.CSVPrinter,java.io.*" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicNameAgeString" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicNameAgeString" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBean" %>
+<%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBeanHandler" %>
+<%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -788,8 +791,8 @@
             return "";
         }
 
-        if (obj instanceof oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBean) {
-            oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBean md = (oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBean) obj;
+        if (obj instanceof EctMeasurementsDataBean) {
+            EctMeasurementsDataBean md = (EctMeasurementsDataBean) obj;
             return md.getDateObserved() + ": " + md.getDataField();
         }
 

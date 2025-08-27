@@ -64,7 +64,7 @@ import org.oscarehr.ws.rest.to.model.ConsultationResponseSearchResult;
 import org.oscarehr.ws.rest.to.model.OtnEconsult;
 
 import ca.uhn.hl7v2.HL7Exception;
-import oscar.oscarEncounter.data.EctFormData;
+import ca.openosp.openo.encounter.data.EctFormData;
 
 public interface ConsultationManager {
 

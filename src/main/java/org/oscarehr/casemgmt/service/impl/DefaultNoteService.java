@@ -63,8 +63,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import ca.openosp.openo.eform.EFormUtil;
-import oscar.oscarEncounter.data.EctFormData;
-import oscar.oscarEncounter.data.EctFormData.PatientForm;
+import ca.openosp.openo.encounter.data.EctFormData;
+import ca.openosp.openo.encounter.data.EctFormData.PatientForm;
 import oscar.util.ConversionUtils;
 
 /**

@@ -34,13 +34,14 @@
 <%@ page import="oscar.OscarProperties" %>
 <%@ page import="org.oscarehr.managers.DemographicManager" %>
 <%@ page import="org.oscarehr.common.model.Demographic" %>
+<%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
-    oscar.oscarEncounter.pageUtil.EctSessionBean bean = null;
-    if ((bean = (oscar.oscarEncounter.pageUtil.EctSessionBean) request.getSession().getAttribute("EctSessionBean")) == null) {
+    EctSessionBean bean = null;
+    if ((bean = (EctSessionBean) request.getSession().getAttribute("EctSessionBean")) == null) {
         response.sendRedirect("error.jsp");
         return;
     }

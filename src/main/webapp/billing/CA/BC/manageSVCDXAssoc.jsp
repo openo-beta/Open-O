@@ -14,8 +14,8 @@
 %>
 
 <%@page
-        import="java.util.*,ca.openosp.openo.oscarBilling.ca.bc.data.BillingCodeData,oscar.oscarBilling.ca.bc.pageUtil.*" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.ServiceCodeAssociation" %>
+        import="java.util.*,ca.openosp.openo.billing.ca.bc.data.BillingCodeData,oscar.oscarBilling.ca.bc.pageUtil.*" %>
+<%@ page import="ca.openosp.openo.billing.ca.bc.pageUtil.ServiceCodeAssociation" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

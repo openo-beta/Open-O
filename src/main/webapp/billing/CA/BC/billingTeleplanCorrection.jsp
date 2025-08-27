@@ -120,7 +120,7 @@
 <%@ page import="org.oscarehr.common.model.Demographic" %>
 <%@ page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@ page import="ca.openosp.openo.entities.Billingmaster" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingmasterDAO" %>
+<%@ page import="ca.openosp.openo.billing.ca.bc.data.BillingmasterDAO" %>
 <%@ page import="oscar.util.ConversionUtils" %>
 <%@ page import="org.oscarehr.common.model.Billing" %>
 <%

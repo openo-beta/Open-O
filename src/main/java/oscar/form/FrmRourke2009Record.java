@@ -44,7 +44,7 @@ import org.oscarehr.util.SpringUtils;
 
 import org.oscarehr.common.dao.forms.Rourke2009DAO;
 import oscar.form.model.FormRourke2009;
-import oscar.oscarEncounter.data.EctFormData;
+import ca.openosp.openo.encounter.data.EctFormData;
 import oscar.util.UtilDateUtilities;
 
 public class FrmRourke2009Record extends FrmRecord {

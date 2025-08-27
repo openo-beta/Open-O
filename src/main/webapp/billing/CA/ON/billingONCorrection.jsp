@@ -49,11 +49,11 @@
 <%@page import="java.text.NumberFormat" %>
 
 <%@page import="org.apache.commons.lang.StringUtils" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.JdbcBillingRAImpl" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingDataHlp" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.JdbcBillingPageUtil" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.pageUtil.Billing3rdPartPrep" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.data.JdbcBillingRAImpl" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.data.BillingDataHlp" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.data.JdbcBillingPageUtil" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.pageUtil.Billing3rdPartPrep" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 
 <%@taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>

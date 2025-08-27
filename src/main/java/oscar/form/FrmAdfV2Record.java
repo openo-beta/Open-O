@@ -9,7 +9,7 @@ import java.util.Properties;
 
 import org.oscarehr.util.LoggedInInfo;
 
-import oscar.oscarDB.DBHandler;
+import ca.openosp.openo.db.DBHandler;
 import oscar.util.UtilDateUtilities;
 
 public class FrmAdfV2Record extends FrmRecord {

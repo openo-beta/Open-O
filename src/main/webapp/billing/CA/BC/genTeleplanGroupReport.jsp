@@ -49,7 +49,7 @@
 <%@ page import="org.oscarehr.common.model.Provider" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@page import="oscar.util.ConversionUtils" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.MSP.ExtractBean" %>
+<%@ page import="ca.openosp.openo.billing.ca.bc.MSP.ExtractBean" %>
 <%
     BillActivityDao billActivityDao = SpringUtils.getBean(BillActivityDao.class);
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);

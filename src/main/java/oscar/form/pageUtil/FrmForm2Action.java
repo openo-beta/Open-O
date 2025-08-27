@@ -53,12 +53,12 @@ import oscar.OscarProperties;
 import oscar.form.FrmRecordHelp;
 import oscar.form.data.FrmData;
 import oscar.form.util.FrmToXMLUtil;
-import ca.openosp.openo.oscarDemographic.data.DemographicData;
-import oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementTypesBean;
-import oscar.oscarEncounter.oscarMeasurements.bean.EctValidationsBean;
-import oscar.oscarEncounter.oscarMeasurements.pageUtil.EctValidation;
-import oscar.oscarEncounter.oscarMeasurements.prop.EctFormProp;
-import oscar.oscarEncounter.pageUtil.EctSessionBean;
+import ca.openosp.openo.demographic.data.DemographicData;
+import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean;
+import ca.openosp.openo.encounter.oscarMeasurements.bean.EctValidationsBean;
+import ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctValidation;
+import ca.openosp.openo.encounter.oscarMeasurements.prop.EctFormProp;
+import ca.openosp.openo.encounter.pageUtil.EctSessionBean;
 import oscar.util.UtilDateUtilities;
 
 /*

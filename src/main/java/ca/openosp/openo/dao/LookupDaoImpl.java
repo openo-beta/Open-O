@@ -42,8 +42,8 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import oscar.MyDateFormat;
 import oscar.OscarProperties;
-import oscar.oscarDB.DBPreparedHandler;
-import oscar.oscarDB.DBPreparedHandlerParam;
+import ca.openosp.openo.db.DBPreparedHandler;
+import ca.openosp.openo.db.DBPreparedHandlerParam;
 
 import ca.openosp.openo.common.KeyConstants;
 import ca.openosp.openo.model.FieldDefValue;

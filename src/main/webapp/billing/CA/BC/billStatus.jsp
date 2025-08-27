@@ -103,7 +103,7 @@
 
 
 <%@page import="org.oscarehr.util.MiscUtils" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.MSP.MSPReconcile" %>
+<%@ page import="ca.openosp.openo.billing.ca.bc.MSP.MSPReconcile" %>
 <!DOCTYPE HTML>
 <html>
 <head>

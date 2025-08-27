@@ -145,7 +145,11 @@
 
 
 <%@page import="org.oscarehr.util.SessionConstants" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.prevention.PreventionData" %>
+<%@ page import="ca.openosp.openo.prevention.PreventionDS" %>
+<%@ page import="ca.openosp.openo.prevention.Prevention" %>
+<%@ page import="ca.openosp.openo.prevention.PreventionDisplayConfig" %>
 <html>
 
     <head>

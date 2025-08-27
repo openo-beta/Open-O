@@ -39,6 +39,7 @@
 <%@page import="org.oscarehr.common.model.ProviderData" %>
 <%@page import="org.owasp.encoder.Encode" %>
 <%@page import="java.util.List, java.util.Random" %>
+<%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
 
 
 <%
@@ -46,7 +47,7 @@
 
     String roleName = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 
-    oscar.oscarEncounter.pageUtil.EctSessionBean bean = null;
+    EctSessionBean bean = null;
     String beanName = "casemgmt_oscar_bean" + (String) request.getAttribute("demographicNo");
 
     pageContext.setAttribute("providerNo", request.getParameter("providerNo"), PageContext.PAGE_SCOPE);

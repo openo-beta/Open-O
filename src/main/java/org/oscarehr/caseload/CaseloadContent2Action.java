@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import ca.openosp.openo.oscarBilling.ca.bc.MSP.MSPReconcile;
+import ca.openosp.openo.billing.ca.bc.MSP.MSPReconcile;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 

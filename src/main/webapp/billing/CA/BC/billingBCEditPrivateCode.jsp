@@ -23,9 +23,9 @@
         response.sendRedirect("../logout.jsp");
     }
 %>
-<%@ page import="java.util.*,ca.openosp.openo.oscarBilling.ca.bc.data.BillingCodeData" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.administration.GstControl2Action" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.JdbcBillingCodeImpl" %>
+<%@ page import="java.util.*,ca.openosp.openo.billing.ca.bc.data.BillingCodeData" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.administration.GstControl2Action" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.data.JdbcBillingCodeImpl" %>
 <%@ page import="java.math.BigDecimal" %>
 <%@ page import="org.oscarehr.common.model.BillingService" %>
 <%@ page import="org.apache.commons.lang3.StringUtils" %>

@@ -24,7 +24,7 @@
 
 --%>
 <%@page import="org.apache.commons.lang.StringUtils" %>
-<%@page import="oscar.oscarEncounter.pageUtil.EctDisplayLabAction2" %>
+<%@page import="ca.openosp.openo.encounter.pageUtil.EctDisplayLabAction2" %>
 <%@page import="org.oscarehr.util.MiscUtils" %>
 <%@page import="java.net.URLEncoder" %>
 <%@page import="oscar.oscarLab.ca.all.web.LabDisplayHelper" %>

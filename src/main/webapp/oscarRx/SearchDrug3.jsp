@@ -34,7 +34,7 @@
 <%@page import="org.oscarehr.common.model.PharmacyInfo" %>
 <%@page import="org.oscarehr.util.WebUtils" %>
 <%@page import="org.oscarehr.util.LocaleUtils" %>
-<%@page import="oscar.oscarRx.data.*,ca.openosp.openo.oscarDemographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
+<%@page import="oscar.oscarRx.data.*,ca.openosp.openo.demographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
 <%@page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
 <%@page import="java.text.SimpleDateFormat" %>
 <%@page import="java.util.*" %>

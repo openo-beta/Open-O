@@ -32,7 +32,7 @@ import java.util.Properties;
 
 import org.oscarehr.util.MiscUtils;
 
-import oscar.oscarDB.DBPreparedHandler;
+import ca.openosp.openo.db.DBPreparedHandler;
 
 
 /**

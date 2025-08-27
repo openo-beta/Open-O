@@ -44,6 +44,7 @@
 
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.encounter.util.EctFileUtil" %>
 <% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
 
 <html>
@@ -67,7 +68,7 @@
             if (formId == 0) {
                 props = ((FrmMentalHealthRecord) rec).getFormCustRecord(props, provNo);
             }
-            oscar.oscarEncounter.util.EctFileUtil list = new oscar.oscarEncounter.util.EctFileUtil();
+            EctFileUtil list = new EctFileUtil();
             props.setProperty("c_lastVisited", "outcome");
 
             String projecthome = oscarVariables.getProperty("project_home");

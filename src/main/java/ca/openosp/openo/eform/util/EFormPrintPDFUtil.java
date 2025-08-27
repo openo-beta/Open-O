@@ -45,7 +45,7 @@ import org.oscarehr.util.SpringUtils;
 
 import oscar.form.FrmRecord;
 import oscar.form.FrmRecordFactory;
-import oscar.oscarEncounter.data.EctFormData;
+import ca.openosp.openo.encounter.data.EctFormData;
 import oscar.util.UtilDateUtilities;
 
 public final class EFormPrintPDFUtil {

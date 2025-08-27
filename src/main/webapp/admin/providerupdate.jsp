@@ -58,6 +58,7 @@
 <%@page import="org.oscarehr.common.dao.ProviderSiteDao" %>
 <%@page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@page import="org.oscarehr.common.model.UserProperty" %>
+<%@ page import="ca.openosp.openo.db.DBPreparedHandler" %>
 <%
     ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
     ProviderSiteDao providerSiteDao = SpringUtils.getBean(ProviderSiteDao.class);

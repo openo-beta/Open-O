@@ -57,7 +57,7 @@ import org.oscarehr.drools.RuleBaseFactory;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 
-import oscar.oscarEncounter.oscarMeasurements.util.RuleBaseCreator;
+import ca.openosp.openo.encounter.oscarMeasurements.util.RuleBaseCreator;
 
 /**
  * @author apavel

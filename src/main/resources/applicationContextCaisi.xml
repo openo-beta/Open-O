@@ -19,7 +19,7 @@
 
 
 	<!-- configure the available measurement flow sheets -->
-	<bean id="measurementTemplateFlowSheet" class="oscar.oscarEncounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig">
+	<bean id="measurementTemplateFlowSheet" class="ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig">
 		<property name="flowSheets">
 			<list>
 				<value>classpath:oscar/oscarEncounter/oscarMeasurements/flowsheets/omdDiabetesFlowsheet.xml</value>

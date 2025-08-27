@@ -25,7 +25,7 @@
 <%@ page
         import="oscar.oscarBilling.ca.on.data.*, java.sql.*, oscar.*, java.net.*"
         errorPage="../errorpage.jsp" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.JdbcBillingErrorRepImpl" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.data.JdbcBillingErrorRepImpl" %>
 <%
     String id = request.getParameter("id");
     String val = request.getParameter("val");

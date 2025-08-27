@@ -34,7 +34,7 @@ import java.util.Properties;
 import org.oscarehr.util.LoggedInInfo;
 
 import ca.openosp.openo.login.DBHelp;
-import oscar.oscarDB.DBHandler;
+import ca.openosp.openo.db.DBHandler;
 import oscar.oscarProvider.data.ProviderData;
 import oscar.util.UtilDateUtilities;
 

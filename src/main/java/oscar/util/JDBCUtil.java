@@ -49,7 +49,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
-import oscar.oscarDB.DBHandler;
+import ca.openosp.openo.db.DBHandler;
 
 public class JDBCUtil {
     public static Document toDocument(ResultSet rs)

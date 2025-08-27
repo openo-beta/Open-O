@@ -43,7 +43,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
 import oscar.OscarProperties;
-import oscar.oscarEncounter.oscarMeasurements.MeasurementFlowSheet;
+import ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet;
 
 public interface MeasurementManager {
 

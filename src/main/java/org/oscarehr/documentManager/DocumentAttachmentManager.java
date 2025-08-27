@@ -7,7 +7,7 @@ import org.oscarehr.common.model.enumerator.DocumentType;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.PDFGenerationException;
 
-import oscar.oscarEncounter.data.EctFormData;
+import ca.openosp.openo.encounter.data.EctFormData;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

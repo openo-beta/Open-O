@@ -28,7 +28,7 @@
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.BillingDao" %>
 <%@page import="org.oscarehr.common.model.Billing" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.pageUtil.BillingCorrectionPrep" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.pageUtil.BillingCorrectionPrep" %>
 <%
     BillingDao billingDao = SpringUtils.getBean(BillingDao.class);
 %>

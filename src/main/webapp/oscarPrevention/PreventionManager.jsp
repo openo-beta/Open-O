@@ -37,6 +37,7 @@
 <%@page import="java.util.regex.Pattern" %>
 <%@page import="java.util.regex.*" %>
 <%@page import="java.util.*" %>
+<%@ page import="ca.openosp.openo.prevention.PreventionDisplayConfig" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

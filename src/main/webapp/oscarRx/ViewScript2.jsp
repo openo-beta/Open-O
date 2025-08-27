@@ -24,7 +24,7 @@
 
 --%>
 <%@ page
-        import="oscar.oscarProvider.data.*, oscar.oscarRx.data.*,oscar.OscarProperties, oscar.oscarClinic.ClinicData, java.util.*" %>
+        import="oscar.oscarProvider.data.*, oscar.oscarRx.data.*,oscar.OscarProperties, ca.openosp.openo.clinic.ClinicData, java.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 

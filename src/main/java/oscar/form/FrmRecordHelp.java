@@ -42,7 +42,7 @@ import org.oscarehr.util.MiscUtils;
 import org.w3c.dom.Document;
 
 import oscar.OscarProperties;
-import oscar.oscarDB.DBHandler;
+import ca.openosp.openo.db.DBHandler;
 import oscar.util.JDBCUtil;
 import oscar.util.UtilDateUtilities;
 

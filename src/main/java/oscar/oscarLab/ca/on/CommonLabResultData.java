@@ -46,7 +46,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import oscar.OscarProperties;
-import oscar.oscarDB.ArchiveDeletedRecords;
+import ca.openosp.openo.db.ArchiveDeletedRecords;
 import oscar.oscarLab.ca.all.Hl7textResultsData;
 import oscar.oscarLab.ca.all.upload.ProviderLabRouting;
 import oscar.oscarLab.ca.bc.PathNet.PathnetResultsData;

@@ -46,7 +46,7 @@ import org.oscarehr.ws.rest.util.ClinicalConnectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import oscar.OscarProperties;
-import oscar.oscarPrevention.PreventionDS;
+import ca.openosp.openo.prevention.PreventionDS;
 
 
 @Path("/resources")

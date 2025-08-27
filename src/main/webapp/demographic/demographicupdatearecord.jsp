@@ -72,7 +72,7 @@
 <%@page import="oscar.OscarProperties" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicNameAgeString" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicNameAgeString" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

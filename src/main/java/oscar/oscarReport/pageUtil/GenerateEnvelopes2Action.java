@@ -40,7 +40,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import ca.openosp.openo.oscarDemographic.data.DemographicData;
+import ca.openosp.openo.demographic.data.DemographicData;
 import oscar.util.UtilDateUtilities;
 
 import com.itextpdf.text.Document;

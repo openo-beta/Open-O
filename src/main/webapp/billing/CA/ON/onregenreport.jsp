@@ -29,10 +29,10 @@
 <%@ page import="oscar.oscarBilling.ca.on.pageUtil.*" %>
 <%@ page import="oscar.oscarBilling.ca.on.data.*" %>
 <%@ page import="oscar.oscarProvider.data.ProviderBillCenter" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingProviderData" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.JdbcBillingCreateBillingFile" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.JdbcBillingClaimImpl" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.pageUtil.BillingDiskCreatePrep" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.data.BillingProviderData" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.data.JdbcBillingCreateBillingFile" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.data.JdbcBillingClaimImpl" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.pageUtil.BillingDiskCreatePrep" %>
 
 
 <%

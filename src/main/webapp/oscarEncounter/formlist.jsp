@@ -43,6 +43,7 @@
 
 <%@ page
         import="oscar.util.UtilMisc,oscar.oscarEncounter.data.*,java.net.*,java.util.*" %>
+<%@ page import="ca.openosp.openo.encounter.data.EctFormData" %>
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     String provNo = request.getParameter("provider_no");

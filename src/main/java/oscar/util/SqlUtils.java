@@ -38,7 +38,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.oscarehr.util.MiscUtils;
 
-import oscar.oscarDB.DBHandler;
+import ca.openosp.openo.db.DBHandler;
 
 public class SqlUtils {
     private static Logger logger = MiscUtils.getLogger();

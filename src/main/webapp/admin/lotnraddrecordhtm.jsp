@@ -34,6 +34,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="oscar.OscarProperties" %>
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
+<%@ page import="ca.openosp.openo.prevention.PreventionDisplayConfig" %>
 <%
     String curProvider_no, userfirstname, userlastname;
     curProvider_no = (String) session.getAttribute("user");

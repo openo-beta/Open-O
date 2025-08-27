@@ -40,13 +40,14 @@
 %>
 
 <%@page import="java.net.URLEncoder" %>
+<%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%
     long startTime = System.currentTimeMillis();
-    oscar.oscarEncounter.pageUtil.EctSessionBean bean = null;
-    if ((bean = (oscar.oscarEncounter.pageUtil.EctSessionBean) request.getSession().getAttribute("EctSessionBean")) == null) {
+    EctSessionBean bean = null;
+    if ((bean = (EctSessionBean) request.getSession().getAttribute("EctSessionBean")) == null) {
         response.sendError(response.SC_FORBIDDEN);
         //response.sendRedirect("error.jsp");
         return;

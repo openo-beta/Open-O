@@ -34,7 +34,7 @@ import org.oscarehr.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarEncounter.data.EctProgram;
+import ca.openosp.openo.encounter.data.EctProgram;
 
 import java.text.SimpleDateFormat;
 

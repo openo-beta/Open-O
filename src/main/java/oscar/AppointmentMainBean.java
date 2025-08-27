@@ -31,8 +31,8 @@ import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import oscar.oscarDB.DBPreparedHandler;
-import oscar.oscarDB.DBPreparedHandlerParam;
+import ca.openosp.openo.db.DBPreparedHandler;
+import ca.openosp.openo.db.DBPreparedHandlerParam;
 import oscar.util.UtilDict;
 
 public class AppointmentMainBean {

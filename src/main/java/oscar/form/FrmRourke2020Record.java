@@ -45,7 +45,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import oscar.form.model.FormRourke2020;
 import oscar.form.util.JasperReportPdfPrint;
-import oscar.oscarEncounter.data.EctFormData;
+import ca.openosp.openo.encounter.data.EctFormData;
 import oscar.util.UtilDateUtilities;
 
 import java.io.OutputStream;

@@ -49,7 +49,7 @@
                 org.oscarehr.common.dao.SecRoleDao,
                 org.oscarehr.common.model.SecRole,
                 org.oscarehr.util.SpringUtils,
-                oscar.oscarEncounter.data.EctProgram,
+                ca.openosp.openo.encounter.data.EctProgram,
                 java.util.Date,
                 java.util.List" %>
 <%@page import="ca.openosp.openo.log.LogAction, ca.openosp.openo.log.LogConst" %>

@@ -46,7 +46,7 @@ import ca.openosp.openo.eform.EFormLoader;
 import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.eform.data.DatabaseAP;
 import ca.openosp.openo.eform.data.EForm;
-import oscar.oscarEncounter.data.EctProgram;
+import ca.openosp.openo.encounter.data.EctProgram;
 import oscar.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;

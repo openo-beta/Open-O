@@ -58,8 +58,8 @@ import ca.openosp.openo.appt.ApptStatusData;
 import oscar.form.JSONUtil;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
-import oscar.oscarEncounter.data.EctProgram;
-import oscar.oscarEncounter.pageUtil.EctSessionBean;
+import ca.openosp.openo.encounter.data.EctProgram;
+import ca.openosp.openo.encounter.pageUtil.EctSessionBean;
 import oscar.util.UtilDateUtilities;
 
 import javax.servlet.http.HttpServletRequest;

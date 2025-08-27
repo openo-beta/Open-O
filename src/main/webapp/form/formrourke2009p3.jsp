@@ -41,7 +41,7 @@
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page import="oscar.util.*, oscar.form.*, oscar.form.data.*" %>
-<%@ page import="oscar.oscarEncounter.data.EctFormData" %>
+<%@ page import="ca.openosp.openo.encounter.data.EctFormData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 

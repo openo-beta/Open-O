@@ -23,7 +23,7 @@ import org.oscarehr.util.DateUtils;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarEncounter.data.EctFormData.PatientForm;
+import ca.openosp.openo.encounter.data.EctFormData.PatientForm;
 import oscar.oscarLab.ca.on.CommonLabResultData;
 import oscar.oscarLab.ca.on.LabResultData;
 import oscar.util.StringUtils;

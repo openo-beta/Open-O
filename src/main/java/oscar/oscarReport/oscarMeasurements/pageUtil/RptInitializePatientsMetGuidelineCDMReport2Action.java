@@ -35,7 +35,7 @@ import org.oscarehr.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
-import oscar.oscarEncounter.oscarMeasurements.pageUtil.EctValidation;
+import ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctValidation;
 import oscar.oscarReport.oscarMeasurements.data.RptMeasurementsData;
 import oscar.util.ConversionUtils;
 

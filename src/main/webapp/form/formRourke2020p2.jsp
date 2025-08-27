@@ -41,7 +41,7 @@
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page import="oscar.util.*, oscar.form.*, oscar.form.data.*" %>
-<%@ page import="oscar.oscarEncounter.data.EctFormData" %>
+<%@ page import="ca.openosp.openo.encounter.data.EctFormData" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Demographic" %>

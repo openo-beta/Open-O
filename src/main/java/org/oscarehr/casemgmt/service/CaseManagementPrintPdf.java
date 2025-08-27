@@ -41,7 +41,7 @@ import org.oscarehr.managers.ProgramManager2;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 import oscar.OscarProperties;
-import oscar.oscarClinic.ClinicData;
+import ca.openosp.openo.clinic.ClinicData;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;

@@ -36,7 +36,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarEncounter.oscarMeasurements.util.WriteNewMeasurements;
+import ca.openosp.openo.encounter.oscarMeasurements.util.WriteNewMeasurements;
 import oscar.oscarWorkflow.WorkFlowState;
 import oscar.util.UtilDateUtilities;
 

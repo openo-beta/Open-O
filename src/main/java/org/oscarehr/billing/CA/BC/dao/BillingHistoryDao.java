@@ -34,7 +34,7 @@ import org.oscarehr.common.model.BillingPaymentType;
 import org.springframework.stereotype.Repository;
 
 import ca.openosp.openo.entities.Billingmaster;
-import ca.openosp.openo.oscarBilling.ca.bc.MSP.MSPReconcile;
+import ca.openosp.openo.billing.ca.bc.MSP.MSPReconcile;
 
 @Repository
 public class BillingHistoryDao extends AbstractDaoImpl<BillingHistory> {

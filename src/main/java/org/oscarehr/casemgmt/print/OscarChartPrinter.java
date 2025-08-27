@@ -73,8 +73,8 @@ import org.oscarehr.util.SpringUtils;
 
 import oscar.OscarProperties;
 import oscar.SxmlMisc;
-import oscar.oscarClinic.ClinicData;
-import ca.openosp.openo.oscarDemographic.data.DemographicRelationship;
+import ca.openosp.openo.clinic.ClinicData;
+import ca.openosp.openo.demographic.data.DemographicRelationship;
 
 /**
  * This will create a PDF + assemble e-forms,documents,labs into a package

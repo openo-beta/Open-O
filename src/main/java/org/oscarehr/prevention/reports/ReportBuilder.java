@@ -53,11 +53,11 @@ import org.oscarehr.util.SpringUtils;
 import org.oscarehr.ws.rest.to.model.PreventionSearchConfigTo1;
 import org.oscarehr.ws.rest.to.model.PreventionSearchTo1;
 
-import oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBean;
-import oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
-import oscar.oscarPrevention.PreventionData;
-import oscar.oscarPrevention.reports.PreventionReportUtil;
-import oscar.oscarPrevention.reports.ReportItem;
+import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBean;
+import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
+import ca.openosp.openo.prevention.PreventionData;
+import ca.openosp.openo.prevention.reports.PreventionReportUtil;
+import ca.openosp.openo.prevention.reports.ReportItem;
 import oscar.util.UtilDateUtilities;
 
 public class ReportBuilder {

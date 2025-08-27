@@ -97,7 +97,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.log.LogAction;
-import ca.openosp.openo.oscarDemographic.data.DemographicRelationship;
+import ca.openosp.openo.demographic.data.DemographicRelationship;
 
 import ca.openosp.openo.service.LookupManager;
 

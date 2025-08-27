@@ -52,8 +52,8 @@
 <%@page import="oscar.util.UtilDateUtilities" %>
 <%@ page import="org.oscarehr.event.EventService" %>
 <%@page import="org.oscarehr.managers.DemographicManager" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicMerged" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicMerged" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <html>

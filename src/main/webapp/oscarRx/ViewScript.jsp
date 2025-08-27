@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@ page import="oscar.oscarProvider.data.*, oscar.OscarProperties, oscar.oscarClinic.ClinicData, java.util.*" %>
+<%@ page import="oscar.oscarProvider.data.*, oscar.OscarProperties, ca.openosp.openo.clinic.ClinicData, java.util.*" %>
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="org.oscarehr.common.model.Site" %>

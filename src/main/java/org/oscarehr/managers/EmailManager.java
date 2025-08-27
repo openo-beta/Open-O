@@ -47,7 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ca.openosp.openo.log.LogAction;
-import oscar.oscarEncounter.data.EctProgram;
+import ca.openosp.openo.encounter.data.EctProgram;
 import oscar.util.StringUtils;
 
 @Service

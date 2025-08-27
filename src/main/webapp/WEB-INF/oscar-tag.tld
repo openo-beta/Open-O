@@ -9,7 +9,7 @@
 
 <tag>
   <name>preventionWarnings</name>
-  <tagclass>oscar.oscarPrevention.tld.PreventionTag</tagclass>
+  <tagclass>ca.openosp.openo.prevention.tld.PreventionTag</tagclass>
   <bodycontent>jsp</bodycontent>
   <attribute>
     <name>demographicNo</name>
@@ -31,7 +31,7 @@
 
 <tag>
   <name>agedConsult</name>
-  <tagclass>oscar.oscarEncounter.oscarConsultationRequest.tld.ConsultTag</tagclass>
+  <tagclass>ca.openosp.openo.encounter.oscarConsultationRequest.tld.ConsultTag</tagclass>
   <bodycontent>jsp</bodycontent>
   <attribute>
     <name>providerNo</name>
@@ -48,7 +48,7 @@
 
 <tag>
   <name>filledScratch</name>
-  <tagclass>oscar.scratch.tld.ScratchTag</tagclass>
+  <tagclass>ca.openosp.openo.scratch.tld.ScratchTag</tagclass>
   <bodycontent>jsp</bodycontent>
   <attribute>
     <name>providerNo</name>
@@ -102,7 +102,7 @@
 
 <tag>
   <name>nameage</name>
-  <tagclass>ca.openosp.openo.oscarDemographic.tld.DemographicNameAgeTag</tagclass>
+  <tagclass>ca.openosp.openo.demographic.tld.DemographicNameAgeTag</tagclass>
   <bodycontent>empty</bodycontent>
   <attribute>
     <name>demographicNo</name>

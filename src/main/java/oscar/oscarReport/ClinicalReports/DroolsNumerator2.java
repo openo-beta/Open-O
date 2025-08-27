@@ -42,11 +42,11 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 
 import oscar.OscarProperties;
-import oscar.oscarEncounter.oscarMeasurements.MeasurementFlowSheet;
-import oscar.oscarEncounter.oscarMeasurements.util.MeasurementDSHelper;
-import oscar.oscarEncounter.oscarMeasurements.util.RuleBaseCreator;
-import oscar.oscarEncounter.oscarMeasurements.util.TargetColour;
-import oscar.oscarEncounter.oscarMeasurements.util.TargetCondition;
+import ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet;
+import ca.openosp.openo.encounter.oscarMeasurements.util.MeasurementDSHelper;
+import ca.openosp.openo.encounter.oscarMeasurements.util.RuleBaseCreator;
+import ca.openosp.openo.encounter.oscarMeasurements.util.TargetColour;
+import ca.openosp.openo.encounter.oscarMeasurements.util.TargetCondition;
 
 /**
  * @author jay

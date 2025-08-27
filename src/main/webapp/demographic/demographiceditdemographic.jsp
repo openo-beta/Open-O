@@ -83,9 +83,9 @@
 
 %>
 <%@ page
-        import="java.util.*, java.net.*,java.text.DecimalFormat, oscar.*, ca.openosp.openo.oscarDemographic.data.ProvinceNames, oscar.oscarWaitingList.WaitingList, oscar.oscarReport.data.DemographicSets,oscar.log.*" %>
+        import="java.util.*, java.net.*,java.text.DecimalFormat, oscar.*, ca.openosp.openo.demographic.data.ProvinceNames, oscar.oscarWaitingList.WaitingList, oscar.oscarReport.data.DemographicSets,oscar.log.*" %>
 <%@ page import="oscar.oscarDemographic.data.*" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.pageUtil.Util" %>
+<%@ page import="ca.openosp.openo.demographic.pageUtil.Util" %>
 <%@ page import="oscar.OscarProperties" %>
 <%@ page import="org.oscarehr.common.dao.*,org.oscarehr.common.model.*" %>
 <%@ page import="org.oscarehr.common.OtherIdManager" %>
@@ -247,8 +247,8 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicMerged" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicRelationship" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicMerged" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicRelationship" %>
 <!DOCTYPE html>
 <html>
 

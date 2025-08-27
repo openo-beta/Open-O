@@ -110,8 +110,8 @@
     //The oscarEncounter session manager, if the session bean is not in the context it looks for a session cookie with the appropriate name and value, if the required cookie is not available
     //it dumps you out to an erros page.
 
-    oscar.oscarEncounter.pageUtil.EctSessionBean bean = null;
-    if ((bean = (oscar.oscarEncounter.pageUtil.EctSessionBean) request.getSession().getAttribute("EctSessionBean")) == null) {
+    EctSessionBean bean = null;
+    if ((bean = (EctSessionBean) request.getSession().getAttribute("EctSessionBean")) == null) {
         response.sendRedirect("error.jsp");
         return;
     }
@@ -195,7 +195,7 @@
     String pAge = Integer.toString(dateConvert.calcAge(bean.yearOfBirth, bean.monthOfBirth, bean.dateOfBirth));
 
     String province = (oscarVariables.getProperty("billregion", "")).trim().toUpperCase();
-    Properties windowSizes = oscar.oscarEncounter.pageUtil.EctWindowSizes.getWindowSizes(provNo);
+    Properties windowSizes = EctWindowSizes.getWindowSizes(provNo);
 
     MsgDemoMap msgDemoMap = new MsgDemoMap();
 
@@ -216,6 +216,9 @@
 <%@page import="org.oscarehr.util.MiscUtils" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
+<%@ page import="ca.openosp.openo.encounter.pageUtil.EctWindowSizes" %>
+<%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
+<%@ page import="ca.openosp.openo.encounter.data.*" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

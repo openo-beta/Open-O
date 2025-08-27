@@ -83,10 +83,10 @@
 	<bean id="clinicDAO" class="org.oscarehr.common.dao.ClinicDAO" autowire="byName" />
 	<bean id="dataExportDAO" class="org.oscarehr.common.dao.DataExportDao" autowire="byName" />
 	<bean id="siteDao" class="org.oscarehr.common.dao.SiteDao" autowire="byName" />
-	<bean id="BillingmasterDAO" class="ca.openosp.openo.oscarBilling.ca.bc.data.BillingmasterDAO" autowire="byName" />
-	<bean id="BillingPreferencesDAO" class="ca.openosp.openo.oscarBilling.ca.bc.data.BillingPreferencesDAO" autowire="byName" />
-	<bean id="PrivateBillTransactionDAO" class="ca.openosp.openo.oscarBilling.ca.bc.data.PrivateBillTransactionsDAO" autowire="byName" />
-	<bean id="SupServiceCodeAssocDAO" class="ca.openosp.openo.oscarBilling.ca.bc.data.SupServiceCodeAssocDAO" autowire="byName" />
+	<bean id="BillingmasterDAO" class="ca.openosp.openo.billing.ca.bc.data.BillingmasterDAO" autowire="byName" />
+	<bean id="BillingPreferencesDAO" class="ca.openosp.openo.billing.ca.bc.data.BillingPreferencesDAO" autowire="byName" />
+	<bean id="PrivateBillTransactionDAO" class="ca.openosp.openo.billing.ca.bc.data.PrivateBillTransactionsDAO" autowire="byName" />
+	<bean id="SupServiceCodeAssocDAO" class="ca.openosp.openo.billing.ca.bc.data.SupServiceCodeAssocDAO" autowire="byName" />
 	<bean id="BillingreferralDAO" class="org.oscarehr.common.dao.BillingreferralDao" autowire="byName" />
 	<bean id="DxresearchDAO" class="org.oscarehr.common.dao.DxresearchDAO" autowire="byName" />
 	<bean id="Icd9DAO" class="org.oscarehr.common.dao.Icd9Dao" autowire="byName" />

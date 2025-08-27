@@ -41,6 +41,7 @@
 
 <%@ page
         import="oscar.util.*, oscar.form.*, oscar.form.data.*,java.util.*, oscar.oscarProvider.data.*, oscar.oscarPrevention.*" %>
+<%@ page import="ca.openosp.openo.prevention.PreventionData" %>
 
 <%
     String id = request.getParameter("id");

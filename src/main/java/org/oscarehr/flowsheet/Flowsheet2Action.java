@@ -73,9 +73,9 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarEncounter.oscarMeasurements.MeasurementFlowSheet;
-import oscar.oscarEncounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig;
-import oscar.oscarPrevention.PreventionDisplayConfig;
+import ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet;
+import ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig;
+import ca.openosp.openo.prevention.PreventionDisplayConfig;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

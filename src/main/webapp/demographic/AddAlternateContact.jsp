@@ -62,8 +62,8 @@
 <%@page import="org.oscarehr.common.model.CtlRelationships" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicRelationship" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicRelationship" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

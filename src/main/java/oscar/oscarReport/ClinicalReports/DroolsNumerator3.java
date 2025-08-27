@@ -40,8 +40,8 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 
 import oscar.OscarProperties;
-import oscar.oscarEncounter.oscarMeasurements.MeasurementFlowSheet;
-import oscar.oscarEncounter.oscarMeasurements.util.MeasurementDSHelper;
+import ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet;
+import ca.openosp.openo.encounter.oscarMeasurements.util.MeasurementDSHelper;
 import oscar.util.ConversionUtils;
 
 /**

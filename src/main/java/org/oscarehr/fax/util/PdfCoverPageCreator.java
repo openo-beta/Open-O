@@ -39,7 +39,7 @@ import org.oscarehr.util.MiscUtils;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import oscar.OscarProperties;
-import oscar.oscarClinic.ClinicData;
+import ca.openosp.openo.clinic.ClinicData;
 
 import static org.oscarehr.util.ClinicLogoUtility.createLogoHeader;
 

@@ -36,8 +36,8 @@ import java.util.Properties;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 
-import oscar.oscarDB.DBHandler;
-import oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
+import ca.openosp.openo.db.DBHandler;
+import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
 import oscar.util.UtilDateUtilities;
 
 public class FrmRhImmuneGlobulinRecord extends FrmRecord {

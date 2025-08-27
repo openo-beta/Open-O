@@ -37,7 +37,7 @@ import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
 import org.oscarehr.util.SpringUtils;
 
-import ca.openosp.openo.oscarBilling.ca.bc.data.SupServiceCodeAssocDAO;
+import ca.openosp.openo.billing.ca.bc.data.SupServiceCodeAssocDAO;
 
 public class SupServiceCodeAssocDAOTest extends DaoTestFixtures {
 

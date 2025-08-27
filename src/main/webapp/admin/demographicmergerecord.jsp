@@ -90,7 +90,7 @@
     }
 %>
 
-<%@ page import="java.util.*, java.sql.*, oscar.*, ca.openosp.openo.oscarDemographic.data.DemographicMerged" %>
+<%@ page import="java.util.*, java.sql.*, oscar.*, ca.openosp.openo.demographic.data.DemographicMerged" %>
 <%@ page import="java.lang.System" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Demographic" %>

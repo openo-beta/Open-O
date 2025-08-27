@@ -116,10 +116,10 @@
 	<bean id="clinicDAO" class="org.oscarehr.common.dao.ClinicDAOImpl" autowire="byName" />
 	<bean id="dataExportDAO" class="org.oscarehr.common.dao.DataExportDaoImpl" autowire="byName" />
 	<bean id="siteDao" class="org.oscarehr.common.dao.SiteDaoImpl" autowire="byName" />
-	<bean id="BillingmasterDAO" class="ca.openosp.openo.oscarBilling.ca.bc.data.BillingmasterDAO" autowire="byName" />
-	<bean id="BillingPreferencesDAO" class="ca.openosp.openo.oscarBilling.ca.bc.data.BillingPreferencesDAO" autowire="byName" />
-	<bean id="PrivateBillTransactionDAO" class="ca.openosp.openo.oscarBilling.ca.bc.data.PrivateBillTransactionsDAO" autowire="byName" />
-	<bean id="SupServiceCodeAssocDAO" class="ca.openosp.openo.oscarBilling.ca.bc.data.SupServiceCodeAssocDAO" autowire="byName" />
+	<bean id="BillingmasterDAO" class="ca.openosp.openo.billing.ca.bc.data.BillingmasterDAO" autowire="byName" />
+	<bean id="BillingPreferencesDAO" class="ca.openosp.openo.billing.ca.bc.data.BillingPreferencesDAO" autowire="byName" />
+	<bean id="PrivateBillTransactionDAO" class="ca.openosp.openo.billing.ca.bc.data.PrivateBillTransactionsDAO" autowire="byName" />
+	<bean id="SupServiceCodeAssocDAO" class="ca.openosp.openo.billing.ca.bc.data.SupServiceCodeAssocDAO" autowire="byName" />
 	<bean id="BillingreferralDAO" class="org.oscarehr.common.dao.BillingreferralDaoImpl" autowire="byName" />
 	<bean id="DxresearchDAO" class="org.oscarehr.common.dao.DxresearchDAOImpl" autowire="byName" />
 	<bean id="icd9Dao" class="org.oscarehr.common.dao.Icd9DaoImpl" autowire="byName" />
@@ -176,7 +176,7 @@
 	</bean>
 
 	<!-- configure the available measurement flow sheets -->
-	<bean id="measurementTemplateFlowSheet" class="oscar.oscarEncounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig">
+	<bean id="measurementTemplateFlowSheet" class="ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig">
 		<property name="flowSheets">
 			<list>
 				<!--value>classpath:oscar/oscarEncounter/oscarMeasurements/flowsheets/diabetesFlowsheet.xml</value-->

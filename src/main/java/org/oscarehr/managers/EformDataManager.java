@@ -38,7 +38,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.PDFGenerationException;
 
 import ca.openosp.openo.eform.data.EForm;
-import oscar.oscarEncounter.data.EctFormData;
+import ca.openosp.openo.encounter.data.EctFormData;
 
 public interface EformDataManager {
 

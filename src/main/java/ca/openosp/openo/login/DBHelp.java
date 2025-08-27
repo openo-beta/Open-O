@@ -36,7 +36,7 @@ import java.sql.SQLException;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.util.MiscUtils;
 
-import oscar.oscarDB.DBHandler;
+import ca.openosp.openo.db.DBHandler;
 
 /**
  * deprecated Use JPA instead, no new code should be written against this class.

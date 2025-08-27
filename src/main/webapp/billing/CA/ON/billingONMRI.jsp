@@ -42,10 +42,10 @@
 <%@page import="org.oscarehr.common.model.ProviderBillCenter" %>
 <%@page import="org.oscarehr.common.dao.ProviderBillCenterDao" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingDataHlp" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingDiskNameData" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.JdbcBillingPageUtil" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.pageUtil.BillingReviewPrep" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.data.BillingDataHlp" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.data.BillingDiskNameData" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.data.JdbcBillingPageUtil" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.pageUtil.BillingReviewPrep" %>
 
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);

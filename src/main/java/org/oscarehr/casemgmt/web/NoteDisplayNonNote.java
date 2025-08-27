@@ -39,7 +39,7 @@ import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.service.BillingONService;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarEncounter.data.EctFormData.PatientForm;
+import ca.openosp.openo.encounter.data.EctFormData.PatientForm;
 import oscar.oscarRx.data.RxPrescriptionData.Prescription;
 
 /**

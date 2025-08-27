@@ -34,7 +34,7 @@ import java.util.List;
 
 import org.oscarehr.util.MiscUtils;
 
-import oscar.oscarDB.DBHandler;
+import ca.openosp.openo.db.DBHandler;
 
 /**
  * This is for straight SQLDenominators  not sure if it should return a more specialised list

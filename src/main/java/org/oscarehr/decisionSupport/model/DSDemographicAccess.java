@@ -50,11 +50,11 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 import oscar.OscarProperties;
-import ca.openosp.openo.oscarBilling.ca.bc.MSP.ServiceCodeValidationLogic;
-import ca.openosp.openo.oscarDemographic.data.DemographicData;
-import oscar.oscarEncounter.oscarMeasurements.MeasurementFlowSheet;
-import oscar.oscarEncounter.oscarMeasurements.MeasurementInfo;
-import oscar.oscarEncounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig;
+import ca.openosp.openo.billing.ca.bc.MSP.ServiceCodeValidationLogic;
+import ca.openosp.openo.demographic.data.DemographicData;
+import ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet;
+import ca.openosp.openo.encounter.oscarMeasurements.MeasurementInfo;
+import ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig;
 import oscar.oscarResearch.oscarDxResearch.bean.dxResearchBean;
 import oscar.oscarResearch.oscarDxResearch.bean.dxResearchBeanHandler;
 import oscar.oscarRx.data.RxPrescriptionData;

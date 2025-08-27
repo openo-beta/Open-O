@@ -28,7 +28,7 @@ package oscar.util;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import ca.openosp.openo.oscarBilling.ca.bc.MSP.CDMReminderHlp;
+import ca.openosp.openo.billing.ca.bc.MSP.CDMReminderHlp;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.model.Provider;

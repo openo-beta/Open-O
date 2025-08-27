@@ -27,10 +27,10 @@
 %>
 <%@ page errorPage="${pageContext.request.contextPath}/appointment/errorpage.jsp"
          import="java.util.*,java.sql.*,oscar.*,java.text.*,java.net.*" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.JdbcBillingPageUtil" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.data.JdbcBillingPageUtil" %>
 <%@ page import="oscar.oscarBilling.ca.on.data.*" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingDataHlp" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.data.BillingDataHlp" %>
 <% //
     int serviceCodeLen = 5;
     String msg = "Type in a name and search first to see if it is available.";

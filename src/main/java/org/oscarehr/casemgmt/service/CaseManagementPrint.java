@@ -1,6 +1,8 @@
 //CHECKSTYLE:OFF
 package org.oscarehr.casemgmt.service;
 
+import ca.openosp.openo.encounter.data.EctProviderData;
+import ca.openosp.openo.encounter.pageUtil.EctSessionBean;
 import com.lowagie.text.DocumentException;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
@@ -490,12 +492,12 @@ public class CaseManagementPrint {
 
     protected String getMRP(HttpServletRequest request, String demographicNo) {
         String strBeanName = "casemgmt_oscar_bean" + demographicNo;
-        oscar.oscarEncounter.pageUtil.EctSessionBean bean = (oscar.oscarEncounter.pageUtil.EctSessionBean) request.getSession().getAttribute(strBeanName);
+        EctSessionBean bean = (EctSessionBean) request.getSession().getAttribute(strBeanName);
         if (bean == null) return new String("");
         if (bean.familyDoctorNo == null) return new String("");
         if (bean.familyDoctorNo.isEmpty()) return new String("");
 
-        oscar.oscarEncounter.data.EctProviderData.Provider prov = new oscar.oscarEncounter.data.EctProviderData().getProvider(bean.familyDoctorNo);
+        EctProviderData.Provider prov = new EctProviderData().getProvider(bean.familyDoctorNo);
         String name = prov.getFirstName() + " " + prov.getSurname();
         return name;
     }

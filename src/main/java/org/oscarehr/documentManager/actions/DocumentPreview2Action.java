@@ -3,7 +3,7 @@ package org.oscarehr.documentManager.actions;
 
 import net.sf.json.JSONObject;
 import ca.openosp.openo.eform.EFormUtil;
-import oscar.oscarEncounter.data.EctFormData;
+import ca.openosp.openo.encounter.data.EctFormData;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.EFormData;

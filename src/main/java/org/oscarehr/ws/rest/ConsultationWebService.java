@@ -99,7 +99,7 @@ import net.sf.json.JSONObject;
 import org.oscarehr.documentManager.EDoc;
 import org.oscarehr.documentManager.EDocUtil;
 import ca.openosp.openo.eform.EFormUtil;
-import ca.openosp.openo.oscarDemographic.data.RxInformation;
+import ca.openosp.openo.demographic.data.RxInformation;
 import oscar.oscarLab.ca.on.CommonLabResultData;
 import oscar.oscarLab.ca.on.LabResultData;
 import oscar.util.ConversionUtils;

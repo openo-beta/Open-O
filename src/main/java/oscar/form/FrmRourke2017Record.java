@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
 import org.oscarehr.common.dao.forms.Rourke2017Dao;
 import oscar.form.model.FormRourke2017;
 import oscar.form.util.JasperReportPdfPrint;
-import oscar.oscarEncounter.data.EctFormData;
+import ca.openosp.openo.encounter.data.EctFormData;
 import oscar.util.UtilDateUtilities;
 
 import java.io.OutputStream;

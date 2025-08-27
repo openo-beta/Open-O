@@ -58,12 +58,12 @@
             <result name="tickler">/tickler/ticklerAddWidget.jsp</result>
         </action>
         <action name="notification/create" class="org.oscarehr.common.web.ProviderNotification2Action"/>
-        <action name="quickBillingBC" class="ca.openosp.openo.oscarBilling.ca.bc.quickbilling.QuickBillingBC2Action">
+        <action name="quickBillingBC" class="ca.openosp.openo.billing.ca.bc.quickbilling.QuickBillingBC2Action">
             <result name="success">/billing/CA/BC/quickBillingBC.jsp</result>
             <result name="searchdx">billing/CA/BC/billingDigNewSearch.jsp</result>
             <result name="error">/billing/CA/BC/quickBillingBC.jsp</result>
         </action>
-        <action name="saveQuickBillingBC" class="ca.openosp.openo.oscarBilling.ca.bc.quickbilling.QuickBillingBCSave2Action">
+        <action name="saveQuickBillingBC" class="ca.openosp.openo.billing.ca.bc.quickbilling.QuickBillingBCSave2Action">
             <result name="saved">/quickBillingBC.do</result>
             <result name="error">/billing/CA/BC/quickBillingBC.jsp?saved=false</result>
         </action>
@@ -77,7 +77,7 @@
         <action name="lab/CA/ALL/createLabelTDIS" class="oscar.oscarLab.ca.all.pageUtil.CreateLabelTDIS2Action">
             <result name="complete">/lab/CA/ALL/labDisplay.jsp</result>
         </action>
-        <action name="MeasurementHL7Uploader" class="oscar.oscarEncounter.oscarMeasurements.hl7.MeasurementHL7Uploader2Action"/>
+        <action name="MeasurementHL7Uploader" class="ca.openosp.openo.encounter.oscarMeasurements.hl7.MeasurementHL7Uploader2Action"/>
         <action name="Home" class="org.oscarehr.PMmodule.web.Home2Action">
             <result name="home">/PMmodule/layout_quatro.jsp</result>
         </action>
@@ -202,7 +202,7 @@
             <result name="success">/oscarRx/ChooseDrug.jsp</result>
             <result name="error">/500.jsp</result>
         </action>
-        <action name="oscarEncounter/IncomingEncounter" class="oscar.oscarEncounter.pageUtil.EctIncomingEncounter2Action">
+        <action name="oscarEncounter/IncomingEncounter" class="ca.openosp.openo.encounter.pageUtil.EctIncomingEncounter2Action">
             <result name="failure">/oscarEncounter/error.jsp</result>
             <result name="success">/oscarEncounter/Index.jsp</result>
             <result name="success2">/oscarEncounter/Index2.jsp</result>
@@ -431,7 +431,7 @@
         <action name="form/forwardshortcutname" class="oscar.form.pageUtil.FormForward2Action"/>
         <action name="form/SetupForm" class="oscar.form.pageUtil.FrmSetupForm2Action"/>
         <action name="form/SubmitForm" class="oscar.form.pageUtil.FrmForm2Action"/>
-        <action name="oscarEncounter/displayLabs" class="oscar.oscarEncounter.pageUtil.EctDisplayLabAction22Action">
+        <action name="oscarEncounter/displayLabs" class="ca.openosp.openo.encounter.pageUtil.EctDisplayLabAction22Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -452,7 +452,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayForms" class="oscar.oscarEncounter.pageUtil.EctDisplayForm2Action">
+        <action name="oscarEncounter/displayForms" class="ca.openosp.openo.encounter.pageUtil.EctDisplayForm2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -473,7 +473,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayEForms" class="oscar.oscarEncounter.pageUtil.EctDisplayEForm2Action">
+        <action name="oscarEncounter/displayEForms" class="ca.openosp.openo.encounter.pageUtil.EctDisplayEForm2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -494,7 +494,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayMessages" class="oscar.oscarEncounter.pageUtil.EctDisplayMsg2Action">
+        <action name="oscarEncounter/displayMessages" class="ca.openosp.openo.encounter.pageUtil.EctDisplayMsg2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -515,7 +515,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayBilling" class="oscar.oscarEncounter.pageUtil.EctDisplayBilling2Action">
+        <action name="oscarEncounter/displayBilling" class="ca.openosp.openo.encounter.pageUtil.EctDisplayBilling2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -536,7 +536,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayDocuments" class="oscar.oscarEncounter.pageUtil.EctDisplayDocs2Action">
+        <action name="oscarEncounter/displayDocuments" class="ca.openosp.openo.encounter.pageUtil.EctDisplayDocs2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -557,7 +557,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayPhotos" class="oscar.oscarEncounter.pageUtil.EctDisplayPhotos2Action">
+        <action name="oscarEncounter/displayPhotos" class="ca.openosp.openo.encounter.pageUtil.EctDisplayPhotos2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -578,7 +578,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayMeasurements" class="oscar.oscarEncounter.pageUtil.EctDisplayMeasurements2Action">
+        <action name="oscarEncounter/displayMeasurements" class="ca.openosp.openo.encounter.pageUtil.EctDisplayMeasurements2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -599,7 +599,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayTickler" class="oscar.oscarEncounter.pageUtil.EctDisplayTickler2Action">
+        <action name="oscarEncounter/displayTickler" class="ca.openosp.openo.encounter.pageUtil.EctDisplayTickler2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -620,7 +620,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayDisease" class="oscar.oscarEncounter.pageUtil.EctDisplayDx2Action">
+        <action name="oscarEncounter/displayDisease" class="ca.openosp.openo.encounter.pageUtil.EctDisplayDx2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -641,7 +641,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayPrevention" class="oscar.oscarEncounter.pageUtil.EctDisplayPrevention2Action">
+        <action name="oscarEncounter/displayPrevention" class="ca.openosp.openo.encounter.pageUtil.EctDisplayPrevention2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -725,7 +725,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayAppointmentHistory" class="oscar.oscarEncounter.pageUtil.EctDisplayAppointmentHistory2Action">
+        <action name="oscarEncounter/displayAppointmentHistory" class="ca.openosp.openo.encounter.pageUtil.EctDisplayAppointmentHistory2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -767,7 +767,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayConsultation" class="oscar.oscarEncounter.pageUtil.EctDisplayConsult2Action">
+        <action name="oscarEncounter/displayConsultation" class="ca.openosp.openo.encounter.pageUtil.EctDisplayConsult2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -788,7 +788,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayEconsultation" class="oscar.oscarEncounter.pageUtil.EctDisplayEconsult2Action">
+        <action name="oscarEncounter/displayEconsultation" class="ca.openosp.openo.encounter.pageUtil.EctDisplayEconsult2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -809,7 +809,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayEHR" class="oscar.oscarEncounter.pageUtil.EctDisplayEHR2Action">
+        <action name="oscarEncounter/displayEHR" class="ca.openosp.openo.encounter.pageUtil.EctDisplayEHR2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -830,7 +830,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayAllergy" class="oscar.oscarEncounter.pageUtil.EctDisplayAllergy2Action">
+        <action name="oscarEncounter/displayAllergy" class="ca.openosp.openo.encounter.pageUtil.EctDisplayAllergy2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -851,7 +851,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayRx" class="oscar.oscarEncounter.pageUtil.EctDisplayRx2Action">
+        <action name="oscarEncounter/displayRx" class="ca.openosp.openo.encounter.pageUtil.EctDisplayRx2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -872,7 +872,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayIssues" class="oscar.oscarEncounter.pageUtil.EctDisplayIssues2Action">
+        <action name="oscarEncounter/displayIssues" class="ca.openosp.openo.encounter.pageUtil.EctDisplayIssues2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -893,7 +893,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayResolvedIssues" class="oscar.oscarEncounter.pageUtil.EctDisplayResolvedIssues2Action">
+        <action name="oscarEncounter/displayResolvedIssues" class="ca.openosp.openo.encounter.pageUtil.EctDisplayResolvedIssues2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -914,7 +914,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayDecisionSupportAlerts" class="oscar.oscarEncounter.pageUtil.EctDisplayDecisionSupportAlerts2Action">
+        <action name="oscarEncounter/displayDecisionSupportAlerts" class="ca.openosp.openo.encounter.pageUtil.EctDisplayDecisionSupportAlerts2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -936,7 +936,7 @@
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
         <action name="report/printLabDaySheetAction" class="oscar.oscarReport.pageUtil.printLabDaySheet2Action"/>
-        <action name="oscarEncounter/displayDiagrams" class="oscar.oscarEncounter.pageUtil.EctDisplayDiagram2Action">
+        <action name="oscarEncounter/displayDiagrams" class="ca.openosp.openo.encounter.pageUtil.EctDisplayDiagram2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -978,7 +978,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayHRM" class="oscar.oscarEncounter.pageUtil.EctDisplayHRM2Action">
+        <action name="oscarEncounter/displayHRM" class="ca.openosp.openo.encounter.pageUtil.EctDisplayHRM2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -1003,7 +1003,7 @@
             <result name="guidelineList">/oscarEncounter/decisionSupport/guidelineList.jsp</result>
             <result name="guidelineDetail">/oscarEncounter/decisionSupport/guidelineDetail.jsp</result>
         </action>
-        <action name="oscarEncounter/SaveEncounter" class="oscar.oscarEncounter.pageUtil.EctSaveEncounter2Action">
+        <action name="oscarEncounter/SaveEncounter" class="ca.openosp.openo.encounter.pageUtil.EctSaveEncounter2Action">
             <result name="saveAndStay">/oscarEncounter/Index.jsp?saved=true</result>
             <result name="failure">/oscarEncounter/error.jsp</result>
             <result name="success">/oscarEncounter/TimeOut.jsp</result>
@@ -1012,7 +1012,7 @@
             <result name="close">/oscarEncounter/close.jsp</result>
             <result name="concurrencyError">/oscarEncounter/concurrencyError.jsp</result>
         </action>
-        <action name="oscarEncounter/SaveEncounter2" class="oscar.oscarEncounter.pageUtil.EctSaveEncounter2Action">
+        <action name="oscarEncounter/SaveEncounter2" class="ca.openosp.openo.encounter.pageUtil.EctSaveEncounter2Action">
             <result name="saveAndStay">/oscarEncounter/Index2.jsp?saved=true</result>
             <result name="failure">/oscarEncounter/error.jsp</result>
             <result name="success">/oscarEncounter/TimeOut.jsp</result>
@@ -1021,34 +1021,34 @@
             <result name="close">/oscarEncounter/close.jsp</result>
             <result name="concurrencyError">/oscarEncounter/concurrencyError.jsp</result>
         </action>
-        <action name="oscarConsultationRequest/consultationClinicalData" class="oscar.oscarEncounter.oscarConsultationRequest.pageUtil.ConsultationClinicalData2Action">
+        <action name="oscarConsultationRequest/consultationClinicalData" class="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.ConsultationClinicalData2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp</result>
         </action>
-        <action name="econsult" class="oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EConsult2Action"/>
-        <action name="oscarEncounter/IncomingConsultation" class="oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctIncomingConsultation2Action">
+        <action name="econsult" class="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EConsult2Action"/>
+        <action name="oscarEncounter/IncomingConsultation" class="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctIncomingConsultation2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/ViewConsultationRequests.jsp</result>
         </action>
         <action name="previewDocs" class="org.oscarehr.documentManager.actions.DocumentPreview2Action">
             <result name="fetchDocuments">/documentManager/attachDocument.jsp</result>
         </action>
-        <action name="attachDocs" class="oscar.oscarEncounter.oscarConsultationRequest.pageUtil.ConsultationAttachDocs2Action">
+        <action name="attachDocs" class="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.ConsultationAttachDocs2Action">
             <result name="fetchAll">/oscarEncounter/oscarConsultationRequest/attachConsultation.jsp</result>
         </action>
         <action name="eform/attachDoc" class="ca.openosp.openo.eform.EFormAttachDocs2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/attachSuccessfull.jsp</result>
         </action>
         <action name="eform/logEformError" class="ca.openosp.openo.eform.EformLogError2Action"/>
-        <action name="oscarEncounter/ViewConsultation" class="oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctViewConsultationRequests2Action">
+        <action name="oscarEncounter/ViewConsultation" class="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewConsultationRequests2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/ViewConsultationRequests.jsp</result>
         </action>
-        <action name="oscarEncounter/ViewRequest" class="oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctViewRequest2Action">
+        <action name="oscarEncounter/ViewRequest" class="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewRequest2Action">
             <result name="failESend">/oscarEncounter/ViewRequest.do</result>
             <result name="success">/oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp</result>
         </action>
-        <action name="oscarEncounter/eRefer" class="oscar.oscarEncounter.oceanEReferal.pageUtil.ERefer2Action">
+        <action name="oscarEncounter/eRefer" class="ca.openosp.openo.encounter.oceanEReferal.pageUtil.ERefer2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp</result>
         </action>
-        <action name="oscarEncounter/RequestConsultation" class="oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequest2Action">
+        <action name="oscarEncounter/RequestConsultation" class="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequest2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/ConfirmConsultationRequest.jsp</result>
             <result name="error">/oscarEncounter/ViewRequest.do?error=true</result>
             <result name="failESend">/oscarEncounter/ViewRequest.do</result>
@@ -1061,65 +1061,65 @@
         <!--action name="oscarEncounter/oscarConsultationRequest/printPdf" class="oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestPrint2Action">
             <result name="error">/oscarEncounter/ViewRequest.do?error=true</result>
         </action-->
-        <action name="oscarEncounter/oscarConsultationRequest/printPdf2" class="oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestPrintAction22Action">
+        <action name="oscarEncounter/oscarConsultationRequest/printPdf2" class="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestPrintAction22Action">
             <result name="error">/oscarEncounter/ViewRequest.do?error=true</result>
             <result name="attachform">/form/forwardshortcutname.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarConsultationRequest/ConsultationFormFax" class="oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctConsultationFormFax2Action">
+        <action name="oscarEncounter/oscarConsultationRequest/ConsultationFormFax" class="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormFax2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/ConfirmConsultationRequest.jsp</result>
             <result name="error">/oscarEncounter/ViewRequest.do?error=true</result>
             <result name="attachform">/form/forwardshortcutname.jsp</result>
             <result name="cancel">/oscarEncounter/ViewRequest.do</result>
         </action>
-        <action name="oscarEncounter/oscarConsultation/printAttached" class="oscar.oscarEncounter.oscarConsultationRequest.pageUtil.ConsultationPrintDocs2Action">
+        <action name="oscarEncounter/oscarConsultation/printAttached" class="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.ConsultationPrintDocs2Action">
             <result name="noprint">/oscarEncounter/oscarConsultationRequest/nothingtoPrint.jsp</result>
         </action>
-        <action name="oscarEncounter/EnableConRequestResponse" class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConEnableReqResp2Action">
+        <action name="oscarEncounter/EnableConRequestResponse" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConEnableReqResp2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/config/EnableRequestResponse.jsp</result>
         </action>
-        <action name="oscarEncounter/AddService" class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConAddService2Action">
+        <action name="oscarEncounter/AddService" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConAddService2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/config/AddService.jsp</result>
         </action>
-        <action name="oscarEncounter/ShowAllServices" class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConShowAllServices2Action">
+        <action name="oscarEncounter/ShowAllServices" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConShowAllServices2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/config/DisplayService.jsp</result>
         </action>
-        <action name="oscarEncounter/ShowAllInstitutions" class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConShowAllInstitutions2Action">
+        <action name="oscarEncounter/ShowAllInstitutions" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConShowAllInstitutions2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/config/DisplayInstitution.jsp</result>
         </action>
-        <action name="oscarEncounter/AddSpecialist" class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConAddSpecialist2Action">
+        <action name="oscarEncounter/AddSpecialist" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConAddSpecialist2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/config/AddSpecialist.jsp</result>
             <result name="edited">/oscarEncounter/oscarConsultationRequest/config/EditSpecialists.jsp</result>
         </action>
-        <action name="oscarEncounter/AddInstitution" class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConAddInstitution2Action">
+        <action name="oscarEncounter/AddInstitution" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConAddInstitution2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/config/AddInstitution.jsp</result>
             <result name="edited">/oscarEncounter/oscarConsultationRequest/config/EditInstitutions.jsp</result>
         </action>
-        <action name="oscarEncounter/AddDepartment" class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConAddDepartment2Action">
+        <action name="oscarEncounter/AddDepartment" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConAddDepartment2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/config/AddDepartment.jsp</result>
             <result name="edited">/oscarEncounter/oscarConsultationRequest/config/EditDepartments.jsp</result>
         </action>
-        <action name="oscarEncounter/UpdateServiceSpecialists" class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConDisplayService2Action">
+        <action name="oscarEncounter/UpdateServiceSpecialists" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConDisplayService2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/config/ShowAllServices.jsp</result>
         </action>
-        <action name="oscarEncounter/UpdateInstitutionDepartment" class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConDisplayInstitution2Action">
+        <action name="oscarEncounter/UpdateInstitutionDepartment" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConDisplayInstitution2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/config/ShowAllInstitutions.jsp</result>
         </action>
-        <action name="oscarEncounter/EditSpecialists" class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConEditSpecialists2Action">
+        <action name="oscarEncounter/EditSpecialists" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConEditSpecialists2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/config/AddSpecialist.jsp</result>
             <result name="delete">/oscarEncounter/oscarConsultationRequest/config/EditSpecialists.jsp</result>
         </action>
-        <action name="oscarEncounter/EditInstitutions" class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConEditInstitutions2Action">
+        <action name="oscarEncounter/EditInstitutions" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConEditInstitutions2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/config/AddInstitution.jsp</result>
             <result name="delete">/oscarEncounter/oscarConsultationRequest/config/EditInstitutions.jsp</result>
         </action>
-        <action name="oscarEncounter/EditDepartments" class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConEditDepartments2Action">
+        <action name="oscarEncounter/EditDepartments" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConEditDepartments2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/config/AddDepartment.jsp</result>
             <result name="delete">/oscarEncounter/oscarConsultationRequest/config/EditDepartments.jsp</result>
         </action>
-        <action name="oscarEncounter/DelService" class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConDeleteServices2Action">
+        <action name="oscarEncounter/DelService" class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConDeleteServices2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/config/DeleteServices.jsp</result>
         </action>
-        <action name="oscarEncounter/InsertTemplate" class="oscar.oscarEncounter.pageUtil.EctInsertTemplate2Action">
+        <action name="oscarEncounter/InsertTemplate" class="ca.openosp.openo.encounter.pageUtil.EctInsertTemplate2Action">
             <result name="success">/oscarEncounter/InsertTemplate.jsp</result>
             <result name="success2">/oscarEncounter/InsertTemplate2.jsp</result>
         </action>
@@ -1131,184 +1131,184 @@
         <action name="CreateInitImmunization" class="oscar.oscarEncounter.immunization.config.pageUtil.EctCreateImmunizationSetInit2Action">
             <result name="success">/immunizationConfig/CreateImmunizationSetConfig.jsp</result>
         </action-->
-        <action name="CreateImmunizationSetConfig" class="oscar.oscarEncounter.immunization.config.pageUtil.EctImmCreateImmunizationSetConfig2Action">
+        <action name="CreateImmunizationSetConfig" class="ca.openosp.openo.encounter.immunization.config.pageUtil.EctImmCreateImmunizationSetConfig2Action">
             <result name="success">/immunizationConfig/AdministrateImmunizationSets.jsp</result>
             <result name="goBack">/immunizationConfig/CreateImmunizationSetConfig.jsp</result>
         </action>
-        <action name="DeleteImmunizationSets" class="oscar.oscarEncounter.immunization.config.pageUtil.EctImmDeleteImmunizationSet2Action">
+        <action name="DeleteImmunizationSets" class="ca.openosp.openo.encounter.immunization.config.pageUtil.EctImmDeleteImmunizationSet2Action">
             <result name="success">/immunizationConfig/AdministrateImmunizationSets.jsp</result>
         </action>
-        <action name="ImmunizationSetDisplay" class="oscar.oscarEncounter.immunization.config.pageUtil.EctImmImmunizationSetDisplay2Action">
+        <action name="ImmunizationSetDisplay" class="ca.openosp.openo.encounter.immunization.config.pageUtil.EctImmImmunizationSetDisplay2Action">
             <result name="success">/immunizationConfig/ImmunizationSetDisplay.jsp</result>
         </action>
-        <action name="oscarEncounter/immunization/deleteSchedule" class="oscar.oscarEncounter.immunization.pageUtil.EctImmDeleteImmSchedule2Action">
+        <action name="oscarEncounter/immunization/deleteSchedule" class="ca.openosp.openo.encounter.immunization.pageUtil.EctImmDeleteImmSchedule2Action">
             <result name="success">/oscarEncounter/immunization/Schedule.jsp</result>
         </action>
-        <action name="oscarEncounter/immunization/initSchedule" class="oscar.oscarEncounter.immunization.pageUtil.EctImmInitSchedule2Action">
+        <action name="oscarEncounter/immunization/initSchedule" class="ca.openosp.openo.encounter.immunization.pageUtil.EctImmInitSchedule2Action">
             <result name="success">/oscarEncounter/immunization/Schedule.jsp</result>
         </action>
-        <action name="oscarEncounter/immunization/loadSchedule" class="oscar.oscarEncounter.immunization.pageUtil.EctImmLoadSchedule2Action">
+        <action name="oscarEncounter/immunization/loadSchedule" class="ca.openosp.openo.encounter.immunization.pageUtil.EctImmLoadSchedule2Action">
             <result name="success">/oscarEncounter/immunization/Schedule.jsp</result>
         </action>
-        <action name="oscarEncounter/immunization/saveSchedule" class="oscar.oscarEncounter.immunization.pageUtil.EctImmSaveSchedule2Action">
+        <action name="oscarEncounter/immunization/saveSchedule" class="ca.openosp.openo.encounter.immunization.pageUtil.EctImmSaveSchedule2Action">
             <result name="reload">/oscarEncounter/immunization/Schedule.jsp</result>
             <result name="configure">/oscarEncounter/immunization/loadConfig.do</result>
         </action>
-        <action name="oscarEncounter/immunization/loadConfig" class="oscar.oscarEncounter.immunization.pageUtil.EctImmLoadConfig2Action">
+        <action name="oscarEncounter/immunization/loadConfig" class="ca.openosp.openo.encounter.immunization.pageUtil.EctImmLoadConfig2Action">
             <result name="success">/oscarEncounter/immunization/ScheduleConfig.jsp</result>
         </action>
-        <action name="oscarEncounter/immunization/saveConfig" class="oscar.oscarEncounter.immunization.pageUtil.EctImmSaveConfig2Action">
+        <action name="oscarEncounter/immunization/saveConfig" class="ca.openosp.openo.encounter.immunization.pageUtil.EctImmSaveConfig2Action">
             <result name="success">/oscarEncounter/immunization/Schedule.jsp</result>
         </action>
-        <action name="oscarEncounter/immunization/config/initConfig" class="oscar.oscarEncounter.immunization.config.pageUtil.EctImmInitConfig2Action">
+        <action name="oscarEncounter/immunization/config/initConfig" class="ca.openosp.openo.encounter.immunization.config.pageUtil.EctImmInitConfig2Action">
             <result name="success">/oscarEncounter/immunization/config/AdministrateImmunizationSets.jsp</result>
         </action>
-        <action name="oscarEncounter/immunization/config/deleteImmunizationSet" class="oscar.oscarEncounter.immunization.config.pageUtil.EctImmInitConfigDeleteImmuSet2Action">
+        <action name="oscarEncounter/immunization/config/deleteImmunizationSet" class="ca.openosp.openo.encounter.immunization.config.pageUtil.EctImmInitConfigDeleteImmuSet2Action">
             <result name="success">/oscarEncounter/immunization/config/AdministrateImmunizationSets.jsp</result>
         </action>
-        <action name="oscarEncounter/immunization/config/CreateInitImmunization" class="oscar.oscarEncounter.immunization.config.pageUtil.EctImmCreateImmunizationSetInit2Action">
+        <action name="oscarEncounter/immunization/config/CreateInitImmunization" class="ca.openosp.openo.encounter.immunization.config.pageUtil.EctImmCreateImmunizationSetInit2Action">
             <result name="success">/oscarEncounter/immunization/config/CreateImmunizationSetConfig.jsp</result>
         </action>
-        <action name="oscarEncounter/immunization/config/CreateImmunizationSetConfig" class="oscar.oscarEncounter.immunization.config.pageUtil.EctImmCreateImmunizationSetConfig2Action">
+        <action name="oscarEncounter/immunization/config/CreateImmunizationSetConfig" class="ca.openosp.openo.encounter.immunization.config.pageUtil.EctImmCreateImmunizationSetConfig2Action">
             <result name="success">/oscarEncounter/immunization/config/AdministrateImmunizationSets.jsp</result>
             <result name="goBack">/oscarEncounter/immunization/config/CreateImmunizationSetConfig.jsp</result>
         </action>
-        <action name="oscarEncounter/immunization/config/DeleteImmunizationSets" class="oscar.oscarEncounter.immunization.config.pageUtil.EctImmDeleteImmunizationSet2Action">
+        <action name="oscarEncounter/immunization/config/DeleteImmunizationSets" class="ca.openosp.openo.encounter.immunization.config.pageUtil.EctImmDeleteImmunizationSet2Action">
             <result name="success">/oscarEncounter/immunization/config/AdministrateImmunizationSets.jsp</result>
         </action>
-        <action name="oscarEncounter/immunization/config/ImmunizationSetDisplay" class="oscar.oscarEncounter.immunization.config.pageUtil.EctImmImmunizationSetDisplay2Action">
+        <action name="oscarEncounter/immunization/config/ImmunizationSetDisplay" class="ca.openosp.openo.encounter.immunization.config.pageUtil.EctImmImmunizationSetDisplay2Action">
             <result name="success">/oscarEncounter/immunization/config/ImmunizationSetDisplay.jsp</result>
         </action>
-        <action name="oscarEncounter/GraphMeasurements" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.MeasurementGraphAction22Action">
+        <action name="oscarEncounter/GraphMeasurements" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.MeasurementGraphAction22Action">
             <result name="success">/oscarEncounter/oscarMeasurements/ProcessMeasurementsSubmission.jsp</result>
             <result name="failure">/oscarEncounter/oscarMeasurements/Measurements.jsp</result>
         </action>
-        <action name="oscarEncounter/FormUpdate" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.FormUpdate2Action">
+        <action name="oscarEncounter/FormUpdate" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.FormUpdate2Action">
             <result name="success">/oscarEncounter/oscarMeasurements/close.jsp</result>
             <result name="reload">/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp</result>
             <result name="failure">/oscarEncounter/oscarMeasurements/FlowUpdate.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/TrackerUpdate" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.FormUpdate2Action">
+        <action name="oscarEncounter/oscarMeasurements/TrackerUpdate" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.FormUpdate2Action">
             <result name="success">/oscarEncounter/oscarMeasurements/close.jsp</result>
             <result name="reload">/oscarEncounter/oscarMeasurements/HealthTrackerPage.jspf?reload</result>
             <result name="failure">/oscarEncounter/oscarMeasurements/HealthTrackerPage.jspf</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/TrackerSlimUpdate" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.FormUpdate2Action">
+        <action name="oscarEncounter/oscarMeasurements/TrackerSlimUpdate" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.FormUpdate2Action">
             <result name="success">/oscarEncounter/oscarMeasurements/HealthTrackerSlim.jspf?reload</result>
             <result name="reload">/oscarEncounter/oscarMeasurements/HealthTrackerSlim.jspf?reload</result>
             <result name="failure">/oscarEncounter/oscarMeasurements/HealthTrackerSlim.jspf</result>
         </action>
-        <action name="oscarEncounter/Measurements" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctMeasurements2Action">
+        <action name="oscarEncounter/Measurements" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctMeasurements2Action">
             <result name="success">/oscarEncounter/oscarMeasurements/ProcessMeasurementsSubmission.jsp</result>
             <result name="failure">/oscarEncounter/oscarMeasurements/Measurements.jsp</result>
         </action>
-        <action name="oscarEncounter/Measurements2" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctMeasurements2Action">
+        <action name="oscarEncounter/Measurements2" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctMeasurements2Action">
             <result name="success">/oscarEncounter/oscarMeasurements/close.jsp</result>
             <result name="failure">/oscarEncounter/oscarMeasurements/AddMeasurementData.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/SetupAddMeasurementType" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctSetupAddMeasurementType2Action">
+        <action name="oscarEncounter/oscarMeasurements/SetupAddMeasurementType" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctSetupAddMeasurementType2Action">
             <result name="continue">/oscarEncounter/oscarMeasurements/AddMeasurementType.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/AddMeasurementType" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctAddMeasurementType2Action">
+        <action name="oscarEncounter/oscarMeasurements/AddMeasurementType" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctAddMeasurementType2Action">
             <result name="success">/oscarEncounter/oscarMeasurements/AddMeasurementType.jsp</result>
             <result name="failure">/oscarEncounter/oscarMeasurements/AddMeasurementType.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/SetupDisplayMeasurementTypes" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctSetupDisplayMeasurementTypes2Action">
+        <action name="oscarEncounter/oscarMeasurements/SetupDisplayMeasurementTypes" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctSetupDisplayMeasurementTypes2Action">
             <result name="continue">/oscarEncounter/oscarMeasurements/DisplayMeasurementTypes.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/DeleteMeasurementTypes" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctDeleteMeasurementTypes2Action">
+        <action name="oscarEncounter/oscarMeasurements/DeleteMeasurementTypes" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctDeleteMeasurementTypes2Action">
             <result name="success">/oscarEncounter/oscarMeasurements/SetupDisplayMeasurementTypes.do</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/SetupMeasurements" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctSetupMeasurements2Action">
+        <action name="oscarEncounter/oscarMeasurements/SetupMeasurements" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctSetupMeasurements2Action">
             <result name="continue">/oscarEncounter/oscarMeasurements/Measurements.jsp</result>
         </action>
         <!--action name="oscarEncounter/oscarMeasurements/StreamStyleSheet" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctStreamStyleSheet2Action"/-->
         <action name="oscarEncounter/MeasurementData" class="org.oscarehr.measurements.web.MeasurementData2Action"/>
-        <action name="oscarEncounter/oscarMeasurements/SetupDisplayHistory" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctSetupDisplayHistory2Action">
+        <action name="oscarEncounter/oscarMeasurements/SetupDisplayHistory" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctSetupDisplayHistory2Action">
             <result name="continue">/oscarEncounter/oscarMeasurements/DisplayHistory.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/SetupHistoryIndex" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctSetupHistoryIndex2Action">
+        <action name="oscarEncounter/oscarMeasurements/SetupHistoryIndex" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctSetupHistoryIndex2Action">
             <result name="continue">/oscarEncounter/oscarMeasurements/HistoryIndex.jsp</result>
             <result name="newcontinue">/oscarEncounter/oscarMeasurements/newHistoryIndex.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/DeleteData" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctDeleteData2Action">
+        <action name="oscarEncounter/oscarMeasurements/DeleteData" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctDeleteData2Action">
             <result name="success">/oscarEncounter/oscarMeasurements/SetupDisplayHistory.do</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/DeleteData2" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctDeleteData2Action">
+        <action name="oscarEncounter/oscarMeasurements/DeleteData2" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctDeleteData2Action">
             <result name="success">/oscarEncounter/oscarMeasurements/close.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/SetupAddMeasuringInstruction" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctSetupAddMeasuringInstruction2Action">
+        <action name="oscarEncounter/oscarMeasurements/SetupAddMeasuringInstruction" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctSetupAddMeasuringInstruction2Action">
             <result name="continue">/oscarEncounter/oscarMeasurements/AddMeasuringInstruction.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/AddMeasuringInstruction" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctAddMeasuringInstruction2Action">
+        <action name="oscarEncounter/oscarMeasurements/AddMeasuringInstruction" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctAddMeasuringInstruction2Action">
             <result name="success">/oscarEncounter/oscarMeasurements/AddMeasuringInstruction.jsp</result>
             <result name="failure">/oscarEncounter/oscarMeasurements/AddMeasuringInstruction.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/SetupStyleSheetList" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctSetupStyleSheetList2Action">
+        <action name="oscarEncounter/oscarMeasurements/SetupStyleSheetList" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctSetupStyleSheetList2Action">
             <result name="continue">/oscarEncounter/oscarMeasurements/DefineNewMeasurementGroup.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/SetupGroupList" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctSetupGroupList2Action">
+        <action name="oscarEncounter/oscarMeasurements/SetupGroupList" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctSetupGroupList2Action">
             <result name="continue">/oscarEncounter/oscarMeasurements/SelectMeasurementGroup.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/SelectMeasurementGroup" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctSelectMeasurementGroup2Action">
+        <action name="oscarEncounter/oscarMeasurements/SelectMeasurementGroup" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctSelectMeasurementGroup2Action">
             <result name="type">/oscarEncounter/oscarMeasurements/ProcessEditMeasurementGroupAction.jsp</result>
             <result name="style">/oscarEncounter/oscarMeasurements/EditMeasurementGroupStyle.jsp</result>
             <result name="delete">/oscarEncounter/oscarMeasurements/SetupGroupList.do</result>
             <result name="addDSHTML">/oscarEncounter/oscarMeasurements/MeasurementGroupDSadd.jsp</result>
             <result name="removeDSHTML">/oscarEncounter/oscarMeasurements/MeasurementGroupDSremove.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/SetupEditMeasurementGroup" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctSetupEditMeasurementGroup2Action">
+        <action name="oscarEncounter/oscarMeasurements/SetupEditMeasurementGroup" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctSetupEditMeasurementGroup2Action">
             <result name="continue">/oscarEncounter/oscarMeasurements/EditMeasurementGroup.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/EditMeasurementGroup" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctEditMeasurementGroup2Action">
+        <action name="oscarEncounter/oscarMeasurements/EditMeasurementGroup" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctEditMeasurementGroup2Action">
             <result name="success">/oscarEncounter/oscarMeasurements/ProcessEditMeasurementGroupAction.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/DefineNewMeasurementGroup" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctDefineNewMeasurementGroup2Action">
+        <action name="oscarEncounter/oscarMeasurements/DefineNewMeasurementGroup" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctDefineNewMeasurementGroup2Action">
             <result name="continue">/oscarEncounter/oscarMeasurements/ProcessAddMeasurementGroupAction.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/SetupAddMeasurementGroup" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctSetupAddMeasurementGroup2Action">
+        <action name="oscarEncounter/oscarMeasurements/SetupAddMeasurementGroup" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctSetupAddMeasurementGroup2Action">
             <result name="continue">/oscarEncounter/oscarMeasurements/AddMeasurementGroup.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/EditMeasurementStyle" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctEditMeasurementStyle2Action">
+        <action name="oscarEncounter/oscarMeasurements/EditMeasurementStyle" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctEditMeasurementStyle2Action">
             <result name="continue">/oscarEncounter/oscarMeasurements/SetupGroupList.do</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/AddMeasurementGroup" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctAddMeasurementGroup2Action">
+        <action name="oscarEncounter/oscarMeasurements/AddMeasurementGroup" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctAddMeasurementGroup2Action">
             <result name="success">/oscarEncounter/oscarMeasurements/ProcessEditMeasurementGroupAction.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/DeleteMeasurementStyleSheet" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctDeleteMeasurementStyleSheet2Action">
+        <action name="oscarEncounter/oscarMeasurements/DeleteMeasurementStyleSheet" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctDeleteMeasurementStyleSheet2Action">
             <result name="success">/oscarEncounter/oscarMeasurements/SetupDisplayMeasurementStyleSheet.do</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/SetupDisplayMeasurementStyleSheet" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctSetupDisplayMeasurementStyleSheet2Action">
+        <action name="oscarEncounter/oscarMeasurements/SetupDisplayMeasurementStyleSheet" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctSetupDisplayMeasurementStyleSheet2Action">
             <result name="continue">/oscarEncounter/oscarMeasurements/DisplayMeasurementStyleSheet.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/AddMeasurementStyleSheet" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctAddMeasurementStyleSheet2Action">
+        <action name="oscarEncounter/oscarMeasurements/AddMeasurementStyleSheet" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctAddMeasurementStyleSheet2Action">
             <interceptor-ref name="fileUpload" />
             <interceptor-ref name="defaultStack"/>
             <result name="success">/oscarEncounter/oscarMeasurements/AddMeasurementStyleSheet.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/AddMeasurementMap" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctAddMeasurementMap2Action">
+        <action name="oscarEncounter/oscarMeasurements/AddMeasurementMap" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctAddMeasurementMap2Action">
             <result name="continue">/oscarEncounter/oscarMeasurements/addMeasurementMap.jsp</result>
             <result name="success">/oscarEncounter/oscarMeasurements/addMeasurementMap.jsp?outcome=success</result>
             <result name="failure">/oscarEncounter/oscarMeasurements/addMeasurementMap.jsp?outcome=failure</result>
             <result name="failedcheck">/oscarEncounter/oscarMeasurements/addMeasurementMap.jsp?outcome=failedcheck</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/NewMeasurementMap" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctAddMeasurementMap2Action">
+        <action name="oscarEncounter/oscarMeasurements/NewMeasurementMap" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctAddMeasurementMap2Action">
             <result name="success">/oscarEncounter/oscarMeasurements/newMeasurementMap.jsp?outcome=success</result>
             <result name="failure">/oscarEncounter/oscarMeasurements/newMeasurementMap.jsp?outcome=failure</result>
             <result name="failedcheck">/oscarEncounter/oscarMeasurements/newMeasurementMap.jsp?outcome=failedcheck</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/RemoveMeasurementMap" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctRemoveMeasurementMap2Action">
+        <action name="oscarEncounter/oscarMeasurements/RemoveMeasurementMap" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctRemoveMeasurementMap2Action">
             <result name="continue">/oscarEncounter/oscarMeasurements/removeMeasurementMap.jsp</result>
             <result name="success">/oscarEncounter/oscarMeasurements/removeMeasurementMap.jsp?outcome=success</result>
             <result name="failure">/oscarEncounter/oscarMeasurements/removeMeasurementMap.jsp?outcome=failure</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/RemapMeasurementMap" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctRemoveMeasurementMap2Action">
+        <action name="oscarEncounter/oscarMeasurements/RemapMeasurementMap" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctRemoveMeasurementMap2Action">
             <result name="continue">/oscarEncounter/oscarMeasurements/remapMeasurementMap.jsp</result>
             <result name="success">/oscarEncounter/oscarMeasurements/remapMeasurementMap.jsp?outcome=success</result>
             <result name="failure">/oscarEncounter/oscarMeasurements/remapMeasurementMap.jsp?outcome=failure</result>
             <result name="failedcheck">/oscarEncounter/oscarMeasurements/remapMeasurementMap.jsp?outcome=failedcheck</result>
         </action>
-        <action name="oscarEncounter/ViewAttachment" class="oscar.oscarEncounter.pageUtil.EctViewAttachment2Action">
+        <action name="oscarEncounter/ViewAttachment" class="ca.openosp.openo.encounter.pageUtil.EctViewAttachment2Action">
             <result name="success">/oscarEncounter/ViewAttachment.jsp</result>
         </action>
         <action name="oscarReport/ShowConsult" class="oscar.oscarReport.pageUtil.RptShowConsult2Action">
@@ -1320,13 +1320,13 @@
         <action name="oscarReport/RptByExample" class="oscar.oscarReport.pageUtil.RptByExample2Action">
             <result name="success">/oscarReport/RptByExample.jsp</result>
         </action>
-        <action name="admin/GstControl" class="ca.openosp.openo.oscarBilling.ca.on.administration.GstControl2Action">
+        <action name="admin/GstControl" class="ca.openosp.openo.billing.ca.on.administration.GstControl2Action">
             <result name="success">/admin/gstControl.jsp</result>
         </action>
         <action name="admin/manageCSSStyles" class="org.oscarehr.billing.CA.ON.web.ManageCSS2Action">
             <result name="init">/admin/manageCSSStyles.jsp</result>
         </action>
-        <action name="admin/MergeRecords" class="ca.openosp.openo.oscarDemographic.pageUtil.DemographicMergeRecord2Action">
+        <action name="admin/MergeRecords" class="ca.openosp.openo.demographic.pageUtil.DemographicMergeRecord2Action">
             <result name="success">/admin/demographicmergerecord.jsp?outcome=success</result>
             <result name="failure">/admin/demographicmergerecord.jsp?outcome=failure</result>
             <result name="successUnMerge">/admin/demographicmergerecord.jsp?outcome=successUnMerge</result>
@@ -1485,19 +1485,19 @@
             <interceptor-ref name="defaultStack"/>
             <result name="success">/oscarResearch/oscarDxResearch/dxResearchSelectAssociations.jsp</result>
         </action>
-        <action name="billing" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.Billing2Action">
+        <action name="billing" class="ca.openosp.openo.billing.ca.bc.pageUtil.Billing2Action">
             <result name="BC">/billing/CA/BC/billingBC.jsp</result>
             <result name="ON">/billing/CA/ON/billingOB.jsp</result>
         </action>
-        <action name="billing/CA/BC/CreateBilling" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingCreateBilling2Action">
+        <action name="billing/CA/BC/CreateBilling" class="ca.openosp.openo.billing.ca.bc.pageUtil.BillingCreateBilling2Action">
             <result name="success">/billing/CA/BC/billingCreated.jsp</result>
             <result name="WCB">/billing/CA/BC/formwcb.jsp?fromBilling=true</result>
         </action>
-        <action name="billing/CA/BC/SaveBilling" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingSaveBilling2Action">
+        <action name="billing/CA/BC/SaveBilling" class="ca.openosp.openo.billing.ca.bc.pageUtil.BillingSaveBilling2Action">
             <result name="success">/billing/CA/BC/billingSaved.jsp</result>
             <result name="anotherBill">/billing/CA/BC/billingBC.jsp</result>
         </action>
-        <action name="billing/CA/BC/billingView" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingView2Action">
+        <action name="billing/CA/BC/billingView" class="ca.openosp.openo.billing.ca.bc.pageUtil.BillingView2Action">
             <result name="success">/billing/CA/BC/billingView.jsp</result>
             <result name="ON">/billing/CA/ON/billingOB2.jsp</result>
             <result name="private">/billing/CA/BC/billReceipt.jsp</result>
@@ -1510,42 +1510,42 @@
             <result name="error">/billing/CA/ON/batcherror.jsp</result>
             <result name="success">/billing/CA/ON/batchBilling.jsp</result>
         </action>
-        <action name="billing/CA/BC/formwcb" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.WCBAction22Action">
+        <action name="billing/CA/BC/formwcb" class="ca.openosp.openo.billing.ca.bc.pageUtil.WCBAction22Action">
             <result name="success">/billing/CA/BC/billingCreated.jsp</result>
             <result name="newbill">/billing.do?newWCBClaim=1</result>
             <result name="viewformwcb">/billing/CA/BC/viewformwcb.do</result>
             <result name="saveAndClose">/billing/CA/BC/wcbClose.jsp</result>
         </action>
-        <action name="billing/CA/BC/viewformwcb" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.ViewWCB2Action">
+        <action name="billing/CA/BC/viewformwcb" class="ca.openosp.openo.billing.ca.bc.pageUtil.ViewWCB2Action">
             <result name="success">/billing/CA/BC/formwcb.jsp</result>
         </action>
-        <action name="billing/CA/BC/billingTeleplanCorrectionWCB" class="ca.openosp.openo.oscarBilling.ca.bc.administration.TeleplanCorrectionActionWCB2Action">
+        <action name="billing/CA/BC/billingTeleplanCorrectionWCB" class="ca.openosp.openo.billing.ca.bc.administration.TeleplanCorrectionActionWCB2Action">
             <result name="success">/billing/CA/BC/billingTeleplanCorrectionWCB.jsp</result>
             <result name="failure">/billing/CA/BC/billingTeleplanCorrectionWCB.jsp</result>
         </action>
-        <action name="billing/CA/BC/reprocessBill" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingReProcessBill2Action">
+        <action name="billing/CA/BC/reprocessBill" class="ca.openosp.openo.billing.ca.bc.pageUtil.BillingReProcessBill2Action">
             <result name="success">/billing/CA/BC/adjustBill.jsp</result>
             <result name="save">/billing/CA/BC/billStatus.jsp</result>
         </action>
-        <action name="billing/CA/BC/reprocessBill" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingReProcessBill2Action">
+        <action name="billing/CA/BC/reprocessBill" class="ca.openosp.openo.billing.ca.bc.pageUtil.BillingReProcessBill2Action">
             <result name="success">/billing/CA/BC/adjustBill.jsp</result>
             <result name="save">/billing/CA/BC/billStatus.jsp</result>
         </action>
-        <action name="billing/CA/BC/billingEditCode" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingEditCode2Action">
+        <action name="billing/CA/BC/billingEditCode" class="ca.openosp.openo.billing.ca.bc.pageUtil.BillingEditCode2Action">
             <result name="success">/billing/CA/BC/billingCodeAdjust.jsp</result>
             <result name="private">/billing/CA/BC/billingPrivateCodeAdjust.jsp</result>
         </action>
-        <action name="billing/CA/BC/billingAddCode" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingAddCode2Action">
+        <action name="billing/CA/BC/billingAddCode" class="ca.openosp.openo.billing.ca.bc.pageUtil.BillingAddCode2Action">
             <result name="success">/billing/CA/BC/billingCodeAdjust.jsp</result>
             <result name="normalCodeError">/billing/CA/BC/billingAddCode.jsp</result>
             <result name="private">/billing/CA/BC/billingPrivateCodeAdjust.jsp</result>
             <result name="privateCodeError">/billing/CA/BC/billingAddPrivateCode.jsp</result>
         </action>
-        <action name="billing/CA/BC/UpdateBilling" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingUpdateBilling2Action">
+        <action name="billing/CA/BC/UpdateBilling" class="ca.openosp.openo.billing.ca.bc.pageUtil.BillingUpdateBilling2Action">
             <result name="success">/billing/CA/BC/billReceipt.jsp</result>
             <result name="successAndClose">/billing/CA/BC/billingSaved.jsp</result>
         </action>
-        <action name="oscarBilling/DocumentErrorReportUpload" class="ca.openosp.openo.oscarBilling.ca.on.pageUtil.BillingDocumentErrorReportUpload2Action">
+        <action name="oscarBilling/DocumentErrorReportUpload" class="ca.openosp.openo.billing.ca.on.pageUtil.BillingDocumentErrorReportUpload2Action">
             <result name="success">/billing/CA/ON/billingEAreport.jsp</result>
             <result name="outside">/billing/CA/ON/billingLreport.jsp</result>
         </action>
@@ -1567,51 +1567,51 @@
         <!--action name="oscarWaitingList/WLWaitingList" class="oscar.pageUtil.WLWaitingList2Action">
             <result name="success">/oscarWaitingList/WLDisplayPatientWaitingList.jsp</result>
         </action-->
-        <action name="demographic/printDemoLabelAction" class="ca.openosp.openo.oscarDemographic.PrintDemoLabel2Action"/>
-        <action name="demographic/printDemoAddressLabelAction" class="ca.openosp.openo.oscarDemographic.PrintDemoAddressLabel2Action"/>
-        <action name="demographic/printDemoChartLabelAction" class="ca.openosp.openo.oscarDemographic.PrintDemoChartLabel2Action"/>
-        <action name="demographic/printClientLabLabelAction" class="ca.openosp.openo.oscarDemographic.PrintClientLabLabel2Action"/>
-        <action name="billing/CA/BC/createBillingReportAction" class="ca.openosp.openo.oscarBilling.ca.bc.MSP.CreateBillingReport2Action"/>
-        <action name="oscarPrevention/AddPrevention" class="oscar.oscarPrevention.pageUtil.AddPrevention2Action">
+        <action name="demographic/printDemoLabelAction" class="ca.openosp.openo.demographic.PrintDemoLabel2Action"/>
+        <action name="demographic/printDemoAddressLabelAction" class="ca.openosp.openo.demographic.PrintDemoAddressLabel2Action"/>
+        <action name="demographic/printDemoChartLabelAction" class="ca.openosp.openo.demographic.PrintDemoChartLabel2Action"/>
+        <action name="demographic/printClientLabLabelAction" class="ca.openosp.openo.demographic.PrintClientLabLabel2Action"/>
+        <action name="billing/CA/BC/createBillingReportAction" class="ca.openosp.openo.billing.ca.bc.MSP.CreateBillingReport2Action"/>
+        <action name="oscarPrevention/AddPrevention" class="ca.openosp.openo.prevention.pageUtil.AddPrevention2Action">
             <result name="success">/oscarPrevention/close.jsp</result>
             <result name="review">/oscarPrevention/review.jsp</result>
             <result name="form">/oscarPrevention/AddPreventionData.jsp</result>
         </action>
-        <action name="oscarPrevention/PreventionReport" class="oscar.oscarPrevention.pageUtil.PreventionReport2Action">
+        <action name="oscarPrevention/PreventionReport" class="ca.openosp.openo.prevention.pageUtil.PreventionReport2Action">
             <result name="success">/oscarPrevention/PreventionReporting.jsp</result>
         </action>
-        <action name="oscarPrevention/printPrevention" class="oscar.oscarPrevention.pageUtil.PreventionPrint2Action">
+        <action name="oscarPrevention/printPrevention" class="ca.openosp.openo.prevention.pageUtil.PreventionPrint2Action">
             <result name="error">/oscarPrevention/index.jsp</result>
         </action>
         <action name="demographic/SearchDemographic" class="org.oscarehr.common.web.SearchDemographicAutoComplete2Action">
             <result name="success">/demographic/autocomplete.jsp</result>
         </action>
         <action name="provider/SearchProvider" class="org.oscarehr.common.web.SearchProviderAutoComplete2Action"/>
-        <action name="demographic/AddRelation" class="ca.openosp.openo.oscarDemographic.pageUtil.AddDemographicRelationship2Action">
+        <action name="demographic/AddRelation" class="ca.openosp.openo.demographic.pageUtil.AddDemographicRelationship2Action">
             <result name="success">/demographic/AddAlternateContact.jsp</result>
             <result name="pmmClient">/PMmodule/ClientManager.do</result>
         </action>
-        <action name="demographic/DeleteRelation" class="ca.openosp.openo.oscarDemographic.pageUtil.DeleteDemographicRelationship2Action">
+        <action name="demographic/DeleteRelation" class="ca.openosp.openo.demographic.pageUtil.DeleteDemographicRelationship2Action">
             <result name="success">/demographic/AddAlternateContact.jsp</result>
         </action>
-        <action name="form/importUpload" class="ca.openosp.openo.oscarDemographic.pageUtil.ImportDemographicDataAction42Action">
+        <action name="form/importUpload" class="ca.openosp.openo.demographic.pageUtil.ImportDemographicDataAction42Action">
             <interceptor-ref name="fileUpload" />
             <interceptor-ref name="defaultStack"/>
             <result name="success">/demographic/demographicImport.jsp</result>
         </action>
-        <action name="form/importLogDownload" class="ca.openosp.openo.oscarDemographic.pageUtil.ImportLogDownload2Action">
+        <action name="form/importLogDownload" class="ca.openosp.openo.demographic.pageUtil.ImportLogDownload2Action">
             <result name="success">/demographic/demographicImport.jsp</result>
         </action>
-        <action name="demographic/DemographicExport" class="ca.openosp.openo.oscarDemographic.pageUtil.DemographicExportAction42Action">
+        <action name="demographic/DemographicExport" class="ca.openosp.openo.demographic.pageUtil.DemographicExportAction42Action">
             <result name="fail">/demographic/demographicExport.jsp</result>
         </action>
-        <action name="demographic/cihiExportOMD4" class="ca.openosp.openo.oscarDemographic.pageUtil.CihiExport2Action" method="execute">
+        <action name="demographic/cihiExportOMD4" class="ca.openosp.openo.demographic.pageUtil.CihiExport2Action" method="execute">
             <result name="display">/demographic/cihiExport.jsp</result>
         </action>
-        <action name="demographic/cihiExportPHC_VRS" class="ca.openosp.openo.oscarDemographic.pageUtil.CihiExportPHC_VRS2Action" method="execute">
+        <action name="demographic/cihiExportPHC_VRS" class="ca.openosp.openo.demographic.pageUtil.CihiExportPHC_VRS2Action" method="execute">
             <result name="display">/demographic/cihiExport.jsp</result>
         </action>
-        <action name="demographic/eRourkeExport" class="ca.openosp.openo.oscarDemographic.pageUtil.RourkeExport2Action" method="execute">
+        <action name="demographic/eRourkeExport" class="ca.openosp.openo.demographic.pageUtil.RourkeExport2Action" method="execute">
             <result name="display">/demographic/rourkeExport.jsp</result>
         </action>
         <action name="report/DemographicSetEdit" class="oscar.oscarReport.pageUtil.DemographicSetEdit2Action">
@@ -1691,22 +1691,22 @@
         </action>
         <action name="eform/displayImage" class="ca.openosp.openo.eform.actions.DisplayImage2Action"/>
         <action name="eform/FetchUpdatedData" class="ca.openosp.openo.eform.actions.FetchUpdatedData2Action"/>
-        <action name="billing/CA/BC/associateCodesAction" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.AssociateCodes2Action">
+        <action name="billing/CA/BC/associateCodesAction" class="ca.openosp.openo.billing.ca.bc.pageUtil.AssociateCodes2Action">
             <result name="success">/billing/CA/BC/showServiceCodeAssocs.do</result>
         </action>
-        <action name="billing/CA/BC/showServiceCodeAssocs" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.ShowServiceCodeAssocs2Action">
+        <action name="billing/CA/BC/showServiceCodeAssocs" class="ca.openosp.openo.billing.ca.bc.pageUtil.ShowServiceCodeAssocs2Action">
             <result name="success">/billing/CA/BC/manageSVCDXAssoc.jsp</result>
         </action>
-        <action name="billing/CA/BC/deleteServiceCodeAssoc" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.DeleteServiceCodeAssoc2Action">
+        <action name="billing/CA/BC/deleteServiceCodeAssoc" class="ca.openosp.openo.billing.ca.bc.pageUtil.DeleteServiceCodeAssoc2Action">
             <result name="success">/billing/CA/BC/showServiceCodeAssocs.do</result>
         </action>
-        <action name="billing/CA/BC/editServiceCodeAssocAction" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.EditServiceCodeAssoc2Action">
+        <action name="billing/CA/BC/editServiceCodeAssocAction" class="ca.openosp.openo.billing.ca.bc.pageUtil.EditServiceCodeAssoc2Action">
             <result name="success">/billing/CA/BC/dxcode_svccode_assoc.jsp</result>
         </action>
-        <action name="billing/CA/BC/saveAssocAction" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.SaveAssoc2Action">
+        <action name="billing/CA/BC/saveAssocAction" class="ca.openosp.openo.billing.ca.bc.pageUtil.SaveAssoc2Action">
             <result name="success">/billing/CA/BC/showServiceCodeAssocs.do</result>
         </action>
-        <action name="billing/CA/BC/AddReferralDoc" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.AddReferralDoc2Action">
+        <action name="billing/CA/BC/AddReferralDoc" class="ca.openosp.openo.billing.ca.bc.pageUtil.AddReferralDoc2Action">
             <result name="success">/billing/CA/BC/billingManageReferralDoc.jsp</result>
             <result name="error">/billing/CA/BC/billingAddReferralDoc.jsp</result>
         </action>
@@ -1727,14 +1727,14 @@
         <action name="lab/CMLlabUpload" class="oscar.oscarLab.ca.on.CML.Upload.LabUpload2Action">
             <result name="success">/lab/CA/ON/uploadComplete.jsp</result>
         </action>
-        <action name="billing/CA/ON/benefitScheduleUpload" class="ca.openosp.openo.oscarBilling.ca.on.OHIP.ScheduleOfBenefitsUpload2Action">
+        <action name="billing/CA/ON/benefitScheduleUpload" class="ca.openosp.openo.billing.ca.on.OHIP.ScheduleOfBenefitsUpload2Action">
             <result name="forceUpdate">/billing/CA/ON/benefitScheduleChange.do</result>
             <result name="success">/billing/CA/ON/ScheduleOfBenefitsUpload.jsp</result>
         </action>
         <action name="admin/uploadEntryText" class="ca.openosp.openo.login.UploadLoginText2Action">
             <result name="success">/admin/uploadEntryText.jsp</result>
         </action>
-        <action name="billing/CA/ON/benefitScheduleChange" class="ca.openosp.openo.oscarBilling.ca.on.OHIP.ScheduleOfBenefitsUpdate2Action">
+        <action name="billing/CA/ON/benefitScheduleChange" class="ca.openosp.openo.billing.ca.on.OHIP.ScheduleOfBenefitsUpdate2Action">
             <result name="success">/billing/CA/ON/ScheduleOfBenefitsUpload.jsp</result>
         </action>
         <!--action name="billing/CA/BC/receivePaymentAction" class="oscar.oscarBilling.ca.bc.pageUtil.BillingReceivePaymentActionForm2Action">
@@ -1742,16 +1742,16 @@
             <result name="internalAdjustment">/billing/CA/BC/adjustBill.jsp</result>
             <result name="internalAdjustmentWCB">/billing/CA/BC/billingTeleplanCorrectionWCB.jsp</result>
         </action-->
-        <action name="billing/CA/BC/receivePaymentAction" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.ReceivePayment2Action">
+        <action name="billing/CA/BC/receivePaymentAction" class="ca.openosp.openo.billing.ca.bc.pageUtil.ReceivePayment2Action">
             <result name="success">/billing/CA/BC/receivePayment.jsp</result>
         </action>
-        <action name="billing/CA/BC/viewReceivePaymentAction" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.ViewReceivePayment2Action">
+        <action name="billing/CA/BC/viewReceivePaymentAction" class="ca.openosp.openo.billing.ca.bc.pageUtil.ViewReceivePayment2Action">
             <result name="success">/billing/CA/BC/receivePayment.jsp</result>
         </action>
-        <action name="billing/CA/BC/saveBillingPreferencesAction" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.SaveBillingPreferences2Action">
+        <action name="billing/CA/BC/saveBillingPreferencesAction" class="ca.openosp.openo.billing.ca.bc.pageUtil.SaveBillingPreferences2Action">
             <result name="success">/billing/CA/BC/viewBillingPreferencesAction.do</result>
         </action>
-        <action name="billing/CA/BC/viewBillingPreferencesAction" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.ViewBillingPreferences2Action">
+        <action name="billing/CA/BC/viewBillingPreferencesAction" class="ca.openosp.openo.billing.ca.bc.pageUtil.ViewBillingPreferences2Action">
             <result name="success">/billing/CA/BC/billingPreferences.jsp</result>
         </action>
         <action name="RunClinicalReport" class="oscar.oscarReport.ClinicalReports.PageUtil.RunClinicalReport2Action">
@@ -1760,7 +1760,7 @@
         <action name="report/RemoveClinicalReport" class="oscar.oscarReport.ClinicalReports.PageUtil.RemoveClinicalReportFromHistory2Action">
             <result name="success">/report/ClinicalReports.jsp</result>
         </action>
-        <action name="billing/CA/BC/supServiceCodeAssocAction" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.SupServiceCodeAssoc2Action">
+        <action name="billing/CA/BC/supServiceCodeAssocAction" class="ca.openosp.openo.billing.ca.bc.pageUtil.SupServiceCodeAssoc2Action">
             <result name="success">/billing/CA/BC/billingSVCTrayAssoc.jsp</result>
         </action>
         <action name="documentManager/addEditDocument" class="org.oscarehr.documentManager.actions.AddEditDocument2Action">
@@ -1781,7 +1781,7 @@
             <result name="success">/documentManager/closeWindow.html</result>
             <result name="failed">/documentManager/addedithtmldocument.jsp</result>
         </action>
-        <action name="Scratch" class="oscar.scratch.Scratch2Action">
+        <action name="Scratch" class="ca.openosp.openo.scratch.Scratch2Action">
             <result name="success">/scratch/index.jsp</result>
             <result name="scratchPadVersion">/scratch/version.jsp</result>
         </action>
@@ -1807,7 +1807,7 @@
         <action name="report/DeleteLetter" class="oscar.oscarReport.pageUtil.DeletePatientLetters2Action">
             <result name="success">/report/ManageLetters.jsp</result>
         </action>
-        <action name="oscarMeasurement/AddShortMeasurement" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctAddShortMeasurement2Action">
+        <action name="oscarMeasurement/AddShortMeasurement" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctAddShortMeasurement2Action">
             <result name="success">/oscarPrevention/PreventionReporting.jsp</result>
         </action>
         <action name="form/RHPrevention" class="oscar.form.pageUtil.FrmFormRHPrevention2Action">
@@ -1816,17 +1816,17 @@
         <action name="form/AddRHWorkFlow" class="oscar.form.pageUtil.FrmFormAddRHWorkFlow2Action">
             <result name="success">/form/RHPrevention.do</result>
         </action>
-        <action name="billing/CA/BC/GenerateTeleplanFile" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.GenerateTeleplanFile2Action">
+        <action name="billing/CA/BC/GenerateTeleplanFile" class="ca.openosp.openo.billing.ca.bc.pageUtil.GenerateTeleplanFile2Action">
             <result name="success">/billing/CA/BC/TeleplanSubmission.jsp</result>
         </action>
-        <action name="billing/CA/BC/ProcessRemittance" class="ca.openosp.openo.oscarBilling.ca.bc.MSP.GenTa2Action">
+        <action name="billing/CA/BC/ProcessRemittance" class="ca.openosp.openo.billing.ca.bc.MSP.GenTa2Action">
             <result name="C12">/billing/CA/BC/billStatus.jsp</result>
             <result name="S21">/billing/CA/BC/viewReconcileReports.jsp</result>
         </action>
-        <action name="billing/CA/BC/SimulateTeleplanFile" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.SimulateTeleplanFile2Action">
+        <action name="billing/CA/BC/SimulateTeleplanFile" class="ca.openosp.openo.billing.ca.bc.pageUtil.SimulateTeleplanFile2Action">
             <result name="success">/billing/CA/BC/TeleplanSimulation.jsp</result>
         </action>
-        <action name="billing/CA/BC/ManageTeleplan" class="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.ManageTeleplan2Action">
+        <action name="billing/CA/BC/ManageTeleplan" class="ca.openosp.openo.billing.ca.bc.pageUtil.ManageTeleplan2Action">
             <result name="success">/billing/CA/BC/teleplan/ManageTeleplan.jsp</result>
             <result name="codelist">/billing/CA/BC/teleplan/ManageBillingCodes.jsp</result>
             <result name="submission">/billing/CA/BC/TeleplanSubmission.jsp</result>
@@ -2100,10 +2100,10 @@
         <action name="billing/CA/ON/moveMOHFiles" class="org.oscarehr.billing.CA.ON.web.MoveMOHFiles2Action">
             <result name="success">/billing/CA/ON/viewMOHFiles.jsp</result>
         </action>
-        <action name="billing/CA/ON/managePaymentType" class="ca.openosp.openo.oscarBilling.ca.on.pageUtil.PaymentType2Action" method="execute">
+        <action name="billing/CA/ON/managePaymentType" class="ca.openosp.openo.billing.ca.on.pageUtil.PaymentType2Action" method="execute">
             <result name="success">/billing/CA/ON/manageBillingPaymentType.jsp</result>
         </action>
-        <action name="billing/CA/ON/endYearStatement" class="ca.openosp.openo.oscarBilling.ca.on.pageUtil.PatientEndYearStatement2Action">
+        <action name="billing/CA/ON/endYearStatement" class="ca.openosp.openo.billing.ca.on.pageUtil.PatientEndYearStatement2Action">
             <result name="success">/billing/CA/ON/endYearStatement.jsp</result>
             <result name="failure">/billing/CA/ON/endYearStatement.jsp</result>
         </action>
@@ -2156,7 +2156,7 @@
             <result name="error">/errorpage.jsp</result>
         </action>
         <action name="CodeSearch" class="org.oscarehr.common.web.CodeSearchService2Action"/>
-        <action name="oscarEncounter/displayEpisodes" class="oscar.oscarEncounter.pageUtil.EctDisplayEpisode2Action">
+        <action name="oscarEncounter/displayEpisodes" class="ca.openosp.openo.encounter.pageUtil.EctDisplayEpisode2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -2183,7 +2183,7 @@
             <result name="success">/episode/success.jsp</result>
         </action>
         <action name="indivica/HCSearch" class="org.oscarehr.common.web.HealthCardSearch2Action"/>
-        <action name="oscarEncounter/displayPregnancies" class="oscar.oscarEncounter.pageUtil.EctDisplayPregnancy2Action">
+        <action name="oscarEncounter/displayPregnancies" class="ca.openosp.openo.encounter.pageUtil.EctDisplayPregnancy2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -2229,7 +2229,7 @@
             <result name="saved">/admin/groupPreferences.jsp</result>
             <result name="changedForm">/admin/groupPreferences.jsp</result>
         </action>
-        <action name="billing/CA/ON/BillingONCorrection" class="ca.openosp.openo.oscarBilling.ca.on.pageUtil.BillingCorrection2Action">
+        <action name="billing/CA/ON/BillingONCorrection" class="ca.openosp.openo.billing.ca.on.pageUtil.BillingCorrection2Action">
             <result name="success">/billing/CA/ON/billingONCorrection.jsp</result>
             <result name="failure">/failure.jsp</result>
             <result name="submitClose">/close.html</result>
@@ -2240,7 +2240,7 @@
             <result name="success">/billing/CA/ON/genRADesc.jsp</result>
             <result name="failure">/failure.jsp</result>
         </action>
-        <action name="oscarEncounter/displayContacts" class="oscar.oscarEncounter.pageUtil.EctDisplayContacts2Action">
+        <action name="oscarEncounter/displayContacts" class="ca.openosp.openo.encounter.pageUtil.EctDisplayContacts2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>

@@ -46,7 +46,7 @@
 <%@page import="org.oscarehr.common.dao.FrmLabReqPreSetDao, org.oscarehr.util.SpringUtils" %>
 <%@page import="oscar.form.*, oscar.OscarProperties, java.util.Date, oscar.util.UtilDateUtilities" %>
 <%@page import="oscar.oscarRx.data.RxProviderData, oscar.oscarRx.data.RxProviderData.Provider" %>
-<%@page import="org.oscarehr.util.MiscUtils,oscar.oscarClinic.ClinicData" %>
+<%@page import="org.oscarehr.util.MiscUtils,ca.openosp.openo.clinic.ClinicData" %>
 <%@page import="org.oscarehr.PMmodule.model.Program" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProgramDao" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>

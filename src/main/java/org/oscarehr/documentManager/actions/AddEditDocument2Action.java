@@ -72,7 +72,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import oscar.MyDateFormat;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
-import oscar.oscarEncounter.data.EctProgram;
+import ca.openosp.openo.encounter.data.EctProgram;
 import oscar.util.UtilDateUtilities;
 
 import com.itextpdf.text.pdf.PdfReader;

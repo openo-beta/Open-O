@@ -35,8 +35,8 @@ import org.apache.commons.collections.KeyValue;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 
-import oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBean;
-import oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
+import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBean;
+import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
 import oscar.oscarMDS.data.ProviderData;
 
 /**

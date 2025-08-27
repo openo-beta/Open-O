@@ -30,7 +30,7 @@
 <%@include file="/casemgmt/taglibs.jsp" %>
 <%@taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@page import="java.util.Enumeration" %>
-<%@page import="oscar.oscarEncounter.pageUtil.NavBarDisplayDAO" %>
+<%@page import="ca.openosp.openo.encounter.pageUtil.NavBarDisplayDAO" %>
 <%@page import="java.util.Arrays,java.util.Properties,java.util.List,java.util.Set,java.util.ArrayList,java.util.Enumeration,java.util.HashSet,java.util.Iterator,java.text.SimpleDateFormat,java.util.Calendar,java.util.Date,java.text.ParseException" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="org.oscarehr.common.model.UserProperty,org.oscarehr.casemgmt.model.*,org.oscarehr.casemgmt.service.* " %>
@@ -67,6 +67,7 @@
 <%@page import="org.oscarehr.managers.EmailManager" %>
 <%@page import="org.oscarehr.managers.EmailComposeManager"%>
 <%@page import="org.oscarehr.managers.SecurityInfoManager"%>
+<%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
 
 <%
     String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -102,9 +103,9 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
     }
 
     String demographicNo = request.getParameter("demographicNo");
-    oscar.oscarEncounter.pageUtil.EctSessionBean bean = null;
+    EctSessionBean bean = null;
     String strBeanName = "casemgmt_oscar_bean" + demographicNo;
-    if ((bean = (oscar.oscarEncounter.pageUtil.EctSessionBean) request.getSession().getAttribute(strBeanName)) == null) {
+    if ((bean = (EctSessionBean) request.getSession().getAttribute(strBeanName)) == null) {
         response.sendRedirect("error.jsp");
         return;
     }

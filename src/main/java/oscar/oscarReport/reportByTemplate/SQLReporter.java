@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.oscarehr.util.MiscUtils;
 
-import oscar.oscarDB.DBHandler;
+import ca.openosp.openo.db.DBHandler;
 import oscar.oscarReport.data.RptResultStruct;
 import oscar.util.UtilMisc;
 

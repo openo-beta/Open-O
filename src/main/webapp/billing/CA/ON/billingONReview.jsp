@@ -272,11 +272,11 @@
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="org.oscarehr.common.model.Site" %>
 <%@ page import="ca.openosp.openo.appt.ApptUtil" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.*" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.administration.GstReport" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.administration.GstControl2Action" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.pageUtil.Billing3rdPartPrep" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.pageUtil.BillingReviewPrep" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.data.*" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.administration.GstReport" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.administration.GstControl2Action" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.pageUtil.Billing3rdPartPrep" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.pageUtil.BillingReviewPrep" %>
 <head>
     <title>OscarBilling</title>
 

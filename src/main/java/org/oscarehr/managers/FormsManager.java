@@ -39,8 +39,8 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.PDFGenerationException;
 
 import oscar.form.util.FormTransportContainer;
-import oscar.oscarEncounter.data.EctFormData;
-import oscar.oscarEncounter.data.EctFormData.PatientForm;
+import ca.openosp.openo.encounter.data.EctFormData;
+import ca.openosp.openo.encounter.data.EctFormData.PatientForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

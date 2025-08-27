@@ -51,7 +51,7 @@
 <jsp:useBean id="oscarVariables" class="java.util.Properties"
              scope="page"/>
 <%@ page
-        import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, oscar.util.*, java.net.*,oscar.MyDateFormat, oscar.oscarEncounter.oscarConsultationRequest.pageUtil.ConsultationAttachDocs" %>
+        import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, oscar.util.*, java.net.*,oscar.MyDateFormat, ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.ConsultationAttachDocs" %>
 <%@ page import="oscar.oscarLab.ca.on.*" %>
 <%@ page import="oscar.oscarLab.ca.all.Hl7textResultsData" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>

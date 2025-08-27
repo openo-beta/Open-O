@@ -38,7 +38,7 @@ import org.oscarehr.billing.CA.BC.dao.Hl7PidDao;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarDB.DBHandler;
+import ca.openosp.openo.db.DBHandler;
 
 /**
  * @author root

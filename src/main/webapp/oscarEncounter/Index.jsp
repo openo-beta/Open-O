@@ -91,8 +91,8 @@
     //The oscarEncounter session manager, if the session bean is not in the context it looks for a session cookie with the appropriate name and value, if the required cookie is not available
     //it dumps you out to an error page.
 
-    oscar.oscarEncounter.pageUtil.EctSessionBean bean = null;
-    if ((bean = (oscar.oscarEncounter.pageUtil.EctSessionBean) request.getSession().getAttribute("EctSessionBean")) == null) {
+    EctSessionBean bean = null;
+    if ((bean = (EctSessionBean) request.getSession().getAttribute("EctSessionBean")) == null) {
         response.sendRedirect("error.jsp");
         return;
     }
@@ -130,7 +130,7 @@
     Collections.sort(labs);
 
     String province = ((String) oscarVariables.getProperty("billregion", "")).trim().toUpperCase();
-    Properties windowSizes = oscar.oscarEncounter.pageUtil.EctWindowSizes.getWindowSizes(provNo);
+    Properties windowSizes = EctWindowSizes.getWindowSizes(provNo);
 
     MsgDemoMap msgDemoMap = new MsgDemoMap();
     List<String> msgVector = msgDemoMap.getMsgVector(demoNo);
@@ -149,6 +149,14 @@
 <%@page import="org.oscarehr.util.MiscUtils" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
+<%@ page import="ca.openosp.openo.encounter.immunization.data.EctImmImmunizationData" %>
+<%@ page import="ca.openosp.openo.encounter.pageUtil.EctWindowSizes" %>
+<%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
+<%@ page import="ca.openosp.openo.encounter.data.EctFormData" %>
+<%@ page import="ca.openosp.openo.encounter.data.EctProviderData" %>
+<%@ page import="ca.openosp.openo.encounter.data.EctPatientData" %>
+<%@ page import="ca.openosp.openo.encounter.data.EctSplitChart" %>
+<%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -913,7 +921,7 @@
 
                             <oscar:oscarPropertiesCheck property="IMMUNIZATION" value="yes"
                                                         defaultVal="true">
-                                <% if (oscar.oscarEncounter.immunization.data.EctImmImmunizationData.hasImmunizations(demoNo)) { %>
+                                <% if (EctImmImmunizationData.hasImmunizations(demoNo)) { %>
                                 <a style="color: red"
                                    href="javascript:popUpImmunizations(700,960,'<rewrite:reWrite jspPage="immunization/initSchedule.do"/>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.immunizations"/></a>
                                 <br>

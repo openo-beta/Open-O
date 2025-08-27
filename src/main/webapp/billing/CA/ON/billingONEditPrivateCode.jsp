@@ -27,7 +27,7 @@
 <%@ page import="oscar.oscarBilling.ca.on.data.*" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="org.oscarehr.util.MiscUtils" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.JdbcBillingCodeImpl" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.data.JdbcBillingCodeImpl" %>
 <%
     //
     //int serviceCodeLen = 5;

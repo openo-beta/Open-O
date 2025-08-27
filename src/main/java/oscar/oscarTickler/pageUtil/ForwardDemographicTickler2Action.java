@@ -36,7 +36,7 @@ import org.oscarehr.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 import org.owasp.encoder.Encode;
-import ca.openosp.openo.oscarDemographic.data.DemographicNameAgeString;
+import ca.openosp.openo.demographic.data.DemographicNameAgeString;
 
 /**
  * This class is used to forward to the add tickler screen with the demographic preselected

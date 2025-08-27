@@ -11,7 +11,7 @@ import java.util.Vector;
 import org.oscarehr.util.LoggedInInfo;
 
 import ca.openosp.openo.login.DBHelp;
-import oscar.oscarDB.DBHandler;
+import ca.openosp.openo.db.DBHandler;
 import oscar.util.UtilDateUtilities;
 
 public class FrmBCINRRecord extends FrmRecord {

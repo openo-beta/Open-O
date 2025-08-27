@@ -55,8 +55,8 @@ Ontario, Canada
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.appt.status.service.AppointmentStatusMgr" %>
 <%@ page import="ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImpl" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.decisionSupport.BillingGuidelines" %>
-<%@ page import="oscar.oscarEncounter.data.EctFormData" %>
+<%@ page import="ca.openosp.openo.billing.ca.bc.decisionSupport.BillingGuidelines" %>
+<%@ page import="ca.openosp.openo.encounter.data.EctFormData" %>
 <%@ page import="oscar.util.ConversionUtils" %>
 <%@ page import="oscar.OscarProperties" %>
 

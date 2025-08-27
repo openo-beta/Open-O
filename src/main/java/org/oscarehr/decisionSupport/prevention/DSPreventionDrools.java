@@ -38,8 +38,8 @@ import org.jdom.input.SAXBuilder;
 import org.oscarehr.util.MiscUtils;
 
 import oscar.OscarProperties;
-import oscar.oscarEncounter.oscarMeasurements.util.DSCondition;
-import oscar.oscarEncounter.oscarMeasurements.util.RuleBaseCreator;
+import ca.openosp.openo.encounter.oscarMeasurements.util.DSCondition;
+import ca.openosp.openo.encounter.oscarMeasurements.util.RuleBaseCreator;
 
 public class DSPreventionDrools {
     private static final Logger logger = MiscUtils.getLogger();
