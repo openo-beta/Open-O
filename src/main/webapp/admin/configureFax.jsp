@@ -45,7 +45,7 @@
 
 <%@page import="java.util.List" %>
 <%@page import="java.util.HashMap" %>
-<%@ page import="org.oscarehr.managers.FaxManager" %>
+<%@ page import="ca.openosp.openo.managers.FaxManager" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 

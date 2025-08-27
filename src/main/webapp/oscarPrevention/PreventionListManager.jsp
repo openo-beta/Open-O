@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.managers.PreventionManager" %>
+<%@page import="ca.openosp.openo.managers.PreventionManager" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="java.util.*" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>

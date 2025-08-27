@@ -33,7 +33,7 @@ import org.oscarehr.caisi_integrator.ws.DemographicWs;
 import ca.openosp.openo.casemgmt.dao.ClientImageDAO;
 import org.oscarehr.common.model.DigitalSignature;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.managers.DigitalSignatureManager;
+import ca.openosp.openo.managers.DigitalSignatureManager;
 import org.oscarehr.util.*;
 import oscar.OscarProperties;
 

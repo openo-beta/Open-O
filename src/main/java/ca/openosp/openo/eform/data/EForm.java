@@ -37,7 +37,7 @@ import org.jsoup.select.Elements;
 import org.oscarehr.common.OtherIdManager;
 import org.oscarehr.common.dao.EFormDataDao;
 import org.oscarehr.common.model.EFormData;
-import org.oscarehr.documentManager.ConvertToEdoc;
+import ca.openosp.openo.documentManager.ConvertToEdoc;
 import org.oscarehr.ui.servlet.ImageRenderingServlet;
 import org.oscarehr.util.DigitalSignatureUtils;
 import org.oscarehr.util.MiscUtils;

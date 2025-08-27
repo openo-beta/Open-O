@@ -72,7 +72,7 @@
 <%@ page import="org.oscarehr.common.dao.FaxConfigDao, org.oscarehr.common.model.FaxConfig" %>
 <%@page import="org.oscarehr.common.dao.ConsultationServiceDao" %>
 <%@page import="org.oscarehr.common.model.ConsultationServices" %>
-<%@ page import="org.oscarehr.managers.DemographicManager" %>
+<%@ page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@page import="org.oscarehr.common.model.DemographicContact" %>
 <%@page import="org.oscarehr.common.model.ProfessionalContact" %>
 <%@page import="org.oscarehr.common.dao.ContactSpecialtyDao" %>
@@ -80,14 +80,14 @@
 <%@page import="org.oscarehr.common.model.ContactSpecialty" %>
 <%@ page import="org.oscarehr.common.model.enumerator.ConsultationRequestExtKey" %>
 <%@ page import="org.oscarehr.common.dao.ConsultationRequestExtDao" %>
-<%@ page import="org.oscarehr.managers.ConsultationManager" %>
+<%@ page import="ca.openosp.openo.managers.ConsultationManager" %>
 <%@ page import="ca.openosp.openo.encounter.data.EctFormData" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.oscarehr.common.model.EFormData" %>
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
 <%@ page import="ca.openosp.openo.lab.ca.all.Hl7textResultsData" %>
-<%@ page import="org.oscarehr.documentManager.EDocUtil" %>
-<%@ page import="org.oscarehr.documentManager.EDoc" %>
+<%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
+<%@ page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@ page import="oscar.util.StringUtils" %>
 <%@ page import="org.oscarehr.common.model.enumerator.ModuleType" %>
 <%@ page import="ca.openosp.openo.demographic.data.EctInformation" %>
@@ -96,6 +96,7 @@
   import="ca.openosp.openo.encounter.oscarConsultationRequest.config.data.EctConConfigurationJavascriptData" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
+<%@ page import="ca.openosp.openo.managers.LookupListManager" %>
 
 
 <jsp:useBean id="displayServiceUtil" scope="request"
@@ -270,7 +271,7 @@
 		 --%>
     <%
 
-        org.oscarehr.managers.LookupListManager lookupListManager = SpringUtils.getBean(org.oscarehr.managers.LookupListManager.class);
+        LookupListManager lookupListManager = SpringUtils.getBean(LookupListManager.class);
         pageContext.setAttribute("appointmentInstructionList", lookupListManager.findLookupListByName(loggedInInfo, "consultApptInst"));
 
     %>

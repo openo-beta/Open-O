@@ -25,12 +25,13 @@ package org.oscarehr.hospitalReportManager.dao;
 
 import static org.junit.Assert.assertNotNull;
 
+import ca.openosp.openo.hospitalReportManager.dao.HRMProviderConfidentialityStatementDao;
 import org.junit.Before;
 import org.junit.Test;
 import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.hospitalReportManager.model.HRMProviderConfidentialityStatement;
+import ca.openosp.openo.hospitalReportManager.model.HRMProviderConfidentialityStatement;
 import org.oscarehr.util.SpringUtils;
 
 public class HRMProviderConfidentialityStatementDaoTest extends DaoTestFixtures {

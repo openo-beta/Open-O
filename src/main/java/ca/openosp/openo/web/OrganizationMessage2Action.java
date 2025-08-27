@@ -38,7 +38,7 @@ import org.oscarehr.common.dao.FacilityDao;
 import org.oscarehr.common.dao.FacilityMessageDao;
 import org.oscarehr.common.model.Facility;
 import org.oscarehr.common.model.FacilityMessage;
-import org.oscarehr.managers.ProgramManager2;
+import ca.openosp.openo.managers.ProgramManager2;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

@@ -32,7 +32,7 @@ import org.oscarehr.common.dao.ContactSpecialtyDao;
 import org.oscarehr.common.dao.CtlRelationshipsDao;
 import org.oscarehr.common.dao.ProfessionalSpecialistDao;
 import org.oscarehr.common.model.*;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 
 import java.util.ArrayList;
 import java.util.Comparator;

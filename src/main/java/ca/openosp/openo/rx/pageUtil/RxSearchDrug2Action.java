@@ -41,7 +41,7 @@ import net.sf.json.JSONSerializer;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

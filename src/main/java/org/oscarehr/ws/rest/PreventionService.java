@@ -32,7 +32,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
-import org.oscarehr.managers.PreventionManager;
+import ca.openosp.openo.managers.PreventionManager;
 import org.oscarehr.common.model.Prevention;
 import org.oscarehr.ws.rest.conversion.PreventionConverter;
 import org.oscarehr.ws.rest.to.PreventionResponse;

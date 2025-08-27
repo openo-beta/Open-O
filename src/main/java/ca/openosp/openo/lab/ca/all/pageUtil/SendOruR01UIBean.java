@@ -49,7 +49,7 @@ import org.oscarehr.common.model.Hl7TextMessage;
 import org.oscarehr.common.model.ProfessionalSpecialist;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.PublicKey;
-import org.oscarehr.managers.DemographicManager;
+import ca.openosp.openo.managers.DemographicManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

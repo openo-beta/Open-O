@@ -66,7 +66,7 @@
 <%@ page import="org.oscarehr.PMmodule.model.Program" %>
 <%@page import="org.oscarehr.PMmodule.service.ProgramManager" %>
 <%@page import="org.oscarehr.PMmodule.service.AdmissionManager" %>
-<%@page import="org.oscarehr.managers.PatientConsentManager" %>
+<%@page import="ca.openosp.openo.managers.PatientConsentManager" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page import="org.oscarehr.common.model.ConsentType" %>
 <%@page import="oscar.OscarProperties" %>

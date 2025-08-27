@@ -30,7 +30,7 @@ package org.oscarehr.ws.rest.conversion;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.Drug;
-import org.oscarehr.managers.DrugLookUp;
+import ca.openosp.openo.managers.DrugLookUp;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.ws.rest.to.model.DrugSearchTo1;

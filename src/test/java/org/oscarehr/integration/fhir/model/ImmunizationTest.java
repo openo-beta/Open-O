@@ -27,6 +27,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
 
+import ca.openosp.openo.integration.fhir.model.AbstractOscarFhirResource;
+import ca.openosp.openo.integration.fhir.model.Immunization;
 import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -58,7 +60,7 @@ public class ImmunizationTest {
         immunization.setManufacture("Pfizer");
         immunization.setName("HPV Vaccine");
 
-        oscarFhirResource = new org.oscarehr.integration.fhir.model.Immunization<Prevention>(immunization);
+        oscarFhirResource = new Immunization<Prevention>(immunization);
     }
 
     @AfterClass

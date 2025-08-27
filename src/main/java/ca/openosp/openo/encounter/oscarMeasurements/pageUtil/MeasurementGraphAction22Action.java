@@ -76,7 +76,7 @@ import org.jfree.data.xy.XYDataset;
 import org.oscarehr.PMmodule.utility.UtilDateUtilities;
 import org.oscarehr.common.dao.MeasurementsExtDao;
 import org.oscarehr.common.model.MeasurementsExt;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.DbConnectionFilter;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;

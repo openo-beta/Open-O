@@ -38,7 +38,7 @@ import net.sf.json.JSONObject;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.PatientLabRoutingDao;
 import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

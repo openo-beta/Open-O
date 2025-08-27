@@ -31,10 +31,10 @@
 <%@page import="java.io.File" %>
 <%@page import="oscar.OscarProperties" %>
 <%@page import="java.util.ArrayList" %>
-<%@page import="org.oscarehr.hospitalReportManager.HRMReportParser" %>
-<%@page import="org.oscarehr.hospitalReportManager.HRMReport" %>
-<%@page import="org.oscarehr.hospitalReportManager.model.HRMDocument" %>
-<%@page import="org.oscarehr.hospitalReportManager.dao.HRMDocumentDao" %>
+<%@page import="ca.openosp.openo.hospitalReportManager.HRMReportParser" %>
+<%@page import="ca.openosp.openo.hospitalReportManager.HRMReport" %>
+<%@page import="ca.openosp.openo.hospitalReportManager.model.HRMDocument" %>
+<%@page import="ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao" %>
 <%@page import="org.oscarehr.common.model.OscarLog" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.log.LogAction" %>

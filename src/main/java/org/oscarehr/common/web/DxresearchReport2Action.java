@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.oscarehr.common.dao.DxresearchDAO;
 import org.oscarehr.common.dao.MyGroupDao;
 import org.oscarehr.common.model.DxRegistedPTInfo;
-import org.oscarehr.managers.CodingSystemManager;
+import ca.openosp.openo.managers.CodingSystemManager;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 

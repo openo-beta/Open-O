@@ -47,7 +47,7 @@
 <%@page import="org.oscarehr.PMmodule.service.ProgramManager" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.managers.ProviderManager2" %>
+<%@page import="ca.openosp.openo.managers.ProviderManager2" %>
 <%@page import="java.util.Date" %>
 <%@page import="java.util.List" %>
 <%@page import="org.oscarehr.common.model.CdsFormOption" %>

@@ -37,11 +37,11 @@
 <%@page import="org.oscarehr.PMmodule.model.*" %>
 <%@page import="org.oscarehr.common.model.*" %>
 <%@page import="oscar.util.DateUtils" %>
-<%@page import="org.oscarehr.documentManager.EDocUtil" %>
+<%@page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@page import="org.springframework.web.context.WebApplicationContext" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="ca.openosp.openo.casemgmt.common.Colour" %>
-<%@page import="org.oscarehr.documentManager.EDoc" %>
+<%@page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="com.quatro.dao.security.*,ca.openosp.openo.model.security.Secrole" %>
 <%@page import="org.oscarehr.util.EncounterUtil" %>

@@ -2994,14 +2994,6 @@
     "optional" : false,
     "integrity" : "sha512:6IiX6yzoQZ9SEf3kdtJUI2LeFOWSrk5X51EZlIhMD4lH0G+CXoHXAeQSDxqGZsa9s5nGLFJF6EuCytSo4wWbbQ=="
   }, {
-    "groupId" : "org.oscarehr.hrm",
-    "artifactId" : "hrm-jaxb",
-    "version" : "4.1a",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:LxeBfAPgMYEJEBPdut8FKDWaq87nihpYJxFizkhG6h75yuwApVjRuvtqexLMf9Z2V1w2+d6+VyC2ciR1WDiirw=="
-  }, {
     "groupId" : "org.oscarehr.integration.ebs",
     "artifactId" : "edt-stubs",
     "version" : "0.0.1-20140911.161211-1",

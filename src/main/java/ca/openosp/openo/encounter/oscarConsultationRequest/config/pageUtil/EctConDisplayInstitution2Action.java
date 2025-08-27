@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.oscarehr.common.dao.InstitutitionDepartmentDao;
 import org.oscarehr.common.model.InstitutionDepartment;
 import org.oscarehr.common.model.InstitutionDepartmentPK;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

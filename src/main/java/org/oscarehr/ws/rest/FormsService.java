@@ -48,7 +48,7 @@ import org.oscarehr.common.dao.EFormDao.EFormSortOrder;
 import org.oscarehr.common.model.EForm;
 import org.oscarehr.common.model.EFormData;
 import org.oscarehr.common.model.EncounterForm;
-import org.oscarehr.managers.FormsManager;
+import ca.openosp.openo.managers.FormsManager;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 import org.oscarehr.ws.rest.conversion.EFormConverter;

@@ -46,14 +46,14 @@ import org.oscarehr.common.dao.DrugDao;
 import org.oscarehr.common.dao.SecRoleDao;
 import org.oscarehr.common.model.Drug;
 import org.oscarehr.common.model.SecRole;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import org.oscarehr.documentManager.EDocUtil;
+import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.encounter.data.EctProgram;

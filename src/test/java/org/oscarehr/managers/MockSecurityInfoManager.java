@@ -24,6 +24,7 @@
 
 package org.oscarehr.managers;
 
+import ca.openosp.openo.managers.SecurityInfoManagerImpl;
 import org.oscarehr.util.LoggedInInfo;
 
 /**

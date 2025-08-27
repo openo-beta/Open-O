@@ -55,7 +55,7 @@
 <%@ page import="org.oscarehr.common.dao.AdmissionDao" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProgramDao" %>
 <%@page import="org.oscarehr.PMmodule.model.Program" %>
-<%@page import="org.oscarehr.managers.PatientConsentManager" %>
+<%@page import="ca.openosp.openo.managers.PatientConsentManager" %>
 <%@page import="org.oscarehr.common.model.ConsentType" %>
 <%@page import="org.oscarehr.common.model.Facility" %>
 <%@page import="org.oscarehr.caisi_integrator.ws.GetConsentTransfer" %>

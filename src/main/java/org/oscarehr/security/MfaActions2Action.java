@@ -25,8 +25,8 @@ package org.oscarehr.security;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 import org.oscarehr.common.model.Security;
-import org.oscarehr.managers.MfaManager;
-import org.oscarehr.managers.SecurityManager;
+import ca.openosp.openo.managers.MfaManager;
+import ca.openosp.openo.managers.SecurityManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

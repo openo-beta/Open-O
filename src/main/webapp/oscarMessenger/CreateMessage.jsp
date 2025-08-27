@@ -31,7 +31,7 @@
 <%@ page import="org.w3c.dom.*" %>
 <%@ page import="ca.openosp.openo.messenger.util.Msgxml" %>
 <%@ page import="oscar.oscarDemographic.data.*" %>
-<%@ page import="org.oscarehr.managers.MessagingManager" %>
+<%@ page import="ca.openosp.openo.managers.MessagingManager" %>
 <%@ page import="org.oscarehr.common.model.Groups" %>
 <%@ page import="ca.openosp.openo.messenger.data.MsgProviderData" %>
 <%@ page import="java.util.Map, java.util.List" %>
@@ -43,6 +43,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.messenger.pageUtil.MsgSessionBean" %>
+<%@ page import="ca.openosp.openo.managers.MessengerGroupManager" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
@@ -70,7 +71,7 @@
 
 
 <%
-    org.oscarehr.managers.MessengerGroupManager groupManager = SpringUtils.getBean(org.oscarehr.managers.MessengerGroupManager.class);
+    MessengerGroupManager groupManager = SpringUtils.getBean(MessengerGroupManager.class);
     Map<Groups, List<MsgProviderData>> groups = groupManager.getAllGroupsWithMembers(LoggedInInfo.getLoggedInInfoFromSession(request));
     Map<String, List<MsgProviderData>> remoteMembers = groupManager.getAllRemoteMembers(LoggedInInfo.getLoggedInInfoFromSession(request));
     List<MsgProviderData> localMembers = groupManager.getAllLocalMembers(LoggedInInfo.getLoggedInInfoFromSession(request));

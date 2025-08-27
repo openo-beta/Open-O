@@ -59,8 +59,8 @@
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.common.model.ProviderLabRoutingModel" %>
 
-<%@page import="org.oscarehr.documentManager.IncomingDocUtil" %>
-<%@ page import="org.oscarehr.documentManager.EDocUtil" %>
+<%@page import="ca.openosp.openo.documentManager.IncomingDocUtil" %>
+<%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 
 <jsp:useBean id="LastPatientsBean" class="java.util.ArrayList" scope="session"/>
 

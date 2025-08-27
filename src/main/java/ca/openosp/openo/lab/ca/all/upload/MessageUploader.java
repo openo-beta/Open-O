@@ -43,7 +43,7 @@ import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.OtherIdManager;
 import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;
-import org.oscarehr.managers.DemographicManager;
+import ca.openosp.openo.managers.DemographicManager;
 import org.oscarehr.olis.dao.OLISSystemPreferencesDao;
 import org.oscarehr.olis.model.OLISSystemPreferences;
 import org.oscarehr.util.DbConnectionFilter;

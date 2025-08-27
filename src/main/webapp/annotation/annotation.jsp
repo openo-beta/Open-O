@@ -53,7 +53,7 @@
                 java.util.Date,
                 java.util.List" %>
 <%@page import="ca.openosp.openo.log.LogAction, ca.openosp.openo.log.LogConst" %>
-<%@page import="org.oscarehr.documentManager.EDocUtil" %>
+<%@page import="ca.openosp.openo.documentManager.EDocUtil" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

@@ -26,7 +26,7 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.oscarehr.common.dao.CaseloadDao;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

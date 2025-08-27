@@ -52,8 +52,8 @@
 <%@page import="org.springframework.web.context.WebApplicationContext" %>
 <%@page import="org.oscarehr.util.SessionConstants" %>
 <%@page import="oscar.oscarProvider.data.*" %>
-<%@ page import="org.oscarehr.documentManager.EDocUtil" %>
-<%@ page import="org.oscarehr.documentManager.EDoc" %>
+<%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
+<%@ page import="ca.openosp.openo.documentManager.EDoc" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <style type="text/css">
     #myAutoComplete {

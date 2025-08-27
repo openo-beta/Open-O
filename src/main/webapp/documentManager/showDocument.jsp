@@ -56,9 +56,9 @@
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@page import="oscar.oscarLab.ca.all.*,oscar.oscarMDS.data.*" %>
 <%@page import="org.oscarehr.common.dao.*,org.oscarehr.common.model.*,org.oscarehr.util.SpringUtils" %>
-<%@ page import="org.oscarehr.documentManager.EDocUtil" %>
-<%@ page import="org.oscarehr.documentManager.EDoc" %>
-<%@ page import="org.oscarehr.documentManager.IncomingDocUtil" %>
+<%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
+<%@ page import="ca.openosp.openo.documentManager.EDoc" %>
+<%@ page import="ca.openosp.openo.documentManager.IncomingDocUtil" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
 <%@ page import="ca.openosp.openo.lab.ca.all.AcknowledgementData" %>

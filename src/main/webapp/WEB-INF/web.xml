@@ -189,7 +189,7 @@
     </context-param>
     <filter>
         <filter-name>CSRFGuard</filter-name>
-        <filter-class>org.oscarehr.app.OscarCsrfGuardFilter</filter-class>
+        <filter-class>ca.openosp.openo.app.OscarCsrfGuardFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>CSRFGuard</filter-name>
@@ -250,7 +250,7 @@
 
 	<filter>
 		<filter-name>XforwardHeader</filter-name>
-		<filter-class>org.oscarehr.app.XforwardHeaderFilter</filter-class>
+		<filter-class>ca.openosp.openo.app.XforwardHeaderFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>XforwardHeader</filter-name>

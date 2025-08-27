@@ -32,7 +32,7 @@ import javax.jws.WebService;
 import org.apache.cxf.annotations.GZIP;
 import org.oscarehr.common.model.Property;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.managers.ProviderManager2;
+import ca.openosp.openo.managers.ProviderManager2;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.ws.transfer_objects.ProviderPropertyTransfer;
 import org.oscarehr.ws.transfer_objects.ProviderTransfer;

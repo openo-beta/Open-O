@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.olis.dao.OLISSystemPreferencesDao;
 import org.oscarehr.olis.model.OLISSystemPreferences;
 import org.oscarehr.util.LoggedInInfo;

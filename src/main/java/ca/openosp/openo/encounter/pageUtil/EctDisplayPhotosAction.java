@@ -27,9 +27,9 @@
 package ca.openosp.openo.encounter.pageUtil;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.oscarehr.documentManager.EDoc;
-import org.oscarehr.documentManager.EDocUtil;
-import org.oscarehr.documentManager.EDocUtil.EDocSort;
+import ca.openosp.openo.documentManager.EDoc;
+import ca.openosp.openo.documentManager.EDocUtil;
+import ca.openosp.openo.documentManager.EDocUtil.EDocSort;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import oscar.util.DateUtils;

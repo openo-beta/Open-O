@@ -27,7 +27,7 @@ import org.oscarehr.common.dao.DemographicContactDao;
 import org.oscarehr.common.dao.RelationshipsDao;
 import org.oscarehr.common.model.DemographicContact;
 import org.oscarehr.common.model.Relationships;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

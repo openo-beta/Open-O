@@ -42,7 +42,7 @@
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page
         import="java.sql.*, java.util.*, oscar.MyDateFormat, org.oscarehr.common.OtherIdManager,oscar.oscarDemographic.data.*,java.text.SimpleDateFormat,org.oscarehr.util.SpringUtils" %>
-<%@ page import="org.oscarehr.event.EventService" %>
+<%@ page import="ca.openosp.openo.event.EventService" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>

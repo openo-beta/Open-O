@@ -28,7 +28,7 @@ package ca.openosp.openo.eform.actions;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

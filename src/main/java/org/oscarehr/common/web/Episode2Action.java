@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.oscarehr.common.dao.EpisodeDao;
 import org.oscarehr.common.model.Episode;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 import org.springframework.beans.BeanUtils;

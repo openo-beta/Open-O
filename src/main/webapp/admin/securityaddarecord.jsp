@@ -64,7 +64,7 @@
 <%@page import="org.oscarehr.common.model.Security" %>
 <%@page import="org.oscarehr.common.dao.SecurityDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="org.oscarehr.managers.MfaManager" %>
+<%@ page import="ca.openosp.openo.managers.MfaManager" %>
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
     SecurityDao securityDao = SpringUtils.getBean(SecurityDao.class);

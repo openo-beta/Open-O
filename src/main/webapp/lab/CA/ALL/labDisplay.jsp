@@ -54,7 +54,7 @@
 <%@ page import="org.oscarehr.common.dao.UserPropertyDAO, org.oscarehr.common.model.UserProperty" %>
 <%@ page import="org.oscarehr.common.model.MeasurementMap, org.oscarehr.common.dao.MeasurementMapDao" %>
 <%@ page import="org.oscarehr.common.model.Tickler" %>
-<%@ page import="org.oscarehr.managers.TicklerManager" %>
+<%@ page import="ca.openosp.openo.managers.TicklerManager" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page
         import="ca.openosp.openo.casemgmt.service.CaseManagementManager, org.oscarehr.common.dao.Hl7TextMessageDao, org.oscarehr.common.model.Hl7TextMessage,org.oscarehr.common.dao.Hl7TextInfoDao,org.oscarehr.common.model.Hl7TextInfo" %>

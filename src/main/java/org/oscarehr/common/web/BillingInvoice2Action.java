@@ -34,8 +34,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.oscarehr.common.service.PdfRecordPrinter;
-import org.oscarehr.managers.BillingONManager;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.BillingONManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

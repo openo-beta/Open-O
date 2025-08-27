@@ -27,8 +27,8 @@ package org.oscarehr.web;
 import org.oscarehr.common.dao.CasemgmtNoteLockDao;
 import org.oscarehr.common.exception.UserSessionNotFoundException;
 import org.oscarehr.common.model.CasemgmtNoteLock;
-import org.oscarehr.managers.UserSessionManager;
-import org.oscarehr.managers.UserSessionManagerImpl;
+import ca.openosp.openo.managers.UserSessionManager;
+import ca.openosp.openo.managers.UserSessionManagerImpl;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 

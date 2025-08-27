@@ -28,7 +28,7 @@ package ca.openosp.openo.billings.ca.bc.Teleplan;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.Demographic;
-import org.oscarehr.managers.DemographicManager;
+import ca.openosp.openo.managers.DemographicManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import oscar.Misc;

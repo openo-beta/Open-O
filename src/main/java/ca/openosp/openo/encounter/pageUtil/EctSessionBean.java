@@ -41,7 +41,7 @@ import org.oscarehr.common.model.EChart;
 import org.oscarehr.common.model.EncounterTemplate;
 import org.oscarehr.common.model.MeasurementGroupStyle;
 import org.oscarehr.common.model.MessageTbl;
-import org.oscarehr.managers.DemographicManager;
+import ca.openosp.openo.managers.DemographicManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

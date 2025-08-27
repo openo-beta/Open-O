@@ -9,7 +9,7 @@
 
 --%>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.hospitalReportManager.SFTPConnector" %>
+<%@page import="ca.openosp.openo.hospitalReportManager.SFTPConnector" %>
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     SFTPConnector.addMeToDoNotSendList(loggedInInfo);

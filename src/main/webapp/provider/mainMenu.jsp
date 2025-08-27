@@ -32,7 +32,7 @@
 
 <%@ page import="java.util.GregorianCalendar" %>
 <%@ page import="java.util.Calendar" %>
-<%@page import="org.oscarehr.managers.DashboardManager" %>
+<%@page import="ca.openosp.openo.managers.DashboardManager" %>
 <%@ page import="org.oscarehr.common.model.Dashboard" %>
 <%@ page import="java.util.Properties" %>
 <%@ page import="oscar.OscarProperties" %>
@@ -40,7 +40,7 @@
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="org.oscarehr.managers.AppManager" %>
+<%@ page import="ca.openosp.openo.managers.AppManager" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@ page import="org.oscarehr.common.model.UserProperty" %>

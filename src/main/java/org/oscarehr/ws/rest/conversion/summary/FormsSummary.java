@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.oscarehr.common.model.EFormData;
-import org.oscarehr.managers.FormsManager;
+import ca.openosp.openo.managers.FormsManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.SummaryItemTo1;
 import org.oscarehr.ws.rest.to.model.SummaryTo1;

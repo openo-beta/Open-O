@@ -37,7 +37,7 @@ import org.oscarehr.common.dao.AbstractCodeSystemDaoImpl;
 import org.oscarehr.common.dao.QuickListDao;
 import org.oscarehr.common.model.AbstractCodeSystemModel;
 import org.oscarehr.common.model.QuickList;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

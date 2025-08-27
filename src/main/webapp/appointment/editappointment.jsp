@@ -42,7 +42,7 @@
 %>
 
 <%@page import="org.oscarehr.common.dao.ProviderDataDao" %>
-<%@page import="org.oscarehr.managers.DemographicManager" %>
+<%@page import="ca.openosp.openo.managers.DemographicManager" %>
 
 <%@page import="ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImpl" %>
 <%
@@ -86,7 +86,7 @@
 <%@ page import="org.oscarehr.PMmodule.service.ProviderManager" %>
 <%@ page import="org.oscarehr.PMmodule.service.ProgramManager" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="org.oscarehr.managers.LookupListManager" %>
+<%@ page import="ca.openosp.openo.managers.LookupListManager" %>
 <%@ page import="org.oscarehr.common.model.LookupList" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>

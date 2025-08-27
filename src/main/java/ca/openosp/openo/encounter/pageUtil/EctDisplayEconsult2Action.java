@@ -27,7 +27,7 @@
 package ca.openosp.openo.encounter.pageUtil;
 
 import org.oscarehr.common.model.Document;
-import org.oscarehr.managers.ConsultationManager;
+import ca.openosp.openo.managers.ConsultationManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 import oscar.OscarProperties;

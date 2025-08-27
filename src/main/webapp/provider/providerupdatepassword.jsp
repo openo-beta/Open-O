@@ -38,7 +38,7 @@
 <%@ page import="org.oscarehr.common.model.Security" %>
 <%@ page import="org.oscarehr.common.dao.SecurityDao" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="org.oscarehr.managers.SecurityManager" %>
+<%@ page import="ca.openosp.openo.managers.SecurityManager" %>
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 	SecurityManager securityManager = SpringUtils.getBean(SecurityManager.class);

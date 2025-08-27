@@ -35,7 +35,7 @@ import ca.openosp.openo.casemgmt.model.CaseManagementIssue;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.Issue;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
-import org.oscarehr.managers.PreferenceManager;
+import ca.openosp.openo.managers.PreferenceManager;
 import org.oscarehr.util.LoggedInInfo;
 
 import org.oscarehr.ws.rest.to.model.SummaryItemTo1;

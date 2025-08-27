@@ -24,8 +24,8 @@
 
 package org.oscarehr.dashboard.handler;
 
+import ca.openosp.openo.dashboard.handler.ExcludeDemographicHandler;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;

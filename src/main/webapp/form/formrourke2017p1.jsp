@@ -46,7 +46,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Demographic" %>
-<%@ page import="org.oscarehr.managers.DemographicManager" %>
+<%@ page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);

@@ -42,8 +42,8 @@
 <%@page import="org.oscarehr.common.model.TicklerComment" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.managers.TicklerManager" %>
-<%@page import="org.oscarehr.managers.DemographicManager" %>
+<%@page import="ca.openosp.openo.managers.TicklerManager" %>
+<%@page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@page import="oscar.OscarProperties" %>
 <%
     TicklerManager ticklerManager = SpringUtils.getBean(TicklerManager.class);

@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.managers.IntegratorFileLogManager" %>
+<%@page import="ca.openosp.openo.managers.IntegratorFileLogManager" %>
 <%@page import="org.oscarehr.common.model.IntegratorFileLog" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%@page import="java.text.SimpleDateFormat" %>

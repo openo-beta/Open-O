@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.oscarehr.common.dao.MessageListDao;
 import org.oscarehr.common.model.MessageList;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

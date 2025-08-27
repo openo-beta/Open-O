@@ -36,7 +36,7 @@ import org.oscarehr.common.dao.BillingServiceDao;
 import org.oscarehr.common.model.BillingONExt;
 import org.oscarehr.common.model.BillingService;
 import org.oscarehr.common.model.Demographic;
-import org.oscarehr.managers.DemographicManager;
+import ca.openosp.openo.managers.DemographicManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

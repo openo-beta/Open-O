@@ -38,7 +38,6 @@ import org.oscarehr.common.dao.ProviderPreferenceDao;
 import org.oscarehr.common.model.EForm;
 import org.oscarehr.common.model.EncounterForm;
 import org.oscarehr.common.model.ProviderPreference;
-import org.oscarehr.managers.EformDataManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

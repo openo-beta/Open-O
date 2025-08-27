@@ -50,8 +50,8 @@
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils,oscar.oscarLab.ca.all.*,oscar.oscarMDS.data.*,oscar.oscarLab.ca.all.util.*" %>
 <%@page import="org.springframework.web.context.WebApplicationContext,org.oscarehr.common.dao.*,org.oscarehr.common.model.*, org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@ page import="org.oscarehr.documentManager.EDocUtil" %>
-<%@ page import="org.oscarehr.documentManager.EDoc" %>
+<%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
+<%@ page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="ca.openosp.openo.lab.ca.all.AcknowledgementData" %>
 <%@ page import="ca.openosp.openo.mds.data.ReportStatus" %>

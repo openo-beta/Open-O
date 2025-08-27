@@ -30,7 +30,7 @@ import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import org.oscarehr.common.dao.CaseManagementTmpSaveDao;
 import org.oscarehr.common.model.CaseManagementTmpSave;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

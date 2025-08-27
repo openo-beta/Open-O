@@ -57,7 +57,7 @@
 %>
 
 <%@page import="org.oscarehr.web.PrescriptionQrCodeUIBean" %>
-<%@ page import="org.oscarehr.managers.DemographicManager" %>
+<%@ page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="java.util.Objects" %>
 <%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>

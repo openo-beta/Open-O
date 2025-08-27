@@ -33,7 +33,7 @@ import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.service.IssueAdminManager;
 import ca.openosp.openo.casemgmt.model.Issue;
 import org.oscarehr.common.dao.SecRoleDao;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

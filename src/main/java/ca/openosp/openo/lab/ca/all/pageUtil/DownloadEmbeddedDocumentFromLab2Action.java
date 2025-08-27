@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import org.apache.commons.codec.binary.Base64;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

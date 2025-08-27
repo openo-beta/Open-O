@@ -35,9 +35,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.oscarehr.common.model.MessageTbl;
 import org.oscarehr.common.model.MsgDemoMap;
-import org.oscarehr.managers.MessagingManager;
-import org.oscarehr.managers.MessengerDemographicManager;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.MessagingManager;
+import ca.openosp.openo.managers.MessengerDemographicManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

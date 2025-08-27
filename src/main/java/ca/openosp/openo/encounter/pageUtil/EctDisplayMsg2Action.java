@@ -28,7 +28,7 @@ package ca.openosp.openo.encounter.pageUtil;
 
 import org.oscarehr.common.model.MessageTbl;
 import org.oscarehr.common.model.OscarMsgType;
-import org.oscarehr.managers.MessagingManager;
+import ca.openosp.openo.managers.MessagingManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 import oscar.util.StringUtils;

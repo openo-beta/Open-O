@@ -30,7 +30,7 @@ import java.util.Map;
 
 import ca.openosp.openo.appointment.search.SearchConfig;
 import ca.openosp.openo.appointment.search.TimeSlot;
-import org.oscarehr.managers.DayWorkSchedule;
+import ca.openosp.openo.managers.DayWorkSchedule;
 
 
 public interface AvailableTimeSlotFilter {

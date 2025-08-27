@@ -55,7 +55,7 @@
 <%@page import="org.oscarehr.common.dao.DrugDao" %>
 <%@page import="org.oscarehr.common.dao.ProviderInboxRoutingDao" %>
 <%@page import="org.oscarehr.common.model.ProviderInboxItem" %>
-<%@page import="org.oscarehr.managers.TicklerManager" %>
+<%@page import="ca.openosp.openo.managers.TicklerManager" %>
 <%@page import="org.oscarehr.common.model.CustomFilter" %>
 <%@page import="org.oscarehr.common.dao.DocumentDao" %>
 <%@page import="org.oscarehr.common.dao.BillingONCHeader1Dao" %>

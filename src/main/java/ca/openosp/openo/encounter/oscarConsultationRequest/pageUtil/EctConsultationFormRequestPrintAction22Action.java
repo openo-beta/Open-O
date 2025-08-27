@@ -35,17 +35,17 @@ import com.itextpdf.text.DocumentException;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.EFormData;
-import org.oscarehr.hospitalReportManager.HRMPDFCreator;
-import org.oscarehr.managers.ConsultationManager;
-import org.oscarehr.managers.FaxManager;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.hospitalReportManager.HRMPDFCreator;
+import ca.openosp.openo.managers.ConsultationManager;
+import ca.openosp.openo.managers.FaxManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 import oscar.OscarProperties;
-import org.oscarehr.documentManager.EDoc;
-import org.oscarehr.documentManager.EDocUtil;
+import ca.openosp.openo.documentManager.EDoc;
+import ca.openosp.openo.documentManager.EDocUtil;
 import oscar.form.util.FormTransportContainer;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;

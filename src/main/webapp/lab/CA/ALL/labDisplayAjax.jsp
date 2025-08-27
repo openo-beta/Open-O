@@ -47,7 +47,7 @@
                  javax.swing.text.rtf.RTFEditorKit,
                  java.io.ByteArrayInputStream" %>
 <%@ page import="org.oscarehr.common.model.Tickler" %>
-<%@ page import="org.oscarehr.managers.TicklerManager" %>
+<%@ page import="ca.openosp.openo.managers.TicklerManager" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
 <%@ page import="ca.openosp.openo.lab.ca.all.parsers.MessageHandler" %>

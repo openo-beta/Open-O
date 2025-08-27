@@ -33,7 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.integration.hl7.model.PatientId;
+import ca.openosp.openo.integration.hl7.model.PatientId;
 import org.oscarehr.util.MiscUtils;
 
 import oscar.Misc;

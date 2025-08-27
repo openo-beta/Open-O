@@ -32,7 +32,7 @@ import java.util.List;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.oscarehr.common.model.Drug;
 import org.oscarehr.common.model.Prescription;
-import org.oscarehr.managers.PrescriptionManager;
+import ca.openosp.openo.managers.PrescriptionManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 import org.springframework.beans.BeanUtils;

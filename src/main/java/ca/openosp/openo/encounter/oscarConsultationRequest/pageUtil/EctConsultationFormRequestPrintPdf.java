@@ -53,8 +53,8 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 import oscar.OscarProperties;
-import org.oscarehr.documentManager.EDoc;
-import org.oscarehr.documentManager.EDocUtil;
+import ca.openosp.openo.documentManager.EDoc;
+import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.clinic.ClinicData;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
 import ca.openosp.openo.lab.ca.all.parsers.Factory;

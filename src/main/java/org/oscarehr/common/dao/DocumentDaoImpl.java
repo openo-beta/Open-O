@@ -45,9 +45,7 @@ import org.oscarehr.common.model.Document;
 import org.oscarehr.common.model.EFormDocs;
 import org.springframework.stereotype.Repository;
 
-import org.oscarehr.documentManager.EDocUtil.EDocSort;
-import oscar.util.ConversionUtils;
-import org.oscarehr.common.dao.DocumentDao;
+import ca.openosp.openo.documentManager.EDocUtil.EDocSort;
 
 @Repository
 public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements DocumentDao {

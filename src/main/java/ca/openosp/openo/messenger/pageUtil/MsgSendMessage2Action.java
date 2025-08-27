@@ -39,7 +39,7 @@ import org.oscarehr.common.dao.MessageTblDao;
 import org.oscarehr.common.model.MessageList;
 import org.oscarehr.common.model.MessageTbl;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

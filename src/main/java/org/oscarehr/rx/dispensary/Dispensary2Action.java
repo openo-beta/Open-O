@@ -49,7 +49,7 @@ import org.oscarehr.common.model.Drug;
 import org.oscarehr.common.model.DrugDispensing;
 import org.oscarehr.common.model.DrugDispensingMapping;
 import org.oscarehr.common.model.DrugProduct;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

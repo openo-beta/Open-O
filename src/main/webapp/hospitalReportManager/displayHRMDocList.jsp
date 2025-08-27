@@ -10,7 +10,8 @@
 --%>
 <!DOCTYPE html>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="java.util.*, org.oscarehr.hospitalReportManager.*,org.oscarehr.hospitalReportManager.model.HRMCategory" %>
+<%@page import="java.util.*, org.oscarehr.hospitalReportManager.*,ca.openosp.openo.hospitalReportManager.model.HRMCategory" %>
+<%@ page import="ca.openosp.openo.hospitalReportManager.HRMUtil" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

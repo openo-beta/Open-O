@@ -36,7 +36,7 @@ import org.oscarehr.common.dao.AllergyDao;
 import org.oscarehr.common.dao.UserPropertyDAO;
 import org.oscarehr.common.model.Allergy;
 import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

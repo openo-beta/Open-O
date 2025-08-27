@@ -50,8 +50,8 @@
 <%@page import="org.oscarehr.common.dao.WaitingListDao" %>
 <%@page import="oscar.util.ConversionUtils" %>
 <%@page import="oscar.util.UtilDateUtilities" %>
-<%@ page import="org.oscarehr.event.EventService" %>
-<%@page import="org.oscarehr.managers.DemographicManager" %>
+<%@ page import="ca.openosp.openo.event.EventService" %>
+<%@page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicMerged" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.waitinglist.WaitingList" %>

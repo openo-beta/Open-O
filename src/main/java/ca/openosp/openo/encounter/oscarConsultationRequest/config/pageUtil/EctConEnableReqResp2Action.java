@@ -37,9 +37,9 @@ import org.oscarehr.common.dao.ConsultationServiceDao;
 import org.oscarehr.common.dao.PropertyDao;
 import org.oscarehr.common.model.ConsultationServices;
 import org.oscarehr.common.model.Property;
-import org.oscarehr.managers.ConsultationManager;
-import org.oscarehr.managers.ConsultationManagerImpl;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.ConsultationManager;
+import ca.openosp.openo.managers.ConsultationManagerImpl;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

@@ -62,7 +62,7 @@
 <%@page import="org.oscarehr.common.dao.DemographicExtArchiveDao" %>
 <%@page import="org.oscarehr.common.model.DemographicExtArchive" %>
 
-<%@page import="org.oscarehr.managers.PatientConsentManager" %>
+<%@page import="ca.openosp.openo.managers.PatientConsentManager" %>
 <%@page import="org.oscarehr.common.model.ConsentType" %>
 <%@page import="oscar.OscarProperties" %>
 <%@page import="org.oscarehr.util.MiscUtils" %>

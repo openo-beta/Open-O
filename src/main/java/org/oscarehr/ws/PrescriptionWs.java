@@ -35,7 +35,7 @@ import javax.jws.WebService;
 import org.apache.cxf.annotations.GZIP;
 import org.oscarehr.common.model.Drug;
 import org.oscarehr.common.model.Prescription;
-import org.oscarehr.managers.PrescriptionManager;
+import ca.openosp.openo.managers.PrescriptionManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.ws.transfer_objects.PrescriptionTransfer;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -57,15 +57,15 @@
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="org.oscarehr.util.SessionConstants" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.hospitalReportManager.dao.HRMDocumentDao" %>
-<%@page import="org.oscarehr.hospitalReportManager.dao.HRMDocumentToDemographicDao" %>
-<%@page import="org.oscarehr.hospitalReportManager.model.HRMDocument" %>
-<%@page import="org.oscarehr.hospitalReportManager.model.HRMDocumentToDemographic" %>
+<%@page import="ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao" %>
+<%@page import="ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao" %>
+<%@page import="ca.openosp.openo.hospitalReportManager.model.HRMDocument" %>
+<%@page import="ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="org.oscarehr.common.model.EFormData" %>
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
-<%@ page import="org.oscarehr.documentManager.EDocUtil" %>
-<%@ page import="org.oscarehr.documentManager.EDoc" %>
+<%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
+<%@ page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
 

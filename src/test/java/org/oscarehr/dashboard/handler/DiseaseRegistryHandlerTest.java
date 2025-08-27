@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ca.openosp.openo.dashboard.handler.DiseaseRegistryHandler;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oscarehr.common.dao.DemographicDao;

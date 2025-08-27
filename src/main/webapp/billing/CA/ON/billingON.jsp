@@ -47,7 +47,7 @@
 <%@page import="org.oscarehr.web.admin.ProviderPreferencesUIBean" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 
-<%@page import="org.oscarehr.managers.DemographicManager,ca.openosp.openo.billing.CA.filters.CodeFilterManager" %>
+<%@page import="ca.openosp.openo.managers.DemographicManager,ca.openosp.openo.billing.CA.filters.CodeFilterManager" %>
 
 <%
 	ProfessionalSpecialistDao professionalSpecialistDao = SpringUtils.getBean(ProfessionalSpecialistDao.class);

@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.oscarehr.common.dao.ServiceSpecialistsDao;
 import org.oscarehr.common.model.ServiceSpecialists;
 import org.oscarehr.common.model.ServiceSpecialistsPK;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

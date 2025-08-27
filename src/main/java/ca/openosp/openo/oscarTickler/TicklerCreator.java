@@ -29,7 +29,7 @@ import java.util.List;
 
 import org.oscarehr.common.model.CustomFilter;
 import org.oscarehr.common.model.Tickler;
-import org.oscarehr.managers.TicklerManager;
+import ca.openosp.openo.managers.TicklerManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

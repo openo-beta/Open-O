@@ -40,8 +40,8 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.MeasurementDao;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Measurement;
-import org.oscarehr.managers.DemographicManager;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.DemographicManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

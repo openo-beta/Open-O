@@ -27,6 +27,7 @@ import static org.junit.Assert.*;
 
 import java.util.Calendar;
 
+import ca.openosp.openo.integration.fhir.model.Patient;
 import org.apache.logging.log4j.Logger;
 import org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender;
 import org.junit.AfterClass;

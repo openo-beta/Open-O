@@ -42,7 +42,7 @@
 <%@page import="org.oscarehr.PMmodule.model.Program" %>
 <%@page import="org.oscarehr.PMmodule.service.ProgramManager" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
-<%@page import="org.oscarehr.managers.ProviderManager2" %>
+<%@page import="ca.openosp.openo.managers.ProviderManager2" %>
 <%@page import="org.oscarehr.common.dao.FunctionalCentreDao" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="java.util.List" %>

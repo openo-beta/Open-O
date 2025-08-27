@@ -19,7 +19,7 @@
 
 --%>
 <%@page import="org.oscarehr.common.dao.BillingOnItemPaymentDao" %>
-<%@page import="org.oscarehr.managers.SecurityInfoManager" %>
+<%@page import="ca.openosp.openo.managers.SecurityInfoManager" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page import="java.math.*,java.util.*,java.sql.*,oscar.*,java.net.*" %>
 <!-- errorPage="/errorpage.jsp" -->

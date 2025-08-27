@@ -42,7 +42,7 @@ import org.oscarehr.common.model.MeasurementGroup;
 import org.oscarehr.common.model.MeasurementGroupStyle;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
-import org.oscarehr.managers.MeasurementManager;
+import ca.openosp.openo.managers.MeasurementManager;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctStyleSheetBeanHandler;
 

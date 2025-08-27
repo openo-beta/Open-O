@@ -7,7 +7,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page import="org.oscarehr.util.MiscUtils,org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="org.apache.logging.log4j.Logger,org.oscarehr.common.dao.OscarLogDao,org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.inboxhub.query.InboxhubQuery" %>
+<%@page import="ca.openosp.openo.inboxhub.query.InboxhubQuery" %>
 <%@ page import="ca.openosp.openo.mds.data.CategoryData" %>
 
 <fmt:setBundle basename="oscarResources"/>

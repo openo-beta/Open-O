@@ -27,7 +27,7 @@
 <%@page import="org.oscarehr.common.model.Dxresearch" %>
 <%@page import="ca.openosp.openo.rx.data.RxPatientData" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.managers.CodingSystemManager" %>
+<%@page import="ca.openosp.openo.managers.CodingSystemManager" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
 <%@page import="ca.openosp.openo.casemgmt.model.Issue" %>

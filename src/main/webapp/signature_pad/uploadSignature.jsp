@@ -42,7 +42,7 @@
     <%@page import="org.oscarehr.util.LoggedInInfo" %>
     <%@page import="org.apache.commons.codec.binary.Base64" %>
     <%@ page import="org.oscarehr.common.model.DigitalSignature" %>
-    <%@ page import="org.oscarehr.managers.DigitalSignatureManager" %>
+    <%@ page import="ca.openosp.openo.managers.DigitalSignatureManager" %>
     <%@ page import="org.oscarehr.util.SpringUtils" %>
     <%@ page import="org.oscarehr.common.model.enumerator.ModuleType" %>
     <%

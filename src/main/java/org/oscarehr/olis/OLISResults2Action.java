@@ -28,7 +28,7 @@ import org.oscarehr.common.dao.OLISResultsDao;
 import org.oscarehr.common.model.OLISResults;
 import org.oscarehr.common.model.OscarLog;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

@@ -35,7 +35,7 @@ import javax.jws.WebService;
 import org.apache.cxf.annotations.GZIP;
 import org.oscarehr.common.model.Prevention;
 import org.oscarehr.common.model.PreventionExt;
-import org.oscarehr.managers.PreventionManager;
+import ca.openosp.openo.managers.PreventionManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.ws.transfer_objects.PreventionTransfer;
 import org.springframework.beans.factory.annotation.Autowired;

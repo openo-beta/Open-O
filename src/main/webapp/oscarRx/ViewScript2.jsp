@@ -41,7 +41,7 @@
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
-<%@ page import="org.oscarehr.managers.FaxManager" %>
+<%@ page import="ca.openosp.openo.managers.FaxManager" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="org.oscarehr.PMmodule.service.ProviderManager" %>

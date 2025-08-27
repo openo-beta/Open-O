@@ -46,7 +46,7 @@ import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.DemographicContact;
 import org.oscarehr.common.model.Prevention;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.managers.DemographicManager;
+import ca.openosp.openo.managers.DemographicManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

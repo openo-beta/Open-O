@@ -39,11 +39,11 @@
 <%@page import="org.oscarehr.common.model.*" %>
 <%@page import="org.oscarehr.common.dao.EFormDao" %>
 <%@page import="oscar.util.DateUtils" %>
-<%@page import="org.oscarehr.documentManager.EDocUtil" %>
+<%@page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@page import="org.springframework.web.context.WebApplicationContext" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="ca.openosp.openo.casemgmt.common.Colour" %>
-<%@page import="org.oscarehr.documentManager.EDoc" %>
+<%@page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="com.quatro.dao.security.*,ca.openosp.openo.model.security.Secrole" %>
 <%@page import="org.oscarehr.util.EncounterUtil" %>
@@ -62,8 +62,8 @@
 <%@page import="ca.openosp.openo.casemgmt.web.NoteDisplayNonNote" %>
 <%@page import="org.oscarehr.common.dao.EncounterTemplateDao" %>
 <%@page import="ca.openosp.openo.casemgmt.web.CheckBoxBean" %>
-<%@page import="org.oscarehr.managers.ProgramManager2" %>
-<%@ page import="org.oscarehr.managers.DemographicManager" %>
+<%@page import="ca.openosp.openo.managers.ProgramManager2" %>
+<%@ page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
 <%@ page import="ca.openosp.openo.casemgmt.web.formbeans.CaseManagementEntryFormBean" %>
 

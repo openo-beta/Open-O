@@ -5,7 +5,7 @@ package ca.openosp.openo.demographic;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.UserPropertyDAO;
 import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.DbConnectionFilter;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;

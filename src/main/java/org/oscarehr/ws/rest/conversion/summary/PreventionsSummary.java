@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.oscarehr.managers.PreventionManager;
+import ca.openosp.openo.managers.PreventionManager;
 import org.oscarehr.common.model.Prevention;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;

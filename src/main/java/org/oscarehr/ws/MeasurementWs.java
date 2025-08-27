@@ -35,7 +35,7 @@ import javax.jws.WebService;
 import org.apache.cxf.annotations.GZIP;
 import org.oscarehr.common.model.Measurement;
 import org.oscarehr.common.model.MeasurementMap;
-import org.oscarehr.managers.MeasurementManager;
+import ca.openosp.openo.managers.MeasurementManager;
 import org.oscarehr.ws.transfer_objects.MeasurementMapTransfer;
 import org.oscarehr.ws.transfer_objects.MeasurementTransfer;
 import org.springframework.beans.factory.annotation.Autowired;

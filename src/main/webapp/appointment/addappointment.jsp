@@ -76,14 +76,14 @@ Ontario, Canada
 <%@ page import="org.oscarehr.common.model.Facility" %>
 <%@ page import="org.oscarehr.PMmodule.service.ProviderManager" %>
 <%@ page import="org.oscarehr.PMmodule.service.ProgramManager" %>
-<%@ page import="org.oscarehr.managers.ProgramManager2" %>
+<%@ page import="ca.openosp.openo.managers.ProgramManager2" %>
 <%@ page import="ca.openosp.openo.decisionSupport.model.DSConsequence" %>
 
 <%@ page import="org.oscarehr.util.MiscUtils" %>
 <%@ page import="org.oscarehr.util.SessionConstants" %>
 <%@ page import="org.oscarehr.common.model.ProviderPreference" %>
 
-<%@ page import="org.oscarehr.managers.LookupListManager" %>
+<%@ page import="ca.openosp.openo.managers.LookupListManager" %>
 <%@ page import="org.oscarehr.common.model.LookupList" %>
 <%@ page import="org.oscarehr.common.dao.SiteDao" %>
 <%@ page import="org.oscarehr.common.model.Site" %>

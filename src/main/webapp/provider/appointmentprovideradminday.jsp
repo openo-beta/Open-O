@@ -60,8 +60,8 @@
 <%@ page import="org.apache.commons.lang.*" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.oscarehr.common.model.*" %>
-<%@ page import="org.oscarehr.managers.PreventionManager" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.managers.*" %>
 
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/special_tag.tld" prefix="special" %>

@@ -39,7 +39,7 @@ import org.oscarehr.common.dao.BillingONCHeader1Dao;
 import org.oscarehr.common.dao.CaseManagementIssueNotesDao;
 import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.dao.GroupNoteDao;
-import org.oscarehr.managers.TicklerManager;
+import ca.openosp.openo.managers.TicklerManager;
 import org.oscarehr.provider.web.CppPreferencesUIBean;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

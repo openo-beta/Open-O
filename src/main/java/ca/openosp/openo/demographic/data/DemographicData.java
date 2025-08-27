@@ -38,7 +38,7 @@ import org.apache.commons.lang.StringUtils;
 import org.oscarehr.common.dao.DemographicCustDao;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.DemographicCust;
-import org.oscarehr.managers.DemographicManager;
+import ca.openosp.openo.managers.DemographicManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

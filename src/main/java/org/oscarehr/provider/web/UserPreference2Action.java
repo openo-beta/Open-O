@@ -46,7 +46,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import org.oscarehr.managers.SecurityManager;
+import ca.openosp.openo.managers.SecurityManager;
 import java.security.MessageDigest;
 import java.util.*;
 

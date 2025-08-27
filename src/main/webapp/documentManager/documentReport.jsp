@@ -60,8 +60,8 @@
 <%@ page import="org.oscarehr.common.dao.CtlDocClassDao" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="org.oscarehr.util.SessionConstants" %>
-<%@ page import="org.oscarehr.documentManager.EDocUtil" %>
-<%@ page import="org.oscarehr.documentManager.EDoc" %>
+<%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
+<%@ page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 

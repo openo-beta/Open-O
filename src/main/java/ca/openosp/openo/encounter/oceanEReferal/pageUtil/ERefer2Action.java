@@ -6,7 +6,7 @@ import org.oscarehr.common.dao.EReferAttachmentDao;
 import org.oscarehr.common.model.EReferAttachment;
 import org.oscarehr.common.model.EReferAttachmentData;
 import org.oscarehr.common.model.enumerator.DocumentType;
-import org.oscarehr.documentManager.DocumentAttachmentManager;
+import ca.openosp.openo.documentManager.DocumentAttachmentManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

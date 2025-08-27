@@ -54,7 +54,7 @@ import org.oscarehr.common.dao.ProviderDataDao;
 import org.oscarehr.common.model.Billing;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.ProviderData;
-import org.oscarehr.managers.DemographicManager;
+import ca.openosp.openo.managers.DemographicManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

@@ -42,24 +42,24 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.oscarehr.hospitalReportManager.xsd.DateFullOrPartial;
-import org.oscarehr.hospitalReportManager.xsd.Demographics;
-import org.oscarehr.hospitalReportManager.xsd.Gender;
-import org.oscarehr.hospitalReportManager.xsd.HealthCard;
-import org.oscarehr.hospitalReportManager.xsd.OfficialSpokenLanguageCode;
-import org.oscarehr.hospitalReportManager.xsd.OmdCds;
-import org.oscarehr.hospitalReportManager.xsd.PatientRecord;
-import org.oscarehr.hospitalReportManager.xsd.PersonNamePartQualifierCode;
-import org.oscarehr.hospitalReportManager.xsd.PersonNamePartTypeCode;
-import org.oscarehr.hospitalReportManager.xsd.PersonNamePurposeCode;
-import org.oscarehr.hospitalReportManager.xsd.PersonNameSimple;
-import org.oscarehr.hospitalReportManager.xsd.PersonNameStandard;
-import org.oscarehr.hospitalReportManager.xsd.PersonStatus;
-import org.oscarehr.hospitalReportManager.xsd.ReportClass;
-import org.oscarehr.hospitalReportManager.xsd.ReportContent;
-import org.oscarehr.hospitalReportManager.xsd.ReportFormat;
-import org.oscarehr.hospitalReportManager.xsd.ReportsReceived;
-import org.oscarehr.hospitalReportManager.xsd.TransactionInformation;
+import ca.openosp.openo.hospitalReportManager.xsd.DateFullOrPartial;
+import ca.openosp.openo.hospitalReportManager.xsd.Demographics;
+import ca.openosp.openo.hospitalReportManager.xsd.Gender;
+import ca.openosp.openo.hospitalReportManager.xsd.HealthCard;
+import ca.openosp.openo.hospitalReportManager.xsd.OfficialSpokenLanguageCode;
+import ca.openosp.openo.hospitalReportManager.xsd.OmdCds;
+import ca.openosp.openo.hospitalReportManager.xsd.PatientRecord;
+import ca.openosp.openo.hospitalReportManager.xsd.PersonNamePartQualifierCode;
+import ca.openosp.openo.hospitalReportManager.xsd.PersonNamePartTypeCode;
+import ca.openosp.openo.hospitalReportManager.xsd.PersonNamePurposeCode;
+import ca.openosp.openo.hospitalReportManager.xsd.PersonNameSimple;
+import ca.openosp.openo.hospitalReportManager.xsd.PersonNameStandard;
+import ca.openosp.openo.hospitalReportManager.xsd.PersonStatus;
+import ca.openosp.openo.hospitalReportManager.xsd.ReportClass;
+import ca.openosp.openo.hospitalReportManager.xsd.ReportContent;
+import ca.openosp.openo.hospitalReportManager.xsd.ReportFormat;
+import ca.openosp.openo.hospitalReportManager.xsd.ReportsReceived;
+import ca.openosp.openo.hospitalReportManager.xsd.TransactionInformation;
 
 import cds.DemographicsDocument;
 import cds.DemographicsDocument.Demographics.Enrolment.EnrolmentHistory;
@@ -76,7 +76,7 @@ public class HRMCreateFile {
     static public void create(DemographicsDocument.Demographics demographic, List<Reports> reports, String file) throws JAXBException, DatatypeConfigurationException {
 
 
-        JAXBContext jc = JAXBContext.newInstance("org.oscarehr.hospitalReportManager.xsd");
+        JAXBContext jc = JAXBContext.newInstance("ca.openosp.openo.hospitalReportManager.xsd");
         Marshaller u = jc.createMarshaller();
 
         OmdCds omdCds = new OmdCds();

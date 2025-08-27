@@ -24,7 +24,7 @@
  */
 package org.oscarehr.ws.rest.conversion;
 
-import org.oscarehr.managers.model.QuickLink;
+import ca.openosp.openo.managers.model.QuickLink;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.QuickLinkTo1;
 import org.springframework.beans.BeanUtils;

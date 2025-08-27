@@ -32,7 +32,7 @@
         import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager, org.oscarehr.util.LoggedInInfo, org.oscarehr.common.model.Facility" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="oscar.OscarProperties" %>
-<%@ page import="org.oscarehr.managers.DemographicManager" %>
+<%@ page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@ page import="org.oscarehr.common.model.Demographic" %>
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
 

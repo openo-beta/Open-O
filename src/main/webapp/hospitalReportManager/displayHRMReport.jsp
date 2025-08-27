@@ -49,6 +49,11 @@
 <%@ page import="org.owasp.csrfguard.CsrfGuard" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
+<%@ page import="ca.openosp.openo.hospitalReportManager.HRMDisplayReport2Action" %>
+<%@ page import="ca.openosp.openo.hospitalReportManager.HRMReportParser" %>
+<%@ page import="ca.openosp.openo.hospitalReportManager.HRMReport" %>
+<%@ page import="ca.openosp.openo.hospitalReportManager.model.*" %>
+<%@ page import="ca.openosp.openo.hospitalReportManager.dao.*" %>
 <!DOCTYPE html>
 
 <%

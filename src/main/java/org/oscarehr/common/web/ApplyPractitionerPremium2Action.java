@@ -34,7 +34,7 @@ import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.dao.BillingONPremiumDao;
 import org.oscarehr.common.model.BillingONPremium;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

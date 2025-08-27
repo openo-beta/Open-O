@@ -33,7 +33,7 @@ import org.oscarehr.common.dao.FlowSheetCustomizationDao;
 import org.oscarehr.common.dao.FlowSheetUserCreatedDao;
 import org.oscarehr.common.model.FlowSheetCustomization;
 import org.oscarehr.common.model.FlowSheetUserCreated;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

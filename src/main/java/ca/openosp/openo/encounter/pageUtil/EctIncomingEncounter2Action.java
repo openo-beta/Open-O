@@ -56,7 +56,7 @@ import ca.openosp.openo.casemgmt.model.Issue;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import ca.openosp.openo.casemgmt.service.CaseManagementManagerImpl;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SessionConstants;

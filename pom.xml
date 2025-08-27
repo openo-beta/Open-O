@@ -565,12 +565,7 @@
             <version>4.3.1</version>
         </dependency>
 
-        <!-- HRM module: can be found in the local_repo folder -->
-        <dependency>
-            <groupId>org.oscarehr.hrm</groupId>
-            <artifactId>hrm-jaxb</artifactId>
-            <version>4.1a</version>
-        </dependency>
+        <!-- HRM module: XSD classes now included directly in codebase -->
         <!-- HRM module 4.3: can be found in the local_repo folder -->
         <dependency>
             <groupId>omd</groupId>
@@ -1251,6 +1246,7 @@
                     </execution>
                 </executions>
             </plugin>
+
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

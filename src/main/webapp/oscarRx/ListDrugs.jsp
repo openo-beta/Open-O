@@ -49,8 +49,8 @@
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
 <%@page import="org.oscarehr.util.LoggedInInfo,org.oscarehr.common.dao.DrugReasonDao,org.oscarehr.common.model.DrugReason" %>
 <%@page import="java.util.ArrayList,oscar.util.*,java.util.*,org.oscarehr.common.model.Drug,org.oscarehr.common.dao.*" %>
-<%@page import="org.oscarehr.managers.DrugDispensingManager" %>
-<%@page import="org.oscarehr.managers.CodingSystemManager" %>
+<%@page import="ca.openosp.openo.managers.DrugDispensingManager" %>
+<%@page import="ca.openosp.openo.managers.CodingSystemManager" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.service.security.SecurityManager" %>
 <%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>

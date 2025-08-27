@@ -23,6 +23,7 @@ package org.oscarehr.integration.fhir.model;
  * Ontario, Canada
  */
 
+import ca.openosp.openo.integration.fhir.model.Practitioner;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

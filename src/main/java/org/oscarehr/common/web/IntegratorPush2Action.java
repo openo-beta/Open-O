@@ -39,7 +39,7 @@ import org.oscarehr.PMmodule.web.forms.IntegratorPushResponse;
 import org.oscarehr.common.dao.UserPropertyDAO;
 import org.oscarehr.common.model.IntegratorProgress;
 import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.managers.IntegratorPushManager;
+import ca.openosp.openo.managers.IntegratorPushManager;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 import org.springframework.beans.BeanUtils;

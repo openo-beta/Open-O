@@ -30,7 +30,7 @@ import java.text.SimpleDateFormat;
 import org.oscarehr.common.dao.EFormDao;
 import org.oscarehr.common.model.EForm;
 import org.oscarehr.common.model.EFormReportTool;
-import org.oscarehr.managers.EFormReportToolManager;
+import ca.openosp.openo.managers.EFormReportToolManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

@@ -31,7 +31,7 @@
 <%@page import="org.oscarehr.common.dao.CVCMappingDao" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%@page import="org.oscarehr.common.model.DHIRSubmissionLog" %>
-<%@page import="org.oscarehr.managers.DHIRSubmissionManager" %>
+<%@page import="ca.openosp.openo.managers.DHIRSubmissionManager" %>
 <%@page import="org.oscarehr.common.model.Consent" %>
 <%@page import="org.oscarehr.common.dao.ConsentDao" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
@@ -43,7 +43,7 @@
 <%@page import="org.oscarehr.util.LocaleUtils" %>
 <%@page import="org.oscarehr.util.WebUtils" %>
 <%@page import="org.oscarehr.util.MiscUtils" %>
-<%@page import="org.oscarehr.managers.PreventionManager" %>
+<%@page import="ca.openosp.openo.managers.PreventionManager" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

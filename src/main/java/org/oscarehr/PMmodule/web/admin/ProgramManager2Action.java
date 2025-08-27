@@ -80,7 +80,7 @@ import org.oscarehr.common.model.Admission;
 import org.oscarehr.common.model.Facility;
 import org.oscarehr.common.model.FunctionalCentre;
 import org.oscarehr.common.model.Tickler;
-import org.oscarehr.managers.TicklerManager;
+import ca.openosp.openo.managers.TicklerManager;
 import org.oscarehr.match.IMatchManager;
 import org.oscarehr.match.MatchManager;
 import org.oscarehr.match.MatchManagerException;

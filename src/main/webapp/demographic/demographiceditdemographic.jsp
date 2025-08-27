@@ -25,7 +25,7 @@
 --%>
 
 <%@page import="org.oscarehr.common.ISO36612" %>
-<%@page import="org.oscarehr.managers.LookupListManager" %>
+<%@page import="ca.openosp.openo.managers.LookupListManager" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
@@ -56,11 +56,11 @@
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="org.oscarehr.common.Gender" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.managers.ProgramManager2" %>
+<%@page import="ca.openosp.openo.managers.ProgramManager2" %>
 <%@page import="org.oscarehr.PMmodule.model.Program" %>
 <%@page import="org.oscarehr.PMmodule.model.ProgramProvider" %>
 <%@page import="java.util.HashSet" %>
-<%@page import="org.oscarehr.managers.PatientConsentManager" %>
+<%@page import="ca.openosp.openo.managers.PatientConsentManager" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <jsp:useBean id="apptMainBean" class="oscar.AppointmentMainBean" scope="session"/>
 <%
@@ -101,7 +101,7 @@
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@page import="org.oscarehr.managers.DemographicManager" %>
+<%@page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@page import="org.oscarehr.PMmodule.service.ProgramManager" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProgramDao" %>
 <%@page import="org.oscarehr.PMmodule.service.AdmissionManager" %>

@@ -31,7 +31,7 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.jobs.OscarRunnable;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Security;
-import org.oscarehr.managers.AuditLogManager;
+import ca.openosp.openo.managers.AuditLogManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

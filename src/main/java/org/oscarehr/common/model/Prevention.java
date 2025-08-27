@@ -49,7 +49,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.oscarehr.util.MiscUtils;
-import org.oscarehr.integration.fhir.interfaces.ImmunizationInterface;
+import ca.openosp.openo.integration.fhir.interfaces.ImmunizationInterface;
 
 @Entity
 @Table(name = "preventions")

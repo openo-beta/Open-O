@@ -29,7 +29,7 @@
 package org.oscarehr.ws.rest.conversion;
 
 import org.oscarehr.common.model.Favorite;
-import org.oscarehr.managers.DrugLookUp;
+import ca.openosp.openo.managers.DrugLookUp;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.FavoriteTo1;
 import org.springframework.beans.factory.annotation.Autowired;

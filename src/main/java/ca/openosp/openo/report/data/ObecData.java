@@ -37,7 +37,7 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.OscarAppointmentDao;
 import org.oscarehr.common.model.Appointment;
 import org.oscarehr.common.model.Demographic;
-import org.oscarehr.integration.mcedt.mailbox.ActionUtils;
+import ca.openosp.openo.integration.mcedt.mailbox.ActionUtils;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 

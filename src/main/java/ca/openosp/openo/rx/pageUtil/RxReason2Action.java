@@ -32,7 +32,7 @@ import org.oscarehr.common.dao.DrugReasonDao;
 import org.oscarehr.common.dao.Icd9Dao;
 import org.oscarehr.common.model.DrugReason;
 import org.oscarehr.common.model.Icd9;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

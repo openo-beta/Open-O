@@ -25,7 +25,7 @@
 
 package ca.openosp.openo.appt.tld;
 
-import org.oscarehr.managers.AppointmentManager;
+import ca.openosp.openo.managers.AppointmentManager;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 

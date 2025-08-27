@@ -36,7 +36,7 @@ import org.oscarehr.common.dao.DocumentDao;
 import org.oscarehr.common.model.CtlDocument;
 import org.oscarehr.common.model.CtlDocumentPK;
 import org.oscarehr.common.model.Document;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

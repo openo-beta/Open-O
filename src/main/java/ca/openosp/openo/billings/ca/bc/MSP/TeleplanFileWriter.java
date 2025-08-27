@@ -36,7 +36,7 @@ import java.util.Map;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.BillingDao;
 import org.oscarehr.common.model.Billing;
-import org.oscarehr.managers.DemographicManager;
+import ca.openosp.openo.managers.DemographicManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

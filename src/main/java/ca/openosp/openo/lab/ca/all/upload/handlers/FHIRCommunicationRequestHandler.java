@@ -55,8 +55,8 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import org.oscarehr.documentManager.EDoc;
-import org.oscarehr.documentManager.EDocUtil;
+import ca.openosp.openo.documentManager.EDoc;
+import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.lab.ca.all.util.Utilities;

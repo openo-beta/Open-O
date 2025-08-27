@@ -44,7 +44,7 @@ import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import org.oscarehr.common.dao.DxDao;
 import org.oscarehr.common.dao.DxresearchDAO;
 import org.oscarehr.common.model.DxAssociation;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

@@ -24,11 +24,13 @@
 
 package org.oscarehr.managers;
 
+import ca.openosp.openo.managers.PrescriptionManagerImpl;
+import ca.openosp.openo.managers.RxManager;
+import ca.openosp.openo.managers.RxManagerImpl;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.oscarehr.common.dao.DrugDao;
 import org.oscarehr.common.dao.DrugDaoImpl;
 import org.oscarehr.common.exception.AccessDeniedException;
 import org.oscarehr.common.model.AbstractModel;

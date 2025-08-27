@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.oscarehr.common.model.RBTGroup;
-import org.oscarehr.managers.RBTGroupManager;
+import ca.openosp.openo.managers.RBTGroupManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

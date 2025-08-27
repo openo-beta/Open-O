@@ -33,8 +33,8 @@ import org.oscarehr.PMmodule.model.ProgramProvider;
 import org.oscarehr.PMmodule.utility.ProgramAccessCache;
 import org.oscarehr.PMmodule.utility.RoleCache;
 import org.oscarehr.common.jobs.OscarJobUtils;
-import org.oscarehr.hospitalReportManager.HRMFixMissingReportHelper;
-import org.oscarehr.integration.mcedt.mailbox.CidPrefixResourceResolver;
+import ca.openosp.openo.hospitalReportManager.HRMFixMissingReportHelper;
+import ca.openosp.openo.integration.mcedt.mailbox.CidPrefixResourceResolver;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
 

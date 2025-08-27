@@ -42,7 +42,7 @@ import org.oscarehr.common.dao.BillingONItemDao;
 import org.oscarehr.common.model.BillingONCHeader1;
 import org.oscarehr.common.model.BillingONItem;
 import org.oscarehr.common.model.Demographic;
-import org.oscarehr.managers.DemographicManager;
+import ca.openosp.openo.managers.DemographicManager;
 import org.oscarehr.util.DbConnectionFilter;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;

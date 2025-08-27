@@ -14,7 +14,7 @@ package ca.openosp.openo.encounter.pageUtil;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.OscarLogDao;
-import org.oscarehr.hospitalReportManager.HRMUtil;
+import ca.openosp.openo.hospitalReportManager.HRMUtil;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

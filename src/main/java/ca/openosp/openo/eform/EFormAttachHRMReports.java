@@ -32,8 +32,8 @@ import java.util.List;
 
 import org.oscarehr.common.dao.EFormDocsDao;
 import org.oscarehr.common.model.EFormDocs;
-import org.oscarehr.hospitalReportManager.dao.HRMDocumentToDemographicDao;
-import org.oscarehr.hospitalReportManager.model.HRMDocumentToDemographic;
+import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao;
+import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
 import org.oscarehr.util.SpringUtils;
 
 import oscar.OscarProperties;

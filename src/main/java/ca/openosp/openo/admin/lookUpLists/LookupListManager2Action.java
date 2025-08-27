@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.oscarehr.common.model.LookupListItem;
-import org.oscarehr.managers.LookupListManager;
+import ca.openosp.openo.managers.LookupListManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

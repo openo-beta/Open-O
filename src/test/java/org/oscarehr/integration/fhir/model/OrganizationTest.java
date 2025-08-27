@@ -24,6 +24,7 @@ package org.oscarehr.integration.fhir.model;
  */
 
 
+import ca.openosp.openo.integration.fhir.model.Organization;
 import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -53,7 +54,7 @@ public class OrganizationTest {
         clinic.setClinicFax("778-343-3453");
         clinic.setClinicName("Test Medical Clinic");
 
-        organization = new org.oscarehr.integration.fhir.model.Organization<Clinic>(clinic);
+        organization = new Organization<Clinic>(clinic);
     }
 
     @AfterClass

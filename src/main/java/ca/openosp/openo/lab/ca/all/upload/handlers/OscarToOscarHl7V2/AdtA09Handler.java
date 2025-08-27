@@ -37,7 +37,7 @@ import org.oscarehr.common.hl7.v2.oscar_to_oscar.DataTypeUtils;
 import org.oscarehr.common.model.Appointment;
 import org.oscarehr.common.model.AppointmentStatus;
 import org.oscarehr.common.model.Demographic;
-import org.oscarehr.managers.DemographicManager;
+import ca.openosp.openo.managers.DemographicManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

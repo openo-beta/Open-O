@@ -46,7 +46,7 @@
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page import="org.oscarehr.PMmodule.model.ProgramProvider" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
-<%@page import="org.oscarehr.managers.ProviderManager2" %>
+<%@page import="ca.openosp.openo.managers.ProviderManager2" %>
 <%@page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@page import="org.oscarehr.common.model.UserProperty" %>
 

@@ -32,7 +32,7 @@ import org.oscarehr.common.dao.PatientLabRoutingDao;
 import org.oscarehr.common.dao.ProviderLabRoutingDao;
 import org.oscarehr.common.model.PatientLabRouting;
 import org.oscarehr.common.model.ProviderLabRoutingModel;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.OscarAuditLogger;

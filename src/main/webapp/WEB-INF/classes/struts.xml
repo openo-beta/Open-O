@@ -20,32 +20,32 @@
             <result name="success">/admin/lookUpLists/</result>
         </action>
         <action name="admin/oncallClinic" class="ca.openosp.openo.admin.reports.SaveOnCallClinic2Action"/>
-        <action name="web/dashboard/display/DashboardDisplay" class="org.oscarehr.dashboard.display.DisplayDashboard2Action">
+        <action name="web/dashboard/display/DashboardDisplay" class="ca.openosp.openo.dashboard.display.DisplayDashboard2Action">
             <result name="success">/web/dashboard/display/DashboardDisplay.jsp</result>
             <result name="unauthorized">/securityError.jsp</result>
             <result name="error">/failure.jsp</result>
         </action>
-        <action name="web/dashboard/display/DrilldownDisplay" class="org.oscarehr.dashboard.display.DisplayDrilldown2Action">
+        <action name="web/dashboard/display/DrilldownDisplay" class="ca.openosp.openo.dashboard.display.DisplayDrilldown2Action">
             <result name="success">/web/dashboard/display/DrilldownDisplay.jsp</result>
             <result name="unauthorized">/securityError.jsp</result>
             <result name="error">/failure.jsp</result>
         </action>
-        <action name="web/dashboard/display/AssignTickler" class="org.oscarehr.dashboard.admin.AssignTickler2Action">
+        <action name="web/dashboard/display/AssignTickler" class="ca.openosp.openo.dashboard.admin.AssignTickler2Action">
             <result name="success">/web/dashboard/display/AssignTickler.jsp</result>
             <result name="unauthorized">/securityError.jsp</result>
             <result name="error">/failure.jsp</result>
         </action>
-        <action name="web/dashboard/display/ExportResults" class="org.oscarehr.dashboard.admin.ExportResults2Action">
+        <action name="web/dashboard/display/ExportResults" class="ca.openosp.openo.dashboard.admin.ExportResults2Action">
             <result name="unauthorized">/securityError.jsp</result>
             <result name="error">/failure.jsp</result>
         </action>
-        <action name="web/dashboard/display/DisplayIndicator" class="org.oscarehr.dashboard.display.DisplayIndicator2Action">
+        <action name="web/dashboard/display/DisplayIndicator" class="ca.openosp.openo.dashboard.display.DisplayIndicator2Action">
             <result name="success">/web/dashboard/display/IndicatorPanel.jsp</result>
             <result name="unauthorized">/securityError.jsp</result>
             <result name="error">/failure.jsp</result>
         </action>
-        <action name="web/dashboard/OutcomesDashboard" class="org.oscarehr.integration.dashboard.OutcomesDashboard2Action"/>
-        <action name="web/dashboard/display/BulkPatientAction" class="org.oscarehr.dashboard.admin.BulkPatientDashboard2Action">
+        <action name="web/dashboard/OutcomesDashboard" class="ca.openosp.openo.integration.dashboard.OutcomesDashboard2Action"/>
+        <action name="web/dashboard/display/BulkPatientAction" class="ca.openosp.openo.dashboard.admin.BulkPatientDashboard2Action">
             <result name="unauthorized">/securityError.jsp</result>
             <result name="error">/failure.jsp</result>
         </action>
@@ -67,11 +67,11 @@
             <result name="saved">/quickBillingBC.do</result>
             <result name="error">/billing/CA/BC/quickBillingBC.jsp?saved=false</result>
         </action>
-        <action name="documentManager/addDocumentType" class="org.oscarehr.documentManager.actions.AddDocumentType2Action">
+        <action name="documentManager/addDocumentType" class="ca.openosp.openo.documentManager.actions.AddDocumentType2Action">
             <result name="failed">/documentManager/addNewDocumentCategories.jsp</result>
             <result name="success">/documentManager/closeWindow.html</result>
         </action>
-        <action name="documentManager/changeDocStatus" class="org.oscarehr.documentManager.actions.ChangeDocStatus2Action">
+        <action name="documentManager/changeDocStatus" class="ca.openosp.openo.documentManager.actions.ChangeDocStatus2Action">
             <result name="success">/documentManager/closeWindow.html</result>
         </action>
         <action name="lab/CA/ALL/createLabelTDIS" class="ca.openosp.openo.lab.ca.all.pageUtil.CreateLabelTDIS2Action">
@@ -208,7 +208,7 @@
             <result name="success2">/oscarEncounter/Index2.jsp</result>
             <result name="domain-error">/casemgmt/domain-error.jsp</result>
         </action>
-        <action name="documentManager/inboxManage" class="org.oscarehr.documentManager.actions.DmsInboxManage2Action" method="execute">
+        <action name="documentManager/inboxManage" class="ca.openosp.openo.documentManager.actions.DmsInboxManage2Action" method="execute">
             <result name="dms_index">/oscarMDS/Index.jsp</result>
             <result name="dms_page">/oscarMDS/Page.jsp</result>
             <result name="document_in_queues">/oscarMDS/documentsInQueues.jsp</result>
@@ -342,7 +342,7 @@
             <result name="failure">/errorpage.jsp</result>
             <result name="success">/documentManager/inboxManage.do?method=prepareForIndexPage</result>
         </action>
-        <action name="web/inboxhub/Inboxhub" class="org.oscarehr.inboxhub.display.ManageInboxhub2Action" method="execute">
+        <action name="web/inboxhub/Inboxhub" class="ca.openosp.openo.inboxhub.display.ManageInboxhub2Action" method="execute">
 			<result name="success">/web/inboxhub/Inboxhub.jsp</result>
 			<result name="displayList">/web/inboxhub/InboxhubListMode.jsp</result>
 			<result name="displayView">/web/inboxhub/InboxhubViewMode.jsp</result>
@@ -1028,7 +1028,7 @@
         <action name="oscarEncounter/IncomingConsultation" class="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctIncomingConsultation2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/ViewConsultationRequests.jsp</result>
         </action>
-        <action name="previewDocs" class="org.oscarehr.documentManager.actions.DocumentPreview2Action">
+        <action name="previewDocs" class="ca.openosp.openo.documentManager.actions.DocumentPreview2Action">
             <result name="fetchDocuments">/documentManager/attachDocument.jsp</result>
         </action>
         <action name="attachDocs" class="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.ConsultationAttachDocs2Action">
@@ -1394,29 +1394,29 @@
             <result name="error">/provider/providerFaxErr.jsp</result>
             <result name="eject">/index.jsp</result>
         </action>
-        <action name="admin/ManageFax" class="org.oscarehr.fax.admin.ConfigureFax2Action">
+        <action name="admin/ManageFax" class="ca.openosp.openo.fax.admin.ConfigureFax2Action">
             <result name="completed">/admin/manageFax.jsp</result>
         </action>
-        <action name="admin/ManageFaxes" class="org.oscarehr.fax.admin.ManageFaxes2Action">
+        <action name="admin/ManageFaxes" class="ca.openosp.openo.fax.admin.ManageFaxes2Action">
             <result name="faxstatus">/admin/faxStatusResults.jspf</result>
         </action>
-        <action name="fax/faxAction" class="org.oscarehr.fax.action.Fax2Action">
+        <action name="fax/faxAction" class="ca.openosp.openo.fax.action.Fax2Action">
             <result name="preview">/fax/CoverPage.jsp</result>
             <result name="error">/errorpage.jsp</result>
             <result name="CONSULTATION">/oscarEncounter/ViewRequest.do</result>
             <result name="EFORM">/eform/efmshowform_data.jsp</result>
             <result name="eFormError">/eform/efmshowform_data.jsp?error=true</result>
         </action>
-        <action name="admin/ManageEmails" class="org.oscarehr.email.admin.ManageEmails2Action">
+        <action name="admin/ManageEmails" class="ca.openosp.openo.email.admin.ManageEmails2Action">
             <result name="show">/admin/manageEmails.jsp</result>
             <result name="emailstatus">/admin/emailStatusResults.jspf</result>
             <result name="compose">/email/emailCompose.jsp</result>
         </action>
-        <action name="email/emailComposeAction" class="org.oscarehr.email.action.EmailCompose2Action">
+        <action name="email/emailComposeAction" class="ca.openosp.openo.email.action.EmailCompose2Action">
             <result name="compose">/email/emailCompose.jsp</result>
             <result name="eFormError">/eform/efmshowform_data.jsp?error=true</result>
         </action>
-        <action name="email/emailSendAction" class="org.oscarehr.email.action.EmailSend2Action">
+        <action name="email/emailSendAction" class="ca.openosp.openo.email.action.EmailSend2Action">
             <result name="success">/email/emailCompose.jsp</result>
             <result name="EFORM">/eform/efmshowform_data.jsp</result>
         </action>
@@ -1763,21 +1763,21 @@
         <action name="billing/CA/BC/supServiceCodeAssocAction" class="ca.openosp.openo.billings.ca.bc.pageUtil.SupServiceCodeAssoc2Action">
             <result name="success">/billing/CA/BC/billingSVCTrayAssoc.jsp</result>
         </action>
-        <action name="documentManager/addEditDocument" class="org.oscarehr.documentManager.actions.AddEditDocument2Action">
+        <action name="documentManager/addEditDocument" class="ca.openosp.openo.documentManager.actions.AddEditDocument2Action">
             <result name="successAdd">/documentManager/documentReport.jsp</result>
             <result name="failAdd">/documentManager/documentReport.jsp</result>
             <result name="failEdit">/documentManager/editDocument.jsp</result>
             <result name="successEdit">/documentManager/closeWindow.html</result>
             <result name="fastUploadSuccess">/documentManager/uploadMultiDocument.jsp</result>
         </action>
-        <action name="documentManager/combinePDFs" class="org.oscarehr.documentManager.actions.CombinePDF2Action">
+        <action name="documentManager/combinePDFs" class="ca.openosp.openo.documentManager.actions.CombinePDF2Action">
             <result name="success">/documentManager/documentReport.jsp</result>
         </action>
-        <action name="documentManager/addLink" class="org.oscarehr.documentManager.actions.AddEditHtml2Action">
+        <action name="documentManager/addLink" class="ca.openosp.openo.documentManager.actions.AddEditHtml2Action">
             <result name="success">/documentManager/documentReport.jsp</result>
             <result name="failed">/documentManager/documentReport.jsp</result>
         </action>
-        <action name="documentManager/addEditHtml" class="org.oscarehr.documentManager.actions.AddEditHtml2Action">
+        <action name="documentManager/addEditHtml" class="ca.openosp.openo.documentManager.actions.AddEditHtml2Action">
             <result name="success">/documentManager/closeWindow.html</result>
             <result name="failed">/documentManager/addedithtmldocument.jsp</result>
         </action>
@@ -2062,17 +2062,17 @@
         <action name="oscarEncounter/oscarMeasurements/FlowSheetDrugAction" class="org.oscarehr.common.web.FlowSheetDrug2Action">
             <result name="success">/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp</result>
         </action>
-        <action name="documentManager/ManageDocument" class="org.oscarehr.documentManager.actions.ManageDocument2Action">
+        <action name="documentManager/ManageDocument" class="ca.openosp.openo.documentManager.actions.ManageDocument2Action">
             <result name="success">/documentManager/undocument.jsp</result>
             <result name="displaySingleDoc">/documentManager/MultiPageDocDisplay.jsp</result>
             <result name="nextIncomingDoc">/documentManager/incomingDocs.jsp</result>
         </action>
         <action name="DocumentDescriptionTemplate" class="org.oscarehr.provider.web.DocumentDescriptionTemplate2Action"/>
-        <action name="PrinterList" class="org.oscarehr.printer.PrinterList2Action"/>
-        <action name="documentManager/SplitDocument" class="org.oscarehr.documentManager.actions.SplitDocument2Action">
+        <action name="PrinterList" class="ca.openosp.openo.printer.PrinterList2Action"/>
+        <action name="documentManager/SplitDocument" class="ca.openosp.openo.documentManager.actions.SplitDocument2Action">
             <result name="success">/oscarMDS/Splitclose.jsp</result>
         </action>
-        <action name="documentManager/documentUpload" class="org.oscarehr.documentManager.actions.DocumentUpload2Action"/>
+        <action name="documentManager/documentUpload" class="ca.openosp.openo.documentManager.actions.DocumentUpload2Action"/>
         <action name="appointment/apptStatusSetting" class="ca.openosp.openo.appt.status.web.AppointmentStatus2Action" method="execute">
             <result name="success">/appointment/appointmentstatussetting.jsp</result>
             <result name="edit">/appointment/appointmentstatusedit.jsp</result>
@@ -2107,7 +2107,7 @@
             <result name="success">/billing/CA/ON/endYearStatement.jsp</result>
             <result name="failure">/billing/CA/ON/endYearStatement.jsp</result>
         </action>
-        <action name="demographic/ValidateSwipeCard" class="org.oscarehr.integration.mchcv.ValidateSwipeCard2Action">
+        <action name="demographic/ValidateSwipeCard" class="ca.openosp.openo.integration.mchcv.ValidateSwipeCard2Action">
             <result name="success">/demographic/demographicswipe.jsp</result>
         </action>
         <action name="appointment/appointmentTypeAction" class="ca.openosp.openo.appt.web.AppointmentType2Action">
@@ -2119,30 +2119,30 @@
                 <param name="namespace">/appointment</param>
             </result>
         </action>
-        <action name="hospitalReportManager/Display" class="org.oscarehr.hospitalReportManager.HRMDisplayReport2Action">
+        <action name="hospitalReportManager/Display" class="ca.openosp.openo.hospitalReportManager.HRMDisplayReport2Action">
             <result name="display">/hospitalReportManager/displayHRMReport.jsp</result>
         </action>
-        <action name="hospitalReportManager/hrmKeyUploader" class="org.oscarehr.hospitalReportManager.HRMUploadKey2Action">
+        <action name="hospitalReportManager/hrmKeyUploader" class="ca.openosp.openo.hospitalReportManager.HRMUploadKey2Action">
             <result name="success">/hospitalReportManager/hrmPreferences.jsp</result>
         </action>
-        <action name="hospitalReportManager/UploadLab" class="org.oscarehr.hospitalReportManager.HRMUploadLab2Action">
+        <action name="hospitalReportManager/UploadLab" class="ca.openosp.openo.hospitalReportManager.HRMUploadLab2Action">
             <result name="success">/hospitalReportManager/hospitalReportManager.jsp</result>
         </action>
-        <action name="hospitalReportManager/Modify" class="org.oscarehr.hospitalReportManager.HRMModifyDocument2Action">
+        <action name="hospitalReportManager/Modify" class="ca.openosp.openo.hospitalReportManager.HRMModifyDocument2Action">
             <result name="ajax">/hospitalReportManager/ajaxResponse.jsp</result>
         </action>
-        <action name="hospitalReportManager/Statement" class="org.oscarehr.hospitalReportManager.HRMStatementModify2Action">
+        <action name="hospitalReportManager/Statement" class="ca.openosp.openo.hospitalReportManager.HRMStatementModify2Action">
             <result name="success">/hospitalReportManager/hospitalReportManager.jsp</result>
         </action>
-        <action name="hospitalReportManager/Mapping" class="org.oscarehr.hospitalReportManager.HRMMapping2Action">
+        <action name="hospitalReportManager/Mapping" class="ca.openosp.openo.hospitalReportManager.HRMMapping2Action">
             <result name="success">/hospitalReportManager/hrmShowMapping.jsp</result>
         </action>
-        <action name="hospitalReportManager/HRMPreferences" class="org.oscarehr.hospitalReportManager.HRMPreferences2Action">
+        <action name="hospitalReportManager/HRMPreferences" class="ca.openosp.openo.hospitalReportManager.HRMPreferences2Action">
             <result name="success">/hospitalReportManager/hrmPreferences.jsp</result>
         </action>
-        <action name="hospitalReportManager/HRMDownloadFile" class="org.oscarehr.hospitalReportManager.HRMDownloadFile2Action"/>
-        <action name="hospitalReportManager/hrm" class="org.oscarehr.hospitalReportManager.v2018.HRM2Action"/>
-        <action name="hospitalReportManager/PrintHRMReport" class="org.oscarehr.hospitalReportManager.PrintHRMReport2Action">
+        <action name="hospitalReportManager/HRMDownloadFile" class="ca.openosp.openo.hospitalReportManager.HRMDownloadFile2Action"/>
+        <action name="hospitalReportManager/hrm" class="ca.openosp.openo.hospitalReportManager.v2018.HRM2Action"/>
+        <action name="hospitalReportManager/PrintHRMReport" class="ca.openosp.openo.hospitalReportManager.PrintHRMReport2Action">
             <result name="error">/hospitalReportManager/displayHRMReport.jsp</result>
         </action>
         <action name="caseload/CaseloadContent" class="ca.openosp.openo.caseload.CaseloadContent2Action"/>
@@ -2270,67 +2270,67 @@
             <interceptor-ref name="fileUpload" />
             <interceptor-ref name="defaultStack"/>
         </action>
-        <action name="mcedt/mcedt" class="org.oscarehr.integration.mcedt.Resource2Action">
+        <action name="mcedt/mcedt" class="ca.openosp.openo.integration.mcedt.Resource2Action">
             <result name="success">/mcedt/index.jsp</result>
         </action>
-        <action name="mcedt/uploads" class="org.oscarehr.integration.mcedt.Upload2Action">
+        <action name="mcedt/uploads" class="ca.openosp.openo.integration.mcedt.Upload2Action">
             <result name="success">/mcedt/uploads.jsp</result>
             <result name="addNew">/mcedt/addUpload.jsp</result>
             <result name="cancel">/mcedt/mcedt.do</result>
             <result name="done">/mcedt/mcedt.do</result>
         </action>
-        <action name="mcedt/update" class="org.oscarehr.integration.mcedt.Update2Action">
+        <action name="mcedt/update" class="ca.openosp.openo.integration.mcedt.Update2Action">
             <result name="cancel">/mcedt/mcedt.do</result>
             <result name="add">/mcedt/update.do</result>
             <result name="success">/mcedt/mcedt.do</result>
             <result name="initial">/mcedt/update.jsp</result>
         </action>
-        <action name="mcedt/info" class="org.oscarehr.integration.mcedt.Info2Action">
+        <action name="mcedt/info" class="ca.openosp.openo.integration.mcedt.Info2Action">
             <result name="info">/mcedt/info.jsp</result>
         </action>
-        <action name="mcedt/kaimcedt" class="org.oscarehr.integration.mcedt.mailbox.Resource2Action">
+        <action name="mcedt/kaimcedt" class="ca.openosp.openo.integration.mcedt.mailbox.Resource2Action">
             <result name="success">/mcedt/mailbox/index.jsp</result>
             <result name="successUserDownload">/mcedt/mailbox/index.jsp?tab=download</result>
             <result name="failUserDownload">/mcedt/mailbox/index.jsp?tab=download</result>
             <result name="successUserSent">/mcedt/mailbox/index.jsp?tab=sent</result>
         </action>
-        <action name="mcedt/openAutoUpload" class="org.oscarehr.integration.mcedt.mailbox.Resource2Action">
+        <action name="mcedt/openAutoUpload" class="ca.openosp.openo.integration.mcedt.mailbox.Resource2Action">
             <result name="success">/mcedt/mailbox/autoUpload.jsp</result>
         </action>
-        <action name="mcedt/autoUpload" class="org.oscarehr.integration.mcedt.mailbox.Upload2Action">
+        <action name="mcedt/autoUpload" class="ca.openosp.openo.integration.mcedt.mailbox.Upload2Action">
             <result name="success">/mcedt/mailbox/autoUpload.jsp</result>
             <result name="failure">/mcedt/mailbox/autoUpload.jsp?connection=failed</result>
             <result name="cancel">/mcedt/kaimcedt.do</result>
         </action>
-        <action name="mcedt/upload" class="org.oscarehr.integration.mcedt.mailbox.Upload2Action">
+        <action name="mcedt/upload" class="ca.openosp.openo.integration.mcedt.mailbox.Upload2Action">
             <result name="success">/mcedt/mailbox/index.jsp?tab=upload</result>
             <result name="failure">/mcedt/mailbox/index.jsp?tab=upload</result>
             <result name="cancel">/mcedt/kaimcedt.do</result>
         </action>
-        <action name="mcedt/addUpload" class="org.oscarehr.integration.mcedt.mailbox.Upload2Action">
+        <action name="mcedt/addUpload" class="ca.openosp.openo.integration.mcedt.mailbox.Upload2Action">
             <result name="success">/mcedt/mailbox/index.jsp?tab=upload</result>
             <result name="failure">/mcedt/mailbox/addUpload.jsp</result>
             <result name="cancel">/mcedt/kaimcedt.do</result>
         </action>
-        <action name="mcedt/kaichpass" class="org.oscarehr.integration.mcedt.mailbox.User2Action">
+        <action name="mcedt/kaichpass" class="ca.openosp.openo.integration.mcedt.mailbox.User2Action">
             <result name="success">/mcedt/mailbox/changepass.jsp</result>
             <result name="cancel">/mcedt/kaimcedt.do</result>
         </action>
-        <action name="mcedt/kaiautodl" class="org.oscarehr.integration.mcedt.mailbox.Download2Action">
+        <action name="mcedt/kaiautodl" class="ca.openosp.openo.integration.mcedt.mailbox.Download2Action">
             <result name="success">/mcedt/mailbox/autoDownload.jsp</result>
             <result name="cancel">/mcedt/kaimcedt.do</result>
         </action>
-        <action name="mcedt/download" class="org.oscarehr.integration.mcedt.mailbox.Download2Action">
+        <action name="mcedt/download" class="ca.openosp.openo.integration.mcedt.mailbox.Download2Action">
             <result name="success">/mcedt/mailbox/index.jsp?tab=download</result>
             <result name="error">/mcedt/mailbox/index.jsp?tab=download</result>
         </action>
-        <action name="mcedt/resourceInfo" class="org.oscarehr.integration.mcedt.mailbox.Info2Action">
+        <action name="mcedt/resourceInfo" class="ca.openosp.openo.integration.mcedt.mailbox.Info2Action">
             <result name="success">/mcedt/mailbox/index.jsp?tab=sent</result>
         </action>
-        <action name="mcedt/reSubmit" class="org.oscarehr.integration.mcedt.mailbox.ReSubmit2Action">
+        <action name="mcedt/reSubmit" class="ca.openosp.openo.integration.mcedt.mailbox.ReSubmit2Action">
             <result name="success">/mcedt/mailbox/index.jsp?tab=sent</result>
         </action>
-        <action name="mcedt/uploads" class="org.oscarehr.integration.mcedt.Upload2Action">
+        <action name="mcedt/uploads" class="ca.openosp.openo.integration.mcedt.Upload2Action">
             <result name="success">/mcedt/uploads.jsp</result>
             <result name="addNew">/mcedt/addUpload.jsp</result>
             <result name="cancel">/mcedt/mcedt.do</result>
@@ -2362,14 +2362,14 @@
             <result name="success">/admin/auditLogPurge.jsp</result>
         </action>
         <action name="lab/DownloadEmbeddedDocumentFromLab" class="ca.openosp.openo.lab.ca.all.pageUtil.DownloadEmbeddedDocumentFromLab2Action"/>
-        <action name="dhir/submit" class="org.oscarehr.integration.dhir.SubmitImmunization2Action">
+        <action name="dhir/submit" class="ca.openosp.openo.integration.dhir.SubmitImmunization2Action">
             <result name="success">/oscarPrevention/dhirSubmission.jsp</result>
             <result name="testresult">/oscarPrevention/test_case.jsp</result>
         </action>
-        <action name="clinicalConnectEHRViewer" class="org.oscarehr.integration.clinicalconnect.ClinicalConnectViewer2Action">
+        <action name="clinicalConnectEHRViewer" class="ca.openosp.openo.integration.clinicalconnect.ClinicalConnectViewer2Action">
             <result name="error">/cc/launcherError.jsp</result>
         </action>
-        <action name="admin/Flowsheet" class="org.oscarehr.flowsheet.Flowsheet2Action"/>
+        <action name="admin/Flowsheet" class="ca.openosp.openo.flowsheet.Flowsheet2Action"/>
 
     </package>
 </struts>

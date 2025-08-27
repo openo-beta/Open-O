@@ -272,9 +272,9 @@
 		<property name="secobjprivilegeDao" ref="secobjprivilegeDao" />
 	</bean>
 
-	<bean id="drilldownQueryHandler" class="org.oscarehr.dashboard.handler.DrilldownQueryHandler" autowire="byName" />
-	<bean id="indicatorQueryHandler" class="org.oscarehr.dashboard.handler.IndicatorQueryHandler" autowire="byName" />
-	<bean id="exportQueryHandler" class="org.oscarehr.dashboard.handler.ExportQueryHandler" autowire="byName" />
+	<bean id="drilldownQueryHandler" class="ca.openosp.openo.dashboard.handler.DrilldownQueryHandler" autowire="byName" />
+	<bean id="indicatorQueryHandler" class="ca.openosp.openo.dashboard.handler.IndicatorQueryHandler" autowire="byName" />
+	<bean id="exportQueryHandler" class="ca.openosp.openo.dashboard.handler.ExportQueryHandler" autowire="byName" />
 		
 	<bean id="extPrintMeasurements" class="ca.openosp.openo.casemgmt.service.MeasurementPrint" autowire="byName"/>
 
@@ -368,7 +368,7 @@
             </property>
         </bean>
 		
-		<bean id="eventService" class="org.oscarehr.event.EventService"/> 
+		<bean id="eventService" class="ca.openosp.openo.event.EventService"/>
 		<bean id="applicationEventMulticaster" class="org.springframework.context.event.SimpleApplicationEventMulticaster">  
               <property name="taskExecutor">  
                   <!--  bean class="org.springframework.core.task.SimpleAsyncTaskExecutor"/ -->  

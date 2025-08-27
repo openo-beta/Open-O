@@ -64,12 +64,13 @@
 <%@page import="org.oscarehr.common.model.AppointmentArchive" %>
 <%@page import="org.oscarehr.common.dao.AppointmentStatusDao" %>
 <%@page import="org.oscarehr.common.model.AppointmentStatus" %>
-<%@page import="org.oscarehr.managers.LookupListManager" %>
+<%@page import="ca.openosp.openo.managers.LookupListManager" %>
 <%@page import="org.oscarehr.common.model.LookupList" %>
 <%@page import="org.oscarehr.common.model.LookupListItem" %>
 
 <%@ page import="org.oscarehr.common.model.ProviderData" %>
 <%@ page import="org.oscarehr.common.dao.ProviderDataDao" %>
+<%@ page import="ca.openosp.openo.managers.AppointmentManager" %>
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -263,7 +264,7 @@
                         if (request.getParameter("limit2") != null)
                             iPageSize = Integer.parseInt(request.getParameter("limit2"));
                         List<Object> appointmentList;
-                        org.oscarehr.managers.AppointmentManager appointmentManager = SpringUtils.getBean(org.oscarehr.managers.AppointmentManager.class);
+                        AppointmentManager appointmentManager = SpringUtils.getBean(AppointmentManager.class);
 
                         if (!"true".equals(showDeleted)) {
                             appointmentList = new java.util.ArrayList<Object>();

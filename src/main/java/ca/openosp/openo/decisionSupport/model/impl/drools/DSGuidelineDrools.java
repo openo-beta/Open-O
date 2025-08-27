@@ -53,7 +53,7 @@ import ca.openosp.openo.decisionSupport.model.DSDemographicAccess;
 import ca.openosp.openo.decisionSupport.model.DSGuideline;
 import ca.openosp.openo.decisionSupport.model.DSParameter;
 import ca.openosp.openo.decisionSupport.model.DecisionSupportException;
-import org.oscarehr.drools.RuleBaseFactory;
+import ca.openosp.openo.drools.RuleBaseFactory;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 

@@ -25,7 +25,7 @@
 --%>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page import="oscar.OscarProperties" %>
-<%@page import="org.oscarehr.managers.DashboardManager" %>
+<%@page import="ca.openosp.openo.managers.DashboardManager" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%
     DashboardManager dashboardManager = SpringUtils.getBean(DashboardManager.class);

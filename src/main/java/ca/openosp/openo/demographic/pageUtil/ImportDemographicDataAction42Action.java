@@ -27,6 +27,8 @@
 package ca.openosp.openo.demographic.pageUtil;
 
 import ca.openosp.openo.casemgmt.model.*;
+import ca.openosp.openo.hospitalReportManager.dao.*;
+import ca.openosp.openo.hospitalReportManager.model.*;
 import cds.AlertsAndSpecialNeedsDocument.AlertsAndSpecialNeeds;
 import cds.AllergiesAndAdverseReactionsDocument.AllergiesAndAdverseReactions;
 import cds.AppointmentsDocument.Appointments;
@@ -78,13 +80,12 @@ import ca.openosp.openo.casemgmt.dao.IssueDAO;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;
-import org.oscarehr.documentManager.EDocUtil;
-import org.oscarehr.hospitalReportManager.HRMReport;
-import org.oscarehr.hospitalReportManager.HRMReportParser;
-import org.oscarehr.hospitalReportManager.dao.*;
-import org.oscarehr.hospitalReportManager.model.*;
-import org.oscarehr.managers.NioFileManager;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.documentManager.EDocUtil;
+import ca.openosp.openo.hospitalReportManager.HRMReport;
+import ca.openosp.openo.hospitalReportManager.HRMReportParser;
+import ca.openosp.openo.hospitalReportManager.dao.*;
+import ca.openosp.openo.managers.NioFileManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

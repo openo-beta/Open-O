@@ -26,7 +26,7 @@
 
 package org.oscarehr.ws.transfer_objects;
 
-import org.oscarehr.managers.DayWorkSchedule;
+import ca.openosp.openo.managers.DayWorkSchedule;
 
 public final class DayWorkScheduleTransfer {
     private boolean isHoliday;

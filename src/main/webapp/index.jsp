@@ -26,7 +26,7 @@
 
 
 <%@ page import="ca.openosp.openo.login.UAgentInfo" %>
-<%@ page import="org.oscarehr.managers.MfaManager" %>
+<%@ page import="ca.openosp.openo.managers.MfaManager" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>

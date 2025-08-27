@@ -14,7 +14,7 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.billing.CA.ON.util.EDTFolder;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

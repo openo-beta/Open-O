@@ -41,7 +41,7 @@ import org.oscarehr.common.dao.OscarCommLocationsDao;
 import org.oscarehr.common.model.MessageList;
 import org.oscarehr.common.model.MessageTbl;
 import org.oscarehr.common.model.OscarCommLocations;
-import org.oscarehr.managers.MessengerGroupManager;
+import ca.openosp.openo.managers.MessengerGroupManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 import org.w3c.dom.Document;

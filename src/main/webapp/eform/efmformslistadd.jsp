@@ -39,7 +39,7 @@ LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
 <%@ page import="java.util.*, java.sql.*, oscar.eform.*" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
-<%@ page import="org.oscarehr.managers.DemographicManager" %>
+<%@ page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>

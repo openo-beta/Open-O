@@ -35,7 +35,7 @@ import org.oscarehr.common.dao.DemographicExtArchiveDao;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.DemographicArchive;
 import org.oscarehr.common.model.DemographicExtArchive;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

@@ -37,16 +37,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Query;
-
-import org.oscarehr.common.model.ConsultDocs;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Document;
-import org.oscarehr.common.model.EFormDocs;
-import org.springframework.stereotype.Repository;
 
-import org.oscarehr.documentManager.EDocUtil.EDocSort;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.documentManager.EDocUtil.EDocSort;
 
 public interface DocumentDao extends AbstractDao<Document> {
 

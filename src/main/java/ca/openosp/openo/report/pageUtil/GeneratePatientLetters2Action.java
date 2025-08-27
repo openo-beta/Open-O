@@ -45,14 +45,14 @@ import net.sf.jasperreports.engine.JasperReport;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.model.ProgramProvider;
-import org.oscarehr.managers.ProgramManager2;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.ProgramManager2;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import org.oscarehr.documentManager.EDoc;
-import org.oscarehr.documentManager.EDocUtil;
+import ca.openosp.openo.documentManager.EDoc;
+import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.eform.APExecute;
 import ca.openosp.openo.prevention.reports.FollowupManagement;
 import ca.openosp.openo.report.data.ManageLetters;

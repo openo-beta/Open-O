@@ -38,9 +38,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import ca.openosp.openo.casemgmt.model.ClientImage;
-import org.oscarehr.integration.mchcv.HCValidationFactory;
-import org.oscarehr.integration.mchcv.HCValidationResult;
-import org.oscarehr.integration.mchcv.HCValidator;
+import ca.openosp.openo.integration.mchcv.HCValidationFactory;
+import ca.openosp.openo.integration.mchcv.HCValidationResult;
+import ca.openosp.openo.integration.mchcv.HCValidator;
 
 /**
  * This object is to help support tracking which fields in the demographic object have been marked as "valid" by an end user. The original intent is because only "validated" information is allowed to be sent to the HNR and part of the scope of work was to

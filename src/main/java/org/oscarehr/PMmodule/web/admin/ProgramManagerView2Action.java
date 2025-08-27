@@ -57,7 +57,7 @@ import org.oscarehr.common.model.Admission;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Facility;
 import org.oscarehr.common.model.Tickler;
-import org.oscarehr.managers.TicklerManager;
+import ca.openosp.openo.managers.TicklerManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

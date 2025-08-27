@@ -54,9 +54,9 @@
         import="java.util.*, oscar.util.*, ca.openosp.openo.provider.data.ProviderData, org.oscarehr.util.SpringUtils, org.oscarehr.common.dao.CtlDocClassDao" %>
 <%@ page import="org.oscarehr.common.model.DocumentExtraReviewer" %>
 <%@ page import="org.oscarehr.common.dao.DocumentExtraReviewerDao" %>
-<%@ page import="org.oscarehr.documentManager.data.AddEditDocument2Form" %>
-<%@ page import="org.oscarehr.documentManager.EDocUtil" %>
-<%@ page import="org.oscarehr.documentManager.EDoc" %>
+<%@ page import="ca.openosp.openo.documentManager.data.AddEditDocument2Form" %>
+<%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
+<%@ page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <%

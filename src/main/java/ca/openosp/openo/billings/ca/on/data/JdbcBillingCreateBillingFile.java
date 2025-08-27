@@ -50,7 +50,7 @@ import org.oscarehr.common.model.BillingONCHeader1;
 import org.oscarehr.common.model.BillingONItem;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Site;
-import org.oscarehr.managers.DemographicManager;
+import ca.openosp.openo.managers.DemographicManager;
 import org.oscarehr.util.DateRange;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;

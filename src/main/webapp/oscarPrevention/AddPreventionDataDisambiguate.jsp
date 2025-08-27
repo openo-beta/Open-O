@@ -32,7 +32,7 @@
 <%@page import="org.oscarehr.common.model.CVCMedicationLotNumber" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%@page import="org.oscarehr.common.model.CVCImmunization" %>
-<%@page import="org.oscarehr.managers.CanadianVaccineCatalogueManager" %>
+<%@page import="ca.openosp.openo.managers.CanadianVaccineCatalogueManager" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.provider.data.ProviderData" %>
 <%@ page

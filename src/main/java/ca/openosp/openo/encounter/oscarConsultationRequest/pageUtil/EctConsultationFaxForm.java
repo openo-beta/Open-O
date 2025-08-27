@@ -27,8 +27,8 @@
 package ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil;
 
 import net.sf.json.JSONObject;
-import org.oscarehr.fax.core.FaxAccount;
-import org.oscarehr.fax.core.FaxRecipient;
+import ca.openosp.openo.fax.core.FaxAccount;
+import ca.openosp.openo.fax.core.FaxRecipient;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;

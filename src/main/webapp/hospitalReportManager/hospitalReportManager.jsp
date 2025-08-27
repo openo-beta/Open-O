@@ -32,7 +32,7 @@
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="java.util.*" %>
 <%@ page
-        import="org.oscarehr.hospitalReportManager.SFTPConnector, org.oscarehr.hospitalReportManager.dao.HRMProviderConfidentialityStatementDao" %>
+        import="ca.openosp.openo.hospitalReportManager.SFTPConnector, ca.openosp.openo.hospitalReportManager.dao.HRMProviderConfidentialityStatementDao" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 

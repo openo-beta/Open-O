@@ -38,7 +38,7 @@ import org.oscarehr.common.dao.Icd9Dao;
 import org.oscarehr.common.model.DiagnosticCode;
 import org.oscarehr.common.model.Icd10;
 import org.oscarehr.common.model.Icd9;
-import org.oscarehr.managers.CodingSystemManager;
+import ca.openosp.openo.managers.CodingSystemManager;
 import org.oscarehr.util.JsonUtil;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

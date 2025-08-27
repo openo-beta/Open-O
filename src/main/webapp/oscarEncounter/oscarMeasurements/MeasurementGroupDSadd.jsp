@@ -44,7 +44,7 @@
 
 
 <%@ page import="java.util.*" %>
-<%@ page import="org.oscarehr.managers.MeasurementManager" %>
+<%@ page import="ca.openosp.openo.managers.MeasurementManager" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 
 <%

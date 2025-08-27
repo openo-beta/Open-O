@@ -42,7 +42,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.printing.FontSettings;
 import org.oscarehr.common.printing.PdfWriterFactory;
-import org.oscarehr.managers.DemographicManager;
+import ca.openosp.openo.managers.DemographicManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 import oscar.OscarProperties;

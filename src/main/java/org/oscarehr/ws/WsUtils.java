@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.model.Security;
-import org.oscarehr.managers.SecurityManager;
+import ca.openosp.openo.managers.SecurityManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

@@ -28,8 +28,8 @@ import javax.ws.rs.Path;
 
 import org.oscarehr.common.dao.AppDefinitionDao;
 import org.oscarehr.common.dao.AppUserDao;
-import org.oscarehr.managers.AppManager;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.AppManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Path("/reportByTemplate")

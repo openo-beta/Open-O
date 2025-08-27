@@ -24,8 +24,8 @@
  */
 package org.oscarehr.common.model;
 
-import org.oscarehr.fax.core.FaxAccount;
-import org.oscarehr.fax.core.FaxRecipient;
+import ca.openosp.openo.fax.core.FaxAccount;
+import ca.openosp.openo.fax.core.FaxRecipient;
 
 import java.util.Date;
 

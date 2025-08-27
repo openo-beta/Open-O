@@ -44,8 +44,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page
         import="java.util.*, oscar.util.*, oscar.OscarProperties, org.oscarehr.util.SpringUtils, org.oscarehr.common.dao.CtlDocClassDao" %>
-<%@ page import="org.oscarehr.documentManager.data.AddEditDocument2Form" %>
-<%@ page import="org.oscarehr.documentManager.EDocUtil" %>
+<%@ page import="ca.openosp.openo.documentManager.data.AddEditDocument2Form" %>
+<%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 
 <%--This is included in documentReport.jsp - wasn't meant to be displayed as a separate page --%>
 <%

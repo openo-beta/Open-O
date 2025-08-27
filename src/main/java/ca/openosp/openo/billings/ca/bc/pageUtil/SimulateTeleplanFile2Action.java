@@ -26,7 +26,7 @@
 
 package ca.openosp.openo.billings.ca.bc.pageUtil;
 
-import org.oscarehr.managers.DemographicManager;
+import ca.openosp.openo.managers.DemographicManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

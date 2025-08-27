@@ -48,7 +48,7 @@
         import="java.util.*,oscar.oscarLab.ca.on.*,oscar.oscarDemographic.data.*" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.oscarehr.common.model.Demographic" %>
-<%@ page import="org.oscarehr.managers.DemographicManager" %>
+<%@ page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabTestValues" %>

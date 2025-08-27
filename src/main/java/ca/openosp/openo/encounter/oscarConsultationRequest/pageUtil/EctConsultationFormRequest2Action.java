@@ -26,6 +26,7 @@
 
 package ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil;
 
+import ca.openosp.openo.managers.*;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.v26.message.ORU_R01;
 import ca.uhn.hl7v2.model.v26.message.REF_I12;
@@ -44,16 +45,12 @@ import org.oscarehr.common.hl7.v2.oscar_to_oscar.SendingUtils;
 import org.oscarehr.common.model.*;
 import org.oscarehr.common.model.enumerator.DocumentType;
 import org.oscarehr.common.model.enumerator.ModuleType;
-import org.oscarehr.documentManager.DocumentAttachmentManager;
-import org.oscarehr.documentManager.EDoc;
-import org.oscarehr.documentManager.EDocUtil;
-import org.oscarehr.fax.core.FaxRecipient;
-import org.oscarehr.managers.*;
-import org.oscarehr.managers.ConsultationManager;
-import org.oscarehr.managers.DemographicManager;
-import org.oscarehr.managers.FaxManager;
-import org.oscarehr.managers.FaxManager.TransactionType;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.documentManager.DocumentAttachmentManager;
+import ca.openosp.openo.documentManager.EDoc;
+import ca.openosp.openo.documentManager.EDocUtil;
+import ca.openosp.openo.fax.core.FaxRecipient;
+import ca.openosp.openo.managers.*;
+import ca.openosp.openo.managers.FaxManager.TransactionType;
 import org.oscarehr.util.*;
 import oscar.OscarProperties;
 import ca.openosp.openo.encounter.data.EctFormData;

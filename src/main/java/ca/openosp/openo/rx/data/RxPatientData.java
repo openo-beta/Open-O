@@ -42,7 +42,7 @@ import org.oscarehr.common.dao.PartialDateDao;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Diseases;
 import org.oscarehr.common.model.PartialDate;
-import org.oscarehr.managers.DemographicManager;
+import ca.openosp.openo.managers.DemographicManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;

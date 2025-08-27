@@ -32,7 +32,7 @@ import java.util.List;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.oscarehr.common.model.Prevention;
 import org.oscarehr.common.model.PreventionExt;
-import org.oscarehr.managers.PreventionManager;
+import ca.openosp.openo.managers.PreventionManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

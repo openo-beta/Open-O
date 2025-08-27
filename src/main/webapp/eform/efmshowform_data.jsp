@@ -29,9 +29,9 @@
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.encounter.data.EctFormData" %>
 <%@ page import="org.oscarehr.common.model.enumerator.DocumentType" %>
-<%@ page import="org.oscarehr.documentManager.DocumentAttachmentManager" %>
-<%@ page import="org.oscarehr.managers.EmailComposeManager" %>
-<%@ page import="org.oscarehr.managers.SecurityInfoManager"%>
+<%@ page import="ca.openosp.openo.documentManager.DocumentAttachmentManager" %>
+<%@ page import="ca.openosp.openo.managers.EmailComposeManager" %>
+<%@ page import="ca.openosp.openo.managers.SecurityInfoManager"%>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="oscar.util.StringUtils" %>
 <%@ page import="java.util.List" %>

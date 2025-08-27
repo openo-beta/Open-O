@@ -35,12 +35,12 @@
 <%@page import="java.util.ArrayList" %>
 <%@page import="org.oscarehr.common.model.DHIRSubmissionLog" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.managers.DHIRSubmissionManager" %>
+<%@page import="ca.openosp.openo.managers.DHIRSubmissionManager" %>
 <%@page import="org.hl7.fhir.dstu3.model.Immunization" %>
 <%@page import="org.hl7.fhir.dstu3.model.Patient" %>
 <%@page import="org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.integration.fhir.builder.AbstractFhirMessageBuilder" %>
+<%@page import="ca.openosp.openo.integration.fhir.builder.AbstractFhirMessageBuilder" %>
 <%@page import="org.hl7.fhir.dstu3.model.Bundle" %>
 <%@page import="java.util.Map" %>
 <%@page import="java.io.InputStream" %>

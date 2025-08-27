@@ -32,7 +32,7 @@ import org.oscarehr.common.dao.AbstractCodeSystemDao;
 import org.oscarehr.common.dao.DxresearchDAO;
 import org.oscarehr.common.model.AbstractCodeSystemModel;
 import org.oscarehr.common.model.Dxresearch;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 import ca.openosp.openo.log.LogAction;

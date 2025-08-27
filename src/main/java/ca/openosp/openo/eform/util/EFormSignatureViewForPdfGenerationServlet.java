@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.DigitalSignature;
-import org.oscarehr.managers.DigitalSignatureManager;
+import ca.openosp.openo.managers.DigitalSignatureManager;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 

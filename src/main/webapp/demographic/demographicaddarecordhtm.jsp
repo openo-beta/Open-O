@@ -25,7 +25,7 @@
 --%>
 <%@page import="java.text.SimpleDateFormat" %>
 <%@page import="java.util.Date" %>
-<%@page import="org.oscarehr.managers.LookupListManager" %>
+<%@page import="ca.openosp.openo.managers.LookupListManager" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
@@ -74,10 +74,10 @@
 <%@page import="oscar.OscarProperties" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.managers.ProgramManager2" %>
+<%@page import="ca.openosp.openo.managers.ProgramManager2" %>
 <%@page import="org.oscarehr.PMmodule.model.ProgramProvider" %>
 
-<%@page import="org.oscarehr.managers.PatientConsentManager" %>
+<%@page import="ca.openosp.openo.managers.PatientConsentManager" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <jsp:useBean id="apptMainBean" class="oscar.AppointmentMainBean" scope="session"/>

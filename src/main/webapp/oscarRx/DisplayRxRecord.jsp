@@ -27,8 +27,8 @@
 <%@page import="org.oscarehr.common.dao.DrugReasonDao" %>
 <%@page import="org.oscarehr.common.model.PartialDate" %>
 <%@page import="org.oscarehr.common.dao.PartialDateDao" %>
-<%@page import="org.oscarehr.managers.CodingSystemManager" %>
-<%@page import="org.oscarehr.managers.PharmacyManager" %>
+<%@page import="ca.openosp.openo.managers.CodingSystemManager" %>
+<%@page import="ca.openosp.openo.managers.PharmacyManager" %>
 <%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
 <%@page import="org.oscarehr.common.model.PharmacyInfo" %>

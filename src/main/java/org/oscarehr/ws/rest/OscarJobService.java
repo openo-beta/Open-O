@@ -42,7 +42,7 @@ import org.oscarehr.common.jobs.OscarJobExecutingManager;
 import org.oscarehr.common.jobs.OscarJobUtils;
 import org.oscarehr.common.model.OscarJob;
 import org.oscarehr.common.model.OscarJobType;
-import org.oscarehr.managers.OscarJobManager;
+import ca.openosp.openo.managers.OscarJobManager;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.ws.rest.to.OscarJobResponse;
 import org.oscarehr.ws.rest.to.OscarJobTypeResponse;

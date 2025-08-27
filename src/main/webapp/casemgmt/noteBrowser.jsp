@@ -41,7 +41,7 @@
 <jsp:useBean id="oscarVariables" class="java.util.Properties" scope="page"/>
 
 <%@page import="java.net.URLDecoder, java.net.URLEncoder,java.util.Date, java.util.List" %>
-<%@page import="org.oscarehr.documentManager.EDocUtil,org.oscarehr.documentManager.EDoc" %>
+<%@page import="ca.openosp.openo.documentManager.EDocUtil,ca.openosp.openo.documentManager.EDoc" %>
 <%@page import="ca.openosp.openo.casemgmt.web.NoteDisplay,ca.openosp.openo.casemgmt.web.NoteDisplayLocal" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager,ca.openosp.openo.casemgmt.model.CaseManagementNote" %>

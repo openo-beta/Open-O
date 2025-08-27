@@ -34,7 +34,7 @@ import net.sf.json.JSONObject;
 
 import org.oscarehr.common.dao.DemographicExtDao;
 import org.oscarehr.common.model.DemographicExt;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 

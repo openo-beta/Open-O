@@ -29,7 +29,7 @@
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 %>
 
-<%@ page import="java.util.*,oscar.oscarReport.reportByTemplate.*,org.oscarehr.managers.RBTGroupManager" %>
+<%@ page import="java.util.*,oscar.oscarReport.reportByTemplate.*,ca.openosp.openo.managers.RBTGroupManager" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.RBTGroup" %>

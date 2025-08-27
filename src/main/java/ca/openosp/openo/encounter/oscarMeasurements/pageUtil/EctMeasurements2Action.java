@@ -42,7 +42,7 @@ import org.oscarehr.common.model.FlowSheetCustomization;
 import org.oscarehr.common.model.Measurement;
 import org.oscarehr.common.model.SecRole;
 import org.oscarehr.common.model.Validations;
-import org.oscarehr.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 import org.springframework.web.context.WebApplicationContext;
