@@ -53,11 +53,9 @@ public class OAuth1SignatureVerifierImplementation implements OAuth1SignatureVer
     @Autowired
     private OscarOAuthDataProvider dataProvider;
 
-    /**
-     * Recomputes the OAuth1 signature for the incoming request and compares
-     * it (constant-time) against the provided oauth_signature. Returns the
-     * token if valid, or throws IllegalArgumentException if not.
-     */
+    // ★ NEW: configurable clock skew (seconds)
+    private static final long ALLOWED_SKEW_SECONDS = 300L;
+
     @Override
     public String verifySignature(HttpServletRequest req, AppOAuth1Config cfg) {
         // --- 1) OAuth params from Authorization header ---
@@ -68,20 +66,30 @@ public class OAuth1SignatureVerifierImplementation implements OAuth1SignatureVer
             throw new IllegalArgumentException("Missing OAuth signature");
         }
 
+        // ★ NEW: timestamp freshness (± ALLOWED_SKEW_SECONDS)
+        String tsStr = oauth.get("oauth_timestamp");
+        if (tsStr == null || tsStr.isEmpty()) {
+            throw new IllegalArgumentException("Missing oauth_timestamp");
+        }
+        long now = System.currentTimeMillis() / 1000L;
+        long ts;
+        try { ts = Long.parseLong(tsStr); }
+        catch (NumberFormatException nfe) { throw new IllegalArgumentException("Invalid oauth_timestamp"); }
+        if (Math.abs(now - ts) > ALLOWED_SKEW_SECONDS) {
+            throw new IllegalArgumentException("Stale oauth_timestamp");
+        }
+
         final String uri = (req.getRequestURI() == null ? "" : req.getRequestURI()).toLowerCase(Locale.ROOT);
         final boolean isInitiate = uri.contains("/initiate");
         final boolean isAccessEndpoint = uri.endsWith("/access_token") || uri.endsWith("/token");
 
-        // robust: step-2 if endpoint says so OR verifier is present
         final boolean hasVerifier = oauth.containsKey("oauth_verifier");
 
         String tokenSecret = "";
         if (!isInitiate && token != null && !token.isEmpty() && dataProvider != null) {
             if (isAccessEndpoint || hasVerifier) {
-                // Step 2: request->access exchange -> use REQUEST-TOKEN secret
                 tokenSecret = dataProvider.getRequestTokenSecret(token);
             } else {
-                // Resource call -> use ACCESS-TOKEN secret
                 tokenSecret = dataProvider.getAccessTokenSecret(token);
             }
         }
@@ -89,8 +97,7 @@ public class OAuth1SignatureVerifierImplementation implements OAuth1SignatureVer
             throw new IllegalArgumentException("Unknown or expired token: " + token);
         }
 
-
-        // --- 3) Base URL (must match how your parser builds it) ---
+        // --- 3) Base URL
         final String scheme = req.getScheme().toLowerCase();
         final String host   = req.getServerName().toLowerCase();
         final int    port   = req.getServerPort();
@@ -103,14 +110,14 @@ public class OAuth1SignatureVerifierImplementation implements OAuth1SignatureVer
         // --- 4) Collect ALL signature params ---
         final java.util.List<NameValue> all = new java.util.ArrayList<>();
 
-        // a) oauth_* from header (values arrive percent-encoded → decode them once)
+        // a) oauth_* from header (percent-decoded once)
         for (Map.Entry<String, String> e : oauth.entrySet()) {
             String k = e.getKey();
             if ("oauth_signature".equals(k) || "realm".equalsIgnoreCase(k)) continue;
             all.add(new NameValue(k, pctDecode(e.getValue())));
         }
 
-        // b) RAW query string (RFC3986 decode; do NOT use URLDecoder here)
+        // b) Query string
         String qs = req.getQueryString();
         if (qs != null && !qs.isEmpty()) {
             for (String qp : qs.split("&")) {
@@ -122,7 +129,7 @@ public class OAuth1SignatureVerifierImplementation implements OAuth1SignatureVer
             }
         }
 
-        // c) Body params (x-www-form-urlencoded) — container already decoded (+ -> space)
+        // c) Body params (x-www-form-urlencoded)
         String ctype = req.getContentType();
         if (ctype != null && ctype.toLowerCase().startsWith("application/x-www-form-urlencoded")) {
             req.getParameterMap().forEach((k, vals) -> {
@@ -148,7 +155,7 @@ public class OAuth1SignatureVerifierImplementation implements OAuth1SignatureVer
                 pct(cfg.getConsumerSecret()) + '&' + pct(tokenSecret == null ? "" : tokenSecret);
         final String computed = base64(hmacSha1(baseString, signingKey));
 
-        // --- 7) Compare (use RFC3986 percent-decode, not URLDecoder) ---
+        // --- 7) Compare (percent-decode first)
         final String incoming = pctDecode(incomingSig);
         if (!constantTimeEquals(incoming, computed)) {
             throw new IllegalArgumentException("Invalid OAuth1 signature");
@@ -157,18 +164,13 @@ public class OAuth1SignatureVerifierImplementation implements OAuth1SignatureVer
         return token; // unchanged contract
     }
 
-
-    /**
-     * After verifySignature, use this to look up which provider owns the token.
-     */
     public String getProviderNo(String token) {
         return dataProvider.getProviderNoByAccessToken(token);
     }
 
-    // Utility methods
+    // ---- utils (unchanged) ----
     private static final java.nio.charset.Charset UTF8 = java.nio.charset.StandardCharsets.UTF_8;
 
-    // Unreserved per RFC 5849: ALPHA / DIGIT / "-" / "." / "_" / "~"
     private static String pct(String s) {
         if (s == null) return "";
         StringBuilder out = new StringBuilder();
@@ -187,7 +189,6 @@ public class OAuth1SignatureVerifierImplementation implements OAuth1SignatureVer
         return out.toString();
     }
 
-    // Compute HMAC-SHA1 digest of input data using the provided key.
     private static byte[] hmacSha1(String data, String key) {
         try {
             javax.crypto.Mac mac = javax.crypto.Mac.getInstance("HmacSHA1");
@@ -198,13 +199,11 @@ public class OAuth1SignatureVerifierImplementation implements OAuth1SignatureVer
             throw new RuntimeException(e);
         }
     }
-
-    // Encode bytes into a Base64 string.
-    private static String base64(byte[] bytes) {
-        return java.util.Base64.getEncoder().encodeToString(bytes);
+    
+    private static String base64(byte[] bytes) { 
+        return java.util.Base64.getEncoder().encodeToString(bytes); 
     }
 
-    // Constant-time string equality check to mitigate timing attacks.
     private static boolean constantTimeEquals(String a, String b) {
         if (a == null || b == null) return false;
         int len = Math.max(a.length(), b.length());
@@ -217,30 +216,23 @@ public class OAuth1SignatureVerifierImplementation implements OAuth1SignatureVer
         return r == 0 && a.length() == b.length();
     }
 
-    // Immutable key/value pair used for normalized parameter lists.
-    private static final class NameValue {
-        final String name, value;
-        NameValue(String n, String v) { this.name = n; this.value = v; }
-    }
-
-    // Percent-decode a string per RFC 5849 (OAuth 1.0a encoding rules).
     private static String pctDecode(String s) {
         if (s == null || s.isEmpty()) return s;
-        int n = s.length();
-        StringBuilder out = new StringBuilder(n);
+        int n = s.length(); StringBuilder out = new StringBuilder(n);
         for (int i = 0; i < n; i++) {
             char c = s.charAt(i);
             if (c == '%' && i + 2 < n) {
                 int hi = Character.digit(s.charAt(i + 1), 16);
                 int lo = Character.digit(s.charAt(i + 2), 16);
-                if (hi >= 0 && lo >= 0) {
-                    out.append((char)((hi << 4) + lo));
-                    i += 2;
-                    continue;
-                }
+                if (hi >= 0 && lo >= 0) { out.append((char)((hi << 4) + lo)); i += 2; continue; }
             }
             out.append(c);
         }
         return out.toString();
+    }
+
+    private static final class NameValue {
+        final String name, value;
+        NameValue(String n, String v) { this.name = n; this.value = v; }
     }
 }

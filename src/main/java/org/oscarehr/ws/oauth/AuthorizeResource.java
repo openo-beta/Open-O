@@ -63,7 +63,6 @@ public class AuthorizeResource {
     @GET
     @Path("/authorize")
     public void showConsent(@QueryParam("oauth_token") String tokenId) throws Exception {
-        System.out.println("showConsent() called with tokenId: " + tokenId);
         if (tokenId == null || tokenId.isEmpty()) {
             response.sendError(400, "Missing oauth_token");
             return;
@@ -71,7 +70,6 @@ public class AuthorizeResource {
 
         // Use YOUR RequestToken type
         RequestToken rt = provider.getRequestToken(tokenId);
-        System.out.println("RequestToken retrieved: " + rt);
         if (rt == null) {
             response.sendError(400, "Invalid oauth_token");
             return;
@@ -81,7 +79,6 @@ public class AuthorizeResource {
         OAuthData od = new OAuthData();
         od.setOauthToken(tokenId);
         od.setReplyTo(request.getContextPath() + "/ws/oauth/authorize");
-        System.out.println("OAuthData prepared: " + od);
         if (c != null) {
             od.setApplicationName(c.getName());
             od.setApplicationURI(c.getUri());

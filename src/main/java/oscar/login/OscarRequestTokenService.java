@@ -55,6 +55,7 @@
 package oscar.login;
 
 import org.oscarehr.ws.oauth.OAuth1Request;
+import org.oscarehr.ws.oauth.OAuth1SignatureVerifier;
 import org.oscarehr.ws.oauth.OAuth1Exception;
 import org.oscarehr.ws.oauth.Client;
 import org.oscarehr.ws.oauth.RequestTokenRegistration;
@@ -64,6 +65,7 @@ import org.oscarehr.ws.oauth.util.OAuth1ParamParser;
 // JAX-RS + Servlet
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -72,6 +74,9 @@ public class OscarRequestTokenService {
 
     private final OscarOAuthDataProvider dataProvider;
     private final OAuth1ParamParser parser;
+
+    @Resource
+    private OAuth1SignatureVerifier verifier;
 
     public OscarRequestTokenService(OscarOAuthDataProvider dataProvider,
                                     OAuth1ParamParser parser) {
@@ -99,6 +104,7 @@ public class OscarRequestTokenService {
         cfg.setConsumerKey(client.getConsumerKey());
         cfg.setConsumerSecret(client.getSecret());
         cfg.setApplicationURI(req.getRequestURL().toString());
+        verifier.verifySignature(req, cfg);
 
         RequestTokenRegistration reg = new RequestTokenRegistration(client);
 
@@ -130,6 +136,7 @@ public class OscarRequestTokenService {
 
         return Response.ok(body).type(MediaType.APPLICATION_FORM_URLENCODED).build();
     }
+    
     private static String enc(String s) {
         return URLEncoder.encode(s, StandardCharsets.UTF_8);
     }

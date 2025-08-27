@@ -85,25 +85,20 @@ public class AccessTokenResource {
 
         // 3) Verify signature using existing verifier API
         try {
-            String baseUrl = req.getScheme() + "://" + req.getServerName()
-                    + (((req.getScheme().equals("http") && req.getServerPort() == 80)
-                    || (req.getScheme().equals("https") && req.getServerPort() == 443))
-                    ? "" : (":" + req.getServerPort()));
-
             AppOAuth1Config cfg = new AppOAuth1Config();
             cfg.setConsumerKey(client.getConsumerKey());
             cfg.setConsumerSecret(client.getSecret());
 
-            // No applicationURI needed here
+            // Verifies HMAC-SHA1 and timestamp freshness
             String tokenFromSig = verifier.verifySignature(req, cfg);
 
             if (!oreq.token.equals(tokenFromSig)) {
                 logger.warn("Access token request failed: token mismatch (req [{}] vs sig [{}])",
                         oreq.token, tokenFromSig);
                 return Response.status(401).entity("invalid_signature").build();
-            }            
+            }
         } catch (Exception e) {
-            logger.warn("Access token request failed: signature verification error for token [{}]", oreq.token, e);
+            logger.error("Access token request failed: signature verification error for token [{}]", oreq.token, e);
             return Response.status(401).entity("invalid_signature").build();
         }
 

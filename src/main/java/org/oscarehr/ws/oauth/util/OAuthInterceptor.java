@@ -60,6 +60,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.cxf.interceptor.Fault;
@@ -69,19 +70,28 @@ import org.apache.cxf.phase.PhaseInterceptor;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
 
 import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.ws.oauth.Client;
 import org.oscarehr.ws.oauth.OAuth1Exception;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import oscar.login.OscarOAuthDataProvider;
-
+import oscar.login.AppOAuth1Config;
 import org.oscarehr.PMmodule.dao.ProviderDao;
+import org.oscarehr.common.model.Provider;
+import org.oscarehr.ws.oauth.OAuth1SignatureVerifier;
 
 @Component
 public class OAuthInterceptor implements PhaseInterceptor<Message> {
 
-    @Autowired private OscarOAuthDataProvider oauthDataProvider;
-    @Autowired private ProviderDao            providerDao;
+    @Autowired 
+    private OscarOAuthDataProvider oauthDataProvider;
+
+    @Autowired 
+    private ProviderDao providerDao;
+
+    @Resource
+    private OAuth1SignatureVerifier verifier;
 
     @Override
     public String getPhase() { return Phase.PRE_INVOKE; }
@@ -91,22 +101,50 @@ public class OAuthInterceptor implements PhaseInterceptor<Message> {
         HttpServletRequest req =
             (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
 
-        // 1) Skip non‑OAuth1 requests
+        // 1) Skip non-OAuth1 requests
         if (!OAuthRequestParser.isOAuth1Request(req)) {
             return;
         }
 
         try {
-            // 2) Pull oauth_token directly from the request (Authorization/query/form)
+            // 2) Pull oauth params
             Map<String, String> oauth = OAuthRequestParser.extractOAuthParameters(req);
-            String token = oauth.get("oauth_token");
+            String consumerKey = oauth.get("oauth_consumer_key");
+            String token       = oauth.get("oauth_token");
+
+            if (consumerKey == null || consumerKey.isEmpty()) {
+                throw new OAuth1Exception(400, "missing_consumer_key");
+            }
             if (token == null || token.isEmpty()) {
                 throw new OAuth1Exception(400, "missing_access_token");
             }
 
-            // 3) Resolve provider and attach LoggedInInfo
+            // 3) Load client to get consumer secret
+            Client client = oauthDataProvider.getClient(consumerKey);
+            if (client == null) {
+                throw new OAuth1Exception(401, "invalid_consumer");
+            }
+
+            // 4) Verify signature + timestamp freshness
+            AppOAuth1Config cfg = new AppOAuth1Config();
+            cfg.setConsumerKey(client.getConsumerKey());
+            cfg.setConsumerSecret(client.getSecret());
+
+            // verifier will:
+            //  - collect auth/query/form params
+            //  - enforce oauth_timestamp skew (±5m)
+            //  - choose ACCESS token secret for resource calls
+            //  - recompute HMAC-SHA1 and compare safely
+            String tokenFromSig = verifier.verifySignature(req, cfg);
+
+            // defensively ensure the same token was signed
+            if (!token.equals(tokenFromSig)) {
+                throw new OAuth1Exception(401, "invalid_signature");
+            }
+
+            // 5) Resolve provider from ACCESS token and attach LoggedInInfo
             String providerNo = oauthDataProvider.getProviderNoByAccessToken(token);
-            var provider = providerDao.getProvider(providerNo);
+            Provider provider = providerDao.getProvider(providerNo);
             if (provider == null) {
                 throw new OAuth1Exception(401, "unknown_provider");
             }
@@ -117,13 +155,15 @@ public class OAuthInterceptor implements PhaseInterceptor<Message> {
 
         } catch (OAuth1Exception e) {
             throw new Fault(e);
+        } catch (IllegalArgumentException badSigOrTime) {
+            // from verifier: missing/stale timestamp, bad signature, unknown token, etc.
+            throw new Fault(new OAuth1Exception(401, "invalid_signature"));
         } catch (Exception e) {
-            // Keep details server‑side; expose a generic fault
             throw new Fault(new OAuth1Exception(401, "oauth_authentication_failed"));
         }
     }
 
-    @Override public void handleFault(Message message) { /* no‑op */ }
+    @Override public void handleFault(Message message) { /* no-op */ }
     @Override public Set<String> getBefore() { return Collections.emptySet(); }
     @Override public Set<String> getAfter()  { return Collections.emptySet(); }
     @Override public Collection<PhaseInterceptor<? extends Message>> getAdditionalInterceptors() { return null; }
