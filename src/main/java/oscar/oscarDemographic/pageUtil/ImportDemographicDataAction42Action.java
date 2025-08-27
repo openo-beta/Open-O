@@ -105,9 +105,11 @@ import oscar.oscarLab.LabRequestReportLink;
 import oscar.oscarLab.ca.all.Hl7textResultsData;
 import oscar.oscarLab.ca.all.upload.HandlerClassFactory;
 import oscar.oscarLab.ca.all.upload.handlers.CMLHandler;
+import oscar.oscarLab.ca.all.upload.handlers.ExcellerisOntarioHandler;
 import oscar.oscarLab.ca.all.upload.handlers.GDMLHandler;
 import oscar.oscarLab.ca.all.upload.handlers.MDSHandler;
 import oscar.oscarLab.ca.all.upload.handlers.MessageHandler;
+import oscar.oscarLab.ca.all.upload.handlers.PATHL7Handler;
 import oscar.oscarLab.ca.all.util.Utilities;
 import oscar.oscarPrevention.PreventionData;
 import oscar.oscarProvider.data.ProviderData;
@@ -117,6 +119,7 @@ import oscar.util.ConversionUtils;
 import oscar.util.StringUtils;
 import oscar.util.UtilDateUtilities;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
@@ -225,9 +228,25 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
          * thread to close gracefully while the import is being processed.
          */
         String filename = importFile.getName();
-        String filetype = null;
+        Path filePath = importFile.toPath().normalize();
+
+        // Get context of the temp directory, get the file path to the the temp directory
+        ServletContext servletContext = ServletActionContext.getServletContext();
+
+        // Validate the paths
+        File safeDir = (File) servletContext.getAttribute("javax.servlet.context.tempdir"); // Use a safe directory
+
+        String safeDirPath = safeDir.getCanonicalPath() + File.separator;
+
+        // Validate that the file path is within the safe directory
+        if (!filePath.startsWith(safeDirPath)) {
+            throw new IllegalArgumentException("Invalid file path: Access outside the allowed directory is not permitted.");
+        }
+
+        int dotIndex = filename.lastIndexOf('.');
+        String filetype = (dotIndex == -1) ? "" : filename.substring(dotIndex + 1).toLowerCase();
         Path directory;
-        try (InputStream inputStream = Files.newInputStream(Paths.get(filename));
+        try (InputStream inputStream = Files.newInputStream(filePath);
              ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
             int length;
             byte[] bytes = new byte[1024];
@@ -3224,18 +3243,25 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
                 if (id == null) id = 0;
                 out.write(fillUp(id.toString(), ' ', column1.length()));
                 out.write(" |");
-                String[] info = demo.get(i);
-                if (info != null && info.length > 0) {
-                    String[] text = info[info.length - 1].split("\n");
-                    out.write(text[0]);
-                    out.newLine();
-                    for (int j = 1; j < text.length; j++) {
-                        out.write(fillUp("", ' ', column1.length()));
-                        out.write(" |");
-                        out.write(text[j]);
+
+                try {
+                    String[] info = demo.get(i);
+
+                    if (info != null && info.length > 0) {
+                        String[] text = info[info.length - 1].split("\n");
+                        out.write(text[0]);
                         out.newLine();
+                        for (int j = 1; j < text.length; j++) {
+                            out.write(fillUp("", ' ', column1.length()));
+                            out.write(" |");
+                            out.write(text[j]);
+                            out.newLine();
+                        }
                     }
+                } catch (IndexOutOfBoundsException e) {
+                    MiscUtils.getLogger().error("Error", e);
                 }
+
                 out.write(fillUp("", '-', tableWidth));
                 out.newLine();
             }
@@ -4329,6 +4355,14 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
                             addOneEntry(LABS);
                         } else if (msgHandler instanceof MDSHandler && ((MDSHandler) msgHandler).parse(loggedInInfo, getClass().getSimpleName(), filePath, checkFileUploadedSuccessfully, "") != null) {
                             labNo = ((MDSHandler) msgHandler).getLastLabNo();
+                            logger.info("successfully added lab");
+                            addOneEntry(LABS);
+                        } else if (msgHandler instanceof ExcellerisOntarioHandler && ((ExcellerisOntarioHandler) msgHandler).parse(loggedInInfo, getClass().getSimpleName(), filePath, checkFileUploadedSuccessfully, "") != null) {
+                            labNo = ((ExcellerisOntarioHandler) msgHandler).getLastLabNo();
+                            logger.info("successfully added lab");
+                            addOneEntry(LABS);
+                        } else if (msgHandler instanceof PATHL7Handler && ((PATHL7Handler) msgHandler).parse(loggedInInfo, getClass().getSimpleName(), filePath, checkFileUploadedSuccessfully, "") != null) {
+                            labNo = ((PATHL7Handler) msgHandler).getLastLabNo();
                             logger.info("successfully added lab");
                             addOneEntry(LABS);
                         } else {

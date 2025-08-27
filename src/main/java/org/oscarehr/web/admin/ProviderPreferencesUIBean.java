@@ -172,8 +172,12 @@ public final class ProviderPreferencesUIBean {
         if (formIds != null) {
             for (String formId : formIds) {
                 Integer formIdInteger = Integer.parseInt(formId);
-                String eformName = eFormDao.find(formIdInteger).getFormName();
-                eFormsIdsList.add(new ProviderPreference.EformLink(formIdInteger, eformName));
+                EForm eForm = eFormDao.find(formIdInteger);
+                if (eForm != null) {
+                    eFormsIdsList.add(new ProviderPreference.EformLink(formIdInteger, eForm.getFormName()));
+                } else {
+                    MiscUtils.getLogger().warn("EForm not found for id of:" + formIdInteger);
+                }
             }
         }
 

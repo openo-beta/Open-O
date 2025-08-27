@@ -89,6 +89,7 @@
 <%@ page import="org.oscarehr.documentManager.EDocUtil" %>
 <%@ page import="org.oscarehr.documentManager.EDoc" %>
 <%@ page import="oscar.util.StringUtils" %>
+<%@ page import="org.oscarehr.common.model.enumerator.ModuleType" %>
 
 
 <jsp:useBean id="displayServiceUtil" scope="request"
@@ -1551,7 +1552,7 @@ if (userAgent != null) {
     <body topmargin="0" leftmargin="0" vlink="#0000FF"
           onload="window.focus();disableDateFields();disableEditing();showSignatureImage();">
     <jsp:include page="../../images/spinner.jsp" flush="true"/>
-    <% 
+    <%
     java.util.List<String> actionErrors = (java.util.List<String>) request.getAttribute("actionErrors");
     if (actionErrors != null && !actionErrors.isEmpty()) {
 %>
@@ -1613,7 +1614,7 @@ if (userAgent != null) {
                         thisForm.setSiteName(defaultSiteName);
                     }
                 }
-            }   
+            }
 
             if (thisForm.iseReferral()) {
         %>
@@ -2694,7 +2695,7 @@ if (userAgent != null) {
                                 </div>
 
                                 <iframe style="width:500px; height:132px;" id="signatureFrame"
-                                        src="<%= request.getContextPath() %>/signature_pad/tabletSignature.jsp?inWindow=true&<%=DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY%>=<%=signatureRequestId%>"></iframe>
+							src="<%= request.getContextPath() %>/signature_pad/tabletSignature.jsp?inWindow=true&<%=DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY%>=<%=signatureRequestId%>&<%=ModuleType.class.getSimpleName()%>=<%=ModuleType.CONSULTATION%>" ></iframe>
 
                             </td>
                         </tr>
@@ -2981,6 +2982,7 @@ if (userAgent != null) {
              DOCUMENT ATTACHMENT MANAGER JAVASCRIPT
              **/
             jQuery(document).on('click', '*[data-poload]', function () {
+                const $mainForm = jQuery('#EctConsultationFormRequest2Form');
 
                 var trigger = jQuery(this);
                 trigger.off('click');
@@ -2989,7 +2991,7 @@ if (userAgent != null) {
 
                 jQuery("#attachDocumentDisplay").load(trigger.data('poload'), function (response, status, xhr) {
                     if (status === "success") {
-                        jQuery('#consultationRequestForm').find(".delegateAttachment").each(function (index, data) {
+                        $mainForm.find(".delegateAttachment").each(function (index, data) {
                             let delegate = "#" + this.id.split("_")[1];
                             let element = jQuery('#attachDocumentsForm').find(delegate);
                             if (element.length === 0) {
@@ -3065,7 +3067,7 @@ if (userAgent != null) {
                             column.append(input);
                             row.append(column);
 
-                            jQuery('#consultationRequestForm').find(target).append(row);
+                            jQuery('#EctConsultationFormRequest2Form').find(target).append(row);
                         });
 
                         // remove unchecked elements from the request form.
@@ -3074,7 +3076,7 @@ if (userAgent != null) {
 
                             if (!checkedElement.is(':checked')) {
                                 var checkedElementClass = checkedElement.attr("class");
-                                jQuery('#consultationRequestForm').find("#entry_" + checkedElement.attr("id")).remove();
+                                $mainForm.find("#entry_" + checkedElement.attr("id")).remove();
                                 checkedElement.attr("class", checkedElementClass.split("_")[0] + "_check");
                             }
                         });

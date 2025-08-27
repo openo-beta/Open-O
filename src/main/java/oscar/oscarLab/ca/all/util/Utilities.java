@@ -35,7 +35,9 @@
 
 package oscar.oscarLab.ca.all.util;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -43,6 +45,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -68,7 +73,6 @@ public class Utilities {
             String line = null;
             boolean firstPIDflag = false; //true if the first PID segment has been processed false otherwise
             boolean firstMSHflag = false; //true if the first MSH segment has been processed false otherwise
-            //String mshSeg = br.readLine();
 
             StringBuilder sb = new StringBuilder();
             String mshSeg = "";
@@ -107,7 +111,6 @@ public class Utilities {
         return (messages);
     }
 
-
     /**
      * @param stream
      * @param filename
@@ -116,35 +119,41 @@ public class Utilities {
     public static String saveFile(InputStream stream, String filename) {
         String retVal = null;
 
-
         try {
             OscarProperties props = OscarProperties.getInstance();
-            //properties must exist
             String place = props.getProperty("DOCUMENT_DIR");
 
-            if (!place.endsWith("/"))
-                place = new StringBuilder(place).insert(place.length(), "/").toString();
-            retVal = place + "LabUpload." + filename.replaceAll(".enc", "") + "." + (new Date()).getTime();
+            File safeDir = new File(place).getCanonicalFile(); // Canonicalize safe base
+            File targetFile = new File(safeDir, filename).getCanonicalFile(); // Canonicalize target path
+
+            // Ensure target file is inside the allowed base directory
+            if (!targetFile.getPath().startsWith(safeDir.getPath() + File.separator)) {
+                throw new IllegalArgumentException("Attempt to write file outside allowed directory: " + targetFile.getPath());
+            }
+
+            // Validate filename to ensure it does not contain invalid characters
+            if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
+                throw new IllegalArgumentException("Invalid filename: " + filename);
+            }
+
+            // Construct retVal using the validated targetFile path
+            retVal = targetFile.getParent() + File.separator + "LabUpload." + targetFile.getName().replaceAll(".enc", "") + "." + (new Date()).getTime();
 
             logger.debug("saveFile place=" + place + ", retVal=" + retVal);
-            //write the  file to the file specified
-            OutputStream os = new FileOutputStream(retVal);
 
-            int bytesRead = 0;
-            while ((bytesRead = stream.read()) != -1) {
-                os.write(bytesRead);
+            try (OutputStream os = Files.newOutputStream(Paths.get(retVal));
+                BufferedInputStream bis = new BufferedInputStream(stream)) {
+
+                byte[] buffer = new byte[8192]; // 8KB buffer
+                int bytesRead;
+                while ((bytesRead = bis.read(buffer)) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                }
             }
-            os.close();
-
-            //close the stream
-            stream.close();
         } catch (FileNotFoundException fnfe) {
-            logger.error("Error", fnfe);
-            return retVal;
-
+            logger.error("Unable to create or write to file: " + filename, fnfe);
         } catch (IOException ioe) {
-            logger.error("Error", ioe);
-            return retVal;
+            logger.error("Error processing file: " + filename, ioe);
         }
         return retVal;
     }
@@ -183,50 +192,54 @@ public class Utilities {
     public static String savePdfFile(InputStream stream, String filename) {
         String retVal = null;
         try {
+            if (filename == null || filename.isBlank()) {
+                throw new IllegalArgumentException("Filename cannot be null or empty");
+            }
+
             OscarProperties props = OscarProperties.getInstance();
-            //properties must exist
             String place = props.getProperty("DOCUMENT_DIR");
 
             if (!place.endsWith("/")) {
-                place = new StringBuilder(place).insert(place.length(), "/").toString();
+                place = place + "/";
             }
 
-            filename = filename.replaceAll(".enc", "");
-            int fileExtIdx = -1;
-            if (filename.endsWith(".pdf")) {
-                fileExtIdx = filename.lastIndexOf(".pdf");
-            } else if (filename.endsWith(".PDF")) {
-                fileExtIdx = filename.lastIndexOf(".PDF");
+            // Canonicalize path to prevent traversal
+            Path basePath = Paths.get(place).toAbsolutePath().normalize();
+            Path targetPath = basePath.resolve(filename).normalize();
+
+            if (!targetPath.startsWith(basePath)) {
+                throw new IllegalArgumentException("Invalid filename (path traversal): " + filename);
             }
 
-            if (fileExtIdx >= 0) {
-                filename = filename.substring(0, fileExtIdx);
+            // Remove .enc
+            filename = filename.replaceAll("\\.enc$", "");
+            if (filename.toLowerCase().endsWith(".pdf")) {
+                filename = filename.substring(0, filename.length() - 4);
             }
 
-            retVal = place + "DocUpload." + filename + "." + (new Date()).getTime() + ".pdf";
+            retVal = basePath.resolve("DocUpload." + filename + "." + System.currentTimeMillis() + ".pdf").toString();
 
-            //write the  file to the file specified
-            OutputStream os = new FileOutputStream(retVal);
-
-            int bytesRead = 0;
-            while ((bytesRead = stream.read()) != -1) {
-                os.write(bytesRead);
+            try (OutputStream os = new FileOutputStream(retVal)) {
+                int bytesRead;
+                while ((bytesRead = stream.read()) != -1) {
+                    os.write(bytesRead);
+                }
             }
-            os.close();
-
-            //close the stream
             stream.close();
+
         } catch (FileNotFoundException fnfe) {
             logger.error("Error", fnfe);
             return retVal;
-
         } catch (IOException ioe) {
             logger.error("Error", ioe);
             return retVal;
+        } catch (IllegalArgumentException iae) {
+            logger.error("Invalid filename: " + filename, iae);
+            return null;
         }
+
         return retVal;
     }
-
 
     /*
      *  Return a string corresponding to the data in a given InputStream

@@ -57,6 +57,10 @@ public class ContextStartupListener implements javax.servlet.ServletContextListe
          */
         System.setProperty("log4j1.compatibility", "true");
 
+        // Disable unsafe serialization in commons-collections to prevent CVE-2015-7501
+        System.setProperty("org.apache.commons.collections.enableUnsafeSerialization", "false");
+        logger.info("Commons-collections unsafe serialization disabled for CVE-2015-7501 protection");
+
         try {
             String contextPath = sce.getServletContext().getContextPath();
 
@@ -80,7 +84,7 @@ public class ContextStartupListener implements javax.servlet.ServletContextListe
             WaitListEmailThread.startTaskIfEnabled();
 
             if (oscarProperties.isPropertyActive("encrypted_xml.remove_cid_prefix")) {
-                ResourceResolver.register(CidPrefixResourceResolver.class, true);
+                ResourceResolver.register(new CidPrefixResourceResolver(), true);
             }
 
             //Run some optimizations
