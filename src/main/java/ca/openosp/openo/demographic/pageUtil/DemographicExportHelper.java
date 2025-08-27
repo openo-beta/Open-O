@@ -43,7 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import oscar.oscarRx.data.RxPrescriptionData;
+import ca.openosp.openo.rx.data.RxPrescriptionData;
 import oscar.util.StringUtils;
 import oscar.util.UtilDateUtilities;
 import cds.MedicationsAndTreatmentsDocument.MedicationsAndTreatments;

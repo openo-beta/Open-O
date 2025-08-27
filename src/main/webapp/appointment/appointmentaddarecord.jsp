@@ -54,6 +54,7 @@
 <%@page import="org.oscarehr.managers.DemographicManager" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicMerged" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.waitinglist.WaitingList" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <html>
@@ -193,7 +194,7 @@
                 if (strMWL != null && strMWL.equalsIgnoreCase("yes")) {
                     ;
                 } else {
-                    oscar.oscarWaitingList.WaitingList wL = oscar.oscarWaitingList.WaitingList.getInstance();
+                    WaitingList wL = WaitingList.getInstance();
                     if (wL.getFound()) {
                         String demographicNo = request.getParameter("demographic_no");
                         if (demographicNo != null && !"".equals(demographicNo)) {

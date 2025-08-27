@@ -50,7 +50,7 @@
 <%@page import="org.oscarehr.casemgmt.web.NoteDisplay" %>
 <%@page import="org.oscarehr.casemgmt.web.CaseManagementViewAction" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="oscar.oscarRx.data.RxPrescriptionData" %>
+<%@page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
 <%@page import="org.oscarehr.casemgmt.dao.CaseManagementNoteLinkDAO" %>
 <%@page import="org.oscarehr.common.dao.ProfessionalSpecialistDao" %>
 <%@page import="oscar.OscarProperties" %>

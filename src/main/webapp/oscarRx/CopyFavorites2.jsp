@@ -33,6 +33,7 @@
 <%@ page import="org.oscarehr.common.model.FavoritesPrivilege" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
+<%@ page import="ca.openosp.openo.rx.data.RxCodesData" %>
 <%
     FavoritesDao favoritesDao = SpringUtils.getBean(FavoritesDao.class);
     FavoritesPrivilegeDao favoritesPrivilegeDao = SpringUtils.getBean(FavoritesPrivilegeDao.class);
@@ -52,7 +53,7 @@
         copyProviderNo = "";
     }
 
-    oscar.oscarRx.data.RxCodesData.FrequencyCode[] freq = new oscar.oscarRx.data.RxCodesData().getFrequencyCodes();
+    RxCodesData.FrequencyCode[] freq = new RxCodesData().getFrequencyCodes();
 %>
 
 <html>

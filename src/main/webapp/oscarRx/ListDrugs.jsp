@@ -53,10 +53,13 @@
 <%@page import="org.oscarehr.managers.CodingSystemManager" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
 
 <%
-    oscar.oscarRx.data.RxPatientData.Patient patient = null;
-    oscar.oscarRx.pageUtil.RxSessionBean bean = null;
+    RxPatientData.Patient patient = null;
+    RxSessionBean bean = null;
 %>
 <c:if test="${empty sessionScope.RxSessionBean}">
     <c:redirect url="error.html"/>
@@ -64,12 +67,12 @@
 <c:if test="${not empty sessionScope.RxSessionBean}">
     <%
         // Directly access the RxSessionBean from the session
-        bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
+        bean = (RxSessionBean) session.getAttribute("RxSessionBean");
         if (bean != null && !bean.isValid()) {
             response.sendRedirect("error.html");
             return; // Ensure no further JSP processing
         }
-        patient = (oscar.oscarRx.data.RxPatientData.Patient) request.getSession().getAttribute("Patient");
+        patient = (RxPatientData.Patient) request.getSession().getAttribute("Patient");
     %>
 </c:if>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>

@@ -40,6 +40,7 @@ import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 
 
+import ca.openosp.openo.rx.data.RxPrescriptionData;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import org.oscarehr.PMmodule.dao.ProgramDao;
@@ -571,8 +572,8 @@ public class OscarChartPrinter {
         else
             newPage = true;
         */
-        oscar.oscarRx.data.RxPrescriptionData prescriptData = new oscar.oscarRx.data.RxPrescriptionData();
-        oscar.oscarRx.data.RxPrescriptionData.Prescription[] arr = {};
+        RxPrescriptionData prescriptData = new RxPrescriptionData();
+        RxPrescriptionData.Prescription[] arr = {};
         arr = prescriptData.getUniquePrescriptionsByPatient(Integer.parseInt(demoNo));
 
         if (arr.length == 0) {
@@ -592,7 +593,7 @@ public class OscarChartPrinter {
 
         Font curFont;
         for (int idx = 0; idx < arr.length; ++idx) {
-            oscar.oscarRx.data.RxPrescriptionData.Prescription drug = arr[idx];
+            RxPrescriptionData.Prescription drug = arr[idx];
             p = new Paragraph();
             p.setAlignment(Paragraph.ALIGN_LEFT);
             if (drug.isCurrent() && !drug.isArchived()) {

@@ -47,9 +47,9 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarRx.data.RxPrescriptionData;
-import oscar.oscarRx.data.RxProviderData;
-import oscar.oscarRx.util.RxUtil;
+import ca.openosp.openo.rx.data.RxPrescriptionData;
+import ca.openosp.openo.rx.data.RxProviderData;
+import ca.openosp.openo.rx.util.RxUtil;
 import oscar.util.DateUtils;
 
 public class StaticScriptBean {

@@ -40,7 +40,7 @@
 %>
 
 <%@ page
-        import="java.util.*, oscar.util.UtilDateUtilities, oscar.form.*, oscar.form.data.*, ca.openosp.openo.prevention.PreventionData, oscar.oscarRx.data.RxPrescriptionData" %>
+        import="java.util.*, oscar.util.UtilDateUtilities, oscar.form.*, oscar.form.data.*, ca.openosp.openo.prevention.PreventionData, ca.openosp.openo.rx.data.RxPrescriptionData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 

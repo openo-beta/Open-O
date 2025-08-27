@@ -48,7 +48,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import oscar.OscarProperties;
-import oscar.oscarTickler.TicklerCreator;
+import ca.openosp.openo.oscarTickler.TicklerCreator;
 import oscar.util.DateUtils;
 
 public final class ConformanceTestHelper {

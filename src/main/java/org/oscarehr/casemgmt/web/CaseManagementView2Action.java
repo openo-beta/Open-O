@@ -60,7 +60,7 @@ import oscar.OscarProperties;
 import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.encounter.data.EctFormData.PatientForm;
-import oscar.oscarRx.pageUtil.RxSessionBean;
+import ca.openosp.openo.rx.pageUtil.RxSessionBean;
 import oscar.util.ConversionUtils;
 import oscar.util.LabelValueBean;
 import oscar.util.OscarRoleObjectPrivilege;

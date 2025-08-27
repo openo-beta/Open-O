@@ -25,7 +25,7 @@
 --%>
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="oscar.oscarRx.data.RxPatientData" %>
+<%@page import="ca.openosp.openo.rx.data.RxPatientData" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -159,6 +159,7 @@
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -1421,8 +1422,8 @@
                                     </table>
                                     <div class="presBox" id="presBox">
                                         <%
-                                            oscar.oscarRx.data.RxPrescriptionData prescriptData = new oscar.oscarRx.data.RxPrescriptionData();
-                                            oscar.oscarRx.data.RxPrescriptionData.Prescription[] arr = {};
+                                            RxPrescriptionData prescriptData = new RxPrescriptionData();
+                                            RxPrescriptionData.Prescription[] arr = {};
                                             arr = prescriptData.getUniquePrescriptionsByPatient(Integer.parseInt(bean.demographicNo));
                                             if (arr.length > 0) {%>
                                         <table>

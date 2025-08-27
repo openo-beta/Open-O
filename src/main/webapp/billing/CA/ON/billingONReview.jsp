@@ -277,6 +277,7 @@
 <%@ page import="ca.openosp.openo.billing.ca.on.administration.GstControl2Action" %>
 <%@ page import="ca.openosp.openo.billing.ca.on.pageUtil.Billing3rdPartPrep" %>
 <%@ page import="ca.openosp.openo.billing.ca.on.pageUtil.BillingReviewPrep" %>
+<%@ page import="ca.openosp.openo.rx.data.RxProviderData" %>
 <head>
     <title>OscarBilling</title>
 
@@ -1070,7 +1071,7 @@
                     List al = pObj.getPaymentType();
 
                     Billing3rdPartPrep privateObj = new Billing3rdPartPrep();
-                    oscar.oscarRx.data.RxProviderData.Provider provider = new oscar.oscarRx.data.RxProviderData().getProvider((String) session.getAttribute("user"));
+                    RxProviderData.Provider provider = new RxProviderData().getProvider((String) session.getAttribute("user"));
 
                 /*
                 = propClinic.getProperty("clinic_name", "") + "\n"

@@ -26,6 +26,7 @@
 
 <%@page import="org.oscarehr.util.MiscUtils" %>
 <%@page import="java.util.*,net.sf.json.*,java.io.*,org.apache.xmlrpc.*,oscar.oscarRx.util.*,oscar.oscarRx.data.*" %>
+<%@ page import="ca.openosp.openo.rx.util.RxDrugRef" %>
 <%
     String din = request.getParameter("din");
     String id = request.getParameter("id");

@@ -29,8 +29,8 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 import oscar.OscarProperties;
 import ca.openosp.openo.clinic.ClinicData;
-import oscar.oscarRx.data.RxProviderData;
-import oscar.oscarRx.data.RxProviderData.Provider;
+import ca.openosp.openo.rx.data.RxProviderData;
+import ca.openosp.openo.rx.data.RxProviderData.Provider;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileInputStream;

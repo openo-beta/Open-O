@@ -31,7 +31,7 @@
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="org.oscarehr.util.SpringUtils"%>
 <%long startTime = System.currentTimeMillis();%>
-<%@page import="oscar.oscarRx.data.RxPatientData"%>
+<%@page import="ca.openosp.openo.rx.data.RxPatientData"%>
 <%@page  import="oscar.oscarDemographic.data.*,java.util.*,oscar.oscarPrevention.*,oscar.oscarEncounter.oscarMeasurements.*,oscar.oscarEncounter.oscarMeasurements.bean.*,java.net.*"%>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils,oscar.log.*"%>
 <%@page import="org.springframework.web.context.WebApplicationContext,oscar.oscarResearch.oscarDxResearch.bean.*"%>
@@ -58,6 +58,7 @@
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean" %>
 <%@ page import="ca.openosp.openo.prevention.PreventionData" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
 
 <%
 	if(session.getValue("user") == null) response.sendRedirect("${ pageContext.request.contextPath }/logout.jsp");
@@ -590,8 +591,8 @@ div.recommendations ul{
             <div class="wrapper" id="rxFullListing"  >
 
                 <%
-                    oscar.oscarRx.data.RxPrescriptionData prescriptData = new oscar.oscarRx.data.RxPrescriptionData();
-                    oscar.oscarRx.data.RxPrescriptionData.Prescription [] arr = {};
+                    RxPrescriptionData prescriptData = new RxPrescriptionData();
+                    RxPrescriptionData.Prescription [] arr = {};
                     arr = prescriptData.getUniquePrescriptionsByPatient(Integer.parseInt(demographic_no));
                     if (arr.length > 0){%>
                 <ul>
@@ -904,8 +905,8 @@ function createAddAll(d,t,h){
 </script>
 
 <%
-    oscar.oscarRx.data.RxPrescriptionData prescriptData = new oscar.oscarRx.data.RxPrescriptionData();
-    oscar.oscarRx.data.RxPrescriptionData.Prescription [] arr = {};
+    RxPrescriptionData prescriptData = new RxPrescriptionData();
+    RxPrescriptionData.Prescription [] arr = {};
 
     List<FlowSheetDrug> atcCodes = flowSheetDrugDao.getFlowSheetDrugs(temp,Integer.parseInt(demographic_no));
     for(FlowSheetDrug fsd : atcCodes){
@@ -925,7 +926,7 @@ function createAddAll(d,t,h){
     </div>
     <%
         out.flush();
-        for (oscar.oscarRx.data.RxPrescriptionData.Prescription pres : arr){
+        for (RxPrescriptionData.Prescription pres : arr){
     %>
     <div class="preventionProcedure"  onclick="javascript:fsPopup(465,635,'','addPreventionData')" >
         <p <%=""/*r(hdata.get("refused"))*/%> title="fade=[on] header=[<%=""/*hdata.get("age")*/%> -- Date:<%=""/*hdata.get("prevention_date")*/%>] body=[<%=""/*com*/%>]" ><%=pres.getBrandName()%> <br/>

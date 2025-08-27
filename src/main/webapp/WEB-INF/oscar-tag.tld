@@ -91,7 +91,7 @@
 
 <tag>
   <name>newTickler</name>
-  <tagclass>oscar.oscarTickler.tld.TicklerTag</tagclass>
+  <tagclass>ca.openosp.openo.oscarTickler.tld.TicklerTag</tagclass>
   <bodycontent>jsp</bodycontent>
   <attribute>
     <name>providerNo</name>

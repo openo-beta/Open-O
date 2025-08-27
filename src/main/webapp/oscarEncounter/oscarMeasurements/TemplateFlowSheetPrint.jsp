@@ -43,6 +43,7 @@
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean" %>
 <%@ page import="ca.openosp.openo.prevention.PreventionData" %>
 <%@ page import="ca.openosp.openo.prevention.Prevention" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -827,8 +828,8 @@ maybe use jquery/ajax to post this data instead of submitting a form to send ALL
                         }
                     }
 
-                    oscar.oscarRx.data.RxPrescriptionData prescriptData = new oscar.oscarRx.data.RxPrescriptionData();
-                    oscar.oscarRx.data.RxPrescriptionData.Prescription[] arr = {};
+                    RxPrescriptionData prescriptData = new RxPrescriptionData();
+                    RxPrescriptionData.Prescription[] arr = {};
 
                     List<FlowSheetDrug> atcCodes = flowSheetDrugDAO.getFlowSheetDrugs(temp, Integer.parseInt(demographic_no));
                     for (FlowSheetDrug fsd : atcCodes) {
@@ -863,7 +864,7 @@ maybe use jquery/ajax to post this data instead of submitting a form to send ALL
                     <%
                         out.flush();
                         int k = 0;
-                        for (oscar.oscarRx.data.RxPrescriptionData.Prescription pres : arr) {
+                        for (RxPrescriptionData.Prescription pres : arr) {
 
                             String hider = "";
 

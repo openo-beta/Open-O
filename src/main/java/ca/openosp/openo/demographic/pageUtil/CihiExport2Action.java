@@ -63,7 +63,7 @@ import ca.openosp.openo.encounter.oscarMeasurements.data.ImportExportMeasurement
 import ca.openosp.openo.encounter.oscarMeasurements.data.LabMeasurements;
 import ca.openosp.openo.encounter.oscarMeasurements.data.Measurements;
 import ca.openosp.openo.report.data.DemographicSets;
-import oscar.oscarRx.data.RxPrescriptionData;
+import ca.openosp.openo.rx.data.RxPrescriptionData;
 import oscar.util.StringUtils;
 import oscar.util.UtilDateUtilities;
 

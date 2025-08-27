@@ -26,7 +26,8 @@
 
 <%@page import="oscar.OscarProperties" %>
 <%@page import="java.util.*" %>
-<%@page import="oscar.oscarRx.data.RxPrescriptionData" %>
+<%@page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -44,7 +45,7 @@
 %>
 
 <%
-    oscar.oscarRx.pageUtil.RxSessionBean bean2 = (oscar.oscarRx.pageUtil.RxSessionBean) request.getSession().getAttribute("RxSessionBean");
+    RxSessionBean bean2 = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
     RxPrescriptionData.Prescription[] allRxInStash = bean2.getStash();
     List allRandomIdInStash = new ArrayList();
     for (RxPrescriptionData.Prescription rx : allRxInStash) {

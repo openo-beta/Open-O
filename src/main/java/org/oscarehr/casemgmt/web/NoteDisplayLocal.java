@@ -37,7 +37,7 @@ import org.oscarehr.util.CppUtils;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarRx.data.RxPrescriptionData;
+import ca.openosp.openo.rx.data.RxPrescriptionData;
 
 public class NoteDisplayLocal implements NoteDisplay {
     private CaseManagementIssueNotesDao caseManagementIssueNotesDao = (CaseManagementIssueNotesDao) SpringUtils.getBean(CaseManagementIssueNotesDao.class);

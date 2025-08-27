@@ -57,8 +57,8 @@ import ca.openosp.openo.encounter.data.EctEChartBean;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean;
 import ca.openosp.openo.encounter.oscarMeasurements.util.EctFindMeasurementTypeUtil;
 import ca.openosp.openo.encounter.pageUtil.EctSessionBean;
-import oscar.oscarRx.data.RxPatientData;
-import oscar.oscarRx.data.RxPrescriptionData;
+import ca.openosp.openo.rx.data.RxPatientData;
+import ca.openosp.openo.rx.data.RxPrescriptionData;
 import oscar.util.UtilDateUtilities;
 
 /*

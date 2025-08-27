@@ -49,8 +49,8 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 import oscar.OscarProperties;
-import oscar.oscarRx.data.RxProviderData;
-import oscar.oscarRx.data.RxProviderData.Provider;
+import ca.openosp.openo.rx.data.RxProviderData;
+import ca.openosp.openo.rx.data.RxProviderData.Provider;
 
 /**
  * @author jaygallagher

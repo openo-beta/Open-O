@@ -194,11 +194,11 @@
         <action name="oscarMessenger/WriteToEncounter" class="ca.openosp.openo.messenger.pageUtil.MsgWriteToEncounter2Action">
             <result name="success">/oscarEncounter/IncomingEncounter.do</result>
         </action>
-        <action name="oscarRx/choosePatient" class="oscar.oscarRx.pageUtil.RxChoosePatient2Action">
+        <action name="oscarRx/choosePatient" class="ca.openosp.openo.rx.pageUtil.RxChoosePatient2Action">
             <result name="success">/oscarRx/SearchDrug.jsp</result>
             <result name="successRX3">/oscarRx/SearchDrug3.jsp</result>
         </action>
-        <action name="oscarRx/searchDrug" class="oscar.oscarRx.pageUtil.RxSearchDrug2Action">
+        <action name="oscarRx/searchDrug" class="ca.openosp.openo.rx.pageUtil.RxSearchDrug2Action">
             <result name="success">/oscarRx/ChooseDrug.jsp</result>
             <result name="error">/500.jsp</result>
         </action>
@@ -213,121 +213,121 @@
             <result name="dms_page">/oscarMDS/Page.jsp</result>
             <result name="document_in_queues">/oscarMDS/documentsInQueues.jsp</result>
         </action>
-        <action name="oscarRx/chooseDrug" class="oscar.oscarRx.pageUtil.RxChooseDrug2Action">
+        <action name="oscarRx/chooseDrug" class="ca.openosp.openo.rx.pageUtil.RxChooseDrug2Action">
             <result name="success">/oscarRx/WriteScript.jsp</result>
         </action>
-        <action name="oscarRx/viewScript" class="oscar.oscarRx.pageUtil.RxViewScript2Action">
+        <action name="oscarRx/viewScript" class="ca.openosp.openo.rx.pageUtil.RxViewScript2Action">
             <result name="viewScript">/oscarRx/ViewScript.jsp</result>
         </action>
         
-        <action name="oscarRx/WriteScript" class="oscar.oscarRx.pageUtil.RxWriteScript2Action">
+        <action name="oscarRx/WriteScript" class="ca.openosp.openo.rx.pageUtil.RxWriteScript2Action">
             <result name="newRx">/oscarRx/prescribe.jsp</result>
             <result name="refresh">/oscarRx/WriteScript.jsp</result>
             <result name="addAnother">/oscarRx/SearchDrug.jsp</result>
             <result name="viewScript">/oscarRx/ViewScript.jsp</result>
         </action>
-        <action name="oscarRx/writeScript" class="oscar.oscarRx.pageUtil.RxWriteScript2Action">
+        <action name="oscarRx/writeScript" class="ca.openosp.openo.rx.pageUtil.RxWriteScript2Action">
             <result name="refresh">/oscarRx/WriteScript.jsp</result>
             <result name="addAnother">/oscarRx/SearchDrug.jsp</result>
             <result name="viewScript">/oscarRx/ViewScript.jsp</result>
         </action>
-        <action name="oscarRx/stash" class="oscar.oscarRx.pageUtil.RxStash2Action">
+        <action name="oscarRx/stash" class="ca.openosp.openo.rx.pageUtil.RxStash2Action">
             <result name="success">/oscarRx/WriteScript.jsp</result>
         </action>
-        <action name="oscarRx/rxStashDelete" class="oscar.oscarRx.pageUtil.RxStash2Action">
+        <action name="oscarRx/rxStashDelete" class="ca.openosp.openo.rx.pageUtil.RxStash2Action">
             <result name="success">/oscarRx/SearchDrug3.jsp</result>
         </action>
-        <action name="oscarRx/UpdateScript" class="oscar.oscarRx.pageUtil.RxWriteScript2Action"/>
-        <action name="oscarRx/useFavorite" class="oscar.oscarRx.pageUtil.RxUseFavorite2Action">
+        <action name="oscarRx/UpdateScript" class="ca.openosp.openo.rx.pageUtil.RxWriteScript2Action"/>
+        <action name="oscarRx/useFavorite" class="ca.openosp.openo.rx.pageUtil.RxUseFavorite2Action">
             <result name="success">/oscarRx/WriteScript.jsp</result>
             <result name="useFav2">/oscarRx/prescribe.jsp</result>
         </action>
-        <action name="oscarRx/addFavoriteStaticScript" class="oscar.oscarRx.pageUtil.RxAddFavorite2Action">
+        <action name="oscarRx/addFavoriteStaticScript" class="ca.openosp.openo.rx.pageUtil.RxAddFavorite2Action">
             <result name="success">/oscarRx/StaticScript.jsp</result>
         </action>
-        <action name="oscarRx/addFavoriteViewScript" class="oscar.oscarRx.pageUtil.RxAddFavorite2Action">
+        <action name="oscarRx/addFavoriteViewScript" class="ca.openosp.openo.rx.pageUtil.RxAddFavorite2Action">
             <result name="success">/oscarRx/ViewScript.jsp</result>
         </action>
-        <action name="oscarRx/addFavoriteWriteScript" class="oscar.oscarRx.pageUtil.RxAddFavorite2Action">
+        <action name="oscarRx/addFavoriteWriteScript" class="ca.openosp.openo.rx.pageUtil.RxAddFavorite2Action">
             <result name="success">/oscarRx/WriteScript.jsp</result>
         </action>
-        <action name="oscarRx/addFavorite2" class="oscar.oscarRx.pageUtil.RxAddFavorite2Action"/>
-        <action name="oscarRx/updateFavorite" class="oscar.oscarRx.pageUtil.RxUpdateFavorite2Action">
+        <action name="oscarRx/addFavorite2" class="ca.openosp.openo.rx.pageUtil.RxAddFavorite2Action"/>
+        <action name="oscarRx/updateFavorite" class="ca.openosp.openo.rx.pageUtil.RxUpdateFavorite2Action">
             <result name="success">/oscarRx/EditFavorites.jsp</result>
         </action>
-        <action name="oscarRx/updateFavorite2" class="oscar.oscarRx.pageUtil.RxUpdateFavorite2Action">
+        <action name="oscarRx/updateFavorite2" class="ca.openosp.openo.rx.pageUtil.RxUpdateFavorite2Action">
             <result name="success">/oscarRx/EditFavorites2.jsp</result>
         </action>
-        <action name="oscarRx/deleteFavorite2" class="oscar.oscarRx.pageUtil.RxDeleteFavorite2Action">
+        <action name="oscarRx/deleteFavorite2" class="ca.openosp.openo.rx.pageUtil.RxDeleteFavorite2Action">
             <result name="success">/oscarRx/EditFavorites2.jsp</result>
         </action>
-        <action name="oscarRx/deleteFavorite" class="oscar.oscarRx.pageUtil.RxDeleteFavorite2Action">
+        <action name="oscarRx/deleteFavorite" class="ca.openosp.openo.rx.pageUtil.RxDeleteFavorite2Action">
             <result name="success">/oscarRx/EditFavorites.jsp</result>
         </action>
-        <action name="oscarRx/rePrescribe" class="oscar.oscarRx.pageUtil.RxRePrescribe2Action">
+        <action name="oscarRx/rePrescribe" class="ca.openosp.openo.rx.pageUtil.RxRePrescribe2Action">
             <result name="success">/oscarRx/WriteScript.jsp</result>
             <result name="reprint">/oscarRx/ViewScript.jsp</result>
         </action>
-        <action name="oscarRx/rePrescribe2" class="oscar.oscarRx.pageUtil.RxRePrescribe2Action">
+        <action name="oscarRx/rePrescribe2" class="ca.openosp.openo.rx.pageUtil.RxRePrescribe2Action">
             <result name="success">/oscarRx/SearchDrug3.jsp</result>
             <result name="repcbLongTerm">/oscarRx/prescribe.jsp</result>
             <result name="represcribe">/oscarRx/prescribe.jsp</result>
         </action>
-        <action name="oscarRx/deleteRx" class="oscar.oscarRx.pageUtil.RxDeleteRx2Action">
+        <action name="oscarRx/deleteRx" class="ca.openosp.openo.rx.pageUtil.RxDeleteRx2Action">
             <result name="success">/oscarRx/SearchDrug.jsp</result>
             <result name="successClearStash">/oscarRx/SearchDrug3.jsp</result>
         </action>
-        <action name="oscarRx/clearPending" class="oscar.oscarRx.pageUtil.RxClearPending2Action">
+        <action name="oscarRx/clearPending" class="ca.openosp.openo.rx.pageUtil.RxClearPending2Action">
             <result name="success">/oscarRx/SearchDrug.jsp</result>
             <result name="close">/oscarRx/close.html</result>
         </action>
-        <action name="oscarRx/searchAllergy" class="oscar.oscarRx.pageUtil.RxSearchAllergy2Action">
+        <action name="oscarRx/searchAllergy" class="ca.openosp.openo.rx.pageUtil.RxSearchAllergy2Action">
             <result name="success">/oscarRx/ChooseAllergy.jsp</result>
         </action>
-        <action name="oscarRx/searchAllergy2" class="oscar.oscarRx.pageUtil.RxSearchAllergy2Action">
+        <action name="oscarRx/searchAllergy2" class="ca.openosp.openo.rx.pageUtil.RxSearchAllergy2Action">
             <result name="success">/oscarRx/ChooseAllergy2.jsp</result>
         </action>
-        <action name="oscarRx/addAllergy" class="oscar.oscarRx.pageUtil.RxAddAllergy2Action">
+        <action name="oscarRx/addAllergy" class="ca.openosp.openo.rx.pageUtil.RxAddAllergy2Action">
             <result name="success">/oscarRx/ShowAllergies.jsp</result>
         </action>
-        <action name="oscarRx/addAllergy2" class="oscar.oscarRx.pageUtil.RxAddAllergy2Action">
+        <action name="oscarRx/addAllergy2" class="ca.openosp.openo.rx.pageUtil.RxAddAllergy2Action">
             <result name="success">/oscarRx/ShowAllergies2.jsp</result>
         </action>
-        <action name="oscarRx/addReaction" class="oscar.oscarRx.pageUtil.RxAddReaction2Action">
+        <action name="oscarRx/addReaction" class="ca.openosp.openo.rx.pageUtil.RxAddReaction2Action">
             <result name="success">/oscarRx/AddReaction.jsp</result>
         </action>
-        <action name="oscarRx/addReaction2" class="oscar.oscarRx.pageUtil.RxAddReaction2Action">
+        <action name="oscarRx/addReaction2" class="ca.openosp.openo.rx.pageUtil.RxAddReaction2Action">
             <result name="success">/oscarRx/AddReaction2.jsp</result>
         </action>
-        <action name="oscarRx/deleteAllergy" class="oscar.oscarRx.pageUtil.RxDeleteAllergy2Action">
+        <action name="oscarRx/deleteAllergy" class="ca.openosp.openo.rx.pageUtil.RxDeleteAllergy2Action">
             <result name="success">/oscarRx/ShowAllergies.jsp</result>
             <result name="successRx3">/oscarRx/ShowAllergies2.jsp</result>
         </action>
-        <action name="oscarRx/deleteAllergy2" class="oscar.oscarRx.pageUtil.RxDeleteAllergy2Action">
+        <action name="oscarRx/deleteAllergy2" class="ca.openosp.openo.rx.pageUtil.RxDeleteAllergy2Action">
             <result name="success">/oscarRx/ShowAllergies2.jsp</result>
         </action>
-        <action name="oscarRx/showAllergy" class="oscar.oscarRx.pageUtil.RxShowAllergy2Action">
+        <action name="oscarRx/showAllergy" class="ca.openosp.openo.rx.pageUtil.RxShowAllergy2Action">
             <result name="success">/oscarRx/ShowAllergies.jsp</result>
             <result name="success-redirect">/oscarRx/ShowAllergies.jsp</result>
             <result name="successRX3">/oscarRx/ShowAllergies2.jsp</result>
         </action>
-        <action name="oscarRx/drugInfo" class="oscar.oscarRx.pageUtil.RxDrugInfo2Action">
+        <action name="oscarRx/drugInfo" class="ca.openosp.openo.rx.pageUtil.RxDrugInfo2Action">
             <result name="success">/oscarRx/SearchDrug.jsp</result>
         </action>
-        <action name="oscarRx/managePharmacy2" class="oscar.oscarRx.pageUtil.RxManagePharmacy2Action">
+        <action name="oscarRx/managePharmacy2" class="ca.openosp.openo.rx.pageUtil.RxManagePharmacy2Action">
             <result name="success">/oscarRx/SelectPharmacy2.jsp</result>
         </action>
-        <action name="oscarRx/managePharmacy" class="oscar.oscarRx.pageUtil.RxManagePharmacy2Action">
+        <action name="oscarRx/managePharmacy" class="ca.openosp.openo.rx.pageUtil.RxManagePharmacy2Action">
             <result name="success">/oscarRx/SelectPharmacy2.jsp</result>
         </action>
-        <action name="oscarRx/RxReason" class="oscar.oscarRx.pageUtil.RxReason2Action">
+        <action name="oscarRx/RxReason" class="ca.openosp.openo.rx.pageUtil.RxReason2Action">
             <result name="close">/oscarRx/close.html</result>
             <result name="success">/oscarRx/SelectReason.jsp</result>
         </action>
-        <action name="oscarRx/GetRxPageSizeInfo" class="oscar.oscarRx.pageUtil.RxRxPageSizeInfo2Action">
+        <action name="oscarRx/GetRxPageSizeInfo" class="ca.openosp.openo.rx.pageUtil.RxRxPageSizeInfo2Action">
             <result name="success">/oscarRx/ViewScript2.jsp</result>
         </action>
-        <action name="oscarRx/WriteToEncounter" class="oscar.oscarRx.pageUtil.RxWriteToEncounter2Action">
+        <action name="oscarRx/WriteToEncounter" class="ca.openosp.openo.rx.pageUtil.RxWriteToEncounter2Action">
             <result name="success">/oscarRx/ViewScript2.jsp</result>
         </action>
         <action name="oscarMDS/SendMRP" class="ca.openosp.openo.mds.pageUtil.SendMostResponProv2Action">
@@ -1552,14 +1552,14 @@
         <!--action name="PMmodule/remoteReferal" class="oscar.remotereferal.OscarRemoteReferal2Action">
             <result name="success">/eform/efmshowform_data.jsp</result>
         </action-->
-        <action name="oscarWaitingList/SetupDisplayPatientWaitingList" class="oscar.oscarWaitingList.pageUtil.WLSetupDisplayPatientWaitingList2Action">
+        <action name="oscarWaitingList/SetupDisplayPatientWaitingList" class="ca.openosp.openo.waitinglist.pageUtil.WLSetupDisplayPatientWaitingList2Action">
             <result name="continue">/oscarWaitingList/DisplayPatientWaitingList.jsp</result>
         </action>
-        <action name="oscarWaitingList/SetupDisplayWaitingList" class="oscar.oscarWaitingList.pageUtil.WLSetupDisplayWaitingList2Action">
+        <action name="oscarWaitingList/SetupDisplayWaitingList" class="ca.openosp.openo.waitinglist.pageUtil.WLSetupDisplayWaitingList2Action">
             <result name="continue">/oscarWaitingList/DisplayWaitingList.jsp</result>
             <result name="failure">/oscarWaitingList/DisplayWaitingList.jsp</result>
         </action>
-        <action name="oscarWaitingList/WLEditWaitingListNameAction" class="oscar.oscarWaitingList.pageUtil.WLEditWaitingListName2Action">
+        <action name="oscarWaitingList/WLEditWaitingListNameAction" class="ca.openosp.openo.waitinglist.pageUtil.WLEditWaitingListName2Action">
             <result name="continue">/oscarWaitingList/EditWaitingListName.jsp</result>
             <result name="editSuccess">/oscarWaitingList/SetupDisplayWaitingList.do</result>
             <result name="failure">/oscarWaitingList/EditWaitingListName.jsp</result>
@@ -1620,10 +1620,10 @@
         <action name="report/SetEligibility" class="ca.openosp.openo.report.pageUtil.DemographicSetEligibility2Action">
             <result name="success">/oscarReport/demographicSetEdit.jsp</result>
         </action>
-        <action name="tickler/ForwardDemographicTickler" class="oscar.oscarTickler.pageUtil.ForwardDemographicTickler2Action">
+        <action name="tickler/ForwardDemographicTickler" class="ca.openosp.openo.oscarTickler.pageUtil.ForwardDemographicTickler2Action">
             <result name="success">/tickler/ticklerAdd.jsp</result>
         </action>
-        <action name="tickler/AddTickler" class="oscar.oscarTickler.pageUtil.AddTickler2Action">
+        <action name="tickler/AddTickler" class="ca.openosp.openo.oscarTickler.pageUtil.AddTickler2Action">
             <result name="close">/close.html</result>
         </action>
         <action name="eform/uploadHtml" class="ca.openosp.openo.eform.upload.HtmlUpload2Action">
@@ -2078,14 +2078,14 @@
             <result name="edit">/appointment/appointmentstatusedit.jsp</result>
         </action>
         <action name="appointment/printAppointmentReceiptAction" class="ca.openosp.openo.report.pageUtil.PrintAppointmentReceipt2Action"/>
-        <action name="oscarRx/updateDrugrefDB" class="oscar.oscarRx.pageUtil.RxUpdateDrugref2Action"/>
-        <action name="oscarRx/copyFavorite" class="oscar.oscarRx.web.CopyFavorites2Action" method="execute">
+        <action name="oscarRx/updateDrugrefDB" class="ca.openosp.openo.rx.pageUtil.RxUpdateDrugref2Action"/>
+        <action name="oscarRx/copyFavorite" class="ca.openosp.openo.rx.web.CopyFavorites2Action" method="execute">
             <result name="success">/oscarRx/CopyFavorites.jsp</result>
             <result name="edit">/appointment/appointmentstatusedit.jsp</result>
         </action>
-        <action name="oscarRx/hideCpp" class="oscar.oscarRx.web.RxHideCpp2Action"/>
-        <action name="oscarRx/reorderDrug" class="oscar.oscarRx.web.RxReorder2Action"/>
-        <action name="oscarRx/copyFavorite2" class="oscar.oscarRx.web.CopyFavorites2Action" method="execute">
+        <action name="oscarRx/hideCpp" class="ca.openosp.openo.rx.web.RxHideCpp2Action"/>
+        <action name="oscarRx/reorderDrug" class="ca.openosp.openo.rx.web.RxReorder2Action"/>
+        <action name="oscarRx/copyFavorite2" class="ca.openosp.openo.rx.web.CopyFavorites2Action" method="execute">
             <result name="success">/oscarRx/CopyFavorites2.jsp</result>
             <result name="edit">/appointment/appointmentstatusedit.jsp</result>
         </action>
@@ -2146,12 +2146,12 @@
             <result name="error">/hospitalReportManager/displayHRMReport.jsp</result>
         </action>
         <action name="caseload/CaseloadContent" class="org.oscarehr.caseload.CaseloadContent2Action"/>
-        <action name="tickler/EditTickler" class="oscar.oscarTickler.pageUtil.EditTickler2Action">
+        <action name="tickler/EditTickler" class="ca.openosp.openo.oscarTickler.pageUtil.EditTickler2Action">
             <result name="close">/closenreload.html</result>
             <result name="failure">/failure.jsp</result>
             <result name="error">/errorpage.jsp</result>
         </action>
-        <action name="tickler/EditTicklerTextSuggest" class="oscar.oscarTickler.pageUtil.EditTickler2Action">
+        <action name="tickler/EditTicklerTextSuggest" class="ca.openosp.openo.oscarTickler.pageUtil.EditTickler2Action">
             <result name="close">/closenreload.html</result>
             <result name="error">/errorpage.jsp</result>
         </action>

@@ -57,8 +57,8 @@ import ca.openosp.openo.encounter.oscarMeasurements.MeasurementInfo;
 import ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig;
 import oscar.oscarResearch.oscarDxResearch.bean.dxResearchBean;
 import oscar.oscarResearch.oscarDxResearch.bean.dxResearchBeanHandler;
-import oscar.oscarRx.data.RxPrescriptionData;
-import oscar.oscarRx.data.RxPrescriptionData.Prescription;
+import ca.openosp.openo.rx.data.RxPrescriptionData;
+import ca.openosp.openo.rx.data.RxPrescriptionData.Prescription;
 
 /**
  * @author apavel

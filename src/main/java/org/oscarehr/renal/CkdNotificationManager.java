@@ -39,7 +39,7 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 import oscar.OscarProperties;
-import oscar.oscarTickler.TicklerCreator;
+import ca.openosp.openo.oscarTickler.TicklerCreator;
 
 public class CkdNotificationManager {
     private Logger logger = MiscUtils.getLogger();

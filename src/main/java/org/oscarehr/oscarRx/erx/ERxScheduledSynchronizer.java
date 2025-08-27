@@ -46,7 +46,7 @@ import org.oscarehr.oscarRx.erx.model.ERxPrescription;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarRx.util.RxDrugRef;
+import ca.openosp.openo.rx.util.RxDrugRef;
 
 /**
  * An object to manage the periodic tasks that the OscarERx plugin needs to do.

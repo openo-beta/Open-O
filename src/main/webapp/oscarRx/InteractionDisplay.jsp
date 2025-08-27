@@ -41,6 +41,8 @@
 
 <%@ page
         import="java.util.*,oscar.oscarRx.data.*,oscar.oscarRx.pageUtil.*" %>
+<%@ page import="ca.openosp.openo.rx.data.RxDrugData" %>
+<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
 <%
     RxSessionBean bean = (RxSessionBean) session.getAttribute("RxSessionBean");
     if (bean == null) {

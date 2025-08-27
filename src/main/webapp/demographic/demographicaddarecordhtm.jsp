@@ -54,7 +54,7 @@
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page
-        import="java.util.*, oscar.*, ca.openosp.openo.demographic.data.ProvinceNames, ca.openosp.openo.demographic.pageUtil.Util, oscar.oscarWaitingList.WaitingList" %>
+        import="java.util.*, oscar.*, ca.openosp.openo.demographic.data.ProvinceNames, ca.openosp.openo.demographic.pageUtil.Util, ca.openosp.openo.waitinglist.WaitingList" %>
 <%@ page
         import="org.oscarehr.common.dao.*,org.oscarehr.common.model.*" %>
 <%@page import="org.oscarehr.util.SpringUtils" %>

@@ -125,6 +125,9 @@
 
 <%@page import="org.oscarehr.util.MiscUtils" %>
 <%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
+<%@ page import="ca.openosp.openo.workflow.WorkFlowFactory" %>
+<%@ page import="ca.openosp.openo.workflow.WFState" %>
+<%@ page import="ca.openosp.openo.workflow.WorkFlow" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

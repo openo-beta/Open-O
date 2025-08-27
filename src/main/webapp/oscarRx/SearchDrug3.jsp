@@ -45,18 +45,21 @@
 <%@page import="org.oscarehr.casemgmt.web.PrescriptDrug" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="java.util.ArrayList,oscar.oscarRx.data.RxPrescriptionData" %>
+<%@page import="java.util.ArrayList,ca.openosp.openo.rx.data.RxPrescriptionData" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
 <%@page import="org.oscarehr.web.admin.ProviderPreferencesUIBean" %>
 <%@page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
 <%@page import="org.oscarehr.casemgmt.model.CaseManagementNote" %>
 <%@page import="org.oscarehr.casemgmt.model.Issue" %>
 <%@ page import="ca.openosp.openo.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPharmacyData" %>
 
 <%
-    oscar.oscarRx.pageUtil.RxSessionBean bean = null;
+    RxSessionBean bean = null;
     String rx_enhance = OscarProperties.getInstance().getProperty("rx_enhance");
-    oscar.oscarRx.data.RxPatientData.Patient patient = (oscar.oscarRx.data.RxPatientData.Patient) request.getSession().getAttribute("Patient");
+    RxPatientData.Patient patient = (RxPatientData.Patient) request.getSession().getAttribute("Patient");
 %>
 
 <%
@@ -94,7 +97,7 @@
 <c:if test="${not empty sessionScope.RxSessionBean}">
     <%
         // Directly access the RxSessionBean from the session
-        bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
+        bean = (RxSessionBean) session.getAttribute("RxSessionBean");
         if (bean != null && !bean.isValid()) {
             response.sendRedirect("error.html");
             return; // Ensure no further JSP processing
@@ -168,7 +171,7 @@
 
     String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_PRESCRIP;
 
-    oscar.oscarRx.data.RxPrescriptionData.Prescription[] prescribedDrugs;
+    RxPrescriptionData.Prescription[] prescribedDrugs;
     prescribedDrugs = patient.getPrescribedDrugScripts(); //this function only returns drugs which have an entry in prescription and drugs table
     String script_no = "";
 
@@ -1008,7 +1011,7 @@
                                             <td style="height: 150px; overflow: auto; border: thin solid #DCDCDC; display: none;" id="reprint">
 
                         <% for (int i = 0; prescribedDrugs.length > i; i++) {
-                                                        oscar.oscarRx.data.RxPrescriptionData.Prescription drug = prescribedDrugs[i];
+                                                        RxPrescriptionData.Prescription drug = prescribedDrugs[i];
                         %>
 
                                                     <%

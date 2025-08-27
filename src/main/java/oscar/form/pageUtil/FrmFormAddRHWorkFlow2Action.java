@@ -37,7 +37,7 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.util.WriteNewMeasurements;
-import oscar.oscarWorkflow.WorkFlowState;
+import ca.openosp.openo.workflow.WorkFlowState;
 import oscar.util.UtilDateUtilities;
 
 /**

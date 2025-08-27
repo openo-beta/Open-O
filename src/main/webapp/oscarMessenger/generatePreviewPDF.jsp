@@ -29,8 +29,8 @@
                 oscar.oscarMessenger.docxfer.util.*,
                 oscar.oscarEncounter.data.*,
                 ca.openosp.openo.encounter.pageUtil.EctSessionBean,
-                oscar.oscarRx.pageUtil.RxSessionBean,
-                oscar.oscarRx.data.RxPatientData,
+                ca.openosp.openo.rx.pageUtil.RxSessionBean,
+                ca.openosp.openo.rx.data.RxPatientData,
                 ca.openosp.openo.messenger.pageUtil.MsgSessionBean,
                 oscar.oscarDemographic.data.*" %>
 
@@ -346,7 +346,7 @@
                                             RxSessionBean Rxbean;
 
                                             if (request.getSession().getAttribute("RxSessionBean") != null) {
-                                                Rxbean = (oscar.oscarRx.pageUtil.RxSessionBean) request.getSession().getAttribute("RxSessionBean");
+                                                Rxbean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
                                             } else {
                                                 Rxbean = new RxSessionBean();
                                             }

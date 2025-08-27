@@ -45,9 +45,9 @@ import oscar.form.FrmRecord;
 import oscar.form.FrmRecordFactory;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
-import oscar.oscarWorkflow.WorkFlow;
-import oscar.oscarWorkflow.WorkFlowFactory;
-import oscar.oscarWorkflow.WorkFlowState;
+import ca.openosp.openo.workflow.WorkFlow;
+import ca.openosp.openo.workflow.WorkFlowFactory;
+import ca.openosp.openo.workflow.WorkFlowState;
 import oscar.util.UtilDateUtilities;
 
 /*

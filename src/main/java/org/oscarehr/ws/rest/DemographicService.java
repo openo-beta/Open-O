@@ -101,7 +101,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import oscar.OscarProperties;
-import oscar.oscarWaitingList.util.WLWaitingListUtil;
+import ca.openosp.openo.waitinglist.util.WLWaitingListUtil;
 
 
 /**

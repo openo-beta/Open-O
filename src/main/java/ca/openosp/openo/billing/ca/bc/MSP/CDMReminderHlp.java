@@ -12,7 +12,7 @@ import java.util.List;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 
-import oscar.oscarTickler.TicklerCreator;
+import ca.openosp.openo.oscarTickler.TicklerCreator;
 import oscar.util.SqlUtils;
 
 public class CDMReminderHlp {

@@ -45,8 +45,8 @@ import javax.persistence.Transient;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import oscar.oscarRx.data.RxPrescriptionData;
-import oscar.oscarRx.util.RxUtil;
+import ca.openosp.openo.rx.data.RxPrescriptionData;
+import ca.openosp.openo.rx.util.RxUtil;
 import oscar.util.UtilDateUtilities;
 
 @Entity

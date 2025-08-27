@@ -26,6 +26,7 @@
 
 package ca.openosp.openo.encounter.pageUtil;
 
+import ca.openosp.openo.rx.data.RxPrescriptionData;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
@@ -33,7 +34,7 @@ import org.oscarehr.caisi_integrator.ws.CachedDemographicDrug;
 import org.oscarehr.provider.web.CppPreferencesUIBean;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
-import oscar.oscarRx.data.RxPrescriptionData.Prescription;
+import ca.openosp.openo.rx.data.RxPrescriptionData.Prescription;
 import oscar.util.DateUtils;
 import oscar.util.StringUtils;
 
@@ -72,7 +73,7 @@ public class EctDisplayRx2Action extends EctDisplayAction {
             String dbFormat = "yyyy-MM-dd";
             String serviceDateStr;
             Date date;
-            oscar.oscarRx.data.RxPrescriptionData prescriptData = new oscar.oscarRx.data.RxPrescriptionData();
+            RxPrescriptionData prescriptData = new RxPrescriptionData();
             Prescription[] arr = prescriptData.getUniquePrescriptionsByPatient(Integer.parseInt(bean.demographicNo));
 
             ArrayList<Prescription> uniqueDrugs = new ArrayList<Prescription>();

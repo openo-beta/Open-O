@@ -41,7 +41,7 @@
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page
-        import="java.util.*, java.net.URLEncoder, oscar.oscarDB.*, oscar.MyDateFormat, oscar.oscarWaitingList.WaitingList, org.oscarehr.common.OtherIdManager" %>
+        import="java.util.*, java.net.URLEncoder, oscar.oscarDB.*, oscar.MyDateFormat, ca.openosp.openo.waitinglist.WaitingList, org.oscarehr.common.OtherIdManager" %>
 <%@ page import="oscar.log.*" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>

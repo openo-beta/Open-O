@@ -43,7 +43,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarRx.data.RxPrescriptionData;
+import ca.openosp.openo.rx.data.RxPrescriptionData;
 
 public class NoteDisplayIntegrator implements NoteDisplay {
     private static final Logger logger = MiscUtils.getLogger();

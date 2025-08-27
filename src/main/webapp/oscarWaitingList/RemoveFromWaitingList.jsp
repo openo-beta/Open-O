@@ -28,6 +28,7 @@
     if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
 %>
 <%@ page import="java.sql.*, java.util.*, oscar.oscarWaitingList.util.*" %>
+<%@ page import="ca.openosp.openo.waitinglist.util.WLWaitingListUtil" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 

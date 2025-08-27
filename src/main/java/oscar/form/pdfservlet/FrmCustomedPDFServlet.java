@@ -63,7 +63,7 @@ import org.owasp.encoder.Encode;
 import oscar.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
-import oscar.oscarRx.data.RxPharmacyData;
+import ca.openosp.openo.rx.data.RxPharmacyData;
 
 public class FrmCustomedPDFServlet extends HttpServlet {
 

@@ -25,6 +25,7 @@
 %>
 
 <%@page import="oscar.OscarProperties" %>
+<%@ page import="ca.openosp.openo.rx.util.RxUtil" %>
 
 
 <%!

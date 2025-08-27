@@ -36,7 +36,7 @@ import oscar.form.pharmaForms.formBPMH.bean.BpmhForm2Bean;
 import oscar.form.pharmaForms.formBPMH.util.CaseNoteParser;
 import oscar.form.pharmaForms.formBPMH.util.JsonUtil;
 import oscar.form.pharmaForms.formBPMH.util.SortDrugList;
-import oscar.oscarRx.data.RxDrugData;
+import ca.openosp.openo.rx.data.RxDrugData;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

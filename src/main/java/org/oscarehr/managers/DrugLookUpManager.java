@@ -29,7 +29,7 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.ws.rest.to.model.DrugSearchTo1;
 import org.springframework.stereotype.Service;
-import oscar.oscarRx.util.RxDrugRef;
+import ca.openosp.openo.rx.util.RxDrugRef;
 
 import java.util.ArrayList;
 import java.util.Hashtable;

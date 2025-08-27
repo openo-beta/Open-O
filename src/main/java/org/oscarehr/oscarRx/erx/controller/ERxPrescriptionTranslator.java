@@ -33,8 +33,8 @@ import java.util.Date;
 import org.oscarehr.common.model.Drug;
 import org.oscarehr.oscarRx.erx.model.ERxPrescription;
 
-import oscar.oscarRx.util.RxDrugRef;
-import oscar.oscarRx.util.RxUtil;
+import ca.openosp.openo.rx.util.RxDrugRef;
+import ca.openosp.openo.rx.util.RxUtil;
 
 /**
  * An object that translates between Prescription objects and ERxPrescription

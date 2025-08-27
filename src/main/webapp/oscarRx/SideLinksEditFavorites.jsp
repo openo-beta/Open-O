@@ -29,11 +29,11 @@
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 %>
 
-<%@page import="oscar.oscarRx.data.RxPatientData" %>
+<%@page import="ca.openosp.openo.rx.data.RxPatientData" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
-    oscar.oscarRx.pageUtil.RxSessionBean bean2 = (oscar.oscarRx.pageUtil.RxSessionBean) request.getSession().getAttribute("RxSessionBean");
+    RxSessionBean bean2 = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
 
     org.oscarehr.common.model.Allergy[] allergies = RxPatientData.getPatient(LoggedInInfo.getLoggedInInfoFromSession(request), bean2.getDemographicNo()).getActiveAllergies();
     String alle = "";
@@ -69,8 +69,8 @@
     <p class="PropSheetLevel1CurrentItem"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgFavorites"/></p>
     <p class="PropSheetMenuItemLevel1">
             <%
-        oscar.oscarRx.data.RxPrescriptionData.Favorite[] favorites
-            = new oscar.oscarRx.data.RxPrescriptionData().getFavorites(bean2.getProviderNo());
+        RxPrescriptionData.Favorite[] favorites
+            = new RxPrescriptionData().getFavorites(bean2.getProviderNo());
 
         for (int j=0; j<favorites.length; j++){%>
 

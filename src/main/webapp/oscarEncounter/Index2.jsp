@@ -25,7 +25,7 @@
 --%>
 
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="oscar.oscarRx.data.RxPatientData" %>
+<%@page import="ca.openosp.openo.rx.data.RxPatientData" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -219,6 +219,7 @@
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctWindowSizes" %>
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
 <%@ page import="ca.openosp.openo.encounter.data.*" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -1503,8 +1504,8 @@
                                             </table>
                                             <div class="presBox" style="width: 100%;" id="presBox">
                                                 <%
-                                                    oscar.oscarRx.data.RxPrescriptionData prescriptData = new oscar.oscarRx.data.RxPrescriptionData();
-                                                    oscar.oscarRx.data.RxPrescriptionData.Prescription[] arr = {};
+                                                    RxPrescriptionData prescriptData = new RxPrescriptionData();
+                                                    RxPrescriptionData.Prescription[] arr = {};
                                                     arr = prescriptData.getUniquePrescriptionsByPatient(Integer.parseInt(bean.demographicNo));
                                                     if (arr.length > 0) {%>
                                                 <table>

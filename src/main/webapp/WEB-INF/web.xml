@@ -119,7 +119,7 @@
 	</filter>
 	<filter>
 		<filter-name>LoginFilter</filter-name>
-		<filter-class>oscar.oscarSecurity.LoginFilter</filter-class>
+		<filter-class>ca.openosp.openo.security.LoginFilter</filter-class>
 	</filter>
 	<filter>
 		<filter-name>ResponseOverrideFilter</filter-name>

@@ -42,6 +42,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.demographic.data.DemographicNameAgeString;
+import ca.openosp.openo.rx.data.RxPrescriptionData;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.Logger;
@@ -175,15 +176,15 @@ public class MeasurementGraphAction22Action extends ActionSupport {
     private static XYTaskDataset getDrugDataSet(Integer demographicId, String[] dins) {
 
         TaskSeriesCollection datasetDrug = new TaskSeriesCollection();
-        oscar.oscarRx.data.RxPrescriptionData prescriptData = new oscar.oscarRx.data.RxPrescriptionData();
+        RxPrescriptionData prescriptData = new RxPrescriptionData();
 
         if (dins != null) {
             for (String din : dins) {
                 if (din != null) {
-                    oscar.oscarRx.data.RxPrescriptionData.Prescription[] arr = prescriptData.getPrescriptionScriptsByPatientRegionalIdentifier(demographicId, din);
+                    RxPrescriptionData.Prescription[] arr = prescriptData.getPrescriptionScriptsByPatientRegionalIdentifier(demographicId, din);
                     if (arr != null && arr.length > 0) {
                         TaskSeries ts = new TaskSeries(arr[0].getBrandName());
-                        for (oscar.oscarRx.data.RxPrescriptionData.Prescription pres : arr) {
+                        for (RxPrescriptionData.Prescription pres : arr) {
                             ts.add(new Task(pres.getBrandName(), pres.getRxDate(), pres.getEndDate()));
                         }
                         datasetDrug.add(ts);
@@ -205,10 +206,10 @@ public class MeasurementGraphAction22Action extends ActionSupport {
 
         String[] ret = new String[dins.length];
         ArrayList<String> list = new ArrayList<String>();
-        oscar.oscarRx.data.RxPrescriptionData prescriptData = new oscar.oscarRx.data.RxPrescriptionData();
+        RxPrescriptionData prescriptData = new RxPrescriptionData();
         for (String din : dins) {
             if (din != null && !"null".equalsIgnoreCase(din)) {
-                oscar.oscarRx.data.RxPrescriptionData.Prescription[] arr = prescriptData.getPrescriptionScriptsByPatientRegionalIdentifier(demographic, din);
+                RxPrescriptionData.Prescription[] arr = prescriptData.getPrescriptionScriptsByPatientRegionalIdentifier(demographic, din);
                 String brandName = null;
                 if (arr != null && arr.length > 0) {
                     brandName = arr[0].getBrandName();

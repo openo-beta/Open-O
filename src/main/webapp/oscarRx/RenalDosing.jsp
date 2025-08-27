@@ -33,6 +33,9 @@
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.lab.SortHashtable" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabTestValues" %>
+<%@ page import="ca.openosp.openo.rx.util.RxUtil" %>
+<%@ page import="ca.openosp.openo.rx.util.RenalDosingFactory" %>
+<%@ page import="ca.openosp.openo.rx.util.DosingRecomendation" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%

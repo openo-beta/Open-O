@@ -26,18 +26,19 @@
 
 package ca.openosp.openo.demographic.data;
 
+import ca.openosp.openo.rx.data.RxPrescriptionData;
 import org.oscarehr.common.model.Allergy;
 import org.oscarehr.util.LoggedInInfo;
 
-import oscar.oscarRx.data.RxPatientData;
+import ca.openosp.openo.rx.data.RxPatientData;
 
 public class RxInformation {
     private String currentMedication;
     private String allergies;
 
     public String getCurrentMedication(String demographic_no) {
-        oscar.oscarRx.data.RxPrescriptionData prescriptData = new oscar.oscarRx.data.RxPrescriptionData();
-        oscar.oscarRx.data.RxPrescriptionData.Prescription[] arr = {};
+        RxPrescriptionData prescriptData = new RxPrescriptionData();
+        RxPrescriptionData.Prescription[] arr = {};
         arr = prescriptData.getUniquePrescriptionsByPatient(Integer.parseInt(demographic_no));
         StringBuilder stringBuffer = new StringBuilder();
         for (int i = 0; i < arr.length; i++) {
@@ -52,7 +53,7 @@ public class RxInformation {
     }
 
     public String getAllergies(LoggedInInfo loggedInInfo, String demographic_no) {
-        oscar.oscarRx.data.RxPatientData.Patient patient = RxPatientData.getPatient(loggedInInfo, Integer.parseInt(demographic_no));
+        RxPatientData.Patient patient = RxPatientData.getPatient(loggedInInfo, Integer.parseInt(demographic_no));
         Allergy[] allergies = {};
         allergies = patient.getActiveAllergies();
         StringBuilder stringBuffer = new StringBuilder();
