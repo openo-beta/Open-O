@@ -69,7 +69,7 @@ public class MEDITECHHandler implements MessageHandler {
     public static String DATE_FORMAT = "yyyyMMddHHmmss";
     public static String DATE_STRING_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    protected static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    protected static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
     protected ORU_R01 msg = null;
     private Terser terser;
 

@@ -10,12 +10,11 @@ import org.oscarehr.common.model.ConsultDocs;
 import org.oscarehr.common.model.EFormData;
 import org.oscarehr.common.model.EFormDocs;
 import ca.openosp.openo.hospitalReportManager.HRMUtil;
-import ca.openosp.openo.managers.*;
 import org.oscarehr.common.model.enumerator.DocumentType;
 import ca.openosp.openo.documentManager.data.AttachmentLabResultData;
-import org.oscarehr.util.DateUtils;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.PDFGenerationException;
+import org.oscarehr.utility.DateUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.PDFGenerationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +23,8 @@ import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.lab.ca.all.Hl7textResultsData;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
-import oscar.util.ConcatPDF;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.ConcatPDF;
+import ca.openosp.openo.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

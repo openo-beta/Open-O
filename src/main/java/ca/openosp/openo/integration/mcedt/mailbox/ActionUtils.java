@@ -49,10 +49,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.integration.mcedt.McedtConstants;
 import ca.openosp.openo.integration.mcedt.ResourceForm;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 import ca.ontario.health.edt.Detail;
 import ca.ontario.health.edt.DetailData;
 import ca.ontario.health.edt.EDTDelegate;

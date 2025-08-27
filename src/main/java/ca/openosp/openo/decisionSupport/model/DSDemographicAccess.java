@@ -45,9 +45,9 @@ import org.oscarehr.common.dao.BillingONCHeader1Dao;
 import org.oscarehr.common.dao.FlowSheetCustomizationDao;
 import org.oscarehr.common.model.FlowSheetCustomization;
 import ca.openosp.openo.decisionSupport.model.conditionValue.DSValue;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.billings.ca.bc.MSP.ServiceCodeValidationLogic;
@@ -55,8 +55,8 @@ import ca.openosp.openo.demographic.data.DemographicData;
 import ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet;
 import ca.openosp.openo.encounter.oscarMeasurements.MeasurementInfo;
 import ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig;
-import oscar.oscarResearch.oscarDxResearch.bean.dxResearchBean;
-import oscar.oscarResearch.oscarDxResearch.bean.dxResearchBeanHandler;
+import ca.openosp.openo.oscarDxResearch.bean.dxResearchBean;
+import ca.openosp.openo.oscarDxResearch.bean.dxResearchBeanHandler;
 import ca.openosp.openo.rx.data.RxPrescriptionData;
 import ca.openosp.openo.rx.data.RxPrescriptionData.Prescription;
 

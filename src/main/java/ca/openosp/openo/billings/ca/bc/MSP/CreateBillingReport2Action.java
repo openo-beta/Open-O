@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import ca.openosp.openo.entities.Provider;
 import ca.openosp.openo.entities.S21;
 import org.apache.commons.io.IOUtils;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarDocumentCreator;
 import ca.openosp.openo.entities.MSPBill;

@@ -30,7 +30,7 @@ import java.util.Date;
 
 import ca.openosp.openo.casemgmt.service.PageNumberStamper;
 import ca.openosp.openo.casemgmt.service.PromoTextStamper;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
 

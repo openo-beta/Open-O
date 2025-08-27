@@ -23,15 +23,15 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.DrugDao" %>
 <%@page import="java.util.List" %>
 <%@page import="org.oscarehr.common.model.Drug" %>
 <%@page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.DemographicWs" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.DemographicWs" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%@page import="org.oscarehr.oscarRx.StaticScriptBean" %>
 <%@page import="java.util.ArrayList" %>
 <%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>

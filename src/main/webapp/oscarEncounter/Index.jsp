@@ -24,7 +24,7 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.rx.data.RxPatientData" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -76,7 +76,7 @@
 <%@ taglib uri="/WEB-INF/special_tag.tld" prefix="special" %>
 
 <%@page
-        import="oscar.log.*,oscar.util.UtilMisc,oscar.oscarEncounter.data.*, java.net.*,java.util.*,oscar.util.UtilDateUtilities" %>
+        import="oscar.log.*,ca.openosp.openo.util.UtilMisc,oscar.oscarEncounter.data.*, java.net.*,java.util.*,ca.openosp.openo.util.UtilDateUtilities" %>
 <%@page
         import="ca.openosp.openo.mds.data.MDSResultsData,oscar.oscarLab.ca.on.*, ca.openosp.openo.messenger.util.MsgDemoMap, ca.openosp.openo.messenger.data.MsgMessageData" %>
 <%@page
@@ -113,7 +113,7 @@
 <!-- add by caisi end-->
 <%
     //need these variables for the forms
-    oscar.util.UtilDateUtilities dateConvert = new oscar.util.UtilDateUtilities();
+    UtilDateUtilities dateConvert = new UtilDateUtilities();
     String demoNo = bean.demographicNo;
     String provNo = bean.providerNo;
     EctFormData.Form[] forms = EctFormData.getForms();
@@ -146,7 +146,7 @@
 %>
 
 
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
 <%@ page import="ca.openosp.openo.encounter.immunization.data.EctImmImmunizationData" %>
@@ -160,6 +160,7 @@
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
 <%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.oscarDxResearch.bean.dxResearchBeanHandler" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

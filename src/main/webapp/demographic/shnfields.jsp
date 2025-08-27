@@ -41,7 +41,7 @@
 
 <%@page import="java.util.*" %>
 <%@page import="org.oscarehr.common.dao.DemographicExtDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
 
 

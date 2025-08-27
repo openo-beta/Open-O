@@ -33,10 +33,10 @@ import java.util.Date;
 import java.util.Properties;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 public class EctRourkeRecord {
     private static Logger logger = MiscUtils.getLogger();
@@ -255,9 +255,9 @@ public class EctRourkeRecord {
         double age = -1;
 
         try {
-            Date tToday = (oscar.util.UtilDateUtilities.StringToDate(today, "yyyy/MM/dd"));
+            Date tToday = (UtilDateUtilities.StringToDate(today, "yyyy/MM/dd"));
 
-            Date tDob = (oscar.util.UtilDateUtilities.StringToDate(dob, "yyyy/MM/dd"));
+            Date tDob = (UtilDateUtilities.StringToDate(dob, "yyyy/MM/dd"));
 
             age = (tToday.getTime() - tDob.getTime()) / (1000 * 3600 * 24);
             double daysPerMonth = 30.4375;

@@ -34,15 +34,15 @@
 <%@page import="ca.openosp.openo.managers.DHIRSubmissionManager" %>
 <%@page import="org.oscarehr.common.model.Consent" %>
 <%@page import="org.oscarehr.common.dao.ConsentDao" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.util.WebUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
 <%@page import="oscar.OscarProperties" %>
 <%@page import="oscar.oscarDemographic.data.*,java.util.*,oscar.oscarPrevention.*" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao, org.oscarehr.common.model.Demographic" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.util.LocaleUtils" %>
-<%@page import="org.oscarehr.util.WebUtils" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="org.oscarehr.utility.LocaleUtils" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page import="ca.openosp.openo.managers.PreventionManager" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -88,7 +88,7 @@
     Integer demographicId = Integer.parseInt(demographic_no);
     PreventionData.addRemotePreventions(loggedInInfo, p, demographicId);
     Date demographicDateOfBirth = PreventionData.getDemographicDateOfBirth(loggedInInfo, Integer.valueOf(demographic_no));
-    String demographicDob = oscar.util.UtilDateUtilities.DateToString(demographicDateOfBirth);
+    String demographicDob = UtilDateUtilities.DateToString(demographicDateOfBirth);
 
     PreventionDS pf = SpringUtils.getBean(PreventionDS.class);
 
@@ -144,12 +144,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.prevention.PreventionData" %>
 <%@ page import="ca.openosp.openo.prevention.PreventionDS" %>
 <%@ page import="ca.openosp.openo.prevention.Prevention" %>
 <%@ page import="ca.openosp.openo.prevention.PreventionDisplayConfig" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <html>
 
     <head>

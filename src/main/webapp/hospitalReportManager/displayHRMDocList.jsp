@@ -9,7 +9,7 @@
 
 --%>
 <!DOCTYPE html>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="java.util.*, org.oscarehr.hospitalReportManager.*,ca.openosp.openo.hospitalReportManager.model.HRMCategory" %>
 <%@ page import="ca.openosp.openo.hospitalReportManager.HRMUtil" %>
 

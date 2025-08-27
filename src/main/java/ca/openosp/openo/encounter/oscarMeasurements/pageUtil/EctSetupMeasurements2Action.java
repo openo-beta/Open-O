@@ -36,8 +36,8 @@ import javax.servlet.http.HttpSession;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBeanHandler;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasuringInstructionBeanHandler;
 import ca.openosp.openo.encounter.pageUtil.EctSessionBean;

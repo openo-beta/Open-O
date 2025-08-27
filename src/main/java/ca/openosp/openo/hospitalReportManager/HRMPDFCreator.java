@@ -36,9 +36,9 @@ import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMProviderConfidentialityStatementDao;
 
 import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import ca.openosp.openo.documentManager.ConvertToEdoc;
 
 import java.io.*;

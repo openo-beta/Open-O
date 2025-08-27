@@ -27,8 +27,8 @@ import org.apache.struts2.ServletActionContext;
 import org.oscarehr.common.model.Security;
 import ca.openosp.openo.managers.MfaManager;
 import ca.openosp.openo.managers.SecurityManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -32,7 +32,7 @@ import javax.security.auth.login.Configuration;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
 

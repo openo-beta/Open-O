@@ -28,7 +28,7 @@ import ca.ontario.health.ebs.EbsFault;
 import ca.ontario.health.hcv.FeeServiceDetails;
 import ca.ontario.health.hcv.ResponseID;
 import org.apache.commons.beanutils.BeanUtils;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.Collections;

@@ -32,7 +32,7 @@ import java.util.List;
 import org.oscarehr.common.model.DrugProduct;
 import org.oscarehr.common.model.DrugProductTemplate;
 import org.oscarehr.common.model.ProductLocation;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 public interface DrugProductManager {
 

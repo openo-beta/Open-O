@@ -43,8 +43,8 @@
         import="java.sql.*, java.util.*, oscar.MyDateFormat, ca.openosp.openo.waitinglist.util.WLWaitingListUtil, oscar.log.*, org.oscarehr.common.OtherIdManager" %>
 
 <%@page import="org.apache.commons.lang.StringUtils" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
@@ -67,7 +67,7 @@
 <%@page import="org.oscarehr.PMmodule.service.ProgramManager" %>
 <%@page import="org.oscarehr.PMmodule.service.AdmissionManager" %>
 <%@page import="ca.openosp.openo.managers.PatientConsentManager" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="org.oscarehr.common.model.ConsentType" %>
 <%@page import="oscar.OscarProperties" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>

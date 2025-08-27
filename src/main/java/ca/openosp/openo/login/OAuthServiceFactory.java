@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Component;
 
 import com.github.scribejava.core.builder.ServiceBuilder;

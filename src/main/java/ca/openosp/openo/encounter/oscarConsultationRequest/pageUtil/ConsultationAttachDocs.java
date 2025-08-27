@@ -26,7 +26,7 @@
 package ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil;
 
 import org.oscarehr.common.model.ConsultDocs;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 /**
  * Handles logic of attaching documents to a specified consultation

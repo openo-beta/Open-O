@@ -36,11 +36,11 @@ import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.dao.OscarAppointmentDao;
 import org.oscarehr.common.model.Appointment;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 public class EctDisplayAppointmentHistoryAction extends EctDisplayAction {
     private static final String cmd = "appointmentHistory";

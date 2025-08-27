@@ -37,7 +37,7 @@ import javax.persistence.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.oscarehr.PMmodule.model.Program;
-import org.oscarehr.util.LocaleUtils;
+import org.oscarehr.utility.LocaleUtils;
 
 @Entity
 @Table(name = "tickler")

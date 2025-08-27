@@ -40,8 +40,8 @@ import org.oscarehr.common.model.BillingONExt;
 import org.oscarehr.common.model.BillingONItem;
 import org.oscarehr.common.model.BillingOnItemPayment;
 import org.oscarehr.common.model.BillingOnTransaction;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data;
 import ca.openosp.openo.billings.ca.on.data.BillingDataHlp;
@@ -54,10 +54,10 @@ import ca.openosp.openo.billings.ca.on.data.JdbcBillingCorrection;
 import ca.openosp.openo.billings.ca.on.data.JdbcBillingPageUtil;
 import ca.openosp.openo.billings.ca.on.data.JdbcBillingReviewImpl;
 
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 public class BillingCorrectionPrep {
-    private static final Logger _logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     JdbcBillingCorrection dbObj = new JdbcBillingCorrection();
     BillingONCHeader1Dao cheader1Dao = (BillingONCHeader1Dao) SpringUtils.getBean(BillingONCHeader1Dao.class);

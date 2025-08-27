@@ -34,8 +34,8 @@ import org.oscarehr.common.dao.InstitutitionDepartmentDao;
 import org.oscarehr.common.model.InstitutionDepartment;
 import org.oscarehr.common.model.InstitutionDepartmentPK;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

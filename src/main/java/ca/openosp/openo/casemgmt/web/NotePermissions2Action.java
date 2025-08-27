@@ -39,8 +39,8 @@ import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import org.oscarehr.common.dao.ProviderDefaultProgramDao;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.ProviderDefaultProgram;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.dao.security.SecroleDao;
 import ca.openosp.openo.model.security.Secrole;

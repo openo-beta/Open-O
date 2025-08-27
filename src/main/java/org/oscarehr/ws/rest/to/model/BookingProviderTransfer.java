@@ -32,7 +32,7 @@ import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.appointment.search.FilterDefinition;
 import ca.openosp.openo.appointment.search.Provider;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 
 public class BookingProviderTransfer {

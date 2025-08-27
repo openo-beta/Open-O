@@ -23,7 +23,7 @@
 <%@page import="org.oscarehr.common.model.BillingPaymentType" %>
 <%@page import="org.oscarehr.common.dao.BillingPaymentTypeDao" %>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 
 <%
     BillingONPayment billPayment = (BillingONPayment) request.getAttribute("billPayment");

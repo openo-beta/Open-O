@@ -32,7 +32,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import org.oscarehr.common.dao.ProviderLabRoutingDao;
 import org.oscarehr.common.model.ProviderLabRoutingModel;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author Jay Gallagher

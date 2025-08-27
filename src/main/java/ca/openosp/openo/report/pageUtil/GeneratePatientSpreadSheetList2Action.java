@@ -34,12 +34,12 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.oscarehr.common.model.Demographic;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.demographic.data.DemographicData;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;

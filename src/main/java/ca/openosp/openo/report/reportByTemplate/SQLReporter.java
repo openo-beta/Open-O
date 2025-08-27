@@ -32,11 +32,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.report.data.RptResultStruct;
-import oscar.util.UtilMisc;
+import ca.openosp.openo.util.UtilMisc;
 
 import com.Ostermiller.util.CSVPrinter;
 

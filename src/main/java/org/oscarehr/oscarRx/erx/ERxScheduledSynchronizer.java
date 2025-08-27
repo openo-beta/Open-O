@@ -43,8 +43,8 @@ import org.oscarehr.oscarRx.erx.controller.ERxCommunicator;
 import org.oscarehr.oscarRx.erx.controller.ERxPrescriptionTranslator;
 import org.oscarehr.oscarRx.erx.model.ERxFacilityPreferences;
 import org.oscarehr.oscarRx.erx.model.ERxPrescription;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.rx.util.RxDrugRef;
 

@@ -27,13 +27,13 @@ import org.oscarehr.common.model.EmailLog;
 import org.oscarehr.common.model.UserProperty;
 import org.oscarehr.common.model.enumerator.DocumentType;
 import ca.openosp.openo.documentManager.DocumentAttachmentManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.PDFGenerationException;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.PDFGenerationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 /*
  * The purpose of the EmailComposeManager is to help prepare all necessary data to display on the emailCompose.jsp page.

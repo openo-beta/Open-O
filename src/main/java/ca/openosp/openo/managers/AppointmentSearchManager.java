@@ -38,7 +38,7 @@ import java.util.Map;
 import ca.openosp.openo.appointment.search.SearchConfig;
 import ca.openosp.openo.appointment.search.TimeSlot;
 import ca.openosp.openo.appointment.search.AppointmentType;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 //import org.oscarehr.oscar_clinic_component.manager.BookingLearningManager;
 import org.oscarehr.ws.transfer_objects.CalendarScheduleCodePairTransfer;
 

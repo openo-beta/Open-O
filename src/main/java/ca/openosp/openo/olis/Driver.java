@@ -65,9 +65,9 @@ import org.oscarehr.common.model.OscarLog;
 import org.oscarehr.common.model.OscarMsgType;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.olis.OLISProtocolSocketFactory;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.xml.sax.InputSource;
 
 import ca.openosp.openo.olis.queries.Query;

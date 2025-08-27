@@ -38,7 +38,7 @@ import org.oscarehr.common.model.ConsultationRequest;
 import org.oscarehr.common.model.ConsultationServices;
 import org.oscarehr.common.model.Demographic;
 import ca.openosp.openo.consultations.ConsultationRequestSearchFilter;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class ConsultRequestDaoTest extends DaoTestFixtures {
 

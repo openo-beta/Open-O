@@ -26,7 +26,7 @@ package ca.openosp.openo.casemgmt.model;
 
 import java.util.Date;
 
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 public class CaseManagementNoteExt {
 

@@ -25,7 +25,7 @@
 --%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="java.text.SimpleDateFormat" %>
 <%@ include file="/taglibs.jsp" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -44,7 +44,7 @@
 %>
 
 <%@page import="java.util.*" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="ca.openosp.openo.renal.CkdScreener" %>
 <%@page import="ca.openosp.openo.renal.CkdScreenerReportHandler" %>

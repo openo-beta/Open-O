@@ -32,7 +32,7 @@ import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
 import ca.openosp.openo.hospitalReportManager.model.HRMCategory;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class HRMCategoryDaoTest extends DaoTestFixtures {
 

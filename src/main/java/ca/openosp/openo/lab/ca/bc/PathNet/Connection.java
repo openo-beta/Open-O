@@ -35,7 +35,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.httpclient.HttpException;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 

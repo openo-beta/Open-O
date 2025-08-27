@@ -38,7 +38,7 @@ LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 %>
 
 <%@ page import="java.util.*, java.sql.*, oscar.eform.*" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -78,7 +78,7 @@ LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     pageContext.setAttribute("demographic", demographicManager.getDemographic(loggedInInfo, demographic_no));
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
 <html>
     <head>

@@ -39,8 +39,8 @@ import javax.servlet.http.HttpSession;
 import org.oscarehr.common.dao.MeasurementTypeDao;
 import org.oscarehr.common.model.MeasurementType;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctTypeDisplayNameBeanHandler;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctValidationsBeanHandler;

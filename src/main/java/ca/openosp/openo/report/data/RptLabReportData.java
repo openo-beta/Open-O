@@ -49,10 +49,10 @@ import org.oscarehr.common.model.LabPatientPhysicianInfo;
 import org.oscarehr.common.model.MdsMSH;
 import org.oscarehr.common.model.PatientLabRouting;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * This classes main function ConsultReportGenerate collects a group of patients with consults in the last specified date

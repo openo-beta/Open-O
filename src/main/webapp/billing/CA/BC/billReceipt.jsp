@@ -39,16 +39,16 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%
     if (session.getValue("user") == null)
         response.sendRedirect("../logout.jsp");
 %>
 <%@page import="java.util.*, oscar.oscarDemographic.data.*" %>
 <%@page import="oscar.oscarBilling.ca.bc.data.*,oscar.oscarBilling.ca.bc.pageUtil.*,oscar.*,oscar.oscarClinic.*" %>
-<%@ page import="oscar.util.StringUtils" %>
+<%@ page import="ca.openosp.openo.util.StringUtils" %>
 <%@ page import="org.oscarehr.common.dao.PropertyDao" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.dao.SystemPreferencesDao" %>
 <%@ page import="org.oscarehr.common.model.SystemPreferences" %>
 <%@ page import="org.owasp.encoder.Encode" %>

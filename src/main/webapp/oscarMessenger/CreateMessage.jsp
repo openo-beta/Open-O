@@ -24,7 +24,7 @@
 
 --%>
 
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -35,11 +35,11 @@
 <%@ page import="org.oscarehr.common.model.Groups" %>
 <%@ page import="ca.openosp.openo.messenger.data.MsgProviderData" %>
 <%@ page import="java.util.Map, java.util.List" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.messenger.pageUtil.MsgSessionBean" %>

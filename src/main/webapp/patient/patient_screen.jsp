@@ -29,10 +29,10 @@
     String demographic_no = (String) session.getAttribute("demo_no");
 %>
 <%@ page import="java.util.*, java.sql.*, java.net.*, oscar.*" errorPage="../appointment/errorpage.jsp" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
-<%@page import="oscar.util.ConversionUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
 
 <%
     DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);

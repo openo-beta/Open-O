@@ -23,7 +23,7 @@
 
 --%>
 <%@page import="ca.openosp.openo.billing.CA.BC.model.WcbBpCode" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.billing.CA.dao.WcbBpCodeDao" %>
 <%
     if (session.getAttribute("user") == null) {

@@ -34,8 +34,8 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.DrugDao;
 import org.oscarehr.common.dao.UserPropertyDAO;
 import org.oscarehr.common.model.Drug;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.rx.data.RxCodesData;

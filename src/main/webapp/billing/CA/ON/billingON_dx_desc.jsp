@@ -28,7 +28,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="java.util.List" %>
 
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.DiagnosticCode" %>
 <%@ page import="org.oscarehr.common.dao.DiagnosticCodeDao" %>
 <%

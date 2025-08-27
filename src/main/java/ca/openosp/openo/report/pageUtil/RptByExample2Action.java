@@ -37,14 +37,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.report.data.RptByExampleData;
-import ca.openosp.openo.service.security.SecurityManager;
+import ca.openosp.openo.services.security.SecurityManager;
 import org.oscarehr.PMmodule.dao.SecUserRoleDao;
 import org.oscarehr.PMmodule.model.SecUserRole;
 import org.oscarehr.common.dao.ReportByExamplesDao;
 import org.oscarehr.common.model.ReportByExamples;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.report.bean.RptByExampleQueryBeanHandler;

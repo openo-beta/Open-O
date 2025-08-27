@@ -40,8 +40,8 @@
 %>
 
 <%@ page
-        import="java.sql.*, java.util.*, oscar.MyDateFormat, org.oscarehr.common.OtherIdManager, oscar.util.ConversionUtils" %>
-<%@ page import="ca.openosp.openo.event.EventService, org.oscarehr.util.SpringUtils" %>
+        import="java.sql.*, java.util.*, oscar.MyDateFormat, org.oscarehr.common.OtherIdManager, ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="ca.openosp.openo.event.EventService, org.oscarehr.utility.SpringUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@page import="org.oscarehr.common.dao.AppointmentArchiveDao" %>

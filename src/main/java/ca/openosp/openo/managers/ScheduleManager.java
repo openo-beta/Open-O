@@ -38,7 +38,7 @@ import org.oscarehr.common.model.AppointmentStatus;
 import org.oscarehr.common.model.AppointmentType;
 import org.oscarehr.common.model.ScheduleTemplateCode;
 import org.oscarehr.common.model.Security;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 public interface ScheduleManager {
 

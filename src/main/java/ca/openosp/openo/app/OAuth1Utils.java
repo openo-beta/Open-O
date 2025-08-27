@@ -32,8 +32,8 @@ import org.apache.cxf.jaxrs.provider.json.JSONProvider;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.AppDefinition;
 import org.oscarehr.common.model.AppUser;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

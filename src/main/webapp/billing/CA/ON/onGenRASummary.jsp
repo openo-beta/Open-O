@@ -26,10 +26,11 @@
 
 <jsp:useBean id="billingLocalInvNoBean" class="java.util.Properties" scope="page"/>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.RaHeader" %>
 <%@page import="org.oscarehr.common.dao.RaHeaderDao" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingRAPrep" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%
     RaHeaderDao dao = SpringUtils.getBean(RaHeaderDao.class);
 %>

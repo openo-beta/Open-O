@@ -32,7 +32,7 @@ import java.util.List;
 
 import org.oscarehr.common.dao.WaitingListNameDao;
 import org.oscarehr.common.model.WaitingListName;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class WLWaitingListNameBeanHandler {
 

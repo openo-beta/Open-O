@@ -44,9 +44,9 @@ import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Document;
 import org.oscarehr.common.model.ProfessionalSpecialist;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * This classes main function ConsultReportGenerate collects a group of patients with consults in the last specified date

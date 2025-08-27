@@ -35,7 +35,7 @@ import javax.persistence.Query;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jettison.json.JSONObject;
 import org.oscarehr.common.model.ISO36612;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository

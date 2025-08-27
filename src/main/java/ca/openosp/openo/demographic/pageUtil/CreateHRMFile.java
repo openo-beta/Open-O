@@ -38,7 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.xmlbeans.XmlOptions;
-import org.oscarehr.caisi_integrator.util.MiscUtils;
+import ca.openosp.openo.caisi_integrator.util.MiscUtils;
 
 import cds.DemographicsDocument;
 import cds.DemographicsDocument.Demographics.Enrolment.EnrolmentHistory;
@@ -114,7 +114,7 @@ public class CreateHRMFile {
         try {
             omdCdsDoc.save(file, options);
         } catch (IOException ex) {
-            org.oscarehr.util.MiscUtils.getLogger();
+            org.oscarehr.utility.MiscUtils.getLogger();
         }
 
         MiscUtils.getLogger().debug("saved HRM file: " + filepath);
@@ -149,7 +149,7 @@ public class CreateHRMFile {
                 }
             }
         } else {
-            org.oscarehr.util.MiscUtils.getLogger();
+            org.oscarehr.utility.MiscUtils.getLogger();
         }
 
         PersonNameStandard HRMpersonName = HRMdemo.addNewNames();

@@ -41,7 +41,7 @@ import org.oscarehr.common.model.DrugProductTemplate;
 import org.oscarehr.common.model.ProductLocation;
 import ca.openosp.openo.managers.DrugDispensingManager;
 import ca.openosp.openo.managers.DrugProductManager;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.ws.rest.to.AbstractSearchResponse;
 import org.oscarehr.ws.rest.to.DrugProductResponse;
 import org.oscarehr.ws.rest.to.DrugProductTemplateResponse;

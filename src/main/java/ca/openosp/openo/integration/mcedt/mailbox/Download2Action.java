@@ -48,7 +48,7 @@ import ca.openosp.openo.integration.mcedt.McedtMessageCreator;
 import ca.openosp.openo.integration.mcedt.ResourceForm;
 
 import oscar.OscarProperties;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 import ca.ontario.health.edt.Detail;
 import ca.ontario.health.edt.DetailData;
 import ca.ontario.health.edt.DownloadData;
@@ -65,7 +65,7 @@ public class Download2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
     private boolean isFileToDownload = false;
 
     @Override

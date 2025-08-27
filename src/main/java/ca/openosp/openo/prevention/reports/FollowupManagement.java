@@ -31,10 +31,10 @@ import java.util.Hashtable;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.util.WriteNewMeasurements;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 /**
  * @author jay

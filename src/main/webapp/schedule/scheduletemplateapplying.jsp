@@ -29,7 +29,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.ScheduleDate" %>
 <%@ page import="org.oscarehr.common.dao.ScheduleDateDao" %>
 <%@ page import="org.oscarehr.common.model.RSchedule" %>
@@ -45,6 +45,8 @@
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@ page import="org.oscarehr.common.model.Site" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <html>
 
     <%

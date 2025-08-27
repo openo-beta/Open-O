@@ -44,7 +44,7 @@
 <%@ page
         import="oscar.oscarProvider.data.*,oscar.oscarWorkflow.*,oscar.oscarEncounter.oscarMeasurements.bean.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 
 <%--
  //TODO: Mother's Information Doesn't save
@@ -123,11 +123,14 @@
 */
 -->
 
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
 <%@ page import="ca.openosp.openo.workflow.WorkFlowFactory" %>
 <%@ page import="ca.openosp.openo.workflow.WFState" %>
 <%@ page import="ca.openosp.openo.workflow.WorkFlow" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="ca.openosp.openo.form.FrmRecord" %>
+<%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

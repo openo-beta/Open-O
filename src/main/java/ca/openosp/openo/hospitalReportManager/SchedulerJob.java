@@ -16,10 +16,10 @@ import java.util.TimerTask;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.UserPropertyDAO;
 import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * This job is set to run every minute, and the thing that really controls it is hrm_interval in the property table.

@@ -67,7 +67,7 @@
          errorPage="/errorpage.jsp" %>
 <%@ page import="oscar.oscarBilling.ca.on.data.*" %>
 <%@ page import="oscar.oscarBilling.ca.on.pageUtil.*" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.ClinicNbr" %>
 <%@page import="org.oscarehr.common.dao.ClinicNbrDao" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingCorrectionPrep" %>

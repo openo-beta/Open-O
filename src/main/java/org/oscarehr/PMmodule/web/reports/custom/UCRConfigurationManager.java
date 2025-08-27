@@ -27,7 +27,7 @@ import java.io.File;
 
 import org.apache.commons.digester.Digester;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 public class UCRConfigurationManager {
 

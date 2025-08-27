@@ -28,11 +28,11 @@ package ca.openosp.openo.encounter.pageUtil;
 
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicLabResult;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicLabResult;
 import org.oscarehr.common.dao.OscarLogDao;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.w3c.dom.Document;
 import oscar.OscarProperties;
 import ca.openosp.openo.lab.ca.all.Hl7textResultsData;
@@ -40,8 +40,8 @@ import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
 import ca.openosp.openo.lab.ca.all.web.LabDisplayHelper;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
-import oscar.util.DateUtils;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.DateUtils;
+import ca.openosp.openo.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;

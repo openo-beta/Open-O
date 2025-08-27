@@ -39,8 +39,8 @@ import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.model.Clinic;
 import org.oscarehr.common.model.Demographic;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author mweston4

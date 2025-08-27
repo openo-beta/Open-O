@@ -43,8 +43,8 @@ import org.oscarehr.common.model.LabPatientPhysicianInfo;
 import org.oscarehr.common.model.LabReportInformation;
 import org.oscarehr.common.model.LabTestResults;
 import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.lab.ca.all.upload.ProviderLabRouting;
@@ -53,7 +53,7 @@ import ca.openosp.openo.lab.ca.all.upload.ProviderLabRouting;
  * @author root
  */
 public class ABCDParser {
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     Atype reportFile = null;
     ArrayList<Atype> atypes = new ArrayList<Atype>();

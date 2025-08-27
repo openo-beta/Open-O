@@ -38,10 +38,10 @@ import org.oscarehr.common.dao.ProviderPreferenceDao;
 import org.oscarehr.common.model.EForm;
 import org.oscarehr.common.model.EncounterForm;
 import org.oscarehr.common.model.ProviderPreference;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import org.oscarehr.util.WebUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
+import org.oscarehr.utility.WebUtils;
 
 public final class ProviderPreferencesUIBean {
 

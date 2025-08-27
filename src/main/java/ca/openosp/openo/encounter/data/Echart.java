@@ -27,7 +27,7 @@ package ca.openosp.openo.encounter.data;
 
 import java.util.Date;
 
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 public class Echart {
     private Date eChartTimeStamp = new Date();

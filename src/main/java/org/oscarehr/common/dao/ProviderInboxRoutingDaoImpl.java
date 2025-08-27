@@ -36,7 +36,7 @@ import javax.persistence.Query;
 import ca.openosp.openo.lab.ca.on.LabResultData;
 import org.oscarehr.common.model.IncomingLabRules;
 import org.oscarehr.common.model.ProviderInboxItem;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;

@@ -43,7 +43,7 @@ import ca.openosp.openo.integration.fhir.model.AbstractOscarFhirResource;
 import ca.openosp.openo.integration.fhir.model.Destination;
 import ca.openosp.openo.integration.fhir.model.Sender;
 import ca.openosp.openo.integration.fhir.resources.constants.ActorType;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import ca.uhn.fhir.context.FhirContext;
 
 

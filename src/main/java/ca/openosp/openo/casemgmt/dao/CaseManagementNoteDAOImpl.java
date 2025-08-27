@@ -55,8 +55,8 @@ import org.oscarehr.PMmodule.model.Program;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.CaseManagementSearchBean;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +64,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import oscar.OscarProperties;
-import oscar.util.SqlUtils;
+import ca.openosp.openo.util.SqlUtils;
 
 @Transactional
 public class CaseManagementNoteDAOImpl extends HibernateDaoSupport implements CaseManagementNoteDAO {

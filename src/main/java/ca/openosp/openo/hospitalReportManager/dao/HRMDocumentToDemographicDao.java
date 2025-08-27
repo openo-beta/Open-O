@@ -20,7 +20,7 @@ import org.oscarehr.common.dao.AbstractDaoImpl;
 import org.oscarehr.common.model.ConsultDocs;
 import org.oscarehr.common.model.EFormDocs;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository

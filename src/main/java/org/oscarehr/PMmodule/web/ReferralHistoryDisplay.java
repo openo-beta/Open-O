@@ -31,14 +31,14 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.model.ClientReferral;
-import org.oscarehr.caisi_integrator.ws.CachedProgram;
-import org.oscarehr.caisi_integrator.ws.FacilityIdIntegerCompositePk;
-import org.oscarehr.caisi_integrator.ws.Referral;
+import ca.openosp.openo.caisi_integrator.ws.CachedProgram;
+import ca.openosp.openo.caisi_integrator.ws.FacilityIdIntegerCompositePk;
+import ca.openosp.openo.caisi_integrator.ws.Referral;
 import org.oscarehr.common.model.Facility;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
-import oscar.util.DateUtils;
+import ca.openosp.openo.util.DateUtils;
 
 public class ReferralHistoryDisplay {
     private static final Logger logger = MiscUtils.getLogger();

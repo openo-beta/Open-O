@@ -30,9 +30,9 @@ import java.util.Hashtable;
 
 import org.oscarehr.common.dao.BillingDao;
 import org.oscarehr.common.model.Billing;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * @author jay

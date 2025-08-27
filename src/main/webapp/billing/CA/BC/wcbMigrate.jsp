@@ -39,8 +39,8 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.DbConnectionFilter,java.sql.*" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.DbConnectionFilter,java.sql.*" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.BillingServiceDao" %>
 <%@page import="org.oscarehr.common.model.BillingService" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.dao.WcbDao" %>

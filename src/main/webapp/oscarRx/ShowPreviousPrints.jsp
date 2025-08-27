@@ -28,11 +28,12 @@
 
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
 <%@ page import="oscar.oscarRx.data.*" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
 <%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.util.DateUtils" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -125,7 +126,7 @@
                                             %>
                                             <tr>
                                                 <td width="50%" valign="top"
-                                                    nowrap="nowrap"><%=oscar.util.DateUtils.formatDate(originalPrintDate, request.getLocale()) %>
+                                                    nowrap="nowrap"><%=DateUtils.formatDate(originalPrintDate, request.getLocale()) %>
                                                 </td>
                                                 <td width="50%" valign="top"
                                                     nowrap="nowrap"><%=providerDao.getProvider(originalProviderNo).getFormattedName() %>

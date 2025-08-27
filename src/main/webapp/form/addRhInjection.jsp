@@ -40,12 +40,15 @@
 %>
 
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page
         import="oscar.util.*, oscar.form.*, oscar.form.data.*,java.util.*,oscar.oscarPrevention.*" %>
 <%@ page
         import="oscar.oscarProvider.data.*,oscar.oscarWorkflow.*,oscar.oscarEncounter.oscarMeasurements.bean.*" %>
 <%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="ca.openosp.openo.form.FrmRecord" %>
+<%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 

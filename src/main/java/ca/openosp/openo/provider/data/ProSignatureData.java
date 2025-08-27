@@ -30,7 +30,7 @@ package ca.openosp.openo.provider.data;
 import ca.openosp.openo.casemgmt.model.ProviderExt;
 import org.oscarehr.common.dao.ProviderExtDao;
 
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 
 public class ProSignatureData {

@@ -62,11 +62,11 @@ import org.oscarehr.common.dao.ValidationsDao;
 import org.oscarehr.common.model.Measurement;
 import org.oscarehr.common.model.MeasurementType;
 import org.oscarehr.common.model.Validations;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.pageUtil.EctSessionBean;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class ScatterPlotChartServlet extends HttpServlet {
     //---all of my charts serviced by this Servlet will have the same properties.

@@ -50,17 +50,17 @@ import ca.openosp.openo.casemgmt.web.formbeans.CaseManagementEntryFormBean;
 import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;
 import ca.openosp.openo.managers.TicklerManager;
-import org.oscarehr.util.*;
+import org.oscarehr.utility.*;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import oscar.OscarProperties;
 import ca.openosp.openo.appt.ApptStatusData;
-import oscar.form.JSONUtil;
+import ca.openosp.openo.form.JSONUtil;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.encounter.data.EctProgram;
 import ca.openosp.openo.encounter.pageUtil.EctSessionBean;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -2984,7 +2984,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         }
 
         if (apptDate == null || apptDate.equals("") || apptDate.equalsIgnoreCase("null")) {
-            encounterText = "\n[" + oscar.util.UtilDateUtilities.DateToString(new Date(), "dd-MMM-yyyy", request.getLocale()) + " .: " + reason + "] \n";
+            encounterText = "\n[" + UtilDateUtilities.DateToString(new Date(), "dd-MMM-yyyy", request.getLocale()) + " .: " + reason + "] \n";
         } else {
             apptDate = convertDateFmt(apptDate, request);
             encounterText = "\n[" + apptDate + " .: " + reason + "]\n";

@@ -30,10 +30,10 @@ import java.util.List;
 
 import org.oscarehr.common.dao.BillingDao;
 import org.oscarehr.common.dao.BillingONCHeader1Dao;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class VisitReportData {
 

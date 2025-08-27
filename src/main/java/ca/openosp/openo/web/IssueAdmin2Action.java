@@ -30,13 +30,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
-import ca.openosp.openo.service.IssueAdminManager;
+import ca.openosp.openo.services.IssueAdminManager;
 import ca.openosp.openo.casemgmt.model.Issue;
 import org.oscarehr.common.dao.SecRoleDao;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 // use your IDE to handle imports
 import com.opensymphony.xwork2.ActionSupport;

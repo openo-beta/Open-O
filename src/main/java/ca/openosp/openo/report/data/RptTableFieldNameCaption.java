@@ -42,8 +42,8 @@ import org.oscarehr.common.dao.EncounterFormDao;
 import org.oscarehr.common.dao.ReportTableFieldCaptionDao;
 import org.oscarehr.common.model.EncounterForm;
 import org.oscarehr.common.model.ReportTableFieldCaption;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.login.DBHelp;
 

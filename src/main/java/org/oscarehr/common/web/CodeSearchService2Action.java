@@ -35,14 +35,14 @@ import net.sf.json.JSONArray;
 import org.apache.commons.lang.WordUtils;
 import org.oscarehr.common.dao.AbstractCodeSystemDao;
 import org.oscarehr.common.model.AbstractCodeSystemModel;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author marc
  */
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
-import oscar.util.LabelValueBean;
+import ca.openosp.openo.util.LabelValueBean;
 
 public class CodeSearchService2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();

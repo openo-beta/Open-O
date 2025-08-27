@@ -26,7 +26,7 @@
 
 package ca.openosp.openo.rx.pageUtil;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 public final class RxWriteScriptForm {
     String action = "";

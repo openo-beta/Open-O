@@ -35,7 +35,7 @@ import javax.persistence.Query;
 
 import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.common.model.ProviderDefaultProgram;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository

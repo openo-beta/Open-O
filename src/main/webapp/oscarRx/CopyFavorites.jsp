@@ -21,7 +21,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.*" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.dao.FavoritesDao" %>
 <%@ page import="org.oscarehr.common.model.Favorites" %>
 <%@ page import="org.oscarehr.common.dao.FavoritesPrivilegeDao" %>

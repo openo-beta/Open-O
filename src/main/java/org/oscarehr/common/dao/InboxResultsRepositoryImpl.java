@@ -19,7 +19,7 @@ import org.oscarehr.common.model.inbox.InboxItem;
 import org.oscarehr.common.model.inbox.InboxItemDemographicCount;
 import org.oscarehr.common.model.inbox.InboxQueryParameters;
 import org.oscarehr.common.model.inbox.InboxResponse;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

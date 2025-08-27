@@ -25,14 +25,14 @@
 --%>
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%@page import="ca.openosp.openo.encounter.pageUtil.EctDisplayLabAction2" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page import="java.net.URLEncoder" %>
 <%@page import="ca.openosp.openo.lab.ca.all.web.LabDisplayHelper" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="java.util.*" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
 <%@ page import="oscar.oscarMDS.data.*,oscar.oscarLab.ca.on.*" %>
-<%@ page import="oscar.util.DateUtils" %>
+<%@ page import="ca.openosp.openo.util.DateUtils" %>
 <%@ page import="ca.openosp.openo.lab.ca.all.Hl7textResultsData" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
 <%@ page import="ca.openosp.openo.mds.data.ProviderData" %>

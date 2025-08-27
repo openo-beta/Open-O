@@ -25,7 +25,7 @@
 package org.oscarehr.ws.rest.conversion;
 
 import org.oscarehr.common.model.EncounterTemplate;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.EncounterTemplateTo1;
 
 public class EncounterTemplateConverter extends AbstractConverter<EncounterTemplate, EncounterTemplateTo1> {

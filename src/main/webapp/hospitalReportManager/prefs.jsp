@@ -23,8 +23,8 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.managers.SecurityInfoManager" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 

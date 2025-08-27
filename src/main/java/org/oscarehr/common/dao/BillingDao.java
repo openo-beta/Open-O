@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.oscarehr.common.model.Billing;
-import org.oscarehr.util.DateRange;
+import org.oscarehr.utility.DateRange;
 
 public interface BillingDao extends AbstractDao<Billing> {
     List<Billing> findActive(int billingNo);

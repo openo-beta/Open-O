@@ -18,7 +18,7 @@
 
 --%>
 <!DOCTYPE html>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -45,7 +45,7 @@
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao, org.oscarehr.common.model.ProviderPreference" %>
 <%@page import="ca.openosp.openo.decisionSupport.model.DSConsequence" %>
 <%@page import="org.oscarehr.web.admin.ProviderPreferencesUIBean" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 
 <%@page import="ca.openosp.openo.managers.DemographicManager,ca.openosp.openo.billing.CA.filters.CodeFilterManager" %>
 
@@ -556,15 +556,17 @@
 <%@page import="org.oscarehr.common.model.Site" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page import="org.oscarehr.common.dao.ProviderPreferenceDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference"%>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.appt.JdbcApptImpl" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.data.*" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingSiteIdPrep" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <html>
 <head>
     <title>Ontario Billing</title>

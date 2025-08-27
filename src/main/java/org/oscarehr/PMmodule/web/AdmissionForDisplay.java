@@ -29,15 +29,15 @@ import java.util.Date;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.caisi_integrator.ws.CachedAdmission;
-import org.oscarehr.caisi_integrator.ws.CachedFacility;
-import org.oscarehr.caisi_integrator.ws.CachedProgram;
-import org.oscarehr.caisi_integrator.ws.FacilityIdIntegerCompositePk;
+import ca.openosp.openo.caisi_integrator.ws.CachedAdmission;
+import ca.openosp.openo.caisi_integrator.ws.CachedFacility;
+import ca.openosp.openo.caisi_integrator.ws.CachedProgram;
+import ca.openosp.openo.caisi_integrator.ws.FacilityIdIntegerCompositePk;
 import org.oscarehr.common.model.Admission;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
-import oscar.util.DateUtils;
+import ca.openosp.openo.util.DateUtils;
 
 /**
  * This is a display object for the history tab of a clients admissions.

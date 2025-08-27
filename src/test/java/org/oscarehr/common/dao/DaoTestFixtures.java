@@ -62,12 +62,11 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
-import org.junit.Test;
 import org.oscarehr.common.dao.utils.ConfigUtils;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public abstract class DaoTestFixtures {

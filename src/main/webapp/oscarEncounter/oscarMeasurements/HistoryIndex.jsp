@@ -24,9 +24,9 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.WebUtils" %>
-<%@page import="org.oscarehr.util.LocaleUtils" %>
-<%@page import="org.oscarehr.util.WebUtils" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
+<%@page import="org.oscarehr.utility.LocaleUtils" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
 <%
     if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
 %>

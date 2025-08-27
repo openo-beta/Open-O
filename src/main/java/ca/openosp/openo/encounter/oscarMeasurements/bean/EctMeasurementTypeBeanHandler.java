@@ -29,11 +29,11 @@ package ca.openosp.openo.encounter.oscarMeasurements.bean;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.ValidationsDao;
 import org.oscarehr.common.model.Validations;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.data.MeasurementTypes;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * @author jay

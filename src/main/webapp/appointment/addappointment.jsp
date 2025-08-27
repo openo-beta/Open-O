@@ -57,7 +57,7 @@ Ontario, Canada
 <%@ page import="ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImpl" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.decisionSupport.BillingGuidelines" %>
 <%@ page import="ca.openosp.openo.encounter.data.EctFormData" %>
-<%@ page import="oscar.util.ConversionUtils" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="oscar.OscarProperties" %>
 
 <%@ page import="org.oscarehr.common.model.AppointmentStatus" %>
@@ -79,8 +79,8 @@ Ontario, Canada
 <%@ page import="ca.openosp.openo.managers.ProgramManager2" %>
 <%@ page import="ca.openosp.openo.decisionSupport.model.DSConsequence" %>
 
-<%@ page import="org.oscarehr.util.MiscUtils" %>
-<%@ page import="org.oscarehr.util.SessionConstants" %>
+<%@ page import="org.oscarehr.utility.MiscUtils" %>
+<%@ page import="org.oscarehr.utility.SessionConstants" %>
 <%@ page import="org.oscarehr.common.model.ProviderPreference" %>
 
 <%@ page import="ca.openosp.openo.managers.LookupListManager" %>
@@ -89,8 +89,8 @@ Ontario, Canada
 <%@ page import="org.oscarehr.common.model.Site" %>
 <%@ page import="org.oscarehr.common.dao.AppointmentTypeDao" %>
 <%@ page import="org.oscarehr.common.model.AppointmentType" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.appt.JdbcApptImpl" %>

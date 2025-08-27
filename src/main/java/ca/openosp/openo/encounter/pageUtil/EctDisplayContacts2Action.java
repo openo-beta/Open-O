@@ -36,11 +36,11 @@ import org.oscarehr.common.model.Contact;
 import org.oscarehr.common.model.DemographicContact;
 import org.oscarehr.common.model.ProfessionalSpecialist;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 public class EctDisplayContacts2Action extends EctDisplayAction {
 

@@ -36,10 +36,10 @@ import org.oscarehr.common.dao.PatientLabRoutingDao;
 import org.oscarehr.common.model.ConsultDocs;
 import org.oscarehr.common.model.EFormDocs;
 import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 import ca.openosp.openo.lab.ca.on.LabResultData;
-import oscar.util.ConversionUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -58,7 +58,7 @@ public class PathnetResultsData {
     private Hl7PidDao hl7PidDao = SpringUtils.getBean(Hl7PidDao.class);
     private EFormDocsDao eformDocsDao = SpringUtils.getBean(EFormDocsDao.class);
 
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     /**
      * Populates ArrayList with labs attached to a consultation

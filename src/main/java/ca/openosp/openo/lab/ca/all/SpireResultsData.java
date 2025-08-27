@@ -33,11 +33,11 @@ import org.oscarehr.common.dao.Hl7TextInfoDao;
 import org.oscarehr.common.dao.PatientLabRoutingDao;
 import org.oscarehr.common.model.Hl7TextInfo;
 import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.on.LabResultData;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class SpireResultsData {
 

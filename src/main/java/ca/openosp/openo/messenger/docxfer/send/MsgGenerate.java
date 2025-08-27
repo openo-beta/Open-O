@@ -31,7 +31,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

@@ -44,7 +44,7 @@ import org.xml.sax.SAXException;
  */
 public class IHAPOIHandlerTestChainedHL7 extends IHAPOIHandler {
 
-    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
     private static String TEST_FILE = "path to test file";
 
     // @Test

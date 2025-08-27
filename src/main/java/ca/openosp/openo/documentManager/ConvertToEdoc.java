@@ -36,13 +36,13 @@ import org.jsoup.select.Elements;
 import org.oscarehr.common.model.EFormData;
 import ca.openosp.openo.email.core.EmailData;
 import ca.openosp.openo.managers.NioFileManager;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.PDFGenerationException;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.PDFGenerationException;
+import org.oscarehr.utility.SpringUtils;
 import org.xhtmlrenderer.layout.SharedContext;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 import oscar.OscarProperties;
-import oscar.form.util.FormTransportContainer;
+import ca.openosp.openo.form.util.FormTransportContainer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

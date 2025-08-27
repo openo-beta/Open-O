@@ -39,20 +39,20 @@ import ca.openosp.openo.hospitalReportManager.HRMPDFCreator;
 import ca.openosp.openo.managers.ConsultationManager;
 import ca.openosp.openo.managers.FaxManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
-import oscar.form.util.FormTransportContainer;
+import ca.openosp.openo.form.util.FormTransportContainer;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
-import oscar.util.ConcatPDF;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.ConcatPDF;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 import com.sun.xml.messaging.saaj.util.ByteInputStream;
 import com.sun.xml.messaging.saaj.util.ByteOutputStream;

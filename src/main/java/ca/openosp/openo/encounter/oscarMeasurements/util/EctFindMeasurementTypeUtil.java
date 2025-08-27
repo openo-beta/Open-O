@@ -30,8 +30,8 @@ import java.util.Vector;
 import org.apache.commons.digester.Digester;
 import org.oscarehr.common.dao.MeasurementTypeDao;
 import org.oscarehr.common.model.MeasurementType;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctValidationsBean;

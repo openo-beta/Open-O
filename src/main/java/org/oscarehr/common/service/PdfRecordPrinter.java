@@ -52,10 +52,10 @@ import org.oscarehr.common.model.BillingONCHeader1;
 import org.oscarehr.common.model.BillingONExt;
 import org.oscarehr.common.dao.BillingONExtDao;
 import org.oscarehr.common.dao.ClinicDAO;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.DateUtils;
+import ca.openosp.openo.util.DateUtils;
 import oscar.OscarProperties;
 import ca.openosp.openo.eform.util.GraphicalCanvasToImage;
 import ca.openosp.openo.eform.APExecute;

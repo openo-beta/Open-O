@@ -34,8 +34,8 @@ import java.util.Hashtable;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.io.RuleBaseLoader;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet;

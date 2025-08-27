@@ -24,7 +24,7 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
 <%
     if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");

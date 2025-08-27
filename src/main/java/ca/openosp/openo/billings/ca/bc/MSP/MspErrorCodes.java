@@ -37,7 +37,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.Properties;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
 

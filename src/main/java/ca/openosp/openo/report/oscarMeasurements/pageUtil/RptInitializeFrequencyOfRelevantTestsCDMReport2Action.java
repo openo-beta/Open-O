@@ -30,12 +30,12 @@ import org.apache.struts2.ServletActionContext;
 import org.oscarehr.common.dao.MeasurementDao;
 import org.oscarehr.common.model.Measurement;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctValidation;
 import ca.openosp.openo.report.oscarMeasurements.data.RptMeasurementsData;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

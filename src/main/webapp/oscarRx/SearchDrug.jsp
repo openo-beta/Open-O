@@ -106,12 +106,12 @@
 
 %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%@page import="java.util.List" %>
 <%@page import="ca.openosp.openo.casemgmt.web.PrescriptDrug" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
 <%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>

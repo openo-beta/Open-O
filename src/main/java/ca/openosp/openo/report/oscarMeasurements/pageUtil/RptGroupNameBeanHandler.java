@@ -31,7 +31,7 @@ import java.util.List;
 
 import org.oscarehr.common.dao.MeasurementGroupDao;
 import org.oscarehr.common.model.MeasurementGroup;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class RptGroupNameBeanHandler {
 

@@ -35,7 +35,7 @@ import org.oscarehr.common.NativeSql;
 import org.oscarehr.common.dao.AbstractDaoImpl;
 import org.springframework.stereotype.Repository;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 @Repository
 @SuppressWarnings("unchecked")

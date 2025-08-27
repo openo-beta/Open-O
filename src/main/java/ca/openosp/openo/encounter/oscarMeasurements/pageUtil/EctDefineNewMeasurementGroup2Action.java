@@ -36,8 +36,8 @@ import javax.servlet.http.HttpSession;
 import org.oscarehr.common.dao.MeasurementGroupStyleDao;
 import org.oscarehr.common.model.MeasurementGroupStyle;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 
 import com.opensymphony.xwork2.ActionSupport;

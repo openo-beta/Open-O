@@ -25,8 +25,8 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.BillCenterDao;
 import org.oscarehr.common.dao.ProviderBillCenterDao;
 import org.oscarehr.common.model.BillCenter;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author Toby

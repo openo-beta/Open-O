@@ -34,12 +34,11 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.oscarehr.common.dao.MeasurementDaoImpl.SearchCriteria;
 import org.oscarehr.common.dao.utils.SchemaUtils;
 import org.oscarehr.common.model.Measurement;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class MeasurementDaoTest extends DaoTestFixtures {
 

@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.admin.web.MigrateRelationshipsToContactsHelper" %>
 <%@page contentType="text/html" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>

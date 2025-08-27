@@ -36,11 +36,11 @@ import org.oscarehr.common.model.EForm;
 import org.oscarehr.common.model.EncounterForm;
 import org.oscarehr.common.model.Security;
 import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile;
-import oscar.util.LabelValueBean;
+import ca.openosp.openo.util.LabelValueBean;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

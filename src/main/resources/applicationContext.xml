@@ -166,12 +166,12 @@
 
 
 	<!-- OscarSuperManager manager provides business logic facade for jsp layer -->
-	<bean id="oscarSuperManager" class="oscar.service.OscarSuperManagerImpl" autowire="byName" init-method="init"/>
+	<bean id="oscarSuperManager" class="ca.openosp.openo.service.OscarSuperManagerImpl" autowire="byName" init-method="init"/>
 
-	<bean id="lookupManager" class="ca.openosp.openo.service.LookupManagerImpl" autowire="byName">
+	<bean id="lookupManager" class="ca.openosp.openo.services.LookupManagerImpl" autowire="byName">
 		<property name="lookupDao" ref="lookupDao" />
 	</bean>
-	<bean id="userAccessManager" class="ca.openosp.openo.service.security.UserAccessManagerImpl" autowire="byName">
+	<bean id="userAccessManager" class="ca.openosp.openo.services.security.UserAccessManagerImpl" autowire="byName">
 		<property name="userAccessDao" ref="userAccessDao" />
 	</bean>
 
@@ -206,7 +206,7 @@
 
 	<!-- managers  -->
 	<bean id="agencyManager" class="org.oscarehr.PMmodule.service.AgencyManagerImpl" autowire="byName" />
-	<bean id="facilityMessageManager" class="ca.openosp.openo.service.OrganizationMessageManagerImpl">
+	<bean id="facilityMessageManager" class="ca.openosp.openo.services.OrganizationMessageManagerImpl">
 	</bean>
 
 	<!-- Manager classes -->
@@ -254,7 +254,7 @@
 	</bean>
 
 	
- 	<bean id="demographicManagerT" class="ca.openosp.openo.service.DemographicManagerTickler">
+ 	<bean id="demographicManagerT" class="ca.openosp.openo.services.DemographicManagerTickler">
 		<property name="demographicDao" ref="demographicDao" />
 	</bean>
 	<bean id="preparedTicklerManagerT" class="ca.openosp.openo.wl.prepared.PreparedTicklerManagerImpl" scope="singleton" />
@@ -267,7 +267,7 @@
 	<bean id="secuserroleDao" class="ca.openosp.openo.dao.security.SecuserroleDaoImpl" autowire="byName" />
         <bean id="secObjectNameDao" class="ca.openosp.openo.dao.security.SecObjectNameDaoImpl" autowire="byName"/>
 
-	<bean id="rolesManager" class="ca.openosp.openo.service.security.RolesManagerImpl" autowire="byName">
+	<bean id="rolesManager" class="ca.openosp.openo.services.security.RolesManagerImpl" autowire="byName">
 		<property name="secroleDao" ref="secroleDao" />
 		<property name="secobjprivilegeDao" ref="secobjprivilegeDao" />
 	</bean>
@@ -345,7 +345,7 @@
         <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" p:corePoolSize="5"
           p:maxPoolSize="10" p:queueCapacity="100" p:waitForTasksToCompleteOnShutdown="true"/>
 
-        <bean id="asyncMailSender" class="oscar.service.AsyncMailSender" autowire="byName">
+        <bean id="asyncMailSender" class="ca.openosp.openo.service.AsyncMailSender" autowire="byName">
            <property name="taskExecutor" ref="taskExecutor" />
         </bean>
 

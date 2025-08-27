@@ -29,9 +29,9 @@ import org.oscarehr.common.model.FlowSheetCustomization;
 import org.oscarehr.common.model.Measurement;
 import org.oscarehr.common.model.Validations;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -40,7 +40,7 @@ import ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet;
 import ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypeBeanHandler;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 import org.oscarehr.common.dao.SecRoleDao;
 import org.oscarehr.common.model.SecRole;

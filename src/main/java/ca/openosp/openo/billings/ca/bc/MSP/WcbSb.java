@@ -29,14 +29,14 @@ import java.math.BigDecimal;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.billing.CA.BC.model.Wcb;
 import org.oscarehr.common.dao.BillingServiceDao;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.Misc;
 import oscar.OscarProperties;
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * @author Jef King

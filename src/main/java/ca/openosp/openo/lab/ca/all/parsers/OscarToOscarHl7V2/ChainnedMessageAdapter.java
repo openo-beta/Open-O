@@ -33,10 +33,10 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.Gender;
 import org.oscarehr.common.hl7.v2.oscar_to_oscar.DataTypeUtils;
 import org.oscarehr.common.hl7.v2.oscar_to_oscar.OscarToOscarUtils;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
-import oscar.util.DateUtils;
+import ca.openosp.openo.util.DateUtils;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.AbstractMessage;
 import ca.uhn.hl7v2.model.DataTypeException;

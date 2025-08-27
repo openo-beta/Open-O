@@ -44,7 +44,7 @@ import ca.uhn.hl7v2.parser.ModelClassFactory;
  */
 public class ZDS extends AbstractSegment {
 
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     /**
      * Adding a serial UID is always a good idea, but optional

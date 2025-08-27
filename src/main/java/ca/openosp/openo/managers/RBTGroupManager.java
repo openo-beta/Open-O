@@ -31,7 +31,7 @@ import java.util.List;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.oscarehr.common.dao.RBTGroupDao;
 import org.oscarehr.common.model.RBTGroup;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

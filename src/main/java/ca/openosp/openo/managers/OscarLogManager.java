@@ -30,7 +30,7 @@ package ca.openosp.openo.managers;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 public interface OscarLogManager {
     public List<Object[]> getRecentDemographicsViewedByProvider(LoggedInInfo loggedInInfo, String providerNo, int startPosition, int itemsToReturn);

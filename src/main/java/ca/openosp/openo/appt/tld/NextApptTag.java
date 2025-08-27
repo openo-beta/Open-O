@@ -26,8 +26,8 @@
 package ca.openosp.openo.appt.tld;
 
 import ca.openosp.openo.managers.AppointmentManager;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;

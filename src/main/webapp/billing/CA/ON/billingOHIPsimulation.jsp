@@ -17,10 +17,10 @@
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 --%>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page import="org.oscarehr.util.DateRange" %>
+<%@ page import="org.oscarehr.utility.DateRange" %>
 <%! boolean bMultisites = org.oscarehr.common.IsPropertiesOn.isMultisitesEnable(); %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ page import="java.math.*, java.util.*, oscar.util.*" %>
@@ -51,6 +51,8 @@
 <%@ page import="oscar.oscarBilling.ca.on.data.*" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.data.*" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingReviewPrep" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <jsp:useBean id="SxmlMisc" class="oscar.SxmlMisc" scope="session"/>
 
 <head>

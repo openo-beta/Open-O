@@ -43,7 +43,7 @@ import org.oscarehr.common.model.BillingONItem;
 import org.oscarehr.common.model.BillingOnItemPayment;
 import org.oscarehr.common.model.BillingOnTransaction;
 import org.oscarehr.common.model.RaDetail;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 
 public class JdbcBillingCorrection {

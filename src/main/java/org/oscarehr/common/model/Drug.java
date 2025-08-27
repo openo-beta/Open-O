@@ -47,7 +47,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import ca.openosp.openo.rx.data.RxPrescriptionData;
 import ca.openosp.openo.rx.util.RxUtil;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 @Entity
 @Table(name = "drugs")

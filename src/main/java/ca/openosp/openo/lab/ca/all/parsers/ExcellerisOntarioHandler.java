@@ -61,12 +61,12 @@ import ca.uhn.hl7v2.parser.Parser;
 import ca.uhn.hl7v2.parser.PipeParser;
 import ca.uhn.hl7v2.util.Terser;
 import ca.uhn.hl7v2.validation.impl.NoValidation;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 
 public class ExcellerisOntarioHandler implements MessageHandler {
 
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
     ORU_R01 msg = null;
 
     private String hl7Body;

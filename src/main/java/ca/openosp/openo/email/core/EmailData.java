@@ -8,7 +8,7 @@ import org.oscarehr.common.model.EmailAttachment;
 import org.oscarehr.common.model.EmailLog.ChartDisplayOption;
 import org.oscarehr.common.model.EmailLog.TransactionType;
 
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 public class EmailData {
     private String sender;

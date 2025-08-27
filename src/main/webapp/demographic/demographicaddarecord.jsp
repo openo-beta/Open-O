@@ -39,11 +39,11 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page
         import="java.util.*, java.net.URLEncoder, oscar.oscarDB.*, oscar.MyDateFormat, ca.openosp.openo.waitinglist.WaitingList, org.oscarehr.common.OtherIdManager" %>
 <%@ page import="oscar.log.*" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 
 <%@ page import="org.oscarehr.common.dao.WaitingListDao" %>
@@ -65,7 +65,7 @@
 <%@page import="ca.openosp.openo.managers.PatientConsentManager" %>
 <%@page import="org.oscarehr.common.model.ConsentType" %>
 <%@page import="oscar.OscarProperties" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

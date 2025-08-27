@@ -36,7 +36,7 @@ import org.oscarehr.common.dao.AbstractDaoImpl;
 import org.springframework.stereotype.Repository;
 
 import ca.openosp.openo.entities.PrivateBillTransaction;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * Provides CRUD operations for BillingPrivateTransactions and legacy

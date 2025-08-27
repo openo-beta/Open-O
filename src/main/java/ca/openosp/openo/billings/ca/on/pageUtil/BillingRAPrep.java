@@ -30,7 +30,7 @@ import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.billings.ca.on.data.JdbcBillingRAImpl;
 
 public class BillingRAPrep {
-    private static final Logger _logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
     JdbcBillingRAImpl dbObj = new JdbcBillingRAImpl();
 
     // ret - Vector = || ||

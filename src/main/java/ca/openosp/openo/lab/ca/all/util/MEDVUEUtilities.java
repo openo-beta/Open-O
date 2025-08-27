@@ -27,7 +27,7 @@ import oscar.OscarProperties;
 
 
 public class MEDVUEUtilities {
-    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     /**
      * Creates a new instance of ICLUtilities

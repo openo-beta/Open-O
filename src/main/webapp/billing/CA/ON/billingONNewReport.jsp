@@ -43,7 +43,7 @@
 
 <%@ page import="java.util.*, java.sql.*, oscar.login.*, oscar.*, java.net.*" errorPage="/errorpage.jsp" %>
 <%@ include file="../../../admin/dbconnection.jsp" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.ReportProvider" %>
 <%@ page import="org.oscarehr.common.dao.ReportProviderDao" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>

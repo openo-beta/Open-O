@@ -31,7 +31,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oscarehr.common.model.Clinic;
 // import org.oscarehr.common.model.ProfessionalContact;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 
 public class OrganizationTest {

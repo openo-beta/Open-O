@@ -30,12 +30,12 @@ import java.util.GregorianCalendar;
 
 import org.oscarehr.common.dao.ConsultationRequestDao;
 import org.oscarehr.common.model.ConsultationRequest;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.demographic.data.DemographicNameAgeString;
-import oscar.util.ConversionUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 /**
  * @author Jay Gallagher

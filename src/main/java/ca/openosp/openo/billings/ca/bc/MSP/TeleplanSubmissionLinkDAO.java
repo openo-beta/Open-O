@@ -30,7 +30,7 @@ import java.util.List;
 
 import ca.openosp.openo.billing.CA.BC.dao.TeleplanSubmissionLinkDao;
 import ca.openosp.openo.billing.CA.BC.model.TeleplanSubmissionLink;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class TeleplanSubmissionLinkDAO {
 

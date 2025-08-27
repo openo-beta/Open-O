@@ -34,14 +34,14 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
 import ca.openosp.openo.fax.core.FaxAccount;
 import ca.openosp.openo.fax.core.FaxRecipient;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import oscar.OscarProperties;
 import ca.openosp.openo.clinic.ClinicData;
 
-import static org.oscarehr.util.ClinicLogoUtility.createLogoHeader;
+import static org.oscarehr.utility.ClinicLogoUtility.createLogoHeader;
 
 
 public class PdfCoverPageCreator {

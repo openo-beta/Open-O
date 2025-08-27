@@ -26,10 +26,10 @@ package ca.openosp.openo.encounter.pageUtil;
 
 import org.oscarehr.common.dao.EpisodeDao;
 import org.oscarehr.common.model.Episode;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import oscar.util.OscarRoleObjectPrivilege;
-import oscar.util.StringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.util.OscarRoleObjectPrivilege;
+import ca.openosp.openo.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

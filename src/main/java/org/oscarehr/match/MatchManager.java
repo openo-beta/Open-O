@@ -29,7 +29,7 @@ import org.oscarehr.PMmodule.dao.VacancyClientMatchDao;
 import org.oscarehr.PMmodule.model.Vacancy;
 import org.oscarehr.PMmodule.model.VacancyClientMatch;
 import org.oscarehr.common.model.Demographic;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author AnooshTech

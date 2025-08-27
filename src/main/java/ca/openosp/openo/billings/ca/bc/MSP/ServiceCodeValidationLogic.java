@@ -17,15 +17,15 @@ import org.oscarehr.common.model.CtlBillingServiceAgeRules;
 import org.oscarehr.common.model.CtlBillingServiceSexRules;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Dxresearch;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.billings.ca.bc.data.BillingFormData.BillingService;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
-import oscar.util.ConversionUtils;
-import oscar.util.DateUtils;
-import oscar.util.UtilMisc;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.DateUtils;
+import ca.openosp.openo.util.UtilMisc;
 
 /**
  * <p>Title:ServiceCodeValidationLogic </p>

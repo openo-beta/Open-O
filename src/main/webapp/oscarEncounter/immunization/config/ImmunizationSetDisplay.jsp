@@ -26,6 +26,7 @@
 
 <%@ page import="java.util.*, org.w3c.dom.*, oscar.util.*" %>
 <%@ page import="ca.openosp.openo.encounter.immunization.config.data.EctImmImmunizationSetData" %>
+<%@ page import="ca.openosp.openo.util.UtilXML" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 

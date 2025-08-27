@@ -28,9 +28,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ page import="java.util.*,oscar.oscarRx.data.*,oscar.oscarRx.pageUtil.*,oscar.oscarRx.util.*" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.rx.util.LimitedUseCode" %>
 <%@ page import="ca.openosp.openo.rx.util.RxUtil" %>
 <%@ page import="ca.openosp.openo.rx.data.RxDrugData" %>

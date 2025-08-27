@@ -27,10 +27,10 @@ package ca.openosp.openo.demographic.data;
 
 import org.oscarehr.common.dao.RelationshipsDao;
 import org.oscarehr.common.model.Relationships;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import oscar.util.ConversionUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 import java.util.*;
 

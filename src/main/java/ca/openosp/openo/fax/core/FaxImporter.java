@@ -54,8 +54,8 @@ import org.oscarehr.common.dao.QueueDocumentLinkDao;
 import org.oscarehr.common.model.FaxConfig;
 import org.oscarehr.common.model.FaxJob;
 import org.oscarehr.common.model.ProviderLabRoutingModel;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import com.itextpdf.text.pdf.codec.Base64;
 import com.fasterxml.jackson.databind.ObjectMapper;

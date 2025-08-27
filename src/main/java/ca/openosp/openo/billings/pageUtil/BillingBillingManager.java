@@ -30,12 +30,12 @@ import java.util.ArrayList;
 
 import org.oscarehr.common.dao.BillingServiceDao;
 import org.oscarehr.common.model.BillingService;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class BillingBillingManager {
 

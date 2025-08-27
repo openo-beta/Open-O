@@ -24,9 +24,9 @@ import java.util.List;
 
 import org.oscarehr.common.dao.BillingONEAReportDao;
 import org.oscarehr.common.model.BillingONEAReport;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class JdbcBillingErrorRepImpl {
 

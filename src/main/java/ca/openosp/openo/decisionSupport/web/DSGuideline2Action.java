@@ -43,8 +43,8 @@ import ca.openosp.openo.decisionSupport.model.DSDemographicAccess;
 import ca.openosp.openo.decisionSupport.model.DSGuideline;
 import ca.openosp.openo.decisionSupport.model.DSGuidelineFactory;
 import ca.openosp.openo.decisionSupport.service.DSService;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.demographic.data.DemographicData;
 

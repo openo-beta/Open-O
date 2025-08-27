@@ -27,7 +27,7 @@
 <%@ page errorPage="/errorpage.jsp" import="java.util.*" %>
 <%@ page import="oscar.oscarBilling.ca.on.pageUtil.*" %>
 <%@ page import="oscar.oscarBilling.ca.on.data.*,org.oscarehr.common.model.*,org.oscarehr.common.dao.*" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.appt.ApptStatusData" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.data.BillingDataHlp" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingSavePrep" %>

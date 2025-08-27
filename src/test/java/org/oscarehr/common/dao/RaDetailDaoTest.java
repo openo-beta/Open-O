@@ -43,10 +43,10 @@ import org.oscarehr.common.dao.utils.SchemaUtils;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.RaDetail;
 import org.oscarehr.common.model.RaHeader;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class RaDetailDaoTest extends DaoTestFixtures {
 

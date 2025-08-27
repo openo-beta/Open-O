@@ -31,7 +31,7 @@
 
 <%@ page import="java.util.*, java.sql.*, oscar.*, java.net.*" %>
 <%@ include file="../../../admin/dbconnection.jsp" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.CtlBillingService" %>
 <%@ page import="org.oscarehr.common.dao.CtlBillingServiceDao" %>
 <%@ page import="org.oscarehr.common.model.CtlDiagCode" %>

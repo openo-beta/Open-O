@@ -30,9 +30,9 @@ import java.util.Date;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.DxresearchDAO;
 import org.oscarehr.common.model.Dxresearch;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class DiseaseRegistryHandler {
 

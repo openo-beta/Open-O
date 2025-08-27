@@ -32,9 +32,9 @@ import java.util.Date;
 import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.model.Appointment;
 import org.oscarehr.common.model.Demographic;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.oscarehr.ws.rest.to.model.NewAppointmentTo1;
 
 /**

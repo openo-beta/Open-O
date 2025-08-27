@@ -34,7 +34,7 @@ import org.oscarehr.common.dao.ClinicDAO;
 import org.oscarehr.common.dao.UserPropertyDAO;
 import org.oscarehr.common.model.Clinic;
 import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.SxmlMisc;
 

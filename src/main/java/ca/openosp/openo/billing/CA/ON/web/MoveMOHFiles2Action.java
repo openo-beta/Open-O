@@ -15,10 +15,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.billing.CA.ON.util.EDTFolder;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import org.oscarehr.util.WebUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
+import org.oscarehr.utility.WebUtils;
 
 
 public class MoveMOHFiles2Action extends ActionSupport {

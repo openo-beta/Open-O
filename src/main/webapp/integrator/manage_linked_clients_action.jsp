@@ -22,8 +22,8 @@
     Toronto, Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page import="org.oscarehr.common.model.Facility" %>
 <%@page import="org.oscarehr.PMmodule.web.ManageLinkedClientsAction" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
@@ -32,7 +32,7 @@
 <%@page import="java.util.HashSet" %>
 <%@page import="java.util.Enumeration" %>
 <%@page import="org.oscarehr.PMmodule.web.ManageLinkedClients" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 
 <%
     int currentDemographicId = Integer.parseInt(request.getParameter("demographicId"));

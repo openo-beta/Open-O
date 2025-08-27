@@ -30,8 +30,8 @@ import java.util.List;
 import org.oscarehr.common.model.CustomFilter;
 import org.oscarehr.common.model.Tickler;
 import ca.openosp.openo.managers.TicklerManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 
 public class TicklerCreator {

@@ -31,10 +31,10 @@ import org.oscarehr.common.dao.FaxConfigDao;
 import org.oscarehr.common.model.FaxConfig;
 import ca.openosp.openo.managers.FaxManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import oscar.form.JSONUtil;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.form.JSONUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

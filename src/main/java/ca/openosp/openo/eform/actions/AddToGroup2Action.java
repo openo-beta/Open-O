@@ -29,8 +29,8 @@ package ca.openosp.openo.eform.actions;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import ca.openosp.openo.eform.EFormUtil;
 
 import javax.servlet.http.HttpServletRequest;

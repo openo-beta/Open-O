@@ -31,7 +31,7 @@ package ca.openosp.openo.managers;
 import java.util.List;
 
 import org.oscarehr.common.model.Facility;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 public interface FacilityManager {
 

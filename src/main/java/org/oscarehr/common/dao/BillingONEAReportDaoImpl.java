@@ -34,7 +34,7 @@ import javax.persistence.Query;
 import org.oscarehr.common.model.BillingONEAReport;
 import org.springframework.stereotype.Repository;
 import ca.openosp.openo.billings.ca.on.data.BillingProviderData;
-import oscar.util.ParamAppender;
+import ca.openosp.openo.util.ParamAppender;
 
 @Repository
 @SuppressWarnings("unchecked")

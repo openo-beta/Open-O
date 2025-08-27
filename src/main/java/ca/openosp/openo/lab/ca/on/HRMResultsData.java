@@ -25,9 +25,9 @@ import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToProvider;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class HRMResultsData {
 

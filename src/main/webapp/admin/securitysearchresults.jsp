@@ -31,7 +31,7 @@
 <%@ page import="java.sql.*, java.util.*, oscar.*" buffer="none" %>
 
 <%@ page import="java.util.*" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Security" %>
 <%@ page import="org.oscarehr.common.dao.SecurityDao" %>
 <%@ page import="org.oscarehr.common.model.UserProperty" %>

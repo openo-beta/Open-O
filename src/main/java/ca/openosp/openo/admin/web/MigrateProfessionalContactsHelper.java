@@ -33,8 +33,8 @@ import org.oscarehr.common.dao.ProfessionalSpecialistDao;
 import org.oscarehr.common.model.DemographicContact;
 import org.oscarehr.common.model.ProfessionalContact;
 import org.oscarehr.common.model.ProfessionalSpecialist;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class MigrateProfessionalContactsHelper {
 

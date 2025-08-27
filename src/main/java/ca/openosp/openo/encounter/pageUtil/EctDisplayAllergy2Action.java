@@ -35,15 +35,15 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicAllergy;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicAllergy;
 import org.oscarehr.common.model.Allergy;
 import org.oscarehr.provider.web.CppPreferencesUIBean;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.rx.data.RxPatientData;
-import oscar.util.DateUtils;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.DateUtils;
+import ca.openosp.openo.util.StringUtils;
 
 /**
  * retrieves info to display Disease entries for demographic

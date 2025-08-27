@@ -34,10 +34,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.oscarehr.common.dao.FacilityDao;
 import org.oscarehr.common.dao.IntegratorControlDao;
 import org.oscarehr.common.model.Facility;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SessionConstants;
-import org.oscarehr.util.SpringUtils;
-import org.oscarehr.util.WebUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SessionConstants;
+import org.oscarehr.utility.SpringUtils;
+import org.oscarehr.utility.WebUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

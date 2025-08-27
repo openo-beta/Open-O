@@ -34,12 +34,12 @@
 <%@page import="java.util.List" %>
 <%@page import="java.util.ArrayList" %>
 <%@page import="org.oscarehr.common.model.DHIRSubmissionLog" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.managers.DHIRSubmissionManager" %>
 <%@page import="org.hl7.fhir.dstu3.model.Immunization" %>
 <%@page import="org.hl7.fhir.dstu3.model.Patient" %>
 <%@page import="org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.integration.fhir.builder.AbstractFhirMessageBuilder" %>
 <%@page import="org.hl7.fhir.dstu3.model.Bundle" %>
 <%@page import="java.util.Map" %>
@@ -50,7 +50,7 @@
 <%@page import="org.apache.http.HttpEntity" %>
 <%@page import="org.apache.http.client.methods.HttpPost" %>
 <%@page import="org.apache.logging.log4j.Logger" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page import="java.io.UnsupportedEncodingException" %>
 <%@page import="java.io.IOException" %>
 <%@page import="java.text.SimpleDateFormat" %>
@@ -63,7 +63,7 @@
 <%@page import="org.apache.http.conn.ClientConnectionManager" %>
 <%@page import="org.apache.http.conn.scheme.SchemeRegistry" %>
 <%@page import="java.security.SecureRandom" %>
-<%@page import="org.oscarehr.util.CxfClientUtils" %>
+<%@page import="org.oscarehr.utility.CxfClientUtils" %>
 <%@page import="javax.net.ssl.SSLContext" %>
 <%@page import="java.security.KeyManagementException" %>
 <%@page import="java.security.NoSuchAlgorithmException" %>

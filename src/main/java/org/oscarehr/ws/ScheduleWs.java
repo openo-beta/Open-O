@@ -42,7 +42,7 @@ import org.oscarehr.common.model.AppointmentType;
 import org.oscarehr.common.model.ScheduleTemplateCode;
 import ca.openosp.openo.managers.DayWorkSchedule;
 import ca.openosp.openo.managers.ScheduleManager;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.ws.transfer_objects.AppointmentArchiveTransfer;
 import org.oscarehr.ws.transfer_objects.AppointmentTransfer;
 import org.oscarehr.ws.transfer_objects.AppointmentTypeTransfer;

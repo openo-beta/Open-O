@@ -36,10 +36,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.oscarehr.common.dao.RemoteAttachmentsDao;
 import org.oscarehr.common.model.RemoteAttachments;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

@@ -67,7 +67,7 @@ import java.util.Properties;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 /**
  * This class is a utility class to create and drop the database schema and all it's bits.

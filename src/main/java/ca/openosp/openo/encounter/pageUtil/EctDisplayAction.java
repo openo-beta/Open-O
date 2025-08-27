@@ -25,7 +25,7 @@
 
 package ca.openosp.openo.encounter.pageUtil;
 
-import ca.openosp.openo.service.security.SecurityManager;
+import ca.openosp.openo.services.security.SecurityManager;
 import com.opensymphony.xwork2.ActionSupport;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
@@ -33,10 +33,10 @@ import net.sf.json.processors.JsDateJsonBeanProcessor;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import oscar.util.UtilDateUtilities;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +55,7 @@ public class EctDisplayAction extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     private static HashMap<String, String> Actions = null;
     protected static final String ELLIPSES = "...";

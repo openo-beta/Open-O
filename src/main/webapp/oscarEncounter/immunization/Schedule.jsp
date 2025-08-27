@@ -39,12 +39,14 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="oscar.oscarEncounter.immunization.data.*, oscar.util.*, oscar.oscarDemographic.data.*" %>
 <%@ page import="oscar.oscarEncounter.immunization.pageUtil.*, java.util.*, org.w3c.dom.*" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
 <%@ page import="ca.openosp.openo.encounter.immunization.data.EctImmImmunizationData" %>
+<%@ page import="ca.openosp.openo.util.UtilMisc" %>
+<%@ page import="ca.openosp.openo.util.UtilXML" %>
 <%
     EctSessionBean bean = (EctSessionBean) request.getSession().getAttribute("EctSessionBean");
 

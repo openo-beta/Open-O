@@ -36,9 +36,9 @@ import ca.openosp.openo.rx.util.RxUtil;
 import org.oscarehr.common.model.Allergy;
 import org.oscarehr.common.model.PartialDate;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;

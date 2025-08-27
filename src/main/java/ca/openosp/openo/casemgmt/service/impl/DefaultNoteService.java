@@ -38,8 +38,8 @@ import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicNote;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicNoteCompositePk;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicNote;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicNoteCompositePk;
 import ca.openosp.openo.casemgmt.common.EChartNoteEntry;
 import ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO;
 import ca.openosp.openo.casemgmt.model.CaseManagementIssue;
@@ -57,7 +57,7 @@ import org.oscarehr.common.dao.CaseManagementIssueNotesDao;
 import org.oscarehr.common.dao.GroupNoteDao;
 import org.oscarehr.common.model.BillingONCHeader1;
 import org.oscarehr.common.model.GroupNoteLink;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -65,7 +65,7 @@ import org.springframework.stereotype.Component;
 import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.encounter.data.EctFormData.PatientForm;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * Default implementation of the notes service
@@ -73,7 +73,7 @@ import oscar.util.ConversionUtils;
 @Component
 public class DefaultNoteService implements NoteService {
 
-    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     @Autowired
     @Qualifier("caseManagementNoteDAO")

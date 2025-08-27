@@ -36,7 +36,7 @@ import java.util.Vector;
 
 import org.oscarehr.common.dao.ReportItemDao;
 import org.oscarehr.common.model.ReportItem;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.login.DBHelp;
 

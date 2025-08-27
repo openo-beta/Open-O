@@ -53,7 +53,7 @@ import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.OscarLogManager;
 import ca.openosp.openo.managers.ProviderManager2;
 import ca.openosp.openo.managers.model.ProviderSettings;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.web.PatientListApptBean;
 import org.oscarehr.web.PatientListApptItemBean;
 import org.oscarehr.ws.rest.conversion.ProviderConverter;

@@ -30,7 +30,7 @@ import java.util.List;
 import org.oscarehr.common.PaginationQuery;
 import org.oscarehr.common.model.Tickler;
 import org.oscarehr.ticklers.web.TicklerQuery;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

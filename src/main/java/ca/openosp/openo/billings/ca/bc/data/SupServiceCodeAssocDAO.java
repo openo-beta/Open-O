@@ -37,7 +37,7 @@ import org.oscarehr.common.dao.AbstractDaoImpl;
 import org.oscarehr.common.model.BillingService;
 import org.springframework.stereotype.Repository;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * Performing CRUD operations on Billing Procedure/Tray Fee Associations. Some Procedures are automatically associated with certain tray fees

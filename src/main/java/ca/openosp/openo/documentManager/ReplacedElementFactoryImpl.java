@@ -29,7 +29,7 @@ import com.lowagie.text.BadElementException;
 import com.lowagie.text.Image;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.w3c.dom.Element;
 import org.xhtmlrenderer.extend.FSImage;
 import org.xhtmlrenderer.extend.ReplacedElement;

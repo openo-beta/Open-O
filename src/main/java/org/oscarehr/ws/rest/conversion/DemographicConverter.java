@@ -27,8 +27,8 @@ package org.oscarehr.ws.rest.conversion;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.DemographicExt;
-import org.oscarehr.util.AgeCalculator;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.AgeCalculator;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.AgeTo1;
 import org.oscarehr.ws.rest.to.model.DemographicExtTo1;
 import org.oscarehr.ws.rest.to.model.DemographicTo1;
@@ -38,7 +38,7 @@ import java.util.List;
 
 public class DemographicConverter extends AbstractConverter<Demographic, DemographicTo1> {
 
-    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     private DemographicExtConverter demoExtConverter = new DemographicExtConverter();
     private ProviderConverter providerConverter = new ProviderConverter();

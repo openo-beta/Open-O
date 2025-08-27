@@ -25,7 +25,7 @@
 package org.oscarehr.ws.rest.conversion;
 
 import org.oscarehr.common.model.Hl7TextMessage;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.Hl7TextMessageTo1;
 import org.springframework.beans.BeanUtils;
 

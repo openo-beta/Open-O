@@ -22,9 +22,9 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.Hl7TextInfoDao;
 import org.oscarehr.common.model.Hl7TextMessageInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.v23.segment.OBR;
 import ca.uhn.hl7v2.model.v23.segment.OBX;
@@ -41,7 +41,7 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
 
 public class MEDVUEHandler implements MessageHandler {
 
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     private ca.uhn.hl7v2.model.v23.message.ORU_R01 msg = null;
     private ArrayList<String> headers = null;

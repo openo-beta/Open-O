@@ -44,7 +44,7 @@ import java.util.StringTokenizer;
 
 import org.apache.logging.log4j.Logger;
 
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.Message;
 import ca.uhn.hl7v2.model.Segment;
@@ -59,7 +59,7 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
  */
 public class DefaultGenericHandler implements MessageHandler {
 
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     protected Message msg = null;
     protected Terser terser;

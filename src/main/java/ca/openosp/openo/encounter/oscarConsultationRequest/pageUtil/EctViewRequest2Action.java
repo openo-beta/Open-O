@@ -61,11 +61,11 @@ import org.oscarehr.common.model.enumerator.ConsultationRequestExtKey;
 import ca.openosp.openo.managers.ConsultationManager;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.v26.message.REF_I12;
 import ca.uhn.hl7v2.model.v26.segment.PID;

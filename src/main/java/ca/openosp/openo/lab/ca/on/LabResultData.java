@@ -34,15 +34,15 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.LabReportInformationDao;
 import org.oscarehr.common.dao.OscarLogDao;
 import org.oscarehr.common.model.LabReportInformation;
-import org.oscarehr.util.DateUtils;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.DateUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.bc.PathNet.PathnetResultsData;
 import ca.openosp.openo.lab.ca.on.CML.CMLLabTest;
 import ca.openosp.openo.lab.ca.on.Spire.SpireLabTest;
-import oscar.util.StringUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.StringUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 
 /**

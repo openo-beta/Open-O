@@ -29,7 +29,7 @@ import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.dashboard.query.Column;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 public class ExportQueryHandler extends AbstractQueryHandler {
 

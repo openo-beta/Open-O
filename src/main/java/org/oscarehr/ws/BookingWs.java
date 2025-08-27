@@ -50,7 +50,7 @@ import ca.openosp.openo.managers.ScheduleManager;
 import ca.openosp.openo.appointment.search.AppointmentOptionTransfer;
 import ca.openosp.openo.appointment.search.AppointmentResults;
 import ca.openosp.openo.appointment.search.AppointmentConfirmationTransfer;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

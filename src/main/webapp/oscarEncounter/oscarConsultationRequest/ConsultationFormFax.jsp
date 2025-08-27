@@ -39,7 +39,7 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page
         import="java.util.*, org.w3c.dom.*, oscar.oscarEncounter.oscarConsultationRequest.pageUtil.*" %>
 <%@ page import="oscar.oscarClinic.*" %>

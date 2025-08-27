@@ -38,13 +38,13 @@ import ca.openosp.openo.billing.CA.dao.BillingDetailDao;
 import ca.openosp.openo.billing.CA.model.BillingDetail;
 import org.oscarehr.common.dao.BillingDao;
 import org.oscarehr.common.model.Billing;
-import org.oscarehr.util.DateRange;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.DateRange;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
-import oscar.util.ConversionUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 public class ExtractBean implements Serializable {
 

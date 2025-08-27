@@ -53,13 +53,13 @@ import org.oscarehr.common.model.BillingONRepo;
 import org.oscarehr.common.model.BillingOnItemPayment;
 import org.oscarehr.common.model.BillingOnTransaction;
 import org.oscarehr.common.model.BillingPaymentType;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 public class JdbcBillingClaimImpl {
-    private static final Logger _logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
     private BillingONHeaderDao dao = SpringUtils.getBean(BillingONHeaderDao.class);
     private BillingONCHeader1Dao cheaderDao = SpringUtils.getBean(BillingONCHeader1Dao.class);
     private BillingONItemDao itemDao = SpringUtils.getBean(BillingONItemDao.class);

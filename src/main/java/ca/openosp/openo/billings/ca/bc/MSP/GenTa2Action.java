@@ -48,8 +48,8 @@ import ca.openosp.openo.billing.CA.BC.model.TeleplanS21;
 import ca.openosp.openo.billing.CA.BC.model.TeleplanS22;
 import ca.openosp.openo.billing.CA.BC.model.TeleplanS23;
 import ca.openosp.openo.billing.CA.BC.model.TeleplanS25;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 

@@ -33,7 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.appt.ApptData;

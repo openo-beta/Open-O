@@ -22,7 +22,7 @@
     Toronto, Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page import="java.util.Enumeration" %>
 
 <%@page isErrorPage="true" %>

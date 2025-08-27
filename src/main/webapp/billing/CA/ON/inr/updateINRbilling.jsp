@@ -23,8 +23,8 @@
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="ca.openosp.openo.billing.CA.dao.BillingInrDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="oscar.util.ConversionUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%
     DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
 %>

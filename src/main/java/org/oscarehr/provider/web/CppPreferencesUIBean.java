@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.oscarehr.common.dao.UserPropertyDAO;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 
 public class CppPreferencesUIBean {

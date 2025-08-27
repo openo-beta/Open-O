@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.oscarehr.common.dao.ClinicDAO;
 import org.oscarehr.common.model.Clinic;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;

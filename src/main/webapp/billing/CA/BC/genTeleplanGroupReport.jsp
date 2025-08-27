@@ -43,12 +43,12 @@
 <%@ page import="java.util.*, java.sql.*, oscar.oscarBilling.ca.bc.MSP.*,oscar.*" %>
 <%@ include file="../../../admin/dbconnection.jsp" %>
 
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.billing.CA.model.BillActivity" %>
 <%@ page import="ca.openosp.openo.billing.CA.dao.BillActivityDao" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@page import="oscar.util.ConversionUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.MSP.ExtractBean" %>
 <%
     BillActivityDao billActivityDao = SpringUtils.getBean(BillActivityDao.class);

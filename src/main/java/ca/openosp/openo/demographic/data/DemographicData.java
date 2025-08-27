@@ -39,10 +39,10 @@ import org.oscarehr.common.dao.DemographicCustDao;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.DemographicCust;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 /**
  * @Deprecated: use DemographicManager.  There is no need for this.
@@ -220,10 +220,10 @@ public class DemographicData {
 
 
     public static String getAge(Demographic d) {
-        if (oscar.util.StringUtils.empty(d.getYearOfBirth()) || oscar.util.StringUtils.empty(d.getMonthOfBirth()) || oscar.util.StringUtils.empty(d.getDateOfBirth())) {
+        if (ca.openosp.openo.util.StringUtils.empty(d.getYearOfBirth()) || ca.openosp.openo.util.StringUtils.empty(d.getMonthOfBirth()) || ca.openosp.openo.util.StringUtils.empty(d.getDateOfBirth())) {
             return "";
         }
-        return (String.valueOf(oscar.util.UtilDateUtilities.calcAge(d.getYearOfBirth(), d.getMonthOfBirth(), d.getDateOfBirth())));
+        return (String.valueOf(UtilDateUtilities.calcAge(d.getYearOfBirth(), d.getMonthOfBirth(), d.getDateOfBirth())));
     }
 
     public static String getAgeAsOf(Demographic d, Date asofDate) {

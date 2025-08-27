@@ -32,9 +32,9 @@ import org.oscarehr.PMmodule.dao.*;
 import org.oscarehr.PMmodule.model.*;
 import org.oscarehr.common.dao.AdmissionDao;
 import org.oscarehr.common.model.Admission;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import oscar.OscarProperties;
-import oscar.util.LabelValueBean;
+import ca.openosp.openo.util.LabelValueBean;
 
 import java.util.ArrayList;
 import java.util.Iterator;

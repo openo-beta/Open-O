@@ -29,9 +29,9 @@ import java.util.Date;
 
 import org.oscarehr.common.dao.EChartDao;
 import org.oscarehr.common.model.EChart;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class EctEChartBean {
 

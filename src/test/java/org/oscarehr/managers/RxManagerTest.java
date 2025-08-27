@@ -36,7 +36,7 @@ import org.oscarehr.common.exception.AccessDeniedException;
 import org.oscarehr.common.model.AbstractModel;
 import org.oscarehr.common.model.Drug;
 import org.oscarehr.common.model.Prescription;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 import java.util.ArrayList;
 import java.util.Date;

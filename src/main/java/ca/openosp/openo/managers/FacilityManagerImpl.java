@@ -32,7 +32,7 @@ import java.util.List;
 
 import org.oscarehr.common.dao.FacilityDao;
 import org.oscarehr.common.model.Facility;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

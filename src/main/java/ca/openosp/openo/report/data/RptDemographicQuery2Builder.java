@@ -27,13 +27,13 @@ package ca.openosp.openo.report.data;
 
 import ca.openosp.openo.messenger.util.MsgStringQuote;
 import org.oscarehr.common.dao.forms.FormsDao;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import ca.openosp.openo.prevention.reports.PreventionReportUtil;
 import ca.openosp.openo.report.pageUtil.RptDemographicReport2Form;
-import oscar.util.DateUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.DateUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 import java.text.ParseException;
 import java.util.ArrayList;

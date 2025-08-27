@@ -26,10 +26,7 @@ import java.util.List;
 
 import org.oscarehr.common.model.DxRegistedPTInfo;
 import org.oscarehr.common.model.Dxresearch;
-import oscar.oscarResearch.oscarDxResearch.bean.dxCodeSearchBean;
-
-import java.util.Date;
-import java.util.List;
+import ca.openosp.openo.oscarDxResearch.bean.dxCodeSearchBean;
 
 public interface DxresearchDAO extends AbstractDao<Dxresearch> {
     List<DxRegistedPTInfo> getPatientRegisted(List<Dxresearch> dList, List<String> doctorList);

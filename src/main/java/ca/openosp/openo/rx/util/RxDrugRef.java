@@ -44,7 +44,7 @@ import org.apache.xmlrpc.Base64;
 import org.apache.xmlrpc.XmlRpcClient;
 import org.apache.xmlrpc.XmlRpcClientLite;
 import org.apache.xmlrpc.XmlRpcException;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import oscar.OscarProperties;
 
 /**

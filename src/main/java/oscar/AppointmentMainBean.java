@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import ca.openosp.openo.db.DBPreparedHandler;
 import ca.openosp.openo.db.DBPreparedHandlerParam;
-import oscar.util.UtilDict;
+import ca.openosp.openo.util.UtilDict;
 
 public class AppointmentMainBean {
 

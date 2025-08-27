@@ -29,7 +29,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.oscarehr.common.dao.UserPropertyDAO;
 import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 import oscar.OscarProperties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +39,7 @@ public class User2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
     private UserPropertyDAO userPropertyDAO = SpringUtils.getBean(UserPropertyDAO.class);
 
     @Override

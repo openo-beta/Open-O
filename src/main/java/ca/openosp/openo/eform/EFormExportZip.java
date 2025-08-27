@@ -32,7 +32,7 @@
 package ca.openosp.openo.eform;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import oscar.OscarProperties;
 import ca.openosp.openo.eform.data.EForm;
 import ca.openosp.openo.eform.upload.ImageUpload2Action;

@@ -23,12 +23,14 @@
 
 package ca.openosp.openo.casemgmt.web;
 
+import ca.openosp.openo.caisi_integrator.ws.*;
 import ca.openosp.openo.casemgmt.model.*;
 import ca.openosp.openo.casemgmt.service.*;
-import ca.openosp.openo.service.security.SecurityManager;
+import ca.openosp.openo.services.security.SecurityManager;
+import ca.openosp.openo.util.UtilDateUtilities;
 import com.opensymphony.xwork2.ActionSupport;
 import ca.openosp.openo.model.security.Secrole;
-import ca.openosp.openo.service.security.RolesManager;
+import ca.openosp.openo.services.security.RolesManager;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsDateJsonBeanProcessor;
@@ -43,7 +45,6 @@ import org.oscarehr.PMmodule.model.ProgramTeam;
 import org.oscarehr.PMmodule.model.SecUserRole;
 import org.oscarehr.PMmodule.service.AdmissionManager;
 import org.oscarehr.PMmodule.service.ProgramManager;
-import org.oscarehr.caisi_integrator.ws.*;
 import ca.openosp.openo.casemgmt.common.Colour;
 import ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO;
 import ca.openosp.openo.casemgmt.dao.IssueDAO;
@@ -52,18 +53,18 @@ import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;
 import ca.openosp.openo.managers.TicklerManager;
 import org.oscarehr.provider.web.CppPreferencesUIBean;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import ca.openosp.openo.casemgmt.web.CaseManagementViewAction.IssueDisplay;
 import oscar.OscarProperties;
 import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.encounter.data.EctFormData.PatientForm;
 import ca.openosp.openo.rx.pageUtil.RxSessionBean;
-import oscar.util.ConversionUtils;
-import oscar.util.LabelValueBean;
-import oscar.util.OscarRoleObjectPrivilege;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.LabelValueBean;
+import ca.openosp.openo.util.OscarRoleObjectPrivilege;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -1749,7 +1750,7 @@ public class CaseManagementView2Action extends ActionSupport {
                 String val = null;
 
                 if (key.contains(" Date")) {
-                    val = oscar.util.UtilDateUtilities.DateToString(cme.getDateValue(), "yyyy-MM-dd");
+                    val = UtilDateUtilities.DateToString(cme.getDateValue(), "yyyy-MM-dd");
                 } else {
                     val = org.apache.commons.lang.StringEscapeUtils.escapeJavaScript(cme.getValue());
                 }

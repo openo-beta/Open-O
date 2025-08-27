@@ -26,7 +26,7 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
-<%@page import="org.oscarehr.util.ProgressStatus" %>
+<%@page import="org.oscarehr.utility.ProgressStatus" %>
 <html>
 <head>
     <title>Progress Dialog</title>

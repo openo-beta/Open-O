@@ -30,7 +30,7 @@ import org.oscarehr.common.dao.DemographicPharmacyDao;
 import org.oscarehr.common.dao.PharmacyInfoDao;
 import org.oscarehr.common.model.DemographicPharmacy;
 import org.oscarehr.common.model.PharmacyInfo;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

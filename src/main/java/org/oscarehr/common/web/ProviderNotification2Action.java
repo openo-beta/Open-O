@@ -37,8 +37,8 @@ import net.sf.json.JSONObject;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.UserDSMessagePrefsDao;
 import org.oscarehr.common.model.UserDSMessagePrefs;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * Creates a provider notification record.
@@ -51,7 +51,7 @@ public class ProviderNotification2Action extends ActionSupport {
     HttpServletResponse response = ServletActionContext.getResponse();
 
 
-    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     private UserDSMessagePrefsDao userDsMessagePrefsDao = SpringUtils.getBean(UserDSMessagePrefsDao.class);
 

@@ -25,7 +25,7 @@
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.oscarehr.common.model.Site" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page import="org.owasp.encoder.Encode" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="oscar.OscarProperties" %>
@@ -34,6 +34,8 @@
 <%@page import="oscar.util.*" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.data.*" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingStatusPrep" %>
+<%@ page import="ca.openosp.openo.util.LabelValueBean" %>
+<%@ page import="ca.openosp.openo.util.DateUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%--
     The taglib directive below imports the JSTL library. If you uncomment it,

@@ -49,10 +49,10 @@ import ca.openosp.openo.appointment.search.AppointmentType;
 import ca.openosp.openo.appointment.search.FilterDefinition;
 import ca.openosp.openo.appointment.search.Provider;
 import ca.openosp.openo.appointment.search.filters.AvailableTimeSlotFilter;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 //import org.oscarehr.oscar_clinic_component.manager.BookingLearningManager;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.XmlUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.XmlUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

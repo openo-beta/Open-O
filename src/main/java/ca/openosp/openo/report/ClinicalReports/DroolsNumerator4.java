@@ -39,8 +39,8 @@ import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.io.RuleBaseLoader;
 import org.jdom.Element;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet;
@@ -48,7 +48,7 @@ import ca.openosp.openo.encounter.oscarMeasurements.util.MeasurementDSHelper;
 import ca.openosp.openo.encounter.oscarMeasurements.util.RuleBaseCreator;
 import ca.openosp.openo.encounter.oscarMeasurements.util.TargetColour;
 import ca.openosp.openo.encounter.oscarMeasurements.util.TargetCondition;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * @author jay

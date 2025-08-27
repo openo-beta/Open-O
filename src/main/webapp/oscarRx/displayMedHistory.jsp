@@ -48,7 +48,7 @@
 <%@page import="oscar.oscarRx.util.*" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
 <html>

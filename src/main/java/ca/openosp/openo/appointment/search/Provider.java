@@ -34,8 +34,8 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.XmlUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.XmlUtils;
 import org.oscarehr.ws.rest.to.model.AllowedAppointmentTypeTransfer;
 import org.oscarehr.ws.rest.to.model.BookingProviderTransfer;
 import org.w3c.dom.NamedNodeMap;

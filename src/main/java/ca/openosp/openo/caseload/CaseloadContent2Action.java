@@ -27,15 +27,15 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.oscarehr.common.dao.CaseloadDao;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import org.owasp.encoder.Encode;
 import oscar.OscarProperties;
 import ca.openosp.openo.log.LogAction;
-import oscar.util.OscarRoleObjectPrivilege;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.OscarRoleObjectPrivilege;
+import ca.openosp.openo.util.StringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

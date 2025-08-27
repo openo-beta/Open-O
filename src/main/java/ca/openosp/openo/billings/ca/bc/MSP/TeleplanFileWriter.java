@@ -37,9 +37,9 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.BillingDao;
 import org.oscarehr.common.model.Billing;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.Misc;
 import ca.openosp.openo.entities.Billingmaster;

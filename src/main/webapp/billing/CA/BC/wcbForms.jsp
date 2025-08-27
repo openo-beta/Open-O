@@ -42,7 +42,7 @@
 
 <%@page import="org.springframework.web.context.WebApplicationContext" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
-<%@page import="oscar.oscarDemographic.data.*,org.oscarehr.util.SpringUtils" %>
+<%@page import="oscar.oscarDemographic.data.*,org.oscarehr.utility.SpringUtils" %>
 <%@page import="java.text.*, java.util.*, oscar.oscarBilling.ca.bc.data.*,oscar.oscarBilling.ca.bc.pageUtil.*,oscar.*,oscar.entities.*" %>
 <%@ page import="ca.openosp.openo.entities.WCB" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO" %>

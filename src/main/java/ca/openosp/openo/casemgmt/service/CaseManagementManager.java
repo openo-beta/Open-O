@@ -30,7 +30,7 @@ package ca.openosp.openo.casemgmt.service;
 import ca.openosp.openo.casemgmt.dao.*;
 import ca.openosp.openo.casemgmt.model.*;
 import ca.openosp.openo.model.security.Secrole;
-import ca.openosp.openo.service.security.RolesManager;
+import ca.openosp.openo.services.security.RolesManager;
 import org.oscarehr.PMmodule.dao.ProgramAccessDAO;
 import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
 import org.oscarehr.PMmodule.dao.ProgramQueueDao;
@@ -39,13 +39,12 @@ import org.oscarehr.PMmodule.model.ProgramAccess;
 import org.oscarehr.PMmodule.model.ProgramProvider;
 import org.oscarehr.PMmodule.service.AdmissionManager;
 import org.oscarehr.PMmodule.service.ProgramManager;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicNote;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicNote;
 import ca.openosp.openo.casemgmt.common.EChartNoteEntry;
-import ca.openosp.openo.casemgmt.dao.*;
 import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;
-import org.oscarehr.util.LoggedInInfo;
-import oscar.util.LabelValueBean;
+import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.util.LabelValueBean;
 
 import java.util.*;
 

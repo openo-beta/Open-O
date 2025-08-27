@@ -28,8 +28,8 @@ package ca.openosp.openo.billing.CA.ON.util;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 import org.oscarehr.common.dao.DocumentDao;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import oscar.OscarProperties;
 
 import javax.activation.MimetypesFileTypeMap;

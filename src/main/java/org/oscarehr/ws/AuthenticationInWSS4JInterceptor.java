@@ -40,8 +40,8 @@ import org.apache.logging.log4j.Logger;
 import org.apache.wss4j.common.WSS4JConstants;
 import org.apache.wss4j.dom.handler.WSHandlerConstants;
 import org.oscarehr.common.model.OscarLog;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.log.LogAction;
 

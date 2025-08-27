@@ -31,11 +31,11 @@ package ca.openosp.openo.report.reportByTemplate.actions;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ca.openosp.openo.service.security.SecurityManager;
+import ca.openosp.openo.services.security.SecurityManager;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import com.Ostermiller.util.CSVParser;
 

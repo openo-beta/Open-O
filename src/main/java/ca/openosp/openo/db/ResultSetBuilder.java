@@ -62,7 +62,7 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.oscarehr.common.model.ProviderLabRoutingModel;
 
-import oscar.util.Textualizer;
+import ca.openosp.openo.util.Textualizer;
 
 /**
  * <p><code>ResultSetBuilder</code> builds a JDOM tree from a

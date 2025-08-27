@@ -38,7 +38,7 @@
     }
 %>
 <%@ page import="ca.openosp.openo.encounter.data.EctPatientData" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 
 <%
     String demoNo = request.getParameter("demographic_no");

@@ -37,13 +37,13 @@ import java.util.List;
 
 import org.oscarehr.common.dao.BillingDao;
 import org.oscarehr.common.model.Billing;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.billings.ca.bc.Teleplan.TeleplanSequenceDAO;
 import ca.openosp.openo.billings.ca.bc.data.BillActivityDAO;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 /**
  * Holds Data about a teleplan submission

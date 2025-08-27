@@ -35,7 +35,7 @@ import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.dao.MyGroupDao;
 import org.oscarehr.common.model.MyGroup;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class ProviderNameBeanHandler {
 

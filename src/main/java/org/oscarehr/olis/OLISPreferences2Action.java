@@ -20,9 +20,9 @@ import org.joda.time.format.DateTimeFormatter;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.olis.dao.OLISSystemPreferencesDao;
 import org.oscarehr.olis.model.OLISSystemPreferences;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.scheduling.concurrent.ScheduledExecutorTask;
 //import org.springframework.scheduling.timer.ScheduledTimerTask;
 

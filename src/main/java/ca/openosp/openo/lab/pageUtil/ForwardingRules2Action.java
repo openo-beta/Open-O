@@ -46,7 +46,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.IncomingLabRulesDao;
 import org.oscarehr.common.model.IncomingLabRules;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.lab.ForwardingRules;
@@ -62,7 +62,7 @@ public class ForwardingRules2Action extends ActionSupport {
     HttpServletResponse response = ServletActionContext.getResponse();
 
 
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
     private IncomingLabRulesDao dao = SpringUtils.getBean(IncomingLabRulesDao.class);
 
 

@@ -35,8 +35,8 @@ import org.oscarehr.PMmodule.dao.WaitlistDao;
 import org.oscarehr.PMmodule.wlmatch.MatchBO;
 import org.oscarehr.PMmodule.wlmatch.MatchingManager;
 import org.oscarehr.PMmodule.wlmatch.VacancyDisplayBO;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 
 import com.opensymphony.xwork2.ActionSupport;

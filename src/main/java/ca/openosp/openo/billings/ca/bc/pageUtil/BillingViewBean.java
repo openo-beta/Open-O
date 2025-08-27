@@ -35,7 +35,7 @@ import org.oscarehr.common.dao.BillingDao;
 import org.oscarehr.common.dao.BillingPaymentTypeDao;
 import org.oscarehr.common.model.Billing;
 import org.oscarehr.common.model.BillingPaymentType;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.entities.PaymentType;
@@ -44,7 +44,7 @@ import ca.openosp.openo.billings.ca.bc.data.BillRecipient;
 import ca.openosp.openo.billings.ca.bc.data.BillingNote;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
 import ca.openosp.openo.billings.ca.bc.pageUtil.BillingBillingManager.BillingItem;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class BillingViewBean {
 

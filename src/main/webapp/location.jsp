@@ -25,11 +25,11 @@
 --%>
 <%@ page import="java.util.*" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Facility" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@ page import="oscar.util.LabelValueBean" %>
+<%@ page import="ca.openosp.openo.util.LabelValueBean" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ include file="/common/webAppContextAndSuperMgr.jsp" %>
@@ -74,7 +74,7 @@
 <script type="text/javascript">
     function setLocation() {
         var programIdForLocation = jQuery("#programIdForLocation").val();
-        window.location.href = "provider/providercontrol.jsp?<%=org.oscarehr.util.SessionConstants.CURRENT_PROGRAM_ID%>=" + programIdForLocation;
+        window.location.href = "provider/providercontrol.jsp?<%=org.oscarehr.utility.SessionConstants.CURRENT_PROGRAM_ID%>=" + programIdForLocation;
     }
 </script>
 </html>

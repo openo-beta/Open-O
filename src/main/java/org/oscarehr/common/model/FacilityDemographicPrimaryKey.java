@@ -27,7 +27,7 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
-import org.oscarehr.caisi_integrator.ws.FacilityIdIntegerCompositePk;
+import ca.openosp.openo.caisi_integrator.ws.FacilityIdIntegerCompositePk;
 
 /**
  * This class is used for (at least) 2 purposes, 1) as a PrimaryKey for JPA objects,

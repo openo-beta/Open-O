@@ -37,9 +37,9 @@ import org.oscarehr.common.model.HrmLog;
 import org.oscarehr.common.model.HrmLogEntry;
 import org.oscarehr.common.model.OscarMsgType;
 import org.oscarehr.common.model.SecObjPrivilege;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;

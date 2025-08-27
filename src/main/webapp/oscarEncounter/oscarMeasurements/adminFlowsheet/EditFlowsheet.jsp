@@ -34,7 +34,7 @@
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.FlowSheetItem" %>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBeanHandler" %>

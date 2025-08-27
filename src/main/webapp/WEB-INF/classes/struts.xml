@@ -49,11 +49,11 @@
             <result name="unauthorized">/securityError.jsp</result>
             <result name="error">/failure.jsp</result>
         </action>
-        <action name="formBPMH" class="oscar.form.pharmaForms.formBPMH.web.BpmhFormRetrieve2Action">
+        <action name="formBPMH" class="ca.openosp.openo.form.pharmaForms.formBPMH.web.BpmhFormRetrieve2Action">
             <result name="saved">/formBPMH.do?method=fetch</result>
             <result name="success">/form/pharmaForms/formBPMH.jsp</result>
         </action>
-        <action name="formeCARES" class="oscar.form.eCARES.EcaresForm2Action">
+        <action name="formeCARES" class="ca.openosp.openo.form.eCARES.EcaresForm2Action">
             <result name="success">/form/eCARES/formeCARES.jsp</result>
             <result name="tickler">/tickler/ticklerAddWidget.jsp</result>
         </action>
@@ -409,16 +409,16 @@
             <result name="failure">/errorpage.jsp</result>
             <result name="success">/admin/labforwardingrules.jsp</result>
         </action>
-        <action name="form/setupSelect" class="oscar.form.pageUtil.FrmSetupSelect2Action">
+        <action name="form/setupSelect" class="ca.openosp.openo.form.pageUtil.FrmSetupSelect2Action">
             <result name="continue">/form/formselect.jsp</result>
         </action>
-        <action name="form/select" class="oscar.form.pageUtil.FrmSelect2Action">
+        <action name="form/select" class="ca.openosp.openo.form.pageUtil.FrmSelect2Action">
             <result name="success">/form/setupSelect.do</result>
         </action>
-        <action name="form/xmlUpload" class="oscar.form.pageUtil.FrmXmlUpload2Action">
+        <action name="form/xmlUpload" class="ca.openosp.openo.form.pageUtil.FrmXmlUpload2Action">
             <result name="success">/form/formXmlUpload.jsp</result>
         </action>
-        <action name="form/formname" class="oscar.form.Frm2Action">
+        <action name="form/formname" class="ca.openosp.openo.form.Frm2Action">
             <result name="exit">/oscarEncounter/close.jsp</result>
             <result name="print">/form/forwardprint.jsp</result>
             <result name="printAll">/form/createpdf</result>
@@ -428,9 +428,9 @@
             <result name="graph">/form/createpdf</result>
             <result name="failure">/oscarEncounter/error.jsp</result>
         </action>
-        <action name="form/forwardshortcutname" class="oscar.form.pageUtil.FormForward2Action"/>
-        <action name="form/SetupForm" class="oscar.form.pageUtil.FrmSetupForm2Action"/>
-        <action name="form/SubmitForm" class="oscar.form.pageUtil.FrmForm2Action"/>
+        <action name="form/forwardshortcutname" class="ca.openosp.openo.form.pageUtil.FormForward2Action"/>
+        <action name="form/SetupForm" class="ca.openosp.openo.form.pageUtil.FrmSetupForm2Action"/>
+        <action name="form/SubmitForm" class="ca.openosp.openo.form.pageUtil.FrmForm2Action"/>
         <action name="oscarEncounter/displayLabs" class="ca.openosp.openo.encounter.pageUtil.EctDisplayLabAction22Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
@@ -1456,31 +1456,31 @@
             <result name="error">/provider/setTicklerPreferences.jsp?error</result>
         </action>
         <action name="provider/rxInteractionWarningLevel" class="org.oscarehr.provider.web.ProviderRxInteractionWarningLevel2Action"/>
-        <action name="oscarResearch/oscarDxResearch/setupDxResearch" class="oscar.oscarResearch.oscarDxResearch.pageUtil.dxSetupResearch2Action">
+        <action name="oscarResearch/oscarDxResearch/setupDxResearch" class="ca.openosp.openo.oscarDxResearch.pageUtil.dxSetupResearch2Action">
             <result name="success">/oscarResearch/oscarDxResearch/dxResearch.jsp</result>
         </action>
-        <action name="oscarResearch/oscarDxResearch/dxResearch" class="oscar.oscarResearch.oscarDxResearch.pageUtil.dxResearch2Action">
+        <action name="oscarResearch/oscarDxResearch/dxResearch" class="ca.openosp.openo.oscarDxResearch.pageUtil.dxResearch2Action">
             <result name="codeSearch">/oscarResearch/oscarDxResearch/dxcodeSearch.do</result>
             <result name="success">/oscarResearch/oscarDxResearch/setupDxResearch.do</result>
             <result name="codeList">/oscarResearch/oscarDxResearch/quickCodeList.jsp</result>
         </action>
-        <action name="oscarResearch/oscarDxResearch/dxResearchCodeSearch" class="oscar.oscarResearch.oscarDxResearch.pageUtil.dxResearchCodeSearch2Action">
+        <action name="oscarResearch/oscarDxResearch/dxResearchCodeSearch" class="ca.openosp.openo.oscarDxResearch.pageUtil.dxResearchCodeSearch2Action">
             <result name="success">/oscarResearch/oscarDxResearch/dxResearchCodeSearch.jsp</result>
         </action>
-        <action name="oscarResearch/oscarDxResearch/dxResearchUpdate" class="oscar.oscarResearch.oscarDxResearch.pageUtil.dxResearchUpdate2Action">
+        <action name="oscarResearch/oscarDxResearch/dxResearchUpdate" class="ca.openosp.openo.oscarDxResearch.pageUtil.dxResearchUpdate2Action">
             <result name="success">/oscarResearch/oscarDxResearch/setupDxResearch.do</result>
         </action>
-        <action name="oscarResearch/oscarDxResearch/dxResearchLoadQuickList" class="oscar.oscarResearch.oscarDxResearch.pageUtil.dxResearchLoadQuickList2Action">
+        <action name="oscarResearch/oscarDxResearch/dxResearchLoadQuickList" class="ca.openosp.openo.oscarDxResearch.pageUtil.dxResearchLoadQuickList2Action">
             <result name="success">/oscarResearch/oscarDxResearch/dxResearchSelectQuickList.jsp</result>
         </action>
-        <action name="oscarResearch/oscarDxResearch/dxResearchLoadQuickListItems" class="oscar.oscarResearch.oscarDxResearch.pageUtil.dxResearchLoadQuickListItems2Action">
+        <action name="oscarResearch/oscarDxResearch/dxResearchLoadQuickListItems" class="ca.openosp.openo.oscarDxResearch.pageUtil.dxResearchLoadQuickListItems2Action">
             <result name="success">/oscarResearch/oscarDxResearch/dxResearchEditQuickList.jsp</result>
         </action>
-        <action name="oscarResearch/oscarDxResearch/dxResearchUpdateQuickList" class="oscar.oscarResearch.oscarDxResearch.pageUtil.dxResearchUpdateQuickList2Action">
+        <action name="oscarResearch/oscarDxResearch/dxResearchUpdateQuickList" class="ca.openosp.openo.oscarDxResearch.pageUtil.dxResearchUpdateQuickList2Action">
             <result name="success">/oscarResearch/oscarDxResearch/dxResearchLoadQuickListItems.do</result>
         </action>
-        <action name="dxCodeSearchJSON" class="oscar.oscarResearch.oscarDxResearch.pageUtil.dxCodeSearchJSON2Action"/>
-        <action name="oscarResearch/oscarDxResearch/dxResearchLoadAssociations" class="oscar.oscarResearch.oscarDxResearch.pageUtil.dxResearchLoadAssociations2Action">
+        <action name="dxCodeSearchJSON" class="ca.openosp.openo.oscarDxResearch.pageUtil.dxCodeSearchJSON2Action"/>
+        <action name="oscarResearch/oscarDxResearch/dxResearchLoadAssociations" class="ca.openosp.openo.oscarDxResearch.pageUtil.dxResearchLoadAssociations2Action">
             <interceptor-ref name="fileUpload" />
             <interceptor-ref name="defaultStack"/>
             <result name="success">/oscarResearch/oscarDxResearch/dxResearchSelectAssociations.jsp</result>
@@ -1810,10 +1810,10 @@
         <action name="oscarMeasurement/AddShortMeasurement" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctAddShortMeasurement2Action">
             <result name="success">/oscarPrevention/PreventionReporting.jsp</result>
         </action>
-        <action name="form/RHPrevention" class="oscar.form.pageUtil.FrmFormRHPrevention2Action">
+        <action name="form/RHPrevention" class="ca.openosp.openo.form.pageUtil.FrmFormRHPrevention2Action">
             <result name="success">/form/formRhImmuneGlobulin.jsp</result>
         </action>
-        <action name="form/AddRHWorkFlow" class="oscar.form.pageUtil.FrmFormAddRHWorkFlow2Action">
+        <action name="form/AddRHWorkFlow" class="ca.openosp.openo.form.pageUtil.FrmFormAddRHWorkFlow2Action">
             <result name="success">/form/RHPrevention.do</result>
         </action>
         <action name="billing/CA/BC/GenerateTeleplanFile" class="ca.openosp.openo.billings.ca.bc.pageUtil.GenerateTeleplanFile2Action">
@@ -2094,7 +2094,7 @@
         </action>
         <action name="saveWorkView" class="org.oscarehr.provider.web.ProviderView2Action" method="execute"/>
         <action name="Provider/showPersonal" class="org.oscarehr.provider.web.DisplayPersonalInfoAppointment2Action"/>
-        <action name="admin/oscarStatus" class="oscar.util.OscarStatus2Action">
+        <action name="admin/oscarStatus" class="ca.openosp.openo.util.OscarStatus2Action">
             <result name="success">/admin/oscarStatus.jsp</result>
         </action>
         <action name="billing/CA/ON/moveMOHFiles" class="ca.openosp.openo.billing.CA.ON.web.MoveMOHFiles2Action">
@@ -2209,7 +2209,7 @@
             <result name="success">/pregnancy/success.jsp</result>
             <result name="complete">/pregnancy/complete.jsp</result>
         </action>
-        <action name="form/BCAR2020" class="oscar.form.FrmBCAR20202Action">
+        <action name="form/BCAR2020" class="ca.openosp.openo.form.FrmBCAR20202Action">
             <result name="pg1">/form/formBCAR2020pg1.jsp</result>
             <result name="pg2">/form/formBCAR2020pg2.jsp</result>
             <result name="pg3">/form/formBCAR2020pg3.jsp</result>

@@ -34,7 +34,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
 

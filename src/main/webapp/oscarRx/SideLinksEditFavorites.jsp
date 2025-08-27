@@ -30,7 +30,7 @@
 %>
 
 <%@page import="ca.openosp.openo.rx.data.RxPatientData" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     RxSessionBean bean2 = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");

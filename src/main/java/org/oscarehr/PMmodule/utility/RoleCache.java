@@ -33,8 +33,8 @@ import org.oscarehr.PMmodule.dao.DefaultRoleAccessDAO;
 import org.oscarehr.PMmodule.model.DefaultRoleAccess;
 import org.oscarehr.common.dao.CaisiAccessTypeDao;
 import org.oscarehr.common.model.CaisiAccessType;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.dao.security.SecroleDao;
 import ca.openosp.openo.model.security.Secrole;

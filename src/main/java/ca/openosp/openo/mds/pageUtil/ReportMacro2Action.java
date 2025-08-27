@@ -39,9 +39,9 @@ import org.oscarehr.common.model.Tickler;
 import org.oscarehr.common.model.TicklerLink;
 import org.oscarehr.common.model.UserProperty;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;

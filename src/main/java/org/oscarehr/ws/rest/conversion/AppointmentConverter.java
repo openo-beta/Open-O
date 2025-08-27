@@ -27,8 +27,8 @@ package org.oscarehr.ws.rest.conversion;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.model.Appointment;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import org.oscarehr.ws.rest.to.model.AppointmentTo1;
 import org.springframework.beans.BeanUtils;
 

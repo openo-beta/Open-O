@@ -26,7 +26,7 @@
 <%@ page errorPage="../appointment/errorpage.jsp" import="java.util.*,java.sql.*" %>
 <%@ page import="oscar.oscarBilling.ca.on.data.*" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@ page import="org.oscarehr.util.MiscUtils" %>
+<%@ page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.data.JdbcBillingCodeImpl" %>
 <%
     //

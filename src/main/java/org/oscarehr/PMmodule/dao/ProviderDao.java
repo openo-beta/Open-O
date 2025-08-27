@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 import ca.openosp.openo.model.security.SecProvider;
 

@@ -48,15 +48,15 @@ import ca.openosp.openo.decisionSupport.model.DSConsequence;
 import ca.openosp.openo.decisionSupport.model.DSGuideline;
 import ca.openosp.openo.decisionSupport.service.DSService;
 import ca.openosp.openo.renal.CkdScreener;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import oscar.OscarProperties;
-import oscar.util.OscarRoleObjectPrivilege;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.OscarRoleObjectPrivilege;
+import ca.openosp.openo.util.StringUtils;
 
 /**
  * @author apavel

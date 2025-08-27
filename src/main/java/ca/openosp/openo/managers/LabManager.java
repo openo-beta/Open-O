@@ -32,8 +32,8 @@ import java.util.List;
 
 import org.oscarehr.common.model.Hl7TextInfo;
 import org.oscarehr.common.model.Hl7TextMessage;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.PDFGenerationException;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.PDFGenerationException;
 
 
 public interface LabManager {

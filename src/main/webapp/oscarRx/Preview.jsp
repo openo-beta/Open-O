@@ -32,7 +32,7 @@
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="org.apache.logging.log4j.Logger" %>
 <%@ page import="oscar.*,java.lang.*,java.util.Date" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
 <%@ page import="ca.openosp.openo.provider.data.ProSignatureData" %>
 <%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
@@ -242,7 +242,7 @@
                                         String fullOutLine = rx.getFullOutLine().replaceAll(";", "<br />");
 
                                         if (fullOutLine == null || fullOutLine.length() <= 6) {
-                                            org.oscarehr.util.MiscUtils.getLogger();
+                                            org.oscarehr.utility.MiscUtils.getLogger();
                                             fullOutLine = "<span style=\"color:red;font-size:16;font-weight:bold\">An error occurred, please write a new prescription.</span><br />" + fullOutLine;
                                         }
                                 %>

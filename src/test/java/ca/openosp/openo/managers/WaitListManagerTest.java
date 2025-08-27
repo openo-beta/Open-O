@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import ca.openosp.openo.managers.WaitListManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.velocity.VelocityContext;
 import org.junit.Test;
@@ -39,7 +38,7 @@ import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.PMmodule.model.Vacancy;
 import org.oscarehr.common.model.Demographic;
 import ca.openosp.openo.managers.WaitListManager.AdmissionDemographicPair;
-import org.oscarehr.util.VelocityUtils;
+import org.oscarehr.utility.VelocityUtils;
 
 public class WaitListManagerTest {
 

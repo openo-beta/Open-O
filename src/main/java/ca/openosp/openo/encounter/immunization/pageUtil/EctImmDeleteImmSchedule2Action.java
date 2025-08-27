@@ -33,14 +33,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import ca.openosp.openo.encounter.immunization.data.EctImmImmunizationData;
-import oscar.util.UtilXML;
+import ca.openosp.openo.util.UtilXML;
 
 /**
  * @author Jay Gallagher

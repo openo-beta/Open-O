@@ -33,9 +33,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -44,7 +44,7 @@ import org.w3c.dom.NodeList;
 import ca.openosp.openo.encounter.immunization.config.data.EctImmImmunizationSetData;
 import ca.openosp.openo.encounter.immunization.data.EctImmImmunizationData;
 import ca.openosp.openo.encounter.pageUtil.EctSessionBean;
-import oscar.util.UtilXML;
+import ca.openosp.openo.util.UtilXML;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

@@ -33,7 +33,7 @@ package ca.openosp.openo.clinic;
 
 import org.oscarehr.common.dao.ClinicDAO;
 import org.oscarehr.common.model.Clinic;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import java.util.HashSet;
 import java.util.Set;

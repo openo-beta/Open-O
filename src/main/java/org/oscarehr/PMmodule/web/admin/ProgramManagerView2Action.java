@@ -35,6 +35,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.ws.WebServiceException;
 
+import ca.openosp.openo.caisi_integrator.ws.*;
+import ca.openosp.openo.util.DateUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.dao.ClientReferralDAO;
@@ -49,7 +51,6 @@ import org.oscarehr.PMmodule.service.ClientRestrictionManager;
 import org.oscarehr.PMmodule.service.ProgramManager;
 import org.oscarehr.PMmodule.service.ProgramQueueManager;
 import org.oscarehr.PMmodule.service.VacancyTemplateManager;
-import org.oscarehr.caisi_integrator.ws.*;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.dao.FacilityDao;
@@ -58,9 +59,9 @@ import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Facility;
 import org.oscarehr.common.model.Tickler;
 import ca.openosp.openo.managers.TicklerManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.beans.factory.annotation.Required;
 
 import ca.openosp.openo.log.LogAction;
@@ -351,7 +352,7 @@ public class ProgramManagerView2Action extends ActionSupport {
         String dischargeNotes = request.getParameter("admission.dischargeNotes");
         String admissionNotes = request.getParameter("admission.admissionNotes");
         String formattedAdmissionDate = request.getParameter("admissionDate");
-        Date admissionDate = oscar.util.DateUtils.toDate(formattedAdmissionDate);
+        Date admissionDate = DateUtils.toDate(formattedAdmissionDate);
         List<Integer> dependents = clientManager.getDependentsList(Integer.valueOf(clientId));
 
         try {

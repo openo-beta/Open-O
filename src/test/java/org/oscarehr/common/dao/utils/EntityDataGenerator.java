@@ -41,7 +41,7 @@ import javax.persistence.Id;
 
 import org.oscarehr.common.model.DemographicExt;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 public class EntityDataGenerator {
 

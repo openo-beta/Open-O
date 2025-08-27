@@ -35,7 +35,7 @@ import org.oscarehr.common.dao.OscarCommLocationsDao;
 import org.oscarehr.common.model.Groups;
 import org.oscarehr.common.model.OscarCommLocations;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

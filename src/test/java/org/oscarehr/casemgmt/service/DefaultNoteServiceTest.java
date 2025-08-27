@@ -49,11 +49,11 @@ import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.AuthUtils;
 import org.oscarehr.common.dao.utils.SchemaUtils;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 public class DefaultNoteServiceTest extends DaoTestFixtures {
-    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     private NoteService service = SpringUtils.getBean(DefaultNoteService.class);
 

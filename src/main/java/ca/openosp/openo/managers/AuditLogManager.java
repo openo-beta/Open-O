@@ -35,9 +35,9 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.oscarehr.common.dao.OscarLogDao;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.stereotype.Service;
 
 import oscar.OscarProperties;

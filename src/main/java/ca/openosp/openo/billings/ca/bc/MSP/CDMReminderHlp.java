@@ -9,11 +9,11 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.oscarTickler.TicklerCreator;
-import oscar.util.SqlUtils;
+import ca.openosp.openo.util.SqlUtils;
 
 public class CDMReminderHlp {
     public CDMReminderHlp() {

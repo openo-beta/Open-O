@@ -40,9 +40,9 @@ import java.util.List;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.Hl7TextInfoDao;
 import org.oscarehr.common.model.Hl7TextInfo;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.OscarAuditLogger;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.OscarAuditLogger;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import ca.openosp.openo.lab.ca.all.upload.MessageUploader;
@@ -50,7 +50,7 @@ import ca.openosp.openo.lab.ca.all.util.Utilities;
 
 public class TRUENORTHHandler implements MessageHandler {
 
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
     Hl7TextInfoDao hl7TextInfoDao = (Hl7TextInfoDao) SpringUtils.getBean(Hl7TextInfoDao.class);
 
     @Override

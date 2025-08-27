@@ -34,11 +34,11 @@ import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.integration.hl7.model.PatientId;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.Misc;
 import oscar.OscarProperties;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.Group;
 import ca.uhn.hl7v2.model.Segment;
@@ -53,7 +53,7 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
  */
 public class HHSEmrDownloadHandler extends DefaultGenericHandler implements MessageHandler {
 
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
     ArrayList<String> headerList = null;
     //   Message msg = null;
     //   Terser terser;

@@ -26,7 +26,7 @@
 
 <%@page import="java.net.URLEncoder" %>
 <%@page import="java.util.List" %>
-<%@page import="oscar.util.ConversionUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@page import="org.oscarehr.common.model.Appointment" %>
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
 

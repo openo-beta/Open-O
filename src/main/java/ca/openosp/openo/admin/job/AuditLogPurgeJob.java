@@ -32,9 +32,9 @@ import org.oscarehr.common.jobs.OscarRunnable;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Security;
 import ca.openosp.openo.managers.AuditLogManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 

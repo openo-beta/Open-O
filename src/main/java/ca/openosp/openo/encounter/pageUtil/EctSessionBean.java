@@ -42,13 +42,13 @@ import org.oscarehr.common.model.EncounterTemplate;
 import org.oscarehr.common.model.MeasurementGroupStyle;
 import org.oscarehr.common.model.MessageTbl;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.encounter.oscarConsultation.data.EctConProviderData;
-import oscar.util.ConversionUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 @Deprecated
 public class EctSessionBean implements java.io.Serializable {

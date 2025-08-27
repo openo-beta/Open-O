@@ -25,7 +25,7 @@
 package org.oscarehr.managers;
 
 import ca.openosp.openo.managers.SecurityInfoManagerImpl;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 /**
  * A mock class to support unit testing without requiring a

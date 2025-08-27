@@ -32,7 +32,7 @@ import javax.persistence.Query;
 
 import org.oscarehr.common.model.Relationships;
 import org.springframework.stereotype.Repository;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 @Repository
 public class RelationshipsDaoImpl extends AbstractDaoImpl<Relationships> implements RelationshipsDao {

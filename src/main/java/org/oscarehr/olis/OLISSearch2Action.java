@@ -29,9 +29,9 @@ import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.OscarLog;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.olis.Driver;
 import ca.openosp.openo.olis.parameters.OBR16;

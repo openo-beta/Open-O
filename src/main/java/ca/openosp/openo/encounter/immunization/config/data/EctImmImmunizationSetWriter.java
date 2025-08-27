@@ -31,7 +31,7 @@ import java.util.Vector;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import oscar.util.UtilXML;
+import ca.openosp.openo.util.UtilXML;
 
 public class EctImmImmunizationSetWriter {
 

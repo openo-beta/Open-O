@@ -34,7 +34,7 @@
 
 
 <jsp:useBean id="dataBean" class="java.util.Properties" scope="page"/>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.ScheduleTemplateCode" %>
 <%@ page import="org.oscarehr.common.dao.ScheduleTemplateCodeDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>

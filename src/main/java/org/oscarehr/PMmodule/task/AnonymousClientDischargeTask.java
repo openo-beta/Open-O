@@ -30,9 +30,9 @@ import java.util.TimerTask;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.service.AdmissionManager;
 import org.oscarehr.common.model.Admission;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class AnonymousClientDischargeTask extends TimerTask {
 

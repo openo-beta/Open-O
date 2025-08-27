@@ -61,8 +61,8 @@ import org.oscarehr.common.model.ScheduleTemplate;
 import org.oscarehr.common.model.ScheduleTemplateCode;
 import org.oscarehr.common.model.ScheduleTemplatePrimaryKey;
 import org.oscarehr.common.model.Security;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

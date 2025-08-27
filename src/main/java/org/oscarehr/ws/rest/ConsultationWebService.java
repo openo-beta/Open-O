@@ -69,8 +69,8 @@ import ca.openosp.openo.consultations.ConsultationResponseSearchFilter;
 import ca.openosp.openo.managers.ConsultationManager;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.DocumentManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.ws.rest.conversion.ConsultationRequestConverter;
 import org.oscarehr.ws.rest.conversion.ConsultationRequestExtConverter;
 import org.oscarehr.ws.rest.conversion.ConsultationResponseConverter;
@@ -102,7 +102,7 @@ import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.demographic.data.RxInformation;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 @Path("/consults")
 @Component("consultationWebService")

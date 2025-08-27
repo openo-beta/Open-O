@@ -38,10 +38,10 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.PropertyDao;
 import org.oscarehr.common.model.Property;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.QueueCache;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.QueueCache;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

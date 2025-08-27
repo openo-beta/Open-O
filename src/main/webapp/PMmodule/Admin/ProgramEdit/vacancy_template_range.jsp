@@ -32,7 +32,7 @@
 <%@page import="org.oscarehr.PMmodule.service.VacancyTemplateManager" %>
 <%@page import="org.oscarehr.PMmodule.dao.CriteriaTypeDao" %>
 <%@page import="org.oscarehr.PMmodule.dao.CriteriaTypeOptionDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%
     CriteriaTypeDao criteriaTypeDAO = SpringUtils.getBean(CriteriaTypeDao.class);
     CriteriaTypeOptionDao criteriaTypeOptionDAO = SpringUtils.getBean(CriteriaTypeOptionDao.class);

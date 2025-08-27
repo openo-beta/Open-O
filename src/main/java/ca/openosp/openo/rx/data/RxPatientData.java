@@ -35,7 +35,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicAllergy;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicAllergy;
 import org.oscarehr.common.dao.AllergyDao;
 import org.oscarehr.common.dao.DiseasesDao;
 import org.oscarehr.common.dao.PartialDateDao;
@@ -43,9 +43,9 @@ import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Diseases;
 import org.oscarehr.common.model.PartialDate;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class RxPatientData {
     private static Logger logger = MiscUtils.getLogger();

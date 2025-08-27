@@ -56,13 +56,13 @@ import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteExt;
 import org.oscarehr.common.dao.PartialDateDao;
 import org.oscarehr.common.model.PartialDate;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.prevention.PreventionDisplayConfig;
 import ca.openosp.openo.provider.data.ProviderData;
-import oscar.util.StringUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.StringUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 /**
  * @author Ronnie
@@ -522,12 +522,12 @@ public class Util {
 
         if (StringUtils.filled(type)) {
             if (type.equals(PartialDate.YEARONLY))
-                val = oscar.util.UtilDateUtilities.DateToString(cme.getDateValue(), "yyyy");
+                val = UtilDateUtilities.DateToString(cme.getDateValue(), "yyyy");
             else if (type.equals(PartialDate.YEARMONTH))
-                val = oscar.util.UtilDateUtilities.DateToString(cme.getDateValue(), "yyyy-MM");
-            else val = oscar.util.UtilDateUtilities.DateToString(cme.getDateValue(), "yyyy-MM-dd");
+                val = UtilDateUtilities.DateToString(cme.getDateValue(), "yyyy-MM");
+            else val = UtilDateUtilities.DateToString(cme.getDateValue(), "yyyy-MM-dd");
         } else {
-            val = oscar.util.UtilDateUtilities.DateToString(cme.getDateValue(), "yyyy-MM-dd");
+            val = UtilDateUtilities.DateToString(cme.getDateValue(), "yyyy-MM-dd");
         }
         return val;
     }

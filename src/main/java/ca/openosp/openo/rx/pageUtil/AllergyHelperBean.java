@@ -33,17 +33,17 @@ import java.util.Locale;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicAllergy;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicAllergy;
 import org.oscarehr.common.dao.PartialDateDao;
 import org.oscarehr.common.model.Allergy;
 import org.oscarehr.common.model.PartialDate;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.rx.data.RxPatientData;
 import ca.openosp.openo.rx.data.RxPatientData.Patient;
-import oscar.util.DateUtils;
+import ca.openosp.openo.util.DateUtils;
 
 public final class AllergyHelperBean {
     private static Logger logger = MiscUtils.getLogger();

@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 import net.sf.json.JSONArray;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.eform.data.DatabaseAP;
 

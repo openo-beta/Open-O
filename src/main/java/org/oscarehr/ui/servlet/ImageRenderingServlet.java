@@ -28,13 +28,13 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.caisi_integrator.ws.DemographicTransfer;
-import org.oscarehr.caisi_integrator.ws.DemographicWs;
+import ca.openosp.openo.caisi_integrator.ws.DemographicTransfer;
+import ca.openosp.openo.caisi_integrator.ws.DemographicWs;
 import ca.openosp.openo.casemgmt.dao.ClientImageDAO;
 import org.oscarehr.common.model.DigitalSignature;
 import org.oscarehr.common.model.Provider;
 import ca.openosp.openo.managers.DigitalSignatureManager;
-import org.oscarehr.util.*;
+import org.oscarehr.utility.*;
 import oscar.OscarProperties;
 
 import javax.servlet.http.HttpServlet;

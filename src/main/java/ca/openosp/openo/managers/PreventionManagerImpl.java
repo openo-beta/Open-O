@@ -40,9 +40,9 @@ import org.oscarehr.common.interfaces.Immunization.ImmunizationProperty;
 import org.oscarehr.common.model.Prevention;
 import org.oscarehr.common.model.PreventionExt;
 import org.oscarehr.common.model.Property;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +50,7 @@ import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.prevention.PreventionDS;
 import ca.openosp.openo.prevention.PreventionData;
 import ca.openosp.openo.prevention.PreventionDisplayConfig;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 @Service
 public class PreventionManagerImpl implements Serializable, PreventionManager {

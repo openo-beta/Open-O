@@ -30,7 +30,7 @@ import java.util.TimerTask;
 import javax.annotation.PreDestroy;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Component;
 
 import oscar.OscarProperties;

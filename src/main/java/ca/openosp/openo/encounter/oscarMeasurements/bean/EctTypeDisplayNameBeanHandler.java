@@ -30,7 +30,7 @@ import java.util.Vector;
 
 import org.oscarehr.common.dao.MeasurementGroupDao;
 import org.oscarehr.common.dao.MeasurementTypeDao;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class EctTypeDisplayNameBeanHandler {
 

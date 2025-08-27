@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.oscarehr.common.dao.ClinicDAO;
 import org.oscarehr.common.model.Clinic;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

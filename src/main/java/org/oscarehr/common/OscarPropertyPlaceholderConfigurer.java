@@ -26,7 +26,7 @@ package org.oscarehr.common;
 import java.util.Properties;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 
 public class OscarPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigurer {

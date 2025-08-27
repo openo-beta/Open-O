@@ -25,9 +25,9 @@
 
 package ca.openosp.openo.entities;
 
-import org.oscarehr.util.MiscUtils;
-import oscar.util.DateUtils;
-import oscar.util.UtilDateUtilities;
+import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.util.DateUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 import java.util.Date;
 import java.util.Enumeration;
@@ -404,7 +404,7 @@ public class MSPBill {
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         }
-        oscar.util.DateUtils ut = new oscar.util.DateUtils();
+        DateUtils ut = new DateUtils();
         long daysOld = DateUtils.getDifDays(new Date(), dt);
         if (daysOld >= 0 && daysOld <= 30) {
             ret = "1";

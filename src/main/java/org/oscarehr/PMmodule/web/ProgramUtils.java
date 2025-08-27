@@ -28,7 +28,7 @@ import org.oscarehr.PMmodule.dao.ProgramDao;
 import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.common.dao.FacilityDao;
 import org.oscarehr.common.model.Facility;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class ProgramUtils {
     private static ProgramDao programDao = (ProgramDao) SpringUtils.getBean(ProgramDao.class);

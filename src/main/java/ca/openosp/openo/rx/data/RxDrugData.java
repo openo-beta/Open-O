@@ -34,7 +34,7 @@ import java.util.Vector;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.oscarehr.common.model.Allergy;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.rx.util.RxDrugRef;
 

@@ -29,8 +29,8 @@ import java.util.List;
 
 import org.oscarehr.PMmodule.service.ProviderManager;
 import org.oscarehr.common.model.OscarMsgType;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.messenger.data.MessengerSystemMessage;
 import org.oscarehr.common.model.Security;

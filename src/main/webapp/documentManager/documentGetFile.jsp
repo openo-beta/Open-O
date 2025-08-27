@@ -24,9 +24,9 @@
 
 --%>
 
-<%@page import="oscar.util.ConversionUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@page import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, java.net.*,oscar.MyDateFormat" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.DocumentDao" %>
 <%@page import="org.oscarehr.common.model.Document" %>
 

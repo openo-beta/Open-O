@@ -37,7 +37,7 @@ import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.ProviderSite;
 import org.oscarehr.common.model.ProviderSitePK;
 import org.oscarehr.common.model.Site;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class SiteDaoTest extends DaoTestFixtures {
 

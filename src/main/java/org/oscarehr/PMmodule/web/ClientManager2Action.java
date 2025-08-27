@@ -42,6 +42,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.ws.WebServiceException;
 
+import ca.openosp.openo.util.DateUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -75,13 +76,13 @@ import org.oscarehr.PMmodule.wlmatch.MatchBO;
 import org.oscarehr.PMmodule.wlmatch.MatchingManager;
 import org.oscarehr.PMmodule.wlmatch.VacancyDisplayBO;
 import org.oscarehr.PMmodule.wlservice.WaitListService;
-import org.oscarehr.caisi_integrator.ws.CachedAdmission;
-import org.oscarehr.caisi_integrator.ws.CachedFacility;
-import org.oscarehr.caisi_integrator.ws.CachedProgram;
-import org.oscarehr.caisi_integrator.ws.FacilityIdIntegerCompositePk;
-import org.oscarehr.caisi_integrator.ws.Gender;
-import org.oscarehr.caisi_integrator.ws.Referral;
-import org.oscarehr.caisi_integrator.ws.ReferralWs;
+import ca.openosp.openo.caisi_integrator.ws.CachedAdmission;
+import ca.openosp.openo.caisi_integrator.ws.CachedFacility;
+import ca.openosp.openo.caisi_integrator.ws.CachedProgram;
+import ca.openosp.openo.caisi_integrator.ws.FacilityIdIntegerCompositePk;
+import ca.openosp.openo.caisi_integrator.ws.Gender;
+import ca.openosp.openo.caisi_integrator.ws.Referral;
+import ca.openosp.openo.caisi_integrator.ws.ReferralWs;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import org.oscarehr.common.dao.AdmissionDao;
 import org.oscarehr.common.dao.CdsClientFormDao;
@@ -89,17 +90,17 @@ import org.oscarehr.common.dao.IntegratorConsentDao;
 import org.oscarehr.common.dao.OscarLogDao;
 import org.oscarehr.common.dao.RemoteReferralDao;
 import org.oscarehr.common.model.*;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import org.oscarehr.util.WebUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
+import org.oscarehr.utility.WebUtils;
 import org.springframework.beans.factory.annotation.Required;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.demographic.data.DemographicRelationship;
 
-import ca.openosp.openo.service.LookupManager;
+import ca.openosp.openo.services.LookupManager;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -254,7 +255,7 @@ public class ClientManager2Action extends ActionSupport {
         String id = request.getParameter("id");
         List<Integer> dependents = clientManager.getDependentsList(Integer.valueOf(id));
         String formattedDischargeDate = request.getParameter("dischargeDate");
-        Date dischargeDate = oscar.util.DateUtils.toDate(formattedDischargeDate);
+        Date dischargeDate = DateUtils.toDate(formattedDischargeDate);
         boolean success = true;
 
         try {

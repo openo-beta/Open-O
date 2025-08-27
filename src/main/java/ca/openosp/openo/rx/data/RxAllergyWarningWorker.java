@@ -30,8 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.oscarehr.common.model.Allergy;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.rx.pageUtil.RxSessionBean;
 

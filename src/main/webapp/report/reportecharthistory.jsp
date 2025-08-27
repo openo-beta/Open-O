@@ -52,7 +52,7 @@
 %>
 <%@ page import="java.util.*, java.sql.*, oscar.*, java.text.*, java.lang.*,java.net.*,oscar.oscarProvider.data.*"
          errorPage="../appointment/errorpage.jsp" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.dao.EChartDao" %>
 <%@ page import="org.oscarehr.common.model.EChart" %>
 <%@ page import="ca.openosp.openo.provider.data.ProviderData" %>

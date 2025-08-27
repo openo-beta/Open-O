@@ -34,11 +34,11 @@ import java.util.List;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.model.Program;
-import org.oscarehr.caisi_integrator.ws.CodeType;
-import org.oscarehr.caisi_integrator.ws.FacilityIdDemographicIssueCompositePk;
+import ca.openosp.openo.caisi_integrator.ws.CodeType;
+import ca.openosp.openo.caisi_integrator.ws.FacilityIdDemographicIssueCompositePk;
 import ca.openosp.openo.casemgmt.model.CaseManagementIssue;
 import ca.openosp.openo.casemgmt.model.Issue;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -31,8 +31,8 @@ import org.junit.Test;
 import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.AuthUtils;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.ws.rest.to.model.PreventionSearchTo1;
 
 public class PreventionReportBuilderTest extends DaoTestFixtures {

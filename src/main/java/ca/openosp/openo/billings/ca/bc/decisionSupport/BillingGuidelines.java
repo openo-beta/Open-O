@@ -38,8 +38,8 @@ import ca.openosp.openo.decisionSupport.model.DSConsequence;
 import ca.openosp.openo.decisionSupport.model.DSGuideline;
 import ca.openosp.openo.decisionSupport.model.DSGuidelineFactory;
 import ca.openosp.openo.decisionSupport.model.DecisionSupportException;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
 import java.io.InputStream;
 import java.io.FileInputStream;

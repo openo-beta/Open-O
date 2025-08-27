@@ -29,7 +29,7 @@
 %>
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 <%@ page import="java.math.*,java.util.*, java.sql.*, oscar.*, java.net.*" errorPage="/errorpage.jsp" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.ReportProvider" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
 <%@ page import="org.oscarehr.common.dao.ReportProviderDao" %>
@@ -37,7 +37,7 @@
 <%@ page import="org.oscarehr.common.dao.BillingDao" %>
 <%@ page import="ca.openosp.openo.billing.CA.model.BillingDetail" %>
 <%@ page import="ca.openosp.openo.billing.CA.dao.BillingDetailDao" %>
-<%@ page import="oscar.util.ConversionUtils" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
 <%@ page import="org.oscarehr.common.model.Appointment" %>
 

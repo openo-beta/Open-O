@@ -31,7 +31,8 @@ import ca.openosp.openo.appt.ApptStatusData;
 import ca.openosp.openo.casemgmt.dao.*;
 import ca.openosp.openo.casemgmt.model.*;
 import ca.openosp.openo.model.security.Secrole;
-import ca.openosp.openo.service.security.RolesManager;
+import ca.openosp.openo.services.security.RolesManager;
+import ca.openosp.openo.util.UtilDateUtilities;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
@@ -44,25 +45,25 @@ import org.oscarehr.PMmodule.service.AdmissionManager;
 import org.oscarehr.PMmodule.service.ProgramManager;
 import org.oscarehr.PMmodule.utility.ProgramAccessCache;
 import org.oscarehr.PMmodule.utility.RoleCache;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicDrug;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicNote;
-import org.oscarehr.caisi_integrator.ws.CachedFacility;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicDrug;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicNote;
+import ca.openosp.openo.caisi_integrator.ws.CachedFacility;
 import ca.openosp.openo.casemgmt.common.EChartNoteEntry;
 import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import oscar.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
-import oscar.util.ConversionUtils;
-import oscar.util.DateUtils;
-import oscar.util.LabelValueBean;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.DateUtils;
+import ca.openosp.openo.util.LabelValueBean;
 
 import java.net.MalformedURLException;
 import java.nio.file.ProviderNotFoundException;
@@ -2346,7 +2347,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
             String encounterText = "";
             try {
                 Appointment appointment = appointmentDao.find(Integer.parseInt(appointmentNo));
-                encounterText = "[" + oscar.util.UtilDateUtilities.DateToString(appointment.getAppointmentDate(),
+                encounterText = "[" + UtilDateUtilities.DateToString(appointment.getAppointmentDate(),
                         "dd-MMM-yyyy", locale) + " .: " + appointment.getReason() + "] \n";
                 note.setAppointmentNo(Integer.parseInt(appointmentNo));
             } catch (Exception e) {

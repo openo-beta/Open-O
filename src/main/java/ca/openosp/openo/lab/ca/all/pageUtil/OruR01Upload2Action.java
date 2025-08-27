@@ -41,11 +41,11 @@ import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.ProfessionalSpecialist;
 import org.oscarehr.common.model.Provider;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import org.oscarehr.util.WebUtils;
-import oscar.util.DateUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
+import org.oscarehr.utility.WebUtils;
+import ca.openosp.openo.util.DateUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

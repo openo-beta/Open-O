@@ -35,8 +35,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import ca.openosp.openo.billing.CA.BC.dao.Hl7PidDao;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.db.DBHandler;
 

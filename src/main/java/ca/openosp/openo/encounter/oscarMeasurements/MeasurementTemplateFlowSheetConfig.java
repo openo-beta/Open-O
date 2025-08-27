@@ -55,8 +55,8 @@ import org.oscarehr.common.dao.FlowsheetDao;
 import org.oscarehr.common.model.FlowSheetCustomization;
 import org.oscarehr.common.model.FlowSheetUserCreated;
 import org.oscarehr.common.model.Flowsheet;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.beans.factory.InitializingBean;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypeBeanHandler;

@@ -32,10 +32,10 @@ import org.oscarehr.common.dao.HL7HandlerMSHMappingDao;
 import org.oscarehr.common.dao.Hl7TextInfoDao;
 import org.oscarehr.common.model.HL7HandlerMSHMapping;
 import org.oscarehr.common.model.Hl7TextMessageInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.all.pageUtil.ORUR01Manager;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.Segment;
 import ca.uhn.hl7v2.model.v25.datatype.CX;
@@ -57,7 +57,7 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
  */
 public class TDISHandler implements MessageHandler {
 
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     private ca.uhn.hl7v2.model.v25.message.ORU_R01 msg = null;
     private ArrayList<String> headers = null;

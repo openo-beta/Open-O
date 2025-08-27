@@ -25,7 +25,7 @@
 package org.oscarehr.ws.rest.conversion;
 
 import ca.openosp.openo.casemgmt.model.CaseManagementIssue;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.CaseManagementIssueTo1;
 
 public class CaseManagementIssueConverter extends AbstractConverter<CaseManagementIssue, CaseManagementIssueTo1> {

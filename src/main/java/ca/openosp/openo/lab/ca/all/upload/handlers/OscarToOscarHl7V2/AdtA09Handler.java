@@ -38,9 +38,9 @@ import org.oscarehr.common.model.Appointment;
 import org.oscarehr.common.model.AppointmentStatus;
 import org.oscarehr.common.model.Demographic;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.uhn.hl7v2.HL7Exception;

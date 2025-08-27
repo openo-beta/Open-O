@@ -40,12 +40,12 @@ import ca.openosp.openo.billing.CA.BC.model.TeleplanC12;
 import ca.openosp.openo.billing.CA.BC.model.TeleplanS00;
 import org.oscarehr.common.dao.BillingDao;
 import org.oscarehr.common.model.Billing;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class MSPReconcile {
 

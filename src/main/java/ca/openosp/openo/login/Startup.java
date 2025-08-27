@@ -27,8 +27,8 @@
 package ca.openosp.openo.login;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.EncryptionUtils;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.EncryptionUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

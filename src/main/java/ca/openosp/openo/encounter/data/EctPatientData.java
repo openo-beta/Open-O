@@ -30,13 +30,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.db.DBHandler;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 /**
  * @deprecated convert to proper JPA Hibernate

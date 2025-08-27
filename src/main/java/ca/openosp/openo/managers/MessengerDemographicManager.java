@@ -35,19 +35,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.caisi_integrator.ws.DemographicTransfer;
-import org.oscarehr.caisi_integrator.ws.DemographicWs;
-import org.oscarehr.common.dao.MsgDemoMapDao;
-import org.oscarehr.common.dao.MsgIntegratorDemoMapDao;
+import ca.openosp.openo.caisi_integrator.ws.DemographicTransfer;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.MsgDemoMap;
 import org.oscarehr.common.model.MsgIntegratorDemoMap;
-import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.oscarehr.utility.LoggedInInfo;
 
 public interface MessengerDemographicManager {
 

@@ -24,9 +24,9 @@
 
 --%>
 <!DOCTYPE html>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="org.oscarehr.common.dao.UserPropertyDAO, org.oscarehr.common.model.UserProperty" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
@@ -59,7 +59,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="org.oscarehr.common.dao.CtlDocClassDao" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>

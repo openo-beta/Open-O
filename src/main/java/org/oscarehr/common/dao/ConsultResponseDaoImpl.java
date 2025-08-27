@@ -39,7 +39,7 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.ConsultationResponse;
 import ca.openosp.openo.consultations.ConsultationResponseSearchFilter;
 import ca.openosp.openo.consultations.ConsultationResponseSearchFilter.SORTMODE;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository

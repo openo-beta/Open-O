@@ -35,7 +35,7 @@ import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import org.oscarehr.common.dao.DrugDao;
 import org.oscarehr.common.model.Drug;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 //import oscar.oscarRx.data.RxPrescriptionData.Prescription;
 //import oscar.oscarRx.pageUtil.RxSessionBean;

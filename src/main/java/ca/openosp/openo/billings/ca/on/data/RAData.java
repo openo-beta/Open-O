@@ -32,10 +32,10 @@ import java.util.List;
 
 import org.oscarehr.common.dao.RaDetailDao;
 import org.oscarehr.common.model.RaDetail;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * @author jay

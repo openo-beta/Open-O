@@ -42,10 +42,10 @@ import org.oscarehr.common.model.Drug;
 import org.oscarehr.common.model.Prescription;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.ProviderPreference;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.QrCodeUtils;
-import org.oscarehr.util.QrCodeUtils.QrCodesOrientation;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.QrCodeUtils;
+import org.oscarehr.utility.QrCodeUtils.QrCodesOrientation;
+import org.oscarehr.utility.SpringUtils;
 import org.oscarehr.web.admin.ProviderPreferencesUIBean;
 
 import oscar.OscarProperties;

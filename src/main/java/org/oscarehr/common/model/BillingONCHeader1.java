@@ -43,7 +43,7 @@ import javax.persistence.TemporalType;
 
 import org.apache.cxf.common.util.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 @Entity
 @Table(name = "billing_on_cheader1")

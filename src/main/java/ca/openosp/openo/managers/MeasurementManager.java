@@ -39,8 +39,8 @@ import org.oscarehr.common.dao.PropertyDao;
 import org.oscarehr.common.model.Measurement;
 import org.oscarehr.common.model.MeasurementMap;
 import org.oscarehr.common.model.Property;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet;

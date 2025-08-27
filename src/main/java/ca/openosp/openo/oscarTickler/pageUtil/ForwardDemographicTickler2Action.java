@@ -33,8 +33,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import org.owasp.encoder.Encode;
 import ca.openosp.openo.demographic.data.DemographicNameAgeString;
 

@@ -33,8 +33,8 @@ import org.oscarehr.common.dao.CSSStylesDAO;
 import org.oscarehr.common.model.BillingService;
 import org.oscarehr.common.model.CssStyle;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

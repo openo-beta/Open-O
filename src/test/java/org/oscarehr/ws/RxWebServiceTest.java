@@ -34,7 +34,7 @@ import org.oscarehr.common.model.Prescription;
 import org.oscarehr.managers.MockSecurityInfoManager;
 import ca.openosp.openo.managers.RxManager;
 import ca.openosp.openo.managers.RxManagerImpl;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.RxWebService;
 import org.oscarehr.ws.rest.conversion.ConversionException;
 import org.oscarehr.ws.rest.conversion.DrugConverterImpl;

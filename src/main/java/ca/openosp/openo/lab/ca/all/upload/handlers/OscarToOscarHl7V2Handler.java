@@ -31,8 +31,8 @@ import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.hl7.v2.oscar_to_oscar.OscarToOscarUtils;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.lab.ca.all.upload.MessageUploader;
 import ca.openosp.openo.lab.ca.all.upload.handlers.OscarToOscarHl7V2.AdtA09Handler;

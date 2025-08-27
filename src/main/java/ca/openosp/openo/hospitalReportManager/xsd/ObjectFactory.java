@@ -1,13 +1,3 @@
-/*
- * Decompiled with CFR 0.152.
- * 
- * Could not load the following classes:
- *  javax.xml.bind.JAXBElement
- *  javax.xml.bind.annotation.XmlElementDecl
- *  javax.xml.bind.annotation.XmlRegistry
- *  javax.xml.bind.annotation.adapters.CollapsedStringAdapter
- *  javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter
- */
 package ca.openosp.openo.hospitalReportManager.xsd;
 
 import javax.xml.bind.JAXBElement;

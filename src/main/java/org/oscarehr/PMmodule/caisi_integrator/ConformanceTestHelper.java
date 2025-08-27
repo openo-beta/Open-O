@@ -32,24 +32,24 @@ import java.util.List;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.caisi_integrator.ws.CachedProvider;
-import org.oscarehr.caisi_integrator.ws.DemographicTransfer;
-import org.oscarehr.caisi_integrator.ws.DemographicWs;
-import org.oscarehr.caisi_integrator.ws.FacilityIdStringCompositePk;
-import org.oscarehr.caisi_integrator.ws.ProviderCommunicationTransfer;
-import org.oscarehr.caisi_integrator.ws.ProviderWs;
+import ca.openosp.openo.caisi_integrator.ws.CachedProvider;
+import ca.openosp.openo.caisi_integrator.ws.DemographicTransfer;
+import ca.openosp.openo.caisi_integrator.ws.DemographicWs;
+import ca.openosp.openo.caisi_integrator.ws.FacilityIdStringCompositePk;
+import ca.openosp.openo.caisi_integrator.ws.ProviderCommunicationTransfer;
+import ca.openosp.openo.caisi_integrator.ws.ProviderWs;
 import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.model.Demographic;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import org.oscarehr.util.XmlUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
+import org.oscarehr.utility.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.oscarTickler.TicklerCreator;
-import oscar.util.DateUtils;
+import ca.openosp.openo.util.DateUtils;
 
 public final class ConformanceTestHelper {
     private static Logger logger = MiscUtils.getLogger();

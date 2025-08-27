@@ -39,7 +39,7 @@
 <%@ page import="java.sql.*" %>
 
 
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Billing" %>
 <%@ page import="org.oscarehr.common.dao.BillingDao" %>
 <%@ page import="org.oscarehr.common.model.BillingService" %>

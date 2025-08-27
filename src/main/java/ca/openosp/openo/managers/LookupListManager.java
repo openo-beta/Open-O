@@ -30,7 +30,7 @@ import org.oscarehr.common.dao.LookupListDao;
 import org.oscarehr.common.dao.LookupListItemDao;
 import org.oscarehr.common.model.LookupList;
 import org.oscarehr.common.model.LookupListItem;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

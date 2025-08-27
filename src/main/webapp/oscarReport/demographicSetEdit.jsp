@@ -41,7 +41,7 @@
 
 <!-- page updated to support better use of CRUD operations -->
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page
         import="oscar.oscarDemographic.data.*,java.util.*,oscar.oscarPrevention.*,oscar.oscarProvider.data.*,oscar.util.*,oscar.oscarReport.data.*,oscar.oscarPrevention.pageUtil.*" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>

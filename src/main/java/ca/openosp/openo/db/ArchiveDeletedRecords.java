@@ -33,8 +33,8 @@ import org.jdom.output.XMLOutputter;
 import org.oscarehr.common.dao.TableModificationDao;
 import org.oscarehr.common.model.ProviderLabRoutingModel;
 import org.oscarehr.common.model.TableModification;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * This class is used to archive deleted or updated rows that won't be used again.

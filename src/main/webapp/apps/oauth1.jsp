@@ -31,8 +31,8 @@
 <%@ page import="org.oscarehr.common.model.AppUser" %>
 <%@ page import="org.oscarehr.common.model.AppDefinition" %>
 <%@ page import="ca.openosp.openo.app.AppOAuth1Config" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
-<%@ page import="org.oscarehr.util.MiscUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="javax.servlet.http.*" %>
 <%@ page import="org.slf4j.Logger, org.slf4j.LoggerFactory" %>

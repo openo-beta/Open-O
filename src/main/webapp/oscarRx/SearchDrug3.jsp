@@ -28,30 +28,30 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.util.WebUtils" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
 <%@page import="org.oscarehr.common.dao.DrugDao" %>
 <%@page import="org.oscarehr.common.model.Drug" %>
 <%@page import="org.oscarehr.common.model.PharmacyInfo" %>
-<%@page import="org.oscarehr.util.WebUtils" %>
-<%@page import="org.oscarehr.util.LocaleUtils" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
+<%@page import="org.oscarehr.utility.LocaleUtils" %>
 <%@page import="oscar.oscarRx.data.*,ca.openosp.openo.demographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
 <%@page import="java.text.SimpleDateFormat" %>
 <%@page import="java.util.*" %>
 <%@page import="java.util.Enumeration" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%@page import="java.util.List" %>
 <%@page import="ca.openosp.openo.casemgmt.web.PrescriptDrug" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="java.util.ArrayList,ca.openosp.openo.rx.data.RxPrescriptionData" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
 <%@page import="org.oscarehr.web.admin.ProviderPreferencesUIBean" %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
 <%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
 <%@page import="ca.openosp.openo.casemgmt.model.Issue" %>
-<%@ page import="ca.openosp.openo.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.services.security.SecurityManager" %>
 <%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
 <%@ page import="ca.openosp.openo.rx.data.RxPharmacyData" %>

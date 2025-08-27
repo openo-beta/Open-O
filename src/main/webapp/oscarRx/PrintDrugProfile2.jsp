@@ -29,10 +29,10 @@
 
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
 <%@ page import="oscar.oscarRx.data.*" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%@page import="java.util.List" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="java.util.ArrayList,oscar.util.*,java.util.*,org.oscarehr.common.model.Drug,org.oscarehr.common.dao.*" %>
 <%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>

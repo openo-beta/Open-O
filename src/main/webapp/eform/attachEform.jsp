@@ -39,7 +39,7 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%
     String user_no = (String) session.getAttribute("user");
     String userfirstname = (String) session.getAttribute("userfirstname");
@@ -55,8 +55,8 @@
 <%@ page import="oscar.oscarLab.ca.on.*" %>
 <%@ page import="ca.openosp.openo.lab.ca.all.Hl7textResultsData" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao" %>
 <%@page import="ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao" %>
 <%@page import="ca.openosp.openo.hospitalReportManager.model.HRMDocument" %>
@@ -68,6 +68,8 @@
 <%@ page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
+<%@ page import="ca.openosp.openo.util.StringUtils" %>
+<%@ page import="ca.openosp.openo.util.DateUtils" %>
 
 <!-- Deprecated: Please use attachDocument.jsp. -->
 <%

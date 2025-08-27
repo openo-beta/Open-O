@@ -43,9 +43,9 @@ import org.oscarehr.common.dao.DiagnosticCodeDao;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.DiagnosticCode;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.entities.Billactivity;
@@ -58,7 +58,7 @@ import ca.openosp.openo.billings.ca.bc.Teleplan.TeleplanService;
 import ca.openosp.openo.billings.ca.bc.Teleplan.TeleplanUserPassDAO;
 import ca.openosp.openo.billings.ca.bc.data.BillActivityDAO;
 import ca.openosp.openo.billings.ca.bc.data.BillingCodeData;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 /**
  * @author jay

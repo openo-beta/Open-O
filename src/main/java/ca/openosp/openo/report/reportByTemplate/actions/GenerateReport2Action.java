@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-import ca.openosp.openo.service.security.SecurityManager;
+import ca.openosp.openo.services.security.SecurityManager;
 import ca.openosp.openo.report.reportByTemplate.ReportFactory;
 import ca.openosp.openo.report.reportByTemplate.Reporter;
 

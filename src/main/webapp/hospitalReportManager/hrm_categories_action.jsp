@@ -26,9 +26,9 @@
 %>
 
 <%@page import="ca.openosp.openo.hospitalReportManager.model.HRMCategory" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.hospitalReportManager.dao.HRMCategoryDao" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%
     HRMCategoryDao hrmCategoryDao = (HRMCategoryDao) SpringUtils.getBean(HRMCategoryDao.class);
 

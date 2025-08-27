@@ -29,7 +29,7 @@ package ca.openosp.openo.managers;
 
 import ca.openosp.openo.inbox.InboxManagerQuery;
 import ca.openosp.openo.inbox.InboxManagerResponse;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 public interface InboxManager {
     public static final String NORMAL = "normal";

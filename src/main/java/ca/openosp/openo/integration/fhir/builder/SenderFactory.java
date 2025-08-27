@@ -28,7 +28,7 @@ import org.oscarehr.common.dao.ClinicDAO;
 import ca.openosp.openo.integration.fhir.model.Sender;
 import ca.openosp.openo.integration.fhir.resources.Settings;
 // import org.oscarehr.util.SpringUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 

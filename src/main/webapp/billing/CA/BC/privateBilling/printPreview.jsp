@@ -3,7 +3,7 @@
   Company: WELL Health Technologies Corp.
   Date: December 6, 2018
  --%>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
@@ -16,7 +16,7 @@
 <%@ page import="ca.openosp.openo.clinic.ClinicData" %>
 <%@ page import="java.util.StringTokenizer" %>
 <%@ page import="java.util.Vector" %>
-<%@ page import="oscar.util.StringUtils" %>
+<%@ page import="ca.openosp.openo.util.StringUtils" %>
 <%@ page import="org.oscarehr.common.model.SystemPreferences" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>

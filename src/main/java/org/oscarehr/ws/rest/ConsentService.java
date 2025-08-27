@@ -40,7 +40,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.common.model.ConsentType;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.OscarLogManager;

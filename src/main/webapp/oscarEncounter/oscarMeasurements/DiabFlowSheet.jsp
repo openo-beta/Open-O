@@ -8,7 +8,7 @@
     and "gnu.org/licenses/gpl-2.0.html".
 
 --%>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <% long startTime = System.currentTimeMillis(); %>
 <%@page contentType="text/html" %>
 <%@page import="oscar.oscarDemographic.data.*,java.util.*,oscar.oscarPrevention.*,oscar.oscarEncounter.oscarMeasurements.*,oscar.oscarEncounter.oscarMeasurements.bean.*,java.net.*, oscar.oscarRx.util.*" %>
@@ -20,7 +20,7 @@
 
 <%@page import="org.oscarehr.common.dao.AllergyDao" %>
 <%@page import="org.oscarehr.common.model.Allergy" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet" %>

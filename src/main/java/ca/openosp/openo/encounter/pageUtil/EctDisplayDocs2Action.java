@@ -26,16 +26,17 @@
 
 package ca.openosp.openo.encounter.pageUtil;
 
+import ca.openosp.openo.util.plugin.IsPropertiesOn;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.DocumentDao.DocumentType;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.documentManager.EDocUtil.EDocSort;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import org.owasp.encoder.Encode;
-import oscar.util.DateUtils;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.DateUtils;
+import ca.openosp.openo.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -64,7 +65,7 @@ public class EctDisplayDocs2Action extends EctDisplayAction {
                 omitTypes = omitTypeStr.split(",");
             }
             // add for inbox manager
-            boolean inboxflag = oscar.util.plugin.IsPropertiesOn.propertiesOn("inboxmnger");
+            boolean inboxflag = IsPropertiesOn.propertiesOn("inboxmnger");
             // set lefthand module heading and link
             String winName = "docs" + bean.demographicNo;
             String url = "popupPage(500,1115,'" + winName + "', '" + request.getContextPath() + "/documentManager/documentReport.jsp?" + "function=demographic&doctype=lab&functionid=" + bean.demographicNo + "&curUser=" + bean.providerNo + "')";
@@ -154,7 +155,7 @@ public class EctDisplayDocs2Action extends EctDisplayAction {
                 hash = Math.abs(winName.hashCode());
 
                 if (inboxflag) {
-                    String path = oscar.util.plugin.IsPropertiesOn.getProperty("DOCUMENT_DIR");
+                    String path = IsPropertiesOn.getProperty("DOCUMENT_DIR");
  		    url = "popupPage(700,800,'" + hash + "', '" + request.getContextPath() + "/mod/docmgmtComp/FillARForm.do?method=showInboxDocDetails&path=" + path + "&demoNo=" + bean.demographicNo + "&name=" + Encode.forJavaScript(dispFilename) + "'); return false;";
                     isURLjavaScript = true;
                 } else if (curDoc.getRemoteFacilityId() == null && curDoc.isPDF()) {

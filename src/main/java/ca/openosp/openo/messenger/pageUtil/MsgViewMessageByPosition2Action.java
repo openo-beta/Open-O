@@ -10,8 +10,8 @@ import org.apache.struts2.ServletActionContext;
 import org.oscarehr.common.dao.ProviderDataDao;
 import org.oscarehr.common.model.ProviderData;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 

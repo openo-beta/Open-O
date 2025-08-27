@@ -54,9 +54,9 @@ import ca.openosp.openo.dashboard.handler.IndicatorTemplateXML;
 import ca.openosp.openo.integration.dashboard.model.Clinic;
 import ca.openosp.openo.integration.dashboard.model.User;
 import ca.openosp.openo.integration.dashboard.model.User.Province;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

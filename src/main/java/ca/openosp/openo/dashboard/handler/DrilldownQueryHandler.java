@@ -31,7 +31,7 @@ import java.util.Set;
 
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.dashboard.query.Column;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 public class DrilldownQueryHandler extends AbstractQueryHandler {
 

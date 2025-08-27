@@ -38,10 +38,10 @@ import java.util.ArrayList;
 import org.oscarehr.common.dao.ProviderLabRoutingDao;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.ProviderLabRoutingModel;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.mds.data.ReportStatus;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class AcknowledgementData {
 

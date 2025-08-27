@@ -32,7 +32,7 @@ import org.oscarehr.PMmodule.wlmatch.MatchBO;
 import org.oscarehr.PMmodule.wlmatch.MatchingManager;
 import org.oscarehr.PMmodule.wlmatch.ReferralOutcomeBO;
 import org.oscarehr.PMmodule.wlmatch.VacancyDisplayBO;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class WaitListService {
     MatchingManager matchingManager = new MatchingManager();

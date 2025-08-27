@@ -38,8 +38,8 @@ import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.casemgmt.util.ExtPrint;
 import org.oscarehr.common.dao.MeasurementDao;
 import org.oscarehr.common.model.Measurement;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import com.itextpdf.text.*;
 

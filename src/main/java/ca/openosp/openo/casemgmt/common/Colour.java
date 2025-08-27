@@ -30,7 +30,7 @@
  */
 package ca.openosp.openo.casemgmt.common;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
 

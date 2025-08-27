@@ -44,16 +44,16 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicForm;
-import org.oscarehr.caisi_integrator.ws.DemographicWs;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicForm;
+import ca.openosp.openo.caisi_integrator.ws.DemographicWs;
 import org.oscarehr.common.dao.EncounterFormDao;
 import org.oscarehr.common.model.EncounterForm;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.SqlUtils;
+import ca.openosp.openo.util.SqlUtils;
 
 public class EctFormData {
 

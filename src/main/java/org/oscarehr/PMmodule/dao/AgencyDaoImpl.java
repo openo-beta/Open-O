@@ -31,7 +31,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.model.Agency;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 public class AgencyDaoImpl extends HibernateDaoSupport implements AgencyDao {

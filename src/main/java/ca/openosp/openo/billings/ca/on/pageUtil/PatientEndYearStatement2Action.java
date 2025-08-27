@@ -43,9 +43,9 @@ import org.oscarehr.common.model.BillingONCHeader1;
 import org.oscarehr.common.model.BillingONItem;
 import org.oscarehr.common.model.Demographic;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarDocumentCreator;
 
@@ -59,7 +59,7 @@ public class PatientEndYearStatement2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    private static final Logger _logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
     private static final String RES_SUCCESS = "success";
     private static final String RES_FAILURE = "failure";
 

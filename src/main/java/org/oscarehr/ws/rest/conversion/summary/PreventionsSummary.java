@@ -32,8 +32,8 @@ import java.util.Map;
 
 import ca.openosp.openo.managers.PreventionManager;
 import org.oscarehr.common.model.Prevention;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import org.oscarehr.ws.rest.to.model.SummaryItemTo1;
 import org.oscarehr.ws.rest.to.model.SummaryTo1;
 import org.springframework.beans.factory.annotation.Autowired;

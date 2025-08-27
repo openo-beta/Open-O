@@ -43,8 +43,8 @@
 
 <!-- Classes needed for signature injection -->
 <%@page import="org.oscarehr.common.model.*" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.util.DigitalSignatureUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.DigitalSignatureUtils" %>
 <%@page import="org.oscarehr.ui.servlet.ImageRenderingServlet" %>
 <!-- end -->
 <%@ page import="org.owasp.encoder.Encode" %>
@@ -58,7 +58,7 @@
 
 <%@page import="org.oscarehr.web.PrescriptionQrCodeUIBean" %>
 <%@ page import="ca.openosp.openo.managers.DemographicManager" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="java.util.Objects" %>
 <%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.rx.data.RxProviderData" %>
@@ -641,7 +641,7 @@
                                 String fullOutLine = rx.getFullOutLine().replaceAll(";", "<br />");
 
                                 if (fullOutLine == null || fullOutLine.length() <= 6) {
-                                    org.oscarehr.util.MiscUtils.getLogger();
+                                    org.oscarehr.utility.MiscUtils.getLogger();
                                     fullOutLine = "<span style=\"color:red;font-size:16;font-weight:bold\">An error occurred, please write a new prescription.</span><br />" + fullOutLine;
                                 }
                         %>

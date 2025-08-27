@@ -40,8 +40,8 @@ import org.oscarehr.common.model.Property;
 import ca.openosp.openo.managers.ConsultationManager;
 import ca.openosp.openo.managers.ConsultationManagerImpl;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

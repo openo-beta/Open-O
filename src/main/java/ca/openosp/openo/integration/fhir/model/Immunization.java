@@ -37,7 +37,7 @@ import org.oscarehr.common.model.CVCImmunization;
 import org.oscarehr.common.model.Prevention;
 import ca.openosp.openo.integration.fhir.interfaces.ImmunizationInterface;
 import ca.openosp.openo.integration.fhir.manager.OscarFhirConfigurationManager;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 
 /*

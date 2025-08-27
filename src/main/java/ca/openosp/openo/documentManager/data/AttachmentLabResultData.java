@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.oscarehr.util.DateUtils;
+import org.oscarehr.utility.DateUtils;
 
 public class AttachmentLabResultData {
     private String segmentID;

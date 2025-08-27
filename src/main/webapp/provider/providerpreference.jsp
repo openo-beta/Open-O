@@ -42,11 +42,11 @@
 <%@ page import="oscar.OscarProperties" %>
 <%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@ page import="org.oscarehr.common.model.UserProperty" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
 <%@page import="org.oscarehr.web.admin.ProviderPreferencesUIBean" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="org.oscarehr.web.PrescriptionQrCodeUIBean" %>
 <%@page import="org.oscarehr.common.model.EForm" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>

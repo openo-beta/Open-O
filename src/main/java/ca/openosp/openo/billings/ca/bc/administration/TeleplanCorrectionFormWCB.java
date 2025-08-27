@@ -30,13 +30,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.Misc;
 import oscar.MyDateFormat;
 import ca.openosp.openo.demographic.data.DemographicData;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class TeleplanCorrectionFormWCB {
 

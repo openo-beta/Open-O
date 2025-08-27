@@ -28,9 +28,9 @@ package ca.openosp.openo.eform.data;
 
 import org.jsoup.nodes.Document;
 import ca.openosp.openo.documentManager.ConvertToEdoc;
-import org.oscarehr.util.MiscUtils;
-import oscar.util.StringBuilderUtils;
-import oscar.util.UtilDateUtilities;
+import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.util.StringBuilderUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 import java.util.ArrayList;
 import java.util.Date;

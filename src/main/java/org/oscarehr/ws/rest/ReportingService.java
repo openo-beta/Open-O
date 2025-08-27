@@ -51,7 +51,7 @@ import ca.openosp.openo.managers.DemographicSetsManager;
 import ca.openosp.openo.managers.EFormReportToolManager;
 import org.oscarehr.prevention.reports.Report;
 import org.oscarehr.prevention.reports.ReportBuilder;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.web.PatientListApptBean;
 import org.oscarehr.web.PatientListApptItemBean;
 import org.oscarehr.ws.rest.conversion.EFormReportToolConverter;

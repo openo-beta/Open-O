@@ -48,9 +48,9 @@ import org.oscarehr.common.dao.PatientLabRoutingDao;
 import org.oscarehr.common.model.PatientLabRouting;
 import org.oscarehr.common.printing.FontSettings;
 import org.oscarehr.common.printing.PdfWriterFactory;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.documentManager.EDoc;
@@ -59,9 +59,9 @@ import ca.openosp.openo.clinic.ClinicData;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
-import oscar.util.ConcatPDF;
-import oscar.util.ConversionUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.ConcatPDF;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;

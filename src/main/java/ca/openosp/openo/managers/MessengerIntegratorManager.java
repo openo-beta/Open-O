@@ -37,9 +37,9 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.caisi_integrator.ws.CachedFacility;
-import org.oscarehr.caisi_integrator.ws.ProviderCommunicationTransfer;
+import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.caisi_integrator.ws.CachedFacility;
+import ca.openosp.openo.caisi_integrator.ws.ProviderCommunicationTransfer;
 import org.oscarehr.common.dao.MessageListDao;
 import org.oscarehr.common.model.Facility;
 import org.oscarehr.common.model.MessageList;
@@ -47,7 +47,7 @@ import org.oscarehr.common.model.MessageTbl;
 import org.oscarehr.common.model.MsgDemoMap;
 import org.oscarehr.common.model.MsgIntegratorDemoMap;
 import org.oscarehr.common.model.OscarMsgType;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -83,7 +83,7 @@ public class MessengerIntegratorManager {
      * @return
      * @throws UnsupportedEncodingException
      */
-    public List<ProviderCommunicationTransfer> getIntegratedMessages(LoggedInInfo loggedInInfo, List<org.oscarehr.caisi_integrator.ws.CachedFacility> facilities, String status)
+    public List<ProviderCommunicationTransfer> getIntegratedMessages(LoggedInInfo loggedInInfo, List<CachedFacility> facilities, String status)
             throws UnsupportedEncodingException {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
             throw new SecurityException("missing required security object (_msg)");
@@ -91,7 +91,7 @@ public class MessengerIntegratorManager {
 
         List<ProviderCommunicationTransfer> integratedMessageList = new ArrayList<ProviderCommunicationTransfer>();
 
-        for (org.oscarehr.caisi_integrator.ws.CachedFacility facility : facilities) {
+        for (CachedFacility facility : facilities) {
             List<ProviderCommunicationTransfer> messageList = getIntegratedMessages(loggedInInfo, facility, status);
             if (messageList != null && !messageList.isEmpty()) {
                 integratedMessageList.addAll(messageList);
@@ -108,7 +108,7 @@ public class MessengerIntegratorManager {
      * @return List<ProviderCommunicationTransfer> or NULL for no results.
      * @throws UnsupportedEncodingException
      */
-    public List<ProviderCommunicationTransfer> getIntegratedMessages(LoggedInInfo loggedInInfo, org.oscarehr.caisi_integrator.ws.CachedFacility facility, String status)
+    public List<ProviderCommunicationTransfer> getIntegratedMessages(LoggedInInfo loggedInInfo, CachedFacility facility, String status)
             throws UnsupportedEncodingException {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
             throw new SecurityException("missing required security object (_msg)");

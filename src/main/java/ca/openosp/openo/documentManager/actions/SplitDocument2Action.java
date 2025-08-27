@@ -41,9 +41,9 @@ import org.oscarehr.common.model.Document;
 import org.oscarehr.common.model.PatientLabRouting;
 import org.oscarehr.common.model.ProviderInboxItem;
 import org.oscarehr.common.model.ProviderLabRoutingModel;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 

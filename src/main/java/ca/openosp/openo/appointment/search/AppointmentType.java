@@ -27,7 +27,7 @@ package ca.openosp.openo.appointment.search;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.oscarehr.util.XmlUtils;
+import org.oscarehr.utility.XmlUtils;
 import org.oscarehr.ws.rest.to.model.AppointmentTypeTransfer;
 import org.w3c.dom.Node;
 

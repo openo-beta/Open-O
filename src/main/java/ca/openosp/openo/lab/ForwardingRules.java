@@ -41,14 +41,14 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.IncomingLabRulesDao;
 import org.oscarehr.common.model.IncomingLabRules;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author wrighd
  */
 public class ForwardingRules {
 
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     /**
      * Creates a new instance of ForwardingRules

@@ -41,7 +41,7 @@
 
 <%@page import="java.text.SimpleDateFormat" %>
 <%@ page
-        import="org.oscarehr.util.WebUtils" %>
+        import="org.oscarehr.utility.WebUtils" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="java.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -52,10 +52,10 @@
 <%@ page import="oscar.log.*" %>
 <%@ page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
-<%@ page import="oscar.util.ConversionUtils" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@page import="oscar.oscarLab.ca.all.*,oscar.oscarMDS.data.*" %>
-<%@page import="org.oscarehr.common.dao.*,org.oscarehr.common.model.*,org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.common.dao.*,org.oscarehr.common.model.*,org.oscarehr.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@ page import="ca.openosp.openo.documentManager.IncomingDocUtil" %>

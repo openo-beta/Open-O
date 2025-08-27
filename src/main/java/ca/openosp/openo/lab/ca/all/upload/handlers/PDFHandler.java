@@ -25,6 +25,7 @@
 
 package ca.openosp.openo.lab.ca.all.upload.handlers;
 
+import ca.openosp.openo.util.UtilDateUtilities;
 import com.itextpdf.text.pdf.PdfReader;
 
 import java.io.FileInputStream;
@@ -35,8 +36,8 @@ import java.io.InputStream;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.ProviderInboxRoutingDao;
 import org.oscarehr.common.dao.QueueDocumentLinkDao;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.documentManager.EDoc;
@@ -48,7 +49,7 @@ import ca.openosp.openo.log.LogConst;
  * @author mweston4
  */
 public class PDFHandler implements MessageHandler {
-    protected static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    protected static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     @Override
     public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
@@ -64,7 +65,7 @@ public class PDFHandler implements MessageHandler {
         }
 
         EDoc newDoc = new EDoc("", "", fileName, "", providerNo, providerNo, "", 'A',
-                oscar.util.UtilDateUtilities.getToday("yyyy-MM-dd"), "", "", "demographic", "-1", false);
+                UtilDateUtilities.getToday("yyyy-MM-dd"), "", "", "demographic", "-1", false);
 
         newDoc.setDocPublic("0");
 

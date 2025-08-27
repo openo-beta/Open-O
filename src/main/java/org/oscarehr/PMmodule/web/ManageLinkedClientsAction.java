@@ -30,16 +30,16 @@ import java.util.List;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.caisi_integrator.ws.DemographicTransfer;
-import org.oscarehr.caisi_integrator.ws.DemographicWs;
+import ca.openosp.openo.caisi_integrator.ws.DemographicTransfer;
+import ca.openosp.openo.caisi_integrator.ws.DemographicWs;
 import org.oscarehr.common.dao.ClientLinkDao;
 import org.oscarehr.common.model.ClientLink;
 import org.oscarehr.common.model.Facility;
 import org.oscarehr.common.model.FacilityDemographicPrimaryKey;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class ManageLinkedClientsAction {
     public static Logger logger = MiscUtils.getLogger();

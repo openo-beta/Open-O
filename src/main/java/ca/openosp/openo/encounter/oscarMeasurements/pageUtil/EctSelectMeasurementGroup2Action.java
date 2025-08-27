@@ -40,8 +40,8 @@ import org.oscarehr.common.dao.MeasurementGroupDao;
 import org.oscarehr.common.dao.MeasurementGroupStyleDao;
 import org.oscarehr.common.model.MeasurementGroup;
 import org.oscarehr.common.model.MeasurementGroupStyle;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import ca.openosp.openo.managers.MeasurementManager;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctStyleSheetBeanHandler;

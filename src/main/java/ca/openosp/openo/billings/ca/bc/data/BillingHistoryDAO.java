@@ -32,14 +32,14 @@ import java.util.List;
 import ca.openosp.openo.billing.CA.BC.dao.BillingHistoryDao;
 import ca.openosp.openo.billing.CA.BC.model.BillingHistory;
 import org.oscarehr.common.model.BillingPaymentType;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.entities.BillHistory;
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile;
-import oscar.util.ConversionUtils;
-import oscar.util.SqlUtils;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.SqlUtils;
 
 /**
  * BillingHistoryDAO is responsible for providing database CRUD operations

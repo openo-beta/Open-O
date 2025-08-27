@@ -36,7 +36,7 @@ import org.oscarehr.common.dao.MeasurementsExtDao;
 import org.oscarehr.common.model.Measurement;
 import org.oscarehr.common.model.MeasurementType;
 import org.oscarehr.common.model.MeasurementsExt;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class ImportExportMeasurements {
 

@@ -27,8 +27,8 @@
 package ca.openosp.openo.encounter.oscarMeasurements.util;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import ca.openosp.openo.demographic.data.DemographicData;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBean;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;

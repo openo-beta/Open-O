@@ -14,12 +14,12 @@ import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.documentManager.data.AttachmentLabResultData;
 import ca.openosp.openo.hospitalReportManager.HRMUtil;
 import ca.openosp.openo.managers.FormsManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.PDFGenerationException;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.PDFGenerationException;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 import org.apache.logging.log4j.Logger;
 
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.v23.datatype.XCN;
 import ca.uhn.hl7v2.model.v23.message.ORU_R01;
@@ -40,7 +40,7 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
  */
 public class ICLHandler extends DefaultGenericHandler implements MessageHandler {
 
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
     ORU_R01 msg = null;
 
     /**

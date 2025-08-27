@@ -40,7 +40,7 @@
 %>
 
 <%@page import="java.util.Date" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.dao.ReportAgeSexDao" %>
 <%
     ReportAgeSexDao reportAgeSexDao = SpringUtils.getBean(ReportAgeSexDao.class);

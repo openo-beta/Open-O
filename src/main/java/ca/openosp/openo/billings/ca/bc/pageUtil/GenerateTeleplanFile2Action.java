@@ -32,9 +32,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.Misc;
 import oscar.OscarProperties;
@@ -43,7 +43,7 @@ import ca.openosp.openo.billings.ca.bc.MSP.TeleplanSubmission;
 import ca.openosp.openo.billings.ca.bc.data.BillActivityDAO;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
 import ca.openosp.openo.provider.data.ProviderData;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 
 /**

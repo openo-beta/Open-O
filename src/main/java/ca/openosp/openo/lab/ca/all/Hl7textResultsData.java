@@ -58,15 +58,15 @@ import org.oscarehr.common.model.MeasurementType;
 import org.oscarehr.common.model.MeasurementsDeleted;
 import org.oscarehr.common.model.MeasurementsExt;
 import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
 import ca.openosp.openo.lab.ca.on.LabResultData;
-import oscar.util.ConversionUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 public class Hl7textResultsData {
 

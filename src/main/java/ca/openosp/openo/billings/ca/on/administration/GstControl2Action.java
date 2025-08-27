@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.billing.CA.dao.GstControlDao;
 import ca.openosp.openo.billing.CA.model.GstControl;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.ServletRequestAware;

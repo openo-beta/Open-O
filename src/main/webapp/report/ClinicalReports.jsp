@@ -41,7 +41,7 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.report.data.DemographicSets, oscar.oscarDemographic.data.*,java.util.*,oscar.oscarPrevention.*,oscar.oscarProvider.data.*,oscar.util.*,oscar.oscarReport.ClinicalReports.*,oscar.oscarEncounter.oscarMeasurements.*,oscar.oscarEncounter.oscarMeasurements.bean.*" %>
 <%@page import="com.Ostermiller.util.CSVPrinter,java.io.*" %>
 <%@ page import="org.owasp.encoder.Encode" %>

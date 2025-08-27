@@ -42,19 +42,19 @@
 <%@page import="org.apache.commons.beanutils.BeanUtils" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="org.springframework.web.context.WebApplicationContext" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.DemographicWs" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.DemographicWs" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 
 <%@ page import="java.util.*, java.sql.*, java.net.*, oscar.*, oscar.oscarDB.*" errorPage="/errorpage.jsp" %>
 <%@ page
-        import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager, org.oscarehr.caisi_integrator.ws.CachedAppointment, org.oscarehr.caisi_integrator.ws.CachedProvider, org.oscarehr.util.LoggedInInfo" %>
+        import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager, ca.openosp.openo.caisi_integrator.ws.CachedAppointment, ca.openosp.openo.caisi_integrator.ws.CachedProvider, org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="org.oscarehr.caisi_integrator.ws.*" %>
 <%@ page import="org.oscarehr.common.model.CachedAppointmentComparator" %>
 
 <%@page import="org.apache.commons.lang.StringUtils" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.oscarehr.common.model.Site" %>
@@ -71,6 +71,9 @@
 <%@ page import="org.oscarehr.common.model.ProviderData" %>
 <%@ page import="org.oscarehr.common.dao.ProviderDataDao" %>
 <%@ page import="ca.openosp.openo.managers.AppointmentManager" %>
+<%@ page import="ca.openosp.openo.util.UtilMisc" %>
+<%@ page import="ca.openosp.openo.util.DateUtils" %>
+<%@ page import="ca.openosp.openo.caisi_integrator.ws.FacilityIdStringCompositePk" %>
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>

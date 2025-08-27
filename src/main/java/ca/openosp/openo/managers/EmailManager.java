@@ -38,17 +38,17 @@ import ca.openosp.openo.email.core.EmailData;
 import ca.openosp.openo.email.core.EmailSender;
 import ca.openosp.openo.email.core.EmailStatusResult;
 import ca.openosp.openo.email.util.EmailNoteUtil;
-import org.oscarehr.util.EmailSendingException;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.PDFEncryptionUtil;
+import org.oscarehr.utility.EmailSendingException;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.PDFEncryptionUtil;
 import org.owasp.encoder.Encode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.encounter.data.EctProgram;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 @Service
 public class EmailManager {

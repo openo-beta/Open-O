@@ -41,7 +41,7 @@
 <%@page import="oscar.oscarBilling.ca.bc.data.*,oscar.*" %>
 <%@page import="java.util.*,java.io.*,oscar.oscarBilling.ca.bc.MSP.*,oscar.oscarBilling.ca.bc.administration.*,java.sql.*" %>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.ClinicLocationDao" %>
 <%@page import="org.oscarehr.common.model.ClinicLocation" %>
 <%@ page import="org.oscarehr.common.model.DiagnosticCode" %>

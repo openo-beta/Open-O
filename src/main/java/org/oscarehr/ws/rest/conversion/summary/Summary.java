@@ -24,7 +24,7 @@
  */
 package org.oscarehr.ws.rest.conversion.summary;
 
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.SummaryTo1;
 
 

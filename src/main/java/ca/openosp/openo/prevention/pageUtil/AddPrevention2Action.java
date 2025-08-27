@@ -51,9 +51,9 @@ import ca.openosp.openo.integration.fhir.api.DHIR;
 import ca.openosp.openo.integration.fhir.builder.FhirBundleBuilder;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import org.oscarehr.provider.model.PreventionManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.prevention.PreventionData;
 import ca.openosp.openo.prevention.PreventionDisplayConfig;

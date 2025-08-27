@@ -36,11 +36,11 @@
 package ca.openosp.openo.report.reportByTemplate.actions;
 
 
-import ca.openosp.openo.service.security.SecurityManager;
+import ca.openosp.openo.services.security.SecurityManager;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import ca.openosp.openo.report.reportByTemplate.ReportManager;
 
 import javax.servlet.http.HttpServletRequest;

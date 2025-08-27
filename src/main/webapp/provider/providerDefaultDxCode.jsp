@@ -24,11 +24,11 @@
 --%>
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
 <%@page import="org.oscarehr.common.dao.ProviderPreferenceDao" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="java.util.List" %>
 
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.apache.commons.lang.time.DateFormatUtils" %>
 
 

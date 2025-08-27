@@ -33,7 +33,7 @@ import java.util.List;
 import org.oscarehr.common.model.Consent;
 import org.oscarehr.common.model.ConsentType;
 import org.oscarehr.common.model.DemographicData;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 /**
  * Manages the various consents required from patients for participation in specific programs

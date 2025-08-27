@@ -40,7 +40,7 @@ import ca.openosp.openo.billing.CA.dao.BillActivityDao;
 import ca.openosp.openo.billing.CA.model.BillActivity;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class BillActivityDaoTest extends DaoTestFixtures {
 

@@ -24,7 +24,7 @@
  */
 package org.oscarehr.ws.rest.conversion;
 
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.UserRoleTo1;
 import org.springframework.stereotype.Component;
 

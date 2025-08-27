@@ -41,7 +41,7 @@ import org.oscarehr.ws.rest.to.model.DemographicTo1;
 
 public class DemographicServiceTest extends BaseRestServiceTest {
 
-    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     /**
      * Generates a new pre-populated random demographic

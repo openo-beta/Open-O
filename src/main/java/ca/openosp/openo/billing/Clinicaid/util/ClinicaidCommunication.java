@@ -44,9 +44,9 @@ import java.util.regex.Matcher;
 import ca.openosp.openo.demographic.data.DemographicData;
 import ca.openosp.openo.provider.data.ProviderData;
 import org.apache.commons.codec.binary.Base64;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
-import oscar.util.UtilMisc;
+import ca.openosp.openo.util.UtilMisc;
 import ca.openosp.openo.billings.data.BillingFormData;
 import oscar.OscarProperties;
 

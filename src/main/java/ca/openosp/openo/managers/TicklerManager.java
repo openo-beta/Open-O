@@ -42,7 +42,7 @@ import org.oscarehr.common.model.Tickler;
 import org.oscarehr.common.model.TicklerCategory;
 import org.oscarehr.common.model.TicklerLink;
 import org.oscarehr.common.model.TicklerTextSuggest;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 import java.util.Collections;
 

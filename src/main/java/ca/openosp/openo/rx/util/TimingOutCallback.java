@@ -49,7 +49,7 @@ import java.net.URL;
 import org.apache.xmlrpc.AsyncCallback;
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.XmlRpcRequest;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 
 /**

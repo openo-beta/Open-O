@@ -28,6 +28,7 @@
         import="oscar.oscarDemographic.data.*,java.util.*,oscar.oscarPrevention.*,oscar.oscarLab.ca.on.*,oscar.util.*,oscar.oscarLab.*,oscar.scratch.*" %>
 <%@ page import="ca.openosp.openo.provider.data.ProviderColourUpdater" %>
 <%@ page import="ca.openosp.openo.scratch.ScratchData" %>
+<%@ page import="ca.openosp.openo.util.DateUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>

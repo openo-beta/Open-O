@@ -33,9 +33,9 @@ import ca.openosp.openo.dashboard.display.beans.DrilldownBean;
 import ca.openosp.openo.dashboard.handler.DrilldownQueryHandler;
 import ca.openosp.openo.dashboard.handler.IndicatorTemplateHandler;
 import ca.openosp.openo.dashboard.handler.IndicatorTemplateXML;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class DrilldownBeanFactory {
 

@@ -29,9 +29,9 @@ import org.oscarehr.common.dao.ConsultDocsDao;
 import org.oscarehr.common.dao.ConsultationRequestDao;
 import org.oscarehr.common.model.ConsultDocs;
 import org.oscarehr.common.model.ConsultationRequest;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
-import oscar.util.ConversionUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

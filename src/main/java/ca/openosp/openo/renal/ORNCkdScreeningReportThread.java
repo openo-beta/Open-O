@@ -33,9 +33,9 @@ import javax.xml.bind.Marshaller;
 
 import org.oscarehr.common.dao.ORNCkdScreeningReportLogDao;
 import org.oscarehr.common.model.ORNCkdScreeningReportLog;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class ORNCkdScreeningReportThread extends Thread {
 

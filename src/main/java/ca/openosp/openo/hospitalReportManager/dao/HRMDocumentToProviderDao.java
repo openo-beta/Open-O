@@ -20,7 +20,7 @@ import org.oscarehr.common.dao.AbstractDaoImpl;
 import org.oscarehr.common.dao.SystemPreferencesDao;
 import org.oscarehr.common.model.SystemPreferences;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToProvider;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository

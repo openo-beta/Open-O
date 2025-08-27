@@ -33,13 +33,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import ca.openosp.openo.entities.WCB;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 /**
  * These Actions Handle of all the interactions with WCB Billing

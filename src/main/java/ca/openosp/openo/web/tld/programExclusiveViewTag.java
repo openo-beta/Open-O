@@ -39,7 +39,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.common.dao.ProviderDefaultProgramDao;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author cronnie

@@ -27,8 +27,8 @@
 <%@ page import="oscar.eform.data.*" %>
 <%@ page import="ca.openosp.openo.managers.EmailComposeManager" %>
 <%@ page import="ca.openosp.openo.managers.SecurityInfoManager"%>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.eform.data.EForm" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

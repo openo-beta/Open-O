@@ -34,9 +34,9 @@ import org.oscarehr.common.model.UserProperty;
 import ca.openosp.openo.managers.MessagingManagerImpl;
 import ca.openosp.openo.managers.MessengerDemographicManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import ca.openosp.openo.messenger.data.ContactIdentifier;
 import ca.openosp.openo.messenger.data.MsgProviderData;
 

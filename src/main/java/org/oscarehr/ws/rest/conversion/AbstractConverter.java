@@ -27,7 +27,7 @@ package org.oscarehr.ws.rest.conversion;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 /**
  * Base class for defining conversion between domain model objects and transfer objects

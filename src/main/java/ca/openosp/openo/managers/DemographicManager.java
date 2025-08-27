@@ -28,11 +28,11 @@
 
 package ca.openosp.openo.managers;
 
-import org.oscarehr.caisi_integrator.ws.DemographicTransfer;
+import ca.openosp.openo.caisi_integrator.ws.DemographicTransfer;
 import org.oscarehr.common.Gender;
 import org.oscarehr.common.exception.PatientDirectiveException;
 import org.oscarehr.common.model.*;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.DemographicSearchRequest;
 import org.oscarehr.ws.rest.to.model.DemographicSearchResult;
 

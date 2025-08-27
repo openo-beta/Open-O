@@ -42,7 +42,7 @@ import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Tickler;
 import org.oscarehr.common.model.TicklerComment;
 import org.oscarehr.common.model.TicklerUpdate;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class TicklerDaoTest extends DaoTestFixtures {
 

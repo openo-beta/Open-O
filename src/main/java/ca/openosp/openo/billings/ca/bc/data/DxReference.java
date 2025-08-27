@@ -40,11 +40,11 @@ import java.util.Map;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.DiagnosticCodeDao;
 import org.oscarehr.common.model.DiagnosticCode;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 /**
  * @author jay

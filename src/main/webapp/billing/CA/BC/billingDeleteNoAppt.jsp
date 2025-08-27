@@ -45,7 +45,7 @@
 %>
 <%@ page import="java.sql.*, java.util.*,java.net.*, oscar.MyDateFormat" errorPage="/errorpage.jsp" %>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.BillingDao" %>
 <%@page import="org.oscarehr.common.model.Billing" %>
 <%@page import="ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO" %>

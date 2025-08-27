@@ -36,14 +36,14 @@ import javax.persistence.Query;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.NativeSql;
 import org.oscarehr.common.model.Billing;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.entities.WCB;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * @author jay

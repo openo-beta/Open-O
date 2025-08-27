@@ -34,7 +34,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oscarehr.common.model.Prevention;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 public class ImmunizationTest {
     private static Logger logger = MiscUtils.getLogger();

@@ -42,13 +42,13 @@ import org.jdom.output.XMLOutputter;
 import org.oscarehr.common.dao.ReportTemplatesDao;
 import org.oscarehr.common.model.ReportTemplates;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.log.LogAction;
-import oscar.util.ConversionUtils;
-import oscar.util.UtilXML;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.UtilXML;
 
 /**
  * Created on December 27, 2006, 10:54 AM

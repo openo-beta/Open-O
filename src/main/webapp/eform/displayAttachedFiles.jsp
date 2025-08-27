@@ -40,13 +40,13 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page
-        import="java.util.ArrayList, oscar.oscarLab.ca.on.*, oscar.util.StringUtils" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
+        import="java.util.ArrayList, oscar.oscarLab.ca.on.*, ca.openosp.openo.util.StringUtils" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%@page import="java.util.List" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
-<%@ page import="oscar.util.DateUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.util.DateUtils" %>
 <%@ page import="ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao" %>
 <%@ page import="ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao" %>
 <%@ page import="ca.openosp.openo.hospitalReportManager.model.HRMDocument" %>

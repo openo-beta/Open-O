@@ -32,7 +32,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.oscarehr.util.DbConnectionFilter;
+import org.oscarehr.utility.DbConnectionFilter;
 
 /**
  * deprecated Use JPA instead, no new code should be written against this class.

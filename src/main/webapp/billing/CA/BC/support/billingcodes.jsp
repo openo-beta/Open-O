@@ -23,7 +23,7 @@
 
 --%>
 <%@page import="org.oscarehr.common.model.BillingService" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.BillingServiceDao" %>
 <%
     if (session.getAttribute("user") == null) {

@@ -40,11 +40,11 @@ import org.oscarehr.common.dao.forms.FormsDao;
 import org.oscarehr.common.model.MessageList;
 import org.oscarehr.common.model.MessageTbl;
 import org.oscarehr.common.model.OscarCommLocations;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.messenger.data.MsgDisplayMessage;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * @deprecated Use org.oscarehr.managers.MessagingManager and JPA model.

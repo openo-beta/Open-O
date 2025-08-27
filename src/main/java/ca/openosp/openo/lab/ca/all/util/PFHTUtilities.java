@@ -34,7 +34,7 @@ import oscar.OscarProperties;
  * @author Divya Mantha, Indivica
  */
 public class PFHTUtilities {
-    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     /**
      * Creates a new instance of ICLUtilities

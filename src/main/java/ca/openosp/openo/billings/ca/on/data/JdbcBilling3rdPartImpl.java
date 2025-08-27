@@ -35,7 +35,7 @@ import org.oscarehr.common.dao.BillingONExtDao;
 import org.oscarehr.common.dao.BillingPaymentTypeDao;
 import org.oscarehr.common.model.BillingONExt;
 import org.oscarehr.common.model.BillingPaymentType;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.oscarehr.common.dao.ClinicDAO;
 import org.oscarehr.common.model.Clinic;
 

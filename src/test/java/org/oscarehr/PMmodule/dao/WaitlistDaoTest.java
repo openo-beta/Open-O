@@ -34,7 +34,7 @@ import org.oscarehr.PMmodule.wlmatch.CriteriasBO;
 import org.oscarehr.PMmodule.wlmatch.VacancyDisplayBO;
 import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class WaitlistDaoTest extends DaoTestFixtures {
 

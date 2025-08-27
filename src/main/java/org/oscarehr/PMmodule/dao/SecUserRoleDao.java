@@ -30,10 +30,7 @@ package org.oscarehr.PMmodule.dao;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.model.SecUserRole;
-import org.oscarehr.util.MiscUtils;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 public interface SecUserRoleDao {
 

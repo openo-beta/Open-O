@@ -37,8 +37,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.oscarehr.common.dao.BillingServiceDao;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.billings.ca.on.data.BillingCodeData;
 

@@ -34,7 +34,7 @@ import javax.persistence.Query;
 import org.oscarehr.common.model.MdsOBX;
 import org.springframework.stereotype.Repository;
 
-import oscar.util.ParamAppender;
+import ca.openosp.openo.util.ParamAppender;
 
 @Repository
 public class MdsOBXDaoImpl extends AbstractDaoImpl<MdsOBX> implements MdsOBXDao {

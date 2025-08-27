@@ -34,9 +34,9 @@ import javax.servlet.jsp.tagext.TagSupport;
 import org.oscarehr.common.dao.ViewDao;
 import org.oscarehr.common.model.View;
 import ca.openosp.openo.managers.TicklerManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import java.util.Map;
 

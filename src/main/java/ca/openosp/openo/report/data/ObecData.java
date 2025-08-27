@@ -38,11 +38,11 @@ import org.oscarehr.common.dao.OscarAppointmentDao;
 import org.oscarehr.common.model.Appointment;
 import org.oscarehr.common.model.Demographic;
 import ca.openosp.openo.integration.mcedt.mailbox.ActionUtils;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.db.DBPreparedHandler;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * This classes main function ObecGenerate collects a group of patients with health insurance number for OHIP validation in the last specified date

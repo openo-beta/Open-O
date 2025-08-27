@@ -40,10 +40,10 @@
 <%@page import="org.oscarehr.PMmodule.model.Program" %>
 <%@page import="org.oscarehr.PMmodule.service.ProgramManager" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="java.util.List" %>
 <%@page import="java.util.ArrayList" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="org.oscarehr.PMmodule.model.ProgramProvider" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="ca.openosp.openo.managers.ProviderManager2" %>

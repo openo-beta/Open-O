@@ -28,20 +28,20 @@
 <%@page import="net.sf.json.JSONSerializer" %>
 <%@page import="net.sf.json.JSONArray" %>
 <%@page import="net.sf.json.JSONObject" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="oscar.util.ConversionUtils" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="org.oscarehr.common.dao.PatientLabRoutingDao" %>
 <%@ page import="org.oscarehr.common.model.PatientLabRouting" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="org.apache.commons.lang.builder.ReflectionToStringBuilder" %>
-<%@ page import="org.oscarehr.util.MiscUtils" %>
+<%@ page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page import="org.w3c.dom.Document" %>
-<%@ page import="org.oscarehr.caisi_integrator.ws.CachedDemographicLabResult" %>
+<%@ page import="ca.openosp.openo.caisi_integrator.ws.CachedDemographicLabResult" %>
 <%@ page import="ca.openosp.openo.lab.ca.all.web.LabDisplayHelper" %>
 <%@ page import="ca.openosp.openo.lab.ca.all.util.LabVersionComparator"%>
 
 <%@ page import="java.util.*,
-                 oscar.util.UtilDateUtilities,
+                 ca.openosp.openo.util.UtilDateUtilities,
                  oscar.oscarLab.ca.all.*,
                  oscar.oscarLab.ca.all.parsers.*,
                  ca.openosp.openo.lab.LabRequestReportLink,
@@ -50,7 +50,7 @@
                  oscar.OscarProperties" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.dao.UserPropertyDAO, org.oscarehr.common.model.UserProperty" %>
 <%@ page import="org.oscarehr.common.model.MeasurementMap, org.oscarehr.common.dao.MeasurementMapDao" %>
 <%@ page import="org.oscarehr.common.model.Tickler" %>

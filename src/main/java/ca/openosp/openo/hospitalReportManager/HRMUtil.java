@@ -17,7 +17,6 @@ import java.util.*;
 
 import ca.openosp.openo.hospitalReportManager.dao.*;
 import org.apache.logging.log4j.Logger;
-import ca.openosp.openo.hospitalReportManager.dao.*;
 import ca.openosp.openo.hospitalReportManager.model.HRMCategory;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentSubClass;
@@ -25,13 +24,13 @@ import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
 import ca.openosp.openo.hospitalReportManager.model.HRMSubClass;
 import ca.openosp.openo.managers.NioFileManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.PDFGenerationException;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.PDFGenerationException;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.on.HRMResultsData;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 public class HRMUtil {
 

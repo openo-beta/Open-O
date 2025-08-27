@@ -37,7 +37,7 @@ import org.oscarehr.common.dao.DrugProductDao;
 import org.oscarehr.common.model.Drug;
 import org.oscarehr.common.model.DrugDispensing;
 import org.oscarehr.common.model.DrugProduct;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

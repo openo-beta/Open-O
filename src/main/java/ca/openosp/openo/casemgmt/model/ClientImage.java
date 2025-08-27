@@ -33,7 +33,7 @@ import javax.sql.rowset.serial.SerialBlob;
 
 import org.apache.commons.codec.binary.Base64;
 import ca.openosp.openo.model.BaseObject;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 public class ClientImage extends BaseObject {
     public static final String imageMissingPlaceholderUrl = "/images/defaultR_img.jpg";

@@ -31,7 +31,7 @@ import java.io.File;
 import java.io.FileWriter;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 /**
  * @author jay

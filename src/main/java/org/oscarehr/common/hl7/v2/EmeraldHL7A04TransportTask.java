@@ -37,7 +37,7 @@ import java.net.Socket;
 import java.util.TimerTask;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
 

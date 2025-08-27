@@ -57,7 +57,7 @@
 
 <%@ include file="../admin/dbconnection.jsp" %>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.ClinicLocationDao" %>
 <%@page import="org.oscarehr.common.model.ClinicLocation" %>
 <%@page import="org.oscarehr.common.dao.ReportProviderDao" %>
@@ -66,7 +66,7 @@
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.oscarehr.common.dao.BillingONCHeader1Dao" %>
 <%@page import="org.oscarehr.common.model.BillingONCHeader1" %>
-<%@page import="oscar.util.ConversionUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%
     ClinicLocationDao clinicLocationDao = (ClinicLocationDao) SpringUtils.getBean(ClinicLocationDao.class);
     ReportProviderDao reportProviderDao = SpringUtils.getBean(ReportProviderDao.class);

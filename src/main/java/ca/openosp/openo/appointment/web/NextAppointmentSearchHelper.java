@@ -43,8 +43,8 @@ import org.oscarehr.common.model.ScheduleDate;
 import org.oscarehr.common.model.ScheduleTemplate;
 import org.oscarehr.common.model.ScheduleTemplateCode;
 import org.oscarehr.common.model.ScheduleTemplatePrimaryKey;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class NextAppointmentSearchHelper {
     static final int MAX_DAYS_TO_SEARCH = 180;

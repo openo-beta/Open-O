@@ -46,9 +46,9 @@ import org.oscarehr.common.dao.SecObjPrivilegeDao;
 import org.oscarehr.common.model.RecycleBin;
 import org.oscarehr.common.model.SecObjPrivilege;
 import org.oscarehr.common.model.SecObjPrivilegePrimaryKey;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.log.LogAction;
 

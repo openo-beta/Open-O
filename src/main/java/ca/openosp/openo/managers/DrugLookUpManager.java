@@ -26,7 +26,7 @@ package ca.openosp.openo.managers;
 
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.ws.rest.to.model.DrugSearchTo1;
 import org.springframework.stereotype.Service;
 import ca.openosp.openo.rx.util.RxDrugRef;

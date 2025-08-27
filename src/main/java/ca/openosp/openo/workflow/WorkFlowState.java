@@ -32,7 +32,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import org.oscarehr.common.dao.WorkFlowDao;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author jay

@@ -84,7 +84,7 @@ public class ReadHRMFile {
             transactionInformation = pr.getTransactionInformation();
 
         } catch (JAXBException ex) {
-            org.oscarehr.util.MiscUtils.getLogger();
+            org.oscarehr.utility.MiscUtils.getLogger();
         }
     }
 

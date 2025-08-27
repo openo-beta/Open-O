@@ -40,7 +40,7 @@
 %>
 
 <!DOCTYPE html>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.lab.ca.all.pageUtil.SendOruR01UIBean" %>
 <%@page import="org.oscarehr.common.model.ProfessionalSpecialist" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>

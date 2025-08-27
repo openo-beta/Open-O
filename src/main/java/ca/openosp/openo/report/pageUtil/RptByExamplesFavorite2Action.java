@@ -36,8 +36,8 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.oscarehr.common.dao.ReportByExamplesFavoriteDao;
 import org.oscarehr.common.model.ReportByExamplesFavorite;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.report.bean.RptByExampleQueryBeanHandler;
 

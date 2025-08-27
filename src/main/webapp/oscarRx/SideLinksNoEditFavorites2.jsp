@@ -24,7 +24,7 @@
 
 --%>
 <%@page import="ca.openosp.openo.rx.data.RxPatientData" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%

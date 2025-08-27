@@ -28,7 +28,7 @@ import ca.ontario.health.edt.Detail;
 import ca.ontario.health.edt.TypeListResult;
 import ca.ontario.health.edt.UpdateRequest;
 import ca.ontario.health.edt.UploadData;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

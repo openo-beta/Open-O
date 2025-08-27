@@ -28,7 +28,7 @@
 
 
 <%@ page
-        import="java.util.*, ca.openosp.openo.encounter.oscarMeasurements.data.MeasurementMapConfig, oscar.OscarProperties, oscar.util.StringUtils,oscar.oscarEncounter.oscarMeasurements.bean.*" %>
+        import="java.util.*, ca.openosp.openo.encounter.oscarMeasurements.data.MeasurementMapConfig, oscar.OscarProperties, ca.openosp.openo.util.StringUtils,oscar.oscarEncounter.oscarMeasurements.bean.*" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBeanHandler" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean" %>
 

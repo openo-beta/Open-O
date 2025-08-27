@@ -44,10 +44,10 @@
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="ca.openosp.openo.managers.ProviderManager2" %>
 <%@page import="org.oscarehr.common.dao.FunctionalCentreDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="java.util.List" %>
 <%@page import="org.oscarehr.common.model.FunctionalCentre" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="java.util.GregorianCalendar" %>
 <%@page import="java.text.DateFormatSymbols" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>

@@ -39,14 +39,14 @@ import org.oscarehr.common.dao.MeasurementDao;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Measurement;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.form.FrmRecord;
-import oscar.form.FrmRecordFactory;
+import ca.openosp.openo.form.FrmRecord;
+import ca.openosp.openo.form.FrmRecordFactory;
 import ca.openosp.openo.encounter.data.EctFormData;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 public final class EFormPrintPDFUtil {
     private static final String HEAD_CIRCUMFERENCE_GRAPH = "HEAD_CIRC";

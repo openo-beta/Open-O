@@ -37,20 +37,20 @@ import java.util.List;
 import java.util.Vector;
 
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.caisi_integrator.ws.CachedMeasurement;
+import ca.openosp.openo.caisi_integrator.ws.CachedMeasurement;
 import org.oscarehr.common.dao.MeasurementDao;
 import org.oscarehr.common.dao.ValidationsDao;
 import org.oscarehr.common.model.Measurement;
 import org.oscarehr.common.model.MeasurementType;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Validations;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.encounter.oscarMeasurements.data.MeasurementTypes;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class EctMeasurementsDataBeanHandler {
 

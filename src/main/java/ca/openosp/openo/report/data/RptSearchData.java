@@ -31,7 +31,7 @@ import java.util.List;
 import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.dao.DemographicQueryFavouritesDao;
 import org.oscarehr.common.model.DemographicQueryFavourite;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author McMaster

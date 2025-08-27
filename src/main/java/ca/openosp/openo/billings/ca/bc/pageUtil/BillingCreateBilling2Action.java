@@ -28,8 +28,8 @@ package ca.openosp.openo.billings.ca.bc.pageUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import oscar.OscarProperties;
@@ -43,7 +43,7 @@ import ca.openosp.openo.billings.ca.bc.data.BillingFormData;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
 import ca.openosp.openo.billings.ca.bc.pageUtil.BillingBillingManager.BillingItem;
 import ca.openosp.openo.demographic.data.DemographicData;
-import oscar.util.SqlUtils;
+import ca.openosp.openo.util.SqlUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

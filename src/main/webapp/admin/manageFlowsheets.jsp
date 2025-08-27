@@ -48,7 +48,7 @@
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet" %>
 <%@ page import="org.oscarehr.common.model.Flowsheet" %>
 <%@ page import="org.oscarehr.common.dao.FlowsheetDao" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%

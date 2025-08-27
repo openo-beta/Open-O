@@ -40,7 +40,11 @@
 %>
 
 <%@ page import="oscar.form.*, oscar.form.data.*" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.form.FrmRecord" %>
+<%@ page import="ca.openosp.openo.form.FrmRourkeRecord" %>
+<%@ page import="ca.openosp.openo.form.data.FrmData" %>
+<%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

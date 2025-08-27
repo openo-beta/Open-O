@@ -31,12 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Query;
-
-import org.apache.commons.lang.StringUtils;
-import org.oscarehr.common.NativeSql;
 import org.oscarehr.common.model.Drug;
-import org.oscarehr.util.MiscUtils;
 
 public interface DrugDao extends AbstractDao<Drug> {
 

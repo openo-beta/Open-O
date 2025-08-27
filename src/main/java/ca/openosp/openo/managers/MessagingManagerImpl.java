@@ -50,11 +50,11 @@ import org.oscarehr.common.model.MsgDemoMap;
 import org.oscarehr.common.model.OscarCommLocations;
 
 import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.messenger.data.ContactIdentifier;

@@ -37,7 +37,7 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.service.AcceptableUseAgreementManager;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
@@ -52,7 +52,7 @@ public class LoginAgreement2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    private static final Logger _logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     private ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
 

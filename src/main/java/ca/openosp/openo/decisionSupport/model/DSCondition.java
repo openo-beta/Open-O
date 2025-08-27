@@ -37,7 +37,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.decisionSupport.model.conditionValue.DSValue;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 /**
  * @author apavel

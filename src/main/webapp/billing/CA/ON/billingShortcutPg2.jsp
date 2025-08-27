@@ -48,12 +48,14 @@
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Billing" %>
 <%@ page import="org.oscarehr.common.dao.BillingDao" %>
 <%@ page import="ca.openosp.openo.billing.CA.model.BillingDetail" %>
 <%@ page import="ca.openosp.openo.billing.CA.dao.BillingDetailDao" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingSavePrep" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%
     BillingDao billingDao = SpringUtils.getBean(BillingDao.class);
     BillingDetailDao billingDetailDao = SpringUtils.getBean(BillingDetailDao.class);

@@ -17,9 +17,9 @@
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 --%>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="oscar.util.ConversionUtils" %>
-<%@page import="org.oscarehr.util.DateRange" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@page import="org.oscarehr.utility.DateRange" %>
 <%
     if (session.getAttribute("user") == null)
         response.sendRedirect("../../../logout.jsp");

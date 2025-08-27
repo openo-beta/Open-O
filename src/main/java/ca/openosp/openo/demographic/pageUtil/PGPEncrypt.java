@@ -31,10 +31,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 /**
  * @author Ronnie Cheng

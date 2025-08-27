@@ -31,11 +31,11 @@ import org.oscarehr.common.model.Demographic;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import oscar.OscarProperties;
-import oscar.util.ConcatPDF;
+import ca.openosp.openo.util.ConcatPDF;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

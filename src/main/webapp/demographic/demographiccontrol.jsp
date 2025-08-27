@@ -25,14 +25,14 @@
 --%>
 
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.MatchingDemographicTransferScore" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.MatchingDemographicTransferScore" %>
 <%@page import="java.util.List" %>
 <%@page import="org.oscarehr.web.DemographicSearchHelper" %>
 <%@page import="java.util.GregorianCalendar" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.MatchingDemographicParameters" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.MatchingDemographicParameters" %>
 <%@ page import="java.io.UnsupportedEncodingException" %>
 <%@ page import="java.net.URLEncoder" %>
 

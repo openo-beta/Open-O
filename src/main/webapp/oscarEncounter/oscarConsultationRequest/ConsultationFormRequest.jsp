@@ -39,7 +39,7 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.WebUtils" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
@@ -56,17 +56,17 @@
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="org.oscarehr.common.model.Site" %>
-<%@page import="org.oscarehr.util.WebUtils" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
 <%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequest2Form" %>
 <%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil" %>
 <%@page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewRequest2Action" %>
-<%@page import="org.oscarehr.util.MiscUtils,ca.openosp.openo.clinic.ClinicData" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="org.oscarehr.util.DigitalSignatureUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils,ca.openosp.openo.clinic.ClinicData" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.DigitalSignatureUtils" %>
 <%@ page import="org.oscarehr.ui.servlet.ImageRenderingServlet" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProgramDao, org.oscarehr.PMmodule.model.Program" %>
 <%@page import="ca.openosp.openo.demographic.data.DemographicData, ca.openosp.openo.rx.data.RxProviderData, ca.openosp.openo.rx.data.RxProviderData.Provider, ca.openosp.openo.clinic.ClinicData" %>
 <%@ page import="org.oscarehr.common.dao.FaxConfigDao, org.oscarehr.common.model.FaxConfig" %>
@@ -88,7 +88,7 @@
 <%@ page import="ca.openosp.openo.lab.ca.all.Hl7textResultsData" %>
 <%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="ca.openosp.openo.documentManager.EDoc" %>
-<%@ page import="oscar.util.StringUtils" %>
+<%@ page import="ca.openosp.openo.util.StringUtils" %>
 <%@ page import="org.oscarehr.common.model.enumerator.ModuleType" %>
 <%@ page import="ca.openosp.openo.demographic.data.EctInformation" %>
 <%@ page import="ca.openosp.openo.demographic.data.RxInformation" %>

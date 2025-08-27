@@ -32,7 +32,7 @@ import java.net.URL;
 
 import org.drools.RuleBase;
 import org.drools.io.RuleBaseLoader;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
 

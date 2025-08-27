@@ -39,8 +39,8 @@ import org.oscarehr.common.dao.LogLettersDao;
 import org.oscarehr.common.dao.ReportLettersDao;
 import org.oscarehr.common.model.LogLetters;
 import org.oscarehr.common.model.ReportLetters;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.apache.logging.log4j.Logger;
 
 

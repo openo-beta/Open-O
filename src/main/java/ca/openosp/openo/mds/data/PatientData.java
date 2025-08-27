@@ -32,9 +32,9 @@ import java.util.Locale;
 
 import org.oscarehr.common.dao.MdsPIDDao;
 import org.oscarehr.common.model.MdsPID;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class PatientData {
 

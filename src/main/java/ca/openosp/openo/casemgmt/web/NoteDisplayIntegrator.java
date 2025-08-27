@@ -28,20 +28,20 @@ import java.util.Date;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicNote;
-import org.oscarehr.caisi_integrator.ws.CachedFacility;
-import org.oscarehr.caisi_integrator.ws.CachedProgram;
-import org.oscarehr.caisi_integrator.ws.CachedProvider;
-import org.oscarehr.caisi_integrator.ws.CodeType;
-import org.oscarehr.caisi_integrator.ws.FacilityIdIntegerCompositePk;
-import org.oscarehr.caisi_integrator.ws.FacilityIdStringCompositePk;
-import org.oscarehr.caisi_integrator.ws.NoteIssue;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicNote;
+import ca.openosp.openo.caisi_integrator.ws.CachedFacility;
+import ca.openosp.openo.caisi_integrator.ws.CachedProgram;
+import ca.openosp.openo.caisi_integrator.ws.CachedProvider;
+import ca.openosp.openo.caisi_integrator.ws.CodeType;
+import ca.openosp.openo.caisi_integrator.ws.FacilityIdIntegerCompositePk;
+import ca.openosp.openo.caisi_integrator.ws.FacilityIdStringCompositePk;
+import ca.openosp.openo.caisi_integrator.ws.NoteIssue;
 import ca.openosp.openo.casemgmt.dao.IssueDAO;
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
 import ca.openosp.openo.casemgmt.model.Issue;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.rx.data.RxPrescriptionData;
 

@@ -36,7 +36,7 @@ import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.appointment.search.SearchConfig;
 import ca.openosp.openo.appointment.search.TimeSlot;
 import ca.openosp.openo.managers.DayWorkSchedule;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.ws.transfer_objects.CalendarScheduleCodePairTransfer;
 
 

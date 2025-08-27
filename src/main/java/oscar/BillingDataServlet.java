@@ -34,7 +34,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 
 public class BillingDataServlet extends HttpServlet implements java.io.Serializable {

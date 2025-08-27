@@ -22,8 +22,8 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.eform.EFormLoader;
 import ca.openosp.openo.eform.EFormUtil;

@@ -34,9 +34,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.rx.util.RxUtil;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.rx.data.RxDrugData;
 import ca.openosp.openo.rx.data.RxPrescriptionData;

@@ -49,13 +49,13 @@ import org.oscarehr.common.model.BillingService;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.service.BillingONService;
 import org.oscarehr.common.model.BillingPaymentType;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.billings.ca.on.data.BillingDataHlp;
-import oscar.util.DateUtils;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.DateUtils;
+import ca.openosp.openo.util.StringUtils;
 
 /**
  * @author mweston4

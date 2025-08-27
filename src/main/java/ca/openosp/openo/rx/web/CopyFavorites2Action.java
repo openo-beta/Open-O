@@ -30,8 +30,8 @@ import org.apache.struts2.ServletActionContext;
 import org.oscarehr.common.dao.FavoritesDao;
 import org.oscarehr.common.dao.FavoritesPrivilegeDao;
 import org.oscarehr.common.model.Favorites;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 

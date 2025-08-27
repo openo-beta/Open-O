@@ -407,6 +407,8 @@
             <version>1.1.2</version>
         </dependency>
 
+        <!-- XMLBeans for AR2005 and CKD - using existing 3.1.0 version below -->
+
         <!-- itext -->
         <dependency>
             <groupId>com.itextpdf</groupId>
@@ -517,12 +519,6 @@
         </dependency>
 
 
-        <!-- caisi integrator: can be found in the local_repo folder -->
-        <dependency>
-            <groupId>org.oscarehr.caisi_integrator</groupId>
-            <artifactId>caisi_integrator_client_stubs</artifactId>
-            <version>1.1</version>
-        </dependency>
 
 
 
@@ -622,33 +618,11 @@
 
 
         <!-- FOR BORN Project - AR2005 in XML format -->
-        <!-- can be found in the local_repo folder -->
-        <dependency>
-            <groupId>org.oscarehr.ar2005</groupId>
-            <artifactId>ar2005</artifactId>
-            <version>1.2</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.xmlbeans</groupId>
-                    <artifactId>xmlbeans</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        <!-- REMOVED: now included as source code -->
 
 
         <!-- FOR ORN Project - CKD config in XML format -->
-        <!-- can be found in the local_repo folder -->
-        <dependency>
-            <groupId>org.oscarehr.ckd</groupId>
-            <artifactId>ckd</artifactId>
-            <version>1.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.xmlbeans</groupId>
-                    <artifactId>xmlbeans</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        <!-- REMOVED: now included as source code -->
 
         <!-- patientSiteVisit.jar , suspect this is generated classes and should be removed as a jar in the future -->
         <!-- can be found in the local_repo folder -->
@@ -977,17 +951,7 @@
         <!-- can be found in the local_repo folder -->
 
         <!-- EBS and HCV Stubs -->
-        <!-- can be found in the local_repo folder -->
-        <dependency>
-            <groupId>org.oscarehr.integration.ebs</groupId>
-            <artifactId>edt-stubs</artifactId>
-            <version>0.0.1-20140911.161211-1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.oscarehr.integration.ebs</groupId>
-            <artifactId>hcv-stubs</artifactId>
-            <version>0.0.1-20140911.161502-1</version>
-        </dependency>
+        <!-- REMOVED: now included as source code -->
 
         <!-- Detected as "Unused dependency" but don't remove it, it's using actually -->
         <dependency>
@@ -1087,19 +1051,6 @@
             <version>9.4.1</version>
         </dependency>
 
-        <!-- Caisi Integrator -->
-        <!-- can be found in the local_repo folder -->
-        <dependency>
-            <groupId>org.oscarehr.caisi_integrator</groupId>
-            <artifactId>integrator-objects</artifactId>
-            <version>0.0.4</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
         <!-- This is a dependency for the Caisi Integrator Objects. Only required until
         OpenJPA is no longer needed in Integrator. -->
@@ -1139,12 +1090,8 @@
             <version>${hapifhir.version}</version>
         </dependency>
 
-        <!-- can be found in the local_repo folder -->
-        <dependency>
-            <groupId>org.oscarehr</groupId>
-            <artifactId>flowsheets</artifactId>
-            <version>1.0</version>
-        </dependency>
+        <!-- flowsheets JAR -->
+        <!-- REMOVED: now included as source code (decompiled with IntelliJ) -->
 
         <!-- Detected as "Unused dependency" but don't remove it, it's using actually -->
         <dependency>

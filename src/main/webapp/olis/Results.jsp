@@ -18,13 +18,13 @@
 <%@page import="java.io.File" %>
 <%@page import="org.oscarehr.olis.OLISUtils" %>
 <%@page import="ca.openosp.openo.lab.FileUploadCheck" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.lab.ca.all.upload.MessageUploader" %>
 <%@page import="org.oscarehr.olis.model.OLISRequestNomenclature" %>
 <%@page import="org.oscarehr.olis.dao.OLISRequestNomenclatureDao" %>
 <%@ page language="java" contentType="text/html;" %>
-<%@page import="com.indivica.olis.queries.*,java.util.*,ca.openosp.openo.lab.ca.all.parsers.Factory, ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler, ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler.OLISError, org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="com.indivica.olis.queries.*,java.util.*,ca.openosp.openo.lab.ca.all.parsers.Factory, ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler, ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler.OLISError, org.oscarehr.utility.SpringUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page import="org.oscarehr.olis.OLISResults2Action" %>
 
 <%

@@ -27,10 +27,10 @@
 package ca.openosp.openo.billings.ca.bc.pageUtil;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import oscar.Misc;
 import ca.openosp.openo.entities.WCB;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 import java.util.List;
 

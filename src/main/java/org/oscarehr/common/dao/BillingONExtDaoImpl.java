@@ -40,8 +40,8 @@ import org.oscarehr.common.model.BillingONCHeader1;
 import org.oscarehr.common.model.BillingONExt;
 import org.oscarehr.common.model.BillingONPayment;
 import org.oscarehr.common.model.BillingPaymentType;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.stereotype.Repository;
 
 /**

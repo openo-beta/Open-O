@@ -43,12 +43,13 @@
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%@page
         import="ca.openosp.openo.encounter.pageUtil.NavBarDisplayDAO, oscar.util.*, java.util.ArrayList, java.util.Date, java.util.Calendar, java.io.IOException" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.dao.security.SecobjprivilegeDao" %>
 <%@ page import="ca.openosp.openo.model.security.Secobjprivilege" %>
 <%@ page import="java.util.List, java.util.regex.Pattern, java.util.regex.Matcher" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.openo.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.services.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.util.DateUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"
        scope="request"/>

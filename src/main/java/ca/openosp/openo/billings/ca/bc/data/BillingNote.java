@@ -36,12 +36,12 @@ import java.util.List;
 
 import ca.openosp.openo.billing.CA.BC.dao.BillingNoteDao;
 import ca.openosp.openo.billing.CA.BC.model.BillingNotes;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.Misc;
 import ca.openosp.openo.entities.Billingmaster;
-import oscar.util.ConversionUtils;
-import oscar.util.UtilMisc;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.UtilMisc;
 
 /**
  * +------------------+------------+------+-----+---------+----------------+

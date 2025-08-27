@@ -41,8 +41,8 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%
     String curUser_no = (String) session.getAttribute("user");
     String str = null;
@@ -57,7 +57,7 @@
         import="java.util.*, oscar.*, ca.openosp.openo.demographic.data.ProvinceNames, ca.openosp.openo.demographic.pageUtil.Util, ca.openosp.openo.waitinglist.WaitingList" %>
 <%@ page
         import="org.oscarehr.common.dao.*,org.oscarehr.common.model.*" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.ProfessionalSpecialist" %>
 <%@page import="org.oscarehr.common.dao.ProfessionalSpecialistDao" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
@@ -70,9 +70,9 @@
 <%@page import="org.oscarehr.common.dao.EFormDao" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProgramDao" %>
 <%@page import="org.oscarehr.common.model.Facility" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="oscar.OscarProperties" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.managers.ProgramManager2" %>
 <%@page import="org.oscarehr.PMmodule.model.ProgramProvider" %>

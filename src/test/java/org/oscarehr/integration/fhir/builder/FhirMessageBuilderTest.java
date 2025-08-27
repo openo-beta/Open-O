@@ -46,7 +46,7 @@ import ca.openosp.openo.integration.fhir.model.SubmittingPractitioner;
 import ca.openosp.openo.integration.fhir.resources.Settings;
 import ca.openosp.openo.integration.fhir.resources.constants.FhirDestination;
 import ca.openosp.openo.integration.fhir.resources.constants.Region;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 public class FhirMessageBuilderTest {
 

@@ -24,7 +24,7 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ include file="/taglibs.jsp" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="org.oscarehr.provider.web.UserPreference2Action" %>

@@ -1,6 +1,8 @@
 <%@ page import="oscar.form.*, oscar.form.data.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.form.FrmRecord" %>
+<%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%

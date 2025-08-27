@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.PMmodule.service.ProgramManager;
 import org.oscarehr.PMmodule.service.ProviderManager;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * Will report some basic statistics out of the PMM

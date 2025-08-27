@@ -52,7 +52,7 @@ import org.oscarehr.oscarRx.erx.model.request.SetPatientImmediate3;
 import org.oscarehr.oscarRx.erx.model.request.Transaction3;
 import org.oscarehr.oscarRx.erx.model.response.GetPrescriptions5Response;
 import org.oscarehr.oscarRx.erx.model.response.SetPatientImmediate3Response;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.w3c.dom.DOMException;
 
 /**

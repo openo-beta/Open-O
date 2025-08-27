@@ -47,14 +47,14 @@ import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.PatientLabRouting;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.ProviderLabRoutingModel;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.all.upload.ProviderLabRouting;
 import ca.openosp.openo.lab.ca.bc.PathNet.HL7.V2_3.MSH;
 import ca.openosp.openo.lab.ca.bc.PathNet.HL7.V2_3.PID;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class Message {
     Logger _logger = MiscUtils.getLogger();

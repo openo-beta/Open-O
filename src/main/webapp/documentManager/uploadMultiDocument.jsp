@@ -54,7 +54,7 @@
 <%@ page
         import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, oscar.util.*, java.net.*,oscar.MyDateFormat, ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%@page import="oscar.oscarProvider.data.*" %>
 <%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="ca.openosp.openo.provider.data.ProviderData" %>

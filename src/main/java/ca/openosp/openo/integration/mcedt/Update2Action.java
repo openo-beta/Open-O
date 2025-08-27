@@ -28,8 +28,8 @@ import ca.ontario.health.edt.*;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.util.MiscUtils;
-import oscar.util.ConversionUtils;
+import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

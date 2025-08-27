@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.openosp.openo.managers.model.ServiceType;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 public interface BillingManager {
 

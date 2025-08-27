@@ -32,8 +32,8 @@ import java.util.Date;
 
 import org.apache.logging.log4j.Logger;
 
-import oscar.util.ConversionUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.Segment;
 import ca.uhn.hl7v2.model.v23.datatype.FT;
@@ -57,7 +57,7 @@ public class CLSHandler implements MessageHandler {
         FIRST, MIDDLE, LAST;
     }
 
-    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     private ORU_R01 msg;
 

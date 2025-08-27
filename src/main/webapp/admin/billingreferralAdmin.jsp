@@ -34,6 +34,7 @@
 
 <%@page import="org.oscarehr.common.model.ProfessionalSpecialist" %>
 <%@page import="java.util.*" %>
+<%@ page import="ca.openosp.openo.util.StringUtils" %>
 
 <%
     String searchBy = "searchByName";
@@ -177,7 +178,7 @@
                         ProfessionalSpecialist ps = (ProfessionalSpecialist) pageContext.getAttribute("referral");
 
                         String linkName = ps.getReferralNo();
-                        if (oscar.util.StringUtils.isNullOrEmpty(ps.getReferralNo())) {
+                        if (StringUtils.isNullOrEmpty(ps.getReferralNo())) {
                             linkName = "N/A";
                         }
                     %>

@@ -39,8 +39,8 @@
 %>
 
 <%@ page import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, java.net.*,oscar.MyDateFormat" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.dao.TeleplanS00Dao" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.model.TeleplanS00" %>
 

@@ -36,8 +36,8 @@ import org.oscarehr.common.dao.OscarKeyDao;
 import org.oscarehr.common.dao.PublicKeyDao;
 import org.oscarehr.common.model.OscarKey;
 import org.oscarehr.common.model.PublicKey;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public final class KeyPairGen {
 

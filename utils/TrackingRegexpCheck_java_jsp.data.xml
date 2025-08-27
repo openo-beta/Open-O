@@ -2619,9 +2619,12 @@
         <ViolationValue>/src/main/webapp/casemgmt/noteBrowser.jsp:&lt;%@page import="java.util.Hashtable"%&gt;</ViolationValue>
         <ViolationValue>/src/main/webapp/casemgmt/noteBrowser.jsp:List&lt;Hashtable&gt; queues = queueDao.getQueues();</ViolationValue>
         <ViolationValue>/src/main/webapp/casemgmt/noteBrowser.jsp:for (Hashtable ht : queues) {</ViolationValue>
-        <ViolationValue>/src/main/webapp/common/OntarioMDRedirect.jsp:&lt;%@page import="org.springframework.web.context.support.WebApplicationContextUtils,org.oscarehr.util.OntarioMD,java.util.Hashtable"%&gt;&lt;%@page import="org.springframework.web.context.WebApplicationContext,org.oscarehr.common.dao.*,org.oscarehr.common.model.*"%&gt;&lt;%</ViolationValue>
+        <ViolationValue>/src/main/webapp/common/OntarioMDRedirect.jsp:&lt;%@page
+            import="org.springframework.web.context.support.WebApplicationContextUtils,org.oscarehr.utility.OntarioMD,java.util.Hashtable"%&gt;&lt;%@page
+            import="org.springframework.web.context.WebApplicationContext,org.oscarehr.common.dao.*,org.oscarehr.common.model.*"%&gt;&lt;%</ViolationValue>
         <ViolationValue>/src/main/webapp/common/OntarioMDRedirect.jsp:Hashtable loginCreds = omd.loginToOntarioMD(uname,pword,requestor);</ViolationValue>
-        <ViolationValue>/src/main/webapp/common/omdDiseaseList.jsp:&lt;%@page import="org.springframework.web.context.support.WebApplicationContextUtils,org.oscarehr.util.OntarioMD,java.util.Hashtable,org.apache.commons.collections.*"%&gt;</ViolationValue>
+        <ViolationValue>/src/main/webapp/common/omdDiseaseList.jsp:&lt;%@page
+            import="org.springframework.web.context.support.WebApplicationContextUtils,org.oscarehr.utility.OntarioMD,java.util.Hashtable,org.apache.commons.collections.*"%&gt;</ViolationValue>
         <ViolationValue>/src/main/webapp/demographic/demographicaddarecordhtm.jsp:Vector vecRef = new Vector();</ViolationValue>
         <ViolationValue>/src/main/webapp/demographic/demographiceditdemographic.jsp:Vector vecRef = new Vector();</ViolationValue>
         <ViolationValue>/src/main/webapp/demographic/demographicpdflabel.jsp:Vector vecRef = new Vector();</ViolationValue>

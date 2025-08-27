@@ -32,8 +32,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.oscarehr.common.model.Tickler;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.managers.TicklerManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.oscarTickler.TicklerData;
 

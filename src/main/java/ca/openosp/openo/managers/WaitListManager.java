@@ -39,8 +39,8 @@ import org.oscarehr.common.dao.AdmissionDao;
 import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.model.Admission;
 import org.oscarehr.common.model.Demographic;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.VelocityUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.VelocityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

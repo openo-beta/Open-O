@@ -29,7 +29,7 @@
 package org.oscarehr.ws.rest.conversion;
 
 import org.oscarehr.common.model.Favorite;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.FavoriteTo1;
 
 import java.util.List;

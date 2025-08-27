@@ -32,10 +32,10 @@ import ca.openosp.openo.dashboard.display.beans.DashboardBean;
 import ca.openosp.openo.managers.DashboardManager;
 import ca.openosp.openo.managers.ProviderManager2;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import java.util.ArrayList;
 import java.util.List;

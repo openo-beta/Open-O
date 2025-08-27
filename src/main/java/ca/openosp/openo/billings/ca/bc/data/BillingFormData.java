@@ -31,11 +31,11 @@ import ca.openosp.openo.billing.CA.BC.dao.BillingStatusTypesDao;
 import ca.openosp.openo.billing.CA.BC.model.BillingStatusTypes;
 import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import ca.openosp.openo.entities.BillingStatusType;
 import ca.openosp.openo.entities.PaymentType;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 import java.util.*;
 

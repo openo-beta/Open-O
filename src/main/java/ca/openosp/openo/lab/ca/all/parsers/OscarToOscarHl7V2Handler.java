@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.hl7.v2.oscar_to_oscar.OscarToOscarUtils;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.lab.ca.all.parsers.OscarToOscarHl7V2.ChainnedMessageAdapter;
 import ca.openosp.openo.lab.ca.all.parsers.OscarToOscarHl7V2.OruR01Handler;

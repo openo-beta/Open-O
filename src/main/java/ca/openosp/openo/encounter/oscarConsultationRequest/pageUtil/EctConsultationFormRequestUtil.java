@@ -32,13 +32,13 @@ import org.oscarehr.common.model.DemographicExt.DemographicProperty;
 import org.oscarehr.common.model.enumerator.ConsultationRequestExtKey;
 import ca.openosp.openo.fax.core.FaxRecipient;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.util.DemographicContactCreator;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.DemographicContactCreator;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import oscar.OscarProperties;
-import oscar.util.ConversionUtils;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.StringUtils;
 
 import java.util.*;
 

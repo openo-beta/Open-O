@@ -37,7 +37,7 @@ import org.oscarehr.common.model.BillingONCHeader1;
 import org.oscarehr.common.model.BillingONItem;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.service.BillingONService;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.data.EctFormData.PatientForm;
 import ca.openosp.openo.rx.data.RxPrescriptionData.Prescription;

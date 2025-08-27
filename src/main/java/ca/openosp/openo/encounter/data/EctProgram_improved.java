@@ -10,7 +10,7 @@ import org.oscarehr.PMmodule.dao.ProgramDao;
 import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
 import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.PMmodule.model.ProgramProvider;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -64,7 +64,7 @@ public class EctProgram_improved {
             
         } catch (Exception e) {
             // Log error and return OSCAR program ID or "0" as fallback
-            org.oscarehr.util.MiscUtils.getLogger().error("Error getting program for provider " + providerNo, e);
+            org.oscarehr.utility.MiscUtils.getLogger().error("Error getting program for provider " + providerNo, e);
             return getOscarProgramId();
         }
     }
@@ -88,7 +88,7 @@ public class EctProgram_improved {
                 return cachedOscarProgramId;
             }
         } catch (Exception e) {
-            org.oscarehr.util.MiscUtils.getLogger().error("Error getting OSCAR program", e);
+            org.oscarehr.utility.MiscUtils.getLogger().error("Error getting OSCAR program", e);
         }
         
         // Fallback to "0" for backwards compatibility

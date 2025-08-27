@@ -28,8 +28,8 @@ package ca.openosp.openo.encounter.pageUtil;
 
 import org.oscarehr.common.model.Document;
 import ca.openosp.openo.managers.ConsultationManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import oscar.OscarProperties;
 
 import javax.servlet.http.HttpServletRequest;

@@ -32,12 +32,12 @@ import org.oscarehr.common.model.CtlDocument;
 import org.oscarehr.common.model.CtlDocumentPK;
 import org.oscarehr.common.model.Document;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import oscar.MyDateFormat;
 import oscar.OscarProperties;
 import ca.openosp.openo.tags.TagObject;
-import oscar.util.ConversionUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 import java.io.*;
 import java.text.ParseException;

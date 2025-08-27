@@ -46,7 +46,7 @@
 
 <jsp:useBean id="documentBean" class="oscar.DocumentBean" scope="request"/>
 
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.billing.CA.BC.model.TeleplanS21" %>
 <%@ page import="ca.openosp.openo.billing.CA.BC.dao.TeleplanS21Dao" %>
 <%@ page import="ca.openosp.openo.billing.CA.BC.model.TeleplanS00" %>

@@ -35,8 +35,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.ws.rest.to.model.SummaryItemTo1;
 import org.oscarehr.ws.rest.to.model.SummaryTo1;
 import org.springframework.stereotype.Component;
@@ -46,7 +46,7 @@ import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.documentManager.EDocUtil.EDocSort;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 @Component
 public class LabsDocsSummary implements Summary {

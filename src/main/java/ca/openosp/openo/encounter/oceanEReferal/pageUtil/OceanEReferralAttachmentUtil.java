@@ -9,7 +9,7 @@ import org.oscarehr.common.dao.EReferAttachmentDaoImpl;
 import org.oscarehr.common.dao.EReferAttachmentDataDaoImpl;
 import org.oscarehr.common.model.EReferAttachment;
 import org.oscarehr.common.model.EReferAttachmentData;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class OceanEReferralAttachmentUtil {
     private static EReferAttachmentDataDaoImpl eReferAttachmentDataDao = SpringUtils.getBean(EReferAttachmentDataDaoImpl.class);

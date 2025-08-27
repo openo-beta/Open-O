@@ -42,7 +42,7 @@ import org.oscarehr.common.dao.RecycleBinDao;
 import org.oscarehr.common.model.MeasurementMap;
 import org.oscarehr.common.model.MeasurementsExt;
 import org.oscarehr.common.model.RecycleBin;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author wrighd

@@ -35,11 +35,11 @@ import java.util.Date;
 
 import ca.openosp.openo.billing.CA.BC.dao.BillingNoteDao;
 import ca.openosp.openo.billing.CA.BC.model.BillingNotes;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.Misc;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * @author root

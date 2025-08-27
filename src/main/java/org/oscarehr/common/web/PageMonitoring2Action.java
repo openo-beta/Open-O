@@ -34,13 +34,14 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.openo.util.DateUtils;
 import net.sf.json.JSONArray;
 
 import org.oscarehr.common.dao.PageMonitorDao;
 import org.oscarehr.common.model.PageMonitor;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -208,10 +209,10 @@ public class PageMonitoring2Action extends ActionSupport {
                     Date endDT = null;
                     Date existingEndDT = null;
 
-                    startDT = oscar.util.DateUtils.parseDateTime(apptDate + " " + startTime + ":00", locale);
-                    existingStartDT = oscar.util.DateUtils.parseDateTime(existingApptDate + " " + existingStartTime + ":00", locale);
-                    endDT = oscar.util.DateUtils.parseDateTime(apptDate + " " + endTime + ":00", locale);
-                    existingEndDT = oscar.util.DateUtils.parseDateTime(existingApptDate + " " + existingEndTime + ":00", locale);
+                    startDT = DateUtils.parseDateTime(apptDate + " " + startTime + ":00", locale);
+                    existingStartDT = DateUtils.parseDateTime(existingApptDate + " " + existingStartTime + ":00", locale);
+                    endDT = DateUtils.parseDateTime(apptDate + " " + endTime + ":00", locale);
+                    existingEndDT = DateUtils.parseDateTime(existingApptDate + " " + existingEndTime + ":00", locale);
 
                     if (startDT.before(existingEndDT) && existingStartDT.before(endDT)) {
                         //overlapping date ranges

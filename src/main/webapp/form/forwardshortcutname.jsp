@@ -24,7 +24,7 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -35,6 +35,7 @@
 </security:oscarSec>
 
 <%@ page import="java.net.URLDecoder, oscar.form.data.*" %>
+<%@ page import="ca.openosp.openo.form.data.FrmData" %>
 
 <%
 

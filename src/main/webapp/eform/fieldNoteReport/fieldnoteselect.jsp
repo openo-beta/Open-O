@@ -26,7 +26,7 @@
 
 <%@ page import="org.oscarehr.common.service.FieldNoteManager" %>
 <%@ page import="org.oscarehr.common.model.EForm, org.oscarehr.common.dao.EFormDao" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="java.util.*" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>

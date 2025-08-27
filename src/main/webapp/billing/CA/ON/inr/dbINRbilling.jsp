@@ -25,7 +25,7 @@
 %>
 <%@ page import="java.sql.*, java.util.*,java.net.*, oscar.MyDateFormat" %>
 
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.billing.CA.model.BillingInr" %>
 <%@ page import="ca.openosp.openo.billing.CA.dao.BillingInrDao" %>
 <%

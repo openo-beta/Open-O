@@ -35,7 +35,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.encounter.immunization.config.data.EctImmHeading;
 import ca.openosp.openo.encounter.immunization.config.data.EctImmImmunizationSetWriter;

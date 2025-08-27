@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.provider.bean.ProviderNameBean;
 

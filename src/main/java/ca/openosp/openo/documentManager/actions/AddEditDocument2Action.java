@@ -62,10 +62,10 @@ import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.managers.ProgramManager2;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SessionConstants;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SessionConstants;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -73,7 +73,7 @@ import oscar.MyDateFormat;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.encounter.data.EctProgram;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 import com.itextpdf.text.pdf.PdfReader;
 
@@ -97,7 +97,7 @@ public class AddEditDocument2Action extends ActionSupport {
         int numberOfPages = 0;
         String fileName = MiscUtils.sanitizeFileName(this.getDocFile().getName());
         String user = (String) request.getSession().getAttribute("user");
-        EDoc newDoc = new EDoc("", "", fileName, "", user, user, this.getSource(), 'A', oscar.util.UtilDateUtilities.getToday("yyyy-MM-dd"), "", "", "demographic", "-1", 0);
+        EDoc newDoc = new EDoc("", "", fileName, "", user, user, this.getSource(), 'A', UtilDateUtilities.getToday("yyyy-MM-dd"), "", "", "demographic", "-1", 0);
         newDoc.setDocPublic("0");
         newDoc.setAppointmentNo(Integer.parseInt(this.getAppointmentNo()));
 

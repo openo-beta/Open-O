@@ -31,7 +31,7 @@ import java.util.Vector;
 
 import org.oscarehr.common.dao.ConsultationServiceDao;
 import org.oscarehr.common.model.ConsultationServices;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class EctConShowAllServicesUtil {
 

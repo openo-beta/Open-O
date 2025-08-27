@@ -47,7 +47,6 @@ import java.util.zip.ZipFile;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import ca.openosp.openo.lab.ca.all.parsers.MEDITECHHandler;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
@@ -66,7 +65,7 @@ import ca.openosp.openo.lab.ca.all.parsers.MEDITECHHandler.UNSTRUCTURED;
 @RunWith(Parameterized.class)
 public class MEDITECHHandlerTest {
 
-    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
     private static MEDITECHHandler handler;
     private static ZipFile zipFile;
     private static Document hl7XML;

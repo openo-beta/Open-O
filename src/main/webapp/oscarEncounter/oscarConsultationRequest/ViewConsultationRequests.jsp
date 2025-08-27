@@ -39,14 +39,14 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="org.oscarehr.common.dao.ConsultationRequestDao" %>
 
 <%@ page import="oscar.oscarEncounter.pageUtil.*,java.text.*,java.util.*" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page
         import="org.oscarehr.common.dao.UserPropertyDAO, org.oscarehr.common.model.UserProperty, org.springframework.web.context.support.WebApplicationContextUtils" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 
 <%@ page import="org.oscarehr.common.model.Site" %>
 <%@ page import="org.oscarehr.common.dao.SiteDao" %>

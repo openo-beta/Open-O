@@ -24,14 +24,14 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
 <%
     String oldGroup_no = request.getParameter("mygroup_no") == null ? "." : request.getParameter("mygroup_no");
 %>
 <%@ page import="java.util.*,java.sql.*"
          errorPage="../provider/errorpage.jsp" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.MyGroup" %>
 <%@ page import="org.oscarehr.common.dao.MyGroupDao" %>
 

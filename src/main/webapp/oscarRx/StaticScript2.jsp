@@ -23,12 +23,12 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.DrugDao" %>
 <%@page import="org.oscarehr.common.dao.PartialDateDao" %>
 <%@page import="org.oscarehr.common.model.PartialDate" %>
@@ -36,14 +36,14 @@
 <%@page import="org.oscarehr.common.model.Drug" %>
 <%@page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.DemographicWs" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.DemographicWs" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%@page import="org.oscarehr.oscarRx.StaticScriptBean" %>
 <%@page import="ca.openosp.openo.rx.util.RxUtil" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 
 <%@page import="java.util.ArrayList" %>
-<%@ page import="ca.openosp.openo.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.services.security.SecurityManager" %>
 <%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 

@@ -46,9 +46,9 @@ import org.oscarehr.common.model.ResidentOscarMsg;
 import org.oscarehr.common.model.Security;
 import org.oscarehr.common.model.UserProperty;
 import ca.openosp.openo.managers.MessagingManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.messenger.data.MessengerSystemMessage;
 

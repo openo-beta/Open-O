@@ -28,7 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import org.oscarehr.common.dao.AbstractCodeSystemDao;
 import org.oscarehr.common.dao.AbstractCodeSystemDaoImpl;
 import org.oscarehr.common.model.AbstractCodeSystemModel;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -30,8 +30,8 @@
 %>
 
 <%@ page import="java.util.*,oscar.oscarReport.reportByTemplate.*,ca.openosp.openo.managers.RBTGroupManager" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.RBTGroup" %>
 <%@ page import="ca.openosp.openo.report.reportByTemplate.ReportManager" %>
 <%@ page import="ca.openosp.openo.report.reportByTemplate.ReportObject" %>

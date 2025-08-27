@@ -9,11 +9,11 @@
 
 --%>
 <%@page contentType="text/html" %>
-<%@page import="java.util.*,ca.openosp.openo.lab.ca.on.CommonLabResultData,org.oscarehr.util.SpringUtils,org.oscarehr.common.dao.QueueDao, ca.openosp.openo.mds.data.ProviderData" %>
+<%@page import="java.util.*,ca.openosp.openo.lab.ca.on.CommonLabResultData,org.oscarehr.utility.SpringUtils,org.oscarehr.common.dao.QueueDao, ca.openosp.openo.mds.data.ProviderData" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao, org.oscarehr.common.model.Provider" %>
 <%@page import="oscar.OscarProperties" %>
 <%@page import="org.oscarehr.common.model.UserProperty" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>

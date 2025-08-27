@@ -40,9 +40,9 @@ import org.oscarehr.common.model.MeasurementGroup;
 import org.oscarehr.common.model.MeasurementType;
 import org.oscarehr.common.model.MeasurementTypeDeleted;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.data.MeasurementTypes;
 

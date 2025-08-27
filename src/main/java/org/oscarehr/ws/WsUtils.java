@@ -34,9 +34,9 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.model.Security;
 import ca.openosp.openo.managers.SecurityManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public final class WsUtils {
     private static ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);

@@ -21,7 +21,7 @@
 <%@ page errorPage="../errorpage.jsp" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.sql.*" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.model.security.Secuserrole" %>
 <%@ page import="ca.openosp.openo.dao.security.SecuserroleDao" %>
 <%

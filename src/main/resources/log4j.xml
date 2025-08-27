@@ -104,7 +104,7 @@
 	</category>
 	
 	<!-- control if you want the possible excessive memory usage warnings. WARN and below will show them -->
-	<category name="org.oscarehr.util.ProblemCheckFilter">
+	<category name="org.oscarehr.utility.ProblemCheckFilter">
 		<priority value="ERROR" />
 	</category>
 	

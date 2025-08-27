@@ -38,8 +38,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.LoggedInInfo;
 
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import ca.openosp.openo.lab.ca.all.upload.MessageUploader;
@@ -50,7 +50,7 @@ import ca.openosp.openo.lab.ca.all.util.Utilities;
  */
 public class HL7Handler implements MessageHandler {
 
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     public HL7Handler() {
         logger.info("NEW HL7Handler UPLOAD HANDLER instance just instantiated. ");

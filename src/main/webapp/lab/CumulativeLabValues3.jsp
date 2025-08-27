@@ -140,9 +140,11 @@
 <!DOCTYPE html>
 
 
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabTestValues" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
+<%@ page import="ca.openosp.openo.util.StringUtils" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <html>
 
     <head>

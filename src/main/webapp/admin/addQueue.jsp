@@ -26,7 +26,7 @@
 
 <!DOCTYPE HTML>
 
-<%@page import="oscar.oscarProvider.data.*,java.util.*,org.oscarehr.util.SpringUtils,org.oscarehr.common.dao.QueueDao" %>
+<%@page import="oscar.oscarProvider.data.*,java.util.*,org.oscarehr.utility.SpringUtils,org.oscarehr.common.dao.QueueDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>

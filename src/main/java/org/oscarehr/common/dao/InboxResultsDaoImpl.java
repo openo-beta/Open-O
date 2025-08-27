@@ -26,14 +26,14 @@ import javax.persistence.Query;
 import org.apache.http.impl.cookie.DateUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.SystemPreferences;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.on.LabResultData;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 public class InboxResultsDaoImpl implements InboxResultsDao {
 
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     @PersistenceContext(unitName = "entityManagerFactory")
     protected EntityManager entityManager = null;

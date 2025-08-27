@@ -41,7 +41,9 @@
 
 
 <%@ page import="oscar.form.*" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.form.FrmRecord" %>
+<%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

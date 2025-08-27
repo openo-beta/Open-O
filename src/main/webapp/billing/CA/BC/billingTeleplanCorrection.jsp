@@ -108,7 +108,7 @@
 <%@ page import="java.math.*, java.util.*, java.sql.*, oscar.*, java.net.*" errorPage="/errorpage.jsp" %>
 
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.ClinicLocationDao" %>
 <%@page import="org.oscarehr.common.model.ClinicLocation" %>
 <%@ page import="org.oscarehr.common.model.DiagnosticCode" %>
@@ -121,7 +121,7 @@
 <%@ page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@ page import="ca.openosp.openo.entities.Billingmaster" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO" %>
-<%@ page import="oscar.util.ConversionUtils" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="org.oscarehr.common.model.Billing" %>
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);

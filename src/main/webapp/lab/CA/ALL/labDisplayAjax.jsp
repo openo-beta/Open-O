@@ -24,16 +24,16 @@
 
 --%>
 
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="org.oscarehr.common.model.PatientLabRouting" %>
-<%@ page import="oscar.util.ConversionUtils" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="org.oscarehr.common.dao.PatientLabRoutingDao" %>
 <%@ page import="java.util.*,
                  java.sql.*,
                  oscar.oscarDB.*,
                  oscar.oscarLab.ca.all.*,
                  oscar.oscarLab.ca.all.util.*,
-                 org.oscarehr.util.SpringUtils,
+                 org.oscarehr.utility.SpringUtils,
                  oscar.oscarLab.ca.all.parsers.*,
                  ca.openosp.openo.lab.LabRequestReportLink,
                  ca.openosp.openo.mds.data.ReportStatus,

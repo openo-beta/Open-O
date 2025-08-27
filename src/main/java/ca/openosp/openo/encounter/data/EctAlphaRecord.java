@@ -33,7 +33,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import ca.openosp.openo.db.DBHandler;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 public class EctAlphaRecord {
     public Properties getAlphaRecord(int demographicNo, int existingID)

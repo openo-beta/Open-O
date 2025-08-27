@@ -26,7 +26,7 @@ package org.oscarehr.common.model.inbox;
 
 import com.twelvemonkeys.lang.StringUtil;
 import org.apache.commons.lang.StringUtils;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import ca.openosp.openo.lab.ca.on.HRMResultsData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
 

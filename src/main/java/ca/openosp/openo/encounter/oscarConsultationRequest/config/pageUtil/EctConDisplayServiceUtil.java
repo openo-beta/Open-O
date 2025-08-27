@@ -36,9 +36,9 @@ import org.oscarehr.common.dao.ServiceSpecialistsDao;
 import org.oscarehr.common.model.ConsultationServices;
 import org.oscarehr.common.model.ProfessionalSpecialist;
 import org.oscarehr.common.model.ServiceSpecialists;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class EctConDisplayServiceUtil {
     private ConsultationServiceDao consultationServiceDao = (ConsultationServiceDao) SpringUtils.getBean(ConsultationServiceDao.class);

@@ -27,7 +27,7 @@
 <%@page import="oscar.OscarProperties" %>
 <%@ include file="/taglibs.jsp" %>
 <%@ page import="java.util.Properties" %>
-<%@ page import="java.util.List, org.oscarehr.util.SpringUtils" %>
+<%@ page import="java.util.List, org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="org.oscarehr.common.dao.ContactSpecialtyDao" %>
 <%@ page import="org.oscarehr.common.model.ContactSpecialty" %>

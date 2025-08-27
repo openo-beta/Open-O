@@ -33,7 +33,7 @@
       org.apache.commons.io.FileUtils,
       org.apache.commons.text.StringEscapeUtils,
       oscar.OscarProperties,
-      oscar.util.FileSortByDate
+      ca.openosp.openo.util.FileSortByDate
 " %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>

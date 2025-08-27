@@ -1,4 +1,4 @@
-<%@page import="org.oscarehr.util.MiscUtils"%>
+<%@page import="org.oscarehr.utility.MiscUtils"%>
 <%@page import="org.apache.logging.log4j.Logger"%>
 <%@page import="java.io.*,oscar.*"%>
 <%

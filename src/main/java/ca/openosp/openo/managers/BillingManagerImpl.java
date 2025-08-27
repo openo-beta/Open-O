@@ -33,7 +33,7 @@ import java.util.List;
 import org.oscarehr.common.dao.CtlBillingServiceDao;
 import org.oscarehr.common.dao.CtlBillingServiceDaoImpl;
 import ca.openosp.openo.managers.model.ServiceType;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

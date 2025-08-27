@@ -27,7 +27,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 import org.oscarehr.common.dao.OnCallQuestionnaireDao;
 import org.oscarehr.common.model.OnCallQuestionnaire;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

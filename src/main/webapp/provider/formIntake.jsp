@@ -12,7 +12,7 @@
 <%@ page import="java.util.*, java.sql.*, oscar.*, oscar.oscarRx.util.*, oscar.util.*" errorPage="/errorpage.jsp" %>
 <%@ page import="org.oscarehr.common.dao.MeasurementDao" %>
 <%@ page import="org.oscarehr.common.model.Measurement" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ include file="/common/webAppContextAndSuperMgr.jsp" %>
 
 <%@ page import="org.oscarehr.common.dao.DemographicDao" %>
@@ -26,6 +26,7 @@
 
 <%@page import="oscar.OscarProperties" %>
 <%@ page import="ca.openosp.openo.rx.util.RxUtil" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 
 
 <%!

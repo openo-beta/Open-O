@@ -39,11 +39,12 @@ import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
+import ca.openosp.openo.util.UtilMisc;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 /**
  * Encapsulates data from table billingmaster
@@ -454,7 +455,7 @@ public class Billingmaster {
         if (firstName.length() < 1) {
             firstName += "   ";
         }
-        nameVerify = oscar.util.UtilMisc.mysqlEscape(firstName.substring(0, 1) + " " + lastName.substring(0, 2));
+        nameVerify = UtilMisc.mysqlEscape(firstName.substring(0, 1) + " " + lastName.substring(0, 2));
     }
 
     /**

@@ -31,16 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.oscarehr.common.dao.DrugDao;
-import org.oscarehr.common.dao.DrugDispensingDao;
-import org.oscarehr.common.dao.DrugProductDao;
-import org.oscarehr.common.model.Drug;
-import org.oscarehr.common.model.DrugDispensing;
-import org.oscarehr.common.model.DrugProduct;
-import org.oscarehr.util.MiscUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 public interface DrugDispensingManager {
 
     public String getStatus(Integer drugId);

@@ -27,9 +27,9 @@
 package ca.openosp.openo.billings.ca.bc.pageUtil;
 
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import oscar.OscarProperties;
 import ca.openosp.openo.billings.ca.bc.MSP.TeleplanFileWriter;
 import ca.openosp.openo.billings.ca.bc.MSP.TeleplanSubmission;

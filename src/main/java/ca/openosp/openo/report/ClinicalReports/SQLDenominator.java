@@ -32,7 +32,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
 

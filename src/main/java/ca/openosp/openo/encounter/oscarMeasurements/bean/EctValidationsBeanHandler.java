@@ -32,9 +32,9 @@ import java.util.Vector;
 
 import org.oscarehr.common.dao.ValidationsDao;
 import org.oscarehr.common.model.Validations;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class EctValidationsBeanHandler {
 

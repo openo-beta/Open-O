@@ -39,7 +39,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Hashtable;
 
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 /**
  * A custom comparator used to compare the Hashtables within an array by the

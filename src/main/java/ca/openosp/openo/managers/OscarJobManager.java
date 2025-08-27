@@ -31,7 +31,7 @@ import java.util.List;
 
 import org.oscarehr.common.model.OscarJob;
 import org.oscarehr.common.model.OscarJobType;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 public interface OscarJobManager {
 

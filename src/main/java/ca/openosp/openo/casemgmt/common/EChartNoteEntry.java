@@ -29,7 +29,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.caisi_integrator.util.MiscUtils;
+import ca.openosp.openo.caisi_integrator.util.MiscUtils;
 
 public class EChartNoteEntry {
 

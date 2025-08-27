@@ -32,7 +32,7 @@ import java.util.List;
 
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteExt;
 import org.oscarehr.common.model.Property;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

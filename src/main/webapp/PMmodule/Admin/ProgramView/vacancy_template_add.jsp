@@ -29,7 +29,7 @@
 <%@page import="org.oscarehr.PMmodule.model.CriteriaType" %>
 <%@page import="org.oscarehr.PMmodule.service.VacancyTemplateManager" %>
 <%@page import="org.oscarehr.PMmodule.model.Program" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%@page import="java.util.List" %>
 <%@ include file="/taglibs.jsp" %>

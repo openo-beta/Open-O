@@ -30,14 +30,8 @@ package org.oscarehr.common.dao;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Query;
-
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.DemographicArchive;
-import org.springframework.stereotype.Repository;
-
-import oscar.util.StringUtils;
-import oscar.util.UtilDateUtilities;
 
 public interface DemographicArchiveDao extends AbstractDao<DemographicArchive> {
 

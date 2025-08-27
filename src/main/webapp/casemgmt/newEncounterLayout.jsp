@@ -31,8 +31,8 @@
 <%@page import="org.oscarehr.casemgmt.web.formbeans.*, ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
 <%@page import="org.oscarehr.common.dao.UserPropertyDAO, oscar.OscarProperties" %>
 <%@page import="org.oscarehr.common.model.UserProperty" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="org.oscarehr.provider.web.CppPreferencesUIBean" %>
 <%@page import="ca.openosp.openo.casemgmt.common.Colour" %>
 <%@page import="org.oscarehr.common.dao.ProviderDataDao" %>

@@ -51,7 +51,7 @@ import ca.openosp.openo.log.LogAction;
 @Component
 public class WebServiceLoggingAdvice {
 
-    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     @Pointcut("execution(public * org.oscarehr.ws.rest.*.*(..))")
     public void pointcut() {

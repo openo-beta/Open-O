@@ -35,7 +35,7 @@ import ca.openosp.openo.dashboard.display.beans.IndicatorPanelBean;
 import ca.openosp.openo.dashboard.display.beans.PanelBean;
 import ca.openosp.openo.dashboard.handler.IndicatorTemplateHandler;
 import ca.openosp.openo.dashboard.handler.IndicatorTemplateXML;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 public class PanelBeanFactory {
     private static Logger logger = MiscUtils.getLogger();

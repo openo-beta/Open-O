@@ -34,9 +34,9 @@ import org.oscarehr.common.dao.MeasurementDao;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Dxresearch;
 import org.oscarehr.common.model.Measurement;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.oscarTickler.TicklerCreator;

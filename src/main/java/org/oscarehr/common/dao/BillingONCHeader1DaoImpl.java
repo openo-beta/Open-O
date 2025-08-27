@@ -53,15 +53,15 @@ import org.oscarehr.common.model.BillingONItem;
 import org.oscarehr.common.model.BillingService;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.DateRange;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.DateRange;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.billings.ca.on.data.BillingDataHlp;
 import ca.openosp.openo.billings.ca.on.pageUtil.BillingStatusPrep;
-import oscar.util.ParamAppender;
+import ca.openosp.openo.util.ParamAppender;
 
 /**
  * @author Eugene Katyukhin

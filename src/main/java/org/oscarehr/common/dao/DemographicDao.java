@@ -48,7 +48,7 @@ import org.oscarehr.PMmodule.web.formbean.ClientSearchFormBean;
 import org.oscarehr.common.Gender;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.DemographicExt;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.DemographicSearchRequest;
 import org.oscarehr.ws.rest.to.model.DemographicSearchResult;
 import org.springframework.context.ApplicationEventPublisher;

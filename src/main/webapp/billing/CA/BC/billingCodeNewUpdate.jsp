@@ -44,7 +44,7 @@
 %>
 <%@page import="java.util.*, java.sql.*, oscar.*, java.net.*,oscar.oscarBilling.ca.bc.pageUtil.*" %>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.BillingServiceDao" %>
 <%@page import="org.oscarehr.common.model.BillingService" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.ServiceCodeAssociation" %>

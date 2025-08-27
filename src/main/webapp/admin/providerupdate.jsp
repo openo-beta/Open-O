@@ -51,7 +51,7 @@
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@page import="org.oscarehr.common.model.ProviderArchive" %>
 <%@page import="org.oscarehr.common.dao.ProviderArchiveDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.apache.commons.beanutils.BeanUtils" %>
 <%@page import="org.oscarehr.common.model.ProviderSite" %>
 <%@page import="org.oscarehr.common.model.ProviderSitePK" %>

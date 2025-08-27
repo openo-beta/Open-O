@@ -35,13 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import javax.persistence.Query;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.EFormData;
-import org.oscarehr.util.MiscUtils;
-import org.springframework.stereotype.Repository;
 
 public interface EFormDataDao extends AbstractDao<EFormData> {
 

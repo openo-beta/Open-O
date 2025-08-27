@@ -1,10 +1,3 @@
-/*
- * Decompiled with CFR 0.152.
- * 
- * Could not load the following classes:
- *  javax.xml.bind.annotation.XmlEnum
- *  javax.xml.bind.annotation.XmlType
- */
 package ca.openosp.openo.hospitalReportManager.xsd;
 
 import javax.xml.bind.annotation.XmlEnum;

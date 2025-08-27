@@ -36,14 +36,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.oscarehr.common.dao.PartialDateDao;
 import org.oscarehr.common.model.PartialDate;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.oscarResearch.oscarDxResearch.bean.dxResearchBean;
-import oscar.oscarResearch.oscarDxResearch.bean.dxResearchBeanHandler;
-import oscar.util.DateUtils;
-import oscar.util.StringUtils;
+import ca.openosp.openo.oscarDxResearch.bean.dxResearchBean;
+import ca.openosp.openo.oscarDxResearch.bean.dxResearchBeanHandler;
+import ca.openosp.openo.util.DateUtils;
+import ca.openosp.openo.util.StringUtils;
 
 /**
  * retrieves info to display Disease entries for demographic

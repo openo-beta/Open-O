@@ -42,7 +42,12 @@
 <%@ page import="org.oscarehr.common.web.Pregnancy2Action" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.util.LabelValueBean" %>
+<%@ page import="ca.openosp.openo.util.UtilMisc" %>
+<%@ page import="ca.openosp.openo.form.FrmRecord" %>
+<%@ page import="ca.openosp.openo.form.data.FrmData" %>
+<%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <%
     String formClass = "ONAREnhanced";
     String formLink = "formonarenhancedpg1.jsp";

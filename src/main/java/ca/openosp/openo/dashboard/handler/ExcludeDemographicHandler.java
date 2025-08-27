@@ -36,9 +36,9 @@ import org.oscarehr.common.model.DemographicExt;
 import ca.openosp.openo.dashboard.display.beans.DrilldownBean;
 import ca.openosp.openo.managers.DashboardManager;
 //import org.oscarehr.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import net.sf.json.JSONArray;
 

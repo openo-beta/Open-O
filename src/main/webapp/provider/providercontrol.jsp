@@ -24,16 +24,17 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.MiscUtils" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ page import="org.oscarehr.PMmodule.web.utils.UserRoleUtils" %>
-<%@ page import="org.oscarehr.util.SessionConstants" %>
+<%@ page import="org.oscarehr.utility.SessionConstants" %>
 <%@ page import="java.util.*,java.net.*, oscar.util.*"
          errorPage="/errorpage.jsp" %>
 <%@ page import="oscar.OscarProperties" %>
+<%@ page import="ca.openosp.openo.util.UtilDict" %>
 
 <caisi:isModuleLoad moduleName="caisi">
     <%

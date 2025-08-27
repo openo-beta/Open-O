@@ -25,7 +25,7 @@
 
 <jsp:useBean id="billingLocalInvNoBean" class="java.util.Properties" scope="page"/>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.RaHeader" %>
 <%@page import="org.oscarehr.common.dao.RaHeaderDao" %>
 <%@page import="org.oscarehr.common.model.RaDetail" %>
@@ -34,7 +34,7 @@
 <%@page import="org.oscarehr.common.model.Billing" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@page import="oscar.util.ConversionUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%
     RaHeaderDao dao = SpringUtils.getBean(RaHeaderDao.class);
     RaDetailDao raDetailDao = SpringUtils.getBean(RaDetailDao.class);
@@ -43,7 +43,8 @@
 %>
 
 
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

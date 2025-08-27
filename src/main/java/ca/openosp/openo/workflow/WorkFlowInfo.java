@@ -29,9 +29,9 @@ package ca.openosp.openo.workflow;
 import java.util.Date;
 import java.util.Hashtable;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 /**
  * @author jay

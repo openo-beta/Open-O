@@ -30,8 +30,8 @@ import java.sql.SQLException;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.billing.CA.BC.dao.Hl7OrcDao;
 import ca.openosp.openo.billing.CA.BC.model.Hl7Orc;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.bc.PathNet.HL7.Node;
 

@@ -34,7 +34,7 @@ import org.junit.Test;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Tickler;
 import ca.openosp.openo.managers.TicklerManagerImpl;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 public class TicklerHandlerTest {
 

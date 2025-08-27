@@ -34,7 +34,7 @@ import org.oscarehr.common.dao.EFormDocsDao;
 import org.oscarehr.common.model.EFormDocs;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 

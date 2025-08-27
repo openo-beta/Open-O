@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page import="org.apache.commons.lang3.StringUtils" %>
 <%@page import="java.util.LinkedList" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
@@ -36,13 +36,13 @@
 <%@page import="ca.openosp.openo.hospitalReportManager.model.HRMDocument" %>
 <%@page import="ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao" %>
 <%@page import="org.oscarehr.common.model.OscarLog" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.log.LogAction" %>
 <%@page import="java.util.Enumeration" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="java.util.List" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page contentType="text/html" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>

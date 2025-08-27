@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.login.DBHelp;
@@ -48,7 +48,7 @@ import com.Ostermiller.util.CSVPrinter;
 
 public class RptDownloadCSVServlet extends HttpServlet {
 
-    private static final Logger _logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
     String reportName = "";
     String DELIMETER = "\t";
 

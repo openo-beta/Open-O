@@ -44,7 +44,10 @@
 
 
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.form.FrmRecord" %>
+<%@ page import="ca.openosp.openo.form.data.FrmData" %>
+<%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 
 <html>
     <head>

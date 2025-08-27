@@ -47,7 +47,7 @@ package ca.openosp.openo.report.data;
 
 import org.oscarehr.common.dao.DemographicQueryFavouritesDao;
 import org.oscarehr.common.model.DemographicQueryFavourite;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import ca.openosp.openo.messenger.docxfer.util.MsgCommxml;

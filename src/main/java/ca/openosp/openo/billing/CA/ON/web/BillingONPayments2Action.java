@@ -53,8 +53,8 @@ import org.oscarehr.common.model.BillingONPayment;
 import org.oscarehr.common.model.BillingOnItemPayment;
 import org.oscarehr.common.model.BillingOnTransaction;
 import org.oscarehr.common.model.BillingPaymentType;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.billings.ca.on.data.BillingItemData;
 import ca.openosp.openo.billings.ca.on.data.JdbcBilling3rdPartImpl;
@@ -70,7 +70,7 @@ public class BillingONPayments2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     private BillingONItemDao billingONItemDao = SpringUtils.getBean(BillingONItemDao.class);
     private BillingONPaymentDao billingONPaymentDao = SpringUtils.getBean(BillingONPaymentDao.class);

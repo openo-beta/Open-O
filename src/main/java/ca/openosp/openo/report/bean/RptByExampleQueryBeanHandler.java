@@ -33,9 +33,9 @@ import org.oscarehr.common.dao.ReportByExamplesFavoriteDao;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.ReportByExamples;
 import org.oscarehr.common.model.ReportByExamplesFavorite;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 @SuppressWarnings("unchecked")
 public class RptByExampleQueryBeanHandler {

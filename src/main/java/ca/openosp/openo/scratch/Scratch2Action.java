@@ -34,8 +34,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.oscarehr.common.dao.ScratchPadDao;
 import org.oscarehr.common.model.ScratchPad;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author jay

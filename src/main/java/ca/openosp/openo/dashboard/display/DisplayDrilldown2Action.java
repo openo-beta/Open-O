@@ -39,9 +39,9 @@ import ca.openosp.openo.dashboard.handler.IndicatorTemplateHandler;
 import ca.openosp.openo.managers.DashboardManager;
 import ca.openosp.openo.managers.ProviderManager2;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.w3c.dom.NodeList;
 
 import com.opensymphony.xwork2.ActionSupport;

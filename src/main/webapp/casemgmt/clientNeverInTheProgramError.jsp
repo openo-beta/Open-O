@@ -27,7 +27,7 @@
 <%@ include file="/casemgmt/taglibs.jsp" %>
 
 <%@page import="org.oscarehr.PMmodule.dao.*" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%
     String programId_str = (String) request.getSession().getAttribute("case_program_id");
     Integer programId;

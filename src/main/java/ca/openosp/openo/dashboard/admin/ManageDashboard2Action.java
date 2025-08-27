@@ -38,9 +38,9 @@ import org.oscarehr.common.model.IndicatorTemplate;
 import ca.openosp.openo.managers.DashboardManager;
 import ca.openosp.openo.managers.DashboardManager.ObjectName;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

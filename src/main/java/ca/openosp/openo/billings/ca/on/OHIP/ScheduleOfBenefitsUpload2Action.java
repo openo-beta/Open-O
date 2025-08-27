@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
 
@@ -51,7 +51,7 @@ public class ScheduleOfBenefitsUpload2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    Logger _logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     boolean checkBox(String str) {
         boolean check = false;

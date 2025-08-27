@@ -25,7 +25,7 @@
 %>
 <!DOCTYPE HTML>
 <%@ page
-        import="java.util.*,oscar.OscarProperties ,oscar.oscarReport.reportByTemplate.*,org.oscarehr.hospitalReportManager.*,org.oscarehr.util.SpringUtils, org.oscarehr.common.dao.UserPropertyDAO, org.oscarehr.common.model.UserProperty" %>
+        import="java.util.*,oscar.OscarProperties ,oscar.oscarReport.reportByTemplate.*,org.oscarehr.hospitalReportManager.*,org.oscarehr.utility.SpringUtils, org.oscarehr.common.dao.UserPropertyDAO, org.oscarehr.common.model.UserProperty" %>
 <%
 
     OscarProperties props = OscarProperties.getInstance();

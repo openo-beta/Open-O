@@ -38,14 +38,14 @@ import org.oscarehr.common.dao.PartialDateDao;
 import org.oscarehr.common.dao.ProviderDataDao;
 import org.oscarehr.common.model.PartialDate;
 import org.oscarehr.common.model.ProviderData;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import ca.openosp.openo.rx.data.RxPrescriptionData;
-import oscar.util.StringUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.StringUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 import cds.MedicationsAndTreatmentsDocument.MedicationsAndTreatments;
 import cds.PatientRecordDocument.PatientRecord;
 

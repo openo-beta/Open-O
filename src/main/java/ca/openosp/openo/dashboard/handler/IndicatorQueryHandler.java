@@ -33,7 +33,7 @@ import java.util.Map;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.dashboard.display.beans.GraphPlot;
 import ca.openosp.openo.managers.DashboardManagerImpl;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 
 /**

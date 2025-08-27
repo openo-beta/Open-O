@@ -39,8 +39,8 @@ import org.oscarehr.common.dao.EFormValueDao;
 import org.oscarehr.common.model.EForm;
 import org.oscarehr.common.model.EFormReportTool;
 import org.oscarehr.common.model.EFormValue;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

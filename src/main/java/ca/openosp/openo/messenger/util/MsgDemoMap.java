@@ -39,10 +39,10 @@ import java.util.List;
 
 import org.oscarehr.common.dao.MsgDemoMapDao;
 import org.oscarehr.common.model.Demographic;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * @deprecated use the common entity at org.oscarehr.common.model.MsgDemoMap

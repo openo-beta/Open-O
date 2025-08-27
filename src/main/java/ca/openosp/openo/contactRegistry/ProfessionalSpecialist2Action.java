@@ -6,10 +6,10 @@ import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
 import org.oscarehr.common.model.ProfessionalSpecialist;
 import ca.openosp.openo.managers.ProfessionalSpecialistsManager;
-import org.oscarehr.util.JsonUtil;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
-import oscar.form.JSONUtil;
+import org.oscarehr.utility.JsonUtil;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.form.JSONUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

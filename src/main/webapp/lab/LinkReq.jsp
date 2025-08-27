@@ -53,15 +53,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 
-<%@page import="oscar.util.ConversionUtils" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.forms.FormsDao" %>
 <%@page import="
 		java.util.Date,
                 java.util.Hashtable,
                 java.util.Vector,
                 ca.openosp.openo.lab.LabRequestReportLink,
-                oscar.util.UtilDateUtilities" %>
+                ca.openosp.openo.util.UtilDateUtilities" %>
 <%
     LabRequestReportLinkDao linkDao = SpringUtils.getBean(LabRequestReportLinkDao.class);
     EFormGroupDao eformGroupDao = SpringUtils.getBean(EFormGroupDao.class);
@@ -201,7 +201,7 @@
 %>
 
 
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <html>
 <head>
     <title>Link to Lab Requisition</title>

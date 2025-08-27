@@ -33,7 +33,7 @@ import java.util.Vector;
 import org.apache.commons.beanutils.BeanComparator;
 import org.oscarehr.common.dao.MeasurementCSSLocationDao;
 import org.oscarehr.common.model.MeasurementCSSLocation;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class EctStyleSheetBeanHandler {
 

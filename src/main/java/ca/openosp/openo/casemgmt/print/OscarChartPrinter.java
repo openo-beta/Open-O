@@ -69,8 +69,8 @@ import org.oscarehr.common.model.Prevention;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Tickler;
 import ca.openosp.openo.managers.TicklerManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import oscar.SxmlMisc;

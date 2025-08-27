@@ -31,7 +31,7 @@ package ca.openosp.openo.managers;
 import java.util.List;
 
 import org.oscarehr.common.model.AppDefinition;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.AppDefinitionTo1;
 
 public interface AppManager {

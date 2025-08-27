@@ -45,9 +45,9 @@ import org.oscarehr.common.dao.OscarKeyDao;
 import org.oscarehr.common.dao.PublicKeyDao;
 import org.oscarehr.common.model.OscarKey;
 import org.oscarehr.common.model.OtherId;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import oscar.OscarProperties;
 import ca.openosp.openo.lab.FileUploadCheck;
 import ca.openosp.openo.lab.ca.all.parsers.HHSEmrDownloadHandler;
@@ -74,7 +74,7 @@ public class LabUpload2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    protected static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    protected static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     @Override
     public String execute() {

@@ -36,8 +36,8 @@ import org.oscarehr.common.dao.DemographicPharmacyDao;
 import org.oscarehr.common.dao.PharmacyInfoDao;
 import org.oscarehr.common.model.DemographicPharmacy;
 import org.oscarehr.common.model.PharmacyInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

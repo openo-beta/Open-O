@@ -33,10 +33,10 @@ import org.oscarehr.common.dao.ScheduleTemplateDao;
 import org.oscarehr.common.model.Appointment;
 import org.oscarehr.common.model.ScheduleDate;
 import org.oscarehr.common.model.ScheduleTemplate;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class UnusedMinutesReporter implements Reporter {
 

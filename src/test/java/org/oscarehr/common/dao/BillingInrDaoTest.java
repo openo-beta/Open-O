@@ -31,7 +31,7 @@ import ca.openosp.openo.billing.CA.dao.BillingInrDao;
 import ca.openosp.openo.billing.CA.model.BillingInr;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class BillingInrDaoTest extends DaoTestFixtures {
 

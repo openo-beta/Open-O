@@ -42,8 +42,8 @@ import org.oscarehr.common.dao.PatientLabRoutingDao;
 import org.oscarehr.common.model.Hl7TextInfo;
 import org.oscarehr.common.model.Hl7TextMessage;
 import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.PDFGenerationException;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.PDFGenerationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +51,7 @@ import com.lowagie.text.DocumentException;
 
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 
 @Service

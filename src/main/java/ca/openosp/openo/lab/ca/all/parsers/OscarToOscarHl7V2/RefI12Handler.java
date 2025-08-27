@@ -27,7 +27,7 @@
 package ca.openosp.openo.lab.ca.all.parsers.OscarToOscarHl7V2;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.v26.datatype.XPN;

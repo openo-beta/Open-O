@@ -52,13 +52,13 @@ import org.oscarehr.common.model.MdsZMC;
 import org.oscarehr.common.model.MdsZMN;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.ProviderLabRoutingModel;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class MDSSegmentData {
 
-    static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     public String segmentID;
     public String reportDate;

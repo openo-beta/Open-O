@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 import org.apache.logging.log4j.Logger;
 import org.jdom.Element;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 /**
  * Stores Conditions for target Colours

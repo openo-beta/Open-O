@@ -30,7 +30,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.billings.ca.bc.data.BillingCodeData;
 

@@ -32,8 +32,8 @@ import java.util.Hashtable;
 import java.util.List;
 
 import org.apache.commons.collections.KeyValue;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBean;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;

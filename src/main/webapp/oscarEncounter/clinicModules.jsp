@@ -41,6 +41,7 @@
 
 <%@page import="java.net.URLEncoder" %>
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -52,7 +53,7 @@
         //response.sendRedirect("error.jsp");
         return;
     }
-    oscar.util.UtilDateUtilities dateConvert = new oscar.util.UtilDateUtilities();
+    UtilDateUtilities dateConvert = new UtilDateUtilities();
     String pAge = Integer.toString(dateConvert.calcAge(bean.yearOfBirth, bean.monthOfBirth, bean.dateOfBirth));
     String winName = "";
 %>

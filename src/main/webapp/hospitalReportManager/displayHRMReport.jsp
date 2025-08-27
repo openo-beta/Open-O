@@ -8,7 +8,7 @@
     and "gnu.org/licenses/gpl-2.0.html".
 
 --%>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="org.apache.commons.lang.StringUtils,oscar.log.*" %>
 <%@page import="java.text.SimpleDateFormat" %>
 <%@ page import="oscar.OscarProperties" %>
@@ -39,10 +39,10 @@
     HRMProviderConfidentialityStatementDao hrmProviderConfidentialityStatementDao = (HRMProviderConfidentialityStatementDao) SpringUtils.getBean(HRMProviderConfidentialityStatementDao.class);
 %>
 
-<%@page import="org.oscarehr.hospitalReportManager.*, org.oscarehr.hospitalReportManager.model.*, org.oscarehr.util.SpringUtils, org.oscarehr.PMmodule.dao.ProviderDao" %>
+<%@page import="org.oscarehr.hospitalReportManager.*, org.oscarehr.hospitalReportManager.model.*, org.oscarehr.utility.SpringUtils, org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@ page import="java.util.*" %>
 <%@ page import="org.apache.logging.log4j.Logger" %>
-<%@ page import="org.oscarehr.util.MiscUtils" %>
+<%@ page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page import="org.oscarehr.hospitalReportManager.dao.*" %>
 <%@ page import="ca.openosp.openo.encounter.data.EctFormData" %>
 <%@ page import="org.owasp.encoder.Encode" %>

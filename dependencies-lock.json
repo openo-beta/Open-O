@@ -2962,62 +2962,6 @@
     "optional" : false,
     "integrity" : "sha512:DW9IfOyQ7JMfzwFeQnWNkKy8BW2rILzLiJc3Ml/HRD7l7zvlHQKBQO9CQxNWLTfu0Kvnlfr7u1oWrjPpQ/EElg=="
   }, {
-    "groupId" : "org.oscarehr.ar2005",
-    "artifactId" : "ar2005",
-    "version" : "1.2",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:KuYiGULJjM5+QXyYP/PbuWVkuls1Wx2pZ2wCv2aUzB2uHUdta31bz2Qhux4BtN/hrd5IB3q0nBXb80K7GAGWAw=="
-  }, {
-    "groupId" : "org.oscarehr.caisi_integrator",
-    "artifactId" : "caisi_integrator_client_stubs",
-    "version" : "1.1",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:Ow6VUDXLQCC3tnoPezfoFsV08PnGy0x1BK7tA7fSUOCy3h01SppFgpiooYBYkN9XWqD1YLg1Kdc5y4N/pS970A=="
-  }, {
-    "groupId" : "org.oscarehr.caisi_integrator",
-    "artifactId" : "integrator-objects",
-    "version" : "0.0.4",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:ZWyBLKYoNreKjHY7N15B4hNbXtofkWNn4p1kVxCDX9G7weeGRHBVeQLydqxlNJbui2Q8BD7KwAEOgwWqZ0POkg=="
-  }, {
-    "groupId" : "org.oscarehr.ckd",
-    "artifactId" : "ckd",
-    "version" : "1.0",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:6IiX6yzoQZ9SEf3kdtJUI2LeFOWSrk5X51EZlIhMD4lH0G+CXoHXAeQSDxqGZsa9s5nGLFJF6EuCytSo4wWbbQ=="
-  }, {
-    "groupId" : "org.oscarehr.integration.ebs",
-    "artifactId" : "edt-stubs",
-    "version" : "0.0.1-20140911.161211-1",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:vjWpHUaxCkt0leBhCLJ0Ybytr0AFmBhyQcVtm7Q8WLm1al3NpJb1c9WdO1d8XMZD9cz2cKaTAHetOnJN5pTNwQ=="
-  }, {
-    "groupId" : "org.oscarehr.integration.ebs",
-    "artifactId" : "hcv-stubs",
-    "version" : "0.0.1-20140911.161502-1",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:ZjRzu8bOkEqxy1p8/TEzG350QcDnUR2sowHnwYf2UMBx/hTvHDev9GIifA+4rI8mBrMngtiIw+5vFKPHcnYcdA=="
-  }, {
-    "groupId" : "org.oscarehr",
-    "artifactId" : "flowsheets",
-    "version" : "1.0",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:LtpvwJ/z/mZrdwKHxmAVDvzo1Fesmjg5YXC2ceSPUEmC3HiCf5p2t8DwtllnSMxQrzEr72Efv7ATzhM720u5mg=="
-  }, {
     "groupId" : "org.ow2.asm",
     "artifactId" : "asm",
     "version" : "9.7.1",

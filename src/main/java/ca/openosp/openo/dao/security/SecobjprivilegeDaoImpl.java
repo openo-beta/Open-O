@@ -33,7 +33,7 @@ import java.util.List;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.hibernate.SessionFactory;

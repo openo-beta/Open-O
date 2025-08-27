@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.oscarehr.common.dao.BillingreferralDao;
 import org.oscarehr.common.model.Billingreferral;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author Jay Gallagher

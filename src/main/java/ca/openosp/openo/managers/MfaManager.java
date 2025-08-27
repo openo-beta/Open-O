@@ -24,7 +24,7 @@ package ca.openosp.openo.managers;
 
 import org.jboss.aerogear.security.otp.api.Base32;
 import org.oscarehr.common.model.Security;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import oscar.OscarProperties;
 
 import java.io.UnsupportedEncodingException;

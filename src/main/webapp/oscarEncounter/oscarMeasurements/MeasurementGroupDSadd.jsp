@@ -45,7 +45,7 @@
 
 <%@ page import="java.util.*" %>
 <%@ page import="ca.openosp.openo.managers.MeasurementManager" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 
 <%
     String groupName = session.getAttribute("groupName").toString();

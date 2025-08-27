@@ -28,10 +28,10 @@ package ca.openosp.openo.billings.ca.bc.pageUtil;
 
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.decisionSupport.model.DSConsequence;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import ca.openosp.openo.billings.ca.bc.decisionSupport.BillingGuidelines;
-import oscar.util.plugin.OscarProperties;
+import ca.openosp.openo.util.plugin.OscarProperties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

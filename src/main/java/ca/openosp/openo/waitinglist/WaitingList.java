@@ -26,7 +26,7 @@
 package ca.openosp.openo.waitinglist;
 
 import org.oscarehr.common.dao.WaitingListNameDao;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /*
  * This class is an interface with the file WEB-INF/classes

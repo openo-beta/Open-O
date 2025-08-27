@@ -40,8 +40,8 @@
 %>
 
 <%@page import="java.util.Date" %>
-<%@page import="oscar.util.ConversionUtils" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.dao.Hl7LinkDao" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.model.Hl7Link" %>
 <%

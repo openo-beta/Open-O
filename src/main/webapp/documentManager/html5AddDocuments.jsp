@@ -46,7 +46,7 @@
 * @license Mit Style License
 */
 -->
-<%@page import="oscar.oscarProvider.data.*,java.util.*,ca.openosp.openo.lab.ca.on.CommonLabResultData,org.oscarehr.util.SpringUtils,org.oscarehr.common.dao.QueueDao" %>
+<%@page import="oscar.oscarProvider.data.*,java.util.*,ca.openosp.openo.lab.ca.on.CommonLabResultData,org.oscarehr.utility.SpringUtils,org.oscarehr.common.dao.QueueDao" %>
 <%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"

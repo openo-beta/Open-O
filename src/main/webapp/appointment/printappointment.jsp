@@ -27,7 +27,7 @@
 
 <%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@ page import="org.oscarehr.common.model.UserProperty" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%
     if (session.getAttribute("userrole") == null) {
         response.sendRedirect("../logout.jsp");

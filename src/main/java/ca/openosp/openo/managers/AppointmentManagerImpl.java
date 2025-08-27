@@ -44,8 +44,8 @@ import org.oscarehr.common.model.AppointmentArchive;
 import org.oscarehr.common.model.AppointmentStatus;
 import org.oscarehr.common.model.LookupList;
 import org.oscarehr.common.model.LookupListItem;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

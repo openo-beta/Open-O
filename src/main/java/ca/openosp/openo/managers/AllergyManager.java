@@ -33,7 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.oscarehr.common.model.Allergy;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 public interface AllergyManager {
 

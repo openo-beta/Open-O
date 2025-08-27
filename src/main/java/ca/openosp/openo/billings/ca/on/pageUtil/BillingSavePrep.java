@@ -28,17 +28,17 @@ import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data;
 import ca.openosp.openo.billings.ca.on.data.BillingDataHlp;
 import ca.openosp.openo.billings.ca.on.data.BillingItemData;
 import ca.openosp.openo.billings.ca.on.data.JdbcBillingClaimImpl;
 import ca.openosp.openo.billings.ca.on.data.JdbcBillingPageUtil;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 public class BillingSavePrep {
-    private static final Logger _logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
     JdbcBillingClaimImpl dbObj = new JdbcBillingClaimImpl();
     int billingId = 0;
 

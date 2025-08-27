@@ -10,7 +10,7 @@
 --%>
 <!DOCTYPE html>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -29,7 +29,7 @@
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="java.util.*" %>
 <%@ page
         import="ca.openosp.openo.hospitalReportManager.SFTPConnector, ca.openosp.openo.hospitalReportManager.dao.HRMProviderConfidentialityStatementDao" %>

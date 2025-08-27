@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.oscarehr.common.dao.DemographicSetsDao;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author Jay Gallagher

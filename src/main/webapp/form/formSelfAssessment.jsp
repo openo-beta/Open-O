@@ -40,14 +40,14 @@
 
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page import="oscar.form.FrmRecord" %>
-<%@ page import="oscar.form.FrmRecordFactory" %>
-<%@ page import="org.oscarehr.util.LocaleUtils" %>
+<%@ page import="ca.openosp.openo.form.FrmRecord" %>
+<%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.oscarehr.utility.LocaleUtils" %>
 <%@ page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@ page import="org.oscarehr.common.model.Demographic" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 
 <%
     String formClass = "SelfAssessment";

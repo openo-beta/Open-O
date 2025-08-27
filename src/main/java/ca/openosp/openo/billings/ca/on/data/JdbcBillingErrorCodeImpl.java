@@ -21,7 +21,7 @@ package ca.openosp.openo.billings.ca.on.data;
 
 import org.oscarehr.common.dao.BillingONErrorCodeDao;
 import org.oscarehr.common.model.BillingONErrorCode;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class JdbcBillingErrorCodeImpl {
 

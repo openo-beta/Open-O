@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.oscarehr.common.dao.MyGroupDao;
 import org.oscarehr.common.model.MyGroup;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author mweston4

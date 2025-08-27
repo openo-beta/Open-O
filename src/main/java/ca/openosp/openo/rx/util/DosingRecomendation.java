@@ -29,7 +29,7 @@ package ca.openosp.openo.rx.util;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 /**
  * @author jay

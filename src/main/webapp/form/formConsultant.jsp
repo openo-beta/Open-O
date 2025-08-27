@@ -35,7 +35,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@ page import="oscar.util.*, oscar.form.*, oscar.form.data.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.form.FrmRecord" %>
+<%@ page import="ca.openosp.openo.form.FrmConsultantRecord" %>
+<%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <%
     String formClass = "Consultant";
     String formLink = "formConsultant.jsp";

@@ -39,14 +39,14 @@ import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.RaDetail;
 import org.oscarehr.common.model.RaHeader;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 public class JdbcBillingRAImpl {
-    private static final Logger _logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     private RaDetailDao raDetailDao = SpringUtils.getBean(RaDetailDao.class);
     private RaHeaderDao raHeaderDao = SpringUtils.getBean(RaHeaderDao.class);

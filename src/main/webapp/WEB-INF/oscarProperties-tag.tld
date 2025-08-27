@@ -45,7 +45,7 @@
     
     <tag>
         <name>oscarPropertiesCheck</name>
-        <tag-class>oscar.util.OscarPropertiesCheck</tag-class>
+        <tag-class>ca.openosp.openo.util.OscarPropertiesCheck</tag-class>
         <body-content>JSP</body-content>
         
         <attribute>

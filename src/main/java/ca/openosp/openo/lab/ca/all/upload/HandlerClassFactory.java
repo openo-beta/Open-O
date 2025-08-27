@@ -38,7 +38,7 @@ import org.apache.logging.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import ca.openosp.openo.lab.ca.all.upload.handlers.DefaultHandler;
 import ca.openosp.openo.lab.ca.all.upload.handlers.MessageHandler;
 

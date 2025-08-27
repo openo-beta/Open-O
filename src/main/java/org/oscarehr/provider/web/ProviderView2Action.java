@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.oscarehr.common.dao.ViewDao;
 import org.oscarehr.common.model.View;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author rjonasz

@@ -24,15 +24,15 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ page import="java.sql.*, java.util.*, oscar.*" errorPage="/errorpage.jsp" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
 <%@page import="org.oscarehr.web.admin.ProviderPreferencesUIBean" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@ page import="org.oscarehr.common.model.UserProperty" %>
 <%@ page import="org.oscarehr.provider.web.ProviderPropertyAction" %>

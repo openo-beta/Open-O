@@ -40,10 +40,10 @@ import org.oscarehr.common.model.MeasurementGroup;
 import org.oscarehr.common.model.MeasurementType;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Validations;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class EctMeasurementTypesBeanHandler {
 

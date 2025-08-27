@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.billing.CA.BC.dao.Hl7ObrDao;
 import ca.openosp.openo.billing.CA.BC.model.Hl7Obr;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.bc.PathNet.HL7.Node;
 
@@ -42,7 +42,7 @@ import ca.openosp.openo.lab.ca.bc.PathNet.HL7.Node;
  * www.andromedia.ca
  */
 public class OBR extends Node {
-    Logger _logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
     private static Hl7ObrDao dao = SpringUtils.getBean(Hl7ObrDao.class);
 
     private ArrayList<OBX> obxs;

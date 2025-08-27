@@ -27,7 +27,7 @@ import java.util.Calendar;
 
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 public class IntegratorPushItemTest {
 

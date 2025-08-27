@@ -32,7 +32,7 @@ import java.util.*;
 
 import org.oscarehr.common.model.Prevention;
 import org.oscarehr.common.model.PreventionExt;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 public interface PreventionManager {
 

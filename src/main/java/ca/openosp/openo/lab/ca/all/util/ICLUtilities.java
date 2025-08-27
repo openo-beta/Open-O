@@ -28,7 +28,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
 

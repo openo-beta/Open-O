@@ -36,9 +36,9 @@ import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.model.Billing;
 import org.oscarehr.common.model.BillingONCHeader1;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class RptFluReportData {
 

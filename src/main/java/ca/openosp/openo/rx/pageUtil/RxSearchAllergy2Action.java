@@ -42,12 +42,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.oscarehr.common.model.Allergy;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
-import oscar.form.pharmaForms.formBPMH.util.JsonUtil;
+import ca.openosp.openo.form.pharmaForms.formBPMH.util.JsonUtil;
 import ca.openosp.openo.rx.data.RxAllergyData;
 import ca.openosp.openo.rx.util.RxDrugRef;
 

@@ -48,12 +48,12 @@ import org.joda.time.PeriodType;
 import org.oscarehr.PMmodule.utility.DateTimeFormatUtils;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Stay;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.EncounterUtil.EncounterType;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.EncounterUtil.EncounterType;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
-import oscar.util.SqlUtils;
+import ca.openosp.openo.util.SqlUtils;
 
 public class PopulationReportDaoImpl extends HibernateDaoSupport implements PopulationReportDao {
 

@@ -28,8 +28,8 @@ package ca.openosp.openo.dashboard.handler;
 //import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import net.sf.json.JSONArray;
 
@@ -41,7 +41,7 @@ import org.oscarehr.common.dao.DemographicExtDao;
 import org.oscarehr.common.dao.DemographicExtArchiveDao;
 //import org.oscarehr.common.model.DemographicExt; 
 //import org.oscarehr.common.model.DemographicExtArchive; 
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 public class DemographicPatientStatusRosterStatusHandler {
 

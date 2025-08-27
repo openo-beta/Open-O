@@ -26,14 +26,14 @@
 
 package ca.openosp.openo.encounter.pageUtil;
 
-import org.oscarehr.caisi_integrator.ws.CachedDemographicPrevention;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicPrevention;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import ca.openosp.openo.prevention.Prevention;
 import ca.openosp.openo.prevention.PreventionDS;
 import ca.openosp.openo.prevention.PreventionData;
 import ca.openosp.openo.prevention.PreventionDisplayConfig;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;

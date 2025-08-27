@@ -33,8 +33,8 @@ import java.util.List;
 import org.oscarehr.common.dao.EFormDocsDao;
 import org.oscarehr.common.model.ConsultDocs;
 import org.oscarehr.common.model.EFormDocs;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;

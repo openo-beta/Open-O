@@ -61,13 +61,13 @@ import org.oscarehr.common.model.FaxConfig;
 import org.oscarehr.common.model.FaxJob;
 import ca.openosp.openo.managers.FaxManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
-import oscar.form.JSONUtil;
+import ca.openosp.openo.form.JSONUtil;
 
 public class ManageFaxes2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();

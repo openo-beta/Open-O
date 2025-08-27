@@ -43,15 +43,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@page import="java.math.*, java.util.*, java.sql.*, oscar.*, java.net.*" errorPage="/errorpage.jsp" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.ClinicLocationDao" %>
 <%@page import="org.oscarehr.common.model.ClinicLocation" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.oscarehr.common.dao.ReportAgeSexDao" %>
 <%@page import="org.oscarehr.common.model.ReportAgeSex" %>
-<%@page import="oscar.util.ConversionUtils" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%
     String user_no = (String) session.getAttribute("user");
     int nItems = 0;

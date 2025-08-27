@@ -40,16 +40,16 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page
         import="java.sql.*, java.util.*, oscar.MyDateFormat, oscar.oscarDemographic.data.*, org.oscarehr.common.OtherIdManager, java.text.SimpleDateFormat"
         errorPage="/errorpage.jsp" %>
-<%@ page import="org.oscarehr.common.model.Demographic,ca.openosp.openo.appt.AppointmentMailer, org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.common.model.Demographic,ca.openosp.openo.appt.AppointmentMailer, org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
 <%@page import="org.oscarehr.common.model.Appointment" %>
 <%@page import="org.oscarehr.common.dao.WaitingListDao" %>
-<%@page import="oscar.util.ConversionUtils" %>
-<%@page import="oscar.util.UtilDateUtilities" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.openo.event.EventService" %>
 <%@page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicMerged" %>

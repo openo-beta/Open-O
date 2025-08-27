@@ -33,11 +33,11 @@ import java.util.List;
 import org.oscarehr.common.dao.LabRequestReportLinkDao;
 import org.oscarehr.common.dao.MeasurementsExtDao;
 import org.oscarehr.common.model.MeasurementsExt;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
-import oscar.util.StringUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.StringUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 public class LabRequestReportLink {
     private static LabRequestReportLinkDao dao = SpringUtils.getBean(LabRequestReportLinkDao.class);

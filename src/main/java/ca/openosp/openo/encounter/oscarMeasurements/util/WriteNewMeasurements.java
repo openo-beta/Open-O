@@ -30,9 +30,9 @@ package ca.openosp.openo.encounter.oscarMeasurements.util;
 import org.oscarehr.common.dao.MeasurementDao;
 import org.oscarehr.common.dao.MeasurementTypeDao;
 import org.oscarehr.common.model.Measurement;
-import org.oscarehr.util.SpringUtils;
-import oscar.util.ConversionUtils;
-import oscar.util.UtilDateUtilities;
+import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 import java.util.*;
 

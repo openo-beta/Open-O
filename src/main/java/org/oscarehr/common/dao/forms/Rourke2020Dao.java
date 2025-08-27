@@ -27,10 +27,10 @@
 package org.oscarehr.common.dao.forms;
 
 import org.oscarehr.common.dao.AbstractDaoImpl;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.stereotype.Repository;
-import oscar.form.model.FormBooleanValue;
-import oscar.form.model.FormRourke2020;
+import ca.openosp.openo.form.model.FormBooleanValue;
+import ca.openosp.openo.form.model.FormRourke2020;
 
 import javax.persistence.Query;
 import java.util.ArrayList;

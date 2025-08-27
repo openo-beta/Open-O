@@ -30,10 +30,10 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import oscar.OscarProperties;
 import ca.openosp.openo.lab.FileUploadCheck;
 import ca.openosp.openo.lab.ca.on.CML.ABCDParser;
@@ -49,7 +49,7 @@ public class LabUpload2Action extends ActionSupport {
     HttpServletResponse response = ServletActionContext.getResponse();
 
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-    Logger _logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     public String execute() {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_lab", "w", null)) {

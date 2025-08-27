@@ -28,7 +28,7 @@ package org.oscarehr.common.dao;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.IntegratorControl;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

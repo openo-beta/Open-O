@@ -65,8 +65,8 @@
 <%@ page import="org.oscarehr.common.OtherIdManager" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@ page import="org.oscarehr.common.model.*" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
-<%@ page import="org.oscarehr.util.SessionConstants" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SessionConstants" %>
 <%@ page import="org.oscarehr.common.model.AppointmentStatus" %>
 <%@ page import="org.oscarehr.common.dao.BillingONCHeader1Dao" %>
 <%@ page import="org.oscarehr.common.model.BillingONCHeader1" %>
@@ -85,7 +85,7 @@
 <%@ page import="org.oscarehr.common.model.Facility" %>
 <%@ page import="org.oscarehr.PMmodule.service.ProviderManager" %>
 <%@ page import="org.oscarehr.PMmodule.service.ProgramManager" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.managers.LookupListManager" %>
 <%@ page import="org.oscarehr.common.model.LookupList" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
@@ -98,6 +98,7 @@
 <%@ page import="ca.openosp.openo.appt.ApptData" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -1498,7 +1499,7 @@
         <%--        java.util.ResourceBundle prop = ResourceBundle.getBundle("oscarResources", request.getLocale());--%>
         <%--        formatDate = oscar.util.UtilDateUtilities.DateToString(d, prop.getString("date.EEEyyyyMMdd"));--%>
         <%--        } catch (Exception e) {--%>
-        <%--            org.oscarehr.util.MiscUtils.getLogger().error("Error", e);--%>
+        <%--            org.oscarehr.utility.MiscUtils.getLogger().error("Error", e);--%>
         <%--            formatDate = oscar.util.UtilDateUtilities.DateToString(inform.parse(strDate), "EEE, yyyy-MM-dd");--%>
         <%--        }--%>
         <%--    %>--%>

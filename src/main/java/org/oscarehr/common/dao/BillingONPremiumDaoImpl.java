@@ -36,11 +36,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import org.oscarehr.common.model.RaHeader;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import oscar.OscarProperties;
-import org.oscarehr.util.LoggedInInfo;
-import oscar.util.DateUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.util.DateUtils;
 
 import java.util.Locale;
 import javax.persistence.Query;

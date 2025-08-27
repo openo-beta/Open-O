@@ -1,12 +1,3 @@
-/*
- * Decompiled with CFR 0.152.
- * 
- * Could not load the following classes:
- *  javax.xml.bind.annotation.XmlAccessType
- *  javax.xml.bind.annotation.XmlAccessorType
- *  javax.xml.bind.annotation.XmlElement
- *  javax.xml.bind.annotation.XmlType
- */
 package ca.openosp.openo.hospitalReportManager.xsd;
 
 import java.math.BigDecimal;

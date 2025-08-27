@@ -46,7 +46,6 @@ import java.util.zip.ZipFile;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import ca.openosp.openo.lab.ca.all.parsers.PATHL7Handler;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
@@ -67,7 +66,7 @@ import junit.framework.Assert;
 @RunWith(Parameterized.class)
 public class PATHL7HandlerTest {
 
-    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     private static PATHL7Handler handler;
     private static ZipFile zipFile;

@@ -44,11 +44,11 @@
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.oscarehr.common.dao.PropertyDao" %>
 <%@ page import="org.oscarehr.common.model.Property" %>
-<%@ page import="oscar.util.StringUtils" %>
+<%@ page import="ca.openosp.openo.util.StringUtils" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingFormData" %>
 <%@ page import="oscar.OscarProperties" %>
 <%@ page import="ca.openosp.openo.clinic.ClinicData" %>

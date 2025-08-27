@@ -37,8 +37,8 @@ import java.util.List;
 import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;
 
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.PDFGenerationException;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.PDFGenerationException;
 
 import ca.openosp.openo.documentManager.EDoc;
 

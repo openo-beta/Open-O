@@ -44,7 +44,7 @@
 %>
 <%@ page import="java.math.*, java.util.*, java.sql.*, oscar.*, java.net.*" %>
 
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.DiagnosticCode" %>
 <%@ page import="org.oscarehr.common.dao.DiagnosticCodeDao" %>
 <%

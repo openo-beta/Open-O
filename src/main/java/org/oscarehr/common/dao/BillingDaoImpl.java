@@ -33,11 +33,11 @@ import javax.persistence.Query;
 
 import org.oscarehr.common.NativeSql;
 import org.oscarehr.common.model.Billing;
-import org.oscarehr.util.DateRange;
+import org.oscarehr.utility.DateRange;
 import org.springframework.stereotype.Repository;
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 @Repository
 @SuppressWarnings("unchecked")

@@ -60,8 +60,8 @@ import org.oscarehr.common.dao.Hl7TextMessageDao;
 import org.oscarehr.common.model.Hl7TextMessage;
 import org.oscarehr.common.printing.FontSettings;
 import org.oscarehr.common.printing.PdfWriterFactory;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.all.Hl7textResultsData;
 import ca.openosp.openo.lab.ca.all.parsers.CLSHandler;
@@ -71,8 +71,8 @@ import ca.openosp.openo.lab.ca.all.parsers.GDMLHandler;
 import ca.openosp.openo.lab.ca.all.parsers.MEDITECHHandler;
 import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
 import ca.openosp.openo.lab.ca.all.parsers.PATHL7Handler;
-import oscar.util.ConcatPDF;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.ConcatPDF;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 
 /**

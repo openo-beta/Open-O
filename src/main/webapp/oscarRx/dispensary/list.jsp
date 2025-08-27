@@ -34,6 +34,7 @@
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.oscarehr.common.model.DrugDispensing" %>
 <%@page import="java.util.Map" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%
     String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
     boolean authed = true;
@@ -373,7 +374,7 @@
                                 </tr>
                                 <tr>
                                     <td><b>Entered Date:</b></td>
-                                    <td><%=oscar.util.UtilDateUtilities.DateToString(drug.getCreateDate())%>
+                                    <td><%=UtilDateUtilities.DateToString(drug.getCreateDate())%>
                                     </td>
                                 </tr>
                                 <tr>

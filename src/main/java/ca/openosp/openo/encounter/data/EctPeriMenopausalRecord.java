@@ -33,10 +33,10 @@ import java.util.Date;
 import java.util.Properties;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 public class EctPeriMenopausalRecord {
     private static Logger logger = MiscUtils.getLogger();

@@ -32,7 +32,7 @@ import ca.openosp.openo.billing.CA.ON.model.BillingONProc;
 import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class BillingONProcDaoTest extends DaoTestFixtures {
 

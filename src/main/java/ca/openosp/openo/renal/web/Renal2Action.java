@@ -39,10 +39,10 @@ import org.oscarehr.common.model.Measurement;
 import ca.openosp.openo.renal.CkdScreener;
 import ca.openosp.openo.renal.ORNCkdScreeningReportThread;
 import ca.openosp.openo.renal.ORNPreImplementationReportThread;
-import org.oscarehr.util.*;
+import org.oscarehr.utility.*;
 import oscar.OscarProperties;
-import oscar.form.FrmLabReq07Record;
-import oscar.form.FrmLabReq10Record;
+import ca.openosp.openo.form.FrmLabReq07Record;
+import ca.openosp.openo.form.FrmLabReq10Record;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -39,7 +39,7 @@ import ca.openosp.openo.report.bean.RptByExampleQueryBeanHandler;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
-import oscar.util.DateUtils;
+import ca.openosp.openo.util.DateUtils;
 
 public class RptViewAllQueryByExamples2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();

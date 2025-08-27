@@ -50,7 +50,7 @@
 <%@page import="java.util.List" %>
 <%@page import="java.util.Map" %>
 <%@page import="java.util.HashMap" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.InstitutionDao" %>
 <%@page import="org.oscarehr.common.model.Institution" %>
 <%@page import="org.oscarehr.common.dao.InstitutitionDepartmentDao, org.oscarehr.common.dao.ConsultationServiceDao" %>

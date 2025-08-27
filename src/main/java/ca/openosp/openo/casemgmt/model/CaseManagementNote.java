@@ -36,7 +36,7 @@ import java.util.Set;
 import ca.openosp.openo.model.BaseObject;
 import ca.openosp.openo.casemgmt.dao.CaseManagementNoteLinkDAO;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.rx.data.RxPrescriptionData;
 

@@ -40,8 +40,8 @@ import org.oscarehr.common.dao.ResourceStorageDao;
 import org.oscarehr.common.model.ResourceStorage;
 import ca.openosp.openo.managers.AppManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.ws.rest.util.ClinicalConnectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 

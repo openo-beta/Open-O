@@ -39,18 +39,22 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
-<%@page import="org.oscarehr.util.LocaleUtils" %>
-<%@page import="org.oscarehr.common.dao.FrmLabReqPreSetDao, org.oscarehr.util.SpringUtils" %>
-<%@page import="oscar.form.*, oscar.OscarProperties, java.util.Date, oscar.util.UtilDateUtilities" %>
+<%@page import="org.oscarehr.utility.LocaleUtils" %>
+<%@page import="org.oscarehr.common.dao.FrmLabReqPreSetDao, org.oscarehr.utility.SpringUtils" %>
+<%@page import="oscar.form.*, oscar.OscarProperties, java.util.Date, ca.openosp.openo.util.UtilDateUtilities" %>
 <%@page import="ca.openosp.openo.rx.data.RxProviderData, ca.openosp.openo.rx.data.RxProviderData.Provider" %>
-<%@page import="org.oscarehr.util.MiscUtils,ca.openosp.openo.clinic.ClinicData" %>
+<%@page import="org.oscarehr.utility.MiscUtils,ca.openosp.openo.clinic.ClinicData" %>
 <%@page import="org.oscarehr.PMmodule.model.Program" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProgramDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="java.util.List" %>
+<%@ page import="ca.openosp.openo.form.FrmRecord" %>
+<%@ page import="ca.openosp.openo.form.FrmRecordHelp" %>
+<%@ page import="ca.openosp.openo.form.FrmLabReq10Record" %>
+<%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
     <head>

@@ -32,8 +32,8 @@ import javax.servlet.jsp.JspWriter;
 
 import org.oscarehr.common.dao.OscarCommLocationsDao;
 import org.oscarehr.common.model.OscarCommLocations;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

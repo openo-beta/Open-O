@@ -40,7 +40,7 @@ import ca.openosp.openo.integration.mchcv.HCValidationResult;
 import ca.openosp.openo.integration.mchcv.HCValidator;
 import ca.openosp.openo.integration.mchcv.OnlineHCValidator;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.ws.rest.to.GenericRESTResponse;
 import org.oscarehr.ws.rest.to.model.PatientDetailStatusTo1;
 import org.springframework.beans.factory.annotation.Autowired;

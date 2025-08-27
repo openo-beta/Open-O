@@ -34,7 +34,7 @@ import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.wss4j.common.WSS4JConstants;
 import org.apache.wss4j.dom.handler.WSHandlerConstants;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import com.medseek.clinical.service.*;
 import com.medseek.clinical.service.GetDefaultLaunchUrl.Props;

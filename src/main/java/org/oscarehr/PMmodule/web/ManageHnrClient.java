@@ -28,9 +28,9 @@ import java.util.List;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.caisi_integrator.ws.ConnectException_Exception;
-import org.oscarehr.caisi_integrator.ws.ConsentState;
-import org.oscarehr.caisi_integrator.ws.GetConsentTransfer;
+import ca.openosp.openo.caisi_integrator.ws.ConnectException_Exception;
+import ca.openosp.openo.caisi_integrator.ws.ConsentState;
+import ca.openosp.openo.caisi_integrator.ws.GetConsentTransfer;
 import ca.openosp.openo.casemgmt.dao.ClientImageDAO;
 import ca.openosp.openo.casemgmt.model.ClientImage;
 import org.oscarehr.common.dao.ClientLinkDao;
@@ -40,9 +40,9 @@ import org.oscarehr.common.model.ClientLink;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.HnrDataValidation;
 import org.oscarehr.ui.servlet.ImageRenderingServlet;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class ManageHnrClient {
     private static Logger logger = MiscUtils.getLogger();

@@ -29,7 +29,7 @@
 package ca.openosp.openo.billings.ca.bc.MSP;
 
 import ca.openosp.openo.entities.Billingmaster;
-import oscar.util.SqlUtils;
+import ca.openosp.openo.util.SqlUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

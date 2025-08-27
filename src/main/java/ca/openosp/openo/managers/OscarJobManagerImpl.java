@@ -36,7 +36,7 @@ import org.oscarehr.common.dao.OscarJobTypeDao;
 import org.oscarehr.common.jobs.OscarJobUtils;
 import org.oscarehr.common.model.OscarJob;
 import org.oscarehr.common.model.OscarJobType;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

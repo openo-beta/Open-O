@@ -39,13 +39,13 @@ import org.oscarehr.common.model.LabPatientPhysicianInfo;
 import org.oscarehr.common.model.LabReportInformation;
 import org.oscarehr.common.model.LabTestResults;
 import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.mds.data.ReportStatus;
-import oscar.util.ConversionUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 /**
  * @author Jay Gallagher

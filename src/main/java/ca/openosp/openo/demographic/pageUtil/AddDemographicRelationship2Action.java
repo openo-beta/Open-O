@@ -35,9 +35,9 @@ import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Facility;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SessionConstants;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SessionConstants;
+import org.oscarehr.utility.SpringUtils;
 import ca.openosp.openo.demographic.data.DemographicRelationship;
 // TODO STRUTS2 - not sure if we need the servlet, thinking it is still needed so left it with the merge. Review if issues.
 

@@ -24,9 +24,9 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="oscar.Misc" %>
-<%@page import="oscar.util.UtilMisc" %>
+<%@page import="ca.openosp.openo.util.UtilMisc" %>
 <%@include file="/casemgmt/taglibs.jsp" %>
 <%@taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@page import="java.util.Enumeration" %>
@@ -38,7 +38,7 @@
 <%@page import="org.oscarehr.PMmodule.model.*" %>
 <%@page import="org.oscarehr.common.model.*" %>
 <%@page import="org.oscarehr.common.dao.EFormDao" %>
-<%@page import="oscar.util.DateUtils" %>
+<%@page import="ca.openosp.openo.util.DateUtils" %>
 <%@page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@page import="org.springframework.web.context.WebApplicationContext" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
@@ -46,19 +46,19 @@
 <%@page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="com.quatro.dao.security.*,ca.openosp.openo.model.security.Secrole" %>
-<%@page import="org.oscarehr.util.EncounterUtil" %>
+<%@page import="org.oscarehr.utility.EncounterUtil" %>
 <%@page import="org.apache.cxf.common.i18n.UncheckedException" %>
 <%@page import="ca.openosp.openo.casemgmt.web.NoteDisplay" %>
 <%@page import="ca.openosp.openo.casemgmt.web.CaseManagementViewAction" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
 <%@page import="ca.openosp.openo.casemgmt.dao.CaseManagementNoteLinkDAO" %>
 <%@page import="oscar.OscarProperties" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page import="org.oscarehr.PMmodule.model.Program" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProgramDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="oscar.util.UtilDateUtilities" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@page import="ca.openosp.openo.casemgmt.web.NoteDisplayNonNote" %>
 <%@page import="org.oscarehr.common.dao.EncounterTemplateDao" %>
 <%@page import="ca.openosp.openo.casemgmt.web.CheckBoxBean" %>
@@ -530,7 +530,7 @@
 
         String apptDate = request.getParameter("appointmentDate");
         if (apptDate == null || apptDate.equals("") || apptDate.equals("null")) {
-            apptDate = oscar.util.UtilDateUtilities.getToday("yyyy-MM-dd");
+            apptDate = UtilDateUtilities.getToday("yyyy-MM-dd");
         }
 
         String startTime = request.getParameter("start_time");

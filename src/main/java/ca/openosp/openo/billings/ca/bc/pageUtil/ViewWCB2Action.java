@@ -34,8 +34,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.oscarehr.common.model.Demographic;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -43,7 +43,7 @@ import oscar.Misc;
 import ca.openosp.openo.entities.WCB;
 import ca.openosp.openo.billings.ca.bc.data.BillingFormData;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
-import oscar.util.SqlUtils;
+import ca.openosp.openo.util.SqlUtils;
 
 /**
  * <p>Title:ViewWCB2Action </p>
@@ -56,7 +56,7 @@ import oscar.util.SqlUtils;
  */
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 public class ViewWCB2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();

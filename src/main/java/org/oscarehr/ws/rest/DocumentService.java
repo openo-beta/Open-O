@@ -31,7 +31,7 @@ import org.oscarehr.common.model.Document;
 import ca.openosp.openo.managers.DocumentManager;
 import ca.openosp.openo.managers.ProgramManager2;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 import org.oscarehr.ws.rest.conversion.DocumentConverter;
 import org.oscarehr.ws.rest.to.model.DocumentTo1;
@@ -55,7 +55,7 @@ import java.util.Map;
 @Path("/document")
 @Component("documentService")
 public class DocumentService extends AbstractServiceImpl {
-    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     @Autowired
     private DocumentManager documentManager;

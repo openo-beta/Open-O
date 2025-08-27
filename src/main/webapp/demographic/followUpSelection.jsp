@@ -24,8 +24,8 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.CachedProvider" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.CachedProvider" %>
 <%@page import="java.util.List" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
 <%@include file="/layouts/html_top.jspf" %>

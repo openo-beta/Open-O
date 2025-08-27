@@ -28,7 +28,7 @@
 
 
 <%@ page import="java.sql.*, java.util.*, oscar.*" buffer="none" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.ProviderData" %>
 <%@ page import="org.oscarehr.common.dao.ProviderDataDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>

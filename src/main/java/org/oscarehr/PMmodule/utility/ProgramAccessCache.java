@@ -31,7 +31,7 @@ import java.util.Map;
 
 import org.oscarehr.PMmodule.dao.ProgramAccessDAO;
 import org.oscarehr.PMmodule.model.ProgramAccess;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class ProgramAccessCache {
 

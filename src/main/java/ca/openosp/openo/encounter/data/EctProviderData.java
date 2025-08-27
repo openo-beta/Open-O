@@ -27,7 +27,7 @@ package ca.openosp.openo.encounter.data;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.SxmlMisc;
 import ca.openosp.openo.clinic.ClinicData;

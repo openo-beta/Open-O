@@ -34,7 +34,7 @@ import ca.openosp.openo.billing.CA.BC.model.CtlServiceCodesDxCodes;
 import org.oscarehr.common.dao.BillingServiceDao;
 import org.oscarehr.common.dao.DiagnosticCodeDao;
 import org.oscarehr.common.model.DiagnosticCode;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * <p>Title: BillingAssociationPersistence</p>

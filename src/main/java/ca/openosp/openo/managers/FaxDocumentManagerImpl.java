@@ -33,14 +33,14 @@ import java.nio.file.Path;
 import ca.openosp.openo.fax.core.FaxAccount;
 import ca.openosp.openo.fax.core.FaxRecipient;
 import ca.openosp.openo.fax.util.PdfCoverPageCreator;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.PDFGenerationException;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.PDFGenerationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ca.openosp.openo.documentManager.ConvertToEdoc;
-import oscar.form.util.FormTransportContainer;
+import ca.openosp.openo.form.util.FormTransportContainer;
 import ca.openosp.openo.log.LogAction;
 
 @Service

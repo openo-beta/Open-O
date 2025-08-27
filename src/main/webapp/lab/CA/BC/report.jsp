@@ -43,8 +43,8 @@
 <%@page import="ca.openosp.openo.billing.CA.BC.model.Hl7Obx" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.model.Hl7Obr" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.dao.Hl7ObrDao" %>
-<%@page import="oscar.util.ConversionUtils" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.dao.Hl7PidDao" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.model.Hl7Pid" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.dao.Hl7LinkDao" %>

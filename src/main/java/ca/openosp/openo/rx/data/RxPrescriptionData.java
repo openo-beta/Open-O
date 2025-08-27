@@ -42,14 +42,14 @@ import org.oscarehr.common.dao.DrugDao;
 import org.oscarehr.common.dao.FavoriteDao;
 import org.oscarehr.common.dao.PrescriptionDao;
 import org.oscarehr.common.model.Drug;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.provider.data.ProSignatureData;
 import ca.openosp.openo.rx.util.RxUtil;
-import oscar.util.ConversionUtils;
-import oscar.util.DateUtils;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.DateUtils;
 
 public class RxPrescriptionData {
 

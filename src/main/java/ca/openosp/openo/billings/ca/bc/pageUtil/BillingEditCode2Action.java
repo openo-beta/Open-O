@@ -38,11 +38,11 @@ import net.sf.json.JSONObject;
 
 import org.oscarehr.common.dao.BillingServiceDao;
 import org.oscarehr.common.model.BillingService;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.billings.ca.bc.data.BillingCodeData;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

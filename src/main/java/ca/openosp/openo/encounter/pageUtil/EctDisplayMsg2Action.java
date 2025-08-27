@@ -29,9 +29,9 @@ package ca.openosp.openo.encounter.pageUtil;
 import org.oscarehr.common.model.MessageTbl;
 import org.oscarehr.common.model.OscarMsgType;
 import ca.openosp.openo.managers.MessagingManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
-import oscar.util.StringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;

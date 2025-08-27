@@ -43,7 +43,7 @@
 
 
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
@@ -52,8 +52,8 @@
 <%@page import="org.oscarehr.common.model.DemographicArchive" %>
 <%@page import="java.util.List" %>
 <%@page import="java.util.Date" %>
-<%@page import="oscar.util.DateUtils" %>
-<%@page import="oscar.util.StringUtils" %>
+<%@page import="ca.openosp.openo.util.DateUtils" %>
+<%@page import="ca.openosp.openo.util.StringUtils" %>
 <%@page import="ca.openosp.openo.demographic.pageUtil.Util" %>
 <html>
     <head>

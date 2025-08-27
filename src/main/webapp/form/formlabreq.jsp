@@ -40,10 +40,13 @@
 %>
 
 <%@ page import="oscar.form.*, oscar.OscarProperties" %>
-<%@page import="org.oscarehr.common.dao.FrmLabReqPreSetDao, org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.common.dao.FrmLabReqPreSetDao, org.oscarehr.utility.SpringUtils" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.form.FrmRecord" %>
+<%@ page import="ca.openosp.openo.form.FrmLabReqRecord" %>
+<%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

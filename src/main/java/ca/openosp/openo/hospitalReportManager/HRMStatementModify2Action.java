@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.hospitalReportManager.dao.HRMProviderConfidentialityStatementDao;
 import ca.openosp.openo.hospitalReportManager.model.HRMProviderConfidentialityStatement;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

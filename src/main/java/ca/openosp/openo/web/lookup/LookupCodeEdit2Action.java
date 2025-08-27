@@ -34,12 +34,12 @@ import oscar.MyDateFormat;
 import ca.openosp.openo.common.KeyConstants;
 import ca.openosp.openo.model.FieldDefValue;
 import ca.openosp.openo.model.LookupTableDefValue;
-import ca.openosp.openo.service.LookupManager;
-import ca.openosp.openo.util.Utility;
+import ca.openosp.openo.services.LookupManager;
+import ca.openosp.openo.utils.Utility;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class LookupCodeEdit2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();

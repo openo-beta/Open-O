@@ -40,9 +40,9 @@ import org.oscarehr.common.model.Allergy;
 import org.oscarehr.common.model.Drug;
 import ca.openosp.openo.managers.AllergyManager;
 import ca.openosp.openo.managers.PrescriptionManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import net.sf.json.JSONObject;
 

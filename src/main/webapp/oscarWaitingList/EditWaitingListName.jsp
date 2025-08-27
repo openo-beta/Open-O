@@ -29,7 +29,7 @@
 %>
 <%@page import="java.util.*" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%@page import="oscar.oscarWaitingList.bean.*" %>
 <%@ page import="ca.openosp.openo.waitinglist.bean.WLWaitingListNameBeanHandler" %>
 <%@ page import="ca.openosp.openo.waitinglist.bean.WLWaitingListNameBean" %>

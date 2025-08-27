@@ -31,15 +31,15 @@ import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.ProviderPreference;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SessionConstants;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SessionConstants;
 import ca.openosp.openo.provider.bean.ProviderNameBean;
 import ca.openosp.openo.provider.bean.ProviderNameBeanHandler;
 import ca.openosp.openo.provider.data.ProviderData;
 import ca.openosp.openo.waitinglist.bean.WLWaitingListBeanHandler;
 import ca.openosp.openo.waitinglist.bean.WLWaitingListNameBeanHandler;
 import ca.openosp.openo.waitinglist.util.WLWaitingListUtil;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,7 +52,7 @@ public final class WLSetupDisplayWaitingList2Action extends ActionSupport {
     HttpServletResponse response = ServletActionContext.getResponse();
 
 
-    private Logger log = org.oscarehr.util.MiscUtils.getLogger();
+    private Logger log = org.oscarehr.utility.MiscUtils.getLogger();
 
     public String execute()
             throws Exception {

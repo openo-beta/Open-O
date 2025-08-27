@@ -38,10 +38,8 @@ import ca.openosp.openo.report.data.DemographicSets;
 import ca.openosp.openo.report.data.RptDemographicQuery2Builder;
 import ca.openosp.openo.report.data.RptDemographicQuery2Loader;
 import ca.openosp.openo.report.data.RptDemographicQuery2Saver;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-
-import ca.openosp.openo.report.data.*;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;

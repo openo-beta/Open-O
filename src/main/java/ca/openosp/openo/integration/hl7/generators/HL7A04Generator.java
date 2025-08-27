@@ -28,7 +28,7 @@ import org.oscarehr.common.model.Demographic;
 
 import org.oscarehr.common.hl7.v2.HL7A04Data;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
 
 

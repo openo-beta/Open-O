@@ -34,8 +34,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.oscarehr.common.model.Allergy;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;

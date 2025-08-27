@@ -24,7 +24,7 @@ package ca.openosp.openo.managers;
 
 import org.oscarehr.common.model.DigitalSignature;
 import org.oscarehr.common.model.enumerator.ModuleType;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 public interface DigitalSignatureManager extends OscarManagerBase {
 

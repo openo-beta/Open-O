@@ -46,7 +46,7 @@
 
 <%@ page import="java.sql.*, java.util.*,java.security.*,oscar.*,oscar.oscarDB.*" errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.openo.log.LogAction,ca.openosp.openo.log.LogConst" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Security" %>
 <%@ page import="org.oscarehr.common.dao.SecurityDao" %>
 <%@ page import="ca.openosp.openo.managers.SecurityManager" %>

@@ -33,7 +33,7 @@ import java.util.List;
 import org.oscarehr.common.model.MessageList;
 import org.oscarehr.common.model.MessageTbl;
 
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 import ca.openosp.openo.messenger.data.ContactIdentifier;
 import ca.openosp.openo.messenger.data.MessengerSystemMessage;

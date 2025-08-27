@@ -19,14 +19,14 @@ import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
 import org.oscarehr.labs.LabIdAndType;
 import ca.openosp.openo.managers.EformDataManager;
 import ca.openosp.openo.managers.FormsManager;
-import org.oscarehr.util.DateUtils;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.DateUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.data.EctFormData.PatientForm;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 public class EmailNoteUtil {
     private EmailLog emailLog;

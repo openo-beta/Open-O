@@ -45,13 +45,13 @@ b<%--
 %>
 <%@ page import="java.math.*, java.util.*, java.sql.*, oscar.*, java.net.*" %>
 
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.DiagnosticCode" %>
 <%@ page import="org.oscarehr.common.dao.DiagnosticCodeDao" %>
 <%
     DiagnosticCodeDao diagnosticCodeDao = SpringUtils.getBean(DiagnosticCodeDao.class);
 %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

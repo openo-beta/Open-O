@@ -27,8 +27,8 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <%@page import="java.util.List" %>
 <%@page import="java.text.DecimalFormat" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.renal.ReportHelper" %>
 <%@page import="ca.openosp.openo.renal.ReportDataContainer" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>

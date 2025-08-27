@@ -33,8 +33,8 @@ import org.oscarehr.common.dao.UserPropertyDAO;
 import org.oscarehr.common.model.IntegratorProgress;
 import org.oscarehr.common.model.IntegratorProgressItem;
 import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

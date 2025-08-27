@@ -48,9 +48,9 @@ import org.drools.WorkingMemory;
 import org.drools.io.RuleBaseLoader;
 import org.jdom.Element;
 import org.oscarehr.common.dao.DxDao;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBean;

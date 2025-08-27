@@ -26,7 +26,7 @@
 
 <%-- Updated by Eugene Petruhin on 11 dec 2008 while fixing #2356548 & #2393547 --%>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <% long loadPage = System.currentTimeMillis(); %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -35,12 +35,13 @@
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.util.MeasurementHelper" %>
-<%@ page import="oscar.oscarResearch.oscarDxResearch.bean.dxResearchBeanHandler" %>
+<%@ page import="ca.openosp.openo.oscarDxResearch.bean.dxResearchBeanHandler" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Vector" %>
 <%@ page import="ca.openosp.openo.encounter.immunization.data.EctImmImmunizationData" %>
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 
 <% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
 <%
@@ -498,7 +499,7 @@
             </tr>
 
             <%
-                String pAge = Integer.toString(oscar.util.UtilDateUtilities.calcAge(bean.yearOfBirth, bean.monthOfBirth, bean.dateOfBirth));
+                String pAge = Integer.toString(UtilDateUtilities.calcAge(bean.yearOfBirth, bean.monthOfBirth, bean.dateOfBirth));
                 CommonLabResultData comLab = new CommonLabResultData();
                 java.util.ArrayList labs = comLab.populateLabResultsData(LoggedInInfo.getLoggedInInfoFromSession(request), "", bean.demographicNo, "", "", "", "U");
                 session.setAttribute("casemgmt_labsbeans", labs);

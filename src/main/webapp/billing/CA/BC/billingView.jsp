@@ -39,7 +39,7 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%
     if (session.getValue("user") == null)
         response.sendRedirect("../logout.jsp");

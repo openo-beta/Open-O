@@ -6,7 +6,7 @@ import org.oscarehr.common.dao.EFormDocsDao;
 import org.oscarehr.common.model.ConsultDocs;
 import org.oscarehr.common.model.EFormDocs;
 import org.oscarehr.common.model.enumerator.DocumentType;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.oceanEReferal.pageUtil.OceanEReferralAttachmentUtil;
 

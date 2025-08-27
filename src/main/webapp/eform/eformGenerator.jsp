@@ -74,7 +74,7 @@ AGPL v2+
 and other liscences (MIT, LGPL etc) as indicated
 -->
 
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.eform.EFormLoader" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%

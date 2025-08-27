@@ -21,7 +21,7 @@ package ca.openosp.openo.billings.ca.on.pageUtil;
 
 import ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data;
 import ca.openosp.openo.billings.ca.on.data.JdbcBillingReviewImpl;
-import oscar.util.LabelValueBean;
+import ca.openosp.openo.util.LabelValueBean;
 
 import java.util.ArrayList;
 import java.util.List;

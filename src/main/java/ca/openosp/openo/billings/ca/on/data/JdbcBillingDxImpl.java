@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.oscarehr.common.dao.DiagnosticCodeDao;
 import org.oscarehr.common.model.DiagnosticCode;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class JdbcBillingDxImpl {
     private DiagnosticCodeDao diagnosticCodeDao = SpringUtils.getBean(DiagnosticCodeDao.class);

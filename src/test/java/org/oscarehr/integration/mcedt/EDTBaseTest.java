@@ -31,8 +31,8 @@ import org.oscarehr.common.dao.utils.ConfigUtils;
 import ca.openosp.openo.integration.ebs.client.ng.EdtClientBuilder;
 import ca.openosp.openo.integration.ebs.client.ng.EdtClientBuilderConfig;
 import ca.openosp.openo.integration.mcedt.mailbox.CidPrefixResourceResolver;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import ca.ontario.health.edt.Detail;

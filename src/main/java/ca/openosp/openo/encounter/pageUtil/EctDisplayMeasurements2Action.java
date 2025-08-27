@@ -26,7 +26,7 @@
 package ca.openosp.openo.encounter.pageUtil;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBean;
-import ca.openosp.openo.service.security.SecurityManager;
+import ca.openosp.openo.services.security.SecurityManager;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.AdmissionDao;
 import org.oscarehr.common.dao.FlowsheetDao;
@@ -34,15 +34,15 @@ import org.oscarehr.common.dao.MeasurementGroupStyleDao;
 import org.oscarehr.common.model.Admission;
 import org.oscarehr.common.model.Flowsheet;
 import org.oscarehr.common.model.MeasurementGroupStyle;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import oscar.OscarProperties;
 import ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
-import oscar.oscarResearch.oscarDxResearch.bean.dxResearchBeanHandler;
-import oscar.util.DateUtils;
-import oscar.util.StringUtils;
+import ca.openosp.openo.oscarDxResearch.bean.dxResearchBeanHandler;
+import ca.openosp.openo.util.DateUtils;
+import ca.openosp.openo.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;

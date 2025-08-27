@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import org.oscarehr.common.dao.OscarCommLocationsDao;
 import org.oscarehr.common.dao.RemoteAttachmentsDao;
 import org.oscarehr.common.model.RemoteAttachments;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class EctRemoteAttachments {
 

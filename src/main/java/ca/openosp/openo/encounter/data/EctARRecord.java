@@ -33,7 +33,7 @@ import java.util.Date;
 import java.util.Properties;
 
 import ca.openosp.openo.db.DBHandler;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 public class EctARRecord {
 

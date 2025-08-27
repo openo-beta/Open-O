@@ -30,10 +30,9 @@ import ca.openosp.openo.rx.data.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.Allergy;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import oscar.OscarProperties;
-import ca.openosp.openo.rx.data.*;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;

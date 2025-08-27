@@ -35,7 +35,7 @@ import java.util.Properties;
 
 import org.oscarehr.common.dao.EncounterWindowDao;
 import org.oscarehr.common.model.EncounterWindow;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author root

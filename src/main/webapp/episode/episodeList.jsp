@@ -24,7 +24,7 @@
 
 --%>
 <!DOCTYPE html>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="java.text.SimpleDateFormat" %>
 <%@ include file="/taglibs.jsp" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -36,7 +36,7 @@
 <%@page import="java.util.*" %>
 <%@page import="org.oscarehr.common.model.Episode" %>
 <%@page import="org.oscarehr.common.dao.EpisodeDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 
 <%
 

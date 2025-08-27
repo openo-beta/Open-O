@@ -28,7 +28,7 @@ import java.util.List;
 
 import org.oscarehr.common.model.Allergy;
 import ca.openosp.openo.managers.AllergyManager;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.SummaryItemTo1;
 import org.oscarehr.ws.rest.to.model.SummaryTo1;
 import org.springframework.beans.factory.annotation.Autowired;

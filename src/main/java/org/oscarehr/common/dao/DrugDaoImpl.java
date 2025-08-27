@@ -36,7 +36,7 @@ import javax.persistence.Query;
 import org.apache.commons.lang.StringUtils;
 import org.oscarehr.common.NativeSql;
 import org.oscarehr.common.model.Drug;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 public class DrugDaoImpl extends AbstractDaoImpl<Drug> implements DrugDao {
 

@@ -39,10 +39,10 @@ import org.oscarehr.olis.dao.OLISRequestNomenclatureDao;
 import org.oscarehr.olis.dao.OLISResultNomenclatureDao;
 import org.oscarehr.olis.model.OLISRequestNomenclature;
 import org.oscarehr.olis.model.OLISResultNomenclature;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.GenericComposite;
 import ca.uhn.hl7v2.model.Message;
@@ -60,7 +60,7 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
  */
 public class OLISHL7Handler implements MessageHandler {
 
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
     protected boolean isFinal = true;
     protected boolean isCorrected = false;
     protected Message msg = null;

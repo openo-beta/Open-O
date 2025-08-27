@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.provider.data.ProviderData;
 import org.oscarehr.common.dao.ProviderDataDao;

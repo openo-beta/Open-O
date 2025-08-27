@@ -113,10 +113,10 @@ import ca.openosp.openo.hospitalReportManager.model.HRMDocumentComment;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToProvider;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import org.oscarehr.util.WebUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
+import org.oscarehr.utility.WebUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -172,9 +172,9 @@ import ca.openosp.openo.report.data.RptDemographicQueryLoader;
 import ca.openosp.openo.report.pageUtil.RptDemographicReport2Form;
 import ca.openosp.openo.rx.data.RxPatientData;
 import ca.openosp.openo.rx.data.RxPrescriptionData;
-import oscar.util.ConversionUtils;
-import oscar.util.StringUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.StringUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 /**
  * @author Ronnie Cheng

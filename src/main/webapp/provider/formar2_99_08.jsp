@@ -29,16 +29,17 @@
     String form_name = "ar2_99_08";
     String username = (String) session.getAttribute("userlastname") + "," + (String) session.getAttribute("userfirstname");
 %>
-<%@ page import="java.util.*, java.sql.*, java.net.*, oscar.*, oscar.util.UtilDateUtilities, oscar.form.graphic.*"
+<%@ page import="java.util.*, java.sql.*, java.net.*, oscar.*, ca.openosp.openo.util.UtilDateUtilities, oscar.form.graphic.*"
          errorPage="/errorpage.jsp" %>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.DemographicAccessoryDao" %>
 <%@page import="org.oscarehr.common.model.DemographicAccessory" %>
 <%@page import="org.oscarehr.common.dao.FormDao" %>
 <%@page import="org.oscarehr.common.model.Form" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
+<%@ page import="ca.openosp.openo.form.graphic.FrmGraphicAR" %>
 <%
     DemographicAccessoryDao demographicAccessoryDao = (DemographicAccessoryDao) SpringUtils.getBean(DemographicAccessoryDao.class);
     FormDao formDao = SpringUtils.getBean(FormDao.class);

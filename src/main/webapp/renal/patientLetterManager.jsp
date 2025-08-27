@@ -25,7 +25,7 @@
 
 --%>
 
-<%@page import="java.util.*, java.io.*, org.oscarehr.util.MiscUtils" %>
+<%@page import="java.util.*, java.io.*, org.oscarehr.utility.MiscUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>

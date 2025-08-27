@@ -43,7 +43,7 @@ import org.oscarehr.common.model.Dxresearch;
 import org.oscarehr.common.model.FormLabReq07;
 import org.oscarehr.common.model.Measurement;
 import org.oscarehr.common.model.MeasurementMap;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class ReportHelper {
 

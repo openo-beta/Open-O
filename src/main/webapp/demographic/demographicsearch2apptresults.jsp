@@ -48,21 +48,21 @@
 
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
-<%@page import="org.oscarehr.util.MiscUtils" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.CachedProvider" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.FacilityIdStringCompositePk" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.CachedProvider" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.FacilityIdStringCompositePk" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
 <%@page import="org.apache.commons.lang.time.DateFormatUtils" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
-<%@page import="oscar.util.DateUtils" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.DemographicTransfer" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.MatchingDemographicTransferScore" %>
+<%@page import="ca.openosp.openo.util.DateUtils" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.DemographicTransfer" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.MatchingDemographicTransferScore" %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
 
 <%@ page import="java.util.*, java.sql.*,java.net.*, oscar.*" errorPage="/errorpage.jsp" %>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicMerged" %>
@@ -402,7 +402,7 @@
 
                 <%
                     String ptstatus = request.getParameter("ptstatus") == null ? "active" : request.getParameter("ptstatus");
-                    org.oscarehr.util.MiscUtils.getLogger().debug("PSTATUS " + ptstatus);
+                    org.oscarehr.utility.MiscUtils.getLogger().debug("PSTATUS " + ptstatus);
 
                     int rowCounter = 0;
                     String bgColor = rowCounter % 2 == 0 ? "#EEEEFF" : "white";

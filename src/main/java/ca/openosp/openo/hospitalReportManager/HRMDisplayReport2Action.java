@@ -16,12 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToProviderDao;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToProvider;
-import ca.openosp.openo.hospitalReportManager.dao.*;
-import ca.openosp.openo.hospitalReportManager.model.*;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

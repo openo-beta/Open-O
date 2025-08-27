@@ -31,8 +31,8 @@ import java.util.Date;
 import java.util.TimerTask;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
 

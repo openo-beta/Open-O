@@ -25,7 +25,7 @@
 package ca.openosp.openo.app;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.owasp.csrfguard.CsrfGuard;
 import org.owasp.csrfguard.CsrfGuardException;
 import org.owasp.csrfguard.action.IAction;

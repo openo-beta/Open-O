@@ -65,7 +65,7 @@
 
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/encounterStyles.css">
 
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.messenger.pageUtil.MsgSessionBean" %>
 <%@ page import="ca.openosp.openo.messenger.docxfer.util.MsgCommxml" %>
 <%@ page import="ca.openosp.openo.messenger.docxfer.send.MsgGenerate" %>

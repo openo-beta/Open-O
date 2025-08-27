@@ -48,11 +48,11 @@ import org.oscarehr.common.model.MdsMSH;
 import org.oscarehr.common.model.MdsZRG;
 import org.oscarehr.common.model.PatientLabRouting;
 import org.oscarehr.common.model.ProviderLabRoutingModel;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.on.LabResultData;
-import oscar.util.ConversionUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 
 public class MDSResultsData {
@@ -62,7 +62,7 @@ public class MDSResultsData {
     private PatientLabRoutingDao PLRDao = SpringUtils.getBean(PatientLabRoutingDao.class);
     private EFormDocsDao eformDocsDao = SpringUtils.getBean(EFormDocsDao.class);
 
-    static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     public ArrayList<String> segmentID;
     public ArrayList<String> acknowledgedStatus;

@@ -43,7 +43,7 @@ import org.oscarehr.common.model.DemographicExt;
 import org.oscarehr.common.model.Dxresearch;
 import org.oscarehr.common.model.OscarLog;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class CkdScreenerReportHandler {
 

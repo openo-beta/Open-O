@@ -25,9 +25,9 @@
 --%>
 
 <%@page import="ca.openosp.openo.appt.ApptData" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@page import="org.oscarehr.common.model.MyGroup" %>
@@ -39,7 +39,7 @@
 <%@page import="org.oscarehr.common.dao.ScheduleTemplateDao" %>
 <%@page import="org.oscarehr.common.model.ScheduleTemplateCode" %>
 <%@page import="org.oscarehr.common.dao.ScheduleTemplateCodeDao" %>
-<%@page import="oscar.util.ConversionUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
     MyGroupDao myGroupDao = SpringUtils.getBean(MyGroupDao.class);

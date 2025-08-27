@@ -43,14 +43,14 @@ import org.oscarehr.common.model.Measurement;
 import org.oscarehr.common.model.SecRole;
 import org.oscarehr.common.model.Validations;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import ca.openosp.openo.encounter.data.EctProgram;
 import ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet;
 import ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

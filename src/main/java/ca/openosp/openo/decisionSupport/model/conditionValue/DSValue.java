@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.decisionSupport.model.DecisionSupportException;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 /**
  * @author apavel

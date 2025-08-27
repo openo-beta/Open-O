@@ -24,8 +24,8 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.WebUtils" %>
-<%@page import="org.oscarehr.util.WebUtils" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
 
 <%@include file="/layouts/html_top.jspf" %>
 

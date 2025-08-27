@@ -39,8 +39,8 @@ import org.oscarehr.common.model.Prevention;
 import org.oscarehr.common.printing.FontSettings;
 import org.oscarehr.common.printing.PdfWriterFactory;
 import ca.openosp.openo.managers.ProgramManager2;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import oscar.OscarProperties;
 import ca.openosp.openo.clinic.ClinicData;
 

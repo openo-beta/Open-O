@@ -26,7 +26,7 @@
 
 package oscar;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import java.io.FileInputStream;
 import java.io.FileWriter;

@@ -99,10 +99,10 @@ import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Security;
 import org.oscarehr.common.model.Tickler;
 import ca.openosp.openo.managers.TicklerManager;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.form.FrmLabReq07Record;
+import ca.openosp.openo.form.FrmLabReq07Record;
 
 
 public class OntarioMDSpec4DataTest extends DaoTestFixtures {

@@ -31,8 +31,8 @@ import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import org.oscarehr.common.dao.CaseManagementTmpSaveDao;
 import org.oscarehr.common.model.CaseManagementTmpSave;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.data.EctProgram;
 

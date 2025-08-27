@@ -29,8 +29,8 @@ package ca.openosp.openo.mds.data;
 import org.apache.commons.lang3.StringUtils;
 import org.oscarehr.common.dao.SystemPreferencesDao;
 import org.oscarehr.common.model.SystemPreferences;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.SpringUtils;
 
 import java.math.BigInteger;
 import java.sql.Connection;

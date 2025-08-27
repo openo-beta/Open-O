@@ -5,8 +5,8 @@ import cds.LaboratoryResultsDocument;
 import cdsDt.DateTimeFullOrPartial;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.Demographic;
-import org.oscarehr.util.MiscUtils;
-import oscar.util.StringUtils;
+import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.util.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

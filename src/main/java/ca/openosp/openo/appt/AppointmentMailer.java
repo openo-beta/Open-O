@@ -48,12 +48,12 @@ import org.oscarehr.common.model.Appointment;
 import org.oscarehr.common.model.Clinic;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 
-import oscar.service.MessageMailer;
+import ca.openosp.openo.service.MessageMailer;
 
 /**
  * @author mweston4

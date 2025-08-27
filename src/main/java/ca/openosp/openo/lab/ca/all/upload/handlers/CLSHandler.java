@@ -30,8 +30,8 @@ import java.util.ArrayList;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.Hl7TextInfoDao;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import ca.openosp.openo.lab.ca.all.upload.MessageUploader;
@@ -40,7 +40,7 @@ import ca.openosp.openo.lab.ca.all.util.Utilities;
 
 public class CLSHandler implements MessageHandler {
 
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
     Hl7TextInfoDao hl7TextInfoDao = (Hl7TextInfoDao) SpringUtils.getBean(Hl7TextInfoDao.class);
 
 

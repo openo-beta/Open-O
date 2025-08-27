@@ -31,12 +31,12 @@ import java.util.Vector;
 
 import org.oscarehr.common.dao.ConfigImmunizationDao;
 import org.oscarehr.common.model.ConfigImmunization;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import oscar.util.UtilXML;
+import ca.openosp.openo.util.UtilXML;
 
 public class EctImmConfigData {
 

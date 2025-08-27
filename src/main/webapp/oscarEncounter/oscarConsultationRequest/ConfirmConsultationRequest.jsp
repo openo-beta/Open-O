@@ -24,7 +24,7 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.WebUtils" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -45,7 +45,7 @@
 %>
 
 
-<%@page import="org.oscarehr.util.WebUtils" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
 <html>
 
     <head>

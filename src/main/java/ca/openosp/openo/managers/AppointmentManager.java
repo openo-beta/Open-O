@@ -32,7 +32,7 @@ import java.util.List;
 import org.oscarehr.common.model.Appointment;
 import org.oscarehr.common.model.AppointmentStatus;
 import org.oscarehr.common.model.LookupListItem;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 public interface AppointmentManager {
 

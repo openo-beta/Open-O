@@ -57,8 +57,8 @@ import ca.uhn.hl7v2.parser.PipeParser;
 import ca.uhn.hl7v2.parser.XMLParser;
 import ca.uhn.hl7v2.util.Terser;
 import ca.uhn.hl7v2.validation.impl.NoValidation;
-import org.oscarehr.util.MiscUtils;
-import oscar.util.UtilDateUtilities;
+import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 
 /**
@@ -66,7 +66,7 @@ import oscar.util.UtilDateUtilities;
  */
 public class PATHL7Handler implements MessageHandler {
 
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
     ORU_R01 msg = null;
 
     private static List<String> labDocuments = Arrays.asList("BCCACSP", "BCCASMP", "BLOODBANKT",

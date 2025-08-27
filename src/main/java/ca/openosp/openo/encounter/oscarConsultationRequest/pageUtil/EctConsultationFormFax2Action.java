@@ -27,10 +27,10 @@ import ca.openosp.openo.managers.FaxManager;
 import ca.openosp.openo.managers.FaxManager.TransactionType;
 import ca.openosp.openo.managers.NioFileManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.PDFGenerationException;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.PDFGenerationException;
+import org.oscarehr.utility.SpringUtils;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 

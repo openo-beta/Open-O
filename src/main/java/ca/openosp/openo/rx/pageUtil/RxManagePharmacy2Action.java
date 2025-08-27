@@ -45,13 +45,13 @@ import net.sf.json.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.oscarehr.common.model.PharmacyInfo;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.rx.data.RxPharmacyData;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 /**
  * @author Jay Gallagher & Jackson Bi

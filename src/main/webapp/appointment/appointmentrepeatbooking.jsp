@@ -51,8 +51,10 @@
 <%@page import="org.oscarehr.common.dao.AppointmentArchiveDao" %>
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
 <%@page import="org.oscarehr.common.model.Appointment" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="oscar.util.ConversionUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="ca.openosp.openo.util.UtilMisc" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%
     AppointmentArchiveDao appointmentArchiveDao = (AppointmentArchiveDao) SpringUtils.getBean(AppointmentArchiveDao.class);
     OscarAppointmentDao appointmentDao = (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class);

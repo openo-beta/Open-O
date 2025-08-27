@@ -24,6 +24,7 @@
  */
 package org.oscarehr.common.web;
 
+import ca.openosp.openo.form.*;
 import com.opensymphony.xwork2.ActionSupport;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -32,14 +33,13 @@ import org.apache.struts2.ServletActionContext;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import oscar.OscarProperties;
-import oscar.form.*;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
-import oscar.util.LabelValueBean;
+import ca.openosp.openo.util.LabelValueBean;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;

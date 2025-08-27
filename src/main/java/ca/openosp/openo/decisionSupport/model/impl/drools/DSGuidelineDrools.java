@@ -54,8 +54,8 @@ import ca.openosp.openo.decisionSupport.model.DSGuideline;
 import ca.openosp.openo.decisionSupport.model.DSParameter;
 import ca.openosp.openo.decisionSupport.model.DecisionSupportException;
 import ca.openosp.openo.drools.RuleBaseFactory;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.util.RuleBaseCreator;
 

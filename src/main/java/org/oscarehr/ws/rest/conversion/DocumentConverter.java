@@ -25,7 +25,7 @@
 package org.oscarehr.ws.rest.conversion;
 
 import org.oscarehr.common.model.Document;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.DocumentReviewTo1;
 import org.oscarehr.ws.rest.to.model.DocumentTo1;
 

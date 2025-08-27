@@ -58,14 +58,14 @@
 <jsp:useBean id="scheduleRscheduleBean" class="oscar.RscheduleBean" scope="session"/>
 <jsp:useBean id="scheduleDateBean" class="java.util.Hashtable" scope="session"/>
 <jsp:useBean id="scheduleHolidayBean" class="java.util.Hashtable" scope="session"/>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.ScheduleDate" %>
 <%@ page import="org.oscarehr.common.dao.ScheduleDateDao" %>
 <%@ page import="org.oscarehr.common.model.RSchedule" %>
 <%@ page import="org.oscarehr.common.dao.RScheduleDao" %>
 <%@ page import="org.oscarehr.common.model.ScheduleHoliday" %>
 <%@ page import="org.oscarehr.common.dao.ScheduleHolidayDao" %>
-<%@page import="oscar.util.ConversionUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%
     ScheduleDateDao scheduleDateDao = SpringUtils.getBean(ScheduleDateDao.class);
     RScheduleDao rScheduleDao = (RScheduleDao) SpringUtils.getBean(RScheduleDao.class);

@@ -39,7 +39,9 @@
 %>
 
 <%@ page
-        import="oscar.util.*, oscar.form.*, oscar.form.data.*, org.oscarehr.util.*" %>
+        import="oscar.util.*, oscar.form.*, oscar.form.data.*, org.oscarehr.utility.*" %>
+<%@ page import="ca.openosp.openo.form.FrmRecord" %>
+<%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     String formClass = "DischargeSummary";

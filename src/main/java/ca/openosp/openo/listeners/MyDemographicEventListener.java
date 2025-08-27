@@ -28,7 +28,7 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.Demographic;
 import ca.openosp.openo.event.DemographicCreateEvent;
 import ca.openosp.openo.event.DemographicUpdateEvent;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;

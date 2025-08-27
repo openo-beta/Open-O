@@ -34,8 +34,8 @@ import org.oscarehr.common.model.Dashboard;
 import org.oscarehr.common.model.IndicatorTemplate;
 import ca.openosp.openo.dashboard.display.beans.DashboardBean;
 import ca.openosp.openo.dashboard.display.beans.PanelBean;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
 /**
  * Construct a DashboardBean

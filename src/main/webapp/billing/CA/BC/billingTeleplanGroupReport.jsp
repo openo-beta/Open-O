@@ -46,12 +46,13 @@
 
 <%@ page import="java.util.*, java.sql.*, oscar.util.*,oscar.*" errorPage="/errorpage.jsp" %>
 <%@ include file="../../../admin/dbconnection.jsp" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.billing.CA.model.BillActivity" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="ca.openosp.openo.billing.CA.dao.BillActivityDao" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@page import="oscar.util.ConversionUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);

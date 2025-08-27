@@ -27,8 +27,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.MiscUtils;
 
 public class MigrateStaffAssignments {
     private static final Logger log = MiscUtils.getLogger();

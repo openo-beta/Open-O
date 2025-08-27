@@ -43,10 +43,10 @@ import org.oscarehr.common.dao.DemographicCustDao;
 import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.DemographicCust;
-import org.oscarehr.util.AppointmentUtil;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.AppointmentUtil;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.rx.data.RxProviderData;

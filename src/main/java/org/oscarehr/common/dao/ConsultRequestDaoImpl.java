@@ -41,7 +41,7 @@ import org.oscarehr.common.model.ConsultationRequest;
 import ca.openosp.openo.consultations.ConsultationQuery;
 import ca.openosp.openo.consultations.ConsultationRequestSearchFilter;
 import ca.openosp.openo.consultations.ConsultationRequestSearchFilter.SORTMODE;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository

@@ -31,10 +31,10 @@ import ca.openosp.openo.billings.ca.on.data.BillingDataHlp;
 import ca.openosp.openo.billings.ca.on.data.BillingItemData;
 import ca.openosp.openo.billings.ca.on.data.JdbcBillingClaimImpl;
 import ca.openosp.openo.billings.ca.on.data.JdbcBillingCodeImpl;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 public class BillingSpecPrep {
-    private static final Logger _logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
     JdbcBillingClaimImpl dbObj = new JdbcBillingClaimImpl();
 
     // save a billing record

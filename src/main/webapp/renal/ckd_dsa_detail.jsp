@@ -49,12 +49,12 @@
 
 
 <%@ page import="java.util.*, java.text.*" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Measurement" %>
 <%@page import="org.oscarehr.common.dao.MeasurementDao" %>
 <%@page import="org.oscarehr.common.dao.DxresearchDAO" %>
 <%@page import="org.oscarehr.common.model.Dxresearch" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%
     MeasurementDao measurementDao = SpringUtils.getBean(MeasurementDao.class);
     DxresearchDAO dxResearchDao = (DxresearchDAO) SpringUtils.getBean(DxresearchDAO.class);

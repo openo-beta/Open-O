@@ -33,7 +33,7 @@ import org.oscarehr.common.dao.CtlFrequencyDao;
 import org.oscarehr.common.dao.CtlSpecialInstructionsDao;
 import org.oscarehr.common.model.CtlFrequency;
 import org.oscarehr.common.model.CtlSpecialInstructions;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class RxCodesData {
 

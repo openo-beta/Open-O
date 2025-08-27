@@ -42,8 +42,8 @@ import org.oscarehr.common.model.Measurement;
 import org.oscarehr.common.model.MeasurementGroupStyle;
 import org.oscarehr.common.model.MeasurementMap;
 import org.oscarehr.common.model.Property;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

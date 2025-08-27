@@ -29,7 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.oscarehr.common.model.Drug;
 import ca.openosp.openo.managers.DrugLookUpManager;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.conversion.DrugConverterImpl;
 import org.oscarehr.ws.rest.to.model.DrugSearchTo1;
 import org.oscarehr.ws.rest.to.model.DrugTo1;

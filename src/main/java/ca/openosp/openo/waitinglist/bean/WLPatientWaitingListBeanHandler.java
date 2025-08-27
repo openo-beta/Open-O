@@ -31,9 +31,9 @@ import java.util.List;
 import org.oscarehr.common.dao.WaitingListDao;
 import org.oscarehr.common.model.WaitingList;
 import org.oscarehr.common.model.WaitingListName;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class WLPatientWaitingListBeanHandler {
 

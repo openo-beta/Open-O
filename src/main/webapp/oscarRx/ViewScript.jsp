@@ -27,7 +27,7 @@
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="org.oscarehr.common.model.Site" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Appointment" %>
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
 <%@ page import="ca.openosp.openo.provider.data.ProviderData" %>

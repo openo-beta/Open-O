@@ -30,8 +30,8 @@ import java.util.ArrayList;
 
 import ca.openosp.openo.billing.CA.BC.dao.WcbDao;
 import ca.openosp.openo.billing.CA.BC.model.Wcb;
-import org.oscarehr.util.SpringUtils;
-import oscar.util.ConversionUtils;
+import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * @author Jay Gallagher

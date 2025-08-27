@@ -35,9 +35,9 @@ import org.oscarehr.common.model.*;
 import org.oscarehr.common.model.enumerator.ConsultationRequestExtKey;
 import ca.openosp.openo.managers.ConsultationManager;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;

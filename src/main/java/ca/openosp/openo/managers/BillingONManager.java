@@ -30,11 +30,11 @@ import org.oscarehr.common.dao.ClinicDAO;
 import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.model.BillingONCHeader1;
 import org.oscarehr.common.web.BillingInvoice2Action;
-import org.oscarehr.util.LocaleUtils;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LocaleUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import oscar.util.DateUtils;
+import ca.openosp.openo.util.DateUtils;
 
 import java.io.InputStream;
 import java.util.Date;

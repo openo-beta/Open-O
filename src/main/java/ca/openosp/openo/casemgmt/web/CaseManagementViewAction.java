@@ -23,6 +23,7 @@
 
 package ca.openosp.openo.casemgmt.web;
 
+import ca.openosp.openo.util.UtilDateUtilities;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.SecUserRoleDao;
@@ -41,10 +42,10 @@ import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.dao.GroupNoteDao;
 import ca.openosp.openo.managers.TicklerManager;
 import org.oscarehr.provider.web.CppPreferencesUIBean;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import oscar.OscarProperties;
-import oscar.util.OscarRoleObjectPrivilege;
+import ca.openosp.openo.util.OscarRoleObjectPrivilege;
 
 import java.net.MalformedURLException;
 import java.util.*;
@@ -459,7 +460,7 @@ public class CaseManagementViewAction {
                 String val = null;
 
                 if (key.contains(" Date")) {
-                    val = oscar.util.UtilDateUtilities.DateToString(cme.getDateValue(), "yyyy-MM-dd");
+                    val = UtilDateUtilities.DateToString(cme.getDateValue(), "yyyy-MM-dd");
                 } else {
                     val = org.apache.commons.lang.StringEscapeUtils.escapeJavaScript(cme.getValue());
                 }

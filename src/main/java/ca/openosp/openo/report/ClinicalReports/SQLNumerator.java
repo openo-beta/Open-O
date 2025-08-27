@@ -29,8 +29,8 @@ package ca.openosp.openo.report.ClinicalReports;
 import java.sql.ResultSet;
 import java.util.Hashtable;
 
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
 

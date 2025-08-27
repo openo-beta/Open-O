@@ -33,7 +33,7 @@ import java.util.List;
 import org.oscarehr.common.merge.MergedDemographicTemplate;
 import org.oscarehr.common.model.Document;
 import ca.openosp.openo.documentManager.EDocUtil.EDocSort;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class DocumentMergeDemographicDAOImpl extends DocumentDaoImpl implements DocumentMergeDemographicDAO {
 

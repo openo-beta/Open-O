@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.TimerTask;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;

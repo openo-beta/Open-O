@@ -63,11 +63,11 @@ import org.oscarehr.common.model.ProfessionalSpecialist;
 import org.oscarehr.common.model.Provider;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.PharmacyManager;
-import org.oscarehr.util.DemographicContactCreator;
+import org.oscarehr.utility.DemographicContactCreator;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.beans.BeanUtils;
 
 import oscar.OscarProperties;

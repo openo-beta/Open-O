@@ -23,23 +23,23 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.util.WebUtils" %>
-<%@page import="org.oscarehr.util.WebUtils" %>
-<%@page import="org.oscarehr.util.LocaleUtils" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
+<%@page import="org.oscarehr.utility.LocaleUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page language="java" import="oscar.OscarProperties" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
 <%@page import="java.util.List" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
 <%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <%@page import="org.oscarehr.common.dao.PartialDateDao" %>
 <%@page import="org.oscarehr.common.model.PartialDate" %>
-<%@ page import="ca.openosp.openo.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.services.security.SecurityManager" %>
 <%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
 

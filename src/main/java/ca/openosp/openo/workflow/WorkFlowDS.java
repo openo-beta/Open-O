@@ -28,7 +28,7 @@ package ca.openosp.openo.workflow;
 
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 /**
  * @author jay

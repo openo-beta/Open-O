@@ -51,18 +51,18 @@ import org.oscarehr.common.model.BillingONItem;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Site;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.util.DateRange;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.DateRange;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.provider.data.ProviderBillCenter;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class JdbcBillingCreateBillingFile {
 
-    private static final Logger _logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     public String errorFatalMsg = "";
     private BillingBatchHeaderData bhObj = null;

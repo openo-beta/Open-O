@@ -27,7 +27,7 @@ package ca.openosp.openo.integration.fhir.model;
 import org.oscarehr.common.model.Provider;
 import ca.openosp.openo.integration.fhir.exception.MandatoryAttributeException;
 import ca.openosp.openo.integration.fhir.manager.OscarFhirConfigurationManager;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.dstu3.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.dstu3.model.ContactPoint.ContactPointUse;

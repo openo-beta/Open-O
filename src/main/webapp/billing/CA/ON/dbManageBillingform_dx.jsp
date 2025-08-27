@@ -21,7 +21,7 @@
 
 <%@ page import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, java.net.*,oscar.MyDateFormat" %>
 
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.CtlDiagCode" %>
 <%@ page import="org.oscarehr.common.dao.CtlDiagCodeDao" %>
 <%

@@ -35,7 +35,7 @@ import ca.openosp.openo.dashboard.display.beans.DashboardBean;
 import ca.openosp.openo.dashboard.display.beans.DrilldownBean;
 import ca.openosp.openo.dashboard.display.beans.IndicatorBean;
 import ca.openosp.openo.dashboard.handler.IndicatorTemplateXML;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 public interface DashboardManager {
     public static final boolean MULTI_THREAD_ON = Boolean.TRUE;

@@ -60,7 +60,7 @@
     </filter-mapping>
     <filter>
         <filter-name>ResponseDefaultsFilter</filter-name>
-        <filter-class>org.oscarehr.util.ResponseDefaultsFilter</filter-class>
+        <filter-class>org.oscarehr.utility.ResponseDefaultsFilter</filter-class>
 		<init-param>
 			<param-name>noCacheEndings</param-name>
 			<param-value>.jsp,.jsf,.json,.do</param-value>
@@ -102,7 +102,7 @@
 
     <filter>
         <filter-name>UserActivityFilter</filter-name>
-        <filter-class>org.oscarehr.util.UserActivityFilter</filter-class>
+        <filter-class>org.oscarehr.utility.UserActivityFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>UserActivityFilter</filter-name>
@@ -111,11 +111,11 @@
 
 	<filter>
 		<filter-name>DbConnectionFilter</filter-name>
-		<filter-class>org.oscarehr.util.DbConnectionFilter</filter-class>
+		<filter-class>org.oscarehr.utility.DbConnectionFilter</filter-class>
 	</filter>
 	<filter>
 		<filter-name>LoggedInUserFilter</filter-name>
-		<filter-class>org.oscarehr.util.LoggedInUserFilter</filter-class>
+		<filter-class>org.oscarehr.utility.LoggedInUserFilter</filter-class>
 	</filter>
 	<filter>
 		<filter-name>LoginFilter</filter-name>
@@ -166,7 +166,7 @@
 		<listener-class>org.oscarehr.common.web.OscarSpringContextLoader</listener-class>
 	</listener>
 	<listener>
-		<listener-class>org.oscarehr.util.ContextStartupListener</listener-class>
+		<listener-class>org.oscarehr.utility.ContextStartupListener</listener-class>
 	</listener>
 	<listener>
 		<listener-class>org.oscarehr.web.OscarSessionListener</listener-class>
@@ -264,12 +264,12 @@
 	</servlet>
 	<servlet>
 		<servlet-name>pdfCreator</servlet-name>
-		<servlet-class>oscar.form.pdfservlet.FrmPDFServlet</servlet-class>
+		<servlet-class>ca.openosp.openo.form.pdfservlet.FrmPDFServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet>
 		<servlet-name>pdfCustomedCreator</servlet-name>
-		<servlet-class>oscar.form.pdfservlet.FrmCustomedPDFServlet</servlet-class>
+		<servlet-class>ca.openosp.openo.form.pdfservlet.FrmCustomedPDFServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet>
@@ -284,17 +284,17 @@
 	</servlet>
 	<servlet>
 		<servlet-name>OscarDownload</servlet-name>
-		<servlet-class>oscar.util.OscarDownload</servlet-class>
+		<servlet-class>ca.openosp.openo.util.OscarDownload</servlet-class>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet>
 		<servlet-name>Download</servlet-name>
-		<servlet-class>oscar.util.GenericDownload</servlet-class>
+		<servlet-class>ca.openosp.openo.util.GenericDownload</servlet-class>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet>
 		<servlet-name>BackupDownload</servlet-name>
-		<servlet-class>oscar.util.BackupDownload</servlet-class>
+		<servlet-class>ca.openosp.openo.util.BackupDownload</servlet-class>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet>

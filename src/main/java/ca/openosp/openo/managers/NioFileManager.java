@@ -33,7 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import oscar.OscarProperties;
 
 /**

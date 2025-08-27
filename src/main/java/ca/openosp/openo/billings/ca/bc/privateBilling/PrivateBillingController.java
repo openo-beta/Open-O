@@ -21,8 +21,8 @@ import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.demographic.data.DemographicData;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import ca.openosp.openo.clinic.ClinicData;
 
 /*

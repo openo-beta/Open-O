@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.oscarehr.common.dao.PropertyDao;
 import org.oscarehr.common.model.Property;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.billings.ca.bc.data.BillingPreference;
 import ca.openosp.openo.billings.ca.bc.data.BillingPreferencesDAO;

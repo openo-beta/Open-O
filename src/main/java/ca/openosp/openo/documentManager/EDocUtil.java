@@ -55,7 +55,7 @@ import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.PMmodule.model.ProgramProvider;
 import org.oscarehr.PMmodule.service.ProgramManager;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicDocument;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicDocument;
 import ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO;
 import ca.openosp.openo.casemgmt.dao.CaseManagementNoteLinkDAO;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
@@ -76,17 +76,17 @@ import org.oscarehr.common.model.TicklerLink;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.ProgramManager2;
 import ca.openosp.openo.managers.TicklerManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.MyDateFormat;
 import oscar.OscarProperties;
 import ca.openosp.openo.lab.ca.all.AcknowledgementData;
 import ca.openosp.openo.mds.data.ReportStatus;
-import oscar.util.ConversionUtils;
-import oscar.util.DateUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.ConversionUtils;
+import ca.openosp.openo.util.DateUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 // all SQL statements here
 public final class EDocUtil {

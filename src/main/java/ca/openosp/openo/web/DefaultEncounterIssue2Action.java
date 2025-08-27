@@ -36,9 +36,9 @@ import ca.openosp.openo.dao.DefaultIssueDao;
 import ca.openosp.openo.model.DefaultIssue;
 import ca.openosp.openo.casemgmt.dao.IssueDAO;
 import ca.openosp.openo.casemgmt.model.Issue;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.log.LogAction;
 

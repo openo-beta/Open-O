@@ -38,6 +38,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.openo.util.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.ClinicDAO;
 import org.oscarehr.common.dao.DemographicDao;
@@ -49,9 +50,9 @@ import org.oscarehr.common.model.Clinic;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.ProviderData;
 import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import oscar.OscarDocumentCreator;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -92,7 +93,7 @@ public class PrintAppointmentReceipt2Action extends ActionSupport {
         String lang = "";
         if (demographic != null) {
             DOB = demographic.getFormattedDob();
-            lang = oscar.util.StringUtils.noNull(demographic.getOfficialLanguage());
+            lang = StringUtils.noNull(demographic.getOfficialLanguage());
         }
         if (lang.equals("French")) {
             oscarResources = ResourceBundle.getBundle("oscarResources", Locale.FRENCH);

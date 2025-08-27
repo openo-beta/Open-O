@@ -10,11 +10,11 @@ import org.oscarehr.common.model.BillingService;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Provider;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.util.DateRange;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.DateRange;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import ca.openosp.openo.entities.Billingmaster;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 import java.util.Properties;
 import java.util.Vector;

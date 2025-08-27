@@ -26,17 +26,17 @@ package org.oscarehr.PMmodule.caisi_integrator;
 
 import java.util.List;
 
-import org.oscarehr.caisi_integrator.ws.FacilityWs;
-import org.oscarehr.caisi_integrator.ws.ImportLog;
+import ca.openosp.openo.caisi_integrator.ws.FacilityWs;
+import ca.openosp.openo.caisi_integrator.ws.ImportLog;
 import org.oscarehr.common.dao.FacilityDao;
 import org.oscarehr.common.dao.IntegratorFileLogDao;
 import org.oscarehr.common.jobs.OscarRunnable;
 import org.oscarehr.common.model.IntegratorFileLog;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Security;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class IntegratorFileLogUpdateJob implements OscarRunnable {
 

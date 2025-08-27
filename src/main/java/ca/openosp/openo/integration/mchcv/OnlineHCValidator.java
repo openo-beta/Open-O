@@ -43,7 +43,7 @@ import javax.xml.ws.soap.SOAPFaultException;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.integration.ebs.client.ng.EdtClientBuilder;
 import ca.openosp.openo.integration.ebs.client.ng.EdtClientBuilderConfig;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
 

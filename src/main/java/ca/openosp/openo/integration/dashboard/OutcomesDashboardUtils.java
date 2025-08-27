@@ -53,9 +53,9 @@ import ca.openosp.openo.integration.dashboard.model.MetricOwner;
 import ca.openosp.openo.integration.dashboard.model.MetricSet;
 import ca.openosp.openo.integration.dashboard.model.Name;
 import ca.openosp.openo.managers.DashboardManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 

@@ -24,8 +24,8 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page %>
 <%@page import="oscar.oscarDemographic.data.*,org.oscarehr.common.model.Demographic" %>
 <%@page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler,java.util.*,oscar.oscarRx.util.*" %>
@@ -36,6 +36,7 @@
 <%@ page import="ca.openosp.openo.rx.util.RxUtil" %>
 <%@ page import="ca.openosp.openo.rx.util.RenalDosingFactory" %>
 <%@ page import="ca.openosp.openo.rx.util.DosingRecomendation" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%

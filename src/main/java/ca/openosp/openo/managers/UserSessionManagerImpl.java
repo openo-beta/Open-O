@@ -24,7 +24,7 @@ package ca.openosp.openo.managers;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.exception.UserSessionNotFoundException;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;

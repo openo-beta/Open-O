@@ -31,15 +31,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ page import="org.oscarehr.util.DigitalSignatureUtils" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.DigitalSignatureUtils" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="org.oscarehr.ui.servlet.ImageRenderingServlet" %>
 <%! boolean bMultisites = org.oscarehr.common.IsPropertiesOn.isMultisitesEnable(); %>
 
 
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
 <%@ page import="ca.openosp.openo.managers.FaxManager" %>
 <%@ page import="org.owasp.encoder.Encode" %>

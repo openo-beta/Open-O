@@ -39,7 +39,7 @@
 %>
 
 <%@page import="java.util.List,ca.openosp.openo.model.DefaultIssue" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.model.DefaultIssue" %>
 <%@page import="ca.openosp.openo.casemgmt.dao.IssueDAO" %>
 <%@page import="ca.openosp.openo.casemgmt.model.Issue" %>

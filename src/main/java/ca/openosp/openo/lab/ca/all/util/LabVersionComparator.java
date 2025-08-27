@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.oscarehr.common.dao.Hl7TextMessageDao;
 import org.oscarehr.common.model.Hl7TextMessage;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
 import ca.openosp.openo.lab.ca.all.parsers.ExcellerisOntarioHandler.OrderStatus;

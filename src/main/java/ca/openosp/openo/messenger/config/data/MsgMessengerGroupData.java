@@ -38,10 +38,10 @@ import org.oscarehr.common.dao.GroupsDao;
 import org.oscarehr.common.model.GroupMembers;
 import org.oscarehr.common.model.Groups;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * <p>Title: </p>

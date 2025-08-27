@@ -46,9 +46,9 @@ import org.oscarehr.common.model.CVCImmunization;
 import org.oscarehr.common.model.CVCMapping;
 import ca.openosp.openo.managers.CanadianVaccineCatalogueManager;
 import ca.openosp.openo.managers.PreventionManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.demographic.data.DemographicData;

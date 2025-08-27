@@ -41,7 +41,7 @@
 <%@ page import="ca.openosp.openo.casemgmt.web.formbeans.CaseManagementViewFormBean" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementCPP" %>
 <%
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     @SuppressWarnings("unchecked")
     java.util.List<NoteDisplay> noteList = (java.util.List<NoteDisplay>) request.getAttribute("Notes");

@@ -69,6 +69,7 @@ import java.util.zip.ZipOutputStream;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.ws.WebServiceException;
 
+import ca.openosp.openo.caisi_integrator.ws.transfer.SetConsentTransfer;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
@@ -80,43 +81,43 @@ import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.PMmodule.dao.SecUserRoleDao;
 import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.PMmodule.model.SecUserRole;
-import org.oscarehr.caisi_integrator.dao.CachedAdmission;
-import org.oscarehr.caisi_integrator.dao.CachedAppointment;
-import org.oscarehr.caisi_integrator.dao.CachedBillingOnItem;
-import org.oscarehr.caisi_integrator.dao.CachedDemographic.Gender;
-import org.oscarehr.caisi_integrator.dao.CachedDemographicAllergy;
-import org.oscarehr.caisi_integrator.dao.CachedDemographicDocument;
-import org.oscarehr.caisi_integrator.dao.CachedDemographicDrug;
-import org.oscarehr.caisi_integrator.dao.CachedDemographicForm;
-import org.oscarehr.caisi_integrator.dao.CachedDemographicHL7LabResult;
-import org.oscarehr.caisi_integrator.dao.CachedDemographicIssue;
-import org.oscarehr.caisi_integrator.dao.CachedDemographicLabResult;
-import org.oscarehr.caisi_integrator.dao.CachedDemographicNote;
-import org.oscarehr.caisi_integrator.dao.CachedDemographicNoteCompositePk;
-import org.oscarehr.caisi_integrator.dao.CachedDemographicPrevention;
-import org.oscarehr.caisi_integrator.dao.CachedDxresearch;
-import org.oscarehr.caisi_integrator.dao.CachedEformData;
-import org.oscarehr.caisi_integrator.dao.CachedEformValue;
-import org.oscarehr.caisi_integrator.dao.CachedFacility;
-import org.oscarehr.caisi_integrator.dao.CachedMeasurement;
-import org.oscarehr.caisi_integrator.dao.CachedMeasurementExt;
-import org.oscarehr.caisi_integrator.dao.CachedMeasurementMap;
-import org.oscarehr.caisi_integrator.dao.CachedMeasurementType;
-import org.oscarehr.caisi_integrator.dao.CachedProgram;
-import org.oscarehr.caisi_integrator.dao.CachedProvider;
-import org.oscarehr.caisi_integrator.dao.FacilityIdDemographicIssueCompositePk;
-import org.oscarehr.caisi_integrator.dao.FacilityIdIntegerCompositePk;
-import org.oscarehr.caisi_integrator.dao.FacilityIdLabResultCompositePk;
-import org.oscarehr.caisi_integrator.dao.FacilityIdStringCompositePk;
-import org.oscarehr.caisi_integrator.dao.NoteIssue;
-import org.oscarehr.caisi_integrator.util.CodeType;
-import org.oscarehr.caisi_integrator.util.Role;
-import org.oscarehr.caisi_integrator.ws.DemographicWs;
-import org.oscarehr.caisi_integrator.ws.FacilityWs;
-import org.oscarehr.caisi_integrator.ws.ImportLog;
-import org.oscarehr.caisi_integrator.ws.ProviderCommunicationTransfer;
-import org.oscarehr.caisi_integrator.ws.transfer.DemographicTransfer;
-import org.oscarehr.caisi_integrator.ws.transfer.ProviderTransfer;
+import ca.openosp.openo.caisi_integrator.dao.CachedAdmission;
+import ca.openosp.openo.caisi_integrator.dao.CachedAppointment;
+import ca.openosp.openo.caisi_integrator.dao.CachedBillingOnItem;
+import ca.openosp.openo.caisi_integrator.dao.CachedDemographic.Gender;
+import ca.openosp.openo.caisi_integrator.dao.CachedDemographicAllergy;
+import ca.openosp.openo.caisi_integrator.dao.CachedDemographicDocument;
+import ca.openosp.openo.caisi_integrator.dao.CachedDemographicDrug;
+import ca.openosp.openo.caisi_integrator.dao.CachedDemographicForm;
+import ca.openosp.openo.caisi_integrator.dao.CachedDemographicHL7LabResult;
+import ca.openosp.openo.caisi_integrator.dao.CachedDemographicIssue;
+import ca.openosp.openo.caisi_integrator.dao.CachedDemographicLabResult;
+import ca.openosp.openo.caisi_integrator.dao.CachedDemographicNote;
+import ca.openosp.openo.caisi_integrator.dao.CachedDemographicNoteCompositePk;
+import ca.openosp.openo.caisi_integrator.dao.CachedDemographicPrevention;
+import ca.openosp.openo.caisi_integrator.dao.CachedDxresearch;
+import ca.openosp.openo.caisi_integrator.dao.CachedEformData;
+import ca.openosp.openo.caisi_integrator.dao.CachedEformValue;
+import ca.openosp.openo.caisi_integrator.dao.CachedFacility;
+import ca.openosp.openo.caisi_integrator.dao.CachedMeasurement;
+import ca.openosp.openo.caisi_integrator.dao.CachedMeasurementExt;
+import ca.openosp.openo.caisi_integrator.dao.CachedMeasurementMap;
+import ca.openosp.openo.caisi_integrator.dao.CachedMeasurementType;
+import ca.openosp.openo.caisi_integrator.dao.CachedProgram;
+import ca.openosp.openo.caisi_integrator.dao.CachedProvider;
+import ca.openosp.openo.caisi_integrator.dao.FacilityIdDemographicIssueCompositePk;
+import ca.openosp.openo.caisi_integrator.dao.FacilityIdIntegerCompositePk;
+import ca.openosp.openo.caisi_integrator.dao.FacilityIdLabResultCompositePk;
+import ca.openosp.openo.caisi_integrator.dao.FacilityIdStringCompositePk;
+import ca.openosp.openo.caisi_integrator.dao.NoteIssue;
+import ca.openosp.openo.caisi_integrator.util.CodeType;
+import ca.openosp.openo.caisi_integrator.util.Role;
+import ca.openosp.openo.caisi_integrator.ws.DemographicWs;
+import ca.openosp.openo.caisi_integrator.ws.FacilityWs;
+import ca.openosp.openo.caisi_integrator.ws.ImportLog;
+import ca.openosp.openo.caisi_integrator.ws.ProviderCommunicationTransfer;
+import ca.openosp.openo.caisi_integrator.ws.transfer.DemographicTransfer;
+import ca.openosp.openo.caisi_integrator.ws.transfer.ProviderTransfer;
 import ca.openosp.openo.casemgmt.dao.CaseManagementIssueDAO;
 import ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO;
 import ca.openosp.openo.casemgmt.dao.ClientImageDAO;
@@ -181,14 +182,14 @@ import ca.openosp.openo.managers.IntegratorFileLogManager;
 import ca.openosp.openo.managers.IntegratorPushManager;
 import ca.openosp.openo.managers.MessengerIntegratorManager;
 import ca.openosp.openo.managers.PatientConsentManager;
-import org.oscarehr.util.*;
+import org.oscarehr.utility.*;
 import org.springframework.beans.BeanUtils;
 import org.w3c.dom.Document;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
-import oscar.form.FrmLabReq07Record;
+import ca.openosp.openo.form.FrmLabReq07Record;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.lab.ca.all.web.LabDisplayHelper;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
@@ -382,7 +383,7 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
         }
 
         FacilityWs facilityWs = CaisiIntegratorManager.getFacilityWs(loggedInInfo, facility);
-        org.oscarehr.caisi_integrator.ws.CachedFacility cachedFacility = facilityWs.getMyFacility();
+        ca.openosp.openo.caisi_integrator.ws.CachedFacility cachedFacility = facilityWs.getMyFacility();
 
         // sync the integrator logs and the most recent entry
         IntegratorFileLog lastFile = updateLogs(loggedInInfo, facility);
@@ -522,7 +523,7 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
      * @throws IOException
      */
     private void pushMessages(ObjectOutputStream out, Facility facility, LoggedInInfo loggedInInfo) throws IOException {
-        List<org.oscarehr.caisi_integrator.ws.CachedFacility> cachedFacilities = CaisiIntegratorManager
+        List<ca.openosp.openo.caisi_integrator.ws.CachedFacility> cachedFacilities = CaisiIntegratorManager
                 .getRemoteFacilities(loggedInInfo, facility);
         LoggedInInfo systemLoggedInInfo = new LoggedInInfo();
         systemLoggedInInfo.setCurrentFacility(facility);
@@ -795,7 +796,7 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
 
     protected int pushAllDemographics(String parentFilename, LoggedInInfo loggedInInfo, Facility facility,
                                       Date lastDataUpdated,
-                                      org.oscarehr.caisi_integrator.ws.CachedFacility cachedFacility, List<Program> programs,
+                                      ca.openosp.openo.caisi_integrator.ws.CachedFacility cachedFacility, List<Program> programs,
                                       Set<Path> documentPaths)
             throws IOException {
 
@@ -1121,7 +1122,7 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
                 .findByFacilityAndDemographicSince(facility.getId(), demographicId, lastUpdatedData);
         if (integratorConsentList != null) {
             for (IntegratorConsent integratorConsent : integratorConsentList) {
-                org.oscarehr.caisi_integrator.ws.transfer.SetConsentTransfer consentTransfer = CaisiIntegratorManager
+                SetConsentTransfer consentTransfer = CaisiIntegratorManager
                         .makeSetConsentTransfer2(integratorConsent);
                 out.writeUnshared(consentTransfer);
             }
@@ -1130,7 +1131,7 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
 
     private void pushDemographicIssues(ObjectOutputStream out, Date lastDataUpdated, Facility facility,
                                        List<Program> programsInFacility, Integer demographicId,
-                                       org.oscarehr.caisi_integrator.ws.CachedFacility cachedFacility) throws IOException {
+                                       ca.openosp.openo.caisi_integrator.ws.CachedFacility cachedFacility) throws IOException {
         logger.debug("pushing demographicIssues facilityId:" + facility.getId() + ", demographicId:" + demographicId);
 
         if ("true".equals(OscarProperties.getInstance().getProperty("integrator.send.issues.disabled", "false"))) {
@@ -1195,7 +1196,7 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
         if (cachedFacility != null) {
 
             List<FacilityIdDemographicIssueCompositePk> b = new ArrayList<FacilityIdDemographicIssueCompositePk>();
-            for (org.oscarehr.caisi_integrator.ws.FacilityIdDemographicIssueCompositePk c : caseManagementIssueDAO
+            for (ca.openosp.openo.caisi_integrator.ws.FacilityIdDemographicIssueCompositePk c : caseManagementIssueDAO
                     .getIssueIdsForIntegrator(cachedFacility.getIntegratorFacilityId(), demographicId)) {
                 FacilityIdDemographicIssueCompositePk n = new FacilityIdDemographicIssueCompositePk();
                 n.setCaisiDemographicId(c.getCaisiDemographicId());
@@ -1407,7 +1408,7 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
         cachedDemographicDocument.setDocXml(eDoc.getHtml());
         cachedDemographicDocument.setNumberOfPages(eDoc.getNumberOfPages());
         cachedDemographicDocument.setObservationDate(
-                org.oscarehr.util.DateUtils.parseIsoDateAsCalendar(eDoc.getObservationDate()).getTime());
+                org.oscarehr.utility.DateUtils.parseIsoDateAsCalendar(eDoc.getObservationDate()).getTime());
         cachedDemographicDocument.setProgramId(eDoc.getProgramId());
         cachedDemographicDocument.setPublic1(Integer.parseInt(eDoc.getDocPublic()));
         cachedDemographicDocument.setResponsible(eDoc.getResponsibleId());

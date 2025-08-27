@@ -32,7 +32,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 public class VacancyTemplateData {
     private static final Logger logger = MiscUtils.getLogger();

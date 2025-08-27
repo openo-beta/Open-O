@@ -34,8 +34,8 @@ import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.MessageList;
 import org.oscarehr.common.model.MessageTbl;
 import org.oscarehr.common.model.MsgDemoMap;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import org.oscarehr.ws.rest.to.model.MessageTo1;
 import org.springframework.stereotype.Component;
 

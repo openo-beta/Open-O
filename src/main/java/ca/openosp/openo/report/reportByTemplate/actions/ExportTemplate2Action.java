@@ -27,8 +27,8 @@ package ca.openosp.openo.report.reportByTemplate.actions;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ca.openosp.openo.service.security.SecurityManager;
-import org.oscarehr.util.MiscUtils;
+import ca.openosp.openo.services.security.SecurityManager;
+import org.oscarehr.utility.MiscUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

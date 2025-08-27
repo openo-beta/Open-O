@@ -32,15 +32,15 @@ import org.oscarehr.common.model.BillingONItem;
 import org.springframework.stereotype.Repository;
 
 import org.oscarehr.common.model.BillingONCHeader1;
-import org.oscarehr.util.MiscUtils;
-import oscar.util.DateUtils;
+import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.util.DateUtils;
 
 import java.util.Locale;
 import java.util.Date;
 
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 @Repository
 public class BillingONRepoDaoImpl extends AbstractDaoImpl<BillingONRepo> implements BillingONRepoDao {

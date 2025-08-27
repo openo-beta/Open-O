@@ -55,7 +55,7 @@
 <%@page import="org.springframework.web.context.WebApplicationContext" %>
 
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.BillingONExtDao" %>
 <%@page import="org.oscarehr.common.model.BillingONExt" %>
 <%@page import="org.oscarehr.common.dao.BillingOnItemPaymentDao" %>

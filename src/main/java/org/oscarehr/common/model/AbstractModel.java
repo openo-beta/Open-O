@@ -26,7 +26,7 @@ package org.oscarehr.common.model;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 public abstract class AbstractModel<T> implements java.io.Serializable {
     protected static final String OBJECT_NOT_YET_PERISTED = "The object is not persisted yet, this operation requires the object to already be persisted.";

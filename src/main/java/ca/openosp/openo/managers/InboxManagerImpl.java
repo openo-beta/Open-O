@@ -50,16 +50,16 @@ import org.oscarehr.common.model.Queue;
 import org.oscarehr.common.model.QueueDocumentLink;
 import ca.openosp.openo.inbox.InboxManagerQuery;
 import ca.openosp.openo.inbox.InboxManagerResponse;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.HRMResultsData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
-import oscar.util.OscarRoleObjectPrivilege;
+import ca.openosp.openo.util.OscarRoleObjectPrivilege;
 
 @Service
 public class InboxManagerImpl implements InboxManager {

@@ -38,9 +38,9 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 public class SpokenLangProperties extends Properties {
     private static SpokenLangProperties spokenLangProperties = new SpokenLangProperties();

@@ -42,10 +42,10 @@ import org.oscarehr.common.model.MeasurementCSSLocation;
 import org.oscarehr.common.model.MeasurementGroupStyle;
 import org.oscarehr.common.model.MeasurementType;
 import org.oscarehr.common.model.Validations;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class EctValidation {
 

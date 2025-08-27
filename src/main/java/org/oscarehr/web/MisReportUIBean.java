@@ -40,10 +40,10 @@ import org.oscarehr.common.dao.FunctionalCentreDao;
 import org.oscarehr.common.model.Admission;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.FunctionalCentre;
-import org.oscarehr.util.EncounterUtil;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.EncounterUtil;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public final class MisReportUIBean {
 

@@ -26,10 +26,8 @@
 
 package org.oscarehr.web.eform;
 
-import org.apache.commons.lang.StringUtils;
 import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 
 public final class EfmPatientFormList {

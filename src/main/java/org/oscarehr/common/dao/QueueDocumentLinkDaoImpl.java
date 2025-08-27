@@ -34,7 +34,7 @@ import java.util.List;
 import javax.persistence.Query;
 
 import org.oscarehr.common.model.QueueDocumentLink;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 
 /**

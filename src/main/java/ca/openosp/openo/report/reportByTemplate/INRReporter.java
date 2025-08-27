@@ -32,10 +32,10 @@ import org.oscarehr.common.dao.DxresearchDAO;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Dxresearch;
 import org.oscarehr.common.model.Measurement;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * @author rjonasz

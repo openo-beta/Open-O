@@ -44,7 +44,7 @@
 
 <%@ page
         import="java.util.*,oscar.oscarBilling.ca.bc.data.*,oscar.oscarBilling.ca.bc.pageUtil.*" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Billingreferral" %>
 <%@page import="org.oscarehr.common.dao.BillingreferralDao" %>
 <%

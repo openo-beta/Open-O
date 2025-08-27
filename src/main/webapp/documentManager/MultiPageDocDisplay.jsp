@@ -24,7 +24,7 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -40,9 +40,9 @@
     }
 %>
 
-<%@page import="oscar.util.UtilDateUtilities" %>
+<%@page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="java.util.*" %>
-<%@ page import="org.oscarehr.util.WebUtils" %>
+<%@ page import="org.oscarehr.utility.WebUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -52,7 +52,7 @@
 <%@page import="org.springframework.web.context.WebApplicationContext,org.oscarehr.common.dao.*,org.oscarehr.common.model.*, org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="ca.openosp.openo.documentManager.EDoc" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.lab.ca.all.AcknowledgementData" %>
 <%@ page import="ca.openosp.openo.mds.data.ReportStatus" %>
 <%!

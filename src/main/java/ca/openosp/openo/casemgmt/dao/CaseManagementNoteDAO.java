@@ -50,10 +50,10 @@ import org.oscarehr.PMmodule.model.Program;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.CaseManagementSearchBean;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.EncounterUtil;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.EncounterUtil;
 
-import oscar.util.SqlUtils;
+import ca.openosp.openo.util.SqlUtils;
 
 public interface CaseManagementNoteDAO {
 

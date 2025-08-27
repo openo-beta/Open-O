@@ -38,8 +38,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.eform.util.EFormPrintPDFUtil;
 
@@ -51,7 +51,7 @@ public final class PrintPDF2Action extends ActionSupport {
     HttpServletResponse response = ServletActionContext.getResponse();
 
 
-    private Logger log = org.oscarehr.util.MiscUtils.getLogger();
+    private Logger log = org.oscarehr.utility.MiscUtils.getLogger();
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     public String execute() throws ServletException, IOException {

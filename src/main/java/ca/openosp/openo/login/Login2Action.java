@@ -41,14 +41,14 @@ import ca.openosp.openo.managers.AppManager;
 import ca.openosp.openo.managers.MfaManager;
 import ca.openosp.openo.managers.SecurityManager;
 import ca.openosp.openo.managers.UserSessionManager;
-import org.oscarehr.util.*;
+import org.oscarehr.utility.*;
 import org.owasp.encoder.Encode;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import oscar.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
-import oscar.util.AlertTimer;
+import ca.openosp.openo.util.AlertTimer;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

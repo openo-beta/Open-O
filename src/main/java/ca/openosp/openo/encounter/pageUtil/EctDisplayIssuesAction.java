@@ -29,13 +29,13 @@ package ca.openosp.openo.encounter.pageUtil;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicIssue;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicIssue;
 import ca.openosp.openo.casemgmt.model.CaseManagementIssue;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
-import org.oscarehr.util.CppUtils;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import oscar.util.StringUtils;
+import org.oscarehr.utility.CppUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;

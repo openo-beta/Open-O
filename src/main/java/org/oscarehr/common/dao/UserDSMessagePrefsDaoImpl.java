@@ -33,7 +33,7 @@ import javax.persistence.Query;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.UserDSMessagePrefs;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository

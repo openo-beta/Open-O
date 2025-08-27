@@ -37,7 +37,7 @@ import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
 import org.oscarehr.PMmodule.model.ProgramAccess;
 import org.oscarehr.PMmodule.model.ProgramProvider;
 import ca.openosp.openo.casemgmt.dao.RoleProgramAccessDAO;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.model.security.Secrole;
 

@@ -23,14 +23,14 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.util.LocaleUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LocaleUtils" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.rx.pageUtil.AllergyHelperBean" %>
 <%@page import="ca.openosp.openo.rx.pageUtil.AllergyDisplay" %>
 <%@page import="java.util.List" %>
 <%@page import="oscar.OscarProperties" %>
-<%@ page import="ca.openosp.openo.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.services.security.SecurityManager" %>
 <%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>

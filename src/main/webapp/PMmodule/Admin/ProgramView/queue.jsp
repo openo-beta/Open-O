@@ -30,7 +30,7 @@
 <%@ page import="org.oscarehr.PMmodule.web.admin.ProgramManager2Action.RemoteQueueEntry" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@page import="org.apache.commons.lang.time.DateFormatUtils" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProgramProviderDAO" %>
 <%@page import="org.oscarehr.PMmodule.model.Program" %>

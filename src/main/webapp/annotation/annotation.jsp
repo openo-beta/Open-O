@@ -48,7 +48,7 @@
                 ca.openosp.openo.casemgmt.service.CaseManagementManager,
                 org.oscarehr.common.dao.SecRoleDao,
                 org.oscarehr.common.model.SecRole,
-                org.oscarehr.util.SpringUtils,
+                org.oscarehr.utility.SpringUtils,
                 ca.openosp.openo.encounter.data.EctProgram,
                 java.util.Date,
                 java.util.List" %>

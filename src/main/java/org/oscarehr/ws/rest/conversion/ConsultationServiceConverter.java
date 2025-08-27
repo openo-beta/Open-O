@@ -29,7 +29,7 @@ import java.util.List;
 
 import org.oscarehr.common.model.ConsultationServices;
 import org.oscarehr.common.model.ProfessionalSpecialist;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.ConsultationServiceTo1;
 import org.oscarehr.ws.rest.to.model.ProfessionalSpecialistTo1;
 import org.springframework.stereotype.Component;

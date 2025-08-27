@@ -31,7 +31,7 @@ import java.util.List;
 
 import org.oscarehr.common.dao.DemographicSetsDao;
 import org.oscarehr.common.model.DemographicSets;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

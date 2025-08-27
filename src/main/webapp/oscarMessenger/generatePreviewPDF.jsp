@@ -36,10 +36,10 @@
 
 <%@ page import=" java.util.*, org.w3c.dom.*, java.sql.*, oscar.*, java.text.*, java.lang.*,java.net.*"
          errorPage="../appointment/errorpage.jsp" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.dao.EChartDao" %>
 <%@ page import="org.oscarehr.common.model.EChart" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
 <%
     EChartDao eChartDao = SpringUtils.getBean(EChartDao.class);
 %>

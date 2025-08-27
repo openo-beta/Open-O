@@ -25,7 +25,7 @@
 --%>
 
 <%@page import="org.apache.commons.lang.StringEscapeUtils"%>
-<%@page import="oscar.util.ConversionUtils"%>
+<%@page import="ca.openosp.openo.util.ConversionUtils"%>
 <%@page import="ca.openosp.openo.casemgmt.web.NoteDisplay"%>
 <%  long start = System.currentTimeMillis(); %>
 <%@include file="/casemgmt/taglibs.jsp"%>
@@ -33,15 +33,16 @@
 	import="java.util.List, java.util.Set, java.util.Iterator, ca.openosp.openo.casemgmt.model.CaseManagementIssue, ca.openosp.openo.casemgmt.model.CaseManagementNoteExt, ca.openosp.openo.casemgmt.model.CaseManagementNote"%>
 <%@page import="org.oscarehr.common.model.Provider"%>
 <%@page import="org.oscarehr.provider.web.CppPreferencesUIBean"%>
-<%@page import="org.oscarehr.util.LoggedInInfo"%>
+<%@page import="org.oscarehr.utility.LoggedInInfo"%>
 <%@page import="ca.openosp.openo.casemgmt.web.CaseManagementViewAction"%>
 <%@page import="org.oscarehr.common.dao.UserPropertyDAO"%>
 <%@page import="org.oscarehr.common.model.UserProperty"%>
 <%@page import="org.oscarehr.common.model.PartialDate"%>
-<%@page import="org.oscarehr.util.SpringUtils"%>
-<%@page import="org.oscarehr.util.LoggedInInfo"%>
+<%@page import="org.oscarehr.utility.SpringUtils"%>
+<%@page import="org.oscarehr.utility.LoggedInInfo"%>
 <%@page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.openo.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.services.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -265,12 +266,12 @@
 
             if (type!=null && !type.trim().equals("")) {
                 if (type.equals(PartialDate.YEARONLY))
-                    val = oscar.util.UtilDateUtilities.DateToString(cme.getDateValue(),"yyyy");
+                    val = UtilDateUtilities.DateToString(cme.getDateValue(),"yyyy");
                 else if (type.equals(PartialDate.YEARMONTH))
-                    val = oscar.util.UtilDateUtilities.DateToString(cme.getDateValue(),"yyyy-MM");
-                else val = oscar.util.UtilDateUtilities.DateToString(cme.getDateValue(),"yyyy-MM-dd");
+                    val = UtilDateUtilities.DateToString(cme.getDateValue(),"yyyy-MM");
+                else val = UtilDateUtilities.DateToString(cme.getDateValue(),"yyyy-MM-dd");
             } else {
-                val = oscar.util.UtilDateUtilities.DateToString(cme.getDateValue(),"yyyy-MM-dd");
+                val = UtilDateUtilities.DateToString(cme.getDateValue(),"yyyy-MM-dd");
             }
             return val;
         }

@@ -70,7 +70,7 @@
 
 <tag>
    <name>oscarPropertiesCheck</name>
-   <tagclass>oscar.util.OscarPropertiesCheck</tagclass>
+   <tagclass>ca.openosp.openo.util.OscarPropertiesCheck</tagclass>
    <bodycontent>JSP</bodycontent>       
    <attribute>
      <name>property</name>
@@ -151,7 +151,7 @@
 
 <tag>
   <name>customInterface</name>
-  <tagclass>org.oscarehr.util.CustomInterfaceTag</tagclass>
+  <tagclass>org.oscarehr.utility.CustomInterfaceTag</tagclass>
   <bodycontent>empty</bodycontent>
   <attribute>
     <name>section</name>

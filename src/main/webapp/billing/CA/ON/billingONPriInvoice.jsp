@@ -19,6 +19,7 @@
 --%>
 <%@ page
         import="oscar.util.*,oscar.oscarBilling.ca.on.pageUtil.*,oscar.oscarBilling.ca.on.data.*" %>
+<%@ page import="ca.openosp.openo.util.DateUtils" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>

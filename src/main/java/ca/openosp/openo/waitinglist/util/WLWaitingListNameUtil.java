@@ -26,8 +26,8 @@ import org.oscarehr.common.dao.WaitingListDao;
 import org.oscarehr.common.dao.WaitingListNameDao;
 import org.oscarehr.common.model.WaitingList;
 import org.oscarehr.common.model.WaitingListName;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class WLWaitingListNameUtil {
 

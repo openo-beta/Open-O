@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -51,7 +51,7 @@ import ca.openosp.openo.lab.ca.all.upload.MessageUploader;
 import ca.openosp.openo.lab.ca.all.util.Utilities;
 
 public class DefaultHandler implements MessageHandler {
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
     String hl7Type = null;
 
     String getHl7Type() {

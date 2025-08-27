@@ -26,7 +26,7 @@
 <html>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="org.oscarehr.common.model.ScratchPad" %>
-<%@ page import="oscar.util.DateUtils" %>
+<%@ page import="ca.openosp.openo.util.DateUtils" %>
 <%@ page import="ca.openosp.openo.provider.data.ProviderColourUpdater" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>

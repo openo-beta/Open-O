@@ -35,7 +35,7 @@ import ca.openosp.openo.billing.CA.BC.model.BillingTrayFee;
 import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.billings.ca.bc.data.SupServiceCodeAssocDAO;
 

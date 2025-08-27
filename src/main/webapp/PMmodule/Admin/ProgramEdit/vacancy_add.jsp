@@ -32,7 +32,7 @@
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%@page import="java.util.List" %>
 <%@page import="java.util.ArrayList" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="java.util.Date" %>
 <%@page import="org.apache.commons.lang.time.DateFormatUtils" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>

@@ -13,10 +13,10 @@ import org.oscarehr.common.model.EmailConfig;
 import org.oscarehr.common.model.EmailLog.TransactionType;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.EmailComposeManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.PDFGenerationException;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.PDFGenerationException;
+import org.oscarehr.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

@@ -30,13 +30,13 @@ import ca.openosp.openo.rx.data.RxPrescriptionData;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicDrug;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicDrug;
 import org.oscarehr.provider.web.CppPreferencesUIBean;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import ca.openosp.openo.rx.data.RxPrescriptionData.Prescription;
-import oscar.util.DateUtils;
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.DateUtils;
+import ca.openosp.openo.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;

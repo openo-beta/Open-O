@@ -20,7 +20,7 @@
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@page import="oscar.util.DateUtils,org.oscarehr.util.SpringUtils, org.oscarehr.util.MiscUtils" %>
+<%@page import="ca.openosp.openo.util.DateUtils,org.oscarehr.utility.SpringUtils, org.oscarehr.utility.MiscUtils" %>
 <%@page import="java.util.Properties,java.util.Date,java.util.List,java.util.ArrayList,java.math.BigDecimal" %>
 <%@page import="org.oscarehr.common.dao.BillingONPaymentDao,org.oscarehr.common.model.BillingONPayment" %>
 <%@page import="org.oscarehr.common.dao.BillingServiceDao,org.oscarehr.common.model.BillingService" %>
@@ -30,8 +30,8 @@
 <%@page import="org.oscarehr.common.dao.BillingONExtDao,org.oscarehr.common.model.BillingONExt" %>
 <%@page import="org.oscarehr.common.dao.BillingONCHeader1Dao,org.oscarehr.common.model.BillingONCHeader1" %>
 <%@page import="org.oscarehr.common.model.BillingONItem, org.oscarehr.common.service.BillingONService" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.util.LocaleUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="org.oscarehr.utility.LocaleUtils" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="oscar.OscarProperties" %>

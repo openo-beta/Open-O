@@ -34,10 +34,10 @@ import java.util.List;
 
 import ca.openosp.openo.billing.CA.dao.BillActivityDao;
 import ca.openosp.openo.billing.CA.model.BillActivity;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.entities.Billactivity;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * @author jay

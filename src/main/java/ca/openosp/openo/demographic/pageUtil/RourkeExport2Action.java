@@ -39,14 +39,14 @@ import org.oscarehr.common.dao.forms.Rourke2009DAO;
 import org.oscarehr.common.model.Clinic;
 import org.oscarehr.common.model.DataExport;
 import org.oscarehr.common.model.Demographic;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
-import oscar.form.model.FormRourke2009;
+import ca.openosp.openo.form.model.FormRourke2009;
 import ca.openosp.openo.report.data.DemographicSets;
-import oscar.util.StringUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.StringUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

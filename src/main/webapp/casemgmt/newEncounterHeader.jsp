@@ -27,10 +27,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="org.oscarehr.util.MiscUtils" %>
+<%@ page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page
-        import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager, org.oscarehr.util.LoggedInInfo, org.oscarehr.common.model.Facility" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+        import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager, org.oscarehr.utility.LoggedInInfo, org.oscarehr.common.model.Facility" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="oscar.OscarProperties" %>
 <%@ page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@ page import="org.oscarehr.common.model.Demographic" %>

@@ -21,9 +21,9 @@ import org.apache.http.util.EntityUtils;
 import org.oscarehr.common.model.EmailAttachment;
 import org.oscarehr.common.model.EmailConfig;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.EmailSendingException;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.EmailSendingException;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

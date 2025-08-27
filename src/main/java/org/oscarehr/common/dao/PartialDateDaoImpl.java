@@ -34,10 +34,10 @@ import javax.persistence.Query;
 
 import org.apache.commons.lang.math.NumberUtils;
 import org.oscarehr.common.model.PartialDate;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
-import oscar.util.StringUtils;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.StringUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 @Repository
 public class PartialDateDaoImpl extends AbstractDaoImpl<PartialDate> implements PartialDateDao {

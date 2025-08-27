@@ -34,9 +34,9 @@ import org.oscarehr.common.model.FaxConfig;
 import org.oscarehr.common.model.FaxJob;
 import ca.openosp.openo.fax.core.FaxAccount;
 import ca.openosp.openo.fax.core.FaxRecipient;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
-import oscar.form.util.FormTransportContainer;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.form.util.FormTransportContainer;
 
 import java.io.IOException;
 import java.nio.file.Path;

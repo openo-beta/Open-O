@@ -29,7 +29,7 @@ import java.util.Vector;
 
 import org.oscarehr.common.dao.MeasurementTypeDao;
 import org.oscarehr.common.model.MeasurementType;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class RptMeasuringInstructionBeanHandler {
 

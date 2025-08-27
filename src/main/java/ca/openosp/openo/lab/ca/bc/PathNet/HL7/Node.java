@@ -40,7 +40,7 @@ import org.apache.logging.log4j.Logger;
  * www.andromedia.ca
  */
 public abstract class Node {
-    Logger _logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
     protected Hashtable data;
 
     protected abstract String[] getProperties();

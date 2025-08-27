@@ -32,7 +32,7 @@ import org.oscarehr.common.dao.ClinicDAO;
 import org.oscarehr.common.dao.PropertyDao;
 import org.oscarehr.common.model.Clinic;
 import org.oscarehr.common.model.Property;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * Manages Fax number for provider

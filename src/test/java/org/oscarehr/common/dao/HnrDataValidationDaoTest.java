@@ -34,7 +34,7 @@ import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Facility;
 import org.oscarehr.common.model.HnrDataValidation;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class HnrDataValidationDaoTest extends DaoTestFixtures {
 

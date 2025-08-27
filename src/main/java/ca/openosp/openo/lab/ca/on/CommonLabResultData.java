@@ -31,8 +31,8 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
 import ca.openosp.openo.billing.CA.BC.dao.Hl7MshDao;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicLabResult;
-import org.oscarehr.caisi_integrator.ws.DemographicWs;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicLabResult;
+import ca.openosp.openo.caisi_integrator.ws.DemographicWs;
 import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.*;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao;
@@ -41,7 +41,7 @@ import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
 import org.oscarehr.labs.LabIdAndType;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.util.*;
+import org.oscarehr.utility.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -52,7 +52,7 @@ import ca.openosp.openo.lab.ca.all.upload.ProviderLabRouting;
 import ca.openosp.openo.lab.ca.bc.PathNet.PathnetResultsData;
 import ca.openosp.openo.mds.data.MDSResultsData;
 import ca.openosp.openo.mds.data.ReportStatus;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
@@ -540,7 +540,7 @@ public class CommonLabResultData {
             return result;
 
         } catch (Exception e) {
-            Logger l = org.oscarehr.util.MiscUtils.getLogger();
+            Logger l = org.oscarehr.utility.MiscUtils.getLogger();
             l.error("exception in CommonLabResultData.updateLabRouting()", e);
             return false;
         }
@@ -589,7 +589,7 @@ public class CommonLabResultData {
 
             return true;
         } catch (Exception e) {
-            Logger l = org.oscarehr.util.MiscUtils.getLogger();
+            Logger l = org.oscarehr.utility.MiscUtils.getLogger();
             l.error("exception in CommonLabResultData.updateLabRouting()", e);
             return false;
         }

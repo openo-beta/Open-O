@@ -35,10 +35,10 @@ import org.oscarehr.common.dao.EFormDao.EFormSortOrder;
 import org.oscarehr.common.model.EForm;
 import org.oscarehr.common.model.EFormData;
 import org.oscarehr.common.model.EncounterForm;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.PDFGenerationException;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.PDFGenerationException;
 
-import oscar.form.util.FormTransportContainer;
+import ca.openosp.openo.form.util.FormTransportContainer;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.encounter.data.EctFormData.PatientForm;
 

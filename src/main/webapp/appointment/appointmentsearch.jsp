@@ -26,7 +26,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ page errorPage="/errorpage.jsp" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
 <%@ page import="java.util.Calendar" %>
@@ -38,7 +38,7 @@
 <%@ page import="ca.openosp.openo.appointment.web.NextAppointmentSearchBean" %>
 <%@ page import="ca.openosp.openo.appointment.web.NextAppointmentSearchResult" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="oscar.util.LabelValueBean" %>
+<%@ page import="ca.openosp.openo.util.LabelValueBean" %>
 <%
     SimpleDateFormat dayFormatter = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
