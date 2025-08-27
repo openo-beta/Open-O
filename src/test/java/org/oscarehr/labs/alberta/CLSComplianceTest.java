@@ -28,7 +28,7 @@ import static org.junit.Assert.*;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
-import oscar.oscarLab.ca.all.parsers.CLSHandler;
+import ca.openosp.openo.lab.ca.all.parsers.CLSHandler;
 
 public class CLSComplianceTest {
 

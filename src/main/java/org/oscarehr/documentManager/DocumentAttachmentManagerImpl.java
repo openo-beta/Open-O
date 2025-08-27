@@ -20,9 +20,9 @@ import org.springframework.stereotype.Service;
 
 import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.encounter.data.EctFormData;
-import oscar.oscarLab.ca.all.Hl7textResultsData;
-import oscar.oscarLab.ca.on.CommonLabResultData;
-import oscar.oscarLab.ca.on.LabResultData;
+import ca.openosp.openo.lab.ca.all.Hl7textResultsData;
+import ca.openosp.openo.lab.ca.on.CommonLabResultData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 import oscar.util.ConcatPDF;
 import oscar.util.StringUtils;
 

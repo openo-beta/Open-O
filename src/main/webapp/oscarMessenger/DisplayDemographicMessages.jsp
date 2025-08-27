@@ -30,6 +30,8 @@
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.messenger.pageUtil.MsgSessionBean" %>
+<%@ page import="ca.openosp.openo.messenger.data.MsgDisplayMessage" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -77,7 +79,7 @@
     </c:if>
 </c:if>
 <%
-    oscar.oscarMessenger.pageUtil.MsgSessionBean bean = (oscar.oscarMessenger.pageUtil.MsgSessionBean) pageContext.findAttribute("bean");
+    MsgSessionBean bean = (MsgSessionBean) pageContext.findAttribute("bean");
     String demographic_no = "";
     if (request.getParameter("demographic_no") != null) {
         demographic_no = request.getParameter("demographic_no");
@@ -94,10 +96,10 @@
 
 %>
 <jsp:useBean id="DisplayMessagesBeanId" scope="session"
-             class="oscar.oscarMessenger.pageUtil.MsgDisplayMessagesBean"/>
+             class="ca.openosp.openo.messenger.pageUtil.MsgDisplayMessagesBean"/>
 <% 
     if (bean == null) {
-        bean = (oscar.oscarMessenger.pageUtil.MsgSessionBean) request.getSession().getAttribute("msgSessionBean");
+        bean = (MsgSessionBean) request.getSession().getAttribute("msgSessionBean");
         if (bean == null) {
             response.sendRedirect("errorpage.jsp?message=Session expired");
             return;
@@ -247,8 +249,8 @@
                                     <!--   for loop Control Initiliation variabe changed to nextMessage   -->
                                     <%
                                         for (int i = 0; i < theMessages2.size(); i++) {
-                                            oscar.oscarMessenger.data.MsgDisplayMessage dm;
-                                            dm = (oscar.oscarMessenger.data.MsgDisplayMessage) theMessages2.get(i);
+                                            MsgDisplayMessage dm;
+                                            dm = (MsgDisplayMessage) theMessages2.get(i);
                                             String isLastMsg = "false";
                                     %>
                                     <tr>

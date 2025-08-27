@@ -66,7 +66,7 @@ import oscar.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.encounter.data.EctProgram;
-import oscar.oscarLab.ca.on.LabResultData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 import oscar.util.UtilDateUtilities;
 
 import javax.imageio.ImageIO;

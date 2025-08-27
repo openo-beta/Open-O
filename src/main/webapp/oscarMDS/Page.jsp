@@ -19,6 +19,7 @@
 <%@page import="org.apache.logging.log4j.Logger,org.oscarehr.common.dao.OscarLogDao,org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.dao.SystemPreferencesDao" %>
 <%@ page import="org.oscarehr.common.model.SystemPreferences" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
 
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");

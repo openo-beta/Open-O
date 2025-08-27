@@ -37,6 +37,7 @@
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctMeasurementsForm" %>
+<%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>

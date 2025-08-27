@@ -28,6 +28,7 @@
 
 
 <%@ page import="oscar.oscarProvider.data.*" %>
+<%@ page import="ca.openosp.openo.provider.data.ProSignatureData" %>
 
 <%
     if (session.getValue("user") == null)

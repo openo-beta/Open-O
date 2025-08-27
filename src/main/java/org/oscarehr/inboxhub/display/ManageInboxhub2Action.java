@@ -30,8 +30,8 @@ import org.oscarehr.inboxhub.query.InboxhubQuery;
 import org.oscarehr.managers.SecurityInfoManager;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
-import oscar.oscarLab.ca.on.LabResultData;
-import oscar.oscarMDS.data.CategoryData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
+import ca.openosp.openo.mds.data.CategoryData;
 
 public class ManageInboxhub2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();

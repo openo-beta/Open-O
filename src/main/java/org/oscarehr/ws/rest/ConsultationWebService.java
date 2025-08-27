@@ -100,8 +100,8 @@ import org.oscarehr.documentManager.EDoc;
 import org.oscarehr.documentManager.EDocUtil;
 import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.demographic.data.RxInformation;
-import oscar.oscarLab.ca.on.CommonLabResultData;
-import oscar.oscarLab.ca.on.LabResultData;
+import ca.openosp.openo.lab.ca.on.CommonLabResultData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 import oscar.util.ConversionUtils;
 
 @Path("/consults")

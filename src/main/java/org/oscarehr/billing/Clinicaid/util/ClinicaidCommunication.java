@@ -42,6 +42,7 @@ import java.util.regex.Matcher;
 
 
 import ca.openosp.openo.demographic.data.DemographicData;
+import ca.openosp.openo.provider.data.ProviderData;
 import org.apache.commons.codec.binary.Base64;
 import org.oscarehr.util.LoggedInInfo;
 
@@ -126,8 +127,8 @@ public class ClinicaidCommunication {
 
                     provider_uli = billform.getPracNo(provider_no);
 
-                    oscar.oscarProvider.data.ProviderData providerData =
-                            new oscar.oscarProvider.data.ProviderData(provider_no);
+                    ProviderData providerData =
+                            new ProviderData(provider_no);
 
                     provider_first_name = providerData.getFirst_name();
                     provider_last_name = providerData.getLast_name();
@@ -150,8 +151,8 @@ public class ClinicaidCommunication {
                     Integer test = Integer.parseInt(provider_no);
 
                     provider_uli = billform.getPracNo(provider_no);
-                    oscar.oscarProvider.data.ProviderData providerData =
-                            new oscar.oscarProvider.data.ProviderData(provider_no);
+                    ProviderData providerData =
+                            new ProviderData(provider_no);
 
                     provider_first_name = providerData.getFirst_name();
                     provider_last_name = providerData.getLast_name();

@@ -56,9 +56,9 @@ import org.oscarehr.util.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import oscar.oscarLab.ca.on.CommonLabResultData;
-import oscar.oscarLab.ca.on.HRMResultsData;
-import oscar.oscarLab.ca.on.LabResultData;
+import ca.openosp.openo.lab.ca.on.CommonLabResultData;
+import ca.openosp.openo.lab.ca.on.HRMResultsData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 import oscar.util.OscarRoleObjectPrivilege;
 
 @Service

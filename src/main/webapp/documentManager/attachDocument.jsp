@@ -23,11 +23,11 @@
     Ontario, Canada
 
 --%>
-<%@ page import="oscar.oscarLab.ca.on.LabResultData" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Arrays" %>
-<%@ page import="oscar.oscarLab.ca.all.Hl7textResultsData" %>
+<%@ page import="ca.openosp.openo.lab.ca.all.Hl7textResultsData" %>
 <%@ page import="org.oscarehr.util.MiscUtils" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%

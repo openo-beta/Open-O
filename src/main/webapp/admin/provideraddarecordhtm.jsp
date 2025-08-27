@@ -41,6 +41,7 @@
 <%@ page import="org.oscarehr.common.dao.ProviderDataDao" %>
 <%@ page import="org.oscarehr.common.model.ProviderData" %>
 <%@ page import="org.oscarehr.common.Gender" %>
+<%@ page import="ca.openosp.openo.provider.data.ProviderBillCenter" %>
 <%
     String curProvider_no = (String) session.getAttribute("user");
     //display the main provider page

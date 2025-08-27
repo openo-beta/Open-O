@@ -60,7 +60,7 @@
 		java.util.Date,
                 java.util.Hashtable,
                 java.util.Vector,
-                oscar.oscarLab.LabRequestReportLink,
+                ca.openosp.openo.lab.LabRequestReportLink,
                 oscar.util.UtilDateUtilities" %>
 <%
     LabRequestReportLinkDao linkDao = SpringUtils.getBean(LabRequestReportLinkDao.class);

@@ -45,6 +45,7 @@ import java.util.zip.ZipFile;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import ca.openosp.openo.lab.ca.all.parsers.IHAPOIHandler;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
@@ -58,8 +59,8 @@ import org.w3c.dom.NodeList;
 
 import ca.uhn.hl7v2.HL7Exception;
 import junit.framework.Assert;
-import oscar.oscarLab.ca.all.parsers.IHAPOIHandler.STRUCTURED;
-import oscar.oscarLab.ca.all.parsers.MEDITECHHandler.ORDER_STATUS;
+import ca.openosp.openo.lab.ca.all.parsers.IHAPOIHandler.STRUCTURED;
+import ca.openosp.openo.lab.ca.all.parsers.MEDITECHHandler.ORDER_STATUS;
 
 
 @RunWith(Parameterized.class)

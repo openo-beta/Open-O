@@ -83,7 +83,7 @@ import org.oscarehr.util.SpringUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBean;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
-import oscar.oscarLab.ca.on.CommonLabTestValues;
+import ca.openosp.openo.lab.ca.on.CommonLabTestValues;
 
 /**
  * @author jaygallagher

@@ -57,7 +57,7 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 import oscar.OscarProperties;
-import oscar.oscarProvider.data.ProviderBillCenter;
+import ca.openosp.openo.provider.data.ProviderBillCenter;
 import oscar.util.ConversionUtils;
 
 public class JdbcBillingCreateBillingFile {

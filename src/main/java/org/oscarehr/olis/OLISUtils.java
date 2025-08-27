@@ -54,8 +54,8 @@ import org.xml.sax.InputSource;
 
 import ca.ssha._2005.hial.Response;
 import oscar.OscarProperties;
-import oscar.oscarLab.ca.all.parsers.Factory;
-import oscar.oscarLab.ca.all.parsers.OLISHL7Handler;
+import ca.openosp.openo.lab.ca.all.parsers.Factory;
+import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 
 
 public class OLISUtils {
@@ -95,7 +95,7 @@ public class OLISUtils {
 
 
     public static boolean isDuplicate(LoggedInInfo loggedInInfo, String msg) {
-        oscar.oscarLab.ca.all.parsers.OLISHL7Handler h = (oscar.oscarLab.ca.all.parsers.OLISHL7Handler) Factory.getHandler("OLIS_HL7", msg);
+        OLISHL7Handler h = (OLISHL7Handler) Factory.getHandler("OLIS_HL7", msg);
         return isDuplicate(loggedInInfo, h, msg);
     }
 

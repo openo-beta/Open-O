@@ -57,7 +57,7 @@ import ca.openosp.openo.eform.data.EForm;
 import ca.openosp.openo.eform.data.EFormBase;
 import ca.openosp.openo.clinic.ClinicData;
 import ca.openosp.openo.db.DBHandler;
-import oscar.oscarMessenger.data.MessengerSystemMessage;
+import ca.openosp.openo.messenger.data.MessengerSystemMessage;
 import oscar.util.ConversionUtils;
 import oscar.util.OscarRoleObjectPrivilege;
 import oscar.util.UtilDateUtilities;

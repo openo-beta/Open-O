@@ -60,7 +60,7 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 import ca.openosp.openo.prevention.PreventionDisplayConfig;
-import oscar.oscarProvider.data.ProviderData;
+import ca.openosp.openo.provider.data.ProviderData;
 import oscar.util.StringUtils;
 import oscar.util.UtilDateUtilities;
 

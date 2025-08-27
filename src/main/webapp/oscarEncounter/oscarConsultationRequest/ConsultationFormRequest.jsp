@@ -85,7 +85,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.oscarehr.common.model.EFormData" %>
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
-<%@ page import="oscar.oscarLab.ca.all.Hl7textResultsData" %>
+<%@ page import="ca.openosp.openo.lab.ca.all.Hl7textResultsData" %>
 <%@ page import="org.oscarehr.documentManager.EDocUtil" %>
 <%@ page import="org.oscarehr.documentManager.EDoc" %>
 <%@ page import="oscar.util.StringUtils" %>
@@ -94,6 +94,8 @@
 <%@ page import="ca.openosp.openo.demographic.data.RxInformation" %>
 <%@ page
   import="ca.openosp.openo.encounter.oscarConsultationRequest.config.data.EctConConfigurationJavascriptData" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
 
 
 <jsp:useBean id="displayServiceUtil" scope="request"

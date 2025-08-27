@@ -190,9 +190,9 @@ import org.oscarehr.documentManager.EDoc;
 import org.oscarehr.documentManager.EDocUtil;
 import oscar.form.FrmLabReq07Record;
 import ca.openosp.openo.log.LogAction;
-import oscar.oscarLab.ca.all.web.LabDisplayHelper;
-import oscar.oscarLab.ca.on.CommonLabResultData;
-import oscar.oscarLab.ca.on.LabResultData;
+import ca.openosp.openo.lab.ca.all.web.LabDisplayHelper;
+import ca.openosp.openo.lab.ca.on.CommonLabResultData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 
 public class CaisiIntegratorUpdateTask extends TimerTask {
 

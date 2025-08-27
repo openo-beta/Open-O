@@ -44,7 +44,7 @@ import org.oscarehr.util.SpringUtils;
 
 import oscar.OscarProperties;
 import oscar.form.model.FormRourke2009;
-import oscar.oscarReport.data.DemographicSets;
+import ca.openosp.openo.report.data.DemographicSets;
 import oscar.util.StringUtils;
 import oscar.util.UtilDateUtilities;
 

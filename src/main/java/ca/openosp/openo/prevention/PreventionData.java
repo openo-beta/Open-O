@@ -48,7 +48,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarProvider.data.ProviderData;
+import ca.openosp.openo.provider.data.ProviderData;
 import oscar.util.DateUtils;
 import oscar.util.UtilDateUtilities;
 

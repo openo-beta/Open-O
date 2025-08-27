@@ -21,6 +21,8 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ca.openosp.openo.lab.ca.all.upload.HandlerClassFactory;
+import ca.openosp.openo.lab.ca.all.upload.handlers.MessageHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.impl.cookie.DateUtils;
 import org.apache.logging.log4j.Logger;
@@ -36,11 +38,10 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarLab.FileUploadCheck;
-import oscar.oscarLab.ca.all.parsers.Factory;
-import oscar.oscarLab.ca.all.parsers.MessageHandler;
-import oscar.oscarLab.ca.all.parsers.OLISHL7Handler;
-import oscar.oscarLab.ca.all.util.Utilities;
+import ca.openosp.openo.lab.FileUploadCheck;
+import ca.openosp.openo.lab.ca.all.parsers.Factory;
+import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
+import ca.openosp.openo.lab.ca.all.util.Utilities;
 
 import ca.openosp.openo.olis.Driver;
 import ca.openosp.openo.olis.parameters.OBR22;
@@ -211,7 +212,7 @@ public class OLISPoller {
 
                     logger.info("message:" + message);
                     // Parse the HL7 string...
-                    MessageHandler h = Factory.getHandler("OLIS_HL7", message);
+                    ca.openosp.openo.lab.ca.all.parsers.MessageHandler h = Factory.getHandler("OLIS_HL7", message);
 
                     String resultUuid = UUID.randomUUID().toString();
 
@@ -232,7 +233,7 @@ public class OLISPoller {
 
             String fileLocation = System.getProperty("java.io.tmpdir") + "/olis_" + uuidToAdd + ".response";
             File file = new File(fileLocation);
-            oscar.oscarLab.ca.all.upload.handlers.MessageHandler msgHandler = oscar.oscarLab.ca.all.upload.HandlerClassFactory.getHandler("OLIS_HL7");
+            MessageHandler msgHandler = HandlerClassFactory.getHandler("OLIS_HL7");
 
             try {
                 InputStream is = new FileInputStream(fileLocation);

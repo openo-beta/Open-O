@@ -50,8 +50,8 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import org.oscarehr.documentManager.EDoc;
 import org.oscarehr.documentManager.EDocUtil;
-import oscar.oscarLab.ca.all.upload.HandlerClassFactory;
-import oscar.oscarLab.ca.all.upload.handlers.MessageHandler;
+import ca.openosp.openo.lab.ca.all.upload.HandlerClassFactory;
+import ca.openosp.openo.lab.ca.all.upload.handlers.MessageHandler;
 import oscar.util.ConversionUtils;
 
 public class DataUtils {

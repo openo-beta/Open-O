@@ -28,7 +28,7 @@
 <%@ page import="java.util.*" errorPage="/errorpage.jsp" %>
 <%@ page import="oscar.oscarBilling.ca.on.pageUtil.*" %>
 <%@ page import="oscar.oscarBilling.ca.on.data.*" %>
-<%@ page import="oscar.oscarProvider.data.ProviderBillCenter" %>
+<%@ page import="ca.openosp.openo.provider.data.ProviderBillCenter" %>
 <%@ page import="ca.openosp.openo.billing.ca.on.data.BillingProviderData" %>
 <%@ page import="ca.openosp.openo.billing.ca.on.data.JdbcBillingCreateBillingFile" %>
 <%@ page import="ca.openosp.openo.billing.ca.on.data.JdbcBillingClaimImpl" %>

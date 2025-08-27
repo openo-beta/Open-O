@@ -33,6 +33,7 @@
 <%@ page import="ca.openosp.openo.demographic.data.DemographicNameAgeString" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.prevention.pageUtil.PreventionReportDisplay" %>
+<%@ page import="ca.openosp.openo.report.data.RptSearchData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -58,7 +59,7 @@
 <%
     String demographic_no = request.getParameter("demographic_no");
 
-    oscar.oscarReport.data.RptSearchData searchData = new oscar.oscarReport.data.RptSearchData();
+    RptSearchData searchData = new RptSearchData();
     ArrayList queryArray = searchData.getQueryTypes();
 
     String preventionText = "";

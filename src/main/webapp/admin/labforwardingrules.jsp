@@ -30,7 +30,7 @@
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 
 <%@ page
-        import="oscar.oscarMDS.data.ProviderData, java.util.ArrayList, oscar.oscarLab.ForwardingRules, oscar.OscarProperties" %>
+        import="ca.openosp.openo.mds.data.ProviderData, java.util.ArrayList, ca.openosp.openo.lab.ForwardingRules, oscar.OscarProperties" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>

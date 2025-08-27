@@ -44,7 +44,7 @@ import org.oscarehr.ws.rest.to.model.InboxTo1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import oscar.oscarLab.ca.on.LabResultData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 
 @Path("/inbox")
 @Component("inboxService")

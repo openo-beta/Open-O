@@ -47,7 +47,7 @@ import ca.openosp.openo.entities.WCB;
 import ca.openosp.openo.billing.ca.bc.Teleplan.TeleplanSequenceDAO;
 import ca.openosp.openo.billing.ca.bc.Teleplan.WCBTeleplanSubmission;
 import ca.openosp.openo.billing.ca.bc.data.BillingmasterDAO;
-import oscar.oscarProvider.data.ProviderData;
+import ca.openosp.openo.provider.data.ProviderData;
 
 /**
  * @author jay

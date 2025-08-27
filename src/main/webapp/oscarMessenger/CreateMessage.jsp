@@ -29,11 +29,11 @@
 
 
 <%@ page import="org.w3c.dom.*" %>
-<%@ page import="oscar.oscarMessenger.util.Msgxml" %>
+<%@ page import="ca.openosp.openo.messenger.util.Msgxml" %>
 <%@ page import="oscar.oscarDemographic.data.*" %>
 <%@ page import="org.oscarehr.managers.MessagingManager" %>
 <%@ page import="org.oscarehr.common.model.Groups" %>
-<%@ page import="oscar.oscarMessenger.data.MsgProviderData" %>
+<%@ page import="ca.openosp.openo.messenger.data.MsgProviderData" %>
 <%@ page import="java.util.Map, java.util.List" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -42,6 +42,7 @@
 <%@page import="org.oscarehr.util.MiscUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.messenger.pageUtil.MsgSessionBean" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
@@ -83,7 +84,7 @@
     pageContext.setAttribute("messageSubject", request.getAttribute("ReSubject"));
     pageContext.setAttribute("messageBody", request.getAttribute("ReText"));
 
-    oscar.oscarMessenger.pageUtil.MsgSessionBean bean = (oscar.oscarMessenger.pageUtil.MsgSessionBean) pageContext.findAttribute("bean");
+    MsgSessionBean bean = (MsgSessionBean) pageContext.findAttribute("bean");
 
     String demographic_no = (String) request.getAttribute("demographic_no");
     DemographicData demoData = new DemographicData();

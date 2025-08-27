@@ -74,7 +74,7 @@
         <action name="documentManager/changeDocStatus" class="org.oscarehr.documentManager.actions.ChangeDocStatus2Action">
             <result name="success">/documentManager/closeWindow.html</result>
         </action>
-        <action name="lab/CA/ALL/createLabelTDIS" class="oscar.oscarLab.ca.all.pageUtil.CreateLabelTDIS2Action">
+        <action name="lab/CA/ALL/createLabelTDIS" class="ca.openosp.openo.lab.ca.all.pageUtil.CreateLabelTDIS2Action">
             <result name="complete">/lab/CA/ALL/labDisplay.jsp</result>
         </action>
         <action name="MeasurementHL7Uploader" class="ca.openosp.openo.encounter.oscarMeasurements.hl7.MeasurementHL7Uploader2Action"/>
@@ -127,30 +127,30 @@
             <result name="ssoLoginError">/index.jsp</result>
         </action>
         <action name="login/recordLogin" class="ca.openosp.openo.login.LoginAgreement2Action"/>
-        <action name="oscarMessenger/ImportDemographic" class="oscar.oscarMessenger.pageUtil.ImportDemographic2Action">
+        <action name="oscarMessenger/ImportDemographic" class="ca.openosp.openo.messenger.pageUtil.ImportDemographic2Action">
             <result name="success">/oscarMessenger/ViewMessage.do</result>
         </action>
-        <action name="oscarMessenger/SendMessage" class="oscar.oscarMessenger.pageUtil.MsgSendMessage2Action">
+        <action name="oscarMessenger/SendMessage" class="ca.openosp.openo.messenger.pageUtil.MsgSendMessage2Action">
             <result name="success">/oscarMessenger/SentMessage.jsp</result>
         </action>
-        <action name="oscarMessenger/CreateMessage" class="oscar.oscarMessenger.pageUtil.MsgCreateMessage2Action">
+        <action name="oscarMessenger/CreateMessage" class="ca.openosp.openo.messenger.pageUtil.MsgCreateMessage2Action">
             <result name="success">/oscarMessenger/SentMessage.jsp</result>
             <result name="error">/oscarMessenger/CreateMessage.jsp</result>
         </action>
-        <action name="oscarMessenger/DisplayMessages" class="oscar.oscarMessenger.pageUtil.MsgDisplayMessages2Action">
+        <action name="oscarMessenger/DisplayMessages" class="ca.openosp.openo.messenger.pageUtil.MsgDisplayMessages2Action">
             <result name="success">/oscarMessenger/DisplayMessages.jsp</result>
             <result name="demoMsg">/oscarMessenger/DisplayDemographicMessages.jsp</result>
         </action>
-        <action name="oscarMessenger/SendDemoMessage" class="oscar.oscarMessenger.pageUtil.MsgSendDemographicMessage2Action">
+        <action name="oscarMessenger/SendDemoMessage" class="ca.openosp.openo.messenger.pageUtil.MsgSendDemographicMessage2Action">
             <result name="success">/oscarMessenger/CreateMessage.jsp</result>
         </action>
-        <action name="oscarMessenger/DisplayDemographicMessages" class="oscar.oscarMessenger.pageUtil.MsgDisplayDemographicMessages2Action">
+        <action name="oscarMessenger/DisplayDemographicMessages" class="ca.openosp.openo.messenger.pageUtil.MsgDisplayDemographicMessages2Action">
             <result name="demoMsg">/oscarMessenger/DisplayDemographicMessages.jsp</result>
         </action>
-        <action name="oscarMessenger/ReDisplayMessages" class="oscar.oscarMessenger.pageUtil.MsgReDisplayMessages2Action">
+        <action name="oscarMessenger/ReDisplayMessages" class="ca.openosp.openo.messenger.pageUtil.MsgReDisplayMessages2Action">
             <result name="success">/oscarMessenger/DisplayMessages.jsp</result>
         </action>
-        <action name="oscarMessenger/ViewMessage" class="oscar.oscarMessenger.pageUtil.MsgViewMessage2Action">
+        <action name="oscarMessenger/ViewMessage" class="ca.openosp.openo.messenger.pageUtil.MsgViewMessage2Action">
             <result name="noRights">/oscarMessenger/DisplayMessages.jsp</result>
             <result name="success">/oscarMessenger/ViewMessage.jsp</result>
             <result name="viewFromEncounter">/oscarMessenger/ViewMessageFromEncounter.jsp</result>
@@ -158,40 +158,40 @@
         <!--action name="oscarMessenger/ViewMessageByPosition" class="oscar.oscarMessenger.pageUtil.MsgViewMessageByPosition2Action">
             <result name="success">/oscarMessenger/ViewMessage.do</result>
         </action-->
-        <action name="oscarMessenger/Doc2PDF" class="oscar.oscarMessenger.pageUtil.MsgAttachPDF2Action">
+        <action name="oscarMessenger/Doc2PDF" class="ca.openosp.openo.messenger.pageUtil.MsgAttachPDF2Action">
             <result name="success">/oscarMessenger/selfCloseAndRefreshOpener.jsp</result>
             <result name="attaching">/oscarMessenger/generatePreviewPDF.jsp</result>
         </action>
-        <action name="oscarMessenger/ProcessDoc2PDF" class="oscar.oscarMessenger.pageUtil.MsgDoc2PDF2Action">
+        <action name="oscarMessenger/ProcessDoc2PDF" class="ca.openosp.openo.messenger.pageUtil.MsgDoc2PDF2Action">
             <result name="success">/oscarMessenger/selfClose.jsp</result>
         </action>
-        <action name="oscarMessenger/HandleMessages" class="oscar.oscarMessenger.pageUtil.MsgHandleMessages2Action">
+        <action name="oscarMessenger/HandleMessages" class="ca.openosp.openo.messenger.pageUtil.MsgHandleMessages2Action">
             <result name="success">/oscarMessenger/DisplayMessages.jsp</result>
             <result name="reply">/oscarMessenger/CreateMessage.jsp</result>
         </action>
-        <action name="oscarMessenger" class="oscar.oscarMessenger.config.pageUtil.MsgMessengerAdmin2Action">
+        <action name="oscarMessenger" class="ca.openosp.openo.messenger.config.pageUtil.MsgMessengerAdmin2Action">
             <result name="success">/oscarMessenger/config/MessengerAdmin.jsp</result>
             <result name="failure">/oscarMessenger/config/MessengerAdmin.jsp</result>
         </action>
-        <action name="oscarMessenger/AddGroup" class="oscar.oscarMessenger.config.pageUtil.MsgMessengerCreateGroup2Action">
+        <action name="oscarMessenger/AddGroup" class="ca.openosp.openo.messenger.config.pageUtil.MsgMessengerCreateGroup2Action">
             <result name="success">/oscarMessenger/config/MessengerAdmin.jsp</result>
         </action>
-        <action name="oscarMessenger/ViewAttach" class="oscar.oscarMessenger.pageUtil.MsgViewAttachment2Action">
+        <action name="oscarMessenger/ViewAttach" class="ca.openosp.openo.messenger.pageUtil.MsgViewAttachment2Action">
             <result name="success">/oscarMessenger/ViewAttachment.jsp</result>
         </action>
-        <action name="oscarMessenger/ViewPDFAttach" class="oscar.oscarMessenger.pageUtil.MsgViewPDFAttachment2Action">
+        <action name="oscarMessenger/ViewPDFAttach" class="ca.openosp.openo.messenger.pageUtil.MsgViewPDFAttachment2Action">
             <result name="success">/oscarMessenger/ViewPDFAttachment.jsp</result>
         </action>
-        <action name="oscarMessenger/ViewPDFFile" class="oscar.oscarMessenger.pageUtil.MsgViewPDF2Action">
+        <action name="oscarMessenger/ViewPDFFile" class="ca.openosp.openo.messenger.pageUtil.MsgViewPDF2Action">
             <result name="success">/oscarMessenger/ViewPDFFile.jsp</result>
         </action>
-        <action name="oscarMessenger/Transfer/Proceed" class="oscar.oscarMessenger.pageUtil.MsgProceed2Action">
+        <action name="oscarMessenger/Transfer/Proceed" class="ca.openosp.openo.messenger.pageUtil.MsgProceed2Action">
             <result name="success">/oscarMessenger/Transfer/SearchComplete.jsp</result>
         </action>
-        <action name="oscarMessenger/ClearMessage" class="oscar.oscarMessenger.pageUtil.MsgClearMessage2Action">
+        <action name="oscarMessenger/ClearMessage" class="ca.openosp.openo.messenger.pageUtil.MsgClearMessage2Action">
             <result name="success">/oscarMessenger/CreateMessage.jsp</result>
         </action>
-        <action name="oscarMessenger/WriteToEncounter" class="oscar.oscarMessenger.pageUtil.MsgWriteToEncounter2Action">
+        <action name="oscarMessenger/WriteToEncounter" class="ca.openosp.openo.messenger.pageUtil.MsgWriteToEncounter2Action">
             <result name="success">/oscarEncounter/IncomingEncounter.do</result>
         </action>
         <action name="oscarRx/choosePatient" class="oscar.oscarRx.pageUtil.RxChoosePatient2Action">
@@ -330,15 +330,15 @@
         <action name="oscarRx/WriteToEncounter" class="oscar.oscarRx.pageUtil.RxWriteToEncounter2Action">
             <result name="success">/oscarRx/ViewScript2.jsp</result>
         </action>
-        <action name="oscarMDS/SendMRP" class="oscar.oscarMDS.pageUtil.SendMostResponProv2Action">
+        <action name="oscarMDS/SendMRP" class="ca.openosp.openo.mds.pageUtil.SendMostResponProv2Action">
             <result name="failure">/errorpage.jsp</result>
         </action>
-        <action name="oscarMDS/UpdateStatus" class="oscar.oscarMDS.pageUtil.ReportStatusUpdate2Action">
+        <action name="oscarMDS/UpdateStatus" class="ca.openosp.openo.mds.pageUtil.ReportStatusUpdate2Action">
             <result name="failure">/errorpage.jsp</result>
             <result name="success">/oscarMDS/Close.jsp</result>
         </action>
-        <action name="oscarMDS/RunMacro" class="oscar.oscarMDS.pageUtil.ReportMacro2Action"/>
-        <action name="oscarMDS/ReportReassign" class="oscar.oscarMDS.pageUtil.ReportReassign2Action">
+        <action name="oscarMDS/RunMacro" class="ca.openosp.openo.mds.pageUtil.ReportMacro2Action"/>
+        <action name="oscarMDS/ReportReassign" class="ca.openosp.openo.mds.pageUtil.ReportReassign2Action">
             <result name="failure">/errorpage.jsp</result>
             <result name="success">/documentManager/inboxManage.do?method=prepareForIndexPage</result>
         </action>
@@ -349,24 +349,24 @@
 			<result name="unauthorized">/securityError.jsp</result>
 			<result name="error">/failure.jsp</result>
         </action>
-        <action name="lab/CA/ALL/Forward" class="oscar.oscarMDS.pageUtil.ReportReassign2Action">
+        <action name="lab/CA/ALL/Forward" class="ca.openosp.openo.mds.pageUtil.ReportReassign2Action">
             <result name="failure">/errorpage.jsp</result>
             <result name="success">/lab/CA/ALL/labDisplay.jsp</result>
         </action>
-        <action name="lab/CA/ALL/PrintPDF" class="oscar.oscarLab.ca.all.pageUtil.PrintLabs2Action">
+        <action name="lab/CA/ALL/PrintPDF" class="ca.openosp.openo.lab.ca.all.pageUtil.PrintLabs2Action">
             <result name="error">/lab/CA/ALL/labDisplay.jsp</result>
         </action>
-        <action name="lab/CA/BC/Forward" class="oscar.oscarMDS.pageUtil.ReportReassign2Action">
+        <action name="lab/CA/BC/Forward" class="ca.openosp.openo.mds.pageUtil.ReportReassign2Action">
             <result name="failure">/errorpage.jsp</result>
             <result name="success">/lab/CA/BC/labDisplay.jsp</result>
         </action>
-        <action name="lab/CA/ALL/UnlinkDemographic" class="oscar.oscarLab.ca.all.pageUtil.UnlinkDemographic2Action">
+        <action name="lab/CA/ALL/UnlinkDemographic" class="ca.openosp.openo.lab.ca.all.pageUtil.UnlinkDemographic2Action">
             <result name="success">/oscarMDS/Close.jsp</result>
         </action>
-        <action name="lab/CA/ALL/PrintOLIS" class="oscar.oscarLab.ca.all.pageUtil.PrintOLISLabs2Action">
+        <action name="lab/CA/ALL/PrintOLIS" class="ca.openosp.openo.lab.ca.all.pageUtil.PrintOLISLabs2Action">
             <result name="error">/lab/CA/ALL/labDisplay.jsp</result>
         </action>
-        <action name="lab/CA/ALL/PrintOLISLab" class="oscar.oscarLab.ca.all.pageUtil.PrintOLISLab2Action">
+        <action name="lab/CA/ALL/PrintOLISLab" class="ca.openosp.openo.lab.ca.all.pageUtil.PrintOLISLab2Action">
             <result name="error">/lab/CA/ALL/labDisplay.jsp</result>
         </action>
         <action name="olis/Search" class="org.oscarehr.olis.OLISSearch2Action">
@@ -381,31 +381,31 @@
         <action name="olis/UploadSimulationData" class="org.oscarehr.olis.OLISUploadSimulationData2Action">
             <result name="success">/olis/Simulate.jsp</result>
         </action>
-        <action name="lab/CA/ON/Forward" class="oscar.oscarMDS.pageUtil.ReportReassign2Action">
+        <action name="lab/CA/ON/Forward" class="ca.openosp.openo.mds.pageUtil.ReportReassign2Action">
             <result name="failure">/errorpage.jsp</result>
             <result name="success">/lab/CA/ON/CMLDisplay.jsp</result>
         </action>
-        <action name="oscarMDS/Forward" class="oscar.oscarMDS.pageUtil.ReportReassign2Action">
+        <action name="oscarMDS/Forward" class="ca.openosp.openo.mds.pageUtil.ReportReassign2Action">
             <result name="failure">/errorpage.jsp</result>
             <result name="success">/oscarMDS/SegmentDisplay.jsp</result>
         </action>
-        <action name="oscarMDS/FileLabs" class="oscar.oscarLab.pageUtil.FileLabs2Action">
+        <action name="oscarMDS/FileLabs" class="ca.openosp.openo.lab.pageUtil.FileLabs2Action">
             <result name="failure">/errorpage.jsp</result>
             <result name="success">/documentManager/inboxManage.do?method=prepareForIndexPage</result>
         </action>
-        <action name="oscarMDS/SearchPatient" class="oscar.oscarMDS.pageUtil.SearchPatient2Action">
+        <action name="oscarMDS/SearchPatient" class="ca.openosp.openo.mds.pageUtil.SearchPatient2Action">
             <result name="failure">/oscarMDS/PatientSearch.jsp?search_mode=search_name&amp;limit1=0&amp;limit2=10</result>
             <result name="success">/oscarMDS/OpenEChart.jsp</result>
         </action>
-        <action name="oscarMDS/PatientMatch" class="oscar.oscarMDS.pageUtil.PatientMatch2Action">
+        <action name="oscarMDS/PatientMatch" class="ca.openosp.openo.mds.pageUtil.PatientMatch2Action">
             <result name="failure">/errorpage.jsp</result>
             <result name="success">/oscarMDS/OpenEChart.jsp</result>
         </action>
-        <action name="oscarMDS/ForwardingRules" class="oscar.oscarLab.pageUtil.ForwardingRules2Action">
+        <action name="oscarMDS/ForwardingRules" class="ca.openosp.openo.lab.pageUtil.ForwardingRules2Action">
             <result name="failure">/errorpage.jsp</result>
             <result name="success">/oscarMDS/ForwardingRules.jsp</result>
         </action>
-        <action name="admin/ForwardingRules" class="oscar.oscarLab.pageUtil.ForwardingRules2Action">
+        <action name="admin/ForwardingRules" class="ca.openosp.openo.lab.pageUtil.ForwardingRules2Action">
             <result name="failure">/errorpage.jsp</result>
             <result name="success">/admin/labforwardingrules.jsp</result>
         </action>
@@ -935,7 +935,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="report/printLabDaySheetAction" class="oscar.oscarReport.pageUtil.printLabDaySheet2Action"/>
+        <action name="report/printLabDaySheetAction" class="ca.openosp.openo.report.pageUtil.printLabDaySheet2Action"/>
         <action name="oscarEncounter/displayDiagrams" class="ca.openosp.openo.encounter.pageUtil.EctDisplayDiagram2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
@@ -1311,13 +1311,13 @@
         <action name="oscarEncounter/ViewAttachment" class="ca.openosp.openo.encounter.pageUtil.EctViewAttachment2Action">
             <result name="success">/oscarEncounter/ViewAttachment.jsp</result>
         </action>
-        <action name="oscarReport/ShowConsult" class="oscar.oscarReport.pageUtil.RptShowConsult2Action">
+        <action name="oscarReport/ShowConsult" class="ca.openosp.openo.report.pageUtil.RptShowConsult2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/ConsultationFormPrint.jsp</result>
         </action>
-        <action name="oscarReport/FluBilling" class="oscar.oscarReport.pageUtil.RptFluBilling2Action">
+        <action name="oscarReport/FluBilling" class="ca.openosp.openo.report.pageUtil.RptFluBilling2Action">
             <result name="success">/oscarReport/oscarReportFluBilling.jsp</result>
         </action>
-        <action name="oscarReport/RptByExample" class="oscar.oscarReport.pageUtil.RptByExample2Action">
+        <action name="oscarReport/RptByExample" class="ca.openosp.openo.report.pageUtil.RptByExample2Action">
             <result name="success">/oscarReport/RptByExample.jsp</result>
         </action>
         <action name="admin/GstControl" class="ca.openosp.openo.billing.ca.on.administration.GstControl2Action">
@@ -1333,63 +1333,63 @@
             <result name="failureUnMerge">/admin/demographicmergerecord.jsp?outcome=failureUnMerge</result>
             <result name="caisiSearch">/PMmodule/ClientSearch2.do</result>
         </action>
-        <action name="oscarReport/RptViewAllQueryByExamples" class="oscar.oscarReport.pageUtil.RptViewAllQueryByExamples2Action">
+        <action name="oscarReport/RptViewAllQueryByExamples" class="ca.openosp.openo.report.pageUtil.RptViewAllQueryByExamples2Action">
             <result name="success">/oscarReport/RptViewAllQueryByExamples.jsp</result>
         </action>
-        <action name="oscarReport/RptByExamplesFavorite" class="oscar.oscarReport.pageUtil.RptByExamplesFavorite2Action">
+        <action name="oscarReport/RptByExamplesFavorite" class="ca.openosp.openo.report.pageUtil.RptByExamplesFavorite2Action">
             <result name="edit">/oscarReport/RptByExamplesFavorite.jsp</result>
             <result name="success">/oscarReport/RptByExamplesAllFavorites.jsp</result>
         </action>
-        <action name="oscarReport/RptByExamplesAllFavorites" class="oscar.oscarReport.pageUtil.RptByExamplesAllFavorites2Action">
+        <action name="oscarReport/RptByExamplesAllFavorites" class="ca.openosp.openo.report.pageUtil.RptByExamplesAllFavorites2Action">
             <result name="success">/oscarReport/RptByExamplesAllFavorites.jsp</result>
         </action>
-        <action name="report/DemographicReport" class="oscar.oscarReport.pageUtil.RptDemographicReport2Action">
+        <action name="report/DemographicReport" class="ca.openosp.openo.report.pageUtil.RptDemographicReport2Action">
             <result name="success">/oscarReport/ReportDemographicReport.jsp</result>
             <result name="failure">/oscar_sfhc/JAYREPORTS/DemographicReport.jsp</result>
         </action>
-        <action name="report/CreateDemographicSet" class="oscar.oscarReport.pageUtil.RptCreateDemographicSet2Action">
+        <action name="report/CreateDemographicSet" class="ca.openosp.openo.report.pageUtil.RptCreateDemographicSet2Action">
             <result name="success">/oscarReport/ReportDemographicReport.jsp</result>
         </action>
-        <action name="oscarReport/obec" class="oscar.oscarReport.pageUtil.Obec2Action">
+        <action name="oscarReport/obec" class="ca.openosp.openo.report.pageUtil.Obec2Action">
             <result name="success">/oscarReport/obec.jsp</result>
         </action>
-        <action name="oscarReport/oscarMeasurements/SetupSelectCDMReport" class="oscar.oscarReport.oscarMeasurements.pageUtil.RptSetupSelectCDMReport2Action">
+        <action name="oscarReport/oscarMeasurements/SetupSelectCDMReport" class="ca.openosp.openo.report.oscarMeasurements.pageUtil.RptSetupSelectCDMReport2Action">
             <result name="continue">/oscarReport/oscarMeasurements/SelectCDMReport.jsp</result>
         </action>
-        <action name="oscarReport/oscarMeasurements/SelectCDMReport" class="oscar.oscarReport.oscarMeasurements.pageUtil.RptSelectCDMReport2Action">
+        <action name="oscarReport/oscarMeasurements/SelectCDMReport" class="ca.openosp.openo.report.oscarMeasurements.pageUtil.RptSelectCDMReport2Action">
             <result name="patientWhoMetGuideline">/oscarReport/oscarMeasurements/InitializePatientsMetGuidelineCDMReport.jsp</result>
             <result name="patientInAbnormalRange">/oscarReport/oscarMeasurements/InitializePatientsInAbnormalRangeCDMReport.jsp</result>
             <result name="freqencyOfReleventTests">/oscarReport/oscarMeasurements/InitializeFrequencyOfRelevantTestsCDMReport.jsp</result>
         </action>
-        <action name="oscarReport/oscarMeasurements/InitializePatientsMetGuidelineCDMReport" class="oscar.oscarReport.oscarMeasurements.pageUtil.RptInitializePatientsMetGuidelineCDMReport2Action">
+        <action name="oscarReport/oscarMeasurements/InitializePatientsMetGuidelineCDMReport" class="ca.openosp.openo.report.oscarMeasurements.pageUtil.RptInitializePatientsMetGuidelineCDMReport2Action">
             <result name="success">/oscarReport/oscarMeasurements/CDMReport.jsp</result>
         </action>
-        <action name="oscarReport/oscarMeasurements/InitializePatientsInAbnormalRangeCDMReport" class="oscar.oscarReport.oscarMeasurements.pageUtil.RptInitializePatientsInAbnormalRangeCDMReport2Action">
+        <action name="oscarReport/oscarMeasurements/InitializePatientsInAbnormalRangeCDMReport" class="ca.openosp.openo.report.oscarMeasurements.pageUtil.RptInitializePatientsInAbnormalRangeCDMReport2Action">
             <result name="success">/oscarReport/oscarMeasurements/CDMReport.jsp</result>
         </action>
-        <action name="oscarReport/oscarMeasurements/InitializeFrequencyOfRelevantTestsCDMReport" class="oscar.oscarReport.oscarMeasurements.pageUtil.RptInitializeFrequencyOfRelevantTestsCDMReport2Action">
+        <action name="oscarReport/oscarMeasurements/InitializeFrequencyOfRelevantTestsCDMReport" class="ca.openosp.openo.report.oscarMeasurements.pageUtil.RptInitializeFrequencyOfRelevantTestsCDMReport2Action">
             <result name="success">/oscarReport/oscarMeasurements/CDMReport.jsp</result>
         </action>
         <!--action name="oscarMaintenance" class="oscar.oscarMaintenance.pageUtil.Maintenance2Action">
             <result name="success">/oscarMaintenance/oscarMaintenanceDisplay.jsp</result>
             <result name="input">/oscarMaintenance/oscarMaintenanceInput.jsp</result>
         </action-->
-        <action name="EnterSignature" class="oscar.oscarProvider.pageUtil.ProEditSignature2Action">
+        <action name="EnterSignature" class="ca.openosp.openo.provider.pageUtil.ProEditSignature2Action">
             <result name="success">/provider/providerSignature.jsp</result>
         </action>
-        <action name="EditPhoneNum" class="oscar.oscarProvider.pageUtil.ProEditPhoneNum2Action">
+        <action name="EditPhoneNum" class="ca.openosp.openo.provider.pageUtil.ProEditPhoneNum2Action">
             <result name="success">/provider/providerPhone.jsp</result>
             <result name="eject">/index.jsp</result>
         </action>
-        <action name="EditAddress" class="oscar.oscarProvider.pageUtil.ProEditAddress2Action">
+        <action name="EditAddress" class="ca.openosp.openo.provider.pageUtil.ProEditAddress2Action">
             <result name="success">/provider/providerAddress.jsp</result>
             <result name="eject">/index.jsp</result>
         </action>
-        <action name="EditPrinter" class="oscar.oscarProvider.pageUtil.ProEditPrinter2Action">
+        <action name="EditPrinter" class="ca.openosp.openo.provider.pageUtil.ProEditPrinter2Action">
             <result name="success">/provider/providerPrinter.jsp</result>
             <result name="eject">/index.jsp</result>
         </action>
-        <action name="EditFaxNum" class="oscar.oscarProvider.pageUtil.ProEditFaxNum2Action">
+        <action name="EditFaxNum" class="ca.openosp.openo.provider.pageUtil.ProEditFaxNum2Action">
             <result name="success">/provider/providerFax.jsp</result>
             <result name="error">/provider/providerFaxErr.jsp</result>
             <result name="eject">/index.jsp</result>
@@ -1420,7 +1420,7 @@
             <result name="success">/email/emailCompose.jsp</result>
             <result name="EFORM">/eform/efmshowform_data.jsp</result>
         </action>
-        <action name="setProviderColour" class="oscar.oscarProvider.pageUtil.ProEditColour2Action">
+        <action name="setProviderColour" class="ca.openosp.openo.provider.pageUtil.ProEditColour2Action">
             <result name="success">/provider/providerColourPicker.jsp</result>
             <result name="error">/provider/providerColourErr.jsp</result>
             <result name="eject">/index.jsp</result>
@@ -1614,10 +1614,10 @@
         <action name="demographic/eRourkeExport" class="ca.openosp.openo.demographic.pageUtil.RourkeExport2Action" method="execute">
             <result name="display">/demographic/rourkeExport.jsp</result>
         </action>
-        <action name="report/DemographicSetEdit" class="oscar.oscarReport.pageUtil.DemographicSetEdit2Action">
+        <action name="report/DemographicSetEdit" class="ca.openosp.openo.report.pageUtil.DemographicSetEdit2Action">
             <result name="success">/oscarReport/demographicSetEdit.jsp</result>
         </action>
-        <action name="report/SetEligibility" class="oscar.oscarReport.pageUtil.DemographicSetEligibility2Action">
+        <action name="report/SetEligibility" class="ca.openosp.openo.report.pageUtil.DemographicSetEligibility2Action">
             <result name="success">/oscarReport/demographicSetEdit.jsp</result>
         </action>
         <action name="tickler/ForwardDemographicTickler" class="oscar.oscarTickler.pageUtil.ForwardDemographicTickler2Action">
@@ -1710,21 +1710,21 @@
             <result name="success">/billing/CA/BC/billingManageReferralDoc.jsp</result>
             <result name="error">/billing/CA/BC/billingAddReferralDoc.jsp</result>
         </action>
-        <action name="lab/labUpload" class="oscar.oscarLab.ca.bc.PathNet.pageUtil.LabUpload2Action">
+        <action name="lab/labUpload" class="ca.openosp.openo.lab.ca.bc.PathNet.pageUtil.LabUpload2Action">
             <result name="success">/lab/CA/BC/LabUpload.jsp</result>
         </action>
-        <action name="lab/newLabUpload" class="oscar.oscarLab.ca.all.pageUtil.LabUpload2Action">
+        <action name="lab/newLabUpload" class="ca.openosp.openo.lab.ca.all.pageUtil.LabUpload2Action">
             <result name="success">/lab/CA/ALL/uploadComplete.jsp</result>
         </action>
-        <action name="lab/CA/ALL/insideLabUpload" class="oscar.oscarLab.ca.all.pageUtil.InsideLabUpload2Action"> 
+        <action name="lab/CA/ALL/insideLabUpload" class="ca.openosp.openo.lab.ca.all.pageUtil.InsideLabUpload2Action">
             <interceptor-ref name="fileUpload" />
             <interceptor-ref name="defaultStack"/>
             <result name="success">/lab/CA/ALL/testUploader.jsp</result>
         </action>
-        <action name="lab/CA/ALL/oruR01Upload" class="oscar.oscarLab.ca.all.pageUtil.OruR01Upload2Action">
+        <action name="lab/CA/ALL/oruR01Upload" class="ca.openosp.openo.lab.ca.all.pageUtil.OruR01Upload2Action">
             <result name="result">/common/genericResultPage.jsp</result>
         </action>
-        <action name="lab/CMLlabUpload" class="oscar.oscarLab.ca.on.CML.Upload.LabUpload2Action">
+        <action name="lab/CMLlabUpload" class="ca.openosp.openo.lab.ca.on.CML.Upload.LabUpload2Action">
             <result name="success">/lab/CA/ON/uploadComplete.jsp</result>
         </action>
         <action name="billing/CA/ON/benefitScheduleUpload" class="ca.openosp.openo.billing.ca.on.OHIP.ScheduleOfBenefitsUpload2Action">
@@ -1754,10 +1754,10 @@
         <action name="billing/CA/BC/viewBillingPreferencesAction" class="ca.openosp.openo.billing.ca.bc.pageUtil.ViewBillingPreferences2Action">
             <result name="success">/billing/CA/BC/billingPreferences.jsp</result>
         </action>
-        <action name="RunClinicalReport" class="oscar.oscarReport.ClinicalReports.PageUtil.RunClinicalReport2Action">
+        <action name="RunClinicalReport" class="ca.openosp.openo.report.ClinicalReports.PageUtil.RunClinicalReport2Action">
             <result name="success">/report/ClinicalReports.jsp</result>
         </action>
-        <action name="report/RemoveClinicalReport" class="oscar.oscarReport.ClinicalReports.PageUtil.RemoveClinicalReportFromHistory2Action">
+        <action name="report/RemoveClinicalReport" class="ca.openosp.openo.report.ClinicalReports.PageUtil.RemoveClinicalReportFromHistory2Action">
             <result name="success">/report/ClinicalReports.jsp</result>
         </action>
         <action name="billing/CA/BC/supServiceCodeAssocAction" class="ca.openosp.openo.billing.ca.bc.pageUtil.SupServiceCodeAssoc2Action">
@@ -1785,26 +1785,26 @@
             <result name="success">/scratch/index.jsp</result>
             <result name="scratchPadVersion">/scratch/version.jsp</result>
         </action>
-        <action name="report/DeleteDemographicReport" class="oscar.oscarReport.pageUtil.RptDemographQueryFavouriteDelete2Action">
+        <action name="report/DeleteDemographicReport" class="ca.openosp.openo.report.pageUtil.RptDemographQueryFavouriteDelete2Action">
             <result name="success">/oscarReport/ReportDemographicReport.jsp</result>
         </action>
-        <action name="report/GenerateEnvelopes" class="oscar.oscarReport.pageUtil.GenerateEnvelopes2Action">
+        <action name="report/GenerateEnvelopes" class="ca.openosp.openo.report.pageUtil.GenerateEnvelopes2Action">
             <result name="success">/oscarReport/ReportDemographicReport.jsp</result>
         </action>
-        <action name="report/GenerateSpreadsheet" class="oscar.oscarReport.pageUtil.GeneratePatientSpreadSheetList2Action">
+        <action name="report/GenerateSpreadsheet" class="ca.openosp.openo.report.pageUtil.GeneratePatientSpreadSheetList2Action">
             <result name="success">/oscarReport/ReportDemographicReport.jsp</result>
         </action>
-        <action name="report/GenerateLetters" class="oscar.oscarReport.pageUtil.GeneratePatientLetters2Action">
+        <action name="report/GenerateLetters" class="ca.openosp.openo.report.pageUtil.GeneratePatientLetters2Action">
             <result name="success">/oscarReport/ReportDemographicReport.jsp</result>
         </action>
-        <action name="report/ManageLetters" class="oscar.oscarReport.pageUtil.ManagePatientLetters2Action">
+        <action name="report/ManageLetters" class="ca.openosp.openo.report.pageUtil.ManagePatientLetters2Action">
             <result name="success">/report/GenerateLetters.jsp</result>
             <result name="success_manage_from_prevention">/oscarPrevention/PreventionReporting.jsp</result>
         </action>
-        <action name="report/DownloadLetter" class="oscar.oscarReport.pageUtil.DownloadPatientLetters2Action">
+        <action name="report/DownloadLetter" class="ca.openosp.openo.report.pageUtil.DownloadPatientLetters2Action">
             <result name="success">/report/GenerateLetters.jsp</result>
         </action>
-        <action name="report/DeleteLetter" class="oscar.oscarReport.pageUtil.DeletePatientLetters2Action">
+        <action name="report/DeleteLetter" class="ca.openosp.openo.report.pageUtil.DeletePatientLetters2Action">
             <result name="success">/report/ManageLetters.jsp</result>
         </action>
         <action name="oscarMeasurement/AddShortMeasurement" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctAddShortMeasurement2Action">
@@ -1966,42 +1966,42 @@
             <result name="form">/casemgmt/OnCallQuestionnaireForm.jsp</result>
             <result name="windowClose">/casemgmt/close.jsp</result>
         </action>
-        <action name="oscarReport/reportByTemplate/GenerateReportAction" class="oscar.oscarReport.reportByTemplate.actions.GenerateReport2Action">
+        <action name="oscarReport/reportByTemplate/GenerateReportAction" class="ca.openosp.openo.report.reportByTemplate.actions.GenerateReport2Action">
             <result name="success">/oscarReport/reportByTemplate/resultReport.jsp</result>
             <result name="fail">/oscarReport/reportByTemplate/reportConfiguration.jsp</result>
         </action>
-        <action name="oscarReport/reportByTemplate/exportTemplateAction" class="oscar.oscarReport.reportByTemplate.actions.ExportTemplate2Action">
+        <action name="oscarReport/reportByTemplate/exportTemplateAction" class="ca.openosp.openo.report.reportByTemplate.actions.ExportTemplate2Action">
             <result name="success">/oscarReport/reportByTemplate/reportConfiguration.jsp</result>
             <result name="fail">/oscarReport/reportByTemplate/reportConfiguration.jsp</result>
         </action>
-        <action name="oscarReport/reportByTemplate/addEditTemplatesAction" class="oscar.oscarReport.reportByTemplate.actions.ManageTemplates2Action">
+        <action name="oscarReport/reportByTemplate/addEditTemplatesAction" class="ca.openosp.openo.report.reportByTemplate.actions.ManageTemplates2Action">
             <result name="done">/oscarReport/reportByTemplate/reportConfiguration.jsp</result>
             <result name="success">/oscarReport/reportByTemplate/addEditTemplate.jsp</result>
             <result name="fail">/oscarReport/reportByTemplate/addEditTemplate.jsp</result>
             <result name="deleted">/oscarReport/reportByTemplate/homePage.jsp</result>
         </action>
-        <action name="oscarReport/reportByTemplate/generateOutFilesAction" class="oscar.oscarReport.reportByTemplate.actions.GenerateOutFiles2Action">
+        <action name="oscarReport/reportByTemplate/generateOutFilesAction" class="ca.openosp.openo.report.reportByTemplate.actions.GenerateOutFiles2Action">
             <result name="success">/oscarReport/reportByTemplate/resultReport.jsp</result>
         </action>
-        <action name="oscarReport/reportByTemplate/uploadTemplates" class="oscar.oscarReport.reportByTemplate.actions.UploadTemplates2Action">
+        <action name="oscarReport/reportByTemplate/uploadTemplates" class="ca.openosp.openo.report.reportByTemplate.actions.UploadTemplates2Action">
             <result name="success">/oscarReport/reportByTemplate/addEditTemplate.jsp</result>
         </action>
-        <action name="oscarReport/reportByTemplate/rbtGroup" class="oscar.oscarReport.reportByTemplate.actions.RBTGetGroup2Action">
+        <action name="oscarReport/reportByTemplate/rbtGroup" class="ca.openosp.openo.report.reportByTemplate.actions.RBTGetGroup2Action">
             <result name="success">/oscarReport/reportByTemplate/templateGroups.jsp</result>
         </action>
-        <action name="oscarReport/reportByTemplate/actions/tempInGroup" class="oscar.oscarReport.reportByTemplate.actions.RBTGetTemplatesInGroup2Action">
+        <action name="oscarReport/reportByTemplate/actions/tempInGroup" class="ca.openosp.openo.report.reportByTemplate.actions.RBTGetTemplatesInGroup2Action">
             <result name="success">/oscarReport/reportByTemplate/templateGroups.jsp</result>
         </action>
-        <action name="oscarReport/reportByTemplate/actions/addGroup" class="oscar.oscarReport.reportByTemplate.actions.RBTAddGroup2Action">
+        <action name="oscarReport/reportByTemplate/actions/addGroup" class="ca.openosp.openo.report.reportByTemplate.actions.RBTAddGroup2Action">
             <result name="success">/oscarReport/reportByTemplate/rbtGroup.do</result>
         </action>
-        <action name="oscarReport/reportByTemplate/actions/rbtAddToGroup" class="oscar.oscarReport.reportByTemplate.actions.RBTAddToGroup2Action">
+        <action name="oscarReport/reportByTemplate/actions/rbtAddToGroup" class="ca.openosp.openo.report.reportByTemplate.actions.RBTAddToGroup2Action">
             <result name="success">/oscarReport/reportByTemplate/actions/tempInGroup.do</result>
         </action>
-        <action name="oscarReport/reportByTemplate/actions/remFromGroup" class="oscar.oscarReport.reportByTemplate.actions.RBTRemoveFromGroup2Action">
+        <action name="oscarReport/reportByTemplate/actions/remFromGroup" class="ca.openosp.openo.report.reportByTemplate.actions.RBTRemoveFromGroup2Action">
             <result name="success">/oscarReport/reportByTemplate/actions/tempInGroup.do</result>
         </action>
-        <action name="oscarReport/reportByTemplate/actions/delGroup" class="oscar.oscarReport.reportByTemplate.actions.RBTDeleteGroup2Action">
+        <action name="oscarReport/reportByTemplate/actions/delGroup" class="ca.openosp.openo.report.reportByTemplate.actions.RBTDeleteGroup2Action">
             <result name="success">/oscarReport/reportByTemplate/rbtGroup.do</result>
         </action>
         <action name="casemgmt/ExtPrintRegistry" class="org.oscarehr.casemgmt.web.ExtPrintRegistry2Action"/>
@@ -2026,7 +2026,7 @@
             <result name="windowClose">/demographic/close.jsp</result>
             <result name="ajax">/demographic/demographiceditdemographic.jsp</result>
         </action>
-        <action name="oscarMDS/SubmitLab" class="oscar.oscarLab.ca.all.web.SubmitLabByForm2Action">
+        <action name="oscarMDS/SubmitLab" class="ca.openosp.openo.lab.ca.all.web.SubmitLabByForm2Action">
             <result name="manage">/oscarMDS/CreateLab.jsp</result>
         </action>
         <action name="ArchiveView" class="org.oscarehr.casemgmt.web.ArchiveView2Action" method="execute">
@@ -2077,7 +2077,7 @@
             <result name="success">/appointment/appointmentstatussetting.jsp</result>
             <result name="edit">/appointment/appointmentstatusedit.jsp</result>
         </action>
-        <action name="appointment/printAppointmentReceiptAction" class="oscar.oscarReport.pageUtil.PrintAppointmentReceipt2Action"/>
+        <action name="appointment/printAppointmentReceiptAction" class="ca.openosp.openo.report.pageUtil.PrintAppointmentReceipt2Action"/>
         <action name="oscarRx/updateDrugrefDB" class="oscar.oscarRx.pageUtil.RxUpdateDrugref2Action"/>
         <action name="oscarRx/copyFavorite" class="oscar.oscarRx.web.CopyFavorites2Action" method="execute">
             <result name="success">/oscarRx/CopyFavorites.jsp</result>
@@ -2361,7 +2361,7 @@
         <action name="admin/AuditLogPurge" class="org.oscarehr.admin.web.AuditLogPurge2Action">
             <result name="success">/admin/auditLogPurge.jsp</result>
         </action>
-        <action name="lab/DownloadEmbeddedDocumentFromLab" class="oscar.oscarLab.ca.all.pageUtil.DownloadEmbeddedDocumentFromLab2Action"/>
+        <action name="lab/DownloadEmbeddedDocumentFromLab" class="ca.openosp.openo.lab.ca.all.pageUtil.DownloadEmbeddedDocumentFromLab2Action"/>
         <action name="dhir/submit" class="org.oscarehr.integration.dhir.SubmitImmunization2Action">
             <result name="success">/oscarPrevention/dhirSubmission.jsp</result>
             <result name="testresult">/oscarPrevention/test_case.jsp</result>

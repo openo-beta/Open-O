@@ -20,7 +20,7 @@
 
 <tag>
   <name>newLab</name>
-  <tagclass>oscar.oscarLab.tld.LabTag</tagclass>
+  <tagclass>ca.openosp.openo.lab.tld.LabTag</tagclass>
   <bodycontent>jsp</bodycontent>
   <attribute>
     <name>providerNo</name>
@@ -42,7 +42,7 @@
 
 <tag>
   <name>newUnclaimedLab</name>
-  <tagclass>oscar.oscarLab.tld.UnclaimedLabTag</tagclass>
+  <tagclass>ca.openosp.openo.lab.tld.UnclaimedLabTag</tagclass>
   <bodycontent>jsp</bodycontent>  
 </tag>
 
@@ -59,7 +59,7 @@
 
 <tag>
   <name>newMessage</name>
-  <tagclass>oscar.oscarMessenger.tld.MsgNewMessageTag</tagclass>
+  <tagclass>ca.openosp.openo.messenger.tld.MsgNewMessageTag</tagclass>
   <bodycontent>jsp</bodycontent>
   <attribute>
     <name>providerNo</name>

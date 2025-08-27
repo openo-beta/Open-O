@@ -34,7 +34,7 @@
 <%@page import="org.oscarehr.common.model.CVCImmunization" %>
 <%@page import="org.oscarehr.managers.CanadianVaccineCatalogueManager" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="oscar.oscarProvider.data.ProviderData" %>
+<%@page import="ca.openosp.openo.provider.data.ProviderData" %>
 <%@ page
         import="ca.openosp.openo.demographic.data.DemographicData,java.text.SimpleDateFormat, java.util.*,oscar.oscarPrevention.*,oscar.oscarProvider.data.*,oscar.util.*" %>
 <%@ page import="org.oscarehr.casemgmt.model.CaseManagementNoteLink" %>

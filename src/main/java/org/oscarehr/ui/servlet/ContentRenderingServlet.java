@@ -38,7 +38,7 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.web.PrescriptionQrCodeUIBean;
 
 import ca.openosp.openo.log.LogAction;
-import oscar.oscarLab.ca.all.pageUtil.ViewOruR01UIBean;
+import ca.openosp.openo.lab.ca.all.pageUtil.ViewOruR01UIBean;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.parser.EncodingNotSupportedException;
 

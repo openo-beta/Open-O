@@ -33,6 +33,8 @@
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.RBTGroup" %>
+<%@ page import="ca.openosp.openo.report.reportByTemplate.ReportManager" %>
+<%@ page import="ca.openosp.openo.report.reportByTemplate.ReportObject" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 

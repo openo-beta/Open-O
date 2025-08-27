@@ -46,8 +46,8 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
 import oscar.OscarProperties;
-import oscar.oscarLab.ca.all.pageUtil.LabUpload2Action;
-import oscar.oscarLab.ca.all.util.Utilities;
+import ca.openosp.openo.lab.ca.all.pageUtil.LabUpload2Action;
+import ca.openosp.openo.lab.ca.all.util.Utilities;
 import ca.uhn.hl7v2.model.v23.datatype.CE;
 import ca.uhn.hl7v2.model.v23.group.ORU_R01_ORDER_OBSERVATION;
 import ca.uhn.hl7v2.model.v23.group.ORU_R01_RESPONSE;

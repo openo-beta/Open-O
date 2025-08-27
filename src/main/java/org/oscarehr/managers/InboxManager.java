@@ -27,39 +27,9 @@
  */
 package org.oscarehr.managers;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Properties;
-import java.util.Vector;
-
-import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.SecUserRoleDao;
-import org.oscarehr.PMmodule.model.SecUserRole;
-import org.oscarehr.PMmodule.utility.UtilDateUtilities;
-import org.oscarehr.common.dao.DocumentResultsDao;
-import org.oscarehr.common.dao.InboxResultsDao;
-import org.oscarehr.common.dao.QueueDocumentLinkDao;
-import org.oscarehr.common.model.Queue;
-import org.oscarehr.common.model.QueueDocumentLink;
 import org.oscarehr.inbox.InboxManagerQuery;
 import org.oscarehr.inbox.InboxManagerResponse;
 import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import oscar.oscarLab.ca.on.CommonLabResultData;
-import oscar.oscarLab.ca.on.HRMResultsData;
-import oscar.oscarLab.ca.on.LabResultData;
-import oscar.util.OscarRoleObjectPrivilege;
 
 public interface InboxManager {
     public static final String NORMAL = "normal";

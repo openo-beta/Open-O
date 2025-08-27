@@ -30,6 +30,8 @@
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.messenger.pageUtil.MsgSessionBean" %>
+<%@ page import="ca.openosp.openo.messenger.data.MsgDisplayMessage" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -95,9 +97,9 @@
     </c:if>
 </c:if>
 <%
-    oscar.oscarMessenger.pageUtil.MsgSessionBean bean = (oscar.oscarMessenger.pageUtil.MsgSessionBean) session.getAttribute("msgSessionBean");
+    MsgSessionBean bean = (MsgSessionBean) session.getAttribute("msgSessionBean");
 %>
-<jsp:useBean id="DisplayMessagesBeanId" scope="session" class="oscar.oscarMessenger.pageUtil.MsgDisplayMessagesBean"/>
+<jsp:useBean id="DisplayMessagesBeanId" scope="session" class="ca.openosp.openo.messenger.pageUtil.MsgDisplayMessagesBean"/>
 <% DisplayMessagesBeanId.setProviderNo(bean.getProviderNo());
     bean.nullAttachment();
 %>
@@ -486,8 +488,8 @@
                                 <!--   for loop Control Initiliation variabe changed to nextMessage   -->
                                 <%
                                     for (int i = 0; i < theMessages2.size(); i++) {
-                                        oscar.oscarMessenger.data.MsgDisplayMessage dm;
-                                        dm = (oscar.oscarMessenger.data.MsgDisplayMessage) theMessages2.get(i);
+                                        MsgDisplayMessage dm;
+                                        dm = (MsgDisplayMessage) theMessages2.get(i);
                                         String key = "oscarMessenger.DisplayMessages.msgStatus" + dm.getStatus().substring(0, 1).toUpperCase() + dm.getStatus().substring(1);
                                 %>
 

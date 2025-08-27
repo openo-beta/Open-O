@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+import ca.openosp.openo.messenger.data.MsgMessageData;
 import org.apache.commons.io.FileUtils;
 import org.oscarehr.PMmodule.dao.SecUserRoleDao;
 import org.oscarehr.PMmodule.model.SecUserRole;
@@ -49,7 +50,7 @@ import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 
 import oscar.OscarProperties;
-import oscar.oscarMessenger.data.MsgProviderData;
+import ca.openosp.openo.messenger.data.MsgProviderData;
 
 /**
  * SFTP Connector to interact with servers and return the server's reply/file data.
@@ -742,7 +743,7 @@ public class SFTPConnector {
 
         String message = "OSCAR attempted to perform a fetch of HRM data at " + new Date() + " but there was an error during the task.\n\nSee below and HRM log for further details:\n" + errorMsg;
 
-        oscar.oscarMessenger.data.MsgMessageData messageData = new oscar.oscarMessenger.data.MsgMessageData();
+        MsgMessageData messageData = new MsgMessageData();
 
         ArrayList<MsgProviderData> sendToProviderListData = new ArrayList<MsgProviderData>();
         for (String providerNo : sendToProviderList) {

@@ -46,9 +46,10 @@
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="org.oscarehr.PMmodule.service.ProviderManager" %>
 <%@ page import="org.oscarehr.common.model.*" %>
-<%@ page import="oscar.oscarProvider.data.ProviderData" %>
+<%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="org.oscarehr.common.model.enumerator.ModuleType" %>
+<%@ page import="ca.openosp.openo.provider.data.ProSignatureData" %>
 
 <%
     OscarAppointmentDao appointmentDao = SpringUtils.getBean(OscarAppointmentDao.class);
@@ -362,7 +363,7 @@
                             if(prefPharmacy!=null && prefPharmacy.trim()!=""){ %>
                     text += "<%=prefPharmacy%>\n"
                     <% } %>
-                    text += "****<%=Encode.forJavaScript(oscar.oscarProvider.data.ProviderData.getProviderName(bean.getProviderNo()))%>********************************************************************************\n";
+                    text += "****<%=Encode.forJavaScript(ProviderData.getProviderName(bean.getProviderNo()))%>********************************************************************************\n";
                     <% } %>
 
                     //we support pasting into orig encounter and new casemanagement

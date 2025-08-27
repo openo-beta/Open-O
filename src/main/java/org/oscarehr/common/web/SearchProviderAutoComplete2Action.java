@@ -37,7 +37,7 @@ import net.sf.json.JSONSerializer;
 
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarProvider.data.ProviderData;
+import ca.openosp.openo.provider.data.ProviderData;
 import org.oscarehr.common.dao.ProviderDataDao;
 
 /**

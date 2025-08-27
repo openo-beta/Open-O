@@ -35,7 +35,7 @@ import org.oscarehr.util.LoggedInInfo;
 
 import ca.openosp.openo.login.DBHelp;
 import ca.openosp.openo.db.DBHandler;
-import oscar.oscarProvider.data.ProviderData;
+import ca.openosp.openo.provider.data.ProviderData;
 import oscar.util.UtilDateUtilities;
 
 public class FrmBCHPRecord extends FrmRecord {

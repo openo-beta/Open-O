@@ -81,6 +81,7 @@
 <%@ page import="org.oscarehr.common.model.TicklerLink" %>
 <%@ page import="org.oscarehr.common.dao.TicklerLinkDao" %>
 <%@ page import="oscar.oscarLab.ca.on.*" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
 
 <%
     TicklerManager ticklerManager = SpringUtils.getBean(TicklerManager.class);

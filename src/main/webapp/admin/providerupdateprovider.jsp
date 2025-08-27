@@ -43,7 +43,7 @@
         return;
     }
 %>
-<%@ page import="java.util.*, oscar.SxmlMisc, oscar.oscarProvider.data.ProviderBillCenter" errorPage="/errorpage.jsp" %>
+<%@ page import="java.util.*, oscar.SxmlMisc, ca.openosp.openo.provider.data.ProviderBillCenter" errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.openo.log.LogAction,ca.openosp.openo.log.LogConst" %>
 <%@ page import="org.oscarehr.common.model.ClinicNbr" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>

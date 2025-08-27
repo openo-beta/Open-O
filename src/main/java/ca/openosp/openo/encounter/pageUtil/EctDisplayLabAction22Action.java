@@ -26,6 +26,7 @@
 
 package ca.openosp.openo.encounter.pageUtil;
 
+import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.caisi_integrator.ws.CachedDemographicLabResult;
 import org.oscarehr.common.dao.OscarLogDao;
@@ -34,11 +35,11 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 import org.w3c.dom.Document;
 import oscar.OscarProperties;
-import oscar.oscarLab.ca.all.Hl7textResultsData;
-import oscar.oscarLab.ca.all.parsers.MessageHandler;
-import oscar.oscarLab.ca.all.web.LabDisplayHelper;
-import oscar.oscarLab.ca.on.CommonLabResultData;
-import oscar.oscarLab.ca.on.LabResultData;
+import ca.openosp.openo.lab.ca.all.Hl7textResultsData;
+import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
+import ca.openosp.openo.lab.ca.all.web.LabDisplayHelper;
+import ca.openosp.openo.lab.ca.on.CommonLabResultData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 import oscar.util.DateUtils;
 import oscar.util.StringUtils;
 
@@ -333,7 +334,7 @@ public class EctDisplayLabAction22Action extends EctDisplayAction {
         }
 
         public MessageHandler getLocalHandler(String segmentId) {
-            return oscar.oscarLab.ca.all.parsers.Factory.getHandler(segmentId);
+            return Factory.getHandler(segmentId);
         }
     }
 

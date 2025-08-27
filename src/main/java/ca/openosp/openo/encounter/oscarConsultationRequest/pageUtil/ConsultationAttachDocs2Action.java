@@ -57,9 +57,9 @@ import org.oscarehr.documentManager.EDocUtil;
 import ca.openosp.openo.eform.EFormUtil;
 import oscar.form.util.FormTransportContainer;
 import ca.openosp.openo.encounter.data.EctFormData;
-import oscar.oscarLab.ca.all.pageUtil.LabPDFCreator;
-import oscar.oscarLab.ca.on.CommonLabResultData;
-import oscar.oscarLab.ca.on.LabResultData;
+import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
+import ca.openosp.openo.lab.ca.on.CommonLabResultData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

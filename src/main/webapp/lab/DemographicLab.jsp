@@ -27,13 +27,15 @@
 <%@page import="ca.openosp.openo.encounter.pageUtil.EctDisplayLabAction2" %>
 <%@page import="org.oscarehr.util.MiscUtils" %>
 <%@page import="java.net.URLEncoder" %>
-<%@page import="oscar.oscarLab.ca.all.web.LabDisplayHelper" %>
+<%@page import="ca.openosp.openo.lab.ca.all.web.LabDisplayHelper" %>
 <%@page import="org.oscarehr.util.LoggedInInfo" %>
 <%@ page import="java.util.*" %>
-<%@ page import="oscar.oscarLab.ca.on.LabResultData" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
 <%@ page import="oscar.oscarMDS.data.*,oscar.oscarLab.ca.on.*" %>
 <%@ page import="oscar.util.DateUtils" %>
-<%@ page import="oscar.oscarLab.ca.all.Hl7textResultsData" %>
+<%@ page import="ca.openosp.openo.lab.ca.all.Hl7textResultsData" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
+<%@ page import="ca.openosp.openo.mds.data.ProviderData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%

@@ -41,14 +41,12 @@ import java.util.zip.ZipFile;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
 import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.oscarehr.common.dao.utils.AuthUtils;
 import org.oscarehr.util.LoggedInInfo;
 
-import oscar.oscarLab.ca.all.parsers.PATHL7Handler;
-import oscar.oscarLab.ca.all.upload.MessageUploader;
+import ca.openosp.openo.lab.ca.all.parsers.PATHL7Handler;
+import ca.openosp.openo.lab.ca.all.upload.MessageUploader;
 
 @Ignore //Skipping until issue is resolved
 public class PATHHL7HandlerTest {

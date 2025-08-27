@@ -28,7 +28,7 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.SystemPreferences;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarLab.ca.on.LabResultData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 import oscar.util.StringUtils;
 
 public class InboxResultsDaoImpl implements InboxResultsDao {

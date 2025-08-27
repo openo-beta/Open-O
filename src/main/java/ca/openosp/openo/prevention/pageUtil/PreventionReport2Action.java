@@ -49,9 +49,9 @@ import org.oscarehr.util.SpringUtils;
 
 import ca.openosp.openo.prevention.reports.PreventionReport;
 import ca.openosp.openo.prevention.reports.PreventionReportFactory;
-import oscar.oscarReport.data.RptDemographicQueryBuilder;
-import oscar.oscarReport.data.RptDemographicQueryLoader;
-import oscar.oscarReport.pageUtil.RptDemographicReport2Form;
+import ca.openosp.openo.report.data.RptDemographicQueryBuilder;
+import ca.openosp.openo.report.data.RptDemographicQueryLoader;
+import ca.openosp.openo.report.pageUtil.RptDemographicReport2Form;
 import oscar.util.UtilDateUtilities;
 
 /**

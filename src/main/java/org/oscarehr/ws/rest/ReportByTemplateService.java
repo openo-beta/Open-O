@@ -24,28 +24,13 @@
  */
 package org.oscarehr.ws.rest;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.codehaus.jettison.json.JSONObject;
-import org.oscarehr.app.AppOAuth1Config;
-import org.oscarehr.app.OAuth1Utils;
 import org.oscarehr.common.dao.AppDefinitionDao;
 import org.oscarehr.common.dao.AppUserDao;
-import org.oscarehr.common.model.AppDefinition;
-import org.oscarehr.common.model.AppUser;
 import org.oscarehr.managers.AppManager;
 import org.oscarehr.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.ws.rest.to.GenericRESTResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import oscar.oscarReport.reportByTemplate.ReportManager;
 
 @Path("/reportByTemplate")
 public class ReportByTemplateService extends AbstractServiceImpl {

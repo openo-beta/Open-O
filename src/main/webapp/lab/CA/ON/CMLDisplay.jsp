@@ -44,7 +44,7 @@
 <%@page import="org.oscarehr.common.dao.PatientLabRoutingDao" %>
 <%@page errorPage="../provider/errorpage.jsp" %>
 <%@ page
-        import="java.util.*, oscar.oscarMDS.data.*,oscar.oscarLab.ca.on.CML.*,oscar.oscarLab.LabRequestReportLink,oscar.oscarDB.*,java.sql.*,oscar.log.*,org.oscarehr.util.SpringUtils,org.oscarehr.casemgmt.service.CaseManagementManager,org.oscarehr.casemgmt.model.*" %>
+        import="java.util.*, oscar.oscarMDS.data.*,oscar.oscarLab.ca.on.CML.*,ca.openosp.openo.lab.LabRequestReportLink,oscar.oscarDB.*,java.sql.*,oscar.log.*,org.oscarehr.util.SpringUtils,org.oscarehr.casemgmt.service.CaseManagementManager,org.oscarehr.casemgmt.model.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%
@@ -95,6 +95,9 @@
 <%@page import="org.oscarehr.util.MiscUtils" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.CML.CMLLabTest" %>
+<%@ page import="ca.openosp.openo.mds.data.ReportStatus" %>
+<%@ page import="ca.openosp.openo.mds.data.MDSSegmentData" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

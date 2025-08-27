@@ -45,7 +45,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarProvider.data.ProSignatureData;
+import ca.openosp.openo.provider.data.ProSignatureData;
 import oscar.oscarRx.util.RxUtil;
 import oscar.util.ConversionUtils;
 import oscar.util.DateUtils;

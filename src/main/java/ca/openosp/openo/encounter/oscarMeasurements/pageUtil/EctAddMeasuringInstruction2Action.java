@@ -44,7 +44,7 @@ import org.oscarehr.util.SpringUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctTypeDisplayNameBeanHandler;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctValidationsBeanHandler;
-import oscar.oscarMessenger.util.MsgStringQuote;
+import ca.openosp.openo.messenger.util.MsgStringQuote;
 
 
 import com.opensymphony.xwork2.ActionSupport;

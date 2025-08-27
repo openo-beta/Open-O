@@ -57,10 +57,10 @@ import org.oscarehr.ws.rest.to.model.Hl7TextMessageTo1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import oscar.oscarLab.FileUploadCheck;
-import oscar.oscarLab.ca.all.upload.HandlerClassFactory;
-import oscar.oscarLab.ca.all.upload.handlers.MessageHandler;
-import oscar.oscarLab.ca.all.util.Utilities;
+import ca.openosp.openo.lab.FileUploadCheck;
+import ca.openosp.openo.lab.ca.all.upload.HandlerClassFactory;
+import ca.openosp.openo.lab.ca.all.upload.handlers.MessageHandler;
+import ca.openosp.openo.lab.ca.all.util.Utilities;
 
 @Path("/labs")
 @Component("labService")

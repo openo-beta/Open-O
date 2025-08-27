@@ -50,6 +50,7 @@
 <%@ page import="java.time.ZoneId" %>
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.time.Duration" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>

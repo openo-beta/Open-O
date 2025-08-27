@@ -42,7 +42,7 @@ import org.oscarehr.util.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ca.openosp.openo.log.LogAction;
-import oscar.oscarProvider.data.ProSignatureData;
+import ca.openosp.openo.provider.data.ProSignatureData;
 import oscar.oscarRx.data.RxPatientData;
 import oscar.oscarRx.data.RxProviderData;
 import oscar.util.DateUtils;

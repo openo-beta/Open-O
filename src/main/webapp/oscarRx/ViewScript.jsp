@@ -30,6 +30,8 @@
 <%@page import="org.oscarehr.util.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Appointment" %>
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
+<%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
+<%@ page import="ca.openosp.openo.provider.data.ProSignatureData" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -207,7 +209,7 @@
             function printPaste2Parent() {
 
                 try {
-                    text = "****<%=oscar.oscarProvider.data.ProviderData.getProviderName(bean.getProviderNo())%>********************************************************************************";
+                    text = "****<%=ProviderData.getProviderName(bean.getProviderNo())%>********************************************************************************";
                     text = text.substring(0, 82) + "\n";
                     if (document.all) {
                         text += preview.document.forms[0].rx_no_newlines.value

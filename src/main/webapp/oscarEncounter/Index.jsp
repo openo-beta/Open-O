@@ -78,7 +78,7 @@
 <%@page
         import="oscar.log.*,oscar.util.UtilMisc,oscar.oscarEncounter.data.*, java.net.*,java.util.*,oscar.util.UtilDateUtilities" %>
 <%@page
-        import="oscar.oscarMDS.data.MDSResultsData,oscar.oscarLab.ca.on.*, oscar.oscarMessenger.util.MsgDemoMap, oscar.oscarMessenger.data.MsgMessageData" %>
+        import="ca.openosp.openo.mds.data.MDSResultsData,oscar.oscarLab.ca.on.*, ca.openosp.openo.messenger.util.MsgDemoMap, ca.openosp.openo.messenger.data.MsgMessageData" %>
 <%@page
         import="oscar.oscarEncounter.oscarMeasurements.*,oscar.oscarResearch.oscarDxResearch.bean.*" %>
 <% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
@@ -157,6 +157,8 @@
 <%@ page import="ca.openosp.openo.encounter.data.EctPatientData" %>
 <%@ page import="ca.openosp.openo.encounter.data.EctSplitChart" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

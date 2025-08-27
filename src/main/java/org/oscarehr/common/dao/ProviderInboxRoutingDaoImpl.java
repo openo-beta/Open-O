@@ -33,12 +33,13 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import ca.openosp.openo.lab.ca.on.LabResultData;
 import org.oscarehr.common.model.IncomingLabRules;
 import org.oscarehr.common.model.ProviderInboxItem;
 import org.oscarehr.util.MiscUtils;
 import org.springframework.stereotype.Repository;
 
-import oscar.oscarLab.ca.on.CommonLabResultData;
+import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 
 /**
  * @author jay gallagher
@@ -113,7 +114,7 @@ public class ProviderInboxRoutingDaoImpl extends AbstractDaoImpl<ProviderInboxIt
      * @param providerNo Provider to add lab results to
      * @param labNo      Document id to be added to the inbox
      * @param labType    Type of the document to be added. Available document types
-     *                   are defined in {@link oscar.oscarLab.ca.on.LabResultData}
+     *                   are defined in {@link LabResultData}
      *                   class.
      */
     // TODO Replace labType parameter with an enum

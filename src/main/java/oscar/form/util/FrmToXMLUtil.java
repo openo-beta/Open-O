@@ -45,7 +45,7 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean;
-import oscar.oscarProvider.data.ProviderData;
+import ca.openosp.openo.provider.data.ProviderData;
 import oscar.oscarRx.data.RxPatientData;
 import oscar.oscarRx.data.RxPrescriptionData;
 import oscar.util.ConversionUtils;

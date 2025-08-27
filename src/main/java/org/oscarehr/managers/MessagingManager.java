@@ -35,9 +35,9 @@ import org.oscarehr.common.model.MessageTbl;
 
 import org.oscarehr.util.LoggedInInfo;
 
-import oscar.oscarMessenger.data.ContactIdentifier;
-import oscar.oscarMessenger.data.MessengerSystemMessage;
-import oscar.oscarMessenger.data.MsgDisplayMessage;
+import ca.openosp.openo.messenger.data.ContactIdentifier;
+import ca.openosp.openo.messenger.data.MessengerSystemMessage;
+import ca.openosp.openo.messenger.data.MsgDisplayMessage;
 
 
 public interface MessagingManager {

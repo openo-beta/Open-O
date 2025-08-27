@@ -32,7 +32,7 @@ import org.oscarehr.common.model.OscarMsgType;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarMessenger.data.MessengerSystemMessage;
+import ca.openosp.openo.messenger.data.MessengerSystemMessage;
 import org.oscarehr.common.model.Security;
 import org.oscarehr.managers.MessagingManager;
 

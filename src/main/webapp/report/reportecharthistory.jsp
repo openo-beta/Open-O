@@ -55,6 +55,7 @@
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="org.oscarehr.common.dao.EChartDao" %>
 <%@ page import="org.oscarehr.common.model.EChart" %>
+<%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
 
 <%
     EChartDao eChartDao = SpringUtils.getBean(EChartDao.class);

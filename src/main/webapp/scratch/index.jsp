@@ -26,7 +26,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ page
         import="oscar.oscarDemographic.data.*,java.util.*,oscar.oscarPrevention.*,oscar.oscarLab.ca.on.*,oscar.util.*,oscar.oscarLab.*,oscar.scratch.*" %>
-<%@ page import="oscar.oscarProvider.data.ProviderColourUpdater" %>
+<%@ page import="ca.openosp.openo.provider.data.ProviderColourUpdater" %>
 <%@ page import="ca.openosp.openo.scratch.ScratchData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

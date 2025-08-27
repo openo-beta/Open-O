@@ -1851,7 +1851,10 @@
         <ViolationValue>/src/main/java/oscar/oscarMessenger/data/MsgAddressBook.java:public java.util.Vector remoteLocationId;</ViolationValue>
         <ViolationValue>/src/main/java/oscar/oscarMessenger/data/MsgAddressBook.java:public java.util.Vector remoteaddrBook;</ViolationValue>
         <ViolationValue>/src/main/java/oscar/oscarMessenger/data/MsgAddressBook.java:public void displayRemoteNodes(Node node,JspWriter out,int depth,String[] thePros,int remoId, java.util.Vector locationVector){</ViolationValue>
-        <ViolationValue>/src/main/java/oscar/oscarMessenger/data/MsgAddressBook.java:public void displayRemoteNodes2(Node node,JspWriter out,int depth,oscar.oscarMessenger.data.MsgReplyMessageData reData,int remoId, java.util.Vector locationVector){</ViolationValue>
+        <ViolationValue>/src/main/java/oscar/oscarMessenger/data/MsgAddressBook.java:public void
+          displayRemoteNodes2(Node node,JspWriter out,int
+          depth,ca.openosp.openo.messenger.data.MsgReplyMessageData reData,int remoId, java.util.Vector
+          locationVector){</ViolationValue>
         <ViolationValue>/src/main/java/oscar/oscarMessenger/data/MsgAddressBook.java:remoteLocationDesc      = new java.util.Vector();</ViolationValue>
         <ViolationValue>/src/main/java/oscar/oscarMessenger/data/MsgAddressBook.java:remoteLocationDesc = new java.util.Vector();</ViolationValue>
         <ViolationValue>/src/main/java/oscar/oscarMessenger/data/MsgAddressBook.java:remoteLocationId        = new java.util.Vector();</ViolationValue>

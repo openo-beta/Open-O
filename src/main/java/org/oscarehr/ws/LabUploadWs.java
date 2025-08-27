@@ -33,10 +33,10 @@ import org.oscarehr.util.MiscUtils;
 import org.springframework.stereotype.Component;
 import oscar.OscarProperties;
 import ca.openosp.openo.log.LogAction;
-import oscar.oscarLab.FileUploadCheck;
-import oscar.oscarLab.ca.all.upload.HandlerClassFactory;
-import oscar.oscarLab.ca.all.upload.handlers.MessageHandler;
-import oscar.oscarLab.ca.all.util.Utilities;
+import ca.openosp.openo.lab.FileUploadCheck;
+import ca.openosp.openo.lab.ca.all.upload.HandlerClassFactory;
+import ca.openosp.openo.lab.ca.all.upload.handlers.MessageHandler;
+import ca.openosp.openo.lab.ca.all.util.Utilities;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;

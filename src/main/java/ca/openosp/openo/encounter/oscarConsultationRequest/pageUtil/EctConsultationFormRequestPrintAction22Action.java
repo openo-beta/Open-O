@@ -48,9 +48,9 @@ import org.oscarehr.documentManager.EDoc;
 import org.oscarehr.documentManager.EDocUtil;
 import oscar.form.util.FormTransportContainer;
 import ca.openosp.openo.encounter.data.EctFormData;
-import oscar.oscarLab.ca.all.pageUtil.LabPDFCreator;
-import oscar.oscarLab.ca.on.CommonLabResultData;
-import oscar.oscarLab.ca.on.LabResultData;
+import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
+import ca.openosp.openo.lab.ca.on.CommonLabResultData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 import oscar.util.ConcatPDF;
 import oscar.util.UtilDateUtilities;
 

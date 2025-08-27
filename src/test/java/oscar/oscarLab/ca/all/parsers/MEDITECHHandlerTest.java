@@ -47,6 +47,7 @@ import java.util.zip.ZipFile;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import ca.openosp.openo.lab.ca.all.parsers.MEDITECHHandler;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
@@ -59,8 +60,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import ca.uhn.hl7v2.HL7Exception;
 import junit.framework.Assert;
-import oscar.oscarLab.ca.all.parsers.MEDITECHHandler.OBX_DATA_TYPES;
-import oscar.oscarLab.ca.all.parsers.MEDITECHHandler.UNSTRUCTURED;
+import ca.openosp.openo.lab.ca.all.parsers.MEDITECHHandler.OBX_DATA_TYPES;
+import ca.openosp.openo.lab.ca.all.parsers.MEDITECHHandler.UNSTRUCTURED;
 
 @RunWith(Parameterized.class)
 public class MEDITECHHandlerTest {

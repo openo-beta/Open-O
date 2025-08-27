@@ -25,7 +25,7 @@ import java.util.Map;
 import java.io.InputStream;
 import java.io.IOException;
 
-import oscar.oscarLab.ca.all.util.Utilities;
+import ca.openosp.openo.lab.ca.all.util.Utilities;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

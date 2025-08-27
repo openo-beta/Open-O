@@ -31,6 +31,8 @@
 <%@page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler,java.util.*,oscar.oscarRx.util.*" %>
 <%@page import="oscar.oscarLab.ca.on.*,oscar.util.*,oscar.oscarLab.*" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.lab.SortHashtable" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.CommonLabTestValues" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%

@@ -44,8 +44,8 @@ import org.springframework.stereotype.Component;
 import org.oscarehr.documentManager.EDoc;
 import org.oscarehr.documentManager.EDocUtil;
 import org.oscarehr.documentManager.EDocUtil.EDocSort;
-import oscar.oscarLab.ca.on.CommonLabResultData;
-import oscar.oscarLab.ca.on.LabResultData;
+import ca.openosp.openo.lab.ca.on.CommonLabResultData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 import oscar.util.StringUtils;
 
 @Component

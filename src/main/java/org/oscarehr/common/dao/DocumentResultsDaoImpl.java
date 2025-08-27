@@ -42,8 +42,8 @@ import org.oscarehr.common.model.ProviderInboxItem;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarLab.ca.on.CommonLabResultData;
-import oscar.oscarLab.ca.on.LabResultData;
+import ca.openosp.openo.lab.ca.on.CommonLabResultData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 
 public class DocumentResultsDaoImpl extends AbstractDaoImpl<Document> implements DocumentResultsDao {
 

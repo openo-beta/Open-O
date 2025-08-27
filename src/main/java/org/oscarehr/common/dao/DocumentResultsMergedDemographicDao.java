@@ -29,7 +29,7 @@ package org.oscarehr.common.dao;
 
 import java.util.ArrayList;
 
-import oscar.oscarLab.ca.on.LabResultData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 
 public interface DocumentResultsMergedDemographicDao extends DocumentResultsDao {
     ArrayList<LabResultData> populateDocumentResultsDataOfAllProviders(String providerNo, String demographicNo, String status);

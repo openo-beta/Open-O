@@ -35,8 +35,8 @@
                  oscar.oscarLab.ca.all.util.*,
                  org.oscarehr.util.SpringUtils,
                  oscar.oscarLab.ca.all.parsers.*,
-                 oscar.oscarLab.LabRequestReportLink,
-                 oscar.oscarMDS.data.ReportStatus,
+                 ca.openosp.openo.lab.LabRequestReportLink,
+                 ca.openosp.openo.mds.data.ReportStatus,
                  oscar.log.*,
                  oscar.OscarProperties,
                  org.apache.commons.codec.binary.Base64,
@@ -50,6 +50,12 @@
 <%@ page import="org.oscarehr.managers.TicklerManager" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
+<%@ page import="ca.openosp.openo.lab.ca.all.parsers.MessageHandler" %>
+<%@ page import="ca.openosp.openo.lab.ca.all.parsers.PATHL7Handler" %>
+<%@ page import="ca.openosp.openo.lab.ca.all.parsers.ExcellerisOntarioHandler" %>
+<%@ page import="ca.openosp.openo.lab.ca.all.parsers.Factory" %>
+<%@ page import="ca.openosp.openo.lab.ca.all.Hl7textResultsData" %>
+<%@ page import="ca.openosp.openo.lab.ca.all.AcknowledgementData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProperties" %>

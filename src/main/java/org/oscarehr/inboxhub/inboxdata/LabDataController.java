@@ -29,11 +29,11 @@ import org.oscarehr.inboxhub.query.InboxhubQuery.StatusFilter;
 import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
-import oscar.oscarLab.ca.on.CommonLabResultData;
-import oscar.oscarLab.ca.on.HRMResultsData;
-import oscar.oscarLab.ca.on.LabResultData;
-import oscar.oscarMDS.data.CategoryData;
-import oscar.oscarMDS.data.ProviderData;
+import ca.openosp.openo.lab.ca.on.CommonLabResultData;
+import ca.openosp.openo.lab.ca.on.HRMResultsData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
+import ca.openosp.openo.mds.data.CategoryData;
+import ca.openosp.openo.mds.data.ProviderData;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -51,7 +51,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class LabDataController {
 

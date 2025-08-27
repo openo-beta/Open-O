@@ -42,7 +42,7 @@
 
 <%@page import="org.oscarehr.common.dao.DataExportDao" %>
 <%@page import="org.apache.commons.lang.time.DateFormatUtils" %>
-<%@page import="oscar.oscarReport.data.DemographicSets" %>
+<%@page import="ca.openosp.openo.report.data.DemographicSets" %>
 <%@page import="java.util.List" %>
 <%@page import="org.oscarehr.common.model.DataExport" %>
 <%@include file="/casemgmt/taglibs.jsp" %>

@@ -40,6 +40,7 @@
 <%@ page import="java.util.Vector" %>
 <%@ page import="ca.openosp.openo.encounter.immunization.data.EctImmImmunizationData" %>
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
 
 <% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
 <%
@@ -498,7 +499,7 @@
 
             <%
                 String pAge = Integer.toString(oscar.util.UtilDateUtilities.calcAge(bean.yearOfBirth, bean.monthOfBirth, bean.dateOfBirth));
-                oscar.oscarLab.ca.on.CommonLabResultData comLab = new oscar.oscarLab.ca.on.CommonLabResultData();
+                CommonLabResultData comLab = new CommonLabResultData();
                 java.util.ArrayList labs = comLab.populateLabResultsData(LoggedInInfo.getLoggedInInfoFromSession(request), "", bean.demographicNo, "", "", "", "U");
                 session.setAttribute("casemgmt_labsbeans", labs);
             %>

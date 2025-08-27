@@ -61,6 +61,8 @@
 <%@ page import="org.oscarehr.documentManager.IncomingDocUtil" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
+<%@ page import="ca.openosp.openo.lab.ca.all.AcknowledgementData" %>
+<%@ page import="ca.openosp.openo.mds.data.ReportStatus" %>
 <%
 
     ProviderInboxRoutingDao providerInboxRoutingDao = SpringUtils.getBean(ProviderInboxRoutingDao.class);

@@ -50,6 +50,7 @@
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewConsultationRequestsUtil" %>
+<%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
 
 <%
     String demo = request.getParameter("de");
@@ -57,7 +58,7 @@
     DemographicData demoData = null;
     org.oscarehr.common.model.Demographic demographic = null;
 
-    oscar.oscarProvider.data.ProviderData pdata = new oscar.oscarProvider.data.ProviderData(proNo);
+    ProviderData pdata = new ProviderData(proNo);
     String team = pdata.getTeam();
 
     if (demo != null) {

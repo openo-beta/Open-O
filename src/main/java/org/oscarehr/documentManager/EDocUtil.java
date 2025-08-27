@@ -82,8 +82,8 @@ import org.oscarehr.util.SpringUtils;
 
 import oscar.MyDateFormat;
 import oscar.OscarProperties;
-import oscar.oscarLab.ca.all.AcknowledgementData;
-import oscar.oscarMDS.data.ReportStatus;
+import ca.openosp.openo.lab.ca.all.AcknowledgementData;
+import ca.openosp.openo.mds.data.ReportStatus;
 import oscar.util.ConversionUtils;
 import oscar.util.DateUtils;
 import oscar.util.UtilDateUtilities;

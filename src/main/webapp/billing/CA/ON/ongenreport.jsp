@@ -24,7 +24,7 @@
 <%@ page import="java.math.*,java.util.*,java.sql.*,oscar.*,oscar.oscarBilling.ca.on.OHIP.*,java.net.*"
          errorPage="/errorpage.jsp" %>
 <%@ page import="oscar.oscarBilling.ca.on.pageUtil.*" %>
-<%@ page import="oscar.oscarBilling.ca.on.data.*,oscar.oscarProvider.data.ProviderBillCenter" %>
+<%@ page import="oscar.oscarBilling.ca.on.data.*,ca.openosp.openo.provider.data.ProviderBillCenter" %>
 
 <jsp:useBean id="apptMainBean" class="oscar.AppointmentMainBean"
              scope="session"/>

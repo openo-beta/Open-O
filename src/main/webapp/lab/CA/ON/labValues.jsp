@@ -43,7 +43,7 @@
 <%@page import="java.io.Serializable" %>
 <%@page import="org.w3c.dom.Document" %>
 <%@page import="org.oscarehr.caisi_integrator.ws.CachedDemographicLabResult" %>
-<%@page import="oscar.oscarLab.ca.all.web.LabDisplayHelper" %>
+<%@page import="ca.openosp.openo.lab.ca.all.web.LabDisplayHelper" %>
 <%@ page
         import="java.util.*,oscar.oscarLab.ca.on.*,oscar.oscarDemographic.data.*" %>
 <%@ page import="org.owasp.encoder.Encode" %>
@@ -51,6 +51,7 @@
 <%@ page import="org.oscarehr.managers.DemographicManager" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.CommonLabTestValues" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     String labType = request.getParameter("labType");

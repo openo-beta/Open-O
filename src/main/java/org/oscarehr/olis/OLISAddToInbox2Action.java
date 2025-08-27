@@ -27,10 +27,10 @@ import org.oscarehr.util.SpringUtils;
 
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
-import oscar.oscarLab.FileUploadCheck;
-import oscar.oscarLab.ca.all.upload.HandlerClassFactory;
-import oscar.oscarLab.ca.all.upload.handlers.OLISHL7Handler;
-import oscar.oscarLab.ca.on.CommonLabResultData;
+import ca.openosp.openo.lab.FileUploadCheck;
+import ca.openosp.openo.lab.ca.all.upload.HandlerClassFactory;
+import ca.openosp.openo.lab.ca.all.upload.handlers.OLISHL7Handler;
+import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

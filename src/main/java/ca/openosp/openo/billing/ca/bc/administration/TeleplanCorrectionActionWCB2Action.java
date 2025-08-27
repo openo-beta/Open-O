@@ -49,7 +49,7 @@ import org.oscarehr.util.SpringUtils;
 import ca.openosp.openo.billing.ca.bc.MSP.MSPReconcile;
 import ca.openosp.openo.billing.ca.bc.data.BillingHistoryDAO;
 import ca.openosp.openo.billing.ca.bc.data.BillingmasterDAO;
-import oscar.oscarProvider.data.ProviderData;
+import ca.openosp.openo.provider.data.ProviderData;
 import oscar.util.ConversionUtils;
 import oscar.util.StringUtils;
 

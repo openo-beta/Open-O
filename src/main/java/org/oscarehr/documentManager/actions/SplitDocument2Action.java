@@ -49,7 +49,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import org.oscarehr.documentManager.EDoc;
 import org.oscarehr.documentManager.EDocUtil;
-import oscar.oscarLab.ca.all.upload.ProviderLabRouting;
+import ca.openosp.openo.lab.ca.all.upload.ProviderLabRouting;
 
 
 import com.opensymphony.xwork2.ActionSupport;

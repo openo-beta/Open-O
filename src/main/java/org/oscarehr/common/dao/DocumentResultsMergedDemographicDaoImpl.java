@@ -32,7 +32,7 @@ import java.util.List;
 
 import org.oscarehr.common.merge.MergedDemographicTemplate;
 import org.springframework.stereotype.Repository;
-import oscar.oscarLab.ca.on.LabResultData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 import oscar.util.ConversionUtils;
 
 @Repository("documentResultsDao")

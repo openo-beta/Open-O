@@ -57,9 +57,9 @@ import org.oscarehr.managers.SecurityInfoManager;
 import org.oscarehr.util.*;
 import oscar.OscarProperties;
 import ca.openosp.openo.encounter.data.EctFormData;
-import oscar.oscarLab.ca.all.pageUtil.LabPDFCreator;
-import oscar.oscarLab.ca.on.CommonLabResultData;
-import oscar.oscarLab.ca.on.LabResultData;
+import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
+import ca.openosp.openo.lab.ca.on.CommonLabResultData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;

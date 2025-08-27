@@ -13,23 +13,10 @@
 
 package org.oscarehr.common.dao;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-
-import org.apache.http.impl.cookie.DateUtils;
-import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.SystemPreferences;
-import org.oscarehr.util.SpringUtils;
-
-import oscar.oscarLab.ca.on.LabResultData;
-import oscar.util.StringUtils;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 
 public interface InboxResultsDao {
 

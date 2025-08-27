@@ -38,7 +38,7 @@ import org.apache.tools.ant.util.DateUtils;
 import org.oscarehr.integration.mcedt.DelegateFactory;
 import org.oscarehr.util.MiscUtils;
 import oscar.OscarProperties;
-import oscar.oscarReport.data.ObecData;
+import ca.openosp.openo.report.data.ObecData;
 
 public class OBECRunner {
 

@@ -52,6 +52,8 @@
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
 <%@ page import="org.oscarehr.documentManager.EDocUtil" %>
 <%@ page import="org.oscarehr.documentManager.EDoc" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

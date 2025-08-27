@@ -49,6 +49,7 @@
 <%@ page import="ca.openosp.openo.demographic.pageUtil.Util" %>
 <%@ page import="ca.openosp.openo.demographic.pageUtil.DemographicExportAction42Action" %>
 <%@ page import="ca.openosp.openo.demographic.pageUtil.PGPEncrypt" %>
+<%@ page import="ca.openosp.openo.report.data.DemographicSets" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>

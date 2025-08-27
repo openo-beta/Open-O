@@ -83,7 +83,7 @@
 
 %>
 <%@ page
-        import="java.util.*, java.net.*,java.text.DecimalFormat, oscar.*, ca.openosp.openo.demographic.data.ProvinceNames, oscar.oscarWaitingList.WaitingList, oscar.oscarReport.data.DemographicSets,oscar.log.*" %>
+        import="java.util.*, java.net.*,java.text.DecimalFormat, oscar.*, ca.openosp.openo.demographic.data.ProvinceNames, oscar.oscarWaitingList.WaitingList, ca.openosp.openo.report.data.DemographicSets,oscar.log.*" %>
 <%@ page import="oscar.oscarDemographic.data.*" %>
 <%@ page import="ca.openosp.openo.demographic.pageUtil.Util" %>
 <%@ page import="oscar.OscarProperties" %>

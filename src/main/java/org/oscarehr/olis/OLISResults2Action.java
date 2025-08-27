@@ -40,11 +40,11 @@ import ca.openosp.openo.olis.queries.Z01Query;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.log.LogAction;
-import oscar.oscarLab.ca.all.parsers.Factory;
-import oscar.oscarLab.ca.all.parsers.MessageHandler;
-import oscar.oscarLab.ca.all.parsers.OLISHL7Handler;
-import oscar.oscarLab.ca.all.upload.MessageUploader;
-import oscar.oscarLab.ca.all.util.Utilities;
+import ca.openosp.openo.lab.ca.all.parsers.Factory;
+import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
+import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
+import ca.openosp.openo.lab.ca.all.upload.MessageUploader;
+import ca.openosp.openo.lab.ca.all.util.Utilities;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

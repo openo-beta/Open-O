@@ -35,7 +35,7 @@ import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 import oscar.OscarProperties;
 import ca.openosp.openo.encounter.data.EctFormData;
-import oscar.oscarLab.LabRequestReportLink;
+import ca.openosp.openo.lab.LabRequestReportLink;
 import oscar.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;

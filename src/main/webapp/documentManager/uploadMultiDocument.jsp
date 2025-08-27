@@ -57,6 +57,7 @@
 <%@page import="org.oscarehr.util.SessionConstants" %>
 <%@page import="oscar.oscarProvider.data.*" %>
 <%@ page import="org.oscarehr.documentManager.EDocUtil" %>
+<%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
 <%
     List providers = ProviderData.getProviderList();
     String provider = "";

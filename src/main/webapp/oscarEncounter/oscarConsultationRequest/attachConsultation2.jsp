@@ -38,7 +38,7 @@
 <%@ page
         import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, oscar.util.*, java.net.*,oscar.MyDateFormat, ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.ConsultationAttachDocs" %>
 <%@ page import="oscar.oscarLab.ca.on.*" %>
-<%@ page import="oscar.oscarLab.ca.all.Hl7textResultsData" %>
+<%@ page import="ca.openosp.openo.lab.ca.all.Hl7textResultsData" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="org.oscarehr.util.SessionConstants" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
@@ -51,6 +51,8 @@
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
 <%@ page import="org.oscarehr.documentManager.EDocUtil" %>
 <%@ page import="org.oscarehr.documentManager.EDoc" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
 
 <!-- Deprecated: Please use attachDocument.jsp. -->
 <%

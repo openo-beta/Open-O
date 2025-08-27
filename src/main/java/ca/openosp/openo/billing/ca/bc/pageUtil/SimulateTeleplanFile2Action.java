@@ -34,7 +34,7 @@ import oscar.OscarProperties;
 import ca.openosp.openo.billing.ca.bc.MSP.TeleplanFileWriter;
 import ca.openosp.openo.billing.ca.bc.MSP.TeleplanSubmission;
 import ca.openosp.openo.billing.ca.bc.data.BillingmasterDAO;
-import oscar.oscarProvider.data.ProviderData;
+import ca.openosp.openo.provider.data.ProviderData;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -279,7 +279,7 @@
 	</servlet>
 	<servlet>
 		<servlet-name>reportDownload</servlet-name>
-		<servlet-class>oscar.oscarReport.pageUtil.RptDownloadCSVServlet</servlet-class>
+		<servlet-class>ca.openosp.openo.report.pageUtil.RptDownloadCSVServlet</servlet-class>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet>
@@ -313,7 +313,7 @@
 	</servlet>
 	<servlet>
 		<servlet-name>PatientListByAppt</servlet-name>
-		<servlet-class>oscar.oscarReport.data.PatientListByAppt</servlet-class>
+		<servlet-class>ca.openosp.openo.report.data.PatientListByAppt</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>ImageRenderingServlet</servlet-name>

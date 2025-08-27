@@ -53,6 +53,8 @@
 <%@ page import="org.oscarehr.documentManager.EDocUtil" %>
 <%@ page import="org.oscarehr.documentManager.EDoc" %>
 <%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="ca.openosp.openo.lab.ca.all.AcknowledgementData" %>
+<%@ page import="ca.openosp.openo.mds.data.ReportStatus" %>
 <%!
     ProviderInboxRoutingDao providerInboxRoutingDao = SpringUtils.getBean(ProviderInboxRoutingDao.class);
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);

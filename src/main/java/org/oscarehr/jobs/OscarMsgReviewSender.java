@@ -50,7 +50,7 @@ import org.oscarehr.util.LoggedInInfo;
 import org.oscarehr.util.MiscUtils;
 import org.oscarehr.util.SpringUtils;
 
-import oscar.oscarMessenger.data.MessengerSystemMessage;
+import ca.openosp.openo.messenger.data.MessengerSystemMessage;
 
 
 /**

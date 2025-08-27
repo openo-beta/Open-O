@@ -33,6 +33,8 @@
 <%@ page import="org.apache.logging.log4j.Logger" %>
 <%@ page import="oscar.*,java.lang.*,java.util.Date" %>
 <%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
+<%@ page import="ca.openosp.openo.provider.data.ProSignatureData" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
