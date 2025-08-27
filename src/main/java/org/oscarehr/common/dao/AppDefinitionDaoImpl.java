@@ -64,7 +64,6 @@ public class AppDefinitionDaoImpl extends AbstractDaoImpl<AppDefinition> impleme
     @SuppressWarnings("unchecked")
     @Override
     public AppDefinition findByConsumerKey(String consumerKey) {
-        System.out.println("Looking up app for consumer key: " + consumerKey);
         Query query = entityManager.createQuery("select x from AppDefinition x where x.config like ?1");
         query.setParameter(1, "%<consumerKey>" + consumerKey + "</consumerKey>%");
 

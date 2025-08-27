@@ -128,4 +128,6 @@ public class ServiceAccessToken extends AbstractModel<Integer> {
     public void setScopes(String scopes) {
         this.scopes = scopes;
     }
+
+
 }
