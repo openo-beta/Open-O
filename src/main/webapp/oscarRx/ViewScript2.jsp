@@ -24,31 +24,36 @@
 
 --%>
 <%@ page
-        import="oscar.oscarProvider.data.*, oscar.oscarRx.data.*,oscar.OscarProperties, oscar.oscarClinic.ClinicData, java.util.*" %>
+        import="oscar.oscarProvider.data.*, oscar.oscarRx.data.*,oscar.OscarProperties, ca.openosp.openo.clinic.ClinicData, java.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ page import="org.oscarehr.util.DigitalSignatureUtils" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.DigitalSignatureUtils" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="org.oscarehr.ui.servlet.ImageRenderingServlet" %>
 <%! boolean bMultisites = org.oscarehr.common.IsPropertiesOn.isMultisitesEnable(); %>
 
 
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
-<%@ page import="org.oscarehr.managers.FaxManager" %>
+<%@ page import="ca.openosp.openo.managers.FaxManager" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="org.oscarehr.PMmodule.service.ProviderManager" %>
 <%@ page import="org.oscarehr.common.model.*" %>
-<%@ page import="oscar.oscarProvider.data.ProviderData" %>
+<%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="org.oscarehr.common.model.enumerator.ModuleType" %>
+<%@ page import="ca.openosp.openo.provider.data.ProSignatureData" %>
+<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.rx.data.RxProviderData" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPharmacyData" %>
 
 <%
     OscarAppointmentDao appointmentDao = SpringUtils.getBean(OscarAppointmentDao.class);
@@ -91,7 +96,7 @@
             ProviderManager providerManager = SpringUtils.getBean(ProviderManager.class);
         %>
         <%
-            oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) pageContext.findAttribute("bean");
+            RxSessionBean bean = (RxSessionBean) pageContext.findAttribute("bean");
             Provider provider = providerManager.getProvider(bean.getProviderNo());
             String providerFax = provider.getWorkPhone();
             if (providerFax == null) {
@@ -114,7 +119,7 @@
 
             String createAnewRx;
             if (reprint.equalsIgnoreCase("true")) {
-                bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("tmpBeanRX");
+                bean = (RxSessionBean) session.getAttribute("tmpBeanRX");
                 createAnewRx = "window.location.href = '" + request.getContextPath() + "/oscarRx/SearchDrug.jsp'";
             } else {
                 createAnewRx = "javascript:clearPending('')";
@@ -134,7 +139,7 @@
                     if (result != null) location = result.getLocation();
                 }
 
-                oscar.oscarRx.data.RxProviderData.Provider rxprovider = new oscar.oscarRx.data.RxProviderData().getProvider(bean.getProviderNo());
+                RxProviderData.Provider rxprovider = new RxProviderData().getProvider(bean.getProviderNo());
                 ProSignatureData sig = new ProSignatureData();
                 boolean hasSig = sig.hasSignature(bean.getProviderNo());
                 String doctorName = "";
@@ -166,7 +171,7 @@
 
 
             } else if (props.getProperty("clinicSatelliteName") != null) {
-                oscar.oscarRx.data.RxProviderData.Provider rxprovider = new oscar.oscarRx.data.RxProviderData().getProvider(bean.getProviderNo());
+                RxProviderData.Provider rxprovider = new RxProviderData().getProvider(bean.getProviderNo());
                 ProSignatureData sig = new ProSignatureData();
                 boolean hasSig = sig.hasSignature(bean.getProviderNo());
                 String doctorName = "";
@@ -362,7 +367,7 @@
                             if(prefPharmacy!=null && prefPharmacy.trim()!=""){ %>
                     text += "<%=prefPharmacy%>\n"
                     <% } %>
-                    text += "****<%=Encode.forJavaScript(oscar.oscarProvider.data.ProviderData.getProviderName(bean.getProviderNo()))%>********************************************************************************\n";
+                    text += "****<%=Encode.forJavaScript(ProviderData.getProviderName(bean.getProviderNo()))%>********************************************************************************\n";
                     <% } %>
 
                     //we support pasting into orig encounter and new casemanagement
@@ -868,7 +873,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                         </tr>
                                         <%
                                             for (int i = 0; i < bean.getStashSize(); i++) {
-                                                oscar.oscarRx.data.RxPrescriptionData.Prescription rx
+                                                RxPrescriptionData.Prescription rx
                                                         = bean.getStashItem(i);
 
                                                 if (!rx.isCustom()) {

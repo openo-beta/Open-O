@@ -40,7 +40,7 @@
     }
 %>
 <%@page import="org.oscarehr.web.admin.KeyManagerUIBean" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%
     String serviceName = request.getParameter("serviceName");

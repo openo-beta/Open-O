@@ -37,7 +37,7 @@ import org.oscarehr.common.PaginationQuery;
 import org.oscarehr.common.dao.AbstractDaoImpl;
 import org.oscarehr.common.model.Tickler;
 import org.oscarehr.ticklers.web.TicklerQuery;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository

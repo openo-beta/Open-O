@@ -32,7 +32,7 @@ import org.oscarehr.common.dao.PublicKeyDao;
 import org.oscarehr.common.model.OscarKey;
 import org.oscarehr.common.model.ProfessionalSpecialist;
 import org.oscarehr.common.model.PublicKey;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public final class KeyManagerUIBean {
 

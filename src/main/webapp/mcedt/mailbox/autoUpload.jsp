@@ -35,7 +35,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ page
-        import="java.io.*,java.util.*, java.sql.*, oscar.*, java.net.*, org.oscarehr.integration.mcedt.mailbox.ActionUtils, java.math.BigInteger,ca.ontario.health.edt.ResponseResult" %>
+        import="java.io.*,java.util.*, java.sql.*, oscar.*, java.net.*, ca.openosp.openo.integration.mcedt.mailbox.ActionUtils, java.math.BigInteger,ca.ontario.health.edt.ResponseResult" %>
 <%
 
     List<File> toEdt = ActionUtils.getUploadList();

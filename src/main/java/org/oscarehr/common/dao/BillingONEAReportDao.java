@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.oscarehr.common.model.BillingONEAReport;
-import ca.openosp.openo.oscarBilling.ca.on.data.BillingProviderData;
+import ca.openosp.openo.billings.ca.on.data.BillingProviderData;
 
 public interface BillingONEAReportDao extends AbstractDao<BillingONEAReport> {
     List<BillingONEAReport> findByProviderOhipNoAndGroupNoAndSpecialtyAndProcessDate(String providerOhipNo, String groupNo, String specialty, Date processDate);

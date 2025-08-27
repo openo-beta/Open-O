@@ -27,14 +27,14 @@ package org.oscarehr.ws.rest.conversion.summary;
 import java.util.List;
 
 import org.oscarehr.common.model.Drug;
-import org.oscarehr.managers.PrescriptionManager;
-import org.oscarehr.util.LoggedInInfo;
+import ca.openosp.openo.managers.PrescriptionManager;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.SummaryItemTo1;
 import org.oscarehr.ws.rest.to.model.SummaryTo1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 
 @Component

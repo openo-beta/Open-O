@@ -40,14 +40,17 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
 <%@page
         import="oscar.oscarEncounter.pageUtil.*,oscar.oscarEncounter.data.*" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil" %>
+<%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewConsultationRequestsUtil" %>
+<%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
 
 <%
     String demo = request.getParameter("de");
@@ -55,7 +58,7 @@
     DemographicData demoData = null;
     org.oscarehr.common.model.Demographic demographic = null;
 
-    oscar.oscarProvider.data.ProviderData pdata = new oscar.oscarProvider.data.ProviderData(proNo);
+    ProviderData pdata = new ProviderData(proNo);
     String team = pdata.getTeam();
 
     if (demo != null) {
@@ -64,12 +67,12 @@
     } else
         response.sendRedirect("../error.jsp");
 
-    oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil consultUtil;
-    consultUtil = new oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil();
+    EctConsultationFormRequestUtil consultUtil;
+    consultUtil = new EctConsultationFormRequestUtil();
     consultUtil.estPatient(LoggedInInfo.getLoggedInInfoFromSession(request), demo);
 
-    oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctViewConsultationRequestsUtil theRequests;
-    theRequests = new oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctViewConsultationRequestsUtil();
+    EctViewConsultationRequestsUtil theRequests;
+    theRequests = new EctViewConsultationRequestsUtil();
     theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demo);
 %>
 

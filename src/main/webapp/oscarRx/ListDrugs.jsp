@@ -26,7 +26,7 @@
 
 <%@page import="org.oscarehr.common.model.PartialDate" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.casemgmt.web.PrescriptDrug" %>
+<%@page import="ca.openosp.openo.casemgmt.web.PrescriptDrug" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -34,29 +34,33 @@
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ page
-        import="oscar.oscarRx.data.*,ca.openosp.openo.oscarDemographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
-<%@page import="org.oscarehr.casemgmt.service.CaseManagementManager,
+        import="oscar.oscarRx.data.*,ca.openosp.openo.demographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
+<%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager,
                 org.springframework.web.context.WebApplicationContext,
                 org.springframework.web.context.support.WebApplicationContextUtils,
-                org.oscarehr.casemgmt.model.CaseManagementNoteLink,
-                org.oscarehr.casemgmt.model.CaseManagementNote" %>
+                ca.openosp.openo.casemgmt.model.CaseManagementNoteLink,
+                ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
 <%@page import="java.text.SimpleDateFormat" %>
 <%@page import="java.util.Calendar" %>
 <%@page import="java.util.Enumeration" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
-<%@page import="java.util.List,oscar.util.StringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
+<%@page import="java.util.List,ca.openosp.openo.util.StringUtils" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
-<%@page import="org.oscarehr.util.LoggedInInfo,org.oscarehr.common.dao.DrugReasonDao,org.oscarehr.common.model.DrugReason" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo,org.oscarehr.common.dao.DrugReasonDao,org.oscarehr.common.model.DrugReason" %>
 <%@page import="java.util.ArrayList,oscar.util.*,java.util.*,org.oscarehr.common.model.Drug,org.oscarehr.common.dao.*" %>
-<%@page import="org.oscarehr.managers.DrugDispensingManager" %>
-<%@page import="org.oscarehr.managers.CodingSystemManager" %>
+<%@page import="ca.openosp.openo.managers.DrugDispensingManager" %>
+<%@page import="ca.openosp.openo.managers.CodingSystemManager" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.openo.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.services.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 
 <%
-    oscar.oscarRx.data.RxPatientData.Patient patient = null;
-    oscar.oscarRx.pageUtil.RxSessionBean bean = null;
+    RxPatientData.Patient patient = null;
+    RxSessionBean bean = null;
 %>
 <c:if test="${empty sessionScope.RxSessionBean}">
     <c:redirect url="error.html"/>
@@ -64,12 +68,12 @@
 <c:if test="${not empty sessionScope.RxSessionBean}">
     <%
         // Directly access the RxSessionBean from the session
-        bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
+        bean = (RxSessionBean) session.getAttribute("RxSessionBean");
         if (bean != null && !bean.isValid()) {
             response.sendRedirect("error.html");
             return; // Ensure no further JSP processing
         }
-        patient = (oscar.oscarRx.data.RxPatientData.Patient) request.getSession().getAttribute("Patient");
+        patient = (RxPatientData.Patient) request.getSession().getAttribute("Patient");
     %>
 </c:if>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
@@ -182,7 +186,7 @@
     CodingSystemManager codingSystemManager = SpringUtils.getBean(CodingSystemManager.class);
 
     boolean integratorEnabled = loggedInInfo.getCurrentFacility().isIntegratorEnabled();
-    String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_PRESCRIP;
+    String annotation_display = CaseManagementNoteLink.DISP_PRESCRIP;
     String heading = request.getParameter("heading");
 
     if (heading != null) {
@@ -292,13 +296,13 @@
         %>
         <tr>
             <td valign="top"><a id="createDate_<%=prescriptIdInt%>"   <%=styleColor%>
-                                href="oscarRx/StaticScript2.jsp?regionalIdentifier=<%=prescriptDrug.getRegionalIdentifier()%>&amp;cn=<%=response.encodeURL(prescriptDrug.getCustomName())%>&amp;bn=<%=response.encodeURL(bn)%>&amp;atc=<%=prescriptDrug.getAtc()%>"><%=oscar.util.UtilDateUtilities.DateToString(prescriptDrug.getCreateDate())%>
+                                href="oscarRx/StaticScript2.jsp?regionalIdentifier=<%=prescriptDrug.getRegionalIdentifier()%>&amp;cn=<%=response.encodeURL(prescriptDrug.getCustomName())%>&amp;bn=<%=response.encodeURL(bn)%>&amp;atc=<%=prescriptDrug.getAtc()%>"><%=UtilDateUtilities.DateToString(prescriptDrug.getCreateDate())%>
             </a></td>
             <td valign="top">
                 <% if (startDateUnknown) { %>
 
                 <% } else {
-                    String startDate = oscar.util.UtilDateUtilities.DateToString(prescriptDrug.getRxDate());
+                    String startDate = UtilDateUtilities.DateToString(prescriptDrug.getRxDate());
                     startDate = partialDateDao.getDatePartial(startDate, PartialDate.DRUGS, prescriptDrug.getId(), PartialDate.DRUGS_STARTDATE);
                 %>
                 <a id="rxDate_<%=prescriptIdInt%>"   <%=styleColor%>

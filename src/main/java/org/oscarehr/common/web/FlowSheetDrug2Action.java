@@ -37,10 +37,10 @@ import org.oscarehr.common.dao.FlowSheetDrugDao;
 import org.oscarehr.common.dao.FlowSheetDxDao;
 import org.oscarehr.common.model.FlowSheetDrug;
 import org.oscarehr.common.model.FlowSheetDx;
-import org.oscarehr.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.managers.SecurityInfoManager;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

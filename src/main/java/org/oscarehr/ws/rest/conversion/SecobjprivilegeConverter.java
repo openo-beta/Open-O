@@ -24,7 +24,7 @@
  */
 package org.oscarehr.ws.rest.conversion;
 
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.UserPrivilegeTo1;
 
 import ca.openosp.openo.model.security.Secobjprivilege;

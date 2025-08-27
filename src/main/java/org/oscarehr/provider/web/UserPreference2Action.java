@@ -36,17 +36,17 @@ import org.oscarehr.common.model.EForm;
 import org.oscarehr.common.model.EncounterForm;
 import org.oscarehr.common.model.Security;
 import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import ca.openosp.openo.oscarBilling.ca.bc.MSP.MSPReconcile;
-import oscar.util.LabelValueBean;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile;
+import ca.openosp.openo.util.LabelValueBean;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import org.oscarehr.managers.SecurityManager;
+import ca.openosp.openo.managers.SecurityManager;
 import java.security.MessageDigest;
 import java.util.*;
 

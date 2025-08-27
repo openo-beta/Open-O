@@ -9,7 +9,7 @@
 
 --%>
 <%@ page import="java.util.*" %>
-<%@ page import="org.oscarehr.util.SpringUtils, org.oscarehr.common.model.Document" %>
+<%@ page import="org.oscarehr.utility.SpringUtils, org.oscarehr.common.model.Document" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="org.oscarehr.common.dao.DocumentDao" %>

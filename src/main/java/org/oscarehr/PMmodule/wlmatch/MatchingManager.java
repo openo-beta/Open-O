@@ -48,8 +48,8 @@ import org.oscarehr.PMmodule.model.CriteriaType;
 import org.oscarehr.PMmodule.model.Vacancy;
 import org.oscarehr.PMmodule.model.VacancyClientMatch;
 import org.oscarehr.common.model.EFormData;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class MatchingManager {
     private static final Logger logger = MiscUtils.getLogger();

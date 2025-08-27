@@ -37,8 +37,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.EncryptionUtils;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.EncryptionUtils;
+import org.oscarehr.utility.MiscUtils;
 
 
 @Entity

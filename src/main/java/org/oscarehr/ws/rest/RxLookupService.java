@@ -26,17 +26,17 @@
 package org.oscarehr.ws.rest;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.managers.DrugLookUp;
-import org.oscarehr.managers.SecurityInfoManager;
-import org.oscarehr.util.MiscUtils;
+import ca.openosp.openo.managers.DrugLookUp;
+import ca.openosp.openo.managers.SecurityInfoManager;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.ws.rest.to.DrugLookupResponse;
 import org.oscarehr.ws.rest.to.DrugResponse;
 import org.oscarehr.ws.rest.to.model.DrugSearchTo1;
 import org.oscarehr.ws.rest.to.model.DrugTo1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import oscar.oscarRx.data.RxPrescriptionData;
-import oscar.oscarRx.util.RxUtil;
+import ca.openosp.openo.rx.data.RxPrescriptionData;
+import ca.openosp.openo.rx.util.RxUtil;
 
 import javax.ws.rs.*;
 import java.util.ArrayList;

@@ -26,7 +26,7 @@ package org.oscarehr.ws.rest.conversion;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.oscarehr.common.model.Document;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.OtnEconsult;
 import org.springframework.stereotype.Component;
 

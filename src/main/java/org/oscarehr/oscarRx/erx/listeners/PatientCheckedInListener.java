@@ -32,11 +32,11 @@ import org.oscarehr.common.dao.ProviderPreferenceDao;
 import org.oscarehr.common.model.Appointment;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.ProviderPreference;
-import org.oscarehr.event.AppointmentStatusChangeEvent;
+import ca.openosp.openo.event.AppointmentStatusChangeEvent;
 import org.oscarehr.oscarRx.erx.ERxPatientRecordSynchronizer;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.context.ApplicationListener;
 
 /**

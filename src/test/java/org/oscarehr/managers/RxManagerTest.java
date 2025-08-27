@@ -24,17 +24,19 @@
 
 package org.oscarehr.managers;
 
+import ca.openosp.openo.managers.PrescriptionManagerImpl;
+import ca.openosp.openo.managers.RxManager;
+import ca.openosp.openo.managers.RxManagerImpl;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.oscarehr.common.dao.DrugDao;
 import org.oscarehr.common.dao.DrugDaoImpl;
 import org.oscarehr.common.exception.AccessDeniedException;
 import org.oscarehr.common.model.AbstractModel;
 import org.oscarehr.common.model.Drug;
 import org.oscarehr.common.model.Prescription;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 import java.util.ArrayList;
 import java.util.Date;

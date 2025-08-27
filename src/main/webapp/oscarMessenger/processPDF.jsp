@@ -25,7 +25,7 @@
 --%>
 
 <%@ page
-        import="oscar.oscarMessenger.docxfer.send.*,oscar.oscarMessenger.docxfer.util.*, oscar.oscarEncounter.data.*, oscar.oscarEncounter.pageUtil.EctSessionBean " %>
+        import="oscar.oscarMessenger.docxfer.send.*,oscar.oscarMessenger.docxfer.util.*, oscar.oscarEncounter.data.*, ca.openosp.openo.encounter.pageUtil.EctSessionBean " %>
 <%@  page
         import=" java.util.*, org.w3c.dom.*, java.sql.*, oscar.*, java.text.*, java.lang.*,java.net.*"
         errorPage="../appointment/errorpage.jsp" %>

@@ -29,13 +29,13 @@ import java.util.ArrayList;
 
 import org.oscarehr.common.dao.EFormDataDao;
 import org.oscarehr.common.model.EFormData;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
-import org.oscarehr.documentManager.EDoc;
-import org.oscarehr.documentManager.EDocUtil;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.documentManager.EDoc;
+import ca.openosp.openo.documentManager.EDocUtil;
+import ca.openosp.openo.util.ConversionUtils;
 
 /**
  * Handles logic of attaching documents to a specified consultation

@@ -33,7 +33,7 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 import org.oscarehr.common.dao.AbstractDaoImpl;
 
-import oscar.form.model.FormRourke2009;
+import ca.openosp.openo.form.model.FormRourke2009;
 
 /**
  * @author rjonasz

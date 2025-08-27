@@ -30,18 +30,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.oscarehr.managers.PreventionManager;
+import ca.openosp.openo.managers.PreventionManager;
 import org.oscarehr.common.model.Prevention;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import org.oscarehr.ws.rest.to.model.SummaryItemTo1;
 import org.oscarehr.ws.rest.to.model.SummaryTo1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import oscar.oscarPrevention.PreventionDS;
-import oscar.oscarPrevention.PreventionData;
-import oscar.oscarPrevention.PreventionDisplayConfig;
+import ca.openosp.openo.prevention.PreventionDS;
+import ca.openosp.openo.prevention.PreventionData;
+import ca.openosp.openo.prevention.PreventionDisplayConfig;
 
 
 @Component
@@ -72,7 +72,7 @@ public class PreventionsSummary implements Summary {
 
         SummaryItemTo1 summaryItem;
 
-        oscar.oscarPrevention.Prevention p = PreventionData.getPrevention(loggedInInfo, demographicNo);
+        ca.openosp.openo.prevention.Prevention p = PreventionData.getPrevention(loggedInInfo, demographicNo);
 
         PreventionDS pf = SpringUtils.getBean(PreventionDS.class);
 

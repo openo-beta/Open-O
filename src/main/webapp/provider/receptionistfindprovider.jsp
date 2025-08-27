@@ -23,8 +23,8 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -42,7 +42,7 @@
 <%@ page import="java.util.*, java.sql.*, oscar.*, java.text.*, java.lang.*,java.net.*"
          errorPage="../appointment/errorpage.jsp" %>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.MyGroupDao" %>
 <%@page import="org.oscarehr.common.model.MyGroup" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>

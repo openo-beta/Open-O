@@ -33,7 +33,7 @@ import javax.persistence.Query;
 
 import org.oscarehr.common.NativeSql;
 import org.oscarehr.common.model.DxAssociation;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository

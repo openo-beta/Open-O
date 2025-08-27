@@ -33,7 +33,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.common.dao.AbstractDaoImpl;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.TypedQuery;

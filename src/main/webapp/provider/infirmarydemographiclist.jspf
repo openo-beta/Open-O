@@ -2,9 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
-<%@ page import="org.oscarehr.managers.TicklerManager" %>
+<%@ page import="ca.openosp.openo.managers.TicklerManager" %>
 <%@ page import="org.oscarehr.common.model.Tickler" %>
-<%@ page import="oscar.*, org.oscarehr.util.*,oscar.util.*,java.net.URLEncoder"%>
+<%@ page import="oscar.*, org.oscarehr.utility.*,oscar.util.*,java.net.URLEncoder"%>
 <%@ page import="ca.openosp.openo.web.Infirm2Action" %>
 <c:if test="${infirmaryView_isOscar == 'false'}">
 <%

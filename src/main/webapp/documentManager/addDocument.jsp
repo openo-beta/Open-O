@@ -43,9 +43,10 @@
 <%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page
-        import="java.util.*, oscar.util.*, oscar.OscarProperties, org.oscarehr.util.SpringUtils, org.oscarehr.common.dao.CtlDocClassDao" %>
-<%@ page import="org.oscarehr.documentManager.data.AddEditDocument2Form" %>
-<%@ page import="org.oscarehr.documentManager.EDocUtil" %>
+        import="java.util.*, oscar.util.*, oscar.OscarProperties, org.oscarehr.utility.SpringUtils, org.oscarehr.common.dao.CtlDocClassDao" %>
+<%@ page import="ca.openosp.openo.documentManager.data.AddEditDocument2Form" %>
+<%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 
 <%--This is included in documentReport.jsp - wasn't meant to be displayed as a separate page --%>
 <%

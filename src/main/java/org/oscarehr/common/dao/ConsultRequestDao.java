@@ -30,19 +30,10 @@ package org.oscarehr.common.dao;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Query;
-
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateFormatUtils;
-import org.apache.commons.lang.time.FastDateFormat;
 import org.oscarehr.common.PaginationQuery;
 import org.oscarehr.common.model.ConsultationRequest;
-import org.oscarehr.consultations.ConsultationQuery;
-import org.oscarehr.consultations.ConsultationRequestSearchFilter;
-import org.oscarehr.consultations.ConsultationRequestSearchFilter.SORTMODE;
-import org.oscarehr.util.MiscUtils;
-import org.springframework.stereotype.Repository;
+import ca.openosp.openo.consultations.ConsultationQuery;
+import ca.openosp.openo.consultations.ConsultationRequestSearchFilter;
 
 public interface ConsultRequestDao extends AbstractDao<ConsultationRequest> {
 

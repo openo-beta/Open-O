@@ -42,11 +42,11 @@
     }
 %>
 
-<%@ page import="oscar.oscarProvider.data.ProviderData" %>
+<%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.List" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.dao.ProviderLabRoutingFavoritesDao" %>
 <%@ page import="org.oscarehr.common.model.ProviderLabRoutingFavorite" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>

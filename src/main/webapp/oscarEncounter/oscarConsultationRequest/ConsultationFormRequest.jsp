@@ -39,7 +39,7 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.WebUtils" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
@@ -51,28 +51,28 @@
 
 
 <%@page import="java.util.ArrayList, java.util.List, java.util.*, oscar.OscarProperties, oscar.oscarLab.ca.on.*" %>
-<%@page import="org.oscarehr.casemgmt.service.CaseManagementManager,org.oscarehr.casemgmt.model.CaseManagementNote,org.oscarehr.casemgmt.model.Issue,org.oscarehr.common.model.UserProperty,org.oscarehr.common.dao.UserPropertyDAO,org.springframework.web.context.support.*,org.springframework.web.context.*" %>
+<%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager,ca.openosp.openo.casemgmt.model.CaseManagementNote,ca.openosp.openo.casemgmt.model.Issue,org.oscarehr.common.model.UserProperty,org.oscarehr.common.dao.UserPropertyDAO,org.springframework.web.context.support.*,org.springframework.web.context.*" %>
 
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="org.oscarehr.common.model.Site" %>
-<%@page import="org.oscarehr.util.WebUtils" %>
-<%@page import="oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequest2Form" %>
-<%@page import="oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil" %>
-<%@page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
-<%@page import="oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctViewRequest2Action" %>
-<%@page import="org.oscarehr.util.MiscUtils,oscar.oscarClinic.ClinicData" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="org.oscarehr.util.DigitalSignatureUtils" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
+<%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequest2Form" %>
+<%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil" %>
+<%@page import="ca.openosp.openo.demographic.data.DemographicData" %>
+<%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewRequest2Action" %>
+<%@page import="org.oscarehr.utility.MiscUtils,ca.openosp.openo.clinic.ClinicData" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.DigitalSignatureUtils" %>
 <%@ page import="org.oscarehr.ui.servlet.ImageRenderingServlet" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProgramDao, org.oscarehr.PMmodule.model.Program" %>
-<%@page import="ca.openosp.openo.oscarDemographic.data.DemographicData, oscar.oscarRx.data.RxProviderData, oscar.oscarRx.data.RxProviderData.Provider, oscar.oscarClinic.ClinicData" %>
+<%@page import="ca.openosp.openo.demographic.data.DemographicData, ca.openosp.openo.rx.data.RxProviderData, ca.openosp.openo.rx.data.RxProviderData.Provider, ca.openosp.openo.clinic.ClinicData" %>
 <%@ page import="org.oscarehr.common.dao.FaxConfigDao, org.oscarehr.common.model.FaxConfig" %>
 <%@page import="org.oscarehr.common.dao.ConsultationServiceDao" %>
 <%@page import="org.oscarehr.common.model.ConsultationServices" %>
-<%@ page import="org.oscarehr.managers.DemographicManager" %>
+<%@ page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@page import="org.oscarehr.common.model.DemographicContact" %>
 <%@page import="org.oscarehr.common.model.ProfessionalContact" %>
 <%@page import="org.oscarehr.common.dao.ContactSpecialtyDao" %>
@@ -80,22 +80,27 @@
 <%@page import="org.oscarehr.common.model.ContactSpecialty" %>
 <%@ page import="org.oscarehr.common.model.enumerator.ConsultationRequestExtKey" %>
 <%@ page import="org.oscarehr.common.dao.ConsultationRequestExtDao" %>
-<%@ page import="org.oscarehr.managers.ConsultationManager" %>
-<%@ page import="oscar.oscarEncounter.data.EctFormData" %>
+<%@ page import="ca.openosp.openo.managers.ConsultationManager" %>
+<%@ page import="ca.openosp.openo.encounter.data.EctFormData" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.oscarehr.common.model.EFormData" %>
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
-<%@ page import="oscar.oscarLab.ca.all.Hl7textResultsData" %>
-<%@ page import="org.oscarehr.documentManager.EDocUtil" %>
-<%@ page import="org.oscarehr.documentManager.EDoc" %>
-<%@ page import="oscar.util.StringUtils" %>
+<%@ page import="ca.openosp.openo.lab.ca.all.Hl7textResultsData" %>
+<%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
+<%@ page import="ca.openosp.openo.documentManager.EDoc" %>
+<%@ page import="ca.openosp.openo.util.StringUtils" %>
 <%@ page import="org.oscarehr.common.model.enumerator.ModuleType" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.EctInformation" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.RxInformation" %>
+<%@ page import="ca.openosp.openo.demographic.data.EctInformation" %>
+<%@ page import="ca.openosp.openo.demographic.data.RxInformation" %>
+<%@ page
+  import="ca.openosp.openo.encounter.oscarConsultationRequest.config.data.EctConConfigurationJavascriptData" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
+<%@ page import="ca.openosp.openo.managers.LookupListManager" %>
 
 
 <jsp:useBean id="displayServiceUtil" scope="request"
-             class="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConDisplayServiceUtil"/>
+             class="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConDisplayServiceUtil"/>
 <!DOCTYPE html>
 <html>
 
@@ -266,7 +271,7 @@
 		 --%>
     <%
 
-        org.oscarehr.managers.LookupListManager lookupListManager = SpringUtils.getBean(org.oscarehr.managers.LookupListManager.class);
+        LookupListManager lookupListManager = SpringUtils.getBean(LookupListManager.class);
         pageContext.setAttribute("appointmentInstructionList", lookupListManager.findLookupListByName(loggedInInfo, "consultApptInst"));
 
     %>
@@ -665,8 +670,8 @@
         var services = new Array();				// the following are used as a 2D table for makes and models
         var specialists = new Array();
         var specialistFaxNumber = "";
-        <%oscar.oscarEncounter.oscarConsultationRequest.config.data.EctConConfigurationJavascriptData configScript;
-				configScript = new oscar.oscarEncounter.oscarConsultationRequest.config.data.EctConConfigurationJavascriptData();
+        <%EctConConfigurationJavascriptData configScript;
+				configScript = new EctConConfigurationJavascriptData();
 				out.println(configScript.getJavascript());%>
 
         /////////////////////////////////////////////////////////////////////

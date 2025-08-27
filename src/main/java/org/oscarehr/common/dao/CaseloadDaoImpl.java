@@ -12,7 +12,7 @@
  */
 package org.oscarehr.common.dao;
 
-import org.oscarehr.caseload.CaseloadCategory;
+import ca.openosp.openo.caseload.CaseloadCategory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 public class ClientSearchFormBean {
     private static Logger log = MiscUtils.getLogger();

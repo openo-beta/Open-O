@@ -36,14 +36,14 @@ import org.hibernate.Session;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.common.model.Facility;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import oscar.MyDateFormat;
 import oscar.OscarProperties;
-import oscar.oscarDB.DBPreparedHandler;
-import oscar.oscarDB.DBPreparedHandlerParam;
+import ca.openosp.openo.db.DBPreparedHandler;
+import ca.openosp.openo.db.DBPreparedHandlerParam;
 
 import ca.openosp.openo.common.KeyConstants;
 import ca.openosp.openo.model.FieldDefValue;
@@ -51,7 +51,7 @@ import ca.openosp.openo.model.LookupCodeValue;
 import ca.openosp.openo.model.LookupTableDefValue;
 import ca.openosp.openo.model.LstOrgcd;
 import ca.openosp.openo.model.security.SecProvider;
-import ca.openosp.openo.util.Utility;
+import ca.openosp.openo.utils.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.hibernate.SessionFactory;
 

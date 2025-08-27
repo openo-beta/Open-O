@@ -55,12 +55,12 @@
 <%@page import="org.springframework.web.context.WebApplicationContext" %>
 
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.BillingONExtDao" %>
 <%@page import="org.oscarehr.common.model.BillingONExt" %>
 <%@page import="org.oscarehr.common.dao.BillingOnItemPaymentDao" %>
 <%@page import="org.oscarehr.billing.CA.ON.model.*" %>
-<%@page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingItemData" %>
+<%@page import="ca.openosp.openo.billings.ca.on.data.BillingItemData" %>
 <%@page import="java.math.BigDecimal" %>
 <%@page import="org.oscarehr.common.dao.BillingPaymentTypeDao" %>
 <%@page import="org.oscarehr.common.model.BillingPaymentType" %>

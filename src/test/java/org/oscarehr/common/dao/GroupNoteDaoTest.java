@@ -43,8 +43,8 @@ import org.junit.Test;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
 import org.oscarehr.common.model.GroupNoteLink;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class GroupNoteDaoTest extends DaoTestFixtures {
     protected GroupNoteDao dao = (GroupNoteDao) SpringUtils.getBean(GroupNoteDao.class);

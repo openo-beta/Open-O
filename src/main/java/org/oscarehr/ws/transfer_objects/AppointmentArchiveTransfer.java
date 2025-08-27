@@ -33,7 +33,7 @@ import org.oscarehr.common.model.Appointment.BookingSource;
 import org.oscarehr.common.model.AppointmentArchive;
 import org.springframework.beans.BeanUtils;
 
-import oscar.util.DateUtils;
+import ca.openosp.openo.util.DateUtils;
 
 public final class AppointmentArchiveTransfer {
     private Integer id;

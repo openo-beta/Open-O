@@ -28,42 +28,45 @@
 <%@page import="net.sf.json.JSONSerializer" %>
 <%@page import="net.sf.json.JSONArray" %>
 <%@page import="net.sf.json.JSONObject" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="oscar.util.ConversionUtils" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="org.oscarehr.common.dao.PatientLabRoutingDao" %>
 <%@ page import="org.oscarehr.common.model.PatientLabRouting" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="org.apache.commons.lang.builder.ReflectionToStringBuilder" %>
-<%@ page import="org.oscarehr.util.MiscUtils" %>
+<%@ page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page import="org.w3c.dom.Document" %>
-<%@ page import="org.oscarehr.caisi_integrator.ws.CachedDemographicLabResult" %>
-<%@ page import="oscar.oscarLab.ca.all.web.LabDisplayHelper" %>
-<%@ page import="oscar.oscarLab.ca.all.util.LabVersionComparator"%>
+<%@ page import="ca.openosp.openo.caisi_integrator.ws.CachedDemographicLabResult" %>
+<%@ page import="ca.openosp.openo.lab.ca.all.web.LabDisplayHelper" %>
+<%@ page import="ca.openosp.openo.lab.ca.all.util.LabVersionComparator"%>
 
 <%@ page import="java.util.*,
-                 oscar.util.UtilDateUtilities,
+                 ca.openosp.openo.util.UtilDateUtilities,
                  oscar.oscarLab.ca.all.*,
                  oscar.oscarLab.ca.all.parsers.*,
-                 oscar.oscarLab.LabRequestReportLink,
-                 oscar.oscarMDS.data.ReportStatus,
+                 ca.openosp.openo.lab.LabRequestReportLink,
+                 ca.openosp.openo.mds.data.ReportStatus,
                  oscar.log.*,
                  oscar.OscarProperties" %>
-<%@ page import="org.oscarehr.casemgmt.model.CaseManagementNoteLink" %>
-<%@ page import="org.oscarehr.casemgmt.model.CaseManagementNote" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.dao.UserPropertyDAO, org.oscarehr.common.model.UserProperty" %>
 <%@ page import="org.oscarehr.common.model.MeasurementMap, org.oscarehr.common.dao.MeasurementMapDao" %>
 <%@ page import="org.oscarehr.common.model.Tickler" %>
-<%@ page import="org.oscarehr.managers.TicklerManager" %>
+<%@ page import="ca.openosp.openo.managers.TicklerManager" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page
-        import="org.oscarehr.casemgmt.service.CaseManagementManager, org.oscarehr.common.dao.Hl7TextMessageDao, org.oscarehr.common.model.Hl7TextMessage,org.oscarehr.common.dao.Hl7TextInfoDao,org.oscarehr.common.model.Hl7TextInfo" %>
+        import="ca.openosp.openo.casemgmt.service.CaseManagementManager, org.oscarehr.common.dao.Hl7TextMessageDao, org.oscarehr.common.model.Hl7TextMessage,org.oscarehr.common.dao.Hl7TextInfoDao,org.oscarehr.common.model.Hl7TextInfo" %>
 <jsp:useBean id="oscarVariables" class="java.util.Properties" scope="session"/>
 <%@    page import="javax.swing.text.rtf.RTFEditorKit" %>
 <%@    page import="java.io.ByteArrayInputStream" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
+<%@ page import="ca.openosp.openo.lab.ca.all.parsers.*" %>
+<%@ page import="ca.openosp.openo.lab.ca.all.Hl7textResultsData" %>
+<%@ page import="ca.openosp.openo.lab.ca.all.AcknowledgementData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProperties" %>
@@ -268,7 +271,7 @@ request.setAttribute("missingTests", missingTests);
     }
 
 
-    String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_LABTEST;
+    String annotation_display = CaseManagementNoteLink.DISP_LABTEST;
     CaseManagementManager caseManagementManager = (CaseManagementManager) SpringUtils.getBean(CaseManagementManager.class);
 
 %>
@@ -2367,7 +2370,7 @@ request.setAttribute("missingTests", missingTests);
 
                     <%
                                            		//CLS textual results - use 4 columns.
-                                           		if(handler instanceof CLSHandler && ( (oscar.oscarLab.ca.all.parsers.CLSHandler) handler).isUnstructured()) {
+                                           		if(handler instanceof CLSHandler && ( (CLSHandler) handler).isUnstructured()) {
                                            	%>
                 <td align="left" colspan="4">
                     <%= handler.getOBXResult(j, k) %>

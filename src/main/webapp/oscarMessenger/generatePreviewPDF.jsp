@@ -28,18 +28,18 @@
         import="oscar.oscarMessenger.docxfer.send.*,
                 oscar.oscarMessenger.docxfer.util.*,
                 oscar.oscarEncounter.data.*,
-                oscar.oscarEncounter.pageUtil.EctSessionBean,
-                oscar.oscarRx.pageUtil.RxSessionBean,
-                oscar.oscarRx.data.RxPatientData,
-                oscar.oscarMessenger.pageUtil.MsgSessionBean,
+                ca.openosp.openo.encounter.pageUtil.EctSessionBean,
+                ca.openosp.openo.rx.pageUtil.RxSessionBean,
+                ca.openosp.openo.rx.data.RxPatientData,
+                ca.openosp.openo.messenger.pageUtil.MsgSessionBean,
                 oscar.oscarDemographic.data.*" %>
 
 <%@ page import=" java.util.*, org.w3c.dom.*, java.sql.*, oscar.*, java.text.*, java.lang.*,java.net.*"
          errorPage="../appointment/errorpage.jsp" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.dao.EChartDao" %>
 <%@ page import="org.oscarehr.common.model.EChart" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
 <%
     EChartDao eChartDao = SpringUtils.getBean(EChartDao.class);
 %>
@@ -63,7 +63,7 @@
 %>
 
 <%@ page import="oscar.util.*" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 
 
 <%
@@ -88,7 +88,7 @@
     EctSessionBean bean = new EctSessionBean();
     bean.demographicNo = demographic_no;
 
-    oscar.oscarMessenger.pageUtil.MsgSessionBean MsgSessionBean = (oscar.oscarMessenger.pageUtil.MsgSessionBean) request.getSession().getAttribute("msgSessionBean");
+    MsgSessionBean MsgSessionBean = (MsgSessionBean) request.getSession().getAttribute("msgSessionBean");
 
     request.getSession().setAttribute("EctSessionBean", bean);
 
@@ -346,7 +346,7 @@
                                             RxSessionBean Rxbean;
 
                                             if (request.getSession().getAttribute("RxSessionBean") != null) {
-                                                Rxbean = (oscar.oscarRx.pageUtil.RxSessionBean) request.getSession().getAttribute("RxSessionBean");
+                                                Rxbean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
                                             } else {
                                                 Rxbean = new RxSessionBean();
                                             }

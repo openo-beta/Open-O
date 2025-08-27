@@ -52,8 +52,10 @@
     String AbnFlag = "";
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.lab.ca.bc.PathNet.PathnetLabTest" %>
+<%@ page import="ca.openosp.openo.mds.data.ReportStatus" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

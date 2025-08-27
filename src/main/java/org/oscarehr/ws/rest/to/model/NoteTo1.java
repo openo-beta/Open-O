@@ -34,7 +34,7 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.oscarehr.casemgmt.model.CaseManagementIssue;
+import ca.openosp.openo.casemgmt.model.CaseManagementIssue;
 
 @XmlRootElement(name = "encounterNote")
 public class NoteTo1 implements Serializable {

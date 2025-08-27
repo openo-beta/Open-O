@@ -35,9 +35,9 @@ import java.util.Map.Entry;
 
 import javax.persistence.Query;
 
-import org.oscarehr.billing.CA.ON.model.Billing3rdPartyAddress;
+import ca.openosp.openo.billing.CA.ON.model.Billing3rdPartyAddress;
 import org.oscarehr.common.NativeSql;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository

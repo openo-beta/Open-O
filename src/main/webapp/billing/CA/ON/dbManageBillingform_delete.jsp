@@ -27,7 +27,7 @@
 <%@page import="org.oscarehr.common.dao.CtlBillingServiceDao" %>
 <%@page import="org.oscarehr.common.model.CtlDiagCode" %>
 <%@page import="org.oscarehr.common.dao.CtlDiagCodeDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 
 
 <%

@@ -26,11 +26,11 @@ package org.oscarehr.ws.rest.conversion;
 
 
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.ProviderTo1;
 import org.oscarehr.ws.rest.to.model.Sex1;
 import org.springframework.stereotype.Component;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.util.ConversionUtils;
 
 @Component
 public class ProviderConverter extends AbstractConverter<Provider, ProviderTo1> {

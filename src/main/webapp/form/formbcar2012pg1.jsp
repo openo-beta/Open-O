@@ -43,7 +43,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.form.FrmRecord" %>
+<%@ page import="ca.openosp.openo.form.data.FrmData" %>
+<%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 
 <jsp:useBean id="oscarVariables" class="java.util.Properties" scope="session"/>
 

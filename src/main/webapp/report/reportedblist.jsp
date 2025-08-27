@@ -55,13 +55,14 @@
          errorPage="../errorpage.jsp" %>
 
 <jsp:useBean id="providerNameBean" class="oscar.Dict" scope="page"/>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.ReportTemp" %>
 <%@ page import="org.oscarehr.common.dao.ReportTempDao" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@ page import="org.oscarehr.common.model.Form" %>
 <%@ page import="org.oscarehr.common.dao.FormDao" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%
     ReportTempDao reportTempDao = SpringUtils.getBean(ReportTempDao.class);
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
@@ -158,7 +159,7 @@
             boolean bodd = false;
             int nItems = 0;
 
-            for (ReportTemp rt : reportTempDao.findGreateThanEdb(oscar.util.ConversionUtils.fromDateString(startDate), Integer.parseInt(strLimit1), Integer.parseInt(strLimit2))) {
+            for (ReportTemp rt : reportTempDao.findGreateThanEdb(ConversionUtils.fromDateString(startDate), Integer.parseInt(strLimit1), Integer.parseInt(strLimit2))) {
 
                 bodd = bodd ? false : true; //for the color of rows
                 nItems++;
@@ -167,7 +168,7 @@
             <td align="center"><%=nItems%>
             </td>
             <td align="center"
-                nowrap><%=oscar.util.ConversionUtils.toDateString(rt.getId().getEdb()).replace('-', '/')%>
+                nowrap><%=ConversionUtils.toDateString(rt.getId().getEdb()).replace('-', '/')%>
             </td>
             <td><%=rt.getDemoName()%>
             </td>

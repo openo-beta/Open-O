@@ -35,9 +35,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.oscarehr.integration.fhir.interfaces.ContactInterface;
-import org.oscarehr.integration.fhir.resources.constants.ContactRelationship;
-import org.oscarehr.integration.fhir.resources.constants.ContactType;
+import ca.openosp.openo.integration.fhir.interfaces.ContactInterface;
+import ca.openosp.openo.integration.fhir.resources.constants.ContactRelationship;
+import ca.openosp.openo.integration.fhir.resources.constants.ContactType;
 
 /**
  * @author Jay Gallagher

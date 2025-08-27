@@ -21,12 +21,12 @@
 <%@ page
         import="java.util.*, java.sql.*, java.net.*, oscar.*, oscar.oscarDB.*" %>
 <%@ page import="oscar.oscarBilling.ca.on.data.*" %>
-<%@ page import="org.oscarehr.util.DateRange" %>
+<%@ page import="org.oscarehr.utility.DateRange" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingItemData" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.JdbcBillingReviewImpl" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingClaimHeader1Data" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingDataHlp" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.BillingItemData" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.JdbcBillingReviewImpl" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.BillingDataHlp" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     if (session.getAttribute("user") == null)

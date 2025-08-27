@@ -49,8 +49,8 @@ import org.oscarehr.PMmodule.model.Vacancy;
 import org.oscarehr.common.dao.AdmissionDao;
 import org.oscarehr.common.model.Admission;
 import org.oscarehr.common.model.JointAdmission;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 

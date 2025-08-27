@@ -25,11 +25,11 @@
 <%@page contentType="text/html" %>
 
 <%@page import="org.oscarehr.common.model.ClinicNbr" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.ClinicNbrDao" %>
-<%@page import="oscar.OscarProperties, org.oscarehr.util.LoggedInInfo" %>
+<%@page import="oscar.OscarProperties, org.oscarehr.utility.LoggedInInfo" %>
 <%@ page
-        import="java.sql.*, java.util.*, oscar.*, oscar.SxmlMisc, oscar.oscarProvider.data.ProviderBillCenter"
+        import="java.sql.*, java.util.*, oscar.*, oscar.SxmlMisc, ca.openosp.openo.provider.data.ProviderBillCenter"
         errorPage="/errorpage.jsp" %>
 
 <html>

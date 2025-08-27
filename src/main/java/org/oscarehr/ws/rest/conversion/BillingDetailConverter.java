@@ -25,7 +25,7 @@
 package org.oscarehr.ws.rest.conversion;
 
 import org.oscarehr.common.model.BillingONCHeader1;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.BillingDetailTo1;
 
 public class BillingDetailConverter extends AbstractConverter<BillingONCHeader1, BillingDetailTo1> {

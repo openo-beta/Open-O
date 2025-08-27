@@ -23,19 +23,19 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.managers.IntegratorFileLogManager" %>
+<%@page import="ca.openosp.openo.managers.IntegratorFileLogManager" %>
 <%@page import="org.oscarehr.common.model.IntegratorFileLog" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%@page import="java.text.SimpleDateFormat" %>
 <%@page import="org.oscarehr.common.dao.UserPropertyDAO" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page import="org.apache.logging.log4j.Logger" %>
 <%@page import="org.oscarehr.common.dao.IntegratorControlDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.FacilityDao" %>
 <%@page import="org.oscarehr.common.model.Facility" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.CachedFacility" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.CachedFacility" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
 
 <%@page import="oscar.OscarProperties" %>

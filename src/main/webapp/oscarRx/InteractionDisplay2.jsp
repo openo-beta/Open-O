@@ -25,6 +25,7 @@
 --%>
 
 <%@ page import="java.util.*,oscar.oscarRx.data.*,oscar.oscarRx.pageUtil.*" %>
+<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");

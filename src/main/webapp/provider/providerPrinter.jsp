@@ -28,7 +28,7 @@
 <%@ page import="oscar.oscarProvider.data.*" %>
 <%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@ page import="org.oscarehr.common.model.UserProperty" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="oscar.OscarProperties" %>
 
 

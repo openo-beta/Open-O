@@ -25,7 +25,7 @@
 --%>
 <!DOCTYPE html>
 
-<%@page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
+<%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
@@ -42,7 +42,7 @@
 %>
 
 <%@page import="org.oscarehr.common.dao.ProviderDataDao" %>
-<%@page import="org.oscarehr.managers.DemographicManager" %>
+<%@page import="ca.openosp.openo.managers.DemographicManager" %>
 
 <%@page import="ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImpl" %>
 <%
@@ -65,8 +65,8 @@
 <%@ page import="org.oscarehr.common.OtherIdManager" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@ page import="org.oscarehr.common.model.*" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
-<%@ page import="org.oscarehr.util.SessionConstants" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SessionConstants" %>
 <%@ page import="org.oscarehr.common.model.AppointmentStatus" %>
 <%@ page import="org.oscarehr.common.dao.BillingONCHeader1Dao" %>
 <%@ page import="org.oscarehr.common.model.BillingONCHeader1" %>
@@ -85,18 +85,20 @@
 <%@ page import="org.oscarehr.common.model.Facility" %>
 <%@ page import="org.oscarehr.PMmodule.service.ProviderManager" %>
 <%@ page import="org.oscarehr.PMmodule.service.ProgramManager" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="org.oscarehr.managers.LookupListManager" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.managers.LookupListManager" %>
 <%@ page import="org.oscarehr.common.model.LookupList" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@ page import="oscar.oscarEncounter.data.EctFormData" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingDataHlp" %>
+<%@ page import="ca.openosp.openo.encounter.data.EctFormData" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.BillingDataHlp" %>
 <%@ page import="org.oscarehr.common.dao.AppointmentTypeDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.appt.ApptUtil" %>
 <%@ page import="ca.openosp.openo.appt.ApptData" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -171,7 +173,7 @@
     boolean caisiEnabled = moduleNames != null && org.apache.commons.lang.StringUtils.containsIgnoreCase(moduleNames, "Caisi");
     boolean locationEnabled = caisiEnabled && (useProgramLocation != null && useProgramLocation.equals("true"));
 
-    String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_APPOINTMENT;
+    String annotation_display = CaseManagementNoteLink.DISP_APPOINTMENT;
     CaseManagementManager caseManagementManager = (CaseManagementManager) SpringUtils.getBean(CaseManagementManager.class);
 
 
@@ -1497,7 +1499,7 @@
         <%--        java.util.ResourceBundle prop = ResourceBundle.getBundle("oscarResources", request.getLocale());--%>
         <%--        formatDate = oscar.util.UtilDateUtilities.DateToString(d, prop.getString("date.EEEyyyyMMdd"));--%>
         <%--        } catch (Exception e) {--%>
-        <%--            org.oscarehr.util.MiscUtils.getLogger().error("Error", e);--%>
+        <%--            org.oscarehr.utility.MiscUtils.getLogger().error("Error", e);--%>
         <%--            formatDate = oscar.util.UtilDateUtilities.DateToString(inform.parse(strDate), "EEE, yyyy-MM-dd");--%>
         <%--        }--%>
         <%--    %>--%>

@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@page import="oscar.oscarRx.data.RxPatientData" %>
+<%@page import="ca.openosp.openo.rx.data.RxPatientData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -32,11 +32,17 @@
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="org.apache.logging.log4j.Logger" %>
 <%@ page import="oscar.*,java.lang.*,java.util.Date" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
+<%@ page import="ca.openosp.openo.provider.data.ProSignatureData" %>
+<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.rx.util.RxUtil" %>
+<%@ page import="ca.openosp.openo.rx.data.RxProviderData" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
-    oscar.oscarRx.pageUtil.RxSessionBean bean = null;
+    RxSessionBean bean = null;
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
 %>
@@ -62,7 +68,7 @@
         <c:if test="${not empty sessionScope.RxSessionBean}">
             <%
                 // Directly access the RxSessionBean from the session
-                bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
+                bean = (RxSessionBean) session.getAttribute("RxSessionBean");
                 if (!bean.isValid()) {
                     response.sendRedirect("error.html");
                 }
@@ -85,20 +91,20 @@
     <body topmargin="0" leftmargin="0" vlink="#0000FF">
 
     <%
-        Date rxDate = oscar.oscarRx.util.RxUtil.Today();
+        Date rxDate = RxUtil.Today();
         String rePrint = request.getParameter("rePrint");
-        oscar.oscarRx.data.RxProviderData.Provider provider;
+        RxProviderData.Provider provider;
         String signingProvider;
         if (rePrint != null && rePrint.equalsIgnoreCase("true")) {
-            bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("tmpBeanRX");
+            bean = (RxSessionBean) session.getAttribute("tmpBeanRX");
             signingProvider = bean.getStashItem(0).getProviderNo();
             rxDate = bean.getStashItem(0).getRxDate();
-            provider = new oscar.oscarRx.data.RxProviderData().getProvider(signingProvider);
+            provider = new RxProviderData().getProvider(signingProvider);
             session.setAttribute("tmpBeanRX", null);
             String ip = request.getRemoteAddr();
             //LogAction.addLog((String) session.getAttribute("user"), LogConst.UPDATE, LogConst.CON_PRESCRIPTION, String.valueOf(bean.getDemographicNo()), ip);
         } else {
-            bean = (oscar.oscarRx.pageUtil.RxSessionBean) pageContext.findAttribute("RxSessionBean");
+            bean = (RxSessionBean) pageContext.findAttribute("RxSessionBean");
 
             //set Date to latest in stash
             Date tmp;
@@ -110,13 +116,13 @@
             }
             rePrint = "";
             signingProvider = bean.getProviderNo();
-            provider = new oscar.oscarRx.data.RxProviderData().getProvider(bean.getProviderNo());
+            provider = new RxProviderData().getProvider(bean.getProviderNo());
         }
 
 
-        oscar.oscarRx.data.RxPatientData.Patient patient = RxPatientData.getPatient(LoggedInInfo.getLoggedInInfoFromSession(request), bean.getDemographicNo());
+        RxPatientData.Patient patient = RxPatientData.getPatient(LoggedInInfo.getLoggedInInfoFromSession(request), bean.getDemographicNo());
 
-        oscar.oscarRx.data.RxPrescriptionData.Prescription rx = null;
+        RxPrescriptionData.Prescription rx = null;
         int i;
         ProSignatureData sig = new ProSignatureData();
         boolean hasSig = sig.hasSignature(signingProvider);
@@ -177,7 +183,7 @@
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="RxPreview.msgTel"/><%=StringEscapeUtils.escapeHtml(patient.getPhone()) %>"/>
 
                     <input type="hidden" name="rxDate"
-                           value="<%= StringEscapeUtils.escapeHtml(oscar.oscarRx.util.RxUtil.DateToString(rxDate, "MMMM d, yyyy")) %>"/>
+                           value="<%= StringEscapeUtils.escapeHtml(RxUtil.DateToString(rxDate, "MMMM d, yyyy")) %>"/>
                     <input type="hidden" name="sigDoctorName"
                            value="<%= StringEscapeUtils.escapeHtml(doctorName) %>"/>
                     <!--img src="img/rx.gif" border="0"-->
@@ -217,7 +223,7 @@
                                 <% if (props.getProperty("showRxChartNo", "").equalsIgnoreCase("true")) { %>
                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.oscarRx.chartNo"/><%=patient.getChartNo()%> <% } %></td>
                             <td align=right valign=top>
-                                <b><%= oscar.oscarRx.util.RxUtil.DateToString(rxDate, "MMMM d, yyyy", request.getLocale()) %>
+                                <b><%= RxUtil.DateToString(rxDate, "MMMM d, yyyy", request.getLocale()) %>
                                 </b></td>
                         </tr>
                     </table>
@@ -236,7 +242,7 @@
                                         String fullOutLine = rx.getFullOutLine().replaceAll(";", "<br />");
 
                                         if (fullOutLine == null || fullOutLine.length() <= 6) {
-                                            org.oscarehr.util.MiscUtils.getLogger();
+                                            org.oscarehr.utility.MiscUtils.getLogger();
                                             fullOutLine = "<span style=\"color:red;font-size:16;font-weight:bold\">An error occurred, please write a new prescription.</span><br />" + fullOutLine;
                                         }
                                 %>

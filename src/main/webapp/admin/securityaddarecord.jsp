@@ -58,13 +58,13 @@
 <%@ page
         import="java.lang.*, java.util.*, java.text.*,java.sql.*, oscar.*"
         errorPage="/errorpage.jsp" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@page import="org.oscarehr.common.model.Security" %>
 <%@page import="org.oscarehr.common.dao.SecurityDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="org.oscarehr.managers.MfaManager" %>
+<%@ page import="ca.openosp.openo.managers.MfaManager" %>
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
     SecurityDao securityDao = SpringUtils.getBean(SecurityDao.class);

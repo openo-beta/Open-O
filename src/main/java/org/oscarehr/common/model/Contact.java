@@ -42,9 +42,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.oscarehr.integration.fhir.interfaces.ContactInterface;
-import org.oscarehr.integration.fhir.resources.constants.ContactRelationship;
-import org.oscarehr.integration.fhir.resources.constants.ContactType;
+import ca.openosp.openo.integration.fhir.interfaces.ContactInterface;
+import ca.openosp.openo.integration.fhir.resources.constants.ContactRelationship;
+import ca.openosp.openo.integration.fhir.resources.constants.ContactType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

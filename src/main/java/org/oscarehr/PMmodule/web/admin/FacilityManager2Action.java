@@ -43,14 +43,14 @@ import org.oscarehr.common.model.Admission;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.EForm;
 import org.oscarehr.common.model.Facility;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SessionConstants;
-import org.oscarehr.util.SpringUtils;
-import org.oscarehr.util.WebUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SessionConstants;
+import org.oscarehr.utility.SpringUtils;
+import org.oscarehr.utility.WebUtils;
 
 import ca.openosp.openo.log.LogAction;
 
-import ca.openosp.openo.service.LookupManager;
+import ca.openosp.openo.services.LookupManager;
 
 /**
  *

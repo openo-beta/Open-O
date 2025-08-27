@@ -32,7 +32,7 @@
 
 <%@ page import="oscar.login.*" %>
 <%@ page import="oscar.log.*" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.SecRole" %>
 <%@ page import="org.oscarehr.common.dao.SecRoleDao" %>
 <%@ page import="org.oscarehr.PMmodule.utility.RoleCache" %>

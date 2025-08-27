@@ -27,7 +27,7 @@ package ca.openosp.openo.entities;
 
 import java.util.Date;
 
-import oscar.util.UtilMisc;
+import ca.openosp.openo.util.UtilMisc;
 
 /**
  * BillHistory  represents an archive of a modification event on a specific line(BillingMaster Record) of a Bill

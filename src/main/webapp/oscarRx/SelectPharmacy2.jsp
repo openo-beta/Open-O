@@ -30,9 +30,12 @@
 <%@ page import="oscar.oscarRx.data.*,java.util.*" %>
 <%@ page import="oscar.OscarProperties" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPharmacyData" %>
 
 <%
-    oscar.oscarRx.pageUtil.RxSessionBean bean = null;
+    RxSessionBean bean = null;
     String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
     boolean authed = true;
     String surname = "", firstName = "";
@@ -78,12 +81,12 @@
         <c:if test="${not empty sessionScope.RxSessionBean}">
             <%
                 // Directly access the RxSessionBean from the session
-                bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
+                bean = (RxSessionBean) session.getAttribute("RxSessionBean");
                 if (bean != null && !bean.isValid()) {
                     response.sendRedirect("error.html");
                     return; // Ensure no further JSP processing
                 }
-                oscar.oscarRx.data.RxPatientData.Patient patient = (oscar.oscarRx.data.RxPatientData.Patient) request.getSession().getAttribute("Patient");
+                RxPatientData.Patient patient = (RxPatientData.Patient) request.getSession().getAttribute("Patient");
                 if (patient != null) {
                     surname = patient.getSurname();
                     firstName = patient.getFirstName();

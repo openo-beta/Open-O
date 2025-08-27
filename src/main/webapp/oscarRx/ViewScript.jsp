@@ -23,13 +23,18 @@
     Ontario, Canada
 
 --%>
-<%@ page import="oscar.oscarProvider.data.*, oscar.OscarProperties, oscar.oscarClinic.ClinicData, java.util.*" %>
+<%@ page import="oscar.oscarProvider.data.*, oscar.OscarProperties, ca.openosp.openo.clinic.ClinicData, java.util.*" %>
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="org.oscarehr.common.model.Site" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Appointment" %>
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
+<%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
+<%@ page import="ca.openosp.openo.provider.data.ProSignatureData" %>
+<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.rx.data.RxProviderData" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -69,13 +74,13 @@
         </c:if>
 
         <%
-            oscar.oscarRx.pageUtil.RxSessionBean bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
+            RxSessionBean bean = (RxSessionBean) session.getAttribute("RxSessionBean");
 
 //are we printing in the past?
             String reprint = (String) request.getAttribute("rePrint") != null ? (String) request.getAttribute("rePrint") : "false";
             String createAnewRx;
             if (reprint.equalsIgnoreCase("true")) {
-                bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("tmpBeanRX");
+                bean = (RxSessionBean) session.getAttribute("tmpBeanRX");
                 createAnewRx = "window.location.href = '" + request.getContextPath() + "/oscarRx/SearchDrug.jsp'";
             } else
                 createAnewRx = "javascript:clearPending('')";
@@ -94,7 +99,7 @@
                     if (result != null) location = result.getLocation();
                 }
 
-                oscar.oscarRx.data.RxProviderData.Provider provider = new oscar.oscarRx.data.RxProviderData().getProvider(bean.getProviderNo());
+                RxProviderData.Provider provider = new RxProviderData().getProvider(bean.getProviderNo());
                 ProSignatureData sig = new ProSignatureData();
                 boolean hasSig = sig.hasSignature(bean.getProviderNo());
                 String doctorName = "";
@@ -126,7 +131,7 @@
 
 
             } else if (props.getProperty("clinicSatelliteName") != null) {
-                oscar.oscarRx.data.RxProviderData.Provider provider = new oscar.oscarRx.data.RxProviderData().getProvider(bean.getProviderNo());
+                RxProviderData.Provider provider = new RxProviderData().getProvider(bean.getProviderNo());
                 ProSignatureData sig = new ProSignatureData();
                 boolean hasSig = sig.hasSignature(bean.getProviderNo());
                 String doctorName = "";
@@ -207,7 +212,7 @@
             function printPaste2Parent() {
 
                 try {
-                    text = "****<%=oscar.oscarProvider.data.ProviderData.getProviderName(bean.getProviderNo())%>********************************************************************************";
+                    text = "****<%=ProviderData.getProviderName(bean.getProviderNo())%>********************************************************************************";
                     text = text.substring(0, 82) + "\n";
                     if (document.all) {
                         text += preview.document.forms[0].rx_no_newlines.value
@@ -398,7 +403,7 @@
                                         </tr>
                                         <%
                                             for (int i = 0; i < bean.getStashSize(); i++) {
-                                                oscar.oscarRx.data.RxPrescriptionData.Prescription rx
+                                                RxPrescriptionData.Prescription rx
                                                         = bean.getStashItem(i);
 
                                                 if (!rx.isCustom()) {

@@ -46,10 +46,10 @@
 <%@ page import="org.oscarehr.common.model.LookupList" %>
 <%@ page import="org.oscarehr.common.model.LookupListItem" %>
 
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
-<%@ page import="org.oscarehr.util.MiscUtils" %>
-<%@ page import="org.oscarehr.util.SessionConstants" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.MiscUtils" %>
+<%@ page import="org.oscarehr.utility.SessionConstants" %>
 <%@page import="oscar.util.*" %>
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
 <%@page import="org.oscarehr.common.model.Site" %>
@@ -60,8 +60,11 @@
 <%@ page import="org.apache.commons.lang.*" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.oscarehr.common.model.*" %>
-<%@ page import="org.oscarehr.managers.PreventionManager" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.managers.*" %>
+<%@ page import="ca.openosp.openo.util.UtilMisc" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/special_tag.tld" prefix="special" %>

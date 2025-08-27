@@ -39,26 +39,27 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%
     if (session.getValue("user") == null)
         response.sendRedirect("../logout.jsp");
 %>
 <%@page import="java.util.*, oscar.oscarDemographic.data.*" %>
 <%@page import="oscar.oscarBilling.ca.bc.data.*,oscar.oscarBilling.ca.bc.pageUtil.*,oscar.*,oscar.oscarClinic.*" %>
-<%@ page import="oscar.util.StringUtils" %>
+<%@ page import="ca.openosp.openo.util.StringUtils" %>
 <%@ page import="org.oscarehr.common.dao.PropertyDao" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.dao.SystemPreferencesDao" %>
 <%@ page import="org.oscarehr.common.model.SystemPreferences" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.oscarehr.common.model.Property" %>
 <%@ page import="ca.openosp.openo.entities.BillHistory" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingBillingManager" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingViewBean" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingHistoryDAO" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingFormData" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.BillingBillingManager" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.BillingViewBean" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingHistoryDAO" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingFormData" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.clinic.ClinicData" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     double totalPayments = 0;

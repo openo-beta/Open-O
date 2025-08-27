@@ -28,8 +28,8 @@ import java.util.TreeMap;
 import org.oscarehr.common.model.IssueGroup;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.SecRole;
-import org.oscarehr.util.AccumulatorMap;
-import org.oscarehr.util.EncounterUtil;
+import org.oscarehr.utility.AccumulatorMap;
+import org.oscarehr.utility.EncounterUtil;
 
 /**
  * This bean is a essentially a huge data grid. The purpose of this

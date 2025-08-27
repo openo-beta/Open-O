@@ -19,7 +19,7 @@
 
 
 	<!-- configure the available measurement flow sheets -->
-	<bean id="measurementTemplateFlowSheet" class="oscar.oscarEncounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig">
+	<bean id="measurementTemplateFlowSheet" class="ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig">
 		<property name="flowSheets">
 			<list>
 				<value>classpath:oscar/oscarEncounter/oscarMeasurements/flowsheets/omdDiabetesFlowsheet.xml</value>
@@ -44,7 +44,7 @@
 
 
 	<!-- managers  -->
-	<bean id="issueAdminManager" class="ca.openosp.openo.service.IssueAdminManager" autowire="byName" />
+	<bean id="issueAdminManager" class="ca.openosp.openo.services.IssueAdminManager" autowire="byName" />
 
 	<bean id="oscarSecurityManager" class="org.oscarehr.PMmodule.service.impl.OscarSecurityManagerImpl" autowire="byName" />
 	<bean id="formsManagerCaisi" class="org.oscarehr.PMmodule.service.impl.FormsManagerImpl" autowire="byName" />

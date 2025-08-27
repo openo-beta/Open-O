@@ -25,7 +25,7 @@
 package org.oscarehr.ws.rest.conversion;
 
 import org.oscarehr.PMmodule.model.Program;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.ProgramTo1;
 
 

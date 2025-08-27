@@ -40,9 +40,9 @@ import org.junit.Test;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
 import org.oscarehr.common.model.BillingONEAReport;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import ca.openosp.openo.oscarBilling.ca.on.data.BillingProviderData;
+import ca.openosp.openo.billings.ca.on.data.BillingProviderData;
 
 public class BillingONEAReportDaoTest extends DaoTestFixtures {
 

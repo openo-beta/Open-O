@@ -27,7 +27,7 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <%@page import="java.math.BigDecimal" %>
 <%@page import="org.oscarehr.common.dao.BillingONItemDao" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="java.text.SimpleDateFormat" %>
 <%@ include file="/taglibs.jsp" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -36,8 +36,8 @@
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 %>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 
 <%@page import="org.oscarehr.common.dao.BillingONCHeader1Dao" %>
 

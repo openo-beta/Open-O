@@ -39,7 +39,7 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%
     if (session.getValue("user") == null)
         response.sendRedirect("../logout.jsp");
@@ -52,10 +52,10 @@
 <%@ page
         import="oscar.oscarBilling.ca.bc.data.*,oscar.oscarBilling.ca.bc.pageUtil.*" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingBillingManager" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingViewBean" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingFormData" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.BillingBillingManager" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.BillingViewBean" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingFormData" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%
 
     String color = "", colorflag = "";

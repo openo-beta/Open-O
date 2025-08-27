@@ -35,9 +35,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import ca.openosp.openo.rx.data.RxPrescriptionData;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.casemgmt.model.CaseManagementNote;
+import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import org.oscarehr.common.dao.EFormValueDao;
 import org.oscarehr.common.model.Allergy;
 import org.oscarehr.common.model.Appointment;
@@ -51,10 +52,10 @@ import org.oscarehr.common.model.BillingONCHeader1;
 import org.oscarehr.common.model.BillingONExt;
 import org.oscarehr.common.dao.BillingONExtDao;
 import org.oscarehr.common.dao.ClinicDAO;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.DateUtils;
+import ca.openosp.openo.util.DateUtils;
 import oscar.OscarProperties;
 import ca.openosp.openo.eform.util.GraphicalCanvasToImage;
 import ca.openosp.openo.eform.APExecute;
@@ -412,8 +413,8 @@ public class PdfRecordPrinter {
         else
             newPage = true;
         */
-        oscar.oscarRx.data.RxPrescriptionData prescriptData = new oscar.oscarRx.data.RxPrescriptionData();
-        oscar.oscarRx.data.RxPrescriptionData.Prescription[] arr = {};
+        RxPrescriptionData prescriptData = new RxPrescriptionData();
+        RxPrescriptionData.Prescription[] arr = {};
         arr = prescriptData.getUniquePrescriptionsByPatient(Integer.parseInt(demoNo));
 
         if (arr.length == 0) {
@@ -433,7 +434,7 @@ public class PdfRecordPrinter {
 
         Font curFont;
         for (int idx = 0; idx < arr.length; ++idx) {
-            oscar.oscarRx.data.RxPrescriptionData.Prescription drug = arr[idx];
+            RxPrescriptionData.Prescription drug = arr[idx];
             p = new Paragraph();
             p.setAlignment(Paragraph.ALIGN_LEFT);
             if (drug.isCurrent() && !drug.isArchived()) {

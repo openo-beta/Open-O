@@ -29,9 +29,9 @@ import java.io.FileInputStream;
 import java.util.Properties;
 
 import org.oscarehr.common.service.AcceptableUseAgreementManager;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
-import org.oscarehr.util.SSOUtility;
+import org.oscarehr.utility.SSOUtility;
 import oscar.OscarProperties;
 
 public class LoginResourceBean {

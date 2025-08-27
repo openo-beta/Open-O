@@ -34,7 +34,7 @@ import javax.jws.WebService;
 
 import org.apache.cxf.annotations.GZIP;
 import org.oscarehr.common.model.Allergy;
-import org.oscarehr.managers.AllergyManager;
+import ca.openosp.openo.managers.AllergyManager;
 import org.oscarehr.ws.transfer_objects.AllergyTransfer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

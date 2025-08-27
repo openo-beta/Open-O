@@ -24,8 +24,8 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 
 <%@page import="java.util.*,oscar.eform.*" %>
 <%@page import="org.oscarehr.web.eform.EfmPatientFormList" %>

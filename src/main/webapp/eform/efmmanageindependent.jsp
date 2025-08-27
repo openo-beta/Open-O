@@ -25,7 +25,7 @@
 --%>
 <%@page import="java.util.*,oscar.eform.*" %>
 <%@page import="org.oscarehr.web.eform.EfmPatientFormList" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>

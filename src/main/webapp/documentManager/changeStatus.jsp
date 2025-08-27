@@ -26,7 +26,7 @@
 %>
 
 <%@ page
-        import="java.util.*, org.oscarehr.documentManager.EDocUtil" %>
+        import="java.util.*, ca.openosp.openo.documentManager.EDocUtil" %>
 
 <%
     ArrayList<String> doctypesD = EDocUtil.getDoctypes("demographic");

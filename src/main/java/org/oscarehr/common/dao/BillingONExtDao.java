@@ -32,17 +32,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Query;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
-
 import org.oscarehr.common.model.BillingONCHeader1;
 import org.oscarehr.common.model.BillingONExt;
 import org.oscarehr.common.model.BillingONPayment;
-import org.oscarehr.common.model.BillingPaymentType;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author mweston4

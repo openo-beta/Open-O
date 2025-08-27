@@ -44,10 +44,10 @@ import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.dao.UserPropertyDAO;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.integration.clinicalconnect.ClinicalConnectSSO;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.integration.clinicalconnect.ClinicalConnectSSO;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.log.LogAction;

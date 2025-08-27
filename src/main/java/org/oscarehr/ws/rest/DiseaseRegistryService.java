@@ -33,8 +33,8 @@ import java.util.Map;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
-import org.oscarehr.casemgmt.dao.IssueDAO;
-import org.oscarehr.casemgmt.model.Issue;
+import ca.openosp.openo.casemgmt.dao.IssueDAO;
+import ca.openosp.openo.casemgmt.model.Issue;
 import org.oscarehr.common.dao.DxresearchDAO;
 import org.oscarehr.common.dao.QuickListDao;
 import org.oscarehr.common.model.Dxresearch;

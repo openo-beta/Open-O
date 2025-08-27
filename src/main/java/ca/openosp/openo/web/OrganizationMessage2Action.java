@@ -30,7 +30,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ca.openosp.openo.service.OrganizationMessageManager;
+import ca.openosp.openo.services.OrganizationMessageManager;
 import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.PMmodule.model.ProgramProvider;
 import org.oscarehr.PMmodule.service.ProgramManager;
@@ -38,9 +38,9 @@ import org.oscarehr.common.dao.FacilityDao;
 import org.oscarehr.common.dao.FacilityMessageDao;
 import org.oscarehr.common.model.Facility;
 import org.oscarehr.common.model.FacilityMessage;
-import org.oscarehr.managers.ProgramManager2;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.managers.ProgramManager2;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

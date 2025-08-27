@@ -41,25 +41,26 @@
 
 <%@page import="java.util.GregorianCalendar" %>
 <%@page import="java.sql.ResultSet" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.DemographicWs" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.DemographicWs" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="java.net.URLEncoder" %>
 <%@page import="java.util.Enumeration" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
-<%@page import="org.oscarehr.util.WebUtils" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page import="org.oscarehr.common.model.Admission" %>
 <%@ page import="org.oscarehr.common.dao.AdmissionDao" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProgramDao" %>
 <%@page import="org.oscarehr.PMmodule.model.Program" %>
-<%@page import="org.oscarehr.managers.PatientConsentManager" %>
+<%@page import="ca.openosp.openo.managers.PatientConsentManager" %>
 <%@page import="org.oscarehr.common.model.ConsentType" %>
 <%@page import="org.oscarehr.common.model.Facility" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.GetConsentTransfer" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.GetConsentTransfer" %>
 <%@page import="org.oscarehr.common.model.UserProperty" %>
+<%@ page import="ca.openosp.openo.encounter.data.EctProgram" %>
 <%
     AdmissionDao admissionDao = (AdmissionDao) SpringUtils.getBean(AdmissionDao.class);
     ProgramDao programDao = SpringUtils.getBean(ProgramDao.class);
@@ -100,7 +101,7 @@
 
 
     //--- add to program so the caisi program access filtering doesn't cause a security problem ---
-    oscar.oscarEncounter.data.EctProgram program = new oscar.oscarEncounter.data.EctProgram(request.getSession());
+    EctProgram program = new EctProgram(request.getSession());
     String progId = program.getProgram(providerNo);
     if (progId.equals("0")) {
         Program p = programDao.getProgramByName("OSCAR");

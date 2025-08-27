@@ -24,10 +24,10 @@
 
 --%>
 <!DOCTYPE html>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.*" %>
 <%@ page import="oscar.oscarLab.ca.on.*" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
@@ -42,7 +42,7 @@
 <%@ page import="org.oscarehr.common.model.Tickler" %>
 <%@ page import="org.oscarehr.common.model.TicklerComment" %>
 <%@ page import="org.oscarehr.common.model.CustomFilter" %>
-<%@ page import="org.oscarehr.managers.TicklerManager" %>
+<%@ page import="ca.openosp.openo.managers.TicklerManager" %>
 <%@ page import="java.text.DateFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="org.owasp.encoder.Encode" %>
@@ -50,6 +50,7 @@
 <%@ page import="java.time.ZoneId" %>
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.time.Duration" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>

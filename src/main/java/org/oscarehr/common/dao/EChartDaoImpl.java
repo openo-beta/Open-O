@@ -33,8 +33,8 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import org.oscarehr.casemgmt.model.CaseManagementCPP;
-import org.oscarehr.casemgmt.model.CaseManagementNote;
+import ca.openosp.openo.casemgmt.model.CaseManagementCPP;
+import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import org.oscarehr.common.model.EChart;
 import org.springframework.stereotype.Repository;
 

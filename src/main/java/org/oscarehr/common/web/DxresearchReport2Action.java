@@ -37,15 +37,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.oscarehr.common.dao.DxresearchDAO;
 import org.oscarehr.common.dao.MyGroupDao;
 import org.oscarehr.common.model.DxRegistedPTInfo;
-import org.oscarehr.managers.CodingSystemManager;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.managers.CodingSystemManager;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarDocumentCreator;
-import oscar.oscarResearch.oscarDxResearch.bean.dxCodeSearchBean;
-import oscar.oscarResearch.oscarDxResearch.bean.dxQuickListBeanHandler;
-import oscar.oscarResearch.oscarDxResearch.bean.dxQuickListItemsHandler;
-import oscar.oscarResearch.oscarDxResearch.util.dxResearchCodingSystem;
+import ca.openosp.openo.oscarDxResearch.bean.dxCodeSearchBean;
+import ca.openosp.openo.oscarDxResearch.bean.dxQuickListBeanHandler;
+import ca.openosp.openo.oscarDxResearch.bean.dxQuickListItemsHandler;
+import ca.openosp.openo.oscarDxResearch.util.dxResearchCodingSystem;
 
 
 /**

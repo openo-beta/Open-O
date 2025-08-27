@@ -44,52 +44,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import javax.persistence.PersistenceException;
-
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.LogicalExpression;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Restrictions;
-import org.oscarehr.PMmodule.model.ProgramProvider;
-import org.oscarehr.PMmodule.web.formbean.ClientListsReportFormBean;
 import org.oscarehr.PMmodule.web.formbean.ClientSearchFormBean;
-import org.oscarehr.caisi_integrator.ws.MatchingDemographicParameters;
-import org.oscarehr.common.DemographicSearchResultTransformer;
 import org.oscarehr.common.Gender;
-import org.oscarehr.common.NativeSql;
-import org.oscarehr.common.model.Admission;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.DemographicExt;
-import org.oscarehr.event.DemographicCreateEvent;
-import org.oscarehr.event.DemographicUpdateEvent;
-import org.oscarehr.integration.hl7.generators.HL7A04Generator;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.DemographicSearchRequest;
-import org.oscarehr.ws.rest.to.model.DemographicSearchRequest.SEARCHMODE;
-import org.oscarehr.ws.rest.to.model.DemographicSearchRequest.SORTMODE;
 import org.oscarehr.ws.rest.to.model.DemographicSearchResult;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.orm.hibernate5.HibernateCallback;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import oscar.MyDateFormat;
-import oscar.OscarProperties;
-import oscar.util.SqlUtils;
 
 /**
  *

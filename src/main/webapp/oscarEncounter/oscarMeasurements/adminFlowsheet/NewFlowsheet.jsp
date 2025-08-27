@@ -27,7 +27,7 @@
 <%@page contentType="text/html" %>
 <%@page import="java.util.*,oscar.oscarDemographic.data.*,java.util.*,oscar.oscarPrevention.*,oscar.oscarEncounter.oscarMeasurements.*,oscar.oscarEncounter.oscarMeasurements.bean.*,java.net.*" %>
 <%@page import="org.jdom.Element,oscar.oscarEncounter.oscarMeasurements.data.*,org.jdom.output.Format,org.jdom.output.XMLOutputter,oscar.oscarEncounter.oscarMeasurements.util.*" %>
-<%@page import="org.oscarehr.common.dao.FlowSheetUserCreatedDao,org.oscarehr.common.model.FlowSheetUserCreated,org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.common.dao.FlowSheetUserCreatedDao,org.oscarehr.common.model.FlowSheetUserCreated,org.oscarehr.utility.SpringUtils" %>
 <%
     FlowSheetUserCreatedDao flowSheetUserCreatedDao = (FlowSheetUserCreatedDao) SpringUtils.getBean(FlowSheetUserCreatedDao.class);
     List<FlowSheetUserCreated> flowsheets = flowSheetUserCreatedDao.getAllUserCreatedFlowSheets();

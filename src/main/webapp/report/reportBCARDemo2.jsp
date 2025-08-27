@@ -18,6 +18,7 @@
         import="java.util.*, oscar.oscarReport.data.*, java.sql.*, oscar.login.*, java.net.*"
         errorPage="../appointment/errorpage.jsp" %>
 <%@ page import="ca.openosp.openo.login.DBHelp" %>
+<%@ page import="ca.openosp.openo.report.data.RptReportCreator" %>
 <% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
 
 <%

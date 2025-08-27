@@ -24,11 +24,11 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
 <%@ page import="java.sql.*, java.util.*" %>
 <%@ page errorPage="/common/error.jsp" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.ScheduleTemplateDao" %>
 <%@page import="org.oscarehr.common.model.ScheduleTemplate" %>
 <%@page import="org.oscarehr.common.dao.ScheduleTemplateCodeDao" %>

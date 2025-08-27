@@ -23,17 +23,18 @@
 
 package org.oscarehr.ui.servlet;
 
+import ca.openosp.openo.casemgmt.model.ClientImage;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.caisi_integrator.ws.DemographicTransfer;
-import org.oscarehr.caisi_integrator.ws.DemographicWs;
-import org.oscarehr.casemgmt.dao.ClientImageDAO;
+import ca.openosp.openo.caisi_integrator.ws.DemographicTransfer;
+import ca.openosp.openo.caisi_integrator.ws.DemographicWs;
+import ca.openosp.openo.casemgmt.dao.ClientImageDAO;
 import org.oscarehr.common.model.DigitalSignature;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.managers.DigitalSignatureManager;
-import org.oscarehr.util.*;
+import ca.openosp.openo.managers.DigitalSignatureManager;
+import org.oscarehr.utility.*;
 import oscar.OscarProperties;
 
 import javax.servlet.http.HttpServlet;
@@ -187,7 +188,7 @@ public final class ImageRenderingServlet extends HttpServlet {
         if (clientId != null && !clientId.isEmpty()) {
             try {
                 // get image
-                org.oscarehr.casemgmt.model.ClientImage clientImage = clientImageDAO.getClientImage(Integer.parseInt(clientId));
+                ClientImage clientImage = clientImageDAO.getClientImage(Integer.parseInt(clientId));
                 if (clientImage != null && "jpg".equalsIgnoreCase(clientImage.getImage_type())) {
                     renderImage(response, clientImage.getImage_data(), "jpeg");
                     return;

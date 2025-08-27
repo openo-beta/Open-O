@@ -33,11 +33,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
 import ca.openosp.openo.appt.ApptData;
-import oscar.oscarClinic.ClinicData;
+import ca.openosp.openo.clinic.ClinicData;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.v23.message.ADT_A04;
 import ca.uhn.hl7v2.model.v23.segment.EVN;

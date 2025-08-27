@@ -28,7 +28,7 @@ package org.oscarehr.common.model;
 
 import javax.persistence.Entity;
 
-import org.oscarehr.integration.fhir.resources.constants.ContactType;
+import ca.openosp.openo.integration.fhir.resources.constants.ContactType;
 
 @Entity
 public class ProfessionalContact extends Contact {

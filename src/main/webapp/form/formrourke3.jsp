@@ -41,7 +41,11 @@
 
 <%@ page import="oscar.form.*, oscar.form.data.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.form.FrmRecord" %>
+<%@ page import="ca.openosp.openo.form.FrmRourkeRecord" %>
+<%@ page import="ca.openosp.openo.form.data.FrmData" %>
+<%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

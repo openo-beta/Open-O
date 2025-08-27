@@ -30,9 +30,9 @@ package org.oscarehr.ws.rest.conversion;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.Drug;
-import org.oscarehr.managers.DrugLookUp;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import ca.openosp.openo.managers.DrugLookUp;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.ws.rest.to.model.DrugSearchTo1;
 import org.oscarehr.ws.rest.to.model.DrugTo1;
 import org.springframework.beans.factory.annotation.Autowired;

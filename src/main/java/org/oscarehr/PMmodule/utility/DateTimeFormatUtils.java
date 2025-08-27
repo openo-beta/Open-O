@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 /**
  * @deprecated 2013-12-09 use org.oscarehr.util.DateUtils instead

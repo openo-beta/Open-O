@@ -154,8 +154,6 @@
 		</jaxws:inInterceptors>
 	</jaxws:endpoint>	
 	
-	<context:component-scan base-package="ca.openosp.openo.login"/>
-	
 	<context:component-scan base-package="org.oscarehr.ws.rest"/>
 	<context:component-scan base-package="org.oscarehr.ws.rest.util"/>
 	<context:component-scan base-package="org.oscarehr.ws.rest.conversion"/>

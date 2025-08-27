@@ -39,26 +39,27 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="java.util.List" %>
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
 <%@page import="oscar.util.*" %>
 <%@page import="java.util.Date" %>
-<%@page import="org.oscarehr.casemgmt.dao.CaseManagementNoteDAO" %>
+<%@page import="ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO" %>
 <%@page import="org.oscarehr.common.dao.BillingDao" %>
 <%@page import="org.oscarehr.common.model.Drug" %>
 <%@page import="org.oscarehr.common.dao.DrugDao" %>
 <%@page import="org.oscarehr.common.dao.ProviderInboxRoutingDao" %>
 <%@page import="org.oscarehr.common.model.ProviderInboxItem" %>
-<%@page import="org.oscarehr.managers.TicklerManager" %>
+<%@page import="ca.openosp.openo.managers.TicklerManager" %>
 <%@page import="org.oscarehr.common.model.CustomFilter" %>
 <%@page import="org.oscarehr.common.dao.DocumentDao" %>
 <%@page import="org.oscarehr.common.dao.BillingONCHeader1Dao" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 
 <%@ include file="/taglibs.jsp" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>

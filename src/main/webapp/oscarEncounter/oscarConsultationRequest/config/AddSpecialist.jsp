@@ -46,11 +46,11 @@
 
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConAddSpecialistForm" %>
+<%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConAddSpecialistForm" %>
 <%@page import="java.util.List" %>
 <%@page import="java.util.Map" %>
 <%@page import="java.util.HashMap" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.InstitutionDao" %>
 <%@page import="org.oscarehr.common.model.Institution" %>
 <%@page import="org.oscarehr.common.dao.InstitutitionDepartmentDao, org.oscarehr.common.dao.ConsultationServiceDao" %>
@@ -58,6 +58,7 @@
 <%@page import="org.oscarehr.common.dao.DepartmentDao" %>
 <%@page import="org.oscarehr.common.model.Department" %>
 <%@page import="org.oscarehr.common.model.EForm" %>
+<%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
 
 <%
     InstitutionDao institutionDao = SpringUtils.getBean(InstitutionDao.class);
@@ -180,7 +181,7 @@
         <tr style="vertical-align: top">
             <td class="MainTableLeftColumn">
                 <%
-                    oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar titlebar = new oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar(request);
+                    EctConTitlebar titlebar = new EctConTitlebar(request);
                     out.print(titlebar.estBar(request));
                 %>
             </td>

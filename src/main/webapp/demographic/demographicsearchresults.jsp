@@ -40,16 +40,16 @@
 
 <!DOCTYPE HTML>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.CachedProvider" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.FacilityIdStringCompositePk" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.CachedProvider" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.FacilityIdStringCompositePk" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
 <%@page import="org.apache.commons.lang.time.DateFormatUtils" %>
 <%@page import="org.oscarehr.common.dao.OscarLogDao" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.DemographicTransfer" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.MatchingDemographicTransferScore" %>
-<%@page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.DemographicTransfer" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.MatchingDemographicTransferScore" %>
+<%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -74,10 +74,10 @@
 
 
 <%@ page import="java.util.*, java.sql.*, java.net.URLEncoder, oscar.*, oscar.util.*" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicMerged" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicMerged" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.oscarehr.common.dao.DemographicExtDao" %>
 <%@ page import="org.oscarehr.common.model.DemographicExt" %>

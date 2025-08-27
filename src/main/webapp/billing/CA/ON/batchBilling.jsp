@@ -25,7 +25,7 @@
 
 --%>
 
-<%@page import="oscar.util.DateUtils" %>
+<%@page import="ca.openosp.openo.util.DateUtils" %>
 <%@page import="oscar.OscarProperties" %>
 <%
     if (session.getAttribute("user") == null) response.sendRedirect("../../../../logout.jsp");
@@ -34,7 +34,7 @@
 %>
 <%@ include file="../../../casemgmt/taglibs.jsp" %>
 <%@ page import="java.util.*, java.sql.*, java.net.*" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.ClinicLocationDao, org.oscarehr.PMmodule.dao.ProviderDao, org.oscarehr.common.dao.BatchBillingDAO, org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="org.oscarehr.common.model.ClinicLocation, org.oscarehr.common.model.Provider, org.oscarehr.common.model.BatchBilling, org.oscarehr.common.model.Demographic" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>

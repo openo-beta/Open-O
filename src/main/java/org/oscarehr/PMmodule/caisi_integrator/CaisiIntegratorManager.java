@@ -36,38 +36,40 @@ import java.util.Map.Entry;
 
 import javax.servlet.http.HttpSession;
 
+import ca.openosp.openo.caisi_integrator.ws.transfer.FacilityConsentPair;
+import ca.openosp.openo.caisi_integrator.ws.transfer.SetConsentTransfer;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicNote;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicNoteCompositePk;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicPrevention;
-import org.oscarehr.caisi_integrator.ws.CachedFacility;
-import org.oscarehr.caisi_integrator.ws.CachedMeasurement;
-import org.oscarehr.caisi_integrator.ws.CachedProgram;
-import org.oscarehr.caisi_integrator.ws.CachedProvider;
-import org.oscarehr.caisi_integrator.ws.ConnectException_Exception;
-import org.oscarehr.caisi_integrator.ws.DemographicTransfer;
-import org.oscarehr.caisi_integrator.ws.DemographicWs;
-import org.oscarehr.caisi_integrator.ws.DemographicWsService;
-import org.oscarehr.caisi_integrator.ws.DuplicateHinExceptionException;
-import org.oscarehr.caisi_integrator.ws.FacilityIdIntegerCompositePk;
-import org.oscarehr.caisi_integrator.ws.FacilityIdStringCompositePk;
-import org.oscarehr.caisi_integrator.ws.FacilityWs;
-import org.oscarehr.caisi_integrator.ws.FacilityWsService;
-import org.oscarehr.caisi_integrator.ws.GetConsentTransfer;
-import org.oscarehr.caisi_integrator.ws.HnrWs;
-import org.oscarehr.caisi_integrator.ws.HnrWsService;
-import org.oscarehr.caisi_integrator.ws.InvalidHinExceptionException;
-import org.oscarehr.caisi_integrator.ws.MatchingDemographicParameters;
-import org.oscarehr.caisi_integrator.ws.ProgramWs;
-import org.oscarehr.caisi_integrator.ws.ProgramWsService;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicNote;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicNoteCompositePk;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicPrevention;
+import ca.openosp.openo.caisi_integrator.ws.CachedFacility;
+import ca.openosp.openo.caisi_integrator.ws.CachedMeasurement;
+import ca.openosp.openo.caisi_integrator.ws.CachedProgram;
+import ca.openosp.openo.caisi_integrator.ws.CachedProvider;
+import ca.openosp.openo.caisi_integrator.ws.ConnectException_Exception;
+import ca.openosp.openo.caisi_integrator.ws.DemographicTransfer;
+import ca.openosp.openo.caisi_integrator.ws.DemographicWs;
+import ca.openosp.openo.caisi_integrator.ws.DemographicWsService;
+import ca.openosp.openo.caisi_integrator.ws.DuplicateHinExceptionException;
+import ca.openosp.openo.caisi_integrator.ws.FacilityIdIntegerCompositePk;
+import ca.openosp.openo.caisi_integrator.ws.FacilityIdStringCompositePk;
+import ca.openosp.openo.caisi_integrator.ws.FacilityWs;
+import ca.openosp.openo.caisi_integrator.ws.FacilityWsService;
+import ca.openosp.openo.caisi_integrator.ws.GetConsentTransfer;
+import ca.openosp.openo.caisi_integrator.ws.HnrWs;
+import ca.openosp.openo.caisi_integrator.ws.HnrWsService;
+import ca.openosp.openo.caisi_integrator.ws.InvalidHinExceptionException;
+import ca.openosp.openo.caisi_integrator.ws.MatchingDemographicParameters;
+import ca.openosp.openo.caisi_integrator.ws.ProgramWs;
+import ca.openosp.openo.caisi_integrator.ws.ProgramWsService;
 
-import org.oscarehr.caisi_integrator.ws.ProviderWs;
-import org.oscarehr.caisi_integrator.ws.ProviderWsService;
-import org.oscarehr.caisi_integrator.ws.ReferralWs;
-import org.oscarehr.caisi_integrator.ws.ReferralWsService;
-import org.oscarehr.caisi_integrator.ws.ProviderCommunicationTransfer;
+import ca.openosp.openo.caisi_integrator.ws.ProviderWs;
+import ca.openosp.openo.caisi_integrator.ws.ProviderWsService;
+import ca.openosp.openo.caisi_integrator.ws.ReferralWs;
+import ca.openosp.openo.caisi_integrator.ws.ReferralWsService;
+import ca.openosp.openo.caisi_integrator.ws.ProviderCommunicationTransfer;
 import org.oscarehr.common.model.Consent;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Facility;
@@ -77,7 +79,7 @@ import org.oscarehr.common.model.IntegratorConsent.SignatureStatus;
 import org.oscarehr.common.model.OscarMsgType;
 import org.oscarehr.hnr.ws.MatchingClientParameters;
 import org.oscarehr.hnr.ws.MatchingClientScore;
-import org.oscarehr.util.*;
+import org.oscarehr.utility.*;
 import org.oscarehr.ws.rest.to.model.DemographicSearchRequest;
 import org.oscarehr.ws.rest.to.model.DemographicSearchRequest.SEARCHMODE;
 
@@ -439,7 +441,7 @@ public class CaisiIntegratorManager {
     public static void pushConsent(LoggedInInfo loggedInInfo, Facility facility, IntegratorConsent integratorConsent) throws MalformedURLException {
         if (integratorConsent.getClientConsentStatus() == ConsentStatus.GIVEN || integratorConsent.getClientConsentStatus() == ConsentStatus.REVOKED) {
             integratorConsent.setFacilityId(facility.getId());
-            org.oscarehr.caisi_integrator.ws.SetConsentTransfer consentTransfer = makeSetConsentTransfer(integratorConsent);
+            ca.openosp.openo.caisi_integrator.ws.SetConsentTransfer consentTransfer = makeSetConsentTransfer(integratorConsent);
             getDemographicWs(loggedInInfo, facility).setCachedDemographicConsent(consentTransfer);
         }
     }
@@ -478,9 +480,9 @@ public class CaisiIntegratorManager {
     /**
      * Method to be used for transmitting Consents via web services.
      */
-    private static org.oscarehr.caisi_integrator.ws.SetConsentTransfer makeSetConsentTransfer(IntegratorConsent integratorConsent) {
+    private static ca.openosp.openo.caisi_integrator.ws.SetConsentTransfer makeSetConsentTransfer(IntegratorConsent integratorConsent) {
         Calendar calendar = Calendar.getInstance();
-        org.oscarehr.caisi_integrator.ws.SetConsentTransfer consentTransfer = new org.oscarehr.caisi_integrator.ws.SetConsentTransfer();
+        ca.openosp.openo.caisi_integrator.ws.SetConsentTransfer consentTransfer = new ca.openosp.openo.caisi_integrator.ws.SetConsentTransfer();
         consentTransfer.setConsentStatus(integratorConsent.getClientConsentStatus().name());
 
         // this should never be null
@@ -496,7 +498,7 @@ public class CaisiIntegratorManager {
         }
 
         for (Entry<Integer, Boolean> entry : integratorConsent.getConsentToShareData().entrySet()) {
-            org.oscarehr.caisi_integrator.ws.FacilityConsentPair pair = new org.oscarehr.caisi_integrator.ws.FacilityConsentPair();
+            ca.openosp.openo.caisi_integrator.ws.FacilityConsentPair pair = new ca.openosp.openo.caisi_integrator.ws.FacilityConsentPair();
             pair.setRemoteFacilityId(entry.getKey());
             pair.setShareData(entry.getValue());
             consentTransfer.getConsentToShareData().add(pair);
@@ -508,25 +510,25 @@ public class CaisiIntegratorManager {
     /**
      * Method to be used for serializing Consent objects for transmission by file transfer.
      */
-    public static org.oscarehr.caisi_integrator.ws.transfer.SetConsentTransfer makeSetConsentTransfer2(IntegratorConsent consent) {
+    public static SetConsentTransfer makeSetConsentTransfer2(IntegratorConsent consent) {
 
-        org.oscarehr.caisi_integrator.ws.transfer.SetConsentTransfer consentTransfer = new org.oscarehr.caisi_integrator.ws.transfer.SetConsentTransfer();
+        SetConsentTransfer consentTransfer = new SetConsentTransfer();
         consentTransfer.setConsentStatus(consent.getClientConsentStatus().name());
         consentTransfer.setCreatedDate(consent.getCreatedDate());
         consentTransfer.setDemographicId(consent.getDemographicId());
         consentTransfer.setExcludeMentalHealthData(consent.isExcludeMentalHealthData());
         consentTransfer.setExpiry(consent.getExpiry());
 
-        List<org.oscarehr.caisi_integrator.ws.transfer.FacilityConsentPair> pairList = new ArrayList<org.oscarehr.caisi_integrator.ws.transfer.FacilityConsentPair>();
+        List<FacilityConsentPair> pairList = new ArrayList<FacilityConsentPair>();
         for (Entry<Integer, Boolean> entry : consent.getConsentToShareData().entrySet()) {
-            org.oscarehr.caisi_integrator.ws.transfer.FacilityConsentPair pair = new org.oscarehr.caisi_integrator.ws.transfer.FacilityConsentPair();
+            FacilityConsentPair pair = new FacilityConsentPair();
             pair.setRemoteFacilityId(entry.getKey());
             pair.setShareData(entry.getValue());
             pairList.add(pair);
 
         }
 
-        consentTransfer.setConsentToShareData(pairList.toArray(new org.oscarehr.caisi_integrator.ws.transfer.FacilityConsentPair[pairList.size()]));
+        consentTransfer.setConsentToShareData(pairList.toArray(new FacilityConsentPair[pairList.size()]));
 
         return consentTransfer;
     }

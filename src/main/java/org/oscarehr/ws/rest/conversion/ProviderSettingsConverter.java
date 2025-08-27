@@ -24,8 +24,8 @@
  */
 package org.oscarehr.ws.rest.conversion;
 
-import org.oscarehr.managers.model.ProviderSettings;
-import org.oscarehr.util.LoggedInInfo;
+import ca.openosp.openo.managers.model.ProviderSettings;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.ProviderSettingsTo1;
 import org.springframework.beans.BeanUtils;
 

@@ -47,21 +47,21 @@
 <%@page import="oscar.oscarBilling.ca.bc.data.*,oscar.*,org.oscarehr.common.model.*" %>
 <%@page import="java.math.*, java.util.*, java.sql.*, oscar.*, java.net.*,oscar.oscarBilling.ca.bc.MSP.*" %>
 <%@page import="org.springframework.web.context.WebApplicationContext,org.springframework.web.context.support.WebApplicationContextUtils, oscar.entities.*" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.administration.GstControl2Action" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.administration.GstReport" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.administration.GstControl2Action" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.administration.GstReport" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.entities.Billingmaster" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingmasterDAO" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.MSP.MSPBillingNote" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.MSP.MSPReconcile" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingFormData" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingCodeData" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingNote" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.MSP.MSPBillingNote" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingFormData" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingCodeData" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingNote" %>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
 
 

@@ -49,14 +49,14 @@
 <%@page import="org.oscarehr.common.model.CVCMedicationLotNumber" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%@page import="org.oscarehr.common.model.CVCImmunization" %>
-<%@page import="org.oscarehr.managers.CanadianVaccineCatalogueManager" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="oscar.oscarProvider.data.ProviderData" %>
+<%@page import="ca.openosp.openo.managers.CanadianVaccineCatalogueManager" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.provider.data.ProviderData" %>
 <%@ page
-        import="ca.openosp.openo.oscarDemographic.data.DemographicData,java.text.SimpleDateFormat, java.util.*,oscar.oscarPrevention.*,oscar.oscarProvider.data.*,oscar.util.*" %>
-<%@ page import="org.oscarehr.casemgmt.model.CaseManagementNoteLink" %>
-<%@ page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+        import="ca.openosp.openo.demographic.data.DemographicData,java.text.SimpleDateFormat, java.util.*,oscar.oscarPrevention.*,oscar.oscarProvider.data.*,oscar.util.*" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
+<%@ page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.DemographicExtDao" %>
 <%@page import="org.oscarehr.common.dao.PreventionsLotNrsDao" %>
 <%@page import="org.oscarehr.common.model.PreventionsLotNrs" %>

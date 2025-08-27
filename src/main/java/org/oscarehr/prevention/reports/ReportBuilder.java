@@ -46,19 +46,19 @@ import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.DemographicContact;
 import org.oscarehr.common.model.Prevention;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.managers.DemographicManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.managers.DemographicManager;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.oscarehr.ws.rest.to.model.PreventionSearchConfigTo1;
 import org.oscarehr.ws.rest.to.model.PreventionSearchTo1;
 
-import oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBean;
-import oscar.oscarEncounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
-import oscar.oscarPrevention.PreventionData;
-import oscar.oscarPrevention.reports.PreventionReportUtil;
-import oscar.oscarPrevention.reports.ReportItem;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBean;
+import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
+import ca.openosp.openo.prevention.PreventionData;
+import ca.openosp.openo.prevention.reports.PreventionReportUtil;
+import ca.openosp.openo.prevention.reports.ReportItem;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 public class ReportBuilder {
     private static Logger logger = MiscUtils.getLogger();

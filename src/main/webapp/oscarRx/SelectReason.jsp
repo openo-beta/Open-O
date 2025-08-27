@@ -29,11 +29,11 @@
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ page
         import="oscar.oscarRx.data.*,java.util.*,org.oscarehr.common.dao.DrugReasonDao,org.oscarehr.common.model.DrugReason" %>
-<%@page import="org.oscarehr.util.SpringUtils,oscar.util.StringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils,ca.openosp.openo.util.StringUtils" %>
 <%@ page
         import="org.oscarehr.common.dao.DxresearchDAO,org.oscarehr.common.model.Dxresearch,org.oscarehr.common.dao.Icd9Dao,org.oscarehr.common.model.Icd9" %>
-<%@ page import="org.oscarehr.util.MiscUtils" %>
-<%@page import="org.oscarehr.managers.CodingSystemManager" %>
+<%@ page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.managers.CodingSystemManager" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%
     CodingSystemManager codingSystemManager = SpringUtils.getBean(CodingSystemManager.class);

@@ -23,6 +23,8 @@
 <%@ page
         import="java.util.*, java.sql.*, oscar.*, java.text.*, oscar.oscarDB.*,java.net.*"
         errorPage="../appointment/errorpage.jsp" %>
+<%@ page import="ca.openosp.openo.db.DBPreparedHandler" %>
+<%@ page import="ca.openosp.openo.db.DBPreparedHandlerParam" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

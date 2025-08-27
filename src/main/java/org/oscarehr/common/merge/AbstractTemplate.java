@@ -27,7 +27,7 @@ package org.oscarehr.common.merge;
 import java.util.List;
 
 import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * Base template class encapsulating common functionality used by extending template components.

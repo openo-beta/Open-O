@@ -46,7 +46,7 @@ import org.oscarehr.common.model.CdsClientFormData;
 import org.oscarehr.common.model.CdsFormOption;
 import org.oscarehr.common.model.CdsHospitalisationDays;
 import org.oscarehr.common.model.Demographic;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class CdsForm4 {
 

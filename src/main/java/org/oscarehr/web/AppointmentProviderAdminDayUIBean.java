@@ -27,8 +27,8 @@ import org.oscarehr.common.dao.EFormDao;
 import org.oscarehr.common.dao.ProviderPreferenceDao;
 import org.oscarehr.common.model.EForm;
 import org.oscarehr.common.model.ProviderPreference;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 public final class AppointmentProviderAdminDayUIBean {
     private static EFormDao eFormDao = (EFormDao) SpringUtils.getBean(EFormDao.class);

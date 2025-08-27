@@ -36,7 +36,7 @@ import net.sf.json.JSONArray;
 import org.apache.commons.lang.StringUtils;
 import org.oscarehr.common.dao.ProfessionalSpecialistDao;
 import org.oscarehr.common.model.ProfessionalSpecialist;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author Toby

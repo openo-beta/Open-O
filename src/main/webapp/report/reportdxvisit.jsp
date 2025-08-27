@@ -14,11 +14,11 @@
 %>
 
 <%@page import="org.oscarehr.common.dao.BillingDao" %>
-<%@page import="oscar.util.ConversionUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@page import="org.oscarehr.common.dao.DxresearchDAO" %>
 <%@page import="org.oscarehr.common.model.Ichppccode" %>
 <%@page import="org.oscarehr.common.dao.IchppccodeDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%
     //reportdxvisit.jsp?sdate=2003-04-01&edate=2003-12-31

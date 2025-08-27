@@ -12,17 +12,6 @@
  */
 package org.oscarehr.common.dao;
 
-import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.inbox.InboxItem;
-import org.oscarehr.common.model.inbox.InboxItemDemographicCount;
-import org.oscarehr.common.model.inbox.InboxQueryParameters;
-import org.oscarehr.common.model.inbox.InboxResponse;
-import org.oscarehr.util.MiscUtils;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

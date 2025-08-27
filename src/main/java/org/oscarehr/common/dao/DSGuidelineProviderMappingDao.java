@@ -27,7 +27,7 @@
  */
 package org.oscarehr.common.dao;
 
-import org.oscarehr.decisionSupport.model.DSGuidelineProviderMapping;
+import ca.openosp.openo.decisionSupport.model.DSGuidelineProviderMapping;
 
 import java.util.List;
 

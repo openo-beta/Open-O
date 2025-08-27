@@ -57,7 +57,7 @@
 
 <jsp:useBean id="apptMainBean" class="oscar.AppointmentMainBean" scope="session"/>
 
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.PreventionsLotNrs" %>
 <%@ page import="org.oscarehr.common.dao.PreventionsLotNrsDao" %>
 <%

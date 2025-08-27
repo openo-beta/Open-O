@@ -61,7 +61,7 @@
 %>
 
 
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <html>
 
 

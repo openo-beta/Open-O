@@ -35,19 +35,19 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicPrevention;
-import org.oscarehr.caisi_integrator.ws.CachedProvider;
-import org.oscarehr.caisi_integrator.ws.DemographicWs;
-import org.oscarehr.caisi_integrator.ws.FacilityIdStringCompositePk;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.XmlUtils;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicPrevention;
+import ca.openosp.openo.caisi_integrator.ws.CachedProvider;
+import ca.openosp.openo.caisi_integrator.ws.DemographicWs;
+import ca.openosp.openo.caisi_integrator.ws.FacilityIdStringCompositePk;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import oscar.util.DateUtils;
+import ca.openosp.openo.util.DateUtils;
 
 public final class RemotePreventionHelper {
     private static Logger logger = MiscUtils.getLogger();

@@ -36,33 +36,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-
-import net.sf.json.JSONObject;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.app.OAuth1Utils;
-import org.oscarehr.common.dao.AppDefinitionDao;
-import org.oscarehr.common.dao.AppUserDao;
-import org.oscarehr.common.model.AppDefinition;
-import org.oscarehr.common.model.AppUser;
-import org.oscarehr.managers.AppManager;
-import org.oscarehr.managers.SecurityInfoManager;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import org.oscarehr.ws.rest.to.GenericRESTResponse;
+import ca.openosp.openo.managers.AppManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.ws.rest.to.model.AppDefinitionTo1;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import oscar.OscarProperties;
 
 @Path("/app")
 public class AppService extends AbstractServiceImpl {

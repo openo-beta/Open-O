@@ -34,7 +34,7 @@ import org.oscarehr.common.model.Appointment;
 import org.oscarehr.common.model.Appointment.BookingSource;
 import org.springframework.beans.BeanUtils;
 
-import oscar.util.DateUtils;
+import ca.openosp.openo.util.DateUtils;
 
 public final class AppointmentTransfer {
 

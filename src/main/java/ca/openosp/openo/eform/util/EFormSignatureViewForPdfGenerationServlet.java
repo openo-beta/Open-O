@@ -19,9 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.DigitalSignature;
-import org.oscarehr.managers.DigitalSignatureManager;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.managers.DigitalSignatureManager;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * The purpose of this servlet is to allow a local process to access eform signatures.

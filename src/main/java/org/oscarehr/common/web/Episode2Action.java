@@ -32,9 +32,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.oscarehr.common.dao.EpisodeDao;
 import org.oscarehr.common.model.Episode;
-import org.oscarehr.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.managers.SecurityInfoManager;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.beans.BeanUtils;
 
 import oscar.OscarProperties;

@@ -38,7 +38,7 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProgramDao;
 import org.oscarehr.PMmodule.model.AdmissionSearchBean;
 import org.oscarehr.common.model.Admission;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository

@@ -24,7 +24,7 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.ConformanceTestHelper" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%

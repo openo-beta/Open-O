@@ -41,7 +41,7 @@
     }
 %>
 <%@ page
-        import="java.sql.*, oscar.login.*, java.util.*,oscar.*,oscar.oscarDB.*,oscar.oscarProvider.data.ProviderBillCenter"
+        import="java.sql.*, oscar.login.*, java.util.*,oscar.*,oscar.oscarDB.*,ca.openosp.openo.provider.data.ProviderBillCenter"
         errorPage="/errorpage.jsp" %>
 
 <%@page import="org.oscarehr.common.dao.SiteDao" %>
@@ -51,13 +51,14 @@
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@page import="org.oscarehr.common.model.ProviderArchive" %>
 <%@page import="org.oscarehr.common.dao.ProviderArchiveDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.apache.commons.beanutils.BeanUtils" %>
 <%@page import="org.oscarehr.common.model.ProviderSite" %>
 <%@page import="org.oscarehr.common.model.ProviderSitePK" %>
 <%@page import="org.oscarehr.common.dao.ProviderSiteDao" %>
 <%@page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@page import="org.oscarehr.common.model.UserProperty" %>
+<%@ page import="ca.openosp.openo.db.DBPreparedHandler" %>
 <%
     ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
     ProviderSiteDao providerSiteDao = SpringUtils.getBean(ProviderSiteDao.class);

@@ -19,7 +19,7 @@
 --%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <%@ page import="java.util.*, oscar.oscarBilling.ca.on.pageUtil.*" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.pageUtil.BillingSpecPrep" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingSpecPrep" %>
 
 <%
     //

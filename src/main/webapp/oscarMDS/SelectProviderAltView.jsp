@@ -27,7 +27,7 @@
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="oscar.oscarMDS.data.ProviderData, java.util.ArrayList" %>
+<%@ page import="ca.openosp.openo.mds.data.ProviderData, java.util.ArrayList" %>
 
 <link rel="stylesheet" type="text/css" href="encounterStyles.css">
 <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>

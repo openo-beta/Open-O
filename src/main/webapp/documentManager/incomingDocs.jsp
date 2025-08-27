@@ -40,9 +40,9 @@
 
 
 <%@page import="org.oscarehr.common.model.UserProperty" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.UserPropertyDAO" %>
-<%@page import="oscar.util.UtilDateUtilities" %>
+<%@page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@page import="java.io.File" %>
 <%@ page import="java.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -59,8 +59,8 @@
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.common.model.ProviderLabRoutingModel" %>
 
-<%@page import="org.oscarehr.documentManager.IncomingDocUtil" %>
-<%@ page import="org.oscarehr.documentManager.EDocUtil" %>
+<%@page import="ca.openosp.openo.documentManager.IncomingDocUtil" %>
+<%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 
 <jsp:useBean id="LastPatientsBean" class="java.util.ArrayList" scope="session"/>
 

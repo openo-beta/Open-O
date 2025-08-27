@@ -31,8 +31,8 @@ import javax.servlet.jsp.PageContext;
 
 import org.oscarehr.common.dao.SecurityDao;
 import org.oscarehr.common.model.Security;
-import org.oscarehr.managers.SecurityManager;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.managers.SecurityManager;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.MyDateFormat;
 import ca.openosp.openo.log.LogAction;

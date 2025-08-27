@@ -24,9 +24,9 @@
 package org.oscarehr.common.model;
 
 import org.apache.commons.lang.StringUtils;
-import org.oscarehr.integration.fhir.interfaces.ContactInterface;
-import org.oscarehr.integration.fhir.resources.constants.ContactRelationship;
-import org.oscarehr.integration.fhir.resources.constants.ContactType;
+import ca.openosp.openo.integration.fhir.interfaces.ContactInterface;
+import ca.openosp.openo.integration.fhir.resources.constants.ContactRelationship;
+import ca.openosp.openo.integration.fhir.resources.constants.ContactType;
 
 import javax.persistence.*;
 import java.io.Serializable;

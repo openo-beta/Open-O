@@ -38,7 +38,7 @@ import org.oscarehr.common.dao.ServiceRequestTokenDao;
 import org.oscarehr.common.model.ServiceAccessToken;
 import org.oscarehr.common.model.ServiceClient;
 import org.oscarehr.common.model.ServiceRequestToken;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

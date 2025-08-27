@@ -31,7 +31,7 @@ import java.net.URL;
 
 import org.oscarehr.common.dao.ProviderPreferenceDao;
 import org.oscarehr.common.model.ProviderPreference;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
 

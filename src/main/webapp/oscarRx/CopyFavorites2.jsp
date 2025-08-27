@@ -26,13 +26,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="java.util.*" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.dao.FavoritesDao" %>
 <%@ page import="org.oscarehr.common.model.Favorites" %>
 <%@ page import="org.oscarehr.common.dao.FavoritesPrivilegeDao" %>
 <%@ page import="org.oscarehr.common.model.FavoritesPrivilege" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
+<%@ page import="ca.openosp.openo.rx.data.RxCodesData" %>
 <%
     FavoritesDao favoritesDao = SpringUtils.getBean(FavoritesDao.class);
     FavoritesPrivilegeDao favoritesPrivilegeDao = SpringUtils.getBean(FavoritesPrivilegeDao.class);
@@ -52,7 +53,7 @@
         copyProviderNo = "";
     }
 
-    oscar.oscarRx.data.RxCodesData.FrequencyCode[] freq = new oscar.oscarRx.data.RxCodesData().getFrequencyCodes();
+    RxCodesData.FrequencyCode[] freq = new RxCodesData().getFrequencyCodes();
 %>
 
 <html>

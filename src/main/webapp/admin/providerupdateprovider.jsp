@@ -24,9 +24,9 @@
 
 --%>
 <%@ page import="org.oscarehr.common.model.LookupListItem" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="org.oscarehr.common.model.LookupList" %>
-<%@ page import="org.oscarehr.managers.LookupListManager" %>
+<%@ page import="ca.openosp.openo.managers.LookupListManager" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -43,10 +43,10 @@
         return;
     }
 %>
-<%@ page import="java.util.*, oscar.SxmlMisc, oscar.oscarProvider.data.ProviderBillCenter" errorPage="/errorpage.jsp" %>
+<%@ page import="java.util.*, oscar.SxmlMisc, ca.openosp.openo.provider.data.ProviderBillCenter" errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.openo.log.LogAction,ca.openosp.openo.log.LogConst" %>
 <%@ page import="org.oscarehr.common.model.ClinicNbr" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.dao.ClinicNbrDao" %>
 <%@ page import="org.oscarehr.common.model.ProviderData" %>
 <%@ page import="org.oscarehr.common.dao.ProviderDataDao" %>

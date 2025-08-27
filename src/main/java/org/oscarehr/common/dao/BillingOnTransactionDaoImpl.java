@@ -35,11 +35,11 @@ import java.util.Date;
 import org.oscarehr.common.model.BillingONCHeader1;
 import org.oscarehr.common.model.BillingONPayment;
 import org.oscarehr.common.model.BillingOnTransaction;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 
-import ca.openosp.openo.oscarBilling.ca.on.data.BillingClaimHeader1Data;
-import ca.openosp.openo.oscarBilling.ca.on.data.BillingDataHlp;
+import ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data;
+import ca.openosp.openo.billings.ca.on.data.BillingDataHlp;
 import org.oscarehr.common.model.BillingONItem;
 
 @Repository

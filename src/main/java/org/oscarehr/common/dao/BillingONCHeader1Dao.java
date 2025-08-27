@@ -35,7 +35,7 @@ import java.util.Map;
 import org.oscarehr.common.model.BillingONCHeader1;
 import org.oscarehr.common.model.BillingONItem;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.DateRange;
+import org.oscarehr.utility.DateRange;
 
 /**
  * @author Eugene Katyukhin

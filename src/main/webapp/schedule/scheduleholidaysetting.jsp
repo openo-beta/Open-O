@@ -57,9 +57,10 @@
 
 
 <jsp:useBean id="scheduleHolidayBean" class="java.util.Hashtable" scope="session"/>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.ScheduleHoliday" %>
 <%@ page import="org.oscarehr.common.dao.ScheduleHolidayDao" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%
     ScheduleHolidayDao scheduleHolidayDao = SpringUtils.getBean(ScheduleHolidayDao.class);
 %>
@@ -120,7 +121,7 @@
 
         for (ScheduleHoliday sh : scheduleHolidayDao.findAll()) {
 
-            scheduleHolidayBean.put(oscar.util.ConversionUtils.toDateString(sh.getId()), new HScheduleHoliday(sh.getHolidayName()));
+            scheduleHolidayBean.put(ConversionUtils.toDateString(sh.getId()), new HScheduleHoliday(sh.getHolidayName()));
         }
     }
 

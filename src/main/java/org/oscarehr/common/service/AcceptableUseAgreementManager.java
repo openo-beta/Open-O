@@ -35,8 +35,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.PropertyDao;
 import org.oscarehr.common.model.Property;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class AcceptableUseAgreementManager {
     private static Logger logger = MiscUtils.getLogger();

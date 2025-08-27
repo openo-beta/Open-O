@@ -39,7 +39,7 @@
     }
 %>
 
-<%@page import="oscar.util.ConversionUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%
 
     String strLimit1 = "0";

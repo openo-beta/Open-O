@@ -29,7 +29,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
-import org.oscarehr.managers.BillingManager;
+import ca.openosp.openo.managers.BillingManager;
 import org.oscarehr.ws.rest.conversion.ServiceTypeConverter;
 import org.oscarehr.ws.rest.to.AbstractSearchResponse;
 import org.oscarehr.ws.rest.to.GenericRESTResponse;

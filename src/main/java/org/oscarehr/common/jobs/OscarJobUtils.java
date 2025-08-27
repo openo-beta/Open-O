@@ -32,7 +32,7 @@ import org.oscarehr.common.model.OscarJob;
 import org.oscarehr.common.model.OscarJobType;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Security;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 

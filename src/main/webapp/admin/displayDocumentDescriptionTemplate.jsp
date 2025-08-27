@@ -29,10 +29,10 @@
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@page import="org.oscarehr.common.model.UserProperty" %>
-<%@page import="org.oscarehr.documentManager.EDocUtil" %>
+<%@page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="java.util.ArrayList" %>
 
 <%

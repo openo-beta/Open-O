@@ -39,18 +39,18 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page
-        import="java.sql.*, java.util.*, oscar.MyDateFormat, org.oscarehr.common.OtherIdManager,oscar.oscarDemographic.data.*,java.text.SimpleDateFormat,org.oscarehr.util.SpringUtils" %>
-<%@ page import="org.oscarehr.event.EventService" %>
+        import="java.sql.*, java.util.*, oscar.MyDateFormat, org.oscarehr.common.OtherIdManager,oscar.oscarDemographic.data.*,java.text.SimpleDateFormat,org.oscarehr.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.event.EventService" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
 <%@page import="org.oscarehr.common.model.Appointment" %>
-<%@page import="oscar.util.ConversionUtils" %>
-<%@page import="oscar.util.UtilDateUtilities" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicMerged" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicMerged" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%
     OscarAppointmentDao appointmentDao = (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class);
 

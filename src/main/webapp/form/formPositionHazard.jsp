@@ -41,9 +41,11 @@
 
 <%@ page language="java" %>
 <%@ page
-        import="oscar.form.*, oscar.OscarProperties, java.util.Date, oscar.util.UtilDateUtilities" %>
+        import="oscar.form.*, oscar.OscarProperties, java.util.Date, ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.form.FrmRecord" %>
+<%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 
 <html>
     <% response.setHeader("Cache-Control", "no-cache");%>

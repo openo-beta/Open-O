@@ -71,7 +71,7 @@
             providerName = Misc.getString(rs, "first_name") + " " + Misc.getString(rs, "last_name");
     }
 %>
-<%@page import="oscar.oscarDB.DBPreparedHandler" %>
+<%@page import="ca.openosp.openo.db.DBPreparedHandler" %>
 
 <%@page import="oscar.Misc" %>
 <html>

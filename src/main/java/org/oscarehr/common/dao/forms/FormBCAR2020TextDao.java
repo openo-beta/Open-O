@@ -25,7 +25,7 @@
 package org.oscarehr.common.dao.forms;
 
 import org.oscarehr.common.dao.AbstractDaoImpl;
-import oscar.form.model.FormBCAR2020Text;
+import ca.openosp.openo.form.model.FormBCAR2020Text;
 
 import javax.persistence.Query;
 import java.util.List;

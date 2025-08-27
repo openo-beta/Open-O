@@ -39,6 +39,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.SchemaFactory;
 
+import ca.openosp.openo.messenger.data.MsgMessageData;
 import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
@@ -64,9 +65,9 @@ import org.oscarehr.common.model.OscarLog;
 import org.oscarehr.common.model.OscarMsgType;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.olis.OLISProtocolSocketFactory;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.xml.sax.InputSource;
 
 import ca.openosp.openo.olis.queries.Query;
@@ -80,7 +81,7 @@ import ca.ssha.www._2005.hial.OLISStub.HIALRequestSignedRequest;
 import ca.ssha.www._2005.hial.OLISStub.OLISRequest;
 import ca.ssha.www._2005.hial.OLISStub.OLISRequestResponse;
 import oscar.OscarProperties;
-import oscar.oscarMessenger.data.MsgProviderData;
+import ca.openosp.openo.messenger.data.MsgProviderData;
 
 public class Driver {
 
@@ -425,7 +426,7 @@ public class Driver {
 
         String message = "OSCAR attempted to perform a fetch of OLIS data at " + new Date() + " but there was an error during the task.\n\nSee below for the error message:\n" + errorMsg;
 
-        oscar.oscarMessenger.data.MsgMessageData messageData = new oscar.oscarMessenger.data.MsgMessageData();
+        MsgMessageData messageData = new MsgMessageData();
 
         ArrayList<MsgProviderData> sendToProviderListData = new ArrayList<MsgProviderData>();
         for (String providerNo : sendToProviderList) {

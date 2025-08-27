@@ -2,7 +2,7 @@
 package org.oscarehr.ws.rest.conversion;
 
 import org.oscarehr.common.model.ConsultationRequestExt;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.ConsultationRequestExtTo1;
 
 public class ConsultationRequestExtConverter extends AbstractConverter<ConsultationRequestExt, ConsultationRequestExtTo1> {

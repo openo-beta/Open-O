@@ -29,7 +29,7 @@ package org.oscarehr.common.dao;
 
 import org.oscarehr.common.model.MyGroup;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 import org.oscarehr.common.model.MyGroupPrimaryKey;
 

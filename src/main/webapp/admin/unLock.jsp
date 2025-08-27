@@ -30,7 +30,7 @@
 <%@ page import="oscar.login.*" %>
 <%@ page import="oscar.log.*" %>
 
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Security" %>
 <%@ page import="org.oscarehr.common.dao.SecurityDao" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>

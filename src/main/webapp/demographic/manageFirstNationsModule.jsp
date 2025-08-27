@@ -42,9 +42,9 @@
 
 <%@page import="java.util.*" %>
 <%@page import="org.oscarehr.common.dao.DemographicExtDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@ page import="org.oscarehr.managers.LookupListManager" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.managers.LookupListManager" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="org.oscarehr.common.model.LookupList" %>
 
 <%

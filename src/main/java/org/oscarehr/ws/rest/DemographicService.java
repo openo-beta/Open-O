@@ -48,9 +48,9 @@ import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.PMmodule.dao.SecUserRoleDao;
 import org.oscarehr.PMmodule.model.SecUserRole;
-import org.oscarehr.caisi_integrator.ws.DemographicTransfer;
-import org.oscarehr.caisi_integrator.ws.MatchingDemographicParameters;
-import org.oscarehr.caisi_integrator.ws.MatchingDemographicTransferScore;
+import ca.openosp.openo.caisi_integrator.ws.DemographicTransfer;
+import ca.openosp.openo.caisi_integrator.ws.MatchingDemographicParameters;
+import ca.openosp.openo.caisi_integrator.ws.MatchingDemographicTransferScore;
 import org.oscarehr.common.dao.ContactDao;
 import org.oscarehr.common.dao.ProfessionalSpecialistDao;
 import org.oscarehr.common.dao.WaitingListDao;
@@ -68,14 +68,14 @@ import org.oscarehr.common.model.ProfessionalSpecialist;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.WaitingList;
 import org.oscarehr.common.model.WaitingListName;
-import org.oscarehr.managers.AllergyManager;
-import org.oscarehr.managers.DemographicManager;
-import org.oscarehr.managers.MeasurementManager;
-import org.oscarehr.managers.NoteManager;
-import org.oscarehr.managers.RxManager;
-import org.oscarehr.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import ca.openosp.openo.managers.AllergyManager;
+import ca.openosp.openo.managers.DemographicManager;
+import ca.openosp.openo.managers.MeasurementManager;
+import ca.openosp.openo.managers.NoteManager;
+import ca.openosp.openo.managers.RxManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.web.DemographicSearchHelper;
 import org.oscarehr.ws.rest.conversion.AllergyConverter;
 import org.oscarehr.ws.rest.conversion.DemographicContactFewConverter;
@@ -101,7 +101,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import oscar.OscarProperties;
-import oscar.oscarWaitingList.util.WLWaitingListUtil;
+import ca.openosp.openo.waitinglist.util.WLWaitingListUtil;
 
 
 /**

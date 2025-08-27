@@ -30,7 +30,7 @@
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ page
-        import="oscar.oscarRx.data.*,ca.openosp.openo.oscarDemographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
+        import="oscar.oscarRx.data.*,ca.openosp.openo.demographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
 <%@ page import="org.oscarehr.common.model.*" %>
 <%@page import="java.util.Enumeration" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
@@ -38,7 +38,7 @@
 
 
 <%
-    oscar.oscarRx.pageUtil.RxSessionBean bean = null;
+    RxSessionBean bean = null;
     String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
 %>
@@ -58,7 +58,7 @@
 <c:if test="${not empty sessionScope.RxSessionBean}">
     <%
         // Directly access the RxSessionBean from the session
-        bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
+        bean = (RxSessionBean) session.getAttribute("RxSessionBean");
         if (bean != null && !bean.isValid()) {
             response.sendRedirect("error.html");
             return; // Ensure no further JSP processing
@@ -81,7 +81,7 @@
     if (drugref_route == null) drugref_route = "";
     String[] d_route = ("Oral," + drugref_route).split(",");
 
-    String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_PRESCRIP;
+    String annotation_display = CaseManagementNoteLink.DISP_PRESCRIP;
 
     //This checks if the provider has the ExternalPresriber feature enabled, if so then a link appear for the provider to access the ExternalPrescriber
     ProviderPreference providerPreference = ProviderPreferencesUIBean.getProviderPreference(loggedInInfo.getLoggedInProviderNo());
@@ -105,13 +105,18 @@
     }
 
 %>
-<%@page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%@page import="java.util.List" %>
-<%@page import="org.oscarehr.casemgmt.web.PrescriptDrug" %>
+<%@page import="ca.openosp.openo.casemgmt.web.PrescriptDrug" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPharmacyData" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <html>
     <head>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/global.js"></script>
@@ -248,7 +253,7 @@
 
     <%
         boolean showall = false;
-        oscar.oscarRx.data.RxPatientData.Patient patient = (oscar.oscarRx.data.RxPatientData.Patient) request.getSession().getAttribute("Patient");
+        RxPatientData.Patient patient = (RxPatientData.Patient) request.getSession().getAttribute("Patient");
         if (request.getParameter("show") != null) if (request.getParameter("show").equals("all")) showall = true;
     %>
     <body topmargin="0" leftmargin="0" vlink="#0000FF" onload="load()">
@@ -314,12 +319,12 @@
                             <div style="height: 100px; overflow: auto; background-color: #DCDCDC; border: thin solid green; display: none;"
                                  id="reprint">
                                 <%
-                                    oscar.oscarRx.data.RxPrescriptionData.Prescription[] prescribedDrugs;
+                                    RxPrescriptionData.Prescription[] prescribedDrugs;
                                     prescribedDrugs = patient.getPrescribedDrugScripts(); //this function only returns drugs which have an entry in prescription and drugs table
                                     String script_no = "";
 
                                     for (int i = 0; i < prescribedDrugs.length; i++) {
-                                        oscar.oscarRx.data.RxPrescriptionData.Prescription drug = prescribedDrugs[i];
+                                        RxPrescriptionData.Prescription drug = prescribedDrugs[i];
                                         if (drug.getScript_no() != null && script_no.equals(drug.getScript_no())) {
                                 %>
                                 <br>

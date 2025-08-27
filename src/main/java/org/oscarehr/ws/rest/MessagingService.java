@@ -33,7 +33,7 @@ import javax.ws.rs.QueryParam;
 
 import org.oscarehr.common.model.MessageList;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.managers.MessagingManager;
+import ca.openosp.openo.managers.MessagingManager;
 import org.oscarehr.ws.rest.conversion.MessagingConverter;
 import org.oscarehr.ws.rest.to.MessagingResponse;
 import org.springframework.beans.factory.annotation.Autowired;

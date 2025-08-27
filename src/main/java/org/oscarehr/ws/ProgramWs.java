@@ -33,7 +33,7 @@ import javax.jws.WebService;
 import org.apache.cxf.annotations.GZIP;
 import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.PMmodule.model.ProgramProvider;
-import org.oscarehr.managers.ProgramManager2;
+import ca.openosp.openo.managers.ProgramManager2;
 import org.oscarehr.ws.transfer_objects.ProgramProviderTransfer;
 import org.oscarehr.ws.transfer_objects.ProgramTransfer;
 import org.springframework.beans.factory.annotation.Autowired;

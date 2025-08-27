@@ -26,7 +26,7 @@
 
 <jsp:useBean id="billingLocalInvNoBean" class="java.util.Properties" scope="page"/>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.RaHeader" %>
 <%@page import="org.oscarehr.common.dao.RaHeaderDao" %>
 <%@page import="org.oscarehr.common.model.RaDetail" %>
@@ -43,7 +43,9 @@
 %>
 
 
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

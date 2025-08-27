@@ -41,12 +41,12 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<%@ page import="java.util.*,ca.openosp.openo.oscarBilling.ca.bc.data.BillingCodeData,oscar.oscarBilling.ca.bc.pageUtil.*" %>
+<%@ page import="java.util.*,ca.openosp.openo.billings.ca.bc.data.BillingCodeData,oscar.oscarBilling.ca.bc.pageUtil.*" %>
 
 <html>
 
     <%@ page
-            import="org.oscarehr.common.dao.BillingServiceDao,org.oscarehr.util.SpringUtils,org.oscarehr.common.model.*" %>
+            import="org.oscarehr.common.dao.BillingServiceDao,org.oscarehr.utility.SpringUtils,org.oscarehr.common.model.*" %>
     <%BillingServiceDao billingServiceDao = (BillingServiceDao) SpringUtils.getBean(BillingServiceDao.class); %>
 
     <head>

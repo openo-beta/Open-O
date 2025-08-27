@@ -36,13 +36,13 @@ import org.oscarehr.PMmodule.service.ProviderManager;
 import org.oscarehr.PMmodule.web.utils.UserRoleUtils;
 import org.oscarehr.common.model.Admission;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.ShutdownException;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.ShutdownException;
 
 public class ErProgramDischargeTask extends TimerTask {
 
-    private static final Logger log = org.oscarehr.util.MiscUtils.getLogger();
+    private static final Logger log = org.oscarehr.utility.MiscUtils.getLogger();
 
     private ProviderManager providerManager;
 

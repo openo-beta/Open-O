@@ -29,7 +29,7 @@
 %>
 <%@ page import="java.util.*,java.sql.*"
          errorPage="../provider/errorpage.jsp" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.MyGroup" %>
 <%@ page import="org.oscarehr.common.dao.MyGroupDao" %>
 

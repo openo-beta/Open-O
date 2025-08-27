@@ -41,7 +41,7 @@
 %>
 
 <%@ page
-        import="java.math.*, java.util.*, java.sql.*, oscar.*, oscar.util.DateUtils, java.net.*" %>
+        import="java.math.*, java.util.*, java.sql.*, oscar.*, ca.openosp.openo.util.DateUtils, java.net.*" %>
 <%
     if (session.getValue("user") == null)
         response.sendRedirect("../logout.jsp");

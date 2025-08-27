@@ -56,8 +56,8 @@
     }
 %>
 <%@ page
-        import="java.util.*, java.sql.*, java.net.*,java.text.DecimalFormat, oscar.*, ca.openosp.openo.oscarDemographic.data.ProvinceNames, oscar.oscarWaitingList.WaitingList" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+        import="java.util.*, java.sql.*, java.net.*,java.text.DecimalFormat, oscar.*, ca.openosp.openo.demographic.data.ProvinceNames, ca.openosp.openo.waitinglist.WaitingList" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.ProfessionalSpecialist" %>
 <%@page import="org.oscarehr.common.dao.ProfessionalSpecialistDao" %>
 <%@page import="org.oscarehr.common.model.DemographicCust" %>
@@ -70,7 +70,7 @@
 <%@page import="org.oscarehr.common.dao.WaitingListNameDao" %>
 <%@page import="org.oscarehr.common.model.WaitingListName" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%
     ProfessionalSpecialistDao professionalSpecialistDao = (ProfessionalSpecialistDao) SpringUtils.getBean(ProfessionalSpecialistDao.class);
     DemographicCustDao demographicCustDao = (DemographicCustDao) SpringUtils.getBean(DemographicCustDao.class);

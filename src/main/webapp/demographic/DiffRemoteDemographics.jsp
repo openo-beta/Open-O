@@ -38,11 +38,11 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page
-        import="org.oscarehr.common.dao.DemographicDao,org.oscarehr.caisi_integrator.ws.DemographicWs,org.oscarehr.util.SpringUtils,org.oscarehr.common.model.Demographic" %>
+        import="org.oscarehr.common.dao.DemographicDao,org.oscarehr.utility.SpringUtils,org.oscarehr.common.model.Demographic" %>
 <%@page
-        import="org.oscarehr.caisi_integrator.ws.DemographicTransfer,org.oscarehr.caisi_integrator.ws.CachedProvider,org.oscarehr.caisi_integrator.ws.*" %>
+        import="org.oscarehr.caisi_integrator.ws.*" %>
 <%@page
         import="org.oscarehr.PMmodule.caisi_integrator.*,java.util.*,oscar.util.*" %>
 <%
@@ -82,8 +82,11 @@
 %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="java.util.*" %>
+<%@ page import="ca.openosp.openo.util.StringUtils" %>
+<%@ page import="ca.openosp.openo.util.DateUtils" %>
+<%@ page import="ca.openosp.openo.caisi_integrator.ws.*" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>

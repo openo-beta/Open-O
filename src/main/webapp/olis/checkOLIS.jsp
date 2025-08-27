@@ -27,7 +27,7 @@
 <%@page
         import="oscar.OscarProperties,java.net.InetAddress,java.io.*,java.util.List,java.util.*,javax.net.ssl.*,java.security.*,java.security.cert.*" %>
 <%@page
-        import="org.oscarehr.util.DbConnectionFilter,java.sql.*,org.oscarehr.util.SpringUtils,org.oscarehr.util.LoggedInInfo" %>
+        import="org.oscarehr.utility.DbConnectionFilter,java.sql.*,org.oscarehr.utility.SpringUtils,org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.olis.Driver" %>
 <%@ page import="ca.openosp.openo.olis.parameters.OBR22" %>
 <%@ page import="ca.openosp.openo.olis.parameters.ZRP1" %>

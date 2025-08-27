@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.ws.rest.util.ClinicalConnectUtil,org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.ws.rest.util.ClinicalConnectUtil,org.oscarehr.utility.LoggedInInfo" %>
 <%
 
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);

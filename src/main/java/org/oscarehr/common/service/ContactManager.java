@@ -33,7 +33,7 @@ import org.oscarehr.common.dao.ContactDao;
 import org.oscarehr.common.dao.DemographicContactDao;
 import org.oscarehr.common.model.Contact;
 import org.oscarehr.common.model.DemographicContact;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class ContactManager {
 

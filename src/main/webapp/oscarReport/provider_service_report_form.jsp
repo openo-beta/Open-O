@@ -43,7 +43,7 @@
 <%@page import="org.caisi.model.*" %>
 <%@page import="org.oscarehr.PMmodule.model.*" %>
 <%@page import="org.oscarehr.PMmodule.dao.*" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 
 <%@ include file="/taglibs.jsp" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"

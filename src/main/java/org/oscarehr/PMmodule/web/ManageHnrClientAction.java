@@ -28,13 +28,13 @@ import java.util.List;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.caisi_integrator.ws.ConnectException_Exception;
-import org.oscarehr.caisi_integrator.ws.ConsentState;
-import org.oscarehr.caisi_integrator.ws.DuplicateHinExceptionException;
-import org.oscarehr.caisi_integrator.ws.GetConsentTransfer;
-import org.oscarehr.caisi_integrator.ws.InvalidHinExceptionException;
-import org.oscarehr.casemgmt.dao.ClientImageDAO;
-import org.oscarehr.casemgmt.model.ClientImage;
+import ca.openosp.openo.caisi_integrator.ws.ConnectException_Exception;
+import ca.openosp.openo.caisi_integrator.ws.ConsentState;
+import ca.openosp.openo.caisi_integrator.ws.DuplicateHinExceptionException;
+import ca.openosp.openo.caisi_integrator.ws.GetConsentTransfer;
+import ca.openosp.openo.caisi_integrator.ws.InvalidHinExceptionException;
+import ca.openosp.openo.casemgmt.dao.ClientImageDAO;
+import ca.openosp.openo.casemgmt.model.ClientImage;
 import org.oscarehr.common.dao.ClientLinkDao;
 import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.dao.HnrDataValidationDao;
@@ -42,12 +42,12 @@ import org.oscarehr.common.model.ClientLink;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.HnrDataValidation;
 import org.oscarehr.hnr.ws.Gender;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import org.oscarehr.common.dao.DemographicDaoImpl;
-import oscar.util.DateUtils;
+import ca.openosp.openo.util.DateUtils;
 
 public class ManageHnrClientAction {
     private static Logger logger = MiscUtils.getLogger();

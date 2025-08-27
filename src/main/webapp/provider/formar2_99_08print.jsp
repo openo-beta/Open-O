@@ -31,8 +31,9 @@
     if (request.getParameter("ooy") != null) ooy = Integer.parseInt(request.getParameter("ooy"));
 %>
 <%@ page
-        import="java.util.*, java.sql.*, java.net.*, oscar.*, oscar.util.UtilMisc, oscar.form.graphic.*"
+        import="java.util.*, java.sql.*, java.net.*, oscar.*, ca.openosp.openo.util.UtilMisc, oscar.form.graphic.*"
         errorPage="/errorpage.jsp" %>
+<%@ page import="ca.openosp.openo.form.graphic.FrmGraphicAR" %>
 
 <html>
 <head>

@@ -32,9 +32,9 @@ import java.util.List;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.oscarehr.common.model.Prevention;
 import org.oscarehr.common.model.PreventionExt;
-import org.oscarehr.managers.PreventionManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.managers.PreventionManager;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 public final class PreventionTransfer {
 

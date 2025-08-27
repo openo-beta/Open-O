@@ -23,18 +23,18 @@
 
 package org.oscarehr.PMmodule.caisi_integrator;
 
-import org.oscarehr.caisi_integrator.ws.Role;
+import ca.openosp.openo.caisi_integrator.util.Role;
 
 public final class IntegratorRoleUtils {
 
     /**
      * @return the matching integrator role, the input can be null and it will just return null, roles that do not match will also return null.
      */
-    public static Role getIntegratorRole(String oscarRole) {
+    public static ca.openosp.openo.caisi_integrator.ws.Role getIntegratorRole(String oscarRole) {
         if (oscarRole == null) return (null);
 
         try {
-            return (Role.valueOf(oscarRole.toUpperCase().replaceAll(" ", "_")));
+            return (ca.openosp.openo.caisi_integrator.ws.Role.valueOf(oscarRole.toUpperCase().replaceAll(" ", "_")));
         } catch (Exception e) {
             // just ignore it, we're just testing for direct matches, null and non matches are expected
         }
@@ -45,11 +45,11 @@ public final class IntegratorRoleUtils {
         return (null);
     }
 
-    public static org.oscarehr.caisi_integrator.util.Role getIntegratorRole2(String oscarRole) {
+    public static Role getIntegratorRole2(String oscarRole) {
         if (oscarRole == null) return (null);
 
         try {
-            return (org.oscarehr.caisi_integrator.util.Role.valueOf(oscarRole.toUpperCase().replaceAll(" ", "_")));
+            return (Role.valueOf(oscarRole.toUpperCase().replaceAll(" ", "_")));
         } catch (Exception e) {
             // just ignore it, we're just testing for direct matches, null and non matches are expected
         }

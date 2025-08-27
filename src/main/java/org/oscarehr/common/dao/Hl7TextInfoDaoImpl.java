@@ -43,8 +43,8 @@ import org.oscarehr.common.model.Hl7TextInfo;
 import org.oscarehr.common.model.Hl7TextMessageInfo;
 import org.oscarehr.common.model.Hl7TextMessageInfo2;
 import org.oscarehr.common.model.SystemPreferences;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.stereotype.Repository;
 import oscar.OscarProperties;
 

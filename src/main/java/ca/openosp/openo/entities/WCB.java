@@ -39,7 +39,7 @@ import javax.persistence.Temporal;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
-import oscar.util.StringUtils;
+import ca.openosp.openo.util.StringUtils;
 
 /**
  * @author jaygallagher

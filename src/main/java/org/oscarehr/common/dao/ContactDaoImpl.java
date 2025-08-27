@@ -34,7 +34,7 @@ import javax.persistence.Query;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.oscarehr.common.model.Contact;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository

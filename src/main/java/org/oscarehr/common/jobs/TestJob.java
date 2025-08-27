@@ -26,7 +26,7 @@ package org.oscarehr.common.jobs;
 
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Security;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 public class TestJob implements OscarRunnable {
 

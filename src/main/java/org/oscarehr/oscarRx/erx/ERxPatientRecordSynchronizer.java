@@ -40,8 +40,8 @@ import org.oscarehr.oscarRx.erx.model.ERxDoctorPreferences;
 import org.oscarehr.oscarRx.erx.model.ERxFacilityPreferences;
 import org.oscarehr.oscarRx.erx.model.ERxPatientData;
 import org.oscarehr.oscarRx.erx.model.request.Transaction3;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * An object to manage sending patient data to the remote prescription provider.

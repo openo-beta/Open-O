@@ -26,9 +26,9 @@ package org.oscarehr.ws.rest.conversion;
 
 import org.oscarehr.common.model.Admission;
 import org.oscarehr.common.model.Demographic;
-import org.oscarehr.managers.DemographicManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.managers.DemographicManager;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import org.oscarehr.ws.rest.to.model.AdmissionTo1;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;

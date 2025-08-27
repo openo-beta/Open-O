@@ -30,7 +30,7 @@ package ca.openosp.openo.dao.security;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import ca.openosp.openo.model.security.Secrole;

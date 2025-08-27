@@ -23,7 +23,7 @@
 
 package org.oscarehr.PMmodule.web;
 
-import ca.openosp.openo.service.LookupManager;
+import ca.openosp.openo.services.LookupManager;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.logging.log4j.Logger;
@@ -34,13 +34,13 @@ import org.oscarehr.PMmodule.dao.VacancyTemplateDao;
 import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.PMmodule.service.*;
 import org.oscarehr.PMmodule.wlmatch.MatchingManager;
-import org.oscarehr.casemgmt.service.CaseManagementManager;
+import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import org.oscarehr.common.dao.*;
 import org.oscarehr.common.model.Admission;
 import org.oscarehr.common.model.CdsClientForm;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;

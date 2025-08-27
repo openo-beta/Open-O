@@ -41,8 +41,8 @@ import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
 import org.oscarehr.common.model.ReportTemp;
 import org.oscarehr.common.model.ReportTempPK;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class ReportTempDaoTest extends DaoTestFixtures {
     protected ReportTempDao dao = (ReportTempDao) SpringUtils.getBean(ReportTempDao.class);

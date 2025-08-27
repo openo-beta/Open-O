@@ -28,7 +28,7 @@ package org.oscarehr.common;
 
 import org.oscarehr.common.dao.OtherIdDAO;
 import org.oscarehr.common.model.OtherId;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author Ronnie Cheng

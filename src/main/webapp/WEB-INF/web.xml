@@ -60,7 +60,7 @@
     </filter-mapping>
     <filter>
         <filter-name>ResponseDefaultsFilter</filter-name>
-        <filter-class>org.oscarehr.util.ResponseDefaultsFilter</filter-class>
+        <filter-class>org.oscarehr.utility.ResponseDefaultsFilter</filter-class>
 		<init-param>
 			<param-name>noCacheEndings</param-name>
 			<param-value>.jsp,.jsf,.json,.do</param-value>
@@ -102,7 +102,7 @@
 
     <filter>
         <filter-name>UserActivityFilter</filter-name>
-        <filter-class>org.oscarehr.util.UserActivityFilter</filter-class>
+        <filter-class>org.oscarehr.utility.UserActivityFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>UserActivityFilter</filter-name>
@@ -111,15 +111,15 @@
 
 	<filter>
 		<filter-name>DbConnectionFilter</filter-name>
-		<filter-class>org.oscarehr.util.DbConnectionFilter</filter-class>
+		<filter-class>org.oscarehr.utility.DbConnectionFilter</filter-class>
 	</filter>
 	<filter>
 		<filter-name>LoggedInUserFilter</filter-name>
-		<filter-class>org.oscarehr.util.LoggedInUserFilter</filter-class>
+		<filter-class>org.oscarehr.utility.LoggedInUserFilter</filter-class>
 	</filter>
 	<filter>
 		<filter-name>LoginFilter</filter-name>
-		<filter-class>oscar.oscarSecurity.LoginFilter</filter-class>
+		<filter-class>ca.openosp.openo.security.LoginFilter</filter-class>
 	</filter>
 	<filter>
 		<filter-name>ResponseOverrideFilter</filter-name>
@@ -166,7 +166,7 @@
 		<listener-class>org.oscarehr.common.web.OscarSpringContextLoader</listener-class>
 	</listener>
 	<listener>
-		<listener-class>org.oscarehr.util.ContextStartupListener</listener-class>
+		<listener-class>org.oscarehr.utility.ContextStartupListener</listener-class>
 	</listener>
 	<listener>
 		<listener-class>org.oscarehr.web.OscarSessionListener</listener-class>
@@ -189,7 +189,7 @@
     </context-param>
     <filter>
         <filter-name>CSRFGuard</filter-name>
-        <filter-class>org.oscarehr.app.OscarCsrfGuardFilter</filter-class>
+        <filter-class>ca.openosp.openo.app.OscarCsrfGuardFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>CSRFGuard</filter-name>
@@ -250,7 +250,7 @@
 
 	<filter>
 		<filter-name>XforwardHeader</filter-name>
-		<filter-class>org.oscarehr.app.XforwardHeaderFilter</filter-class>
+		<filter-class>ca.openosp.openo.app.XforwardHeaderFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>XforwardHeader</filter-name>
@@ -264,12 +264,12 @@
 	</servlet>
 	<servlet>
 		<servlet-name>pdfCreator</servlet-name>
-		<servlet-class>oscar.form.pdfservlet.FrmPDFServlet</servlet-class>
+		<servlet-class>ca.openosp.openo.form.pdfservlet.FrmPDFServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet>
 		<servlet-name>pdfCustomedCreator</servlet-name>
-		<servlet-class>oscar.form.pdfservlet.FrmCustomedPDFServlet</servlet-class>
+		<servlet-class>ca.openosp.openo.form.pdfservlet.FrmCustomedPDFServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet>
@@ -279,32 +279,32 @@
 	</servlet>
 	<servlet>
 		<servlet-name>reportDownload</servlet-name>
-		<servlet-class>oscar.oscarReport.pageUtil.RptDownloadCSVServlet</servlet-class>
+		<servlet-class>ca.openosp.openo.report.pageUtil.RptDownloadCSVServlet</servlet-class>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet>
 		<servlet-name>OscarDownload</servlet-name>
-		<servlet-class>oscar.util.OscarDownload</servlet-class>
+		<servlet-class>ca.openosp.openo.util.OscarDownload</servlet-class>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet>
 		<servlet-name>Download</servlet-name>
-		<servlet-class>oscar.util.GenericDownload</servlet-class>
+		<servlet-class>ca.openosp.openo.util.GenericDownload</servlet-class>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet>
 		<servlet-name>BackupDownload</servlet-name>
-		<servlet-class>oscar.util.BackupDownload</servlet-class>
+		<servlet-class>ca.openosp.openo.util.BackupDownload</servlet-class>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet>
 		<servlet-name>UploadTeleplanServlet</servlet-name>
-		<servlet-class>ca.openosp.openo.oscarBilling.ca.bc.MSP.DocumentTeleplanReportUploadServlet</servlet-class>
+		<servlet-class>ca.openosp.openo.billings.ca.bc.MSP.DocumentTeleplanReportUploadServlet</servlet-class>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet>
 		<servlet-name>ScatterPlotChartServlet</servlet-name>
-		<servlet-class>oscar.oscarEncounter.oscarMeasurements.pageUtil.ScatterPlotChartServlet</servlet-class>
+		<servlet-class>ca.openosp.openo.encounter.oscarMeasurements.pageUtil.ScatterPlotChartServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>DocumentUploadServlet</servlet-name>
@@ -313,7 +313,7 @@
 	</servlet>
 	<servlet>
 		<servlet-name>PatientListByAppt</servlet-name>
-		<servlet-class>oscar.oscarReport.data.PatientListByAppt</servlet-class>
+		<servlet-class>ca.openosp.openo.report.data.PatientListByAppt</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>ImageRenderingServlet</servlet-name>
@@ -409,7 +409,7 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>ScatterPlotChartServlet</servlet-name>
-		<url-pattern>/servlet/oscar.oscarEncounter.oscarMeasurements.pageUtil.ScatterPlotChartServlet</url-pattern>
+		<url-pattern>/servlet/ca.openosp.openo.encounter.oscarMeasurements.pageUtil.ScatterPlotChartServlet</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>DocumentUploadServlet</servlet-name>

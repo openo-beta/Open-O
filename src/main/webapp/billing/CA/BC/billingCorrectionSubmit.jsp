@@ -52,14 +52,14 @@
 <jsp:useBean id="billingDataBean" class="oscar.BillingDataBean" scope="session"/>
 <jsp:useBean id="billingPatientDataBean" class="oscar.BillingPatientDataBean" scope="session"/>
 
-<%@ page import="org.oscarehr.util.SpringUtils" %>
-<%@ page import="org.oscarehr.billing.CA.model.BillingDetail" %>
-<%@ page import="org.oscarehr.billing.CA.dao.BillingDetailDao" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.billing.CA.model.BillingDetail" %>
+<%@ page import="ca.openosp.openo.billing.CA.dao.BillingDetailDao" %>
 <%@ page import="org.oscarehr.common.model.RecycleBin" %>
 <%@ page import="org.oscarehr.common.dao.RecycleBinDao" %>
 <%@ page import="org.oscarehr.common.model.Billing" %>
 <%@ page import="org.oscarehr.common.dao.BillingDao" %>
-<%@ page import="oscar.util.ConversionUtils" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%
     BillingDetailDao billingDetailDao = SpringUtils.getBean(BillingDetailDao.class);
     RecycleBinDao recycleBinDao = SpringUtils.getBean(RecycleBinDao.class);

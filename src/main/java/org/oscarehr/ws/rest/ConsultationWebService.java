@@ -46,7 +46,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang.StringUtils;
 import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.casemgmt.service.CaseManagementManager;
+import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import org.oscarehr.common.dao.ClinicDAO;
 import org.oscarehr.common.dao.ConsultationServiceDao;
 import org.oscarehr.common.dao.FaxConfigDao;
@@ -64,13 +64,13 @@ import org.oscarehr.common.model.FaxConfig;
 import org.oscarehr.common.model.ProfessionalSpecialist;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.consultations.ConsultationRequestSearchFilter;
-import org.oscarehr.consultations.ConsultationResponseSearchFilter;
-import org.oscarehr.managers.ConsultationManager;
-import org.oscarehr.managers.DemographicManager;
-import org.oscarehr.managers.DocumentManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import ca.openosp.openo.consultations.ConsultationRequestSearchFilter;
+import ca.openosp.openo.consultations.ConsultationResponseSearchFilter;
+import ca.openosp.openo.managers.ConsultationManager;
+import ca.openosp.openo.managers.DemographicManager;
+import ca.openosp.openo.managers.DocumentManager;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.ws.rest.conversion.ConsultationRequestConverter;
 import org.oscarehr.ws.rest.conversion.ConsultationRequestExtConverter;
 import org.oscarehr.ws.rest.conversion.ConsultationResponseConverter;
@@ -96,13 +96,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import net.sf.json.JSONObject;
-import org.oscarehr.documentManager.EDoc;
-import org.oscarehr.documentManager.EDocUtil;
+import ca.openosp.openo.documentManager.EDoc;
+import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.eform.EFormUtil;
-import ca.openosp.openo.oscarDemographic.data.RxInformation;
-import oscar.oscarLab.ca.on.CommonLabResultData;
-import oscar.oscarLab.ca.on.LabResultData;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.demographic.data.RxInformation;
+import ca.openosp.openo.lab.ca.on.CommonLabResultData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
+import ca.openosp.openo.util.ConversionUtils;
 
 @Path("/consults")
 @Component("consultationWebService")

@@ -25,7 +25,7 @@
 package org.oscarehr.ws.rest.conversion;
 
 import org.oscarehr.common.model.DocumentReview;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.DocumentReviewTo1;
 
 public class DocumentReviewConverter extends AbstractConverter<DocumentReview, DocumentReviewTo1> {

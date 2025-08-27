@@ -47,7 +47,7 @@ import java.util.TreeMap;
 
 import javax.persistence.PersistenceException;
 
-import ca.openosp.openo.util.Utility;
+import ca.openosp.openo.utils.Utility;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
@@ -66,19 +66,19 @@ import org.hibernate.criterion.Restrictions;
 import org.oscarehr.PMmodule.model.ProgramProvider;
 import org.oscarehr.PMmodule.web.formbean.ClientListsReportFormBean;
 import org.oscarehr.PMmodule.web.formbean.ClientSearchFormBean;
-import org.oscarehr.caisi_integrator.ws.MatchingDemographicParameters;
+import ca.openosp.openo.caisi_integrator.ws.MatchingDemographicParameters;
 import org.oscarehr.common.DemographicSearchResultTransformer;
 import org.oscarehr.common.Gender;
 import org.oscarehr.common.NativeSql;
 import org.oscarehr.common.model.Admission;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.DemographicExt;
-import org.oscarehr.event.DemographicCreateEvent;
-import org.oscarehr.event.DemographicUpdateEvent;
-import org.oscarehr.integration.hl7.generators.HL7A04Generator;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import ca.openosp.openo.event.DemographicCreateEvent;
+import ca.openosp.openo.event.DemographicUpdateEvent;
+import ca.openosp.openo.integration.hl7.generators.HL7A04Generator;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.ws.rest.to.model.DemographicSearchRequest;
 import org.oscarehr.ws.rest.to.model.DemographicSearchRequest.SEARCHMODE;
 import org.oscarehr.ws.rest.to.model.DemographicSearchRequest.SORTMODE;
@@ -92,7 +92,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import oscar.MyDateFormat;
 import oscar.OscarProperties;
-import oscar.util.SqlUtils;
+import ca.openosp.openo.util.SqlUtils;
 
 /**
  *

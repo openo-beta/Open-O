@@ -36,7 +36,7 @@ import org.oscarehr.PMmodule.model.VacancyClientMatch;
 import org.oscarehr.match.client.ClientData;
 import org.oscarehr.match.vacancy.VacancyData;
 import org.oscarehr.match.vacancy.VacancyTemplateData;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 /**
  * @author AnooshTech

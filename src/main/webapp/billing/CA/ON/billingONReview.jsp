@@ -41,7 +41,7 @@
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.DiagnosticCode" %>
 <%@ page import="org.oscarehr.common.dao.DiagnosticCodeDao" %>
 <%@ page import="org.oscarehr.common.dao.BillingONCHeader1Dao, org.oscarehr.common.model.BillingONCHeader1" %>
@@ -272,11 +272,14 @@
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="org.oscarehr.common.model.Site" %>
 <%@ page import="ca.openosp.openo.appt.ApptUtil" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.*" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.administration.GstReport" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.administration.GstControl2Action" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.pageUtil.Billing3rdPartPrep" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.pageUtil.BillingReviewPrep" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.*" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.administration.GstReport" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.administration.GstControl2Action" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.Billing3rdPartPrep" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingReviewPrep" %>
+<%@ page import="ca.openosp.openo.rx.data.RxProviderData" %>
+<%@ page import="ca.openosp.openo.util.DateUtils" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <head>
     <title>OscarBilling</title>
 
@@ -701,7 +704,7 @@
                 Calendar serviceDateCal = Calendar.getInstance();
                 java.util.Date serviceDate = null;
                 try {
-                    serviceDate = oscar.util.DateUtils.parseDate(request.getParameter("service_date"),request.getLocale());
+                    serviceDate = DateUtils.parseDate(request.getParameter("service_date"),request.getLocale());
                     serviceDateCal.setTime(serviceDate);
                 } catch (java.text.ParseException e) {}
 
@@ -1070,7 +1073,7 @@
                     List al = pObj.getPaymentType();
 
                     Billing3rdPartPrep privateObj = new Billing3rdPartPrep();
-                    oscar.oscarRx.data.RxProviderData.Provider provider = new oscar.oscarRx.data.RxProviderData().getProvider((String) session.getAttribute("user"));
+                    RxProviderData.Provider provider = new RxProviderData().getProvider((String) session.getAttribute("user"));
 
                 /*
                 = propClinic.getProperty("clinic_name", "") + "\n"

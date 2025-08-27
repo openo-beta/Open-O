@@ -29,13 +29,8 @@ package org.oscarehr.PMmodule.dao;
 
 import java.util.List;
 
-import org.apache.commons.lang.time.DateUtils;
-import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.model.AccessType;
 import org.oscarehr.PMmodule.model.ProgramAccess;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.QueueCache;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 public interface ProgramAccessDAO {
 

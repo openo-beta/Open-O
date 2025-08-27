@@ -48,9 +48,9 @@ import org.oscarehr.common.dao.EFormDao.EFormSortOrder;
 import org.oscarehr.common.model.EForm;
 import org.oscarehr.common.model.EFormData;
 import org.oscarehr.common.model.EncounterForm;
-import org.oscarehr.managers.FormsManager;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.managers.FormsManager;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.oscarehr.ws.rest.conversion.EFormConverter;
 import org.oscarehr.ws.rest.conversion.EncounterFormConverter;
 import org.oscarehr.ws.rest.to.AbstractSearchResponse;
@@ -64,7 +64,7 @@ import org.oscarehr.ws.rest.to.model.SummaryTo1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import oscar.oscarEncounter.data.EctFormData;
+import ca.openosp.openo.encounter.data.EctFormData;
 
 
 /**

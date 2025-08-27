@@ -40,12 +40,12 @@ import javax.ws.rs.core.Response;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.common.model.ConsentType;
-import org.oscarehr.managers.DemographicManager;
-import org.oscarehr.managers.OscarLogManager;
-import org.oscarehr.managers.PatientConsentManager;
-import org.oscarehr.managers.ProviderManager2;
+import ca.openosp.openo.managers.DemographicManager;
+import ca.openosp.openo.managers.OscarLogManager;
+import ca.openosp.openo.managers.PatientConsentManager;
+import ca.openosp.openo.managers.ProviderManager2;
 import org.oscarehr.ws.rest.to.AbstractSearchResponse;
 import org.oscarehr.ws.rest.to.GenericRESTResponse;
 import org.oscarehr.ws.rest.to.model.ConsentTypeTo1;

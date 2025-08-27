@@ -33,8 +33,8 @@ import org.junit.Test;
 import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.SchemaUtils;
 import org.oscarehr.rx.util.DrugrefUtil;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.ws.rest.to.model.RxDsMessageTo1;
 
 import oscar.OscarProperties;

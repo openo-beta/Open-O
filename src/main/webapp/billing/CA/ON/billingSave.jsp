@@ -26,11 +26,11 @@
 <%@ page import="java.sql.*, java.util.*,java.net.*, oscar.util.*, oscar.oscarBilling.ca.on.data.*, oscar.MyDateFormat"
          errorPage="/errorpage.jsp" %>
 
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Billing" %>
 <%@ page import="org.oscarehr.common.dao.BillingDao" %>
-<%@ page import="org.oscarehr.billing.CA.model.BillingDetail" %>
-<%@ page import="org.oscarehr.billing.CA.dao.BillingDetailDao" %>
+<%@ page import="ca.openosp.openo.billing.CA.model.BillingDetail" %>
+<%@ page import="ca.openosp.openo.billing.CA.dao.BillingDetailDao" %>
 <%@page import="org.oscarehr.common.dao.AppointmentArchiveDao" %>
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
 <%@page import="org.oscarehr.common.model.Appointment" %>

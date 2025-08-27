@@ -46,8 +46,8 @@
 %>
 
 <%@ page
-        import="java.util.*, java.sql.*, oscar.util.*,oscar.oscarProvider.data.ProviderData,oscar.oscarBilling.ca.bc.data.*,oscar.entities.*" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillActivityDAO" %>
+        import="java.util.*, java.sql.*, oscar.util.*,ca.openosp.openo.provider.data.ProviderData,oscar.oscarBilling.ca.bc.data.*,oscar.entities.*" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillActivityDAO" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>

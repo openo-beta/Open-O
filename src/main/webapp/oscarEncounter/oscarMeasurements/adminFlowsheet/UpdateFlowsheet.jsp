@@ -46,6 +46,13 @@
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@ page import="org.springframework.web.context.WebApplicationContext" %>
 <%@ page import="org.oscarehr.common.dao.*,org.oscarehr.common.model.FlowSheetCustomization" %>
+<%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet" %>
+<%@ page import="ca.openosp.openo.encounter.oscarMeasurements.FlowSheetItem" %>
+<%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig" %>
+<%@ page import="ca.openosp.openo.encounter.oscarMeasurements.util.Recommendation" %>
+<%@ page import="ca.openosp.openo.encounter.oscarMeasurements.util.RecommendationCondition" %>
+<%@ page import="ca.openosp.openo.encounter.oscarMeasurements.util.TargetCondition" %>
+<%@ page import="ca.openosp.openo.encounter.oscarMeasurements.util.TargetColour" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>

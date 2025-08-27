@@ -33,15 +33,15 @@ import java.util.Date;
 
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.model.ClientReferral;
-import org.oscarehr.caisi_integrator.ws.CachedFacility;
-import org.oscarehr.caisi_integrator.ws.CachedProgram;
-import org.oscarehr.caisi_integrator.ws.CachedProvider;
-import org.oscarehr.caisi_integrator.ws.FacilityIdIntegerCompositePk;
-import org.oscarehr.caisi_integrator.ws.FacilityIdStringCompositePk;
-import org.oscarehr.caisi_integrator.ws.Referral;
-import org.oscarehr.util.LoggedInInfo;
+import ca.openosp.openo.caisi_integrator.ws.CachedFacility;
+import ca.openosp.openo.caisi_integrator.ws.CachedProgram;
+import ca.openosp.openo.caisi_integrator.ws.CachedProvider;
+import ca.openosp.openo.caisi_integrator.ws.FacilityIdIntegerCompositePk;
+import ca.openosp.openo.caisi_integrator.ws.FacilityIdStringCompositePk;
+import ca.openosp.openo.caisi_integrator.ws.Referral;
+import org.oscarehr.utility.LoggedInInfo;
 
-import oscar.util.DateUtils;
+import ca.openosp.openo.util.DateUtils;
 
 public class ReferralSummaryDisplay {
     public static final Comparator<ReferralSummaryDisplay> REFERRAL_DATE_COMPARATOR = new Comparator<ReferralSummaryDisplay>() {

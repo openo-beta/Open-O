@@ -31,7 +31,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ca.openosp.openo.service.security.SecurityManager;
+import ca.openosp.openo.services.security.SecurityManager;
 import net.sf.json.JSONObject;
 
 import org.oscarehr.PMmodule.web.forms.IntegratorPushItem;
@@ -39,9 +39,9 @@ import org.oscarehr.PMmodule.web.forms.IntegratorPushResponse;
 import org.oscarehr.common.dao.UserPropertyDAO;
 import org.oscarehr.common.model.IntegratorProgress;
 import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.managers.IntegratorPushManager;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.managers.IntegratorPushManager;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.beans.BeanUtils;
 
 import com.opensymphony.xwork2.ActionSupport;

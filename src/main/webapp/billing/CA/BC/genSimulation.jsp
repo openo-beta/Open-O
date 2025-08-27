@@ -32,17 +32,17 @@
     }
 %>
 
-<%@page import="oscar.util.ConversionUtils" %>
-<%@page import="org.oscarehr.util.DateRange" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@page import="org.oscarehr.utility.DateRange" %>
 
 
 <%@ page import="java.math.*, java.util.*, java.sql.*, oscar.*, oscar.oscarBilling.ca.bc.MSP.*, java.net.*, oscar.*"
          errorPage="../../../errorpage.jsp" %>
 <%@ include file="../../../admin/dbconnection.jsp" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.MSP.ExtractBean" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.MSP.ExtractBean" %>
 
 
 <%

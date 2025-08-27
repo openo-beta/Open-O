@@ -27,6 +27,7 @@ import static org.junit.Assert.*;
 
 import java.util.Calendar;
 
+import ca.openosp.openo.integration.fhir.model.Patient;
 import org.apache.logging.log4j.Logger;
 import org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender;
 import org.junit.AfterClass;
@@ -36,7 +37,7 @@ import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Provider;
 //import org.oscarehr.managers.DemographicManager;
 //import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 public class PatientTest {
 

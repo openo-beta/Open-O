@@ -36,10 +36,10 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.dao.OscarLogDao;
 import org.oscarehr.common.model.OscarLog;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.DeamonThreadFactory;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.DeamonThreadFactory;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class LogAction {
     private static Logger logger = MiscUtils.getLogger();

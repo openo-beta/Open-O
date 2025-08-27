@@ -40,11 +40,11 @@
 
 <%@page import="org.oscarehr.provider.model.PreventionManager" %>
 <%@ page
-        import="java.sql.*, java.util.*, oscar.MyDateFormat, oscar.oscarWaitingList.util.WLWaitingListUtil, oscar.log.*, org.oscarehr.common.OtherIdManager" %>
+        import="java.sql.*, java.util.*, oscar.MyDateFormat, ca.openosp.openo.waitinglist.util.WLWaitingListUtil, oscar.log.*, org.oscarehr.common.OtherIdManager" %>
 
 <%@page import="org.apache.commons.lang.StringUtils" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
@@ -66,13 +66,13 @@
 <%@ page import="org.oscarehr.PMmodule.model.Program" %>
 <%@page import="org.oscarehr.PMmodule.service.ProgramManager" %>
 <%@page import="org.oscarehr.PMmodule.service.AdmissionManager" %>
-<%@page import="org.oscarehr.managers.PatientConsentManager" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.managers.PatientConsentManager" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="org.oscarehr.common.model.ConsentType" %>
 <%@page import="oscar.OscarProperties" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicNameAgeString" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicNameAgeString" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -384,7 +384,7 @@
 
 
             //add to waiting list if the waiting_list parameter in the property file is set to true
-            oscar.oscarWaitingList.WaitingList wL = oscar.oscarWaitingList.WaitingList.getInstance();
+            ca.openosp.openo.waitinglist.WaitingList wL = ca.openosp.openo.waitinglist.WaitingList.getInstance();
             if (wL.getFound() && oscar.OscarProperties.getInstance().getBooleanProperty("DEMOGRAPHIC_WAITING_LIST", "true")) {
                 WLWaitingListUtil.updateWaitingListRecord(
                         request.getParameter("list_id"), request.getParameter("waiting_list_note"),

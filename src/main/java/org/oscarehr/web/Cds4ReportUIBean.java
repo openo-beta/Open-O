@@ -51,12 +51,12 @@ import org.oscarehr.common.model.CdsFormOption;
 import org.oscarehr.common.model.CdsHospitalisationDays;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.FunctionalCentre;
-import org.oscarehr.util.AccumulatorMap;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.AccumulatorMap;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.DateUtils;
+import ca.openosp.openo.util.DateUtils;
 
 public final class Cds4ReportUIBean {
 

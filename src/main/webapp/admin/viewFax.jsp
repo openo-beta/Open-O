@@ -39,7 +39,7 @@
 %>
 
 <%@ page import="org.oscarehr.common.dao.FaxJobDao, org.oscarehr.common.model.FaxJob" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="java.util.List" %>
 
 <ul style="list-style-type:none;padding:0px;">

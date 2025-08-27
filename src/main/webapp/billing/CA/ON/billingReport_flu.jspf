@@ -26,7 +26,7 @@
 
 <%@page import="oscar.MyDateFormat" %>
 <%@page import="oscar.SxmlMisc" %>
-<%@page import="oscar.util.ConversionUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@page import="java.sql.ResultSet" %> 
 <%@page import="java.math.BigDecimal" %>
 <%@page import="java.util.List" %>

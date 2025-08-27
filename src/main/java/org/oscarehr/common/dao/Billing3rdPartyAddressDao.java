@@ -27,7 +27,7 @@
  */
 package org.oscarehr.common.dao;
 
-import org.oscarehr.billing.CA.ON.model.Billing3rdPartyAddress;
+import ca.openosp.openo.billing.CA.ON.model.Billing3rdPartyAddress;
 
 import java.util.List;
 

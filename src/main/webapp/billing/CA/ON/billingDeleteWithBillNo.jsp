@@ -30,13 +30,13 @@
 <%@ page import="oscar.oscarBilling.ca.on.data.*" %>
 <%@ include file="../../../admin/dbconnection.jsp" %>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.BillingDao" %>
 <%@page import="org.oscarehr.common.model.Billing" %>
 <%@page import="org.oscarehr.common.dao.AppointmentArchiveDao" %>
 <%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
 <%@page import="org.oscarehr.common.model.Appointment" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.pageUtil.BillingCorrectionPrep" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingCorrectionPrep" %>
 
 <%
     BillingDao billingDao = SpringUtils.getBean(BillingDao.class);

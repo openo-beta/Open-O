@@ -27,10 +27,10 @@
 
 <%@ page import="java.sql.*, java.util.*, oscar.MyDateFormat" errorPage="/errorpage.jsp" %>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.EncounterDao" %>
 <%@page import="org.oscarehr.common.model.Encounter" %>
-<%@page import="oscar.util.ConversionUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
 
 <%
     EncounterDao encounterDao = SpringUtils.getBean(EncounterDao.class);

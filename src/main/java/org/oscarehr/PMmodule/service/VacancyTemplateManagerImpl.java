@@ -31,24 +31,6 @@ package org.oscarehr.PMmodule.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
-import org.oscarehr.PMmodule.dao.CriteriaDao;
-import org.oscarehr.PMmodule.dao.CriteriaSelectionOptionDao;
-import org.oscarehr.PMmodule.dao.CriteriaTypeDao;
-import org.oscarehr.PMmodule.dao.CriteriaTypeOptionDao;
-import org.oscarehr.PMmodule.dao.ProgramDao;
-import org.oscarehr.PMmodule.dao.VacancyDao;
-import org.oscarehr.PMmodule.dao.VacancyTemplateDao;
-import org.oscarehr.PMmodule.model.Criteria;
-import org.oscarehr.PMmodule.model.CriteriaSelectionOption;
-import org.oscarehr.PMmodule.model.CriteriaType;
-import org.oscarehr.PMmodule.model.CriteriaTypeOption;
-import org.oscarehr.PMmodule.model.Program;
-import org.oscarehr.PMmodule.model.Vacancy;
-import org.oscarehr.PMmodule.model.VacancyTemplate;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional

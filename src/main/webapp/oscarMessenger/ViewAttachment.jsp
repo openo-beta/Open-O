@@ -27,6 +27,8 @@
 <%@ page
         import="oscar.oscarMessenger.docxfer.send.*,oscar.oscarMessenger.docxfer.util.*, oscar.util.*" %>
 <%@ page import="java.util.*, org.w3c.dom.*" %>
+<%@ page import="ca.openosp.openo.messenger.docxfer.util.MsgCommxml" %>
+<%@ page import="ca.openosp.openo.util.UtilXML" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 

@@ -51,7 +51,7 @@ import javax.xml.ws.WebServiceClient;
 public class WaitListService_Service extends Service {
 
     private final static URL WAITLISTSERVICE_WSDL_LOCATION;
-    private final static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private final static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     static {
         URL url = null;

@@ -39,15 +39,15 @@
 <%@ page import="java.sql.*" %>
 
 
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Billing" %>
 <%@ page import="org.oscarehr.common.dao.BillingDao" %>
 <%@ page import="org.oscarehr.common.model.BillingService" %>
 <%@ page import="org.oscarehr.common.dao.BillingServiceDao" %>
-<%@ page import="org.oscarehr.billing.CA.model.BillingDetail" %>
-<%@ page import="org.oscarehr.billing.CA.dao.BillingDetailDao" %>
-<%@ page import="org.oscarehr.billing.CA.model.BillingDetail" %>
-<%@ page import="org.oscarehr.billing.CA.dao.BillingDetailDao" %>
+<%@ page import="ca.openosp.openo.billing.CA.model.BillingDetail" %>
+<%@ page import="ca.openosp.openo.billing.CA.dao.BillingDetailDao" %>
+<%@ page import="ca.openosp.openo.billing.CA.model.BillingDetail" %>
+<%@ page import="ca.openosp.openo.billing.CA.dao.BillingDetailDao" %>
 <%
     BillingDao billingDao = SpringUtils.getBean(BillingDao.class);
     BillingDetailDao billingDetailDao = SpringUtils.getBean(BillingDetailDao.class);

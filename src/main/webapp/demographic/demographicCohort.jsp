@@ -41,8 +41,8 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="oscar.oscarReport.data.DemographicSets, ca.openosp.openo.oscarDemographic.data.DemographicData" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.report.data.DemographicSets, ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 

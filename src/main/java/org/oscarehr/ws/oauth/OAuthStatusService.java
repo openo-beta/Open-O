@@ -43,14 +43,14 @@ import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsDateJsonBeanProcessor;
 
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.ServiceAccessToken;
 import org.oscarehr.common.dao.ServiceAccessTokenDao;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 @Path("/oauth")
 public class OAuthStatusService extends AbstractServiceImpl {

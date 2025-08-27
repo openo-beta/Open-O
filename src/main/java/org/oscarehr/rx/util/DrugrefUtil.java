@@ -25,10 +25,7 @@
 package org.oscarehr.rx.util;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
@@ -50,14 +47,14 @@ import org.oscarehr.common.model.Allergy;
 import org.oscarehr.common.model.DemographicExt;
 import org.oscarehr.common.model.UserDSMessagePrefs;
 import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.oscarehr.ws.rest.to.model.RxDsMessageTo1;
 
 import oscar.OscarProperties;
-import oscar.oscarRx.data.RxPatientData;
-import oscar.oscarRx.util.RxDrugRef;
+import ca.openosp.openo.rx.data.RxPatientData;
+import ca.openosp.openo.rx.util.RxDrugRef;
 
 public class DrugrefUtil {
     private static final Logger logger = MiscUtils.getLogger();

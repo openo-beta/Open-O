@@ -28,17 +28,20 @@
 <%@ include file="/casemgmt/taglibs.jsp" %>
 
 <%@page import="java.util.Enumeration, org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.casemgmt.web.formbeans.*, org.oscarehr.casemgmt.model.CaseManagementNote" %>
+<%@page import="org.oscarehr.casemgmt.web.formbeans.*, ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
 <%@page import="org.oscarehr.common.dao.UserPropertyDAO, oscar.OscarProperties" %>
 <%@page import="org.oscarehr.common.model.UserProperty" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="org.oscarehr.provider.web.CppPreferencesUIBean" %>
-<%@page import="org.oscarehr.casemgmt.common.Colour" %>
+<%@page import="ca.openosp.openo.casemgmt.common.Colour" %>
 <%@page import="org.oscarehr.common.dao.ProviderDataDao" %>
 <%@page import="org.oscarehr.common.model.ProviderData" %>
 <%@page import="org.owasp.encoder.Encode" %>
 <%@page import="java.util.List, java.util.Random" %>
+<%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteExt" %>
+<%@ page import="ca.openosp.openo.casemgmt.web.formbeans.CaseManagementEntryFormBean" %>
 
 
 <%
@@ -46,13 +49,13 @@
 
     String roleName = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 
-    oscar.oscarEncounter.pageUtil.EctSessionBean bean = null;
+    EctSessionBean bean = null;
     String beanName = "casemgmt_oscar_bean" + (String) request.getAttribute("demographicNo");
 
     pageContext.setAttribute("providerNo", request.getParameter("providerNo"), PageContext.PAGE_SCOPE);
     pageContext.setAttribute("demographicNo", request.getParameter("demographicNo"), PageContext.PAGE_SCOPE);
 
-    org.oscarehr.casemgmt.model.CaseManagementNoteExt cme = new org.oscarehr.casemgmt.model.CaseManagementNoteExt();
+    CaseManagementNoteExt cme = new CaseManagementNoteExt();
 
     String frmName = "caseManagementEntryForm" + request.getParameter("demographicNo");
     CaseManagementEntryFormBean cform = (CaseManagementEntryFormBean) session.getAttribute(frmName);

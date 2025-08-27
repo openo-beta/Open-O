@@ -24,8 +24,8 @@
 
 --%>
 
-<%@page import="org.oscarehr.casemgmt.model.CaseManagementNote" %>
-<%@page import="org.oscarehr.casemgmt.dao.CaseManagementNoteDAO" %>
+<%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
+<%@page import="ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO" %>
 <%@page import="java.util.Set" %>
 <%@page import="java.util.List" %>
 <%@page import="java.util.HashMap" %>
@@ -49,10 +49,10 @@
         return;
     }
 %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@page import="org.oscarehr.common.model.UserProperty" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 
 
 <%
@@ -63,7 +63,7 @@
 <%@ page
         import="oscar.oscarDemographic.data.*, java.util.Enumeration" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

@@ -28,14 +28,14 @@
 
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@ page import="org.springframework.web.context.WebApplicationContext" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Tickler" %>
 <%@ page import="org.oscarehr.common.model.TicklerLink" %>
 <%@ page import="org.oscarehr.common.dao.TicklerLinkDao" %>
-<%@ page import="oscar.util.UtilDateUtilities" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="org.oscarehr.managers.TicklerManager" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.managers.TicklerManager" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.time.LocalDateTime" %>
 

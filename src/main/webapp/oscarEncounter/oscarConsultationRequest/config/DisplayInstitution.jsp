@@ -45,7 +45,7 @@
 
 
 <%@page import="java.util.List" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Institution" %>
 <%@page import="org.oscarehr.common.dao.InstitutionDao" %>
 <%@page import="org.oscarehr.common.model.Department" %>
@@ -53,6 +53,7 @@
 <%@page import="org.oscarehr.common.model.InstitutionDepartment" %>
 <%@page import="org.oscarehr.common.model.InstitutionDepartmentPK" %>
 <%@page import="org.oscarehr.common.dao.InstitutitionDepartmentDao" %>
+<%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
 <%
     InstitutionDao institutionDao = SpringUtils.getBean(InstitutionDao.class);
     DepartmentDao departmentDao = SpringUtils.getBean(DepartmentDao.class);
@@ -101,7 +102,7 @@
         <tr style="vertical-align: top">
             <td class="MainTableLeftColumn">
                 <%
-                    oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar titlebar = new oscar.oscarEncounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar();
+                    EctConTitlebar titlebar = new EctConTitlebar();
                     out.print(titlebar.estBar(request));
                 %>
             </td>

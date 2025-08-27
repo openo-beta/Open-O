@@ -24,9 +24,9 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.WebUtils" %>
-<%@page import="org.oscarehr.util.LocaleUtils" %>
-<%@page import="org.oscarehr.util.WebUtils" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
+<%@page import="org.oscarehr.utility.LocaleUtils" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
 <%
     if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
 %>
@@ -39,6 +39,8 @@
 <%@ page import="oscar.oscarEncounter.oscarMeasurements.bean.*" %>
 <%@ page import="oscar.oscarEncounter.oscarMeasurements.data.*" %>
 <%@ page import="java.util.Vector" %>
+<%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
+<%@ page import="ca.openosp.openo.encounter.oscarMeasurements.data.MeasurementMapConfig" %>
 <%
     EctSessionBean bean = (EctSessionBean) request.getSession().getAttribute("EctSessionBean");
     MeasurementMapConfig measurementMapConfig = new MeasurementMapConfig();

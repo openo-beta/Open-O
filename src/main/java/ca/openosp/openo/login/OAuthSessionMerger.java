@@ -36,7 +36,7 @@ import org.oscarehr.common.model.ServiceRequestToken;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 
 public class OAuthSessionMerger {

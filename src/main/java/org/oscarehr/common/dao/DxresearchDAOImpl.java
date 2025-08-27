@@ -40,12 +40,12 @@ import org.oscarehr.common.model.AbstractCodeSystemModel;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.DxRegistedPTInfo;
 import org.oscarehr.common.model.Dxresearch;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.springframework.stereotype.Repository;
 
-import oscar.oscarResearch.oscarDxResearch.bean.dxCodeSearchBean;
-import oscar.oscarResearch.oscarDxResearch.bean.dxQuickListItemsHandler;
+import ca.openosp.openo.oscarDxResearch.bean.dxCodeSearchBean;
+import ca.openosp.openo.oscarDxResearch.bean.dxQuickListItemsHandler;
 
 /**
  * @author toby

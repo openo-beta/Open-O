@@ -28,9 +28,17 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ page import="java.util.*,oscar.oscarRx.data.*,oscar.oscarRx.pageUtil.*,oscar.oscarRx.util.*" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.rx.util.LimitedUseCode" %>
+<%@ page import="ca.openosp.openo.rx.util.RxUtil" %>
+<%@ page import="ca.openosp.openo.rx.data.RxDrugData" %>
+<%@ page import="ca.openosp.openo.rx.data.RxCodesData" %>
+<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.rx.util.LimitedUseLookup" %>
+<%@ page import="ca.openosp.openo.rx.pageUtil.RxWriteScriptForm" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 
 <%long start = System.currentTimeMillis();%>
 
@@ -84,7 +92,7 @@
             boolean isCustom = true;
             String atcCode = null;
             String regionalIdentifier = "";
-            String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_PRESCRIP;
+            String annotation_display = CaseManagementNoteLink.DISP_PRESCRIP;
             Long now = new Date().getTime();
             String annotation_attrib = "";// = "anno"+now;
 

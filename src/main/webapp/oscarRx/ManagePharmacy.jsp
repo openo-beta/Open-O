@@ -28,6 +28,8 @@
 
 <%@ page
         import="oscar.oscarRx.pageUtil.*,oscar.oscarRx.data.*,java.util.*" %>
+<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPharmacyData" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -56,7 +58,7 @@
                 response.sendRedirect("error.html");
             } else {
                 // Check if RxSessionBean is present but not valid
-                oscar.oscarRx.pageUtil.RxSessionBean rxBean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
+                RxSessionBean rxBean = (RxSessionBean) session.getAttribute("RxSessionBean");
                 if (!rxBean.isValid()) {
                     response.sendRedirect("error.html");
                 }

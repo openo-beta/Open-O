@@ -24,9 +24,9 @@
 
 --%>
 <!DOCTYPE html>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="org.oscarehr.common.dao.UserPropertyDAO, org.oscarehr.common.model.UserProperty" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
@@ -39,7 +39,7 @@
     String user_no = (String) session.getAttribute("user");
     String demographicNo = (String) session.getAttribute("casemgmt_DemoNo");
 
-    String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_DOCUMENT;
+    String annotation_display = CaseManagementNoteLink.DISP_DOCUMENT;
     String appointment = request.getParameter("appointmentNo");
     int appointmentNo = 0;
     if (appointment != null && !appointment.isEmpty()) {
@@ -59,9 +59,10 @@
 <%@ page import="java.util.*" %>
 <%@ page import="org.oscarehr.common.dao.CtlDocClassDao" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
-<%@ page import="org.oscarehr.documentManager.EDocUtil" %>
-<%@ page import="org.oscarehr.documentManager.EDoc" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
+<%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
+<%@ page import="ca.openosp.openo.documentManager.EDoc" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 
 

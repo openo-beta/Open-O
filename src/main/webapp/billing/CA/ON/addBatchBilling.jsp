@@ -24,7 +24,7 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%
     if (session.getAttribute("user") == null) response.sendRedirect("../../logout.jsp");
 %>

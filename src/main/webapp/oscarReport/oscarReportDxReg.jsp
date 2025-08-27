@@ -18,7 +18,7 @@
 
 --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="org.oscarehr.util.SessionConstants" %>
+<%@ page import="org.oscarehr.utility.SessionConstants" %>
 <%@ page import="org.oscarehr.common.model.ProviderPreference" %>
 <%@ include file="/taglibs.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -44,7 +44,7 @@
 <%@ page import="oscar.oscarResearch.oscarDxResearch.util.*" %>
 <%@ page import="java.util.*, java.sql.*" %>
 
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
 <%@ page import="org.oscarehr.common.dao.MyGroupDao" %>

@@ -37,16 +37,16 @@
 <%@ page import="oscar.oscarBilling.ca.on.data.*" %>
 <%@page import="org.oscarehr.billing.CA.ON.dao.*" %>
 <%@page import="org.oscarehr.common.dao.BillingONExtDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 
 <%@page import="org.oscarehr.common.dao.BillingONPaymentDao" %>
 <%@page import="org.oscarehr.common.model.BillingONPayment" %>
 <%@page import="org.oscarehr.common.dao.BillingONCHeader1Dao" %>
 <%@page import="org.oscarehr.common.model.BillingONCHeader1" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingItemData" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.JdbcBillingReviewImpl" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingClaimHeader1Data" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingDataHlp" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.BillingItemData" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.JdbcBillingReviewImpl" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.BillingDataHlp" %>
 <%
     BillingONPaymentDao billingOnPaymentDao = SpringUtils.getBean(BillingONPaymentDao.class);
     BillingONCHeader1Dao bCh1Dao = SpringUtils.getBean(BillingONCHeader1Dao.class);

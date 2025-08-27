@@ -78,20 +78,20 @@
 <%@ page import="java.math.*, java.util.*, java.sql.*, oscar.*, java.net.*" errorPage="/errorpage.jsp" %>
 
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.ClinicLocationDao" %>
 <%@page import="org.oscarehr.common.model.ClinicLocation" %>
 <%@ page import="org.oscarehr.common.model.DiagnosticCode" %>
 <%@ page import="org.oscarehr.common.dao.DiagnosticCodeDao" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@page import="org.oscarehr.billing.CA.model.BillingDetail" %>
-<%@page import="org.oscarehr.billing.CA.dao.BillingDetailDao" %>
+<%@page import="ca.openosp.openo.billing.CA.model.BillingDetail" %>
+<%@page import="ca.openosp.openo.billing.CA.dao.BillingDetailDao" %>
 <%@ page import="org.oscarehr.common.model.Demographic" %>
 <%@ page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="org.oscarehr.common.model.Billing" %>
 <%@page import="org.oscarehr.common.dao.BillingDao" %>
-<%@page import="oscar.util.ConversionUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%
     DiagnosticCodeDao diagnosticCodeDao = SpringUtils.getBean(DiagnosticCodeDao.class);
     ClinicLocationDao clinicLocationDao = (ClinicLocationDao) SpringUtils.getBean(ClinicLocationDao.class);

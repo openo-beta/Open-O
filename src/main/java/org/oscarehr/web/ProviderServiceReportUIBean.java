@@ -32,15 +32,14 @@ import java.util.List;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProgramDao;
 import org.oscarehr.PMmodule.model.Program;
-import org.oscarehr.casemgmt.dao.CaseManagementNoteDAO;
-import org.oscarehr.casemgmt.dao.CaseManagementNoteDAOImpl;
-import org.oscarehr.casemgmt.dao.CaseManagementNoteDAO.EncounterCounts;
+import ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO;
+import ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO.EncounterCounts;
 import org.oscarehr.common.dao.SecRoleDao;
 import org.oscarehr.common.model.SecRole;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.DateUtils;
+import ca.openosp.openo.util.DateUtils;
 
 public class ProviderServiceReportUIBean {
 

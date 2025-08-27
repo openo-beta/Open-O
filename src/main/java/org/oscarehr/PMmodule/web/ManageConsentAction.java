@@ -30,16 +30,15 @@ import java.util.GregorianCalendar;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.caisi_integrator.ws.CachedFacility;
+import ca.openosp.openo.caisi_integrator.ws.CachedFacility;
 import org.oscarehr.common.dao.IntegratorConsentDao;
 import org.oscarehr.common.model.DigitalSignature;
 import org.oscarehr.common.model.IntegratorConsent;
 import org.oscarehr.common.model.enumerator.ModuleType;
-import org.oscarehr.managers.DigitalSignatureManager;
-import org.oscarehr.util.DigitalSignatureUtils;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.managers.DigitalSignatureManager;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class ManageConsentAction {
     private static Logger logger = MiscUtils.getLogger();

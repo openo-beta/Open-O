@@ -40,10 +40,10 @@
 %>
 
 <%@page import="java.util.List" %>
-<%@page import="oscar.util.ConversionUtils" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@page import="java.util.Date" %>
-<%@page import="org.oscarehr.billing.CA.BC.dao.Hl7LinkDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="ca.openosp.openo.billing.CA.BC.dao.Hl7LinkDao" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
 <%
     Hl7LinkDao dao = SpringUtils.getBean(Hl7LinkDao.class);

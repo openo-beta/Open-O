@@ -37,9 +37,9 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.FastDateFormat;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.ConsultationResponse;
-import org.oscarehr.consultations.ConsultationResponseSearchFilter;
-import org.oscarehr.consultations.ConsultationResponseSearchFilter.SORTMODE;
-import org.oscarehr.util.MiscUtils;
+import ca.openosp.openo.consultations.ConsultationResponseSearchFilter;
+import ca.openosp.openo.consultations.ConsultationResponseSearchFilter.SORTMODE;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository

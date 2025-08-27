@@ -35,15 +35,15 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.caisi_integrator.ws.CachedFacility;
+import ca.openosp.openo.caisi_integrator.ws.CachedFacility;
 import org.oscarehr.common.dao.IntegratorConsentDao;
 import org.oscarehr.common.model.IntegratorConsent;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.IntegratorConsent.ConsentStatus;
 import org.oscarehr.common.model.IntegratorConsent.SignatureStatus;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class ManageConsent {
     private static Logger logger = MiscUtils.getLogger();

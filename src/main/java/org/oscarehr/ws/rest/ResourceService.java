@@ -38,15 +38,15 @@ import org.oscarehr.common.dao.AppDefinitionDao;
 import org.oscarehr.common.dao.AppUserDao;
 import org.oscarehr.common.dao.ResourceStorageDao;
 import org.oscarehr.common.model.ResourceStorage;
-import org.oscarehr.managers.AppManager;
-import org.oscarehr.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import ca.openosp.openo.managers.AppManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 import org.oscarehr.ws.rest.util.ClinicalConnectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import oscar.OscarProperties;
-import oscar.oscarPrevention.PreventionDS;
+import ca.openosp.openo.prevention.PreventionDS;
 
 
 @Path("/resources")

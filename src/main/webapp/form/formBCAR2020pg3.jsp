@@ -41,10 +41,12 @@
 %>
 
 <%@ page import=" oscar.form.*, oscar.form.data.*, java.util.Properties" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="oscar.util.UtilMisc" %>
+<%@ page import="ca.openosp.openo.util.UtilMisc" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="ca.openosp.openo.form.FrmBCAR2020Record" %>
+<%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     String formClass = "BCAR2020";

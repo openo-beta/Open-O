@@ -19,10 +19,10 @@
                 org.oscarehr.olis.dao.OLISResultNomenclatureDao,
                 org.oscarehr.olis.model.OLISRequestNomenclature,
                 org.oscarehr.olis.model.OLISResultNomenclature,
-                org.oscarehr.util.SpringUtils" %>
+                org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.UserPropertyDAO" %>
 <%@page import="org.oscarehr.common.model.UserProperty" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 

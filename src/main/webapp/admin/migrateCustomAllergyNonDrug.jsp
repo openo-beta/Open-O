@@ -24,14 +24,14 @@
 
 --%>
 <%@page import="org.oscarehr.common.model.OscarLog" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.log.LogAction" %>
 <%@page import="java.util.Enumeration" %>
 <%@page import="org.oscarehr.common.model.Demographic" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="org.oscarehr.common.model.Allergy" %>
 <%@page import="java.util.List" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.AllergyDao" %>
 <%@page contentType="text/html" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>

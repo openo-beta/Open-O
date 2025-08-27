@@ -34,15 +34,15 @@ import net.sf.json.JSONObject;
 
 import org.oscarehr.common.dao.DemographicExtDao;
 import org.oscarehr.common.model.DemographicExt;
-import org.oscarehr.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.managers.SecurityInfoManager;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.log.LogAction;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
-import oscar.util.LabelValueBean;
+import ca.openosp.openo.util.LabelValueBean;
 
 public class DemographicExtService2Action extends ActionSupport {
     private HttpServletRequest request = ServletActionContext.getRequest();

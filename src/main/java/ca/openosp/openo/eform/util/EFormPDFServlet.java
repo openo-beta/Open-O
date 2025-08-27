@@ -49,21 +49,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.itextpdf.text.*;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperRunManager;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.printing.FontSettings;
 import org.oscarehr.common.printing.PdfWriterFactory;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
-import oscar.form.graphic.FrmGraphicFactory;
-import oscar.form.graphic.FrmPdfGraphic;
-import oscar.form.pdfservlet.FrmPDFPostValueProcessor;
-import oscar.util.ConcatPDF;
+import ca.openosp.openo.form.graphic.FrmGraphicFactory;
+import ca.openosp.openo.form.graphic.FrmPdfGraphic;
+import ca.openosp.openo.form.pdfservlet.FrmPDFPostValueProcessor;
+import ca.openosp.openo.util.ConcatPDF;
 
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.ColumnText;
@@ -77,7 +74,7 @@ import com.itextpdf.text.pdf.PdfWriter;
  */
 public class EFormPDFServlet extends HttpServlet {
 
-    Logger log = org.oscarehr.util.MiscUtils.getLogger();
+    Logger log = org.oscarehr.utility.MiscUtils.getLogger();
 
     /**
      *

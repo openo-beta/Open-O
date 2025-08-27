@@ -39,7 +39,7 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%
     if (session.getValue("user") == null)
         response.sendRedirect(request.getContextPath() + "/logout.jsp");
@@ -50,15 +50,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@ page import="oscar.oscarBilling.ca.bc.data.*,oscar.oscarBilling.ca.bc.pageUtil.*" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.BillingreferralDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingSessionBean" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingBillingManager" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.WCBForm" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingFormData" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.BillingSessionBean" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.BillingBillingManager" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.WCBForm" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingFormData" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%
     BillingreferralDao billingReferralDao = (BillingreferralDao) SpringUtils.getBean(BillingreferralDao.class);
 %>

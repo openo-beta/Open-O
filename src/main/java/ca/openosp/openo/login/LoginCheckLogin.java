@@ -33,7 +33,7 @@ import java.util.Vector;
 
 import org.apache.commons.lang3.StringUtils;
 import org.oscarehr.common.model.Security;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarProperties;
 

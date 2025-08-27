@@ -36,11 +36,11 @@ import org.junit.Test;
 import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.entities.WCB;
-import ca.openosp.openo.oscarBilling.ca.bc.data.BillingmasterDAO;
+import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
 
 public class BillingmasterDAOTest extends DaoTestFixtures {
 

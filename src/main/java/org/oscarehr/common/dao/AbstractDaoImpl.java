@@ -38,13 +38,11 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.oscarehr.common.dao.AbstractDao;
-
 import org.oscarehr.common.model.AbstractModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import oscar.util.ParamAppender;
+import ca.openosp.openo.util.ParamAppender;
 
 @Transactional
 public abstract class AbstractDaoImpl<T extends AbstractModel<?>> implements AbstractDao<T> {

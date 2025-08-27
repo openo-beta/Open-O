@@ -23,9 +23,9 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.billing.CA.BC.model.WcbNoiCode" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.billing.CA.BC.dao.WcbNoiCodeDao" %>
+<%@page import="ca.openosp.openo.billing.CA.BC.model.WcbNoiCode" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.billing.CA.BC.dao.WcbNoiCodeDao" %>
 <html>
     <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

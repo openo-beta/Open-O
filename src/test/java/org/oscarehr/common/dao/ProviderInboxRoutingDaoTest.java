@@ -28,15 +28,14 @@ import static org.junit.Assert.fail;
 
 import javax.persistence.PersistenceException;
 
-import org.hibernate.HibernateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
 import org.oscarehr.common.model.ProviderInboxItem;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.oscarLab.ca.on.LabResultData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 
 public class ProviderInboxRoutingDaoTest extends DaoTestFixtures {
 

@@ -50,8 +50,8 @@
     String demoNo = request.getParameter("val2");
     String prov = request.getParameter("val1");
 
-    oscar.oscarMessenger.pageUtil.MsgSessionBean bean = null;
-    bean = new oscar.oscarMessenger.pageUtil.MsgSessionBean();
+    MsgSessionBean bean = null;
+    bean = new MsgSessionBean();
 
     bean.setProviderNo(prov);
 
@@ -65,7 +65,10 @@
 
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/encounterStyles.css">
 
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@ page import="ca.openosp.openo.messenger.pageUtil.MsgSessionBean" %>
+<%@ page import="ca.openosp.openo.messenger.docxfer.util.MsgCommxml" %>
+<%@ page import="ca.openosp.openo.messenger.docxfer.send.MsgGenerate" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

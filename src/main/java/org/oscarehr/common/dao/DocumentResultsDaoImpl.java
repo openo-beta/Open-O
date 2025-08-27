@@ -39,15 +39,15 @@ import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Document;
 import org.oscarehr.common.model.ProviderInboxItem;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.oscarLab.ca.on.CommonLabResultData;
-import oscar.oscarLab.ca.on.LabResultData;
+import ca.openosp.openo.lab.ca.on.CommonLabResultData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 
 public class DocumentResultsDaoImpl extends AbstractDaoImpl<Document> implements DocumentResultsDao {
 
-    Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     public DocumentResultsDaoImpl() {
         super(Document.class);

@@ -30,8 +30,8 @@ import org.oscarehr.common.dao.CdsClientFormDao;
 import org.oscarehr.common.dao.CdsClientFormDataDao;
 import org.oscarehr.common.model.CdsClientForm;
 import org.oscarehr.common.model.CdsClientFormData;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 
 public class CdsForm4Action {
 

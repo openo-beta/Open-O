@@ -34,7 +34,7 @@ import java.util.Locale;
 
 import org.oscarehr.common.model.BillingONPremium;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 public interface BillingONPremiumDao extends AbstractDao<BillingONPremium> {
     List<BillingONPremium> getActiveRAPremiumsByPayDate(Date startDate, Date endDate, Locale locale);

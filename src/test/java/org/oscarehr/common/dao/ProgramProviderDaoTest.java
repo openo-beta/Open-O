@@ -25,14 +25,13 @@ package org.oscarehr.common.dao;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Ignore;
 import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.PMmodule.model.ProgramProvider;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class ProgramProviderDaoTest extends DaoTestFixtures {
 

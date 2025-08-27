@@ -27,20 +27,21 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="org.oscarehr.util.MiscUtils" %>
+<%@ page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page
-        import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager, org.oscarehr.util.LoggedInInfo, org.oscarehr.common.model.Facility" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+        import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager, org.oscarehr.utility.LoggedInInfo, org.oscarehr.common.model.Facility" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="oscar.OscarProperties" %>
-<%@ page import="org.oscarehr.managers.DemographicManager" %>
+<%@ page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@ page import="org.oscarehr.common.model.Demographic" %>
+<%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
-    oscar.oscarEncounter.pageUtil.EctSessionBean bean = null;
-    if ((bean = (oscar.oscarEncounter.pageUtil.EctSessionBean) request.getSession().getAttribute("EctSessionBean")) == null) {
+    EctSessionBean bean = null;
+    if ((bean = (EctSessionBean) request.getSession().getAttribute("EctSessionBean")) == null) {
         response.sendRedirect("error.jsp");
         return;
     }

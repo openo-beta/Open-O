@@ -27,7 +27,7 @@ package org.oscarehr.ws.rest.to.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.oscarehr.appointment.search.FilterDefinition;
+import ca.openosp.openo.appointment.search.FilterDefinition;
 
 
 public class FilterDefinitionTransfer {

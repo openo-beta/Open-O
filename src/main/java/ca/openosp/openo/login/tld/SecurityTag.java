@@ -29,7 +29,7 @@ package ca.openosp.openo.login.tld;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import oscar.OscarProperties;
-import oscar.util.OscarRoleObjectPrivilege;
+import ca.openosp.openo.util.OscarRoleObjectPrivilege;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;

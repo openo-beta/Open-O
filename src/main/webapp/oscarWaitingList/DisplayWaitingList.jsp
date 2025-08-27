@@ -24,7 +24,7 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%@page import="org.oscarehr.common.model.ProviderPreference" %>
 <%
     if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
@@ -33,6 +33,8 @@
 %>
 <%@ page
         import="java.util.*,oscar.util.*, oscar.oscarWaitingList.bean.*" %>
+<%@ page import="ca.openosp.openo.waitinglist.bean.WLWaitingListNameBeanHandler" %>
+<%@ page import="ca.openosp.openo.waitinglist.bean.WLWaitingListNameBean" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>

@@ -23,23 +23,25 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.util.WebUtils" %>
-<%@page import="org.oscarehr.util.WebUtils" %>
-<%@page import="org.oscarehr.util.LocaleUtils" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
+<%@page import="org.oscarehr.utility.WebUtils" %>
+<%@page import="org.oscarehr.utility.LocaleUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page language="java" import="oscar.OscarProperties" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
 <%@page import="java.util.List" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
-<%@page import="org.oscarehr.casemgmt.model.CaseManagementNoteLink" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
+<%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <%@page import="org.oscarehr.common.dao.PartialDateDao" %>
 <%@page import="org.oscarehr.common.model.PartialDate" %>
-<%@ page import="ca.openosp.openo.service.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.services.security.SecurityManager" %>
+<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
 
 <%
     String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -57,7 +59,7 @@
 
 <%
     OscarProperties props = OscarProperties.getInstance();
-    oscar.oscarRx.pageUtil.RxSessionBean bean = null;
+    RxSessionBean bean = null;
     PartialDateDao partialDateDao = (PartialDateDao) SpringUtils.getBean(PartialDateDao.class);
 %>
 
@@ -67,7 +69,7 @@
 <c:if test="${not empty sessionScope.RxSessionBean}">
     <%
         // Directly access the RxSessionBean from the session
-        bean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
+        bean = (RxSessionBean) session.getAttribute("RxSessionBean");
         if (bean != null && !bean.isValid()) {
             response.sendRedirect("error.html");
             return; // Ensure no further JSP processing
@@ -75,8 +77,8 @@
     %>
 </c:if>
 <%
-    String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_ALLERGY;
-    oscar.oscarRx.data.RxPatientData.Patient patient = (oscar.oscarRx.data.RxPatientData.Patient) session.getAttribute("Patient");
+    String annotation_display = CaseManagementNoteLink.DISP_ALLERGY;
+    RxPatientData.Patient patient = (RxPatientData.Patient) session.getAttribute("Patient");
     SecurityManager securityManager = new SecurityManager();
 %>
 <html>
@@ -579,7 +581,7 @@
                                                 <%
                                                     CaseManagementManager cmm = (CaseManagementManager) SpringUtils.getBean(CaseManagementManager.class);
                                                     @SuppressWarnings("unchecked")
-                                                    List<CaseManagementNoteLink> existingAnnots = cmm.getLinkByTableId(org.oscarehr.casemgmt.model.CaseManagementNoteLink.ALLERGIES, Long.valueOf(allergy.getAllergyId()));
+                                                    List<CaseManagementNoteLink> existingAnnots = cmm.getLinkByTableId(CaseManagementNoteLink.ALLERGIES, Long.valueOf(allergy.getAllergyId()));
                                                 %>
                                                 <td>
                                                     <%

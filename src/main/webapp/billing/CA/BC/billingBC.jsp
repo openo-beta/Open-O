@@ -40,31 +40,31 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 
 <%@taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@page import="java.util.*, oscar.oscarBilling.ca.bc.data.*,oscar.oscarBilling.ca.bc.pageUtil.*,oscar.*,oscar.entities.*" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.BillingreferralDao" %>
-<%@ page import="oscar.oscarResearch.oscarDxResearch.util.dxResearchCodingSystem" %>
+<%@ page import="ca.openosp.openo.oscarDxResearch.util.dxResearchCodingSystem" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.oscarehr.common.dao.PropertyDao" %>
 <%@ page import="org.oscarehr.common.model.Property" %>
-<%@ page import="org.oscarehr.managers.DemographicManager,ca.openosp.openo.oscarBilling.ca.bc.MSP.ServiceCodeValidationLogic" %>
+<%@ page import="ca.openosp.openo.managers.DemographicManager,ca.openosp.openo.billings.ca.bc.MSP.ServiceCodeValidationLogic" %>
 <%@ page import="org.oscarehr.common.model.Demographic" %>
 <%@ page import="org.apache.commons.lang3.StringUtils" %>
 <%@ page import="ca.openosp.openo.entities.PaymentType" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingSessionBean" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingPreferencesDAO" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.ServiceCodeAssociation" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingAssociationPersistence" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.pageUtil.BillingCreateBillingForm" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.SupServiceCodeAssocDAO" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingFormData" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.data.BillingPreference" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.BillingSessionBean" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingPreferencesDAO" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.ServiceCodeAssociation" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.BillingAssociationPersistence" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.BillingCreateBillingForm" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.SupServiceCodeAssocDAO" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingFormData" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingPreference" %>
 
 <%!
 

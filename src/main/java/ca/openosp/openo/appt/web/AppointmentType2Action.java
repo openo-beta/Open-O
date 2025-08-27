@@ -29,8 +29,8 @@ import org.oscarehr.common.dao.AppointmentTypeDao;
 import org.oscarehr.common.dao.SiteDao;
 import org.oscarehr.common.model.AppointmentType;
 import org.oscarehr.common.model.Site;
-import org.oscarehr.util.SpringUtils;
-import oscar.util.LabelValueBean;
+import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.util.LabelValueBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

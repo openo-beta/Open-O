@@ -41,7 +41,7 @@ import org.oscarehr.PMmodule.model.SecUserRole;
 import org.oscarehr.common.dao.SecurityDao;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Security;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 
 /**

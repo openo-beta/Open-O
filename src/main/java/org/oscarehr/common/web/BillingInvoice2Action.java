@@ -34,14 +34,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.oscarehr.common.service.PdfRecordPrinter;
-import org.oscarehr.managers.BillingONManager;
-import org.oscarehr.managers.SecurityInfoManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.managers.BillingONManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.util.ConcatPDF;
-import oscar.util.UtilDateUtilities;
+import ca.openosp.openo.util.ConcatPDF;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 /**
  * @author mweston4

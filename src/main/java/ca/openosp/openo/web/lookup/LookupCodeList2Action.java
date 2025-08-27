@@ -28,11 +28,11 @@ import javax.servlet.http.HttpServletResponse;
 
 
 import ca.openosp.openo.model.LookupTableDefValue;
-import ca.openosp.openo.service.LookupManager;
+import ca.openosp.openo.services.LookupManager;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class LookupCodeList2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();

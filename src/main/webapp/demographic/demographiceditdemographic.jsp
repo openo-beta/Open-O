@@ -25,7 +25,7 @@
 --%>
 
 <%@page import="org.oscarehr.common.ISO36612" %>
-<%@page import="org.oscarehr.managers.LookupListManager" %>
+<%@page import="ca.openosp.openo.managers.LookupListManager" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
@@ -40,13 +40,13 @@
         return;
     }
 %>
-<%@page import="oscar.util.ConversionUtils" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.ConformanceTestHelper" %>
 <%@page import="org.oscarehr.common.dao.DemographicExtDao" %>
 <%@page import="org.oscarehr.common.dao.DemographicArchiveDao" %>
 <%@page import="org.oscarehr.common.dao.DemographicExtArchiveDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="oscar.OscarProperties" %>
 <%@page import="org.oscarehr.common.dao.ScheduleTemplateCodeDao" %>
 <%@page import="org.oscarehr.common.model.ScheduleTemplateCode" %>
@@ -55,12 +55,12 @@
 <%@page import="org.oscarehr.common.model.WaitingListName" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="org.oscarehr.common.Gender" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="org.oscarehr.managers.ProgramManager2" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.managers.ProgramManager2" %>
 <%@page import="org.oscarehr.PMmodule.model.Program" %>
 <%@page import="org.oscarehr.PMmodule.model.ProgramProvider" %>
 <%@page import="java.util.HashSet" %>
-<%@page import="org.oscarehr.managers.PatientConsentManager" %>
+<%@page import="ca.openosp.openo.managers.PatientConsentManager" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <jsp:useBean id="apptMainBean" class="oscar.AppointmentMainBean" scope="session"/>
 <%
@@ -83,16 +83,16 @@
 
 %>
 <%@ page
-        import="java.util.*, java.net.*,java.text.DecimalFormat, oscar.*, ca.openosp.openo.oscarDemographic.data.ProvinceNames, oscar.oscarWaitingList.WaitingList, oscar.oscarReport.data.DemographicSets,oscar.log.*" %>
+        import="java.util.*, java.net.*,java.text.DecimalFormat, oscar.*, ca.openosp.openo.demographic.data.ProvinceNames, ca.openosp.openo.waitinglist.WaitingList, ca.openosp.openo.report.data.DemographicSets,oscar.log.*" %>
 <%@ page import="oscar.oscarDemographic.data.*" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.pageUtil.Util" %>
+<%@ page import="ca.openosp.openo.demographic.pageUtil.Util" %>
 <%@ page import="oscar.OscarProperties" %>
 <%@ page import="org.oscarehr.common.dao.*,org.oscarehr.common.model.*" %>
 <%@ page import="org.oscarehr.common.OtherIdManager" %>
 <%@ page import="org.oscarehr.common.web.Contact2Action" %>
-<%@ page import="org.oscarehr.casemgmt.model.CaseManagementNoteLink" %>
-<%@ page import="org.oscarehr.casemgmt.service.CaseManagementManager" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
+<%@ page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.ProfessionalSpecialist" %>
 <%@page import="org.oscarehr.common.dao.ProfessionalSpecialistDao" %>
 <%@page import="org.oscarehr.common.model.DemographicCust" %>
@@ -101,11 +101,11 @@
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@page import="org.oscarehr.managers.DemographicManager" %>
+<%@page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@page import="org.oscarehr.PMmodule.service.ProgramManager" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProgramDao" %>
 <%@page import="org.oscarehr.PMmodule.service.AdmissionManager" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
 
 <%!
@@ -197,7 +197,7 @@
 
 
     String currentProgram = "";
-    String programId = (String) session.getAttribute(org.oscarehr.util.SessionConstants.CURRENT_PROGRAM_ID);
+    String programId = (String) session.getAttribute(org.oscarehr.utility.SessionConstants.CURRENT_PROGRAM_ID);
     if (programId != null && programId.length() > 0) {
         Integer prId = null;
         try {
@@ -242,13 +242,13 @@
 
 %>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicMerged" %>
-<%@ page import="ca.openosp.openo.oscarDemographic.data.DemographicRelationship" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicMerged" %>
+<%@ page import="ca.openosp.openo.demographic.data.DemographicRelationship" %>
 <!DOCTYPE html>
 <html>
 
@@ -1001,11 +1001,11 @@
                                             }
                                             //----------------------------REFERRAL DOCTOR --------------end-----------
 
-                                            if (oscar.util.StringUtils.filled(demographic.getYearOfBirth()))
+                                            if (ca.openosp.openo.util.StringUtils.filled(demographic.getYearOfBirth()))
                                                 birthYear = StringUtils.trimToEmpty(demographic.getYearOfBirth());
-                                            if (oscar.util.StringUtils.filled(demographic.getMonthOfBirth()))
+                                            if (ca.openosp.openo.util.StringUtils.filled(demographic.getMonthOfBirth()))
                                                 birthMonth = StringUtils.trimToEmpty(demographic.getMonthOfBirth());
-                                            if (oscar.util.StringUtils.filled(demographic.getDateOfBirth()))
+                                            if (ca.openosp.openo.util.StringUtils.filled(demographic.getDateOfBirth()))
                                                 birthDate = StringUtils.trimToEmpty(demographic.getDateOfBirth());
 
                                             dob_year = Integer.parseInt(birthYear);
@@ -2683,7 +2683,7 @@
                                                         </td>
                                                         <td align="left">
                                                             <%
-                                                                String lang = oscar.util.StringUtils.noNull(demographic.getOfficialLanguage()); %>
+                                                                String lang = ca.openosp.openo.util.StringUtils.noNull(demographic.getOfficialLanguage()); %>
                                                             <select name="official_lang" <%=getDisabled("official_lang")%>>
                                                                 <option value="English" <%=lang.equals("English") ? "selected" : ""%> >
                                                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgEnglish"/></option>
@@ -2698,7 +2698,7 @@
                                                         </td>
                                                         <td>
                                                             <%
-                                                                String spokenLang = oscar.util.StringUtils.noNull(demographic.getSpokenLanguage()); %>
+                                                                String spokenLang = ca.openosp.openo.util.StringUtils.noNull(demographic.getSpokenLanguage()); %>
                                                             <select name="spoken_lang"
                                                                     style="width: 200px;" <%=getDisabled("spoken_lang")%>>
                                                                 <%for (String splang : Util.spokenLangProperties.getLangSorted()) { %>
@@ -3318,7 +3318,7 @@
                                                         </b></td>
                                                         <td align="left">
                                                             <%
-                                                                String newsletter = oscar.util.StringUtils.noNull(demographic.getNewsletter()).trim();
+                                                                String newsletter = ca.openosp.openo.util.StringUtils.noNull(demographic.getNewsletter()).trim();
                                                                 if (newsletter == null || newsletter.equals("")) {
                                                                     newsletter = "Unknown";
                                                                 }
@@ -3763,7 +3763,7 @@
                                                             <option value="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.msgNotSet"/></option>
                                                             <%for (CountryCode cc : countryList) { %>
                                                             <option value="<%=cc.getCountryId()%>"
-                                                                    <% if (oscar.util.StringUtils.noNull(demographic.getCountryOfOrigin()).equals(cc.getCountryId())) {
+                                                                    <% if (ca.openosp.openo.util.StringUtils.noNull(demographic.getCountryOfOrigin()).equals(cc.getCountryId())) {
                                                                         out.print("SELECTED");
                                                                     }%>><%=cc.getCountryName() %>
                                                             </option>
@@ -4673,7 +4673,7 @@
                                                                                     wlId = wl.getId().toString();
                                                                                     listID = String.valueOf(wl.getListId());
                                                                                     wlnote = wl.getNote();
-                                                                                    wlReferralDate = oscar.util.ConversionUtils.toDateString(wl.getOnListSince());
+                                                                                    wlReferralDate = ConversionUtils.toDateString(wl.getOnListSince());
                                                                                     if (wlReferralDate != null && wlReferralDate.length() > 10) {
                                                                                         wlReferralDate = wlReferralDate.substring(0, 11);
                                                                                     }
@@ -4690,7 +4690,7 @@
                                                                             <%} %>
                                                                             <%
 
-                                                                                List<WaitingListName> wlns = waitingListNameDao.findCurrentByGroup(((org.oscarehr.common.model.ProviderPreference) session.getAttribute(org.oscarehr.util.SessionConstants.LOGGED_IN_PROVIDER_PREFERENCE)).getMyGroupNo());
+                                                                                List<WaitingListName> wlns = waitingListNameDao.findCurrentByGroup(((org.oscarehr.common.model.ProviderPreference) session.getAttribute(org.oscarehr.utility.SessionConstants.LOGGED_IN_PROVIDER_PREFERENCE)).getMyGroupNo());
                                                                                 for (WaitingListName wln : wlns) {
                                                                             %>
                                                                             <option value="<%=wln.getId()%>"

@@ -31,12 +31,11 @@ import java.util.List;
 import org.oscarehr.common.dao.BillingONCHeader1Dao;
 import org.oscarehr.common.model.BillingONCHeader1;
 import org.oscarehr.common.model.BillingONItem;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.oscarehr.common.model.BillingONPayment;
 import org.oscarehr.common.dao.BillingONPaymentDao;
-import org.oscarehr.common.dao.BillingONPaymentDaoImpl;
 
 /**
  * @author mweston4

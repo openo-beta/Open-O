@@ -37,9 +37,10 @@
 <jsp:useBean id="risks" class="ca.openosp.openo.decision.DesAntenatalPlannerRisks_99_12" scope="page"/>
 <jsp:useBean id="checklist" class="ca.openosp.openo.decision.DesAntenatalPlannerChecklist_99_12" scope="page"/>
 <%@ include file="../../admin/dbconnection.jsp" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.Desaprisk" %>
 <%@page import="org.oscarehr.common.dao.DesapriskDao" %>
+<%@ page import="ca.openosp.openo.db.DBHandler" %>
 <%
     DesapriskDao desapriskDao = SpringUtils.getBean(DesapriskDao.class);
 %>
@@ -96,7 +97,7 @@
         ResultSet rsdemo = null;
         if (!form_no.equals("0")) {
             //we don't have forms converted at this time
-            rsdemo = oscar.oscarDB.DBHandler.GetSQL("select * from formONAR where ID = " + form_no);
+            rsdemo = DBHandler.GetSQL("select * from formONAR where ID = " + form_no);
 
             ResultSetMetaData resultsetmetadata = rsdemo.getMetaData();
             while (rsdemo.next()) {

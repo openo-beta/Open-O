@@ -49,10 +49,13 @@
 <%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
 
 <%@ page
-        import="java.util.*, oscar.*, oscar.util.*, oscar.oscarProvider.data.ProviderData, org.oscarehr.util.SpringUtils, org.oscarehr.common.dao.CtlDocClassDao" %>
-<%@ page import="org.oscarehr.documentManager.data.AddEditDocument2Form" %>
-<%@ page import="org.oscarehr.documentManager.EDocUtil" %>
-<%@ page import="org.oscarehr.documentManager.EDoc" %>
+        import="java.util.*, oscar.*, oscar.util.*, ca.openosp.openo.provider.data.ProviderData, org.oscarehr.utility.SpringUtils, org.oscarehr.common.dao.CtlDocClassDao" %>
+<%@ page import="ca.openosp.openo.documentManager.data.AddEditDocument2Form" %>
+<%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
+<%@ page import="ca.openosp.openo.documentManager.EDoc" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
+<%@ page import="ca.openosp.openo.util.UtilMisc" %>
+<%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%
     String mode = "";
     if (request.getAttribute("mode") != null) {
@@ -128,7 +131,7 @@
 
     List<Map<String, String>> pdList = new ProviderData().getProviderList();
     ArrayList<String> doctypes = EDocUtil.getDoctypes(module);
-    String annotation_display = org.oscarehr.casemgmt.model.CaseManagementNoteLink.DISP_DOCUMENT;
+    String annotation_display = CaseManagementNoteLink.DISP_DOCUMENT;
     String annotation_tableid = editDocumentNo;
     Long now = new Date().getTime();
     String annotation_attrib = "anno" + now;

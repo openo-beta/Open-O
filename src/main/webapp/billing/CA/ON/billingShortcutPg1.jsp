@@ -28,9 +28,9 @@
 <%@page import="org.oscarehr.common.dao.BillingServiceDao" %>
 <%@page import="org.oscarehr.common.model.ClinicLocation" %>
 <%@page import="org.oscarehr.common.dao.ClinicLocationDao" %>
-<%@page import="org.oscarehr.billing.CA.model.BillingDetail" %>
-<%@page import="org.oscarehr.billing.CA.dao.BillingDetailDao" %>
-<%@page import="oscar.util.ConversionUtils" %>
+<%@page import="ca.openosp.openo.billing.CA.model.BillingDetail" %>
+<%@page import="ca.openosp.openo.billing.CA.dao.BillingDetailDao" %>
+<%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@page import="org.oscarehr.common.model.Billing" %>
 <%@page import="org.oscarehr.common.dao.BillingDao" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>
@@ -56,7 +56,7 @@
 <%@ page errorPage="/errorpage.jsp" %>
 <%@ page import="java.util.*,java.net.*, java.sql.*, oscar.*" %>
 <%@ page import="oscar.oscarBilling.ca.on.data.*" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.ClinicNbr" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
 <%@page import="org.oscarehr.common.dao.ClinicNbrDao" %>
@@ -65,13 +65,13 @@
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 <jsp:useBean id="providerBean" class="java.util.Properties"
              scope="session"/>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.ProfessionalSpecialist" %>
 <%@page import="org.oscarehr.common.dao.ProfessionalSpecialistDao" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingItemData" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.JdbcBillingReviewImpl" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.BillingClaimHeader1Data" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.BillingItemData" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.JdbcBillingReviewImpl" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data" %>
 <%
     ProfessionalSpecialistDao professionalSpecialistDao = (ProfessionalSpecialistDao) SpringUtils.getBean(ProfessionalSpecialistDao.class);
 %>

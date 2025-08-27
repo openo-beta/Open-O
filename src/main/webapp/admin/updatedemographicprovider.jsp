@@ -28,11 +28,11 @@
 <%@ page import="java.util.List" %>
 <%@ page import="org.oscarehr.common.model.DemographicExt" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="org.oscarehr.managers.DemographicManager" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="org.oscarehr.managers.ProviderManager2" %>
+<%@ page import="ca.openosp.openo.managers.DemographicManager" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.managers.ProviderManager2" %>
 <%@ page import="org.oscarehr.common.model.Demographic" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>

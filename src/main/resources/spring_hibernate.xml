@@ -19,7 +19,7 @@
 	<!-- 
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
 	 -->
-	<bean id="sessionFactory" class="org.oscarehr.util.SpringHibernateLocalSessionFactoryBean">
+	<bean id="sessionFactory" class="org.oscarehr.utility.SpringHibernateLocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="mappingDirectoryLocations">
 			<!-- only *.hbm.xml will be loaded -->
@@ -63,7 +63,7 @@
 		</property> -->
 
 <!--
-	<bean id="auditSessionFactory" class="org.oscarehr.util.SpringHibernateLocalSessionFactoryBean">
+	<bean id="auditSessionFactory" class="org.oscarehr.utility.SpringHibernateLocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="mappingDirectoryLocations">
 			<list>

@@ -29,10 +29,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.appointment.search.FilterDefinition;
-import org.oscarehr.appointment.search.Provider;
+import ca.openosp.openo.appointment.search.FilterDefinition;
+import ca.openosp.openo.appointment.search.Provider;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 
 public class BookingProviderTransfer {

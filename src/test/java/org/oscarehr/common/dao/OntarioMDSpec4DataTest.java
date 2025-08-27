@@ -70,16 +70,16 @@ import org.oscarehr.PMmodule.dao.SecUserRoleDao;
 import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.PMmodule.model.ProgramProvider;
 import org.oscarehr.PMmodule.model.SecUserRole;
-import org.oscarehr.casemgmt.dao.CaseManagementIssueDAO;
-import org.oscarehr.casemgmt.dao.CaseManagementNoteDAO;
-import org.oscarehr.casemgmt.dao.CaseManagementNoteExtDAO;
-import org.oscarehr.casemgmt.dao.CaseManagementNoteLinkDAO;
-import org.oscarehr.casemgmt.dao.IssueDAO;
-import org.oscarehr.casemgmt.model.CaseManagementIssue;
-import org.oscarehr.casemgmt.model.CaseManagementNote;
-import org.oscarehr.casemgmt.model.CaseManagementNoteExt;
-import org.oscarehr.casemgmt.model.CaseManagementNoteLink;
-import org.oscarehr.casemgmt.model.Issue;
+import ca.openosp.openo.casemgmt.dao.CaseManagementIssueDAO;
+import ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO;
+import ca.openosp.openo.casemgmt.dao.CaseManagementNoteExtDAO;
+import ca.openosp.openo.casemgmt.dao.CaseManagementNoteLinkDAO;
+import ca.openosp.openo.casemgmt.dao.IssueDAO;
+import ca.openosp.openo.casemgmt.model.CaseManagementIssue;
+import ca.openosp.openo.casemgmt.model.CaseManagementNote;
+import ca.openosp.openo.casemgmt.model.CaseManagementNoteExt;
+import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
+import ca.openosp.openo.casemgmt.model.Issue;
 import org.oscarehr.common.dao.utils.SchemaUtils;
 import org.oscarehr.common.model.Admission;
 import org.oscarehr.common.model.Allergy;
@@ -98,11 +98,11 @@ import org.oscarehr.common.model.Prevention;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Security;
 import org.oscarehr.common.model.Tickler;
-import org.oscarehr.managers.TicklerManager;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.managers.TicklerManager;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.form.FrmLabReq07Record;
+import ca.openosp.openo.form.FrmLabReq07Record;
 
 
 public class OntarioMDSpec4DataTest extends DaoTestFixtures {

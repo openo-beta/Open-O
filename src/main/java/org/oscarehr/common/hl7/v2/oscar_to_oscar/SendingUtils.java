@@ -62,9 +62,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.common.model.ProfessionalSpecialist;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.CxfClientUtilsOld;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.CxfClientUtilsOld;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
 
 import ca.openosp.openo.log.LogAction;
 import ca.uhn.hl7v2.HL7Exception;

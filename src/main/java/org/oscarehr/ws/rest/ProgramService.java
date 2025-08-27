@@ -37,10 +37,9 @@ import javax.ws.rs.QueryParam;
 
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.tools.ant.util.DateUtils;
-import org.oscarehr.PMmodule.model.Program;
 import org.oscarehr.PMmodule.model.ProgramProvider;
 import org.oscarehr.PMmodule.service.AdmissionManager;
-import org.oscarehr.managers.ProgramManager2;
+import ca.openosp.openo.managers.ProgramManager2;
 import org.oscarehr.ws.rest.conversion.AdmissionConverter;
 import org.oscarehr.ws.rest.conversion.ProgramConverter;
 import org.oscarehr.ws.rest.to.AbstractSearchResponse;

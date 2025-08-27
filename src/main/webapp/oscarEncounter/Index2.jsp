@@ -24,8 +24,8 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="oscar.oscarRx.data.RxPatientData" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.rx.data.RxPatientData" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -92,9 +92,9 @@
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 
 <%@page
-        import="oscar.log.*,oscar.util.UtilMisc,oscar.oscarEncounter.data.*, java.net.*,java.util.*,oscar.util.UtilDateUtilities" %>
+        import="oscar.log.*,ca.openosp.openo.util.UtilMisc,oscar.oscarEncounter.data.*, java.net.*,java.util.*,ca.openosp.openo.util.UtilDateUtilities" %>
 <%@page
-        import="oscar.oscarMDS.data.MDSResultsData,oscar.oscarLab.ca.on.*, oscar.oscarMessenger.util.MsgDemoMap, oscar.oscarMessenger.data.MsgMessageData" %>
+        import="ca.openosp.openo.mds.data.MDSResultsData,oscar.oscarLab.ca.on.*, ca.openosp.openo.messenger.util.MsgDemoMap, ca.openosp.openo.messenger.data.MsgMessageData" %>
 <%@page
         import="oscar.oscarEncounter.oscarMeasurements.*,oscar.oscarResearch.oscarDxResearch.bean.*,oscar.util.*" %>
 <%@page
@@ -110,8 +110,8 @@
     //The oscarEncounter session manager, if the session bean is not in the context it looks for a session cookie with the appropriate name and value, if the required cookie is not available
     //it dumps you out to an erros page.
 
-    oscar.oscarEncounter.pageUtil.EctSessionBean bean = null;
-    if ((bean = (oscar.oscarEncounter.pageUtil.EctSessionBean) request.getSession().getAttribute("EctSessionBean")) == null) {
+    EctSessionBean bean = null;
+    if ((bean = (EctSessionBean) request.getSession().getAttribute("EctSessionBean")) == null) {
         response.sendRedirect("error.jsp");
         return;
     }
@@ -171,7 +171,7 @@
 
 <%
     //need these variables for the forms
-    oscar.util.UtilDateUtilities dateConvert = new oscar.util.UtilDateUtilities();
+    UtilDateUtilities dateConvert = new UtilDateUtilities();
     String demoNo = bean.demographicNo;
     String provNo = bean.providerNo;
     EctFormData.Form[] forms = EctFormData.getForms();
@@ -195,7 +195,7 @@
     String pAge = Integer.toString(dateConvert.calcAge(bean.yearOfBirth, bean.monthOfBirth, bean.dateOfBirth));
 
     String province = (oscarVariables.getProperty("billregion", "")).trim().toUpperCase();
-    Properties windowSizes = oscar.oscarEncounter.pageUtil.EctWindowSizes.getWindowSizes(provNo);
+    Properties windowSizes = EctWindowSizes.getWindowSizes(provNo);
 
     MsgDemoMap msgDemoMap = new MsgDemoMap();
 
@@ -213,9 +213,14 @@
 %>
 
 
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
+<%@ page import="ca.openosp.openo.encounter.pageUtil.EctWindowSizes" %>
+<%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
+<%@ page import="ca.openosp.openo.encounter.data.*" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.util.StringUtils" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -1500,8 +1505,8 @@
                                             </table>
                                             <div class="presBox" style="width: 100%;" id="presBox">
                                                 <%
-                                                    oscar.oscarRx.data.RxPrescriptionData prescriptData = new oscar.oscarRx.data.RxPrescriptionData();
-                                                    oscar.oscarRx.data.RxPrescriptionData.Prescription[] arr = {};
+                                                    RxPrescriptionData prescriptData = new RxPrescriptionData();
+                                                    RxPrescriptionData.Prescription[] arr = {};
                                                     arr = prescriptData.getUniquePrescriptionsByPatient(Integer.parseInt(bean.demographicNo));
                                                     if (arr.length > 0) {%>
                                                 <table>

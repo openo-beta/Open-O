@@ -39,7 +39,7 @@ import org.oscarehr.PMmodule.model.Agency;
 import org.oscarehr.PMmodule.service.AgencyManager;
 import org.oscarehr.PMmodule.service.OscarSecurityManager;
 import org.oscarehr.PMmodule.service.ProviderManager;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 

@@ -35,6 +35,7 @@ import java.util.UUID;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import ca.openosp.openo.util.UtilDateUtilities;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.dao.DaoTestFixtures;
@@ -42,17 +43,17 @@ import org.oscarehr.common.dao.DemographicDao;
 import org.oscarehr.common.dao.ProviderInboxRoutingDao;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import org.oscarehr.documentManager.EDoc;
-import org.oscarehr.documentManager.EDocUtil;
-import oscar.oscarLab.ca.all.upload.HandlerClassFactory;
-import oscar.oscarLab.ca.all.upload.handlers.MessageHandler;
-import oscar.util.ConversionUtils;
+import ca.openosp.openo.documentManager.EDoc;
+import ca.openosp.openo.documentManager.EDocUtil;
+import ca.openosp.openo.lab.ca.all.upload.HandlerClassFactory;
+import ca.openosp.openo.lab.ca.all.upload.handlers.MessageHandler;
+import ca.openosp.openo.util.ConversionUtils;
 
 public class DataUtils {
 
@@ -122,7 +123,7 @@ public class DataUtils {
                 String fileName = "sample_upload_for_" + user + "_" + i + "_" + System.currentTimeMillis() + ".txt";
                 String source = "";
                 EDoc newDoc = new EDoc("", "", fileName, "", user, user, source, 'A',
-                        oscar.util.UtilDateUtilities.getToday("yyyy-MM-dd"), "", "", "demographic", "-1", 0);
+                        UtilDateUtilities.getToday("yyyy-MM-dd"), "", "", "demographic", "-1", 0);
                 newDoc.setDocPublic("0");
                 fileName = newDoc.getFileName();
 

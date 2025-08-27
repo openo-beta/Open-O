@@ -31,12 +31,12 @@ import java.util.List;
 import java.util.Set;
 
 
-import org.oscarehr.casemgmt.model.CaseManagementIssue;
-import org.oscarehr.casemgmt.model.CaseManagementNote;
-import org.oscarehr.casemgmt.model.Issue;
-import org.oscarehr.casemgmt.service.CaseManagementManager;
-import org.oscarehr.managers.PreferenceManager;
-import org.oscarehr.util.LoggedInInfo;
+import ca.openosp.openo.casemgmt.model.CaseManagementIssue;
+import ca.openosp.openo.casemgmt.model.CaseManagementNote;
+import ca.openosp.openo.casemgmt.model.Issue;
+import ca.openosp.openo.casemgmt.service.CaseManagementManager;
+import ca.openosp.openo.managers.PreferenceManager;
+import org.oscarehr.utility.LoggedInInfo;
 
 import org.oscarehr.ws.rest.to.model.SummaryItemTo1;
 import org.oscarehr.ws.rest.to.model.SummaryTo1;

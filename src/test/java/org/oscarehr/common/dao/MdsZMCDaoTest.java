@@ -25,7 +25,7 @@ package org.oscarehr.common.dao;
 
 import org.junit.Before;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class MdsZMCDaoTest extends DaoTestFixtures {
 

@@ -29,9 +29,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.oscarehr.PMmodule.model.DefaultRoleAccess;
 import org.oscarehr.PMmodule.service.ProgramManager;
 import org.oscarehr.PMmodule.utility.RoleCache;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import ca.openosp.openo.service.security.RolesManager;
+import ca.openosp.openo.services.security.RolesManager;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

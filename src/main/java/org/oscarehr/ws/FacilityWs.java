@@ -31,7 +31,7 @@ import javax.jws.WebService;
 
 import org.apache.cxf.annotations.GZIP;
 import org.oscarehr.common.model.Facility;
-import org.oscarehr.managers.FacilityManager;
+import ca.openosp.openo.managers.FacilityManager;
 import org.oscarehr.ws.transfer_objects.FacilityTransfer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

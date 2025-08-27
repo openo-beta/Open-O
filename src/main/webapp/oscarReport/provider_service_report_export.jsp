@@ -38,14 +38,14 @@
     }
 %>
 
-<%@page import="oscar.util.SqlUtils" %>
+<%@page import="ca.openosp.openo.util.SqlUtils" %>
 <%@page import="org.oscarehr.web.ProviderServiceReportUIBean" %>
 <%@page import="java.util.*" %>
 <%@page import="org.caisi.model.*" %>
 <%@page import="org.oscarehr.PMmodule.model.*" %>
 <%@page import="org.oscarehr.PMmodule.web.*" %>
 <%@page import="org.oscarehr.common.model.*" %>
-<%@page import="org.oscarehr.util.*" %>
+<%@page import="org.oscarehr.utility.*" %>
 <%@page import="java.text.*" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%

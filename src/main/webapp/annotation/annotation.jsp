@@ -43,17 +43,17 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <%@page import="org.springframework.web.context.WebApplicationContext,
                 org.springframework.web.context.support.WebApplicationContextUtils,
-                org.oscarehr.casemgmt.model.CaseManagementNote,
-                org.oscarehr.casemgmt.model.CaseManagementNoteLink,
-                org.oscarehr.casemgmt.service.CaseManagementManager,
+                ca.openosp.openo.casemgmt.model.CaseManagementNote,
+                ca.openosp.openo.casemgmt.model.CaseManagementNoteLink,
+                ca.openosp.openo.casemgmt.service.CaseManagementManager,
                 org.oscarehr.common.dao.SecRoleDao,
                 org.oscarehr.common.model.SecRole,
-                org.oscarehr.util.SpringUtils,
-                oscar.oscarEncounter.data.EctProgram,
+                org.oscarehr.utility.SpringUtils,
+                ca.openosp.openo.encounter.data.EctProgram,
                 java.util.Date,
                 java.util.List" %>
 <%@page import="ca.openosp.openo.log.LogAction, ca.openosp.openo.log.LogConst" %>
-<%@page import="org.oscarehr.documentManager.EDocUtil" %>
+<%@page import="ca.openosp.openo.documentManager.EDocUtil" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

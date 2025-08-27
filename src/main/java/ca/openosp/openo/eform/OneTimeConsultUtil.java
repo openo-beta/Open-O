@@ -35,9 +35,9 @@ import org.oscarehr.common.dao.EFormDataDao;
 import org.oscarehr.common.dao.EFormValueDao;
 import org.oscarehr.common.model.EFormData;
 import org.oscarehr.common.model.EFormValue;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
-import oscar.util.UtilDateUtilities;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.util.UtilDateUtilities;
 
 public class OneTimeConsultUtil {
     private static final Logger logger = MiscUtils.getLogger();

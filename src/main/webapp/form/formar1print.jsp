@@ -44,7 +44,8 @@
 %>
 <%@ page import="java.util.*, java.sql.*, oscar.*, oscar.util.*" %>
 <%@ page import="oscar.form.*" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.util.UtilMisc" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

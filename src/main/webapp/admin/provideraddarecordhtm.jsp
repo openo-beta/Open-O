@@ -31,16 +31,17 @@
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@ page import="org.oscarehr.common.model.LookupListItem" %>
 <%@ page import="org.oscarehr.common.model.LookupList" %>
-<%@ page import="org.oscarehr.util.LoggedInInfo" %>
-<%@ page import="org.oscarehr.managers.LookupListManager" %>
+<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.managers.LookupListManager" %>
 <%@ page import="org.oscarehr.common.model.ClinicNbr" %>
 <%@ page import="org.oscarehr.common.dao.ClinicNbrDao" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.dao.SiteDao" %>
 <%@ page import="org.oscarehr.common.model.Site" %>
 <%@ page import="org.oscarehr.common.dao.ProviderDataDao" %>
 <%@ page import="org.oscarehr.common.model.ProviderData" %>
 <%@ page import="org.oscarehr.common.Gender" %>
+<%@ page import="ca.openosp.openo.provider.data.ProviderBillCenter" %>
 <%
     String curProvider_no = (String) session.getAttribute("user");
     //display the main provider page

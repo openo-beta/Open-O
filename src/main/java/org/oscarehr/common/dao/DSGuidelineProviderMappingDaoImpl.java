@@ -30,7 +30,7 @@ package org.oscarehr.common.dao;
 import java.util.List;
 import javax.persistence.Query;
 
-import org.oscarehr.decisionSupport.model.DSGuidelineProviderMapping;
+import ca.openosp.openo.decisionSupport.model.DSGuidelineProviderMapping;
 import org.springframework.stereotype.Repository;
 
 @Repository

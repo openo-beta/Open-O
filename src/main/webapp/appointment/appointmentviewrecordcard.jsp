@@ -41,7 +41,7 @@
 %>
 
 <%@ page import="java.sql.*, java.util.*, oscar.MyDateFormat, org.oscarehr.common.OtherIdManager" %>
-<%@ page import="org.oscarehr.event.EventService, org.oscarehr.util.SpringUtils" %>
+<%@ page import="ca.openosp.openo.event.EventService, org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="org.oscarehr.common.model.Appointment" %>

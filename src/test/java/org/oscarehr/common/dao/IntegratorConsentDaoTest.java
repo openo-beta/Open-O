@@ -36,7 +36,7 @@ import org.oscarehr.common.model.IntegratorConsent;
 import org.oscarehr.common.model.IntegratorConsent.ConsentStatus;
 import org.oscarehr.common.model.IntegratorConsent.SignatureStatus;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 public class IntegratorConsentDaoTest extends DaoTestFixtures {
 

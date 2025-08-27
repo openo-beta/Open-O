@@ -29,7 +29,7 @@ package org.oscarehr.common.dao;
 
 import java.util.List;
 
-import org.oscarehr.decisionSupport.model.DSGuideline;
+import ca.openosp.openo.decisionSupport.model.DSGuideline;
 
 public interface DSGuidelineDao extends AbstractDao<DSGuideline> {
     DSGuideline findByUUID(String uuid);

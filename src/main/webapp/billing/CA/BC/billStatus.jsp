@@ -45,7 +45,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.ReportProviderDao" %>
 <%@page import="org.oscarehr.common.model.ReportProvider" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
@@ -102,8 +102,9 @@
 </security:oscarSec>
 
 
-<%@page import="org.oscarehr.util.MiscUtils" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.bc.MSP.MSPReconcile" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@ page import="ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile" %>
+<%@ page import="ca.openosp.openo.util.DateUtils" %>
 <!DOCTYPE HTML>
 <html>
 <head>

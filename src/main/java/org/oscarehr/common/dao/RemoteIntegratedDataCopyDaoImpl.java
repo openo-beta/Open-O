@@ -34,8 +34,8 @@ import javax.persistence.Query;
 
 import org.apache.commons.net.util.Base64;
 import org.oscarehr.common.model.RemoteIntegratedDataCopy;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.ObjectMarshalUtil;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.ObjectMarshalUtil;
 import org.springframework.stereotype.Repository;
 
 @Repository

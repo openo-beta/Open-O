@@ -105,7 +105,7 @@ public abstract class BaseRestServiceTest {
     protected static Cookie session;
     protected static String mediaType = MediaType.APPLICATION_XML;
 
-    private static Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
 
     /**
      * Initializes base restful settings.

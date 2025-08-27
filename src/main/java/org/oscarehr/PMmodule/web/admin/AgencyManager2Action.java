@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.oscarehr.PMmodule.model.Agency;
 import org.oscarehr.PMmodule.service.AgencyManager;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import ca.openosp.openo.log.LogAction;
 

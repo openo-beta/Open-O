@@ -33,7 +33,7 @@ import javax.xml.ws.handler.MessageContext;
 
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Security;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 
 public abstract class AbstractWs {

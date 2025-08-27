@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.SortedSet;
 
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.EncounterUtil.EncounterType;
+import org.oscarehr.utility.EncounterUtil.EncounterType;
 
 public interface PopulationReportDao {
     public static final int LOW = 0;

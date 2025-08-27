@@ -24,7 +24,7 @@
 
 package org.oscarehr.common.model;
 
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.MiscUtils;
 
 import java.io.Serializable;
 import java.util.Comparator;

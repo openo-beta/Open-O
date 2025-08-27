@@ -33,6 +33,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import ca.openosp.openo.lab.ca.all.upload.HandlerClassFactory;
+import ca.openosp.openo.lab.ca.all.upload.handlers.MessageHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.impl.cookie.DateUtils;
 import org.apache.logging.log4j.Logger;
@@ -44,13 +46,13 @@ import org.oscarehr.olis.dao.OLISProviderPreferencesDao;
 import org.oscarehr.olis.dao.OLISSystemPreferencesDao;
 import org.oscarehr.olis.model.OLISProviderPreferences;
 import org.oscarehr.olis.model.OLISSystemPreferences;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
 import oscar.OscarProperties;
-import oscar.oscarLab.FileUploadCheck;
-import oscar.oscarLab.ca.all.util.Utilities;
+import ca.openosp.openo.lab.FileUploadCheck;
+import ca.openosp.openo.lab.ca.all.util.Utilities;
 
 import ca.openosp.openo.olis.Driver;
 import ca.openosp.openo.olis.parameters.OBR22;
@@ -325,7 +327,7 @@ public class OLISPollingUtil {
         String fileLocation = Utilities.saveFile(new ByteArrayInputStream(responseContent.getBytes("UTF-8")), hl7Filename);
         logger.debug(fileLocation);
         File file = new File(fileLocation);
-        oscar.oscarLab.ca.all.upload.handlers.MessageHandler msgHandler = oscar.oscarLab.ca.all.upload.HandlerClassFactory.getHandler("OLIS_HL7");
+        MessageHandler msgHandler = HandlerClassFactory.getHandler("OLIS_HL7");
         try {
             InputStream is = new FileInputStream(fileLocation);
             int check = FileUploadCheck.addFile(file.getName(), is, "0");

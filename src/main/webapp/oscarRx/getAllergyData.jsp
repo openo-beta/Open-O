@@ -27,12 +27,15 @@
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%@page import="org.oscarehr.common.model.Allergy" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.RemoteDrugAllergyHelper" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page import="java.util.*,net.sf.json.*,java.lang.reflect.*,java.io.*,org.apache.xmlrpc.*,oscar.oscarRx.util.*,oscar.oscarRx.data.*" %>
 <%@ page import="org.oscarehr.common.dao.SystemPreferencesDao" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.SystemPreferences" %>
+<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.rx.data.RxDrugData" %>
+<%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -59,7 +62,7 @@
     if (disabled.equals("false")) {
 
 
-        oscar.oscarRx.pageUtil.RxSessionBean rxSessionBean = (oscar.oscarRx.pageUtil.RxSessionBean) session.getAttribute("RxSessionBean");
+        RxSessionBean rxSessionBean = (RxSessionBean) session.getAttribute("RxSessionBean");
         Allergy[] allergies = RxPatientData.getPatient(loggedInInfo, rxSessionBean.getDemographicNo()).getActiveAllergies();
 
         if (loggedInInfo.getCurrentFacility().isIntegratorEnabled()) {

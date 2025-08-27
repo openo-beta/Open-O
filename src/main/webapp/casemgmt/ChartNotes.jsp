@@ -24,13 +24,13 @@
 
 --%>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="oscar.Misc" %>
-<%@page import="oscar.util.UtilMisc" %>
+<%@page import="ca.openosp.openo.util.UtilMisc" %>
 <%@include file="/casemgmt/taglibs.jsp" %>
 <%@taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@page import="java.util.Enumeration" %>
-<%@page import="oscar.oscarEncounter.pageUtil.NavBarDisplayDAO" %>
+<%@page import="ca.openosp.openo.encounter.pageUtil.NavBarDisplayDAO" %>
 <%@page import="java.util.Arrays,java.util.Properties,java.util.List,java.util.Set,java.util.ArrayList,java.util.Enumeration,java.util.HashSet,java.util.Iterator,java.text.SimpleDateFormat,java.util.Calendar,java.util.Date,java.text.ParseException" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="org.oscarehr.common.model.UserProperty,org.oscarehr.casemgmt.model.*,org.oscarehr.casemgmt.service.* " %>
@@ -38,32 +38,34 @@
 <%@page import="org.oscarehr.PMmodule.model.*" %>
 <%@page import="org.oscarehr.common.model.*" %>
 <%@page import="org.oscarehr.common.dao.EFormDao" %>
-<%@page import="oscar.util.DateUtils" %>
-<%@page import="org.oscarehr.documentManager.EDocUtil" %>
+<%@page import="ca.openosp.openo.util.DateUtils" %>
+<%@page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@page import="org.springframework.web.context.WebApplicationContext" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
-<%@page import="org.oscarehr.casemgmt.common.Colour" %>
-<%@page import="org.oscarehr.documentManager.EDoc" %>
+<%@page import="ca.openosp.openo.casemgmt.common.Colour" %>
+<%@page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="com.quatro.dao.security.*,ca.openosp.openo.model.security.Secrole" %>
-<%@page import="org.oscarehr.util.EncounterUtil" %>
+<%@page import="org.oscarehr.utility.EncounterUtil" %>
 <%@page import="org.apache.cxf.common.i18n.UncheckedException" %>
-<%@page import="org.oscarehr.casemgmt.web.NoteDisplay" %>
-<%@page import="org.oscarehr.casemgmt.web.CaseManagementViewAction" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="oscar.oscarRx.data.RxPrescriptionData" %>
-<%@page import="org.oscarehr.casemgmt.dao.CaseManagementNoteLinkDAO" %>
+<%@page import="ca.openosp.openo.casemgmt.web.NoteDisplay" %>
+<%@page import="ca.openosp.openo.casemgmt.web.CaseManagementViewAction" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
+<%@page import="ca.openosp.openo.casemgmt.dao.CaseManagementNoteLinkDAO" %>
 <%@page import="oscar.OscarProperties" %>
-<%@page import="org.oscarehr.util.MiscUtils" %>
+<%@page import="org.oscarehr.utility.MiscUtils" %>
 <%@page import="org.oscarehr.PMmodule.model.Program" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProgramDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
-<%@page import="oscar.util.UtilDateUtilities" %>
-<%@page import="org.oscarehr.casemgmt.web.NoteDisplayNonNote" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@page import="ca.openosp.openo.casemgmt.web.NoteDisplayNonNote" %>
 <%@page import="org.oscarehr.common.dao.EncounterTemplateDao" %>
-<%@page import="org.oscarehr.casemgmt.web.CheckBoxBean" %>
-<%@page import="org.oscarehr.managers.ProgramManager2" %>
-<%@ page import="org.oscarehr.managers.DemographicManager" %>
+<%@page import="ca.openosp.openo.casemgmt.web.CheckBoxBean" %>
+<%@page import="ca.openosp.openo.managers.ProgramManager2" %>
+<%@ page import="ca.openosp.openo.managers.DemographicManager" %>
+<%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
+<%@ page import="ca.openosp.openo.casemgmt.web.formbeans.CaseManagementEntryFormBean" %>
 
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 
@@ -122,9 +124,9 @@
         }
 
         String demographicNo = request.getParameter("demographicNo");
-        oscar.oscarEncounter.pageUtil.EctSessionBean bean = null;
+        EctSessionBean bean = null;
         String strBeanName = "casemgmt_oscar_bean" + demographicNo;
-        if ((bean = (oscar.oscarEncounter.pageUtil.EctSessionBean) request.getSession().getAttribute(strBeanName)) == null) {
+        if ((bean = (EctSessionBean) request.getSession().getAttribute(strBeanName)) == null) {
             response.sendRedirect("error.jsp");
             return;
         }
@@ -528,7 +530,7 @@
 
         String apptDate = request.getParameter("appointmentDate");
         if (apptDate == null || apptDate.equals("") || apptDate.equals("null")) {
-            apptDate = oscar.util.UtilDateUtilities.getToday("yyyy-MM-dd");
+            apptDate = UtilDateUtilities.getToday("yyyy-MM-dd");
         }
 
         String startTime = request.getParameter("start_time");

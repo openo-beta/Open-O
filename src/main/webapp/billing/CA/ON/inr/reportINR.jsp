@@ -24,12 +24,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="java.util.*, java.sql.*, java.net.*" %>
 <%@ include file="../../../../admin/dbconnection.jsp" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="org.oscarehr.common.model.Provider" %>
 <%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@ page import="org.oscarehr.billing.CA.model.BillingInr" %>
-<%@ page import="org.oscarehr.billing.CA.dao.BillingInrDao" %>
-<%@ page import="oscar.util.ConversionUtils" %>
+<%@ page import="ca.openosp.openo.billing.CA.model.BillingInr" %>
+<%@ page import="ca.openosp.openo.billing.CA.dao.BillingInrDao" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
     BillingInrDao billingInrDao = SpringUtils.getBean(BillingInrDao.class);
@@ -38,7 +38,7 @@
 
 <jsp:useBean id="SxmlMisc" class="oscar.SxmlMisc" scope="session"/>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.ClinicLocationDao" %>
 <%@page import="org.oscarehr.common.model.ClinicLocation" %>
 <%

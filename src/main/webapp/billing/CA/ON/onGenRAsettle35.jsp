@@ -22,14 +22,14 @@
          errorPage="/errorpage.jsp" %>
 <%@ page import="oscar.oscarBilling.ca.on.pageUtil.*" %>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.RaHeader" %>
 <%@page import="org.oscarehr.common.dao.RaHeaderDao" %>
 <%@page import="org.oscarehr.common.model.RaDetail" %>
 <%@page import="org.oscarehr.common.dao.RaDetailDao" %>
 <%@page import="org.oscarehr.common.model.Billing" %>
 <%@page import="org.oscarehr.common.dao.BillingDao" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.pageUtil.BillingRAPrep" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingRAPrep" %>
 <%
     RaHeaderDao dao = SpringUtils.getBean(RaHeaderDao.class);
     BillingDao billingDao = SpringUtils.getBean(BillingDao.class);

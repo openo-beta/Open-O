@@ -25,7 +25,7 @@
 package org.oscarehr.ws.rest.conversion;
 
 import org.oscarehr.common.model.PharmacyInfo;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.PharmacyInfoTo1;
 
 public class PharmacyInfoConverter extends AbstractConverter<PharmacyInfo, PharmacyInfoTo1> {

@@ -25,7 +25,7 @@
 --%>
 <%@page import="java.text.SimpleDateFormat" %>
 <%@page import="java.util.Date" %>
-<%@page import="org.oscarehr.managers.LookupListManager" %>
+<%@page import="ca.openosp.openo.managers.LookupListManager" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
@@ -41,8 +41,8 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.util.SessionConstants" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.SessionConstants" %>
 <%
     String curUser_no = (String) session.getAttribute("user");
     String str = null;
@@ -54,10 +54,10 @@
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page
-        import="java.util.*, oscar.*, ca.openosp.openo.oscarDemographic.data.ProvinceNames, ca.openosp.openo.oscarDemographic.pageUtil.Util, oscar.oscarWaitingList.WaitingList" %>
+        import="java.util.*, oscar.*, ca.openosp.openo.demographic.data.ProvinceNames, ca.openosp.openo.demographic.pageUtil.Util, ca.openosp.openo.waitinglist.WaitingList" %>
 <%@ page
         import="org.oscarehr.common.dao.*,org.oscarehr.common.model.*" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.model.ProfessionalSpecialist" %>
 <%@page import="org.oscarehr.common.dao.ProfessionalSpecialistDao" %>
 <%@page import="org.oscarehr.common.model.Provider" %>
@@ -70,14 +70,14 @@
 <%@page import="org.oscarehr.common.dao.EFormDao" %>
 <%@page import="org.oscarehr.PMmodule.dao.ProgramDao" %>
 <%@page import="org.oscarehr.common.model.Facility" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="oscar.OscarProperties" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.managers.ProgramManager2" %>
+<%@page import="ca.openosp.openo.managers.ProgramManager2" %>
 <%@page import="org.oscarehr.PMmodule.model.ProgramProvider" %>
 
-<%@page import="org.oscarehr.managers.PatientConsentManager" %>
+<%@page import="ca.openosp.openo.managers.PatientConsentManager" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <jsp:useBean id="apptMainBean" class="oscar.AppointmentMainBean" scope="session"/>

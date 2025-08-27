@@ -27,6 +27,9 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 
 import ca.ontario.health.hcv.*;
+import ca.openosp.openo.integration.mchcv.HCValidationFactory;
+import ca.openosp.openo.integration.mchcv.HCValidationResult;
+import ca.openosp.openo.integration.mchcv.HCValidator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;

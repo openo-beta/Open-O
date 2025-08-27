@@ -28,7 +28,7 @@
 <%@page import="org.oscarehr.common.model.Property" %>
 <%@page import="org.oscarehr.provider.model.PreventionManager" %>
 <%@page import="org.oscarehr.common.dao.PropertyDao" %>
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="oscar.OscarProperties" %>
 
 <%@page import="java.util.ArrayList" %>
@@ -37,6 +37,7 @@
 <%@page import="java.util.regex.Pattern" %>
 <%@page import="java.util.regex.*" %>
 <%@page import="java.util.*" %>
+<%@ page import="ca.openosp.openo.prevention.PreventionDisplayConfig" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -111,7 +112,7 @@
         ArrayList<HashMap<String, String>> prevList = pdc.getPreventions();
 
 //TODO the rest of this code should be moved into an Action Class and handled by the PreventionManager
-        org.oscarehr.managers.PreventionManager preventionManager = SpringUtils.getBean(org.oscarehr.managers.PreventionManager.class);
+        ca.openosp.openo.managers.PreventionManager preventionManager = SpringUtils.getBean(ca.openosp.openo.managers.PreventionManager.class);
 
         PropertyDao propDao = (PropertyDao) SpringUtils.getBean(PropertyDao.class);
         List<Property> pList = propDao.findByName(vProp);

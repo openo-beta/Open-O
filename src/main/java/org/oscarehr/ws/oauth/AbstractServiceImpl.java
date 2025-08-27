@@ -35,7 +35,7 @@ import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.oscarehr.common.model.Provider;
-import org.oscarehr.util.LoggedInInfo;
+import org.oscarehr.utility.LoggedInInfo;
 
 import com.github.scribejava.core.model.OAuth1AccessToken;
 

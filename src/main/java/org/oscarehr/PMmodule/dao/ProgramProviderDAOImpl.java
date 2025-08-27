@@ -31,8 +31,8 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.model.ProgramProvider;
 import org.oscarehr.common.model.Facility;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.QueueCache;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.QueueCache;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 

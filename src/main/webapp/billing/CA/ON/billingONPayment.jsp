@@ -28,7 +28,7 @@
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<%@page import="org.oscarehr.util.SpringUtils,org.oscarehr.util.LocaleUtils,org.oscarehr.util.MiscUtils, oscar.util.DateUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils,org.oscarehr.utility.LocaleUtils,org.oscarehr.utility.MiscUtils, ca.openosp.openo.util.DateUtils" %>
 <%@page import="org.oscarehr.common.model.Demographic, org.oscarehr.common.model.BillingONItem, org.oscarehr.common.model.BillingOnItemPayment, org.oscarehr.common.model.RaDetail" %>
 <%@page import="java.util.Locale, java.math.BigDecimal, java.util.Calendar,java.util.List,java.util.ArrayList, java.util.HashMap, java.util.Map, java.util.Date" %>
 <%@page import="java.text.ParseException" %>

@@ -31,7 +31,7 @@
 <%@ page import="java.util.*, java.sql.*, oscar.*,java.net.*"
          errorPage="../errorpage.jsp" %>
 
-<%@page import="org.oscarehr.util.SpringUtils" %>
+<%@page import="org.oscarehr.utility.SpringUtils" %>
 <%@page import="org.oscarehr.common.dao.DemographicAccessoryDao" %>
 <%@page import="org.oscarehr.common.model.DemographicAccessory" %>
 <%@page import="org.oscarehr.common.dao.DemographicDao" %>

@@ -39,7 +39,7 @@
 <%@ page import="java.io.*, java.sql.*, oscar.*, oscar.util.*, java.util.*" errorPage="/errorpage.jsp" %>
 <%@ page import="oscar.oscarBilling.ca.on.pageUtil.*" %>
 <%@ page import="oscar.oscarBilling.ca.on.data.*" %>
-<%@ page import="ca.openosp.openo.oscarBilling.ca.on.data.JdbcBillingRAImpl" %>
+<%@ page import="ca.openosp.openo.billings.ca.on.data.JdbcBillingRAImpl" %>
 <jsp:useBean id="documentBean" class="oscar.DocumentBean" scope="request"/>
 
 <%

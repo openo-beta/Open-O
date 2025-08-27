@@ -29,27 +29,24 @@ import java.sql.Date;
 import java.util.Calendar;
 import java.util.HashSet;
 
-import org.hl7.fhir.dstu3.model.Attachment;
+import ca.openosp.openo.integration.fhir.builder.FhirBundleBuilder;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import org.oscarehr.common.model.Clinic;
 import org.oscarehr.common.model.Demographic;
 import org.oscarehr.common.model.Prevention;
 import org.oscarehr.common.model.Provider;
 import org.oscarehr.common.model.Security;
-import org.oscarehr.integration.fhir.manager.OscarFhirConfigurationManager;
-import org.oscarehr.integration.fhir.model.ClinicalImpression;
-import org.oscarehr.integration.fhir.model.Immunization;
-import org.oscarehr.integration.fhir.model.AbstractOscarFhirResource;
-import org.oscarehr.integration.fhir.model.Patient;
-import org.oscarehr.integration.fhir.model.PerformingPractitioner;
-import org.oscarehr.integration.fhir.model.Practitioner;
-import org.oscarehr.integration.fhir.model.SubmittingPractitioner;
-import org.oscarehr.integration.fhir.resources.Settings;
-import org.oscarehr.integration.fhir.resources.constants.FhirDestination;
-import org.oscarehr.integration.fhir.resources.constants.Region;
-import org.oscarehr.util.LoggedInInfo;
+import ca.openosp.openo.integration.fhir.manager.OscarFhirConfigurationManager;
+import ca.openosp.openo.integration.fhir.model.Immunization;
+import ca.openosp.openo.integration.fhir.model.AbstractOscarFhirResource;
+import ca.openosp.openo.integration.fhir.model.Patient;
+import ca.openosp.openo.integration.fhir.model.PerformingPractitioner;
+import ca.openosp.openo.integration.fhir.model.SubmittingPractitioner;
+import ca.openosp.openo.integration.fhir.resources.Settings;
+import ca.openosp.openo.integration.fhir.resources.constants.FhirDestination;
+import ca.openosp.openo.integration.fhir.resources.constants.Region;
+import org.oscarehr.utility.LoggedInInfo;
 
 public class FhirMessageBuilderTest {
 

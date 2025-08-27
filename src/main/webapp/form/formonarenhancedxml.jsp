@@ -40,7 +40,7 @@
 %>
 
 <%@page import="org.oscarehr.integration.born.ONAREnhancedFormToXML" %>
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
 <%@ page trimDirectiveWhitespaces="true" %>
 
 <%

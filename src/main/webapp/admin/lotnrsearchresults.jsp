@@ -32,7 +32,7 @@
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ page import="org.oscarehr.common.model.PreventionsLotNrs" %>
 <%@ page import="org.oscarehr.common.dao.PreventionsLotNrsDao" %>
-<%@ page import="org.oscarehr.util.SpringUtils" %>
+<%@ page import="org.oscarehr.utility.SpringUtils" %>
 <%@ page import="java.util.*" %>
 <%@ page import="oscar.OscarProperties" %>
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>

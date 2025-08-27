@@ -40,11 +40,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.oscarehr.common.model.ProfessionalSpecialist;
-import org.oscarehr.util.DbConnectionFilter;
-import org.oscarehr.util.MiscUtils;
+import org.oscarehr.utility.DbConnectionFilter;
+import org.oscarehr.utility.MiscUtils;
 
 import oscar.OscarDocumentCreator;
-import oscar.util.ConcatPDF;
+import ca.openosp.openo.util.ConcatPDF;
 
 /**
  * Originally developed by Prylynx for SJHCG

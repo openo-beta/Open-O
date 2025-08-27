@@ -34,17 +34,17 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import org.oscarehr.common.dao.ProviderLabRoutingDao;
-import org.oscarehr.inbox.InboxManagerQuery;
-import org.oscarehr.inbox.InboxManagerResponse;
-import org.oscarehr.managers.InboxManager;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.SpringUtils;
+import ca.openosp.openo.inbox.InboxManagerQuery;
+import ca.openosp.openo.inbox.InboxManagerResponse;
+import ca.openosp.openo.managers.InboxManager;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.SpringUtils;
 import org.oscarehr.ws.rest.to.InboxResponse;
 import org.oscarehr.ws.rest.to.model.InboxTo1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import oscar.oscarLab.ca.on.LabResultData;
+import ca.openosp.openo.lab.ca.on.LabResultData;
 
 @Path("/inbox")
 @Component("inboxService")

@@ -24,8 +24,8 @@
  */
 package org.oscarehr.ws.rest.conversion;
 
-import org.oscarehr.managers.model.ServiceType;
-import org.oscarehr.util.LoggedInInfo;
+import ca.openosp.openo.managers.model.ServiceType;
+import org.oscarehr.utility.LoggedInInfo;
 import org.oscarehr.ws.rest.to.model.ServiceTypeTo;
 import org.springframework.beans.BeanUtils;
 

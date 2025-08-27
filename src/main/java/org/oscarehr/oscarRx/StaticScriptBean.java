@@ -37,20 +37,20 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
-import org.oscarehr.caisi_integrator.ws.CachedDemographicDrug;
-import org.oscarehr.caisi_integrator.ws.CachedFacility;
-import org.oscarehr.caisi_integrator.ws.CachedProvider;
-import org.oscarehr.caisi_integrator.ws.FacilityIdStringCompositePk;
+import ca.openosp.openo.caisi_integrator.ws.CachedDemographicDrug;
+import ca.openosp.openo.caisi_integrator.ws.CachedFacility;
+import ca.openosp.openo.caisi_integrator.ws.CachedProvider;
+import ca.openosp.openo.caisi_integrator.ws.FacilityIdStringCompositePk;
 import org.oscarehr.common.dao.DrugDao;
 import org.oscarehr.common.model.Drug;
-import org.oscarehr.util.LoggedInInfo;
-import org.oscarehr.util.MiscUtils;
-import org.oscarehr.util.SpringUtils;
+import org.oscarehr.utility.LoggedInInfo;
+import org.oscarehr.utility.MiscUtils;
+import org.oscarehr.utility.SpringUtils;
 
-import oscar.oscarRx.data.RxPrescriptionData;
-import oscar.oscarRx.data.RxProviderData;
-import oscar.oscarRx.util.RxUtil;
-import oscar.util.DateUtils;
+import ca.openosp.openo.rx.data.RxPrescriptionData;
+import ca.openosp.openo.rx.data.RxProviderData;
+import ca.openosp.openo.rx.util.RxUtil;
+import ca.openosp.openo.util.DateUtils;
 
 public class StaticScriptBean {
     private static final Logger logger = MiscUtils.getLogger();

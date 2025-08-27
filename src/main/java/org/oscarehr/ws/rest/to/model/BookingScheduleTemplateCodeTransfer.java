@@ -26,7 +26,7 @@ package org.oscarehr.ws.rest.to.model;
 
 import java.util.Arrays;
 
-import org.oscarehr.appointment.search.SearchConfig;
+import ca.openosp.openo.appointment.search.SearchConfig;
 
 public class BookingScheduleTemplateCodeTransfer {
 

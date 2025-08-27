@@ -38,9 +38,9 @@
     }
 %>
 
-<%@page import="org.oscarehr.util.LoggedInInfo" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.CachedProvider" %>
-<%@page import="org.oscarehr.caisi_integrator.ws.FacilityIdStringCompositePk" %>
+<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.CachedProvider" %>
+<%@page import="ca.openosp.openo.caisi_integrator.ws.FacilityIdStringCompositePk" %>
 <%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
 <%@page contentType="text/html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -48,7 +48,7 @@
 <%@taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page
-        import="org.oscarehr.casemgmt.model.*, org.oscarehr.common.dao.DemographicDao, org.oscarehr.util.SpringUtils, org.oscarehr.common.model.Demographic" %>
+        import="org.oscarehr.casemgmt.model.*, org.oscarehr.common.dao.DemographicDao, org.oscarehr.utility.SpringUtils, org.oscarehr.common.model.Demographic" %>
 
 
 <%
