@@ -725,14 +725,15 @@
                         // Transform the data to the format expected by jQuery UI autocomplete
                         var transformedData = $.map(data, function(item) {
                             return {
-                                label: item.description + ' (' + item.code + ')',
-                                value: item.description,
+                                label: item.description.trim() + ' (' + item.code + ')',
+                                value: item.description.trim(),
                                 id: item.id
                             };
                         });
                         response(transformedData);
                     })
                     .fail(function(xhr, status, error) {
+                        console.error("Autocomplete request failed:", status, error);
                         response([]);
                     });
             },
