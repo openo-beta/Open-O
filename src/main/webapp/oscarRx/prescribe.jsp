@@ -32,6 +32,7 @@
 <%@page import="oscar.oscarRx.data.*" %>
 <%@page import="oscar.oscarRx.util.*" %>
 <%@page import="oscar.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -89,7 +90,7 @@
             String eTreatmentType = rx.getETreatmentType() != null ? rx.getETreatmentType() : "";
             String rxStatus = rx.getRxStatus() != null ? rx.getRxStatus() : "";
             String protocol = rx.getProtocol() != null ? rx.getProtocol() : "";
-		/*  Field not required. Commented out because it may be reactivated in the future. 
+		/*  Field not required. Commented out because it may be reactivated in the future.
          String priorRxProtocol	= rx.getPriorRxProtocol()!=null ? rx.getPriorRxProtocol() : "";
          */
             String drugForm = rx.getDrugForm();
@@ -172,25 +173,24 @@
             drugName = drugName.replace("\"", "\\\"");
             byte[] drugNameBytes = drugName.getBytes("ISO-8859-1");
             drugName = new String(drugNameBytes, "UTF-8");
-
+                String fieldSetId = "set_" + rand;
 %>
 
-<fieldset style="margin-top:2px;width:640px;" id="set_<%=rand%>">
+<fieldset style="margin-top:2px;width:640px;" id="<%=Encode.forHtmlAttribute(fieldSetId)%>">
     <a tabindex="-1" href="javascript:void(0);" style="float:right;margin-left:5px;margin-top:0px;padding-top:0px;"
-       onclick="$('set_<%=rand%>').remove();deletePrescribe('<%=rand%>');removeReRxDrugId('<%=DrugReferenceId%>')"><img
+       onclick="$('set_<%=Encode.forJavaScriptAttribute(rand)%>').remove();deletePrescribe('<%=Encode.forJavaScriptAttribute(rand)%>');removeReRxDrugId('<%=Encode.forJavaScriptAttribute(Integer.toString(DrugReferenceId))%>')"><img
             src='<c:out value="${ctx}/images/close.png"/>' border="0"></a>
     <a tabindex="-1" href="javascript:void(0);" style="float:right;;margin-left:5px;margin-top:0px;padding-top:0px;"
-       title="Add to Favorites" onclick="addFav('<%=rand%>','<%=drugName%>')">F</a>
+       title="Add to Favorites" onclick="addFav('<%=Encode.forJavaScriptAttribute(rand)%>','<%=Encode.forJavaScriptAttribute(drugName)%>')">F</a>
     <a tabindex="-1" href="javascript:void(0);" style="float:right;margin-top:0px;padding-top:0px;"
-       onclick="$('rx_more_<%=rand%>').toggle();"> <span id="moreLessWord_<%=rand%>"
+       onclick="$('rx_more_<%=Encode.forJavaScriptAttribute(rand)%>').toggle();"> <span id="moreLessWord_<%=Encode.forHtmlAttribute(rand)%>"
                                                          onclick="updateMoreLess(id)">more</span> </a>
-
-    <label style="float:left;width:80px;" title="<%=ATC%>">Name:</label>
-    <input type="hidden" name="atcCode" value="<%=ATCcode%>"/>
-    <input tabindex="-1" type="text" id="drugName_<%=rand%>" name="drugName_<%=rand%>" size="30" <%if (gcn == 0) {%>
-           onkeyup="saveCustomName(this);" value="<%=drugName%>"<%} else {%> value='<%=drugName%>'
-           onchange="changeDrugName('<%=rand%>','<%=drugName%>');" <%}%> TITLE="<%=drugName%>"/>&nbsp;<span
-        id="inactive_<%=rand%>" style="color:red;"></span>
+    <label style="float:left;width:80px;" title="<%=Encode.forHtmlAttribute(ATC)%>">Name:</label>
+    <input type="hidden" name="atcCode" value="<%=Encode.forHtmlAttribute(ATCcode)%>"/>
+    <input tabindex="-1" type="text" id="drugName_<%=Encode.forHtmlAttribute(rand)%>" name="drugName_<%=Encode.forHtmlAttribute(rand)%>" size="30" <%if (gcn == 0) {%>
+           onkeyup="saveCustomName(this);" value="<%=Encode.forHtmlAttribute(drugName)%>"<%} else {%> value='<%=Encode.forHtmlAttribute(drugName)%>'
+           onchange="changeDrugName('<%=Encode.forJavaScriptAttribute(rand)%>','<%=Encode.forJavaScriptAttribute(drugName)%>');" <%}%> TITLE="<%=Encode.forHtmlAttribute(drugName)%>"/>&nbsp;<span
+        id="inactive_<%=Encode.forHtmlAttribute(rand)%>" style="color:red;"></span>
 
     <!-- Allergy Alert Table-->
 
@@ -224,61 +224,61 @@
 
     <a tabindex="-1" href="javascript:void(0);" onclick="showHideSpecInst('siAutoComplete_<%=rand%>')"
        style="float:left;width:80px;">Instructions:</a>
-    <input type="text" id="instructions_<%=rand%>" name="instructions_<%=rand%>" onkeypress="handleEnter(this,event);"
-           value="<%=instructions%>" size="60" onchange="parseIntr(this);"/><a href="javascript:void(0);" tabindex="-1"
-                                                                               onclick="displayMedHistory('<%=rand%>');"
+    <input type="text" id="instructions_<%=Encode.forHtmlAttribute(rand)%>" name="instructions_<%=Encode.forHtmlAttribute(rand)%>" onkeypress="handleEnter(this,event);"
+           value="<%=Encode.forHtmlAttribute(instructions)%>" size="60" onchange="parseIntr(this);"/><a href="javascript:void(0);" tabindex="-1"
+                                                                               onclick="displayMedHistory('<%=Encode.forJavaScriptAttribute(rand)%>');"
                                                                                style="color:red;font-size:13pt;vertical-align:super;text-decoration:none"
                                                                                TITLE="Instruction Examples"><b>*</b></a>
-    <a href="javascript:void(0);" tabindex="-1" onclick="displayInstructions('<%=rand%>');"><img
+    <a href="javascript:void(0);" tabindex="-1" onclick="displayInstructions('<%=Encode.forJavaScriptAttribute(rand)%>');"><img
             src="<c:out value="${ctx}/images/icon_help_sml.gif"/>" border="0" TITLE="Instructions Field Reference"></a>
-    <span id="major_<%=rand%>" style="display:none;background-color:red"></span>&nbsp;<span id="moderate_<%=rand%>"
+    <span id="major_<%=Encode.forHtmlAttribute(rand)%>" style="display:none;background-color:red"></span>&nbsp;<span id="moderate_<%=Encode.forHtmlAttribute(rand)%>"
                                                                                             style="display:none;background-color:orange"></span>&nbsp;<span
-        id='minor_<%=rand%>' style="display:none;background-color:yellow;"></span>&nbsp;<span id='unknown_<%=rand%>'
+        id='minor_<%=Encode.forHtmlAttribute(rand)%>' style="display:none;background-color:yellow;"></span>&nbsp;<span id='unknown_<%=Encode.forHtmlAttribute(rand)%>'
                                                                                               style="display:none;background-color:#B1FB17"></span>
     <br>
-    <label for="siInput_<%=rand%>"></label>
-    <div id="siAutoComplete_<%=rand%>" <%if (isSpecInstPresent) {%> style="overflow:visible;"<%} else {%>
+    <label for="siInput_<%=Encode.forHtmlAttribute(rand)%>"></label>
+    <div id="siAutoComplete_<%=Encode.forHtmlAttribute(rand)%>" <%if (isSpecInstPresent) {%> style="overflow:visible;"<%} else {%>
          style="overflow:visible;display:none;"<%}%> >
-        <label style="float:left;width:80px;">&nbsp;&nbsp;</label><input id="siInput_<%=rand%>" type="text" size="60"
+        <label style="float:left;width:80px;">&nbsp;&nbsp;</label><input id="siInput_<%=Encode.forHtmlAttribute(rand)%>" type="text" size="60"
                                                                          <%if(!isSpecInstPresent) {%>style="color:gray; width:auto"
                                                                          value="Enter Special Instruction" <%} else {%>
                                                                          style="color:black; width:auto"
-                                                                         value="<%=specialInstruction%>" <%}%>
-                                                                         onblur="changeText('siInput_<%=rand%>');updateSpecialInstruction('siInput_<%=rand%>');"
-                                                                         onfocus="changeText('siInput_<%=rand%>');">
-        <div id="siContainer_<%=rand%>" style="float:right">
+                                                                         value="<%=Encode.forHtmlAttribute(specialInstruction)%>" <%}%>
+                                                                         onblur="changeText('siInput_<%=Encode.forJavaScriptAttribute(rand)%>');updateSpecialInstruction('siInput_<%=Encode.forJavaScriptAttribute(rand)%>');"
+                                                                         onfocus="changeText('siInput_<%=Encode.forJavaScriptAttribute(rand)%>');">
+        <div id="siContainer_<%=Encode.forHtmlAttribute(rand)%>" style="float:right">
         </div>
         <br><br>
     </div>
     <div>
-        <label id="labelQuantity_<%=rand%>" style="float:left;width:80px;">Qty/Mitte:</label><input
-            size="8" <%if (rx.isCustomNote()) {%> disabled <%}%> type="text" id="quantity_<%=rand%>"
-            name="quantity_<%=rand%>" value="<%=quantityText%>" onblur="updateQty(this);"/>
-        <label style="">Repeats:</label><input type="text" size="5" id="repeats_<%=rand%>"  <%if (rx.isCustomNote()) {%>
-                                               disabled <%}%> name="repeats_<%=rand%>" value="<%=repeats%>"
-                                               onInput="updateLongTerm('<%=rand %>',this)"
+        <label id="labelQuantity_<%=Encode.forHtmlAttribute(rand)%>" style="float:left;width:80px;">Qty/Mitte:</label><input
+            size="8" <%if (rx.isCustomNote()) {%> disabled <%}%> type="text" id="quantity_<%=Encode.forHtmlAttribute(rand)%>"
+            name="quantity_<%=Encode.forHtmlAttribute(rand)%>" value="<%=Encode.forHtmlAttribute(quantityText)%>" onblur="updateQty(this);"/>
+        <label style="">Repeats:</label><input type="text" size="5" id="repeats_<%=Encode.forHtmlAttribute(rand)%>"  <%if (rx.isCustomNote()) {%>
+                                               disabled <%}%> name="repeats_<%=Encode.forHtmlAttribute(rand)%>" value="<%=Encode.forHtmlAttribute(repeats)%>"
+                                               onInput="updateLongTerm('<%=Encode.forJavaScriptAttribute(rand) %>',this)"
                                                onblur="updateProperty(this.id)"/>
     </div>
-    <div id="medTerm_<%=rand%>">
+    <div id="medTerm_<%=Encode.forHtmlAttribute(rand)%>">
         <label><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgLongTermMedication"/>: </label>
         <span>
-				<label for="longTermY_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgYes"/> </label>
-			  	<input type="radio" id="longTermY_<%=rand%>" name="longTerm_<%=rand%>" value="yes"
+				<label for="longTermY_<%=Encode.forHtmlAttribute(rand)%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgYes"/> </label>
+			  	<input type="radio" id="longTermY_<%=Encode.forHtmlAttribute(rand)%>" name="longTerm_<%=Encode.forHtmlAttribute(rand)%>" value="yes"
                        class="med-term" <%if (longTerm != null && longTerm) {%> checked="checked" <%}%>
-                       onChange="updateShortTerm('<%=rand%>',false)"/>
-			  	
-			  	<label for="longTermN_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgNo"/> </label>
-			  	<input type="radio" id="longTermN_<%=rand%>" name="longTerm_<%=rand%>" value="no"
+                       onChange="updateShortTerm('<%=Encode.forJavaScriptAttribute(rand)%>',false)"/>
+
+			  	<label for="longTermN_<%=Encode.forHtmlAttribute(rand)%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgNo"/> </label>
+			  	<input type="radio" id="longTermN_<%=Encode.forHtmlAttribute(rand)%>" name="longTerm_<%=Encode.forHtmlAttribute(rand)%>" value="no"
                        class="med-term" <%if (longTerm != null && !longTerm) {%> checked="checked" <%}%>
-                       onChange="updateShortTerm('<%=rand%>',true)"/>
-			  	
-			  	<label for="longTermE_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgUnset"/> </label>
-			  	<input type="radio" id="longTermE_<%=rand%>" name="longTerm_<%=rand%>" value="unset"
+                       onChange="updateShortTerm('<%=Encode.forJavaScriptAttribute(rand)%>',true)"/>
+
+			  	<label for="longTermE_<%=Encode.forHtmlAttribute(rand)%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgUnset"/> </label>
+			  	<input type="radio" id="longTermE_<%=Encode.forHtmlAttribute(rand)%>" name="longTerm_<%=Encode.forHtmlAttribute(rand)%>" value="unset"
                        class="med-term" <%if (longTerm == null) {%> checked="checked" <%}%>
-                       onChange="updateShortTerm('<%=rand%>',false)"/>
+                       onChange="updateShortTerm('<%=Encode.forJavaScriptAttribute(rand)%>',false)"/>
 				<div style="display:none">
-					<label for="shortTerm_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgSortTermMedication"/> </label>
-	        		<input type="checkbox" id="shortTerm_<%=rand%>" name="shortTerm_<%=rand%>"
+					<label for="shortTerm_<%=Encode.forHtmlAttribute(rand)%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgSortTermMedication"/> </label>
+	        		<input type="checkbox" id="shortTerm_<%=Encode.forHtmlAttribute(rand)%>" name="shortTerm_<%=Encode.forHtmlAttribute(rand)%>"
                            class="med-term" <%if (shortTerm) {%> checked="checked" <%}%> />
 	        	</div>
 	        </span>
@@ -379,15 +379,15 @@
             <label for="pastMedSelection" title="Medications taken at home that were previously ordered."><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgPastMedication"/></label>
 
             <span id="pastMedSelection">
-        	<label for="pastMedY_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgYes"/></label> 
+        	<label for="pastMedY_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgYes"/></label>
             <input type="radio" value="yes" name="pastMed_<%=rand%>"
                    id="pastMedY_<%=rand%>" <%if (pastMed != null && pastMed) {%> checked="checked" <%}%>  />
-            
-            <label for="pastMedN_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgNo"/></label> 
+
+            <label for="pastMedN_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgNo"/></label>
             <input type="radio" value="no" name="pastMed_<%=rand%>"
                    id="pastMedN_<%=rand%>" <%if (pastMed != null && !pastMed) {%> checked="checked" <%}%>  />
-            
-            <label for="pastMedE_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgUnknown"/></label> 
+
+            <label for="pastMedE_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgUnknown"/></label>
             <input type="radio" value="unset" name="pastMed_<%=rand%>"
                    id="pastMedE_<%=rand%>" <%if (pastMed == null) {%> checked="checked" <%}%>  />
          </span>
@@ -396,7 +396,7 @@
 
             <label for="patientCompliantSelection"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgPatientCompliance"/>:</label>
             <span id="patientCompliantSelection">
-         <label for="patientComplianceY_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgYes"/></label> 
+         <label for="patientComplianceY_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgYes"/></label>
             <input type="radio" value="yes" name="patientCompliance_<%=rand%>"
                    id="patientComplianceY_<%=rand%>" <%if (patientCompliance != null && patientCompliance) {%>
                    checked="checked" <%}%> />
@@ -405,7 +405,7 @@
             <input type="radio" value="no" name="patientCompliance_<%=rand%>"
                    id="patientComplianceN_<%=rand%>" <%if (patientCompliance != null && !patientCompliance) {%>
                    checked="checked" <%}%> />
-	
+
 		<label for="patientComplianceE_<%=rand%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="WriteScript.msgUnset"/></label>
             <input type="radio" value="unset" name="patientCompliance_<%=rand%>"
                    id="patientComplianceE_<%=rand%>" <%if (patientCompliance == null) {%> checked="checked" <%}%> />
@@ -754,8 +754,9 @@
 
         if (confirm('This drug was discontinued on <%=archivedDate%> because of <%=archivedReason%> are you sure you want to continue it?') == true) {
             //do nothing
-        } else {
-            $('set_<%=rand%>').remove();
+                    }
+                    else{
+                        $('#<%=fieldSetId%>').remove();
             //call java class to delete it from stash pool.
             var randId = '<%=rand%>';
             deletePrescribe(randId);
