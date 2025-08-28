@@ -69,7 +69,6 @@
 
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 
-
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
@@ -83,11 +82,8 @@
         return;
     }
 %>
-
-
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-
 
     String demoNo = request.getParameter("demographicNo");
     String privateConsentEnabledProperty = OscarProperties.getInstance().getProperty("privateConsentEnabled");
@@ -114,7 +110,6 @@
         }
     }
 
-
     try {
         Facility facility = loggedInInfo.getCurrentFacility();
 
@@ -132,16 +127,12 @@
         }
 
         String provNo = bean.providerNo;
-
         String dateFormat = "dd-MMM-yyyy H:mm";
-
         SimpleDateFormat jsfmt = new SimpleDateFormat("MMM dd, yyyy");
         Date dToday = new Date();
         String strToday = jsfmt.format(dToday);
-
         String frmName = "caseManagementEntryForm" + demographicNo;
         CaseManagementEntryFormBean cform = (CaseManagementEntryFormBean) session.getAttribute(frmName);
-
         if (request.getParameter("caseManagementEntryForm") == null) {
             request.setAttribute("caseManagementEntryForm", cform);
         }
@@ -198,7 +189,6 @@
 
 </script>
 <div id="topContent">
-
     <form name="caseManagementViewForm" action="${pageContext.request.contextPath}/CaseManagementView.do" method="post">
         <input type="hidden" name="demographicNo" value="<%=demographicNo%>"/>
         <input type="hidden" name="providerNo" value="<%=provNo%>"/>
@@ -722,8 +712,6 @@
 </form>
 
 <script type="text/javascript">
-
-
     /**
      * enable autocomplete for Issue search menus.
      */
