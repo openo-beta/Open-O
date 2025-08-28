@@ -2160,7 +2160,8 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
             search = request.getParameter("term");
         }
 
-        List<Issue> searchResults = caseManagementMgr.searchIssues(providerNo, programId, search);
+        // Use searchIssuesNoRolesConcerned to bypass program/role restrictions
+        List<Issue> searchResults = caseManagementMgr.searchIssuesNoRolesConcerned(providerNo, programId, search);
 
         // Don't remove issues which we already have. But don't insert duplicate issues when save the issues.
 //		List<CaseManagementIssue> existingIssues = new ArrayList<>();

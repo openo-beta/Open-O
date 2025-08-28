@@ -144,7 +144,15 @@
             request.setAttribute("caseManagementEntryForm", cform);
         }
 %>
-
+<script type="text/javascript" src="<c:out value="${ctx}/js/jquery-1.7.1.min.js"/>"></script>
+<script type="text/javascript" src="<c:out value="${ctx}/library/jquery/jquery-ui-1.12.1.min.js" />"></script>
+<script type="text/javascript">
+    jQuery.noConflict();
+</script>
+<link rel="stylesheet" type="text/css" href="<c:out value="${ctx}"/>/library/jquery/jquery-ui-1.12.1.min.css">
+<script src="<c:out value="${ctx}"/>/share/javascript/prototype.js" type="text/javascript"></script>
+<script src="<c:out value="${ctx}"/>/share/javascript/scriptaculous.js" type="text/javascript"></script>
+<script type="text/javascript" src="<c:out value="${ctx}/js/newCaseManagementView.js.jsp"/>"></script>
 <script type="text/javascript">
     ctx = "<c:out value="${ctx}"/>";
     imgPrintgreen.src = ctx + "/oscarEncounter/graphics/printerGreen.png"; //preload green print image so firefox will update properly
@@ -171,7 +179,6 @@
     requireObsDate = false;
     <% } %>
 
-
     strToday = "<%=strToday%>";
 
     notesIncrement = parseInt("<%=OscarProperties.getInstance().getProperty("num_loaded_notes", "20") %>");
@@ -184,7 +191,6 @@
     <% if( request.getAttribute("NoteLockError") != null ) { %>
     alert("<%=request.getAttribute("NoteLockError")%>");
     <%}%>
-
 </script>
 <div id="topContent">
 
@@ -715,39 +721,36 @@
 
     /**
      * enable autocomplete for Issue search menus.
-     * I don't know why Javascript is scattered all over either. Sorry.
      */
-    jQuery(".issueAutocomplete").autocomplete({
-        source: function (request, response) {
-            jQuery.ajax({
-                url: ctx + "/CaseManagementEntry.do",
-                dataType: "json",
-                data: {
-                    term: request.term,
-                    method: "issueList",
-                    demographicNo: demographicNo,
-                    providerNo: providerNo
-                },
-                success: function (data) {
-                    response(jQuery.map(data, function (item) {
-                        return {
-                            label: item.description.trim() + ' (' + item.code + ')',
-                            value: item.description.trim(),
-                            id: item.id
-                        };
-                    }))
-                }
-            });
-        },
-        delay: 100,
-        minLength: 3,
-        select: function (event, ui) {
-            // <input type="hidden" name="newIssueId" id="newIssueId"/>
-            // <input type="hidden" name="newIssueName" id="newIssueName"/>
-            document.getElementById("newIssueId").value = ui.item.id;
-            document.getElementById("newIssueName").value = ui.item.value;
-        }
-    })
+    jQuery(document).ready(function($) {
+        var autocompleteUrl = ctx + "/CaseManagementEntry.do?method=issueList&demographicNo=" + demographicNo + "&providerNo=" + providerNo;
+        
+        $(".issueAutocomplete").autocomplete({
+            source: function(request, response) {
+                $.get(autocompleteUrl + "&term=" + request.term)
+                    .done(function(data) {
+                        // Transform the data to the format expected by jQuery UI autocomplete
+                        var transformedData = $.map(data, function(item) {
+                            return {
+                                label: item.description + ' (' + item.code + ')',
+                                value: item.description,
+                                id: item.id
+                            };
+                        });
+                        response(transformedData);
+                    })
+                    .fail(function(xhr, status, error) {
+                        response([]);
+                    });
+            },
+            delay: 100,
+            minLength: 3,
+            select: function (event, ui) {
+                document.getElementById("newIssueId").value = ui.item.id;
+                document.getElementById("newIssueName").value = ui.item.value;
+            }
+        });
+    });
 </script>
 
 <%
