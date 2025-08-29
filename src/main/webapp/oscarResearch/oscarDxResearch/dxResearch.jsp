@@ -97,7 +97,7 @@
               href="${pageContext.servletContext.contextPath}/library/bootstrap/3.0.0/css/bootstrap.min.css"/>
         <link rel="stylesheet" type="text/css" media="all"
               href="${pageContext.servletContext.contextPath}/library/bootstrap/3.0.0/css/bootstrap-theme.min.css"/>
-        <link rel="stylesheet" type="text/css" href="dxResearch.css">
+        <link rel="stylesheet" type="text/css" href="${pageContext.servletContext.contextPath}/oscarResearch/oscarDxResearch/dxResearch.css">
 
         <script type="text/javascript">
             //<!--
