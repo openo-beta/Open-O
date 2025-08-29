@@ -1582,7 +1582,7 @@
                 + '\n\nAre you sure you wish to use this feature?') == true) {
 
                 //call another function to bring up prescribe.jsp
-                var url = '<c:out value="${ctx}"/>//oscarRx/WriteScript.do?parameterValue=normalDrugSetCustom';
+                var url = '<c:out value="${ctx}"/>/oscarRx/WriteScript.do?parameterValue=normalDrugSetCustom';
                 var customDrugName = $("drugName_" + randomId).getValue();
                 var data = "randomId=" + randomId + "&customDrugName=" + customDrugName;
                 new Ajax.Updater('rxText', url, {
@@ -1611,7 +1611,7 @@
         }
 
         function iterateStash() {
-            var url = '<c:out value="${ctx}"/>//oscarRx/WriteScript.do?parameterValue=iterateStash';
+            var url = '<c:out value="${ctx}"/>/oscarRx/WriteScript.do?parameterValue=iterateStash';
             var data = "rand=" + Math.floor(Math.random() * 10001);
             new Ajax.Updater('rxText', url, {
                 method: 'get', parameters: data, asynchronous: true, evalScripts: true,
@@ -1872,7 +1872,7 @@
                 + '\n  *  Drug Information'
                 + '\n\nAre you sure you wish to use this feature?') == true) {
                 var randomId = Math.round(Math.random() * 1000000);
-                var url = '<c:out value="${ctx}"/>//oscarRx/WriteScript.do?parameterValue=newCustomNote';
+                var url = '<c:out value="${ctx}"/>/oscarRx/WriteScript.do?parameterValue=newCustomNote';
                 var data = "randomId=" + randomId;
                 new Ajax.Updater('rxText', url, {
                     method: 'get',
@@ -1895,7 +1895,7 @@
                 //call another function to bring up prescribe.jsp
                 var randomId = Math.round(Math.random() * 1000000);
                 var searchString = $("searchString").value;
-                var url = '<c:out value="${ctx}"/>//oscarRx/WriteScript.do?parameterValue=newCustomDrug&name=' + searchString;
+                var url = '<c:out value="${ctx}"/>/oscarRx/WriteScript.do?parameterValue=newCustomDrug&name=' + searchString;
                 var data = "randomId=" + randomId;
                 new Ajax.Updater('rxText', url, {
                     method: 'get', parameters: data, asynchronous: true, evalScripts: true,
@@ -2031,7 +2031,7 @@
             //var myHiddenField = YAHOO.util.Dom.get("myHidden");
             var myHandler = function (type, args) {
                 var arr = args[2];
-                var url = '<c:out value="${ctx}"/>//oscarRx/WriteScript.do?parameterValue=createNewRx'; //"prescribe.jsp";
+                var url = '<c:out value="${ctx}"/>/oscarRx/WriteScript.do?parameterValue=createNewRx'; //"prescribe.jsp";
                 var ran_number = Math.round(Math.random() * 1000000);
                 var name = encodeURIComponent(arr.name);
                 var params = "demographicNo=<%=demoNo%>&drugId=" + arr.id + "&text=" + name + "&randomId=" + ran_number;  //hack to get around ie caching the page
@@ -2171,7 +2171,7 @@
 
 
         function setSearchedDrug(drugId, name) {
-            var url = '<c:out value="${ctx}"/>//oscarRx/WriteScript.do?parameterValue=createNewRx';
+            var url = '<c:out value="${ctx}"/>/oscarRx/WriteScript.do?parameterValue=createNewRx';
             var ran_number = Math.round(Math.random() * 1000000);
             name = encodeURIComponent(name);
             var params = "demographicNo=<%=demoNo%>&drugId=" + drugId + "&text=" + name + "&randomId=" + ran_number;
