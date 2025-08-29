@@ -529,7 +529,7 @@ public class CaseloadContent2Action extends ActionSupport {
 
                 // add Rx button to string
                 if (isModuleLoaded(request, "TORONTO_RFQ", true) && hasPrivilege("_appointment.doctorLink", roleName$)) {
-                    buttons += "| <a href='#' onClick=\"popupOscarRx(700,1027,'../rx/choosePatient.do?providerNo=" + curUser_no + "&demographicNo=" + demographic_no + "');return false;\">Rx</a> ";
+                    buttons += "| <a href='#' onClick=\"popupOscarRx(700,1027,'../oscarRx/choosePatient.do?providerNo=" + curUser_no + "&demographicNo=" + demographic_no + "');return false;\">Rx</a> ";
                 }
 
                 // add Tickler button to string

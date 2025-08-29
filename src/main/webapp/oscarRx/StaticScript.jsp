@@ -105,7 +105,7 @@
                 if (favoriteName.length > 0) {
                     var s = escape('?regionalIdentifier=<%=regionalIdentifier%>&cn=<%=cn%>');
 
-                    window.location.href = '<%=request.getContextPath() %>/rx/addFavoriteStaticScript.do?drugId='
+                    window.location.href = '<%=request.getContextPath() %>/oscarRx/addFavoriteStaticScript.do?drugId='
                         + escape(drugId) + '&favoriteName=' + escape(favoriteName)
                         + '&returnParams=' + s;
                 }

@@ -154,7 +154,7 @@
                     <tr>
                         <td>
                             <%
-                                String sBack = "rx/SearchDrug.jsp";
+                                String sBack = "oscarRx/SearchDrug.jsp";
                             %> <input type=button class="ControlPushButton"
                                       onclick="javascript:window.location.href='<%=sBack%>';"
                                       value="Back to Search Drug"/></td>

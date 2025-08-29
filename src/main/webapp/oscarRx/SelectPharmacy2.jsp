@@ -100,7 +100,7 @@
                 $(function () {
                     var demo = $("#demographicNo").val();
 					if(demo != null && demo !== "") {
-						$.post("<%=request.getContextPath() + "/rx/managePharmacy.do?method=getPharmacyFromDemographic&demographicNo="%>" + demo,
+						$.post("<%=request.getContextPath() + "/oscarRx/managePharmacy.do?method=getPharmacyFromDemographic&demographicNo="%>" + demo,
                         function (data) {
                             if (data && data.length && data.length > 0) {
                                 $("#preferredList").html("");
@@ -316,7 +316,7 @@
 
                         var data = "pharmId=" + pharmId + "&demographicNo=" + demo + "&preferredOrder=" + ($("#preferredList div").length + 1);
                         ShowSpin(true);
-                        $.post("<%=request.getContextPath() + "/rx/managePharmacy.do?method=setPreferred"%>", data, function (data) {
+                        $.post("<%=request.getContextPath() + "/oscarRx/managePharmacy.do?method=setPreferred"%>", data, function (data) {
                             if (data.id) {
                                 $("html, body").animate({scrollTop: 0}, 1000);
                                 window.location.reload(false);
@@ -370,7 +370,7 @@
 
             function addPharmacy() {
                 myLightWindow.activateWindow({
-                    href: "<%= request.getContextPath() %>/rx/ManagePharmacy2.jsp?type=Add",
+                    href: "<%= request.getContextPath() %>/oscarRx/ManagePharmacy2.jsp?type=Add",
                     width: 400,
                     height: 500
                 });
@@ -378,7 +378,7 @@
 
             function editPharmacy(id) {
                 myLightWindow.activateWindow({
-                    href: "<%= request.getContextPath() %>/rx/ManagePharmacy2.jsp?type=Edit&ID=" + id,
+                    href: "<%= request.getContextPath() %>/oscarRx/ManagePharmacy2.jsp?type=Edit&ID=" + id,
                     width: 400,
                     height: 500
                 });
@@ -387,7 +387,7 @@
 
             function viewPharmacy(id) {
                 myLightWindow.activateWindow({
-                    href: "<%= request.getContextPath() %>/rx/ViewPharmacy.jsp?type=View&ID=" + id,
+                    href: "<%= request.getContextPath() %>/oscarRx/ViewPharmacy.jsp?type=View&ID=" + id,
                     width: 400,
                     height: 500
                 });

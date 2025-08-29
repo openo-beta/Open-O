@@ -261,7 +261,7 @@
                             <br>
                             <br>
                             <%
-                                String sBack = "rx/ShowAllergies.jsp";
+                                String sBack = "oscarRx/ShowAllergies.jsp";
                             %> <input type=button class="ControlPushButton"
                                       onclick="javascript:window.location.href='<%=sBack%>';"
                                       value="Back to View Allergies"/></td>

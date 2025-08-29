@@ -1501,7 +1501,7 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                                         brandName);
 
                                     if (favoriteName.length > 0) {
-                                        window.location.href = '<%= request.getContextPath() %>/rx/addFavoriteWriteScript.do?stashId='
+                                        window.location.href = '<%= request.getContextPath() %>/oscarRx/addFavoriteWriteScript.do?stashId='
                                             + escape(stashId) + '&favoriteName=' + escape(favoriteName);
                                     }
                                 }

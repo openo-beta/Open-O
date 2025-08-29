@@ -60,7 +60,7 @@ public final class RxShowAllergy2Action extends ActionSupport {
         reorder(request);
         //ActionForward fwd = mapping.findForward("success-redirect");
         try {
-            response.sendRedirect(request.getContextPath() + "/rx/ShowAllergies.jsp?demographicNo=" + request.getParameter("demographicNo"));
+            response.sendRedirect(request.getContextPath() + "/oscarRx/ShowAllergies.jsp?demographicNo=" + request.getParameter("demographicNo"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -126,9 +126,9 @@ public final class RxShowAllergy2Action extends ActionSupport {
 
         RxPatientData.Patient patient = RxPatientData.getPatient(loggedInInfo, bean.getDemographicNo());
 
-        String forward = request.getContextPath() + "/rx/ShowAllergies.jsp";
+        String forward = request.getContextPath() + "/oscarRx/ShowAllergies.jsp";
         if (useRx3) {
-            forward = request.getContextPath() + "/rx/ShowAllergies2.jsp";
+            forward = request.getContextPath() + "/oscarRx/ShowAllergies2.jsp";
         }
         if (patient != null) {
             request.getSession().setAttribute("Patient", patient);

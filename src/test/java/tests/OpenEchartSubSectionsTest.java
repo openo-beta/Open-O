@@ -2305,7 +2305,7 @@ public class OpenEchartSubSectionsTest {
             if (!windowHandle.equals(mainWindowHandle) && !windowHandle.equals(demographicSearchWindowHandle) && !windowHandle.equals(eChartWindowHandle)) {
                 allergiesWindowHandle = windowHandle;
                 driver.switchTo().window(windowHandle);
-                if (driver.getCurrentUrl().contains("rx/showAllergy.do")) {
+                if (driver.getCurrentUrl().contains("oscarRx/showAllergy.do")) {
                     break;
                 }
             }
@@ -2325,8 +2325,8 @@ public class OpenEchartSubSectionsTest {
         }
 
         if (!is500Error) {
-            wait.until(ExpectedConditions.urlContains("rx/showAllergy.do"));
-            Assert.assertTrue(driver.getCurrentUrl().contains("rx/showAllergy.do"));
+            wait.until(ExpectedConditions.urlContains("oscarRx/showAllergy.do"));
+            Assert.assertTrue(driver.getCurrentUrl().contains("oscarRx/showAllergy.do"));
             System.out.println("Allergies window opened successfully.");
         }
 
@@ -2450,7 +2450,7 @@ public class OpenEchartSubSectionsTest {
             if (!windowHandle.equals(mainWindowHandle) && !windowHandle.equals(demographicSearchWindowHandle) && !windowHandle.equals(eChartWindowHandle)) {
                 medicationsWindowHandle = windowHandle;
                 driver.switchTo().window(windowHandle);
-                if (driver.getCurrentUrl().contains("rx/choosePatient.do")) {
+                if (driver.getCurrentUrl().contains("oscarRx/choosePatient.do")) {
                     break;
                 }
             }
@@ -2470,8 +2470,8 @@ public class OpenEchartSubSectionsTest {
         }
 
         if (!is500Error) {
-            wait.until(ExpectedConditions.urlContains("rx/choosePatient.do"));
-            Assert.assertTrue(driver.getCurrentUrl().contains("rx/choosePatient.do"));
+            wait.until(ExpectedConditions.urlContains("oscarRx/choosePatient.do"));
+            Assert.assertTrue(driver.getCurrentUrl().contains("oscarRx/choosePatient.do"));
             System.out.println("Medications window opened successfully.");
         }
 

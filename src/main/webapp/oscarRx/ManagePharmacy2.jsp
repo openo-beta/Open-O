@@ -97,7 +97,7 @@
                 if ($("#pharmacyId").val() != null && $("#pharmacyId").val() != "") {
 
                     var data = $("#pharmacyForm").serialize();
-                    $.post("<%=request.getContextPath() + "/rx/managePharmacy.do?method=save"%>",
+                    $.post("<%=request.getContextPath() + "/oscarRx/managePharmacy.do?method=save"%>",
                         data, function (data) {
                             if (data.id) {
                                 parent.location.reload();
@@ -120,7 +120,7 @@
                 }
 
                 var data = $("#pharmacyForm").serialize();
-                $.post("<%=request.getContextPath() + "/rx/managePharmacy.do?method=add"%>",
+                $.post("<%=request.getContextPath() + "/oscarRx/managePharmacy.do?method=add"%>",
                     data, function (data) {
                         if (data.success) {
                             parent.location.reload();

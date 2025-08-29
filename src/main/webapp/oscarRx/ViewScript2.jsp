@@ -122,7 +122,7 @@
             String createAnewRx;
             if (reprint.equalsIgnoreCase("true")) {
                 bean = (RxSessionBean) session.getAttribute("tmpBeanRX");
-                createAnewRx = "window.location.href = '" + request.getContextPath() + "/rx/SearchDrug.jsp'";
+                createAnewRx = "window.location.href = '" + request.getContextPath() + "/oscarRx/SearchDrug.jsp'";
             } else {
                 createAnewRx = "javascript:clearPending('')";
             }
@@ -237,7 +237,7 @@
 
         <script type="text/javascript">
             function resetStash() {
-                var url = "<c:out value="${ctx}"/>" + "/rx/deleteRx.do?parameterValue=clearStash";
+                var url = "<c:out value="${ctx}"/>" + "/oscarRx/deleteRx.do?parameterValue=clearStash";
                 var data = "";
                 new Ajax.Request(url, {
                     method: 'post', parameters: data, onSuccess: function (transport) {
@@ -248,7 +248,7 @@
             }
 
             function resetReRxDrugList() {
-                var url = "<c:out value="${ctx}"/>" + "/rx/deleteRx.do?parameterValue=clearReRxDrugList";
+                var url = "<c:out value="${ctx}"/>" + "/oscarRx/deleteRx.do?parameterValue=clearReRxDrugList";
                 var data = "";
                 new Ajax.Request(url, {
                     method: 'post', parameters: data
@@ -297,7 +297,7 @@
             function addNotes() {
 
 
-                var url = "rx/AddRxComment.jsp";
+                var url = "oscarRx/AddRxComment.jsp";
                 var ran_number = Math.round(Math.random() * 1000000);
                 var comment = encodeURIComponent(document.getElementById('additionalNotes').value);
                 var params = "scriptNo=<%=request.getAttribute("scriptId")%>&comment=" + comment + "&rand=" + ran_number;  //]
@@ -413,7 +413,7 @@
 
 	function writeToEncounter(print, text) {
     	try {
-			var url = "<%=request.getContextPath() %>/rx/WriteToEncounter.do";
+			var url = "<%=request.getContextPath() %>/oscarRx/WriteToEncounter.do";
 			var prefPharmacy = "<%=prefPharmacy != null ? Encode.forJavaScriptBlock(prefPharmacy) : ""%>";
 			new Ajax.Request(url, {method: 'post',
 				parameters: "prefPharmacy=" + encodeURIComponent(prefPharmacy) +
@@ -644,7 +644,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                     <div class="DivContentPadding">
 					<% if (bean.getStashSize() > 0) { %>
                                         <iframe id='preview' name='preview' width=420px height=890px
-							src="Preview2.jsp?scriptId=<%=bean.getStashItem(0).getScript_no()%>&rePrint=<%=reprint%>&pharmacyId=<%=request.getParameter("pharmacyId")%>"
+							src="oscarRx/Preview2.jsp?scriptId=<%=bean.getStashItem(0).getScript_no()%>&rePrint=<%=reprint%>&pharmacyId=<%=request.getParameter("pharmacyId")%>"
 							align=center border=0 frameborder=0></iframe></div>
 					<% } %>
                                 </td>
@@ -669,7 +669,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                         }
 
                                         function clearPendingFax() {
-                                            parent.window.location = "../rx/close.html";
+                                            parent.window.location = "../oscarRx/close.html";
                                             parent.myLightWindow.deactivate();
                                         }
 
@@ -685,7 +685,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
 	                                if(! id) {
 										return;
 	                                }
-                                    var url="<c:out value="${ctx}"/>"+"/rx/managePharmacy2.do?";
+                                    var url="<c:out value="${ctx}"/>"+"/oscarRx/managePharmacy2.do?";
                                     var data="method=getPharmacyInfo&pharmacyId="+id;
                                     new Ajax.Request(url, {method: 'get',parameters:data, onSuccess:function(transport){
                                         var json=transport.responseText.evalJSON();
