@@ -44,8 +44,12 @@ fi
 
 # Short welcome banner
 echo ""
-echo "Open-O EMR Development Environment"
-echo "Type 'help-dev' for development tools and commands"
+echo "========================================="
+echo "  OpenO EMR Development Environment"
+echo "========================================="
+echo "  Type 'help-dev' for commands reference"
+echo "  Type 'make help' for build options"
+echo "========================================="
 echo ""
 
 # Aliases for common tasks
@@ -70,67 +74,8 @@ alias claude-help='cat CLAUDE.md | head -50'
 alias docs='docs-status'
 alias docs-logs='tail -f /tmp/docusaurus.log'
 
-# Development help command with pager support
-alias help-dev='cat << "EOF" | less
-=============================================================
-Open-O EMR Development Environment - Command Reference
-=============================================================
-
-AI CODING ASSISTANTS:
-  claude         - Claude Code CLI (Anthropic)
-  aider          - AI pair programming assistant
-  aider --model claude-3-5-sonnet-20241022
-  aider --model gpt-4-turbo
-
-DEVELOPMENT TOOLS:
-  mvn clean compile    - Build Java project
-  mvn test            - Run tests
-  mvn package         - Package WAR file
-  gh pr create        - Create GitHub pull request
-  gh pr list          - List pull requests
-
-DOCUMENTATION:
-  docs-start          - Start documentation server (port 3000)
-  docs-stop           - Stop documentation server  
-  docs-status         - Check documentation server status
-  docs-logs           - View documentation server logs
-
-DATABASE:
-  mysql -h db -u root -ppassword oscar  - Connect to database
-  db-connect                             - Database connection alias
-
-CONTAINER INFO:
-  Main app:  http://localhost:8080
-  Debug:     port 8000
-  Database:  port 3306
-  Docs:      http://localhost:3000
-
-HEALTHCARE EMR CONTEXT:
-  • Follow PIPEDA/HIPAA compliance
-  • Use 2Action pattern for Struts2 migration
-  • All imports: ca.openosp.openo.* (new namespace)
-  • OWASP encoding required for all user inputs
-
-QUICK REFERENCE:
-  cat CLAUDE.md       - View project context for AI
-  git log --oneline   - Recent development activity
-  docker ps           - View running containers
-  debug-on / debug-off - Toggle DEBUG/INFO logging levels
-
-ALIASES:
-  build        - mvn clean compile
-  test-build   - mvn test
-  package-war  - mvn package
-  db-connect   - Connect to database
-  logs-tomcat  - Tail Tomcat logs
-  claude-help  - Show project context for AI
-  docs         - Check documentation server status
-  docs-logs    - View documentation server logs
-
-=============================================================
-Ready for healthcare EMR development with AI assistance
-=============================================================
-EOF'
+# Development help command - uses script for better compatibility
+# The help-dev script is available in /scripts/help-dev
 
 # Logging level control
 alias debug-on='export LOGGING_LEVEL=DEBUG && echo "🔍 Logging set to DEBUG level"'
@@ -141,5 +86,5 @@ export EDITOR=nano
 export JAVA_HOME=/opt/java/openjdk
 export MAVEN_OPTS="-Xmx1G -Xms512m"
 
-# Add workspace to PATH for any custom scripts
-export PATH="/workspace/scripts:$PATH"
+# Add workspace and Go bin to PATH for custom scripts and Go tools
+export PATH="/workspace/scripts:/root/go/bin:$PATH"
