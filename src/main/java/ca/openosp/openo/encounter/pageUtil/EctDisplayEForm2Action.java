@@ -28,9 +28,9 @@ package ca.openosp.openo.encounter.pageUtil;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.EFormData;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.model.EFormData;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.util.DateUtils;
 import ca.openosp.openo.util.OscarRoleObjectPrivilege;

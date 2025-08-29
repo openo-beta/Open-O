@@ -28,9 +28,9 @@ package ca.openosp.openo.encounter.pageUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.dao.EncounterTemplateDao;
-import org.oscarehr.common.model.EncounterTemplate;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.EncounterTemplateDao;
+import ca.openosp.openo.commn.model.EncounterTemplate;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

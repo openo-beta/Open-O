@@ -34,11 +34,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.dao.OscarAppointmentDao;
-import org.oscarehr.common.model.Appointment;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.OscarAppointmentDao;
+import ca.openosp.openo.commn.model.Appointment;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 

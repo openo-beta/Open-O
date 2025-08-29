@@ -8,20 +8,20 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.common.model.EFormData;
-import org.oscarehr.common.model.EmailAttachment;
-import org.oscarehr.common.model.EmailLog;
-import org.oscarehr.common.model.EmailLog.ChartDisplayOption;
+import ca.openosp.openo.commn.model.EFormData;
+import ca.openosp.openo.commn.model.EmailAttachment;
+import ca.openosp.openo.commn.model.EmailLog;
+import ca.openosp.openo.commn.model.EmailLog.ChartDisplayOption;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.hospitalReportManager.HRMUtil;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
-import org.oscarehr.labs.LabIdAndType;
+import ca.openosp.openo.labs.LabIdAndType;
 import ca.openosp.openo.managers.EformDataManager;
 import ca.openosp.openo.managers.FormsManager;
-import org.oscarehr.utility.DateUtils;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.DateUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.data.EctFormData.PatientForm;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;

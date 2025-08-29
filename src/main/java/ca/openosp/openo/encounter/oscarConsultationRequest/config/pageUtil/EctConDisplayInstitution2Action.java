@@ -30,12 +30,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.dao.InstitutitionDepartmentDao;
-import org.oscarehr.common.model.InstitutionDepartment;
-import org.oscarehr.common.model.InstitutionDepartmentPK;
+import ca.openosp.openo.commn.dao.InstitutitionDepartmentDao;
+import ca.openosp.openo.commn.model.InstitutionDepartment;
+import ca.openosp.openo.commn.model.InstitutionDepartmentPK;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -52,7 +52,7 @@ public class EctConDisplayInstitution2Action extends ActionSupport {
             throws ServletException, IOException {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_con", "r", null)) {
-            throw new SecurityException("missing required security object (_con)");
+            throw new SecurityException("missing required sec object (_con)");
         }
 
         String id = this.getId();

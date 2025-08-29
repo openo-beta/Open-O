@@ -27,7 +27,7 @@ package ca.openosp.openo.login.jaas;
 import java.io.Serializable;
 import java.security.Principal;
 
-import org.oscarehr.PMmodule.model.SecUserRole;
+import ca.openosp.openo.PMmodule.model.SecUserRole;
 
 public class OscarRole extends SecUserRole implements Principal, Serializable {
 

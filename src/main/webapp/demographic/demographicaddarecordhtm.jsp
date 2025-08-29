@@ -41,8 +41,8 @@
     }
 %>
 
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="org.oscarehr.utility.SessionConstants" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.SessionConstants" %>
 <%
     String curUser_no = (String) session.getAttribute("user");
     String str = null;
@@ -54,33 +54,29 @@
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page
-        import="java.util.*, oscar.*, ca.openosp.openo.demographic.data.ProvinceNames, ca.openosp.openo.demographic.pageUtil.Util, ca.openosp.openo.waitinglist.WaitingList" %>
+        import="java.util.*, ca.openosp.*, ca.openosp.openo.demographic.data.ProvinceNames, ca.openosp.openo.demographic.pageUtil.Util, ca.openosp.openo.waitinglist.WaitingList" %>
 <%@ page
-        import="org.oscarehr.common.dao.*,org.oscarehr.common.model.*" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.common.model.ProfessionalSpecialist" %>
-<%@page import="org.oscarehr.common.dao.ProfessionalSpecialistDao" %>
-<%@page import="org.oscarehr.common.model.Provider" %>
-<%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@page import="org.oscarehr.common.dao.DemographicDao" %>
-<%@page import="org.oscarehr.common.model.WaitingListName" %>
-<%@page import="org.oscarehr.PMmodule.model.Program" %>
-<%@page import="org.oscarehr.PMmodule.service.ProgramManager" %>
-<%@page import="org.oscarehr.common.dao.WaitingListNameDao" %>
-<%@page import="org.oscarehr.common.dao.EFormDao" %>
-<%@page import="org.oscarehr.PMmodule.dao.ProgramDao" %>
-<%@page import="org.oscarehr.common.model.Facility" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="oscar.OscarProperties" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+        import="ca.openosp.openo.commn.dao.*,ca.openosp.openo.commn.model.*" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
+<%@page import="ca.openosp.openo.PMmodule.model.Program" %>
+<%@page import="ca.openosp.openo.PMmodule.service.ProgramManager" %>
+<%@page import="ca.openosp.openo.PMmodule.dao.ProgramDao" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.OscarProperties" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.managers.ProgramManager2" %>
-<%@page import="org.oscarehr.PMmodule.model.ProgramProvider" %>
+<%@page import="ca.openosp.openo.PMmodule.model.ProgramProvider" %>
 
 <%@page import="ca.openosp.openo.managers.PatientConsentManager" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.commn.Gender" %>
+<%@ page import="ca.openosp.openo.commn.dao.*" %>
+<%@ page import="ca.openosp.openo.commn.model.*" %>
+<%@ page import="ca.openosp.Misc" %>
 
-<jsp:useBean id="apptMainBean" class="oscar.AppointmentMainBean" scope="session"/>
+<jsp:useBean id="apptMainBean" class="ca.openosp.AppointmentMainBean" scope="session"/>
 <%!
     ProfessionalSpecialistDao professionalSpecialistDao = (ProfessionalSpecialistDao) SpringUtils.getBean(ProfessionalSpecialistDao.class);
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
@@ -1585,7 +1581,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
 
                                 <select name="sex" id="sex">
                                     <option value=""></option>
-                                    <% for (org.oscarehr.common.Gender gn : org.oscarehr.common.Gender.values()) { %>
+                                    <% for (Gender gn : Gender.values()) { %>
                                     <option value="<%=gn.name()%>" <%=((sex.toUpperCase().equals(gn.name())) ? "selected=\"selected\"" : "") %>><%=gn.getText()%>
                                     </option>
                                     <% } %>

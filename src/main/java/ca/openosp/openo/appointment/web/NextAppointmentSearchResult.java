@@ -30,7 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.commn.model.Provider;
 
 public class NextAppointmentSearchResult {
     private String providerNo;

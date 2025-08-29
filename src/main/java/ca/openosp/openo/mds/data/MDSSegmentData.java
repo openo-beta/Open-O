@@ -33,32 +33,33 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.MdsMSHDao;
-import org.oscarehr.common.dao.MdsNTEDao;
-import org.oscarehr.common.dao.MdsOBRDao;
-import org.oscarehr.common.dao.MdsOBXDao;
-import org.oscarehr.common.dao.MdsPV1Dao;
-import org.oscarehr.common.dao.MdsZLBDao;
-import org.oscarehr.common.dao.MdsZMCDao;
-import org.oscarehr.common.dao.MdsZMNDao;
-import org.oscarehr.common.dao.MdsZRGDao;
-import org.oscarehr.common.dao.ProviderLabRoutingDao;
-import org.oscarehr.common.model.MdsNTE;
-import org.oscarehr.common.model.MdsOBX;
-import org.oscarehr.common.model.MdsPV1;
-import org.oscarehr.common.model.MdsZLB;
-import org.oscarehr.common.model.MdsZMC;
-import org.oscarehr.common.model.MdsZMN;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.ProviderLabRoutingModel;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.MdsMSHDao;
+import ca.openosp.openo.commn.dao.MdsNTEDao;
+import ca.openosp.openo.commn.dao.MdsOBRDao;
+import ca.openosp.openo.commn.dao.MdsOBXDao;
+import ca.openosp.openo.commn.dao.MdsPV1Dao;
+import ca.openosp.openo.commn.dao.MdsZLBDao;
+import ca.openosp.openo.commn.dao.MdsZMCDao;
+import ca.openosp.openo.commn.dao.MdsZMNDao;
+import ca.openosp.openo.commn.dao.MdsZRGDao;
+import ca.openosp.openo.commn.dao.ProviderLabRoutingDao;
+import ca.openosp.openo.commn.model.MdsNTE;
+import ca.openosp.openo.commn.model.MdsOBX;
+import ca.openosp.openo.commn.model.MdsPV1;
+import ca.openosp.openo.commn.model.MdsZLB;
+import ca.openosp.openo.commn.model.MdsZMC;
+import ca.openosp.openo.commn.model.MdsZMN;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.ProviderLabRoutingModel;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 
 public class MDSSegmentData {
 
-    static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    static Logger logger = MiscUtils.getLogger();
 
     public String segmentID;
     public String reportDate;
@@ -226,7 +227,7 @@ public class MDSSegmentData {
         }
     }
 
-    // returns true if provider has already acknowledged this lab; false otherwise
+    // returns true if providers has already acknowledged this lab; false otherwise
     public boolean getAcknowledgedStatus(String providerNo) {
 
         for (int i = 0; i < statusArray.size(); i++) {

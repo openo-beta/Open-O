@@ -37,14 +37,15 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.decisionSupport.model.DSCondition;
 import ca.openosp.openo.decisionSupport.model.DSConsequence;
 import ca.openosp.openo.decisionSupport.model.DSDemographicAccess;
 import ca.openosp.openo.decisionSupport.model.DSGuideline;
 import ca.openosp.openo.decisionSupport.model.DSGuidelineFactory;
 import ca.openosp.openo.decisionSupport.service.DSService;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.demographic.data.DemographicData;
 
@@ -120,7 +121,7 @@ public class DSGuideline2Action extends ActionSupport {
             conditionResults.add(new ConditionResult(dsCondition, result, actualValues));
         }
         DemographicData demographicData = new DemographicData();
-        org.oscarehr.common.model.Demographic demographic = demographicData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demographicNo);
+        Demographic demographic = demographicData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demographicNo);
 
         request.setAttribute("patientName", demographic.getFirstName() + " " + demographic.getLastName());
         request.setAttribute("guideline", dsGuideline);

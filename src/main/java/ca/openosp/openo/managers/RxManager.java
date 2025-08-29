@@ -28,11 +28,11 @@
 
 package ca.openosp.openo.managers;
 
-import org.oscarehr.common.model.Drug;
-import org.oscarehr.common.model.Favorite;
-import org.oscarehr.common.model.Prescription;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.ws.rest.to.model.RxStatus;
+import ca.openosp.openo.commn.model.Drug;
+import ca.openosp.openo.commn.model.Favorite;
+import ca.openosp.openo.commn.model.Prescription;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.webserv.rest.to.model.RxStatus;
 
 import java.util.List;
 

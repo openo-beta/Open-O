@@ -28,7 +28,7 @@
     String newticklerwarningwindow = null;
     String cbiReminderWindow = null;
 
-    if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.IsPropertiesOn.propertiesOn("CBI_REMINDER_WINDOW")) {
+    if (ca.openosp.openo.commn.IsPropertiesOn.isCaisiEnable() && ca.openosp.openo.commn.IsPropertiesOn.propertiesOn("CBI_REMINDER_WINDOW")) {
         cbiReminderWindow = (String) session.getAttribute("cbiReminderWindow");
     }
 

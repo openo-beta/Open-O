@@ -35,11 +35,12 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.Hl7TextInfoDao;
-import org.oscarehr.common.model.Hl7TextMessageInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.Hl7TextInfoDao;
+import ca.openosp.openo.commn.model.Hl7TextMessageInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.UtilDateUtilities;
 import ca.uhn.hl7v2.HL7Exception;
@@ -58,7 +59,7 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
  */
 public class BioTestHandler implements MessageHandler {
 
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
     ORU_R01 msg = null;
     ArrayList<String> headers = null;
     HashMap<OBR, ArrayList<OBX>> obrSegMap = null;
@@ -728,7 +729,7 @@ public class BioTestHandler implements MessageHandler {
                 nums.add(docNum);
             }
         } catch (Exception e) {
-            logger.warn("Could not return ordering provider", e);
+            logger.warn("Could not return ordering providers", e);
         }
 
         //cc'd docs numbers

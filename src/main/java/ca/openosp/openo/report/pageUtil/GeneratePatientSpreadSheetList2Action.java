@@ -32,11 +32,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.oscarehr.common.model.Demographic;
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.demographic.data.DemographicData;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -60,7 +60,7 @@ public class GeneratePatientSpreadSheetList2Action extends ActionSupport {
     public String execute() {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_report", "r", null)) {
-            throw new SecurityException("missing required security object (_report)");
+            throw new SecurityException("missing required sec object (_report)");
         }
 
         String[] demos = request.getParameterValues("demo");

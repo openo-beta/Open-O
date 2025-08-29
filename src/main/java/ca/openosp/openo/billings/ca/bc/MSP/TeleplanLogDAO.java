@@ -30,8 +30,8 @@ import java.util.List;
 
 import ca.openosp.openo.billing.CA.BC.dao.LogTeleplanTxDao;
 import ca.openosp.openo.billing.CA.BC.model.LogTeleplanTx;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 /**
  * @author jay

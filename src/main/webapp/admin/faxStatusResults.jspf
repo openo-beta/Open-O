@@ -1,5 +1,5 @@
-<%@ page import="org.oscarehr.common.model.FaxJob, org.oscarehr.common.model.FaxClientLog, org.oscarehr.common.dao.ProviderDataDao, org.oscarehr.common.model.ProviderData, org.oscarehr.common.dao.DemographicDao, org.oscarehr.common.model.Demographic" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.commn.model.FaxJob, ca.openosp.openo.commn.model.FaxClientLog, ca.openosp.openo.commn.dao.ProviderDataDao, ca.openosp.openo.commn.model.ProviderData, ca.openosp.openo.commn.dao.DemographicDao, ca.openosp.openo.commn.model.Demographic" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.apache.commons.lang.time.DateFormatUtils"%>
 <%@ page import="ca.openosp.openo.managers.FaxManager" %>

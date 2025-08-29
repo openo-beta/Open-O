@@ -33,13 +33,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.collections.comparators.ReverseComparator;
-import org.oscarehr.common.dao.OscarAppointmentDao;
-import org.oscarehr.common.dao.ScheduleTemplateDao;
-import org.oscarehr.common.model.Appointment;
-import org.oscarehr.common.model.ScheduleDate;
-import org.oscarehr.common.model.ScheduleTemplate;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.OscarAppointmentDao;
+import ca.openosp.openo.commn.dao.ScheduleTemplateDao;
+import ca.openosp.openo.commn.model.Appointment;
+import ca.openosp.openo.commn.model.ScheduleDate;
+import ca.openosp.openo.commn.model.ScheduleTemplate;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 
@@ -77,7 +77,7 @@ public class ThirdApptTimeReporter implements Reporter {
         String rsHtml = "";
         String csv = "";
         if (date_from == null || providers == null || schedSymbols == null) {
-            rsHtml = "date_from and provider must be set and at least one schedule symbol must be set";
+            rsHtml = "date_from and providers must be set and at least one schedule symbol must be set";
             request.setAttribute("errormsg", rsHtml);
             request.setAttribute("templateid", templateId);
             return false;

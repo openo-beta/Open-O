@@ -32,13 +32,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.common.model.Appointment;
-import org.oscarehr.common.model.AppointmentArchive;
-import org.oscarehr.common.model.AppointmentStatus;
-import org.oscarehr.common.model.AppointmentType;
-import org.oscarehr.common.model.ScheduleTemplateCode;
-import org.oscarehr.common.model.Security;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.model.Appointment;
+import ca.openosp.openo.commn.model.AppointmentArchive;
+import ca.openosp.openo.commn.model.AppointmentStatus;
+import ca.openosp.openo.commn.model.AppointmentType;
+import ca.openosp.openo.commn.model.ScheduleTemplateCode;
+import ca.openosp.openo.commn.model.Security;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 public interface ScheduleManager {
 

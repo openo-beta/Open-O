@@ -8,7 +8,8 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
 
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.Misc;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import ca.openosp.openo.login.DBHelp;
 import ca.openosp.openo.db.DBHandler;
@@ -26,24 +27,24 @@ public class FrmBCINRRecord extends FrmRecord {
                     + demographicNo;
             ResultSet rs = DBHandler.GetSQL(sql);
             if (rs.next()) {
-                java.util.Date date = UtilDateUtilities.calcDate(oscar.Misc.getString(rs, "year_of_birth"), rs
-                        .getString("month_of_birth"), oscar.Misc.getString(rs, "date_of_birth"));
-                props.setProperty("demographic_no", oscar.Misc.getString(rs, "demographic_no"));
+                java.util.Date date = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), rs
+                        .getString("month_of_birth"), Misc.getString(rs, "date_of_birth"));
+                props.setProperty("demographic_no", Misc.getString(rs, "demographic_no"));
                 props
                         .setProperty("formCreated", UtilDateUtilities.DateToString(new Date(),
                                 _dateFormat));
                 // props.setProperty("formEdited",
                 // UtilDateUtilities.DateToString(new Date(),_dateFormat));
-                props.setProperty("c_surname", oscar.Misc.getString(rs, "last_name"));
-                props.setProperty("c_givenName", oscar.Misc.getString(rs, "first_name"));
-                props.setProperty("c_address", oscar.Misc.getString(rs, "address"));
-                props.setProperty("c_city", oscar.Misc.getString(rs, "city"));
-                props.setProperty("c_province", oscar.Misc.getString(rs, "province"));
-                props.setProperty("c_postal", oscar.Misc.getString(rs, "postal"));
-                props.setProperty("c_phn", oscar.Misc.getString(rs, "hin"));
+                props.setProperty("c_surname", Misc.getString(rs, "last_name"));
+                props.setProperty("c_givenName", Misc.getString(rs, "first_name"));
+                props.setProperty("c_address", Misc.getString(rs, "address"));
+                props.setProperty("c_city", Misc.getString(rs, "city"));
+                props.setProperty("c_province", Misc.getString(rs, "province"));
+                props.setProperty("c_postal", Misc.getString(rs, "postal"));
+                props.setProperty("c_phn", Misc.getString(rs, "hin"));
                 props.setProperty("c_dateOfBirth", UtilDateUtilities.DateToString(date, _dateFormat));
-                props.setProperty("c_phone1", oscar.Misc.getString(rs, "phone"));
-                props.setProperty("c_phone2", oscar.Misc.getString(rs, "phone2"));
+                props.setProperty("c_phone1", Misc.getString(rs, "phone"));
+                props.setProperty("c_phone2", Misc.getString(rs, "phone2"));
             }
             rs.close();
         } else {
@@ -57,15 +58,15 @@ public class FrmBCINRRecord extends FrmRecord {
             DBHelp db = new DBHelp();
             ResultSet rs = DBHelp.searchDBRecord(sql);
             if (rs.next()) {
-                props.setProperty("c_surname_cur", oscar.Misc.getString(rs, "last_name"));
-                props.setProperty("c_givenName_cur", oscar.Misc.getString(rs, "first_name"));
-                props.setProperty("c_address_cur", oscar.Misc.getString(rs, "address"));
-                props.setProperty("c_city_cur", oscar.Misc.getString(rs, "city"));
-                props.setProperty("c_province_cur", oscar.Misc.getString(rs, "province"));
-                props.setProperty("c_postal_cur", oscar.Misc.getString(rs, "postal"));
-                props.setProperty("c_phn_cur", oscar.Misc.getString(rs, "hin"));
-                props.setProperty("c_phone1_cur", oscar.Misc.getString(rs, "phone"));
-                props.setProperty("c_phone2_cur", oscar.Misc.getString(rs, "phone2"));
+                props.setProperty("c_surname_cur", Misc.getString(rs, "last_name"));
+                props.setProperty("c_givenName_cur", Misc.getString(rs, "first_name"));
+                props.setProperty("c_address_cur", Misc.getString(rs, "address"));
+                props.setProperty("c_city_cur", Misc.getString(rs, "city"));
+                props.setProperty("c_province_cur", Misc.getString(rs, "province"));
+                props.setProperty("c_postal_cur", Misc.getString(rs, "postal"));
+                props.setProperty("c_phn_cur", Misc.getString(rs, "hin"));
+                props.setProperty("c_phone1_cur", Misc.getString(rs, "phone"));
+                props.setProperty("c_phone2_cur", Misc.getString(rs, "phone2"));
             }
         }
         return props;

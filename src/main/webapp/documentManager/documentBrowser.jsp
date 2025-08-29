@@ -24,7 +24,7 @@
 --%>
 
 
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="java.util.*" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -40,10 +40,10 @@
 <%@page import="ca.openosp.openo.documentManager.EDocUtil,ca.openosp.openo.documentManager.EDoc" %>
 <%@page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@page import="java.util.Hashtable" %>
-<%@page import="org.oscarehr.common.dao.CtlDocClassDao,org.oscarehr.common.dao.QueueDao" %>
+<%@page import="ca.openosp.openo.commn.dao.CtlDocClassDao,ca.openosp.openo.commn.dao.QueueDao" %>
 <%@page import="org.springframework.web.context.WebApplicationContext" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%

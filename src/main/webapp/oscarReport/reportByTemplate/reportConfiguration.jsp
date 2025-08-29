@@ -29,7 +29,7 @@
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 %>
 
-<%@ page import="java.util.*,oscar.oscarReport.reportByTemplate.*" %>
+<%@ page import="java.util.*,ca.openosp.openo.report.reportByTemplate.*" %>
 <%@ page import="ca.openosp.openo.report.reportByTemplate.ReportManager" %>
 <%@ page import="ca.openosp.openo.report.reportByTemplate.Choice" %>
 <%@ page import="ca.openosp.openo.report.reportByTemplate.Parameter" %>

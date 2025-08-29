@@ -27,13 +27,13 @@ package ca.openosp.openo.renal;
 import java.util.TimerTask;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.Security;
-import org.oscarehr.utility.DbConnectionFilter;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.Security;
+import ca.openosp.openo.utility.DbConnectionFilter;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 public class CkdScreenerSchedulerJob extends TimerTask {
 

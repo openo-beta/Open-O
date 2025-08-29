@@ -25,7 +25,7 @@
 
 package ca.openosp.openo.entities;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.util.DateUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 

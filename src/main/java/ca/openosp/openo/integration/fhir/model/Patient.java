@@ -28,6 +28,8 @@ import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
 
+import ca.openosp.openo.commn.model.Clinic;
+import ca.openosp.openo.commn.model.Provider;
 import org.hl7.fhir.dstu3.model.Address;
 import org.hl7.fhir.dstu3.model.Address.AddressUse;
 import org.hl7.fhir.dstu3.model.CodeableConcept;
@@ -40,8 +42,8 @@ import org.hl7.fhir.dstu3.model.HumanName.NameUse;
 import org.hl7.fhir.dstu3.model.Identifier;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.instance.model.api.IBaseResource;
-import org.oscarehr.common.Gender;
-import org.oscarehr.common.model.Demographic;
+import ca.openosp.openo.commn.Gender;
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.integration.fhir.manager.OscarFhirConfigurationManager;
 import ca.openosp.openo.integration.fhir.utils.EnumMappingUtil;
 import ca.openosp.openo.integration.fhir.utils.FhirUtils;
@@ -84,7 +86,7 @@ import ca.openosp.openo.integration.fhir.utils.FhirUtils;
     "language" : { CodeableConcept }, // R!  The language which can be used to communicate with the patient about his or her health 
     "preferred" : <boolean> // Language preference indicator
   }],
-  "careProvider" : [{ Reference(Organization|Practitioner) }], // Patient's nominated primary care provider
+  "careProvider" : [{ Reference(Organization|Practitioner) }], // Patient's nominated primary care providers
   "managingOrganization" : { Reference(Organization) }, // Organization that is the custodian of the patient record
   "link" : [{ // Link to another patient resource that concerns the same actual person
     "other" : { Reference(Patient) }, // R!  The other patient resource that the link refers to
@@ -93,13 +95,13 @@ import ca.openosp.openo.integration.fhir.utils.FhirUtils;
 } 
 */
 
-public class Patient extends AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.Patient, org.oscarehr.common.model.Demographic> {
+public class Patient extends AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.Patient, Demographic> {
 
-    public Patient(org.oscarehr.common.model.Demographic from) {
+    public Patient(Demographic from) {
         super(new org.hl7.fhir.dstu3.model.Patient(), from);
     }
 
-    public Patient(org.oscarehr.common.model.Demographic from, OscarFhirConfigurationManager configurationManager) {
+    public Patient(Demographic from, OscarFhirConfigurationManager configurationManager) {
         super(new org.hl7.fhir.dstu3.model.Patient(), from, configurationManager);
     }
 
@@ -275,7 +277,7 @@ public class Patient extends AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.
     /**
      * Only for embedded (or contained) CareProvider resources. Some FHIR Implementers discourage this.
      */
-    public void addGeneralPractitioner(org.oscarehr.common.model.Provider careProvider) {
+    public void addGeneralPractitioner(Provider careProvider) {
         addGeneralPractitioner(new Practitioner(careProvider));
     }
 
@@ -309,8 +311,8 @@ public class Patient extends AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.
     /**
      * Set the managing organization.
      */
-    public void setManagingOrganization(org.oscarehr.common.model.Clinic clinic) {
-        setManagingOrganization(new Organization<org.oscarehr.common.model.Clinic>(clinic));
+    public void setManagingOrganization(Clinic clinic) {
+        setManagingOrganization(new Organization<Clinic>(clinic));
     }
 
     /**

@@ -36,9 +36,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctTypeDisplayNameBeanHandler;
 
@@ -69,7 +69,7 @@ public class EctSetupAddMeasurementGroup2Action extends ActionSupport {
             return "continue";
 
         } else {
-            throw new SecurityException("Access Denied!"); //missing required security object (_admin)
+            throw new SecurityException("Access Denied!"); //missing required sec object (_admin)
         }
     }
 

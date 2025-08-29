@@ -2,7 +2,7 @@ package ca.openosp.openo.caisi_integrator.ws;
 
 import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlElement;
-import org.oscarehr.hnr.ws.MatchingClientScore;
+import ca.openosp.openo.ws.MatchingClientScore;
 import java.util.List;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlAccessType;

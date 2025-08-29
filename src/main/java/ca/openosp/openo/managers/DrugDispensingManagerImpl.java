@@ -31,13 +31,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.oscarehr.common.dao.DrugDao;
-import org.oscarehr.common.dao.DrugDispensingDao;
-import org.oscarehr.common.dao.DrugProductDao;
-import org.oscarehr.common.model.Drug;
-import org.oscarehr.common.model.DrugDispensing;
-import org.oscarehr.common.model.DrugProduct;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.dao.DrugDao;
+import ca.openosp.openo.commn.dao.DrugDispensingDao;
+import ca.openosp.openo.commn.dao.DrugProductDao;
+import ca.openosp.openo.commn.model.Drug;
+import ca.openosp.openo.commn.model.DrugDispensing;
+import ca.openosp.openo.commn.model.DrugProduct;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

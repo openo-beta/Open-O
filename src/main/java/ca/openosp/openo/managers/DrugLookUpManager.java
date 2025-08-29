@@ -26,10 +26,10 @@ package ca.openosp.openo.managers;
 
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.ws.rest.to.model.DrugSearchTo1;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.webserv.rest.to.model.DrugSearchTo1;
 import org.springframework.stereotype.Service;
-import ca.openosp.openo.rx.util.RxDrugRef;
+import ca.openosp.openo.prescript.util.RxDrugRef;
 
 import java.util.ArrayList;
 import java.util.Hashtable;

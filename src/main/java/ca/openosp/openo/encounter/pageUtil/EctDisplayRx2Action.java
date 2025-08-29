@@ -26,15 +26,15 @@
 
 package ca.openosp.openo.encounter.pageUtil;
 
-import ca.openosp.openo.rx.data.RxPrescriptionData;
+import ca.openosp.openo.prescript.data.RxPrescriptionData;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.IntegratorFallBackManager;
 import ca.openosp.openo.caisi_integrator.ws.CachedDemographicDrug;
-import org.oscarehr.provider.web.CppPreferencesUIBean;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import ca.openosp.openo.rx.data.RxPrescriptionData.Prescription;
+import ca.openosp.openo.provider.web.CppPreferencesUIBean;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.prescript.data.RxPrescriptionData.Prescription;
 import ca.openosp.openo.util.DateUtils;
 import ca.openosp.openo.util.StringUtils;
 

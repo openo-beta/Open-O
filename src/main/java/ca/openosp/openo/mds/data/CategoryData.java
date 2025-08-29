@@ -27,10 +27,10 @@
 package ca.openosp.openo.mds.data;
 
 import org.apache.commons.lang3.StringUtils;
-import org.oscarehr.common.dao.SystemPreferencesDao;
-import org.oscarehr.common.model.SystemPreferences;
-import org.oscarehr.utility.DbConnectionFilter;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.SystemPreferencesDao;
+import ca.openosp.openo.commn.model.SystemPreferences;
+import ca.openosp.openo.utility.DbConnectionFilter;
+import ca.openosp.openo.utility.SpringUtils;
 
 import java.math.BigInteger;
 import java.sql.Connection;

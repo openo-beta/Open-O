@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import oscar.dao.OscarSuperDao;
+import ca.openosp.openo.dao.OscarSuperDao;
 
 public class OscarSuperManagerImpl implements OscarSuperManager {
 
@@ -69,6 +69,6 @@ public class OscarSuperManagerImpl implements OscarSuperManager {
         if (oscarSuperDao != null) {
             return oscarSuperDao;
         }
-        throw new IllegalArgumentException("OscarSuperManager contains no dao with specified name: " + daoName);
+        throw new IllegalArgumentException("OscarSuperManager contains no daos with specified name: " + daoName);
     }
 }

@@ -30,19 +30,19 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.MeasurementDao;
-import org.oscarehr.common.dao.MeasurementGroupDao;
-import org.oscarehr.common.dao.MeasurementTypeDao;
-import org.oscarehr.common.dao.ValidationsDao;
-import org.oscarehr.common.model.Measurement;
-import org.oscarehr.common.model.MeasurementGroup;
-import org.oscarehr.common.model.MeasurementType;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.Validations;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.MeasurementDao;
+import ca.openosp.openo.commn.dao.MeasurementGroupDao;
+import ca.openosp.openo.commn.dao.MeasurementTypeDao;
+import ca.openosp.openo.commn.dao.ValidationsDao;
+import ca.openosp.openo.commn.model.Measurement;
+import ca.openosp.openo.commn.model.MeasurementGroup;
+import ca.openosp.openo.commn.model.MeasurementType;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.Validations;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.util.ConversionUtils;
 
 public class EctMeasurementTypesBeanHandler {

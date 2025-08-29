@@ -28,12 +28,12 @@ package ca.openosp.openo.report.bean;
 import java.util.Collection;
 import java.util.Vector;
 
-import org.oscarehr.common.dao.ReportByExamplesDao;
-import org.oscarehr.common.dao.ReportByExamplesFavoriteDao;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.ReportByExamples;
-import org.oscarehr.common.model.ReportByExamplesFavorite;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ReportByExamplesDao;
+import ca.openosp.openo.commn.dao.ReportByExamplesFavoriteDao;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.ReportByExamples;
+import ca.openosp.openo.commn.model.ReportByExamplesFavorite;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 

@@ -30,14 +30,14 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import org.oscarehr.PMmodule.service.ProviderManager;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.Security;
+import ca.openosp.openo.PMmodule.service.ProviderManager;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.Security;
 import ca.openosp.openo.managers.FacilityManager;
 import ca.openosp.openo.managers.MessagingManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class MsgNewMessageTag extends TagSupport {
 

@@ -38,11 +38,11 @@
         return;
     }
 %>
-<%@ page import="oscar.form.graphic.*, oscar.util.*, oscar.form.*, oscar.form.data.*" %>
-<%@ page import="org.oscarehr.common.web.Pregnancy2Action" %>
+<%@ page import="ca.openosp.openo.form.graphic.*, ca.openosp.openo.util.*, ca.openosp.openo.form.*, ca.openosp.openo.form.data.*" %>
+<%@ page import="ca.openosp.openo.commn.web.Pregnancy2Action" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.util.LabelValueBean" %>
 <%@ page import="ca.openosp.openo.util.UtilMisc" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
@@ -51,6 +51,7 @@
 <%@ page import="ca.openosp.openo.form.data.FrmData" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <%@ page import="ca.openosp.openo.form.graphic.FrmGraphicAR" %>
+<%@ page import="ca.openosp.OscarProperties" %>
 <%
     String ctx = request.getContextPath();
     String formClass = "ONAREnhanced";
@@ -74,9 +75,9 @@
     List<LabelValueBean> cytologyForms = Pregnancy2Action.getEformsByGroup("Cytology");
     List<LabelValueBean> ultrasoundForms = Pregnancy2Action.getEformsByGroup("Ultrasound");
 
-    String customEformGroup = oscar.OscarProperties.getInstance().getProperty("prenatal_screening_eform_group");
-    String prenatalScreenName = oscar.OscarProperties.getInstance().getProperty("prenatal_screening_name");
-    String prenatalScreen = oscar.OscarProperties.getInstance().getProperty("prenatal_screening_abbrv");
+    String customEformGroup = OscarProperties.getInstance().getProperty("prenatal_screening_eform_group");
+    String prenatalScreenName = OscarProperties.getInstance().getProperty("prenatal_screening_name");
+    String prenatalScreen = OscarProperties.getInstance().getProperty("prenatal_screening_abbrv");
 
     List<LabelValueBean> customForms = Pregnancy2Action.getEformsByGroup(customEformGroup);
 
@@ -90,7 +91,7 @@
         props.setProperty("us_num", "0");
     }
 
-    String labReqVer = oscar.OscarProperties.getInstance().getProperty("onare_labreqver", "07");
+    String labReqVer = OscarProperties.getInstance().getProperty("onare_labreqver", "07");
     if (labReqVer.equals("")) {
         labReqVer = "07";
     }

@@ -25,7 +25,7 @@
 --%>
 <%@page errorPage="../provider/errorpage.jsp" %>
 <%@ page
-        import="java.util.*, oscar.oscarMDS.data.*,oscar.oscarLab.ca.on.*" %>
+        import="java.util.*, ca.openosp.openo.mds.data.*,ca.openosp.openo.lab.ca.on.*" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
 <%@ page import="ca.openosp.openo.mds.data.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>

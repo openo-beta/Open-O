@@ -30,10 +30,10 @@ package ca.openosp.openo.managers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.oscarehr.common.dao.CtlBillingServiceDao;
-import org.oscarehr.common.dao.CtlBillingServiceDaoImpl;
+import ca.openosp.openo.commn.dao.CtlBillingServiceDao;
+import ca.openosp.openo.commn.dao.CtlBillingServiceDaoImpl;
 import ca.openosp.openo.managers.model.ServiceType;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

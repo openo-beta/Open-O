@@ -32,11 +32,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.dao.ConsultationServiceDao;
-import org.oscarehr.common.model.ConsultationServices;
+import ca.openosp.openo.commn.dao.ConsultationServiceDao;
+import ca.openosp.openo.commn.model.ConsultationServices;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -53,7 +53,7 @@ public class EctConDeleteServices2Action extends ActionSupport {
             throws ServletException, IOException {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_con", "u", null)) {
-            throw new SecurityException("missing required security object (_con)");
+            throw new SecurityException("missing required sec object (_con)");
         }
 
         String servs[] = this.getService();

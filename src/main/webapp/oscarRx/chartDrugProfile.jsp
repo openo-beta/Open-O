@@ -38,9 +38,9 @@
     }
 %>
 
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page
-        import="java.util.*,oscar.oscarLab.ca.on.*,oscar.oscarDemographic.data.*" %>
+        import="java.util.*,ca.openosp.openo.lab.ca.on.*,ca.openosp.openo.demographic.data.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -55,7 +55,7 @@
 
     DemographicData dData = new DemographicData();
 
-    org.oscarehr.common.model.Demographic demographic = dData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demographicNo);
+    Demographic demographic = dData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demographicNo);
 
 
     RxPrescriptionData prescriptData = new RxPrescriptionData();
@@ -85,9 +85,10 @@
 
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath()%>/js/global.js"></script>

@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Vector;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 public class BillingClaimsErrorReportBeanHandler {
 

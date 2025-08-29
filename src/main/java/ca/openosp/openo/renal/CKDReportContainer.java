@@ -26,7 +26,7 @@ package ca.openosp.openo.renal;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.oscarehr.common.model.Demographic;
+import ca.openosp.openo.commn.model.Demographic;
 
 @XmlRootElement(name = "CkdScreeningReportItem")
 public class CKDReportContainer {

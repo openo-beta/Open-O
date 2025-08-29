@@ -28,15 +28,15 @@ import com.opensymphony.xwork2.ActionSupport;
 import net.sf.json.JSONObject;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.common.dao.PatientLabRoutingDao;
-import org.oscarehr.common.dao.ProviderLabRoutingDao;
-import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.common.model.ProviderLabRoutingModel;
+import ca.openosp.openo.commn.dao.PatientLabRoutingDao;
+import ca.openosp.openo.commn.dao.ProviderLabRoutingDao;
+import ca.openosp.openo.commn.model.PatientLabRouting;
+import ca.openosp.openo.commn.model.ProviderLabRoutingModel;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.OscarAuditLogger;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.OscarAuditLogger;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.form.JSONUtil;
 import ca.openosp.openo.log.LogConst;
 
@@ -64,7 +64,7 @@ public class UnlinkDemographic2Action extends ActionSupport {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", "u", null)) {
-            throw new SecurityException("missing required security object (_lab)");
+            throw new SecurityException("missing required sec object (_lab)");
         }
         boolean success = false;
         //set the demographicNo in the patientLabRouting table
@@ -89,8 +89,8 @@ public class UnlinkDemographic2Action extends ActionSupport {
             }
         }
 
-        /* ensure the lab requisitioning provider is aware by inserting lab back into their inbox.
-         * or into the unattached inbox if no provider is identified.
+        /* ensure the lab requisitioning providers is aware by inserting lab back into their inbox.
+         * or into the unattached inbox if no providers is identified.
          */
         if (success) {
             List<ProviderLabRoutingModel> providerLabRoutingModel = providerLabRoutingDao.findAllLabRoutingByIdandType(labNo, ProviderLabRoutingDao.LAB_TYPE.HL7.name());

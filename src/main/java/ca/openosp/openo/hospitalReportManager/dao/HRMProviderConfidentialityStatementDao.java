@@ -12,7 +12,7 @@ package ca.openosp.openo.hospitalReportManager.dao;
 
 import javax.persistence.Query;
 
-import org.oscarehr.common.dao.AbstractDaoImpl;
+import ca.openosp.openo.commn.dao.AbstractDaoImpl;
 import ca.openosp.openo.hospitalReportManager.model.HRMProviderConfidentialityStatement;
 import org.springframework.stereotype.Repository;
 
@@ -30,7 +30,7 @@ public class HRMProviderConfidentialityStatementDao extends AbstractDaoImpl<HRMP
         try {
             return (String) query.getSingleResult();
         } catch (Exception e) {
-            // No statement for this provider
+            // No statement for this providers
             return "";
         }
     }

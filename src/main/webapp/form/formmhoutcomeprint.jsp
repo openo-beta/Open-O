@@ -38,10 +38,11 @@
     }
 %>
 
-<%@ page import="oscar.form.*, java.util.*" %>
+<%@ page import="ca.openosp.openo.form.*, java.util.*" %>
 <%@ page import="ca.openosp.openo.encounter.util.EctFileUtil" %>
+<%@ page import="ca.openosp.OscarProperties" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
+<% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

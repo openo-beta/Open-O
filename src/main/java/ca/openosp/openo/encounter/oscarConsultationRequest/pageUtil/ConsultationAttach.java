@@ -25,12 +25,12 @@
 
 package ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil;
 
-import org.oscarehr.common.dao.ConsultDocsDao;
-import org.oscarehr.common.dao.ConsultationRequestDao;
-import org.oscarehr.common.model.ConsultDocs;
-import org.oscarehr.common.model.ConsultationRequest;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ConsultDocsDao;
+import ca.openosp.openo.commn.dao.ConsultationRequestDao;
+import ca.openosp.openo.commn.model.ConsultDocs;
+import ca.openosp.openo.commn.model.ConsultationRequest;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.util.ConversionUtils;
 
 import java.util.ArrayList;

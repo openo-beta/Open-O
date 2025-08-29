@@ -23,25 +23,26 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="org.oscarehr.utility.WebUtils" %>
-<%@page import="org.oscarehr.utility.WebUtils" %>
-<%@page import="org.oscarehr.utility.LocaleUtils" %>
-<%@page import="org.oscarehr.utility.MiscUtils" %>
-<%@ page language="java" import="oscar.OscarProperties" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.WebUtils" %>
+<%@page import="ca.openosp.openo.utility.WebUtils" %>
+<%@page import="ca.openosp.openo.utility.LocaleUtils" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@ page language="java" import="ca.openosp.OscarProperties" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
 <%@page import="java.util.List" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
 <%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
-<%@page import="org.oscarehr.common.dao.PartialDateDao" %>
-<%@page import="org.oscarehr.common.model.PartialDate" %>
+<%@page import="ca.openosp.openo.commn.dao.PartialDateDao" %>
+<%@page import="ca.openosp.openo.commn.model.PartialDate" %>
 <%@ page import="ca.openosp.openo.services.security.SecurityManager" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPatientData" %>
+<%@ page import="ca.openosp.openo.commn.model.Allergy" %>
 
 <%
     String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -499,7 +500,7 @@
                                                 boolean hasDrugAllergy = false;
                                                 int iNKDA = 0;
 
-                                                for (org.oscarehr.common.model.Allergy allergy : patient.getAllergies(LoggedInInfo.getLoggedInInfoFromSession(request))) {
+                                                for (Allergy allergy : patient.getAllergies(LoggedInInfo.getLoggedInInfoFromSession(request))) {
                                                     if (!allergy.getArchived()) {
                                                         if (allergy.getTypeCode() > 0) hasDrugAllergy = true;
                                                         if (allergy.getDescription().equals("No Known Drug Allergies"))

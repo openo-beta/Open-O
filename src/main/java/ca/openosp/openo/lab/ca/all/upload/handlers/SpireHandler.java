@@ -36,12 +36,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.Hl7TextInfoDao;
-import org.oscarehr.common.model.Hl7TextInfo;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.OscarAuditLogger;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.Hl7TextInfoDao;
+import ca.openosp.openo.commn.model.Hl7TextInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.OscarAuditLogger;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import ca.openosp.openo.lab.ca.all.upload.MessageUploader;
@@ -49,7 +49,7 @@ import ca.openosp.openo.lab.ca.all.util.Utilities;
 
 public class SpireHandler implements MessageHandler {
 
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
     Hl7TextInfoDao hl7TextInfoDao = (Hl7TextInfoDao) SpringUtils.getBean(Hl7TextInfoDao.class);
 
     public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
@@ -93,7 +93,7 @@ public class SpireHandler implements MessageHandler {
                 }
                 if (dupResult.getAccessionNumber().indexOf("-") != -1) {
                     if (dupResult.getAccessionNumber().substring(0, dupResult.getAccessionNumber().indexOf("-")).equals(acc)) {
-                        //olis match
+                        //olis1 match
                         //if(h.getHealthNum().equals(dupResult.getHealthNumber())) {
                         OscarAuditLogger.getInstance().log(loggedInInfo, "Lab", "Skip", "Duplicate lab skipped - accession " + acc + "\n" + msg);
                         return true;

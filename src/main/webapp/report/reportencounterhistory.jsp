@@ -39,13 +39,13 @@
     }
 %>
 
-<%@ page import="java.util.*, java.sql.*, oscar.*,java.net.*" errorPage="../errorpage.jsp" %>
+<%@ page import="java.util.*, java.sql.*, ca.openosp.*,java.net.*" errorPage="../errorpage.jsp" %>
 
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
-<%@ page import="org.oscarehr.common.dao.EncounterDao" %>
-<%@ page import="org.oscarehr.common.model.Encounter" %>
-<%@ page import="org.oscarehr.common.dao.DemographicDao" %>
-<%@ page import="org.oscarehr.common.model.Demographic" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.commn.dao.EncounterDao" %>
+<%@ page import="ca.openosp.openo.commn.model.Encounter" %>
+<%@ page import="ca.openosp.openo.commn.dao.DemographicDao" %>
+<%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 
 <%

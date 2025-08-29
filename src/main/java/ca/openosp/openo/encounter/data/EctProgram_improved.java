@@ -6,11 +6,12 @@
 
 package ca.openosp.openo.encounter.data;
 
-import org.oscarehr.PMmodule.dao.ProgramDao;
-import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
-import org.oscarehr.PMmodule.model.Program;
-import org.oscarehr.PMmodule.model.ProgramProvider;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.PMmodule.dao.ProgramDao;
+import ca.openosp.openo.PMmodule.dao.ProgramProviderDAO;
+import ca.openosp.openo.PMmodule.model.Program;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -19,7 +20,7 @@ import java.util.List;
 
 /**
  * Improved implementation that properly defaults to the OSCAR program
- * when no specific program is configured for a provider
+ * when no specific program is configured for a providers
  */
 public class EctProgram_improved {
     private HttpSession se;
@@ -33,24 +34,24 @@ public class EctProgram_improved {
     }
 
     /**
-     * Gets the program ID for a provider.
+     * Gets the program ID for a providers.
      * 
      * This improved implementation:
-     * 1. First checks if the provider has an assigned program
+     * 1. First checks if the providers has an assigned program
      * 2. Falls back to the OSCAR program if it exists
      * 3. Only returns "0" if no OSCAR program exists (backwards compatibility)
      * 
-     * @param providerNo The provider number
+     * @param providerNo The providers number
      * @return The program ID as a string
      */
     public String getProgram(String providerNo) {
         try {
-            // First check if provider has an assigned program
+            // First check if providers has an assigned program
             ProgramProviderDAO programProviderDao = SpringUtils.getBean(ProgramProviderDAO.class);
             if (providerNo != null && !providerNo.trim().isEmpty()) {
                 List<ProgramProvider> programProviders = programProviderDao.getProgramProviderByProviderNo(providerNo);
                 if (programProviders != null && !programProviders.isEmpty()) {
-                    // Return the first active program for this provider
+                    // Return the first active program for this providers
                     for (ProgramProvider pp : programProviders) {
                         if (pp.getProgramId() != null) {
                             return String.valueOf(pp.getProgramId());
@@ -59,12 +60,12 @@ public class EctProgram_improved {
                 }
             }
             
-            // No provider-specific program found, default to OSCAR program
+            // No providers-specific program found, default to OSCAR program
             return getOscarProgramId();
             
         } catch (Exception e) {
             // Log error and return OSCAR program ID or "0" as fallback
-            org.oscarehr.utility.MiscUtils.getLogger().error("Error getting program for provider " + providerNo, e);
+            MiscUtils.getLogger().error("Error getting program for providers " + providerNo, e);
             return getOscarProgramId();
         }
     }
@@ -88,7 +89,7 @@ public class EctProgram_improved {
                 return cachedOscarProgramId;
             }
         } catch (Exception e) {
-            org.oscarehr.utility.MiscUtils.getLogger().error("Error getting OSCAR program", e);
+            MiscUtils.getLogger().error("Error getting OSCAR program", e);
         }
         
         // Fallback to "0" for backwards compatibility

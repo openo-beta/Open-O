@@ -91,7 +91,7 @@
 
 <tag>
   <name>newTickler</name>
-  <tagclass>ca.openosp.openo.oscarTickler.tld.TicklerTag</tagclass>
+  <tagclass>ca.openosp.openo.tickler.tld.TicklerTag</tagclass>
   <bodycontent>jsp</bodycontent>
   <attribute>
     <name>providerNo</name>
@@ -151,7 +151,7 @@
 
 <tag>
   <name>customInterface</name>
-  <tagclass>org.oscarehr.utility.CustomInterfaceTag</tagclass>
+  <tagclass>ca.openosp.openo.utility.CustomInterfaceTag</tagclass>
   <bodycontent>empty</bodycontent>
   <attribute>
     <name>section</name>

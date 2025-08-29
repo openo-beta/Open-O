@@ -38,10 +38,10 @@
     }
 %>
 
-<%@ page import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, java.net.*,oscar.MyDateFormat"
+<%@ page import="java.math.*, java.util.*, java.io.*, java.sql.*, ca.openosp.*, java.net.*,ca.openosp.MyDateFormat"
          errorPage="/errorpage.jsp" %>
-<%@page import="org.oscarehr.utility.MiscUtils" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.dao.TeleplanS00Dao" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.model.TeleplanS00" %>
 

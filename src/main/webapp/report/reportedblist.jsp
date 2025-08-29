@@ -51,17 +51,17 @@
     if (request.getParameter("startDate") != null) startDate = request.getParameter("startDate");
     if (request.getParameter("endDate") != null) endDate = request.getParameter("endDate");
 %>
-<%@ page import="java.util.*, java.sql.*, oscar.*"
+<%@ page import="java.util.*, java.sql.*, ca.openosp.*"
          errorPage="../errorpage.jsp" %>
 
-<jsp:useBean id="providerNameBean" class="oscar.Dict" scope="page"/>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
-<%@ page import="org.oscarehr.common.model.ReportTemp" %>
-<%@ page import="org.oscarehr.common.dao.ReportTempDao" %>
-<%@ page import="org.oscarehr.common.model.Provider" %>
-<%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@ page import="org.oscarehr.common.model.Form" %>
-<%@ page import="org.oscarehr.common.dao.FormDao" %>
+<jsp:useBean id="providerNameBean" class="ca.openosp.Dict" scope="page"/>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.commn.model.ReportTemp" %>
+<%@ page import="ca.openosp.openo.commn.dao.ReportTempDao" %>
+<%@ page import="ca.openosp.openo.commn.model.Provider" %>
+<%@ page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
+<%@ page import="ca.openosp.openo.commn.model.Form" %>
+<%@ page import="ca.openosp.openo.commn.dao.FormDao" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%
     ReportTempDao reportTempDao = SpringUtils.getBean(ReportTempDao.class);
@@ -144,7 +144,7 @@
                     param2[4] = curUser_no;
 
                     ReportTemp temp = new ReportTemp();
-                    temp.setId(new org.oscarehr.common.model.ReportTempPK());
+                    temp.setId(new ca.openosp.openo.commn.model.ReportTempPK());
                     temp.getId().setDemographicNo(f1.getDemographicNo());
                     temp.getId().setEdb(MyDateFormat.getSysDate(param2[0]));
                     temp.setDemoName(param2[1]);

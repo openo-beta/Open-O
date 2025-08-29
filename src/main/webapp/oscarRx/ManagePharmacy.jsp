@@ -27,9 +27,9 @@
 
 
 <%@ page
-        import="oscar.oscarRx.pageUtil.*,oscar.oscarRx.data.*,java.util.*" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPharmacyData" %>
+        import="ca.openosp.openo.rx.pageUtil.*,ca.openosp.openo.rx.data.*,java.util.*" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPharmacyData" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>

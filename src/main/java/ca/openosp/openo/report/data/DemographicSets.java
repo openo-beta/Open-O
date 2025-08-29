@@ -31,8 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.oscarehr.common.dao.DemographicSetsDao;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.DemographicSetsDao;
+import ca.openosp.openo.utility.SpringUtils;
 
 /**
  * @author Jay Gallagher
@@ -62,7 +62,7 @@ public class DemographicSets {
 
         for (int i = 0; i < demoList.size(); i++) {
             String demographicNo = demoList.get(i);
-            org.oscarehr.common.model.DemographicSets ds = new org.oscarehr.common.model.DemographicSets();
+            ca.openosp.openo.commn.model.DemographicSets ds = new ca.openosp.openo.commn.model.DemographicSets();
             ds.setName(setName);
             ds.setDemographicNo(Integer.parseInt(demographicNo));
             ds.setArchive("0");
@@ -74,8 +74,8 @@ public class DemographicSets {
 
     public List<String> getDemographicSet(String setName) {
         List<String> retval = new ArrayList<String>();
-        List<org.oscarehr.common.model.DemographicSets> dss = demographicSetsDao.findBySetName(setName);
-        for (org.oscarehr.common.model.DemographicSets ds : dss) {
+        List<ca.openosp.openo.commn.model.DemographicSets> dss = demographicSetsDao.findBySetName(setName);
+        for (ca.openosp.openo.commn.model.DemographicSets ds : dss) {
             retval.add(String.valueOf(ds.getDemographicNo()));
         }
         return retval;
@@ -84,8 +84,8 @@ public class DemographicSets {
     public List<String> getDemographicSet(List<String> setNames) {
         List<String> retval = new ArrayList<String>();
 
-        List<org.oscarehr.common.model.DemographicSets> dss = demographicSetsDao.findBySetNames(setNames);
-        for (org.oscarehr.common.model.DemographicSets ds : dss) {
+        List<ca.openosp.openo.commn.model.DemographicSets> dss = demographicSetsDao.findBySetNames(setNames);
+        for (ca.openosp.openo.commn.model.DemographicSets ds : dss) {
             retval.add(String.valueOf(ds.getDemographicNo()));
         }
 
@@ -95,8 +95,8 @@ public class DemographicSets {
     public List<Map<String, String>> getDemographicSetExt(String setName) {
         List<Map<String, String>> retval = new ArrayList<Map<String, String>>();
 
-        List<org.oscarehr.common.model.DemographicSets> dss = demographicSetsDao.findBySetName(setName);
-        for (org.oscarehr.common.model.DemographicSets ds : dss) {
+        List<ca.openosp.openo.commn.model.DemographicSets> dss = demographicSetsDao.findBySetName(setName);
+        for (ca.openosp.openo.commn.model.DemographicSets ds : dss) {
             Map<String, String> h = new HashMap<String, String>();
             h.put("demographic_no", String.valueOf(ds.getDemographicNo()));
             String el = ds.getEligibility();
@@ -113,8 +113,8 @@ public class DemographicSets {
 
     public List<String> getIneligibleDemographicSet(String setName) {
         List<String> retval = new ArrayList<String>();
-        List<org.oscarehr.common.model.DemographicSets> dss = demographicSetsDao.findBySetNameAndEligibility(setName, "1");
-        for (org.oscarehr.common.model.DemographicSets ds : dss) {
+        List<ca.openosp.openo.commn.model.DemographicSets> dss = demographicSetsDao.findBySetNameAndEligibility(setName, "1");
+        for (ca.openosp.openo.commn.model.DemographicSets ds : dss) {
             retval.add(String.valueOf(ds.getDemographicNo()));
         }
         return retval;
@@ -122,8 +122,8 @@ public class DemographicSets {
 
     public List<String> getEligibleDemographicSet(String setName) {
         List<String> retval = new ArrayList<String>();
-        List<org.oscarehr.common.model.DemographicSets> dss = demographicSetsDao.findBySetNameAndEligibility(setName, "0");
-        for (org.oscarehr.common.model.DemographicSets ds : dss) {
+        List<ca.openosp.openo.commn.model.DemographicSets> dss = demographicSetsDao.findBySetNameAndEligibility(setName, "0");
+        for (ca.openosp.openo.commn.model.DemographicSets ds : dss) {
             retval.add(String.valueOf(ds.getDemographicNo()));
         }
         return retval;
@@ -132,8 +132,8 @@ public class DemographicSets {
 
     public List<String> setDemographicIneligible(String setName, String demoNo) {
         List<String> retval = new ArrayList<String>();
-        List<org.oscarehr.common.model.DemographicSets> dss = demographicSetsDao.findBySetNameAndDemographicNo(setName, Integer.parseInt(demoNo));
-        for (org.oscarehr.common.model.DemographicSets ds : dss) {
+        List<ca.openosp.openo.commn.model.DemographicSets> dss = demographicSetsDao.findBySetNameAndDemographicNo(setName, Integer.parseInt(demoNo));
+        for (ca.openosp.openo.commn.model.DemographicSets ds : dss) {
             ds.setEligibility("1");
             demographicSetsDao.merge(ds);
         }
@@ -142,8 +142,8 @@ public class DemographicSets {
 
     public List<String> setDemographicDelete(String setName, String demoNo) {
         List<String> retval = new ArrayList<String>();
-        List<org.oscarehr.common.model.DemographicSets> dss = demographicSetsDao.findBySetNameAndDemographicNo(setName, Integer.parseInt(demoNo));
-        for (org.oscarehr.common.model.DemographicSets ds : dss) {
+        List<ca.openosp.openo.commn.model.DemographicSets> dss = demographicSetsDao.findBySetNameAndDemographicNo(setName, Integer.parseInt(demoNo));
+        for (ca.openosp.openo.commn.model.DemographicSets ds : dss) {
             ds.setArchive("1");
             demographicSetsDao.merge(ds);
         }

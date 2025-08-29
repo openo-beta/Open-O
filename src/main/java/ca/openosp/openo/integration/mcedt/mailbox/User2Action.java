@@ -24,13 +24,14 @@
  */
 package ca.openosp.openo.integration.mcedt.mailbox;
 
+import ca.openosp.openo.utility.MiscUtils;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.common.dao.UserPropertyDAO;
-import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.utility.SpringUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.commn.dao.UserPropertyDAO;
+import ca.openosp.openo.commn.model.UserProperty;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.OscarProperties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,7 +40,7 @@ public class User2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static Logger logger = MiscUtils.getLogger();
     private UserPropertyDAO userPropertyDAO = SpringUtils.getBean(UserPropertyDAO.class);
 
     @Override

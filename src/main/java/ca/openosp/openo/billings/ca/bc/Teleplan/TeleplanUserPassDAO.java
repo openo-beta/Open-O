@@ -29,11 +29,11 @@ package ca.openosp.openo.billings.ca.bc.Teleplan;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.PropertyDao;
-import org.oscarehr.common.model.Property;
-import org.oscarehr.utility.EncryptionUtils;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.PropertyDao;
+import ca.openosp.openo.commn.model.Property;
+import ca.openosp.openo.utility.EncryptionUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 /**
  * Deals with storing the teleplan sequence #

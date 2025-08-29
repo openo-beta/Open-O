@@ -26,7 +26,7 @@ package ca.openosp.openo.app;
 
 import org.owasp.csrfguard.log.JavaLogger;
 import org.owasp.csrfguard.log.LogLevel;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 import java.io.File;
 import java.io.IOException;

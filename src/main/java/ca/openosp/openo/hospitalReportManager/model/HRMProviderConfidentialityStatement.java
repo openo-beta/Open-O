@@ -12,7 +12,7 @@ package ca.openosp.openo.hospitalReportManager.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import org.oscarehr.common.model.AbstractModel;
+import ca.openosp.openo.commn.model.AbstractModel;
 
 @Entity
 public class HRMProviderConfidentialityStatement extends AbstractModel<String> {

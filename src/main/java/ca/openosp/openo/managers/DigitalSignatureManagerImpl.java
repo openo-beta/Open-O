@@ -22,12 +22,12 @@
 
 package ca.openosp.openo.managers;
 
-import org.oscarehr.common.dao.DigitalSignatureDao;
-import org.oscarehr.common.model.DigitalSignature;
-import org.oscarehr.common.model.enumerator.ModuleType;
-import org.oscarehr.utility.DigitalSignatureUtils;
-import org.oscarehr.utility.EncryptionUtils;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.dao.DigitalSignatureDao;
+import ca.openosp.openo.commn.model.DigitalSignature;
+import ca.openosp.openo.commn.model.enumerator.ModuleType;
+import ca.openosp.openo.utility.DigitalSignatureUtils;
+import ca.openosp.openo.utility.EncryptionUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

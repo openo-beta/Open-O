@@ -30,7 +30,7 @@
 %>
 
 <%@ page
-        import="java.util.*,oscar.oscarReport.reportByTemplate.*,java.sql.*, org.apache.commons.lang.StringEscapeUtils" %>
+        import="java.util.*,ca.openosp.openo.report.reportByTemplate.*,java.sql.*, org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.report.reportByTemplate.ReportObjectGeneric" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

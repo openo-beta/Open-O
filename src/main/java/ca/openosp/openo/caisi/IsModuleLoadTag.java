@@ -26,7 +26,7 @@ package ca.openosp.openo.caisi;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 public class IsModuleLoadTag extends TagSupport {
 

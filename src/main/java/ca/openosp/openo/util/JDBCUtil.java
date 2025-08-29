@@ -41,9 +41,10 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import ca.openosp.Misc;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.xerces.parsers.DOMParser;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -70,7 +71,7 @@ public class JDBCUtil {
 
             for (int i = 1; i <= colCount; i++) {
                 String columnName = StringEscapeUtils.escapeXml(rsmd.getColumnName(i));
-                String value = StringEscapeUtils.escapeXml(oscar.Misc.getString(rs, i));
+                String value = StringEscapeUtils.escapeXml(Misc.getString(rs, i));
 
                 Element node = doc.createElement(columnName);
                 node.appendChild(doc.createTextNode(value));

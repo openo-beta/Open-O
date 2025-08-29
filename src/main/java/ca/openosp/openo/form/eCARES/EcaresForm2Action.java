@@ -32,9 +32,9 @@ import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.managers.FormeCARESManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.managers.constants.Constants;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.form.JSONUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -64,7 +64,7 @@ public class EcaresForm2Action extends ActionSupport {
         Integer demographicNo = demographicNumberToInteger(request);
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, demographicNo)) {
-            throw new SecurityException("missing required security object (_form)");
+            throw new SecurityException("missing required sec object (_form)");
         }
 
         if (demographicNo != null) {

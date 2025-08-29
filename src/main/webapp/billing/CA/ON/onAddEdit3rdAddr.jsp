@@ -25,8 +25,8 @@
 
 %>
 <%@ page errorPage="../../../appointment/errorpage.jsp"
-         import="java.util.*,java.sql.*,oscar.*,java.text.*,java.net.*" %>
-<%@ page import="oscar.oscarBilling.ca.on.data.*" %>
+         import="java.util.*,java.sql.*,ca.openosp.*,java.text.*,java.net.*" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.data.*" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.data.JdbcBilling3rdPartImpl" %>
 <% //

@@ -38,14 +38,14 @@ import ca.openosp.openo.decisionSupport.model.DSConsequence;
 import ca.openosp.openo.decisionSupport.model.DSGuideline;
 import ca.openosp.openo.decisionSupport.model.DSGuidelineFactory;
 import ca.openosp.openo.decisionSupport.model.DecisionSupportException;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 /**
  * Class used to Manage BillingGuidelines.
@@ -189,8 +189,8 @@ public class BillingGuidelines {
         if (demographicNo == null) {
             return new ArrayList<DSConsequence>();
         }
-        log.debug("passed in provider: " + providerNo + " demographicNo" + demographicNo);
-        log.debug("Decision Support 'evaluateAndGetConsequences' has been called, reading " + billingGuideLines.size() + " for this provider");
+        log.debug("passed in providers: " + providerNo + " demographicNo" + demographicNo);
+        log.debug("Decision Support 'evaluateAndGetConsequences' has been called, reading " + billingGuideLines.size() + " for this providers");
         ArrayList<DSConsequence> allResultingConsequences = new ArrayList<DSConsequence>();
         for (DSGuideline dsGuideline : billingGuideLines) {
             try {

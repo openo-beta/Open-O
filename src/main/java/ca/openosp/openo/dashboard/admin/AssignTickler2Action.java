@@ -29,17 +29,17 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.Tickler;
-import org.oscarehr.common.model.TicklerCategory;
-import org.oscarehr.common.model.TicklerTextSuggest;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.Tickler;
+import ca.openosp.openo.commn.model.TicklerCategory;
+import ca.openosp.openo.commn.model.TicklerTextSuggest;
 import ca.openosp.openo.dashboard.handler.TicklerHandler;
 import ca.openosp.openo.managers.ProviderManager2;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.managers.TicklerManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import net.sf.json.JSONObject;
 

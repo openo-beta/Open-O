@@ -23,7 +23,7 @@ import java.util.Date;
 
 import ca.openosp.openo.billing.CA.ON.dao.BillingONProcDao;
 import ca.openosp.openo.billing.CA.ON.model.BillingONProc;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class JdbcBillingLog {
 

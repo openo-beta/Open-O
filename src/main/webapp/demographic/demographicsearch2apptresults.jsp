@@ -48,11 +48,11 @@
 
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
-<%@page import="org.oscarehr.utility.MiscUtils" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.caisi_integrator.ws.CachedProvider" %>
 <%@page import="ca.openosp.openo.caisi_integrator.ws.FacilityIdStringCompositePk" %>
-<%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
+<%@page import="ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
 <%@page import="org.apache.commons.lang.time.DateFormatUtils" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%@page import="ca.openosp.openo.util.DateUtils" %>
@@ -60,14 +60,16 @@
 <%@page import="ca.openosp.openo.caisi_integrator.ws.MatchingDemographicTransferScore" %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
 
-<%@ page import="java.util.*, java.sql.*,java.net.*, oscar.*" errorPage="/errorpage.jsp" %>
+<%@ page import="java.util.*, java.sql.*,java.net.*, ca.openosp.*" errorPage="/errorpage.jsp" %>
 
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.common.model.Demographic" %>
-<%@page import="org.oscarehr.common.dao.DemographicDao" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicMerged" %>
-<%@page import="org.oscarehr.common.dao.OscarLogDao" %>
+<%@page import="ca.openosp.openo.commn.dao.OscarLogDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.Misc" %>
+<%@ page import="ca.openosp.OscarProperties" %>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
 
 <%
@@ -402,7 +404,7 @@
 
                 <%
                     String ptstatus = request.getParameter("ptstatus") == null ? "active" : request.getParameter("ptstatus");
-                    org.oscarehr.utility.MiscUtils.getLogger().debug("PSTATUS " + ptstatus);
+                    ca.openosp.openo.utility.MiscUtils.getLogger().debug("PSTATUS " + ptstatus);
 
                     int rowCounter = 0;
                     String bgColor = rowCounter % 2 == 0 ? "#EEEEFF" : "white";
@@ -570,7 +572,7 @@
                             providerPk.setIntegratorFacilityId(demographicTransfer.getIntegratorFacilityId());
                             providerPk.setCaisiItemId(demographicTransfer.getCaisiProviderId());
                             CachedProvider cachedProvider = CaisiIntegratorManager.getProvider(loggedInInfo, loggedInInfo.getCurrentFacility(), providerPk);
-                            MiscUtils.getLogger().debug("Cached provider, pk=" + providerPk.getIntegratorFacilityId() + "," + providerPk.getCaisiItemId() + ", cachedProvider=" + cachedProvider);
+                            MiscUtils.getLogger().debug("Cached providers, pk=" + providerPk.getIntegratorFacilityId() + "," + providerPk.getCaisiItemId() + ", cachedProvider=" + cachedProvider);
 
                             String providerName = "";
 

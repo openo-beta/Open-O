@@ -28,17 +28,17 @@ import java.io.InputStream;
 import java.util.Vector;
 
 import org.apache.commons.digester.Digester;
-import org.oscarehr.common.dao.MeasurementTypeDao;
-import org.oscarehr.common.model.MeasurementType;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.MeasurementTypeDao;
+import ca.openosp.openo.commn.model.MeasurementType;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctValidationsBean;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctValidationsBeanHandler;
 import ca.openosp.openo.encounter.oscarMeasurements.prop.EctFormProp;
 
-//import com.ibatis.common.resources.Resources;
+//import com.ibatis.commons.resources.Resources;
 /*
  * Author: Ivy Chan
  * Company: iConcept Technologes Inc.

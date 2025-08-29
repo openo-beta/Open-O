@@ -24,7 +24,7 @@
 
 --%>
 
-<%@ page import="ca.openosp.openo.oscarDxResearch.util.dxResearchCodingSystem" %>
+<%@ page import="ca.openosp.openo.dxresearch.util.dxResearchCodingSystem" %>
 <%@ page import="ca.openosp.openo.services.security.SecurityManager" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>

@@ -31,13 +31,13 @@ import org.apache.commons.lang.StringUtils;
 import org.hl7.fhir.dstu3.model.BooleanType;
 import org.hl7.fhir.dstu3.model.Immunization.ImmunizationStatus;
 import org.hl7.fhir.dstu3.model.Reference;
-import org.oscarehr.common.dao.CVCImmunizationDao;
-import org.oscarehr.common.model.AbstractModel;
-import org.oscarehr.common.model.CVCImmunization;
-import org.oscarehr.common.model.Prevention;
+import ca.openosp.openo.commn.dao.CVCImmunizationDao;
+import ca.openosp.openo.commn.model.AbstractModel;
+import ca.openosp.openo.commn.model.CVCImmunization;
+import ca.openosp.openo.commn.model.Prevention;
 import ca.openosp.openo.integration.fhir.interfaces.ImmunizationInterface;
 import ca.openosp.openo.integration.fhir.manager.OscarFhirConfigurationManager;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 
 /*
@@ -483,7 +483,7 @@ public class Immunization<T extends AbstractModel<Integer> & ImmunizationInterfa
      * information from the person who administered the vaccine.
      */
     private void setReportOrigin(org.hl7.fhir.dstu3.model.Immunization immunization) {
-        String provider = "provider";
+        String provider = "providers";
         String display = "other";
 
         if (include(OptionalFHIRAttribute.dateIsEstimated)) {
@@ -492,7 +492,7 @@ public class Immunization<T extends AbstractModel<Integer> & ImmunizationInterfa
             }
         }
 
-        if ("provider".equals(provider) && !StringUtils.isEmpty(getOscarResource().getProviderName())) {
+        if ("providers".equals(provider) && !StringUtils.isEmpty(getOscarResource().getProviderName())) {
             display = getOscarResource().getProviderName();
         }
 
@@ -503,8 +503,8 @@ public class Immunization<T extends AbstractModel<Integer> & ImmunizationInterfa
     }
 
     /**
-     * All practitioners added here are ALWAYS the administering provider.
-     * This is the provider that gave the immunization.
+     * All practitioners added here are ALWAYS the administering providers.
+     * This is the providers that gave the immunization.
      */
     public void addPerformingPractitioner(Reference reference) {
         getFhirResource().addPractitioner()
@@ -517,7 +517,7 @@ public class Immunization<T extends AbstractModel<Integer> & ImmunizationInterfa
 
     /**
      * This will add a reference link to any involved practitioner.
-     * Not to be confused with administering provider.
+     * Not to be confused with administering providers.
      */
     public void addPractitioner(Reference reference) {
         getFhirResource().addPractitioner().setActor(reference);

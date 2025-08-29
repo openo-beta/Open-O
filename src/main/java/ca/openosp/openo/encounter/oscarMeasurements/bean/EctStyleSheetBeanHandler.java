@@ -31,9 +31,9 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.commons.beanutils.BeanComparator;
-import org.oscarehr.common.dao.MeasurementCSSLocationDao;
-import org.oscarehr.common.model.MeasurementCSSLocation;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.MeasurementCSSLocationDao;
+import ca.openosp.openo.commn.model.MeasurementCSSLocation;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class EctStyleSheetBeanHandler {
 

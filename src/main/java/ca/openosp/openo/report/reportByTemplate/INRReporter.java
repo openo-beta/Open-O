@@ -28,12 +28,12 @@ import java.sql.ResultSet;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.oscarehr.common.dao.DxresearchDAO;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.Dxresearch;
-import org.oscarehr.common.model.Measurement;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.DxresearchDAO;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.Dxresearch;
+import ca.openosp.openo.commn.model.Measurement;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 

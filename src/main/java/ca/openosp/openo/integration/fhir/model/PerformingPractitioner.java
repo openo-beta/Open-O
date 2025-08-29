@@ -24,7 +24,7 @@ package ca.openosp.openo.integration.fhir.model;
  * Ontario, Canada
  */
 
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.integration.fhir.manager.OscarFhirConfigurationManager;
 import ca.openosp.openo.integration.fhir.resources.constants.ActorType;
 

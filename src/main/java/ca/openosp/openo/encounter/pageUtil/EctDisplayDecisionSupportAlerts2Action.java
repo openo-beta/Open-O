@@ -42,19 +42,19 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.DxresearchDAO;
-import org.oscarehr.common.model.Dxresearch;
+import ca.openosp.openo.commn.dao.DxresearchDAO;
+import ca.openosp.openo.commn.model.Dxresearch;
 import ca.openosp.openo.decisionSupport.model.DSConsequence;
 import ca.openosp.openo.decisionSupport.model.DSGuideline;
 import ca.openosp.openo.decisionSupport.service.DSService;
 import ca.openosp.openo.renal.CkdScreener;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.util.OscarRoleObjectPrivilege;
 import ca.openosp.openo.util.StringUtils;
 

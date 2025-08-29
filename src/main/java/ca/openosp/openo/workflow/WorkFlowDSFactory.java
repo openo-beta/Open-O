@@ -32,9 +32,9 @@ import java.net.URL;
 
 import org.drools.RuleBase;
 import org.drools.io.RuleBaseLoader;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 /**
  * @author jay

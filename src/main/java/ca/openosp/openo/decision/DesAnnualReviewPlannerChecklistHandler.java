@@ -29,7 +29,7 @@ package ca.openosp.openo.decision;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;

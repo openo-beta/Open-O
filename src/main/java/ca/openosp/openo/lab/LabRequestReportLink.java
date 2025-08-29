@@ -30,10 +30,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.oscarehr.common.dao.LabRequestReportLinkDao;
-import org.oscarehr.common.dao.MeasurementsExtDao;
-import org.oscarehr.common.model.MeasurementsExt;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.LabRequestReportLinkDao;
+import ca.openosp.openo.commn.dao.MeasurementsExtDao;
+import ca.openosp.openo.commn.model.MeasurementsExt;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 import ca.openosp.openo.util.StringUtils;
@@ -46,8 +46,8 @@ public class LabRequestReportLink {
     public static HashMap<String, Object> getLinkByReport(String reportTable, Long reportId) {
         HashMap<String, Object> link = new HashMap<String, Object>();
 
-        List<org.oscarehr.common.model.LabRequestReportLink> results = dao.findByReportTableAndReportId(reportTable, reportId.intValue());
-        for (org.oscarehr.common.model.LabRequestReportLink l : results) {
+        List<ca.openosp.openo.commn.model.LabRequestReportLink> results = dao.findByReportTableAndReportId(reportTable, reportId.intValue());
+        for (ca.openosp.openo.commn.model.LabRequestReportLink l : results) {
             link.put("id", l.getId().longValue());
             link.put("request_table", l.getRequestTable());
             link.put("request_id", Long.valueOf(l.getRequestId()));
@@ -63,8 +63,8 @@ public class LabRequestReportLink {
     public static HashMap<String, Object> getLinkByRequestId(String requestTable, Long reqId) {
         HashMap<String, Object> link = new HashMap<String, Object>();
 
-        List<org.oscarehr.common.model.LabRequestReportLink> results = dao.findByRequestTableAndRequestId(requestTable, reqId.intValue());
-        for (org.oscarehr.common.model.LabRequestReportLink l : results) {
+        List<ca.openosp.openo.commn.model.LabRequestReportLink> results = dao.findByRequestTableAndRequestId(requestTable, reqId.intValue());
+        for (ca.openosp.openo.commn.model.LabRequestReportLink l : results) {
             link.put("id", l.getId().longValue());
             link.put("request_table", l.getRequestTable());
             link.put("request_id", Long.valueOf(l.getRequestId()));
@@ -78,7 +78,7 @@ public class LabRequestReportLink {
 
     public static String getRequestDate(String id) {
         Date requestDate = null;
-        org.oscarehr.common.model.LabRequestReportLink l = dao.find(Integer.parseInt(id));
+        ca.openosp.openo.commn.model.LabRequestReportLink l = dao.find(Integer.parseInt(id));
         if (l != null) {
             requestDate = l.getRequestDate();
         }
@@ -102,7 +102,7 @@ public class LabRequestReportLink {
         if (StringUtils.empty(reportTable) || reportId == null) return;
         if (StringUtils.empty(requestDate)) requestDate = null;
 
-        org.oscarehr.common.model.LabRequestReportLink l = new org.oscarehr.common.model.LabRequestReportLink();
+        ca.openosp.openo.commn.model.LabRequestReportLink l = new ca.openosp.openo.commn.model.LabRequestReportLink();
         l.setRequestTable(requestTable);
         l.setRequestId(requestId == null ? null : requestId.intValue());
         l.setRequestDate(ConversionUtils.fromDateString(requestDate));
@@ -119,7 +119,7 @@ public class LabRequestReportLink {
     }
 
     public static void delete(String reportTable, Long reportId) {
-        for (org.oscarehr.common.model.LabRequestReportLink link : dao.findByReportTableAndReportId(reportTable, reportId.intValue())) {
+        for (ca.openosp.openo.commn.model.LabRequestReportLink link : dao.findByReportTableAndReportId(reportTable, reportId.intValue())) {
             dao.remove(link.getId());
         }
     }
@@ -127,7 +127,7 @@ public class LabRequestReportLink {
     public static void update(Long id, String requestTable, Long requestId, String requestDate) {
         if (id == null) return;
 
-        org.oscarehr.common.model.LabRequestReportLink l = dao.find(id.intValue());
+        ca.openosp.openo.commn.model.LabRequestReportLink l = dao.find(id.intValue());
         if (l != null) {
             l.setRequestTable(requestTable);
             l.setRequestId(requestId.intValue());

@@ -34,23 +34,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ca.openosp.openo.commn.model.Demographic;
 import org.apache.logging.log4j.Logger;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-import org.oscarehr.common.dao.CVCImmunizationDao;
-import org.oscarehr.common.dao.CVCMappingDao;
-import org.oscarehr.common.dao.CVCMedicationDao;
-import org.oscarehr.common.model.CVCImmunization;
-import org.oscarehr.common.model.CVCMapping;
+import ca.openosp.openo.commn.dao.CVCImmunizationDao;
+import ca.openosp.openo.commn.dao.CVCMappingDao;
+import ca.openosp.openo.commn.dao.CVCMedicationDao;
+import ca.openosp.openo.commn.model.CVCImmunization;
+import ca.openosp.openo.commn.model.CVCMapping;
 import ca.openosp.openo.managers.CanadianVaccineCatalogueManager;
 import ca.openosp.openo.managers.PreventionManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.demographic.data.DemographicData;
 
 public class PreventionDisplayConfig {
@@ -245,7 +246,7 @@ public class PreventionDisplayConfig {
         String display = "style=\"display:none;\"";
         DemographicData dData = new DemographicData();
         log.debug("demoage " + Demographic_no);
-        org.oscarehr.common.model.Demographic demograph = dData.getDemographic(loggedInInfo, Demographic_no);
+        Demographic demograph = dData.getDemographic(loggedInInfo, Demographic_no);
         try {
             String minAgeStr = (String) setHash.get("minAge");
             String maxAgeStr = (String) setHash.get("maxAge");
@@ -302,7 +303,7 @@ public class PreventionDisplayConfig {
         PreventionManager preventionManager = SpringUtils.getBean(PreventionManager.class);
         DemographicData dData = new DemographicData();
         log.debug("demoage " + Demographic_no);
-        org.oscarehr.common.model.Demographic demograph = dData.getDemographic(loggedInInfo, Demographic_no);
+        Demographic demograph = dData.getDemographic(loggedInInfo, Demographic_no);
         try {
             if (preventionManager.hideItem(setHash.get("name")) && numberOfPrevs == 0) {
                 //move to hidden list

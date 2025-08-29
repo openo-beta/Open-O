@@ -25,9 +25,9 @@
 
 package ca.openosp.openo.messenger.pageUtil;
 
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class MsgSessionBean implements java.io.Serializable {
 

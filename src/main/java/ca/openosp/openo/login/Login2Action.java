@@ -25,27 +25,28 @@
 
 package ca.openosp.openo.login;
 
+import ca.openosp.openo.commn.IsPropertiesOn;
+import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.commn.model.*;
+import ca.openosp.openo.utility.*;
 import com.opensymphony.xwork2.ActionSupport;
 import ca.openosp.openo.model.security.LdapSecurity;
 import net.sf.json.JSONObject;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.jboss.aerogear.security.otp.Totp;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.PMmodule.service.ProviderManager;
-import org.oscarehr.PMmodule.web.utils.UserRoleUtils;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.model.*;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.service.ProviderManager;
+import ca.openosp.openo.PMmodule.web.utils.UserRoleUtils;
 import ca.openosp.openo.decisionSupport.service.DSService;
 import ca.openosp.openo.managers.AppManager;
 import ca.openosp.openo.managers.MfaManager;
 import ca.openosp.openo.managers.SecurityManager;
 import ca.openosp.openo.managers.UserSessionManager;
-import org.oscarehr.utility.*;
 import org.owasp.encoder.Encode;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.util.AlertTimer;
@@ -121,7 +122,7 @@ public final class Login2Action extends ActionSupport {
         LoginCheckLogin cl;
         
         // Check if this is MFA validation flow
-        boolean isMfaVerifyFlow = (code != null && !code.isEmpty());
+        boolean isMfaVerifyFlow = (this.code != null && !this.code.isEmpty());
         
         if (isMfaVerifyFlow) {
             cl = request.getSession().getAttribute("cl") == null ? new LoginCheckLogin()
@@ -129,7 +130,7 @@ public final class Login2Action extends ActionSupport {
             
             // Handle MFA validation
             Object mfaSecret;
-            if (mfaRegistrationFlow) {
+            if (this.mfaRegistrationFlow) {
                 mfaSecret = request.getSession().getAttribute("mfaSecret").toString();
             } else {
                 Security security = cl.getSecurity();
@@ -143,8 +144,8 @@ public final class Login2Action extends ActionSupport {
             
             Totp totp = new Totp(mfaSecret.toString());
             
-            if (totp.verify(code)) {
-                if (mfaRegistrationFlow) {
+            if (totp.verify(this.code)) {
+                if (this.mfaRegistrationFlow) {
                     Security security = cl.getSecurity();
                     LoggedInInfo loggedInInfo = LoggedInUserFilter.generateLoggedInInfoFromSession(request);
                     try {
@@ -156,7 +157,7 @@ public final class Login2Action extends ActionSupport {
                 // Continue with post-authentication flow after successful MFA
                 return resumePostAuthenticationFlow(cl, ip, isMobileOptimized, submitType, ajaxResponse);
             } else {
-                if (mfaRegistrationFlow) {
+                if (this.mfaRegistrationFlow) {
                     request.setAttribute("mfaRegistrationRequired", true);
                     request.setAttribute("qrData", this.mfaManager.getQRCodeImageData(cl.getSecurity().getId(), mfaSecret.toString()));
                 }
@@ -323,7 +324,7 @@ public final class Login2Action extends ActionSupport {
         // >> 5. Successful Login Handling
         if (strAuth != null && strAuth.length != 1) { // login successfully
 
-            // is the provider record inactive?
+            // is the providers record inactive?
             Provider p = providerDao.getProvider(strAuth[0]);
             if (p == null || (p.getStatus() != null && p.getStatus().equals("0"))) {
                 logger.info(LOG_PRE + " Inactive: " + userName);
@@ -403,7 +404,7 @@ public final class Login2Action extends ActionSupport {
                     securityDao.updateOneIdKey(securityRecord);
                     session.setAttribute("oneIdEmail", oneIdEmail);
                 } else {
-                    logger.error("The account for provider number " + providerNumber
+                    logger.error("The account for providers number " + providerNumber
                             + " already has a ONE ID key associated with it");
                     return "error";
                 }
@@ -462,7 +463,7 @@ public final class Login2Action extends ActionSupport {
             }
 
             // Continue with the rest of authentication flow
-            // initiate security manager
+            // initiate sec manager
             String default_pmm = null;
 
             // get preferences from preference table
@@ -473,7 +474,7 @@ public final class Login2Action extends ActionSupport {
 
             session.setAttribute(SessionConstants.LOGGED_IN_PROVIDER_PREFERENCE, providerPreference);
 
-            if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable()) {
+            if (IsPropertiesOn.isCaisiEnable()) {
                 String tklerProviderNo = null;
                 UserProperty prop = propDao.getProp(providerNo, UserProperty.PROVIDER_FOR_TICKLER_WARNING);
                 if (prop == null) {
@@ -736,7 +737,7 @@ public final class Login2Action extends ActionSupport {
     }
 
     /**
-     * get the security record based on the username
+     * get the sec record based on the username
      *
      * @param username
      * @return

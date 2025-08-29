@@ -23,13 +23,14 @@
 
 package ca.openosp.openo.appt.web;
 
+import ca.openosp.openo.commn.IsPropertiesOn;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.common.dao.AppointmentTypeDao;
-import org.oscarehr.common.dao.SiteDao;
-import org.oscarehr.common.model.AppointmentType;
-import org.oscarehr.common.model.Site;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.AppointmentTypeDao;
+import ca.openosp.openo.commn.dao.SiteDao;
+import ca.openosp.openo.commn.model.AppointmentType;
+import ca.openosp.openo.commn.model.Site;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.util.LabelValueBean;
 
 import javax.servlet.ServletException;
@@ -121,7 +122,7 @@ public class AppointmentType2Action extends ActionSupport {
 
         }
 
-        if (org.oscarehr.common.IsPropertiesOn.isMultisitesEnable()) {
+        if (IsPropertiesOn.isMultisitesEnable()) {
             List<LabelValueBean> locations = new ArrayList<LabelValueBean>();
             SiteDao siteDao = (SiteDao) SpringUtils.getBean(SiteDao.class);
             List<Site> sites = siteDao.getAllActiveSites();

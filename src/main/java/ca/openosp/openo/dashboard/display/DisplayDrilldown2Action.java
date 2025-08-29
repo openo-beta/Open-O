@@ -31,17 +31,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.model.IndicatorTemplate;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.model.IndicatorTemplate;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.dashboard.display.beans.DrilldownBean;
 import ca.openosp.openo.dashboard.handler.IndicatorTemplateHandler;
 import ca.openosp.openo.managers.DashboardManager;
 import ca.openosp.openo.managers.ProviderManager2;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.w3c.dom.NodeList;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -70,14 +70,14 @@ public class DisplayDrilldown2Action extends ActionSupport {
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_dashboardDrilldown", SecurityInfoManager.READ, null)) {
             if (loggedInInfo != null && loggedInInfo.getLoggedInProvider() != null) {
-                logger.info("Provider " + loggedInInfo.getLoggedInProvider().getProviderNo() + " does not have read permission on _dashboardDrilldown security object");
+                logger.info("Provider " + loggedInInfo.getLoggedInProvider().getProviderNo() + " does not have read permission on _dashboardDrilldown sec object");
             }
             return "unauthorized";
         }
         if (!securityInfoManager.hasPrivilege(loggedInInfo,
                 "_dxresearch", SecurityInfoManager.WRITE, null)) {
             if (loggedInInfo != null && loggedInInfo.getLoggedInProvider() != null) {
-                logger.info("Provider " + loggedInInfo.getLoggedInProvider().getProviderNo() + " does not have write permission on _dxresearch security object");
+                logger.info("Provider " + loggedInInfo.getLoggedInProvider().getProviderNo() + " does not have write permission on _dxresearch sec object");
             }
             return "unauthorized";
         }
@@ -145,7 +145,7 @@ public class DisplayDrilldown2Action extends ActionSupport {
             sharedIndicatorTemplates = dashboardManager.getIndicatorLibrary(LoggedInInfo.getLoggedInInfoFromSession(request), true);
             indicatorTemplate = findIndicatorTemplateBySharedMetricSetName(loggedInInfo, sharedIndicatorTemplates, metricSetName);
 
-        } else { //common dashboard opens drill down list from pie slice, should use not-shared xml file for different metric label
+        } else { //commons dashboard opens drill down list from pie slice, should use not-shared xml file for different metric label
             sharedIndicatorTemplates = dashboardManager.getIndicatorLibrary(LoggedInInfo.getLoggedInInfoFromSession(request), false);
             indicatorTemplate = findIndicatorTemplateBySharedMetricSetNameAndMatricLabel(loggedInInfo, sharedIndicatorTemplates, metricSetName, metricLabel);
         }
@@ -159,7 +159,7 @@ public class DisplayDrilldown2Action extends ActionSupport {
 
         if (metricLabel.equals("null")) { //local pie opens drill down list for whole pie, should use shared xml file
             drilldown = dashboardManager.getDrilldownData(loggedInInfo, indicatorTemplate.getId(), providerNo != null ? providerNo : null, metricLabel);
-        } else { //common dashboard opens drill down list from pie slice, should use not-shared xml file for different metric label
+        } else { //commons dashboard opens drill down list from pie slice, should use not-shared xml file for different metric label
             drilldown = dashboardManager.getDrilldownData(loggedInInfo, indicatorTemplate.getId(), providerNo != null ? providerNo : null, metricLabel);
         }
 

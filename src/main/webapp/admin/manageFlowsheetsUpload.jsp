@@ -43,7 +43,7 @@
 %>
 
 
-<%@ page import="java.util.*,oscar.oscarReport.reportByTemplate.*" %>
+<%@ page import="java.util.*,ca.openosp.openo.report.reportByTemplate.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -55,9 +55,9 @@
 <%@ page import="java.io.StringWriter" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet" %>
-<%@ page import="org.oscarehr.common.model.Flowsheet" %>
-<%@ page import="org.oscarehr.common.dao.FlowsheetDao" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.commn.model.Flowsheet" %>
+<%@ page import="ca.openosp.openo.commn.dao.FlowsheetDao" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 
 <%
     boolean isMultipart = FileUpload.isMultipartContent(request);

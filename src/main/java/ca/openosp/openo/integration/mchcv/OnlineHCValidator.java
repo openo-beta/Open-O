@@ -43,9 +43,9 @@ import javax.xml.ws.soap.SOAPFaultException;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.integration.ebs.client.ng.EdtClientBuilder;
 import ca.openosp.openo.integration.ebs.client.ng.EdtClientBuilderConfig;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 public class OnlineHCValidator implements HCValidator {
     private static Logger logger = MiscUtils.getLogger();

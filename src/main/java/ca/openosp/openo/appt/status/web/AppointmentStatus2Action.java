@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.AppointmentStatus;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.model.AppointmentStatus;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 

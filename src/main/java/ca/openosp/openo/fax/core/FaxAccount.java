@@ -25,7 +25,7 @@
 
 package ca.openosp.openo.fax.core;
 
-import org.oscarehr.common.model.FaxConfig;
+import ca.openosp.openo.commn.model.FaxConfig;
 
 public class FaxAccount {
 

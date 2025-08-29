@@ -33,10 +33,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.dao.OnCallClinicDao;
-import org.oscarehr.common.model.OnCallClinic;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.OnCallClinicDao;
+import ca.openosp.openo.commn.model.OnCallClinic;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.fasterxml.jackson.databind.ObjectMapper;

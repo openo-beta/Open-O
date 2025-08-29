@@ -32,8 +32,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.common.model.ProviderInboxItem;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.model.ProviderInboxItem;
+import ca.openosp.openo.commn.dao.ProviderInboxRoutingDao;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.on.LabResultData;
 
@@ -65,7 +66,7 @@ public class ProviderInboxRoutingDaoTest extends DaoTestFixtures {
         } catch (PersistenceException e) {
             fail("Error related to JPA configuration");
         } catch (Exception e) {
-            // TODO add proper pre-initialization populate lab routing rules, result data, provider data and make sure that the routing works
+            // TODO add proper pre-initialization populate lab routing rules, result data, providers data and make sure that the routing works
             // just swallow for now
         }
     }

@@ -32,8 +32,8 @@
 package ca.openosp.openo.decisionSupport.service;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
 /**
  * Default Decision Support Service implementation.

@@ -39,14 +39,15 @@
     }
 %>
 
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@ page import="oscar.oscarEncounter.immunization.data.*, oscar.util.*, oscar.oscarDemographic.data.*" %>
-<%@ page import="oscar.oscarEncounter.immunization.pageUtil.*, java.util.*, org.w3c.dom.*" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.encounter.immunization.data.*, ca.openosp.openo.util.*, ca.openosp.openo.demographic.data.*" %>
+<%@ page import="ca.openosp.openo.encounter.immunization.pageUtil.*, java.util.*, org.w3c.dom.*" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
 <%@ page import="ca.openosp.openo.encounter.immunization.data.EctImmImmunizationData" %>
 <%@ page import="ca.openosp.openo.util.UtilMisc" %>
 <%@ page import="ca.openosp.openo.util.UtilXML" %>
+<%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 <%
     EctSessionBean bean = (EctSessionBean) request.getSession().getAttribute("EctSessionBean");
 
@@ -58,7 +59,7 @@
     String age = "";
     if (demoNo != null) {
         DemographicData dData = new DemographicData();
-        org.oscarehr.common.model.Demographic demographic = dData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demoNo);
+        Demographic demographic = dData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demoNo);
         last_name = demographic.getLastName();
         first_name = demographic.getFirstName();
         sex = demographic.getSex();
@@ -401,7 +402,7 @@
                                 String givenDate = cell.getAttribute("givenDate");
                                 String refusedDate = cell.getAttribute("refusedDate");
                                 String lot = cell.getAttribute("lot");
-                                String provider = cell.getAttribute("provider");
+                                String provider = cell.getAttribute("providers");
                                 String comments = cell.getAttribute("comments");
 
                                 s += "<input type=hidden name='" + id + "_givenDate' value='" + givenDate + "' />"

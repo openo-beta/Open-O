@@ -25,10 +25,10 @@
 package ca.openosp.openo.listeners;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.Demographic;
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.event.DemographicCreateEvent;
 import ca.openosp.openo.event.DemographicUpdateEvent;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;

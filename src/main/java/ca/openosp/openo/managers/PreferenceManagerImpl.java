@@ -31,8 +31,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteExt;
-import org.oscarehr.common.model.Property;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.model.Property;
+import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

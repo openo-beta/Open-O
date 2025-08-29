@@ -33,7 +33,7 @@
 
 <%
     ArrayList<String> doctypesD = EDocUtil.getDoctypes("demographic");
-    ArrayList<String> doctypesP = EDocUtil.getDoctypes("provider");
+    ArrayList<String> doctypesP = EDocUtil.getDoctypes("providers");
 %>
 
 <html>
@@ -132,7 +132,7 @@
                     <tr>
                         <td><%=doctypeP%>
                         </td>
-                        <td><%=EDocUtil.getDocStatus("provider", doctypeP)%>
+                        <td><%=EDocUtil.getDocStatus("providers", doctypeP)%>
                         </td>
                     </tr>
                     <% }%>

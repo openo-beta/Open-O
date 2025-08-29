@@ -36,10 +36,10 @@ import java.util.Map.Entry;
 
 import org.drools.RuleBase;
 import org.drools.io.RuleBaseLoader;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet;
 import ca.openosp.openo.encounter.oscarMeasurements.util.MeasurementDSHelper;
 import ca.openosp.openo.util.ConversionUtils;

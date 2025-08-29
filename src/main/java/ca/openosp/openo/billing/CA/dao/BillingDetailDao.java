@@ -31,7 +31,7 @@ package ca.openosp.openo.billing.CA.dao;
 import java.util.List;
 
 import ca.openosp.openo.billing.CA.model.BillingDetail;
-import org.oscarehr.common.dao.AbstractDao;
+import ca.openosp.openo.commn.dao.AbstractDao;
 
 public interface BillingDetailDao extends AbstractDao<BillingDetail> {
 

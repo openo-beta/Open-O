@@ -31,11 +31,11 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.dao.EFormDao;
-import org.oscarehr.common.model.EForm;
+import ca.openosp.openo.commn.dao.EFormDao;
+import ca.openosp.openo.commn.model.EForm;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -54,7 +54,7 @@ public class OpenEFormByName2Action extends ActionSupport {
         Integer fid = null;
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_eform", "w", null)) {
-            throw new SecurityException("missing required security object (_eform)");
+            throw new SecurityException("missing required sec object (_eform)");
         }
 
 

@@ -2,17 +2,17 @@
 package ca.openosp.openo.billings.ca.bc.administration;
 
 
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.BillingDao;
-import org.oscarehr.common.dao.BillingServiceDao;
-import org.oscarehr.common.model.Billing;
-import org.oscarehr.common.model.BillingService;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.BillingDao;
+import ca.openosp.openo.commn.dao.BillingServiceDao;
+import ca.openosp.openo.commn.model.Billing;
+import ca.openosp.openo.commn.model.BillingService;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.DateRange;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.DateRange;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.util.ConversionUtils;
 
@@ -28,7 +28,7 @@ public class GstReport {
         DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
         ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
 
-        // For every bill the provider is involved with, search the gst value, date, demo no within the chosen dates
+        // For every bill the providers is involved with, search the gst value, date, demo no within the chosen dates
         DateRange dateRange = new DateRange(ConversionUtils.fromDateString(startDate), ConversionUtils.fromDateString(endDate));
         if (providerNos != null && providerNos.length > 0) {
             for (Object[] i : dao.findProviderBillingsWithGst(providerNos, dateRange)) {

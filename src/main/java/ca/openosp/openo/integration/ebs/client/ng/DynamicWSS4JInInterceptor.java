@@ -7,7 +7,7 @@ import org.apache.cxf.phase.Phase;
 import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 import org.apache.logging.log4j.Logger;
 import org.apache.wss4j.dom.handler.WSHandlerConstants;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;

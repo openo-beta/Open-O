@@ -32,7 +32,7 @@ import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.MessageHeader;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.dstu3.model.Resource;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.integration.fhir.builder.FhirBundleBuilder;
 import ca.openosp.openo.integration.fhir.manager.OscarFhirConfigurationManager;
 import ca.openosp.openo.integration.fhir.manager.OscarFhirResourceManager;
@@ -40,7 +40,7 @@ import ca.openosp.openo.integration.fhir.model.AbstractOscarFhirResource;
 import ca.openosp.openo.integration.fhir.resources.Settings;
 import ca.openosp.openo.integration.fhir.resources.constants.FhirDestination;
 import ca.openosp.openo.integration.fhir.resources.constants.Region;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 
 public class DHIR {

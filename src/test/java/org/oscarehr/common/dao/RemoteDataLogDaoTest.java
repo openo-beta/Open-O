@@ -30,9 +30,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.common.model.RemoteDataLog;
-import org.oscarehr.common.model.RemoteDataLog.Action;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.model.RemoteDataLog;
+import ca.openosp.openo.commn.model.RemoteDataLog.Action;
+import ca.openosp.openo.commn.dao.RemoteDataLogDao;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class RemoteDataLogDaoTest extends DaoTestFixtures {
 

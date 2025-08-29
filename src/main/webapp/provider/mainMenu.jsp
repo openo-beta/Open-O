@@ -33,17 +33,17 @@
 <%@ page import="java.util.GregorianCalendar" %>
 <%@ page import="java.util.Calendar" %>
 <%@page import="ca.openosp.openo.managers.DashboardManager" %>
-<%@ page import="org.oscarehr.common.model.Dashboard" %>
+<%@ page import="ca.openosp.openo.commn.model.Dashboard" %>
 <%@ page import="java.util.Properties" %>
-<%@ page import="oscar.OscarProperties" %>
+<%@ page import="ca.openosp.OscarProperties" %>
 <%@ page import="org.apache.commons.lang3.StringUtils" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="java.util.List" %>
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.managers.AppManager" %>
 <%@ page import="java.net.URLEncoder" %>
-<%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
-<%@ page import="org.oscarehr.common.model.UserProperty" %>
+<%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
+<%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%
@@ -225,7 +225,7 @@
                             <security:oscarSec roleName="<%=roleName$%>" objectName="_edoc" rights="r">
                                 <li>
                                     <a HREF="#"
-                                       onclick="popup('700', '1024', '../documentManager/documentReport.jsp?function=provider&functionid=<%=curUser_no%>&curUser=<%=curUser_no%>', 'edocView');"
+                                       onclick="popup('700', '1024', '../documentManager/documentReport.jsp?function=providers&functionid=<%=curUser_no%>&curUser=<%=curUser_no%>', 'edocView');"
                                        TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewEdoc"/>'><fmt:setBundle basename="oscarResources"/><fmt:message key="global.edoc"/></a>
                                 </li>
                             </security:oscarSec>
@@ -378,10 +378,10 @@
 <script>
     const contextPath = document.getElementById("contextPath").value;
     const originalInboxLinkClickEvent = "popupInboxManager('" + contextPath + "/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=curUser_no%>');return false;";
-    const newInboxLinkClickEvent = "popupInboxManager('" + contextPath + "/web/inboxhub/Inboxhub.do?method=displayInboxForm', 800);return false;";
+    const newInboxLinkClickEvent = "popupInboxManager('" + contextPath + "/www/inboxhub/Inboxhub.do?method=displayInboxForm', 800);return false;";
 
     const originalUnclaimedLabLinkClickEvent = "popupInboxManager('" + contextPath + "/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=0&searchProviderNo=0&status=N&lname=&fname=&hnum=&pageNum=1&startIndex=0');return false;";
-    const newUnclaimedLabLinkClickEvent = "popupInboxManager('" + contextPath + "/web/inboxhub/Inboxhub.do?method=displayInboxForm&unclaimed=1', 800);return false;";
+    const newUnclaimedLabLinkClickEvent = "popupInboxManager('" + contextPath + "/www/inboxhub/Inboxhub.do?method=displayInboxForm&unclaimed=1', 800);return false;";
 
      document.getElementById("inboxLink").addEventListener("mouseup", function(event) {
         if(event.altKey) {

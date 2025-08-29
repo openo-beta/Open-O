@@ -26,29 +26,29 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.billing.CA.ON.dao.BillingONFavouriteDao;
 import ca.openosp.openo.billing.CA.ON.dao.BillingONFilenameDao;
 import ca.openosp.openo.billing.CA.ON.model.BillingONFavourite;
 import ca.openosp.openo.billing.CA.ON.model.BillingONFilename;
-import org.oscarehr.common.dao.BillingPaymentTypeDao;
-import org.oscarehr.common.dao.ClinicLocationDao;
-import org.oscarehr.common.dao.OscarAppointmentDao;
-import org.oscarehr.common.dao.ProfessionalSpecialistDao;
-import org.oscarehr.common.dao.ProviderSiteDao;
-import org.oscarehr.common.model.Appointment;
-import org.oscarehr.common.model.BillingPaymentType;
-import org.oscarehr.common.model.ClinicLocation;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.ProfessionalSpecialist;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.ProviderSite;
+import ca.openosp.openo.commn.dao.BillingPaymentTypeDao;
+import ca.openosp.openo.commn.dao.ClinicLocationDao;
+import ca.openosp.openo.commn.dao.OscarAppointmentDao;
+import ca.openosp.openo.commn.dao.ProfessionalSpecialistDao;
+import ca.openosp.openo.commn.dao.ProviderSiteDao;
+import ca.openosp.openo.commn.model.Appointment;
+import ca.openosp.openo.commn.model.BillingPaymentType;
+import ca.openosp.openo.commn.model.ClinicLocation;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.ProviderSite;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.SxmlMisc;
+import ca.openosp.SxmlMisc;
 
 public class JdbcBillingPageUtil {
 

@@ -35,10 +35,10 @@ package ca.openosp.openo.lab.ca.all;
 
 import java.util.ArrayList;
 
-import org.oscarehr.common.dao.ProviderLabRoutingDao;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.ProviderLabRoutingModel;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ProviderLabRoutingDao;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.ProviderLabRoutingModel;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.mds.data.ReportStatus;
 import ca.openosp.openo.util.ConversionUtils;

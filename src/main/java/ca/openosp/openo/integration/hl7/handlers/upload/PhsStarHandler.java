@@ -30,8 +30,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.lab.ca.all.upload.MessageUploader;
 import ca.openosp.openo.lab.ca.all.upload.handlers.MessageHandler;

@@ -32,24 +32,24 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.billing.CA.BC.dao.Hl7MessageDao;
 import ca.openosp.openo.billing.CA.BC.dao.Hl7ObrDao;
 import ca.openosp.openo.billing.CA.BC.dao.Hl7PidDao;
 import ca.openosp.openo.billing.CA.BC.model.Hl7Message;
 import ca.openosp.openo.billing.CA.BC.model.Hl7Obr;
 import ca.openosp.openo.billing.CA.BC.model.Hl7Pid;
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.dao.DemographicDaoImpl;
-import org.oscarehr.common.dao.PatientLabRoutingDao;
-import org.oscarehr.common.dao.ProviderLabRoutingDao;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.ProviderLabRoutingModel;
-import org.oscarehr.utility.DbConnectionFilter;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.dao.DemographicDaoImpl;
+import ca.openosp.openo.commn.dao.PatientLabRoutingDao;
+import ca.openosp.openo.commn.dao.ProviderLabRoutingDao;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.PatientLabRouting;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.ProviderLabRoutingModel;
+import ca.openosp.openo.utility.DbConnectionFilter;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.all.upload.ProviderLabRouting;
 import ca.openosp.openo.lab.ca.bc.PathNet.HL7.V2_3.MSH;
@@ -150,12 +150,12 @@ public class Message {
                     subStrings = obr.getOrderingProvider().split("\\^");
                     providerMinistryNo = subStrings[0]; // StringUtils.returnStringToFirst(subStrings[0].substring(1,
                     // subStrings[0].length())," ");
-                    // check that this is a legal provider
+                    // check that this is a legal providers
                     MiscUtils.getLogger().debug("looking for " + providerMinistryNo);
                     providerNo = getProviderNoFromBillingNo(providerMinistryNo);
-                    if (providerNo != null) { // provider found in database
+                    if (providerNo != null) { // providers found in database
                         listOfProviderNo.add(providerNo);
-                    } // provider not found
+                    } // providers not found
 
                     // next route to consulting doctor(s)
                     if (!obr.getResultCopiesTo().equals("")) {
@@ -164,27 +164,27 @@ public class Message {
                             subStrings = conDoctors[i - 1].split("\\^");
                             providerMinistryNo = subStrings[0];// StringUtils.returnStringToFirst(subStrings[0].substring(1,
                             // subStrings[0].length())," ");
-                            // check that this is a legal provider
+                            // check that this is a legal providers
                             MiscUtils.getLogger().debug("looking for 2 " + providerMinistryNo);
                             providerNo = getProviderNoFromBillingNo(providerMinistryNo);
-                            if (providerNo != null) { // provider found in database
+                            if (providerNo != null) { // providers found in database
                                 if (!listOfProviderNo.contains(providerNo)) {
                                     listOfProviderNo.add(providerNo);
                                 }
-                            } // provider not found
+                            } // providers not found
                         }
                     }
                     /////
 
                     ProviderLabRouting routing = new ProviderLabRouting();
-                    if (listOfProviderNo.size() > 0) { // provider found in database
+                    if (listOfProviderNo.size() > 0) { // providers found in database
                         for (int p = 0; p < listOfProviderNo.size(); p++) {
                             String prov = listOfProviderNo.get(p);
 
                             routing.route(parent, prov, DbConnectionFilter.getThreadLocalDbConnection(), "BCP");
                         }
                         addedToProviderLabRouting = true;
-                    } // provider not found
+                    } // providers not found
 
                     if (!addedToProviderLabRouting) {
                         ProviderLabRoutingModel l = new ProviderLabRoutingModel();

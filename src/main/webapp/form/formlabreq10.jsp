@@ -39,17 +39,17 @@
     }
 %>
 
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="org.oscarehr.utility.MiscUtils" %>
-<%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
-<%@page import="org.oscarehr.utility.LocaleUtils" %>
-<%@page import="org.oscarehr.common.dao.FrmLabReqPreSetDao, org.oscarehr.utility.SpringUtils" %>
-<%@page import="oscar.form.*, oscar.OscarProperties, java.util.Date, ca.openosp.openo.util.UtilDateUtilities" %>
-<%@page import="ca.openosp.openo.rx.data.RxProviderData, ca.openosp.openo.rx.data.RxProviderData.Provider" %>
-<%@page import="org.oscarehr.utility.MiscUtils,ca.openosp.openo.clinic.ClinicData" %>
-<%@page import="org.oscarehr.PMmodule.model.Program" %>
-<%@page import="org.oscarehr.PMmodule.dao.ProgramDao" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
+<%@page import="ca.openosp.openo.utility.LocaleUtils" %>
+<%@page import="ca.openosp.openo.commn.dao.FrmLabReqPreSetDao, ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.form.*, ca.openosp.OscarProperties, java.util.Date, ca.openosp.openo.util.UtilDateUtilities" %>
+<%@page import="ca.openosp.openo.prescript.data.RxProviderData, ca.openosp.openo.prescript.data.RxProviderData.Provider" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils,ca.openosp.openo.clinic.ClinicData" %>
+<%@page import="ca.openosp.openo.PMmodule.model.Program" %>
+<%@page import="ca.openosp.openo.PMmodule.dao.ProgramDao" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="java.util.List" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordHelp" %>
@@ -142,7 +142,7 @@
             if (ret == true) {
 
                 //ret = confirm("Do you wish to save this form and view the print preview?");
-                //popupFixedPage(650,850,'../provider/notice.htm');
+                //popupFixedPage(650,850,'../providers/notice.htm');
                 temp = document.forms[0].action;
                 document.forms[0].action = "form/formname.do?__title=Lab+Request&__cfgfile=labReqPrintEncounterForm2010&__template=labReqForm2010";
                 document.forms[0].submit.value = "printall";

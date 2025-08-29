@@ -41,9 +41,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.DocumentBean;
+import ca.openosp.DocumentBean;
 
 public class DocumentTeleplanReportUploadServlet extends HttpServlet {
     final static int BUFFER = 2048;

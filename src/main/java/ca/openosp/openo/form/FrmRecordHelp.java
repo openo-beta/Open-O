@@ -37,11 +37,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 
+import ca.openosp.Misc;
 import org.apache.commons.lang.StringUtils;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import org.w3c.dom.Document;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.JDBCUtil;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -96,7 +97,7 @@ public class FrmRecordHelp {
                 else if (md.getColumnTypeName(i).equalsIgnoreCase("timestamp"))
                     value = UtilDateUtilities.DateToString(rs.getTimestamp(i), "yyyy/MM/dd HH:mm:ss");
                 else
-                    value = oscar.Misc.getString(rs, i);
+                    value = Misc.getString(rs, i);
 
                 if (value != null)
                     props.setProperty(name, value);
@@ -277,7 +278,7 @@ public class FrmRecordHelp {
             } else if (md.getColumnTypeName(i).equalsIgnoreCase("date"))
                 value = UtilDateUtilities.DateToString(rs.getDate(i), _dateFormat);
             else
-                value = oscar.Misc.getString(rs, i);
+                value = Misc.getString(rs, i);
 
             if (value != null)
                 p.setProperty(name, value);

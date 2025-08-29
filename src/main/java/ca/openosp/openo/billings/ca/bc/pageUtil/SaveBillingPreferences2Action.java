@@ -29,9 +29,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.oscarehr.common.dao.PropertyDao;
-import org.oscarehr.common.model.Property;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.PropertyDao;
+import ca.openosp.openo.commn.model.Property;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.billings.ca.bc.data.BillingPreference;
 import ca.openosp.openo.billings.ca.bc.data.BillingPreferencesDAO;
@@ -167,7 +167,7 @@ public class SaveBillingPreferences2Action
     private boolean useClinicGstNo;
     private boolean autoPopulateRefer;
 
-    //What to display for payee info when this provider gets referred to as a payee on an invoice
+    //What to display for payee info when this providers gets referred to as a payee on an invoice
     private String invoicePayeeInfo;
     private boolean invoicePayeeDisplayClinicInfo;
 
@@ -176,7 +176,7 @@ public class SaveBillingPreferences2Action
     private String formCode;
     private String description;
 
-    //Default billing provider preference
+    //Default billing providers preference
     private String defaultBillingProvider;
 
     //Default Teleplan service location (visittype)

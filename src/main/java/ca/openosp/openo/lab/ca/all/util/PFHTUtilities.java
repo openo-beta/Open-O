@@ -26,15 +26,16 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 /*
  * @author Divya Mantha, Indivica
  */
 public class PFHTUtilities {
-    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static Logger logger = MiscUtils.getLogger();
 
     /**
      * Creates a new instance of ICLUtilities

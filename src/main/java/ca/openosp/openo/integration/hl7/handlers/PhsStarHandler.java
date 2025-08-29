@@ -39,28 +39,28 @@ import org.apache.logging.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-import org.oscarehr.PMmodule.dao.ProgramDao;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.PMmodule.model.Program;
-import org.oscarehr.common.OtherIdManager;
-import org.oscarehr.common.dao.AdmissionDao;
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.dao.OscarAppointmentDao;
-import org.oscarehr.common.dao.OscarLogDao;
-import org.oscarehr.common.dao.ProfessionalSpecialistDao;
-import org.oscarehr.common.model.Admission;
-import org.oscarehr.common.model.Appointment;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.OscarLog;
-import org.oscarehr.common.model.OtherId;
-import org.oscarehr.common.model.ProfessionalSpecialist;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.PMmodule.dao.ProgramDao;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.model.Program;
+import ca.openosp.openo.commn.OtherIdManager;
+import ca.openosp.openo.commn.dao.AdmissionDao;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.dao.OscarAppointmentDao;
+import ca.openosp.openo.commn.dao.OscarLogDao;
+import ca.openosp.openo.commn.dao.ProfessionalSpecialistDao;
+import ca.openosp.openo.commn.model.Admission;
+import ca.openosp.openo.commn.model.Appointment;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.OscarLog;
+import ca.openosp.openo.commn.model.OtherId;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.integration.hl7.model.PatientId;
 import ca.openosp.openo.integration.hl7.model.StaffId;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.parser.GenericParser;
 import ca.uhn.hl7v2.parser.Parser;
@@ -301,15 +301,15 @@ public class PhsStarHandler extends BasePhsStarHandler {
             logger.error("Unable to retrieve patient data..cannot make appointment");
             throw new HL7Exception("Unable to retrieve patient data..cannot make appointment");
         }
-        //match provider - STAR id is linked from OtherId table
+        //match providers - STAR id is linked from OtherId table
         Provider provider = null;
         OtherId otherId = OtherIdManager.searchTable(OtherIdManager.PROVIDER, "STAR", getApptPractitionerNo());
         if (otherId != null) {
             provider = providerDao.getProvider(otherId.getTableId());
         }
         if (provider == null) {
-            logger.error("Unable to match provider..cannot make appointment - " + getApptPractitionerNo());
-            throw new HL7Exception("Unable to match provider..cannot make appointment - " + getApptPractitionerNo());
+            logger.error("Unable to match providers..cannot make appointment - " + getApptPractitionerNo());
+            throw new HL7Exception("Unable to match providers..cannot make appointment - " + getApptPractitionerNo());
         }
         //create appt
         Appointment appt = new Appointment();
@@ -442,15 +442,15 @@ public class PhsStarHandler extends BasePhsStarHandler {
 
         Demographic demographic = demographicDao.getClientByDemographicNo(appt.getDemographicNo());
 
-        //match provider - STAR id is linked from OtherId table
+        //match providers - STAR id is linked from OtherId table
         Provider provider = null;
         OtherId pOtherId = OtherIdManager.searchTable(OtherIdManager.PROVIDER, "STAR", getApptPractitionerNo());
         if (pOtherId != null) {
             provider = providerDao.getProvider(pOtherId.getTableId());
         }
         if (provider == null) {
-            logger.error("Unable to match provider..cannot make appointment - " + getApptPractitionerNo());
-            throw new HL7Exception("Unable to match provider..cannot make appointment - " + getApptPractitionerNo());
+            logger.error("Unable to match providers..cannot make appointment - " + getApptPractitionerNo());
+            throw new HL7Exception("Unable to match providers..cannot make appointment - " + getApptPractitionerNo());
         }
 
         appt.setProviderNo(provider.getProviderNo());
@@ -658,7 +658,7 @@ public class PhsStarHandler extends BasePhsStarHandler {
         //specialty = 1&FAMILY PRACTITIONER&99H62&1&FAMILY PRACTITIONER&99SPC
         String praSpecialty = this.extractOrEmpty("/MF_STAFF/PRA-5-1-2"); //should be same as pract_id
 
-        logger.info("need to do a provider add/update for id " + practId);
+        logger.info("need to do a providers add/update for id " + practId);
 
         //logger.info("mfId="+mfId);
         ProfessionalSpecialistDao professionalSpecialistDao = (ProfessionalSpecialistDao) SpringUtils.getBean(ProfessionalSpecialistDao.class);

@@ -41,10 +41,10 @@ import ca.openosp.openo.billing.CA.BC.model.Hl7Msh;
 import ca.openosp.openo.billing.CA.BC.model.Hl7Obr;
 import ca.openosp.openo.billing.CA.BC.model.Hl7Obx;
 import ca.openosp.openo.billing.CA.BC.model.Hl7Pid;
-import org.oscarehr.common.dao.PatientLabRoutingDao;
-import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.PatientLabRoutingDao;
+import ca.openosp.openo.commn.model.PatientLabRouting;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.mds.data.ReportStatus;
@@ -56,7 +56,7 @@ import ca.openosp.openo.util.UtilDateUtilities;
  */
 public class PathnetLabTest {
 
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
 
     public String pName = "";          //  5. Patient: First name
     public String pSex = "";                //  7. Sex F or M

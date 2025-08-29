@@ -36,9 +36,9 @@ import java.util.zip.GZIPInputStream;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.oscarehr.common.dao.ClinicDAO;
-import org.oscarehr.common.model.Clinic;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ClinicDAO;
+import ca.openosp.openo.commn.model.Clinic;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;

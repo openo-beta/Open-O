@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 
 import com.opensymphony.xwork2.ActionSupport;

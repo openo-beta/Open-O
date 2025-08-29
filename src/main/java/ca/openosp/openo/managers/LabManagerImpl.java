@@ -36,14 +36,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.common.dao.Hl7TextInfoDao;
-import org.oscarehr.common.dao.Hl7TextMessageDao;
-import org.oscarehr.common.dao.PatientLabRoutingDao;
-import org.oscarehr.common.model.Hl7TextInfo;
-import org.oscarehr.common.model.Hl7TextMessage;
-import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.PDFGenerationException;
+import ca.openosp.openo.commn.dao.Hl7TextInfoDao;
+import ca.openosp.openo.commn.dao.Hl7TextMessageDao;
+import ca.openosp.openo.commn.dao.PatientLabRoutingDao;
+import ca.openosp.openo.commn.model.Hl7TextInfo;
+import ca.openosp.openo.commn.model.Hl7TextMessage;
+import ca.openosp.openo.commn.model.PatientLabRouting;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.PDFGenerationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -137,7 +137,7 @@ public class LabManagerImpl implements LabManager {
 
     private void checkPrivilege(LoggedInInfo loggedInInfo, String privilege) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", privilege, null)) {
-            throw new RuntimeException("missing required security object (_lab)");
+            throw new RuntimeException("missing required sec object (_lab)");
         }
     }
 

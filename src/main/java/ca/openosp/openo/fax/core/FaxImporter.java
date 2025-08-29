@@ -47,21 +47,21 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.FaxConfigDao;
-import org.oscarehr.common.dao.FaxJobDao;
-import org.oscarehr.common.dao.ProviderLabRoutingDao;
-import org.oscarehr.common.dao.QueueDocumentLinkDao;
-import org.oscarehr.common.model.FaxConfig;
-import org.oscarehr.common.model.FaxJob;
-import org.oscarehr.common.model.ProviderLabRoutingModel;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.FaxConfigDao;
+import ca.openosp.openo.commn.dao.FaxJobDao;
+import ca.openosp.openo.commn.dao.ProviderLabRoutingDao;
+import ca.openosp.openo.commn.dao.QueueDocumentLinkDao;
+import ca.openosp.openo.commn.model.FaxConfig;
+import ca.openosp.openo.commn.model.FaxJob;
+import ca.openosp.openo.commn.model.ProviderLabRoutingModel;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.itextpdf.text.pdf.codec.Base64;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
 
@@ -149,7 +149,7 @@ public class FaxImporter {
                             // to fully complete. If NULL, the file will not be deleted from the Host server.
                             if (fileName != null) {
 
-                                // set the new fax into provider lab routing for tracking it's route.
+                                // set the new fax into providers lab routing for tracking it's route.
                                 providerRouting(Integer.parseInt(edoc.getDocId()));
 
                                 // delete the fax on the sever.
@@ -333,7 +333,7 @@ public class FaxImporter {
 
         Integer id = providerLabRouting.getId();
         if (id == null || id < 1) {
-            log.warn("Failed to add Fax document id " + providerLabRouting.getLabNo() + " to provider lab routing.");
+            log.warn("Failed to add Fax document id " + providerLabRouting.getLabNo() + " to providers lab routing.");
         }
     }
 

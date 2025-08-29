@@ -27,24 +27,24 @@
 
 package ca.openosp.openo.managers;
 
+import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.commn.model.*;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
 import ca.openosp.openo.caisi_integrator.ws.DemographicTransfer;
 import ca.openosp.openo.caisi_integrator.ws.DemographicWs;
 import ca.openosp.openo.caisi_integrator.ws.GetConsentTransfer;
-import org.oscarehr.common.Gender;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.exception.PatientDirectiveException;
-import org.oscarehr.common.model.*;
-import org.oscarehr.common.model.Demographic.PatientStatus;
-import org.oscarehr.common.model.enumerator.DemographicExtKey;
-import org.oscarehr.utility.DemographicContactCreator;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import org.oscarehr.ws.rest.to.model.DemographicSearchRequest;
-import org.oscarehr.ws.rest.to.model.DemographicSearchResult;
+import ca.openosp.openo.commn.Gender;
+import ca.openosp.openo.commn.exception.PatientDirectiveException;
+import ca.openosp.openo.commn.model.Demographic.PatientStatus;
+import ca.openosp.openo.commn.model.enumerator.DemographicExtKey;
+import ca.openosp.openo.utility.DemographicContactCreator;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.openo.webserv.rest.to.model.DemographicSearchRequest;
+import ca.openosp.openo.webserv.rest.to.model.DemographicSearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ca.openosp.openo.log.LogAction;
@@ -60,7 +60,7 @@ import java.util.regex.Pattern;
  * as
  * extensions (DemographicExt), merge data, archive data, etc.
  * <p>
- * Future Use: Add privacy, security, and consent profiles
+ * Future Use: Add privacy, sec, and consent profiles
  */
 @Service
 public class DemographicManagerImpl implements DemographicManager {
@@ -353,7 +353,7 @@ public class DemographicManagerImpl implements DemographicManager {
         checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
 
         if (provider == null || provider.getProviderNo() == null || regex == null) {
-            return new ArrayList<>(); // Return an empty list if provider or regex is null
+            return new ArrayList<>(); // Return an empty list if providers or regex is null
         }
 
         List<Demographic> demographicList = demographicDao.getDemographicByProvider(provider.getProviderNo());
@@ -1185,14 +1185,14 @@ public class DemographicManagerImpl implements DemographicManager {
     @Override
     public void checkPrivilege(LoggedInInfo loggedInInfo, String privilege) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_demographic", privilege, null)) {
-            throw new RuntimeException("missing required security object (_demographic)");
+            throw new RuntimeException("missing required sec object (_demographic)");
         }
     }
 
     @Override
     public void checkPrivilege(LoggedInInfo loggedInInfo, String privilege, int demographicNo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_demographic", privilege, demographicNo)) {
-            throw new RuntimeException("missing required security object (_demographic)");
+            throw new RuntimeException("missing required sec object (_demographic)");
         }
     }
 
@@ -1231,10 +1231,10 @@ public class DemographicManagerImpl implements DemographicManager {
     }
 
     /**
-     * Find the provider designated as the primary or most responsible practitioner
+     * Find the providers designated as the primary or most responsible practitioner
      * for this patient.
      * If the MRP is not indicated this method will return the first available
-     * internal provider.
+     * internal providers.
      *
      * @param loggedInInfo
      * @param demographicNo

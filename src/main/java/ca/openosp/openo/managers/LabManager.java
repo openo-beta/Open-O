@@ -30,10 +30,10 @@ package ca.openosp.openo.managers;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.oscarehr.common.model.Hl7TextInfo;
-import org.oscarehr.common.model.Hl7TextMessage;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.PDFGenerationException;
+import ca.openosp.openo.commn.model.Hl7TextInfo;
+import ca.openosp.openo.commn.model.Hl7TextMessage;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.PDFGenerationException;
 
 
 public interface LabManager {

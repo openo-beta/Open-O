@@ -26,7 +26,7 @@
 
 package ca.openosp.openo.form.model;
 
-import org.oscarehr.common.model.AbstractModel;
+import ca.openosp.openo.commn.model.AbstractModel;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;

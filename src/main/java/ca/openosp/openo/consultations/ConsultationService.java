@@ -26,10 +26,10 @@ package ca.openosp.openo.consultations;
 
 import java.util.List;
 
-import org.oscarehr.common.PaginationQuery;
-import org.oscarehr.common.dao.ConsultRequestDao;
-import org.oscarehr.common.model.ConsultationRequest;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.PaginationQuery;
+import ca.openosp.openo.commn.dao.ConsultRequestDao;
+import ca.openosp.openo.commn.model.ConsultationRequest;
+import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

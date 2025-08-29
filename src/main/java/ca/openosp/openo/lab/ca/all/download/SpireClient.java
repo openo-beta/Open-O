@@ -29,8 +29,9 @@ import java.io.FileOutputStream;
 import java.util.List;
 import java.util.TimerTask;
 
+import ca.openosp.OscarProperties;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
@@ -45,7 +46,7 @@ public class SpireClient extends TimerTask {
     private ChannelSftp spireSFTPChannel;
     private Session spireSession;
 
-    private oscar.OscarProperties p = oscar.OscarProperties.getInstance();
+    private OscarProperties p = OscarProperties.getInstance();
     private static Logger logger = MiscUtils.getLogger();
 
     /**

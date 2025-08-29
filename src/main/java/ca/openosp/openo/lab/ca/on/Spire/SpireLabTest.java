@@ -30,17 +30,17 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.Hl7TextInfoDao;
-import org.oscarehr.common.dao.LabPatientPhysicianInfoDao;
-import org.oscarehr.common.dao.LabReportInformationDao;
-import org.oscarehr.common.dao.LabTestResultsDao;
-import org.oscarehr.common.dao.PatientLabRoutingDao;
-import org.oscarehr.common.model.LabPatientPhysicianInfo;
-import org.oscarehr.common.model.LabReportInformation;
-import org.oscarehr.common.model.LabTestResults;
-import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.Hl7TextInfoDao;
+import ca.openosp.openo.commn.dao.LabPatientPhysicianInfoDao;
+import ca.openosp.openo.commn.dao.LabReportInformationDao;
+import ca.openosp.openo.commn.dao.LabTestResultsDao;
+import ca.openosp.openo.commn.dao.PatientLabRoutingDao;
+import ca.openosp.openo.commn.model.LabPatientPhysicianInfo;
+import ca.openosp.openo.commn.model.LabReportInformation;
+import ca.openosp.openo.commn.model.LabTestResults;
+import ca.openosp.openo.commn.model.PatientLabRouting;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.util.ConversionUtils;

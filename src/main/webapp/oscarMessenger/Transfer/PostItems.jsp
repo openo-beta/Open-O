@@ -40,7 +40,7 @@
 %>
 
 <%@page contentType='text/xml'
-        import="oscar.oscarMessenger.docxfer.send.*, oscar.oscarMessenger.docxfer.util.*" %>
+        import="ca.openosp.openo.messenger.docxfer.send.*, ca.openosp.openo.messenger.docxfer.util.*" %>
 <%@ page import="ca.openosp.openo.messenger.docxfer.util.MsgCommxml" %>
 <%@ page import="ca.openosp.openo.messenger.pageUtil.MsgSessionBean" %>
 <%@ page import="ca.openosp.openo.messenger.docxfer.send.MsgSendDocument" %>

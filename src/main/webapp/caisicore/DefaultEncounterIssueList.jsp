@@ -39,15 +39,15 @@
 %>
 
 <%@page import="java.util.List,ca.openosp.openo.model.DefaultIssue" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.model.DefaultIssue" %>
 <%@page import="ca.openosp.openo.casemgmt.dao.IssueDAO" %>
 <%@page import="ca.openosp.openo.casemgmt.model.Issue" %>
 <%@page import="java.lang.NumberFormatException" %>
 <%@page import="java.lang.Exception" %>
 <%@page import="java.text.SimpleDateFormat" %>
-<%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@page import="org.oscarehr.common.model.Provider" %>
+<%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
+<%@page import="ca.openosp.openo.commn.model.Provider" %>
 
 <html>
 <head>

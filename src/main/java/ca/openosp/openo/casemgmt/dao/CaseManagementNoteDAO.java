@@ -46,12 +46,12 @@ import java.util.UUID;
 
 import javax.persistence.PersistenceException;
 
-import org.oscarehr.PMmodule.model.Program;
+import ca.openosp.openo.PMmodule.model.Program;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.CaseManagementSearchBean;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.utility.DbConnectionFilter;
-import org.oscarehr.utility.EncounterUtil;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.utility.DbConnectionFilter;
+import ca.openosp.openo.utility.EncounterUtil;
 
 import ca.openosp.openo.util.SqlUtils;
 

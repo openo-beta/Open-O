@@ -33,10 +33,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.common.dao.AllergyDao;
-import org.oscarehr.common.model.Allergy;
-import org.oscarehr.common.model.ConsentType;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.dao.AllergyDao;
+import ca.openosp.openo.commn.model.Allergy;
+import ca.openosp.openo.commn.model.ConsentType;
+import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

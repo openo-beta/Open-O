@@ -27,16 +27,17 @@ package ca.openosp.openo.lab.ca.bc.PathNet;
 
 import ca.openosp.openo.billing.CA.BC.dao.*;
 import ca.openosp.openo.billing.CA.BC.model.*;
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.billing.CA.BC.util.PathNetLabResults;
-import org.oscarehr.common.dao.ConsultDocsDao;
-import org.oscarehr.common.dao.ConsultResponseDocDao;
-import org.oscarehr.common.dao.EFormDocsDao;
-import org.oscarehr.common.dao.PatientLabRoutingDao;
-import org.oscarehr.common.model.ConsultDocs;
-import org.oscarehr.common.model.EFormDocs;
-import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ConsultDocsDao;
+import ca.openosp.openo.commn.dao.ConsultResponseDocDao;
+import ca.openosp.openo.commn.dao.EFormDocsDao;
+import ca.openosp.openo.commn.dao.PatientLabRoutingDao;
+import ca.openosp.openo.commn.model.ConsultDocs;
+import ca.openosp.openo.commn.model.EFormDocs;
+import ca.openosp.openo.commn.model.PatientLabRouting;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.lab.ca.on.LabResultData;
 import ca.openosp.openo.util.ConversionUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -58,7 +59,7 @@ public class PathnetResultsData {
     private Hl7PidDao hl7PidDao = SpringUtils.getBean(Hl7PidDao.class);
     private EFormDocsDao eformDocsDao = SpringUtils.getBean(EFormDocsDao.class);
 
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
 
     /**
      * Populates ArrayList with labs attached to a consultation

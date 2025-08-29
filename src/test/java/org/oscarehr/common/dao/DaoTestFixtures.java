@@ -64,9 +64,9 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.oscarehr.common.dao.utils.ConfigUtils;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public abstract class DaoTestFixtures {
@@ -99,7 +99,7 @@ public abstract class DaoTestFixtures {
 
         start = System.currentTimeMillis();
         if (SpringUtils.getBeanFactory() == null) {
-            oscar.OscarProperties p = oscar.OscarProperties.getInstance();
+            ca.openosp.OscarProperties p = ca.openosp.OscarProperties.getInstance();
             p.setProperty("db_name", ConfigUtils.getProperty("db_schema") + ConfigUtils.getProperty("db_schema_properties"));
             p.setProperty("db_username", ConfigUtils.getProperty("db_user"));
             p.setProperty("db_password", ConfigUtils.getProperty("db_password"));
@@ -139,7 +139,7 @@ public abstract class DaoTestFixtures {
             }
 
             if (daoObject == null) {
-                logger.warn("Unable to find dao field of type " + clazz.getName());
+                logger.warn("Unable to find daos field of type " + clazz.getName());
                 return;
             }
 

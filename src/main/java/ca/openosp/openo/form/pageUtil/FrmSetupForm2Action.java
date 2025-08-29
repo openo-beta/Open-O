@@ -37,18 +37,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ca.openosp.Misc;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.xmlrpc.XmlRpcClient;
 import org.apache.xmlrpc.XmlRpcException;
-import org.oscarehr.common.dao.MeasurementDao;
-import org.oscarehr.common.model.Allergy;
-import org.oscarehr.common.model.Measurement;
+import ca.openosp.openo.commn.dao.MeasurementDao;
+import ca.openosp.openo.commn.model.Allergy;
+import ca.openosp.openo.commn.model.Measurement;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.form.data.FrmVTData;
 import ca.openosp.openo.form.util.FrmToXMLUtil;
 import ca.openosp.openo.form.util.FrmXml2VTData;
@@ -57,8 +58,8 @@ import ca.openosp.openo.encounter.data.EctEChartBean;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean;
 import ca.openosp.openo.encounter.oscarMeasurements.util.EctFindMeasurementTypeUtil;
 import ca.openosp.openo.encounter.pageUtil.EctSessionBean;
-import ca.openosp.openo.rx.data.RxPatientData;
-import ca.openosp.openo.rx.data.RxPrescriptionData;
+import ca.openosp.openo.prescript.data.RxPatientData;
+import ca.openosp.openo.prescript.data.RxPrescriptionData;
 import ca.openosp.openo.util.UtilDateUtilities;
 
 /*
@@ -81,7 +82,7 @@ public final class FrmSetupForm2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", null)) {
-            throw new SecurityException("missing required security object (_demographic)");
+            throw new SecurityException("missing required sec object (_demographic)");
         }
 
         /**
@@ -250,7 +251,7 @@ public final class FrmSetupForm2Action extends ActionSupport {
 		} */ catch (IOException e) {
             MiscUtils.getLogger().debug("IO error.");
             MiscUtils.getLogger().debug("Error, file " + formName + ".xml not found.");
-            MiscUtils.getLogger().debug("This file must be placed at web/form");
+            MiscUtils.getLogger().debug("This file must be placed at www/form");
             MiscUtils.getLogger().error("Error", e);
         }
         response.sendRedirect(contextPath + "/form/form" + formName + ".jsp");
@@ -304,7 +305,7 @@ public final class FrmSetupForm2Action extends ActionSupport {
                         ResultSetMetaData md = rs.getMetaData();
                         for (int i = 1; i <= md.getColumnCount(); i++) {
                             String name = md.getColumnName(i);
-                            String value = oscar.Misc.getString(rs, i);
+                            String value = Misc.getString(rs, i);
                             if (value != null) props.setProperty(name, value);
                         }
                     }

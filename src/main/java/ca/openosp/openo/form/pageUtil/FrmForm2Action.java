@@ -35,21 +35,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ca.openosp.openo.commn.model.Demographic;
 import org.apache.commons.validator.GenericValidator;
 import org.apache.logging.log4j.Logger;
 import org.apache.xmlrpc.XmlRpcClient;
 import org.apache.xmlrpc.XmlRpcException;
-import org.oscarehr.common.dao.EncounterFormDao;
-import org.oscarehr.common.dao.MeasurementDao;
-import org.oscarehr.common.dao.MeasurementDaoImpl.SearchCriteria;
-import org.oscarehr.common.model.EncounterForm;
-import org.oscarehr.common.model.Measurement;
+import ca.openosp.openo.commn.dao.EncounterFormDao;
+import ca.openosp.openo.commn.dao.MeasurementDao;
+import ca.openosp.openo.commn.dao.MeasurementDaoImpl.SearchCriteria;
+import ca.openosp.openo.commn.model.EncounterForm;
+import ca.openosp.openo.commn.model.Measurement;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.form.FrmRecordHelp;
 import ca.openosp.openo.form.data.FrmData;
 import ca.openosp.openo.form.util.FrmToXMLUtil;
@@ -96,7 +97,7 @@ public class FrmForm2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_form", "w", null)) {
-            throw new SecurityException("missing required security object (_form)");
+            throw new SecurityException("missing required sec object (_form)");
         }
 
         boolean valid = true;
@@ -167,7 +168,7 @@ public class FrmForm2Action extends ActionSupport {
 
         if (valid) {
             DemographicData demoData = new DemographicData();
-            org.oscarehr.common.model.Demographic demo = demoData
+            Demographic demo = demoData
                     .getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demographicNo);
             logger.debug("is valid, procede write to table");
             // Store form information as properties for saving to form table

@@ -37,9 +37,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.common.model.ScheduleTemplateCode;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.model.ScheduleTemplateCode;
+import ca.openosp.openo.commn.dao.ScheduleTemplateCodeDao;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class ScheduleTemplateCodeDaoTest extends DaoTestFixtures {
 

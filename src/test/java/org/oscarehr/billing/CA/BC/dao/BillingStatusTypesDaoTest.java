@@ -35,7 +35,7 @@ import org.junit.Test;
 import ca.openosp.openo.billing.CA.BC.model.BillingStatusTypes;
 import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class BillingStatusTypesDaoTest extends DaoTestFixtures {
 

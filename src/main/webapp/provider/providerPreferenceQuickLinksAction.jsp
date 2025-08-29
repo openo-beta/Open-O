@@ -24,10 +24,10 @@
 
 --%>
 
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="org.oscarehr.web.admin.ProviderPreferencesUIBean" %>
-<%@page import="org.oscarehr.utility.WebUtils" %>
-<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.web.admin.ProviderPreferencesUIBean" %>
+<%@page import="ca.openosp.openo.utility.WebUtils" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     String providerNo = loggedInInfo.getLoggedInProviderNo();

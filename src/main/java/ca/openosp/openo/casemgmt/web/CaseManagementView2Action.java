@@ -23,9 +23,12 @@
 
 package ca.openosp.openo.casemgmt.web;
 
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.caisi_integrator.ws.*;
 import ca.openosp.openo.casemgmt.model.*;
 import ca.openosp.openo.casemgmt.service.*;
+import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.commn.model.*;
 import ca.openosp.openo.services.security.SecurityManager;
 import ca.openosp.openo.util.UtilDateUtilities;
 import com.opensymphony.xwork2.ActionSupport;
@@ -37,31 +40,29 @@ import net.sf.json.processors.JsDateJsonBeanProcessor;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
-import org.oscarehr.PMmodule.dao.SecUserRoleDao;
-import org.oscarehr.PMmodule.model.ProgramProvider;
-import org.oscarehr.PMmodule.model.ProgramTeam;
-import org.oscarehr.PMmodule.model.SecUserRole;
-import org.oscarehr.PMmodule.service.AdmissionManager;
-import org.oscarehr.PMmodule.service.ProgramManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.IntegratorFallBackManager;
+import ca.openosp.openo.PMmodule.dao.SecUserRoleDao;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.PMmodule.model.ProgramTeam;
+import ca.openosp.openo.PMmodule.model.SecUserRole;
+import ca.openosp.openo.PMmodule.service.AdmissionManager;
+import ca.openosp.openo.PMmodule.service.ProgramManager;
 import ca.openosp.openo.casemgmt.common.Colour;
 import ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO;
 import ca.openosp.openo.casemgmt.dao.IssueDAO;
 import ca.openosp.openo.casemgmt.web.formbeans.CaseManagementViewFormBean;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.model.*;
 import ca.openosp.openo.managers.TicklerManager;
-import org.oscarehr.provider.web.CppPreferencesUIBean;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.provider.web.CppPreferencesUIBean;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.casemgmt.web.CaseManagementViewAction.IssueDisplay;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.encounter.data.EctFormData.PatientForm;
-import ca.openosp.openo.rx.pageUtil.RxSessionBean;
+import ca.openosp.openo.prescript.pageUtil.RxSessionBean;
 import ca.openosp.openo.util.ConversionUtils;
 import ca.openosp.openo.util.LabelValueBean;
 import ca.openosp.openo.util.OscarRoleObjectPrivilege;
@@ -354,7 +355,7 @@ public class CaseManagementView2Action extends ActionSupport {
 
             for (Iterator<ProgramProvider> j = ps.iterator(); j.hasNext(); ) {
                 ProgramProvider pp = j.next();
-                logger.debug("Get program provider teams");
+                logger.debug("Get program providers teams");
                 for (Iterator<ProgramTeam> k = pp.getTeams().iterator(); k.hasNext(); ) {
                     ProgramTeam pt = k.next();
                     if (pt.getName().equals(teamName)) {
@@ -362,7 +363,7 @@ public class CaseManagementView2Action extends ActionSupport {
                     }
                 }
                 current = System.currentTimeMillis();
-                logger.debug("Get program provider teams " + String.valueOf(current - start));
+                logger.debug("Get program providers teams " + String.valueOf(current - start));
                 start = current;
 
             }
@@ -477,7 +478,7 @@ public class CaseManagementView2Action extends ActionSupport {
             request.setAttribute("cme_js", customCmeJs);
         }
 
-        //2. Override from provider preferences?
+        //2. Override from providers preferences?
 
         //3. Override based on appointment type?
 
@@ -608,7 +609,7 @@ public class CaseManagementView2Action extends ActionSupport {
         if (noteSort != null && noteSort.length() > 0) {
             notesToDisplay = sortNotes(notesToDisplay, noteSort);
         } else {
-            oscar.OscarProperties p = oscar.OscarProperties.getInstance();
+            OscarProperties p = OscarProperties.getInstance();
             noteSort = p.getProperty("CMESort", "");
             if (noteSort.trim().equalsIgnoreCase("UP"))
                 notesToDisplay = sortNotes(notesToDisplay, "observation_date_asc");
@@ -682,14 +683,14 @@ public class CaseManagementView2Action extends ActionSupport {
 
         logger.debug("Filter Notes");
 
-        // filter notes based on role and program/provider mappings
+        // filter notes based on role and program/providers mappings
         // Only filter if we have a valid program ID
         if (programId != null && !programId.equals("0") && !programId.isEmpty()) {
             notes = caseManagementMgr.filterNotes(loggedInInfo, loggedInInfo.getLoggedInProviderNo(), notes, programId);
         }
         logger.debug("FILTER NOTES " + (System.currentTimeMillis() - startTime));
 
-        // apply provider filter
+        // apply providers filter
         logger.debug("Filter Notes Provider");
         startTime = System.currentTimeMillis();
         notes = applyProviderFilters(notes, this.getFilter_providers());
@@ -741,13 +742,13 @@ public class CaseManagementView2Action extends ActionSupport {
                 notesToDisplay.add(new NoteDisplayNonNote(patientForm));
             }
 
-            if (oscar.OscarProperties.getInstance().getProperty("billregion", "").equalsIgnoreCase("ON")) {
+            if (OscarProperties.getInstance().getProperty("billregion", "").equalsIgnoreCase("ON")) {
                 fetchInvoices(notesToDisplay, demoNo);
             }
         }
 
         // sort the notes
-        String noteSort = oscar.OscarProperties.getInstance().getProperty("CMESort", "");
+        String noteSort = OscarProperties.getInstance().getProperty("CMESort", "");
         if (noteSort.trim().equalsIgnoreCase("UP")) notesToDisplay = sortNotes(notesToDisplay, "observation_date_asc");
         else notesToDisplay = sortNotes(notesToDisplay, "observation_date_desc");
 
@@ -875,7 +876,7 @@ public class CaseManagementView2Action extends ActionSupport {
 
             } else {
                 if (Arrays.binarySearch(providerNo, note.getProviderNo()) >= 0)
-                    // correct provider
+                    // correct providers
                     filteredNotes.add(note);
             }
         }

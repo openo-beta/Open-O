@@ -31,9 +31,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.dao.BillingreferralDao;
-import org.oscarehr.common.model.Billingreferral;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.BillingreferralDao;
+import ca.openosp.openo.commn.model.Billingreferral;
+import ca.openosp.openo.utility.SpringUtils;
 
 /**
  * @author Jay Gallagher

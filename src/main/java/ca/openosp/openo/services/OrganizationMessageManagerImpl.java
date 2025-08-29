@@ -28,8 +28,8 @@ package ca.openosp.openo.services;
 
 import java.util.List;
 
-import org.oscarehr.common.dao.FacilityMessageDao;
-import org.oscarehr.common.model.FacilityMessage;
+import ca.openosp.openo.commn.dao.FacilityMessageDao;
+import ca.openosp.openo.commn.model.FacilityMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 

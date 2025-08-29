@@ -36,13 +36,13 @@ package ca.openosp.openo.encounter.oscarMeasurements.data;
 
 import java.util.*;
 
-import org.oscarehr.common.dao.MeasurementMapDao;
-import org.oscarehr.common.dao.MeasurementsExtDao;
-import org.oscarehr.common.dao.RecycleBinDao;
-import org.oscarehr.common.model.MeasurementMap;
-import org.oscarehr.common.model.MeasurementsExt;
-import org.oscarehr.common.model.RecycleBin;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.MeasurementMapDao;
+import ca.openosp.openo.commn.dao.MeasurementsExtDao;
+import ca.openosp.openo.commn.dao.RecycleBinDao;
+import ca.openosp.openo.commn.model.MeasurementMap;
+import ca.openosp.openo.commn.model.MeasurementsExt;
+import ca.openosp.openo.commn.model.RecycleBin;
+import ca.openosp.openo.utility.SpringUtils;
 
 /**
  * @author wrighd

@@ -30,9 +30,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.demographic.data.DemographicData;
 import ca.openosp.openo.waitinglist.bean.WLPatientWaitingListBeanHandler;
@@ -50,12 +51,12 @@ public final class WLSetupDisplayPatientWaitingList2Action extends ActionSupport
             throws Exception {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "r", null)) {
-            throw new RuntimeException("missing required security object (_demographic)");
+            throw new RuntimeException("missing required sec object (_demographic)");
         }
 
         String demographicNo = request.getParameter("demographic_no");
         DemographicData demoData = new DemographicData();
-        org.oscarehr.common.model.Demographic demo = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demographicNo);
+        Demographic demo = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demographicNo);
         String demoInfo = demo.getLastName() + ", " + demo.getFirstName() + " " + demo.getSex() + " " + demo.getAge();
         WLPatientWaitingListBeanHandler hd = new WLPatientWaitingListBeanHandler(demographicNo);
         HttpSession session = request.getSession();

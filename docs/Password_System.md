@@ -257,7 +257,7 @@ python3 scripts/generate_bcrypt_password.py
 # Example output:
 # Password: my_password
 # BCrypt hash: {bcrypt}$2b$12$...
-# Database SQL: UPDATE security SET password='{bcrypt}...' WHERE user_name='your_username';
+# Database SQL: UPDATE sec SET password='{bcrypt}...' WHERE user_name='your_username';
 ```
 
 ### Database Queries

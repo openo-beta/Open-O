@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.List;
 
 import ca.openosp.openo.billing.CA.model.BillActivity;
-import org.oscarehr.common.dao.AbstractDao;
+import ca.openosp.openo.commn.dao.AbstractDao;
 
 public interface BillActivityDao extends AbstractDao<BillActivity> {
 

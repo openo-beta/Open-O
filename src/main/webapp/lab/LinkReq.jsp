@@ -24,17 +24,17 @@
 
 --%>
 
-<%@page import="org.oscarehr.common.model.EForm" %>
-<%@page import="org.oscarehr.common.dao.EFormDao" %>
-<%@page import="org.oscarehr.common.model.Demographic" %>
-<%@page import="org.oscarehr.common.dao.DemographicDao" %>
-<%@page import="org.oscarehr.common.model.EFormData" %>
+<%@page import="ca.openosp.openo.commn.model.EForm" %>
+<%@page import="ca.openosp.openo.commn.dao.EFormDao" %>
+<%@page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
+<%@page import="ca.openosp.openo.commn.model.EFormData" %>
 <%@page import="org.apache.commons.lang3.StringUtils" %>
-<%@page import="org.oscarehr.common.model.EFormGroup" %>
-<%@page import="org.oscarehr.common.dao.EFormDataDao" %>
-<%@page import="org.oscarehr.common.dao.EFormGroupDao" %>
-<%@page import="oscar.OscarProperties" %>
-<%@page import="org.oscarehr.common.dao.LabRequestReportLinkDao" %>
+<%@page import="ca.openosp.openo.commn.model.EFormGroup" %>
+<%@page import="ca.openosp.openo.commn.dao.EFormDataDao" %>
+<%@page import="ca.openosp.openo.commn.dao.EFormGroupDao" %>
+<%@page import="ca.openosp.OscarProperties" %>
+<%@page import="ca.openosp.openo.commn.dao.LabRequestReportLinkDao" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -54,8 +54,8 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.common.dao.forms.FormsDao" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.commn.dao.forms.FormsDao" %>
 <%@page import="
 		java.util.Date,
                 java.util.Hashtable,
@@ -86,7 +86,7 @@
     Vector<String> formName = new Vector<String>(); //formname or eformname
     Vector<Integer> formType = new Vector<Integer>(); //1=form, 2=eform
 
-    org.oscarehr.common.model.LabRequestReportLink existingLink = null;
+    ca.openosp.openo.commn.model.LabRequestReportLink existingLink = null;
 
     boolean close = false;
 
@@ -201,7 +201,7 @@
 %>
 
 
-<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <html>
 <head>
     <title>Link to Lab Requisition</title>

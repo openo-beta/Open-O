@@ -28,17 +28,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.jobs.OscarRunnable;
-import org.oscarehr.common.model.IndicatorTemplate;
-import org.oscarehr.common.model.Property;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.Security;
-import org.oscarehr.common.model.UserProperty;
+import ca.openosp.openo.commn.jobs.OscarRunnable;
+import ca.openosp.openo.commn.model.IndicatorTemplate;
+import ca.openosp.openo.commn.model.Property;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.Security;
+import ca.openosp.openo.commn.model.UserProperty;
 import ca.openosp.openo.managers.DashboardManager;
 import ca.openosp.openo.managers.ProviderManager2;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class OutcomesDashboardMetricSenderJob implements OscarRunnable {
 
@@ -100,7 +100,7 @@ public class OutcomesDashboardMetricSenderJob implements OscarRunnable {
             if (tmp.size() > 0) {
                 String val = tmp.get(0).getValue();
                 if ("true".equals(val)) {
-                    logger.info("Adding provider " + p.getFormattedName() + " to the shared list");
+                    logger.info("Adding providers " + p.getFormattedName() + " to the shared list");
                     results.add(p);
                 }
             }

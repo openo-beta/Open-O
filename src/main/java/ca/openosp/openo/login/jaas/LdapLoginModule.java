@@ -35,13 +35,13 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 import javax.security.auth.login.LoginException;
 
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.PMmodule.dao.SecUserRoleDao;
-import org.oscarehr.PMmodule.model.SecUserRole;
-import org.oscarehr.common.dao.SecurityDao;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.Security;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.dao.SecUserRoleDao;
+import ca.openosp.openo.PMmodule.model.SecUserRole;
+import ca.openosp.openo.commn.dao.SecurityDao;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.Security;
+import ca.openosp.openo.utility.SpringUtils;
 
 
 /**
@@ -129,10 +129,10 @@ public final class LdapLoginModule extends BaseLoginModule {
      *
      * @param loginName Login name to use for loading the principal
      * @return Returns the loaded principal
-     * @throws LoginException LoginException is thrown in case there are inconsistent security info for the specified user name or if provider doesn't exist
+     * @throws LoginException LoginException is thrown in case there are inconsistent sec info for the specified user name or if providers doesn't exist
      */
     protected final OscarPrincipal loadPrincipal(String loginName) throws LoginException {
-        // find unique security record for the validated login
+        // find unique sec record for the validated login
         List<Security> securities = getSecurityDao().findByUserName(loginName);
         if (securities.size() < 1) {
             throw new LoginException("OSCAR Security record is not found for " + loginName);
@@ -142,7 +142,7 @@ public final class LdapLoginModule extends BaseLoginModule {
         }
 
         Security security = securities.get(0);
-        // now find provider info for the security record
+        // now find providers info for the sec record
         Provider provider = getProviderDao().getProvider(security.getProviderNo());
         OscarPrincipal result = new OscarPrincipal(provider);
         result.setName(loginName);

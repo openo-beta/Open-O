@@ -28,7 +28,7 @@ package ca.openosp.openo.util;
 
 import java.util.ResourceBundle;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 
 public class Pager {

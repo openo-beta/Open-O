@@ -39,25 +39,25 @@
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.*" %>
-<%@ page import="oscar.OscarProperties" %>
-<%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
-<%@ page import="org.oscarehr.common.model.UserProperty" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
+<%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
+<%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 
-<%@page import="org.oscarehr.common.model.ProviderPreference" %>
-<%@page import="org.oscarehr.web.admin.ProviderPreferencesUIBean" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="org.oscarehr.web.PrescriptionQrCodeUIBean" %>
-<%@page import="org.oscarehr.common.model.EForm" %>
+<%@page import="ca.openosp.openo.commn.model.ProviderPreference" %>
+<%@page import="ca.openosp.openo.web.admin.ProviderPreferencesUIBean" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.web.PrescriptionQrCodeUIBean" %>
+<%@page import="ca.openosp.openo.commn.model.EForm" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.common.model.EncounterForm" %>
-<%@page import="org.oscarehr.common.dao.CtlBillingServiceDao" %>
-<%@page import="org.oscarehr.common.model.CtlBillingService" %>
-<%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
+<%@page import="ca.openosp.openo.commn.model.EncounterForm" %>
+<%@page import="ca.openosp.openo.commn.dao.CtlBillingServiceDao" %>
+<%@page import="ca.openosp.openo.commn.model.CtlBillingService" %>
+<%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@page import="java.util.List" %>
 <%@page import="java.util.ArrayList" %>
-<%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@page import="org.oscarehr.common.model.Provider" %>
+<%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
+<%@page import="ca.openosp.openo.commn.model.Provider" %>
 
 <%!
     CtlBillingServiceDao ctlBillingServiceDao = SpringUtils.getBean(CtlBillingServiceDao.class);

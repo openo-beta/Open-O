@@ -24,15 +24,15 @@
 package ca.openosp.openo.integration.mcedt;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.UserPropertyDAO;
-import org.oscarehr.common.model.UserProperty;
+import ca.openosp.openo.commn.dao.UserPropertyDAO;
+import ca.openosp.openo.commn.model.UserProperty;
 import ca.openosp.openo.integration.ebs.client.ng.EdtClientBuilder;
 import ca.openosp.openo.integration.ebs.client.ng.EdtClientBuilderConfig;
 import ca.openosp.openo.integration.mcedt.mailbox.ActionUtils;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.ontario.health.edt.EDTDelegate;
 
 import java.io.File;

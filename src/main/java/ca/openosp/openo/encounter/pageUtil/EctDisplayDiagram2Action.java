@@ -26,8 +26,8 @@
 
 package ca.openosp.openo.encounter.pageUtil;
 
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.util.StringUtils;
 
@@ -42,7 +42,7 @@ public class EctDisplayDiagram2Action extends EctDisplayAction {
 
     public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao) {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_eform", "r", null)) {
-            throw new SecurityException("missing required security object (_eform)");
+            throw new SecurityException("missing required sec object (_eform)");
         }
 
         //set text for lefthand module title

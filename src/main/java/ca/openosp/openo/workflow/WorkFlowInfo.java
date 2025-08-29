@@ -29,7 +29,7 @@ package ca.openosp.openo.workflow;
 import java.util.Date;
 import java.util.Hashtable;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.util.UtilDateUtilities;
 

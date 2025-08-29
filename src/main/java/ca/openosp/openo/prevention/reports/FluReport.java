@@ -38,9 +38,10 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
+import ca.openosp.openo.commn.model.Demographic;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.demographic.data.DemographicData;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBean;
@@ -297,7 +298,7 @@ public class FluReport implements PreventionReport {
     boolean isOfAge(LoggedInInfo loggedInInfo, String d, Date asofDate) {
         boolean isAge = true;
         DemographicData demoData = new DemographicData();
-        org.oscarehr.common.model.Demographic demo = demoData.getDemographic(loggedInInfo, d);
+        Demographic demo = demoData.getDemographic(loggedInInfo, d);
         Date demoDOB = DemographicData.getDOBObj(demo);
 
         Calendar bonusEl = Calendar.getInstance();

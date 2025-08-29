@@ -37,12 +37,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.Lab;
-import org.oscarehr.common.model.LabTest;
+import ca.openosp.openo.commn.model.Lab;
+import ca.openosp.openo.commn.model.LabTest;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.lab.FileUploadCheck;
 import ca.openosp.openo.lab.ca.all.upload.HandlerClassFactory;
@@ -76,7 +76,7 @@ public class SubmitLabByForm2Action extends ActionSupport {
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_lab", "w", null)) {
-            throw new SecurityException("missing required security object (_lab)");
+            throw new SecurityException("missing required sec object (_lab)");
         }
 
         logger.info("in save lab from form");

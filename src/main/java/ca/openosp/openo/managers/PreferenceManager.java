@@ -31,7 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteExt;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 
 public interface PreferenceManager {

@@ -34,24 +34,24 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.BillingONCHeader1Dao;
-import org.oscarehr.common.dao.BillingONExtDao;
-import org.oscarehr.common.dao.BillingONPaymentDao;
-import org.oscarehr.common.dao.BillingONRepoDao;
-import org.oscarehr.common.dao.BillingPaymentTypeDao;
-import org.oscarehr.common.dao.BillingServiceDao;
-import org.oscarehr.common.model.BillingONCHeader1;
-import org.oscarehr.common.model.BillingONExt;
-import org.oscarehr.common.model.BillingONItem;
-import org.oscarehr.common.model.BillingONPayment;
-import org.oscarehr.common.model.BillingService;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.service.BillingONService;
-import org.oscarehr.common.model.BillingPaymentType;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.BillingONCHeader1Dao;
+import ca.openosp.openo.commn.dao.BillingONExtDao;
+import ca.openosp.openo.commn.dao.BillingONPaymentDao;
+import ca.openosp.openo.commn.dao.BillingONRepoDao;
+import ca.openosp.openo.commn.dao.BillingPaymentTypeDao;
+import ca.openosp.openo.commn.dao.BillingServiceDao;
+import ca.openosp.openo.commn.model.BillingONCHeader1;
+import ca.openosp.openo.commn.model.BillingONExt;
+import ca.openosp.openo.commn.model.BillingONItem;
+import ca.openosp.openo.commn.model.BillingONPayment;
+import ca.openosp.openo.commn.model.BillingService;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.service.BillingONService;
+import ca.openosp.openo.commn.model.BillingPaymentType;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.billings.ca.on.data.BillingDataHlp;
 import ca.openosp.openo.util.DateUtils;
@@ -342,7 +342,7 @@ public class BillingCorrection2Action extends ActionSupport {
                 if (newProvider != null) {
                     bCh1.setProviderOhipNo(newProvider.getOhipNo());
                 } else {
-                    MiscUtils.getLogger().warn("null provider! can't do the update (" + request.getParameter("provider_no") + ")");
+                    MiscUtils.getLogger().warn("null providers! can't do the update (" + request.getParameter("provider_no") + ")");
                 }
             }
         }

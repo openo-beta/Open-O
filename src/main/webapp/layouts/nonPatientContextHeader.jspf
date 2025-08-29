@@ -24,11 +24,11 @@
 
 --%>
 
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@ page import="org.oscarehr.common.model.UserProperty" %>
-<%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
-<%@ page import="oscar.OscarProperties" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
+<%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
+<%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.*" %>
 
@@ -234,7 +234,7 @@ label.error {
 									
 							        <security:oscarSec roleName="<%=roleName$%>" objectName="_pref" rights="r">
 									<li>  
-										<a href=# onClick ="popupPage2('<%=request.getContextPath()%>/provider/providerpreference.jsp?provider_no=<%=curUser_no%>');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>' OnMouseOver="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>' ; return true"><i class="icon-user"></i> <fmt:setBundle basename="oscarResources"/><fmt:message key="global.pref"/></a>
+										<a href=# onClick ="popupPage2('<%=request.getContextPath()%>/providers/providerpreference.jsp?provider_no=<%=curUser_no%>');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>' OnMouseOver="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>' ; return true"><i class="icon-user"></i> <fmt:setBundle basename="oscarResources"/><fmt:message key="global.pref"/></a>
 									</li>
 									</security:oscarSec>
 									
@@ -320,7 +320,7 @@ label.error {
 			
 			<security:oscarSec roleName="<%=roleName$%>" objectName="_edoc" rights="r">
 			<li>
-			   <a HREF="#" onclick="popupPage2('<%=request.getContextPath()%>/documentManager/documentReport.jsp?function=provider&functionid=<%=curUser_no%>&curUser=<%=curUser_no%>', 'edocView');" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewEdoc"/>'><fmt:setBundle basename="oscarResources"/><fmt:message key="global.edoc"/></a>
+			   <a HREF="#" onclick="popupPage2('<%=request.getContextPath()%>/documentManager/documentReport.jsp?function=providers&functionid=<%=curUser_no%>&curUser=<%=curUser_no%>', 'edocView');" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewEdoc"/>'><fmt:setBundle basename="oscarResources"/><fmt:message key="global.edoc"/></a>
 			</li>
 			</security:oscarSec>
 			 

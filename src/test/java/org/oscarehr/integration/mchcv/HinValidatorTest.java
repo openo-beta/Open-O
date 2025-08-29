@@ -115,7 +115,7 @@ public class HinValidatorTest {
         System.out.println(printOutput("testNOT_ON_ACTIVE_ROSTER", validationResult));
 
         assertEquals("102", validationResult.getFeeServiceResponseCode("P108"));
-        assertEquals("The FSC entered by the provider is not valid.", validationResult.getFeeServiceResponseDescription("P108"));
+        assertEquals("The FSC entered by the providers is not valid.", validationResult.getFeeServiceResponseDescription("P108"));
         assertNull(validationResult.getFeeServiceDate("P108"));
 
         assertEquals(true, isValid);

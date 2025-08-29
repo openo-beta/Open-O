@@ -2,14 +2,14 @@
 package ca.openosp.openo.encounter.oceanEReferal.pageUtil;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.EReferAttachmentDao;
-import org.oscarehr.common.model.EReferAttachment;
-import org.oscarehr.common.model.EReferAttachmentData;
-import org.oscarehr.common.model.enumerator.DocumentType;
+import ca.openosp.openo.commn.dao.EReferAttachmentDao;
+import ca.openosp.openo.commn.model.EReferAttachment;
+import ca.openosp.openo.commn.model.EReferAttachmentData;
+import ca.openosp.openo.commn.model.enumerator.DocumentType;
 import ca.openosp.openo.documentManager.DocumentAttachmentManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.StringUtils;
 

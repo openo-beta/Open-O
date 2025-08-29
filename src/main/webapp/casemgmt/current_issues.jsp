@@ -40,10 +40,10 @@
     }
 %>
 
-<%@ page import="org.oscarehr.casemgmt.model.*" %>
-<%@ page import="org.oscarehr.casemgmt.web.formbeans.*" %>
+<%@ page import="ca.openosp.openo.casemgmt.model.*" %>
+<%@ page import="ca.openosp.openo.casemgmt.web.formbeans.*" %>
 <%@page import="ca.openosp.openo.casemgmt.web.CaseManagementViewAction" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="java.util.Map" %>
 <%@page import="ca.openosp.openo.casemgmt.web.CheckBoxBean" %>
 

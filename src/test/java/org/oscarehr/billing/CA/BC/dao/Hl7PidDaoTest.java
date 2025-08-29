@@ -32,7 +32,7 @@ import ca.openosp.openo.billing.CA.BC.model.Hl7Pid;
 import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class Hl7PidDaoTest extends DaoTestFixtures {
 
@@ -40,7 +40,7 @@ public class Hl7PidDaoTest extends DaoTestFixtures {
 
     @Before
     public void before() throws Exception {
-        SchemaUtils.restoreTable("hl7_pid", "hl7_link", "hl7_msh", "hl7_obr", "hl7_obx", "provider", "hl7_message");
+        SchemaUtils.restoreTable("hl7_pid", "hl7_link", "hl7_msh", "hl7_obr", "hl7_obx", "providers", "hl7_message");
     }
 
     @Test

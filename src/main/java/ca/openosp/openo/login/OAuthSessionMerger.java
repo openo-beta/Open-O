@@ -31,12 +31,12 @@
 
 package ca.openosp.openo.login;
 
-import org.oscarehr.common.dao.ServiceRequestTokenDao;
-import org.oscarehr.common.model.ServiceRequestToken;
+import ca.openosp.openo.commn.dao.ServiceRequestTokenDao;
+import ca.openosp.openo.commn.model.ServiceRequestToken;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 
 public class OAuthSessionMerger {

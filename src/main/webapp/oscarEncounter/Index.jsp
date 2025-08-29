@@ -24,8 +24,8 @@
 
 --%>
 
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="ca.openosp.openo.rx.data.RxPatientData" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.prescript.data.RxPatientData" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -76,12 +76,12 @@
 <%@ taglib uri="/WEB-INF/special_tag.tld" prefix="special" %>
 
 <%@page
-        import="oscar.log.*,ca.openosp.openo.util.UtilMisc,oscar.oscarEncounter.data.*, java.net.*,java.util.*,ca.openosp.openo.util.UtilDateUtilities" %>
+        import="ca.openosp.openo.log.*,ca.openosp.openo.util.UtilMisc,ca.openosp.openo.encounter.data.*, java.net.*,java.util.*,ca.openosp.openo.util.UtilDateUtilities" %>
 <%@page
-        import="ca.openosp.openo.mds.data.MDSResultsData,oscar.oscarLab.ca.on.*, ca.openosp.openo.messenger.util.MsgDemoMap, ca.openosp.openo.messenger.data.MsgMessageData" %>
+        import="ca.openosp.openo.mds.data.MDSResultsData,ca.openosp.openo.lab.ca.on.*, ca.openosp.openo.messenger.util.MsgDemoMap, ca.openosp.openo.messenger.data.MsgMessageData" %>
 <%@page
-        import="oscar.oscarEncounter.oscarMeasurements.*,oscar.oscarResearch.oscarDxResearch.bean.*" %>
-<% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
+        import="ca.openosp.openo.encounter.oscarMeasurements.*,ca.openosp.openo.dxresearch.bean.*" %>
+<% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 
 <%
     String ip = request.getRemoteAddr();
@@ -146,7 +146,7 @@
 %>
 
 
-<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
 <%@ page import="ca.openosp.openo.encounter.immunization.data.EctImmImmunizationData" %>
@@ -159,8 +159,10 @@
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
-<%@ page import="ca.openosp.openo.oscarDxResearch.bean.dxResearchBeanHandler" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.dxresearch.bean.dxResearchBeanHandler" %>
+<%@ page import="ca.openosp.openo.commn.model.Allergy" %>
+<%@ page import="ca.openosp.OscarProperties" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -734,8 +736,8 @@
             // Written by wreby
             // This code supports the autosave function
             //autoSaveTimer is in milliseconds
-            var autoSaveTimerLength = <%= oscar.OscarProperties.getInstance().getProperty("ECT_AUTOSAVE_TIMER","-1") %>;
-            var SaveFeedbackTimerLength = <%=oscar.OscarProperties.getInstance().getProperty("ECT_SAVE_FEEDBACK_TIMER","2500") %>;
+            var autoSaveTimerLength = <%= OscarProperties.getInstance().getProperty("ECT_AUTOSAVE_TIMER","-1") %>;
+            var SaveFeedbackTimerLength = <%=OscarProperties.getInstance().getProperty("ECT_SAVE_FEEDBACK_TIMER","2500") %>;
             var request = null;
             if (autoSaveTimerLength > 0) {
                 var autoSaveTimer = setTimeout("AutoSaveEncounter()", autoSaveTimerLength);
@@ -940,10 +942,10 @@
                                 <oscar:preventionWarnings
                                         demographicNo="<%=bean.demographicNo%>">prevention</oscar:preventionWarnings></a>
                             <br>
-                        </oscar:oscarPropertiesCheck> <% if (oscar.OscarProperties.getInstance().getProperty("oscarcomm", "").equals("on")) { %>
+                        </oscar:oscarPropertiesCheck> <% if (OscarProperties.getInstance().getProperty("oscarcomm", "").equals("on")) { %>
                             <a href="javascript:popupOscarComm(700,960,'RemoteAttachments.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarComm"/></a><br>
                             <% } %> <a href=#
-                                       onClick="popupOscarComm(580,900,'../oscarResearch/oscarDxResearch/setupDxResearch.do?demographicNo=<%=bean.demographicNo%>&providerNo=<%=provNo%>&quickList=');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.disease"/></a><br>
+                                       onClick="popupOscarComm(580,900,'../oscarResearch/dxresearch/setupDxResearch.do?demographicNo=<%=bean.demographicNo%>&providerNo=<%=provNo%>&quickList=');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.disease"/></a><br>
                             <a href=#
                                onClick="popupOscarCon(580,800,'../appointment/appointmentcontrol.jsp?keyword=<%=URLEncoder.encode(bean.patientLastName+","+bean.patientFirstName)%>&displaymode=<%=URLEncoder.encode("Search ")%>&search_mode=search_name&originalpage=<%=URLEncoder.encode("../tickler/ticklerAdd.jsp")%>&orderby=last_name&appointment_date=2000-01-01&limit1=0&limit2=5&status=t&start_time=10:45&end_time=10:59&duration=15&dboperation=search_demorecord&type=&demographic_no=<%=bean.demographicNo%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.addTickler"/></a><br>
                         </td>
@@ -1366,7 +1368,7 @@
                                     <div class="presBox" id="allergyBox">
                                         <ul>
                                             <%
-                                                org.oscarehr.common.model.Allergy[] allergies = RxPatientData.getPatient(loggedInInfo, Integer.parseInt(demoNo)).getAllergies(loggedInInfo);
+                                                Allergy[] allergies = RxPatientData.getPatient(loggedInInfo, Integer.parseInt(demoNo)).getAllergies(loggedInInfo);
 
                                                 for (int j = 0; j < allergies.length; j++) {%>
                                             <li><a
@@ -1604,7 +1606,7 @@
                                                                          onClick="document.forms['encForm'].btnPressed.value='Save'; document.forms['encForm'].submit();javascript:popupPageK('encounterPrint.jsp');"/>
                                     <input type="hidden" name="btnPressed" value=""> <input
                                             type="hidden" name="submitMethod" value="synchronous"/>
-                                    <!-- security code block -->
+                                    <!-- sec code block -->
                                     <security:oscarSec roleName="<%=roleName$%>" objectName="_eChart"
                                                        rights="w">
                                         <% if (!bPrincipalControl || (bPrincipalControl && bPrincipalDisplay)) { %>
@@ -1630,7 +1632,7 @@
                                                    onclick="document.forms['encForm'].btnPressed.value='Verify and Sign'; document.forms['encForm'].submit();">
                                         </security:oscarSec>
                                         <% } %>
-                                    </security:oscarSec> <!-- security code block --> <input type="button"
+                                    </security:oscarSec> <!-- sec code block --> <input type="button"
                                                                                              style="height: 20px"
                                                                                              name="buttonPressed"
                                                                                              value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnExit"/>"

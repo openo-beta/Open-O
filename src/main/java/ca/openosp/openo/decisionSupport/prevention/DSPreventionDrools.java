@@ -35,9 +35,9 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.encounter.oscarMeasurements.util.DSCondition;
 import ca.openosp.openo.encounter.oscarMeasurements.util.RuleBaseCreator;
 
@@ -46,7 +46,7 @@ public class DSPreventionDrools {
 
     public static final Namespace namespace = Namespace.getNamespace("http://drools.org/rules");
     public static final Namespace javaNamespace = Namespace.getNamespace("java", "http://drools.org/semantics/java");
-    public static final String preventionObjectClassPath = "oscar.oscarPrevention.Prevention";
+    public static final String preventionObjectClassPath = "ca.openosp.openo.prevention.Prevention";
 
     public static RuleBase createRuleBase(byte[] ruleSet) throws Exception {
         logger.debug(preventionObjectClassPath);

@@ -34,17 +34,17 @@ import org.apache.commons.validator.GenericValidator;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
-import org.oscarehr.common.dao.FlowSheetCustomizationDao;
-import org.oscarehr.common.dao.MeasurementDao;
-import org.oscarehr.common.dao.MeasurementDaoImpl.SearchCriteria;
-import org.oscarehr.common.dao.SecRoleDao;
-import org.oscarehr.common.model.FlowSheetCustomization;
-import org.oscarehr.common.model.Measurement;
-import org.oscarehr.common.model.SecRole;
-import org.oscarehr.common.model.Validations;
+import ca.openosp.openo.commn.dao.FlowSheetCustomizationDao;
+import ca.openosp.openo.commn.dao.MeasurementDao;
+import ca.openosp.openo.commn.dao.MeasurementDaoImpl.SearchCriteria;
+import ca.openosp.openo.commn.dao.SecRoleDao;
+import ca.openosp.openo.commn.model.FlowSheetCustomization;
+import ca.openosp.openo.commn.model.Measurement;
+import ca.openosp.openo.commn.model.SecRole;
+import ca.openosp.openo.commn.model.Validations;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import ca.openosp.openo.encounter.data.EctProgram;
@@ -73,7 +73,7 @@ public class EctMeasurements2Action extends ActionSupport {
     public String execute() throws ServletException, IOException {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_measurement", "w",
                 null)) {
-            throw new SecurityException("missing required security object (_measurement)");
+            throw new SecurityException("missing required sec object (_measurement)");
         }
 
         boolean ajax = (request.getParameter("ajax") != null) ? Boolean.valueOf(request.getParameter("ajax")) : false;

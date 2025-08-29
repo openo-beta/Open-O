@@ -24,29 +24,29 @@
 
 --%>
 
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@ page import="org.oscarehr.common.model.PatientLabRouting" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.commn.model.PatientLabRouting" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
-<%@ page import="org.oscarehr.common.dao.PatientLabRoutingDao" %>
+<%@ page import="ca.openosp.openo.commn.dao.PatientLabRoutingDao" %>
 <%@ page import="java.util.*,
                  java.sql.*,
-                 oscar.oscarDB.*,
-                 oscar.oscarLab.ca.all.*,
-                 oscar.oscarLab.ca.all.util.*,
-                 org.oscarehr.utility.SpringUtils,
-                 oscar.oscarLab.ca.all.parsers.*,
+                 ca.openosp.openo.db.*,
+                 ca.openosp.openo.lab.ca.all.*,
+                 ca.openosp.openo.lab.ca.all.util.*,
+                 ca.openosp.openo.utility.SpringUtils,
+                 ca.openosp.openo.lab.ca.all.parsers.*,
                  ca.openosp.openo.lab.LabRequestReportLink,
                  ca.openosp.openo.mds.data.ReportStatus,
-                 oscar.log.*,
-                 oscar.OscarProperties,
+                 ca.openosp.openo.log.*,
+                 ca.openosp.OscarProperties,
                  org.apache.commons.codec.binary.Base64,
-                 org.oscarehr.common.dao.Hl7TextInfoDao,
-                 org.oscarehr.common.model.Hl7TextInfo,
-                 org.oscarehr.common.dao.UserPropertyDAO,
-                 org.oscarehr.common.model.UserProperty,
+                 ca.openosp.openo.commn.dao.Hl7TextInfoDao,
+                 ca.openosp.openo.commn.model.Hl7TextInfo,
+                 ca.openosp.openo.commn.dao.UserPropertyDAO,
+                 ca.openosp.openo.commn.model.UserProperty,
                  javax.swing.text.rtf.RTFEditorKit,
                  java.io.ByteArrayInputStream" %>
-<%@ page import="org.oscarehr.common.model.Tickler" %>
+<%@ page import="ca.openosp.openo.commn.model.Tickler" %>
 <%@ page import="ca.openosp.openo.managers.TicklerManager" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
@@ -77,7 +77,7 @@
 
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-    oscar.OscarProperties props = oscar.OscarProperties.getInstance();
+    OscarProperties props = OscarProperties.getInstance();
     String segmentID = request.getParameter("segmentID");
     String providerNo = request.getParameter("providerNo");
     String searchProviderNo = request.getParameter("searchProviderNo");
@@ -244,7 +244,7 @@
                 if (json != null) {
                     var success = json.isLinkedToDemographic;
                     var demoid = '';
-                    //check if lab is linked to a provider
+                    //check if lab is linked to a providers
                     if (success) {
                         if (action == 'ackLab') {
                             if (confirmAck()) {

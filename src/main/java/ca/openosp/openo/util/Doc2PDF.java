@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import org.w3c.tidy.Tidy;
 
 import com.itextpdf.text.Document;
@@ -123,7 +123,7 @@ public class Doc2PDF {
             // Return the exit status from HTMLDOC...
             return (process.waitFor());
         } catch (Exception e) {
-            // An error occurred - send it to stderr for the web server...
+            // An error occurred - send it to stderr for the www server...
             logger.error(e.toString() + " caught while running:\n\n");
             logger.error("    " + command + "\n");
             logger.error("", e);
@@ -146,7 +146,7 @@ public class Doc2PDF {
             filename = filename + "?" + query_string;
         }
 
-        // Convert the file to PDF and send to the web client...
+        // Convert the file to PDF and send to the www client...
         topdf(request, response, filename);
 
         return;

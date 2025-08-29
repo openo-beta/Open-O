@@ -34,11 +34,12 @@ package ca.openosp.openo.billings.ca.bc.data;
 import java.util.Date;
 import java.util.List;
 
+import ca.openosp.Misc;
 import ca.openosp.openo.billing.CA.BC.dao.BillingNoteDao;
 import ca.openosp.openo.billing.CA.BC.model.BillingNotes;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.Misc;
+import ca.openosp.Misc;
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.util.ConversionUtils;
 import ca.openosp.openo.util.UtilMisc;
@@ -72,7 +73,7 @@ public class BillingNote {
     }
 
     public void addNote(String billingmaster_no, String provider_no, String note) {
-        note = oscar.Misc.removeNewLine(note);
+        note = Misc.removeNewLine(note);
 
         BillingNotes n = new BillingNotes();
         n.setBillingmasterNo(ConversionUtils.fromIntString(billingmaster_no));
@@ -90,7 +91,7 @@ public class BillingNote {
         List<Billingmaster> bmdao = dao.getBillingmasterByBillingNo(Integer.parseInt(billingNo));
         for (Billingmaster bm : bmdao) {
             if (bm != null) {
-                addNote(String.valueOf(bm.getBillingmasterNo()), provider, oscar.Misc.removeNewLine(note));
+                addNote(String.valueOf(bm.getBillingmasterNo()), provider, Misc.removeNewLine(note));
             }
         }
     }

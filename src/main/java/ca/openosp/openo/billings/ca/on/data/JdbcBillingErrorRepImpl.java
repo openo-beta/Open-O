@@ -22,9 +22,9 @@ package ca.openosp.openo.billings.ca.on.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.oscarehr.common.dao.BillingONEAReportDao;
-import org.oscarehr.common.model.BillingONEAReport;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.BillingONEAReportDao;
+import ca.openosp.openo.commn.model.BillingONEAReport;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 

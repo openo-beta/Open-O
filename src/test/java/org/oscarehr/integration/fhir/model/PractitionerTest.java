@@ -27,7 +27,7 @@ import ca.openosp.openo.integration.fhir.model.Practitioner;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.commn.model.Provider;
 
 public class PractitionerTest {
 

@@ -26,14 +26,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ page errorPage="/errorpage.jsp" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
-<%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@ page import="org.oscarehr.common.model.Provider" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
+<%@ page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="org.oscarehr.common.dao.ScheduleTemplateCodeDao" %>
-<%@ page import="org.oscarehr.common.model.ScheduleTemplateCode" %>
+<%@ page import="ca.openosp.openo.commn.dao.ScheduleTemplateCodeDao" %>
+<%@ page import="ca.openosp.openo.commn.model.ScheduleTemplateCode" %>
 <%@ page import="ca.openosp.openo.appointment.web.NextAppointmentSearchHelper" %>
 <%@ page import="ca.openosp.openo.appointment.web.NextAppointmentSearchBean" %>
 <%@ page import="ca.openosp.openo.appointment.web.NextAppointmentSearchResult" %>

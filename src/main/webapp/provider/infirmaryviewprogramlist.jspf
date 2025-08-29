@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi"%>
-<%@ page import="org.oscarehr.utility.*"%>
+<%@ page import="ca.openosp.openo.utility.*"%>
 <%@ page import="ca.openosp.openo.caisi.CaisiUtil" %>
 
 <%

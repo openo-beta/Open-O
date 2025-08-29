@@ -24,19 +24,20 @@
  */
 package ca.openosp.openo.form.pharmaForms.formBPMH.business;
 
+import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.commn.model.*;
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.model.*;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.form.pharmaForms.formBPMH.bean.BpmhDrug;
 import ca.openosp.openo.form.pharmaForms.formBPMH.bean.BpmhForm2Bean;
 import ca.openosp.openo.form.pharmaForms.formBPMH.util.CaseNoteParser;
 import ca.openosp.openo.form.pharmaForms.formBPMH.util.JsonUtil;
 import ca.openosp.openo.form.pharmaForms.formBPMH.util.SortDrugList;
-import ca.openosp.openo.rx.data.RxDrugData;
+import ca.openosp.openo.prescript.data.RxDrugData;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ import java.util.List;
  */
 public class BpmhForm2Handler {
 
-    private static final Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static final Logger logger = MiscUtils.getLogger();
     private static final String[] IGNORE_METHODS = new String[]{
             "handler",
             "hibernateLazyInitializer",
@@ -184,7 +185,7 @@ public class BpmhForm2Handler {
             getBpmhFormBean().setFormDate(getFormHistory().getFormCreated());
             getBpmhFormBean().setFormId(getFormHistory().getId() + "");
             getBpmhFormBean().setEditDate(getFormHistory().getFormEdited());
-            // provider is implicitly set from form table.
+            // providers is implicitly set from form table.
             formBeanProvider = getProviderDao().getProvider(getFormHistory().getProviderNo() + "");
             familyDrName = getFormHistory().getFamilyDrName();
             familyDrPhone = getFormHistory().getFamilyDrPhone();

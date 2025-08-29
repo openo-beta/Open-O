@@ -35,7 +35,7 @@ import ca.openosp.openo.billing.CA.BC.model.Hl7Link;
 import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class Hl7LinkDaoTest extends DaoTestFixtures {
 
@@ -44,7 +44,7 @@ public class Hl7LinkDaoTest extends DaoTestFixtures {
     @Before
     public void before() throws Exception {
         SchemaUtils.restoreTable("hl7_link", "hl7_pid", "hl7_link", "hl7_obr", "demographic", "lst_gender", "admission", "demographic_merged",
-                "hl7_message", "program", "health_safety", "provider", "providersite", "site", "program_team");
+                "hl7_message", "program", "health_safety", "providers", "providersite", "site", "program_team");
     }
 
     @Test

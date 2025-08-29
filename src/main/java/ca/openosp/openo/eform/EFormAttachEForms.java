@@ -30,14 +30,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.common.dao.EFormDocsDao;
-import org.oscarehr.common.model.ConsultDocs;
-import org.oscarehr.common.model.EFormData;
-import org.oscarehr.common.model.EFormDocs;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.EFormDocsDao;
+import ca.openosp.openo.commn.model.ConsultDocs;
+import ca.openosp.openo.commn.model.EFormData;
+import ca.openosp.openo.commn.model.EFormDocs;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 /**
  * @author rjonasz

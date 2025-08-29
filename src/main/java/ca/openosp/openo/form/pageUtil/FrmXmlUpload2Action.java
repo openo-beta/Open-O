@@ -29,8 +29,8 @@ package ca.openosp.openo.form.pageUtil;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.util.JDBCUtil;
 
 import javax.servlet.ServletContext;
@@ -52,7 +52,7 @@ public class FrmXmlUpload2Action extends ActionSupport {
     public String execute()
             throws ServletException, IOException {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_form", "r", null)) {
-            throw new SecurityException("missing required security object (_form)");
+            throw new SecurityException("missing required sec object (_form)");
         }
 
         int BUFFER = 2048;

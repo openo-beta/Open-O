@@ -33,16 +33,16 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.oscarehr.common.dao.PreventionDao;
-import org.oscarehr.common.dao.PreventionExtDao;
-import org.oscarehr.common.dao.PropertyDao;
-import org.oscarehr.common.interfaces.Immunization.ImmunizationProperty;
-import org.oscarehr.common.model.Prevention;
-import org.oscarehr.common.model.PreventionExt;
-import org.oscarehr.common.model.Property;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.PreventionDao;
+import ca.openosp.openo.commn.dao.PreventionExtDao;
+import ca.openosp.openo.commn.dao.PropertyDao;
+import ca.openosp.openo.commn.interfaces.Immunization.ImmunizationProperty;
+import ca.openosp.openo.commn.model.Prevention;
+import ca.openosp.openo.commn.model.PreventionExt;
+import ca.openosp.openo.commn.model.Property;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -225,7 +225,7 @@ public class PreventionManagerImpl implements Serializable, PreventionManager {
     @Override
     public List<Prevention> getPreventionsByDemographicNo(LoggedInInfo loggedInInfo, Integer demographicNo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_prevention", SecurityInfoManager.READ, demographicNo)) {
-            throw new RuntimeException("missing required security object (_prevention)");
+            throw new RuntimeException("missing required sec object (_prevention)");
         }
 
         List<Prevention> results = preventionDao.findUniqueByDemographicId(demographicNo);

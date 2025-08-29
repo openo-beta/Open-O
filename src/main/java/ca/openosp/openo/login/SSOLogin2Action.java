@@ -36,19 +36,19 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.PMmodule.service.ProviderManager;
-import org.oscarehr.common.dao.FacilityDao;
-import org.oscarehr.common.dao.ProviderPreferenceDao;
-import org.oscarehr.common.dao.SecurityDao;
-import org.oscarehr.common.dao.UserPropertyDAO;
-import org.oscarehr.common.model.Security;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.service.ProviderManager;
+import ca.openosp.openo.commn.dao.FacilityDao;
+import ca.openosp.openo.commn.dao.ProviderPreferenceDao;
+import ca.openosp.openo.commn.dao.SecurityDao;
+import ca.openosp.openo.commn.dao.UserPropertyDAO;
+import ca.openosp.openo.commn.model.Security;
 import ca.openosp.openo.managers.AppManager;
 import ca.openosp.openo.managers.SsoAuthenticationManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 
@@ -201,7 +201,7 @@ public final class SSOLogin2Action extends ActionSupport {
             logger.info("providerInformation : " + Arrays.toString(providerInformation));
             providerNumber = providerInformation[0];
 
-            //Compares the logged in provider number with the provider number that matched the oneIdKey
+            //Compares the logged in providers number with the providers number that matched the oneIdKey
             if (loggedInProviderNumber.equals(providerNumber)) {
                 //Sets the oneIdEmail session attribute
                 session.setAttribute("oneIdEmail", oneIdEmail);
@@ -225,20 +225,20 @@ public final class SSOLogin2Action extends ActionSupport {
 
             //If the ondIdKey parameter is not null and is not an empty string
             if (oneIdKey != null && !oneIdKey.equals("")) {
-                //Gets the logged in provider's number to link the ONE ID key
+                //Gets the logged in providers's number to link the ONE ID key
                 Security securityRecord = securityDao.getByProviderNo(loggedInProviderNumber);
-                //If a provider was found
+                //If a providers was found
                 if (securityRecord != null) {
-                    //Checks if the oneIdKey linked to the security record doesn't exist
+                    //Checks if the oneIdKey linked to the sec record doesn't exist
                     if (securityRecord.getOneIdKey() == null || securityRecord.getOneIdKey().equals("")) {
-                        //Updates the ONE ID Key for the security record
+                        //Updates the ONE ID Key for the sec record
                         securityRecord.setOneIdKey(oneIdKey);
                         securityRecord.setOneIdEmail(oneIdEmail);
 
                         securityDao.updateOneIdKey(securityRecord);
 
                         //Logs the linking of the key
-                        logger.info("Linked ONE ID Key " + oneIdKey + " to provider " + loggedInProviderNumber);
+                        logger.info("Linked ONE ID Key " + oneIdKey + " to providers " + loggedInProviderNumber);
                         //Sets the oneIdEmail session attribute
                         session.setAttribute("oneIdEmail", oneIdEmail);
 
@@ -249,9 +249,9 @@ public final class SSOLogin2Action extends ActionSupport {
                         //Sets the actionForward to success
                         actionForward = "/index.jsp";
                     } else {
-                        logger.error("The account for provider number " + providerNumber + " already has a ONE ID account associated with it");
+                        logger.error("The account for providers number " + providerNumber + " already has a ONE ID account associated with it");
                         //Routes failure and sets a message parameter to alert the user.
-                        actionForward = "/logout.jsp?errorMessage=The account for provider number " + providerNumber + " already has a ONE ID account associated with it";
+                        actionForward = "/logout.jsp?errorMessage=The account for providers number " + providerNumber + " already has a ONE ID account associated with it";
                     }
                 }
             } else {
@@ -384,10 +384,10 @@ public final class SSOLogin2Action extends ActionSupport {
                             String attributeName = sessionAttributeNames.nextElement();
                             logger.debug("=> " + attributeName + ":" + newSession.getAttribute(attributeName));
                         }
-                        logger.debug("SSO login updated forwarding to provider schedule.");
+                        logger.debug("SSO login updated forwarding to providers schedule.");
                     }
 
-                    destination = "provider";
+                    destination = "providers";
 
                     LogAction.addLog((String) newSession.getAttribute("user"), LogConst.LOGIN, LogConst.CON_LOGIN, "", ipAddress);
                 } else {

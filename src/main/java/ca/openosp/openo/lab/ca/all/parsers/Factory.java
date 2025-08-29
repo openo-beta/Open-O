@@ -48,12 +48,12 @@ import org.apache.logging.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-import org.oscarehr.common.dao.Hl7TextMessageDao;
-import org.oscarehr.common.model.Hl7TextMessage;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.Hl7TextMessageDao;
+import ca.openosp.openo.commn.model.Hl7TextMessage;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 public final class Factory {
 

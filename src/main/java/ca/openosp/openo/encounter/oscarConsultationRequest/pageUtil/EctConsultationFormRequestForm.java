@@ -28,7 +28,7 @@ package ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
-import org.oscarehr.utility.WebUtils;
+import ca.openosp.openo.utility.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;

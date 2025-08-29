@@ -33,8 +33,8 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import ca.openosp.openo.dao.security.SecobjprivilegeDao;
-import ca.openosp.openo.dao.security.SecroleDao;
+import ca.openosp.openo.daos.security.SecobjprivilegeDao;
+import ca.openosp.openo.daos.security.SecroleDao;
 import ca.openosp.openo.model.security.Secobjprivilege;
 import ca.openosp.openo.model.security.Secrole;
 

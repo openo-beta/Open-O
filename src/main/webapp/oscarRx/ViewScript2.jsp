@@ -24,36 +24,38 @@
 
 --%>
 <%@ page
-        import="oscar.oscarProvider.data.*, oscar.oscarRx.data.*,oscar.OscarProperties, ca.openosp.openo.clinic.ClinicData, java.util.*" %>
+        import="ca.openosp.openo.providers.data.*, ca.openosp.openo.rx.data.*,ca.openosp.OscarProperties, ca.openosp.openo.clinic.ClinicData, java.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ page import="org.oscarehr.utility.DigitalSignatureUtils" %>
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@ page import="org.oscarehr.ui.servlet.ImageRenderingServlet" %>
-<%! boolean bMultisites = org.oscarehr.common.IsPropertiesOn.isMultisitesEnable(); %>
+<%@ page import="ca.openosp.openo.utility.DigitalSignatureUtils" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.ui.servlet.ImageRenderingServlet" %>
+<%! boolean bMultisites = IsPropertiesOn.isMultisitesEnable(); %>
 
 
-<%@page import="org.oscarehr.common.dao.SiteDao" %>
+<%@page import="ca.openosp.openo.commn.dao.SiteDao" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
 <%@ page import="ca.openosp.openo.managers.FaxManager" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@ page import="org.oscarehr.PMmodule.service.ProviderManager" %>
-<%@ page import="org.oscarehr.common.model.*" %>
-<%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
+<%@ page import="ca.openosp.openo.PMmodule.service.ProviderManager" %>
+<%@ page import="ca.openosp.openo.commn.model.*" %>
+<%@ page import="ca.openosp.openo.providers.data.ProviderData" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="org.oscarehr.common.model.enumerator.ModuleType" %>
-<%@ page import="ca.openosp.openo.provider.data.ProSignatureData" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.data.RxProviderData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPharmacyData" %>
+<%@ page import="ca.openosp.openo.commn.model.enumerator.ModuleType" %>
+<%@ page import="ca.openosp.openo.providers.data.ProSignatureData" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxProviderData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPharmacyData" %>
+<%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
+<%@ page import="ca.openosp.openo.commn.model.*" %>
 
 <%
     OscarAppointmentDao appointmentDao = SpringUtils.getBean(OscarAppointmentDao.class);
@@ -642,7 +644,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                     <div class="DivContentPadding">
 					<% if (bean.getStashSize() > 0) { %>
                                         <iframe id='preview' name='preview' width=420px height=890px
-							src="Preview2.jsp?scriptId=<%=bean.getStashItem(0).getScript_no()%>&rePrint=<%=reprint%>&pharmacyId=<%=request.getParameter("pharmacyId")%>"
+							src="oscarRx/Preview2.jsp?scriptId=<%=bean.getStashItem(0).getScript_no()%>&rePrint=<%=reprint%>&pharmacyId=<%=request.getParameter("pharmacyId")%>"
 							align=center border=0 frameborder=0></iframe></div>
 					<% } %>
                                 </td>

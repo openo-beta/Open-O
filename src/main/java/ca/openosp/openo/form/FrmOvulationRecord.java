@@ -7,7 +7,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.Misc;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -25,15 +26,15 @@ public class FrmOvulationRecord extends FrmRecord {
             ResultSet rs = DBHandler.GetSQL(sql);
 
             if (rs.next()) {
-                java.util.Date dob = UtilDateUtilities.calcDate(oscar.Misc.getString(rs, "year_of_birth"), oscar.Misc.getString(rs, "month_of_birth"), oscar.Misc.getString(rs, "date_of_birth"));
+                java.util.Date dob = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), Misc.getString(rs, "month_of_birth"), Misc.getString(rs, "date_of_birth"));
 
-                props.setProperty("demographic_no", oscar.Misc.getString(rs, "demographic_no"));
-                props.setProperty("clientFirstName", oscar.Misc.getString(rs, "first_name"));
-                props.setProperty("clientLastName", oscar.Misc.getString(rs, "last_name"));
+                props.setProperty("demographic_no", Misc.getString(rs, "demographic_no"));
+                props.setProperty("clientFirstName", Misc.getString(rs, "first_name"));
+                props.setProperty("clientLastName", Misc.getString(rs, "last_name"));
                 props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
                 //props.setProperty("formEdited", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
                 props.setProperty("dob", String.valueOf(UtilDateUtilities.calcAge(dob)));
-                props.setProperty("healthNum", oscar.Misc.getString(rs, "hin") + oscar.Misc.getString(rs, "ver"));
+                props.setProperty("healthNum", Misc.getString(rs, "hin") + Misc.getString(rs, "ver"));
             }
             rs.close();
 

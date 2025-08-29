@@ -29,8 +29,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.common.model.Groups;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.model.Groups;
+import ca.openosp.openo.commn.dao.GroupsDao;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class GroupsDaoTest {
 

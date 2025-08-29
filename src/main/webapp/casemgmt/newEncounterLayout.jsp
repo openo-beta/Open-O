@@ -28,15 +28,15 @@
 <%@ include file="/casemgmt/taglibs.jsp" %>
 
 <%@page import="java.util.Enumeration, org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.casemgmt.web.formbeans.*, ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
-<%@page import="org.oscarehr.common.dao.UserPropertyDAO, oscar.OscarProperties" %>
-<%@page import="org.oscarehr.common.model.UserProperty" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@ page import="org.oscarehr.provider.web.CppPreferencesUIBean" %>
+<%@page import="ca.openosp.openo.casemgmt.web.formbeans.*, ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
+<%@page import="ca.openosp.openo.commn.dao.UserPropertyDAO, ca.openosp.OscarProperties" %>
+<%@page import="ca.openosp.openo.commn.model.UserProperty" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.provider.web.CppPreferencesUIBean" %>
 <%@page import="ca.openosp.openo.casemgmt.common.Colour" %>
-<%@page import="org.oscarehr.common.dao.ProviderDataDao" %>
-<%@page import="org.oscarehr.common.model.ProviderData" %>
+<%@page import="ca.openosp.openo.commn.dao.ProviderDataDao" %>
+<%@page import="ca.openosp.openo.commn.model.ProviderData" %>
 <%@page import="org.owasp.encoder.Encode" %>
 <%@page import="java.util.List, java.util.Random" %>
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>

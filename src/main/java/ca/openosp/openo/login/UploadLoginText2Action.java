@@ -26,16 +26,17 @@
 
 package ca.openosp.openo.login;
 
+import ca.openosp.OscarProperties;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.common.dao.PropertyDao;
-import org.oscarehr.common.model.Property;
-import org.oscarehr.common.service.AcceptableUseAgreementManager;
+import ca.openosp.openo.commn.dao.PropertyDao;
+import ca.openosp.openo.commn.model.Property;
+import ca.openosp.openo.commn.service.AcceptableUseAgreementManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,7 +55,7 @@ public class UploadLoginText2Action extends ActionSupport {
     public String execute() {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin", "w", null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         InputStream fis = null;
@@ -105,7 +106,7 @@ public class UploadLoginText2Action extends ActionSupport {
         try {
             if (importFile.getName().length() > 0) {
                 fis = Files.newInputStream(importFile.toPath());
-                String savePath = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "/OSCARloginText.txt";
+                String savePath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "/OSCARloginText.txt";
                 fos = new FileOutputStream(savePath);
                 byte[] buf = new byte[128 * 1024];
                 int i = 0;

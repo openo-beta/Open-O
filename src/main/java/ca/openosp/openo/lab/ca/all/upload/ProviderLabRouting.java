@@ -42,12 +42,13 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.ProviderLabRoutingDao;
-import org.oscarehr.common.model.ProviderLabRoutingModel;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ProviderLabRoutingDao;
+import ca.openosp.openo.commn.model.ProviderLabRoutingModel;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.lab.ForwardingRules;
 import ca.openosp.openo.util.ConversionUtils;
 
@@ -56,7 +57,7 @@ import ca.openosp.openo.util.ConversionUtils;
  */
 public class ProviderLabRouting {
 
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
     private ProviderLabRoutingDao providerLabRoutingDao = SpringUtils.getBean(ProviderLabRoutingDao.class);
 
     public ProviderLabRouting() {
@@ -109,8 +110,8 @@ public class ProviderLabRouting {
                 routeMagic(labId, ((forwardProviders.get(j)).get(0)), labType);
             }
 
-            // If the lab has already been sent to this provider check to make sure that
-            // it is set as a new lab for at least one provider if AUTO_FILE_LABS=yes is not
+            // If the lab has already been sent to this providers check to make sure that
+            // it is set as a new lab for at least one providers if AUTO_FILE_LABS=yes is not
             // set in the oscar.properties file
         } else if (autoFileLabs == null || !autoFileLabs.equalsIgnoreCase("yes")) {
             List<ProviderLabRoutingModel> moreRoutings = dao.findByLabNoTypeAndStatus(labId, labType, "N");
@@ -168,8 +169,8 @@ public class ProviderLabRouting {
                 route(labId, ((forwardProviders.get(j)).get(0)), labType);
             }
 
-            // If the lab has already been sent to this provider check to make sure that
-            // it is set as a new lab for at least one provider if AUTO_FILE_LABS=yes is not
+            // If the lab has already been sent to this providers check to make sure that
+            // it is set as a new lab for at least one providers if AUTO_FILE_LABS=yes is not
             // set in the oscar.properties file
         } else if (autoFileLabs == null || !autoFileLabs.equalsIgnoreCase("yes")) {
             rs = providerLabRoutingDao.getProviderLabRoutingForLabAndType(Integer.parseInt(labId), labType);

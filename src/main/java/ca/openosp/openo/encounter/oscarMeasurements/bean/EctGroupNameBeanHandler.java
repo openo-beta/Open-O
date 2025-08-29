@@ -28,9 +28,9 @@ package ca.openosp.openo.encounter.oscarMeasurements.bean;
 import java.util.Collection;
 import java.util.Vector;
 
-import org.oscarehr.common.dao.MeasurementGroupStyleDao;
-import org.oscarehr.common.model.MeasurementGroupStyle;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.MeasurementGroupStyleDao;
+import ca.openosp.openo.commn.model.MeasurementGroupStyle;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class EctGroupNameBeanHandler {
 

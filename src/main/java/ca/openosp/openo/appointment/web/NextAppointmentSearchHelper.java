@@ -32,19 +32,19 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.OscarAppointmentDao;
-import org.oscarehr.common.dao.ScheduleDateDao;
-import org.oscarehr.common.dao.ScheduleTemplateCodeDao;
-import org.oscarehr.common.dao.ScheduleTemplateDao;
-import org.oscarehr.common.model.Appointment;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.ScheduleDate;
-import org.oscarehr.common.model.ScheduleTemplate;
-import org.oscarehr.common.model.ScheduleTemplateCode;
-import org.oscarehr.common.model.ScheduleTemplatePrimaryKey;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.OscarAppointmentDao;
+import ca.openosp.openo.commn.dao.ScheduleDateDao;
+import ca.openosp.openo.commn.dao.ScheduleTemplateCodeDao;
+import ca.openosp.openo.commn.dao.ScheduleTemplateDao;
+import ca.openosp.openo.commn.model.Appointment;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.ScheduleDate;
+import ca.openosp.openo.commn.model.ScheduleTemplate;
+import ca.openosp.openo.commn.model.ScheduleTemplateCode;
+import ca.openosp.openo.commn.model.ScheduleTemplatePrimaryKey;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class NextAppointmentSearchHelper {
     static final int MAX_DAYS_TO_SEARCH = 180;
@@ -92,7 +92,7 @@ public class NextAppointmentSearchHelper {
     }
 
     /**
-     * Break it up by provider..it doesn't really make sense to search all providers, but could be modified to do groups
+     * Break it up by providers..it doesn't really make sense to search all providers, but could be modified to do groups
      * of providers.
      *
      * @param day
@@ -133,7 +133,7 @@ public class NextAppointmentSearchHelper {
     }
 
     /**
-     * Search by provider and day.
+     * Search by providers and day.
      * <p>
      * 1) load up schedule
      * 2) see what slots are available
@@ -151,7 +151,7 @@ public class NextAppointmentSearchHelper {
         //load up the schedule
         ScheduleDate sd = scheduleDateDao.findByProviderNoAndDate(providerNo, day);
         if (sd == null) {
-            logger.warn("no schedule found for provider " + providerNo + " on day " + day);
+            logger.warn("no schedule found for providers " + providerNo + " on day " + day);
             return results;
         }
         //we have a schedule..lets check what template to use
@@ -163,7 +163,7 @@ public class NextAppointmentSearchHelper {
             template = scheduleTemplateDao.find(new ScheduleTemplatePrimaryKey(providerNo, templateName));
         }
         if (template == null) {
-            logger.warn("no template found for provider " + providerNo + " and name=" + templateName);
+            logger.warn("no template found for providers " + providerNo + " and name=" + templateName);
             return results;
         }
 
@@ -231,7 +231,7 @@ public class NextAppointmentSearchHelper {
                     cal2.set(Calendar.SECOND, 0);
                     cal2.set(Calendar.MILLISECOND, 0);
                     if (checkAvailability(cal2.getTime(), duration, providerNo)) {
-                        //logger.info("spot available at " + cal2.getTime() + " for " + duration + " mins with provider " + providerNo);
+                        //logger.info("spot available at " + cal2.getTime() + " for " + duration + " mins with providers " + providerNo);
                         NextAppointmentSearchResult result = new NextAppointmentSearchResult();
                         result.setProviderNo(providerNo);
                         result.setProvider(providerDao.getProvider(providerNo));

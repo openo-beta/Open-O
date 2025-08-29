@@ -45,43 +45,43 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import ca.openosp.openo.commn.dao.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.PMmodule.model.ProgramProvider;
-import org.oscarehr.PMmodule.service.ProgramManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.IntegratorFallBackManager;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.PMmodule.service.ProgramManager;
 import ca.openosp.openo.caisi_integrator.ws.CachedDemographicDocument;
 import ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO;
 import ca.openosp.openo.casemgmt.dao.CaseManagementNoteLinkDAO;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.dao.DocumentDao.Module;
-import org.oscarehr.common.model.ConsultDocs;
-import org.oscarehr.common.model.CtlDocType;
-import org.oscarehr.common.model.CtlDocument;
-import org.oscarehr.common.model.CtlDocumentPK;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.Document;
-import org.oscarehr.common.model.EFormDocs;
-import org.oscarehr.common.model.PartialDate;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.Tickler;
-import org.oscarehr.common.model.TicklerLink;
+import ca.openosp.openo.commn.dao.DocumentDao.Module;
+import ca.openosp.openo.commn.model.ConsultDocs;
+import ca.openosp.openo.commn.model.CtlDocType;
+import ca.openosp.openo.commn.model.CtlDocument;
+import ca.openosp.openo.commn.model.CtlDocumentPK;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.Document;
+import ca.openosp.openo.commn.model.EFormDocs;
+import ca.openosp.openo.commn.model.PartialDate;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.Tickler;
+import ca.openosp.openo.commn.model.TicklerLink;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.ProgramManager2;
 import ca.openosp.openo.managers.TicklerManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.MyDateFormat;
-import oscar.OscarProperties;
+import ca.openosp.MyDateFormat;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.lab.ca.all.AcknowledgementData;
 import ca.openosp.openo.mds.data.ReportStatus;
 import ca.openosp.openo.util.ConversionUtils;
@@ -817,7 +817,7 @@ public final class EDocUtil {
 
     public static void refileDocument(String documentNo, String queueId) throws Exception {
 
-        String sourceDocDir = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String sourceDocDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
         Document d = documentDao.find(ConversionUtils.fromIntString(documentNo));
         File sourceFile = new File(sourceDocDir, d.getDocfilename());
 
@@ -1151,7 +1151,7 @@ public final class EDocUtil {
             p_cmn = caseManagementNoteDao.getMostRecentNote(p_cmn.getUuid());
         }
 
-        //if get provider no is -1 , it's a document note.
+        //if get providers no is -1 , it's a document note.
         if (p_cmn != null && p_cmn.getProviderNo().equals("-1")) {
             p_cmn = null;
         }  //don't use document note as annotation.

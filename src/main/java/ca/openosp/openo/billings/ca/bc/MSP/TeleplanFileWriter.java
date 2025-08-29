@@ -34,20 +34,20 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.BillingDao;
-import org.oscarehr.common.model.Billing;
+import ca.openosp.openo.commn.dao.BillingDao;
+import ca.openosp.openo.commn.model.Billing;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.Misc;
+import ca.openosp.Misc;
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.entities.WCB;
 import ca.openosp.openo.billings.ca.bc.Teleplan.TeleplanSequenceDAO;
 import ca.openosp.openo.billings.ca.bc.Teleplan.WCBTeleplanSubmission;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
-import ca.openosp.openo.provider.data.ProviderData;
+import ca.openosp.openo.providers.data.ProviderData;
 
 /**
  * @author jay
@@ -161,7 +161,7 @@ public class TeleplanFileWriter {
             appendToHTML(HtmlTeleplanHelper.htmlNewProviderSection(providerBillingNumber, new Date()));
             log.debug("For Provider  :" + providerBillingNumber);
             List list = getBilling(providerBillingNumber, null, null); // null,null because date range doesn't do anything
-            //Get All The Bills for this provider
+            //Get All The Bills for this providers
 
             log.debug("Billing List Size? " + list.size());
             int providerClaimsCount = 0;

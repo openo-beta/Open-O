@@ -33,16 +33,17 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
+import ca.openosp.SxmlMisc;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.billing.CA.dao.BillingDetailDao;
 import ca.openosp.openo.billing.CA.model.BillingDetail;
-import org.oscarehr.common.dao.BillingDao;
-import org.oscarehr.common.model.Billing;
-import org.oscarehr.utility.DateRange;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.BillingDao;
+import ca.openosp.openo.commn.model.Billing;
+import ca.openosp.openo.utility.DateRange;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.util.ConversionUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 
@@ -142,10 +143,10 @@ public class ExtractBean implements Serializable {
         referralDoc = "000000";
         hcFlag = ""; // for html content
         m_Flag = ""; // for html content
-        referral = oscar.SxmlMisc.getXmlContent(content, "<xml_referral>", "</xml_referral>");
-        referralDoc = oscar.SxmlMisc.getXmlContent(content, "<rdohip>", "</rdohip>");
-        hcType = oscar.SxmlMisc.getXmlContent(content, "<hctype>", "</hctype>");
-        m_review = oscar.SxmlMisc.getXmlContent(content, "<mreview>", "</mreview>");
+        referral = SxmlMisc.getXmlContent(content, "<xml_referral>", "</xml_referral>");
+        referralDoc = SxmlMisc.getXmlContent(content, "<rdohip>", "</rdohip>");
+        hcType = SxmlMisc.getXmlContent(content, "<hctype>", "</hctype>");
+        m_review = SxmlMisc.getXmlContent(content, "<mreview>", "</mreview>");
         m_review = (m_review != null && m_review.equals("checked")) ? "Y" : space(1);
         m_Flag = m_review.equals("Y") ? "M" : "";
         hcFlag = (hcType == null || hcType.compareTo("ON") == 0 || hcType.compareTo("") == 0) ? "" : "H";
@@ -190,7 +191,7 @@ public class ExtractBean implements Serializable {
         spec = "RMB";
         hcFlag = "H";
         healthcardCount++;
-        demoSex = oscar.SxmlMisc.getXmlContent(content, "<demosex>", "</demosex>");
+        demoSex = SxmlMisc.getXmlContent(content, "<demosex>", "</demosex>");
         hcLast = demoName.substring(0, demoName.indexOf(",")).toUpperCase();
         hcFirst = demoName.substring(demoName.indexOf(",") + 1).toUpperCase();
         hcLast = hcLast.length() < 9 ? (hcLast + space(9 - hcLast.length())) : (hcLast.substring(0, 9));

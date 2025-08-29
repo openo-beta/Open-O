@@ -38,9 +38,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.prevention.reports.FollowupManagement;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -61,7 +61,7 @@ public class EctAddShortMeasurement2Action extends ActionSupport {
     public String execute() throws IOException {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_measurement", "w", null)) {
-            throw new SecurityException("missing required security object (_measurement)");
+            throw new SecurityException("missing required sec object (_measurement)");
         }
 
         //MARK IN MEASUREMENTS????
@@ -87,7 +87,7 @@ public class EctAddShortMeasurement2Action extends ActionSupport {
     public String addMeasurements() {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_measurement", "w", null)) {
-            throw new SecurityException("missing required security object (_measurement)");
+            throw new SecurityException("missing required sec object (_measurement)");
         }
 
         String followUpType = request.getParameter("followUpType");

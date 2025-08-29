@@ -37,7 +37,7 @@ import org.hl7.fhir.dstu3.model.Communication.CommunicationStatus;
 import org.hl7.fhir.dstu3.model.Organization;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.dstu3.model.Resource;
-import org.oscarehr.common.model.Clinic;
+import ca.openosp.openo.commn.model.Clinic;
 import ca.openosp.openo.integration.fhir.manager.OscarFhirConfigurationManager;
 import ca.openosp.openo.integration.fhir.model.AbstractOscarFhirResource;
 import ca.openosp.openo.integration.fhir.model.Destination;

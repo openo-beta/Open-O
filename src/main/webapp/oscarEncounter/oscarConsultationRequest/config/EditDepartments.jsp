@@ -42,9 +42,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.common.dao.DepartmentDao" %>
-<%@page import="org.oscarehr.common.model.Department" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.commn.dao.DepartmentDao" %>
+<%@page import="ca.openosp.openo.commn.model.Department" %>
 <%@page import="java.util.List" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
 

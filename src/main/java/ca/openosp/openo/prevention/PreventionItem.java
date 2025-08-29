@@ -28,7 +28,7 @@ package ca.openosp.openo.prevention;
 import java.util.Date;
 
 import ca.openosp.openo.caisi_integrator.ws.CachedDemographicPrevention;
-import org.oscarehr.common.model.Prevention;
+import ca.openosp.openo.commn.model.Prevention;
 
 import ca.openosp.openo.util.ConversionUtils;
 

@@ -38,11 +38,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.DiagnosticCodeDao;
-import org.oscarehr.common.model.DiagnosticCode;
-import org.oscarehr.utility.DbConnectionFilter;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.DiagnosticCodeDao;
+import ca.openosp.openo.commn.model.DiagnosticCode;
+import ca.openosp.openo.utility.DbConnectionFilter;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.UtilDateUtilities;
 

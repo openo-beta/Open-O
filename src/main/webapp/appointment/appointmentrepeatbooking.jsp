@@ -44,14 +44,14 @@
     String deepcolor = "#CCCCFF", weakcolor = "#EEEEFF", tableTitle = "#99ccff";
     boolean bEdit = request.getParameter("appointment_no") != null ? true : false;
 %>
-<%@ page import="java.util.*, oscar.*, oscar.util.*"
+<%@ page import="java.util.*, ca.openosp.*, ca.openosp.openo.util.*"
          errorPage="/errorpage.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<%@page import="org.oscarehr.common.dao.AppointmentArchiveDao" %>
-<%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
-<%@page import="org.oscarehr.common.model.Appointment" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.commn.dao.AppointmentArchiveDao" %>
+<%@page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
+<%@page import="ca.openosp.openo.commn.model.Appointment" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="ca.openosp.openo.util.UtilMisc" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>

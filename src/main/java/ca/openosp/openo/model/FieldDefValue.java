@@ -21,7 +21,7 @@
  */
 package ca.openosp.openo.model;
 
-import ca.openosp.openo.common.KeyConstants;
+import ca.openosp.openo.commons.KeyConstants;
 
 public class FieldDefValue extends BaseObject {
     private String tableId;

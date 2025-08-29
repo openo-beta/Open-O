@@ -35,22 +35,23 @@
 
 package ca.openosp.openo.lab.ca.all.upload;
 
+import ca.openosp.Misc;
+import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.commn.model.*;
 import ca.openosp.openo.lab.ca.all.parsers.*;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.OtherIdManager;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.model.*;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.OtherIdManager;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.olis.dao.OLISSystemPreferencesDao;
-import org.oscarehr.olis.model.OLISSystemPreferences;
-import org.oscarehr.utility.DbConnectionFilter;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.olis.dao.OLISSystemPreferencesDao;
+import ca.openosp.openo.olis.model.OLISSystemPreferences;
+import ca.openosp.openo.utility.DbConnectionFilter;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.demographic.data.DemographicMerged;
 import ca.openosp.openo.lab.ca.all.Hl7textResultsData;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -322,7 +323,7 @@ public final class MessageUploader {
         for (int i = 0; i < docNames.size(); i++) {
             String[] firstLastName = docNames.get(i).split("\\s");
             if (firstLastName != null && firstLastName.length >= 2) {
-                //logger.debug("Searching for provider with first and last name: " + firstLastName[0] + " " + firstLastName[firstLastName.length-1]);
+                //logger.debug("Searching for providers with first and last name: " + firstLastName[0] + " " + firstLastName[firstLastName.length-1]);
                 List<Provider> provList = providerDao.getProviderLikeFirstLastName("%" + firstLastName[0] + "%", firstLastName[firstLastName.length - 1]);
                 if (provList != null) {
                     int provIndex = findProviderWithShortestFirstName(provList);
@@ -349,7 +350,7 @@ public final class MessageUploader {
 
     /**
      * Method findProviderWithShortestFirstName
-     * Finds the provider with the shortest first name in a list of providers.
+     * Finds the providers with the shortest first name in a list of providers.
      */
     private static int findProviderWithShortestFirstName(List<Provider> provList) {
         if (provList == null || provList.isEmpty())
@@ -369,10 +370,10 @@ public final class MessageUploader {
     }
 
     /**
-     * Attempt to match the doctors from the lab to a provider
+     * Attempt to match the doctors from the lab to a providers
      */
     private static void providerRouteReport(String labId, ArrayList<String> docNums, Connection conn, String altProviderNo, String labType, String search_on, Integer limit, boolean orderByLength) throws Exception {
-        // Using HashSet to avoid duplicate provider numbers
+        // Using HashSet to avoid duplicate providers numbers
         LinkedHashSet<String> providerNums = new LinkedHashSet<>();
         PreparedStatement pstmt;
         String sql = "";
@@ -403,14 +404,14 @@ public final class MessageUploader {
                                 practitionerNum.insert(0, "0");
                             }
                         }
-                        sql = "select provider_no from provider where " + sqlSearchOn + " = '" + practitionerNum.toString() + "'" + sqlOrderByLength + sqlLimit;
+                        sql = "select provider_no from providers where " + sqlSearchOn + " = '" + practitionerNum.toString() + "'" + sqlOrderByLength + sqlLimit;
                     } else {
-                        sql = "select provider_no from provider where " + sqlSearchOn + " LIKE '" + ((String) docNums.get(i)) + "'" + sqlOrderByLength + sqlLimit;
+                        sql = "select provider_no from providers where " + sqlSearchOn + " LIKE '" + ((String) docNums.get(i)) + "'" + sqlOrderByLength + sqlLimit;
                     }
                     pstmt = conn.prepareStatement(sql);
                     ResultSet rs = pstmt.executeQuery();
                     while (rs.next()) {
-                        providerNums.add(oscar.Misc.getString(rs, "provider_no"));
+                        providerNums.add(Misc.getString(rs, "provider_no"));
                     }
                     rs.close();
                     pstmt.close();
@@ -443,7 +444,7 @@ public final class MessageUploader {
     }
 
     /**
-     * Attempt to match the doctors from the lab to a provider
+     * Attempt to match the doctors from the lab to a providers
      */
     private static void providerRouteReport(String labId, ArrayList docNums, Connection conn, String altProviderNo, String labType) throws Exception {
         providerRouteReport(labId, docNums, conn, altProviderNo, labType, null, null, false);
@@ -490,8 +491,8 @@ public final class MessageUploader {
 
             while (rs.next()) {
                 result = new PatientLabRoutingResult();
-                demo = oscar.Misc.getString(rs, "demographic_no");
-                provider_no = oscar.Misc.getString(rs, "provider_no");
+                demo = Misc.getString(rs, "demographic_no");
+                provider_no = Misc.getString(rs, "provider_no");
                 result.setDemographicNo(Integer.parseInt(demo));
                 result.setProviderNo(provider_no);
                 count++;
@@ -566,8 +567,8 @@ public final class MessageUploader {
 
             while (rs.next()) {
                 result = new PatientLabRoutingResult();
-                demo = oscar.Misc.getString(rs, "demographic_no");
-                provider_no = oscar.Misc.getString(rs, "provider_no");
+                demo = Misc.getString(rs, "demographic_no");
+                provider_no = Misc.getString(rs, "provider_no");
                 result.setDemographicNo(Integer.parseInt(demo));
                 result.setProviderNo(provider_no);
                 count++;
@@ -636,7 +637,7 @@ public final class MessageUploader {
     }
 
     /**
-     * Attempt to match the patient from the lab to a demographic, return the patients provider which is to be used then no other provider can be found to match the patient to.
+     * Attempt to match the patient from the lab to a demographic, return the patients providers which is to be used then no other providers can be found to match the patient to.
      */
     private static String patientRouteReport(LoggedInInfo loggedInInfo, String labType, int labId, String lastName, String firstName, String sex, String dob, String hin, Connection conn) throws SQLException {
 
@@ -692,8 +693,8 @@ public final class MessageUploader {
 
 					while (rs.next()) {
 						result = new PatientLabRoutingResult();
-						demo = oscar.Misc.getString(rs, "demographic_no");
-						provider_no = oscar.Misc.getString(rs, "provider_no");
+						demo = Misc.getString(rs, "demographic_no");
+						provider_no = Misc.getString(rs, "provider_no");
 						result.setDemographicNo(Integer.parseInt(demo));
 						result.setProviderNo(provider_no);
 						count++;

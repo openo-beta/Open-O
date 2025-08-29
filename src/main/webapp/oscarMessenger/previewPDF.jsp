@@ -42,7 +42,7 @@
     }
 %>
 
-<%@ page import="oscar.util.*" %>
+<%@ page import="ca.openosp.openo.util.*" %>
 <%@ page import="ca.openosp.openo.util.Doc2PDF" %>
 <%
 

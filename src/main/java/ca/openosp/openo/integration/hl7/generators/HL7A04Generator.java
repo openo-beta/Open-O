@@ -24,11 +24,11 @@
  */
 package ca.openosp.openo.integration.hl7.generators;
 
-import org.oscarehr.common.model.Demographic;
+import ca.openosp.openo.commn.model.Demographic;
 
-import org.oscarehr.common.hl7.v2.HL7A04Data;
+import ca.openosp.openo.commn.hl7.v2.HL7A04Data;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
 
 

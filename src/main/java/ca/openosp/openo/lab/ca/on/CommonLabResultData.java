@@ -26,26 +26,26 @@
 
 package ca.openosp.openo.lab.ca.on;
 
+import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.commn.model.*;
+import ca.openosp.openo.utility.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.IntegratorFallBackManager;
 import ca.openosp.openo.billing.CA.BC.dao.Hl7MshDao;
 import ca.openosp.openo.caisi_integrator.ws.CachedDemographicLabResult;
 import ca.openosp.openo.caisi_integrator.ws.DemographicWs;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.model.*;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToProviderDao;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
-import org.oscarehr.labs.LabIdAndType;
+import ca.openosp.openo.labs.LabIdAndType;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.db.ArchiveDeletedRecords;
 import ca.openosp.openo.lab.ca.all.Hl7textResultsData;
 import ca.openosp.openo.lab.ca.all.upload.ProviderLabRouting;
@@ -289,7 +289,7 @@ public class CommonLabResultData {
         return labs;
     }
 
-    // get documents that are specific provider to show in that provider's inbox
+    // get documents that are specific providers to show in that providers's inbox
     public ArrayList<LabResultData> populateLabResultsData2(LoggedInInfo loggedInInfo, String providerNo, String demographicNo, String patientFirstName, String patientLastName, String patientHealthNumber, String status, String scannedDocStatus) {
         ArrayList<LabResultData> labs = new ArrayList<LabResultData>();
         labs = populateLabsData(loggedInInfo, providerNo, demographicNo, patientFirstName, patientLastName, patientHealthNumber, status, scannedDocStatus);
@@ -297,7 +297,7 @@ public class CommonLabResultData {
         return labs;
     }
 
-    // return documents specific to this provider only, doesn't include documents that are not linked to any provider
+    // return documents specific to this providers only, doesn't include documents that are not linked to any providers
     public ArrayList<LabResultData> populateDocumentDataSpecificProvider(String providerNo, String demographicNo, String patientFirstName, String patientLastName, String patientHealthNumber, String status, String scannedDocStatus) {
         ArrayList<LabResultData> labs = new ArrayList<LabResultData>();
         if (scannedDocStatus != null && (scannedDocStatus.equals("O") || scannedDocStatus.equals("I") || scannedDocStatus.equals(""))) {
@@ -425,7 +425,7 @@ public class CommonLabResultData {
 
         /*
          * Add a new entry if it does not exist.
-         * This could be an entry with a "0" provider number which indicates that it is unassigned.
+         * This could be an entry with a "0" providers number which indicates that it is unassigned.
          */
         else {
             ProviderLabRoutingModel providerLabRouting = new ProviderLabRoutingModel();
@@ -540,7 +540,7 @@ public class CommonLabResultData {
             return result;
 
         } catch (Exception e) {
-            Logger l = org.oscarehr.utility.MiscUtils.getLogger();
+            Logger l = MiscUtils.getLogger();
             l.error("exception in CommonLabResultData.updateLabRouting()", e);
             return false;
         }
@@ -589,7 +589,7 @@ public class CommonLabResultData {
 
             return true;
         } catch (Exception e) {
-            Logger l = org.oscarehr.utility.MiscUtils.getLogger();
+            Logger l = MiscUtils.getLogger();
             l.error("exception in CommonLabResultData.updateLabRouting()", e);
             return false;
         }
@@ -598,7 +598,7 @@ public class CommonLabResultData {
     public static boolean fileLabs(ArrayList<String[]> flaggedLabs, LoggedInInfo loggedInInfo) {
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", SecurityInfoManager.WRITE, null)) {
-            throw new SecurityException("missing required security object (_lab)");
+            throw new SecurityException("missing required sec object (_lab)");
         }
         return fileLabs(flaggedLabs, loggedInInfo.getLoggedInProviderNo());
 

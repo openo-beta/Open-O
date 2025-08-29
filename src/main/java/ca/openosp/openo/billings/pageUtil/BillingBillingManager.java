@@ -28,10 +28,10 @@ package ca.openosp.openo.billings.pageUtil;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import org.oscarehr.common.dao.BillingServiceDao;
-import org.oscarehr.common.model.BillingService;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.BillingServiceDao;
+import ca.openosp.openo.commn.model.BillingService;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;

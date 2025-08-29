@@ -34,13 +34,13 @@ import java.util.Date;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
-import org.oscarehr.common.dao.OscarLogDao;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.OscarLogDao;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.stereotype.Service;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 
 @Service

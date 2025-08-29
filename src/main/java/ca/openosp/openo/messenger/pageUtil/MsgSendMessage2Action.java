@@ -33,15 +33,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.MessageListDao;
-import org.oscarehr.common.dao.MessageTblDao;
-import org.oscarehr.common.model.MessageList;
-import org.oscarehr.common.model.MessageTbl;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.MessageListDao;
+import ca.openosp.openo.commn.dao.MessageTblDao;
+import ca.openosp.openo.commn.model.MessageList;
+import ca.openosp.openo.commn.model.MessageTbl;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -57,7 +57,7 @@ public class MsgSendMessage2Action extends ActionSupport {
         // Extract attributes we will need
         // Setup variables
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_msg", "w", null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         String[] providers = this.getProvider();

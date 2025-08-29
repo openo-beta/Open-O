@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 import ca.openosp.openo.billing.CA.BC.dao.WcbDao;
 import ca.openosp.openo.billing.CA.BC.model.Wcb;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.util.ConversionUtils;
 
 /**

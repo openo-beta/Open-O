@@ -10,7 +10,7 @@
 
 package ca.openosp.openo.billing.CA.ON.util;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 public enum EDTFolder {
     INBOX, OUTBOX, SENT, ARCHIVE;

@@ -27,14 +27,14 @@ package ca.openosp.openo.report.oscarMeasurements.pageUtil;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.common.dao.MeasurementDao;
-import org.oscarehr.common.dao.forms.FormsDao;
-import org.oscarehr.common.model.Measurement;
-import org.oscarehr.common.model.Validations;
+import ca.openosp.openo.commn.dao.MeasurementDao;
+import ca.openosp.openo.commn.dao.forms.FormsDao;
+import ca.openosp.openo.commn.model.Measurement;
+import ca.openosp.openo.commn.model.Validations;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctValidation;
 import ca.openosp.openo.report.oscarMeasurements.data.RptMeasurementsData;
 import ca.openosp.openo.util.ConversionUtils;
@@ -55,7 +55,7 @@ public class RptInitializePatientsMetGuidelineCDMReport2Action extends ActionSup
     public String execute() throws ServletException, IOException {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_report", "r", null)) {
-            throw new SecurityException("missing required security object (_report)");
+            throw new SecurityException("missing required sec object (_report)");
         }
 
         RptMeasurementsData mData = new RptMeasurementsData();

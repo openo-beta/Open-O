@@ -24,7 +24,7 @@ package ca.openosp.openo.integration.fhir.interfaces;
  * Ontario, Canada
  */
 
-import org.oscarehr.common.interfaces.Immunization;
+import ca.openosp.openo.commn.interfaces.Immunization;
 
 
 /**

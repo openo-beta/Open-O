@@ -32,8 +32,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.common.model.Allergy;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.model.Allergy;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 public interface AllergyManager {
 

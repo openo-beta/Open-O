@@ -31,12 +31,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.oscarehr.common.dao.ConsentDao;
-import org.oscarehr.common.dao.ConsentTypeDao;
-import org.oscarehr.common.model.Consent;
-import org.oscarehr.common.model.ConsentType;
-import org.oscarehr.common.model.DemographicData;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.dao.ConsentDao;
+import ca.openosp.openo.commn.dao.ConsentTypeDao;
+import ca.openosp.openo.commn.model.Consent;
+import ca.openosp.openo.commn.model.ConsentType;
+import ca.openosp.openo.commn.model.DemographicData;
+import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -201,7 +201,7 @@ public class PatientConsentManagerImpl implements PatientConsentManager {
      */
     public void optoutConsent(LoggedInInfo loggedinInfo, int demographic_no, int consentTypeId) {
 
-        // use this manager method in order to reduce repetitive use of the security check.
+        // use this manager method in order to reduce repetitive use of the sec check.
         Consent consent = getConsentByDemographicAndConsentType(loggedinInfo, demographic_no, consentTypeId);
 
         if (consent != null) {

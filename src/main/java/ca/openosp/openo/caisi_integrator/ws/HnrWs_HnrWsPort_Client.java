@@ -1,8 +1,8 @@
 package ca.openosp.openo.caisi_integrator.ws;
 
 import java.util.Calendar;
-import org.oscarehr.hnr.ws.MatchingClientParameters;
-import org.oscarehr.hnr.ws.Client;
+import ca.openosp.openo.ws.MatchingClientParameters;
+import ca.openosp.openo.ws.Client;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.io.File;

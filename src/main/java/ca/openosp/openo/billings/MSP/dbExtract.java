@@ -33,8 +33,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.oscarehr.utility.DbConnectionFilter;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.DbConnectionFilter;
+import ca.openosp.openo.utility.MiscUtils;
 
 public class dbExtract implements Serializable {
 

@@ -24,7 +24,7 @@
  */
 package ca.openosp.openo.managers.model;
 
-import org.oscarehr.common.model.ProviderPreference;
+import ca.openosp.openo.commn.model.ProviderPreference;
 
 import java.util.ArrayList;
 import java.util.Collection;

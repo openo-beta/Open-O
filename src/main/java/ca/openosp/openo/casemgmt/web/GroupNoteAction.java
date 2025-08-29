@@ -28,17 +28,17 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.service.AdmissionManager;
-import org.oscarehr.PMmodule.web.CreateAnonymousClientAction;
+import ca.openosp.openo.PMmodule.service.AdmissionManager;
+import ca.openosp.openo.PMmodule.web.CreateAnonymousClientAction;
 import ca.openosp.openo.casemgmt.web.formbeans.CaseManagementEntryFormBean;
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.dao.GroupNoteDao;
-import org.oscarehr.common.model.Admission;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.GroupNoteLink;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.dao.GroupNoteDao;
+import ca.openosp.openo.commn.model.Admission;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.GroupNoteLink;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 
 public class GroupNoteAction {

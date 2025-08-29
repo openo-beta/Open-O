@@ -62,46 +62,46 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.xmlbeans.XmlOptions;
-import org.oscarehr.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.casemgmt.model.CaseManagementIssue;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteExt;
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
-import org.oscarehr.common.dao.AbstractCodeSystemDao;
-import org.oscarehr.common.dao.ContactDao;
-import org.oscarehr.common.dao.DemographicArchiveDao;
-import org.oscarehr.common.dao.DemographicContactDao;
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.dao.DemographicExtDao;
-import org.oscarehr.common.dao.DemographicPharmacyDao;
-import org.oscarehr.common.dao.DrugReasonDao;
-import org.oscarehr.common.dao.DxresearchDAO;
-import org.oscarehr.common.dao.EpisodeDao;
-import org.oscarehr.common.dao.Hl7TextInfoDao;
-import org.oscarehr.common.dao.Hl7TextMessageDao;
-import org.oscarehr.common.dao.OscarAppointmentDao;
-import org.oscarehr.common.dao.PartialDateDao;
-import org.oscarehr.common.dao.PharmacyInfoDao;
-import org.oscarehr.common.dao.ProfessionalSpecialistDao;
-import org.oscarehr.common.exception.PatientDirectiveException;
-import org.oscarehr.common.model.AbstractCodeSystemModel;
-import org.oscarehr.common.model.Allergy;
-import org.oscarehr.common.model.Appointment;
-import org.oscarehr.common.model.Contact;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.DemographicArchive;
-import org.oscarehr.common.model.DemographicContact;
-import org.oscarehr.common.model.DemographicPharmacy;
-import org.oscarehr.common.model.DrugReason;
-import org.oscarehr.common.model.Dxresearch;
-import org.oscarehr.common.model.Episode;
-import org.oscarehr.common.model.Hl7TextInfo;
-import org.oscarehr.common.model.Hl7TextMessage;
-import org.oscarehr.common.model.PartialDate;
-import org.oscarehr.common.model.PharmacyInfo;
-import org.oscarehr.common.model.ProfessionalSpecialist;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.commn.dao.AbstractCodeSystemDao;
+import ca.openosp.openo.commn.dao.ContactDao;
+import ca.openosp.openo.commn.dao.DemographicArchiveDao;
+import ca.openosp.openo.commn.dao.DemographicContactDao;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.dao.DemographicExtDao;
+import ca.openosp.openo.commn.dao.DemographicPharmacyDao;
+import ca.openosp.openo.commn.dao.DrugReasonDao;
+import ca.openosp.openo.commn.dao.DxresearchDAO;
+import ca.openosp.openo.commn.dao.EpisodeDao;
+import ca.openosp.openo.commn.dao.Hl7TextInfoDao;
+import ca.openosp.openo.commn.dao.Hl7TextMessageDao;
+import ca.openosp.openo.commn.dao.OscarAppointmentDao;
+import ca.openosp.openo.commn.dao.PartialDateDao;
+import ca.openosp.openo.commn.dao.PharmacyInfoDao;
+import ca.openosp.openo.commn.dao.ProfessionalSpecialistDao;
+import ca.openosp.openo.commn.exception.PatientDirectiveException;
+import ca.openosp.openo.commn.model.AbstractCodeSystemModel;
+import ca.openosp.openo.commn.model.Allergy;
+import ca.openosp.openo.commn.model.Appointment;
+import ca.openosp.openo.commn.model.Contact;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.DemographicArchive;
+import ca.openosp.openo.commn.model.DemographicContact;
+import ca.openosp.openo.commn.model.DemographicPharmacy;
+import ca.openosp.openo.commn.model.DrugReason;
+import ca.openosp.openo.commn.model.Dxresearch;
+import ca.openosp.openo.commn.model.Episode;
+import ca.openosp.openo.commn.model.Hl7TextInfo;
+import ca.openosp.openo.commn.model.Hl7TextMessage;
+import ca.openosp.openo.commn.model.PartialDate;
+import ca.openosp.openo.commn.model.PharmacyInfo;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
+import ca.openosp.openo.commn.model.Provider;
 //import org.oscarehr.e2e.director.E2ECreator;
 //import org.oscarehr.e2e.util.EverestUtils;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentCommentDao;
@@ -113,10 +113,10 @@ import ca.openosp.openo.hospitalReportManager.model.HRMDocumentComment;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToProvider;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import org.oscarehr.utility.WebUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.openo.utility.WebUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -152,7 +152,7 @@ import cdsDt.ResidualInformation.DataElement;
 import cdsDt.ResultNormalAbnormalFlag;
 import cdsDt.YnIndicator;
 import cdsDt.YnIndicatorsimple.Enum;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.appt.ApptStatusData;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
@@ -165,13 +165,13 @@ import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
 import ca.openosp.openo.lab.ca.all.upload.ProviderLabRouting;
 import ca.openosp.openo.prevention.PreventionData;
-import ca.openosp.openo.provider.data.ProviderData;
+import ca.openosp.openo.providers.data.ProviderData;
 import ca.openosp.openo.report.data.DemographicSets;
 import ca.openosp.openo.report.data.RptDemographicQueryBuilder;
 import ca.openosp.openo.report.data.RptDemographicQueryLoader;
 import ca.openosp.openo.report.pageUtil.RptDemographicReport2Form;
-import ca.openosp.openo.rx.data.RxPatientData;
-import ca.openosp.openo.rx.data.RxPrescriptionData;
+import ca.openosp.openo.prescript.data.RxPatientData;
+import ca.openosp.openo.prescript.data.RxPrescriptionData;
 import ca.openosp.openo.util.ConversionUtils;
 import ca.openosp.openo.util.StringUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -232,11 +232,11 @@ public class DemographicExportAction42Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "r", null)) {
-            throw new SecurityException("missing required security object (_demographic)");
+            throw new SecurityException("missing required sec object (_demographic)");
         }
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographicExport", "r", null)) {
-            throw new SecurityException("missing required security object (_demographicExport)");
+            throw new SecurityException("missing required sec object (_demographicExport)");
         }
 
         String setName = this.getPatientSet();
@@ -333,7 +333,7 @@ public class DemographicExportAction42Action extends ActionSupport {
                         // DEMOGRAPHICS
                         DemographicData d = new DemographicData();
 
-                        org.oscarehr.common.model.Demographic demographic = null;
+                        Demographic demographic = null;
                         try {
                             demographic = d.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demoNo);
                         } catch (PatientDirectiveException e) {
@@ -3116,7 +3116,7 @@ public class DemographicExportAction42Action extends ActionSupport {
     private void fillContactInfo(LoggedInInfo loggedInInfo, Demographics.Contact contact, String contactId, String demoNo, int index, int type) {
 
         if (type == DemographicContact.TYPE_DEMOGRAPHIC) {
-            org.oscarehr.common.model.Demographic relDemo = new DemographicData().getDemographic(loggedInInfo, contactId);
+            Demographic relDemo = new DemographicData().getDemographic(loggedInInfo, contactId);
             HashMap<String, String> relDemoExt = new HashMap<String, String>();
             relDemoExt.putAll(demographicExtDao.getAllValuesForDemo(Integer.parseInt(contactId)));
 

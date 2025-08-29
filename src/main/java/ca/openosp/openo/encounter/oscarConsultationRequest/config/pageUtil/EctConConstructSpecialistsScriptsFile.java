@@ -33,13 +33,13 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
-import org.oscarehr.common.dao.ConsultationServiceDao;
-import org.oscarehr.common.dao.ServiceSpecialistsDao;
-import org.oscarehr.common.model.ConsultationServices;
-import org.oscarehr.common.model.ProfessionalSpecialist;
-import org.oscarehr.common.model.ServiceSpecialists;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ConsultationServiceDao;
+import ca.openosp.openo.commn.dao.ServiceSpecialistsDao;
+import ca.openosp.openo.commn.model.ConsultationServices;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
+import ca.openosp.openo.commn.model.ServiceSpecialists;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.oscarConsultationRequest.config.data.EctConConfigurationJavascriptData;
 import ca.openosp.openo.util.ConversionUtils;

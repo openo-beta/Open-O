@@ -34,7 +34,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.util.UtilDateUtilities;
 

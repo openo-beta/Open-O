@@ -27,12 +27,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ page import="oscar.oscarRx.data.*,java.util.*" %>
-<%@ page import="oscar.OscarProperties" %>
+<%@ page import="ca.openosp.openo.rx.data.*,java.util.*" %>
+<%@ page import="ca.openosp.OscarProperties" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPharmacyData" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPatientData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPharmacyData" %>
+<%@ page import="ca.openosp.openo.commn.model.PharmacyInfo" %>
 
 <%
     RxSessionBean bean = null;
@@ -550,7 +551,7 @@
                                 <td id="pharmacyListWindow">
 
                                     <% RxPharmacyData pharmacy = new RxPharmacyData();
-                                        List<org.oscarehr.common.model.PharmacyInfo> pharList = pharmacy.getAllPharmacies();
+                                        List<PharmacyInfo> pharList = pharmacy.getAllPharmacies();
                                     %>
                                     <table id="pharmacyList" class="table-condensed table-striped"
                                            style="margin-top:5px;width:100%">
@@ -565,7 +566,7 @@
                                             <th></th>
                                         </tr>
                                         <% for (int i = 0; i < pharList.size(); i++) {
-                                            org.oscarehr.common.model.PharmacyInfo ph = pharList.get(i);
+                                            PharmacyInfo ph = pharList.get(i);
                                             if (ph.getName() != null && !ph.getName().isEmpty()) {
                                         %>
                                         <tr class="pharmacyItem" pharmId="<%=ph.getId()%>">

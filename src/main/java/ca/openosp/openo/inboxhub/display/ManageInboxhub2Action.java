@@ -28,8 +28,8 @@ import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.inboxhub.inboxdata.LabDataController;
 import ca.openosp.openo.inboxhub.query.InboxhubQuery;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.lab.ca.on.LabResultData;
 import ca.openosp.openo.mds.data.CategoryData;
 

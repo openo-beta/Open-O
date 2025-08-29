@@ -23,20 +23,20 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.common.model.DrugReason" %>
-<%@page import="org.oscarehr.common.dao.DrugReasonDao" %>
-<%@page import="org.oscarehr.common.model.PartialDate" %>
-<%@page import="org.oscarehr.common.dao.PartialDateDao" %>
+<%@page import="ca.openosp.openo.commn.model.DrugReason" %>
+<%@page import="ca.openosp.openo.commn.dao.DrugReasonDao" %>
+<%@page import="ca.openosp.openo.commn.model.PartialDate" %>
+<%@page import="ca.openosp.openo.commn.dao.PartialDateDao" %>
 <%@page import="ca.openosp.openo.managers.CodingSystemManager" %>
 <%@page import="ca.openosp.openo.managers.PharmacyManager" %>
 <%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
-<%@page import="org.oscarehr.common.model.PharmacyInfo" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.commn.model.PharmacyInfo" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="java.text.SimpleDateFormat" %>
 <%@page import="java.util.List" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
-<%@page import="org.oscarehr.common.dao.DrugDao,org.oscarehr.common.model.Drug,org.oscarehr.utility.MiscUtils,org.oscarehr.utility.SpringUtils,org.oscarehr.PMmodule.dao.ProviderDao,org.oscarehr.common.dao.DemographicDao" %>
+<%@page import="ca.openosp.openo.commn.dao.DrugDao,ca.openosp.openo.commn.model.Drug,ca.openosp.openo.utility.MiscUtils,ca.openosp.openo.utility.SpringUtils,ca.openosp.openo.PMmodule.dao.ProviderDao,ca.openosp.openo.commn.dao.DemographicDao" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -120,7 +120,7 @@
 
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <html>
 <head>

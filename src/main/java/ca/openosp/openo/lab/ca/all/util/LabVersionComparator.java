@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.oscarehr.common.dao.Hl7TextMessageDao;
-import org.oscarehr.common.model.Hl7TextMessage;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.Hl7TextMessageDao;
+import ca.openosp.openo.commn.model.Hl7TextMessage;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
 import ca.openosp.openo.lab.ca.all.parsers.ExcellerisOntarioHandler.OrderStatus;

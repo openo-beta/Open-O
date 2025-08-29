@@ -28,33 +28,33 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.utility.WebUtils" %>
-<%@page import="org.oscarehr.common.dao.DrugDao" %>
-<%@page import="org.oscarehr.common.model.Drug" %>
-<%@page import="org.oscarehr.common.model.PharmacyInfo" %>
-<%@page import="org.oscarehr.utility.WebUtils" %>
-<%@page import="org.oscarehr.utility.LocaleUtils" %>
-<%@page import="oscar.oscarRx.data.*,ca.openosp.openo.demographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
+<%@page import="ca.openosp.openo.utility.WebUtils" %>
+<%@page import="ca.openosp.openo.commn.dao.DrugDao" %>
+<%@page import="ca.openosp.openo.commn.model.Drug" %>
+<%@page import="ca.openosp.openo.commn.model.PharmacyInfo" %>
+<%@page import="ca.openosp.openo.utility.WebUtils" %>
+<%@page import="ca.openosp.openo.utility.LocaleUtils" %>
+<%@page import="ca.openosp.openo.rx.data.*,ca.openosp.openo.demographic.data.DemographicData,ca.openosp.OscarProperties,ca.openosp.openo.log.*" %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
 <%@page import="java.text.SimpleDateFormat" %>
 <%@page import="java.util.*" %>
 <%@page import="java.util.Enumeration" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.utility.SessionConstants" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.SessionConstants" %>
 <%@page import="java.util.List" %>
 <%@page import="ca.openosp.openo.casemgmt.web.PrescriptDrug" %>
-<%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="java.util.ArrayList,ca.openosp.openo.rx.data.RxPrescriptionData" %>
-<%@page import="org.oscarehr.common.model.ProviderPreference" %>
-<%@page import="org.oscarehr.web.admin.ProviderPreferencesUIBean" %>
+<%@page import="ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="java.util.ArrayList,ca.openosp.openo.prescript.data.RxPrescriptionData" %>
+<%@page import="ca.openosp.openo.commn.model.ProviderPreference" %>
+<%@page import="ca.openosp.openo.web.admin.ProviderPreferencesUIBean" %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
 <%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
 <%@page import="ca.openosp.openo.casemgmt.model.Issue" %>
 <%@ page import="ca.openosp.openo.services.security.SecurityManager" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPharmacyData" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPatientData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPharmacyData" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 
 <%
@@ -176,7 +176,7 @@
     prescribedDrugs = patient.getPrescribedDrugScripts(); //this function only returns drugs which have an entry in prescription and drugs table
     String script_no = "";
 
-    //This checks if the provider has the ExternalPresriber feature enabled, if so then a link appear for the provider to access the ExternalPrescriber
+    //This checks if the providers has the ExternalPresriber feature enabled, if so then a link appear for the providers to access the ExternalPrescriber
     ProviderPreference providerPreference = ProviderPreferencesUIBean.getProviderPreference(loggedInInfo.getLoggedInProviderNo());
 
     boolean eRxEnabled = false;
@@ -1131,7 +1131,7 @@
                                                                             </td>
                                                                             <%
                                                                                 }
-                                                                                if (!OscarProperties.getInstance().getProperty("rx.profile_legend.hide", "false").equals("true")) {
+                                                                                if (!OscarProperties.getInstance().getProperty("prescript.profile_legend.hide", "false").equals("true")) {
 
                                                                                     if (longterm_acute) {
                                                                             %>
@@ -1275,7 +1275,7 @@
     <div id="themeLegend"
          style="position: absolute;display:none; width:500px;height:200px;background-color:white;padding:20px;border:1px solid grey">
         <a href="javascript:void(0);" class="currentDrug">Drug that is current</a><br/>
-        <%if (!OscarProperties.getInstance().getProperty("rx.delete_drug.hide", "false").equals("true")) {%>
+        <%if (!OscarProperties.getInstance().getProperty("prescript.delete_drug.hide", "false").equals("true")) {%>
         <a href="javascript:void(0);" class="archivedDrug">Drug that is archived</a><br/>
         <%} %>
         <a href="javascript:void(0);" class="expireInReference">Drug that is current but will expire within the

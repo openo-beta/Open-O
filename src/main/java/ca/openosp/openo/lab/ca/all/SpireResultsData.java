@@ -29,12 +29,12 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.Hl7TextInfoDao;
-import org.oscarehr.common.dao.PatientLabRoutingDao;
-import org.oscarehr.common.model.Hl7TextInfo;
-import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.Hl7TextInfoDao;
+import ca.openosp.openo.commn.dao.PatientLabRoutingDao;
+import ca.openosp.openo.commn.model.Hl7TextInfo;
+import ca.openosp.openo.commn.model.PatientLabRouting;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.on.LabResultData;
 import ca.openosp.openo.util.ConversionUtils;
@@ -70,7 +70,7 @@ public class SpireResultsData {
         if (demographicNo == null) {
             // note to self: lab reports not found in the providerLabRouting table will not show up -
             // need to ensure every lab is entered in providerLabRouting, with '0'
-            // for the provider number if unable to find correct provider
+            // for the providers number if unable to find correct providers
             routings = dao.findLabsViaMagic(status, providerNo, patientFirstName, patientLastName, patientHealthNumber);
         } else {
             routings = dao.findByDemographicId(ConversionUtils.fromIntString(demographicNo));

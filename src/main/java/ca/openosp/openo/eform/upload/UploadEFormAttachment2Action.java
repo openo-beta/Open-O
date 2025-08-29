@@ -31,15 +31,15 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.dao.CtlDocumentDao;
-import org.oscarehr.common.dao.DocumentDao;
-import org.oscarehr.common.model.CtlDocument;
-import org.oscarehr.common.model.CtlDocumentPK;
-import org.oscarehr.common.model.Document;
+import ca.openosp.openo.commn.dao.CtlDocumentDao;
+import ca.openosp.openo.commn.dao.DocumentDao;
+import ca.openosp.openo.commn.model.CtlDocument;
+import ca.openosp.openo.commn.model.CtlDocumentPK;
+import ca.openosp.openo.commn.model.Document;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -54,7 +54,7 @@ public class UploadEFormAttachment2Action extends ActionSupport {
     public String execute() {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
         String docFileName = this.getUploadFileName();
         try {

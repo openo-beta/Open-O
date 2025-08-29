@@ -27,38 +27,38 @@
 
 package ca.openosp.openo.casemgmt.service;
 
+import ca.openosp.openo.PMmodule.model.*;
 import ca.openosp.openo.appt.ApptStatusData;
 import ca.openosp.openo.casemgmt.dao.*;
 import ca.openosp.openo.casemgmt.model.*;
+import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.commn.model.*;
 import ca.openosp.openo.model.security.Secrole;
 import ca.openosp.openo.services.security.RolesManager;
 import ca.openosp.openo.util.UtilDateUtilities;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
-import org.oscarehr.PMmodule.dao.ProgramAccessDAO;
-import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
-import org.oscarehr.PMmodule.dao.ProgramQueueDao;
-import org.oscarehr.PMmodule.model.*;
-import org.oscarehr.PMmodule.service.AdmissionManager;
-import org.oscarehr.PMmodule.service.ProgramManager;
-import org.oscarehr.PMmodule.utility.ProgramAccessCache;
-import org.oscarehr.PMmodule.utility.RoleCache;
+import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.IntegratorFallBackManager;
+import ca.openosp.openo.PMmodule.dao.ProgramAccessDAO;
+import ca.openosp.openo.PMmodule.dao.ProgramProviderDAO;
+import ca.openosp.openo.PMmodule.dao.ProgramQueueDao;
+import ca.openosp.openo.PMmodule.service.AdmissionManager;
+import ca.openosp.openo.PMmodule.service.ProgramManager;
+import ca.openosp.openo.PMmodule.utility.ProgramAccessCache;
+import ca.openosp.openo.PMmodule.utility.RoleCache;
 import ca.openosp.openo.caisi_integrator.ws.CachedDemographicDrug;
 import ca.openosp.openo.caisi_integrator.ws.CachedDemographicNote;
 import ca.openosp.openo.caisi_integrator.ws.CachedFacility;
 import ca.openosp.openo.casemgmt.common.EChartNoteEntry;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.model.*;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.util.ConversionUtils;
@@ -1068,7 +1068,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
                 secuL = 2;
             if (role.equalsIgnoreCase("CSW"))
                 secuL = 1;
-            /* get provider's highest level */
+            /* get providers's highest level */
             if (secuL > rtSecul)
                 rtSecul = secuL;
             if (rtSecul >= level)
@@ -1283,7 +1283,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     @Override
     public CaseManagementTmpSave getTmpSave(String providerNo, String demographicNo, String programId) {
         // If maxTmpSave is "true", "yes", "on", it is treated as active
-        if (oscar.OscarProperties.getInstance().isPropertyActive("maxTmpSave")) {
+        if (OscarProperties.getInstance().isPropertyActive("maxTmpSave")) {
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.DAY_OF_MONTH, -14);
             Date twoWeeksAgo = cal.getTime();
@@ -1309,7 +1309,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
         // There is a temporary note, but does it have any content besides the tag?
         if (obj != null && OscarProperties.getInstance().isPropertyActive("encounter.remove_empty_tmp_notes")
                 && !caseManagementTmpSaveDao.noteHasContent(obj.getId())) {
-            logger.debug("Empty Tmp note found for provider: {}, demographic: {}, program: {}", providerNo, demographicNo, programId);
+            logger.debug("Empty Tmp note found for providers: {}, demographic: {}, program: {}", providerNo, demographicNo, programId);
 
             // The temporary note available doesn't have any content anyway, so get rid of
             // it.
@@ -1317,10 +1317,10 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
         }
 
         if (removed) {
-            logger.debug("Removed empty tmp note for provider: {}, demographic: {}, program: {}", providerNo, demographicNo, programId);
+            logger.debug("Removed empty tmp note for providers: {}, demographic: {}, program: {}", providerNo, demographicNo, programId);
             return null;
         } else {
-            logger.debug("Could not remove empty tmp note -or- tmp note with content found for provider: {}, demographic: {}, program: {}", providerNo, demographicNo, programId);
+            logger.debug("Could not remove empty tmp note -or- tmp note with content found for providers: {}, demographic: {}, program: {}", providerNo, demographicNo, programId);
             return obj;
         }
     }
@@ -2194,20 +2194,20 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
         try {
             // Null check for providerExtDao and cproviderNo
             if (providerExtDao == null || cproviderNo == null) {
-                logger.warn("providerExtDao or cproviderNo is null. Cannot fetch provider's signature.");                
+                logger.warn("providerExtDao or cproviderNo is null. Cannot fetch providers's signature.");
             } else {
-                // Fetch provider's signature
+                // Fetch providers's signature
                 ProviderExt pe = providerExtDao.find(cproviderNo);
                 if (pe != null) {
                     tempS = pe.getSignature();
                 } else {
                     // Handle the case where ProviderExt is not found
-                    logger.warn("ProviderExt not found for provider number: " + cproviderNo);
+                    logger.warn("ProviderExt not found for providers number: " + cproviderNo);
                 }
             }
         } catch (Exception e) {
             // Log the exception with error details
-            logger.error("Error fetching provider's signature for provider number: " + cproviderNo, e);
+            logger.error("Error fetching providers's signature for providers number: " + cproviderNo, e);
         }
 
         if (tempS != null && !tempS.trim().isEmpty()) {
@@ -2276,7 +2276,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
      * gets all the notes
      * if we have a key, and the note is locked, consider it
      * caisi - filter notes
-     * grab the last one, where i am provider, and it's not signed
+     * grab the last one, where i am providers, and it's not signed
      *
      * @param request
      * @param demono
@@ -2383,7 +2383,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
         return status;
     }
 
-    // add new note link if note is document or rx note
+    // add new note link if note is document or prescript note
     @Override
     public void addNewNoteLink(Long noteId) {
         CaseManagementNote cmn = getNote(noteId.toString());
@@ -2559,7 +2559,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
         }
 
         /*
-         * if provider is a doctor or nurse,get all major and resolved medical issue for
+         * if providers is a doctor or nurse,get all major and resolved medical issue for
          * demograhhic and append them to CPP medical history
          */
         if (inCaisi) {

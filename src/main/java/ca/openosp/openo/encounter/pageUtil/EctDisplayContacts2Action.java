@@ -28,18 +28,18 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.ContactDao;
-import org.oscarehr.common.dao.DemographicContactDao;
-import org.oscarehr.common.dao.ProfessionalSpecialistDao;
-import org.oscarehr.common.model.Contact;
-import org.oscarehr.common.model.DemographicContact;
-import org.oscarehr.common.model.ProfessionalSpecialist;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.ContactDao;
+import ca.openosp.openo.commn.dao.DemographicContactDao;
+import ca.openosp.openo.commn.dao.ProfessionalSpecialistDao;
+import ca.openosp.openo.commn.model.Contact;
+import ca.openosp.openo.commn.model.DemographicContact;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.util.StringUtils;
 
 public class EctDisplayContacts2Action extends EctDisplayAction {
@@ -152,7 +152,7 @@ public class EctDisplayContacts2Action extends EctDisplayAction {
                 if ("true".equalsIgnoreCase(healthCareTeamEnabled)) {
 
                     if (contact.getType() == DemographicContact.TYPE_PROVIDER) {
-                        url = "alert('Edit internal providers from the provider menu');return false;";
+                        url = "alert('Edit internal providers from the providers menu');return false;";
                     } else {
                         url = "popupPage(650,500,'" + hash + "','" +
                                 request.getContextPath() +

@@ -24,7 +24,7 @@
     }
 %>
 
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%
     String user_no = (String) session.getAttribute("user");
     String userfirstname = (String) session.getAttribute("userfirstname");
@@ -36,18 +36,18 @@
 <jsp:useBean id="oscarVariables" class="java.util.Properties"
              scope="page"/>
 <%@ page
-        import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, oscar.util.*, java.net.*,oscar.MyDateFormat, ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.ConsultationAttachDocs" %>
-<%@ page import="oscar.oscarLab.ca.on.*" %>
+        import="java.math.*, java.util.*, java.io.*, java.sql.*, ca.openosp.*, ca.openosp.openo.util.*, java.net.*,ca.openosp.MyDateFormat, ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.ConsultationAttachDocs" %>
+<%@ page import="ca.openosp.openo.lab.ca.on.*" %>
 <%@ page import="ca.openosp.openo.lab.ca.all.Hl7textResultsData" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.utility.SessionConstants" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.SessionConstants" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao" %>
 <%@page import="ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao" %>
 <%@page import="ca.openosp.openo.hospitalReportManager.model.HRMDocument" %>
 <%@page import="ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="org.oscarehr.common.model.EFormData" %>
+<%@ page import="ca.openosp.openo.commn.model.EFormData" %>
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
 <%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="ca.openosp.openo.documentManager.EDoc" %>

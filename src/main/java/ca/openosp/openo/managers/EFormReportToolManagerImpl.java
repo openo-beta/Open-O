@@ -32,15 +32,15 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.EFormDao;
-import org.oscarehr.common.dao.EFormDataDao;
-import org.oscarehr.common.dao.EFormReportToolDao;
-import org.oscarehr.common.dao.EFormValueDao;
-import org.oscarehr.common.model.EForm;
-import org.oscarehr.common.model.EFormReportTool;
-import org.oscarehr.common.model.EFormValue;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.dao.EFormDao;
+import ca.openosp.openo.commn.dao.EFormDataDao;
+import ca.openosp.openo.commn.dao.EFormReportToolDao;
+import ca.openosp.openo.commn.dao.EFormValueDao;
+import ca.openosp.openo.commn.model.EForm;
+import ca.openosp.openo.commn.model.EFormReportTool;
+import ca.openosp.openo.commn.model.EFormValue;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

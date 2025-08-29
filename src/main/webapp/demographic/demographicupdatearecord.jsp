@@ -38,38 +38,38 @@
     }
 %>
 
-<%@page import="org.oscarehr.provider.model.PreventionManager" %>
+<%@page import="ca.openosp.openo.provider.model.PreventionManager" %>
 <%@ page
-        import="java.sql.*, java.util.*, oscar.MyDateFormat, ca.openosp.openo.waitinglist.util.WLWaitingListUtil, oscar.log.*, org.oscarehr.common.OtherIdManager" %>
+        import="java.sql.*, java.util.*, ca.openosp.MyDateFormat, ca.openosp.openo.waitinglist.util.WLWaitingListUtil, ca.openosp.openo.log.*, ca.openosp.openo.commn.OtherIdManager" %>
 
 <%@page import="org.apache.commons.lang.StringUtils" %>
-<%@page import="org.oscarehr.utility.MiscUtils" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 
-<%@page import="org.oscarehr.common.model.Demographic" %>
-<%@page import="org.oscarehr.common.dao.DemographicDao" %>
-<%@page import="org.oscarehr.common.dao.DemographicArchiveDao" %>
-<%@page import="org.oscarehr.common.model.DemographicCust" %>
-<%@page import="org.oscarehr.common.dao.DemographicCustDao" %>
-<%@page import="org.oscarehr.common.dao.DemographicExtDao" %>
-<%@page import="org.oscarehr.common.dao.DemographicExtArchiveDao" %>
-<%@page import="org.oscarehr.common.model.DemographicExt" %>
-<%@page import="org.oscarehr.common.model.DemographicExtArchive" %>
+<%@page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
+<%@page import="ca.openosp.openo.commn.dao.DemographicArchiveDao" %>
+<%@page import="ca.openosp.openo.commn.model.DemographicCust" %>
+<%@page import="ca.openosp.openo.commn.dao.DemographicCustDao" %>
+<%@page import="ca.openosp.openo.commn.dao.DemographicExtDao" %>
+<%@page import="ca.openosp.openo.commn.dao.DemographicExtArchiveDao" %>
+<%@page import="ca.openosp.openo.commn.model.DemographicExt" %>
+<%@page import="ca.openosp.openo.commn.model.DemographicExtArchive" %>
 
-<%@ page import="org.oscarehr.common.dao.WaitingListDao" %>
-<%@ page import="org.oscarehr.common.model.WaitingList" %>
+<%@ page import="ca.openosp.openo.commn.dao.WaitingListDao" %>
+<%@ page import="ca.openosp.openo.commn.model.WaitingList" %>
 
-<%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
-<%@page import="org.oscarehr.common.model.Appointment" %>
-<%@page import="org.oscarehr.provider.model.PreventionManager" %>
+<%@page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
+<%@page import="ca.openosp.openo.commn.model.Appointment" %>
+<%@page import="ca.openosp.openo.provider.model.PreventionManager" %>
 
-<%@ page import="org.oscarehr.PMmodule.model.Program" %>
-<%@page import="org.oscarehr.PMmodule.service.ProgramManager" %>
-<%@page import="org.oscarehr.PMmodule.service.AdmissionManager" %>
+<%@ page import="ca.openosp.openo.PMmodule.model.Program" %>
+<%@page import="ca.openosp.openo.PMmodule.service.ProgramManager" %>
+<%@page import="ca.openosp.openo.PMmodule.service.AdmissionManager" %>
 <%@page import="ca.openosp.openo.managers.PatientConsentManager" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="org.oscarehr.common.model.ConsentType" %>
-<%@page import="oscar.OscarProperties" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.commn.model.ConsentType" %>
+<%@page import="ca.openosp.OscarProperties" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicNameAgeString" %>
@@ -80,7 +80,7 @@
 
 
 <%
-    java.util.Properties oscarVariables = oscar.OscarProperties.getInstance();
+    java.util.Properties oscarVariables = OscarProperties.getInstance();
 
     DemographicExtDao demographicExtDao = SpringUtils.getBean(DemographicExtDao.class);
     DemographicExtArchiveDao demographicExtArchiveDao = SpringUtils.getBean(DemographicExtArchiveDao.class);
@@ -385,7 +385,7 @@
 
             //add to waiting list if the waiting_list parameter in the property file is set to true
             ca.openosp.openo.waitinglist.WaitingList wL = ca.openosp.openo.waitinglist.WaitingList.getInstance();
-            if (wL.getFound() && oscar.OscarProperties.getInstance().getBooleanProperty("DEMOGRAPHIC_WAITING_LIST", "true")) {
+            if (wL.getFound() && OscarProperties.getInstance().getBooleanProperty("DEMOGRAPHIC_WAITING_LIST", "true")) {
                 WLWaitingListUtil.updateWaitingListRecord(
                         request.getParameter("list_id"), request.getParameter("waiting_list_note"),
                         request.getParameter("demographic_no"), request.getParameter("waiting_list_referral_date"));

@@ -26,16 +26,16 @@
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@page import="ca.openosp.openo.rx.data.RxDrugData,java.util.*" %>
+<%@page import="ca.openosp.openo.prescript.data.RxDrugData,java.util.*" %>
 <%@page import="java.text.SimpleDateFormat" %>
 <%@page import="java.util.Calendar" %>
-<%@page import="oscar.oscarRx.data.*" %>
-<%@page import="oscar.oscarRx.util.*" %>
-<%@page import="oscar.OscarProperties" %>
+<%@page import="ca.openosp.openo.rx.data.*" %>
+<%@page import="ca.openosp.openo.rx.util.*" %>
+<%@page import="ca.openosp.OscarProperties" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.util.RxUtil" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.util.RxUtil" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -68,7 +68,7 @@
             String startDate = RxUtil.DateToString(rx.getRxDate(), "yyyy-MM-dd");
             String writtenDate = RxUtil.DateToString(rx.getWrittenDate(), "yyyy-MM-dd");
             String lastRefillDate = RxUtil.DateToString(rx.getLastRefillDate(), "yyyy-MM-dd");
-            int gcn = rx.getGCN_SEQNO();//if gcn is 0, rx is customed drug.
+            int gcn = rx.getGCN_SEQNO();//if gcn is 0, prescript is customed drug.
             String customName = rx.getCustomName();
             Boolean patientCompliance = rx.getPatientCompliance();
             String frequency = rx.getFrequencyCode();
@@ -80,7 +80,7 @@
             String takeMax = rx.getTakeMaxString();
             Boolean longTerm = rx.getLongTerm();
             boolean shortTerm = rx.getShortTerm();
-            //   boolean isCustomNote   =rx.isCustomNote();
+            //   boolean isCustomNote   =prescript.isCustomNote();
             String outsideProvOhip = rx.getOutsideProviderOhip();
             String brandName = rx.getBrandName();
             String ATC = rx.getAtcCode();
@@ -94,7 +94,7 @@
             String rxStatus = rx.getRxStatus() != null ? rx.getRxStatus() : "";
             String protocol = rx.getProtocol() != null ? rx.getProtocol() : "";
 		/*  Field not required. Commented out because it may be reactivated in the future.
-         String priorRxProtocol	= rx.getPriorRxProtocol()!=null ? rx.getPriorRxProtocol() : "";
+         String priorRxProtocol	= prescript.getPriorRxProtocol()!=null ? prescript.getPriorRxProtocol() : "";
          */
             String drugForm = rx.getDrugForm();
             //remove from the rerx list
