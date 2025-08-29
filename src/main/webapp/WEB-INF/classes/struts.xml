@@ -1462,6 +1462,9 @@
         <action name="oscarResearch/oscarDxResearch/setupDxResearch" class="ca.openosp.openo.dxresearch.pageUtil.dxSetupResearch2Action">
             <result name="success">/oscarResearch/oscarDxResearch/dxResearch.jsp</result>
         </action>
+        <action name="oscarResearch/dxresearch/setupDxResearch" class="ca.openosp.openo.dxresearch.pageUtil.dxSetupResearch2Action">
+            <result name="success">/oscarResearch/oscarDxResearch/dxResearch.jsp</result>
+        </action>
         <action name="oscarResearch/oscarDxResearch/dxResearch" class="ca.openosp.openo.dxresearch.pageUtil.dxResearch2Action">
             <result name="codeSearch">/oscarResearch/oscarDxResearch/dxcodeSearch.do</result>
             <result name="success">/oscarResearch/oscarDxResearch/setupDxResearch.do</result>
@@ -1471,6 +1474,9 @@
             <result name="success">/oscarResearch/oscarDxResearch/dxResearchCodeSearch.jsp</result>
         </action>
         <action name="oscarResearch/oscarDxResearch/dxResearchUpdate" class="ca.openosp.openo.dxresearch.pageUtil.dxResearchUpdate2Action">
+            <result name="success">/oscarResearch/oscarDxResearch/setupDxResearch.do</result>
+        </action>
+        <action name="oscarResearch/dxresearch/dxResearchUpdate" class="ca.openosp.openo.dxresearch.pageUtil.dxResearchUpdate2Action">
             <result name="success">/oscarResearch/oscarDxResearch/setupDxResearch.do</result>
         </action>
         <action name="oscarResearch/oscarDxResearch/dxResearchLoadQuickList" class="ca.openosp.openo.dxresearch.pageUtil.dxResearchLoadQuickList2Action">
