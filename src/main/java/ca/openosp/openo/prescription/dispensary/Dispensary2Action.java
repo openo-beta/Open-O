@@ -237,7 +237,7 @@ public class Dispensary2Action extends ActionSupport {
 
 
         request.setAttribute("drugId", request.getParameter("drugId"));
-        String af = "/rx/Dispense.do?method=view&drugId=" + request.getParameter("drugId");
+        String af = "/oscarRx/Dispense.do?method=view&drugId=" + request.getParameter("drugId");
         return af;
     }
 

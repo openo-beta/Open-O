@@ -39,7 +39,7 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@Table(name = "providers")
+@Table(name = "provider")
 public class ProviderData extends AbstractModel<String> implements Serializable {
 
     @Id

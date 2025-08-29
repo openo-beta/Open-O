@@ -115,7 +115,7 @@
                     $("#searchResultsContainer div[id $= '_content'] a").bind("click", function (event) {
                         event.preventDefault();
                         // override the old addReaction.do with the new addReaction2.do
-                        var path = "${ pageContext.servletContext.contextPath }/rx/addReaction2.do"
+                        var path = "${ pageContext.servletContext.contextPath }/oscarRx/addReaction2.do"
                         var param = this.href.split("?")[1];
 
                         sendSearchRequest(path, param, "#addAllergyDialogue");
@@ -131,7 +131,7 @@
                         allergyId = allergyId.split("=")[1].trim()
                         $("#allergy_" + allergyId).addClass("highLightRow");
 
-                        var path = "${ pageContext.servletContext.contextPath }/rx/deleteAllergy2.do";
+                        var path = "${ pageContext.servletContext.contextPath }/oscarRx/deleteAllergy2.do";
 
                         if (confirm(action + " this Allergy?")) {
                             sendSearchRequest(path, param, ".Step1Text");
@@ -142,7 +142,7 @@
                     $(".modifyAllergyLink").bind("click", function (event) {
                         var ids = this.id.split("_");
                         var param = ids[1].trim();
-                        sendSearchRequest("${ pageContext.servletContext.contextPath }/rx/addReaction2.do",
+                        sendSearchRequest("${ pageContext.servletContext.contextPath }/oscarRx/addReaction2.do",
                             param, "#addAllergyDialogue");
                     });
 
@@ -327,7 +327,7 @@
                 if (isEmpty() == true) {
                     name = name.toUpperCase();
                     confirm("Adding custom allergy: " + name);
-                    sendSearchRequest("${ pageContext.servletContext.contextPath }/rx/addReaction2.do",
+                    sendSearchRequest("${ pageContext.servletContext.contextPath }/oscarRx/addReaction2.do",
                         "ID=0&type=0&name=" + name, "#addAllergyDialogue");
                     $("input[value='Custom Allergy']").addClass("highLightButton");
                 }
@@ -337,7 +337,7 @@
                 $(".highLightButton").removeClass("highLightButton");
                 var param = "ID=44452&name=PENICILLINS&type=10";
 
-                sendSearchRequest("${ pageContext.servletContext.contextPath }/rx/addReaction2.do",
+                sendSearchRequest("${ pageContext.servletContext.contextPath }/oscarRx/addReaction2.do",
                     param, "#addAllergyDialogue");
                 $("input[value='Penicillin']").addClass("highLightButton");
             }
@@ -346,7 +346,7 @@
                 $(".highLightButton").removeClass("highLightButton");
                 var param = "ID=44159&name=SULFONAMIDES&type=10";
 
-                sendSearchRequest("${ pageContext.servletContext.contextPath }/rx/addReaction2.do",
+                sendSearchRequest("${ pageContext.servletContext.contextPath }/oscarRx/addReaction2.do",
                     param, "#addAllergyDialogue");
                 $("input[value='Sulfa']").addClass("highLightButton");
             }
@@ -355,7 +355,7 @@
 
             function addCustomNKDA() {
                 $(".highLightButton").removeClass("highLightButton");
-                sendSearchRequest("${ pageContext.servletContext.contextPath }/rx/addReaction2.do",
+                sendSearchRequest("${ pageContext.servletContext.contextPath }/oscarRx/addReaction2.do",
                     "ID=0&type=0&" + paramNKDA, "#addAllergyDialogue");
                 $("input[value='NKDA']").addClass("highLightButton");
             }
