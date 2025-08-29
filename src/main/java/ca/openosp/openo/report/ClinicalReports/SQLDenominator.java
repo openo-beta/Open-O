@@ -32,7 +32,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.Misc;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
 
@@ -82,7 +83,7 @@ public class SQLDenominator implements Denominator {
             ResultSet rs = DBHandler.GetSQL(exeSql);
             MiscUtils.getLogger().debug("SQL Statement: " + exeSql);
             while (rs.next()) {
-                String toAdd = oscar.Misc.getString(rs, resultString);
+                String toAdd = Misc.getString(rs, resultString);
                 list.add(toAdd);
             }
             rs.close();

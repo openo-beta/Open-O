@@ -42,9 +42,9 @@
 
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%@page
-        import="ca.openosp.openo.encounter.pageUtil.NavBarDisplayDAO, oscar.util.*, java.util.ArrayList, java.util.Date, java.util.Calendar, java.io.IOException" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
-<%@ page import="ca.openosp.openo.dao.security.SecobjprivilegeDao" %>
+        import="ca.openosp.openo.encounter.pageUtil.NavBarDisplayDAO, ca.openosp.openo.util.*, java.util.ArrayList, java.util.Date, java.util.Calendar, java.io.IOException" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.daos.security.SecobjprivilegeDao" %>
 <%@ page import="ca.openosp.openo.model.security.Secobjprivilege" %>
 <%@ page import="java.util.List, java.util.regex.Pattern, java.util.regex.Matcher" %>
 <%@ page import="org.owasp.encoder.Encode" %>

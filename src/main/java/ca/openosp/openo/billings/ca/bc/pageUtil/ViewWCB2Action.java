@@ -32,14 +32,14 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.model.Demographic;
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import oscar.Misc;
+import ca.openosp.Misc;
 import ca.openosp.openo.entities.WCB;
 import ca.openosp.openo.billings.ca.bc.data.BillingFormData;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
@@ -106,9 +106,9 @@ public class ViewWCB2Action extends ActionSupport {
                 this.setW_city(demographic.getCity());
                 this.setInjuryLocations(data.getInjuryLocationList());
 
-                //Retrieve provider ohip number and payee number
+                //Retrieve providers ohip number and payee number
 
-                List lstResults = SqlUtils.getQueryResultsList("select ohip_no,billing_no from provider where provider_no = " + providerNo);
+                List lstResults = SqlUtils.getQueryResultsList("select ohip_no,billing_no from providers where provider_no = " + providerNo);
                 if (lstResults != null) {
                     String[] providerData = (String[]) lstResults.get(0);
                     this.setW_pracno(providerData[0]);

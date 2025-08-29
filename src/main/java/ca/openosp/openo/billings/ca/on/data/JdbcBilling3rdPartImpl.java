@@ -30,14 +30,14 @@ import java.util.Properties;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import ca.openosp.openo.billing.CA.ON.model.Billing3rdPartyAddress;
-import org.oscarehr.common.dao.Billing3rdPartyAddressDao;
-import org.oscarehr.common.dao.BillingONExtDao;
-import org.oscarehr.common.dao.BillingPaymentTypeDao;
-import org.oscarehr.common.model.BillingONExt;
-import org.oscarehr.common.model.BillingPaymentType;
-import org.oscarehr.utility.SpringUtils;
-import org.oscarehr.common.dao.ClinicDAO;
-import org.oscarehr.common.model.Clinic;
+import ca.openosp.openo.commn.dao.Billing3rdPartyAddressDao;
+import ca.openosp.openo.commn.dao.BillingONExtDao;
+import ca.openosp.openo.commn.dao.BillingPaymentTypeDao;
+import ca.openosp.openo.commn.model.BillingONExt;
+import ca.openosp.openo.commn.model.BillingPaymentType;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ClinicDAO;
+import ca.openosp.openo.commn.model.Clinic;
 
 public class JdbcBilling3rdPartImpl {
 
@@ -196,7 +196,7 @@ public class JdbcBilling3rdPartImpl {
      * public List get3rdAddrList(String keyword, String field) {
      * Properties prop = new Properties();
      * List<Properties> ret = new Vector<Properties>();
-     * List<Billing3rdPartyAddress> addressList = dao.findAddressesByOneField(field,
+     * List<Billing3rdPartyAddress> addressList = daos.findAddressesByOneField(field,
      * keyword);
      * if(addressList != null) {
      * for(Billing3rdPartyAddress b : addressList) {

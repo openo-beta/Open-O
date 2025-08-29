@@ -10,7 +10,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.Misc;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -27,23 +28,23 @@ public class FrmInvoiceRecord extends FrmRecord {
                     + demographicNo;
             ResultSet rs = DBHandler.GetSQL(sql);
             if (rs.next()) {
-                java.util.Date date = UtilDateUtilities.calcDate(oscar.Misc.getString(rs, "year_of_birth"), rs
-                        .getString("month_of_birth"), oscar.Misc.getString(rs, "date_of_birth"));
-                props.setProperty("demographic_no", oscar.Misc.getString(rs, "demographic_no"));
+                java.util.Date date = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), rs
+                        .getString("month_of_birth"), Misc.getString(rs, "date_of_birth"));
+                props.setProperty("demographic_no", Misc.getString(rs, "demographic_no"));
                 props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(),
                         _dateFormat));
-                props.setProperty("patientName", oscar.Misc.getString(rs, "first_name") + " " + oscar.Misc.getString(rs, "last_name"));
-                props.setProperty("patientSex", oscar.Misc.getString(rs, "sex"));
+                props.setProperty("patientName", Misc.getString(rs, "first_name") + " " + Misc.getString(rs, "last_name"));
+                props.setProperty("patientSex", Misc.getString(rs, "sex"));
                 props.setProperty("dateOfBirth", UtilDateUtilities.DateToString(date, _dateFormat));
                 //props.setProperty("c_surname", oscar.Misc.getString(rs,"last_name"));
-                props.setProperty("c_address", oscar.Misc.getString(rs, "address"));
-                props.setProperty("c_address2", oscar.Misc.getString(rs, "city") + "," + oscar.Misc.getString(rs, "province") + "   "
-                        + oscar.Misc.getString(rs, "postal"));
+                props.setProperty("c_address", Misc.getString(rs, "address"));
+                props.setProperty("c_address2", Misc.getString(rs, "city") + "," + Misc.getString(rs, "province") + "   "
+                        + Misc.getString(rs, "postal"));
                 //props.setProperty("c_province", oscar.Misc.getString(rs,"province"));
                 //props.setProperty("c_postal", oscar.Misc.getString(rs,"postal"));
-                props.setProperty("c_phn", oscar.Misc.getString(rs, "hin") + oscar.Misc.getString(rs, "ver") + "(" + oscar.Misc.getString(rs, "hc_type")
+                props.setProperty("c_phn", Misc.getString(rs, "hin") + Misc.getString(rs, "ver") + "(" + Misc.getString(rs, "hc_type")
                         + ")");
-                props.setProperty("c_phone", oscar.Misc.getString(rs, "phone") + "  " + oscar.Misc.getString(rs, "phone2"));
+                props.setProperty("c_phone", Misc.getString(rs, "phone") + "  " + Misc.getString(rs, "phone2"));
                 props.setProperty("date_invoice", UtilDateUtilities.DateToString(new Date(),
                         _dateFormat));
                 props.setProperty("date_signature", UtilDateUtilities.DateToString(new Date(),

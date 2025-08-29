@@ -37,15 +37,15 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
-import org.oscarehr.common.dao.MsgDemoMapDao;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.MsgDemoMapDao;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 
 /**
- * @deprecated use the common entity at org.oscarehr.common.model.MsgDemoMap
+ * @deprecated use the commons entity at org.oscarehr.commons.model.MsgDemoMap
  */
 @Deprecated
 public class MsgDemoMap {
@@ -57,7 +57,7 @@ public class MsgDemoMap {
 
     public void linkMsg2Demo(String msgId, String demographic_no) {
 
-        org.oscarehr.common.model.MsgDemoMap mdm = new org.oscarehr.common.model.MsgDemoMap();
+        ca.openosp.openo.commn.model.MsgDemoMap mdm = new ca.openosp.openo.commn.model.MsgDemoMap();
         mdm.setMessageID(Integer.valueOf(msgId));
         mdm.setDemographic_no(Integer.valueOf(demographic_no));
 
@@ -72,7 +72,7 @@ public class MsgDemoMap {
         MsgDemoMapDao dao = SpringUtils.getBean(MsgDemoMapDao.class);
         dao.getMessagesAndDemographicsByMessageId(ConversionUtils.fromIntString(msgId));
         for (Object[] o : dao.getMessagesAndDemographicsByMessageId(ConversionUtils.fromIntString(msgId))) {
-            org.oscarehr.common.model.MsgDemoMap m = (org.oscarehr.common.model.MsgDemoMap) o[0];
+            ca.openosp.openo.commn.model.MsgDemoMap m = (ca.openosp.openo.commn.model.MsgDemoMap) o[0];
             Demographic d = (Demographic) o[1];
             if (demoMap.containsKey(String.valueOf(d.getDemographicNo()))) {
                 demoMap.get(String.valueOf(d.getDemographicNo())).add(d.getFormattedName());
@@ -94,7 +94,7 @@ public class MsgDemoMap {
         MsgDemoMapDao dao = SpringUtils.getBean(MsgDemoMapDao.class);
         dao.getMessagesAndDemographicsByMessageId(ConversionUtils.fromIntString(msgId));
         for (Object[] o : dao.getMessagesAndDemographicsByMessageId(ConversionUtils.fromIntString(msgId))) {
-            org.oscarehr.common.model.MsgDemoMap m = (org.oscarehr.common.model.MsgDemoMap) o[0];
+            ca.openosp.openo.commn.model.MsgDemoMap m = (ca.openosp.openo.commn.model.MsgDemoMap) o[0];
             Demographic d = (Demographic) o[1];
             demoMap.put("" + d.getDemographicNo(), d.getFullName());
         }
@@ -106,7 +106,7 @@ public class MsgDemoMap {
         List<String> msgVector = new ArrayList<String>();
         MsgDemoMapDao dao = SpringUtils.getBean(MsgDemoMapDao.class);
         for (Object[] o : dao.getMapAndMessagesByDemographicNo(ConversionUtils.fromIntString(demographic_no))) {
-            org.oscarehr.common.model.MsgDemoMap map = (org.oscarehr.common.model.MsgDemoMap) o[0];
+            ca.openosp.openo.commn.model.MsgDemoMap map = (ca.openosp.openo.commn.model.MsgDemoMap) o[0];
             msgVector.add("" + map.getMessageID());
         }
         return msgVector;
@@ -116,7 +116,7 @@ public class MsgDemoMap {
         List<String> msgList = new ArrayList<String>();
         MsgDemoMapDao dao = SpringUtils.getBean(MsgDemoMapDao.class);
         for (Object[] o : dao.getMapAndMessagesByDemographicNoAndType(Integer.valueOf(demographic_no), type)) {
-            org.oscarehr.common.model.MsgDemoMap map = (org.oscarehr.common.model.MsgDemoMap) o[0];
+            ca.openosp.openo.commn.model.MsgDemoMap map = (ca.openosp.openo.commn.model.MsgDemoMap) o[0];
             msgList.add("" + map.getMessageID());
         }
         return msgList;

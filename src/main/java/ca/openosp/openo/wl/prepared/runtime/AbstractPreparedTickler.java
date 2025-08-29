@@ -27,7 +27,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import ca.openosp.openo.wl.prepared.PreparedTickler;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 public abstract class AbstractPreparedTickler implements PreparedTickler {
 

@@ -4,9 +4,9 @@ package ca.openosp.openo.email.core;
 import java.util.Collections;
 import java.util.List;
 
-import org.oscarehr.common.model.EmailAttachment;
-import org.oscarehr.common.model.EmailLog.ChartDisplayOption;
-import org.oscarehr.common.model.EmailLog.TransactionType;
+import ca.openosp.openo.commn.model.EmailAttachment;
+import ca.openosp.openo.commn.model.EmailLog.ChartDisplayOption;
+import ca.openosp.openo.commn.model.EmailLog.TransactionType;
 
 import ca.openosp.openo.util.StringUtils;
 

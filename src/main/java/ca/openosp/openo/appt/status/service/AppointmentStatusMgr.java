@@ -26,7 +26,7 @@ package ca.openosp.openo.appt.status.service;
 
 import java.util.List;
 
-import org.oscarehr.common.model.AppointmentStatus;
+import ca.openosp.openo.commn.model.AppointmentStatus;
 
 /**
  * @author toby

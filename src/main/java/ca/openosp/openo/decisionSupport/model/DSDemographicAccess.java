@@ -38,27 +38,28 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import ca.openosp.openo.commn.model.Demographic;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
-import org.oscarehr.common.dao.BillingONCHeader1Dao;
-import org.oscarehr.common.dao.FlowSheetCustomizationDao;
-import org.oscarehr.common.model.FlowSheetCustomization;
+import ca.openosp.openo.commn.dao.BillingONCHeader1Dao;
+import ca.openosp.openo.commn.dao.FlowSheetCustomizationDao;
+import ca.openosp.openo.commn.model.FlowSheetCustomization;
 import ca.openosp.openo.decisionSupport.model.conditionValue.DSValue;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.billings.ca.bc.MSP.ServiceCodeValidationLogic;
 import ca.openosp.openo.demographic.data.DemographicData;
 import ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet;
 import ca.openosp.openo.encounter.oscarMeasurements.MeasurementInfo;
 import ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig;
-import ca.openosp.openo.oscarDxResearch.bean.dxResearchBean;
-import ca.openosp.openo.oscarDxResearch.bean.dxResearchBeanHandler;
-import ca.openosp.openo.rx.data.RxPrescriptionData;
-import ca.openosp.openo.rx.data.RxPrescriptionData.Prescription;
+import ca.openosp.openo.dxresearch.bean.dxResearchBean;
+import ca.openosp.openo.dxresearch.bean.dxResearchBeanHandler;
+import ca.openosp.openo.prescript.data.RxPrescriptionData;
+import ca.openosp.openo.prescript.data.RxPrescriptionData.Prescription;
 
 /**
  * @author apavel
@@ -99,7 +100,7 @@ public class DSDemographicAccess {
     private String providerNo = null;
     private List<Object> dynamicArgs = null;
     private boolean passedGuideline = false;
-    private org.oscarehr.common.model.Demographic demographicData;
+    private Demographic demographicData;
     private List<Prescription> prescriptionData;
 
     private LoggedInInfo loggedInInfo;
@@ -812,7 +813,7 @@ public class DSDemographicAccess {
     /**
      * @return the demographicData
      */
-    public org.oscarehr.common.model.Demographic getDemographicData(LoggedInInfo loggedInInfo) {
+    public Demographic getDemographicData(LoggedInInfo loggedInInfo) {
         if (this.demographicData == null) {
             this.demographicData = new DemographicData().getDemographic(loggedInInfo, demographicNo);
         }
@@ -822,7 +823,7 @@ public class DSDemographicAccess {
     /**
      * @param demographicData the demographicData to set
      */
-    public void setDemographicData(org.oscarehr.common.model.Demographic demographicData) {
+    public void setDemographicData(Demographic demographicData) {
         this.demographicData = demographicData;
     }
 

@@ -8,17 +8,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.oscarehr.common.dao.BillingCdmServiceCodesDao;
-import org.oscarehr.common.dao.CtlBillingServiceAgeRulesDao;
-import org.oscarehr.common.dao.CtlBillingServiceSexRulesDao;
-import org.oscarehr.common.dao.DxresearchDAO;
-import org.oscarehr.common.model.BillingCdmServiceCodes;
-import org.oscarehr.common.model.CtlBillingServiceAgeRules;
-import org.oscarehr.common.model.CtlBillingServiceSexRules;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.Dxresearch;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.BillingCdmServiceCodesDao;
+import ca.openosp.openo.commn.dao.CtlBillingServiceAgeRulesDao;
+import ca.openosp.openo.commn.dao.CtlBillingServiceSexRulesDao;
+import ca.openosp.openo.commn.dao.DxresearchDAO;
+import ca.openosp.openo.commn.model.BillingCdmServiceCodes;
+import ca.openosp.openo.commn.model.CtlBillingServiceAgeRules;
+import ca.openosp.openo.commn.model.CtlBillingServiceSexRules;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.Dxresearch;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.billings.ca.bc.data.BillingFormData.BillingService;

@@ -27,7 +27,7 @@ package ca.openosp.openo.billings.ca.bc.data;
 
 import java.text.NumberFormat;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile;
 

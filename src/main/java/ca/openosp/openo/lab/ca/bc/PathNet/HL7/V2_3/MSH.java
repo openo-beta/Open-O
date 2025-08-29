@@ -30,8 +30,8 @@ import java.sql.SQLException;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.billing.CA.BC.dao.Hl7MshDao;
 import ca.openosp.openo.billing.CA.BC.model.Hl7Msh;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.bc.PathNet.HL7.Node;
 
@@ -61,7 +61,7 @@ public class MSH extends Node {
         h.setReceivingApp(get("receiving_application", ""));
         h.setReceivingFacility(get("receiving_facility", ""));
         h.setDateTime(convertTSToDate(get("date_time_of_message", "")));
-        h.setSecurity(get("security", ""));
+        h.setSecurity(get("sec", ""));
         h.setMessageType(get("message_type", ""));
         h.setControlId(get("message_control_id", ""));
         h.setProcessingId(get("processing_id", ""));
@@ -92,7 +92,7 @@ public class MSH extends Node {
                 "receiving_application",
                 "receiving_facility",
                 "date_time_of_message",
-                "security",
+                "sec",
                 "message_type",
                 "message_control_id",
                 "processing_id",

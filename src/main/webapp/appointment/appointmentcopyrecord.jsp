@@ -27,7 +27,7 @@
     if (session.getAttribute("user") == null) response.sendRedirect("../logout.jsp");
 %>
 <%@ page
-        import="oscar.appt.*"
+        import="ca.openosp.openo.appt.*"
         errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.openo.appt.ApptUtil" %>
 

@@ -10,9 +10,9 @@
 -- - org.oscarehr.PMmodule.notification.EmailTriggerServlet (Servlet class)
 -- - org.oscarehr.threads.WaitListEmailThread (Background thread)
 -- - org.oscarehr.managers.WaitListManager.sendProxyEformNotification() (Service method)
--- - /ProxyEformNotification servlet mapping from web.xml
+-- - /ProxyEformNotification servlet mapping from www.xml
 -- - WaitListEmailThread references from ContextStartupListener
--- - LoginFilter security exemptions for /ProxyEformNotification
+-- - LoginFilter sec exemptions for /ProxyEformNotification
 
 -- Configuration properties removed:
 -- - enable_wait_list_email_notifications
@@ -26,12 +26,12 @@
 -- - Removed ~200 lines of dead code
 -- - Eliminated background thread that only threw exceptions
 -- - Removed unused servlet endpoint
--- - Cleaned up security filter configurations
+-- - Cleaned up sec filter configurations
 -- - Reduced application startup complexity
 
 -- To re-enable similar functionality in the future:
 -- 1. Restore all deleted Java classes
--- 2. Re-add servlet configuration in web.xml
--- 3. Restore security exemptions in LoginFilter
+-- 2. Re-add servlet configuration in www.xml
+-- 3. Restore sec exemptions in LoginFilter
 -- 4. Re-add configuration properties
 -- 5. Implement working email notification logic (replacing UnsupportedOperationException)

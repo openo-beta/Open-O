@@ -44,12 +44,12 @@ import javax.crypto.SecretKey;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.XmlUtils;
-import org.oscarehr.ws.rest.to.model.AppointmentTypeTransfer;
-import org.oscarehr.ws.rest.to.model.BookingProviderTransfer;
-import org.oscarehr.ws.rest.to.model.BookingScheduleTemplateCodeTransfer;
-import org.oscarehr.ws.rest.to.model.SearchConfigTo1;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.XmlUtils;
+import ca.openosp.openo.webserv.rest.to.model.AppointmentTypeTransfer;
+import ca.openosp.openo.webserv.rest.to.model.BookingProviderTransfer;
+import ca.openosp.openo.webserv.rest.to.model.BookingScheduleTemplateCodeTransfer;
+import ca.openosp.openo.webserv.rest.to.model.SearchConfigTo1;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -67,7 +67,7 @@ public class SearchConfig {
 
     private Map<Character, Integer> appointmentCodeDurations = null;
     private Map<String, Provider> providers = null;
-    private List<Provider> bookingProviders = null; //needed for web service delete me
+    private List<Provider> bookingProviders = null; //needed for www service delete me
     private String timezone = "America/Toronto";
     private int defaultAppointmentCount = 1;
     private List<FilterDefinition> filters = null;

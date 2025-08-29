@@ -24,8 +24,8 @@
 
 --%>
 
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="oscar.Misc" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.Misc" %>
 <%@page import="ca.openosp.openo.util.UtilMisc" %>
 <%@include file="/casemgmt/taglibs.jsp" %>
 <%@taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
@@ -33,11 +33,11 @@
 <%@page import="ca.openosp.openo.encounter.pageUtil.NavBarDisplayDAO" %>
 <%@page import="java.util.Arrays,java.util.Properties,java.util.List,java.util.Set,java.util.ArrayList,java.util.Enumeration,java.util.HashSet,java.util.Iterator,java.text.SimpleDateFormat,java.util.Calendar,java.util.Date,java.text.ParseException" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.common.model.UserProperty,org.oscarehr.casemgmt.model.*,org.oscarehr.casemgmt.service.* " %>
-<%@page import="org.oscarehr.casemgmt.web.formbeans.*" %>
-<%@page import="org.oscarehr.PMmodule.model.*" %>
-<%@page import="org.oscarehr.common.model.*" %>
-<%@page import="org.oscarehr.common.dao.EFormDao" %>
+<%@page import="ca.openosp.openo.casemgmt.model.*,ca.openosp.openo.casemgmt.service.* " %>
+<%@page import="ca.openosp.openo.casemgmt.web.formbeans.*" %>
+<%@page import="ca.openosp.openo.PMmodule.model.*" %>
+<%@page import="ca.openosp.openo.commn.model.*" %>
+<%@page import="ca.openosp.openo.commn.dao.EFormDao" %>
 <%@page import="ca.openosp.openo.util.DateUtils" %>
 <%@page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@page import="org.springframework.web.context.WebApplicationContext" %>
@@ -46,26 +46,28 @@
 <%@page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="com.quatro.dao.security.*,ca.openosp.openo.model.security.Secrole" %>
-<%@page import="org.oscarehr.utility.EncounterUtil" %>
+<%@page import="ca.openosp.openo.utility.EncounterUtil" %>
 <%@page import="org.apache.cxf.common.i18n.UncheckedException" %>
 <%@page import="ca.openosp.openo.casemgmt.web.NoteDisplay" %>
 <%@page import="ca.openosp.openo.casemgmt.web.CaseManagementViewAction" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
 <%@page import="ca.openosp.openo.casemgmt.dao.CaseManagementNoteLinkDAO" %>
-<%@page import="oscar.OscarProperties" %>
-<%@page import="org.oscarehr.utility.MiscUtils" %>
-<%@page import="org.oscarehr.PMmodule.model.Program" %>
-<%@page import="org.oscarehr.PMmodule.dao.ProgramDao" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.OscarProperties" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.PMmodule.model.Program" %>
+<%@page import="ca.openosp.openo.PMmodule.dao.ProgramDao" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@page import="ca.openosp.openo.casemgmt.web.NoteDisplayNonNote" %>
-<%@page import="org.oscarehr.common.dao.EncounterTemplateDao" %>
+<%@page import="ca.openosp.openo.commn.dao.EncounterTemplateDao" %>
 <%@page import="ca.openosp.openo.casemgmt.web.CheckBoxBean" %>
 <%@page import="ca.openosp.openo.managers.ProgramManager2" %>
 <%@ page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
 <%@ page import="ca.openosp.openo.casemgmt.web.formbeans.CaseManagementEntryFormBean" %>
+<%@ page import="ca.openosp.openo.commn.model.*" %>
+<%@ page import="ca.openosp.openo.PMmodule.model.ProgramProvider" %>
 
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 
@@ -159,7 +161,7 @@
     </caisi:isModuleLoad>
 
     <%
-    oscar.OscarProperties props = oscar.OscarProperties.getInstance();
+    OscarProperties props = OscarProperties.getInstance();
     String requireIssue = props.getProperty("caisi.require_issue","true");
     if(requireIssue != null && requireIssue.equals("false")) {
     //require issue is false%>

@@ -41,10 +41,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.data.MeasurementMapConfig;
 
@@ -59,7 +60,7 @@ public class EctRemoveMeasurementMap2Action extends ActionSupport {
     HttpServletResponse response = ServletActionContext.getResponse();
 
 
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     /**
@@ -103,7 +104,7 @@ public class EctRemoveMeasurementMap2Action extends ActionSupport {
             return outcome;
 
         } else {
-            throw new SecurityException("Access Denied!"); //missing required security object (_admin)
+            throw new SecurityException("Access Denied!"); //missing required sec object (_admin)
         }
 
     }

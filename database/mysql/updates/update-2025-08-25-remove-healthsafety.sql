@@ -13,9 +13,9 @@
 
 -- Note: The following related functionality has been removed from the codebase:
 -- - org.oscarehr.PMmodule.model.HealthSafety (Hibernate model)
--- - org.oscarehr.PMmodule.dao.HealthSafetyDao* (Data access objects)
+-- - org.oscarehr.PMmodule.daos.HealthSafetyDao* (Data access objects)
 -- - org.oscarehr.PMmodule.service.HealthSafetyManager* (Service classes)  
--- - org.oscarehr.PMmodule.web.HealthSafety2Action (Struts2 action)
+-- - org.oscarehr.PMmodule.www.HealthSafety2Action (Struts2 action)
 -- - PMmodule/HealthSafety struts configuration
 -- - applicationContextCaisi.xml bean definitions for healthSafetyDao and healthSafetyManager
 

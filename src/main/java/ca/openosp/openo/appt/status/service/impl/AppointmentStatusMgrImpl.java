@@ -27,9 +27,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.beanutils.BeanComparator;
-import org.oscarehr.common.dao.AppointmentStatusDao;
-import org.oscarehr.common.model.AppointmentStatus;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.AppointmentStatusDao;
+import ca.openosp.openo.commn.model.AppointmentStatus;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.appt.status.service.AppointmentStatusMgr;
 

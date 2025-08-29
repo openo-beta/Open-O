@@ -36,8 +36,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import ca.openosp.OscarProperties;
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import ca.openosp.openo.caisi_integrator.ws.CachedDemographicNote;
 import ca.openosp.openo.caisi_integrator.ws.CachedDemographicNoteCompositePk;
 import ca.openosp.openo.casemgmt.common.EChartNoteEntry;
@@ -52,12 +54,12 @@ import ca.openosp.openo.casemgmt.web.NoteDisplay;
 import ca.openosp.openo.casemgmt.web.NoteDisplayIntegrator;
 import ca.openosp.openo.casemgmt.web.NoteDisplayLocal;
 import ca.openosp.openo.casemgmt.web.NoteDisplayNonNote;
-import org.oscarehr.common.dao.BillingONCHeader1Dao;
-import org.oscarehr.common.dao.CaseManagementIssueNotesDao;
-import org.oscarehr.common.dao.GroupNoteDao;
-import org.oscarehr.common.model.BillingONCHeader1;
-import org.oscarehr.common.model.GroupNoteLink;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.dao.BillingONCHeader1Dao;
+import ca.openosp.openo.commn.dao.CaseManagementIssueNotesDao;
+import ca.openosp.openo.commn.dao.GroupNoteDao;
+import ca.openosp.openo.commn.model.BillingONCHeader1;
+import ca.openosp.openo.commn.model.GroupNoteLink;
+import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -73,7 +75,7 @@ import ca.openosp.openo.util.ConversionUtils;
 @Component
 public class DefaultNoteService implements NoteService {
 
-    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static Logger logger = MiscUtils.getLogger();
 
     @Autowired
     @Qualifier("caseManagementNoteDAO")
@@ -206,7 +208,7 @@ public class DefaultNoteService implements NoteService {
         intTime = System.currentTimeMillis();
 
         List<Map<String, Object>> bills = null;
-        if (oscar.OscarProperties.getInstance().getProperty("billregion", "").equalsIgnoreCase("ON")) {
+        if (OscarProperties.getInstance().getProperty("billregion", "").equalsIgnoreCase("ON")) {
             bills = billingONCHeader1Dao.getInvoicesMeta(Integer.parseInt(demoNo));
             for (Map<String, Object> h1 : bills) {
                 EChartNoteEntry e = new EChartNoteEntry();
@@ -257,7 +259,7 @@ public class DefaultNoteService implements NoteService {
 
         // TODO: role based filter for eforms?
 
-        // apply provider filter
+        // apply providers filter
         entries = applyProviderFilter(entries, criteria.getProviders());
         logger.debug("FILTER NOTES PROVIDER " + (System.currentTimeMillis() - intTime) + "ms entries size "
                 + entries.size());

@@ -40,11 +40,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.RaDetail;
-import org.oscarehr.common.model.RaHeader;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.RaDetail;
+import ca.openosp.openo.commn.model.RaHeader;
+import ca.openosp.openo.commn.dao.RaDetailDao;
+import ca.openosp.openo.commn.dao.RaHeaderDao;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 
@@ -55,7 +57,7 @@ public class RaDetailDaoTest extends DaoTestFixtures {
 
     @Before
     public void before() throws Exception {
-        SchemaUtils.restoreTable("radetail", "raheader", "provider");
+        SchemaUtils.restoreTable("radetail", "raheader", "providers");
     }
 
     @Test

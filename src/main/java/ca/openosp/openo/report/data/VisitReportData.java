@@ -28,11 +28,11 @@ package ca.openosp.openo.report.data;
 import java.util.Arrays;
 import java.util.List;
 
-import org.oscarehr.common.dao.BillingDao;
-import org.oscarehr.common.dao.BillingONCHeader1Dao;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.BillingDao;
+import ca.openosp.openo.commn.dao.BillingONCHeader1Dao;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.util.ConversionUtils;
 
 public class VisitReportData {

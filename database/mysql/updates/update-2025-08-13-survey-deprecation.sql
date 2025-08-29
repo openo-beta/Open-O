@@ -94,8 +94,8 @@ SELECT 'HsfoRecommitSchedule', COUNT(*) FROM HsfoRecommitSchedule;
 -- - /src/main/java/org/oscarehr/study/
 -- - /src/main/java/org/oscarehr/survey/
 -- - /src/main/java/oscar/form/study/
--- - /src/main/java/org/oscarehr/common/dao/ (Survey/Study/HSFO-related DAOs)
--- - /src/main/java/org/oscarehr/common/model/ (Survey/Study/HSFO-related models)
+-- - /src/main/java/org/oscarehr/commons/daos/ (Survey/Study/HSFO-related DAOs)
+-- - /src/main/java/org/oscarehr/commons/model/ (Survey/Study/HSFO-related models)
 --
 -- ============================================================================
 -- NOTES

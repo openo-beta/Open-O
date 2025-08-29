@@ -36,17 +36,17 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.EFormDao;
-import org.oscarehr.common.dao.EFormDao.EFormSortOrder;
-import org.oscarehr.common.dao.EFormDataDao;
-import org.oscarehr.common.dao.EFormGroupDao;
-import org.oscarehr.common.dao.EncounterFormDao;
-import org.oscarehr.common.model.EForm;
-import org.oscarehr.common.model.EFormData;
-import org.oscarehr.common.model.EncounterForm;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.PDFGenerationException;
+import ca.openosp.openo.commn.dao.EFormDao;
+import ca.openosp.openo.commn.dao.EFormDao.EFormSortOrder;
+import ca.openosp.openo.commn.dao.EFormDataDao;
+import ca.openosp.openo.commn.dao.EFormGroupDao;
+import ca.openosp.openo.commn.dao.EncounterFormDao;
+import ca.openosp.openo.commn.model.EForm;
+import ca.openosp.openo.commn.model.EFormData;
+import ca.openosp.openo.commn.model.EncounterForm;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PDFGenerationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -93,7 +93,7 @@ public class FormsManagerImpl implements FormsManager {
      * @param status    Status to be used when looking up forms.
      * @param sortOrder Order how records should be sorted. Providing no sort order
      *                  delegates to the default sorting order of the persistence
-     *                  provider
+     *                  providers
      * @return Returns the list of all forms with the specified status.
      */
     @Override
@@ -161,7 +161,7 @@ public class FormsManagerImpl implements FormsManager {
     public List<PatientForm> getEncounterFormsbyDemographicNumber(LoggedInInfo loggedInInfo, Integer demographicId,
                                                                   boolean getAllVersions, boolean getOnlyPDFReadyForms) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, null)) {
-            throw new RuntimeException("missing required security object (_form)");
+            throw new RuntimeException("missing required sec object (_form)");
         }
 
         return processEncounterForms(loggedInInfo, demographicId, getAllVersions, getOnlyPDFReadyForms);
@@ -208,7 +208,7 @@ public class FormsManagerImpl implements FormsManager {
     public Integer saveFormDataAsEDoc(LoggedInInfo loggedInInfo, FormTransportContainer formTransportContainer) {
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_edoc", SecurityInfoManager.WRITE, null)) {
-            throw new RuntimeException("missing required security object (_eform)");
+            throw new RuntimeException("missing required sec object (_eform)");
         }
 
         EDoc edoc = ConvertToEdoc.from(formTransportContainer);
@@ -257,7 +257,7 @@ public class FormsManagerImpl implements FormsManager {
     @Override
     public Path renderForm(LoggedInInfo loggedInInfo, FormTransportContainer formTransportContainer) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, null)) {
-            throw new RuntimeException("missing required security object (_form)");
+            throw new RuntimeException("missing required sec object (_form)");
         }
 
         LogAction.addLogSynchronous(loggedInInfo, "FormsManager.saveFormAsTempPdf", "");
@@ -279,7 +279,7 @@ public class FormsManagerImpl implements FormsManager {
             loggedInInfo = LoggedInInfo.getLoggedInInfoFromRequest(request);
         }
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, null)) {
-            throw new RuntimeException("missing required security object (_form)");
+            throw new RuntimeException("missing required sec object (_form)");
         }
 
         FormTransportContainer formTransportContainer = getFormTransportContainer(request, response, form);
@@ -323,7 +323,7 @@ public class FormsManagerImpl implements FormsManager {
      */
     public PatientForm getFormById(LoggedInInfo loggedInInfo, Integer formId, Integer demographicNo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, null)) {
-            throw new RuntimeException("missing required security object (_form)");
+            throw new RuntimeException("missing required sec object (_form)");
         }
 
         PatientForm patientForm = null;

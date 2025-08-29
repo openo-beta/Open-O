@@ -33,8 +33,8 @@ import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.oscarehr.common.model.Prevention;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.model.Prevention;
+import ca.openosp.openo.utility.MiscUtils;
 
 public class ImmunizationTest {
     private static Logger logger = MiscUtils.getLogger();

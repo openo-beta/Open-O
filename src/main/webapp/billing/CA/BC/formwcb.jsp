@@ -44,7 +44,7 @@
     }
 %>
 <%@ page
-        import="oscar.form.*, java.util.*,oscar.oscarBilling.ca.bc.pageUtil.*,oscar.oscarDB.*,oscar.oscarBilling.ca.bc.MSP.*, oscar.oscarBilling.ca.bc.Teleplan.*" %>
+        import="ca.openosp.openo.form.*, java.util.*,ca.openosp.openo.billing.ca.bc.pageUtil.*,ca.openosp.openo.db.*,ca.openosp.openo.billing.ca.bc.MSP.*, ca.openosp.openo.billing.ca.bc.Teleplan.*" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.WCBForm" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingFormData" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.Teleplan.WCBCodes" %>

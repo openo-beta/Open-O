@@ -36,18 +36,18 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
+import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.caisi_integrator.ws.CachedFacility;
 import ca.openosp.openo.caisi_integrator.ws.ProviderCommunicationTransfer;
-import org.oscarehr.common.dao.MessageListDao;
-import org.oscarehr.common.model.Facility;
-import org.oscarehr.common.model.MessageList;
-import org.oscarehr.common.model.MessageTbl;
-import org.oscarehr.common.model.MsgDemoMap;
-import org.oscarehr.common.model.MsgIntegratorDemoMap;
-import org.oscarehr.common.model.OscarMsgType;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.dao.MessageListDao;
+import ca.openosp.openo.commn.model.Facility;
+import ca.openosp.openo.commn.model.MessageList;
+import ca.openosp.openo.commn.model.MessageTbl;
+import ca.openosp.openo.commn.model.MsgDemoMap;
+import ca.openosp.openo.commn.model.MsgIntegratorDemoMap;
+import ca.openosp.openo.commn.model.OscarMsgType;
+import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -86,7 +86,7 @@ public class MessengerIntegratorManager {
     public List<ProviderCommunicationTransfer> getIntegratedMessages(LoggedInInfo loggedInInfo, List<CachedFacility> facilities, String status)
             throws UnsupportedEncodingException {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         List<ProviderCommunicationTransfer> integratedMessageList = new ArrayList<ProviderCommunicationTransfer>();
@@ -111,7 +111,7 @@ public class MessengerIntegratorManager {
     public List<ProviderCommunicationTransfer> getIntegratedMessages(LoggedInInfo loggedInInfo, CachedFacility facility, String status)
             throws UnsupportedEncodingException {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         /*
@@ -123,7 +123,7 @@ public class MessengerIntegratorManager {
         }
 
         /*
-         *  Sort the selected integrated messages into groups of provider id's by message id.
+         *  Sort the selected integrated messages into groups of providers id's by message id.
          *  The MessageList object represents a one to many relationship where 1 message
          *  has many recipients in many different facilities.
          */
@@ -160,7 +160,7 @@ public class MessengerIntegratorManager {
 
                 for (MessageList message : messageList) {
                     /*
-                     * Add each provider as recipients of this message. Format: provder_number @ facility_id
+                     * Add each providers as recipients of this message. Format: provder_number @ facility_id
                      */
                     if (message.getDestinationFacilityId() > 0) {
                         String address = message.getProviderNo() + '@' + message.getDestinationFacilityId();
@@ -209,7 +209,7 @@ public class MessengerIntegratorManager {
     public ProviderCommunicationTransfer getIntegratedMessage(LoggedInInfo loggedInInfo, MessageList messageList)
             throws UnsupportedEncodingException {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
         long messageId = messageList.getMessage();
         int destinationFacilityId = messageList.getDestinationFacilityId();
@@ -253,7 +253,7 @@ public class MessengerIntegratorManager {
 
         /*
          * it's possible to have more than one sender/receiver in the source.
-         * The first provider id is the message creator - located in the messageTbl.sentByNo column.
+         * The first providers id is the message creator - located in the messageTbl.sentByNo column.
          *
          * for the moment it's assumed that "this facility" has an Id of zero (0).
          * This can be changed once the assignment of facility id's is stabilized in future changes to the
@@ -418,7 +418,7 @@ public class MessengerIntegratorManager {
     public List<Integer> receiveIntegratedMessages(LoggedInInfo loggedInInfo, List<ProviderCommunicationTransfer> providerCommunicationList)
             throws UnsupportedEncodingException {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.WRITE, null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         List<Integer> receivedMessages = new ArrayList<Integer>();
@@ -444,7 +444,7 @@ public class MessengerIntegratorManager {
             messageTbl.setSentBy(from);
 
             /*
-             * The source provider id column may also contain any other providers that were copied in
+             * The source providers id column may also contain any other providers that were copied in
              * at the source.
              * The originator of the message will always be the first entry.
              * These providers will always be from the same source facility.
@@ -499,7 +499,7 @@ public class MessengerIntegratorManager {
                  *  Adding this is a requirement for the use of a XML address book. However it's unknown if the address book
                  *  feature is still in use. Use of the currentlocation column may need to be reconsidered in the future.
                  *
-                 *  For now, it's important to use the currentlocation column to distinguish between a provider id that
+                 *  For now, it's important to use the currentlocation column to distinguish between a providers id that
                  *  exists in the local clinic (145) or a remote clinic (>=0)
                  *
                  */

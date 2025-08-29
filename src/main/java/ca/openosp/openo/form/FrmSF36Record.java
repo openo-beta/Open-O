@@ -32,8 +32,9 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.Misc;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -54,24 +55,24 @@ public class FrmSF36Record extends FrmRecord {
                     + demographicNo;
             rs = DBHandler.GetSQL(sql);
             if (rs.next()) {
-                java.util.Date dob = UtilDateUtilities.calcDate(oscar.Misc.getString(rs, "year_of_birth"), oscar.Misc.getString(rs, "month_of_birth"), oscar.Misc.getString(rs, "date_of_birth"));
+                java.util.Date dob = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), Misc.getString(rs, "month_of_birth"), Misc.getString(rs, "date_of_birth"));
                 props.setProperty(
                         "demographic_no",
-                        oscar.Misc.getString(rs, "demographic_no"));
+                        Misc.getString(rs, "demographic_no"));
                 props.setProperty(
                         "formCreated",
                         UtilDateUtilities.DateToString(
                                 new Date(),
                                 _dateFormat));
                 props.setProperty("dob", UtilDateUtilities.DateToString(dob, "yyyy/MM/dd"));
-                props.setProperty("sex", oscar.Misc.getString(rs, "sex"));
-                props.setProperty("phone", oscar.Misc.getString(rs, "phone"));
+                props.setProperty("sex", Misc.getString(rs, "sex"));
+                props.setProperty("phone", Misc.getString(rs, "phone"));
             }
             rs.close();
             sql = "SELECT studyID FROM rehabStudy2004 WHERE demographic_no='" + demographicNo + "'";
             rs = DBHandler.GetSQL(sql);
             if (rs.next()) {
-                props.setProperty("studyID", oscar.Misc.getString(rs, "studyID"));
+                props.setProperty("studyID", Misc.getString(rs, "studyID"));
             } else {
                 props.setProperty("studyID", "N/A");
             }
@@ -106,7 +107,7 @@ public class FrmSF36Record extends FrmRecord {
                         if (md.getColumnTypeName(i).equalsIgnoreCase("date")) {
                             value = UtilDateUtilities.DateToString(rs.getDate(i), "yyyy/MM/dd");
                         } else {
-                            value = oscar.Misc.getString(rs, i);
+                            value = Misc.getString(rs, i);
                         }
                     }
 

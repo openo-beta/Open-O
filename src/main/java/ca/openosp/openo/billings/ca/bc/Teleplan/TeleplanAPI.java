@@ -41,9 +41,9 @@ import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 /**
  * @author jay
@@ -250,7 +250,7 @@ public class TeleplanAPI {
      * This will return a file contain a list (1 logname/line) of logs
      * the user can download
      * The format of the logname is: 001E2805.LOG
-     * To convert this to the same style as the web download name you must
+     * To convert this to the same style as the www download name you must
      * extract the century from the first character (0..Z 0=20, Z=56)
      * extract the Month which is the 4th character (A (Jan)..L(Dec))
      * Then you would create the filename CCYY_MM_DD_Gdd.LOG

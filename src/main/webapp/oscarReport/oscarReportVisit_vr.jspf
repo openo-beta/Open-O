@@ -39,10 +39,10 @@ if(!authed) {
 }
 %>
 
-<%@page import="org.oscarehr.common.dao.ReportProviderDao" %>
-<%@page import="org.oscarehr.common.model.ReportProvider" %>
-<%@page import="org.oscarehr.common.model.Provider" %>
-<%@page import="oscar.MyDateFormat" %>
+<%@page import="ca.openosp.openo.commn.dao.ReportProviderDao" %>
+<%@page import="ca.openosp.openo.commn.model.ReportProvider" %>
+<%@page import="ca.openosp.openo.commn.model.Provider" %>
+<%@page import="ca.openosp.MyDateFormat" %>
 <%@page import="java.sql.ResultSet" %> 
 <%@page import="java.math.BigDecimal" %>
 <%@ page import="ca.openosp.openo.report.data.VisitReportData" %>

@@ -25,7 +25,7 @@
 package ca.openosp.openo.billing.CA.ON.dao;
 
 import ca.openosp.openo.billing.CA.ON.model.BillingONProc;
-import org.oscarehr.common.dao.AbstractDaoImpl;
+import ca.openosp.openo.commn.dao.AbstractDaoImpl;
 import org.springframework.stereotype.Repository;
 
 @Repository

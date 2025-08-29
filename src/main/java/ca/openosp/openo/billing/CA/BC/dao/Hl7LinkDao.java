@@ -31,8 +31,8 @@ import java.util.List;
 import javax.persistence.Query;
 
 import ca.openosp.openo.billing.CA.BC.model.Hl7Link;
-import org.oscarehr.common.NativeSql;
-import org.oscarehr.common.dao.AbstractDaoImpl;
+import ca.openosp.openo.commn.NativeSql;
+import ca.openosp.openo.commn.dao.AbstractDaoImpl;
 import org.springframework.stereotype.Repository;
 
 import ca.openosp.openo.util.ConversionUtils;
@@ -83,17 +83,17 @@ public class Hl7LinkDao extends AbstractDaoImpl<Hl7Link> {
     }
 
     public List<Object[]> findProvidersWithReports() {
-        String sql = "SELECT DISTINCT provider.ProviderNo, provider.LastName, provider.FirstName FROM Hl7Link hl7_link, Demographic demographic, Provider provider " +
+        String sql = "SELECT DISTINCT providers.ProviderNo, providers.LastName, providers.FirstName FROM Hl7Link hl7_link, Demographic demographic, Provider providers " +
                 "WHERE hl7_link.demographicNo = demographic.DemographicNo " +
-                "AND demographic.ProviderNo = provider.ProviderNo " +
+                "AND demographic.ProviderNo = providers.ProviderNo " +
                 "AND demographic.ProviderNo IS NOT NULL";
         Query query = entityManager.createQuery(sql);
         return query.getResultList();
     }
 
     public List<Object[]> findReportsByProvider(String providerNo) {
-        String sql = "FROM Hl7Link hl7_link, Demographic demographic, Hl7Pid hl7_pid, Hl7Obr hl7_obr, Hl7Message hl7_message, Provider provider " +
-                "WHERE demographic.ProviderNo = provider.ProviderNo " +
+        String sql = "FROM Hl7Link hl7_link, Demographic demographic, Hl7Pid hl7_pid, Hl7Obr hl7_obr, Hl7Message hl7_message, Provider providers " +
+                "WHERE demographic.ProviderNo = providers.ProviderNo " +
                 "AND hl7_link.id = hl7_obr.pidId " +
                 "AND hl7_link.id = hl7_pid.id " +
                 "AND demographic.ProviderNo = :providerNo " +

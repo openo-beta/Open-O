@@ -21,9 +21,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import ca.openosp.Misc;
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.DbConnectionFilter;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.utility.DbConnectionFilter;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import ca.openosp.openo.lab.ca.all.upload.MessageUploader;
@@ -34,7 +36,7 @@ import ca.openosp.openo.lab.ca.all.util.Utilities;
  */
 public class HRMXMLHandler implements MessageHandler {
 
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
 
     public HRMXMLHandler() {
         logger.info("NEW HRM XML UPLOAD HANDLER instance just instantiated. ");
@@ -80,8 +82,8 @@ public class HRMXMLHandler implements MessageHandler {
 
             // only recheck the result status if it is not already set to
             // abnormal
-            if (!oscar.Misc.getString(rs, "result_status").equals("A")) {
-                ca.openosp.openo.lab.ca.all.parsers.MessageHandler h = Factory.getHandler(oscar.Misc.getString(rs, "lab_no"));
+            if (!Misc.getString(rs, "result_status").equals("A")) {
+                ca.openosp.openo.lab.ca.all.parsers.MessageHandler h = Factory.getHandler(Misc.getString(rs, "lab_no"));
                 int i = 0;
                 int j = 0;
                 String resultStatus = "";
@@ -92,8 +94,8 @@ public class HRMXMLHandler implements MessageHandler {
                         if (h.isOBXAbnormal(i, j)) {
                             resultStatus = "A";
                             sql = "UPDATE LOW_PRIORITY hl7TextInfo SET result_status='A' WHERE lab_no='"
-                                    + oscar.Misc.getString(rs, "lab_no") + "'";
-                            oscar.Misc.getString(sql);
+                                    + Misc.getString(rs, "lab_no") + "'";
+                            Misc.getString(sql);
                         }
                         j++;
                     }

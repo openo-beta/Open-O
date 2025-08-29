@@ -30,9 +30,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
-import org.oscarehr.common.dao.ValidationsDao;
-import org.oscarehr.common.model.Validations;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ValidationsDao;
+import ca.openosp.openo.commn.model.Validations;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 

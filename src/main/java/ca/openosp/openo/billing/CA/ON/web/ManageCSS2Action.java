@@ -28,13 +28,13 @@ package ca.openosp.openo.billing.CA.ON.web;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.common.dao.BillingServiceDao;
-import org.oscarehr.common.dao.CSSStylesDAO;
-import org.oscarehr.common.model.BillingService;
-import org.oscarehr.common.model.CssStyle;
+import ca.openosp.openo.commn.dao.BillingServiceDao;
+import ca.openosp.openo.commn.dao.CSSStylesDAO;
+import ca.openosp.openo.commn.model.BillingService;
+import ca.openosp.openo.commn.model.CssStyle;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,7 +60,7 @@ public class ManageCSS2Action extends ActionSupport {
 
     public String save() {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin", "w", null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         CssStyle cssStyle = null;
@@ -101,7 +101,7 @@ public class ManageCSS2Action extends ActionSupport {
     public String delete() {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin", "w", null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         List<CssStyle> styles = cssStylesDao.findAll();

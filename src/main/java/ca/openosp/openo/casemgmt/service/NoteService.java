@@ -24,7 +24,7 @@
  */
 package ca.openosp.openo.casemgmt.service;
 
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 /**
  * Defines contract for retrieving notes for a demographic record.

@@ -24,7 +24,7 @@
     }
 %>
 
-<%@page import="java.util.*, org.oscarehr.hospitalReportManager.*, ca.openosp.openo.hospitalReportManager.model.HRMCategory" %>
+<%@page import="java.util.*, ca.openosp.openo.hospitalReportManager.*, ca.openosp.openo.hospitalReportManager.model.HRMCategory" %>
 <%@ page import="ca.openosp.openo.hospitalReportManager.HRMUtil" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>

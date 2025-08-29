@@ -37,7 +37,7 @@ package ca.openosp.openo.report.reportByTemplate.actions;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import ca.openosp.openo.report.reportByTemplate.ReportManager;
 

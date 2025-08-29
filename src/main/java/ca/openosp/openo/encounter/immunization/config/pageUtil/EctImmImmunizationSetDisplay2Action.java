@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 public class EctImmImmunizationSetDisplay2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();

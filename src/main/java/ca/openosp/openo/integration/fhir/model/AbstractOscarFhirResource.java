@@ -26,7 +26,7 @@ package ca.openosp.openo.integration.fhir.model;
 
 import java.util.UUID;
 
-import org.oscarehr.common.model.AbstractModel;
+import ca.openosp.openo.commn.model.AbstractModel;
 import ca.openosp.openo.integration.fhir.interfaces.ResourceAttributeFilterInterface;
 import ca.openosp.openo.integration.fhir.manager.OscarFhirConfigurationManager;
 import ca.openosp.openo.integration.fhir.resources.ResourceAttributeFilter;

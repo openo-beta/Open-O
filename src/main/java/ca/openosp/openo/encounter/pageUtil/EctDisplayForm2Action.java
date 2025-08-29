@@ -28,12 +28,12 @@ package ca.openosp.openo.encounter.pageUtil;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.EncounterFormDao;
-import org.oscarehr.common.model.EncounterForm;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.commn.dao.EncounterFormDao;
+import ca.openosp.openo.commn.model.EncounterForm;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.lab.LabRequestReportLink;
 import ca.openosp.openo.util.StringUtils;

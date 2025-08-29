@@ -30,8 +30,9 @@ package ca.openosp.openo.messenger.docxfer.send;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 
+import ca.openosp.Misc;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -117,7 +118,7 @@ public class MsgGenerate {
                     String fldData = "";
                     try {
 
-                        fldData = oscar.Misc.getString(rs, i);
+                        fldData = Misc.getString(rs, i);
 
                         if (fldData == null) fldData = "";
 
@@ -143,7 +144,7 @@ public class MsgGenerate {
             }
 
             {
-                String value = oscar.Misc.getString(rs, "fldItem");
+                String value = Misc.getString(rs, "fldItem");
                 if (value == null) value = "";
                 item.setAttribute("value", value);
             }
@@ -154,7 +155,7 @@ public class MsgGenerate {
 
                 fld.setAttribute("name", cfgFld.getAttribute("name"));
                 fld.setAttribute("sql", cfgFld.getAttribute("sql"));
-                String value = oscar.Misc.getString(rs, ("fld" + i));
+                String value = Misc.getString(rs, ("fld" + i));
                 if (value == null) value = "";
                 fld.setAttribute("value", value);
             }

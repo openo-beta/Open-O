@@ -43,7 +43,7 @@ import ca.openosp.openo.hospitalReportManager.xsd.OmdCds;
 import ca.openosp.openo.hospitalReportManager.xsd.PatientRecord;
 import ca.openosp.openo.hospitalReportManager.xsd.PhoneNumber;
 import ca.openosp.openo.hospitalReportManager.xsd.ReportsReceived;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.util.UtilDateUtilities;
 import ca.uhn.hl7v2.HL7Exception;

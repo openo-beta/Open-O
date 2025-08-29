@@ -27,25 +27,25 @@
  */
 package ca.openosp.openo.managers;
 
-import ca.openosp.openo.rx.util.RxUtil;
+import ca.openosp.openo.prescript.util.RxUtil;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.IntegratorFallBackManager;
 import ca.openosp.openo.caisi_integrator.ws.CachedDemographicDrug;
-import org.oscarehr.common.dao.DrugDao;
-import org.oscarehr.common.dao.PrescriptionDao;
-import org.oscarehr.common.exception.AccessDeniedException;
-import org.oscarehr.common.model.ConsentType;
-import org.oscarehr.common.model.Drug;
-import org.oscarehr.common.model.Prescription;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.dao.DrugDao;
+import ca.openosp.openo.commn.dao.PrescriptionDao;
+import ca.openosp.openo.commn.exception.AccessDeniedException;
+import ca.openosp.openo.commn.model.ConsentType;
+import ca.openosp.openo.commn.model.Drug;
+import ca.openosp.openo.commn.model.Prescription;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ca.openosp.openo.log.LogAction;
-import ca.openosp.openo.provider.data.ProSignatureData;
-import ca.openosp.openo.rx.data.RxPatientData;
-import ca.openosp.openo.rx.data.RxProviderData;
+import ca.openosp.openo.providers.data.ProSignatureData;
+import ca.openosp.openo.prescript.data.RxPatientData;
+import ca.openosp.openo.prescript.data.RxProviderData;
 import ca.openosp.openo.util.DateUtils;
 
 import java.util.Date;
@@ -269,11 +269,11 @@ public class PrescriptionManagerImpl implements PrescriptionManager {
      */
     private String getPrescriptionTextView(LoggedInInfo info, Integer demo, List<Drug> drugs) {
 
-        // This code uses legacy code from oscar.oscarRx package.
+        // This code uses legacy code from oscar.rx package.
         // Should refactor to change this. Trying best to limit the
         // scope to this method.
         //
-        // TODO: Refactor to not use code from oscar.oscarRx
+        // TODO: Refactor to not use code from oscar.rx
 
         RxPatientData.Patient patient = RxPatientData.getPatient(info, demo);
         RxProviderData.Provider provider = (new RxProviderData()).getProvider(info.getLoggedInProviderNo());
@@ -403,7 +403,7 @@ public class PrescriptionManagerImpl implements PrescriptionManager {
     @Override
     public boolean print(LoggedInInfo loggedInInfo, int scriptNo) {
 
-        org.oscarehr.common.model.Prescription prescription = prescriptionDao.find(scriptNo);
+        Prescription prescription = prescriptionDao.find(scriptNo);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
         if (prescription == null)

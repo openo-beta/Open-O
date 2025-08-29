@@ -23,12 +23,12 @@
 
 package ca.openosp.openo.managers;
 
-import org.oscarehr.common.exception.UserSessionNotFoundException;
+import ca.openosp.openo.commn.exception.UserSessionNotFoundException;
 
 import javax.servlet.http.HttpSession;
 
 /**
- * Manages user sessions.  Provides methods to register, unregister, and retrieve user sessions based on a user security code.
+ * Manages user sessions.  Provides methods to register, unregister, and retrieve user sessions based on a user sec code.
  * This interface is implemented by a service class that handles the actual session management logic.
  *
  */
@@ -36,14 +36,14 @@ public interface UserSessionManager {
 
     /**
      * Registers a user session.
-     * @param userSecurityCode The user's security code.
+     * @param userSecurityCode The user's sec code.
      * @param session The HTTP session object.
      */
     void registerUserSession(Integer userSecurityCode, HttpSession session);
 
     /**
      * Unregisters a user session.
-     * @param userSecurityCode The user's security code.
+     * @param userSecurityCode The user's sec code.
      * @return The unregistered HTTP session object.
      * @throws UserSessionNotFoundException If the user session is not found.
      */
@@ -51,7 +51,7 @@ public interface UserSessionManager {
 
     /**
      * Retrieves a registered user session.
-     * @param userSecurityCode The user's security code.
+     * @param userSecurityCode The user's sec code.
      * @return The registered HTTP session object, or null if not found.
      */
     HttpSession getRegisteredSession(Integer userSecurityCode);

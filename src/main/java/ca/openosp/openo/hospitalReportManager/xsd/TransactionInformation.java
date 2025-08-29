@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 import ca.openosp.openo.hospitalReportManager.xsd.PersonNameSimple;
 
 @XmlAccessorType(value=XmlAccessType.FIELD)
-@XmlType(name="", propOrder={"messageUniqueID", "deliverToUserID", "provider"})
+@XmlType(name="", propOrder={"messageUniqueID", "deliverToUserID", "providers"})
 @XmlRootElement(name="TransactionInformation", namespace="cds")
 public class TransactionInformation {
     @XmlElement(name="MessageUniqueID", namespace="cds", required=true)

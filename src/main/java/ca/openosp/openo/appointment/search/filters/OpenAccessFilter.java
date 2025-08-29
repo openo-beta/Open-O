@@ -36,8 +36,8 @@ import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.appointment.search.SearchConfig;
 import ca.openosp.openo.appointment.search.TimeSlot;
 import ca.openosp.openo.managers.DayWorkSchedule;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.ws.transfer_objects.CalendarScheduleCodePairTransfer;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.webserv.transfer_objects.CalendarScheduleCodePairTransfer;
 
 
 public class OpenAccessFilter implements AvailableTimeSlotFilter {

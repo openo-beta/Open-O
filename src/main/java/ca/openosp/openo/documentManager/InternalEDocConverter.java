@@ -25,14 +25,14 @@ public class InternalEDocConverter implements EDocConverterInterface {
   public void convert(String document, OutputStream os) throws IOException {
     Map<String,String> settings = Map.of(
       "load.blockLocalFileAccess","false",
-      "web.enableIntelligentShrinking","true",
-      "web.minimumFontSize", "10",
-      "web.printMediaType", "true",
-      "web.defaultEncoding", "utf-8",
+      "www.enableIntelligentShrinking","true",
+      "www.minimumFontSize", "10",
+      "www.printMediaType", "true",
+      "www.defaultEncoding", "utf-8",
       "T", "10mm",
       "L", "8mm",
       "R", "8mm",
-      "web.enableJavascript","false"
+      "www.enableJavascript","false"
     );
     try(InputStream in = HtmlToPdf.create()
         .object(HtmlToPdfObject.forHtml(document, settings))

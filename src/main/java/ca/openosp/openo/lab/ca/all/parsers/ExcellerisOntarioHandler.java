@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
 
 import ca.uhn.hl7v2.HL7Exception;
@@ -66,7 +67,7 @@ import ca.openosp.openo.util.UtilDateUtilities;
 
 public class ExcellerisOntarioHandler implements MessageHandler {
 
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
     ORU_R01 msg = null;
 
     private String hl7Body;

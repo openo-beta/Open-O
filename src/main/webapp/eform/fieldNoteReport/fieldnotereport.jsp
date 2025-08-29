@@ -24,7 +24,7 @@
 
 --%>
 
-<%@ page import="org.oscarehr.common.service.FieldNoteManager" %>
+<%@ page import="ca.openosp.openo.commn.service.FieldNoteManager" %>
 <%@ page import="java.util.*, java.text.*" %>
 <%@ page import="ca.openosp.openo.util.StringUtils" %>
 

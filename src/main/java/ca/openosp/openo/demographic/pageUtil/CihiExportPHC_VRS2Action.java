@@ -26,6 +26,8 @@
 
 package ca.openosp.openo.demographic.pageUtil;
 
+import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.commn.model.*;
 import cdsDtCihiPhcvrs.*;
 import cdscihiphcvrs.AllergiesAndAdverseReactionsDocument.AllergiesAndAdverseReactions;
 import cdscihiphcvrs.AppointmentsDocument.Appointments;
@@ -54,12 +56,10 @@ import ca.openosp.openo.casemgmt.model.CaseManagementIssue;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteExt;
 import ca.openosp.openo.casemgmt.model.Issue;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.model.*;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.encounter.oscarMeasurements.data.ImportExportMeasurements;
 import ca.openosp.openo.encounter.oscarMeasurements.data.Measurements;
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
@@ -67,7 +67,7 @@ import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
 import ca.openosp.openo.report.data.DemographicSets;
-import ca.openosp.openo.rx.data.RxPrescriptionData;
+import ca.openosp.openo.prescript.data.RxPrescriptionData;
 import ca.openosp.openo.util.StringUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 
@@ -405,7 +405,7 @@ public class CihiExportPHC_VRS2Action extends ActionSupport {
             }
 
         } catch (NoSuchAlgorithmException e) {
-            log.error("Cannot use md5 for provider", e);
+            log.error("Cannot use md5 for providers", e);
         }
 
         return strHash.toString();

@@ -27,14 +27,14 @@ package ca.openosp.openo.managers;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.common.dao.IntegratorProgressDao;
-import org.oscarehr.common.dao.IntegratorProgressItemDao;
-import org.oscarehr.common.dao.UserPropertyDAO;
-import org.oscarehr.common.model.IntegratorProgress;
-import org.oscarehr.common.model.IntegratorProgressItem;
-import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.IntegratorProgressDao;
+import ca.openosp.openo.commn.dao.IntegratorProgressItemDao;
+import ca.openosp.openo.commn.dao.UserPropertyDAO;
+import ca.openosp.openo.commn.model.IntegratorProgress;
+import ca.openosp.openo.commn.model.IntegratorProgressItem;
+import ca.openosp.openo.commn.model.UserProperty;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -31,7 +31,7 @@ import ca.openosp.openo.billing.CA.dao.BillingInrDao;
 import ca.openosp.openo.billing.CA.model.BillingInr;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class BillingInrDaoTest extends DaoTestFixtures {
 
@@ -42,7 +42,7 @@ public class BillingInrDaoTest extends DaoTestFixtures {
 
     @Before
     public void before() throws Exception {
-        SchemaUtils.restoreTable("billinginr", "demographic", "lst_gender", "demographic_merged", "admission", "health_safety", "provider", "program");
+        SchemaUtils.restoreTable("billinginr", "demographic", "lst_gender", "demographic_merged", "admission", "health_safety", "providers", "program");
     }
 
     @Test

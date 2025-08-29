@@ -24,9 +24,9 @@
 
 --%>
 
-<%@page import="org.oscarehr.utility.WebUtils" %>
-<%@page import="org.oscarehr.utility.LocaleUtils" %>
-<%@page import="org.oscarehr.utility.WebUtils" %>
+<%@page import="ca.openosp.openo.utility.WebUtils" %>
+<%@page import="ca.openosp.openo.utility.LocaleUtils" %>
+<%@page import="ca.openosp.openo.utility.WebUtils" %>
 <%
     if (session.getValue("user") == null) response.sendRedirect("../../logout.jsp");
 %>
@@ -34,10 +34,10 @@
 
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
-<%@ page import="oscar.oscarEncounter.pageUtil.*" %>
-<%@ page import="oscar.oscarEncounter.oscarMeasurements.pageUtil.*" %>
-<%@ page import="oscar.oscarEncounter.oscarMeasurements.bean.*" %>
-<%@ page import="oscar.oscarEncounter.oscarMeasurements.data.*" %>
+<%@ page import="ca.openosp.openo.encounter.pageUtil.*" %>
+<%@ page import="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.*" %>
+<%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.*" %>
+<%@ page import="ca.openosp.openo.encounter.oscarMeasurements.data.*" %>
 <%@ page import="java.util.Vector" %>
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.data.MeasurementMapConfig" %>

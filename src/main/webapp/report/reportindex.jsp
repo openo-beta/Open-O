@@ -47,12 +47,12 @@
     String curUser_no = (String) session.getAttribute("user");
     String mygroupno = providerPreference.getMyGroupNo();
     mygroupno = StringUtils.trimToEmpty(mygroupno);
-    String billingRegion = (oscar.OscarProperties.getInstance()).getProperty("billregion");
+    String billingRegion = (ca.openosp.OscarProperties.getInstance()).getProperty("billregion");
 %>
 <%@ page
-        import="java.util.*, oscar.*, java.sql.*, java.text.*, java.net.*"
+        import="java.util.*, ca.openosp.*, java.sql.*, java.text.*, java.net.*"
         errorPage="../appointment/errorpage.jsp" %>
-<jsp:useBean id="reportMainBean" class="oscar.AppointmentMainBean"
+<jsp:useBean id="reportMainBean" class="ca.openosp.AppointmentMainBean"
              scope="session"/>
 <% if (!reportMainBean.getBDoConfigure()) { %>
 <%@ include file="reportMainBeanConn.jspf" %>
@@ -778,7 +778,7 @@
                 <td></td>
             </tr>
 
-            <% //if((oscar.OscarProperties.getInstance()).getProperty("demographicExt") != null && (oscar.OscarProperties.getInstance()).getProperty("demographicExt").startsWith("Approximate EDD")) {
+            <% //if((ca.openosp.OscarProperties.getInstance()).getProperty("demographicExt") != null && (ca.openosp.OscarProperties.getInstance()).getProperty("demographicExt").startsWith("Approximate EDD")) {
             %>
             <tr>
                 <td width="2"><%=j%>

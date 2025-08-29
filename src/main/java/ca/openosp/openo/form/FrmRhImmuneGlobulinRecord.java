@@ -33,8 +33,9 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.Properties;
 
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.Misc;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
@@ -56,25 +57,25 @@ public class FrmRhImmuneGlobulinRecord extends FrmRecord {
                     + demographicNo;
             rs = DBHandler.GetSQL(sql);
             if (rs.next()) {
-                java.util.Date dob = UtilDateUtilities.calcDate(oscar.Misc.getString(rs, "year_of_birth"), oscar.Misc.getString(rs, "month_of_birth"), oscar.Misc.getString(rs, "date_of_birth"));
-                props.setProperty("demographic_no", oscar.Misc.getString(rs, "demographic_no"));
+                java.util.Date dob = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), Misc.getString(rs, "month_of_birth"), Misc.getString(rs, "date_of_birth"));
+                props.setProperty("demographic_no", Misc.getString(rs, "demographic_no"));
                 props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(), _dateFormat));
                 props.setProperty("dob", UtilDateUtilities.DateToString(dob, "yyyy-MM-dd"));
-                props.setProperty("sex", oscar.Misc.getString(rs, "sex"));
-                props.setProperty("phone", oscar.Misc.getString(rs, "phone"));
+                props.setProperty("sex", Misc.getString(rs, "sex"));
+                props.setProperty("phone", Misc.getString(rs, "phone"));
 
-                String lastname = oscar.Misc.getString(rs, "last_name");
+                String lastname = Misc.getString(rs, "last_name");
                 MiscUtils.getLogger().debug("last name " + lastname);
                 props.setProperty("motherSurname", lastname);
-                props.setProperty("motherFirstname", oscar.Misc.getString(rs, "first_name"));
-                props.setProperty("motherHIN", oscar.Misc.getString(rs, "hin"));
-                props.setProperty("motherVC", oscar.Misc.getString(rs, "ver"));
-                props.setProperty("motherCity", oscar.Misc.getString(rs, "city"));
-                props.setProperty("motherProvince", oscar.Misc.getString(rs, "province"));
-                props.setProperty("motherPostalCode", oscar.Misc.getString(rs, "postal"));
+                props.setProperty("motherFirstname", Misc.getString(rs, "first_name"));
+                props.setProperty("motherHIN", Misc.getString(rs, "hin"));
+                props.setProperty("motherVC", Misc.getString(rs, "ver"));
+                props.setProperty("motherCity", Misc.getString(rs, "city"));
+                props.setProperty("motherProvince", Misc.getString(rs, "province"));
+                props.setProperty("motherPostalCode", Misc.getString(rs, "postal"));
 
 
-                props.setProperty("motherAddress", oscar.Misc.getString(rs, "address"));
+                props.setProperty("motherAddress", Misc.getString(rs, "address"));
 
                 Hashtable measurementHash = EctMeasurementsDataBeanHandler.getLast("" + demographicNo, "BLDT");
 
@@ -119,7 +120,7 @@ public class FrmRhImmuneGlobulinRecord extends FrmRecord {
                         if (md.getColumnTypeName(i).equalsIgnoreCase("date")) {
                             value = UtilDateUtilities.DateToString(rs.getDate(i), _dateFormat);
                         } else {
-                            value = oscar.Misc.getString(rs, i);
+                            value = Misc.getString(rs, i);
                         }
                     }
 

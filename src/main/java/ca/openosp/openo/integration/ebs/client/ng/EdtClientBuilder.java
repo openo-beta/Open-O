@@ -56,7 +56,7 @@ import ca.ontario.health.ebs.idp.IdpHeader;
  * 
  * <p/>
  * 
- * If any request data is specified to be encrypted, by the specific web
+ * If any request data is specified to be encrypted, by the specific www
  * service, it will use the public key of the EBS system. SOAP must be signed
  * with a Timestamp element for each message TTL for the SOAP message
  * will be 10 minutes. Each message must also include the Username token.
@@ -161,7 +161,7 @@ public class EdtClientBuilder {
         // Set up SSL trust-all if needed
         configureSsl((HTTPConduit) client.getConduit());
 
-        // Add security interceptors
+        // Add sec interceptors
         configureOutInterceptor(client);
         configureInInterceptor(client);
 
@@ -173,7 +173,7 @@ public class EdtClientBuilder {
         }
 
         // Configure HTTP timeouts
-        bp.getRequestContext().put("com.sun.xml.internal.ws.request.timeout", 240_000);
+        bp.getRequestContext().put("com.sun.xml.internal.webserv.request.timeout", 240_000);
         HTTPConduit conduit = (HTTPConduit) client.getConduit();
         HTTPClientPolicy policy = new HTTPClientPolicy();
         policy.setConnectionTimeout(100_000);

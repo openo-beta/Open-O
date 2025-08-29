@@ -36,10 +36,10 @@ import javax.servlet.http.HttpServletRequest;
 import com.itextpdf.text.pdf.PdfPTable;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.casemgmt.util.ExtPrint;
-import org.oscarehr.common.dao.MeasurementDao;
-import org.oscarehr.common.model.Measurement;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.MeasurementDao;
+import ca.openosp.openo.commn.model.Measurement;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.itextpdf.text.*;
 

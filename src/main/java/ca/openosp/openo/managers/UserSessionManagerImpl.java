@@ -23,8 +23,8 @@
 package ca.openosp.openo.managers;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.exception.UserSessionNotFoundException;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.exception.UserSessionNotFoundException;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -34,7 +34,7 @@ import java.util.Objects;
 
 /**
  * Implementation of the {@link UserSessionManager} interface.
- * This class manages user sessions using a HashMap to store the association between user security codes and HttpSessions.
+ * This class manages user sessions using a HashMap to store the association between user sec codes and HttpSessions.
  */
 @Service
 public class UserSessionManagerImpl implements UserSessionManager {
@@ -44,10 +44,10 @@ public class UserSessionManagerImpl implements UserSessionManager {
     private static final Map<Integer, HttpSession> userSessionMap = new HashMap<>();
 
     /**
-     * Registers a user session with the given user security code and HttpSession.
-     * If a session is already registered for the given user security code, it is invalidated before registering the
+     * Registers a user session with the given user sec code and HttpSession.
+     * If a session is already registered for the given user sec code, it is invalidated before registering the
      * new provided session.
-     * @param userSecurityCode The user security code.
+     * @param userSecurityCode The user sec code.
      * @param session The HttpSession.
      */
     @Override
@@ -72,10 +72,10 @@ public class UserSessionManagerImpl implements UserSessionManager {
     }
 
     /**
-     * Unregisters the user session associated with the given user security code.
-     * @param userSecurityCode The user security code.
+     * Unregisters the user session associated with the given user sec code.
+     * @param userSecurityCode The user sec code.
      * @return The HttpSession that was unregistered.
-     * @throws UserSessionNotFoundException If no session is found for the given user security code.
+     * @throws UserSessionNotFoundException If no session is found for the given user sec code.
      */
     @Override
     public HttpSession unregisterUserSession(Integer userSecurityCode) throws UserSessionNotFoundException {
@@ -90,10 +90,10 @@ public class UserSessionManagerImpl implements UserSessionManager {
     }
 
     /**
-     * Retrieves the registered HttpSession for the given user security code.
-     * @param userSecurityCode The user security code.
+     * Retrieves the registered HttpSession for the given user sec code.
+     * @param userSecurityCode The user sec code.
      * @return The HttpSession.
-     * @throws UserSessionNotFoundException If no session is found for the given user security code.
+     * @throws UserSessionNotFoundException If no session is found for the given user sec code.
      */
     @Override
     public HttpSession getRegisteredSession(Integer userSecurityCode) {
@@ -105,9 +105,9 @@ public class UserSessionManagerImpl implements UserSessionManager {
     }
 
     /**
-     * Checks if a session is registered for the given user security code.
+     * Checks if a session is registered for the given user sec code.
      *
-     * @param userSecurityCode The user security code.
+     * @param userSecurityCode The user sec code.
      * @return True if the session is registered, false otherwise.
      */
     private boolean isUserSessionRegistered(Integer userSecurityCode) {

@@ -27,6 +27,8 @@
 package ca.openosp.openo.demographic.pageUtil;
 
 import ca.openosp.openo.casemgmt.model.*;
+import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.commn.model.*;
 import ca.openosp.openo.hospitalReportManager.dao.*;
 import ca.openosp.openo.hospitalReportManager.model.*;
 import cds.AlertsAndSpecialNeedsDocument.AlertsAndSpecialNeeds;
@@ -71,25 +73,23 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlOptions;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.PMmodule.model.Program;
-import org.oscarehr.PMmodule.model.ProgramProvider;
-import org.oscarehr.PMmodule.service.AdmissionManager;
-import org.oscarehr.PMmodule.service.ProgramManager;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.model.Program;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.PMmodule.service.AdmissionManager;
+import ca.openosp.openo.PMmodule.service.ProgramManager;
 import ca.openosp.openo.casemgmt.dao.IssueDAO;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.model.*;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.hospitalReportManager.HRMReport;
 import ca.openosp.openo.hospitalReportManager.HRMReportParser;
 import ca.openosp.openo.managers.NioFileManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import org.oscarehr.ws.LabUploadWs;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.openo.webserv.LabUploadWs;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.demographic.data.DemographicAddResult;
 import ca.openosp.openo.demographic.data.DemographicData;
 import ca.openosp.openo.encounter.data.EctProgram;
@@ -106,9 +106,9 @@ import ca.openosp.openo.lab.ca.all.upload.handlers.MessageHandler;
 import ca.openosp.openo.lab.ca.all.upload.handlers.PATHL7Handler;
 import ca.openosp.openo.lab.ca.all.util.Utilities;
 import ca.openosp.openo.prevention.PreventionData;
-import ca.openosp.openo.provider.data.ProviderData;
-import ca.openosp.openo.rx.data.RxDrugData;
-import ca.openosp.openo.rx.data.RxDrugData.DrugMonograph;
+import ca.openosp.openo.providers.data.ProviderData;
+import ca.openosp.openo.prescript.data.RxDrugData;
+import ca.openosp.openo.prescript.data.RxDrugData.DrugMonograph;
 import ca.openosp.openo.util.ConversionUtils;
 import ca.openosp.openo.util.StringUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -193,7 +193,7 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
     public String execute() throws Exception {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", null)) {
-            throw new SecurityException("missing required security object (_demographic)");
+            throw new SecurityException("missing required sec object (_demographic)");
         }
 
         //TODO: More thought needs to be put into the user interface. Extra attention on multithreading is advised
@@ -2201,7 +2201,7 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
                     ProviderData pd = getProviderByOhip(personOHIP);
                     if (pd != null && Integer.valueOf(pd.getProviderNo()) > -1000)
                         drug.setProviderNo(pd.getProviderNo());
-                    else { //outside provider
+                    else { //outside providers
                         drug.setOutsideProviderName(StringUtils.noNull(personName.get("lastname")) + ", " + StringUtils.noNull(personName.get("firstname")));
                         drug.setOutsideProviderOhip(personOHIP);
                         drug.setProviderNo(writeProviderData(personName.get("firstname"), personName.get("lastname"), personOHIP));
@@ -2455,7 +2455,7 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
                     apptProvider = writeProviderData(providerName.get("firstname"), providerName.get("lastname"), personOHIP);
                     if (StringUtils.empty(apptProvider)) {
                         apptProvider = defaultProviderNo();
-                        err_note.add("Appointment has no provider; assigned to \"doctor oscardoc\" (" + (i + 1) + ")");
+                        err_note.add("Appointment has no providers; assigned to \"doctor oscardoc\" (" + (i + 1) + ")");
                     }
                 }
 
@@ -3930,11 +3930,11 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
     }
 
     String updateExternalProvider(String firstName, String lastName, String ohipNo, String cpsoNo, ProviderData pd) {
-        // For external provider only
+        // For external providers only
         if (pd == null) return null;
         if (pd.getProviderNo().charAt(0) != '-') return pd.getProviderNo();
 
-        org.oscarehr.common.model.ProviderData newpd = providerDataDao.findByProviderNo(pd.getProviderNo());
+        ca.openosp.openo.commn.model.ProviderData newpd = providerDataDao.findByProviderNo(pd.getProviderNo());
         if (StringUtils.empty(pd.getFirst_name()))
             newpd.setFirstName(StringUtils.noNull(firstName));
         if (StringUtils.empty(pd.getLast_name()))
@@ -3959,7 +3959,7 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
 
         if (pd != null) return updateExternalProvider(firstName, lastName, ohipNo, cpsoNo, pd);
 
-        //Write as a new provider
+        //Write as a new providers
         if (StringUtils.empty(firstName) && StringUtils.empty(lastName) && StringUtils.empty(ohipNo))
             return ""; //no information at all!
         pd = new ProviderData();
@@ -4054,7 +4054,7 @@ public class ImportDemographicDataAction42Action extends ActionSupport {
         entries.put(category + importNo, n);
     }
 
-    DemographicArchive archiveDemographic(org.oscarehr.common.model.Demographic d) {
+    DemographicArchive archiveDemographic(Demographic d) {
         DemographicArchive da = new DemographicArchive();
 
         da.setDemographicNo(Integer.valueOf(d.getDemographicNo()));

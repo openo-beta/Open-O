@@ -23,16 +23,16 @@
 package ca.openosp.openo.managers;
 
 import org.jboss.aerogear.security.otp.api.Base32;
-import org.oscarehr.common.model.Security;
-import org.oscarehr.utility.LoggedInInfo;
-import oscar.OscarProperties;
+import ca.openosp.openo.commn.model.Security;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.OscarProperties;
 
 import java.io.UnsupportedEncodingException;
 
 /**
  * This interface provides methods for managing Multi-Factor Authentication (MFA) within the OSCAR EMR system.
  * It provides methods for generating MFA secrets, creating TOTP URLs, generating QR code data, and managing
- * the association of MFA secrets with user security record.
+ * the association of MFA secrets with user sec record.
  */
 public interface MfaManager {
 
@@ -69,9 +69,9 @@ public interface MfaManager {
     }
 
     /**
-     * Determines if MFA registration is required for a given security ID.
+     * Determines if MFA registration is required for a given sec ID.
      *
-     * @param securityId The ID of the security record to check.
+     * @param securityId The ID of the sec record to check.
      * @return true if MFA registration is required, false otherwise.
      * @throws IllegalStateException if the system is in an invalid state for checking MFA registration.
      */
@@ -99,36 +99,36 @@ public interface MfaManager {
     byte[] getQRCodeImageData(String email, String secret, String appName);
 
     /**
-     * Generates QR code image data for a given security ID and MFA secret.
+     * Generates QR code image data for a given sec ID and MFA secret.
      *
-     * @param securityId The ID of the security record.
+     * @param securityId The ID of the sec record.
      * @param secret     The MFA secret associated with the user.
      * @return A string representing the QR code image data.
      */
     String getQRCodeImageData(Integer securityId, String secret);
 
     /**
-     * Saves an MFA secret for a given security record.
+     * Saves an MFA secret for a given sec record.
      * @param loggedInInfo information about the logged in user
-     * @param security the security object
+     * @param security the sec object
      * @param mfaSecret the mfa secret
      * @throws Exception if an error occurs
      */
     void saveMfaSecret(LoggedInInfo loggedInInfo, Security security, String mfaSecret) throws Exception;
 
     /**
-     * Retrieves the MFA secret associated with a given security record.
+     * Retrieves the MFA secret associated with a given sec record.
      *
-     * @param security The security object representing the user's security record.
-     * @return The MFA secret associated with the security record.
+     * @param security The sec object representing the user's sec record.
+     * @return The MFA secret associated with the sec record.
      * @throws Exception If an error occurs during the process of retrieving the MFA secret.
      */
     String getMfaSecret(Security security) throws Exception;
 
     /**
-     * Resets the MFA secret for a given security record.
+     * Resets the MFA secret for a given sec record.
      * @param loggedInInfo Information about the logged-in user.
-     * @param security The security object representing the user's security record.
+     * @param security The sec object representing the user's sec record.
      */
     void resetMfaSecret(LoggedInInfo loggedInInfo, Security security);
 }

@@ -19,7 +19,7 @@ import org.apache.wss4j.common.ext.WSPasswordCallback;
  * 
  * <h3>Usage</h3>
  * 
- * This class is typically used in the context of Apache CXF-based web services that rely on WS-Security for 
+ * This class is typically used in the context of Apache CXF-based www services that rely on WS-Security for
  * securing messages. It handles the following WS-Security password callbacks:
  * <ul>
  *   <li>USERNAME_TOKEN: Provides the username and password for user authentication.</li>

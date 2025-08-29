@@ -24,25 +24,25 @@ import net.sf.json.JsonConfig;
 import net.sf.json.processors.JsDateJsonBeanProcessor;
 
 import org.apache.tools.ant.util.DateUtils;
-import org.oscarehr.common.dao.AdmissionDao;
-import org.oscarehr.PMmodule.dao.ProgramAccessDAO;
-import org.oscarehr.PMmodule.dao.ProgramDao;
-import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
-import org.oscarehr.common.model.Admission;
-import org.oscarehr.PMmodule.model.DefaultRoleAccess;
-import org.oscarehr.PMmodule.model.Program;
-import org.oscarehr.PMmodule.model.ProgramAccess;
-import org.oscarehr.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.commn.dao.AdmissionDao;
+import ca.openosp.openo.PMmodule.dao.ProgramAccessDAO;
+import ca.openosp.openo.PMmodule.dao.ProgramDao;
+import ca.openosp.openo.PMmodule.dao.ProgramProviderDAO;
+import ca.openosp.openo.commn.model.Admission;
+import ca.openosp.openo.PMmodule.model.DefaultRoleAccess;
+import ca.openosp.openo.PMmodule.model.Program;
+import ca.openosp.openo.PMmodule.model.ProgramAccess;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
 import ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO;
 import ca.openosp.openo.casemgmt.dao.RoleProgramAccessDAO;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
-import org.oscarehr.common.dao.ProviderDefaultProgramDao;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.ProviderDefaultProgram;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ProviderDefaultProgramDao;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.ProviderDefaultProgram;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
-import ca.openosp.openo.dao.security.SecroleDao;
+import ca.openosp.openo.daos.security.SecroleDao;
 import ca.openosp.openo.model.security.Secrole;
 
 /**
@@ -116,14 +116,14 @@ public class NotePermissions2Action extends ActionSupport {
                     boolean hasRoleAccess = false;
                     for (Secrole programRole : programAccess.getRoles()) {
                         if (programRole.getId().longValue() == provider.getRoleId().longValue()) {
-                            // This provider has access based on their role
+                            // This providers has access based on their role
                             hasRoleAccess = true;
                         }
                     }
 
                     if (hasRoleAccess) // This role is included in the list of roles granted this permission
                         permissionList.add(new NotePermission(provider, NotePermission.AccessType.ROLE));
-                    else // The provider's role is not included in the list of roles granted this permission
+                    else // The providers's role is not included in the list of roles granted this permission
                         permissionList.add(new NotePermission(provider, NotePermission.AccessType.NO_ACCESS));
                 }
             } else if (roleProgramAccessDao.hasAccess("read " + roleName + " notes", provider.getRoleId())) {
@@ -175,7 +175,7 @@ public class NotePermissions2Action extends ActionSupport {
                     && note.getProgram_no() != null && note.getProgram_no().equalsIgnoreCase(newProgramNo)) {
                 hashMap.put("success", "NO_CHANGE");
             } else if (providerHasAccess(providerNo, newProgramNo, newRoleId, note.getDemographic_no())) {
-                // Check if this provider has access to the requested program & role pair
+                // Check if this providers has access to the requested program & role pair
                 Program p = programDao.getProgram(Integer.parseInt(newProgramNo));
                 Secrole r = secroleDao.getRole(Integer.parseInt(newRoleId));
 
@@ -198,11 +198,11 @@ public class NotePermissions2Action extends ActionSupport {
                 hashMap.put("noteContent", newNote);
                 hashMap.put("newNoteId", id);
             } else {
-                // The provider making this modification won't be able to see the note if this change is made
+                // The providers making this modification won't be able to see the note if this change is made
                 hashMap.put("error", "MAKES_INVISIBLE");
             }
         } else {
-            // The provider doesn't have permission to see this note, so they can't modify it
+            // The providers doesn't have permission to see this note, so they can't modify it
             hashMap.put("error", "PERMISSION_DENIED");
         }
 
@@ -244,8 +244,8 @@ public class NotePermissions2Action extends ActionSupport {
             }
         }
 
-        // The provider default program is not one of the programs that the patient is admitted to,
-        // so choose the first one that they're admitted to that the provider can access
+        // The providers default program is not one of the programs that the patient is admitted to,
+        // so choose the first one that they're admitted to that the providers can access
         HashMap<Program, List<Secrole>> providerDemoPrograms = getAllProviderAccessibleRolesForDemo(providerNo, demoNo);
         if (!providerDemoPrograms.isEmpty()) {
             Program program = providerDemoPrograms.keySet().iterator().next();
@@ -341,7 +341,7 @@ public class NotePermissions2Action extends ActionSupport {
                 } else {
                     for (Secrole programRole : programAccess.getRoles()) {
                         if (programRole.getId().longValue() == provider.getRoleId().longValue()) {
-                            // This provider has access based on their role
+                            // This providers has access based on their role
                             return true;
                         }
                     }
@@ -374,7 +374,7 @@ public class NotePermissions2Action extends ActionSupport {
             if (programAccessMap.containsKey("read " + roleName + " notes")) {
                 for (Secrole programRole : programAccessMap.get("read " + roleName + " notes").getRoles()) {
                     if (programRole.getId().longValue() == provider.getRoleId().longValue()) {
-                        // This provider has access based on their role
+                        // This providers has access based on their role
                         // Return whether the demo has an active admission to this program
                         return (demoAdmission != null);
                     }

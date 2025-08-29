@@ -27,7 +27,7 @@
 package ca.openosp.openo.lab.ca.all.parsers.OscarToOscarHl7V2;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.v26.datatype.XPN;
@@ -47,7 +47,7 @@ public final class RefI12Handler extends ChainnedMessageAdapter<REF_I12> {
 
     @Override
     public String getDocName() {
-        // look through provider records for the referring provider
+        // look through providers records for the referring providers
 
         logger.debug("hl7Message.getPROVIDER_CONTACTReps()=" + hl7Message.getPROVIDER_CONTACTReps());
         for (int i = 0; i < hl7Message.getPROVIDER_CONTACTReps(); i++) {

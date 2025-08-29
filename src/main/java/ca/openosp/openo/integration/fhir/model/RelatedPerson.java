@@ -35,15 +35,15 @@ import org.hl7.fhir.dstu3.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.dstu3.model.ContactPoint.ContactPointUse;
 import org.hl7.fhir.dstu3.model.Identifier.IdentifierUse;
 import org.hl7.fhir.dstu3.model.Reference;
-import org.oscarehr.common.model.Contact;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.ProfessionalContact;
+import ca.openosp.openo.commn.model.Contact;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.ProfessionalContact;
 import ca.openosp.openo.integration.fhir.utils.FhirUtils;
 
 
-public class RelatedPerson extends AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.RelatedPerson, org.oscarehr.common.model.Contact> {
+public class RelatedPerson extends AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.RelatedPerson, Contact> {
 
-    public RelatedPerson(org.oscarehr.common.model.Contact contact) {
+    public RelatedPerson(Contact contact) {
         super(new org.hl7.fhir.dstu3.model.RelatedPerson(), contact);
     }
 
@@ -51,7 +51,7 @@ public class RelatedPerson extends AbstractOscarFhirResource<org.hl7.fhir.dstu3.
         super(new Contact(), relatedPerson);
     }
 
-    public RelatedPerson(org.oscarehr.common.model.Demographic demographic) {
+    public RelatedPerson(Demographic demographic) {
         this(new Patient(demographic));
     }
 

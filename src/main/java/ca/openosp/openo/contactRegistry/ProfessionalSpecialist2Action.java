@@ -4,11 +4,11 @@ package ca.openosp.openo.contactRegistry;
 import com.opensymphony.xwork2.ActionSupport;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.common.model.ProfessionalSpecialist;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
 import ca.openosp.openo.managers.ProfessionalSpecialistsManager;
-import org.oscarehr.utility.JsonUtil;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.JsonUtil;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.form.JSONUtil;
 
 import javax.servlet.http.HttpServletRequest;

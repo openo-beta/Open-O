@@ -25,7 +25,7 @@
 package ca.openosp.openo.app;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import org.owasp.csrfguard.CsrfGuard;
 import org.owasp.csrfguard.CsrfGuardException;
 import org.owasp.csrfguard.action.IAction;
@@ -34,7 +34,7 @@ import org.owasp.csrfguard.log.LogLevel;
 import org.owasp.csrfguard.util.RandomGenerator;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

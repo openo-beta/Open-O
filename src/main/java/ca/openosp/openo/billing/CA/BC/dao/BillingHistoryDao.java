@@ -29,8 +29,8 @@ import java.util.List;
 import javax.persistence.Query;
 
 import ca.openosp.openo.billing.CA.BC.model.BillingHistory;
-import org.oscarehr.common.dao.AbstractDaoImpl;
-import org.oscarehr.common.model.BillingPaymentType;
+import ca.openosp.openo.commn.dao.AbstractDaoImpl;
+import ca.openosp.openo.commn.model.BillingPaymentType;
 import org.springframework.stereotype.Repository;
 
 import ca.openosp.openo.entities.Billingmaster;

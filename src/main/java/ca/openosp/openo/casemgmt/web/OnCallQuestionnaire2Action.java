@@ -25,9 +25,9 @@ package ca.openosp.openo.casemgmt.web;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.common.dao.OnCallQuestionnaireDao;
-import org.oscarehr.common.model.OnCallQuestionnaire;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.OnCallQuestionnaireDao;
+import ca.openosp.openo.commn.model.OnCallQuestionnaire;
+import ca.openosp.openo.utility.SpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

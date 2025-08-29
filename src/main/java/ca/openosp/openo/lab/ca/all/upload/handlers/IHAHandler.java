@@ -42,9 +42,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 
 //*import org.apache.commons.lang.StringUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.hl7.v2.oscar_to_oscar.DynamicHapiLoaderUtils;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.DynamicHapiLoaderUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
 //*import org.oscarehr.util.DbConnectionFilter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -61,7 +62,7 @@ import ca.openosp.openo.lab.ca.all.upload.MessageUploader;
  *
  */
 public class IHAHandler extends DefaultGenericHandler implements MessageHandler {
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
     String hl7Type = null;
     String proNo, UserID, Password, Alias;
     ArrayList<String> headerList = null;

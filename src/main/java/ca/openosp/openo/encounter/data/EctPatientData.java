@@ -30,10 +30,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.Misc;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -52,7 +53,7 @@ public class EctPatientData {
             rs = DBHandler.GetSQL("SELECT provider_no FROM demographic WHERE demographic_no = "
                     + demographicNo);
             if (rs.next())
-                ret = oscar.Misc.getString(rs, "provider_no");
+                ret = Misc.getString(rs, "provider_no");
 
         } catch (SQLException e) {
             MiscUtils.getLogger().debug("error - EctPatientData.getProviderNo");
@@ -79,11 +80,11 @@ public class EctPatientData {
             rs = DBHandler.GetSQL("SELECT demographic_no, last_name, first_name, sex, year_of_birth, month_of_birth, date_of_birth, address, city, postal, phone, roster_status FROM demographic WHERE demographic_no = "
                     + demographicNo);
             if (rs.next())
-                p = new Patient(rs.getInt("demographic_no"), oscar.Misc.getString(rs, "last_name"), oscar.Misc.getString(rs, "first_name"),
-                        oscar.Misc.getString(rs, "sex"), UtilDateUtilities.calcDate(oscar.Misc.getString(rs, "year_of_birth"), rs
-                        .getString("month_of_birth"), oscar.Misc.getString(rs, "date_of_birth")),
-                        oscar.Misc.getString(rs, "address"), oscar.Misc.getString(rs, "city"), oscar.Misc.getString(rs, "postal"), oscar.Misc.getString(rs, "phone"),
-                        oscar.Misc.getString(rs, "roster_status"));
+                p = new Patient(rs.getInt("demographic_no"), Misc.getString(rs, "last_name"), Misc.getString(rs, "first_name"),
+                        Misc.getString(rs, "sex"), UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), rs
+                        .getString("month_of_birth"), Misc.getString(rs, "date_of_birth")),
+                        Misc.getString(rs, "address"), Misc.getString(rs, "city"), Misc.getString(rs, "postal"), Misc.getString(rs, "phone"),
+                        Misc.getString(rs, "roster_status"));
 
         } catch (SQLException e) {
             MiscUtils.getLogger().error("Error", e);
@@ -205,13 +206,13 @@ public class EctPatientData {
                         rs = DBHandler.GetSQL(sql);
                         if (rs.next()) {
                             this.eChartTimeStamp = rs.getTimestamp("timeStamp");
-                            this.socialHistory = oscar.Misc.getString(rs, "socialHistory");
-                            this.familyHistory = oscar.Misc.getString(rs, "familyHistory");
-                            this.medicalHistory = oscar.Misc.getString(rs, "medicalHistory");
-                            this.ongoingConcerns = oscar.Misc.getString(rs, "ongoingConcerns");
-                            this.reminders = oscar.Misc.getString(rs, "reminders");
-                            this.encounter = oscar.Misc.getString(rs, "encounter");
-                            this.subject = oscar.Misc.getString(rs, "subject");
+                            this.socialHistory = Misc.getString(rs, "socialHistory");
+                            this.familyHistory = Misc.getString(rs, "familyHistory");
+                            this.medicalHistory = Misc.getString(rs, "medicalHistory");
+                            this.ongoingConcerns = Misc.getString(rs, "ongoingConcerns");
+                            this.reminders = Misc.getString(rs, "reminders");
+                            this.encounter = Misc.getString(rs, "encounter");
+                            this.subject = Misc.getString(rs, "subject");
                         }
 
                     } catch (SQLException e) {

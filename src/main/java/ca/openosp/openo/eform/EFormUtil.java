@@ -25,6 +25,9 @@
 
 package ca.openosp.openo.eform;
 
+import ca.openosp.Misc;
+import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.commn.model.*;
 import ca.openosp.openo.model.security.Secobjprivilege;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -32,27 +35,25 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
 import ca.openosp.openo.casemgmt.dao.CaseManagementNoteLinkDAO;
 import ca.openosp.openo.casemgmt.model.CaseManagementIssue;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
 import ca.openosp.openo.casemgmt.model.Issue;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.dao.EFormDao.EFormSortOrder;
-import org.oscarehr.common.model.*;
+import ca.openosp.openo.commn.dao.EFormDao.EFormSortOrder;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.managers.MessagingManager;
 import ca.openosp.openo.managers.PreventionManager;
 import ca.openosp.openo.managers.ProgramManager2;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.eform.data.EForm;
 import ca.openosp.openo.eform.data.EFormBase;
 import ca.openosp.openo.clinic.ClinicData;
@@ -117,7 +118,7 @@ public class EFormUtil {
     public static String saveEForm(String formName, String formSubject, String fileName, String htmlStr, String creator, boolean showLatestFormOnly, boolean patientIndependent, String roleType) {
         // called by the upload action, puts the uploaded form into DB
 
-        org.oscarehr.common.model.EForm eform = new org.oscarehr.common.model.EForm();
+        ca.openosp.openo.commn.model.EForm eform = new ca.openosp.openo.commn.model.EForm();
         eform.setFormName(formName);
         eform.setFileName(fileName);
         eform.setSubject(formSubject);
@@ -137,7 +138,7 @@ public class EFormUtil {
 
         // sends back a list of forms that were uploaded (those that can be added to the patient)
 
-        List<org.oscarehr.common.model.EForm> eforms = null;
+        List<ca.openosp.openo.commn.model.EForm> eforms = null;
         Boolean status = null;
         if (deleted.equals("deleted")) {
             status = false;
@@ -156,7 +157,7 @@ public class EFormUtil {
         eforms = eformDao.findByStatus(status, sortOrder);
 
         ArrayList<HashMap<String, ? extends Object>> results = new ArrayList<HashMap<String, ? extends Object>>();
-        for (org.oscarehr.common.model.EForm eform : eforms) {
+        for (ca.openosp.openo.commn.model.EForm eform : eforms) {
             HashMap<String, Object> curht = new HashMap<String, Object>();
             curht.put("fid", eform.getId().toString());
             curht.put("formName", eform.getFormName());
@@ -423,7 +424,7 @@ public class EFormUtil {
     public static HashMap<String, Object> loadEForm(String fid) {
 
         Integer id = Integer.valueOf(fid);
-        org.oscarehr.common.model.EForm eform = eformDao.find(id);
+        ca.openosp.openo.commn.model.EForm eform = eformDao.find(id);
         HashMap<String, Object> curht = new HashMap<String, Object>();
         if (eform == null) {
             logger.error("Unable to find EForm with ID = " + fid);
@@ -452,7 +453,7 @@ public class EFormUtil {
         // Updates the form - used by editForm
 
 
-        org.oscarehr.common.model.EForm eform = eformDao.find(Integer.parseInt(updatedForm.getFid()));
+        ca.openosp.openo.commn.model.EForm eform = eformDao.find(Integer.parseInt(updatedForm.getFid()));
         if (eform == null) {
             logger.error("Unable to find eform for update: " + updatedForm);
             return;
@@ -489,7 +490,7 @@ public class EFormUtil {
 
     public static String getEFormParameter(String fid, String fieldName) {
 
-        org.oscarehr.common.model.EForm eform = eformDao.find(ConversionUtils.fromIntString(fid));
+        ca.openosp.openo.commn.model.EForm eform = eformDao.find(ConversionUtils.fromIntString(fid));
         if (eform == null) {
             logger.error("Unable to find EForm for ID = " + fid);
             return "";
@@ -547,7 +548,7 @@ public class EFormUtil {
                 values = new ArrayList<String>();
                 for (int i = 0; i < names.size(); i++) {
                     try {
-                        values.add(oscar.Misc.getString(rs, names.get(i)));
+                        values.add(Misc.getString(rs, names.get(i)));
                         logger.debug("VALUE ====" + rs.getObject(names.get(i)) + "|");
                     } catch (Exception sqe) {
                         values.add("<(" + names.get(i) + ")NotFound>");
@@ -571,7 +572,7 @@ public class EFormUtil {
                 JSONObject value = new JSONObject();
                 for (int i = 0; i < names.size(); i++) {
                     try {
-                        value.element(names.get(i), oscar.Misc.getString(rs, names.get(i)));
+                        value.element(names.get(i), Misc.getString(rs, names.get(i)));
                     } catch (Exception sqe) {
                         value.element(names.get(i), "<(" + names.get(i) + ")NotFound>");
                         logger.error("Error", sqe);
@@ -628,7 +629,7 @@ public class EFormUtil {
 
     public static boolean formExistsInDB(String eFormName) {
 
-        org.oscarehr.common.model.EForm eform = eformDao.findByName(eFormName);
+        ca.openosp.openo.commn.model.EForm eform = eformDao.findByName(eFormName);
         return eform != null;
     }
 
@@ -649,8 +650,8 @@ public class EFormUtil {
             ResultSet rs = getSQL(sql);
             while (rs.next()) {
                 HashMap<String, String> curhash = new HashMap<String, String>();
-                curhash.put("groupName", oscar.Misc.getString(rs, "group_name"));
-                curhash.put("count", oscar.Misc.getString(rs, "count"));
+                curhash.put("groupName", Misc.getString(rs, "group_name"));
+                curhash.put("count", Misc.getString(rs, "count"));
                 al.add(curhash);
             }
         } catch (SQLException sqe) {
@@ -670,8 +671,8 @@ public class EFormUtil {
             ResultSet rs = getSQL(sql);
             while (rs.next()) {
                 HashMap<String, String> curhash = new HashMap<String, String>();
-                curhash.put("groupName", oscar.Misc.getString(rs, "group_name"));
-                curhash.put("count", oscar.Misc.getString(rs, "count"));
+                curhash.put("groupName", Misc.getString(rs, "group_name"));
+                curhash.put("count", Misc.getString(rs, "count"));
                 al.add(curhash);
             }
         } catch (SQLException sqe) {
@@ -810,7 +811,7 @@ public class EFormUtil {
                     }
                 }
                 HashMap<String, String> curht = new HashMap<String, String>();
-                curht.put("fdid", oscar.Misc.getString(rs, "fdid"));
+                curht.put("fdid", Misc.getString(rs, "fdid"));
                 curht.put("fid", rsGetString(rs, "fid"));
                 curht.put("formName", rsGetString(rs, "form_name"));
                 curht.put("formSubject", rsGetString(rs, "subject"));
@@ -852,7 +853,7 @@ public class EFormUtil {
         }
 
         /* write to document
-         * <document {optional:belong=provider/patient}>
+         * <document {optional:belong=providers/patient}>
          * 		<docdesc>{optional:documentDescription}</docdesc>
          * 		<docowner>{optional:provider_no/demographic_no}</docowner>
          * 		<content>
@@ -865,7 +866,7 @@ public class EFormUtil {
             if (StringUtils.isBlank(template)) continue;
 
             String belong = getAttribute("belong", getBeginTag("document", template));
-            if (!"patient".equalsIgnoreCase(belong)) belong = "provider";
+            if (!"patient".equalsIgnoreCase(belong)) belong = "providers";
             else belong = "demographic";
 
             String docOwner = getContent("docowner", template, null);
@@ -889,7 +890,7 @@ public class EFormUtil {
         /* write to prevention
          * <prevention>
          * 		<type>{preventionType: must be identical to Oscar prevention types}</type>
-         * 		<provider>{optional:providerNo}</provider>
+         * 		<providers>{optional:providerNo}</providers>
          * 		<date>{optional:preventionDate}</date>
          * 		<status>{optional:completed/refused/ineligible}</status>
          * 		<name>{optional}</name>
@@ -911,7 +912,7 @@ public class EFormUtil {
             String preventionType = getEqualIgnoreCase(preventionManager.getPreventionTypeList(), getContent("type", template, null));
             if (preventionType == null) continue;
 
-            String preventionProvider = getContent("provider", template, eForm.getProviderNo());
+            String preventionProvider = getContent("providers", template, eForm.getProviderNo());
             String preventionDate = getContent("date", template, eForm.getFormDate());
             String preventionStatus = getContent("status", template, "completed"); //completed(0)/refused(1)/ineligible(2)
 
@@ -988,7 +989,7 @@ public class EFormUtil {
 
             String taskAssignedTo = getContent("taskAssignedTo", template, null);
             if (taskAssignedTo == null) continue; //no assignee
-            if (providerDao.getProvider(taskAssignedTo.trim()) == null) continue; //assignee provider no not exists
+            if (providerDao.getProvider(taskAssignedTo.trim()) == null) continue; //assignee providers no not exists
 
             String message = getContent("tickMsg", template, "");
             Tickler tickler = new Tickler();
@@ -1270,7 +1271,7 @@ public class EFormUtil {
 
     private static void setFormStatus(String fid, boolean status) {
 
-        org.oscarehr.common.model.EForm eform = eformDao.find(ConversionUtils.fromIntString(fid));
+        ca.openosp.openo.commn.model.EForm eform = eformDao.find(ConversionUtils.fromIntString(fid));
         if (eform == null) {
             logger.error("Unable to find EForm for " + fid);
             return;
@@ -1281,7 +1282,7 @@ public class EFormUtil {
 
     private static String rsGetString(ResultSet rs, String column) throws SQLException {
         // protects agianst null values;
-        String thisStr = oscar.Misc.getString(rs, column);
+        String thisStr = Misc.getString(rs, column);
         if (thisStr == null) return "";
         return thisStr;
     }
@@ -1333,7 +1334,7 @@ public class EFormUtil {
     private static String putTemplateEformValues(EForm eForm, String fdid, String path, String template) {
         if (eForm == null || StringUtils.isBlank(template)) return template;
 
-        String[] efields = {"name", "subject", "patient", "provider", "link"};
+        String[] efields = {"name", "subject", "patient", "providers", "link"};
         String[] eValues = {eForm.getFormName(), eForm.getFormSubject(), eForm.getDemographicNo(), eForm.getProviderNo(), "<a href='" + path + "/eform/efmshowform_data.jsp?fdid=" + fdid + "' target='_blank'>" + eForm.getFormName() + "</a>"};
 
         String tag = "$te{";
@@ -1612,7 +1613,7 @@ public class EFormUtil {
      * developed eForms that are imported from external sources.
      */
     public static void logError(int formId, String error) {
-        org.oscarehr.common.model.EForm eform = eformDao.findById(formId);
+        ca.openosp.openo.commn.model.EForm eform = eformDao.findById(formId);
 
         /*
          * DEFAULT is always stable = true

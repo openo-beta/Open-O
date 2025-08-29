@@ -29,13 +29,13 @@ package ca.openosp.openo.managers;
 
 import java.util.List;
 
-import org.oscarehr.common.model.Dashboard;
-import org.oscarehr.common.model.IndicatorTemplate;
+import ca.openosp.openo.commn.model.Dashboard;
+import ca.openosp.openo.commn.model.IndicatorTemplate;
 import ca.openosp.openo.dashboard.display.beans.DashboardBean;
 import ca.openosp.openo.dashboard.display.beans.DrilldownBean;
 import ca.openosp.openo.dashboard.display.beans.IndicatorBean;
 import ca.openosp.openo.dashboard.handler.IndicatorTemplateXML;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 public interface DashboardManager {
     public static final boolean MULTI_THREAD_ON = Boolean.TRUE;

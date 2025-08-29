@@ -31,16 +31,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.oscarehr.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
-import org.oscarehr.common.model.BillingONCHeader1;
-import org.oscarehr.common.model.BillingONItem;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.service.BillingONService;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.model.BillingONCHeader1;
+import ca.openosp.openo.commn.model.BillingONItem;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.service.BillingONService;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.data.EctFormData.PatientForm;
-import ca.openosp.openo.rx.data.RxPrescriptionData.Prescription;
+import ca.openosp.openo.prescript.data.RxPrescriptionData.Prescription;
 
 /**
  * The echart seems to have non-note items in the note list. As a result this class will hold non-note items. A constructor can be made for each type of non-note item.

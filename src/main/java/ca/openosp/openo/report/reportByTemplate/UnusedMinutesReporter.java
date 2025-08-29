@@ -28,13 +28,13 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.oscarehr.common.dao.OscarAppointmentDao;
-import org.oscarehr.common.dao.ScheduleTemplateDao;
-import org.oscarehr.common.model.Appointment;
-import org.oscarehr.common.model.ScheduleDate;
-import org.oscarehr.common.model.ScheduleTemplate;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.OscarAppointmentDao;
+import ca.openosp.openo.commn.dao.ScheduleTemplateDao;
+import ca.openosp.openo.commn.model.Appointment;
+import ca.openosp.openo.commn.model.ScheduleDate;
+import ca.openosp.openo.commn.model.ScheduleTemplate;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 

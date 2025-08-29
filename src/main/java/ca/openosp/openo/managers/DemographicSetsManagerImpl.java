@@ -29,9 +29,9 @@ package ca.openosp.openo.managers;
 
 import java.util.List;
 
-import org.oscarehr.common.dao.DemographicSetsDao;
-import org.oscarehr.common.model.DemographicSets;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.dao.DemographicSetsDao;
+import ca.openosp.openo.commn.model.DemographicSets;
+import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

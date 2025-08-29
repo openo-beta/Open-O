@@ -43,7 +43,7 @@ public class MessengerSystemMessage {
     private Integer[] attachedDemographicNo;
 
     /**
-     * Instantiate with a list of known provider numbers for whom
+     * Instantiate with a list of known providers numbers for whom
      * this message is for.
      *
      * @param recipients

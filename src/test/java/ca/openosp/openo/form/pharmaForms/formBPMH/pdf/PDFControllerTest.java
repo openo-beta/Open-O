@@ -28,7 +28,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.oscarehr.common.model.Demographic;
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.form.pharmaForms.formBPMH.bean.BpmhDrug;
 import ca.openosp.openo.form.pharmaForms.formBPMH.bean.BpmhForm2Bean;
 

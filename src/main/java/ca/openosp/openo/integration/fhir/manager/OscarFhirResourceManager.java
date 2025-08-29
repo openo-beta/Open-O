@@ -32,12 +32,12 @@ import java.util.UUID;
 
 import ca.openosp.openo.integration.fhir.model.Patient;
 import org.hl7.fhir.dstu3.model.Identifier;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.DemographicExt;
-import org.oscarehr.common.model.LookupList;
-import org.oscarehr.common.model.LookupListItem;
-import org.oscarehr.common.model.Prevention;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.DemographicExt;
+import ca.openosp.openo.commn.model.LookupList;
+import ca.openosp.openo.commn.model.LookupListItem;
+import ca.openosp.openo.commn.model.Prevention;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.integration.fhir.model.Immunization;
 import ca.openosp.openo.integration.fhir.model.AbstractOscarFhirResource;
 import ca.openosp.openo.integration.fhir.model.PerformingPractitioner;
@@ -47,10 +47,10 @@ import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.LookupListManager;
 import ca.openosp.openo.managers.PreventionManager;
 import ca.openosp.openo.managers.ProviderManager2;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.stereotype.Service;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 
 @Service
@@ -64,7 +64,7 @@ public class OscarFhirResourceManager {
     public static final List<Immunization<Prevention>> getImmunizationsByDemographicNo(OscarFhirConfigurationManager configurationManager, int demographicNo) {
         PreventionManager preventionManager = SpringUtils.getBean(PreventionManager.class);
 
-        //TODO what kind of security check goes here?
+        //TODO what kind of sec check goes here?
 
         List<Immunization<Prevention>> immunizations = null;
         List<Prevention> preventions = preventionManager.getPreventionsByDemographicNo(configurationManager.getLoggedInInfo(), demographicNo);
@@ -190,7 +190,7 @@ public class OscarFhirResourceManager {
 
         if (provider != null) {
             practitioner = new PerformingPractitioner(provider, configurationManager);
-            LogAction.addLogSynchronous(configurationManager.getLoggedInInfo(), "OscarFhirResourceManager.getProviderByProviderNumber", "Retrieved provider " + providerNo + " " + provider.toString());
+            LogAction.addLogSynchronous(configurationManager.getLoggedInInfo(), "OscarFhirResourceManager.getProviderByProviderNumber", "Retrieved providers " + providerNo + " " + provider.toString());
         }
 
         return practitioner;
@@ -209,7 +209,7 @@ public class OscarFhirResourceManager {
 
         if (provider != null) {
             practitioner = new Practitioner(provider, configurationManager);
-            LogAction.addLogSynchronous(configurationManager.getLoggedInInfo(), "OscarFhirResourceManager.getProviderByProviderNumber", "Retrieved provider " + providerNo + " " + provider.toString());
+            LogAction.addLogSynchronous(configurationManager.getLoggedInInfo(), "OscarFhirResourceManager.getProviderByProviderNumber", "Retrieved providers " + providerNo + " " + provider.toString());
         }
 
         return practitioner;

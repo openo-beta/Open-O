@@ -25,7 +25,7 @@
 
 package ca.openosp.openo.consultations;
 
-import org.oscarehr.common.PaginationQuery;
+import ca.openosp.openo.commn.PaginationQuery;
 
 public class ConsultationQuery extends PaginationQuery {
     private static final long serialVersionUID = 5994830654027801723L;

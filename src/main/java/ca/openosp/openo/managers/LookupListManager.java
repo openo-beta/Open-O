@@ -26,11 +26,11 @@ package ca.openosp.openo.managers;
 
 import java.util.List;
 
-import org.oscarehr.common.dao.LookupListDao;
-import org.oscarehr.common.dao.LookupListItemDao;
-import org.oscarehr.common.model.LookupList;
-import org.oscarehr.common.model.LookupListItem;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.dao.LookupListDao;
+import ca.openosp.openo.commn.dao.LookupListItemDao;
+import ca.openosp.openo.commn.model.LookupList;
+import ca.openosp.openo.commn.model.LookupListItem;
+import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

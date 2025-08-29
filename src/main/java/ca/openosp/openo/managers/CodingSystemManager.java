@@ -25,10 +25,10 @@
 package ca.openosp.openo.managers;
 
 import org.apache.commons.lang.StringUtils;
-import org.oscarehr.common.dao.AbstractCodeSystemDao;
-import org.oscarehr.common.dao.AbstractCodeSystemDaoImpl;
-import org.oscarehr.common.model.AbstractCodeSystemModel;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.AbstractCodeSystemDao;
+import ca.openosp.openo.commn.dao.AbstractCodeSystemDaoImpl;
+import ca.openosp.openo.commn.model.AbstractCodeSystemModel;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.stereotype.Service;
 
 @Service

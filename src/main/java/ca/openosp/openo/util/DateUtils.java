@@ -36,9 +36,9 @@ import java.util.Locale;
 
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 /**
  * @deprecated 2013-12-09 use org.oscarehr.util.DateUtils instead

@@ -51,6 +51,7 @@ import ca.openosp.openo.hospitalReportManager.xsd.ReportMedia;
 import ca.openosp.openo.hospitalReportManager.xsd.ReportsReceived;
 import ca.openosp.openo.hospitalReportManager.xsd.ReportsReceived.OBRContent;
 import ca.openosp.openo.hospitalReportManager.xsd.TransactionInformation;
+import ca.openosp.openo.utility.MiscUtils;
 
 
 /**
@@ -84,7 +85,7 @@ public class ReadHRMFile {
             transactionInformation = pr.getTransactionInformation();
 
         } catch (JAXBException ex) {
-            org.oscarehr.utility.MiscUtils.getLogger();
+            MiscUtils.getLogger();
         }
     }
 

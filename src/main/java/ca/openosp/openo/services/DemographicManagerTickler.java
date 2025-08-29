@@ -25,8 +25,8 @@ package ca.openosp.openo.services;
 
 import java.util.List;
 
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.model.Demographic;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.model.Demographic;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

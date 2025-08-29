@@ -26,15 +26,15 @@
 package ca.openosp.openo.hospitalReportManager;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.model.Demographic;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.util.ConcatPDF;
 
 import javax.servlet.http.HttpServletRequest;
@@ -61,7 +61,7 @@ public class PrintHRMReport2Action extends ActionSupport {
     public String execute() throws IOException {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_hrm", "r", null)) {
-            throw new SecurityException("missing required security object (_hrm)");
+            throw new SecurityException("missing required sec object (_hrm)");
         }
 
         int demographicNo = 0;

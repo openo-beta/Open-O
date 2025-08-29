@@ -28,20 +28,20 @@ package ca.openosp.openo.dashboard.handler;
 //import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import net.sf.json.JSONArray;
 
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.dao.DemographicArchiveDao;
-//import org.oscarehr.common.model.DemographicArchive; 
-import org.oscarehr.common.dao.DemographicExtDao;
-import org.oscarehr.common.dao.DemographicExtArchiveDao;
-//import org.oscarehr.common.model.DemographicExt; 
-//import org.oscarehr.common.model.DemographicExtArchive; 
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.dao.DemographicArchiveDao;
+//import org.oscarehr.commons.model.DemographicArchive;
+import ca.openosp.openo.commn.dao.DemographicExtDao;
+import ca.openosp.openo.commn.dao.DemographicExtArchiveDao;
+//import org.oscarehr.commons.model.DemographicExt;
+//import org.oscarehr.commons.model.DemographicExtArchive;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 public class DemographicPatientStatusRosterStatusHandler {
 

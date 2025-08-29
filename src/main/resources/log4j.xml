@@ -34,7 +34,7 @@
 		<priority value="INFO" />
 	</category>
 
-	<category name="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorUpdateTask" additivity="false">
+	<category name="ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorUpdateTask" additivity="false">
 		<level value="INFO" />
 		<appender-ref ref="INTEGRATOR_FILE" />
 	</category>

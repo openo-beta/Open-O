@@ -57,7 +57,7 @@
             <result name="success">/form/eCARES/formeCARES.jsp</result>
             <result name="tickler">/tickler/ticklerAddWidget.jsp</result>
         </action>
-        <action name="notification/create" class="org.oscarehr.common.web.ProviderNotification2Action"/>
+        <action name="notification/create" class="ca.openosp.openo.commn.web.ProviderNotification2Action"/>
         <action name="quickBillingBC" class="ca.openosp.openo.billings.ca.bc.quickbilling.QuickBillingBC2Action">
             <result name="success">/billing/CA/BC/quickBillingBC.jsp</result>
             <result name="searchdx">billing/CA/BC/billingDigNewSearch.jsp</result>
@@ -78,25 +78,25 @@
             <result name="complete">/lab/CA/ALL/labDisplay.jsp</result>
         </action>
         <action name="MeasurementHL7Uploader" class="ca.openosp.openo.encounter.oscarMeasurements.hl7.MeasurementHL7Uploader2Action"/>
-        <action name="Home" class="org.oscarehr.PMmodule.web.Home2Action">
+        <action name="Home" class="ca.openosp.openo.PMmodule.web.Home2Action">
             <result name="home">/PMmodule/layout_quatro.jsp</result>
         </action>
-        <action name="SystemMessage" class="ca.openosp.openo.web.SystemMessage2Action" method="execute">
+        <action name="SystemMessage" class="ca.openosp.openo.www.SystemMessage2Action" method="execute">
             <result name="view">/caisicore/SystemMessage.jsp</result>
             <result name="list">/caisicore/SystemMessageList.jsp</result>
             <result name="edit">/caisicore/SystemMessageForm.jsp</result>
         </action>
-        <action name="DefaultEncounterIssue" class="ca.openosp.openo.web.DefaultEncounterIssue2Action" method="execute">
+        <action name="DefaultEncounterIssue" class="ca.openosp.openo.www.DefaultEncounterIssue2Action" method="execute">
             <result name="list">/caisicore/DefaultEncounterIssueList.jsp</result>
             <result name="edit">/caisicore/DefaultEncounterIssueForm.jsp</result>
             <result name="editRemove">/caisicore/DefaultEncounterIssueFormRemove.jsp</result>
         </action>
-        <action name="FacilityMessage" class="ca.openosp.openo.web.OrganizationMessage2Action" method="execute">
+        <action name="FacilityMessage" class="ca.openosp.openo.www.OrganizationMessage2Action" method="execute">
             <result name="view">/caisicore/FacilityMessage.jsp</result>
             <result name="list">/caisicore/FacilityMessageList.jsp</result>
             <result name="edit">/caisicore/FacilityMessageForm.jsp</result>
         </action>
-        <action name="issueAdmin" class="ca.openosp.openo.web.IssueAdmin2Action">
+        <action name="issueAdmin" class="ca.openosp.openo.www.IssueAdmin2Action">
             <result name="list">/caisicore/issueAdminList.jsp</result>
             <result name="edit">/caisicore/issueAdminForm.jsp</result>
         </action>
@@ -110,7 +110,7 @@
             <result name="ssoLogin">/ssoLogin.do</result>
             <result name="mfaHandler">/mfa/mfa_handler.jsp</result>
         </action>
-        <action name="securityRecord/mfa" class="org.oscarehr.security.MfaActions2Action"/>
+        <action name="securityRecord/mfa" class="ca.openosp.openo.security.MfaActions2Action"/>
         <action name="ssoLogin" class="ca.openosp.openo.login.SSOLogin2Action">
             <result name="provider">/provider/providercontrol.jsp</result>
             <result name="failure">/logout.jsp?login=failed</result>
@@ -194,11 +194,11 @@
         <action name="oscarMessenger/WriteToEncounter" class="ca.openosp.openo.messenger.pageUtil.MsgWriteToEncounter2Action">
             <result name="success">/oscarEncounter/IncomingEncounter.do</result>
         </action>
-        <action name="oscarRx/choosePatient" class="ca.openosp.openo.rx.pageUtil.RxChoosePatient2Action">
+        <action name="oscarRx/choosePatient" class="ca.openosp.openo.prescript.pageUtil.RxChoosePatient2Action">
             <result name="success">/oscarRx/SearchDrug.jsp</result>
             <result name="successRX3">/oscarRx/SearchDrug3.jsp</result>
         </action>
-        <action name="oscarRx/searchDrug" class="ca.openosp.openo.rx.pageUtil.RxSearchDrug2Action">
+        <action name="oscarRx/searchDrug" class="ca.openosp.openo.prescript.pageUtil.RxSearchDrug2Action">
             <result name="success">/oscarRx/ChooseDrug.jsp</result>
             <result name="error">/500.jsp</result>
         </action>
@@ -213,121 +213,124 @@
             <result name="dms_page">/oscarMDS/Page.jsp</result>
             <result name="document_in_queues">/oscarMDS/documentsInQueues.jsp</result>
         </action>
-        <action name="oscarRx/chooseDrug" class="ca.openosp.openo.rx.pageUtil.RxChooseDrug2Action">
+        <action name="oscarRx/chooseDrug" class="ca.openosp.openo.prescript.pageUtil.RxChooseDrug2Action">
             <result name="success">/oscarRx/WriteScript.jsp</result>
         </action>
-        <action name="oscarRx/viewScript" class="ca.openosp.openo.rx.pageUtil.RxViewScript2Action">
+        <action name="oscarRx/viewScript" class="ca.openosp.openo.prescript.pageUtil.RxViewScript2Action">
             <result name="viewScript">/oscarRx/ViewScript.jsp</result>
         </action>
         
-        <action name="oscarRx/WriteScript" class="ca.openosp.openo.rx.pageUtil.RxWriteScript2Action">
+        <action name="oscarRx/WriteScript" class="ca.openosp.openo.prescript.pageUtil.RxWriteScript2Action">
             <result name="newRx">/oscarRx/prescribe.jsp</result>
             <result name="refresh">/oscarRx/WriteScript.jsp</result>
             <result name="addAnother">/oscarRx/SearchDrug.jsp</result>
             <result name="viewScript">/oscarRx/ViewScript.jsp</result>
         </action>
-        <action name="oscarRx/writeScript" class="ca.openosp.openo.rx.pageUtil.RxWriteScript2Action">
+        <action name="oscarRx/writeScript" class="ca.openosp.openo.prescript.pageUtil.RxWriteScript2Action">
             <result name="refresh">/oscarRx/WriteScript.jsp</result>
             <result name="addAnother">/oscarRx/SearchDrug.jsp</result>
             <result name="viewScript">/oscarRx/ViewScript.jsp</result>
         </action>
-        <action name="oscarRx/stash" class="ca.openosp.openo.rx.pageUtil.RxStash2Action">
+        <action name="oscarRx/stash" class="ca.openosp.openo.prescript.pageUtil.RxStash2Action">
             <result name="success">/oscarRx/WriteScript.jsp</result>
         </action>
-        <action name="oscarRx/rxStashDelete" class="ca.openosp.openo.rx.pageUtil.RxStash2Action">
+        <action name="oscarRx/rxStashDelete" class="ca.openosp.openo.prescript.pageUtil.RxStash2Action">
             <result name="success">/oscarRx/SearchDrug3.jsp</result>
         </action>
-        <action name="oscarRx/UpdateScript" class="ca.openosp.openo.rx.pageUtil.RxWriteScript2Action"/>
-        <action name="oscarRx/useFavorite" class="ca.openosp.openo.rx.pageUtil.RxUseFavorite2Action">
+        <action name="oscarRx/UpdateScript" class="ca.openosp.openo.prescript.pageUtil.RxWriteScript2Action"/>
+        <action name="oscarRx/useFavorite" class="ca.openosp.openo.prescript.pageUtil.RxUseFavorite2Action">
             <result name="success">/oscarRx/WriteScript.jsp</result>
             <result name="useFav2">/oscarRx/prescribe.jsp</result>
         </action>
-        <action name="oscarRx/addFavoriteStaticScript" class="ca.openosp.openo.rx.pageUtil.RxAddFavorite2Action">
+        <action name="oscarRx/addFavoriteStaticScript" class="ca.openosp.openo.prescript.pageUtil.RxAddFavorite2Action">
             <result name="success">/oscarRx/StaticScript.jsp</result>
         </action>
-        <action name="oscarRx/addFavoriteViewScript" class="ca.openosp.openo.rx.pageUtil.RxAddFavorite2Action">
+        <action name="oscarRx/addFavoriteViewScript" class="ca.openosp.openo.prescript.pageUtil.RxAddFavorite2Action">
             <result name="success">/oscarRx/ViewScript.jsp</result>
         </action>
-        <action name="oscarRx/addFavoriteWriteScript" class="ca.openosp.openo.rx.pageUtil.RxAddFavorite2Action">
+        <action name="oscarRx/addFavoriteWriteScript" class="ca.openosp.openo.prescript.pageUtil.RxAddFavorite2Action">
             <result name="success">/oscarRx/WriteScript.jsp</result>
         </action>
-        <action name="oscarRx/addFavorite2" class="ca.openosp.openo.rx.pageUtil.RxAddFavorite2Action"/>
-        <action name="oscarRx/updateFavorite" class="ca.openosp.openo.rx.pageUtil.RxUpdateFavorite2Action">
+        <action name="oscarRx/addFavorite2" class="ca.openosp.openo.prescript.pageUtil.RxAddFavorite2Action"/>
+        <action name="oscarRx/updateFavorite" class="ca.openosp.openo.prescript.pageUtil.RxUpdateFavorite2Action">
             <result name="success">/oscarRx/EditFavorites.jsp</result>
         </action>
-        <action name="oscarRx/updateFavorite2" class="ca.openosp.openo.rx.pageUtil.RxUpdateFavorite2Action">
+        <action name="oscarRx/updateFavorite2" class="ca.openosp.openo.prescript.pageUtil.RxUpdateFavorite2Action">
             <result name="success">/oscarRx/EditFavorites2.jsp</result>
         </action>
-        <action name="oscarRx/deleteFavorite2" class="ca.openosp.openo.rx.pageUtil.RxDeleteFavorite2Action">
+        <action name="oscarRx/deleteFavorite2" class="ca.openosp.openo.prescript.pageUtil.RxDeleteFavorite2Action">
             <result name="success">/oscarRx/EditFavorites2.jsp</result>
         </action>
-        <action name="oscarRx/deleteFavorite" class="ca.openosp.openo.rx.pageUtil.RxDeleteFavorite2Action">
+        <action name="oscarRx/deleteFavorite" class="ca.openosp.openo.prescript.pageUtil.RxDeleteFavorite2Action">
             <result name="success">/oscarRx/EditFavorites.jsp</result>
         </action>
-        <action name="oscarRx/rePrescribe" class="ca.openosp.openo.rx.pageUtil.RxRePrescribe2Action">
+        <action name="oscarRx/rePrescribe" class="ca.openosp.openo.prescript.pageUtil.RxRePrescribe2Action">
             <result name="success">/oscarRx/WriteScript.jsp</result>
             <result name="reprint">/oscarRx/ViewScript.jsp</result>
         </action>
-        <action name="oscarRx/rePrescribe2" class="ca.openosp.openo.rx.pageUtil.RxRePrescribe2Action">
+        <action name="oscarRx/rePrescribe2" class="ca.openosp.openo.prescript.pageUtil.RxRePrescribe2Action">
             <result name="success">/oscarRx/SearchDrug3.jsp</result>
             <result name="repcbLongTerm">/oscarRx/prescribe.jsp</result>
             <result name="represcribe">/oscarRx/prescribe.jsp</result>
         </action>
-        <action name="oscarRx/deleteRx" class="ca.openosp.openo.rx.pageUtil.RxDeleteRx2Action">
+        <action name="oscarRx/saveDigitalSignature" class="ca.openosp.openo.prescript.pageUtil.RxRePrescribe2Action" method="saveDigitalSignature">
+            <result name="success">/oscarRx/SearchDrug3.jsp</result>
+        </action>
+        <action name="oscarRx/deleteRx" class="ca.openosp.openo.prescript.pageUtil.RxDeleteRx2Action">
             <result name="success">/oscarRx/SearchDrug.jsp</result>
             <result name="successClearStash">/oscarRx/SearchDrug3.jsp</result>
         </action>
-        <action name="oscarRx/clearPending" class="ca.openosp.openo.rx.pageUtil.RxClearPending2Action">
+        <action name="oscarRx/clearPending" class="ca.openosp.openo.prescript.pageUtil.RxClearPending2Action">
             <result name="success">/oscarRx/SearchDrug.jsp</result>
             <result name="close">/oscarRx/close.html</result>
         </action>
-        <action name="oscarRx/searchAllergy" class="ca.openosp.openo.rx.pageUtil.RxSearchAllergy2Action">
+        <action name="oscarRx/searchAllergy" class="ca.openosp.openo.prescript.pageUtil.RxSearchAllergy2Action">
             <result name="success">/oscarRx/ChooseAllergy.jsp</result>
         </action>
-        <action name="oscarRx/searchAllergy2" class="ca.openosp.openo.rx.pageUtil.RxSearchAllergy2Action">
+        <action name="oscarRx/searchAllergy2" class="ca.openosp.openo.prescript.pageUtil.RxSearchAllergy2Action">
             <result name="success">/oscarRx/ChooseAllergy2.jsp</result>
         </action>
-        <action name="oscarRx/addAllergy" class="ca.openosp.openo.rx.pageUtil.RxAddAllergy2Action">
+        <action name="oscarRx/addAllergy" class="ca.openosp.openo.prescript.pageUtil.RxAddAllergy2Action">
             <result name="success">/oscarRx/ShowAllergies.jsp</result>
         </action>
-        <action name="oscarRx/addAllergy2" class="ca.openosp.openo.rx.pageUtil.RxAddAllergy2Action">
+        <action name="oscarRx/addAllergy2" class="ca.openosp.openo.prescript.pageUtil.RxAddAllergy2Action">
             <result name="success">/oscarRx/ShowAllergies2.jsp</result>
         </action>
-        <action name="oscarRx/addReaction" class="ca.openosp.openo.rx.pageUtil.RxAddReaction2Action">
+        <action name="oscarRx/addReaction" class="ca.openosp.openo.prescript.pageUtil.RxAddReaction2Action">
             <result name="success">/oscarRx/AddReaction.jsp</result>
         </action>
-        <action name="oscarRx/addReaction2" class="ca.openosp.openo.rx.pageUtil.RxAddReaction2Action">
+        <action name="oscarRx/addReaction2" class="ca.openosp.openo.prescript.pageUtil.RxAddReaction2Action">
             <result name="success">/oscarRx/AddReaction2.jsp</result>
         </action>
-        <action name="oscarRx/deleteAllergy" class="ca.openosp.openo.rx.pageUtil.RxDeleteAllergy2Action">
+        <action name="oscarRx/deleteAllergy" class="ca.openosp.openo.prescript.pageUtil.RxDeleteAllergy2Action">
             <result name="success">/oscarRx/ShowAllergies.jsp</result>
             <result name="successRx3">/oscarRx/ShowAllergies2.jsp</result>
         </action>
-        <action name="oscarRx/deleteAllergy2" class="ca.openosp.openo.rx.pageUtil.RxDeleteAllergy2Action">
+        <action name="oscarRx/deleteAllergy2" class="ca.openosp.openo.prescript.pageUtil.RxDeleteAllergy2Action">
             <result name="success">/oscarRx/ShowAllergies2.jsp</result>
         </action>
-        <action name="oscarRx/showAllergy" class="ca.openosp.openo.rx.pageUtil.RxShowAllergy2Action">
+        <action name="oscarRx/showAllergy" class="ca.openosp.openo.prescript.pageUtil.RxShowAllergy2Action">
             <result name="success">/oscarRx/ShowAllergies.jsp</result>
             <result name="success-redirect">/oscarRx/ShowAllergies.jsp</result>
             <result name="successRX3">/oscarRx/ShowAllergies2.jsp</result>
         </action>
-        <action name="oscarRx/drugInfo" class="ca.openosp.openo.rx.pageUtil.RxDrugInfo2Action">
+        <action name="oscarRx/drugInfo" class="ca.openosp.openo.prescript.pageUtil.RxDrugInfo2Action">
             <result name="success">/oscarRx/SearchDrug.jsp</result>
         </action>
-        <action name="oscarRx/managePharmacy2" class="ca.openosp.openo.rx.pageUtil.RxManagePharmacy2Action">
+        <action name="oscarRx/managePharmacy2" class="ca.openosp.openo.prescript.pageUtil.RxManagePharmacy2Action">
             <result name="success">/oscarRx/SelectPharmacy2.jsp</result>
         </action>
-        <action name="oscarRx/managePharmacy" class="ca.openosp.openo.rx.pageUtil.RxManagePharmacy2Action">
+        <action name="oscarRx/managePharmacy" class="ca.openosp.openo.prescript.pageUtil.RxManagePharmacy2Action">
             <result name="success">/oscarRx/SelectPharmacy2.jsp</result>
         </action>
-        <action name="oscarRx/RxReason" class="ca.openosp.openo.rx.pageUtil.RxReason2Action">
+        <action name="oscarRx/RxReason" class="ca.openosp.openo.prescript.pageUtil.RxReason2Action">
             <result name="close">/oscarRx/close.html</result>
             <result name="success">/oscarRx/SelectReason.jsp</result>
         </action>
-        <action name="oscarRx/GetRxPageSizeInfo" class="ca.openosp.openo.rx.pageUtil.RxRxPageSizeInfo2Action">
+        <action name="oscarRx/GetRxPageSizeInfo" class="ca.openosp.openo.prescript.pageUtil.RxRxPageSizeInfo2Action">
             <result name="success">/oscarRx/ViewScript2.jsp</result>
         </action>
-        <action name="oscarRx/WriteToEncounter" class="ca.openosp.openo.rx.pageUtil.RxWriteToEncounter2Action">
+        <action name="oscarRx/WriteToEncounter" class="ca.openosp.openo.prescript.pageUtil.RxWriteToEncounter2Action">
             <result name="success">/oscarRx/ViewScript2.jsp</result>
         </action>
         <action name="oscarMDS/SendMRP" class="ca.openosp.openo.mds.pageUtil.SendMostResponProv2Action">
@@ -369,16 +372,16 @@
         <action name="lab/CA/ALL/PrintOLISLab" class="ca.openosp.openo.lab.ca.all.pageUtil.PrintOLISLab2Action">
             <result name="error">/lab/CA/ALL/labDisplay.jsp</result>
         </action>
-        <action name="olis/Search" class="org.oscarehr.olis.OLISSearch2Action">
+        <action name="olis/Search" class="ca.openosp.openo.olis.OLISSearch2Action">
             <result name="results">/olis/Results.do</result>
         </action>
-        <action name="olis/Results" class="org.oscarehr.olis.OLISResults2Action">
+        <action name="olis/Results" class="ca.openosp.openo.olis.OLISResults2Action">
             <result name="results">/olis/Results.jsp</result>
         </action>
-        <action name="olis/AddToInbox" class="org.oscarehr.olis.OLISAddToInbox2Action">
+        <action name="olis/AddToInbox" class="ca.openosp.openo.olis.OLISAddToInbox2Action">
             <result name="ajax">/olis/ajaxResponse.jsp</result>
         </action>
-        <action name="olis/UploadSimulationData" class="org.oscarehr.olis.OLISUploadSimulationData2Action">
+        <action name="olis/UploadSimulationData" class="ca.openosp.openo.olis.OLISUploadSimulationData2Action">
             <result name="success">/olis/Simulate.jsp</result>
         </action>
         <action name="lab/CA/ON/Forward" class="ca.openosp.openo.mds.pageUtil.ReportReassign2Action">
@@ -1223,7 +1226,7 @@
             <result name="continue">/oscarEncounter/oscarMeasurements/Measurements.jsp</result>
         </action>
         <!--action name="oscarEncounter/oscarMeasurements/StreamStyleSheet" class="oscar.oscarEncounter.oscarMeasurements.pageUtil.EctStreamStyleSheet2Action"/-->
-        <action name="oscarEncounter/MeasurementData" class="org.oscarehr.measurements.web.MeasurementData2Action"/>
+        <action name="oscarEncounter/MeasurementData" class="ca.openosp.openo.measurements.web.MeasurementData2Action"/>
         <action name="oscarEncounter/oscarMeasurements/SetupDisplayHistory" class="ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctSetupDisplayHistory2Action">
             <result name="continue">/oscarEncounter/oscarMeasurements/DisplayHistory.jsp</result>
         </action>
@@ -1374,22 +1377,22 @@
             <result name="success">/oscarMaintenance/oscarMaintenanceDisplay.jsp</result>
             <result name="input">/oscarMaintenance/oscarMaintenanceInput.jsp</result>
         </action-->
-        <action name="EnterSignature" class="ca.openosp.openo.provider.pageUtil.ProEditSignature2Action">
+        <action name="EnterSignature" class="ca.openosp.openo.providers.pageUtil.ProEditSignature2Action">
             <result name="success">/provider/providerSignature.jsp</result>
         </action>
-        <action name="EditPhoneNum" class="ca.openosp.openo.provider.pageUtil.ProEditPhoneNum2Action">
+        <action name="EditPhoneNum" class="ca.openosp.openo.providers.pageUtil.ProEditPhoneNum2Action">
             <result name="success">/provider/providerPhone.jsp</result>
             <result name="eject">/index.jsp</result>
         </action>
-        <action name="EditAddress" class="ca.openosp.openo.provider.pageUtil.ProEditAddress2Action">
+        <action name="EditAddress" class="ca.openosp.openo.providers.pageUtil.ProEditAddress2Action">
             <result name="success">/provider/providerAddress.jsp</result>
             <result name="eject">/index.jsp</result>
         </action>
-        <action name="EditPrinter" class="ca.openosp.openo.provider.pageUtil.ProEditPrinter2Action">
+        <action name="EditPrinter" class="ca.openosp.openo.providers.pageUtil.ProEditPrinter2Action">
             <result name="success">/provider/providerPrinter.jsp</result>
             <result name="eject">/index.jsp</result>
         </action>
-        <action name="EditFaxNum" class="ca.openosp.openo.provider.pageUtil.ProEditFaxNum2Action">
+        <action name="EditFaxNum" class="ca.openosp.openo.providers.pageUtil.ProEditFaxNum2Action">
             <result name="success">/provider/providerFax.jsp</result>
             <result name="error">/provider/providerFaxErr.jsp</result>
             <result name="eject">/index.jsp</result>
@@ -1420,12 +1423,12 @@
             <result name="success">/email/emailCompose.jsp</result>
             <result name="EFORM">/eform/efmshowform_data.jsp</result>
         </action>
-        <action name="setProviderColour" class="ca.openosp.openo.provider.pageUtil.ProEditColour2Action">
+        <action name="setProviderColour" class="ca.openosp.openo.providers.pageUtil.ProEditColour2Action">
             <result name="success">/provider/providerColourPicker.jsp</result>
             <result name="error">/provider/providerColourErr.jsp</result>
             <result name="eject">/index.jsp</result>
         </action>
-        <action name="setProviderStaleDate" class="org.oscarehr.provider.web.ProviderProperty2Action" method="execute">
+        <action name="setProviderStaleDate" class="ca.openosp.openo.provider.web.ProviderProperty2Action" method="execute">
             <result name="success">/provider/setNoteStaleDate.jsp</result>
             <result name="gen">/provider/setGenProperty.jsp</result>
             <result name="genRxPageSize">/provider/setGenRxPageSizeProperty.jsp</result>
@@ -1450,37 +1453,37 @@
             <result name="genClinicalConnectPrefs">/provider/setClinicalConnectPrefs.jsp</result>
             <result name="genLabMacroPrefs">/provider/setLabMacroPrefs.jsp</result>
         </action>
-        <action name="setTicklerPreferences" class="org.oscarehr.provider.web.ProviderProperty2Action" method="execute">
+        <action name="setTicklerPreferences" class="ca.openosp.openo.provider.web.ProviderProperty2Action" method="execute">
             <result name="success">/provider/setTicklerPreferences.jsp</result>
             <result name="complete">/provider/setTicklerPreferences.jsp</result>
             <result name="error">/provider/setTicklerPreferences.jsp?error</result>
         </action>
-        <action name="provider/rxInteractionWarningLevel" class="org.oscarehr.provider.web.ProviderRxInteractionWarningLevel2Action"/>
-        <action name="oscarResearch/oscarDxResearch/setupDxResearch" class="ca.openosp.openo.oscarDxResearch.pageUtil.dxSetupResearch2Action">
+        <action name="provider/rxInteractionWarningLevel" class="ca.openosp.openo.provider.web.ProviderRxInteractionWarningLevel2Action"/>
+        <action name="oscarResearch/oscarDxResearch/setupDxResearch" class="ca.openosp.openo.dxresearch.pageUtil.dxSetupResearch2Action">
             <result name="success">/oscarResearch/oscarDxResearch/dxResearch.jsp</result>
         </action>
-        <action name="oscarResearch/oscarDxResearch/dxResearch" class="ca.openosp.openo.oscarDxResearch.pageUtil.dxResearch2Action">
+        <action name="oscarResearch/oscarDxResearch/dxResearch" class="ca.openosp.openo.dxresearch.pageUtil.dxResearch2Action">
             <result name="codeSearch">/oscarResearch/oscarDxResearch/dxcodeSearch.do</result>
             <result name="success">/oscarResearch/oscarDxResearch/setupDxResearch.do</result>
             <result name="codeList">/oscarResearch/oscarDxResearch/quickCodeList.jsp</result>
         </action>
-        <action name="oscarResearch/oscarDxResearch/dxResearchCodeSearch" class="ca.openosp.openo.oscarDxResearch.pageUtil.dxResearchCodeSearch2Action">
+        <action name="oscarResearch/oscarDxResearch/dxResearchCodeSearch" class="ca.openosp.openo.dxresearch.pageUtil.dxResearchCodeSearch2Action">
             <result name="success">/oscarResearch/oscarDxResearch/dxResearchCodeSearch.jsp</result>
         </action>
-        <action name="oscarResearch/oscarDxResearch/dxResearchUpdate" class="ca.openosp.openo.oscarDxResearch.pageUtil.dxResearchUpdate2Action">
+        <action name="oscarResearch/oscarDxResearch/dxResearchUpdate" class="ca.openosp.openo.dxresearch.pageUtil.dxResearchUpdate2Action">
             <result name="success">/oscarResearch/oscarDxResearch/setupDxResearch.do</result>
         </action>
-        <action name="oscarResearch/oscarDxResearch/dxResearchLoadQuickList" class="ca.openosp.openo.oscarDxResearch.pageUtil.dxResearchLoadQuickList2Action">
+        <action name="oscarResearch/oscarDxResearch/dxResearchLoadQuickList" class="ca.openosp.openo.dxresearch.pageUtil.dxResearchLoadQuickList2Action">
             <result name="success">/oscarResearch/oscarDxResearch/dxResearchSelectQuickList.jsp</result>
         </action>
-        <action name="oscarResearch/oscarDxResearch/dxResearchLoadQuickListItems" class="ca.openosp.openo.oscarDxResearch.pageUtil.dxResearchLoadQuickListItems2Action">
+        <action name="oscarResearch/oscarDxResearch/dxResearchLoadQuickListItems" class="ca.openosp.openo.dxresearch.pageUtil.dxResearchLoadQuickListItems2Action">
             <result name="success">/oscarResearch/oscarDxResearch/dxResearchEditQuickList.jsp</result>
         </action>
-        <action name="oscarResearch/oscarDxResearch/dxResearchUpdateQuickList" class="ca.openosp.openo.oscarDxResearch.pageUtil.dxResearchUpdateQuickList2Action">
+        <action name="oscarResearch/oscarDxResearch/dxResearchUpdateQuickList" class="ca.openosp.openo.dxresearch.pageUtil.dxResearchUpdateQuickList2Action">
             <result name="success">/oscarResearch/oscarDxResearch/dxResearchLoadQuickListItems.do</result>
         </action>
-        <action name="dxCodeSearchJSON" class="ca.openosp.openo.oscarDxResearch.pageUtil.dxCodeSearchJSON2Action"/>
-        <action name="oscarResearch/oscarDxResearch/dxResearchLoadAssociations" class="ca.openosp.openo.oscarDxResearch.pageUtil.dxResearchLoadAssociations2Action">
+        <action name="dxCodeSearchJSON" class="ca.openosp.openo.dxresearch.pageUtil.dxCodeSearchJSON2Action"/>
+        <action name="oscarResearch/oscarDxResearch/dxResearchLoadAssociations" class="ca.openosp.openo.dxresearch.pageUtil.dxResearchLoadAssociations2Action">
             <interceptor-ref name="fileUpload" />
             <interceptor-ref name="defaultStack"/>
             <result name="success">/oscarResearch/oscarDxResearch/dxResearchSelectAssociations.jsp</result>
@@ -1583,10 +1586,10 @@
         <action name="oscarPrevention/printPrevention" class="ca.openosp.openo.prevention.pageUtil.PreventionPrint2Action">
             <result name="error">/oscarPrevention/index.jsp</result>
         </action>
-        <action name="demographic/SearchDemographic" class="org.oscarehr.common.web.SearchDemographicAutoComplete2Action">
+        <action name="demographic/SearchDemographic" class="ca.openosp.openo.commn.web.SearchDemographicAutoComplete2Action">
             <result name="success">/demographic/autocomplete.jsp</result>
         </action>
-        <action name="provider/SearchProvider" class="org.oscarehr.common.web.SearchProviderAutoComplete2Action"/>
+        <action name="provider/SearchProvider" class="ca.openosp.openo.commn.web.SearchProviderAutoComplete2Action"/>
         <action name="demographic/AddRelation" class="ca.openosp.openo.demographic.pageUtil.AddDemographicRelationship2Action">
             <result name="success">/demographic/AddAlternateContact.jsp</result>
             <result name="pmmClient">/PMmodule/ClientManager.do</result>
@@ -1620,10 +1623,10 @@
         <action name="report/SetEligibility" class="ca.openosp.openo.report.pageUtil.DemographicSetEligibility2Action">
             <result name="success">/oscarReport/demographicSetEdit.jsp</result>
         </action>
-        <action name="tickler/ForwardDemographicTickler" class="ca.openosp.openo.oscarTickler.pageUtil.ForwardDemographicTickler2Action">
+        <action name="tickler/ForwardDemographicTickler" class="ca.openosp.openo.tickler.pageUtil.ForwardDemographicTickler2Action">
             <result name="success">/tickler/ticklerAdd.jsp</result>
         </action>
-        <action name="tickler/AddTickler" class="ca.openosp.openo.oscarTickler.pageUtil.AddTickler2Action">
+        <action name="tickler/AddTickler" class="ca.openosp.openo.tickler.pageUtil.AddTickler2Action">
             <result name="close">/close.html</result>
         </action>
         <action name="eform/uploadHtml" class="ca.openosp.openo.eform.upload.HtmlUpload2Action">
@@ -1835,27 +1838,27 @@
         </action>
         <!--action name="billing/CA/BC/DownloadBilling" class="oscar.oscarBilling.ca.bc.pageUtil.DownloadFile2Action"/-->
         <!-- ticklerPlus actions removed -->
-        <action name="PMmodule/ProgramManager" class="org.oscarehr.PMmodule.web.admin.ProgramManager2Action" method="execute">
+        <action name="PMmodule/ProgramManager" class="ca.openosp.openo.PMmodule.web.admin.ProgramManager2Action" method="execute">
             <result name="list">page.pmm.admin.list</result>
             <result name="edit">page.pmm.admin.edit</result>
             <result name="timeout">/PMmodule/Timeout.jsp</result>
             <result name="programSignatures">/PMmodule/Admin/ProgramSignatures.jsp</result>
         </action>
-        <action name="PMmodule/AllVacancies" class="org.oscarehr.PMmodule.web.AllWaitingList2Action" method="execute">
+        <action name="PMmodule/AllVacancies" class="ca.openosp.openo.PMmodule.web.AllWaitingList2Action" method="execute">
             <result name="waitList">page.pmm.allWatingList</result>
         </action>
-        <action name="PMmodule/VacancyClientMatch" class="org.oscarehr.PMmodule.web.VacancyClientMatch2Action" method="execute">
+        <action name="PMmodule/VacancyClientMatch" class="ca.openosp.openo.PMmodule.web.VacancyClientMatch2Action" method="execute">
             <result name="success">page.pmm.vacancyClientMatch</result>
         </action>
-        <action name="PMmodule/ProgramManagerView" class="org.oscarehr.PMmodule.web.admin.ProgramManagerView2Action" method="execute">
+        <action name="PMmodule/ProgramManagerView" class="ca.openosp.openo.PMmodule.web.admin.ProgramManagerView2Action" method="execute">
             <result name="view">page.pmm.admin.view</result>
             <result name="service_restriction_error">page.pmm.program.service_restriction_error</result>
         </action>
-        <action name="PMmodule/AgencyManager" class="org.oscarehr.PMmodule.web.admin.AgencyManager2Action" method="execute">
+        <action name="PMmodule/AgencyManager" class="ca.openosp.openo.PMmodule.web.admin.AgencyManager2Action" method="execute">
             <result name="view">page.pmm.admin.agency.view</result>
             <result name="edit">page.pmm.admin.agency.edit</result>
         </action>
-        <action name="PMmodule/FacilityManager" class="org.oscarehr.PMmodule.web.admin.FacilityManager2Action" method="execute">
+        <action name="PMmodule/FacilityManager" class="ca.openosp.openo.PMmodule.web.admin.FacilityManager2Action" method="execute">
             <result name="list">page.pmm.admin.facility.list</result>
             <result name="edit">page.pmm.admin.facility.edit</result>
             <result name="view">page.pmm.admin.facility.view</result>
@@ -1864,15 +1867,15 @@
             <result name="list">/admin/facility/ListFacilities.jsp</result>
             <result name="edit">/admin/facility/EditFacility.jsp</result>
         </action>
-        <action name="PMmodule/ProviderSearch" class="org.oscarehr.PMmodule.web.ProviderSearch2Action" method="execute">
+        <action name="PMmodule/ProviderSearch" class="ca.openosp.openo.PMmodule.web.ProviderSearch2Action" method="execute">
             <result name="results">/PMmodule/ProviderSearch.jsp</result>
         </action>
-        <action name="PMmodule/ClientSearch2" class="org.oscarehr.PMmodule.web.ClientSearchAction22Action" method="execute">
+        <action name="PMmodule/ClientSearch2" class="ca.openosp.openo.PMmodule.web.ClientSearchAction22Action" method="execute">
             <result name="form">page.pmm.client.searchform</result>
             <result name="search">page.pmm.client.searchresults</result>
             <result name="attachSearch">/casemgmt/attachClient.jsp</result>
         </action>
-        <action name="PMmodule/ClientManager" class="org.oscarehr.PMmodule.web.ClientManager2Action" method="execute">
+        <action name="PMmodule/ClientManager" class="ca.openosp.openo.PMmodule.web.ClientManager2Action" method="execute">
             <result name="edit">page.pmm.client</result>
             <result name="refer_vacancy">page.pmm.client.vacancy</result>
             <result name="edit-redirect">page.pmm.client</result>
@@ -1885,38 +1888,38 @@
             <result name="service_restriction_error">page.pmm.client.service_restriction_error</result>
             <result name="generalFormsReport">/PMmodule/GeneralFormsReport.jsp</result>
         </action>
-        <action name="PMmodule/ProviderInfo" class="org.oscarehr.PMmodule.web.ProviderInfo2Action" method="execute">
+        <action name="PMmodule/ProviderInfo" class="ca.openosp.openo.PMmodule.web.ProviderInfo2Action" method="execute">
             <result name="view">page.pmm.provider.view</result>
         </action>
-        <action name="PMmodule/StaffManager" class="org.oscarehr.PMmodule.web.admin.StaffManager2Action" method="execute">
+        <action name="PMmodule/StaffManager" class="ca.openosp.openo.PMmodule.web.admin.StaffManager2Action" method="execute">
             <result name="list">page.pmm.staff.list</result>
             <result name="edit">page.pmm.staff.edit</result>
         </action>
-        <action name="PMmodule/Admin/DefaultRoleAccess" class="org.oscarehr.PMmodule.web.admin.DefaultRoleAccess2Action" method="execute">
+        <action name="PMmodule/Admin/DefaultRoleAccess" class="ca.openosp.openo.PMmodule.web.admin.DefaultRoleAccess2Action" method="execute">
             <result name="list">page.pmm.admin.defaultroleaccess.list</result>
             <result name="form">page.pmm.admin.defaultroleaccess.form</result>
             <result name="rlist">/PMmodule/Admin/DefaultRoleAccess.do?method=list</result>
         </action>
-        <action name="Lookup/LookupList" class="ca.openosp.openo.web.lookup.LookupList2Action" method="execute">
+        <action name="Lookup/LookupList" class="ca.openosp.openo.www.lookup.LookupList2Action" method="execute">
             <result name="list">/PMmodule/lookup/LookupList.jsp</result>
         </action>
-        <action name="Lookup/LookupTableList" class="ca.openosp.openo.web.lookup.LookupTableList2Action" method="execute">
+        <action name="Lookup/LookupTableList" class="ca.openosp.openo.www.lookup.LookupTableList2Action" method="execute">
             <result name="list">/PMmodule/lookup/LookupTableList.jsp</result>
         </action>
-        <action name="Lookup/LookupCodeList" class="ca.openosp.openo.web.lookup.LookupCodeList2Action" method="execute">
+        <action name="Lookup/LookupCodeList" class="ca.openosp.openo.www.lookup.LookupCodeList2Action" method="execute">
             <result name="list">/PMmodule/lookup/LookupCodeList.jsp</result>
         </action>
-        <action name="Lookup/LookupCodeEdit" class="ca.openosp.openo.web.lookup.LookupCodeEdit2Action" method="execute">
+        <action name="Lookup/LookupCodeEdit" class="ca.openosp.openo.www.lookup.LookupCodeEdit2Action" method="execute">
             <result name="edit">/PMmodule/lookup/LookupCodeEdit.jsp</result>
         </action>
-        <action name="PMmodule/Reports/ProgramActivityReport" class="org.oscarehr.PMmodule.web.reports.ActivityReport2Action" method="execute">
+        <action name="PMmodule/Reports/ProgramActivityReport" class="ca.openosp.openo.PMmodule.web.reports.ActivityReport2Action" method="execute">
             <result name="form">/PMmodule/reports/ActivityReportForm.jsp</result>
             <result name="report">/PMmodule/reports/ActivityReport.jsp</result>
         </action>
-        <action name="PMmodule/Reports/BasicReport" class="org.oscarehr.PMmodule.web.reports.BasicReport2Action" method="execute">
+        <action name="PMmodule/Reports/BasicReport" class="ca.openosp.openo.PMmodule.web.reports.BasicReport2Action" method="execute">
             <result name="form">/PMmodule/reports/BasicReport.jsp</result>
         </action>
-        <action name="PMmodule/Reports/ClientListsReport" class="org.oscarehr.PMmodule.web.reports.ClientListsReport2Action" method="execute">
+        <action name="PMmodule/Reports/ClientListsReport" class="ca.openosp.openo.PMmodule.web.reports.ClientListsReport2Action" method="execute">
             <result name="form">/PMmodule/reports/ClientListsReportForm.jsp</result>
             <result name="report">/PMmodule/reports/ClientListsReport.jsp</result>
         </action>
@@ -2006,19 +2009,19 @@
         </action>
         <action name="casemgmt/ExtPrintRegistry" class="ca.openosp.openo.casemgmt.web.ExtPrintRegistry2Action"/>
         <action name="casemgmt/RegisterCppCode" class="ca.openosp.openo.casemgmt.web.RegisterCppCode2Action"/>
-        <action name="provider/UserPreference" class="org.oscarehr.provider.web.UserPreference2Action">
+        <action name="provider/UserPreference" class="ca.openosp.openo.provider.web.UserPreference2Action">
             <result name="form">/provider/UserPreferences.jsp</result>
         </action>
-        <action name="provider/CppPreferences" class="org.oscarehr.provider.web.CppPreferences2Action">
+        <action name="provider/CppPreferences" class="ca.openosp.openo.provider.web.CppPreferences2Action">
             <result name="form">/provider/cpp_preferences.jsp</result>
             <result name="exit">/oscarEncounter/close.jsp</result>
         </action>
-        <action name="provider/OlisPreferences" class="org.oscarehr.provider.web.OlisPreferences2Action">
+        <action name="provider/OlisPreferences" class="ca.openosp.openo.provider.web.OlisPreferences2Action">
             <result name="form">/provider/olis_preferences.jsp</result>
         </action>
         <action name="searchProfessionalSpecialist" class="ca.openosp.openo.contactRegistry.ProfessionalSpecialist2Action"/>
         <action name="getProfessionalSpecialist" class="ca.openosp.openo.contactRegistry.ProfessionalSpecialist2Action"/>
-        <action name="demographic/Contact" class="org.oscarehr.common.web.Contact2Action">
+        <action name="demographic/Contact" class="ca.openosp.openo.commn.web.Contact2Action">
             <result name="pForm">/demographic/addEditProfessionalContact.jsp</result>
             <result name="cForm">/demographic/addEditContact.jsp</result>
             <result name="view">/demographic/viewContact.jsp</result>
@@ -2032,34 +2035,34 @@
         <action name="ArchiveView" class="ca.openosp.openo.casemgmt.web.ArchiveView2Action" method="execute">
             <result name="view">/provider/providercontrol.jsp</result>
         </action>
-        <action name="VaccineProviderReport" class="org.oscarehr.vaccine.VaccineProviderReport2Action" method="execute">
+        <action name="VaccineProviderReport" class="ca.openosp.openo.vaccine.VaccineProviderReport2Action" method="execute">
             <result name="report">/PMmodule/vaccine/vaccine_provider_report.jsp</result>
         </action>
-        <action name="PopulationReport" class="org.oscarehr.common.web.PopulationReport2Action" method="execute">
+        <action name="PopulationReport" class="ca.openosp.openo.commn.web.PopulationReport2Action" method="execute">
             <result name="report">/report/PopulationReport.jsp</result>
         </action>
-        <action name="admin/ManageClinic" class="org.oscarehr.common.web.ClinicManage2Action" method="execute">
+        <action name="admin/ManageClinic" class="ca.openosp.openo.commn.web.ClinicManage2Action" method="execute">
             <result name="success">/admin/clinicAdmin.jsp</result>
         </action>
-        <action name="olis/Preferences" class="org.oscarehr.olis.OLISPreferences2Action">
+        <action name="olis/Preferences" class="ca.openosp.openo.olis.OLISPreferences2Action">
             <result name="success">/olis/Preferences.jsp</result>
         </action>
-        <action name="admin/ManageSites" class="org.oscarehr.common.web.SitesManage2Action" method="execute">
+        <action name="admin/ManageSites" class="ca.openosp.openo.commn.web.SitesManage2Action" method="execute">
             <result name="list">/admin/sitesAdmin.jsp</result>
             <result name="details">/admin/sitesAdminDetail.jsp</result>
         </action>
-        <action name="admin/ManageBillingReferral" class="org.oscarehr.common.web.BillingreferralEdit2Action">
+        <action name="admin/ManageBillingReferral" class="ca.openosp.openo.commn.web.BillingreferralEdit2Action">
             <result name="list">/admin/billingreferralAdmin.jsp</result>
         </action>
-        <action name="report/DxresearchReport" class="org.oscarehr.common.web.DxresearchReport2Action" method="execute">
+        <action name="report/DxresearchReport" class="ca.openosp.openo.commn.web.DxresearchReport2Action" method="execute">
             <result name="success">/oscarReport/oscarReportDxReg.jsp</result>
             <result name="editdesc">/oscarReport/editCodeDesc.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/adminFlowsheet/FlowSheetCustomAction" class="org.oscarehr.common.web.FlowSheetCustom2Action">
+        <action name="oscarEncounter/oscarMeasurements/adminFlowsheet/FlowSheetCustomAction" class="ca.openosp.openo.commn.web.FlowSheetCustom2Action">
             <result name="success">/oscarEncounter/oscarMeasurements/adminFlowsheet/EditFlowsheet.jsp</result>
             <result name="newflowsheet">/oscarEncounter/oscarMeasurements/adminFlowsheet/NewFlowsheet.jsp</result>
         </action>
-        <action name="oscarEncounter/oscarMeasurements/FlowSheetDrugAction" class="org.oscarehr.common.web.FlowSheetDrug2Action">
+        <action name="oscarEncounter/oscarMeasurements/FlowSheetDrugAction" class="ca.openosp.openo.commn.web.FlowSheetDrug2Action">
             <result name="success">/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp</result>
         </action>
         <action name="documentManager/ManageDocument" class="ca.openosp.openo.documentManager.actions.ManageDocument2Action">
@@ -2067,7 +2070,7 @@
             <result name="displaySingleDoc">/documentManager/MultiPageDocDisplay.jsp</result>
             <result name="nextIncomingDoc">/documentManager/incomingDocs.jsp</result>
         </action>
-        <action name="DocumentDescriptionTemplate" class="org.oscarehr.provider.web.DocumentDescriptionTemplate2Action"/>
+        <action name="DocumentDescriptionTemplate" class="ca.openosp.openo.provider.web.DocumentDescriptionTemplate2Action"/>
         <action name="PrinterList" class="ca.openosp.openo.printer.PrinterList2Action"/>
         <action name="documentManager/SplitDocument" class="ca.openosp.openo.documentManager.actions.SplitDocument2Action">
             <result name="success">/oscarMDS/Splitclose.jsp</result>
@@ -2078,22 +2081,22 @@
             <result name="edit">/appointment/appointmentstatusedit.jsp</result>
         </action>
         <action name="appointment/printAppointmentReceiptAction" class="ca.openosp.openo.report.pageUtil.PrintAppointmentReceipt2Action"/>
-        <action name="oscarRx/updateDrugrefDB" class="ca.openosp.openo.rx.pageUtil.RxUpdateDrugref2Action"/>
-        <action name="oscarRx/copyFavorite" class="ca.openosp.openo.rx.web.CopyFavorites2Action" method="execute">
+        <action name="oscarRx/updateDrugrefDB" class="ca.openosp.openo.prescript.pageUtil.RxUpdateDrugref2Action"/>
+        <action name="oscarRx/copyFavorite" class="ca.openosp.openo.prescript.web.CopyFavorites2Action" method="execute">
             <result name="success">/oscarRx/CopyFavorites.jsp</result>
             <result name="edit">/appointment/appointmentstatusedit.jsp</result>
         </action>
-        <action name="oscarRx/hideCpp" class="ca.openosp.openo.rx.web.RxHideCpp2Action"/>
-        <action name="oscarRx/reorderDrug" class="ca.openosp.openo.rx.web.RxReorder2Action"/>
-        <action name="oscarRx/copyFavorite2" class="ca.openosp.openo.rx.web.CopyFavorites2Action" method="execute">
+        <action name="oscarRx/hideCpp" class="ca.openosp.openo.prescript.web.RxHideCpp2Action"/>
+        <action name="oscarRx/reorderDrug" class="ca.openosp.openo.prescript.web.RxReorder2Action"/>
+        <action name="oscarRx/copyFavorite2" class="ca.openosp.openo.prescript.web.CopyFavorites2Action" method="execute">
             <result name="success">/oscarRx/CopyFavorites2.jsp</result>
             <result name="edit">/appointment/appointmentstatusedit.jsp</result>
         </action>
-        <action name="PMmodule/Admin/SysAdmin" class="org.oscarehr.PMmodule.web.admin.AdminHome2Action" method="execute">
+        <action name="PMmodule/Admin/SysAdmin" class="ca.openosp.openo.PMmodule.web.admin.AdminHome2Action" method="execute">
             <result name="admin">page.admin.home</result>
         </action>
-        <action name="saveWorkView" class="org.oscarehr.provider.web.ProviderView2Action" method="execute"/>
-        <action name="Provider/showPersonal" class="org.oscarehr.provider.web.DisplayPersonalInfoAppointment2Action"/>
+        <action name="saveWorkView" class="ca.openosp.openo.provider.web.ProviderView2Action" method="execute"/>
+        <action name="Provider/showPersonal" class="ca.openosp.openo.provider.web.DisplayPersonalInfoAppointment2Action"/>
         <action name="admin/oscarStatus" class="ca.openosp.openo.util.OscarStatus2Action">
             <result name="success">/admin/oscarStatus.jsp</result>
         </action>
@@ -2146,16 +2149,16 @@
             <result name="error">/hospitalReportManager/displayHRMReport.jsp</result>
         </action>
         <action name="caseload/CaseloadContent" class="ca.openosp.openo.caseload.CaseloadContent2Action"/>
-        <action name="tickler/EditTickler" class="ca.openosp.openo.oscarTickler.pageUtil.EditTickler2Action">
+        <action name="tickler/EditTickler" class="ca.openosp.openo.tickler.pageUtil.EditTickler2Action">
             <result name="close">/closenreload.html</result>
             <result name="failure">/failure.jsp</result>
             <result name="error">/errorpage.jsp</result>
         </action>
-        <action name="tickler/EditTicklerTextSuggest" class="ca.openosp.openo.oscarTickler.pageUtil.EditTickler2Action">
+        <action name="tickler/EditTicklerTextSuggest" class="ca.openosp.openo.tickler.pageUtil.EditTickler2Action">
             <result name="close">/closenreload.html</result>
             <result name="error">/errorpage.jsp</result>
         </action>
-        <action name="CodeSearch" class="org.oscarehr.common.web.CodeSearchService2Action"/>
+        <action name="CodeSearch" class="ca.openosp.openo.commn.web.CodeSearchService2Action"/>
         <action name="oscarEncounter/displayEpisodes" class="ca.openosp.openo.encounter.pageUtil.EctDisplayEpisode2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
@@ -2177,12 +2180,12 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="Episode" class="org.oscarehr.common.web.Episode2Action">
+        <action name="Episode" class="ca.openosp.openo.commn.web.Episode2Action">
             <result name="list">/episode/episodeList.jsp</result>
             <result name="form">/episode/episodeForm.jsp</result>
             <result name="success">/episode/success.jsp</result>
         </action>
-        <action name="indivica/HCSearch" class="org.oscarehr.common.web.HealthCardSearch2Action"/>
+        <action name="indivica/HCSearch" class="ca.openosp.openo.commn.web.HealthCardSearch2Action"/>
         <action name="oscarEncounter/displayPregnancies" class="ca.openosp.openo.encounter.pageUtil.EctDisplayPregnancy2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
@@ -2204,7 +2207,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="Pregnancy" class="org.oscarehr.common.web.Pregnancy2Action">
+        <action name="Pregnancy" class="ca.openosp.openo.commn.web.Pregnancy2Action">
             <result name="list">/pregnancy/list.jsp</result>
             <result name="success">/pregnancy/success.jsp</result>
             <result name="complete">/pregnancy/complete.jsp</result>
@@ -2218,14 +2221,14 @@
             <result name="pg6">/form/formBCAR2020Attachments.jsp</result>
             <result name="exit">/oscarEncounter/close.jsp</result>
         </action>
-        <action name="PageMonitoringService" class="org.oscarehr.common.web.PageMonitoring2Action"/>
+        <action name="PageMonitoringService" class="ca.openosp.openo.commn.web.PageMonitoring2Action"/>
         <action name="casemgmt/NotePermissions" class="ca.openosp.openo.casemgmt.web.NotePermissions2Action"/>
-        <action name="BillingInvoice" class="org.oscarehr.common.web.BillingInvoice2Action">
+        <action name="BillingInvoice" class="ca.openosp.openo.commn.web.BillingInvoice2Action">
             <result name="success">/billing/CA/ON/billingONCorrection.jsp</result>
             <result name="listSuccess">/billing/CA/ON/billingONStatus.jsp</result>
         </action>
-        <action name="BillingONReview" class="org.oscarehr.common.web.BillingONReview2Action"/>
-        <action name="admin/GroupPreference" class="org.oscarehr.common.web.GroupPreference2Action">
+        <action name="BillingONReview" class="ca.openosp.openo.commn.web.BillingONReview2Action"/>
+        <action name="admin/GroupPreference" class="ca.openosp.openo.commn.web.GroupPreference2Action">
             <result name="saved">/admin/groupPreferences.jsp</result>
             <result name="changedForm">/admin/groupPreferences.jsp</result>
         </action>
@@ -2236,7 +2239,7 @@
             <result name="closeReload">/billing/CA/ON/billingONCorrection.jsp?billing_no=</result>
             <result name="adminReload">/billing/CA/ON/billingONCorrection.jsp?billing_no=&amp;admin&amp;success</result>
         </action>
-        <action name="billing/CA/ON/ApplyPractitionerPremium" class="org.oscarehr.common.web.ApplyPractitionerPremium2Action">
+        <action name="billing/CA/ON/ApplyPractitionerPremium" class="ca.openosp.openo.commn.web.ApplyPractitionerPremium2Action">
             <result name="success">/billing/CA/ON/genRADesc.jsp</result>
             <result name="failure">/failure.jsp</result>
         </action>
@@ -2336,24 +2339,24 @@
             <result name="cancel">/mcedt/mcedt.do</result>
             <result name="done">/mcedt/mcedt.do</result>
         </action>
-        <action name="demographicSupport" class="org.oscarehr.common.web.Demographic2Action"/>
-        <action name="oscarRx/Dispense" class="org.oscarehr.rx.dispensary.Dispensary2Action">
+        <action name="demographicSupport" class="ca.openosp.openo.commn.web.Demographic2Action"/>
+        <action name="oscarRx/Dispense" class="ca.openosp.openo.prescription.dispensary.Dispensary2Action">
             <result name="list">/oscarRx/dispensary/list.jsp</result>
         </action>
         <!--action name="consults/Consultations" class="org.oscarehr.consultations.Consultation2Action"/-->
-        <action name="DemographicExtService" class="org.oscarehr.common.web.DemographicExtService2Action"/>
-        <action name="integrator/IntegratorPush" class="org.oscarehr.common.web.IntegratorPush2Action"/>
-        <action name="printReferralLabelAction" class="org.oscarehr.common.web.PrintReferralLabel2Action"/>
+        <action name="DemographicExtService" class="ca.openosp.openo.commn.web.DemographicExtService2Action"/>
+        <action name="integrator/IntegratorPush" class="ca.openosp.openo.commn.web.IntegratorPush2Action"/>
+        <action name="printReferralLabelAction" class="ca.openosp.openo.commn.web.PrintReferralLabel2Action"/>
         <action name="billing/CA/ON/billingON3rdPayments" class="ca.openosp.openo.billing.CA.ON.web.BillingONPayments2Action" method="execute">
             <result name="success">/billing/CA/ON/billingON3rdPayments.jsp</result>
             <result name="failure">/billing/CA/ON/billingON3rdPayments.jsp</result>
             <result name="viewPayment">/billing/CA/ON/billingON3rdViewPayment.jsp</result>
         </action>
-        <!--action name="billing/CA/ON/displayMOHXML" class="org.oscarehr.billing.CA.ON.web.DisplayMOHXML2Action">
+        <!--action name="billing/CA/ON/displayMOHXML" class="org.oscarehr.billing.CA.ON.www.DisplayMOHXML2Action">
             <result name="success">/billing/CA/ON/billingLreport.jsp</result>
             <result name="failure">/billing/CA/ON/billingLreport.jsp</result>
         </action>
-        <action name="billing/CA/ON/moveMOHFiles" class="org.oscarehr.billing.CA.ON.web.ArchiveMOHFile2Action">
+        <action name="billing/CA/ON/moveMOHFiles" class="org.oscarehr.billing.CA.ON.www.ArchiveMOHFile2Action">
             <result name="showInbox">/billing/CA/ON/viewMOHFiles.jsp</result>
         </action-->
         <action name="billing/ca/on/DisplayInvoiceLogo" class="ca.openosp.openo.billing.CA.ON.util.DisplayInvoiceLogo2Action"/>

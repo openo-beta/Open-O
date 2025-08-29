@@ -30,11 +30,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.ImmunizationsDao;
-import org.oscarehr.common.model.Immunizations;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.ImmunizationsDao;
+import ca.openosp.openo.commn.model.Immunizations;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class EctImmImmunizationData {
     private static ImmunizationsDao dao = SpringUtils.getBean(ImmunizationsDao.class);

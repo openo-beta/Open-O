@@ -29,15 +29,15 @@ package ca.openosp.openo.demographic.pageUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.dao.CtlRelationshipsDao;
-import org.oscarehr.common.model.CtlRelationships;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.Facility;
+import ca.openosp.openo.commn.dao.CtlRelationshipsDao;
+import ca.openosp.openo.commn.model.CtlRelationships;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.Facility;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SessionConstants;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SessionConstants;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.demographic.data.DemographicRelationship;
 // TODO STRUTS2 - not sure if we need the servlet, thinking it is still needed so left it with the merge. Review if issues.
 
@@ -62,7 +62,7 @@ public class AddDemographicRelationship2Action extends ActionSupport {
     public String execute() {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "w", null)) {
-            throw new SecurityException("missing required security object (_demographic)");
+            throw new SecurityException("missing required sec object (_demographic)");
         }
 
         String origDemo = request.getParameter("origDemo");

@@ -28,7 +28,7 @@ package ca.openosp.openo.lab.ca.bc.PathNet.HL7.V2_3;
 import java.sql.SQLException;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.lab.ca.bc.PathNet.HL7.Node;
 

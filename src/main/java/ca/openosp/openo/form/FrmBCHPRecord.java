@@ -31,11 +31,11 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import ca.openosp.openo.login.DBHelp;
 import ca.openosp.openo.db.DBHandler;
-import ca.openosp.openo.provider.data.ProviderData;
+import ca.openosp.openo.providers.data.ProviderData;
 import ca.openosp.openo.util.UtilDateUtilities;
 
 public class FrmBCHPRecord extends FrmRecord {

@@ -16,11 +16,11 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import org.oscarehr.common.dao.AbstractDaoImpl;
-import org.oscarehr.common.dao.SystemPreferencesDao;
-import org.oscarehr.common.model.SystemPreferences;
+import ca.openosp.openo.commn.dao.AbstractDaoImpl;
+import ca.openosp.openo.commn.dao.SystemPreferencesDao;
+import ca.openosp.openo.commn.model.SystemPreferences;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToProvider;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.stereotype.Repository;
 
 @Repository

@@ -26,15 +26,15 @@ package ca.openosp.openo.managers;
 
 import org.apache.cxf.common.util.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.SecurityArchiveDao;
-import org.oscarehr.common.dao.SecurityDao;
-import org.oscarehr.common.model.Security;
-import org.oscarehr.utility.EncryptionUtils;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.dao.SecurityArchiveDao;
+import ca.openosp.openo.commn.dao.SecurityDao;
+import ca.openosp.openo.commn.model.Security;
+import ca.openosp.openo.utility.EncryptionUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 
 import java.util.Date;
@@ -123,17 +123,17 @@ public class SecurityManager {
 	}
 
 	/**
-	 * Validates the password against the provided security's stored password. If the password is valid and an upgrade
+	 * Validates the password against the provided sec's stored password. If the password is valid and an upgrade
 	 * is needed to the existing stored password, the stored password will be upgraded.
 	 *
 	 * @param rawPassword The password to validate.
-	 * @param security    The security object containing the stored password.
+	 * @param security    The sec object containing the stored password.
 	 */
 	public boolean validatePassword(CharSequence rawPassword, Security security) {
 		boolean isValid = this.matchesPassword(rawPassword, security.getPassword());
 		if (isValid && EncryptionUtils.isPasswordHashUpgradeNeeded(security.getPassword())) {
 			boolean isHashUpgraded = this.upgradeSavePasswordHash(rawPassword, security);
-			if (isHashUpgraded)
+			if (!isHashUpgraded)
 				logger.error("Error while upgrading password hash");
 		}
 		return isValid;

@@ -24,13 +24,18 @@
  */
 package ca.openosp.openo.managers;
 
+import ca.openosp.openo.commn.model.*;
+import ca.openosp.openo.utility.EncounterUtil;
+import ca.openosp.openo.utility.JsonUtil;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.services.IssueAdminManager;
-import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
-import org.oscarehr.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.PMmodule.dao.ProgramProviderDAO;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
 import ca.openosp.openo.casemgmt.dao.CaseManagementNoteLinkDAO;
 import ca.openosp.openo.casemgmt.dao.IssueDAO;
 import ca.openosp.openo.casemgmt.model.CaseManagementIssue;
@@ -38,12 +43,10 @@ import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
 import ca.openosp.openo.casemgmt.model.Issue;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
-import org.oscarehr.common.dao.DrugDao;
-import org.oscarehr.common.dao.DxresearchDAO;
-import org.oscarehr.common.dao.FormeCARESDao;
-import org.oscarehr.common.model.*;
+import ca.openosp.openo.commn.dao.DrugDao;
+import ca.openosp.openo.commn.dao.DxresearchDAO;
+import ca.openosp.openo.commn.dao.FormeCARESDao;
 import ca.openosp.openo.managers.constants.Constants;
-import org.oscarehr.utility.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ca.openosp.openo.encounter.data.EctProgram;
@@ -102,7 +105,7 @@ public class FormeCARESManager {
         responseMessage.put(Constants.Cares.FormField.demographicNo.name(), demographicNo);
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.WRITE, demographicNo)) {
-            throw new SecurityException("missing required security object (_form)");
+            throw new SecurityException("missing required sec object (_form)");
         }
 
         String formId = (String) formJsonData.get(Constants.Cares.FormField.formId.name());
@@ -153,7 +156,7 @@ public class FormeCARESManager {
 
     public final JSONObject getData(LoggedInInfo loggedInInfo, int demographicNo, int formId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, demographicNo)) {
-            throw new SecurityException("missing required security object (_form)");
+            throw new SecurityException("missing required sec object (_form)");
         }
 
         logger.debug("Fetching eCARES form id " + formId + " for demographic number " + demographicNo);
@@ -212,7 +215,7 @@ public class FormeCARESManager {
 
     public final JSONObject createTickler(LoggedInInfo loggedInInfo, String tickerString) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.WRITE, null)) {
-            throw new SecurityException("missing required security object (_form)");
+            throw new SecurityException("missing required sec object (_form)");
         }
 
         JSONObject responseMessage = new JSONObject();
@@ -293,7 +296,7 @@ public class FormeCARESManager {
      */
     public final Map<String, Object> getTickler(LoggedInInfo loggedInInfo, String tickerString) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_tickler", SecurityInfoManager.READ, null)) {
-            throw new RuntimeException("missing required security object (_tickler)");
+            throw new RuntimeException("missing required sec object (_tickler)");
         }
 
         Map<String, Object> attributes = new HashMap<String, Object>();
@@ -312,7 +315,7 @@ public class FormeCARESManager {
 
     public final long saveTicklerEncounterNote(LoggedInInfo loggedInInfo, String note, int demographicNo) throws Exception {
         if (!securityInfoManager.isAllowedAccessToPatientRecord(loggedInInfo, demographicNo)) {
-            throw new RuntimeException("missing required security object");
+            throw new RuntimeException("missing required sec object");
         }
 
         String programNumber = new EctProgram(loggedInInfo.getSession()).getProgram(loggedInInfo.getLoggedInProviderNo());
@@ -465,7 +468,7 @@ public class FormeCARESManager {
          */
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_newCasemgmt.prescriptions", SecurityInfoManager.READ, demographicNo)) {
             jsonDataObject.element(Constants.Cares.Medication.medications.name(), new String[]{"User not authorized to view medications for this patient. " +
-                    "Missing required security object (_newCasemgmt.prescriptions)"});
+                    "Missing required sec object (_newCasemgmt.prescriptions)"});
         } else {
             drugList = drugDao.findByDemographicId(demographicNo, Boolean.FALSE);
         }
@@ -518,7 +521,7 @@ public class FormeCARESManager {
         int demographicNo = jsonDataObject.getInt(Constants.Cares.FormField.demographicNo.name());
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_newCasemgmt.DxRegistry", SecurityInfoManager.READ, demographicNo)) {
             jsonDataObject.element("problems", new String[]{"User not authorized to view diseases for this patient. " +
-                    "Missing required security object (_newCasemgmt.DxRegistry)"});
+                    "Missing required sec object (_newCasemgmt.DxRegistry)"});
         } else {
             dxresearchList = dxresearchDAO.getByDemographicNo(demographicNo);
         }

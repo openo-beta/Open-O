@@ -31,13 +31,13 @@ import ca.openosp.openo.casemgmt.dao.CaseManagementNoteLinkDAO;
 import ca.openosp.openo.casemgmt.model.CaseManagementIssue;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
-import org.oscarehr.common.dao.CaseManagementIssueNotesDao;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.utility.CppUtils;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.CaseManagementIssueNotesDao;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.utility.CppUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
-import ca.openosp.openo.rx.data.RxPrescriptionData;
+import ca.openosp.openo.prescript.data.RxPrescriptionData;
 
 public class NoteDisplayLocal implements NoteDisplay {
     private CaseManagementIssueNotesDao caseManagementIssueNotesDao = (CaseManagementIssueNotesDao) SpringUtils.getBean(CaseManagementIssueNotesDao.class);

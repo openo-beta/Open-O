@@ -39,16 +39,16 @@
 	</bean>
 
 	<!-- DAO -->
-	<bean id="formsDAO" class="org.oscarehr.PMmodule.dao.FormsDAOImpl" autowire="byName" />
-	<bean id="populationReportDao" class="org.oscarehr.common.dao.PopulationReportDaoImpl" autowire="byName" />
+	<bean id="formsDAO" class="ca.openosp.openo.PMmodule.dao.FormsDAOImpl" autowire="byName" />
+	<bean id="populationReportDao" class="ca.openosp.openo.commn.dao.PopulationReportDaoImpl" autowire="byName" />
 
 
 	<!-- managers  -->
 	<bean id="issueAdminManager" class="ca.openosp.openo.services.IssueAdminManager" autowire="byName" />
 
-	<bean id="oscarSecurityManager" class="org.oscarehr.PMmodule.service.impl.OscarSecurityManagerImpl" autowire="byName" />
-	<bean id="formsManagerCaisi" class="org.oscarehr.PMmodule.service.impl.FormsManagerImpl" autowire="byName" />
-	<bean id="populationReportManager" class="org.oscarehr.common.service.PopulationReportManager" autowire="byName">
+	<bean id="oscarSecurityManager" class="ca.openosp.openo.PMmodule.service.impl.OscarSecurityManagerImpl" autowire="byName" />
+	<bean id="formsManagerCaisi" class="ca.openosp.openo.PMmodule.service.impl.FormsManagerImpl" autowire="byName" />
+	<bean id="populationReportManager" class="ca.openosp.openo.commn.service.PopulationReportManager" autowire="byName">
 		<property name="issueDAO" ref="IssueDAO" />
 		<property name="populationReportDao" ref="populationReportDao" />
 	</bean>
@@ -58,7 +58,7 @@
 
 	
 
-	 <bean id="scheduledErProgramDischargeTask" class="org.oscarehr.PMmodule.task.ErProgramDischargeTask">
+	 <bean id="scheduledErProgramDischargeTask" class="ca.openosp.openo.PMmodule.task.ErProgramDischargeTask">
 		<property name="admissionManager" ref="admissionManager" />
 		<property name="providerManager" ref="providerManager" />
 	</bean>
@@ -77,7 +77,7 @@
 	</bean>
 
 
-	<bean id="scheduledAnonymousClientDischargeTask" class="org.oscarehr.PMmodule.task.AnonymousClientDischargeTask" />
+	<bean id="scheduledAnonymousClientDischargeTask" class="ca.openosp.openo.PMmodule.task.AnonymousClientDischargeTask" />
     <!-- Define the scheduled executor factory bean -->
     <bean class="org.springframework.scheduling.concurrent.ScheduledExecutorFactoryBean">
         <property name="scheduledExecutorTasks">
@@ -106,12 +106,12 @@
 
 
 	<!--
-		<bean id="UCRConfigurationManager" class="org.oscarehr.PMmodule.web.reports.custom.UCRConfigurationManager"> <property name="filename"> <value>org/oscarehr/PMmodule/web/reports/custom/test.xml</value> </property> </bean>
+		<bean id="UCRConfigurationManager" class="org.oscarehr.PMmodule.www.reports.custom.UCRConfigurationManager"> <property name="filename"> <value>org/oscarehr/PMmodule/www/reports/custom/test.xml</value> </property> </bean>
 	-->
 
 
 
-	<context:component-scan base-package="org.oscarehr.PMmodule.dao" />
-	<context:component-scan base-package="org.oscarehr.PMmodule.service" />
-	<context:component-scan base-package="org.oscarehr.PMmodule.web.admin" />
+	<context:component-scan base-package="ca.openosp.openo.PMmodule.dao" />
+	<context:component-scan base-package="ca.openosp.openo.PMmodule.service" />
+	<context:component-scan base-package="ca.openosp.openo.PMmodule.web.admin" />
 </beans>

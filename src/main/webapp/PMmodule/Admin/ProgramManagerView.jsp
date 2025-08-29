@@ -23,8 +23,9 @@
 
 --%>
 <%@ include file="/taglibs.jsp" %>
-<%@ page import="org.oscarehr.PMmodule.web.formbean.*" %>
-<%@page import="org.oscarehr.PMmodule.model.Program" %>
+<%@ page import="ca.openosp.openo.PMmodule.web.formbean.*" %>
+<%@page import="ca.openosp.openo.PMmodule.model.Program" %>
+<%@ page import="ca.openosp.openo.PMmodule.web.formbean.ProgramManagerViewFormBean" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <form action="${pageContext.request.contextPath}/PMmodule/ProgramManagerView.do" method="post">
 

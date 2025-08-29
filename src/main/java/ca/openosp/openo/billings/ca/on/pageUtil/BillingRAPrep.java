@@ -25,12 +25,13 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
 
 import ca.openosp.openo.billings.ca.on.data.JdbcBillingRAImpl;
 
 public class BillingRAPrep {
-    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static final Logger _logger = MiscUtils.getLogger();
     JdbcBillingRAImpl dbObj = new JdbcBillingRAImpl();
 
     // ret - Vector = || ||

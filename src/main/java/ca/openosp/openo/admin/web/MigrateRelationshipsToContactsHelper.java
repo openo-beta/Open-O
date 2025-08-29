@@ -23,13 +23,13 @@
  */
 package ca.openosp.openo.admin.web;
 
-import org.oscarehr.common.dao.DemographicContactDao;
-import org.oscarehr.common.dao.RelationshipsDao;
-import org.oscarehr.common.model.DemographicContact;
-import org.oscarehr.common.model.Relationships;
+import ca.openosp.openo.commn.dao.DemographicContactDao;
+import ca.openosp.openo.commn.dao.RelationshipsDao;
+import ca.openosp.openo.commn.model.DemographicContact;
+import ca.openosp.openo.commn.model.Relationships;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.log.LogAction;
 
@@ -40,7 +40,7 @@ public class MigrateRelationshipsToContactsHelper {
     public static boolean doMigration(LoggedInInfo loggedInInfo) {
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", "r", null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         RelationshipsDao relationshipsDao = SpringUtils.getBean(RelationshipsDao.class);

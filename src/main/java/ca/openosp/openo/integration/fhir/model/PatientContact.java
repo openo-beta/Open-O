@@ -26,11 +26,12 @@ package ca.openosp.openo.integration.fhir.model;
 
 import java.util.List;
 
+import ca.openosp.openo.commn.model.DemographicContact;
 import org.hl7.fhir.dstu3.model.Patient;
 import org.hl7.fhir.instance.model.api.IBaseResource;
-import org.oscarehr.common.model.Contact;
-import org.oscarehr.common.model.ProfessionalContact;
-import org.oscarehr.common.model.ProfessionalSpecialist;
+import ca.openosp.openo.commn.model.Contact;
+import ca.openosp.openo.commn.model.ProfessionalContact;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
 import ca.uhn.fhir.model.dstu2.composite.AddressDt;
 import ca.uhn.fhir.model.dstu2.composite.CodeableConceptDt;
 import ca.uhn.fhir.model.dstu2.resource.Location;
@@ -97,21 +98,21 @@ import ca.uhn.fhir.model.primitive.StringDt;
  */
 public class PatientContact extends AbstractOscarFhirResource<org.hl7.fhir.dstu3.model.Patient, Contact> {
 
-    private org.oscarehr.common.model.Contact contact;
+    private Contact contact;
     private ProfessionalSpecialist professionalSpecialist;
-    private org.oscarehr.common.model.DemographicContact demographicContact;
-    private org.oscarehr.common.model.DemographicContact[] demographicContacts;
-    private org.oscarehr.common.model.Contact[] contacts;
+    private DemographicContact demographicContact;
+    private DemographicContact[] demographicContacts;
+    private Contact[] contacts;
     private ca.uhn.fhir.model.dstu2.resource.Patient.Contact[] fhirContacts;
     private ca.uhn.fhir.model.dstu2.resource.Patient.Contact fhirContact;
     private List<CodeableConceptDt> contactRelationships;
 
-    public PatientContact(org.oscarehr.common.model.Contact[] contacts) {
+    public PatientContact(Contact[] contacts) {
         this.setContacts(contacts);
         this.setFhirContacts(new ca.uhn.fhir.model.dstu2.resource.Patient.Contact[contacts.length]);
     }
 
-    public PatientContact(org.oscarehr.common.model.Contact contact) {
+    public PatientContact(Contact contact) {
         setContact(contact);
         setFhirContact(new ca.uhn.fhir.model.dstu2.resource.Patient.Contact());
     }
@@ -120,7 +121,7 @@ public class PatientContact extends AbstractOscarFhirResource<org.hl7.fhir.dstu3
      * Demographic Contact wraps around a Contact entity. This wrapper contains meta data
      * about the contact, such as relationship and legal status.
      */
-    public PatientContact(org.oscarehr.common.model.DemographicContact demographicContact) {
+    public PatientContact(DemographicContact demographicContact) {
         setDemographicContact(demographicContact);
         setFhirContactFromDemographicContact(new ca.uhn.fhir.model.dstu2.resource.Patient.Contact());
     }
@@ -129,7 +130,7 @@ public class PatientContact extends AbstractOscarFhirResource<org.hl7.fhir.dstu3
      * Demographic Contact wraps around a Contact entity. This wrapper contains meta data
      * about the contact, such as relationship and legal status.
      */
-    public PatientContact(org.oscarehr.common.model.DemographicContact[] demographicContacts) {
+    public PatientContact(DemographicContact[] demographicContacts) {
         setDemographicContacts(demographicContacts);
         setFhirContactFromDemographicContact(new ca.uhn.fhir.model.dstu2.resource.Patient.Contact[demographicContacts.length]);
     }
@@ -168,11 +169,11 @@ public class PatientContact extends AbstractOscarFhirResource<org.hl7.fhir.dstu3
     /**
      * Get the Oscar Entity Contact.
      */
-    public org.oscarehr.common.model.Contact getContact() {
+    public Contact getContact() {
         return contact;
     }
 
-    private void setContact(org.oscarehr.common.model.Contact contact) {
+    private void setContact(Contact contact) {
         this.contact = contact;
     }
 
@@ -180,27 +181,27 @@ public class PatientContact extends AbstractOscarFhirResource<org.hl7.fhir.dstu3
         return fhirContact;
     }
 
-    public org.oscarehr.common.model.Contact[] getContacts() {
+    public Contact[] getContacts() {
         return contacts;
     }
 
-    private void setContacts(org.oscarehr.common.model.Contact[] contacts) {
+    private void setContacts(Contact[] contacts) {
         this.contacts = contacts;
     }
 
-    public org.oscarehr.common.model.DemographicContact getDemographicContact() {
+    public DemographicContact getDemographicContact() {
         return demographicContact;
     }
 
-    private void setDemographicContact(org.oscarehr.common.model.DemographicContact demographicContact) {
+    private void setDemographicContact(DemographicContact demographicContact) {
         this.demographicContact = demographicContact;
     }
 
-    public org.oscarehr.common.model.DemographicContact[] getDemographicContacts() {
+    public DemographicContact[] getDemographicContacts() {
         return demographicContacts;
     }
 
-    private void setDemographicContacts(org.oscarehr.common.model.DemographicContact[] demographicContacts) {
+    private void setDemographicContacts(DemographicContact[] demographicContacts) {
         this.demographicContacts = demographicContacts;
     }
 

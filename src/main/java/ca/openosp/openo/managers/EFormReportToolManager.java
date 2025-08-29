@@ -31,8 +31,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.common.model.EFormReportTool;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.model.EFormReportTool;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 
 /**

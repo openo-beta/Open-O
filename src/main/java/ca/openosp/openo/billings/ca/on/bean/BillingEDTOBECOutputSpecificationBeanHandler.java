@@ -33,15 +33,15 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.BatchEligibilityDao;
-import org.oscarehr.common.model.BatchEligibility;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.BatchEligibilityDao;
+import ca.openosp.openo.commn.model.BatchEligibility;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class BillingEDTOBECOutputSpecificationBeanHandler {
 

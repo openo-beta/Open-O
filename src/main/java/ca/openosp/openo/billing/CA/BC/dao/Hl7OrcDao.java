@@ -29,7 +29,7 @@ import java.util.List;
 import javax.persistence.Query;
 
 import ca.openosp.openo.billing.CA.BC.model.Hl7Orc;
-import org.oscarehr.common.dao.AbstractDaoImpl;
+import ca.openosp.openo.commn.dao.AbstractDaoImpl;
 import org.springframework.stereotype.Repository;
 
 @Repository

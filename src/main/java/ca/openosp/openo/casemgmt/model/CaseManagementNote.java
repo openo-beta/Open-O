@@ -35,10 +35,10 @@ import java.util.Set;
 
 import ca.openosp.openo.model.BaseObject;
 import ca.openosp.openo.casemgmt.dao.CaseManagementNoteLinkDAO;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.utility.SpringUtils;
 
-import ca.openosp.openo.rx.data.RxPrescriptionData;
+import ca.openosp.openo.prescript.data.RxPrescriptionData;
 
 
 public class CaseManagementNote extends BaseObject {
@@ -108,7 +108,7 @@ public class CaseManagementNote extends BaseObject {
         map.put("reporter_caisi_role", reporter_caisi_role);
         map.put("reporter_caisi_team", reporter_program_team);
         map.put("history", history);
-        map.put("provider", provider);
+        map.put("providers", provider);
         map.put("editors", editors);
         map.put("role_name", roleName);
         map.put("program_name", programName);

@@ -31,8 +31,8 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.commons.io.IOUtils;
 import org.apache.struts2.ServletActionContext;
 
-import org.oscarehr.utility.MiscUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.OscarProperties;
 
 import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletRequest;

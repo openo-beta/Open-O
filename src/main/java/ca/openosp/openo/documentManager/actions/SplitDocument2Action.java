@@ -21,6 +21,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.OscarProperties;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -29,21 +30,21 @@ import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageTree;
-import org.oscarehr.common.dao.CtlDocumentDao;
-import org.oscarehr.common.dao.DocumentDao;
-import org.oscarehr.common.dao.PatientLabRoutingDao;
-import org.oscarehr.common.dao.ProviderInboxRoutingDao;
-import org.oscarehr.common.dao.ProviderLabRoutingDao;
-import org.oscarehr.common.dao.QueueDocumentLinkDao;
-import org.oscarehr.common.model.CtlDocument;
-import org.oscarehr.common.model.CtlDocumentPK;
-import org.oscarehr.common.model.Document;
-import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.common.model.ProviderInboxItem;
-import org.oscarehr.common.model.ProviderLabRoutingModel;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.CtlDocumentDao;
+import ca.openosp.openo.commn.dao.DocumentDao;
+import ca.openosp.openo.commn.dao.PatientLabRoutingDao;
+import ca.openosp.openo.commn.dao.ProviderInboxRoutingDao;
+import ca.openosp.openo.commn.dao.ProviderLabRoutingDao;
+import ca.openosp.openo.commn.dao.QueueDocumentLinkDao;
+import ca.openosp.openo.commn.model.CtlDocument;
+import ca.openosp.openo.commn.model.CtlDocumentPK;
+import ca.openosp.openo.commn.model.Document;
+import ca.openosp.openo.commn.model.PatientLabRouting;
+import ca.openosp.openo.commn.model.ProviderInboxItem;
+import ca.openosp.openo.commn.model.ProviderLabRoutingModel;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -92,7 +93,7 @@ public class SplitDocument2Action extends ActionSupport {
 
         Document doc = documentDao.getDocument(docNum);
 
-        String docdownload = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docdownload = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
         if (!docdownload.endsWith(File.separator)) {
             docdownload = docdownload + File.separator;
         }
@@ -221,7 +222,7 @@ public class SplitDocument2Action extends ActionSupport {
     public String rotate180() throws Exception {
         Document doc = documentDao.getDocument(request.getParameter("document"));
 
-        String docdownload = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docdownload = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
         Path filePath = Paths.get(docdownload, doc.getDocfilename());
         File input = filePath.toFile();
         PDFParser parser = new PDFParser(new RandomAccessFile(input, "rw"));
@@ -246,7 +247,7 @@ public class SplitDocument2Action extends ActionSupport {
     public String rotate90() throws Exception {
         Document doc = documentDao.getDocument(request.getParameter("document"));
 
-        String docdownload = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docdownload = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
         Path filePath = Paths.get(docdownload, doc.getDocfilename());
         File file = filePath.toFile();
 
@@ -271,7 +272,7 @@ public class SplitDocument2Action extends ActionSupport {
     public String removeFirstPage() throws Exception {
         Document doc = documentDao.getDocument(request.getParameter("document"));
 
-        String docdownload = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docdownload = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
         Path filePath = Paths.get(docdownload, doc.getDocfilename());
         File file = filePath.toFile();
 

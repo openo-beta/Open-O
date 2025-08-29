@@ -30,9 +30,9 @@ package ca.openosp.openo.managers;
 
 import java.util.List;
 
-import org.oscarehr.common.dao.FacilityDao;
-import org.oscarehr.common.model.Facility;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.dao.FacilityDao;
+import ca.openosp.openo.commn.model.Facility;
+import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

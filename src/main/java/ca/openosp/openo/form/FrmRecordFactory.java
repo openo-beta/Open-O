@@ -26,7 +26,7 @@
 
 package ca.openosp.openo.form;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 public class FrmRecordFactory {
 

@@ -35,8 +35,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
-import org.oscarehr.common.model.ProviderData;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.model.ProviderData;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import ca.openosp.openo.billings.ca.bc.data.BillingFormData;
 import ca.openosp.openo.billings.ca.bc.data.BillingFormData.BillingVisit;

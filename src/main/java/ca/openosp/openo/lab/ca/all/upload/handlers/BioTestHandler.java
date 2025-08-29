@@ -29,12 +29,13 @@ package ca.openosp.openo.lab.ca.all.upload.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.Hl7TextInfoDao;
-import org.oscarehr.common.model.Hl7TextInfo;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.OscarAuditLogger;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.Hl7TextInfoDao;
+import ca.openosp.openo.commn.model.Hl7TextInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.OscarAuditLogger;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import ca.openosp.openo.lab.ca.all.upload.MessageUploader;
@@ -43,7 +44,7 @@ import ca.openosp.openo.lab.ca.all.util.Utilities;
 
 public class BioTestHandler implements MessageHandler {
 
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
     Hl7TextInfoDao hl7TextInfoDao = (Hl7TextInfoDao) SpringUtils.getBean(Hl7TextInfoDao.class);
 
 

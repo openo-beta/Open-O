@@ -24,26 +24,27 @@
 
 --%>
 
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
 <%@ page import="org.w3c.dom.*" %>
 <%@ page import="ca.openosp.openo.messenger.util.Msgxml" %>
-<%@ page import="oscar.oscarDemographic.data.*" %>
+<%@ page import="ca.openosp.openo.demographic.data.*" %>
 <%@ page import="ca.openosp.openo.managers.MessagingManager" %>
-<%@ page import="org.oscarehr.common.model.Groups" %>
+<%@ page import="ca.openosp.openo.commn.model.Groups" %>
 <%@ page import="ca.openosp.openo.messenger.data.MsgProviderData" %>
 <%@ page import="java.util.Map, java.util.List" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.messenger.pageUtil.MsgSessionBean" %>
 <%@ page import="ca.openosp.openo.managers.MessengerGroupManager" %>
+<%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
@@ -89,7 +90,7 @@
 
     String demographic_no = (String) request.getAttribute("demographic_no");
     DemographicData demoData = new DemographicData();
-    org.oscarehr.common.model.Demographic demo = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demographic_no);
+    Demographic demo = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demographic_no);
     String demoName = "";
     if (demo != null) {
         demoName = demo.getLastName() + ", " + demo.getFirstName();

@@ -36,9 +36,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.common.model.BillingCdmServiceCodes;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.model.BillingCdmServiceCodes;
+import ca.openosp.openo.commn.dao.BillingCdmServiceCodesDao;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class BillingCdmServiceCodesDaoTest extends DaoTestFixtures {
 

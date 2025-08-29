@@ -25,16 +25,16 @@
 --%>
 
 <%@page import="ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO" %>
-<%@page import="org.oscarehr.common.model.SecRole" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.common.dao.SecRoleDao" %>
-<%@page import="oscar.oscarDB.*" %>
+<%@page import="ca.openosp.openo.commn.model.SecRole" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.commn.dao.SecRoleDao" %>
+<%@page import="ca.openosp.openo.db.*" %>
 <%@page import="java.sql.*" %>
 <%@page import="java.util.*" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.utility.DbConnectionFilter" %>
-<%@page import="org.oscarehr.utility.MiscUtils" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.DbConnectionFilter" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.log.LogAction" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%

@@ -22,11 +22,11 @@
     Toronto, Ontario, Canada
 
 --%>
-    <%@page import="org.oscarehr.common.model.UserProperty"%>
-    <%@page import="org.oscarehr.utility.LoggedInInfo"%>
-    <%@page import="org.oscarehr.utility.SpringUtils"%>
-    <%@page import="org.oscarehr.common.dao.UserPropertyDAO"%>
-    <%@page import="oscar.OscarProperties"%>
+    <%@page import="ca.openosp.openo.commn.model.UserProperty"%>
+    <%@page import="ca.openosp.openo.utility.LoggedInInfo"%>
+    <%@page import="ca.openosp.openo.utility.SpringUtils"%>
+    <%@page import="ca.openosp.openo.commn.dao.UserPropertyDAO"%>
+    <%@page import="ca.openosp.OscarProperties"%>
     <%@page contentType="text/javascript"%>
     <%@page import="ca.openosp.openo.casemgmt.common.Colour"%>
 

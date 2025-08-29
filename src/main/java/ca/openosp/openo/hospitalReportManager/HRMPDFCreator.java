@@ -30,15 +30,15 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.*;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.EFormData;
+import ca.openosp.openo.commn.model.EFormData;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao;
 
 import ca.openosp.openo.hospitalReportManager.dao.HRMProviderConfidentialityStatementDao;
 
 import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.documentManager.ConvertToEdoc;
 
 import java.io.*;

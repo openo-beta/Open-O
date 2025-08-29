@@ -23,8 +23,8 @@
 
 --%>
 <%@ include file="/taglibs.jsp" %>
-<%@ page import="org.oscarehr.PMmodule.model.ProgramSignature" %>
-<%@ page import="org.oscarehr.PMmodule.model.Program" %>
+<%@ page import="ca.openosp.openo.PMmodule.model.ProgramSignature" %>
+<%@ page import="ca.openosp.openo.PMmodule.model.Program" %>
 <script>
     function save() {
         var maxAllowed = document.programManagerForm.elements['program.maxAllowed'].value;

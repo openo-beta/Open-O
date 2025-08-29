@@ -26,7 +26,7 @@
 
 <%@ page import=" java.util.*, org.w3c.dom.*" %>
 <%@ page
-        import="oscar.oscarMessenger.docxfer.send.*,oscar.oscarMessenger.docxfer.util.*" %>
+        import="ca.openosp.openo.messenger.docxfer.send.*,ca.openosp.openo.messenger.docxfer.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -65,7 +65,7 @@
 
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/encounterStyles.css">
 
-<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.messenger.pageUtil.MsgSessionBean" %>
 <%@ page import="ca.openosp.openo.messenger.docxfer.util.MsgCommxml" %>
 <%@ page import="ca.openosp.openo.messenger.docxfer.send.MsgGenerate" %>

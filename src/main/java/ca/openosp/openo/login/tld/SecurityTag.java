@@ -28,7 +28,7 @@ package ca.openosp.openo.login.tld;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.util.OscarRoleObjectPrivilege;
 
 import javax.servlet.jsp.JspException;
@@ -63,7 +63,7 @@ public class SecurityTag implements Tag {
     public int doStartTag() throws JspException {
         int ret = 0;
         Vector v = OscarRoleObjectPrivilege.getPrivilegeProp(objectName);
-        /*TODO: temporily allow current security work, the if statement should be removed */
+        /*TODO: temporily allow current sec work, the if statement should be removed */
         if (roleName == null)
         {
             ret = SKIP_BODY;

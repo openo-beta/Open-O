@@ -41,7 +41,7 @@ import org.junit.Test;
 import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.SchemaUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.login.jaas.LdapLoginModule;
 import ca.openosp.openo.login.jaas.LoginModuleFactory;
 import ca.openosp.openo.login.jaas.OscarCallbackHandler;
@@ -52,7 +52,7 @@ public class LdapLoginModuleTest extends DaoTestFixtures {
 
     @Before
     public void before() throws Exception {
-        SchemaUtils.restoreTable("security", "provider", "secUserRole");
+        SchemaUtils.restoreTable("sec", "providers", "secUserRole");
     }
 
     @Test

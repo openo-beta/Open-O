@@ -30,11 +30,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.dao.DemographicDao;
+import ca.openosp.openo.commn.dao.DemographicDao;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.renal.CkdScreener;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -55,7 +55,7 @@ public class CkdDSA2Action extends ActionSupport {
         String demographicNo = request.getParameter("demographic_no");
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "r", demographicNo)) {
-            throw new SecurityException("missing required security object (_demographic)");
+            throw new SecurityException("missing required sec object (_demographic)");
         }
 
         CkdScreener ckdScreener = new CkdScreener();

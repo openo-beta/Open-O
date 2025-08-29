@@ -27,9 +27,9 @@ package ca.openosp.openo.billings.pageUtil;
 
 import java.util.ArrayList;
 
-import org.oscarehr.common.dao.BillingDao;
-import org.oscarehr.common.model.Billing;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.BillingDao;
+import ca.openosp.openo.commn.model.Billing;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.billings.pageUtil.BillingBillingManager.BillingItem;

@@ -30,20 +30,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.dao.DemographicExtDao;
-import org.oscarehr.common.dao.DrugDao;
-import org.oscarehr.common.dao.DxresearchDAO;
-import org.oscarehr.common.dao.FormLabReq07Dao;
-import org.oscarehr.common.dao.MeasurementDao;
-import org.oscarehr.common.dao.MeasurementMapDao;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.Drug;
-import org.oscarehr.common.model.Dxresearch;
-import org.oscarehr.common.model.FormLabReq07;
-import org.oscarehr.common.model.Measurement;
-import org.oscarehr.common.model.MeasurementMap;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.dao.DemographicExtDao;
+import ca.openosp.openo.commn.dao.DrugDao;
+import ca.openosp.openo.commn.dao.DxresearchDAO;
+import ca.openosp.openo.commn.dao.FormLabReq07Dao;
+import ca.openosp.openo.commn.dao.MeasurementDao;
+import ca.openosp.openo.commn.dao.MeasurementMapDao;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.Drug;
+import ca.openosp.openo.commn.model.Dxresearch;
+import ca.openosp.openo.commn.model.FormLabReq07;
+import ca.openosp.openo.commn.model.Measurement;
+import ca.openosp.openo.commn.model.MeasurementMap;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class ReportHelper {
 

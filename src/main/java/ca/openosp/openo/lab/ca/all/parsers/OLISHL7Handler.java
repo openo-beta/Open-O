@@ -32,15 +32,16 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.Misc;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.bouncycastle.util.encoders.Base64;
-import org.oscarehr.olis.dao.OLISRequestNomenclatureDao;
-import org.oscarehr.olis.dao.OLISResultNomenclatureDao;
-import org.oscarehr.olis.model.OLISRequestNomenclature;
-import org.oscarehr.olis.model.OLISResultNomenclature;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.olis.dao.OLISRequestNomenclatureDao;
+import ca.openosp.openo.olis.dao.OLISResultNomenclatureDao;
+import ca.openosp.openo.olis.model.OLISRequestNomenclature;
+import ca.openosp.openo.olis.model.OLISResultNomenclature;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.UtilDateUtilities;
 import ca.uhn.hl7v2.HL7Exception;
@@ -60,7 +61,7 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
  */
 public class OLISHL7Handler implements MessageHandler {
 
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
     protected boolean isFinal = true;
     protected boolean isCorrected = false;
     protected Message msg = null;
@@ -1200,7 +1201,7 @@ public class OLISHL7Handler implements MessageHandler {
 
     private void parseZPDSegment() throws HL7Exception {
         Segment zpd = terser.getSegment("/.ZPD");
-        boolean rb = "Y".equals(oscar.Misc.getStr(Terser.get(zpd, 3, 0, 1, 1), ""));
+        boolean rb = "Y".equals(Misc.getStr(Terser.get(zpd, 3, 0, 1, 1), ""));
         if (!reportBlocked && rb) {
             reportBlocked = true;
         }

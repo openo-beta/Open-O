@@ -25,7 +25,7 @@
 package ca.openosp.openo.event;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.context.ApplicationEvent;
 
 public class AppointmentStatusChangeEvent extends ApplicationEvent {
@@ -36,7 +36,7 @@ public class AppointmentStatusChangeEvent extends ApplicationEvent {
      */
     private final String appointment_no;
     /**
-     * The ID of the provider who has the appointment.
+     * The ID of the providers who has the appointment.
      */
     private final String provider_no;
     /**
@@ -103,9 +103,9 @@ public class AppointmentStatusChangeEvent extends ApplicationEvent {
     }
 
     /**
-     * Returns the ID of the provider who has the appointment.
+     * Returns the ID of the providers who has the appointment.
      *
-     * @return The current ID of the provider who has the appointment.
+     * @return The current ID of the providers who has the appointment.
      */
     public final String getProvider_no() {
         return this.provider_no;

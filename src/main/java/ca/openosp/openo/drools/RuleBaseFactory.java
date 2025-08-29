@@ -26,7 +26,7 @@ package ca.openosp.openo.drools;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.drools.RuleBase;
-import org.oscarehr.utility.QueueCache;
+import ca.openosp.openo.utility.QueueCache;
 
 public final class RuleBaseFactory {
 

@@ -39,7 +39,7 @@
     }
 %>
 
-<%@page import="org.oscarehr.utility.WebUtils" %>
+<%@page import="ca.openosp.openo.utility.WebUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
@@ -50,46 +50,40 @@
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 
 
-<%@page import="java.util.ArrayList, java.util.List, java.util.*, oscar.OscarProperties, oscar.oscarLab.ca.on.*" %>
-<%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager,ca.openosp.openo.casemgmt.model.CaseManagementNote,ca.openosp.openo.casemgmt.model.Issue,org.oscarehr.common.model.UserProperty,org.oscarehr.common.dao.UserPropertyDAO,org.springframework.web.context.support.*,org.springframework.web.context.*" %>
+<%@page import="java.util.ArrayList, java.util.List, java.util.*, ca.openosp.OscarProperties, ca.openosp.openo.lab.ca.on.*" %>
+<%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager,ca.openosp.openo.casemgmt.model.CaseManagementNote,ca.openosp.openo.casemgmt.model.Issue,ca.openosp.openo.commn.dao.UserPropertyDAO,org.springframework.web.context.support.*,org.springframework.web.context.*" %>
 
-<%@page import="org.oscarehr.common.dao.SiteDao" %>
+<%@page import="ca.openosp.openo.commn.dao.SiteDao" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
-<%@page import="org.oscarehr.common.model.Site" %>
-<%@page import="org.oscarehr.utility.WebUtils" %>
+<%@page import="ca.openosp.openo.utility.WebUtils" %>
 <%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequest2Form" %>
 <%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil" %>
 <%@page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewRequest2Action" %>
-<%@page import="org.oscarehr.utility.MiscUtils,ca.openosp.openo.clinic.ClinicData" %>
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@ page import="org.oscarehr.utility.DigitalSignatureUtils" %>
-<%@ page import="org.oscarehr.ui.servlet.ImageRenderingServlet" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.utility.MiscUtils" %>
-<%@page import="org.oscarehr.PMmodule.dao.ProgramDao, org.oscarehr.PMmodule.model.Program" %>
-<%@page import="ca.openosp.openo.demographic.data.DemographicData, ca.openosp.openo.rx.data.RxProviderData, ca.openosp.openo.rx.data.RxProviderData.Provider, ca.openosp.openo.clinic.ClinicData" %>
-<%@ page import="org.oscarehr.common.dao.FaxConfigDao, org.oscarehr.common.model.FaxConfig" %>
-<%@page import="org.oscarehr.common.dao.ConsultationServiceDao" %>
-<%@page import="org.oscarehr.common.model.ConsultationServices" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils,ca.openosp.openo.clinic.ClinicData" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.utility.DigitalSignatureUtils" %>
+<%@ page import="ca.openosp.openo.ui.servlet.ImageRenderingServlet" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.PMmodule.dao.ProgramDao, ca.openosp.openo.PMmodule.model.Program" %>
+<%@page import="ca.openosp.openo.demographic.data.DemographicData, ca.openosp.openo.prescript.data.RxProviderData, ca.openosp.openo.prescript.data.RxProviderData.Provider, ca.openosp.openo.clinic.ClinicData" %>
+<%@ page import="ca.openosp.openo.commn.dao.FaxConfigDao" %>
+<%@page import="ca.openosp.openo.commn.dao.ConsultationServiceDao" %>
 <%@ page import="ca.openosp.openo.managers.DemographicManager" %>
-<%@page import="org.oscarehr.common.model.DemographicContact" %>
-<%@page import="org.oscarehr.common.model.ProfessionalContact" %>
-<%@page import="org.oscarehr.common.dao.ContactSpecialtyDao" %>
-<%@page import="org.oscarehr.common.dao.DemographicContactDao" %>
-<%@page import="org.oscarehr.common.model.ContactSpecialty" %>
-<%@ page import="org.oscarehr.common.model.enumerator.ConsultationRequestExtKey" %>
-<%@ page import="org.oscarehr.common.dao.ConsultationRequestExtDao" %>
+<%@page import="ca.openosp.openo.commn.dao.ContactSpecialtyDao" %>
+<%@page import="ca.openosp.openo.commn.dao.DemographicContactDao" %>
+<%@ page import="ca.openosp.openo.commn.model.enumerator.ConsultationRequestExtKey" %>
+<%@ page import="ca.openosp.openo.commn.dao.ConsultationRequestExtDao" %>
 <%@ page import="ca.openosp.openo.managers.ConsultationManager" %>
 <%@ page import="ca.openosp.openo.encounter.data.EctFormData" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="org.oscarehr.common.model.EFormData" %>
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
 <%@ page import="ca.openosp.openo.lab.ca.all.Hl7textResultsData" %>
 <%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@ page import="ca.openosp.openo.util.StringUtils" %>
-<%@ page import="org.oscarehr.common.model.enumerator.ModuleType" %>
+<%@ page import="ca.openosp.openo.commn.model.enumerator.ModuleType" %>
 <%@ page import="ca.openosp.openo.demographic.data.EctInformation" %>
 <%@ page import="ca.openosp.openo.demographic.data.RxInformation" %>
 <%@ page
@@ -97,6 +91,8 @@
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
 <%@ page import="ca.openosp.openo.managers.LookupListManager" %>
+<%@ page import="ca.openosp.openo.commn.model.*" %>
+<%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
 
 
 <jsp:useBean id="displayServiceUtil" scope="request"
@@ -104,7 +100,7 @@
 <!DOCTYPE html>
 <html>
 
-    <%! boolean bMultisites = org.oscarehr.common.IsPropertiesOn.isMultisitesEnable(); %>
+    <%! boolean bMultisites = IsPropertiesOn.isMultisitesEnable(); %>
 
     <%
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -145,7 +141,7 @@
         String providerNo = (String) session.getAttribute("user");
         String providerNoFromChart = null;
         DemographicData demoData = null;
-        org.oscarehr.common.model.Demographic demographic = null;
+        Demographic demographic = null;
 
         RxProviderData rx = new RxProviderData();
         List<Provider> prList = rx.getAllProviders();
@@ -162,7 +158,7 @@
             demo = consultUtil.demoNo;
         }
 
-        // Check if the selected provider is currently active. If it is not active, add it to the prList, as the list only contains active providers.
+        // Check if the selected providers is currently active. If it is not active, add it to the prList, as the list only contains active providers.
         Boolean isProviderActive = false;
         for (Provider activeProvider : prList) {
             if (consultUtil.providerNo != null && consultUtil.providerNo.equalsIgnoreCase(activeProvider.getProviderNo())) {
@@ -1278,7 +1274,7 @@
 
 
     <%
-        String lhndType = "provider"; //set default as provider
+        String lhndType = "providers"; //set default as providers
         String providerDefault = providerNo;
 
         if (consultUtil.letterheadName == null) {
@@ -1290,7 +1286,7 @@
                 lhnd = lhndProperty.getValue();
             }
 
-            //1 or null = provider, 2 = MRP and 3 = clinic
+            //1 or null = providers, 2 = MRP and 3 = clinic
 
             if (lhnd != null) {
                 if ("2".equals(lhnd)) {
@@ -2388,7 +2384,7 @@ if (userAgent != null) {
                                                         if (p.getProviderNo().compareTo("-1") != 0 && (p.getFirstName() != null || p.getSurname() != null)) {
                                                 %>
                                                 <option value="<%=p.getProviderNo() %>"
-                                                        <%=(consultUtil.letterheadName != null && consultUtil.letterheadName.equalsIgnoreCase(p.getProviderNo())) ? "selected='selected'" : (consultUtil.letterheadName == null && p.getProviderNo().equalsIgnoreCase(providerDefault) && lhndType.equals("provider") ? "selected='selected'" : "") %>>
+                                                        <%=(consultUtil.letterheadName != null && consultUtil.letterheadName.equalsIgnoreCase(p.getProviderNo())) ? "selected='selected'" : (consultUtil.letterheadName == null && p.getProviderNo().equalsIgnoreCase(providerDefault) && lhndType.equals("providers") ? "selected='selected'" : "") %>>
                                                     <%=Encode.forHtmlContent(p.getSurname())%>
                                                     ,&nbsp;<%=Encode.forHtmlContent(p.getFirstName().replace("Dr.", ""))%>
                                                 </option>

@@ -41,12 +41,12 @@
 
 
 <%@ page
-        import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, java.net.*,oscar.MyDateFormat,oscar.oscarBilling.ca.bc.MSP.*,oscar.*" %>
+        import="java.math.*, java.util.*, java.io.*, java.sql.*, ca.openosp.*, java.net.*,ca.openosp.MyDateFormat,ca.openosp.openo.billing.ca.bc.MSP.*" %>
 
 
-<jsp:useBean id="documentBean" class="oscar.DocumentBean" scope="request"/>
+<jsp:useBean id="documentBean" class="ca.openosp.DocumentBean" scope="request"/>
 
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.billing.CA.BC.model.TeleplanS21" %>
 <%@ page import="ca.openosp.openo.billing.CA.BC.dao.TeleplanS21Dao" %>
 <%@ page import="ca.openosp.openo.billing.CA.BC.model.TeleplanS00" %>
@@ -60,6 +60,7 @@
 <%@ page import="ca.openosp.openo.billing.CA.BC.model.TeleplanC12" %>
 <%@ page import="ca.openosp.openo.billing.CA.BC.dao.TeleplanC12Dao" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile" %>
+<%@ page import="ca.openosp.OscarProperties" %>
 <%
     TeleplanS21Dao teleplanS21Dao = SpringUtils.getBean(TeleplanS21Dao.class);
     TeleplanS00Dao teleplanS00Dao = SpringUtils.getBean(TeleplanS00Dao.class);

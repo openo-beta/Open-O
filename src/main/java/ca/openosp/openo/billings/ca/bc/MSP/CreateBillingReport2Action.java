@@ -16,10 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import ca.openosp.openo.entities.Provider;
 import ca.openosp.openo.entities.S21;
 import org.apache.commons.io.IOUtils;
-import org.oscarehr.utility.DbConnectionFilter;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.DbConnectionFilter;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.OscarDocumentCreator;
+import ca.openosp.OscarDocumentCreator;
 import ca.openosp.openo.entities.MSPBill;
 import ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile.BillSearch;
 import ca.openosp.openo.billings.ca.bc.data.PayRefSummary;
@@ -108,7 +108,7 @@ public class CreateBillingReport2Action extends ActionSupport {
                 } else if (repType.equals(MSPReconcile.REP_WO)) {
                     Provider payeeProv = msp.getProvider(payee, 1);
                     Provider provProv = msp.getProvider(provider, 0);
-                    reportParams.put("provider", provider.equals("ALL") ? "ALL" : payeeProv.getFullName());
+                    reportParams.put("providers", provider.equals("ALL") ? "ALL" : payeeProv.getFullName());
                     reportParams.put("payee", payee.equals("ALL") ? "ALL" : provProv.getFullName());
                 }
 
@@ -132,8 +132,8 @@ public class CreateBillingReport2Action extends ActionSupport {
 
                 Provider payeeProv = msp.getProvider(provider, 1);
                 reportParams.put("mspBean", msp);
-                //set parameters for payee of provider
-                reportParams.put("provider", payeeProv.equals("ALL") ? "ALL" : payeeProv.getInitials());
+                //set parameters for payee of providers
+                reportParams.put("providers", payeeProv.equals("ALL") ? "ALL" : payeeProv.getInitials());
                 reportParams.put("providerNo", payeeProv.getProviderNo());
                 //set parameters for S21 report header
                 reportParams.put("payeeName", s21.getPayeeName());
@@ -204,7 +204,7 @@ public class CreateBillingReport2Action extends ActionSupport {
 
                 reportParams.put("account", account.equals("ALL") ? "ALL" : acctProv.getFullName());
 
-                reportParams.put("provider", provider.equals("ALL") ? "ALL" : provProv.getInitials());
+                reportParams.put("providers", provider.equals("ALL") ? "ALL" : provProv.getInitials());
                 reportParams.put("payee", payee.equals("ALL") ? "ALL" : payeeProv.getInitials());
                 reportParams.put("startDate", startDate);
                 reportParams.put("endDate", endDate);

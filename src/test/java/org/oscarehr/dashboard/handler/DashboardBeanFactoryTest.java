@@ -36,8 +36,8 @@ import org.apache.commons.io.IOUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 // import org.junit.Test;
-import org.oscarehr.common.model.Dashboard;
-import org.oscarehr.common.model.IndicatorTemplate;
+import ca.openosp.openo.commn.model.Dashboard;
+import ca.openosp.openo.commn.model.IndicatorTemplate;
 import ca.openosp.openo.dashboard.display.beans.DashboardBean;
 import ca.openosp.openo.dashboard.factory.DashboardBeanFactory;
 

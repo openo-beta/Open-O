@@ -33,9 +33,9 @@ import net.sf.json.processors.JsDateJsonBeanProcessor;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 
 import javax.servlet.ServletException;
@@ -55,7 +55,7 @@ public class EctDisplayAction extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static Logger logger = MiscUtils.getLogger();
 
     private static HashMap<String, String> Actions = null;
     protected static final String ELLIPSES = "...";
@@ -108,7 +108,7 @@ public class EctDisplayAction extends ActionSupport {
         request.setAttribute("navbarName", navName);
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "r", bean.demographicNo)) {
-            throw new SecurityException("missing required security object (_demographic)");
+            throw new SecurityException("missing required sec object (_demographic)");
         }
 
         boolean isJsonRequest = request.getParameter("json") != null && request.getParameter("json").equalsIgnoreCase("true");
@@ -288,7 +288,7 @@ public class EctDisplayAction extends ActionSupport {
     /**
      * Checks if the action is enabled. Non-enabled actions should not render the encounter
      * screen widget (i.e. return true in {@link #getInfo(EctSessionBean, javax.servlet.http.HttpServletRequest, NavBarDisplayDAO, org.apache.struts.util.MessageResources)}
-     * and must not modify the nav bar dao).
+     * and must not modify the nav bar daos).
      *
      * @return Returns true of the actions is enabled and false otherwise.
      */
@@ -299,7 +299,7 @@ public class EctDisplayAction extends ActionSupport {
     /**
      * Sets if the action is enabled. Non-enabled actions should not render the encounter
      * screen widget (i.e. return true in {@link #getInfo(EctSessionBean, javax.servlet.http.HttpServletRequest, NavBarDisplayDAO, org.apache.struts.util.MessageResources)}
-     * and must not modify the nav bar dao).
+     * and must not modify the nav bar daos).
      *
      * @param enabled Boolean flag that indicates if the actions is enabled.
      */

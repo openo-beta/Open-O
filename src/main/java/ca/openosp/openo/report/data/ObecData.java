@@ -34,12 +34,12 @@ import java.nio.file.StandardOpenOption;
 import java.util.Properties;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.OscarAppointmentDao;
-import org.oscarehr.common.model.Appointment;
-import org.oscarehr.common.model.Demographic;
+import ca.openosp.openo.commn.dao.OscarAppointmentDao;
+import ca.openosp.openo.commn.model.Appointment;
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.integration.mcedt.mailbox.ActionUtils;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.db.DBPreparedHandler;
 import ca.openosp.openo.util.ConversionUtils;

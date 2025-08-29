@@ -21,11 +21,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 
+import ca.openosp.Misc;
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.Hl7TextInfoDao;
-import org.oscarehr.common.model.Hl7TextInfo;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.Hl7TextInfoDao;
+import ca.openosp.openo.commn.model.Hl7TextInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import ca.openosp.openo.lab.ca.all.upload.MessageUploader;
@@ -36,7 +38,7 @@ import ca.openosp.openo.lab.ca.all.util.Utilities;
  */
 public class TDISHandler implements MessageHandler {
 
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
 
     public TDISHandler() {
         logger.info("NEW TDISHandler UPLOAD HANDLER instance just instantiated. ");
@@ -88,7 +90,7 @@ public class TDISHandler implements MessageHandler {
 
         while (iter.hasNext() && n > 0) {
             Hl7TextInfo lab = iter.next();
-            if (!oscar.Misc.getString(lab.getResultStatus()).equals("A")) {
+            if (!Misc.getString(lab.getResultStatus()).equals("A")) {
                 ca.openosp.openo.lab.ca.all.parsers.MessageHandler h = Factory.getHandler(((Integer) lab.getLabNumber()).toString());
 
                 int i = 0;

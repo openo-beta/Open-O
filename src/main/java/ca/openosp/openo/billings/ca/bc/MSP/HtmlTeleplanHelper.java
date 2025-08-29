@@ -26,7 +26,7 @@
 
 package ca.openosp.openo.billings.ca.bc.MSP;
 
-import oscar.Misc;
+import ca.openosp.Misc;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;

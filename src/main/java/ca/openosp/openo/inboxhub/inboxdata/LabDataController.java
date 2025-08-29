@@ -21,14 +21,14 @@ package ca.openosp.openo.inboxhub.inboxdata;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
-import org.oscarehr.common.dao.InboxResultsDao;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.commn.dao.InboxResultsDao;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.inboxhub.query.InboxhubQuery;
 import ca.openosp.openo.inboxhub.query.InboxhubQuery.ProviderSearchFilter;
 import ca.openosp.openo.inboxhub.query.InboxhubQuery.StatusFilter;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.HRMResultsData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
@@ -197,7 +197,7 @@ public class LabDataController {
         String loggedInProviderNo = (String) loggedInInfo.getSession().getAttribute("user");
         Provider loggedInProvider = ProviderData.getProvider(loggedInProviderNo);
 
-        //Checking unclaimed vs claimed physician. If no searchAll/provider search filter is provided reset search to logged in provider.
+        //Checking unclaimed vs claimed physician. If no searchAll/providers search filter is provided reset search to logged in providers.
         if (Objects.equals(query.getProviderSearchFilter(), ProviderSearchFilter.ANY_PROVIDER)) {//All
             query.setSearchProviderNo("-1");
             query.setSearchProviderName("");

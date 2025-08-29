@@ -39,12 +39,12 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
-import org.oscarehr.common.dao.ReportTemplatesDao;
-import org.oscarehr.common.model.ReportTemplates;
+import ca.openosp.openo.commn.dao.ReportTemplatesDao;
+import ca.openosp.openo.commn.model.ReportTemplates;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.util.ConversionUtils;
@@ -294,7 +294,7 @@ public class ReportManager {
     @SuppressWarnings("unchecked")
     public String addUpdateTemplate(String uuid, String templateId, Document templateXML, LoggedInInfo loggedInInfo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_report", SecurityInfoManager.WRITE, null)) {
-            throw new RuntimeException("missing required security object (_report)");
+            throw new RuntimeException("missing required sec object (_report)");
         }
         try {
             Element rootElement = templateXML.getRootElement();
@@ -388,7 +388,7 @@ public class ReportManager {
 
     public String addTemplate(String uuid, String templateXML, LoggedInInfo loggedInInfo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_report", SecurityInfoManager.WRITE, null)) {
-            throw new RuntimeException("missing required security object (_report)");
+            throw new RuntimeException("missing required sec object (_report)");
         }
         try {
             Document templateXMLdoc = readXml(templateXML);
@@ -401,7 +401,7 @@ public class ReportManager {
 
     public String updateTemplate(String uuid, String templateId, String templateXML, LoggedInInfo loggedInInfo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_report", SecurityInfoManager.WRITE, null)) {
-            throw new RuntimeException("missing required security object (_report)");
+            throw new RuntimeException("missing required sec object (_report)");
         }
         try {
             Document templateXMLdoc = readXml(templateXML);

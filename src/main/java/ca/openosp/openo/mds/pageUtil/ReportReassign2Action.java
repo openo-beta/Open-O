@@ -38,12 +38,12 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.ProviderLabRoutingFavoritesDao;
-import org.oscarehr.common.model.ProviderLabRoutingFavorite;
+import ca.openosp.openo.commn.dao.ProviderLabRoutingFavoritesDao;
+import ca.openosp.openo.commn.model.ProviderLabRoutingFavorite;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 
@@ -66,7 +66,7 @@ public class ReportReassign2Action extends ActionSupport {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", "w", null)) {
-            throw new SecurityException("missing required security object (_lab)");
+            throw new SecurityException("missing required sec object (_lab)");
         }
 
         String status = request.getParameter("status");

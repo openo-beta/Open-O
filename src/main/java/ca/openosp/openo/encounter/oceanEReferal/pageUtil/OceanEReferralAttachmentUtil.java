@@ -5,11 +5,11 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
-import org.oscarehr.common.dao.EReferAttachmentDaoImpl;
-import org.oscarehr.common.dao.EReferAttachmentDataDaoImpl;
-import org.oscarehr.common.model.EReferAttachment;
-import org.oscarehr.common.model.EReferAttachmentData;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.EReferAttachmentDaoImpl;
+import ca.openosp.openo.commn.dao.EReferAttachmentDataDaoImpl;
+import ca.openosp.openo.commn.model.EReferAttachment;
+import ca.openosp.openo.commn.model.EReferAttachmentData;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class OceanEReferralAttachmentUtil {
     private static EReferAttachmentDataDaoImpl eReferAttachmentDataDao = SpringUtils.getBean(EReferAttachmentDataDaoImpl.class);

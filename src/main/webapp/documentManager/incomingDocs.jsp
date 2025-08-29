@@ -39,9 +39,9 @@
 %>
 
 
-<%@page import="org.oscarehr.common.model.UserProperty" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.common.dao.UserPropertyDAO" %>
+<%@page import="ca.openosp.openo.commn.model.UserProperty" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
 <%@page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@page import="java.io.File" %>
 <%@ page import="java.util.*" %>
@@ -53,11 +53,11 @@
 
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@page import="org.springframework.web.context.WebApplicationContext" %>
-<%@page import="org.oscarehr.common.dao.ProviderLabRoutingDao,org.oscarehr.common.dao.DemographicDao, org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@page import="org.oscarehr.common.dao.CtlDocClassDao,org.oscarehr.common.dao.QueueDao" %>
-<%@page import="org.oscarehr.common.model.Provider" %>
-<%@page import="org.oscarehr.common.model.Demographic" %>
-<%@page import="org.oscarehr.common.model.ProviderLabRoutingModel" %>
+<%@page import="ca.openosp.openo.commn.dao.ProviderLabRoutingDao,ca.openosp.openo.commn.dao.DemographicDao, ca.openosp.openo.PMmodule.dao.ProviderDao" %>
+<%@page import="ca.openosp.openo.commn.dao.CtlDocClassDao,ca.openosp.openo.commn.dao.QueueDao" %>
+<%@page import="ca.openosp.openo.commn.model.Provider" %>
+<%@page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@page import="ca.openosp.openo.commn.model.ProviderLabRoutingModel" %>
 
 <%@page import="ca.openosp.openo.documentManager.IncomingDocUtil" %>
 <%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
@@ -1149,7 +1149,7 @@
         </tr>
         <script type="text/javascript">
             YAHOO.example.BasicRemote = function () {
-                var url = "<%= request.getContextPath()%>/provider/SearchProvider.do";
+                var url = "<%= request.getContextPath()%>/providers/SearchProvider.do";
                 var oDS = new YAHOO.util.XHRDataSource(url, {
                     connMethodPost: true,
                     connXhrMode: 'ignoreStaleResponses'

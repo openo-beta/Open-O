@@ -24,20 +24,20 @@
  */
 package ca.openosp.openo.renal;
 
+import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.commn.model.*;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO;
 import ca.openosp.openo.casemgmt.dao.IssueDAO;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.Issue;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.model.*;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import org.oscarmcmaster.ckd.CKDConfig;
-import org.oscarmcmaster.ckd.CkdConfigDocument;
-import org.oscarmcmaster.ckd.DxCodes.Code;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.openo.ckd.CKDConfig;
+import ca.openosp.openo.ckd.CkdConfigDocument;
+import ca.openosp.openo.ckd.DxCodes.Code;
+import ca.openosp.OscarProperties;
 
 import java.util.*;
 
@@ -176,7 +176,7 @@ public class CkdScreener {
         Demographic demographic = demographicDao.getDemographicById(demographicNo);
         if (demographic != null && demographic.getProviderNo() != null && demographic.getProviderNo().length() > 0) {
             if (excludeMap.get(demographic.getProviderNo()) != null) {
-                logger.debug("skipping " + demographicNo + " - provider has opted out");
+                logger.debug("skipping " + demographicNo + " - providers has opted out");
                 return false;
             }
         }

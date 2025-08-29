@@ -26,8 +26,8 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<%@ page import="oscar.oscarProvider.data.*" %>
-<%@ page import="ca.openosp.openo.provider.data.ProviderColourUpdater" %>
+<%@ page import="ca.openosp.openo.providers.data.*" %>
+<%@ page import="ca.openosp.openo.providers.data.ProviderColourUpdater" %>
 
 
 <%

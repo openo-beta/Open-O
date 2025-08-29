@@ -40,19 +40,19 @@ import java.util.Properties;
 import java.util.Vector;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.SecUserRoleDao;
-import org.oscarehr.PMmodule.model.SecUserRole;
-import org.oscarehr.PMmodule.utility.UtilDateUtilities;
-import org.oscarehr.common.dao.DocumentResultsDao;
-import org.oscarehr.common.dao.InboxResultsDao;
-import org.oscarehr.common.dao.QueueDocumentLinkDao;
-import org.oscarehr.common.model.Queue;
-import org.oscarehr.common.model.QueueDocumentLink;
+import ca.openosp.openo.PMmodule.dao.SecUserRoleDao;
+import ca.openosp.openo.PMmodule.model.SecUserRole;
+import ca.openosp.openo.PMmodule.utility.UtilDateUtilities;
+import ca.openosp.openo.commn.dao.DocumentResultsDao;
+import ca.openosp.openo.commn.dao.InboxResultsDao;
+import ca.openosp.openo.commn.dao.QueueDocumentLinkDao;
+import ca.openosp.openo.commn.model.Queue;
+import ca.openosp.openo.commn.model.QueueDocumentLink;
 import ca.openosp.openo.inbox.InboxManagerQuery;
 import ca.openosp.openo.inbox.InboxManagerResponse;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -170,29 +170,29 @@ public class InboxManagerImpl implements InboxManager {
 
                     int queueIdInt = Integer.parseInt(queueid);
 
-                    // if doc sent to default queue and no valid provider, do NOT include it
+                    // if doc sent to default queue and no valid providers, do NOT include it
                     if (queueIdInt == Queue.DEFAULT_QUEUE_ID && !documentResultsDao.isSentToValidProvider(docid) && isSegmentIDUnique(validlabdocs, data)) {
                         // validlabdocs.add(data);
                     }
-                    // if doc sent to default queue && valid provider, check if it's sent to this provider, if yes include it
+                    // if doc sent to default queue && valid providers, check if it's sent to this providers, if yes include it
                     else if (queueIdInt == Queue.DEFAULT_QUEUE_ID && documentResultsDao.isSentToValidProvider(docid) && documentResultsDao.isSentToProvider(docid, searchProviderNo) && isSegmentIDUnique(validlabdocs, data)) {
                         validlabdocs.add(data);
                     }
-                    // if doc setn to non-default queue and valid provider, check if provider is in the queue or equal to the provider
+                    // if doc setn to non-default queue and valid providers, check if providers is in the queue or equal to the providers
                     else if (queueIdInt != Queue.DEFAULT_QUEUE_ID && documentResultsDao.isSentToValidProvider(docid)) {
                         Vector<Object> vec = OscarRoleObjectPrivilege.getPrivilegeProp("_queue." + queueid);
                         if (OscarRoleObjectPrivilege.checkPrivilege(roleName, (Properties) vec.get(0), (Vector) vec.get(1)) || documentResultsDao.isSentToProvider(docid, searchProviderNo)) {
-                            // labs is in provider's queue,do nothing
+                            // labs is in providers's queue,do nothing
                             if (isSegmentIDUnique(validlabdocs, data)) {
                                 validlabdocs.add(data);
                             }
                         }
                     }
-                    // if doc sent to non default queue and no valid provider, check if provider is in the non default queue
+                    // if doc sent to non default queue and no valid providers, check if providers is in the non default queue
                     else if (!queueid.equals(Queue.DEFAULT_QUEUE_ID) && !documentResultsDao.isSentToValidProvider(docid)) {
                         Vector<Object> vec = OscarRoleObjectPrivilege.getPrivilegeProp("_queue." + queueid);
                         if (OscarRoleObjectPrivilege.checkPrivilege(roleName, (Properties) vec.get(0), (Vector) vec.get(1))) {
-                            // labs is in provider's queue,do nothing
+                            // labs is in providers's queue,do nothing
                             if (isSegmentIDUnique(validlabdocs, data)) {
                                 validlabdocs.add(data);
                             }

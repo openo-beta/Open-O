@@ -26,10 +26,11 @@
 
 package ca.openosp.openo.eform;
 
+import ca.openosp.OscarProperties;
 import org.apache.commons.digester.Digester;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.eform.data.DatabaseAP;
 import ca.openosp.openo.eform.data.EForm;
 
@@ -182,7 +183,7 @@ public class EFormLoader {
         digester.addBeanPropertySetter("eformap-config/databaseap/ap-json-output", "apJsonOutput");
         digester.addSetNext("eformap-config/databaseap", "addDatabaseAP");
         try {
-            Properties op = oscar.OscarProperties.getInstance();
+            Properties op = OscarProperties.getInstance();
             String configpath = op.getProperty("eform_databaseap_config");
             InputStream fs = null;
             if (configpath == null) {

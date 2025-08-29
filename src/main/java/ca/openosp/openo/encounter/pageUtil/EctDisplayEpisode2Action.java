@@ -24,10 +24,10 @@
  */
 package ca.openosp.openo.encounter.pageUtil;
 
-import org.oscarehr.common.dao.EpisodeDao;
-import org.oscarehr.common.model.Episode;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.EpisodeDao;
+import ca.openosp.openo.commn.model.Episode;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.util.OscarRoleObjectPrivilege;
 import ca.openosp.openo.util.StringUtils;
 

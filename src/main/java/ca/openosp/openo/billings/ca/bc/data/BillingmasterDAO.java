@@ -34,9 +34,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.NativeSql;
-import org.oscarehr.common.model.Billing;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.NativeSql;
+import ca.openosp.openo.commn.model.Billing;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

@@ -32,14 +32,14 @@ import java.util.Locale;
 import javax.servlet.jsp.JspWriter;
 
 import org.apache.commons.beanutils.BeanComparator;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.GroupMembersDao;
-import org.oscarehr.common.dao.GroupsDao;
-import org.oscarehr.common.model.GroupMembers;
-import org.oscarehr.common.model.Groups;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.GroupMembersDao;
+import ca.openosp.openo.commn.dao.GroupsDao;
+import ca.openosp.openo.commn.model.GroupMembers;
+import ca.openosp.openo.commn.model.Groups;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 

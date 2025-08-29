@@ -36,9 +36,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.form.data.FrmData;
 
@@ -63,7 +63,7 @@ public class FormForward2Action extends ActionSupport {
         String demographicNo = request.getParameter("demographic_no");
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, demographicNo)) {
-            throw new SecurityException("missing required security object (_form)");
+            throw new SecurityException("missing required sec object (_form)");
         }
 
         String formName = request.getParameter("formname");

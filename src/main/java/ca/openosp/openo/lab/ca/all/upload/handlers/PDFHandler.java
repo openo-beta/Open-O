@@ -26,6 +26,7 @@
 package ca.openosp.openo.lab.ca.all.upload.handlers;
 
 import ca.openosp.openo.util.UtilDateUtilities;
+import ca.openosp.openo.utility.MiscUtils;
 import com.itextpdf.text.pdf.PdfReader;
 
 import java.io.FileInputStream;
@@ -34,12 +35,12 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.ProviderInboxRoutingDao;
-import org.oscarehr.common.dao.QueueDocumentLinkDao;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ProviderInboxRoutingDao;
+import ca.openosp.openo.commn.dao.QueueDocumentLinkDao;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.log.LogAction;
@@ -49,7 +50,7 @@ import ca.openosp.openo.log.LogConst;
  * @author mweston4
  */
 public class PDFHandler implements MessageHandler {
-    protected static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    protected static Logger logger = MiscUtils.getLogger();
 
     @Override
     public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
@@ -85,7 +86,7 @@ public class PDFHandler implements MessageHandler {
 
             LogAction.addLog(providerNo, LogConst.ADD, LogConst.CON_DOCUMENT, doc_no, ipAddr, "", "DocUpload");
 
-            //Get provider to route document to
+            //Get providers to route document to
             String batchPDFProviderNo = OscarProperties.getInstance().getProperty("batch_pdf_provider_no");
             if ((batchPDFProviderNo != null) && !batchPDFProviderNo.isEmpty()) {
 

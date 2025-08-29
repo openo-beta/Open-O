@@ -28,13 +28,13 @@
 <%@page import="net.sf.json.JSONSerializer" %>
 <%@page import="net.sf.json.JSONArray" %>
 <%@page import="net.sf.json.JSONObject" %>
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
-<%@ page import="org.oscarehr.common.dao.PatientLabRoutingDao" %>
-<%@ page import="org.oscarehr.common.model.PatientLabRouting" %>
+<%@ page import="ca.openosp.openo.commn.dao.PatientLabRoutingDao" %>
+<%@ page import="ca.openosp.openo.commn.model.PatientLabRouting" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="org.apache.commons.lang.builder.ReflectionToStringBuilder" %>
-<%@ page import="org.oscarehr.utility.MiscUtils" %>
+<%@ page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="org.w3c.dom.Document" %>
 <%@ page import="ca.openosp.openo.caisi_integrator.ws.CachedDemographicLabResult" %>
 <%@ page import="ca.openosp.openo.lab.ca.all.web.LabDisplayHelper" %>
@@ -42,22 +42,22 @@
 
 <%@ page import="java.util.*,
                  ca.openosp.openo.util.UtilDateUtilities,
-                 oscar.oscarLab.ca.all.*,
-                 oscar.oscarLab.ca.all.parsers.*,
+                 ca.openosp.openo.lab.ca.all.*,
+                 ca.openosp.openo.lab.ca.all.parsers.*,
                  ca.openosp.openo.lab.LabRequestReportLink,
                  ca.openosp.openo.mds.data.ReportStatus,
-                 oscar.log.*,
-                 oscar.OscarProperties" %>
+                 ca.openosp.openo.log.*,
+                 ca.openosp.OscarProperties" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
-<%@ page import="org.oscarehr.common.dao.UserPropertyDAO, org.oscarehr.common.model.UserProperty" %>
-<%@ page import="org.oscarehr.common.model.MeasurementMap, org.oscarehr.common.dao.MeasurementMapDao" %>
-<%@ page import="org.oscarehr.common.model.Tickler" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO, ca.openosp.openo.commn.model.UserProperty" %>
+<%@ page import="ca.openosp.openo.commn.model.MeasurementMap, ca.openosp.openo.commn.dao.MeasurementMapDao" %>
+<%@ page import="ca.openosp.openo.commn.model.Tickler" %>
 <%@ page import="ca.openosp.openo.managers.TicklerManager" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page
-        import="ca.openosp.openo.casemgmt.service.CaseManagementManager, org.oscarehr.common.dao.Hl7TextMessageDao, org.oscarehr.common.model.Hl7TextMessage,org.oscarehr.common.dao.Hl7TextInfoDao,org.oscarehr.common.model.Hl7TextInfo" %>
+        import="ca.openosp.openo.casemgmt.service.CaseManagementManager, ca.openosp.openo.commn.dao.Hl7TextMessageDao, ca.openosp.openo.commn.model.Hl7TextMessage,ca.openosp.openo.commn.dao.Hl7TextInfoDao,ca.openosp.openo.commn.model.Hl7TextInfo" %>
 <jsp:useBean id="oscarVariables" class="java.util.Properties" scope="session"/>
 <%@    page import="javax.swing.text.rtf.RTFEditorKit" %>
 <%@    page import="java.io.ByteArrayInputStream" %>
@@ -87,7 +87,7 @@
 
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-    oscar.OscarProperties props = oscar.OscarProperties.getInstance();
+    OscarProperties props = OscarProperties.getInstance();
     String segmentID = request.getParameter("segmentID");
     String providerNo = request.getParameter("providerNo");
     String searchProviderNo = StringUtils.trimToEmpty(request.getParameter("searchProviderNo"));
@@ -892,7 +892,7 @@ request.setAttribute("missingTests", missingTests);
                     if (json != null) {
                         var success = json.isLinkedToDemographic;
                         var demoid = '';
-                        //check if lab is linked to a provider
+                        //check if lab is linked to a providers
                         if (success) {
                             console.log("Lab IS linked to demographic: " + success);
                             console.log("Processing action: " + action);
@@ -1037,7 +1037,7 @@ request.setAttribute("missingTests", missingTests);
                 if (providerNo.equals(reportStatus.getOscarProviderNo())) {
                     labStatus = reportStatus.getStatus();
                     if (labStatus.equals("A")) {
-                        ackFlag = true;//lab has been ack by this provider.
+                        ackFlag = true;//lab has been ack by this providers.
                         break;
                     }
                 }

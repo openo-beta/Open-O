@@ -1,13 +1,14 @@
 //CHECKSTYLE:OFF
 package ca.openosp.openo.casemgmt.service;
 
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.encounter.data.EctProviderData;
 import ca.openosp.openo.encounter.pageUtil.EctSessionBean;
 import com.lowagie.text.DocumentException;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.PMmodule.model.ProgramProvider;
-import org.oscarehr.PMmodule.service.ProgramManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.PMmodule.service.ProgramManager;
 import ca.openosp.openo.caisi_integrator.ws.CachedDemographicNote;
 import ca.openosp.openo.caisi_integrator.ws.DemographicWs;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
@@ -16,13 +17,13 @@ import ca.openosp.openo.casemgmt.model.Issue;
 import ca.openosp.openo.casemgmt.util.ExtPrint;
 import ca.openosp.openo.casemgmt.web.NoteDisplay;
 import ca.openosp.openo.casemgmt.web.NoteDisplayLocal;
-import org.oscarehr.common.model.Prevention;
+import ca.openosp.openo.commn.model.Prevention;
 import ca.openosp.openo.managers.PreventionManager;
 import ca.openosp.openo.managers.ProgramManager2;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
 import ca.openosp.openo.lab.ca.all.pageUtil.OLISLabPDFCreator;
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
@@ -122,7 +123,7 @@ public class CaseManagementPrint {
         }
 
         // we're not guaranteed any ordering of notes given to us, so sort by observation date
-        oscar.OscarProperties p = oscar.OscarProperties.getInstance();
+        OscarProperties p = OscarProperties.getInstance();
         String noteSort = p.getProperty("CMESort", "");
         if (noteSort.trim().equalsIgnoreCase("UP")) {
             Collections.sort(notes, CaseManagementNote.noteObservationDateComparator);
@@ -352,7 +353,7 @@ public class CaseManagementPrint {
         if (pp != null && pp.getProgramId() != null) {
             programId = "" + pp.getProgramId();
         } else {
-            programId = String.valueOf(programMgr.getProgramIdByProgramName("OSCAR")); //Default to the oscar program if provider hasn't been assigned to a program
+            programId = String.valueOf(programMgr.getProgramIdByProgramName("OSCAR")); //Default to the oscar program if providers hasn't been assigned to a program
         }
 
         NoteSelectionCriteria criteria = new NoteSelectionCriteria();
@@ -413,7 +414,7 @@ public class CaseManagementPrint {
         if (pp != null && pp.getProgramId() != null) {
             programId = "" + pp.getProgramId();
         } else {
-            programId = String.valueOf(programMgr.getProgramIdByProgramName("OSCAR")); //Default to the oscar program if provider hasn't been assigned to a program
+            programId = String.valueOf(programMgr.getProgramIdByProgramName("OSCAR")); //Default to the oscar program if providers hasn't been assigned to a program
         }
 
         NoteSelectionCriteria criteria = new NoteSelectionCriteria();

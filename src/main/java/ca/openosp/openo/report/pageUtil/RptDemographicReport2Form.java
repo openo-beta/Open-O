@@ -25,7 +25,7 @@
 
 package ca.openosp.openo.report.pageUtil;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.util.ConversionUtils;
 
 import java.util.ArrayList;

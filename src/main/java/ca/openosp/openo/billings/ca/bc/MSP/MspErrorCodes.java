@@ -37,9 +37,9 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.Properties;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 public class MspErrorCodes extends Properties {
 
@@ -62,7 +62,7 @@ public class MspErrorCodes extends Properties {
             load(is);
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
-            MiscUtils.getLogger().debug("Error loading MSP Error codes file :" + oscar.OscarProperties.getInstance().getProperty("msp_error_codes"));
+            MiscUtils.getLogger().debug("Error loading MSP Error codes file :" + OscarProperties.getInstance().getProperty("msp_error_codes"));
         }
     }
 

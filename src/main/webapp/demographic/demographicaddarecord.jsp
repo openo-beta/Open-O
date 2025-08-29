@@ -39,33 +39,19 @@
     }
 %>
 
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page
-        import="java.util.*, java.net.URLEncoder, oscar.oscarDB.*, oscar.MyDateFormat, ca.openosp.openo.waitinglist.WaitingList, org.oscarehr.common.OtherIdManager" %>
-<%@ page import="oscar.log.*" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
+        import="java.util.*, java.net.URLEncoder, ca.openosp.openo.db.*, ca.openosp.MyDateFormat, ca.openosp.openo.waitinglist.WaitingList, ca.openosp.openo.commn.OtherIdManager" %>
+<%@ page import="ca.openosp.openo.log.*" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 
-<%@ page import="org.oscarehr.common.dao.WaitingListDao" %>
-
-<%@ page import="org.oscarehr.common.model.DemographicExt" %>
-<%@ page import="org.oscarehr.common.dao.DemographicExtDao" %>
-
-<%@ page import="org.oscarehr.common.model.Demographic" %>
-<%@ page import="org.oscarehr.common.dao.DemographicDao" %>
-<%@ page import="org.oscarehr.common.model.DemographicCust" %>
-<%@ page import="org.oscarehr.common.dao.DemographicCustDao" %>
-<%@page import="org.oscarehr.PMmodule.service.ProgramManager" %>
-<%@page import="org.oscarehr.PMmodule.service.AdmissionManager" %>
-
-<%@page import="org.oscarehr.common.dao.DemographicArchiveDao" %>
-<%@page import="org.oscarehr.common.dao.DemographicExtArchiveDao" %>
-<%@page import="org.oscarehr.common.model.DemographicExtArchive" %>
+<%@page import="ca.openosp.openo.PMmodule.service.ProgramManager" %>
+<%@page import="ca.openosp.openo.PMmodule.service.AdmissionManager" %>
 
 <%@page import="ca.openosp.openo.managers.PatientConsentManager" %>
-<%@page import="org.oscarehr.common.model.ConsentType" %>
-<%@page import="oscar.OscarProperties" %>
-<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="ca.openosp.OscarProperties" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -73,8 +59,12 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.db.DBPreparedHandlerParam" %>
+<%@ page import="ca.openosp.openo.commn.model.*" %>
+<%@ page import="ca.openosp.openo.commn.dao.*" %>
+<%@ page import="ca.openosp.openo.PMmodule.model.Program" %>
+<%@ page import="ca.openosp.openo.PMmodule.dao.ProgramDao" %>
 <%!
-    java.util.Properties oscarVariables = oscar.OscarProperties.getInstance();
+    java.util.Properties oscarVariables = OscarProperties.getInstance();
 
     //	AdmissionDao admissionDao = (AdmissionDao)SpringUtils.getBean(AdmissionDao.class);
     ProgramManager pm = SpringUtils.getBean(ProgramManager.class);
@@ -361,18 +351,18 @@
                 //add to waiting list if the waiting_list parameter in the property file is set to true
 
                 WaitingList wL = WaitingList.getInstance();
-                if (wL.getFound() && oscar.OscarProperties.getInstance().getBooleanProperty("DEMOGRAPHIC_WAITING_LIST", "true")) {
+                if (wL.getFound() && OscarProperties.getInstance().getBooleanProperty("DEMOGRAPHIC_WAITING_LIST", "true")) {
 
                     String[] paramWLPosition = new String[1];
                     paramWLPosition[0] = request.getParameter("list_id");
                     if (paramWLPosition[0].compareTo("") != 0) {
 
                         List<Long> positionList = new ArrayList<Long>();
-                        List<org.oscarehr.common.model.WaitingList> waitingListList = waitingListDao.findByWaitingListId(new Integer(1));
+                        List<ca.openosp.openo.commn.model.WaitingList> waitingListList = waitingListDao.findByWaitingListId(new Integer(1));
 
                         if (waitingListList != null) {
 
-                            for (org.oscarehr.common.model.WaitingList waitingList : waitingListList) {
+                            for (ca.openosp.openo.commn.model.WaitingList waitingList : waitingListList) {
                                 positionList.add(waitingList.getPosition());
                             }
                             Long maxPosition = 0L;
@@ -382,7 +372,7 @@
 
                             String listId = request.getParameter("list_id");
                             if (listId != null && !listId.equals("") && !listId.equals("0")) {
-                                org.oscarehr.common.model.WaitingList waitingList = new org.oscarehr.common.model.WaitingList();
+                                ca.openosp.openo.commn.model.WaitingList waitingList = new ca.openosp.openo.commn.model.WaitingList();
                                 waitingList.setListId(Integer.parseInt(request.getParameter("list_id")));
                                 waitingList.setDemographicNo(demographic.getDemographicNo());
                                 waitingList.setNote(request.getParameter("waiting_list_note"));
@@ -402,8 +392,8 @@
                 String rps = request.getParameter("rps");
                 if (rps == null || rps.trim().isEmpty()) {
                     // No program selected, try to use OSCAR program
-                    org.oscarehr.PMmodule.dao.ProgramDao programDao = (org.oscarehr.PMmodule.dao.ProgramDao) SpringUtils.getBean(org.oscarehr.PMmodule.dao.ProgramDao.class);
-                    org.oscarehr.PMmodule.model.Program oscarProgram = programDao.getProgramByName("OSCAR");
+                    ProgramDao programDao = (ProgramDao) SpringUtils.getBean(ProgramDao.class);
+                    Program oscarProgram = programDao.getProgramByName("OSCAR");
                     if (oscarProgram != null) {
                         rps = String.valueOf(oscarProgram.getId());
                     }
@@ -413,7 +403,7 @@
                 if (rps != null && !rps.trim().isEmpty()) {
                     try {
                         Integer programId = Integer.parseInt(rps);
-                        org.oscarehr.common.model.Admission admission = new org.oscarehr.common.model.Admission();
+                        Admission admission = new Admission();
                         admission.setClientId(demographic.getDemographicNo());
                         admission.setProgramId(programId);
                         admission.setProviderNo(curUser_no);
@@ -421,7 +411,7 @@
                         admission.setAdmissionStatus("current");
                         admission.setAdmissionFromTransfer(false);
                         
-                        org.oscarehr.common.dao.AdmissionDao admissionDao = (org.oscarehr.common.dao.AdmissionDao) SpringUtils.getBean(org.oscarehr.common.dao.AdmissionDao.class);
+                        AdmissionDao admissionDao = (AdmissionDao) SpringUtils.getBean(AdmissionDao.class);
                         admissionDao.saveAdmission(admission);
                     } catch (Exception e) {
                         // Log but don't fail demographic creation

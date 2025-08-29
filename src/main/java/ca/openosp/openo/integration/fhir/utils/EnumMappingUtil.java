@@ -26,7 +26,7 @@ package ca.openosp.openo.integration.fhir.utils;
  */
 
 import org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender;
-import org.oscarehr.common.Gender;
+import ca.openosp.openo.commn.Gender;
 
 public final class EnumMappingUtil {
 

@@ -44,22 +44,22 @@ import org.hl7.fhir.dstu3.model.ValueSet;
 import org.hl7.fhir.dstu3.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.dstu3.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.dstu3.model.ValueSet.ConceptSetComponent;
-import org.oscarehr.common.dao.CVCImmunizationDao;
-import org.oscarehr.common.dao.CVCMedicationDao;
-import org.oscarehr.common.dao.CVCMedicationGTINDao;
-import org.oscarehr.common.dao.CVCMedicationLotNumberDao;
-import org.oscarehr.common.model.CVCImmunization;
-import org.oscarehr.common.model.CVCMedication;
-import org.oscarehr.common.model.CVCMedicationGTIN;
-import org.oscarehr.common.model.CVCMedicationLotNumber;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.dao.CVCImmunizationDao;
+import ca.openosp.openo.commn.dao.CVCMedicationDao;
+import ca.openosp.openo.commn.dao.CVCMedicationGTINDao;
+import ca.openosp.openo.commn.dao.CVCMedicationLotNumberDao;
+import ca.openosp.openo.commn.model.CVCImmunization;
+import ca.openosp.openo.commn.model.CVCMedication;
+import ca.openosp.openo.commn.model.CVCMedicationGTIN;
+import ca.openosp.openo.commn.model.CVCMedicationLotNumber;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ca.uhn.fhir.context.FhirContext;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 
 @Service

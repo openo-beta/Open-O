@@ -26,7 +26,7 @@
 package ca.openosp.openo.entities;
 
 /**
- * Encapsulates data from table provider
+ * Encapsulates data from table providers
  */
 public class Provider {
     private String providerNo = "";

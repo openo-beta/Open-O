@@ -31,11 +31,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.openosp.Misc;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.EncounterFormDao;
-import org.oscarehr.common.model.EncounterForm;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.EncounterFormDao;
+import ca.openosp.openo.commn.model.EncounterForm;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -119,7 +120,7 @@ public class FrmData {
                 + " WHERE demographic_no=" + demoNo + " ORDER BY ID DESC";
         ResultSet rs = DBHandler.GetSQL(sql);
         while (rs.next()) {
-            PatientForm frm = new PatientForm(oscar.Misc.getString(rs, "ID"), oscar.Misc.getString(rs, "demographic_no"),
+            PatientForm frm = new PatientForm(Misc.getString(rs, "ID"), Misc.getString(rs, "demographic_no"),
                     UtilDateUtilities.DateToString(rs.getDate("formCreated"), "yy/MM/dd"), UtilDateUtilities.DateToString(rs.getDate("formEdited"), "yy/MM/dd"));
             forms.add(frm);
         }
@@ -138,14 +139,14 @@ public class FrmData {
         String table = "";
         ResultSet rs = DBHandler.GetSQL(sql);
         while (rs.next()) {
-            table = oscar.Misc.getString(rs, "form_table");
+            table = Misc.getString(rs, "form_table");
         }
         rs = null;
 
         sql = "SELECT ID, demographic_no, formCreated, formEdited FROM " + table + " WHERE demographic_no=" + demoNo + " ORDER BY ID DESC limit 0,1";
         rs = DBHandler.GetSQL(sql);
         while (rs.next()) {
-            frm = new PatientForm(oscar.Misc.getString(rs, "ID"), oscar.Misc.getString(rs, "demographic_no"),
+            frm = new PatientForm(Misc.getString(rs, "ID"), Misc.getString(rs, "demographic_no"),
                     UtilDateUtilities.DateToString(rs.getDate("formCreated"), "yy/MM/dd"), UtilDateUtilities.DateToString(rs.getDate("formEdited"), "yy/MM/dd"));
         }
 
@@ -160,8 +161,8 @@ public class FrmData {
         String sql = "SELECT study_name, study_link FROM study WHERE study_no=" + studyNo;
         ResultSet rs = DBHandler.GetSQL(sql);
         while (rs.next()) {
-            ret[0] = oscar.Misc.getString(rs, "study_name");
-            ret[1] = oscar.Misc.getString(rs, "study_link");
+            ret[0] = Misc.getString(rs, "study_name");
+            ret[1] = Misc.getString(rs, "study_link");
         }
 
         rs.close();
@@ -194,7 +195,7 @@ public class FrmData {
             sql = "SELECT form_no FROM " + table + " WHERE demographic_no=" + demoNo + " AND form_name='" + searchFormName + "' order by form_no desc limit 0,1";
             rs = DBHandler.GetSQL(sql);
             while (rs.next()) {
-                ret[1] = oscar.Misc.getString(rs, "form_no");
+                ret[1] = Misc.getString(rs, "form_no");
             }
             String[] xmlForm = ret.clone();
 
@@ -250,7 +251,7 @@ public class FrmData {
             sql = "SELECT ID FROM " + table + " WHERE demographic_no=" + demoNo + " order by formEdited desc limit 0,1";
             rs = DBHandler.GetSQL(sql);
             while (rs.next()) {
-                ret[1] = oscar.Misc.getString(rs, "ID");
+                ret[1] = Misc.getString(rs, "ID");
             }
         }
 
@@ -267,7 +268,7 @@ public class FrmData {
         String sql = "SELECT value FROM property WHERE name='resource'";
         ResultSet rs = DBHandler.GetSQL(sql);
         while (rs.next()) {
-            ret = oscar.Misc.getString(rs, "value");
+            ret = Misc.getString(rs, "value");
         }
 
         rs.close();
@@ -284,7 +285,7 @@ public class FrmData {
         String sql = "SELECT value FROM property WHERE name='" + name + "'";
         ResultSet rs = DBHandler.GetSQL(sql);
         while (rs.next()) {
-            ret = oscar.Misc.getString(rs, "value");
+            ret = Misc.getString(rs, "value");
         }
 
         rs.close();

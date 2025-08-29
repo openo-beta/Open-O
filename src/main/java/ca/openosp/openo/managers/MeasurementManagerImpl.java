@@ -33,17 +33,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.common.dao.MeasurementDao;
-import org.oscarehr.common.dao.MeasurementGroupStyleDao;
-import org.oscarehr.common.dao.MeasurementMapDao;
-import org.oscarehr.common.dao.PropertyDao;
-import org.oscarehr.common.model.ConsentType;
-import org.oscarehr.common.model.Measurement;
-import org.oscarehr.common.model.MeasurementGroupStyle;
-import org.oscarehr.common.model.MeasurementMap;
-import org.oscarehr.common.model.Property;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.MeasurementDao;
+import ca.openosp.openo.commn.dao.MeasurementGroupStyleDao;
+import ca.openosp.openo.commn.dao.MeasurementMapDao;
+import ca.openosp.openo.commn.dao.PropertyDao;
+import ca.openosp.openo.commn.model.ConsentType;
+import ca.openosp.openo.commn.model.Measurement;
+import ca.openosp.openo.commn.model.MeasurementGroupStyle;
+import ca.openosp.openo.commn.model.MeasurementMap;
+import ca.openosp.openo.commn.model.Property;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

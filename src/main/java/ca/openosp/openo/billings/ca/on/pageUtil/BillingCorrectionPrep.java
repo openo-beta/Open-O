@@ -30,18 +30,18 @@ import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.BillingONCHeader1Dao;
-import org.oscarehr.common.dao.BillingONExtDao;
-import org.oscarehr.common.dao.BillingONItemDao;
-import org.oscarehr.common.dao.BillingOnItemPaymentDao;
-import org.oscarehr.common.dao.BillingOnTransactionDao;
-import org.oscarehr.common.model.BillingONCHeader1;
-import org.oscarehr.common.model.BillingONExt;
-import org.oscarehr.common.model.BillingONItem;
-import org.oscarehr.common.model.BillingOnItemPayment;
-import org.oscarehr.common.model.BillingOnTransaction;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.BillingONCHeader1Dao;
+import ca.openosp.openo.commn.dao.BillingONExtDao;
+import ca.openosp.openo.commn.dao.BillingONItemDao;
+import ca.openosp.openo.commn.dao.BillingOnItemPaymentDao;
+import ca.openosp.openo.commn.dao.BillingOnTransactionDao;
+import ca.openosp.openo.commn.model.BillingONCHeader1;
+import ca.openosp.openo.commn.model.BillingONExt;
+import ca.openosp.openo.commn.model.BillingONItem;
+import ca.openosp.openo.commn.model.BillingOnItemPayment;
+import ca.openosp.openo.commn.model.BillingOnTransaction;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data;
 import ca.openosp.openo.billings.ca.on.data.BillingDataHlp;
@@ -57,7 +57,7 @@ import ca.openosp.openo.billings.ca.on.data.JdbcBillingReviewImpl;
 import ca.openosp.openo.util.StringUtils;
 
 public class BillingCorrectionPrep {
-    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static final Logger _logger = MiscUtils.getLogger();
 
     JdbcBillingCorrection dbObj = new JdbcBillingCorrection();
     BillingONCHeader1Dao cheader1Dao = (BillingONCHeader1Dao) SpringUtils.getBean(BillingONCHeader1Dao.class);

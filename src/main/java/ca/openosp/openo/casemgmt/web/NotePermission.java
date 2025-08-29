@@ -10,7 +10,7 @@
 
 package ca.openosp.openo.casemgmt.web;
 
-import org.oscarehr.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
 
 public class NotePermission {
     public enum AccessType {ALL_ROLES, ROLE, ROLE_GLOBAL, NO_ACCESS}

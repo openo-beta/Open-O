@@ -46,7 +46,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import ca.openosp.openo.decisionSupport.model.conditionValue.DSValue;
 import ca.openosp.openo.decisionSupport.model.impl.drools.DSGuidelineDrools;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 /**
  * @author apavel

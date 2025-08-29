@@ -27,13 +27,13 @@ import com.opensymphony.xwork2.ActionSupport;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.common.dao.FaxConfigDao;
-import org.oscarehr.common.model.FaxConfig;
+import ca.openosp.openo.commn.dao.FaxConfigDao;
+import ca.openosp.openo.commn.model.FaxConfig;
 import ca.openosp.openo.managers.FaxManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.form.JSONUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,7 +58,7 @@ public class ConfigureFax2Action extends ActionSupport {
         JSONObject jsonObject;
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin", "r", null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         try {
@@ -208,7 +208,7 @@ public class ConfigureFax2Action extends ActionSupport {
 
     public void restartFaxScheduler() {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin.fax.restart", "w", null)) {
-            throw new SecurityException("missing required security object (_admin.fax.restart)");
+            throw new SecurityException("missing required sec object (_admin.fax.restart)");
         }
         faxManager.restartFaxScheduler(LoggedInInfo.getLoggedInInfoFromSession(request));
     }
@@ -216,7 +216,7 @@ public class ConfigureFax2Action extends ActionSupport {
     public void getFaxSchedularStatus() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.fax.restart", "r", null)) {
-            throw new SecurityException("missing required security object (_admin.fax.restart)");
+            throw new SecurityException("missing required sec object (_admin.fax.restart)");
         }
         JSONUtil.jsonResponse(response, faxManager.getFaxSchedularStatus(loggedInInfo));
     }

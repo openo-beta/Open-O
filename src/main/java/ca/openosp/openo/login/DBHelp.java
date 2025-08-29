@@ -33,8 +33,9 @@ package ca.openosp.openo.login;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import ca.openosp.Misc;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
 
@@ -59,10 +60,10 @@ public final class DBHelp {
     }
 
     public static String getString(ResultSet rs, String columnName) throws SQLException {
-        return oscar.Misc.getString(rs, columnName);
+        return Misc.getString(rs, columnName);
     }
 
     public static String getString(ResultSet rs, int columnIndex) throws SQLException {
-        return oscar.Misc.getString(rs, columnIndex);
+        return Misc.getString(rs, columnIndex);
     }
 }

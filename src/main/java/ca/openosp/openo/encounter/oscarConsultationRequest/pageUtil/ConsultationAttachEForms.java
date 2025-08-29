@@ -26,8 +26,8 @@
 
 package ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil;
 
-import org.oscarehr.common.model.ConsultDocs;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.model.ConsultDocs;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 @Deprecated
 public class ConsultationAttachEForms extends ConsultationAttach {

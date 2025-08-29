@@ -31,14 +31,14 @@ package ca.openosp.openo.billings.ca.on.administration;
 import java.util.Properties;
 import java.util.Vector;
 
-import org.oscarehr.common.dao.BillingONExtDao;
-import org.oscarehr.common.dao.BillingServiceDao;
-import org.oscarehr.common.model.BillingONExt;
-import org.oscarehr.common.model.BillingService;
-import org.oscarehr.common.model.Demographic;
+import ca.openosp.openo.commn.dao.BillingONExtDao;
+import ca.openosp.openo.commn.dao.BillingServiceDao;
+import ca.openosp.openo.commn.model.BillingONExt;
+import ca.openosp.openo.commn.model.BillingService;
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 
@@ -56,7 +56,7 @@ public class GstReport {
             billno.add("" + e.getBillingNo());
         }
 
-        // For every bill the provider is involved with, search the gst value, date, demo no within the chosen dates
+        // For every bill the providers is involved with, search the gst value, date, demo no within the chosen dates
         for (int i = 0; i < billno.size(); i++) {
             for (BillingONExt e : dao.find(ConversionUtils.fromIntString(billno.get(i)), "gst", ConversionUtils.fromDateString(startDate), ConversionUtils.fromDateString(endDate))) {
                 props = new Properties();

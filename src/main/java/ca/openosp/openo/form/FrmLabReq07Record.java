@@ -36,10 +36,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
+import ca.openosp.Misc;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.IntegratorFallBackManager;
 import ca.openosp.openo.caisi_integrator.ws.CachedDemographicForm;
 import ca.openosp.openo.caisi_integrator.ws.CachedProgram;
 import ca.openosp.openo.caisi_integrator.ws.CachedProvider;
@@ -47,16 +48,16 @@ import ca.openosp.openo.caisi_integrator.ws.DemographicTransfer;
 import ca.openosp.openo.caisi_integrator.ws.DemographicWs;
 import ca.openosp.openo.caisi_integrator.ws.FacilityIdIntegerCompositePk;
 import ca.openosp.openo.caisi_integrator.ws.FacilityIdStringCompositePk;
-import org.oscarehr.common.dao.ClinicDAO;
-import org.oscarehr.common.model.Clinic;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.Facility;
-import org.oscarehr.utility.LocaleUtils;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ClinicDAO;
+import ca.openosp.openo.commn.model.Clinic;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.Facility;
+import ca.openosp.openo.utility.LocaleUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.UtilDateUtilities;
 
@@ -147,13 +148,13 @@ public class FrmLabReq07Record extends FrmRecord {
 
 
         if (demoProvider.equals(provNo)) {
-            // from provider table
+            // from providers table
             sql = "SELECT CONCAT(last_name, ', ', first_name) AS provName, ohip_no, comments "
-                    + "FROM provider WHERE provider_no = '" + provNo + "'";
+                    + "FROM providers WHERE provider_no = '" + provNo + "'";
             rs = DBHandler.GetSQL(sql);
 
             if (rs.next()) {
-                String comments = oscar.Misc.getString(rs, "comments");
+                String comments = Misc.getString(rs, "comments");
                 String strSpecialtyCode = "00";
                 if (comments.indexOf(xmlSpecialtyCode) != -1) {
                     strSpecialtyCode = comments.substring(comments.indexOf(xmlSpecialtyCode) + xmlSpecialtyCode.length(), comments.indexOf(xmlSpecialtyCode2));
@@ -162,21 +163,21 @@ public class FrmLabReq07Record extends FrmRecord {
                         strSpecialtyCode = "00";
                     }
                 }
-                String num = oscar.Misc.getString(rs, "ohip_no");
-                props.setProperty("reqProvName", oscar.Misc.getString(rs, "provName"));
-                props.setProperty("provName", oscar.Misc.getString(rs, "provName"));
+                String num = Misc.getString(rs, "ohip_no");
+                props.setProperty("reqProvName", Misc.getString(rs, "provName"));
+                props.setProperty("provName", Misc.getString(rs, "provName"));
                 props.setProperty("practitionerNo", "0000-" + num + "-" + strSpecialtyCode);
             }
             rs.close();
         } else {
-            // from provider table
-            sql = "SELECT CONCAT(last_name, ', ', first_name) AS provName, ohip_no, comments FROM provider WHERE provider_no = '"
+            // from providers table
+            sql = "SELECT CONCAT(last_name, ', ', first_name) AS provName, ohip_no, comments FROM providers WHERE provider_no = '"
                     + provNo + "'";
             rs = DBHandler.GetSQL(sql);
 
             String num = "";
             if (rs.next()) {
-                String comments = oscar.Misc.getString(rs, "comments");
+                String comments = Misc.getString(rs, "comments");
                 String strSpecialtyCode = "00";
                 if (comments.indexOf(xmlSpecialtyCode) != -1) {
                     strSpecialtyCode = comments.substring(comments.indexOf(xmlSpecialtyCode) + xmlSpecialtyCode.length(), comments.indexOf(xmlSpecialtyCode2));
@@ -185,24 +186,24 @@ public class FrmLabReq07Record extends FrmRecord {
                         strSpecialtyCode = "00";
                     }
                 }
-                num = oscar.Misc.getString(rs, "ohip_no");
-                props.setProperty("reqProvName", oscar.Misc.getString(rs, "provName"));
+                num = Misc.getString(rs, "ohip_no");
+                props.setProperty("reqProvName", Misc.getString(rs, "provName"));
                 props.setProperty("practitionerNo", "0000-" + num + "-" + strSpecialtyCode);
             }
             rs.close();
 
             if (!demoProvider.equals("")) {
-                // from provider table
-                sql = "SELECT CONCAT(last_name, ', ', first_name) AS provName, ohip_no FROM provider WHERE provider_no = "
+                // from providers table
+                sql = "SELECT CONCAT(last_name, ', ', first_name) AS provName, ohip_no FROM providers WHERE provider_no = "
                         + demoProvider;
                 rs = DBHandler.GetSQL(sql);
 
                 if (rs.next()) {
                     if (num.equals("")) {
-                        num = oscar.Misc.getString(rs, "ohip_no");
+                        num = Misc.getString(rs, "ohip_no");
                         props.setProperty("practitionerNo", "0000-" + num + "-00");
                     }
-                    props.setProperty("provName", oscar.Misc.getString(rs, "provName"));
+                    props.setProperty("provName", Misc.getString(rs, "provName"));
 
                 }
                 rs.close();

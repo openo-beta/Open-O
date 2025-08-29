@@ -7,15 +7,15 @@ import java.util.List;
 import javax.net.ssl.SSLContext;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.EmailAttachment;
-import org.oscarehr.common.model.EmailConfig;
+import ca.openosp.openo.commn.model.EmailAttachment;
+import ca.openosp.openo.commn.model.EmailConfig;
 import ca.openosp.openo.email.helpers.APISendGridEmailSender;
 import ca.openosp.openo.email.helpers.SMTPEmailSender;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.EmailSendingException;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.EmailSendingException;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class EmailSender {
     private final Logger logger = MiscUtils.getLogger();
@@ -64,7 +64,7 @@ public class EmailSender {
 
     public void send() throws EmailSendingException {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_email", SecurityInfoManager.WRITE, null)) {
-            throw new RuntimeException("missing required security object (_email)");
+            throw new RuntimeException("missing required sec object (_email)");
         }
 
         switch (emailConfig.getEmailType()) {

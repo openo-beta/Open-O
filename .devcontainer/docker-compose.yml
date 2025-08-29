@@ -26,8 +26,8 @@ services:
   db:
     container_name: openo-mariadb-dev
     build:
-      context: ./../
-      dockerfile: ./.devcontainer/db/Dockerfile
+      context: ../
+      dockerfile: .devcontainer/db/Dockerfile
     env_file:
       - ./development/config/shared/local.env
     ports:

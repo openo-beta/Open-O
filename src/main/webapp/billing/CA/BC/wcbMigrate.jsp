@@ -39,10 +39,10 @@
     }
 %>
 
-<%@page import="org.oscarehr.utility.DbConnectionFilter,java.sql.*" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.common.dao.BillingServiceDao" %>
-<%@page import="org.oscarehr.common.model.BillingService" %>
+<%@page import="ca.openosp.openo.utility.DbConnectionFilter,java.sql.*" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.commn.dao.BillingServiceDao" %>
+<%@page import="ca.openosp.openo.commn.model.BillingService" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.dao.WcbDao" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.model.Wcb" %>
 <%@page import="ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO" %>

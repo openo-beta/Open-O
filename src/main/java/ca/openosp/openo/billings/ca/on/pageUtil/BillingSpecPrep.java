@@ -24,6 +24,7 @@ import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
 
 import ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data;
@@ -34,7 +35,7 @@ import ca.openosp.openo.billings.ca.on.data.JdbcBillingCodeImpl;
 import ca.openosp.openo.util.UtilDateUtilities;
 
 public class BillingSpecPrep {
-    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static final Logger _logger = MiscUtils.getLogger();
     JdbcBillingClaimImpl dbObj = new JdbcBillingClaimImpl();
 
     // save a billing record
@@ -113,8 +114,8 @@ public class BillingSpecPrep {
         claim1Header.setLocation(val.getParameter("clinicNo"));
 
         claim1Header.setDemographic_no(val.getParameter("functionid"));
-        claim1Header.setProviderNo(val.getParameter("provider").substring(
-                val.getParameter("provider").indexOf("|") + 1));
+        claim1Header.setProviderNo(val.getParameter("providers").substring(
+                val.getParameter("providers").indexOf("|") + 1));
         claim1Header.setAppointment_no(val.getParameter("appointment_no")); // appointment_no;
         claim1Header.setDemographic_name(val.getParameter("demo_name"));
         String temp[] = getPatientLF(val.getParameter("demo_name"));
@@ -150,8 +151,8 @@ public class BillingSpecPrep {
         claim1Header.setComment("");
         claim1Header.setVisittype(val.getParameter("xml_visittype").substring(0, 2));
 
-        claim1Header.setProvider_ohip_no(val.getParameter("provider").substring(0,
-                val.getParameter("provider").indexOf("|")));
+        claim1Header.setProvider_ohip_no(val.getParameter("providers").substring(0,
+                val.getParameter("providers").indexOf("|")));
         claim1Header.setProvider_rma_no("");
         claim1Header.setApptProvider_no(val.getParameter("apptProvider"));
         claim1Header.setAsstProvider_no("");
@@ -211,8 +212,8 @@ public class BillingSpecPrep {
         claim1Header.setLocation(val.getParameter("clinicNo"));
 
         claim1Header.setDemographic_no(val.getParameter("functionid"));
-        claim1Header.setProviderNo(val.getParameter("provider").substring(
-                val.getParameter("provider").indexOf("|") + 1));
+        claim1Header.setProviderNo(val.getParameter("providers").substring(
+                val.getParameter("providers").indexOf("|") + 1));
         claim1Header.setAppointment_no(val.getParameter("appointment_no")); // appointment_no;
         claim1Header.setDemographic_name(val.getParameter("demo_name"));
         String temp[] = getPatientLF(val.getParameter("demo_name"));
@@ -236,8 +237,8 @@ public class BillingSpecPrep {
         claim1Header.setComment("");
         claim1Header.setVisittype(val.getParameter("xml_visittype").substring(0, 2));
 
-        claim1Header.setProvider_ohip_no(val.getParameter("provider").substring(0,
-                val.getParameter("provider").indexOf("|")));
+        claim1Header.setProvider_ohip_no(val.getParameter("providers").substring(0,
+                val.getParameter("providers").indexOf("|")));
         claim1Header.setProvider_rma_no("");
         claim1Header.setApptProvider_no(val.getParameter("apptProvider"));
         claim1Header.setAsstProvider_no("");

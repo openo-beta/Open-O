@@ -27,7 +27,7 @@
 package ca.openosp.openo.billings.ca.bc.pageUtil;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import java.util.List;
 
@@ -370,9 +370,9 @@ public final class BillingCreateBilling2Form {
     }
 
     /**
-     * An Array of Strings thats contains provider numbers
+     * An Array of Strings thats contains providers numbers
      *
-     * @return String[], the provider numbers that this message will be set to
+     * @return String[], the providers numbers that this message will be set to
      */
     public String[] getService() {
         if (service == null) {

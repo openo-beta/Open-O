@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
 
 import ca.openosp.openo.util.ConversionUtils;
@@ -57,7 +58,7 @@ public class CLSHandler implements MessageHandler {
         FIRST, MIDDLE, LAST;
     }
 
-    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static Logger logger = MiscUtils.getLogger();
 
     private ORU_R01 msg;
 
@@ -659,18 +660,18 @@ public class CLSHandler implements MessageHandler {
     }
 
     /**
-     * Gets the ordering provider name.
+     * Gets the ordering providers name.
      *
-     * @return Returns the provider name or an empty string if it's not specified
+     * @return Returns the providers name or an empty string if it's not specified
      */
     public String getOrderingProvider() {
         return get("/.OBR-16-2");
     }
 
     /**
-     * Gets the ordering provider ID for matching provider with the correct inbox routing.
+     * Gets the ordering providers ID for matching providers with the correct inbox routing.
      *
-     * @return Returns the provider id or an empty string if it's not specified
+     * @return Returns the providers id or an empty string if it's not specified
      */
     public String getOrderingProviderId() {
         return get("/.OBR-16-1");

@@ -41,16 +41,17 @@ import java.util.regex.Matcher;
 //import java.util.List;
 
 
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.demographic.data.DemographicData;
-import ca.openosp.openo.provider.data.ProviderData;
+import ca.openosp.openo.providers.data.ProviderData;
 import org.apache.commons.codec.binary.Base64;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import ca.openosp.openo.util.UtilMisc;
 import ca.openosp.openo.billings.data.BillingFormData;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
-//import org.oscarehr.casemgmt.dao.CaseManagementIssueDAO;
+//import org.oscarehr.casemgmt.daos.CaseManagementIssueDAO;
 //import org.oscarehr.casemgmt.model.CaseManagementIssue;
 
 public class ClinicaidCommunication {
@@ -83,7 +84,7 @@ public class ClinicaidCommunication {
 
             DemographicData demoData =
                     new DemographicData();
-            org.oscarehr.common.model.Demographic demo =
+            Demographic demo =
                     demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), service_recipient_oscar_number);
 
             String referral_doc = demo.getFamilyDoctor();
@@ -114,8 +115,8 @@ public class ClinicaidCommunication {
             String provider_first_name = "";
             String provider_last_name = "";
 
-            // If this invoice was created from an appointment, use the provider
-            // who performed the appointment as the billing provider
+            // If this invoice was created from an appointment, use the providers
+            // who performed the appointment as the billing providers
             if (appointment_provider_no != null) {
                 try {
                     provider_no = appointment_provider_no;
@@ -139,14 +140,14 @@ public class ClinicaidCommunication {
 
             }
 
-            // If no appointment provider exists, try to get the patients
-            // provider to use for billing
+            // If no appointment providers exists, try to get the patients
+            // providers to use for billing
             if (provider_no == null || provider_no == "") {
                 try {
                     provider_no = demo.getProviderNo();
 
                     // Make sure the provider_no is a valid integer. If a patient doesn't
-                    // have a provider assigned to them, the demo returns an invalid provider_no
+                    // have a providers assigned to them, the demo returns an invalid provider_no
                     // which then causes ProviderData to throw an un-catchable exception
                     Integer test = Integer.parseInt(provider_no);
 
@@ -164,7 +165,7 @@ public class ClinicaidCommunication {
 
             }
 
-            // If no patient or appointment provider was found, use the
+            // If no patient or appointment providers was found, use the
             // current user for billing
             if (provider_no == null || provider_no == "") {
                 try {
@@ -255,7 +256,7 @@ public class ClinicaidCommunication {
     }
 
     /**
-     * Authenticates with Clinicaid and returns a security nonce to be used
+     * Authenticates with Clinicaid and returns a sec nonce to be used
      * for all communications in this session
      *
      * @param identifier id of the logged in user

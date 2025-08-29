@@ -30,10 +30,10 @@ import java.util.List;
 
 import javax.servlet.jsp.JspWriter;
 
-import org.oscarehr.common.dao.OscarCommLocationsDao;
-import org.oscarehr.common.model.OscarCommLocations;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.OscarCommLocationsDao;
+import ca.openosp.openo.commn.model.OscarCommLocations;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -233,9 +233,9 @@ public class MsgAddressBook {
                 MiscUtils.getLogger().debug("the binsearch returned " + binSearch + " there are " + locationVector.size() + " in the locationVector ");
                 if ((binSearch > 0) && (((String) locationVector.elementAt(binSearch)).equals(remoteLocationId.elementAt(remoId)))) {
                     MiscUtils.getLogger().debug("i found it at = " + locationVector.elementAt(binSearch));
-                    out.print("<input type=\"checkbox\" name=provider value=" + element.getAttribute("id") + "@" + ((String) remoteLocationId.elementAt(remoId)) + " checked > " + element.getAttribute("desc") + "\n");
+                    out.print("<input type=\"checkbox\" name=providers value=" + element.getAttribute("id") + "@" + ((String) remoteLocationId.elementAt(remoId)) + " checked > " + element.getAttribute("desc") + "\n");
                 } else {
-                    out.print("<input type=\"checkbox\" name=provider value=" + element.getAttribute("id") + "@" + ((String) remoteLocationId.elementAt(remoId)) + "  ><font color=#ff5900>" + element.getAttribute("desc") + "</font>\n");
+                    out.print("<input type=\"checkbox\" name=providers value=" + element.getAttribute("id") + "@" + ((String) remoteLocationId.elementAt(remoId)) + "  ><font color=#ff5900>" + element.getAttribute("desc") + "</font>\n");
                 }
             }
             if (node.hasChildNodes()) {
@@ -308,9 +308,9 @@ public class MsgAddressBook {
                 //if ( ( binSearch > 0 ) && ( ( (String) locationVector.elementAt(binSearch) ).equals( (String) remoteLocationId.elementAt(remoId)  ) )){
 
                 if (reData.remoContains(element.getAttribute("id"), (String) remoteLocationId.elementAt(remoId))) {
-                    out.print("<input type=\"checkbox\" name=provider value=" + element.getAttribute("id") + "@" + ((String) remoteLocationId.elementAt(remoId)) + " checked > " + element.getAttribute("desc") + "\n");
+                    out.print("<input type=\"checkbox\" name=providers value=" + element.getAttribute("id") + "@" + ((String) remoteLocationId.elementAt(remoId)) + " checked > " + element.getAttribute("desc") + "\n");
                 } else {
-                    out.print("<input type=\"checkbox\" name=provider value=" + element.getAttribute("id") + "@" + ((String) remoteLocationId.elementAt(remoId)) + "  ><font color=#ff5900>" + element.getAttribute("desc") + "</font>\n");
+                    out.print("<input type=\"checkbox\" name=providers value=" + element.getAttribute("id") + "@" + ((String) remoteLocationId.elementAt(remoId)) + "  ><font color=#ff5900>" + element.getAttribute("desc") + "</font>\n");
                 }
             }
             if (node.hasChildNodes()) {

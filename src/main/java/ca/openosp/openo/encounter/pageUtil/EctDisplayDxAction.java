@@ -34,14 +34,14 @@ import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.oscarehr.common.dao.PartialDateDao;
-import org.oscarehr.common.model.PartialDate;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.PartialDateDao;
+import ca.openosp.openo.commn.model.PartialDate;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import ca.openosp.openo.oscarDxResearch.bean.dxResearchBean;
-import ca.openosp.openo.oscarDxResearch.bean.dxResearchBeanHandler;
+import ca.openosp.openo.dxresearch.bean.dxResearchBean;
+import ca.openosp.openo.dxresearch.bean.dxResearchBeanHandler;
 import ca.openosp.openo.util.DateUtils;
 import ca.openosp.openo.util.StringUtils;
 
@@ -61,7 +61,7 @@ public class EctDisplayDxAction extends EctDisplayAction {
 
             //set lefthand module heading and link
             String winName = "Disease" + bean.demographicNo;
-            String url = "popupPage(580,900,'" + winName + "','" + request.getContextPath() + "/oscarResearch/oscarDxResearch/setupDxResearch.do?demographicNo=" + bean.demographicNo + "&providerNo=" + bean.providerNo + "&quickList=')";
+            String url = "popupPage(580,900,'" + winName + "','" + request.getContextPath() + "/oscarResearch/dxresearch/setupDxResearch.do?demographicNo=" + bean.demographicNo + "&providerNo=" + bean.providerNo + "&quickList=')";
             Dao.setLeftHeading(getText("oscarEncounter.LeftNavBar.DxRegistry"));
             Dao.setLeftURL(url);
 

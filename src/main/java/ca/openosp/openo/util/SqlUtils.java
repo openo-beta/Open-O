@@ -34,9 +34,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import ca.openosp.Misc;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
 
@@ -62,7 +63,7 @@ public class SqlUtils {
             while (rs.next()) {
                 String[] record = new String[cols];
                 for (int i = 0; i < cols; i++) {
-                    record[i] = oscar.Misc.getString(rs, i + 1);
+                    record[i] = Misc.getString(rs, i + 1);
                 }
                 records.add(record);
             }
@@ -119,7 +120,7 @@ public class SqlUtils {
                 Properties record = new Properties();
                 for (int i = 0; i < cols; i++) {
                     String columnName = rs.getMetaData().getColumnName(i + 1);
-                    String cellValue = oscar.Misc.getString(rs, i + 1);
+                    String cellValue = Misc.getString(rs, i + 1);
                     if (columnName != null && !"".equals(columnName)) {
 
                         cellValue = cellValue == null ? "" : cellValue;

@@ -38,35 +38,35 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
-import org.oscarehr.PMmodule.dao.ProgramAccessDAO;
-import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.PMmodule.model.ProgramAccess;
-import org.oscarehr.PMmodule.model.ProgramProvider;
-import org.oscarehr.PMmodule.service.ProgramManager;
+import ca.openosp.openo.PMmodule.dao.ProgramAccessDAO;
+import ca.openosp.openo.PMmodule.dao.ProgramProviderDAO;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.model.ProgramAccess;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.PMmodule.service.ProgramManager;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
-import org.oscarehr.common.dao.CustomFilterDao;
-import org.oscarehr.common.dao.TicklerCategoryDao;
-import org.oscarehr.common.dao.TicklerCommentDao;
-import org.oscarehr.common.dao.TicklerDao;
-import org.oscarehr.common.dao.TicklerLinkDao;
-import org.oscarehr.common.dao.TicklerTextSuggestDao;
-import org.oscarehr.common.dao.TicklerUpdateDao;
-import org.oscarehr.common.model.CustomFilter;
-import org.oscarehr.common.model.Tickler;
-import org.oscarehr.common.model.TicklerCategory;
-import org.oscarehr.common.model.TicklerComment;
-import org.oscarehr.common.model.TicklerLink;
-import org.oscarehr.common.model.TicklerTextSuggest;
-import org.oscarehr.common.model.TicklerUpdate;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.dao.CustomFilterDao;
+import ca.openosp.openo.commn.dao.TicklerCategoryDao;
+import ca.openosp.openo.commn.dao.TicklerCommentDao;
+import ca.openosp.openo.commn.dao.TicklerDao;
+import ca.openosp.openo.commn.dao.TicklerLinkDao;
+import ca.openosp.openo.commn.dao.TicklerTextSuggestDao;
+import ca.openosp.openo.commn.dao.TicklerUpdateDao;
+import ca.openosp.openo.commn.model.CustomFilter;
+import ca.openosp.openo.commn.model.Tickler;
+import ca.openosp.openo.commn.model.TicklerCategory;
+import ca.openosp.openo.commn.model.TicklerComment;
+import ca.openosp.openo.commn.model.TicklerLink;
+import ca.openosp.openo.commn.model.TicklerTextSuggest;
+import ca.openosp.openo.commn.model.TicklerUpdate;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 
 import ca.openosp.openo.model.security.Secrole;
@@ -303,7 +303,7 @@ public class TicklerManagerImpl implements TicklerManager {
                 continue;
             }
 
-            // load up the program_provider entry to get the role for this provider in the
+            // load up the program_provider entry to get the role for this providers in the
             // tickler's program
             ppList = programProviderDAO.getProgramProviderByProviderProgramId(providerNo, Long.valueOf(programId));
             if (ppList == null || ppList.isEmpty()) {
@@ -312,7 +312,7 @@ public class TicklerManagerImpl implements TicklerManager {
             ProgramProvider pp = ppList.get(0);
             Secrole role = pp.getRole();
 
-            // Get the tickler assigned to provider's role in the tickler's program
+            // Get the tickler assigned to providers's role in the tickler's program
             String ticklerRole = null;
             List<ProgramProvider> ppList2 = new ArrayList<ProgramProvider>();
             ppList2 = this.programProviderDAO.getProgramProviderByProviderProgramId(t.getTaskAssignedTo(),
@@ -330,9 +330,9 @@ public class TicklerManagerImpl implements TicklerManager {
 
             // read
 
-            // if the provider's role is allowed to read tickler's assigned to
+            // if the providers's role is allowed to read tickler's assigned to
             // "ticklerRole". add.
-            // if no entry exists, but the the provider has same role as assigned to role,
+            // if no entry exists, but the the providers has same role as assigned to role,
             // then we add
             pa = programAccessMap.get("read ticklers assigned to a " + ticklerRole);
             if (pa != null) {
@@ -346,7 +346,7 @@ public class TicklerManagerImpl implements TicklerManager {
             }
             pa = null;
 
-            // if this provider wrote the tickler, they should see it..doesn't matter
+            // if this providers wrote the tickler, they should see it..doesn't matter
             // about the role based access
             if (!add) {
                 if (t.getProvider().getProviderNo().equals(providerNo)) {
@@ -426,7 +426,7 @@ public class TicklerManagerImpl implements TicklerManager {
 
             // --- log action ---
             LogAction.addLogSynchronous(loggedInInfo, "TicklerManager.addComment", "ticklerId=" + tickler_id
-                    + ",provider=" + provider + ",message=" + message + ",id=" + comment.getId());
+                    + ",providers=" + provider + ",message=" + message + ",id=" + comment.getId());
         }
     }
 
@@ -456,7 +456,7 @@ public class TicklerManagerImpl implements TicklerManager {
 
             // --- log action ---
             LogAction.addLogSynchronous(loggedInInfo, "TicklerManager.reassign",
-                    "ticklerId=" + tickler_id + ",provider=" + provider + ",task_assigned_to=" + task_assigned_to);
+                    "ticklerId=" + tickler_id + ",providers=" + provider + ",task_assigned_to=" + task_assigned_to);
         }
     }
 
@@ -479,7 +479,7 @@ public class TicklerManagerImpl implements TicklerManager {
 
             // --- log action ---
             LogAction.addLogSynchronous(loggedInInfo, "TicklerManager.updateStatus",
-                    "ticklerId=" + tickler_id + ",provider=" + provider + ",status=" + status);
+                    "ticklerId=" + tickler_id + ",providers=" + provider + ",status=" + status);
         }
     }
 
@@ -770,7 +770,7 @@ public class TicklerManagerImpl implements TicklerManager {
 
     private void checkPrivilege(LoggedInInfo loggedInInfo, String privilege) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_tickler", privilege, null)) {
-            throw new RuntimeException("missing required security object (_tickler)");
+            throw new RuntimeException("missing required sec object (_tickler)");
         }
     }
 }

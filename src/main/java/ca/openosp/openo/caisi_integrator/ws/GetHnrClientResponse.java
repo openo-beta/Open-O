@@ -1,7 +1,7 @@
 package ca.openosp.openo.caisi_integrator.ws;
 
 import javax.xml.bind.annotation.XmlElement;
-import org.oscarehr.hnr.ws.Client;
+import ca.openosp.openo.ws.Client;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

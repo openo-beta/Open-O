@@ -60,12 +60,13 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<%@page import="oscar.OscarProperties" %>
+<%@page import="ca.openosp.OscarProperties" %>
+<%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
 <html>
     <head>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/global.js"></script>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.page.title"/> Start Time
-            : <%=oscar.OscarProperties.getInstance().getStartTime()%>
+            : <%=OscarProperties.getInstance().getStartTime()%>
         </title>
         <link rel="stylesheet" type="text/css"
               href="<%= request.getContextPath() %>/share/css/OscarStandardLayout.css"/>
@@ -425,7 +426,7 @@
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.frmGroups"/>
                 </a></li>
 
-                <% if (org.oscarehr.common.IsPropertiesOn.isIndivicaRichTextLetterEnable()) { %>
+                <% if (IsPropertiesOn.isIndivicaRichTextLetterEnable()) { %>
                 <li><a href="${pageContext.request.contextPath}/admin/../eform/efmformrtl_config.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.richTextLetter"/></a></li>
                 <% } %>
 
@@ -698,7 +699,7 @@
                     <li><a href="#"
                            onclick='popupPage(550,800, "${pageContext.request.contextPath}/admin/ManageClinic.do");return false;'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.clinicAdmin"/></a></li>
                     <%
-                        if (org.oscarehr.common.IsPropertiesOn.isMultisitesEnable()) {
+                        if (IsPropertiesOn.isMultisitesEnable()) {
                     %>
                     <li><a href="#"
                            onclick='popupPage(550,800, "${pageContext.request.contextPath}/admin/ManageSites.do");return false;'><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.sitesAdmin"/></a></li>
@@ -743,7 +744,7 @@
                         <%--				if (oscar.oscarSecurity.CRHelper.isCRFrameworkEnabled())--%>
                         <%--						{--%>
                         <%--			%>--%>
-                        <%--			<security:oscarSec roleName="<%=roleName$%>"--%>
+                        <%--			<sec:oscarSec roleName="<%=roleName$%>"--%>
                         <%--				objectName="_admin.cookieRevolver" rights="r">--%>
                         <%--		--%>
                         <%--				<li>&nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.titleFactorAuth"/>--%>
@@ -766,7 +767,7 @@
                         <%--						onclick="popupPage(500,700,'../gatekeeper/matrixadmin/show');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.genMatrixCards"/></a></li>--%>
                         <%--				</ul>--%>
                         <%--				</li>--%>
-                        <%--			</security:oscarSec>--%>
+                        <%--			</sec:oscarSec>--%>
                         <%--			<%--%>
                         <%--				}--%>
                         <%--			%>           	--%>

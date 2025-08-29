@@ -27,14 +27,14 @@ package ca.openosp.openo.admin.web;
 import java.util.Date;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.DemographicContactDao;
-import org.oscarehr.common.dao.ProfessionalContactDao;
-import org.oscarehr.common.dao.ProfessionalSpecialistDao;
-import org.oscarehr.common.model.DemographicContact;
-import org.oscarehr.common.model.ProfessionalContact;
-import org.oscarehr.common.model.ProfessionalSpecialist;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.DemographicContactDao;
+import ca.openosp.openo.commn.dao.ProfessionalContactDao;
+import ca.openosp.openo.commn.dao.ProfessionalSpecialistDao;
+import ca.openosp.openo.commn.model.DemographicContact;
+import ca.openosp.openo.commn.model.ProfessionalContact;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class MigrateProfessionalContactsHelper {
 

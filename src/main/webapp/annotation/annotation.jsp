@@ -46,9 +46,9 @@
                 ca.openosp.openo.casemgmt.model.CaseManagementNote,
                 ca.openosp.openo.casemgmt.model.CaseManagementNoteLink,
                 ca.openosp.openo.casemgmt.service.CaseManagementManager,
-                org.oscarehr.common.dao.SecRoleDao,
-                org.oscarehr.common.model.SecRole,
-                org.oscarehr.utility.SpringUtils,
+                ca.openosp.openo.commn.dao.SecRoleDao,
+                ca.openosp.openo.commn.model.SecRole,
+                ca.openosp.openo.utility.SpringUtils,
                 ca.openosp.openo.encounter.data.EctProgram,
                 java.util.Date,
                 java.util.List" %>
@@ -116,7 +116,7 @@
     if (p_cmn != null) p_cmn = cmm.getMostRecentNote(p_cmn.getUuid());
 
     String uuid = "";
-    //if get provider no is -1 , it's a document note.
+    //if get providers no is -1 , it's a document note.
     if (p_cmn != null && !p_cmn.getProviderNo().equals("-1")) uuid = p_cmn.getUuid();
     else p_cmn = null;//don't use document note as annotation.
     //get note from attribute

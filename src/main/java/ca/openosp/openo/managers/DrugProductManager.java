@@ -29,10 +29,10 @@ package ca.openosp.openo.managers;
 
 import java.util.List;
 
-import org.oscarehr.common.model.DrugProduct;
-import org.oscarehr.common.model.DrugProductTemplate;
-import org.oscarehr.common.model.ProductLocation;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.model.DrugProduct;
+import ca.openosp.openo.commn.model.DrugProductTemplate;
+import ca.openosp.openo.commn.model.ProductLocation;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 public interface DrugProductManager {
 

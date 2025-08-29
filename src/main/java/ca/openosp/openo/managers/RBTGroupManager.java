@@ -29,9 +29,9 @@ package ca.openosp.openo.managers;
 import java.util.List;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.oscarehr.common.dao.RBTGroupDao;
-import org.oscarehr.common.model.RBTGroup;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.dao.RBTGroupDao;
+import ca.openosp.openo.commn.model.RBTGroup;
+import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

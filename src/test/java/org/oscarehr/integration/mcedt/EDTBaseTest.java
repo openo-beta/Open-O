@@ -31,8 +31,8 @@ import org.oscarehr.common.dao.utils.ConfigUtils;
 import ca.openosp.openo.integration.ebs.client.ng.EdtClientBuilder;
 import ca.openosp.openo.integration.ebs.client.ng.EdtClientBuilderConfig;
 import ca.openosp.openo.integration.mcedt.mailbox.CidPrefixResourceResolver;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import ca.ontario.health.edt.Detail;
@@ -47,7 +47,7 @@ import ca.ontario.health.edt.TypeListData;
 import ca.ontario.health.edt.TypeListResult;
 import ca.ontario.health.edt.UpdateRequest;
 import ca.ontario.health.edt.UploadData;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 public abstract class EDTBaseTest {
     protected static Logger logger = MiscUtils.getLogger();
@@ -137,7 +137,7 @@ public abstract class EDTBaseTest {
         // Check if the Spring context (bean factory) has been initialized yet
         // Set up the context if it's null
         if(SpringUtils.getBeanFactory() == null) {
-            oscar.OscarProperties p = oscar.OscarProperties.getInstance();
+            ca.openosp.OscarProperties p = ca.openosp.OscarProperties.getInstance();
             // Set the properties
             p.setProperty("db_name", ConfigUtils.getProperty("db_schema") + ConfigUtils.getProperty("db_schema_properties"));
             p.setProperty("db_username", ConfigUtils.getProperty("db_user"));

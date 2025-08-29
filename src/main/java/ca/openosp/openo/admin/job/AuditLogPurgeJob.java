@@ -28,15 +28,15 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.jobs.OscarRunnable;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.Security;
+import ca.openosp.openo.commn.jobs.OscarRunnable;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.Security;
 import ca.openosp.openo.managers.AuditLogManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 /*
  *  a) determine which rows to be purged 

@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 /**
  * This class safely fetches static image resources for the login Index page.

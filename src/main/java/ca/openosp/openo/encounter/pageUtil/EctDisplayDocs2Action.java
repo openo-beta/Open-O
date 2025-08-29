@@ -28,12 +28,12 @@ package ca.openosp.openo.encounter.pageUtil;
 
 import ca.openosp.openo.util.plugin.IsPropertiesOn;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.DocumentDao.DocumentType;
+import ca.openosp.openo.commn.dao.DocumentDao.DocumentType;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.documentManager.EDocUtil.EDocSort;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import org.owasp.encoder.Encode;
 import ca.openosp.openo.util.DateUtils;
 import ca.openosp.openo.util.StringUtils;
