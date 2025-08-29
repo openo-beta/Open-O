@@ -56,6 +56,7 @@ import ca.openosp.openo.managers.TicklerManager;
 import ca.openosp.openo.provider.web.CppPreferencesUIBean;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.CppUtils;
 import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.casemgmt.web.CaseManagementViewAction.IssueDisplay;
 import ca.openosp.OscarProperties;
@@ -99,6 +100,16 @@ public class CaseManagementView2Action extends ActionSupport {
     protected ProgramManager programMgr = SpringUtils.getBean(ProgramManager.class);
     protected AdmissionManager admissionMgr = SpringUtils.getBean(AdmissionManager.class);
 
+    static {
+        // Initialize CPP 
+        try {
+            CppUtils.addCppCode("CurrentHistory");
+            CppUtils.addCppCode("DiagnosticNotes");
+            CppUtils.addCppCode("PastOcularHistory");
+        } catch (Exception e) {
+            System.err.println("Failed to init CPP codes in CaseManagementView2Action: " + e.getMessage());
+        }
+    }
 
     public String execute() throws Exception {
         this.setFilter_provider("");
@@ -107,7 +118,6 @@ public class CaseManagementView2Action extends ActionSupport {
         // prevent null pointer errors as both these variables are required in navigation.jsp
         request.getSession().setAttribute("casemgmt_newFormBeans", new ArrayList<Object>());
         request.getSession().setAttribute("casemgmt_msgBeans", new ArrayList<Object>());
-
 
         String method = request.getParameter("method") != null ? request.getParameter("method") : (String) request.getAttribute("method");
 
@@ -161,8 +171,6 @@ public class CaseManagementView2Action extends ActionSupport {
             cpp.setUpdate_date(new Date());
 
             caseManagementMgr.saveCPP(cpp, providerNo);
-
-            // caseManagementMgr.saveEctWin(ectWin);
         } else response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
         return null;
@@ -193,8 +201,6 @@ public class CaseManagementView2Action extends ActionSupport {
     }
 
     public String viewNotes() throws Exception {
-        // response.setCharacterEncoding("UTF-8");
-
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
@@ -226,7 +232,6 @@ public class CaseManagementView2Action extends ActionSupport {
      * Session variables : case_program_id casemgmt_DemoNo casemgmt_VlCountry casemgmt_msgBeans readonly
      */
     public String view() throws Exception {
-        // response.setCharacterEncoding("UTF-8");
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
         long start = System.currentTimeMillis();
@@ -308,7 +313,6 @@ public class CaseManagementView2Action extends ActionSupport {
                 admission = admissionMgr.getCurrentAdmission(programId, Integer.valueOf(demoNo));
             } catch (Exception e) {
                 logger.debug("No admission found for programId: " + programId + " and demoNo: " + demoNo + " - " + e.getMessage());
-                // Continue without admission - this is acceptable
             }
         } else {
             logger.debug("No valid programId available - skipping admission lookup");
@@ -389,7 +393,6 @@ public class CaseManagementView2Action extends ActionSupport {
         request.setAttribute("dxMap", dxMap);
 
         // UCF
-
         /* ISSUES */
         if (tab.equals("Current Issues")) {
             if (useNewCaseMgmt) viewCurrentIssuesTab_newCme(demoNo, programId);
@@ -432,8 +435,7 @@ public class CaseManagementView2Action extends ActionSupport {
             bean.setProviderNo(loggedInInfo.getLoggedInProviderNo());
             bean.setDemographicNo(Integer.parseInt(demoNo));
             request.getSession().setAttribute("RxSessionBean", bean);
-            // set up RX end
-
+            // Setup RX end
         }
 
         /* tickler */
@@ -469,7 +471,6 @@ public class CaseManagementView2Action extends ActionSupport {
         current = System.currentTimeMillis();
 
         //load up custom JavaScript
-
         //1. try from Properties
         String customCmeJs = OscarProperties.getInstance().getProperty("cme_js");
         if (customCmeJs == null || customCmeJs.length() == 0) {
@@ -481,7 +482,6 @@ public class CaseManagementView2Action extends ActionSupport {
         //2. Override from providers preferences?
 
         //3. Override based on appointment type?
-
         logger.debug("VIEW Exiting " + String.valueOf(current - beginning));
 
         String printPreview = (String) request.getAttribute("patientCppPrintPreview");
@@ -489,7 +489,6 @@ public class CaseManagementView2Action extends ActionSupport {
             request.setAttribute("patientCppPrintPreview", "false");
             return "clientHistoryPrintPreview";
         } else {
-
             if (useNewCaseMgmt) {
                 String fwdName = request.getParameter("ajaxview");
                 if (fwdName == null || fwdName.equals("") || fwdName.equalsIgnoreCase("null")) {
@@ -511,7 +510,6 @@ public class CaseManagementView2Action extends ActionSupport {
         boolean hideInactiveIssues = Boolean.parseBoolean(this.getHideActiveIssue());
 
         ArrayList<CheckBoxBean> checkBoxBeanList = new ArrayList<CheckBoxBean>();
-        // addLocalIssues(checkBoxBeanList, demographicNo, hideInactiveIssues, null);
         addLocalIssues(providerNo, checkBoxBeanList, demographicNo, hideInactiveIssues, Integer.valueOf(programId));
         addRemoteIssues(loggedInInfo, checkBoxBeanList, demographicNo, hideInactiveIssues);
         addGroupIssues(loggedInInfo, checkBoxBeanList, demographicNo, hideInactiveIssues);
@@ -575,7 +573,6 @@ public class CaseManagementView2Action extends ActionSupport {
         if (resetFilter != null && resetFilter.equals("true")) {
             logger.debug("CASEMGMTVIEW RESET FILTER");
             this.setFilter_providers(null);
-            // this.setFilter_provider("");
             this.setFilter_roles(null);
             this.setNote_sort(null);
         }
@@ -737,7 +734,6 @@ public class CaseManagementView2Action extends ActionSupport {
             }
 
             // add forms to notes list as single line items
-            //ArrayList<PatientForm> allPatientForms=EctFormData.getGroupedPatientFormsFromAllTables(demographicId);
             for (PatientForm patientForm : allPatientForms) {
                 notesToDisplay.add(new NoteDisplayNonNote(patientForm));
             }
@@ -775,9 +771,7 @@ public class CaseManagementView2Action extends ActionSupport {
         request.setAttribute(UserProperty.STALE_FORMAT, userProp2);
         logger.debug("Get stale note date " + (System.currentTimeMillis() - startTime));
 
-        //List<CaseManagementIssue> issues = cmeIssueDao.getIssuesByDemographic(demoNo);
         ArrayList<CheckBoxBean> checkBoxBeanList = new ArrayList<CheckBoxBean>();
-        // addLocalIssues(checkBoxBeanList, demographicNo, hideInactiveIssues, null);
         addLocalIssues(providerNo, checkBoxBeanList, demographicId, false, Integer.valueOf(programId));
         addRemoteIssues(loggedInInfo, checkBoxBeanList, demographicId, false);
         addGroupIssues(loggedInInfo, checkBoxBeanList, demographicId, false);
@@ -911,7 +905,6 @@ public class CaseManagementView2Action extends ActionSupport {
                 CaseManagementNote note = this.caseManagementNoteDao.getNote(Long.valueOf(orginalNoteId));
 
                 // filter on issues to display
-                // if (issueCodesToDisplay==null || hasIssueToBeDisplayed(note, issueCodesToDisplay)) {
                 // filter on role based access
                 String roleName = this.roleMgr.getRole(note.getReporter_caisi_role()).getRoleName();
                 if (hasRole(roles, roleName)) {
@@ -925,7 +918,6 @@ public class CaseManagementView2Action extends ActionSupport {
                     disp.setLocation(String.valueOf(origDemographic.getDemographicNo()));
                     notesToDisplay.add(disp);
                 }
-                // }
             } catch (Exception e) {
                 logger.error("Unexpected error.", e);
             }
@@ -934,7 +926,6 @@ public class CaseManagementView2Action extends ActionSupport {
     }
 
     private void addRemoteNotes(LoggedInInfo loggedInInfo, ArrayList<NoteDisplay> notesToDisplay, int demographicNo, List<Issue> issueCodesToDisplay, String programId) {
-
         if (!loggedInInfo.getCurrentFacility().isIntegratorEnabled()) return;
         List<CachedDemographicNote> linkedNotes = null;
         try {
@@ -966,7 +957,6 @@ public class CaseManagementView2Action extends ActionSupport {
                 logger.error("Unexpected error.", e);
             }
         }
-
     }
 
     private boolean hasIssueToBeDisplayed(CachedDemographicNote cachedDemographicNote, List<Issue> issueCodesToDisplay) {
@@ -1010,25 +1000,15 @@ public class CaseManagementView2Action extends ActionSupport {
                 List<CaseManagementIssue> issues = this.caseManagementMgr.getIssuesByNote(noteId);
                 logger.warn("we are doing nothing with this: " + issues);
             }
-            /*
-             * for (CachedDemographicIssue cachedDemographicIssue : remoteIssues) { try { IssueDisplay issueDisplay=null;
-             *
-             * if (!hideInactiveIssues) issueDisplay=getIssueToDisplay(cachedDemographicIssue); else if (!cachedDemographicIssue.isResolved()) issueDisplay=getIssueToDisplay(cachedDemographicIssue);
-             *
-             * if (issueDisplay!=null) { CheckBoxBean checkBoxBean=new CheckBoxBean(); checkBoxBean.setIssueDisplay(issueDisplay); checkBoxBean.setUsed(caseManagementNoteDao.haveIssue(issueDisplay.getCode(), demographicNo));
-             * checkBoxBeanList.add(checkBoxBean); } } catch (Exception e) { log.error("Unexpected error.", e); } }
-             */
         } catch (Exception e) {
             logger.error("Unexpected error.", e);
         }
     }
 
     protected void addRemoteIssues(LoggedInInfo loggedInInfo, ArrayList<CheckBoxBean> checkBoxBeanList, int demographicNo, boolean hideInactiveIssues) {
-
         if (!loggedInInfo.getCurrentFacility().isIntegratorEnabled()) return;
 
         try {
-
             List<CachedDemographicIssue> remoteIssues = null;
             try {
                 if (!CaisiIntegratorManager.isIntegratorOffline(loggedInInfo.getSession())) {
@@ -1226,8 +1206,6 @@ public class CaseManagementView2Action extends ActionSupport {
         request.setAttribute("identUrl", identUrl);
 
         // filter the notes by the checked issues
-        // UserProperty userProp = caseManagementMgr.getUserProperty(providerNo, UserProperty.STALE_NOTEDATE);
-
         List<Issue> issues = caseManagementMgr.getIssueInfoByCode(providerNo, codes);
         StringBuilder checked_issues = new StringBuilder();
         StringBuilder cppIssues = new StringBuilder();
@@ -1286,11 +1264,6 @@ public class CaseManagementView2Action extends ActionSupport {
         if (remoteNotes.size() > 0) {
             request.setAttribute("remoteNotes", remoteNotes);
         }
-
-        /*
-         * oscar.OscarProperties p = oscar.OscarProperties.getInstance(); String noteSort = p.getProperty("CMESort", ""); if (noteSort.trim().equalsIgnoreCase("UP")) request.setAttribute("Notes", sortNotes(notes, "observation_date_asc")); else
-         * request.setAttribute("Notes", sortNotes(notes, "observation_date_desc"));
-         */
 
         boolean isJsonRequest = request.getParameter("json") != null && request.getParameter("json").equalsIgnoreCase("true");
         if (isJsonRequest) {
@@ -1446,8 +1419,6 @@ public class CaseManagementView2Action extends ActionSupport {
 
     }
 
-
-
     protected Map<Long, Boolean> getUnlockedNotesMap(HttpServletRequest request) {
         @SuppressWarnings("unchecked")
         Map<Long, Boolean> map = (Map<Long, Boolean>) request.getSession().getAttribute("unlockedNoteMap");
@@ -1558,20 +1529,13 @@ public class CaseManagementView2Action extends ActionSupport {
         // set all colors
         String blackColour = "FFFFFF";
         String documentColour = "color:#" + blackColour + ";background-color:#" + Colour.getInstance().documents + ";";
-        //String diseaseColour = "color:#" + blackColour + ";background-color:#" + Colour.getInstance().disease + ";";
         String eFormsColour = "color:#" + blackColour + ";background-color:#" + Colour.getInstance().eForms + ";";
         String formsColour = "color:#" + blackColour + ";background-color:#" + Colour.getInstance().forms + ";";
-        //String labsColour = "color:#" + blackColour + ";background-color:#" + Colour.getInstance().labs + ";";
-        //String measurementsColour = "color:#" + blackColour + ";background-color:#" + Colour.getInstance().measurements + ";";
-        //String messagesColour = "color:#" + blackColour + ";background-color:#" + Colour.getInstance().messages + ";";
-        //String preventionColour = "color:#" + blackColour + ";background-color:#" + Colour.getInstance().prevention + ";";
-        //String ticklerColour = "color:#" + blackColour + ";background-color:#" + Colour.getInstance().tickler + ";";
         String rxColour = "color:#" + blackColour + ";background-color:#" + Colour.getInstance().rx + ";";
         String invoiceColour = "color:#" + blackColour + ";background-color:#" + Colour.getInstance().invoices + ";";
         String ticklerNoteColour = "color:#" + blackColour + ";background-color:#" + Colour.getInstance().ticklerNotes + ";";
         String externalNoteColour = "color:#" + blackColour + ";background-color:#" + Colour.getInstance().externalNotes + ";";
         String emailNoteColour = "color:#" + blackColour + ";background-color:#" + Colour.getInstance().emailNotes + ";";
-
         String bgColour = "color:#000000;background-color:#CCCCFF;";
 
         if (noteDisplay.isCpp()) {
@@ -1609,7 +1573,6 @@ public class CaseManagementView2Action extends ActionSupport {
         else if (noteDisplay.containsIssue("Concerns")) return (colour.ongoingConcerns);
         else if (noteDisplay.containsIssue("Reminders")) return (colour.reminders);
         else return colour.prevention;
-
     }
 
     public static CaseManagementNote getLatestCppNote(String demographicNo, long issueId, int appointmentNo, boolean filterByAppointment) {
@@ -1703,7 +1666,6 @@ public class CaseManagementView2Action extends ActionSupport {
                 sb.append("Treatment:" + getNoteExt(noteId, "Treatment", noteExts));
             }
         }
-
         if (issueCodeArr[1].equals("RiskFactors")) {
             if (prefsBean.getRiskFactorsStartDate().equals("on")) {
                 sb.append("Start Date:" + getNoteExt(noteId, "Start Date", noteExts));
@@ -1712,7 +1674,6 @@ public class CaseManagementView2Action extends ActionSupport {
                 sb.append("Resolution Date:" + getNoteExt(noteId, "Resolution Date", noteExts));
             }
         }
-
         if (issueCodeArr[1].equals("OMeds")) {
             if (prefsBean.getOtherMedsStartDate().equals("on")) {
                 sb.append("Start Date:" + getNoteExt(noteId, "Start Date", noteExts));
@@ -1721,7 +1682,6 @@ public class CaseManagementView2Action extends ActionSupport {
                 sb.append("Resolution Date:" + getNoteExt(noteId, "Resolution Date", noteExts));
             }
         }
-
         if (issueCodeArr[1].equals("FamHistory")) {
             if (prefsBean.getFamilyHistoryStartDate().equals("on")) {
                 sb.append("Start Date:" + getNoteExt(noteId, "Start Date", noteExts));
@@ -1736,8 +1696,6 @@ public class CaseManagementView2Action extends ActionSupport {
                 sb.append("Relationship:" + getNoteExt(noteId, "Relationship", noteExts));
             }
         }
-
-
         if (sb.length() > 0) {
             sb.insert(0, " (");
             sb.append(")");
@@ -1762,7 +1720,6 @@ public class CaseManagementView2Action extends ActionSupport {
     }
 
     public String viewNotesOpt() {
-        // response.setCharacterEncoding("UTF-8");
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
         HttpSession se = request.getSession();
@@ -1780,7 +1737,6 @@ public class CaseManagementView2Action extends ActionSupport {
         }
         String programId = (String) request.getSession().getAttribute("case_program_id");
 
-        // viewCurrentIssuesTab_newCmeNotesOpt(request, caseForm, demoNo, programId);
         NoteSelectionCriteria criteria = new NoteSelectionCriteria();
         if (request.getParameter("numToReturn") != null && request.getParameter("numToReturn").length() > 0) {
             criteria.setMaxResults(ConversionUtils.fromIntString(request.getParameter("numToReturn")));
@@ -1871,8 +1827,8 @@ public class CaseManagementView2Action extends ActionSupport {
     private String vlCountry = "";
     private String rootCompURL = "";
     private String hideActiveIssue = "true";
-    private CaseManagementCPP cpp = new CaseManagementCPP();
 
+    private CaseManagementCPP cpp = new CaseManagementCPP();
     private EncounterWindow ectWin = new EncounterWindow();
     public static final String[] tabs = {"Current Issues", "Client History", "Allergies", "Prescriptions", "Reminders", "Ticklers", "Search"};
     private File imageFile;
@@ -1884,15 +1840,11 @@ public class CaseManagementView2Action extends ActionSupport {
     private int searchProgramId;
     private String searchText;
     private String searchEncounterType;
-
     private String note_sort = null;
     private String filter_provider = "";
     private String filter_providers[];
     private String filter_roles[];
-
     private long formId;
-
-
     private int noteId;
     private String password;
 
