@@ -3293,10 +3293,17 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         boolean programSet = false;
 
         if (note.getProgram_no() != null && note.getProgram_no().length() > 0 && !"null".equals(note.getProgram_no())) {
-            ProgramProvider pp = programProviderDao.getProgramProvider(note.getProviderNo(), Long.valueOf(note.getProgram_no()));
-            if (pp != null) {
-                note.setReporter_caisi_role(String.valueOf(pp.getRoleId()));
-                programSet = true;
+            try {
+                Long programId = Long.valueOf(note.getProgram_no());
+                if (programId > 0) {
+                    ProgramProvider pp = programProviderDao.getProgramProvider(note.getProviderNo(), programId);
+                    if (pp != null) {
+                        note.setReporter_caisi_role(String.valueOf(pp.getRoleId()));
+                        programSet = true;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                // Invalid program number format, skip program provider lookup
             }
         }
 
