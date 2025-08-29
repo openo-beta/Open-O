@@ -25,23 +25,23 @@
 package ca.openosp.openo.casemgmt.service;
 
 
-import ca.openosp.openo.rx.data.RxPrescriptionData;
+import ca.openosp.openo.prescript.data.RxPrescriptionData;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.commons.lang.StringUtils;
-import org.oscarehr.PMmodule.model.Program;
-import org.oscarehr.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.PMmodule.model.Program;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
-import org.oscarehr.common.model.Prevention;
-import org.oscarehr.common.printing.FontSettings;
-import org.oscarehr.common.printing.PdfWriterFactory;
+import ca.openosp.openo.commn.model.Prevention;
+import ca.openosp.openo.commn.printing.FontSettings;
+import ca.openosp.openo.commn.printing.PdfWriterFactory;
 import ca.openosp.openo.managers.ProgramManager2;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.clinic.ClinicData;
 
 import javax.servlet.http.HttpServletRequest;

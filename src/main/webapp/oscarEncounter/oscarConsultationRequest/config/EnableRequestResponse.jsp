@@ -40,8 +40,8 @@
 %>
 
 <%@ page import="java.util.*" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
-<%@ page import="org.oscarehr.common.dao.PropertyDao, org.oscarehr.common.model.Property" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.commn.dao.PropertyDao, ca.openosp.openo.commn.model.Property" %>
 <%@ page import="ca.openosp.openo.managers.ConsultationManager" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
 

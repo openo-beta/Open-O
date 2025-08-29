@@ -38,12 +38,12 @@ import java.util.Vector;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.EncounterFormDao;
-import org.oscarehr.common.dao.ReportTableFieldCaptionDao;
-import org.oscarehr.common.model.EncounterForm;
-import org.oscarehr.common.model.ReportTableFieldCaption;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.EncounterFormDao;
+import ca.openosp.openo.commn.dao.ReportTableFieldCaptionDao;
+import ca.openosp.openo.commn.model.EncounterForm;
+import ca.openosp.openo.commn.model.ReportTableFieldCaption;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.login.DBHelp;
 

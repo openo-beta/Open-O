@@ -13,12 +13,12 @@ package ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil;
 import com.itextpdf.text.DocumentException;
 import net.sf.json.JSONObject;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.ClinicDAO;
-import org.oscarehr.common.dao.FaxConfigDao;
-import org.oscarehr.common.dao.FaxJobDao;
-import org.oscarehr.common.model.Clinic;
-import org.oscarehr.common.model.FaxConfig;
-import org.oscarehr.common.model.FaxJob;
+import ca.openosp.openo.commn.dao.ClinicDAO;
+import ca.openosp.openo.commn.dao.FaxConfigDao;
+import ca.openosp.openo.commn.dao.FaxJobDao;
+import ca.openosp.openo.commn.model.Clinic;
+import ca.openosp.openo.commn.model.FaxConfig;
+import ca.openosp.openo.commn.model.FaxJob;
 import ca.openosp.openo.documentManager.DocumentAttachmentManager;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.fax.core.FaxAccount;
@@ -27,10 +27,10 @@ import ca.openosp.openo.managers.FaxManager;
 import ca.openosp.openo.managers.FaxManager.TransactionType;
 import ca.openosp.openo.managers.NioFileManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.PDFGenerationException;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PDFGenerationException;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 
@@ -73,7 +73,7 @@ public class EctConsultationFormFax2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", "r", null)) {
-            throw new SecurityException("missing required security object (_con)");
+            throw new SecurityException("missing required sec object (_con)");
         }
 
         //EctConsultationFaxForm ectConsultationFaxForm = (EctConsultationFaxForm) form;
@@ -200,7 +200,7 @@ public class EctConsultationFormFax2Action extends ActionSupport {
                 faxManager.logFaxJob(loggedInInfo, faxJob, TransactionType.CONSULTATION, Integer.parseInt(reqId));
                 // FaxClientLog faxClientLog = new FaxClientLog();
                 // faxClientLog.setFaxId(faxJob.getId()); // IMPORTANT! this is the id of the FaxJobID from the Faxes table. A 1:1 cardinality.
-                // faxClientLog.setProviderNo(faxJob.getOscarUser()); // the provider that sent this fax
+                // faxClientLog.setProviderNo(faxJob.getOscarUser()); // the providers that sent this fax
                 // faxClientLog.setStartTime(new Date(System.currentTimeMillis())); // the exact time the fax was sent
                 // faxClientLog.setRequestId(Integer.parseInt(reqId));
                 // faxClientLogDao.persist(faxClientLog);

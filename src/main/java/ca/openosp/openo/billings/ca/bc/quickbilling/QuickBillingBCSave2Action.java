@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.common.model.ProviderData;
+import ca.openosp.openo.commn.model.ProviderData;
 import ca.openosp.openo.billings.ca.bc.data.BillingFormData;
 import ca.openosp.openo.billings.ca.bc.pageUtil.BillingSessionBean;
 

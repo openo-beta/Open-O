@@ -13,11 +13,11 @@ package ca.openosp.openo.report.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.utility.SpringUtils;
 
-import ca.openosp.openo.provider.bean.ProviderNameBean;
+import ca.openosp.openo.providers.bean.ProviderNameBean;
 
 public class DoctorList {
 

@@ -25,7 +25,7 @@
 package ca.openosp.openo.billing.CA.BC.dao;
 
 import ca.openosp.openo.billing.CA.BC.model.LogTeleplanTx;
-import org.oscarehr.common.dao.AbstractDaoImpl;
+import ca.openosp.openo.commn.dao.AbstractDaoImpl;
 import org.springframework.stereotype.Repository;
 
 @Repository

@@ -30,10 +30,10 @@ import java.util.concurrent.ExecutionException;
 
 import org.apache.cxf.jaxrs.provider.json.JSONProvider;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.AppDefinition;
-import org.oscarehr.common.model.AppUser;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.model.AppDefinition;
+import ca.openosp.openo.commn.model.AppUser;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

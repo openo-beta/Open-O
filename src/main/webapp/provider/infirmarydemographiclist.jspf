@@ -3,9 +3,9 @@
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ page import="ca.openosp.openo.managers.TicklerManager" %>
-<%@ page import="org.oscarehr.common.model.Tickler" %>
-<%@ page import="oscar.*, org.oscarehr.utility.*,oscar.util.*,java.net.URLEncoder"%>
-<%@ page import="ca.openosp.openo.web.Infirm2Action" %>
+<%@ page import="ca.openosp.openo.commn.model.Tickler" %>
+<%@ page import="ca.openosp.*,ca.openosp.openo.utility.*,ca.openosp.openo.util.*,java.net.URLEncoder"%>
+<%@ page import="ca.openosp.openo.www.Infirm2Action" %>
 <c:if test="${infirmaryView_isOscar == 'false'}">
 <%
 	LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoFromSession(request);

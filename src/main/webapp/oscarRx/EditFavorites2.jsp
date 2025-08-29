@@ -1,7 +1,7 @@
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.data.RxDrugData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxCodesData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %><%--
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxDrugData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxCodesData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %><%--
 
     Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
     This software is published under the GPL GNU General Public License.
@@ -118,7 +118,7 @@
                 if (err == false) {
                     var data = "favoriteId=" + favoriteId + "&favoriteName=" + favoriteName + "&customName=" + customName + "&takeMin=" + takeMin + "&takeMax=" + takeMax + "&frequencyCode=" + frequencyCode +
                         "&duration=" + duration + "&durationUnit=" + durationUnit + "&quantity=" + quantity + "&repeat=" + repeat + "&nosubs=" + nosubs + "&prn=" + prn + "&customInstr=" + customInstr + "&special=" + special + "&dispenseInternal=" + dispenseInternal;
-                    var url = "<c:out value="${ctx}"/>" + "/oscarRx/updateFavorite2.do?method=ajaxEditFavorite";
+                    var url = "<c:out value="${ctx}"/>" + "/rx/updateFavorite2.do?method=ajaxEditFavorite";
 
                     fetch(url, {
                         method: "post",

@@ -26,7 +26,7 @@ package ca.openosp.openo.form;
 
 import net.sf.json.JSONObject;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

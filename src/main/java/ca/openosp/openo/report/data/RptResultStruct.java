@@ -26,6 +26,8 @@
 
 package ca.openosp.openo.report.data;
 
+import ca.openosp.Misc;
+
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -55,7 +57,7 @@ public class RptResultStruct {
             sb.append("<tr class='" + rowColor + "'>");
             for (int j = 0; j < columns; j++) {
                 sb.append("<td>");
-                sb.append(oscar.Misc.getString(rs, columnNames[j]));
+                sb.append(Misc.getString(rs, columnNames[j]));
                 sb.append("</td>");
 
             }
@@ -108,7 +110,7 @@ CSS:
                 sb.append("<tr>");
                 for (int j = 0; j < columns; j++) {
                     sb.append("<td>");
-                    sb.append(oscar.Misc.getString(rs, columnNames[j]));
+                    sb.append(Misc.getString(rs, columnNames[j]));
                     sb.append("</td>");
 
                 }

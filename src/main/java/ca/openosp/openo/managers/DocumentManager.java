@@ -34,11 +34,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.model.*;
+import ca.openosp.openo.commn.dao.DocumentDao;
+import ca.openosp.openo.commn.model.CtlDocument;
+import ca.openosp.openo.commn.model.Document;
 
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.PDFGenerationException;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.PDFGenerationException;
 
 import ca.openosp.openo.documentManager.EDoc;
 
@@ -56,7 +57,7 @@ public interface DocumentManager {
      * @param loggedInInfo  The logged in info of the current user
      * @param document      Document to create
      * @param demographicNo The demographic number to save the document to
-     * @param providerNo    The optional provider number to route the document to
+     * @param providerNo    The optional providers number to route the document to
      * @param documentData  The document byte data
      * @return Document record from the database once it has been created
      * @throws IOException If actions related to getting document data fail

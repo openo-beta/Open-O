@@ -36,11 +36,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.oscarehr.common.dao.MeasurementTypeDao;
-import org.oscarehr.common.model.MeasurementType;
+import ca.openosp.openo.commn.dao.MeasurementTypeDao;
+import ca.openosp.openo.commn.model.MeasurementType;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctTypeDisplayNameBeanHandler;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctValidationsBeanHandler;
@@ -130,7 +130,7 @@ public class EctAddMeasuringInstruction2Action extends ActionSupport {
             return SUCCESS;
 
         } else {
-            throw new SecurityException("Access Denied!"); //missing required security object (_admin)
+            throw new SecurityException("Access Denied!"); //missing required sec object (_admin)
         }
 
     }

@@ -32,13 +32,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
-import org.oscarehr.common.hl7.v2.oscar_to_oscar.DataTypeUtils;
-import org.oscarehr.common.hl7.v2.oscar_to_oscar.OruR01;
-import org.oscarehr.common.hl7.v2.oscar_to_oscar.OscarToOscarUtils;
-import org.oscarehr.common.hl7.v2.oscar_to_oscar.OruR01.ObservationData;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.ui.servlet.ContentRenderingServlet;
+import ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.DataTypeUtils;
+import ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.OruR01;
+import ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.OscarToOscarUtils;
+import ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.OruR01.ObservationData;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.ui.servlet.ContentRenderingServlet;
 
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import ca.uhn.hl7v2.HL7Exception;

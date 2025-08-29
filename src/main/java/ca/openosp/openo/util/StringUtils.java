@@ -27,7 +27,7 @@
 package ca.openosp.openo.util;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import java.io.InputStream;
 import java.text.ParseException;

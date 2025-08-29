@@ -36,12 +36,12 @@ import org.apache.logging.log4j.Logger;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import org.oscarehr.common.dao.ClinicDAO;
-import org.oscarehr.common.dao.DashboardDao;
-import org.oscarehr.common.dao.IndicatorTemplateDao;
-import org.oscarehr.common.model.Dashboard;
-import org.oscarehr.common.model.IndicatorTemplate;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.commn.dao.ClinicDAO;
+import ca.openosp.openo.commn.dao.DashboardDao;
+import ca.openosp.openo.commn.dao.IndicatorTemplateDao;
+import ca.openosp.openo.commn.model.Dashboard;
+import ca.openosp.openo.commn.model.IndicatorTemplate;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.dashboard.display.beans.DashboardBean;
 import ca.openosp.openo.dashboard.display.beans.DrilldownBean;
 import ca.openosp.openo.dashboard.display.beans.IndicatorBean;
@@ -54,14 +54,14 @@ import ca.openosp.openo.dashboard.handler.IndicatorTemplateXML;
 import ca.openosp.openo.integration.dashboard.model.Clinic;
 import ca.openosp.openo.integration.dashboard.model.User;
 import ca.openosp.openo.integration.dashboard.model.User.Province;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.sf.json.JSONObject;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 
 @Service
@@ -706,7 +706,7 @@ public class DashboardManagerImpl implements DashboardManager {
             return null;
         }
 
-        org.oscarehr.common.model.Clinic oClinic = clinicDAO.getClinic();
+        ca.openosp.openo.commn.model.Clinic oClinic = clinicDAO.getClinic();
         Clinic clinic = new Clinic();
         clinic.setApplication("oscar");
 
@@ -732,7 +732,7 @@ public class DashboardManagerImpl implements DashboardManager {
         user.setProvince(Province.ON);
         // user.setUniqueIdentifier(uniqueIdentifier);
         user.setUsername(provider.getProviderNo());
-        user.setRole("provider");
+        user.setRole("providers");
 
         JSONObject response = new JSONObject();
         response.put("clinic", clinic);

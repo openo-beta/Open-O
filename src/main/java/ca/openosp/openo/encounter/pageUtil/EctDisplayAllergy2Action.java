@@ -33,15 +33,15 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.IntegratorFallBackManager;
 import ca.openosp.openo.caisi_integrator.ws.CachedDemographicAllergy;
-import org.oscarehr.common.model.Allergy;
-import org.oscarehr.provider.web.CppPreferencesUIBean;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.model.Allergy;
+import ca.openosp.openo.provider.web.CppPreferencesUIBean;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
-import ca.openosp.openo.rx.data.RxPatientData;
+import ca.openosp.openo.prescript.data.RxPatientData;
 import ca.openosp.openo.util.DateUtils;
 import ca.openosp.openo.util.StringUtils;
 
@@ -66,7 +66,7 @@ public class EctDisplayAllergy2Action extends EctDisplayAction {
 
             // set lefthand module heading and link
             String winName = "Allergy" + bean.demographicNo;
-            String url = "popupPage(580,900,'" + winName + "','" + request.getContextPath() + "/oscarRx/showAllergy.do?demographicNo=" + bean.demographicNo + "')";
+            String url = "popupPage(580,900,'" + winName + "','" + request.getContextPath() + "/rx/showAllergy.do?demographicNo=" + bean.demographicNo + "')";
             Dao.setLeftHeading(getText("oscarEncounter.NavBar.Allergy"));
             Dao.setLeftURL(url);
 

@@ -25,7 +25,7 @@
 
 package ca.openosp.openo.managers;
 
-import org.oscarehr.ws.rest.to.model.DrugSearchTo1;
+import ca.openosp.openo.webserv.rest.to.model.DrugSearchTo1;
 
 import java.util.List;
 

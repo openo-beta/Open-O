@@ -28,7 +28,7 @@ import java.util.List;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.casemgmt.dao.IssueDAO;
 import ca.openosp.openo.casemgmt.model.Issue;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class IssueAdminManager {

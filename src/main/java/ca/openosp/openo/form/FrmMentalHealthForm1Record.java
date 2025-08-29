@@ -28,7 +28,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.Misc;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -44,17 +45,17 @@ public class FrmMentalHealthForm1Record extends FrmRecord {
                     + demographicNo;
             ResultSet rs = DBHandler.GetSQL(sql);
             if (rs.next()) {
-                Date dob = UtilDateUtilities.calcDate(oscar.Misc.getString(rs, "year_of_birth"), oscar.Misc.getString(rs, "month_of_birth"),
-                        oscar.Misc.getString(rs, "date_of_birth"));
-                props.setProperty("demographic_no", oscar.Misc.getString(rs, "demographic_no"));
+                Date dob = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), Misc.getString(rs, "month_of_birth"),
+                        Misc.getString(rs, "date_of_birth"));
+                props.setProperty("demographic_no", Misc.getString(rs, "demographic_no"));
                 props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(),
                         "yyyy/MM/dd"));
                 props.setProperty("formEdited", UtilDateUtilities.DateToString(new Date(), "yyyy-MM-dd HH:mm:ss"));
                 props.setProperty("birthDate", UtilDateUtilities.DateToString(dob, "yyyy/MM/dd"));
-                props.setProperty("clientName", oscar.Misc.getString(rs, "clientName"));
-                props.setProperty("demoProvider", oscar.Misc.getString(rs, "provider_no"));
-                props.setProperty("clientAddress", oscar.Misc.getString(rs, "clientAddress"));
-                demoProvider = oscar.Misc.getString(rs, "provider_no");
+                props.setProperty("clientName", Misc.getString(rs, "clientName"));
+                props.setProperty("demoProvider", Misc.getString(rs, "provider_no"));
+                props.setProperty("clientAddress", Misc.getString(rs, "clientAddress"));
+                demoProvider = Misc.getString(rs, "provider_no");
             }
             rs.close();
         } else {
@@ -75,43 +76,43 @@ public class FrmMentalHealthForm1Record extends FrmRecord {
         if (!demoProvider.equals("")) {
 
             if (demoProvider.equals(provNo)) {
-                // from provider table
+                // from providers table
                 sql = "SELECT CONCAT(last_name, ', ', first_name) AS provName, ohip_no "
-                        + "FROM provider WHERE provider_no = '" + provNo + "'";
+                        + "FROM providers WHERE provider_no = '" + provNo + "'";
                 rs = DBHandler.GetSQL(sql);
 
                 if (rs.next()) {
-                    String num = oscar.Misc.getString(rs, "ohip_no");
-                    props.setProperty("reqProvName", oscar.Misc.getString(rs, "provName"));
-                    props.setProperty("provName", oscar.Misc.getString(rs, "provName"));
+                    String num = Misc.getString(rs, "ohip_no");
+                    props.setProperty("reqProvName", Misc.getString(rs, "provName"));
+                    props.setProperty("provName", Misc.getString(rs, "provName"));
                     props.setProperty("practitionerNo", "0000-" + num + "-00");
                 }
                 rs.close();
             } else {
-                // from provider table
-                sql = "SELECT CONCAT(last_name, ', ', first_name) AS provName, ohip_no FROM provider WHERE provider_no = '"
+                // from providers table
+                sql = "SELECT CONCAT(last_name, ', ', first_name) AS provName, ohip_no FROM providers WHERE provider_no = '"
                         + provNo + "'";
                 rs = DBHandler.GetSQL(sql);
 
                 String num = "";
                 if (rs.next()) {
-                    num = oscar.Misc.getString(rs, "ohip_no");
-                    props.setProperty("reqProvName", oscar.Misc.getString(rs, "provName"));
+                    num = Misc.getString(rs, "ohip_no");
+                    props.setProperty("reqProvName", Misc.getString(rs, "provName"));
                     props.setProperty("practitionerNo", "0000-" + num + "-00");
                 }
                 rs.close();
 
-                // from provider table
-                sql = "SELECT CONCAT(last_name, ', ', first_name) AS provName, ohip_no FROM provider WHERE provider_no = "
+                // from providers table
+                sql = "SELECT CONCAT(last_name, ', ', first_name) AS provName, ohip_no FROM providers WHERE provider_no = "
                         + demoProvider;
                 rs = DBHandler.GetSQL(sql);
 
                 if (rs.next()) {
                     if (num.equals("")) {
-                        num = oscar.Misc.getString(rs, "ohip_no");
+                        num = Misc.getString(rs, "ohip_no");
                         props.setProperty("practitionerNo", "0000-" + num + "-00");
                     }
-                    props.setProperty("provName", oscar.Misc.getString(rs, "provName"));
+                    props.setProperty("provName", Misc.getString(rs, "provName"));
 
                 }
                 rs.close();

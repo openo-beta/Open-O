@@ -25,6 +25,9 @@ package ca.openosp.openo.casemgmt.web;
 
 import ca.openosp.openo.casemgmt.dao.*;
 import ca.openosp.openo.casemgmt.model.*;
+import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.commn.model.*;
+import ca.openosp.openo.utility.*;
 import com.opensymphony.xwork2.ActionSupport;
 import ca.openosp.openo.model.security.Secrole;
 import net.sf.json.JSONObject;
@@ -35,25 +38,22 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
-import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.PMmodule.model.Program;
-import org.oscarehr.PMmodule.model.ProgramProvider;
-import org.oscarehr.PMmodule.service.AdmissionManager;
-import org.oscarehr.PMmodule.service.ProgramManager;
-import org.oscarehr.PMmodule.service.ProviderManager;
+import ca.openosp.openo.PMmodule.dao.ProgramProviderDAO;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.model.Program;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.PMmodule.service.AdmissionManager;
+import ca.openosp.openo.PMmodule.service.ProgramManager;
+import ca.openosp.openo.PMmodule.service.ProviderManager;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import ca.openosp.openo.casemgmt.service.CaseManagementPrint;
 import ca.openosp.openo.casemgmt.service.ClientImageManager;
 import ca.openosp.openo.casemgmt.web.CaseManagementViewAction.IssueDisplay;
 import ca.openosp.openo.casemgmt.web.formbeans.CaseManagementEntryFormBean;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.model.*;
 import ca.openosp.openo.managers.TicklerManager;
-import org.oscarehr.utility.*;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.appt.ApptStatusData;
 import ca.openosp.openo.form.JSONUtil;
 import ca.openosp.openo.log.LogAction;
@@ -197,11 +197,11 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         request.setAttribute("change_flag", "false");
         request.setAttribute("from", "casemgmt");
 
-        logger.debug("Get demo and provider no");
+        logger.debug("Get demo and providers no");
         String demono = getDemographicNo(request);
         Integer demographicNo = Integer.parseInt(demono);
         current = System.currentTimeMillis();
-        logger.debug("Get demo and provider no " + String.valueOf(current - start));
+        logger.debug("Get demo and providers no " + String.valueOf(current - start));
         start = current;
 
         String programIdString = (String) session.getAttribute("case_program_id");
@@ -277,7 +277,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
         logger.debug("NoteId " + nId);
 
-        String maxTmpSave = oscar.OscarProperties.getInstance().getProperty("maxTmpSave", "off");
+        String maxTmpSave = OscarProperties.getInstance().getProperty("maxTmpSave", "off");
         logger.debug("maxTmpSave " + maxTmpSave);
         // set date 2 weeks in past so we retrieve more recent saved notes
         Calendar cal = Calendar.getInstance();
@@ -404,7 +404,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         logger.debug("note in cform " + cform.getCaseNote_note());
         /* set issue checked list */
 
-        // get issues for current demographic, based on provider rights
+        // get issues for current demographic, based on providers rights
 
         Boolean useNewCaseMgmt = Boolean.valueOf((String) session.getAttribute("newCaseManagement"));
 
@@ -1239,7 +1239,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
             }
         } catch (Exception e) {
             //Exception thrown if other window has saved and exited so lock is gone
-            logger.error("Lock not found for " + demo + " provider " + providerNo + " IP " + request.getRemoteAddr(), e);
+            logger.error("Lock not found for " + demo + " providers " + providerNo + " IP " + request.getRemoteAddr(), e);
             return -1L;
         }
 
@@ -2036,7 +2036,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
             } else {
                 providerview = loggedInInfo.getLoggedInProviderNo();
             }
-            String defaultView = oscar.OscarProperties.getInstance().getProperty("default_view", "");
+            String defaultView = OscarProperties.getInstance().getProperty("default_view", "");
 
             Set setIssues = this.getCaseNote().getIssues();
             Iterator iter = setIssues.iterator();
@@ -2939,7 +2939,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
      * gets all the notes
      * if we have a key, and the note is locked, consider it
      * caisi - filter notes
-     * grab the last one, where i am provider, and it's not signed
+     * grab the last one, where i am providers, and it's not signed
      *
      * @param request
      * @param demono

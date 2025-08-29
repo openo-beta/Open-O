@@ -33,15 +33,15 @@ import java.util.List;
 import java.util.Vector;
 import java.util.Date;
 
-import org.oscarehr.common.dao.MessageListDao;
-import org.oscarehr.common.dao.MessageTblDao;
-import org.oscarehr.common.dao.OscarCommLocationsDao;
-import org.oscarehr.common.dao.forms.FormsDao;
-import org.oscarehr.common.model.MessageList;
-import org.oscarehr.common.model.MessageTbl;
-import org.oscarehr.common.model.OscarCommLocations;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.MessageListDao;
+import ca.openosp.openo.commn.dao.MessageTblDao;
+import ca.openosp.openo.commn.dao.OscarCommLocationsDao;
+import ca.openosp.openo.commn.dao.forms.FormsDao;
+import ca.openosp.openo.commn.model.MessageList;
+import ca.openosp.openo.commn.model.MessageTbl;
+import ca.openosp.openo.commn.model.OscarCommLocations;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.messenger.data.MsgDisplayMessage;
 import ca.openosp.openo.util.ConversionUtils;
@@ -143,7 +143,7 @@ public class MsgDisplayMessagesBean implements java.io.Serializable {
 
     /**
      * calls getMessageIDS and getInfo which are used to fill the Vectors
-     * with the Message headers for the current provider No
+     * with the Message headers for the current providers No
      *
      * @return Vector, Contains the messageids for use on the DisplayMessage.jsp
      */
@@ -257,7 +257,7 @@ public class MsgDisplayMessagesBean implements java.io.Serializable {
     /**
      * Used to set the providerNo that will determine what this bean will fill itself with
      *
-     * @param providerNo String, provider No
+     * @param providerNo String, providers No
      */
     public void setProviderNo(String providerNo) {
 
@@ -265,9 +265,9 @@ public class MsgDisplayMessagesBean implements java.io.Serializable {
     }
 
     /**
-     * gets the current provider No
+     * gets the current providers No
      *
-     * @return the provider no
+     * @return the providers no
      */
     public String getProviderNo() {
         return this.providerNo;

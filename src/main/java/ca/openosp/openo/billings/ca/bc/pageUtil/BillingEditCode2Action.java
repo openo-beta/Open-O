@@ -36,10 +36,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
-import org.oscarehr.common.dao.BillingServiceDao;
-import org.oscarehr.common.model.BillingService;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.BillingServiceDao;
+import ca.openosp.openo.commn.model.BillingService;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.billings.ca.bc.data.BillingCodeData;
 import ca.openosp.openo.util.UtilDateUtilities;

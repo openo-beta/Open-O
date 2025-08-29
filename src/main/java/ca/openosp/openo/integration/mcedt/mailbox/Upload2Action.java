@@ -30,8 +30,8 @@ import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.integration.mcedt.DelegateFactory;
 import ca.openosp.openo.integration.mcedt.McedtMessageCreator;
-import org.oscarehr.utility.MiscUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.OscarProperties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -43,7 +43,7 @@
 <%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page
-        import="java.util.*, oscar.util.*, oscar.OscarProperties, org.oscarehr.utility.SpringUtils, org.oscarehr.common.dao.CtlDocClassDao" %>
+        import="java.util.*, ca.openosp.openo.util.*, ca.openosp.OscarProperties, ca.openosp.openo.utility.SpringUtils, ca.openosp.openo.commn.dao.CtlDocClassDao" %>
 <%@ page import="ca.openosp.openo.documentManager.data.AddEditDocument2Form" %>
 <%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
@@ -335,7 +335,7 @@
                     <input type="checkbox" id="restrictToProgram" name="restrictToProgram">
                     Restrict to current program</label>
             </div>
-            <% if (module.equals("provider")) {%>
+            <% if (module.equals("providers")) {%>
             <div class="checkbox">
                 <label>
                     <input type="checkbox" id="docPublic" name="docPublic" <%=formdata.getDocPublic() + " "%>
@@ -432,7 +432,7 @@
             <input type="text" name="docSubClass" id="docSubClass2" class="form-control">
             <div class="autocomplete_style" id="docSubClass_list2"></div>
         </div>
-        <% if (module.equals("provider")) {%>
+        <% if (module.equals("providers")) {%>
         <div class="checkbox">
             <label>
                 <input type="checkbox" name="docPublic" <%=formdata.getDocPublic() + " "%> value="checked">

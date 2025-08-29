@@ -30,12 +30,12 @@ import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.Dashboard;
-import org.oscarehr.common.model.IndicatorTemplate;
+import ca.openosp.openo.commn.model.Dashboard;
+import ca.openosp.openo.commn.model.IndicatorTemplate;
 import ca.openosp.openo.dashboard.display.beans.DashboardBean;
 import ca.openosp.openo.dashboard.display.beans.PanelBean;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
 /**
  * Construct a DashboardBean

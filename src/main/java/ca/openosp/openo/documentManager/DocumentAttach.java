@@ -1,12 +1,12 @@
 //CHECKSTYLE:OFF
 package ca.openosp.openo.documentManager;
 
-import org.oscarehr.common.dao.ConsultDocsDao;
-import org.oscarehr.common.dao.EFormDocsDao;
-import org.oscarehr.common.model.ConsultDocs;
-import org.oscarehr.common.model.EFormDocs;
-import org.oscarehr.common.model.enumerator.DocumentType;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ConsultDocsDao;
+import ca.openosp.openo.commn.dao.EFormDocsDao;
+import ca.openosp.openo.commn.model.ConsultDocs;
+import ca.openosp.openo.commn.model.EFormDocs;
+import ca.openosp.openo.commn.model.enumerator.DocumentType;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.oceanEReferal.pageUtil.OceanEReferralAttachmentUtil;
 

@@ -32,8 +32,9 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.Misc;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -54,14 +55,14 @@ public class FrmCaregiverRecord extends FrmRecord {
                     + demographicNo;
             rs = DBHandler.GetSQL(sql);
             if (rs.next()) {
-                props.setProperty("demographic_no", oscar.Misc.getString(rs, "demographic_no"));
+                props.setProperty("demographic_no", Misc.getString(rs, "demographic_no"));
                 props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(), _dateFormat));
             }
             rs.close();
             sql = "SELECT studyID FROM rehabStudy2004 WHERE demographic_no='" + demographicNo + "'";
             rs = DBHandler.GetSQL(sql);
             if (rs.next()) {
-                props.setProperty("studyID", oscar.Misc.getString(rs, "studyID"));
+                props.setProperty("studyID", Misc.getString(rs, "studyID"));
             } else {
                 props.setProperty("studyID", "N/A");
             }
@@ -95,7 +96,7 @@ public class FrmCaregiverRecord extends FrmRecord {
                         if (md.getColumnTypeName(i).equalsIgnoreCase("date")) {
                             value = UtilDateUtilities.DateToString(rs.getDate(i), "yyyy/MM/dd");
                         } else {
-                            value = oscar.Misc.getString(rs, i);
+                            value = Misc.getString(rs, i);
                         }
                     }
 

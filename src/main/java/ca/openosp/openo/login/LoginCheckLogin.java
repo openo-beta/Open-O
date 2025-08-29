@@ -32,10 +32,10 @@ import java.util.Properties;
 import java.util.Vector;
 
 import org.apache.commons.lang3.StringUtils;
-import org.oscarehr.common.model.Security;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.model.Security;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 
 public final class LoginCheckLogin {
@@ -119,8 +119,8 @@ public final class LoginCheckLogin {
     /**
      * Authenticates based on an SSO Key
      *
-     * @param ssoKey - The ssoKey to be matched to a provider
-     * @return String array of the provider information
+     * @param ssoKey - The ssoKey to be matched to a providers
+     * @return String array of the providers information
      */
     public String[] ssoAuth(String ssoKey) {
         lb = new LoginCheckLoginBean();
@@ -138,7 +138,7 @@ public final class LoginCheckLogin {
     /**
      * Overload method for authentication without PIN code.
      * It does not matter if the PIN code is set as required in
-     * the provider profile.
+     * the providers profile.
      *
      * @param user_name
      * @param password

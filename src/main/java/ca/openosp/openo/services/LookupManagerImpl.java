@@ -27,7 +27,7 @@ package ca.openosp.openo.services;
 import java.sql.SQLException;
 import java.util.List;
 
-import ca.openosp.openo.dao.LookupDao;
+import ca.openosp.openo.daos.LookupDao;
 import ca.openosp.openo.model.LookupCodeValue;
 import ca.openosp.openo.model.LookupTableDefValue;
 

@@ -31,10 +31,10 @@ import java.util.List;
 
 import ca.openosp.openo.billing.CA.BC.dao.CtlServiceCodesDxCodesDao;
 import ca.openosp.openo.billing.CA.BC.model.CtlServiceCodesDxCodes;
-import org.oscarehr.common.dao.BillingServiceDao;
-import org.oscarehr.common.dao.DiagnosticCodeDao;
-import org.oscarehr.common.model.DiagnosticCode;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.BillingServiceDao;
+import ca.openosp.openo.commn.dao.DiagnosticCodeDao;
+import ca.openosp.openo.commn.model.DiagnosticCode;
+import ca.openosp.openo.utility.SpringUtils;
 
 /**
  * <p>Title: BillingAssociationPersistence</p>

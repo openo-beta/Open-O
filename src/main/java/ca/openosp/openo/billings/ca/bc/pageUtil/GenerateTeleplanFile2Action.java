@@ -32,17 +32,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.Misc;
-import oscar.OscarProperties;
+import ca.openosp.Misc;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.billings.ca.bc.MSP.TeleplanFileWriter;
 import ca.openosp.openo.billings.ca.bc.MSP.TeleplanSubmission;
 import ca.openosp.openo.billings.ca.bc.data.BillActivityDAO;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
-import ca.openosp.openo.provider.data.ProviderData;
+import ca.openosp.openo.providers.data.ProviderData;
 import ca.openosp.openo.util.UtilDateUtilities;
 
 
@@ -74,8 +74,8 @@ public class GenerateTeleplanFile2Action extends ActionSupport {
 
         String batchCount = "0";
         String providerNo = request.getParameter("user");
-        String provider = request.getParameter("provider");
-        String providerBillingNo = request.getParameter("provider");
+        String provider = request.getParameter("providers");
+        String providerBillingNo = request.getParameter("providers");
         if (provider != null && provider.equals("all")) {
             providerBillingNo = "%";
         }

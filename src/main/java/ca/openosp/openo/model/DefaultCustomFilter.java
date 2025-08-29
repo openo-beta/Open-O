@@ -23,7 +23,7 @@
 
 package ca.openosp.openo.model;
 
-import org.oscarehr.common.model.CustomFilter;
+import ca.openosp.openo.commn.model.CustomFilter;
 
 
 public class DefaultCustomFilter extends CustomFilter {

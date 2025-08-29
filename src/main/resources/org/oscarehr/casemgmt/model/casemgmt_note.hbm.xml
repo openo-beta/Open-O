@@ -40,7 +40,7 @@
 		<property name="reporter_program_team" />
 		<property name="history" />
 		<property name="uuid" />
-		<many-to-one name="provider" class="org.oscarehr.common.model.Provider"
+		<many-to-one name="provider" class="ca.openosp.openo.commn.model.Provider"
 			column="provider_no" update="false" not-found='ignore' insert="false"
 			lazy="false" />
 		<set name="issues" table="casemgmt_issue_notes" lazy="false">

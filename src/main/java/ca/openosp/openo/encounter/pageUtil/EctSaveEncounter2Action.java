@@ -38,19 +38,19 @@ import javax.servlet.http.HttpServletResponse;
 import ca.openosp.openo.appt.ApptStatusData;
 import ca.openosp.openo.billings.ca.bc.pageUtil.BillingSessionBean;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.AppointmentArchiveDao;
-import org.oscarehr.common.dao.EChartDao;
-import org.oscarehr.common.dao.EncounterWindowDao;
-import org.oscarehr.common.dao.OscarAppointmentDao;
-import org.oscarehr.common.model.Appointment;
-import org.oscarehr.common.model.EChart;
-import org.oscarehr.common.model.EncounterWindow;
+import ca.openosp.openo.commn.dao.AppointmentArchiveDao;
+import ca.openosp.openo.commn.dao.EChartDao;
+import ca.openosp.openo.commn.dao.EncounterWindowDao;
+import ca.openosp.openo.commn.dao.OscarAppointmentDao;
+import ca.openosp.openo.commn.model.Appointment;
+import ca.openosp.openo.commn.model.EChart;
+import ca.openosp.openo.commn.model.EncounterWindow;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.util.ConversionUtils;
@@ -118,7 +118,7 @@ public class EctSaveEncounter2Action extends ActionSupport {
             IOException, ServletException {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(httpservletrequest), "_demographic", "w", null)) {
-            throw new SecurityException("missing required security object (_demographic)");
+            throw new SecurityException("missing required sec object (_demographic)");
         }
 
         log.debug("EctSaveEncounter2Action Start");

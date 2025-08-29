@@ -24,7 +24,7 @@
 
 --%>
 
-<%@page import="org.oscarehr.common.ISO36612" %>
+<%@page import="ca.openosp.openo.commn.ISO36612" %>
 <%@page import="ca.openosp.openo.managers.LookupListManager" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -41,28 +41,18 @@
     }
 %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="org.oscarehr.PMmodule.caisi_integrator.ConformanceTestHelper" %>
-<%@page import="org.oscarehr.common.dao.DemographicExtDao" %>
-<%@page import="org.oscarehr.common.dao.DemographicArchiveDao" %>
-<%@page import="org.oscarehr.common.dao.DemographicExtArchiveDao" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="oscar.OscarProperties" %>
-<%@page import="org.oscarehr.common.dao.ScheduleTemplateCodeDao" %>
-<%@page import="org.oscarehr.common.model.ScheduleTemplateCode" %>
-<%@page import="org.oscarehr.common.dao.WaitingListDao" %>
-<%@page import="org.oscarehr.common.dao.WaitingListNameDao" %>
-<%@page import="org.oscarehr.common.model.WaitingListName" %>
+<%@page import="ca.openosp.openo.PMmodule.caisi_integrator.ConformanceTestHelper" %>
+<%@page import="ca.openosp.OscarProperties" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.common.Gender" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.commn.Gender" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.managers.ProgramManager2" %>
-<%@page import="org.oscarehr.PMmodule.model.Program" %>
-<%@page import="org.oscarehr.PMmodule.model.ProgramProvider" %>
+<%@page import="ca.openosp.openo.PMmodule.model.Program" %>
+<%@page import="ca.openosp.openo.PMmodule.model.ProgramProvider" %>
 <%@page import="java.util.HashSet" %>
 <%@page import="ca.openosp.openo.managers.PatientConsentManager" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<jsp:useBean id="apptMainBean" class="oscar.AppointmentMainBean" scope="session"/>
+<jsp:useBean id="apptMainBean" class="ca.openosp.AppointmentMainBean" scope="session"/>
 <%
     String demographic$ = request.getParameter("demographic_no");
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -83,29 +73,22 @@
 
 %>
 <%@ page
-        import="java.util.*, java.net.*,java.text.DecimalFormat, oscar.*, ca.openosp.openo.demographic.data.ProvinceNames, ca.openosp.openo.waitinglist.WaitingList, ca.openosp.openo.report.data.DemographicSets,oscar.log.*" %>
-<%@ page import="oscar.oscarDemographic.data.*" %>
+        import="java.util.*, java.net.*,java.text.DecimalFormat, ca.openosp.*, ca.openosp.openo.demographic.data.ProvinceNames, ca.openosp.openo.waitinglist.WaitingList, ca.openosp.openo.report.data.DemographicSets,ca.openosp.openo.log.*" %>
+<%@ page import="ca.openosp.openo.demographic.data.*" %>
 <%@ page import="ca.openosp.openo.demographic.pageUtil.Util" %>
-<%@ page import="oscar.OscarProperties" %>
-<%@ page import="org.oscarehr.common.dao.*,org.oscarehr.common.model.*" %>
-<%@ page import="org.oscarehr.common.OtherIdManager" %>
-<%@ page import="org.oscarehr.common.web.Contact2Action" %>
+<%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="ca.openosp.openo.commn.dao.*,ca.openosp.openo.commn.model.*" %>
+<%@ page import="ca.openosp.openo.commn.OtherIdManager" %>
+<%@ page import="ca.openosp.openo.commn.web.Contact2Action" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <%@ page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.common.model.ProfessionalSpecialist" %>
-<%@page import="org.oscarehr.common.dao.ProfessionalSpecialistDao" %>
-<%@page import="org.oscarehr.common.model.DemographicCust" %>
-<%@page import="org.oscarehr.common.dao.DemographicCustDao" %>
-<%@page import="org.oscarehr.common.model.Demographic" %>
-<%@page import="org.oscarehr.common.dao.DemographicDao" %>
-<%@page import="org.oscarehr.common.model.Provider" %>
-<%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@page import="ca.openosp.openo.managers.DemographicManager" %>
-<%@page import="org.oscarehr.PMmodule.service.ProgramManager" %>
-<%@page import="org.oscarehr.PMmodule.dao.ProgramDao" %>
-<%@page import="org.oscarehr.PMmodule.service.AdmissionManager" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.PMmodule.service.ProgramManager" %>
+<%@page import="ca.openosp.openo.PMmodule.dao.ProgramDao" %>
+<%@page import="ca.openosp.openo.PMmodule.service.AdmissionManager" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
 
 <%!
@@ -197,7 +180,7 @@
 
 
     String currentProgram = "";
-    String programId = (String) session.getAttribute(org.oscarehr.utility.SessionConstants.CURRENT_PROGRAM_ID);
+    String programId = (String) session.getAttribute(ca.openosp.openo.utility.SessionConstants.CURRENT_PROGRAM_ID);
     if (programId != null && programId.length() > 0) {
         Integer prId = null;
         try {
@@ -242,13 +225,18 @@
 
 %>
 
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicMerged" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicRelationship" %>
+<%@ page import="ca.openosp.openo.utility.*" %>
+<%@ page import="ca.openosp.openo.commn.model.*" %>
+<%@ page import="ca.openosp.openo.commn.dao.*" %>
+<%@ page import="ca.openosp.MyDateFormat" %>
+<%@ page import="ca.openosp.SxmlMisc" %>
 <!DOCTYPE html>
 <html>
 
@@ -1160,7 +1148,7 @@
                         <tr>
                             <td><a
                                     href="javascript: function myFunction() {return false; }"
-                                    onClick="popupOscarRx(700,1027,'<%= request.getContextPath() %>/oscarRx/choosePatient.do?providerNo=<%=curProvider_no%>&demographicNo=<%=demographic_no%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.prescriptions"/></a>
+                                    onClick="popupOscarRx(700,1027,'<%= request.getContextPath() %>/rx/choosePatient.do?providerNo=<%=curProvider_no%>&demographicNo=<%=demographic_no%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.prescriptions"/></a>
                             </td>
                         </tr>
 
@@ -4664,12 +4652,12 @@
                                                                         <td align="left">
                                                                             <%
 
-                                                                                List<org.oscarehr.common.model.WaitingList> wls = waitingListDao.search_wlstatus(Integer.parseInt(demographic_no));
+                                                                                List<ca.openosp.openo.commn.model.WaitingList> wls = waitingListDao.search_wlstatus(Integer.parseInt(demographic_no));
 
                                                                                 String wlId = "", listID = "", wlnote = "";
                                                                                 String wlReferralDate = "";
                                                                                 if (wls.size() > 0) {
-                                                                                    org.oscarehr.common.model.WaitingList wl = wls.get(0);
+                                                                                    ca.openosp.openo.commn.model.WaitingList wl = wls.get(0);
                                                                                     wlId = wl.getId().toString();
                                                                                     listID = String.valueOf(wl.getListId());
                                                                                     wlnote = wl.getNote();
@@ -4690,7 +4678,7 @@
                                                                             <%} %>
                                                                             <%
 
-                                                                                List<WaitingListName> wlns = waitingListNameDao.findCurrentByGroup(((org.oscarehr.common.model.ProviderPreference) session.getAttribute(org.oscarehr.utility.SessionConstants.LOGGED_IN_PROVIDER_PREFERENCE)).getMyGroupNo());
+                                                                                List<WaitingListName> wlns = waitingListNameDao.findCurrentByGroup(((ProviderPreference) session.getAttribute(ca.openosp.openo.utility.SessionConstants.LOGGED_IN_PROVIDER_PREFERENCE)).getMyGroupNo());
                                                                                 for (WaitingListName wln : wlns) {
                                                                             %>
                                                                             <option value="<%=wln.getId()%>"
@@ -4768,7 +4756,7 @@
                                                                                     String _pvid = loggedInInfo.getLoggedInProviderNo();
                                                                                     ProgramManager tempPm = SpringUtils.getBean(ProgramManager.class);
                                                                                     
-                                                                                    // Get provider's programs for permission checking - recreating getActiveProviderPrograms logic
+                                                                                    // Get providers's programs for permission checking - recreating getActiveProviderPrograms logic
                                                                                     Set<Program> pset = new HashSet<Program>();
                                                                                     for (Program providerProgram : tempPm.getProgramDomain(_pvid)) {
                                                                                         if (providerProgram != null && providerProgram.isActive()) {
@@ -4979,7 +4967,7 @@
                                                         </td>
                                                         <td width="30%" align='center' valign="top"><input
                                                                 type="hidden" name="displaymode" value="Update Record">
-                                                            <!-- security code block --> <span id="updateButton"
+                                                            <!-- sec code block --> <span id="updateButton"
                                                                                                style="display: none;"> <security:oscarSec
                                                                     roleName="<%=roleName$%>" objectName="_demographic"
                                                                     rights="w">
@@ -4988,7 +4976,7 @@
                                                                 %>
                                                                 <input type="submit" <%=(showCbiReminder?"onclick='showCbiReminder()'":"")%>
                                                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnUpdate"/>">
-                                                            </security:oscarSec> </span> <!-- security code block -->
+                                                            </security:oscarSec> </span> <!-- sec code block -->
                                                         </td>
                                                         <td width="40%" align='right' valign="top"><span
                                                                 id="swipeButton" style="display: none;"> <input

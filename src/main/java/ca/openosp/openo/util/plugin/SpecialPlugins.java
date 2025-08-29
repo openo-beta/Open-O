@@ -22,7 +22,7 @@ package ca.openosp.openo.util.plugin;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 public class SpecialPlugins extends TagSupport {
     /**

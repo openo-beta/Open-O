@@ -1,7 +1,7 @@
 <%@ page
-        import="oscar.form.*, oscar.form.data.*, java.util.*, oscar.util.*" %>
+        import="ca.openosp.openo.form.*, ca.openosp.openo.form.data.*, java.util.*, ca.openosp.openo.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmBCINRRecord" %>

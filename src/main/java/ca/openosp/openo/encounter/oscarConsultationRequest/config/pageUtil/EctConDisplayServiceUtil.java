@@ -30,13 +30,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import org.oscarehr.common.dao.ConsultationServiceDao;
-import org.oscarehr.common.dao.ProfessionalSpecialistDao;
-import org.oscarehr.common.dao.ServiceSpecialistsDao;
-import org.oscarehr.common.model.ConsultationServices;
-import org.oscarehr.common.model.ProfessionalSpecialist;
-import org.oscarehr.common.model.ServiceSpecialists;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ConsultationServiceDao;
+import ca.openosp.openo.commn.dao.ProfessionalSpecialistDao;
+import ca.openosp.openo.commn.dao.ServiceSpecialistsDao;
+import ca.openosp.openo.commn.model.ConsultationServices;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
+import ca.openosp.openo.commn.model.ServiceSpecialists;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 

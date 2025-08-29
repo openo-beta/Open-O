@@ -29,8 +29,8 @@ import java.util.List;
 import javax.persistence.Query;
 
 import ca.openosp.openo.billing.CA.BC.model.Hl7Message;
-import org.oscarehr.common.dao.AbstractDaoImpl;
-import org.oscarehr.common.model.PatientLabRouting;
+import ca.openosp.openo.commn.dao.AbstractDaoImpl;
+import ca.openosp.openo.commn.model.PatientLabRouting;
 import org.springframework.stereotype.Repository;
 
 @Repository

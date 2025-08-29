@@ -28,11 +28,11 @@ package ca.openosp.openo.dashboard.handler;
 import java.util.Date;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.DxresearchDAO;
-import org.oscarehr.common.model.Dxresearch;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.DxresearchDAO;
+import ca.openosp.openo.commn.model.Dxresearch;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class DiseaseRegistryHandler {
 
@@ -76,7 +76,7 @@ public class DiseaseRegistryHandler {
         logger.info(
                 "Added code (" + icd9code +
                         ") to disease registry for patient (" + demographicNo + ")" +
-                        " with provider no (" + providerNo + ")"
+                        " with providers no (" + providerNo + ")"
         );
         return dx.getId();
     }

@@ -23,16 +23,16 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="org.oscarehr.utility.LocaleUtils" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.LocaleUtils" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="ca.openosp.openo.rx.pageUtil.AllergyHelperBean" %>
-<%@page import="ca.openosp.openo.rx.pageUtil.AllergyDisplay" %>
+<%@page import="ca.openosp.openo.prescript.pageUtil.AllergyHelperBean" %>
+<%@page import="ca.openosp.openo.prescript.pageUtil.AllergyDisplay" %>
 <%@page import="java.util.List" %>
-<%@page import="oscar.OscarProperties" %>
+<%@page import="ca.openosp.OscarProperties" %>
 <%@ page import="ca.openosp.openo.services.security.SecurityManager" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPatientData" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

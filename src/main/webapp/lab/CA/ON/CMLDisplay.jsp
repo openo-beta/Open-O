@@ -39,12 +39,12 @@
     }
 %>
 
-<%@page import="org.oscarehr.common.model.PatientLabRouting" %>
+<%@page import="ca.openosp.openo.commn.model.PatientLabRouting" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
-<%@page import="org.oscarehr.common.dao.PatientLabRoutingDao" %>
+<%@page import="ca.openosp.openo.commn.dao.PatientLabRoutingDao" %>
 <%@page errorPage="../provider/errorpage.jsp" %>
 <%@ page
-        import="java.util.*, oscar.oscarMDS.data.*,oscar.oscarLab.ca.on.CML.*,ca.openosp.openo.lab.LabRequestReportLink,oscar.oscarDB.*,java.sql.*,oscar.log.*,org.oscarehr.utility.SpringUtils,ca.openosp.openo.casemgmt.service.CaseManagementManager,org.oscarehr.casemgmt.model.*" %>
+        import="java.util.*, ca.openosp.openo.mds.data.*,ca.openosp.openo.lab.ca.on.CML.*,ca.openosp.openo.lab.LabRequestReportLink,ca.openosp.openo.db.*,java.sql.*,ca.openosp.openo.log.*,ca.openosp.openo.utility.SpringUtils,ca.openosp.openo.casemgmt.service.CaseManagementManager,ca.openosp.openo.casemgmt.model.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%
@@ -92,7 +92,7 @@
     String AbnFlag = "";
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.CML.CMLLabTest" %>

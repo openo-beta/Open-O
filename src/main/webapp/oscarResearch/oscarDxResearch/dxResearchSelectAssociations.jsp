@@ -58,7 +58,7 @@
                 //clear list
                 $("#clear_list").click(function () {
                     if (confirm('Are you sure you want to delete all associations?')) {
-                        //$.get("<%= request.getContextPath() %>/oscarResearch/oscarDxResearch/dxResearchLoadAssociations.do?method=clearAssociations");
+                        //$.get("<%= request.getContextPath() %>/oscarResearch/dxresearch/dxResearchLoadAssociations.do?method=clearAssociations");
                         $.ajax({
                             type: "GET",
                             url: "<%= request.getContextPath() %>/oscarResearch/oscarDxResearch/dxResearchLoadAssociations.do?method=clearAssociations",

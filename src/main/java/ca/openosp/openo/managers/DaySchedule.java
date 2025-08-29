@@ -29,7 +29,7 @@ package ca.openosp.openo.managers;
 import java.util.Calendar;
 import java.util.List;
 
-import org.oscarehr.common.model.Appointment;
+import ca.openosp.openo.commn.model.Appointment;
 
 public final class DaySchedule {
     private Calendar startTime;

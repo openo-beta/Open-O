@@ -36,10 +36,10 @@ import java.util.Map;
 import java.util.Set;
 
 import ca.openosp.openo.caisi_integrator.ws.DemographicTransfer;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.MsgDemoMap;
-import org.oscarehr.common.model.MsgIntegratorDemoMap;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.MsgDemoMap;
+import ca.openosp.openo.commn.model.MsgIntegratorDemoMap;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 public interface MessengerDemographicManager {
 
@@ -164,7 +164,7 @@ public interface MessengerDemographicManager {
     public Long attachDemographicToMessage(LoggedInInfo loggedInInfo, int messageId, int demographicNo);
 
     /**
-     * This method is hard-coded to the most common Integrator patient consent types.
+     * This method is hard-coded to the most commons Integrator patient consent types.
      * UserProperty.INTEGRATOR_PATIENT_CONSENT
      * UserProperty.INTEGRATOR_DEMOGRAPHIC_CONSENT
      *

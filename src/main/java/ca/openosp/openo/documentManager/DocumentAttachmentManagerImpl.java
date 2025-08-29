@@ -4,17 +4,17 @@ package ca.openosp.openo.documentManager;
 import ca.openosp.openo.managers.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
-import org.oscarehr.common.dao.ConsultDocsDao;
-import org.oscarehr.common.dao.EFormDocsDao;
-import org.oscarehr.common.model.ConsultDocs;
-import org.oscarehr.common.model.EFormData;
-import org.oscarehr.common.model.EFormDocs;
+import ca.openosp.openo.commn.dao.ConsultDocsDao;
+import ca.openosp.openo.commn.dao.EFormDocsDao;
+import ca.openosp.openo.commn.model.ConsultDocs;
+import ca.openosp.openo.commn.model.EFormData;
+import ca.openosp.openo.commn.model.EFormDocs;
 import ca.openosp.openo.hospitalReportManager.HRMUtil;
-import org.oscarehr.common.model.enumerator.DocumentType;
+import ca.openosp.openo.commn.model.enumerator.DocumentType;
 import ca.openosp.openo.documentManager.data.AttachmentLabResultData;
-import org.oscarehr.utility.DateUtils;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.PDFGenerationException;
+import ca.openosp.openo.utility.DateUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.PDFGenerationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +63,7 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
 
     public List<String> getConsultAttachments(LoggedInInfo loggedInInfo, Integer requestId, DocumentType documentType, Integer demographicNo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", SecurityInfoManager.READ, demographicNo)) {
-            throw new RuntimeException("missing required security object (_con)");
+            throw new RuntimeException("missing required sec object (_con)");
         }
 
         List<String> consultAttachments = new ArrayList<>();
@@ -76,7 +76,7 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
 
     public List<String> getEFormAttachments(LoggedInInfo loggedInInfo, Integer fdid, DocumentType documentType, Integer demographicNo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_eform", SecurityInfoManager.READ, demographicNo)) {
-            throw new RuntimeException("missing required security object (_eform)");
+            throw new RuntimeException("missing required sec object (_eform)");
         }
 
         List<String> eFormAttachments = new ArrayList<>();
@@ -89,7 +89,7 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
 
     public List<EctFormData.PatientForm> getFormsAttachedToEForms(LoggedInInfo loggedInInfo, Integer fdid, DocumentType documentType, Integer demographicNo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_eform", SecurityInfoManager.READ, demographicNo)) {
-            throw new RuntimeException("missing required security object (_eform)");
+            throw new RuntimeException("missing required sec object (_eform)");
         }
 
         List<EctFormData.PatientForm> attachedForms = new ArrayList<>();
@@ -175,7 +175,7 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
      */
     public List<EFormData> getAllEFormsExpectFdid(LoggedInInfo loggedInInfo, Integer demographicNo, Integer fdid) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_eform", SecurityInfoManager.READ, demographicNo)) {
-            throw new RuntimeException("missing required security object (_eform)");
+            throw new RuntimeException("missing required sec object (_eform)");
         }
 
         List<EFormData> allEForms = EFormUtil.listPatientEformsCurrent(demographicNo, true);
@@ -192,7 +192,7 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
 
     public void attachToConsult(LoggedInInfo loggedInInfo, DocumentType documentType, String[] attachments, String providerNo, Integer requestId, Integer demographicNo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", SecurityInfoManager.WRITE, demographicNo)) {
-            throw new RuntimeException("missing required security object (_con)");
+            throw new RuntimeException("missing required sec object (_con)");
         }
 
         DocumentAttach documentAttach = new DocumentAttach();
@@ -209,7 +209,7 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
      */
     public void attachToConsult(LoggedInInfo loggedInInfo, DocumentType documentType, String[] attachments, String providerNo, Integer requestId, Integer demographicNo, Boolean editOnOcean) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", SecurityInfoManager.WRITE, demographicNo)) {
-            throw new RuntimeException("missing required security object (_con)");
+            throw new RuntimeException("missing required sec object (_con)");
         }
 
         DocumentAttach documentAttach = new DocumentAttach(demographicNo, editOnOcean);
@@ -218,7 +218,7 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
 
     public void attachToEForm(LoggedInInfo loggedInInfo, DocumentType documentType, String[] attachments, String providerNo, Integer fdid, Integer demographicNo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_eform", SecurityInfoManager.WRITE, demographicNo)) {
-            throw new RuntimeException("missing required security object (_eform)");
+            throw new RuntimeException("missing required sec object (_eform)");
         }
 
         DocumentAttach documentAttach = new DocumentAttach();

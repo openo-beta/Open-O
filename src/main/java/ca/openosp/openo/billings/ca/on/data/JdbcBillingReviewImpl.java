@@ -19,15 +19,15 @@
 
 package ca.openosp.openo.billings.ca.on.data;
 
+import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.commn.model.*;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.billing.CA.ON.dao.BillingPercLimitDao;
 import ca.openosp.openo.billing.CA.ON.model.BillingPercLimit;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.model.*;
-import org.oscarehr.utility.DateRange;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.DateRange;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.util.ConversionUtils;
 import ca.openosp.openo.util.LabelValueBean;
 
@@ -39,7 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class JdbcBillingReviewImpl {
-    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static final Logger _logger = MiscUtils.getLogger();
 
     private ClinicLocationDao clinicLocationDao = (ClinicLocationDao) SpringUtils.getBean(ClinicLocationDao.class);
     private BillingONCHeader1Dao dao = SpringUtils.getBean(BillingONCHeader1Dao.class);

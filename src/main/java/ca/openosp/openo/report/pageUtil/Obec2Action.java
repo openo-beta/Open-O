@@ -34,11 +34,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.encounter.oscarMeasurements.pageUtil.EctValidation;
 import ca.openosp.openo.report.data.ObecData;
 import ca.openosp.openo.util.DateUtils;
@@ -57,7 +57,7 @@ public class Obec2Action extends ActionSupport {
    throws ServletException, IOException {
 	   
 	   if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_report", "r", null)) {
-	  		  throw new SecurityException("missing required security object (_report)");
+	  		  throw new SecurityException("missing required sec object (_report)");
 	  	  	}
 	   
       Properties proppies = OscarProperties.getInstance();

@@ -42,28 +42,28 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.xml.security.exceptions.Base64DecodingException;
 import org.apache.xml.security.utils.Base64;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.ConsultationRequestDao;
-import org.oscarehr.common.dao.ConsultationRequestExtDao;
-import org.oscarehr.common.dao.Hl7TextMessageDao;
-import org.oscarehr.common.hl7.v2.oscar_to_oscar.DataTypeUtils;
-import org.oscarehr.common.hl7.v2.oscar_to_oscar.OscarToOscarUtils;
-import org.oscarehr.common.hl7.v2.oscar_to_oscar.RefI12;
-import org.oscarehr.common.model.ConsultationRequest;
-import org.oscarehr.common.model.ConsultationRequestExt;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.DemographicExt;
-import org.oscarehr.common.model.DemographicExt.DemographicProperty;
-import org.oscarehr.common.model.Hl7TextMessage;
-import org.oscarehr.common.model.ProfessionalSpecialist;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.enumerator.ConsultationRequestExtKey;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.ConsultationRequestDao;
+import ca.openosp.openo.commn.dao.ConsultationRequestExtDao;
+import ca.openosp.openo.commn.dao.Hl7TextMessageDao;
+import ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.DataTypeUtils;
+import ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.OscarToOscarUtils;
+import ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.RefI12;
+import ca.openosp.openo.commn.model.ConsultationRequest;
+import ca.openosp.openo.commn.model.ConsultationRequestExt;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.DemographicExt;
+import ca.openosp.openo.commn.model.DemographicExt.DemographicProperty;
+import ca.openosp.openo.commn.model.Hl7TextMessage;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.enumerator.ConsultationRequestExtKey;
 import ca.openosp.openo.managers.ConsultationManager;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.UtilDateUtilities;
 import ca.uhn.hl7v2.HL7Exception;
@@ -303,7 +303,7 @@ public class EctViewRequest2Action extends ActionSupport {
 //        thisForm.setPatientWPhone(patientAddress);
         thisForm.setPatientEmail(demographic.getEmail());
 
-        // referring provider
+        // referring providers
         PRD referringPrd = RefI12.getPrdByRoleId(refI12, "RP");
         Provider provider = DataTypeUtils.parsePrdAsProvider(referringPrd);
         thisForm.setProviderName(provider.getLastName() + ", " + provider.getFirstName());
@@ -322,7 +322,7 @@ public class EctViewRequest2Action extends ActionSupport {
 
     private static void checkPrivilege(LoggedInInfo loggedInInfo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", "r", null)) {
-            throw new SecurityException("missing required security object (_con)");
+            throw new SecurityException("missing required sec object (_con)");
         }
     }
 

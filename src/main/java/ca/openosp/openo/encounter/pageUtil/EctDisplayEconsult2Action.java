@@ -26,11 +26,11 @@
 
 package ca.openosp.openo.encounter.pageUtil;
 
-import org.oscarehr.common.model.Document;
+import ca.openosp.openo.commn.model.Document;
 import ca.openosp.openo.managers.ConsultationManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.OscarProperties;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;

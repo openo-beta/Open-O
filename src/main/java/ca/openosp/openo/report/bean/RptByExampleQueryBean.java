@@ -27,7 +27,7 @@
 package ca.openosp.openo.report.bean;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 public class RptByExampleQueryBean {
 

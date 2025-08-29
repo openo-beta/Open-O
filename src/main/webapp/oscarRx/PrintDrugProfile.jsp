@@ -27,12 +27,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
-<%@ page import="oscar.oscarRx.data.*, org.oscarehr.common.model.PharmacyInfo" %>
+<%@ page import="ca.openosp.openo.rx.data.*, ca.openosp.openo.commn.model.PharmacyInfo" %>
 <%@page import="java.util.List" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPharmacyData" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPatientData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPharmacyData" %>
 <c:if test="${empty sessionScope.RxSessionBean}">
     <% response.sendRedirect("error.html"); %>
 </c:if>

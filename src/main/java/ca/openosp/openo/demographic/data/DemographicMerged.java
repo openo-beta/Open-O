@@ -40,15 +40,15 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.DemographicMergedDao;
-import org.oscarehr.common.dao.RecycleBinDao;
-import org.oscarehr.common.dao.SecObjPrivilegeDao;
-import org.oscarehr.common.model.RecycleBin;
-import org.oscarehr.common.model.SecObjPrivilege;
-import org.oscarehr.common.model.SecObjPrivilegePrimaryKey;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.DemographicMergedDao;
+import ca.openosp.openo.commn.dao.RecycleBinDao;
+import ca.openosp.openo.commn.dao.SecObjPrivilegeDao;
+import ca.openosp.openo.commn.model.RecycleBin;
+import ca.openosp.openo.commn.model.SecObjPrivilege;
+import ca.openosp.openo.commn.model.SecObjPrivilegePrimaryKey;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.log.LogAction;
 
@@ -67,7 +67,7 @@ public class DemographicMerged {
 
     public void Merge(LoggedInInfo loggedInInfo, String demographic_no, String head) {
 
-        org.oscarehr.common.model.DemographicMerged dm = new org.oscarehr.common.model.DemographicMerged();
+        ca.openosp.openo.commn.model.DemographicMerged dm = new ca.openosp.openo.commn.model.DemographicMerged();
 
         // always merge the head of records that have already been merged to the new head
         String record_head = getHead(demographic_no);
@@ -102,8 +102,8 @@ public class DemographicMerged {
 
     public void UnMerge(LoggedInInfo loggedInInfo, String demographic_no, String curUser_no) {
 
-        List<org.oscarehr.common.model.DemographicMerged> dms = dao.findByDemographicNo(Integer.parseInt(demographic_no));
-        for (org.oscarehr.common.model.DemographicMerged dm : dms) {
+        List<ca.openosp.openo.commn.model.DemographicMerged> dms = dao.findByDemographicNo(Integer.parseInt(demographic_no));
+        for (ca.openosp.openo.commn.model.DemographicMerged dm : dms) {
             dm.setLastUpdateUser(loggedInInfo.getLoggedInProviderNo());
             dm.setLastUpdateDate(new Date());
             dm.setDeleted(1);
@@ -146,8 +146,8 @@ public class DemographicMerged {
     public Integer getHead(Integer demographic_no) {
         Integer head = null;
 
-        List<org.oscarehr.common.model.DemographicMerged> dms = dao.findCurrentByDemographicNo(demographic_no);
-        for (org.oscarehr.common.model.DemographicMerged dm : dms) {
+        List<ca.openosp.openo.commn.model.DemographicMerged> dms = dao.findCurrentByDemographicNo(demographic_no);
+        for (ca.openosp.openo.commn.model.DemographicMerged dm : dms) {
             head = dm.getMergedTo();
         }
 
@@ -162,8 +162,8 @@ public class DemographicMerged {
     public ArrayList<String> getTail(String demographic_no) {
         ArrayList<String> tailArray = new ArrayList<String>();
 
-        List<org.oscarehr.common.model.DemographicMerged> dms = dao.findCurrentByMergedTo(Integer.parseInt(demographic_no));
-        for (org.oscarehr.common.model.DemographicMerged dm : dms) {
+        List<ca.openosp.openo.commn.model.DemographicMerged> dms = dao.findCurrentByMergedTo(Integer.parseInt(demographic_no));
+        for (ca.openosp.openo.commn.model.DemographicMerged dm : dms) {
             tailArray.add(String.valueOf(dm.getDemographicNo()));
         }
 

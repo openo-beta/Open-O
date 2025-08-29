@@ -23,20 +23,21 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.common.model.PharmacyInfo" %>
+<%@page import="ca.openosp.openo.commn.model.PharmacyInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
-<%@ page import="oscar.oscarRx.data.*" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.utility.SessionConstants" %>
+<%@ page import="ca.openosp.openo.rx.data.*" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.SessionConstants" %>
 <%@page import="java.util.List" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="java.util.ArrayList,oscar.util.*,java.util.*,org.oscarehr.common.model.Drug,org.oscarehr.common.dao.*" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPharmacyData" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="java.util.ArrayList,ca.openosp.openo.util.*,java.util.*,ca.openosp.openo.commn.model.Drug,ca.openosp.openo.commn.dao.*" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPatientData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPharmacyData" %>
+<%@ page import="ca.openosp.openo.commn.dao.DrugDao" %>
 <%
     RxSessionBean bean = null;
 %>

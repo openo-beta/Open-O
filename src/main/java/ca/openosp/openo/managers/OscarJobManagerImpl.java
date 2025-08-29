@@ -30,13 +30,13 @@ package ca.openosp.openo.managers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.oscarehr.common.dao.AbstractDaoImpl;
-import org.oscarehr.common.dao.OscarJobDao;
-import org.oscarehr.common.dao.OscarJobTypeDao;
-import org.oscarehr.common.jobs.OscarJobUtils;
-import org.oscarehr.common.model.OscarJob;
-import org.oscarehr.common.model.OscarJobType;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.dao.AbstractDaoImpl;
+import ca.openosp.openo.commn.dao.OscarJobDao;
+import ca.openosp.openo.commn.dao.OscarJobTypeDao;
+import ca.openosp.openo.commn.jobs.OscarJobUtils;
+import ca.openosp.openo.commn.model.OscarJob;
+import ca.openosp.openo.commn.model.OscarJobType;
+import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -29,9 +29,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.oscarehr.common.dao.MeasurementGroupDao;
-import org.oscarehr.common.model.MeasurementGroup;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.MeasurementGroupDao;
+import ca.openosp.openo.commn.model.MeasurementGroup;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class RptGroupNameBeanHandler {
 

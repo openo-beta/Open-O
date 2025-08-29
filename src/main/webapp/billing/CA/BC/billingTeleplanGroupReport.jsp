@@ -44,15 +44,16 @@
     String user_no = (String) session.getAttribute("user");
 %>
 
-<%@ page import="java.util.*, java.sql.*, oscar.util.*,oscar.*" errorPage="/errorpage.jsp" %>
+<%@ page import="java.util.*, java.sql.*, ca.openosp.openo.util.*,ca.openosp.*" errorPage="/errorpage.jsp" %>
 <%@ include file="../../../admin/dbconnection.jsp" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.billing.CA.model.BillActivity" %>
-<%@page import="org.oscarehr.common.model.Provider" %>
+<%@page import="ca.openosp.openo.commn.model.Provider" %>
 <%@page import="ca.openosp.openo.billing.CA.dao.BillActivityDao" %>
-<%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
+<%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="ca.openosp.SxmlMisc" %>
 
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);

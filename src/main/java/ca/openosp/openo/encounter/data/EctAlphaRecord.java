@@ -32,6 +32,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import ca.openosp.Misc;
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.UtilDateUtilities;
 
@@ -44,8 +45,8 @@ public class EctAlphaRecord {
             String sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName FROM demographic WHERE demographic_no = " + demographicNo;
             ResultSet rs = DBHandler.GetSQL(sql);
             if (rs.next()) {
-                props.setProperty("demographic_no", oscar.Misc.getString(rs, "demographic_no"));
-                props.setProperty("pName", oscar.Misc.getString(rs, "pName"));
+                props.setProperty("demographic_no", Misc.getString(rs, "demographic_no"));
+                props.setProperty("pName", Misc.getString(rs, "pName"));
                 props.setProperty("formDate", UtilDateUtilities.DateToString(new java.util.Date(), "yyyy/MM/dd"));
                 props.setProperty("formCreated", UtilDateUtilities.DateToString(new java.util.Date(), "yyyy/MM/dd"));
                 props.setProperty("formEdited", UtilDateUtilities.DateToString(new java.util.Date(), "yyyy/MM/dd"));
@@ -67,7 +68,7 @@ public class EctAlphaRecord {
                     } else if (md.getColumnTypeName(i).equalsIgnoreCase("date"))
                         value = UtilDateUtilities.DateToString(rs.getDate(i), "yyyy/MM/dd");
                     else
-                        value = oscar.Misc.getString(rs, i);
+                        value = Misc.getString(rs, i);
                     if (value != null)
                         props.setProperty(name, value);
                 }
@@ -150,7 +151,7 @@ public class EctAlphaRecord {
                 } else if (md.getColumnTypeName(i).equalsIgnoreCase("date"))
                     value = UtilDateUtilities.DateToString(rs.getDate(i), "yyyy/MM/dd");
                 else
-                    value = oscar.Misc.getString(rs, i);
+                    value = Misc.getString(rs, i);
                 if (value != null)
                     props.setProperty(name, value);
             }

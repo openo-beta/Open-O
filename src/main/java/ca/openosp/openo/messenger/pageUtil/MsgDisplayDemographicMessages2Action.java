@@ -39,9 +39,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.messenger.util.MsgDemoMap;
 
@@ -61,7 +61,7 @@ public class MsgDisplayDemographicMessages2Action extends ActionSupport {
             throws IOException, ServletException {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_msg", "r", null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         // Extract attributes we will need
@@ -90,7 +90,7 @@ public class MsgDisplayDemographicMessages2Action extends ActionSupport {
             bean.setDemographic_no(demographicNo);
 
             request.getSession().setAttribute("msgSessionBean", bean);
-            MiscUtils.getLogger().debug("Created new MsgSessionBean for provider: " + providerNo);
+            MiscUtils.getLogger().debug("Created new MsgSessionBean for providers: " + providerNo);
         }
 
 

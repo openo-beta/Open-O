@@ -31,13 +31,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.dao.FacilityDao;
-import org.oscarehr.common.dao.IntegratorControlDao;
-import org.oscarehr.common.model.Facility;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SessionConstants;
-import org.oscarehr.utility.SpringUtils;
-import org.oscarehr.utility.WebUtils;
+import ca.openosp.openo.commn.dao.FacilityDao;
+import ca.openosp.openo.commn.dao.IntegratorControlDao;
+import ca.openosp.openo.commn.model.Facility;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SessionConstants;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.openo.utility.WebUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

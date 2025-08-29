@@ -32,8 +32,8 @@ import ca.openosp.openo.integration.fhir.model.Destination;
 import ca.openosp.openo.integration.fhir.model.Sender;
 import ca.openosp.openo.integration.fhir.resources.ResourceAttributeFilter;
 import ca.openosp.openo.integration.fhir.resources.Settings;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
 public final class OscarFhirConfigurationManager {
 

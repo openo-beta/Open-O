@@ -41,11 +41,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
-import ca.openosp.openo.dao.DefaultIssueDao;
-import org.oscarehr.PMmodule.dao.ProgramAccessDAO;
-import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
-import org.oscarehr.PMmodule.model.ProgramAccess;
-import org.oscarehr.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.daos.DefaultIssueDao;
+import ca.openosp.openo.PMmodule.dao.ProgramAccessDAO;
+import ca.openosp.openo.PMmodule.dao.ProgramProviderDAO;
+import ca.openosp.openo.PMmodule.model.ProgramAccess;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
 import ca.openosp.openo.casemgmt.dao.CaseManagementIssueDAO;
 import ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO;
 import ca.openosp.openo.casemgmt.dao.IssueDAO;
@@ -55,17 +55,17 @@ import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.Issue;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import ca.openosp.openo.casemgmt.service.CaseManagementManagerImpl;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SessionConstants;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SessionConstants;
+import ca.openosp.openo.utility.SpringUtils;
 
-import ca.openosp.openo.dao.security.SecroleDao;
+import ca.openosp.openo.daos.security.SecroleDao;
 import ca.openosp.openo.model.security.Secrole;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.util.UtilDateUtilities;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -88,7 +88,7 @@ public class EctIncomingEncounter2Action extends ActionSupport {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "r",
                 null)) {
-            throw new SecurityException("missing required security object (_demographic)");
+            throw new SecurityException("missing required sec object (_demographic)");
         }
 
         if (!"true".equals(OscarProperties.getInstance().getProperty("program_domain.show_echart", "false"))) {
@@ -202,7 +202,7 @@ public class EctIncomingEncounter2Action extends ActionSupport {
                 String[] issueIds = defaultIssueDao.findAllDefaultIssueIds();
                 for (String id : issueIds) {
                     Issue issue = issueDao.getIssue(Long.valueOf(id));
-                    // judge current provider can access this issue
+                    // judge current providers can access this issue
                     if (!issueIdSet.contains(Long.parseLong(id))) {
                         continue;
                     }

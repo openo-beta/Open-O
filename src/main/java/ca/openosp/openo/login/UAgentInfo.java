@@ -18,7 +18,7 @@ package ca.openosp.openo.login;
 
 /**
  * The DetectSmartPhone class encapsulates information about
- * a browser's connection to your web site.
+ * a browser's connection to your www site.
  * You can use it to find out whether the browser asking for
  * your site's content is probably running on a mobile device.
  * The methods were written so you can be as granular as you want.
@@ -92,7 +92,7 @@ public class UAgentInfo {
 
     public static final String engineOpera = "opera"; //Popular browser
     public static final String engineNetfront = "netfront"; //Common embedded OS browser
-    public static final String engineUpBrowser = "up.browser"; //common on some phones
+    public static final String engineUpBrowser = "up.browser"; //commons on some phones
     public static final String engineOpenWeb = "openweb"; //Transcoding by OpenWave server
     public static final String deviceMidp = "midp"; //a mobile Java technology
     public static final String uplink = "up.link";
@@ -686,7 +686,7 @@ public class UAgentInfo {
     /**
      * The quick way to detect for a tier of devices.
      * This method detects for devices which can
-     * display iPhone-optimized web content.
+     * display iPhone-optimized www content.
      * Includes iPhone, iPod Touch, Android, Palm WebOS, etc.
      */
     public boolean detectTierIphone() {

@@ -1,4 +1,4 @@
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %><%--
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %><%--
 
     Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
     This software is published under the GPL GNU General Public License.
@@ -97,7 +97,7 @@
                 if ($("#pharmacyId").val() != null && $("#pharmacyId").val() != "") {
 
                     var data = $("#pharmacyForm").serialize();
-                    $.post("<%=request.getContextPath() + "/oscarRx/managePharmacy.do?method=save"%>",
+                    $.post("<%=request.getContextPath() + "/rx/managePharmacy.do?method=save"%>",
                         data, function (data) {
                             if (data.id) {
                                 parent.location.reload();
@@ -120,7 +120,7 @@
                 }
 
                 var data = $("#pharmacyForm").serialize();
-                $.post("<%=request.getContextPath() + "/oscarRx/managePharmacy.do?method=add"%>",
+                $.post("<%=request.getContextPath() + "/rx/managePharmacy.do?method=add"%>",
                     data, function (data) {
                         if (data.success) {
                             parent.location.reload();

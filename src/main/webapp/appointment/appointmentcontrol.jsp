@@ -24,7 +24,7 @@
 
 --%>
 
-<%@ page import="java.util.*, oscar.*, oscar.util.*" %>
+<%@ page import="java.util.*, ca.openosp.*, ca.openosp.openo.util.*" %>
 <%@ page import="ca.openosp.openo.util.UtilDict" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%

@@ -27,14 +27,14 @@
 package ca.openosp.openo.billings.ca.bc.pageUtil;
 
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.billings.ca.bc.MSP.TeleplanFileWriter;
 import ca.openosp.openo.billings.ca.bc.MSP.TeleplanSubmission;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
-import ca.openosp.openo.provider.data.ProviderData;
+import ca.openosp.openo.providers.data.ProviderData;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -63,8 +63,8 @@ public class SimulateTeleplanFile2Action extends ActionSupport {
 
         String dataCenterId = OscarProperties.getInstance().getProperty("dataCenterId");
 
-        String provider = request.getParameter("provider");
-        String providerBillingNo = request.getParameter("provider");
+        String provider = request.getParameter("providers");
+        String providerBillingNo = request.getParameter("providers");
         if (provider != null && provider.equals("all")) {
             providerBillingNo = "%";
         }

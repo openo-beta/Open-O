@@ -29,9 +29,9 @@ import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.oscarehr.common.model.Clinic;
-// import org.oscarehr.common.model.ProfessionalContact;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.model.Clinic;
+// import org.oscarehr.commons.model.ProfessionalContact;
+import ca.openosp.openo.utility.MiscUtils;
 
 
 public class OrganizationTest {

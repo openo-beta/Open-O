@@ -43,6 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
 
 import ca.openosp.openo.util.StringUtils;
@@ -63,7 +64,7 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
 public class CMLHandler implements MessageHandler {
 
     ORU_R01 msg = null;
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
 
     /**
      * Creates a new instance of CMLHandler

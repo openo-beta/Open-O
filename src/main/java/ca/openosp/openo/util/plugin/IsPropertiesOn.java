@@ -19,7 +19,7 @@
 
 package ca.openosp.openo.util.plugin;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 public class IsPropertiesOn {
 

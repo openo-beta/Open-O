@@ -31,8 +31,8 @@ import javax.servlet.http.HttpServletResponse;
 
 
 import ca.openosp.openo.managers.RBTGroupManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 
 import com.opensymphony.xwork2.ActionSupport;

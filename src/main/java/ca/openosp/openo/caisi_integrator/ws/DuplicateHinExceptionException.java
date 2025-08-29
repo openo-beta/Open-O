@@ -1,6 +1,6 @@
 package ca.openosp.openo.caisi_integrator.ws;
 
-import org.oscarehr.hnr.ws.DuplicateHinException;
+import ca.openosp.openo.ws.DuplicateHinException;
 import javax.xml.ws.WebFault;
 
 @WebFault(name = "DuplicateHinException", targetNamespace = "http://ws.hnr.oscarehr.org/")

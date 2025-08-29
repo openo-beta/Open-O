@@ -39,22 +39,22 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.BillingONCHeader1Dao;
-import org.oscarehr.common.dao.BillingONExtDao;
-import org.oscarehr.common.dao.BillingONItemDao;
-import org.oscarehr.common.dao.BillingONPaymentDao;
-import org.oscarehr.common.dao.BillingOnItemPaymentDao;
-import org.oscarehr.common.dao.BillingOnTransactionDao;
-import org.oscarehr.common.dao.BillingPaymentTypeDao;
-import org.oscarehr.common.model.BillingONCHeader1;
-import org.oscarehr.common.model.BillingONExt;
-import org.oscarehr.common.model.BillingONItem;
-import org.oscarehr.common.model.BillingONPayment;
-import org.oscarehr.common.model.BillingOnItemPayment;
-import org.oscarehr.common.model.BillingOnTransaction;
-import org.oscarehr.common.model.BillingPaymentType;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.BillingONCHeader1Dao;
+import ca.openosp.openo.commn.dao.BillingONExtDao;
+import ca.openosp.openo.commn.dao.BillingONItemDao;
+import ca.openosp.openo.commn.dao.BillingONPaymentDao;
+import ca.openosp.openo.commn.dao.BillingOnItemPaymentDao;
+import ca.openosp.openo.commn.dao.BillingOnTransactionDao;
+import ca.openosp.openo.commn.dao.BillingPaymentTypeDao;
+import ca.openosp.openo.commn.model.BillingONCHeader1;
+import ca.openosp.openo.commn.model.BillingONExt;
+import ca.openosp.openo.commn.model.BillingONItem;
+import ca.openosp.openo.commn.model.BillingONPayment;
+import ca.openosp.openo.commn.model.BillingOnItemPayment;
+import ca.openosp.openo.commn.model.BillingOnTransaction;
+import ca.openosp.openo.commn.model.BillingPaymentType;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.billings.ca.on.data.BillingItemData;
 import ca.openosp.openo.billings.ca.on.data.JdbcBilling3rdPartImpl;
@@ -70,7 +70,7 @@ public class BillingONPayments2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static Logger logger = MiscUtils.getLogger();
 
     private BillingONItemDao billingONItemDao = SpringUtils.getBean(BillingONItemDao.class);
     private BillingONPaymentDao billingONPaymentDao = SpringUtils.getBean(BillingONPaymentDao.class);

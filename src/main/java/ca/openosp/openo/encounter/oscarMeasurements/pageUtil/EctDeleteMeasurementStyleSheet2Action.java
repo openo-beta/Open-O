@@ -32,13 +32,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.dao.MeasurementCSSLocationDao;
-import org.oscarehr.common.dao.MeasurementGroupStyleDao;
-import org.oscarehr.common.model.MeasurementCSSLocation;
-import org.oscarehr.common.model.MeasurementGroupStyle;
+import ca.openosp.openo.commn.dao.MeasurementCSSLocationDao;
+import ca.openosp.openo.commn.dao.MeasurementGroupStyleDao;
+import ca.openosp.openo.commn.model.MeasurementCSSLocation;
+import ca.openosp.openo.commn.model.MeasurementGroupStyle;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 
@@ -79,7 +79,7 @@ public class EctDeleteMeasurementStyleSheet2Action extends ActionSupport {
             return SUCCESS;
 
         } else {
-            throw new SecurityException("Access Denied!"); //missing required security object (_admin)
+            throw new SecurityException("Access Denied!"); //missing required sec object (_admin)
         }
     }
 

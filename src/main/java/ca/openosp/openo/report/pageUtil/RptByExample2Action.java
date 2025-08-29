@@ -38,15 +38,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.report.data.RptByExampleData;
 import ca.openosp.openo.services.security.SecurityManager;
-import org.oscarehr.PMmodule.dao.SecUserRoleDao;
-import org.oscarehr.PMmodule.model.SecUserRole;
-import org.oscarehr.common.dao.ReportByExamplesDao;
-import org.oscarehr.common.model.ReportByExamples;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.dao.SecUserRoleDao;
+import ca.openosp.openo.PMmodule.model.SecUserRole;
+import ca.openosp.openo.commn.dao.ReportByExamplesDao;
+import ca.openosp.openo.commn.model.ReportByExamples;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.report.bean.RptByExampleQueryBeanHandler;
 
 
@@ -78,7 +78,7 @@ public class RptByExample2Action extends ActionSupport {
 
         List<SecUserRole> userRoles = secUserRoleDao.findByRoleNameAndProviderNo("admin", providerNo);
         if (userRoles.isEmpty()) {
-            MiscUtils.getLogger().warn("provider " + providerNo + " does not have admin privileges to run query by example");
+            MiscUtils.getLogger().warn("providers " + providerNo + " does not have admin privileges to run query by example");
             return "/oscarReport/RptByExample.jsp";
         }
 

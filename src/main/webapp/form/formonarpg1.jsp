@@ -13,11 +13,11 @@
     }
 %>
 
-<%@page import="oscar.OscarProperties" %>
-<%@ page import="oscar.util.*, oscar.form.*, oscar.form.data.*" %>
+<%@page import="ca.openosp.OscarProperties" %>
+<%@ page import="ca.openosp.openo.util.*, ca.openosp.openo.form.*, ca.openosp.openo.form.data.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!--add for con report-->
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.util.UtilMisc" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.data.FrmData" %>

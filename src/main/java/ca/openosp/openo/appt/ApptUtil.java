@@ -27,7 +27,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.oscarehr.common.model.Site;
+import ca.openosp.openo.commn.model.Site;
 
 /**
  * This class contains Appointment related presentation layer helper methods.

@@ -35,7 +35,7 @@ import java.util.Map;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.integration.hl7.model.PatientId;
 import ca.openosp.openo.integration.hl7.model.StaffId;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.Message;

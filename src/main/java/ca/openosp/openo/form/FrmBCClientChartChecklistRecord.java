@@ -7,10 +7,11 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 
-import org.oscarehr.common.dao.ClinicDAO;
-import org.oscarehr.common.model.Clinic;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.Misc;
+import ca.openosp.openo.commn.dao.ClinicDAO;
+import ca.openosp.openo.commn.model.Clinic;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.login.DBHelp;
 import ca.openosp.openo.db.DBHandler;
@@ -47,19 +48,19 @@ public class FrmBCClientChartChecklistRecord extends FrmRecord {
                         .DateToString(new Date(), _dateFormat));
                 props.setProperty("formEdited", UtilDateUtilities.DateToString(
                         new Date(), _dateFormat));
-                props.setProperty("c_surname", oscar.Misc.getString(rs, "last_name"));
-                props.setProperty("c_givenName", oscar.Misc.getString(rs, "first_name"));
-                props.setProperty("c_address", oscar.Misc.getString(rs, "address"));
-                props.setProperty("c_city", oscar.Misc.getString(rs, "city"));
-                props.setProperty("c_province", oscar.Misc.getString(rs, "province"));
-                props.setProperty("c_postal", oscar.Misc.getString(rs, "postal"));
-                props.setProperty("c_phn", oscar.Misc.getString(rs, "hin"));
+                props.setProperty("c_surname", Misc.getString(rs, "last_name"));
+                props.setProperty("c_givenName", Misc.getString(rs, "first_name"));
+                props.setProperty("c_address", Misc.getString(rs, "address"));
+                props.setProperty("c_city", Misc.getString(rs, "city"));
+                props.setProperty("c_province", Misc.getString(rs, "province"));
+                props.setProperty("c_postal", Misc.getString(rs, "postal"));
+                props.setProperty("c_phn", Misc.getString(rs, "hin"));
                 props.setProperty("pg1_dateOfBirth", UtilDateUtilities
                         .DateToString(date, _dateFormat));
                 props.setProperty("pg1_age", String.valueOf(UtilDateUtilities
                         .calcAge(date)));
-                props.setProperty("c_phone", oscar.Misc.getString(rs, "phone") + "  "
-                        + oscar.Misc.getString(rs, "phone2"));
+                props.setProperty("c_phone", Misc.getString(rs, "phone") + "  "
+                        + Misc.getString(rs, "phone2"));
                 props.setProperty("pg1_formDate", UtilDateUtilities
                         .DateToString(new Date(), _dateFormat));
             }
@@ -77,17 +78,17 @@ public class FrmBCClientChartChecklistRecord extends FrmRecord {
                     + demographicNo;
             ResultSet rs = DBHelp.searchDBRecord(sql);
             if (rs.next()) {
-                props.setProperty("c_surname_cur", oscar.Misc.getString(rs, "last_name"));
+                props.setProperty("c_surname_cur", Misc.getString(rs, "last_name"));
                 props
                         .setProperty("c_givenName_cur", rs
                                 .getString("first_name"));
-                props.setProperty("c_address_cur", oscar.Misc.getString(rs, "address"));
-                props.setProperty("c_city_cur", oscar.Misc.getString(rs, "city"));
-                props.setProperty("c_province_cur", oscar.Misc.getString(rs, "province"));
-                props.setProperty("c_postal_cur", oscar.Misc.getString(rs, "postal"));
-                props.setProperty("c_phn_cur", oscar.Misc.getString(rs, "hin"));
-                props.setProperty("c_phone_cur", oscar.Misc.getString(rs, "phone") + "  "
-                        + oscar.Misc.getString(rs, "phone2"));
+                props.setProperty("c_address_cur", Misc.getString(rs, "address"));
+                props.setProperty("c_city_cur", Misc.getString(rs, "city"));
+                props.setProperty("c_province_cur", Misc.getString(rs, "province"));
+                props.setProperty("c_postal_cur", Misc.getString(rs, "postal"));
+                props.setProperty("c_phn_cur", Misc.getString(rs, "hin"));
+                props.setProperty("c_phone_cur", Misc.getString(rs, "phone") + "  "
+                        + Misc.getString(rs, "phone2"));
             }
         }
         return props;

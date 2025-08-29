@@ -25,13 +25,13 @@
 
 package ca.openosp.openo.billings.ca.bc.pageUtil;
 
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.PropertyDao;
-import org.oscarehr.common.model.Property;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.PropertyDao;
+import ca.openosp.openo.commn.model.Property;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.billings.ca.bc.data.BillingFormData;
 import ca.openosp.openo.billings.ca.bc.data.BillingPreference;
 import ca.openosp.openo.billings.ca.bc.data.BillingPreferencesDAO;
@@ -117,7 +117,7 @@ public class ViewBillingPreferences2Action
         }
         servletRequest.setAttribute("billingProviderList", providerList);
 
-        // Check for a per-provider property and if none set it to CLINICDEFAULT
+        // Check for a per-providers property and if none set it to CLINICDEFAULT
         List<Property> defaultServiceLocationPropertyList = propertyDao.findByNameAndProvider(Property.PROPERTY_KEY.bc_default_service_location, this.getProviderNo());
         if (!defaultServiceLocationPropertyList.isEmpty()) {
             this.setDefaultServiceLocation(defaultServiceLocationPropertyList.get(0).getValue());
@@ -150,7 +150,7 @@ public class ViewBillingPreferences2Action
     private boolean useClinicGstNo;
     private boolean autoPopulateRefer;
 
-    //What to display for payee info when this provider gets referred to as a payee on an invoice
+    //What to display for payee info when this providers gets referred to as a payee on an invoice
     private String invoicePayeeInfo;
     private boolean invoicePayeeDisplayClinicInfo;
 
@@ -159,7 +159,7 @@ public class ViewBillingPreferences2Action
     private String formCode;
     private String description;
 
-    //Default billing provider preference
+    //Default billing providers preference
     private String defaultBillingProvider;
 
     //Default Teleplan service location (visittype)

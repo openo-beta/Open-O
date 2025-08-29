@@ -24,36 +24,38 @@
 
 --%>
 <%@ page
-        import="oscar.oscarProvider.data.*, oscar.oscarRx.data.*,oscar.OscarProperties, ca.openosp.openo.clinic.ClinicData, java.util.*" %>
+        import="ca.openosp.openo.providers.data.*, ca.openosp.openo.rx.data.*,ca.openosp.OscarProperties, ca.openosp.openo.clinic.ClinicData, java.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ page import="org.oscarehr.utility.DigitalSignatureUtils" %>
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@ page import="org.oscarehr.ui.servlet.ImageRenderingServlet" %>
-<%! boolean bMultisites = org.oscarehr.common.IsPropertiesOn.isMultisitesEnable(); %>
+<%@ page import="ca.openosp.openo.utility.DigitalSignatureUtils" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.ui.servlet.ImageRenderingServlet" %>
+<%! boolean bMultisites = IsPropertiesOn.isMultisitesEnable(); %>
 
 
-<%@page import="org.oscarehr.common.dao.SiteDao" %>
+<%@page import="ca.openosp.openo.commn.dao.SiteDao" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
 <%@ page import="ca.openosp.openo.managers.FaxManager" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@ page import="org.oscarehr.PMmodule.service.ProviderManager" %>
-<%@ page import="org.oscarehr.common.model.*" %>
-<%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
+<%@ page import="ca.openosp.openo.PMmodule.service.ProviderManager" %>
+<%@ page import="ca.openosp.openo.commn.model.*" %>
+<%@ page import="ca.openosp.openo.providers.data.ProviderData" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="org.oscarehr.common.model.enumerator.ModuleType" %>
-<%@ page import="ca.openosp.openo.provider.data.ProSignatureData" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.data.RxProviderData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPharmacyData" %>
+<%@ page import="ca.openosp.openo.commn.model.enumerator.ModuleType" %>
+<%@ page import="ca.openosp.openo.providers.data.ProSignatureData" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxProviderData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPharmacyData" %>
+<%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
+<%@ page import="ca.openosp.openo.commn.model.*" %>
 
 <%
     OscarAppointmentDao appointmentDao = SpringUtils.getBean(OscarAppointmentDao.class);
@@ -120,7 +122,7 @@
             String createAnewRx;
             if (reprint.equalsIgnoreCase("true")) {
                 bean = (RxSessionBean) session.getAttribute("tmpBeanRX");
-                createAnewRx = "window.location.href = '" + request.getContextPath() + "/oscarRx/SearchDrug.jsp'";
+                createAnewRx = "window.location.href = '" + request.getContextPath() + "/rx/SearchDrug.jsp'";
             } else {
                 createAnewRx = "javascript:clearPending('')";
             }
@@ -235,7 +237,7 @@
 
         <script type="text/javascript">
             function resetStash() {
-                var url = "<c:out value="${ctx}"/>" + "/oscarRx/deleteRx.do?parameterValue=clearStash";
+                var url = "<c:out value="${ctx}"/>" + "/rx/deleteRx.do?parameterValue=clearStash";
                 var data = "";
                 new Ajax.Request(url, {
                     method: 'post', parameters: data, onSuccess: function (transport) {
@@ -246,7 +248,7 @@
             }
 
             function resetReRxDrugList() {
-                var url = "<c:out value="${ctx}"/>" + "/oscarRx/deleteRx.do?parameterValue=clearReRxDrugList";
+                var url = "<c:out value="${ctx}"/>" + "/rx/deleteRx.do?parameterValue=clearReRxDrugList";
                 var data = "";
                 new Ajax.Request(url, {
                     method: 'post', parameters: data
@@ -295,7 +297,7 @@
             function addNotes() {
 
 
-                var url = "oscarRx/AddRxComment.jsp";
+                var url = "rx/AddRxComment.jsp";
                 var ran_number = Math.round(Math.random() * 1000000);
                 var comment = encodeURIComponent(document.getElementById('additionalNotes').value);
                 var params = "scriptNo=<%=request.getAttribute("scriptId")%>&comment=" + comment + "&rand=" + ran_number;  //]
@@ -411,7 +413,7 @@
 
 	function writeToEncounter(print, text) {
     	try {
-			var url = "<%=request.getContextPath() %>/oscarRx/WriteToEncounter.do";
+			var url = "<%=request.getContextPath() %>/rx/WriteToEncounter.do";
 			var prefPharmacy = "<%=prefPharmacy != null ? Encode.forJavaScriptBlock(prefPharmacy) : ""%>";
 			new Ajax.Request(url, {method: 'post',
 				parameters: "prefPharmacy=" + encodeURIComponent(prefPharmacy) +
@@ -667,7 +669,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                         }
 
                                         function clearPendingFax() {
-                                            parent.window.location = "../oscarRx/close.html";
+                                            parent.window.location = "../rx/close.html";
                                             parent.myLightWindow.deactivate();
                                         }
 
@@ -683,7 +685,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
 	                                if(! id) {
 										return;
 	                                }
-                                    var url="<c:out value="${ctx}"/>"+"/oscarRx/managePharmacy2.do?";
+                                    var url="<c:out value="${ctx}"/>"+"/rx/managePharmacy2.do?";
                                     var data="method=getPharmacyInfo&pharmacyId="+id;
                                     new Ajax.Request(url, {method: 'get',parameters:data, onSuccess:function(transport){
                                         var json=transport.responseText.evalJSON();

@@ -26,26 +26,26 @@
 
 package ca.openosp.openo.documentManager.actions;
 
-import ca.openosp.openo.dao.security.SecObjectNameDao;
+import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.daos.security.SecObjectNameDao;
 import ca.openosp.openo.model.security.Secobjectname;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.http.impl.cookie.DateUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.SecUserRoleDao;
-import org.oscarehr.PMmodule.model.SecUserRole;
-import org.oscarehr.PMmodule.utility.UtilDateUtilities;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.ProviderInboxItem;
-import org.oscarehr.common.model.Queue;
-import org.oscarehr.common.model.QueueDocumentLink;
+import ca.openosp.openo.PMmodule.dao.SecUserRoleDao;
+import ca.openosp.openo.PMmodule.model.SecUserRole;
+import ca.openosp.openo.PMmodule.utility.UtilDateUtilities;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.ProviderInboxItem;
+import ca.openosp.openo.commn.model.Queue;
+import ca.openosp.openo.commn.model.QueueDocumentLink;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.lab.ca.all.Hl7textResultsData;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.HRMResultsData;
@@ -207,7 +207,7 @@ public class DmsInboxManage2Action extends ActionSupport {
             searchProviderNo = request.getParameter("searchProviderAll");
         } else if (searchProviderNo == null) {
             searchProviderNo = providerNo;
-        } // default to current provider
+        } // default to current providers
 
         boolean providerSearch = !"-1".equals(searchProviderNo);
 
@@ -261,7 +261,7 @@ public class DmsInboxManage2Action extends ActionSupport {
             logger.error("Error", e);
         }
 
-        // can't use userrole from session, because it changes if provider A search for provider B's documents
+        // can't use userrole from session, because it changes if providers A search for providers B's documents
 
         // oscar.oscarMDS.data.MDSResultsData mDSData = new oscar.oscarMDS.data.MDSResultsData();
         CommonLabResultData comLab = new CommonLabResultData();
@@ -269,7 +269,7 @@ public class DmsInboxManage2Action extends ActionSupport {
         String providerNo = (String) session.getAttribute("user");
         String searchProviderNo = StringEscapeUtils.escapeSql(request.getParameter("searchProviderNo"));
         String ackStatus = StringEscapeUtils.escapeSql(request.getParameter("status"));
-        String demographicNo = StringEscapeUtils.escapeSql(request.getParameter("demographicNo")); // used when searching for labs by patient instead of provider
+        String demographicNo = StringEscapeUtils.escapeSql(request.getParameter("demographicNo")); // used when searching for labs by patient instead of providers
         String scannedDocStatus = StringEscapeUtils.escapeSql(request.getParameter("scannedDocument"));
         Integer page = 0;
         try {
@@ -756,7 +756,7 @@ public class DmsInboxManage2Action extends ActionSupport {
         for (QueueDocumentLink q : qs) {
             int qid = q.getQueueId();
             List<Object> vec = OscarRoleObjectPrivilege.getPrivilegeProp("_queue." + qid);
-            // if queue is not default and provider doesn't have access to it,continue
+            // if queue is not default and providers doesn't have access to it,continue
             if (qid != Queue.DEFAULT_QUEUE_ID && !OscarRoleObjectPrivilege.checkPrivilege(roleName.toString(), (Properties) vec.get(0), (List) vec.get(1))) {
                 continue;
             }

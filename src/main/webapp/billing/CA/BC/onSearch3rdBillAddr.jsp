@@ -101,7 +101,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
-<%@page import="oscar.Misc" %>
+<%@page import="ca.openosp.Misc" %>
 <%@ page import="ca.openosp.openo.db.DBPreparedHandler" %>
 <html>
     <head>

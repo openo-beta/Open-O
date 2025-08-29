@@ -32,8 +32,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.common.model.ConsultationRequest;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.model.ConsultationRequest;
+import ca.openosp.openo.commn.dao.ConsultationRequestDao;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 
@@ -44,7 +45,7 @@ public class ConsultationRequestDaoTest extends DaoTestFixtures {
     @Before
     public void before() throws Exception {
         SchemaUtils.restoreTable("consultationRequests", "professionalSpecialists", "consultationServices", "demographic", "lst_gender", "admission", "demographic_merged", "program",
-                "health_safety", "provider", "providersite", "site", "program_team", "log", "Facility", "DemographicContact", "LookupListItem", "demographicExt");
+                "health_safety", "providers", "providersite", "site", "program_team", "log", "Facility", "DemographicContact", "LookupListItem", "demographicExt");
     }
 
     @Test

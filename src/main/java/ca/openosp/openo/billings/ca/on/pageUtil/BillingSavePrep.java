@@ -27,8 +27,9 @@ import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
+import ca.openosp.openo.commn.IsPropertiesOn;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data;
 import ca.openosp.openo.billings.ca.on.data.BillingDataHlp;
@@ -38,7 +39,7 @@ import ca.openosp.openo.billings.ca.on.data.JdbcBillingPageUtil;
 import ca.openosp.openo.util.UtilDateUtilities;
 
 public class BillingSavePrep {
-    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static final Logger _logger = MiscUtils.getLogger();
     JdbcBillingClaimImpl dbObj = new JdbcBillingClaimImpl();
     int billingId = 0;
 
@@ -285,7 +286,7 @@ public class BillingSavePrep {
         claim1Header.setLocation(val.getParameter("xml_slicode").trim());
 
         claim1Header.setDemographic_no(val.getParameter("demographic_no"));
-        if (org.oscarehr.common.IsPropertiesOn.isMultisitesEnable()) {
+        if (IsPropertiesOn.isMultisitesEnable()) {
             claim1Header.setProviderNo(val.getParameter("xml_provider").substring(0, val.getParameter("xml_provider").indexOf("|")));
         } else {
             claim1Header.setProviderNo(val.getParameter("xml_provider"));

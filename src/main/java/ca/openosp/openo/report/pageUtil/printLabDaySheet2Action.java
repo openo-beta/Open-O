@@ -36,10 +36,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.DbConnectionFilter;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.DbConnectionFilter;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.OscarDocumentCreator;
+import ca.openosp.OscarDocumentCreator;
 
 /**
  * @author Toby

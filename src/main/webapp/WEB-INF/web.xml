@@ -52,7 +52,7 @@
 	</filter-mapping>
     <filter>
             <filter-name>WebServiceSessionInvalidatingFilter</filter-name>
-            <filter-class>org.oscarehr.ws.WebServiceSessionInvalidatingFilter</filter-class>
+            <filter-class>ca.openosp.openo.webserv.WebServiceSessionInvalidatingFilter</filter-class>
     </filter>
     <filter-mapping>
             <filter-name>WebServiceSessionInvalidatingFilter</filter-name>
@@ -60,7 +60,7 @@
     </filter-mapping>
     <filter>
         <filter-name>ResponseDefaultsFilter</filter-name>
-        <filter-class>org.oscarehr.utility.ResponseDefaultsFilter</filter-class>
+        <filter-class>ca.openosp.openo.utility.ResponseDefaultsFilter</filter-class>
 		<init-param>
 			<param-name>noCacheEndings</param-name>
 			<param-value>.jsp,.jsf,.json,.do</param-value>
@@ -73,7 +73,7 @@
 
 	<filter>
 		<filter-name>PrivacyStatementAppendingFilter</filter-name>
-		<filter-class>org.oscarehr.common.printing.PrivacyStatementAppendingFilter</filter-class>
+		<filter-class>ca.openosp.openo.commn.printing.PrivacyStatementAppendingFilter</filter-class>
 		<init-param>
 			<param-name>exclusions</param-name>
 			<param-value>/oscarMessenger,/demographic/demographiccontrol.jsp,/demographic/demographiceditdemographic.js.jsp,/demographic/demographicprintdemographic.jsp,/provider/schedulePage.js.jsp</param-value>
@@ -102,7 +102,7 @@
 
     <filter>
         <filter-name>UserActivityFilter</filter-name>
-        <filter-class>org.oscarehr.utility.UserActivityFilter</filter-class>
+        <filter-class>ca.openosp.openo.utility.UserActivityFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>UserActivityFilter</filter-name>
@@ -111,15 +111,15 @@
 
 	<filter>
 		<filter-name>DbConnectionFilter</filter-name>
-		<filter-class>org.oscarehr.utility.DbConnectionFilter</filter-class>
+		<filter-class>ca.openosp.openo.utility.DbConnectionFilter</filter-class>
 	</filter>
 	<filter>
 		<filter-name>LoggedInUserFilter</filter-name>
-		<filter-class>org.oscarehr.utility.LoggedInUserFilter</filter-class>
+		<filter-class>ca.openosp.openo.utility.LoggedInUserFilter</filter-class>
 	</filter>
 	<filter>
 		<filter-name>LoginFilter</filter-name>
-		<filter-class>ca.openosp.openo.security.LoginFilter</filter-class>
+		<filter-class>ca.openosp.openo.sec.LoginFilter</filter-class>
 	</filter>
 	<filter>
 		<filter-name>ResponseOverrideFilter</filter-name>
@@ -127,7 +127,7 @@
 	</filter>
 	<filter>
 		<filter-name>PMMFilter</filter-name>
-		<filter-class>org.oscarehr.PMmodule.web.PMMFilter</filter-class>
+		<filter-class>ca.openosp.openo.PMmodule.web.PMMFilter</filter-class>
 	</filter>
 
 	<filter-mapping>
@@ -163,13 +163,13 @@
 		<listener-class>ca.openosp.openo.login.Startup</listener-class>
 	</listener>
 	<listener>
-		<listener-class>org.oscarehr.common.web.OscarSpringContextLoader</listener-class>
+		<listener-class>ca.openosp.openo.commn.web.OscarSpringContextLoader</listener-class>
 	</listener>
 	<listener>
-		<listener-class>org.oscarehr.utility.ContextStartupListener</listener-class>
+		<listener-class>ca.openosp.openo.utility.ContextStartupListener</listener-class>
 	</listener>
 	<listener>
-		<listener-class>org.oscarehr.web.OscarSessionListener</listener-class>
+		<listener-class>ca.openosp.openo.web.OscarSessionListener</listener-class>
 	</listener>
 
     <!--  Cross Site Request Forgery Configuration  -->
@@ -234,7 +234,7 @@
 		<url-pattern>/ws/*</url-pattern>
 	</servlet-mapping>
 
-    <!-- HTTP header security -->
+    <!-- HTTP header sec -->
     <filter>
         <filter-name>ClickjackFilterSameOrigin</filter-name>
         <filter-class>org.owasp.esapi.filters.ClickjackFilter</filter-class>
@@ -259,7 +259,7 @@
 
 	<servlet>
 		<servlet-name>UploadDocument</servlet-name>
-		<servlet-class>oscar.DocumentMgtUploadServlet</servlet-class>
+		<servlet-class>ca.openosp.DocumentMgtUploadServlet</servlet-class>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet>
@@ -308,7 +308,7 @@
 	</servlet>
 	<servlet>
 		<servlet-name>DocumentUploadServlet</servlet-name>
-		<servlet-class>oscar.DocumentUploadServlet</servlet-class>
+		<servlet-class>ca.openosp.DocumentUploadServlet</servlet-class>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet>
@@ -317,15 +317,15 @@
 	</servlet>
 	<servlet>
 		<servlet-name>ImageRenderingServlet</servlet-name>
-		<servlet-class>org.oscarehr.ui.servlet.ImageRenderingServlet</servlet-class>
+		<servlet-class>ca.openosp.openo.ui.servlet.ImageRenderingServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>ContentRenderingServlet</servlet-name>
-		<servlet-class>org.oscarehr.ui.servlet.ContentRenderingServlet</servlet-class>
+		<servlet-class>ca.openosp.openo.ui.servlet.ContentRenderingServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>eformViewForPdfGenerationServlet</servlet-name>
-		<servlet-class>org.oscarehr.web.eform.EformViewForPdfGenerationServlet</servlet-class>
+		<servlet-class>ca.openosp.openo.web.eform.EformViewForPdfGenerationServlet</servlet-class>
 	</servlet>
 
 	<servlet>
@@ -373,7 +373,7 @@
 
 	<servlet-mapping>
 		<servlet-name>UploadDocument</servlet-name>
-		<url-pattern>/servlet/oscar.DocumentMgtUploadServlet</url-pattern>
+		<url-pattern>/servlet/ca.openosp.DocumentMgtUploadServlet</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>pdfCreator</servlet-name>
@@ -413,7 +413,7 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>DocumentUploadServlet</servlet-name>
-		<url-pattern>/servlet/oscar.DocumentUploadServlet</url-pattern>
+		<url-pattern>/servlet/ca.openosp.DocumentUploadServlet</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>PatientListByAppt</servlet-name>

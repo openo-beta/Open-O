@@ -26,8 +26,8 @@ import ca.openosp.openo.billing.CA.BC.model.Hl7Msh;
 import ca.openosp.openo.billing.CA.BC.model.Hl7Obr;
 import ca.openosp.openo.billing.CA.BC.model.Hl7Orc;
 import ca.openosp.openo.billing.CA.BC.model.Hl7Pid;
-import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.common.model.ProviderLabRoutingModel;
+import ca.openosp.openo.commn.model.PatientLabRouting;
+import ca.openosp.openo.commn.model.ProviderLabRoutingModel;
 
 public class PathNetLabResults {
     private Hl7Msh hl7Msh;

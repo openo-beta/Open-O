@@ -45,20 +45,20 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
-import org.oscarehr.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
 
-import org.oscarehr.common.dao.HrmLogDao;
-import org.oscarehr.common.dao.HrmLogEntryDao;
-import org.oscarehr.common.dao.OscarJobDao;
-import org.oscarehr.common.dao.OscarJobTypeDao;
-import org.oscarehr.common.dao.UserPropertyDAO;
-import org.oscarehr.common.jobs.OscarJobUtils;
-import org.oscarehr.common.model.HrmLog;
-import org.oscarehr.common.model.HrmLogEntry;
-import org.oscarehr.common.model.OscarJob;
-import org.oscarehr.common.model.OscarJobType;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.UserProperty;
+import ca.openosp.openo.commn.dao.HrmLogDao;
+import ca.openosp.openo.commn.dao.HrmLogEntryDao;
+import ca.openosp.openo.commn.dao.OscarJobDao;
+import ca.openosp.openo.commn.dao.OscarJobTypeDao;
+import ca.openosp.openo.commn.dao.UserPropertyDAO;
+import ca.openosp.openo.commn.jobs.OscarJobUtils;
+import ca.openosp.openo.commn.model.HrmLog;
+import ca.openosp.openo.commn.model.HrmLogEntry;
+import ca.openosp.openo.commn.model.OscarJob;
+import ca.openosp.openo.commn.model.OscarJobType;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.UserProperty;
 import ca.openosp.openo.hospitalReportManager.HRMReport;
 import ca.openosp.openo.hospitalReportManager.HRMReportParser;
 import ca.openosp.openo.hospitalReportManager.SFTPConnector;
@@ -72,11 +72,11 @@ import ca.openosp.openo.hospitalReportManager.model.HRMDocumentSubClass;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
 import ca.openosp.openo.hospitalReportManager.model.HRMProviderConfidentialityStatement;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -792,12 +792,12 @@ public class HRM2Action extends ActionSupport {
 
             for (HRMDocument d : docs) {
                 HRMCategory category = null;
-                //Provider provider = null;
+                //Provider providers = null;
                 if (d.getHrmCategoryId() != null) {
                     category = hrmCategoryDao.find(d.getHrmCategoryId());
                 }
                 //if(d.getRecipientProviderNo() != null) {
-                //	provider = providerDao.getProvider(d.getRecipientProviderNo());
+                //	providers = providerDao.getProvider(d.getRecipientProviderNo());
                 //}
 
                 List<HRMDocumentToDemographic> ptList = hrmDocumentToDemographicDao.findByHrmDocumentId(d.getId().toString());

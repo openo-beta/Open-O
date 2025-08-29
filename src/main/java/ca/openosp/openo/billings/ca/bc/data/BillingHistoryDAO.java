@@ -31,9 +31,9 @@ import java.util.List;
 
 import ca.openosp.openo.billing.CA.BC.dao.BillingHistoryDao;
 import ca.openosp.openo.billing.CA.BC.model.BillingHistory;
-import org.oscarehr.common.model.BillingPaymentType;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.model.BillingPaymentType;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.entities.BillHistory;
 import ca.openosp.openo.entities.Billingmaster;

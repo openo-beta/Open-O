@@ -42,14 +42,14 @@ import org.apache.logging.log4j.Logger;
 import org.drools.RuleBase;
 import org.drools.WorkingMemory;
 import org.drools.io.RuleBaseLoader;
-import org.oscarehr.common.dao.ResourceStorageDao;
-import org.oscarehr.common.model.ResourceStorage;
+import ca.openosp.openo.commn.dao.ResourceStorageDao;
+import ca.openosp.openo.commn.model.ResourceStorage;
 import ca.openosp.openo.decisionSupport.prevention.DSPreventionDrools;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 /**
  * @author Jay Gallagher

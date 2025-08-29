@@ -30,10 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.openosp.openo.messenger.util.MsgStringQuote;
-import org.oscarehr.common.dao.forms.FormsDao;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.forms.FormsDao;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.prevention.reports.PreventionReportUtil;
 import ca.openosp.openo.report.pageUtil.RptDemographicReport2Form;
@@ -149,7 +149,7 @@ public class RptDemographicQueryBuilder {
 
         stringBuffer.append(" from demographic d ");
         if (getprovider) {
-            stringBuffer.append(", provider p");
+            stringBuffer.append(", providers p");
         }
         int yStyle = 0;
         try {
@@ -400,7 +400,7 @@ public class RptDemographicQueryBuilder {
                     }
                 }
 
-                // need to check if they were rostered at this point to this provider  (asofRosterDate is only set if this is being called from prevention reports)
+                // need to check if they were rostered at this point to this providers  (asofRosterDate is only set if this is being called from prevention reports)
                 if (demoNo != null && asofRosterDate != null && providers != null && providers.length > 0) {
                     //Only checking the first doc.  Only one should be included for finding the cumulative bonus
                     try {

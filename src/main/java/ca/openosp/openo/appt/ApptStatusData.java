@@ -33,7 +33,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import org.oscarehr.common.model.AppointmentStatus;
+import ca.openosp.OscarProperties;
+import ca.openosp.openo.commn.model.AppointmentStatus;
 
 import ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImpl;
 
@@ -44,7 +45,7 @@ import ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImpl;
  */
 public final class ApptStatusData {
 
-    oscar.OscarProperties pros = oscar.OscarProperties.getInstance();
+    OscarProperties pros = OscarProperties.getInstance();
     String strEditable = pros.getProperty("ENABLE_EDIT_APPT_STATUS");
     String apptStatus = null;
     String[] aStatus = {"t", "T", "H", "P", "E", "N", "C", "B", "tS", "TS", "HS", "PS", "ES", "NS", "CS", "BS", "tV", "TV", "HV", "PV", "EV", "NV", "CV", "BV"};

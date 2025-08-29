@@ -19,12 +19,12 @@
 --%>
 <%@page import="ca.openosp.openo.billing.CA.ON.model.BillingPercLimit" %>
 <%@page import="ca.openosp.openo.billing.CA.ON.dao.BillingPercLimitDao" %>
-<%@page import="org.oscarehr.common.model.BillingService" %>
-<%@page import="org.oscarehr.common.dao.BillingServiceDao" %>
-<%@page import="org.oscarehr.common.dao.DemographicDao" %>
-<%@page import="org.oscarehr.common.model.Demographic" %>
-<%@page import="org.oscarehr.common.model.Provider" %>
-<%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
+<%@page import="ca.openosp.openo.commn.model.BillingService" %>
+<%@page import="ca.openosp.openo.commn.dao.BillingServiceDao" %>
+<%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
+<%@page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@page import="ca.openosp.openo.commn.model.Provider" %>
+<%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%
     if (session.getAttribute("user") == null) {
         response.sendRedirect("../../../logout.jsp");
@@ -42,20 +42,23 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
-<%@ page errorPage="/errorpage.jsp" import="java.util.*,java.math.*,java.net.*,java.sql.*, oscar.util.*, oscar.*" %>
+<%@ page errorPage="/errorpage.jsp" import="java.util.*,java.math.*,java.net.*,java.sql.*, ca.openosp.openo.util.*, ca.openosp.*" %>
 
-<%@ page import="oscar.oscarBilling.ca.on.pageUtil.*" %>
+<%@ page import="ca.openosp.openo.billing.ca.on.pageUtil.*" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
-<%@ page import="org.oscarehr.common.model.Billing" %>
-<%@ page import="org.oscarehr.common.dao.BillingDao" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.commn.model.Billing" %>
+<%@ page import="ca.openosp.openo.commn.dao.BillingDao" %>
 <%@ page import="ca.openosp.openo.billing.CA.model.BillingDetail" %>
 <%@ page import="ca.openosp.openo.billing.CA.dao.BillingDetailDao" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingSavePrep" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="ca.openosp.SxmlMisc" %>
+<%@ page import="ca.openosp.MyDateFormat" %>
 <%
     BillingDao billingDao = SpringUtils.getBean(BillingDao.class);
     BillingDetailDao billingDetailDao = SpringUtils.getBean(BillingDetailDao.class);
@@ -92,7 +95,7 @@
     String action = "edit";
     Properties propHist = null;
     Vector vecHist = new Vector();
-    // get provider's detail
+    // get providers's detail
     String proOHIPNO = "", proRMA = "";
 
     ProviderDao prDao = SpringUtils.getBean(ProviderDao.class);

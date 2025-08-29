@@ -31,7 +31,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.Logger;
 import org.jdom.Element;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 
 /**

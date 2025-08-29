@@ -33,8 +33,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import org.oscarehr.utility.LoggedInInfo;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.OscarProperties;
 
 /**
  * the NioFileManager handles all file input and output of all OscarDocument files

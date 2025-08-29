@@ -27,12 +27,12 @@
 package ca.openosp.openo.billings.ca.bc.Teleplan;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.Demographic;
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import oscar.Misc;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.Misc;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.entities.WCB;
 import ca.openosp.openo.billings.ca.bc.MSP.TeleplanFileWriter;
@@ -87,7 +87,7 @@ public class WCBTeleplanSubmission {
     }
 
     public String dateFormat(String date) {
-        return Misc.forwardZero(oscar.Misc.cleanNumber(date), 8);
+        return Misc.forwardZero(Misc.cleanNumber(date), 8);
     }
 
 

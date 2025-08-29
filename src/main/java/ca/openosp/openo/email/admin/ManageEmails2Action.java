@@ -5,18 +5,18 @@ import ca.openosp.openo.managers.*;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.common.model.EmailAttachment;
-import org.oscarehr.common.model.EmailConfig;
-import org.oscarehr.common.model.EmailLog;
-import org.oscarehr.common.model.EmailLog.EmailStatus;
-import org.oscarehr.common.model.EmailLog.TransactionType;
-import org.oscarehr.common.model.enumerator.DocumentType;
+import ca.openosp.openo.commn.model.EmailAttachment;
+import ca.openosp.openo.commn.model.EmailConfig;
+import ca.openosp.openo.commn.model.EmailLog;
+import ca.openosp.openo.commn.model.EmailLog.EmailStatus;
+import ca.openosp.openo.commn.model.EmailLog.TransactionType;
+import ca.openosp.openo.commn.model.enumerator.DocumentType;
 import ca.openosp.openo.documentManager.DocumentAttachmentManager;
 import ca.openosp.openo.email.core.EmailStatusResult;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.PDFGenerationException;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PDFGenerationException;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.form.JSONUtil;
 import ca.openosp.openo.util.StringUtils;
 
@@ -151,7 +151,7 @@ public class ManageEmails2Action extends ActionSupport {
     private List<EmailAttachment> refreshEmailAttachments(HttpServletRequest request, HttpServletResponse response, EmailLog emailLog) throws PDFGenerationException {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_email", SecurityInfoManager.READ, null)) {
-            throw new RuntimeException("missing required security object (_email)");
+            throw new RuntimeException("missing required sec object (_email)");
         }
 
         List<EmailAttachment> emailAttachmentList = emailLog.getEmailAttachments();

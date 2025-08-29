@@ -51,15 +51,15 @@
 
 %>
 <%@ page
-        import="java.util.*, java.sql.*, oscar.*, java.text.*, java.lang.*"
+        import="java.util.*, java.sql.*, ca.openosp.*, java.text.*, java.lang.*"
         errorPage="../appointment/errorpage.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
 <jsp:useBean id="scheduleHolidayBean" class="java.util.Hashtable" scope="session"/>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
-<%@ page import="org.oscarehr.common.model.ScheduleHoliday" %>
-<%@ page import="org.oscarehr.common.dao.ScheduleHolidayDao" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.commn.model.ScheduleHoliday" %>
+<%@ page import="ca.openosp.openo.commn.dao.ScheduleHolidayDao" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%
     ScheduleHolidayDao scheduleHolidayDao = SpringUtils.getBean(ScheduleHolidayDao.class);

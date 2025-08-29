@@ -27,7 +27,7 @@ package ca.openosp.openo.integration.fhir.model;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.hl7.fhir.dstu3.model.MessageHeader.MessageSourceComponent;
-import org.oscarehr.common.model.Clinic;
+import ca.openosp.openo.commn.model.Clinic;
 
 /*
 "source": {
@@ -163,11 +163,11 @@ public class Sender {
         this.organization = organization;
     }
 
-    public org.oscarehr.common.model.Clinic getClinic() {
+    public Clinic getClinic() {
         return this.clinic;
     }
 
-    public void setClinic(org.oscarehr.common.model.Clinic clinic) {
+    public void setClinic(Clinic clinic) {
         if (clinic != null) {
             setSenderName(clinic.getClinicName());
             setOscarFhirResource(new Organization<Clinic>(clinic));

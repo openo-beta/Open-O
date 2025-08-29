@@ -33,12 +33,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.dao.MeasurementGroupDao;
-import org.oscarehr.common.model.MeasurementGroup;
+import ca.openosp.openo.commn.dao.MeasurementGroupDao;
+import ca.openosp.openo.commn.model.MeasurementGroup;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -89,7 +89,7 @@ public class EctEditMeasurementGroup2Action extends ActionSupport {
             return SUCCESS;
 
         } else {
-            throw new SecurityException("Access Denied!"); //missing required security object (_admin)
+            throw new SecurityException("Access Denied!"); //missing required sec object (_admin)
         }
     }
 

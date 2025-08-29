@@ -35,8 +35,9 @@ import org.junit.Test;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
 import ca.openosp.openo.decisionSupport.model.DSGuidelineProviderMapping;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.DSGuidelineProviderMappingDao;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class DSGuidelineProviderMappingDaoTest extends DaoTestFixtures {
 

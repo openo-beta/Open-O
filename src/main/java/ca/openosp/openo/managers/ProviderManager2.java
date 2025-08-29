@@ -28,18 +28,18 @@ package ca.openosp.openo.managers;
 import java.util.*;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.casemgmt.model.ProviderExt;
-import org.oscarehr.common.dao.PropertyDao;
-import org.oscarehr.common.dao.ProviderExtDao;
-import org.oscarehr.common.dao.ProviderPreferenceDao;
-import org.oscarehr.common.model.Property;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.ProviderPreference;
-import org.oscarehr.common.model.ProviderPreference.QuickLink;
+import ca.openosp.openo.commn.dao.PropertyDao;
+import ca.openosp.openo.commn.dao.ProviderExtDao;
+import ca.openosp.openo.commn.dao.ProviderPreferenceDao;
+import ca.openosp.openo.commn.model.Property;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.ProviderPreference;
+import ca.openosp.openo.commn.model.ProviderPreference.QuickLink;
 import ca.openosp.openo.managers.model.ProviderSettings;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

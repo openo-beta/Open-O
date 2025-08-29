@@ -6,8 +6,8 @@ import java.net.URI;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.AppDefinition;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.model.AppDefinition;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.stereotype.Component;
 
 @Component

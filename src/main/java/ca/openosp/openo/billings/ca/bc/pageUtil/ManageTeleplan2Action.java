@@ -39,15 +39,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.DiagnosticCodeDao;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.DiagnosticCode;
+import ca.openosp.openo.commn.dao.DiagnosticCodeDao;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.DiagnosticCode;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.entities.Billactivity;
 import ca.openosp.openo.billings.ca.bc.MSP.MspErrorCodes;
 import ca.openosp.openo.billings.ca.bc.Teleplan.TeleplanAPI;

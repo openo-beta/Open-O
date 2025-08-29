@@ -9,10 +9,10 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
-import ca.openosp.openo.oscarTickler.TicklerCreator;
+import ca.openosp.openo.tickler.TicklerCreator;
 import ca.openosp.openo.util.SqlUtils;
 
 public class CDMReminderHlp {
@@ -87,7 +87,7 @@ public class CDMReminderHlp {
 
     /**
      * Returns a String list of demographic numbers for patients that are associated with the
-     * specified provider number and who have been diagnosed with a chronic disease
+     * specified providers number and who have been diagnosed with a chronic disease
      *
      * @return ArrayList
      */

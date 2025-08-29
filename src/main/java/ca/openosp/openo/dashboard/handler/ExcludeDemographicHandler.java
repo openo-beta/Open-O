@@ -30,15 +30,15 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-//import org.oscarehr.common.dao.DemographicExtArchiveDao;
-import org.oscarehr.common.dao.DemographicExtDao;
-import org.oscarehr.common.model.DemographicExt;
+//import org.oscarehr.commons.daos.DemographicExtArchiveDao;
+import ca.openosp.openo.commn.dao.DemographicExtDao;
+import ca.openosp.openo.commn.model.DemographicExt;
 import ca.openosp.openo.dashboard.display.beans.DrilldownBean;
 import ca.openosp.openo.managers.DashboardManager;
 //import org.oscarehr.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import net.sf.json.JSONArray;
 

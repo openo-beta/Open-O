@@ -29,13 +29,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.OscarProperties;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.printing.FontSettings;
-import org.oscarehr.common.printing.PdfWriterFactory;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.printing.FontSettings;
+import ca.openosp.openo.commn.printing.PdfWriterFactory;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.form.FrmRecord;
 import ca.openosp.openo.form.FrmRecordFactory;
 import ca.openosp.openo.form.graphic.FrmGraphicFactory;
@@ -62,7 +63,7 @@ import com.lowagie.text.pdf.PdfWriter;
  */
 public class FrmPDFServlet extends HttpServlet {
 
-    Logger log = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger log = MiscUtils.getLogger();
 
     /**
      *
@@ -403,7 +404,7 @@ public class FrmPDFServlet extends HttpServlet {
 
             // create a reader for a certain document
             //String propFilename = "../../OscarDocument/" + getProjectName() + "/form/" + template;
-            String propFilename = oscar.OscarProperties.getInstance().getProperty("pdfFORMDIR", "") + "/" + template;
+            String propFilename = OscarProperties.getInstance().getProperty("pdfFORMDIR", "") + "/" + template;
             PdfReader reader = null;
             float height;
             int n;
@@ -806,7 +807,7 @@ public class FrmPDFServlet extends HttpServlet {
         // Now cleanFilename is safe to use
         
         // Try loading from file system
-        String pdfFormDir = oscar.OscarProperties.getInstance().getProperty("pdfFORMDIR", "");
+        String pdfFormDir = OscarProperties.getInstance().getProperty("pdfFORMDIR", "");
         if (!pdfFormDir.isEmpty()) {
             Properties fsProps = loadFromFileSystem(pdfFormDir, cleanFilename);
             if (fsProps != null) {

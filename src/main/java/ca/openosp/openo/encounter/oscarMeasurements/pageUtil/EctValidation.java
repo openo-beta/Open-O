@@ -34,16 +34,16 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.validator.GenericValidator;
-import org.oscarehr.common.dao.MeasurementCSSLocationDao;
-import org.oscarehr.common.dao.MeasurementGroupStyleDao;
-import org.oscarehr.common.dao.MeasurementTypeDao;
-import org.oscarehr.common.dao.ValidationsDao;
-import org.oscarehr.common.model.MeasurementCSSLocation;
-import org.oscarehr.common.model.MeasurementGroupStyle;
-import org.oscarehr.common.model.MeasurementType;
-import org.oscarehr.common.model.Validations;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.MeasurementCSSLocationDao;
+import ca.openosp.openo.commn.dao.MeasurementGroupStyleDao;
+import ca.openosp.openo.commn.dao.MeasurementTypeDao;
+import ca.openosp.openo.commn.dao.ValidationsDao;
+import ca.openosp.openo.commn.model.MeasurementCSSLocation;
+import ca.openosp.openo.commn.model.MeasurementGroupStyle;
+import ca.openosp.openo.commn.model.MeasurementType;
+import ca.openosp.openo.commn.model.Validations;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 

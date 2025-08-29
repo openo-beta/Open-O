@@ -24,7 +24,7 @@
 package ca.openosp.openo.casemgmt.web.formbeans;
 
 import ca.openosp.openo.casemgmt.model.CaseManagementCPP;
-import org.oscarehr.common.model.EncounterWindow;
+import ca.openosp.openo.commn.model.EncounterWindow;
 
 import java.io.File;
 

@@ -27,9 +27,9 @@ package ca.openosp.openo.encounter.data;
 
 import java.util.Vector;
 
-import org.oscarehr.common.dao.EChartDao;
-import org.oscarehr.common.model.EChart;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.EChartDao;
+import ca.openosp.openo.commn.model.EChart;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 

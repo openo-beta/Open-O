@@ -36,13 +36,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.time.DateUtils;
-import org.oscarehr.common.dao.BatchBillingDAO;
-import org.oscarehr.common.dao.BillingONCHeader1Dao;
-import org.oscarehr.common.model.BatchBilling;
+import ca.openosp.openo.commn.dao.BatchBillingDAO;
+import ca.openosp.openo.commn.dao.BillingONCHeader1Dao;
+import ca.openosp.openo.commn.model.BatchBilling;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 /**
  * @author rjonasz
@@ -71,7 +71,7 @@ public class BatchBill2Action extends ActionSupport {
         }
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_billing", "w", null)) {
-            throw new SecurityException("missing required security object (_billing)");
+            throw new SecurityException("missing required sec object (_billing)");
         }
 
 
@@ -110,7 +110,7 @@ public class BatchBill2Action extends ActionSupport {
     public String doBatchBill() {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_billing", "w", null)) {
-            throw new SecurityException("missing required security object (_billing)");
+            throw new SecurityException("missing required sec object (_billing)");
         }
 
         ResourceBundle oscarResource = ResourceBundle.getBundle("oscarResources", request.getLocale());
@@ -143,7 +143,7 @@ public class BatchBill2Action extends ActionSupport {
             String[] temp;
             for (int idx = 0; idx < billingInfo.length; ++idx) {
                 temp = billingInfo[idx].split(";");
-                //passed in order is billing provider, demographic no, service code, dx code
+                //passed in order is billing providers, demographic no, service code, dx code
                 total = this.billingONCHeader1Dao.createBill(temp[3], Integer.parseInt(temp[2]), temp[0], temp[1], clinic_view, billingDate, curUser);
 
                 batchBillingList = batchBillingDAO.find(Integer.parseInt(temp[2]), temp[0]);
@@ -157,7 +157,7 @@ public class BatchBill2Action extends ActionSupport {
         }
 
         try {
-            response.sendRedirect("/billing/CA/ON/batchBilling.jsp?provider_no=" + request.getParameter("provider") + "&service_code=" + request.getParameter("service_code"));
+            response.sendRedirect("/billing/CA/ON/batchBilling.jsp?provider_no=" + request.getParameter("providers") + "&service_code=" + request.getParameter("service_code"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -169,7 +169,7 @@ public class BatchBill2Action extends ActionSupport {
 
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_billing", "w", null)) {
-            throw new SecurityException("missing required security object (_billing)");
+            throw new SecurityException("missing required sec object (_billing)");
         }
 
         String[] billingInfo = request.getParameterValues("bill");
@@ -191,7 +191,7 @@ public class BatchBill2Action extends ActionSupport {
         }
 
         try {
-            response.sendRedirect("/billing/CA/ON/batchBilling.jsp?provider_no=" + request.getParameter("provider") + "&service_code=" + request.getParameter("service_code"));
+            response.sendRedirect("/billing/CA/ON/batchBilling.jsp?provider_no=" + request.getParameter("providers") + "&service_code=" + request.getParameter("service_code"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -203,12 +203,12 @@ public class BatchBill2Action extends ActionSupport {
     public String add() throws ParseException {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_billing", "w", null)) {
-            throw new SecurityException("missing required security object (_billing)");
+            throw new SecurityException("missing required sec object (_billing)");
         }
 
         BatchBillingDAO batchBillingDAO = (BatchBillingDAO) SpringUtils.getBean(BatchBillingDAO.class);
         Integer demographicNo = Integer.parseInt(request.getParameter("demographic_no").trim());
-        String billingProviderNo = request.getParameter("provider").trim();
+        String billingProviderNo = request.getParameter("providers").trim();
         String creatorProviderNo = request.getParameter("creator").trim();
         String service_code = request.getParameter("xml_other1");
         String dxcode = request.getParameter("xml_diagnostic_detail");

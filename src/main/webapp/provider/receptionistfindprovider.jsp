@@ -23,8 +23,8 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="org.oscarehr.utility.SessionConstants" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.SessionConstants" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -39,16 +39,16 @@
     String month = request.getParameter("pmonth") != null ? request.getParameter("pmonth") : "5";
     String day = request.getParameter("pday") != null ? request.getParameter("pday") : "8";
 %>
-<%@ page import="java.util.*, java.sql.*, oscar.*, java.text.*, java.lang.*,java.net.*"
+<%@ page import="java.util.*, java.sql.*, ca.openosp.*, java.text.*, java.lang.*,java.net.*"
          errorPage="../appointment/errorpage.jsp" %>
 
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.common.dao.MyGroupDao" %>
-<%@page import="org.oscarehr.common.model.MyGroup" %>
-<%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@page import="org.oscarehr.common.model.Provider" %>
-<%@page import="org.oscarehr.common.dao.MyGroupAccessRestrictionDao" %>
-<%@page import="org.oscarehr.common.model.MyGroupAccessRestriction" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.commn.dao.MyGroupDao" %>
+<%@page import="ca.openosp.openo.commn.model.MyGroup" %>
+<%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
+<%@page import="ca.openosp.openo.commn.model.Provider" %>
+<%@page import="ca.openosp.openo.commn.dao.MyGroupAccessRestrictionDao" %>
+<%@page import="ca.openosp.openo.commn.model.MyGroupAccessRestriction" %>
 <%
     MyGroupDao myGroupDao = SpringUtils.getBean(MyGroupDao.class);
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
@@ -93,8 +93,8 @@
 
 %>
 
-<%@page import="org.oscarehr.common.model.ProviderPreference" %>
-<%@page import="org.oscarehr.web.admin.ProviderPreferencesUIBean" %>
+<%@page import="ca.openosp.openo.commn.model.ProviderPreference" %>
+<%@page import="ca.openosp.openo.web.admin.ProviderPreferencesUIBean" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

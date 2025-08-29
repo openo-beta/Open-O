@@ -64,7 +64,7 @@ import ca.openosp.openo.lab.ca.all.parsers.MEDITECHHandler.ORDER_STATUS;
 
 @RunWith(Parameterized.class)
 public class IHAPOIHandlerTest {
-    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static Logger logger = ca.openosp.openo.utility.MiscUtils.getLogger();
     private static IHAPOIHandler handler;
     private static ZipFile zipFile;
     private static Document hl7XML;

@@ -36,13 +36,13 @@ import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.Issue;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager.IssueType;
-import org.oscarehr.common.model.Allergy;
-import org.oscarehr.common.model.Drug;
+import ca.openosp.openo.commn.model.Allergy;
+import ca.openosp.openo.commn.model.Drug;
 import ca.openosp.openo.managers.AllergyManager;
 import ca.openosp.openo.managers.PrescriptionManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import net.sf.json.JSONObject;
 

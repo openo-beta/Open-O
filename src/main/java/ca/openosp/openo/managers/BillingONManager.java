@@ -24,14 +24,14 @@
  */
 package ca.openosp.openo.managers;
 
-import org.oscarehr.common.dao.BillingONCHeader1Dao;
-import org.oscarehr.common.dao.BillingONExtDao;
-import org.oscarehr.common.dao.ClinicDAO;
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.model.BillingONCHeader1;
-import org.oscarehr.common.web.BillingInvoice2Action;
-import org.oscarehr.utility.LocaleUtils;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.dao.BillingONCHeader1Dao;
+import ca.openosp.openo.commn.dao.BillingONExtDao;
+import ca.openosp.openo.commn.dao.ClinicDAO;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.model.BillingONCHeader1;
+import ca.openosp.openo.commn.web.BillingInvoice2Action;
+import ca.openosp.openo.utility.LocaleUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ca.openosp.openo.util.DateUtils;

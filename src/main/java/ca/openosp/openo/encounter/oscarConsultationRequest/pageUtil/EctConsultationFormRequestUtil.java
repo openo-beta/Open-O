@@ -25,18 +25,19 @@
 
 package ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil;
 
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.model.*;
-import org.oscarehr.common.model.DemographicExt.DemographicProperty;
-import org.oscarehr.common.model.enumerator.ConsultationRequestExtKey;
+import ca.openosp.openo.commn.IsPropertiesOn;
+import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.commn.model.*;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.model.DemographicExt.DemographicProperty;
+import ca.openosp.openo.commn.model.enumerator.ConsultationRequestExtKey;
 import ca.openosp.openo.fax.core.FaxRecipient;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.DemographicContactCreator;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.DemographicContactCreator;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.util.ConversionUtils;
 import ca.openosp.openo.util.StringUtils;
 
@@ -110,7 +111,7 @@ public class EctConsultationFormRequestUtil {
 	private final FaxJobDao faxJobDao = SpringUtils.getBean(FaxJobDao.class);
     private final FaxClientLogDao faxClientLogDao = SpringUtils.getBean(FaxClientLogDao.class);
 
-    private final boolean bMultisites = org.oscarehr.common.IsPropertiesOn.isMultisitesEnable();
+    private final boolean bMultisites = IsPropertiesOn.isMultisitesEnable();
 
     private FaxRecipient specialistFaxLog;
     private Set<FaxRecipient> copyToFaxLog;

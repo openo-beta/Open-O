@@ -15,10 +15,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.billing.CA.ON.util.EDTFolder;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import org.oscarehr.utility.WebUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.openo.utility.WebUtils;
 
 
 public class MoveMOHFiles2Action extends ActionSupport {
@@ -30,7 +30,7 @@ public class MoveMOHFiles2Action extends ActionSupport {
 
     public String execute() throws Exception {
         if(!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin", "w", null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         StringBuilder messages = new StringBuilder();

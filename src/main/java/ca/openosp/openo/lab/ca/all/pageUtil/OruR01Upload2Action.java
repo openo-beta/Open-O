@@ -31,20 +31,20 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.common.dao.ClinicDAO;
-import org.oscarehr.common.dao.ProfessionalSpecialistDao;
-import org.oscarehr.common.hl7.v2.oscar_to_oscar.OruR01;
-import org.oscarehr.common.hl7.v2.oscar_to_oscar.OruR01.ObservationData;
-import org.oscarehr.common.hl7.v2.oscar_to_oscar.SendingUtils;
-import org.oscarehr.common.model.Clinic;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.ProfessionalSpecialist;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.commn.dao.ClinicDAO;
+import ca.openosp.openo.commn.dao.ProfessionalSpecialistDao;
+import ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.OruR01;
+import ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.OruR01.ObservationData;
+import ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.SendingUtils;
+import ca.openosp.openo.commn.model.Clinic;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import org.oscarehr.utility.WebUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.openo.utility.WebUtils;
 import ca.openosp.openo.util.DateUtils;
 
 import javax.servlet.ServletException;
@@ -65,7 +65,7 @@ public class OruR01Upload2Action extends ActionSupport {
     @Override
     public String execute() throws IOException {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_lab", "w", null)) {
-            throw new SecurityException("missing required security object (_lab)");
+            throw new SecurityException("missing required sec object (_lab)");
         }
 
         try {

@@ -27,7 +27,7 @@
 <%@ page import="ca.openosp.openo.billings.ca.on.administration.GstControl2Action" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.data.JdbcBillingCodeImpl" %>
 <%@ page import="java.math.BigDecimal" %>
-<%@ page import="org.oscarehr.common.model.BillingService" %>
+<%@ page import="ca.openosp.openo.commn.model.BillingService" %>
 <%@ page import="org.apache.commons.lang3.StringUtils" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%

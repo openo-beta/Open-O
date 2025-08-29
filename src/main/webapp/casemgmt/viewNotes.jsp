@@ -31,18 +31,19 @@
 <%@include file="/casemgmt/taglibs.jsp"%>
 <%@page
 	import="java.util.List, java.util.Set, java.util.Iterator, ca.openosp.openo.casemgmt.model.CaseManagementIssue, ca.openosp.openo.casemgmt.model.CaseManagementNoteExt, ca.openosp.openo.casemgmt.model.CaseManagementNote"%>
-<%@page import="org.oscarehr.common.model.Provider"%>
-<%@page import="org.oscarehr.provider.web.CppPreferencesUIBean"%>
-<%@page import="org.oscarehr.utility.LoggedInInfo"%>
+<%@page import="ca.openosp.openo.commn.model.Provider"%>
+<%@page import="ca.openosp.openo.provider.web.CppPreferencesUIBean"%>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo"%>
 <%@page import="ca.openosp.openo.casemgmt.web.CaseManagementViewAction"%>
-<%@page import="org.oscarehr.common.dao.UserPropertyDAO"%>
-<%@page import="org.oscarehr.common.model.UserProperty"%>
-<%@page import="org.oscarehr.common.model.PartialDate"%>
-<%@page import="org.oscarehr.utility.SpringUtils"%>
-<%@page import="org.oscarehr.utility.LoggedInInfo"%>
+<%@page import="ca.openosp.openo.commn.dao.UserPropertyDAO"%>
+<%@page import="ca.openosp.openo.commn.model.UserProperty"%>
+<%@page import="ca.openosp.openo.commn.model.PartialDate"%>
+<%@page import="ca.openosp.openo.utility.SpringUtils"%>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo"%>
 <%@page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.services.security.SecurityManager" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="ca.openosp.OscarProperties" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -125,7 +126,7 @@
 
             String htmlNoteTxt = note.getNote() + addlData;
 
-            boolean singleLine = Boolean.valueOf(oscar.OscarProperties.getInstance().getProperty("echart.cpp.single_line", "false"));
+            boolean singleLine = Boolean.valueOf(OscarProperties.getInstance().getProperty("echart.cpp.single_line", "false"));
             UserPropertyDAO userPropertyDao = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
             UserProperty prop = userPropertyDao.getProp(loggedInInfo.getLoggedInProviderNo(), UserProperty.CPP_SINGLE_LINE);
             if (prop != null) {

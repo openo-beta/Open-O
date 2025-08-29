@@ -27,10 +27,10 @@ package ca.openosp.openo.encounter.oscarMeasurements.util;
 
 //used by eforms for writing measurements
 
-import org.oscarehr.common.dao.MeasurementDao;
-import org.oscarehr.common.dao.MeasurementTypeDao;
-import org.oscarehr.common.model.Measurement;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.MeasurementDao;
+import ca.openosp.openo.commn.dao.MeasurementTypeDao;
+import ca.openosp.openo.commn.model.Measurement;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.util.ConversionUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 

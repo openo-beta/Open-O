@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import ca.openosp.openo.caisi_integrator.ws.CachedDemographicNote;
 import ca.openosp.openo.caisi_integrator.ws.CachedFacility;
 import ca.openosp.openo.caisi_integrator.ws.CachedProgram;
@@ -39,11 +39,11 @@ import ca.openosp.openo.caisi_integrator.ws.NoteIssue;
 import ca.openosp.openo.casemgmt.dao.IssueDAO;
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
 import ca.openosp.openo.casemgmt.model.Issue;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import ca.openosp.openo.rx.data.RxPrescriptionData;
+import ca.openosp.openo.prescript.data.RxPrescriptionData;
 
 public class NoteDisplayIntegrator implements NoteDisplay {
     private static final Logger logger = MiscUtils.getLogger();
@@ -77,7 +77,7 @@ public class NoteDisplayIntegrator implements NoteDisplay {
             CachedProgram remoteProgram = CaisiIntegratorManager.getRemoteProgram(loggedInInfo, loggedInInfo.getCurrentFacility(), programPk);
             if (remoteProgram != null) programName = remoteProgram.getName();
 
-            // provider name
+            // providers name
             FacilityIdStringCompositePk providerPk = new FacilityIdStringCompositePk();
             providerPk.setIntegratorFacilityId(cachedDemographicNote.getCachedDemographicNoteCompositePk().getIntegratorFacilityId());
             providerPk.setCaisiItemId(cachedDemographicNote.getObservationCaisiProviderId());

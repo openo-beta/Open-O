@@ -28,11 +28,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
 
-import org.oscarehr.common.service.AcceptableUseAgreementManager;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.service.AcceptableUseAgreementManager;
+import ca.openosp.openo.utility.MiscUtils;
 
-import org.oscarehr.utility.SSOUtility;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.SSOUtility;
+import ca.openosp.OscarProperties;
 
 public class LoginResourceBean {
 

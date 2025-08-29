@@ -31,7 +31,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.util.WriteNewMeasurements;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -58,7 +58,7 @@ public class FollowupManagement {
      * @param followUpType    --  procedure type eg PAPF,FLUF,MAMF,FOBF,CIMF
      * @param followUpValue   --  proedure value eg L1,L2,P1 letter 1, letter 2, phone call 1
      * @param demographicList --  list of demographic numbers as strings
-     * @param providerNo      --  provider # generating the list
+     * @param providerNo      --  providers # generating the list
      * @param dateObserved    --  date list is generated
      * @param comment         -- comment
      */
@@ -76,7 +76,7 @@ public class FollowupManagement {
      * @param followUpType    --  procedure type eg PAPF,FLUF,MAMF,FOBF,CIMF
      * @param followUpValue   --  proedure value eg L1,L2,P1 letter 1, letter 2, phone call 1
      * @param demographicList --  list of demographic numbers as strings
-     * @param providerNo      --  provider # generating the list
+     * @param providerNo      --  providers # generating the list
      * @param dateObserved    --  date list is generated
      * @param comment         -- comment
      */

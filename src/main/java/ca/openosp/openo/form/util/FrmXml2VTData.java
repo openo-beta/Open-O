@@ -33,6 +33,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Properties;
 
+import ca.openosp.openo.utility.MiscUtils;
 import noNamespace.SitePatientVisitRecordsDocument;
 import noNamespace.SitePatientVisitRecordsDocument.SitePatientVisitRecords;
 
@@ -45,7 +46,7 @@ import ca.openosp.openo.form.data.FrmVTData;
  * @author yilee18
  */
 public class FrmXml2VTData {
-    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static final Logger _logger = MiscUtils.getLogger();
 
     static String[] elementAttrName = new String[]{"value", "signed_when", "signed_who", "signed_how"};
 

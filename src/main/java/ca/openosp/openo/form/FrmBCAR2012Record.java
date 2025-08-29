@@ -30,10 +30,10 @@ import java.util.Date;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.SxmlMisc;
+import ca.openosp.SxmlMisc;
 
 
 public class FrmBCAR2012Record extends FrmRecord {

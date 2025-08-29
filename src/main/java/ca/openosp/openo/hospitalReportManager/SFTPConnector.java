@@ -28,18 +28,18 @@ import javax.crypto.spec.SecretKeySpec;
 
 import ca.openosp.openo.messenger.data.MsgMessageData;
 import org.apache.commons.io.FileUtils;
-import org.oscarehr.PMmodule.dao.SecUserRoleDao;
-import org.oscarehr.PMmodule.model.SecUserRole;
-import org.oscarehr.common.dao.HrmLogDao;
-import org.oscarehr.common.dao.HrmLogEntryDao;
-import org.oscarehr.common.dao.SecObjPrivilegeDao;
-import org.oscarehr.common.model.HrmLog;
-import org.oscarehr.common.model.HrmLogEntry;
-import org.oscarehr.common.model.OscarMsgType;
-import org.oscarehr.common.model.SecObjPrivilege;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.dao.SecUserRoleDao;
+import ca.openosp.openo.PMmodule.model.SecUserRole;
+import ca.openosp.openo.commn.dao.HrmLogDao;
+import ca.openosp.openo.commn.dao.HrmLogEntryDao;
+import ca.openosp.openo.commn.dao.SecObjPrivilegeDao;
+import ca.openosp.openo.commn.model.HrmLog;
+import ca.openosp.openo.commn.model.HrmLogEntry;
+import ca.openosp.openo.commn.model.OscarMsgType;
+import ca.openosp.openo.commn.model.SecObjPrivilege;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
@@ -49,7 +49,7 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.messenger.data.MsgProviderData;
 
 /**

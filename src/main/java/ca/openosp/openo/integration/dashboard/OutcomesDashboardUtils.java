@@ -42,9 +42,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.ClinicDAO;
-import org.oscarehr.common.model.IndicatorTemplate;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.commn.dao.ClinicDAO;
+import ca.openosp.openo.commn.model.IndicatorTemplate;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.dashboard.display.beans.IndicatorBean;
 import ca.openosp.openo.dashboard.handler.IndicatorTemplateHandler;
 import ca.openosp.openo.integration.dashboard.model.Clinic;
@@ -53,15 +53,15 @@ import ca.openosp.openo.integration.dashboard.model.MetricOwner;
 import ca.openosp.openo.integration.dashboard.model.MetricSet;
 import ca.openosp.openo.integration.dashboard.model.Name;
 import ca.openosp.openo.managers.DashboardManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 public class OutcomesDashboardUtils {
 
@@ -105,7 +105,7 @@ public class OutcomesDashboardUtils {
         IndicatorBean indicatorBean = dashboardManager.getIndicatorPanelForProvider(x, provider.getProviderNo(), indicatorTemplate.getId());
 
         //map results into Metric Set
-        org.oscarehr.common.model.Clinic oClinic = clinicDao.getClinic();
+        ca.openosp.openo.commn.model.Clinic oClinic = clinicDao.getClinic();
         Clinic clinic = new Clinic();
         clinic.setApplication("oscar");
 

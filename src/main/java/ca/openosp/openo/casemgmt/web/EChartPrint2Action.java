@@ -37,13 +37,13 @@ import ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO;
 import ca.openosp.openo.casemgmt.model.CaseManagementIssue;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.print.OscarChartPrinter;
-import org.oscarehr.common.dao.AllergyDao;
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.model.Allergy;
-import org.oscarehr.common.model.Demographic;
+import ca.openosp.openo.commn.dao.AllergyDao;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.model.Allergy;
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.log.LogAction;
 
@@ -73,7 +73,7 @@ public class EChartPrint2Action extends ActionSupport {
         DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "r", demographicNo)) {
-            throw new SecurityException("missing required security object (_demographic)");
+            throw new SecurityException("missing required sec object (_demographic)");
         }
 
 

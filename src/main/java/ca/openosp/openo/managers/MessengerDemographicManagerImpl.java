@@ -35,17 +35,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import ca.openosp.openo.caisi_integrator.ws.DemographicTransfer;
 import ca.openosp.openo.caisi_integrator.ws.DemographicWs;
-import org.oscarehr.common.dao.MsgDemoMapDao;
-import org.oscarehr.common.dao.MsgIntegratorDemoMapDao;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.MsgDemoMap;
-import org.oscarehr.common.model.MsgIntegratorDemoMap;
-import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.dao.MsgDemoMapDao;
+import ca.openosp.openo.commn.dao.MsgIntegratorDemoMapDao;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.MsgDemoMap;
+import ca.openosp.openo.commn.model.MsgIntegratorDemoMap;
+import ca.openosp.openo.commn.model.UserProperty;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,7 +71,7 @@ public class MessengerDemographicManagerImpl implements MessengerDemographicMana
      */
     public List<Demographic> getAttachedDemographics(LoggedInInfo loggedInInfo, int messageId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         List<MsgDemoMap> msgDemoMap = getAttachedDemographicList(loggedInInfo, messageId);
@@ -87,7 +87,7 @@ public class MessengerDemographicManagerImpl implements MessengerDemographicMana
 
     private Demographic getAttachedDemographic(LoggedInInfo loggedInInfo, int demographicNo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_demographic", SecurityInfoManager.READ, demographicNo)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
         return demographicManager.getDemographic(loggedInInfo, demographicNo);
     }
@@ -101,7 +101,7 @@ public class MessengerDemographicManagerImpl implements MessengerDemographicMana
      */
     public List<MsgDemoMap> getAttachedDemographicList(LoggedInInfo loggedInInfo, int messageId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
         return msgDemoMapDao.findByMessageId(messageId);
     }
@@ -117,7 +117,7 @@ public class MessengerDemographicManagerImpl implements MessengerDemographicMana
      */
     public List<MsgIntegratorDemoMap> getUnlinkedIntegratedDemographicList(LoggedInInfo loggedInInfo, int messageId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         return msgIntegratorDemoMapDao.findByMessageIdandMsgDemoMapId(messageId, 0L);
@@ -125,7 +125,7 @@ public class MessengerDemographicManagerImpl implements MessengerDemographicMana
 
     public List<DemographicTransfer> getUnlinkedIntegratedDemographics(LoggedInInfo loggedInInfo, int messageId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         List<MsgIntegratorDemoMap> unlinkedList = getUnlinkedIntegratedDemographicList(loggedInInfo, messageId);
@@ -141,7 +141,7 @@ public class MessengerDemographicManagerImpl implements MessengerDemographicMana
 
     public DemographicTransfer getIntegratedDemographic(LoggedInInfo loggedInInfo, int demographicNo, int facilityId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         DemographicTransfer demographicTransfer = null;
@@ -221,7 +221,7 @@ public class MessengerDemographicManagerImpl implements MessengerDemographicMana
      */
     public Integer attachIntegratedDemographicToMessage(LoggedInInfo loggedInInfo, int messageId, int demographicNo, int sourceFacilityId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.WRITE, null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
         int msgDemoMapId = 0;
 
@@ -248,7 +248,7 @@ public class MessengerDemographicManagerImpl implements MessengerDemographicMana
      */
     public List<Integer> getLinkedDemographicIdsFromSourceFacility(LoggedInInfo loggedInInfo, final int demographicNo, int sourceFacilityId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         return demographicManager.getLinkedDemographicIds(loggedInInfo, demographicNo, sourceFacilityId);
@@ -266,7 +266,7 @@ public class MessengerDemographicManagerImpl implements MessengerDemographicMana
      */
     public long updateAttachedIntegratedDemographic(LoggedInInfo loggedInInfo, int messageId, int demographicNo, int facilityId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.WRITE, null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         // first check the list to avoid duplicates.
@@ -324,7 +324,7 @@ public class MessengerDemographicManagerImpl implements MessengerDemographicMana
      */
     public Long attachDemographicToMessage(LoggedInInfo loggedInInfo, int messageId, int demographicNo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.WRITE, demographicNo)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         MsgDemoMap msgDemoMap = new MsgDemoMap();
@@ -335,7 +335,7 @@ public class MessengerDemographicManagerImpl implements MessengerDemographicMana
     }
 
     /**
-     * This method is hard-coded to the most common Integrator patient consent types.
+     * This method is hard-coded to the most commons Integrator patient consent types.
      * UserProperty.INTEGRATOR_PATIENT_CONSENT
      * UserProperty.INTEGRATOR_DEMOGRAPHIC_CONSENT
      *
@@ -345,7 +345,7 @@ public class MessengerDemographicManagerImpl implements MessengerDemographicMana
      */
     public boolean isPatientConsentedForIntegrator(LoggedInInfo loggedInInfo, int demographicNo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, demographicNo)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
         /*
          * it is acceptable to remove the hard-coded consent types in the futre
@@ -365,7 +365,7 @@ public class MessengerDemographicManagerImpl implements MessengerDemographicMana
      */
     public List<MsgDemoMap> getMessageMapByDemographicNo(LoggedInInfo loggedInInfo, int demographicNo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, demographicNo)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         return msgDemoMapDao.findByDemographicNo(demographicNo);
@@ -379,7 +379,7 @@ public class MessengerDemographicManagerImpl implements MessengerDemographicMana
      */
     public List<Demographic> importDemographic(LoggedInInfo loggedInInfo, int remoteFacilityId, int remoteDemographicNo, int messageId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.WRITE, null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         Demographic remoteDemographic = demographicManager.getRemoteDemographic(loggedInInfo, remoteFacilityId, remoteDemographicNo);
@@ -410,7 +410,7 @@ public class MessengerDemographicManagerImpl implements MessengerDemographicMana
 
     public boolean linkDemographicWithRemote(LoggedInInfo loggedInInfo, int demographicNo, int remoteFacilityId, int remoteDemographicNo, int messageId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.WRITE, null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
         boolean success = demographicManager.linkDemographicToRemoteDemographic(loggedInInfo, demographicNo, remoteFacilityId, remoteDemographicNo);
         if (success) {

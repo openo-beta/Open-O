@@ -29,11 +29,11 @@ package ca.openosp.openo.billings.ca.bc.data;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.common.dao.BillingServiceDao;
-import org.oscarehr.common.model.BillingService;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.BillingServiceDao;
+import ca.openosp.openo.commn.model.BillingService;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.Misc;
+import ca.openosp.Misc;
 import ca.openosp.openo.util.SqlUtils;
 
 /**

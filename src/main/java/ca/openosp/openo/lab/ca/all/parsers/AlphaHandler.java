@@ -26,6 +26,7 @@ package ca.openosp.openo.lab.ca.all.parsers;
 
 import java.util.ArrayList;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
 
 import ca.uhn.hl7v2.HL7Exception;
@@ -40,7 +41,7 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
 
 public class AlphaHandler extends DefaultGenericHandler implements MessageHandler {
 
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
     ca.uhn.hl7v2.model.v22.message.ORU_R01 msg22 = null;
     ca.uhn.hl7v2.model.v23.message.ORU_R01 msg23 = null;
     String version = null;

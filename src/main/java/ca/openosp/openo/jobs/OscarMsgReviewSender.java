@@ -35,20 +35,20 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.ProviderDataDao;
-import org.oscarehr.common.dao.ResidentOscarMsgDao;
-import org.oscarehr.common.dao.UserPropertyDAO;
-import org.oscarehr.common.jobs.OscarRunnable;
-import org.oscarehr.common.model.OscarMsgType;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.ProviderData;
-import org.oscarehr.common.model.ResidentOscarMsg;
-import org.oscarehr.common.model.Security;
-import org.oscarehr.common.model.UserProperty;
+import ca.openosp.openo.commn.dao.ProviderDataDao;
+import ca.openosp.openo.commn.dao.ResidentOscarMsgDao;
+import ca.openosp.openo.commn.dao.UserPropertyDAO;
+import ca.openosp.openo.commn.jobs.OscarRunnable;
+import ca.openosp.openo.commn.model.OscarMsgType;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.ProviderData;
+import ca.openosp.openo.commn.model.ResidentOscarMsg;
+import ca.openosp.openo.commn.model.Security;
+import ca.openosp.openo.commn.model.UserProperty;
 import ca.openosp.openo.managers.MessagingManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.messenger.data.MessengerSystemMessage;
 

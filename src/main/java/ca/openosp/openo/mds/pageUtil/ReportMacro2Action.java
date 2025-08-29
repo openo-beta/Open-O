@@ -32,16 +32,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.TicklerDao;
-import org.oscarehr.common.dao.TicklerLinkDao;
-import org.oscarehr.common.dao.UserPropertyDAO;
-import org.oscarehr.common.model.Tickler;
-import org.oscarehr.common.model.TicklerLink;
-import org.oscarehr.common.model.UserProperty;
+import ca.openosp.openo.commn.dao.TicklerDao;
+import ca.openosp.openo.commn.dao.TicklerLinkDao;
+import ca.openosp.openo.commn.dao.UserPropertyDAO;
+import ca.openosp.openo.commn.model.Tickler;
+import ca.openosp.openo.commn.model.TicklerLink;
+import ca.openosp.openo.commn.model.UserProperty;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -67,7 +67,7 @@ public class ReportMacro2Action extends ActionSupport {
         JSONObject result = new JSONObject();
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_lab", "w", null)) {
-            throw new SecurityException("missing required security object (_lab)");
+            throw new SecurityException("missing required sec object (_lab)");
         }
 
         String name = request.getParameter("name");
@@ -99,7 +99,7 @@ public class ReportMacro2Action extends ActionSupport {
             }
         } else {
             result.put("success", false);
-            result.put("error", "No macros defined in provider preferences");
+            result.put("error", "No macros defined in providers preferences");
             result.write(response.getWriter());
             return null;
         }
@@ -141,7 +141,7 @@ public class ReportMacro2Action extends ActionSupport {
                 tl.setTicklerNo(t.getId());
                 ticklerLinkDao.persist(tl);
             } else {
-                logger.info("Cannot sent tickler. Not enough information in macro definition. provider taskAssignedTo and message");
+                logger.info("Cannot sent tickler. Not enough information in macro definition. providers taskAssignedTo and message");
             }
 
         }

@@ -16,9 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -30,7 +30,7 @@ public class AddDocumentType2Action extends ActionSupport {
     @Override
     public String execute() {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin,_admin.document", "r", null)) {
-            throw new SecurityException("missing required security object (_admin,_admin.document)");
+            throw new SecurityException("missing required sec object (_admin,_admin.document)");
         }
         HashMap<String, String> errors = new HashMap<>();
         boolean doctypeadded = false;

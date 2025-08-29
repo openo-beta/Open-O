@@ -25,13 +25,13 @@
 --%>
 <%@page import="org.apache.commons.lang.StringUtils" %>
 <%@page import="ca.openosp.openo.encounter.pageUtil.EctDisplayLabAction2" %>
-<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@page import="java.net.URLEncoder" %>
 <%@page import="ca.openosp.openo.lab.ca.all.web.LabDisplayHelper" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="java.util.*" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
-<%@ page import="oscar.oscarMDS.data.*,oscar.oscarLab.ca.on.*" %>
+<%@ page import="ca.openosp.openo.mds.data.*,ca.openosp.openo.lab.ca.on.*" %>
 <%@ page import="ca.openosp.openo.util.DateUtils" %>
 <%@ page import="ca.openosp.openo.lab.ca.all.Hl7textResultsData" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
@@ -55,13 +55,13 @@
 <%
 
 
-    //oscar.oscarMDS.data.MDSResultsData mDSData = new oscar.oscarMDS.data.MDSResultsData();
+    //ca.openosp.openo.mds.data.MDSResultsData mDSData = new ca.openosp.openo.mds.data.MDSResultsData();
     CommonLabResultData comLab = new CommonLabResultData();
     //String providerNo = request.getParameter("providerNo");
     String providerNo = (String) session.getAttribute("user");
     String searchProviderNo = request.getParameter("searchProviderNo");
     String ackStatus = request.getParameter("status");
-    String demographicNo = request.getParameter("demographicNo"); // used when searching for labs by patient instead of provider
+    String demographicNo = request.getParameter("demographicNo"); // used when searching for labs by patient instead of providers
 
     if (ackStatus == null) {
         ackStatus = "N";
@@ -235,7 +235,7 @@
                             <% if (demographicNo != null) { %>
                             <input type="button" class="smallButton"
                                    value="Search OLIS"
-                                   onClick="popupStart('1000','1200','<%=request.getContextPath() %>/olis/Search.jsp?demographicNo=<%=demographicNo %>','OLIS_SEARCH')">
+                                   onClick="popupStart('1000','1200','<%=request.getContextPath() %>/olis1/Search.jsp?demographicNo=<%=demographicNo %>','OLIS_SEARCH')">
                             <% } %>
 
                             <% if (demographicNo == null && request.getParameter("fname") != null) { %>

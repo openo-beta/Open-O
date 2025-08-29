@@ -24,22 +24,22 @@
 
 --%>
 <!DOCTYPE html>
-<%@ page import="org.oscarehr.common.dao.ProviderSiteDao" %>
-<%@ page import="org.oscarehr.utility.SessionConstants" %>
-<%@ page import="org.oscarehr.common.model.ProviderPreference" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
-<%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
-<%@ page import="org.oscarehr.common.model.UserProperty" %>
-<%@ page import="org.oscarehr.common.dao.ScheduleHolidayDao" %>
-<%@ page import="org.oscarehr.common.model.ScheduleHoliday" %>
-<%@ page import="org.oscarehr.common.dao.MyGroupDao" %>
-<%@ page import="org.oscarehr.common.model.MyGroup" %>
-<%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@ page import="org.oscarehr.common.model.Provider" %>
+<%@ page import="ca.openosp.openo.commn.dao.ProviderSiteDao" %>
+<%@ page import="ca.openosp.openo.utility.SessionConstants" %>
+<%@ page import="ca.openosp.openo.commn.model.ProviderPreference" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
+<%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
+<%@ page import="ca.openosp.openo.commn.dao.ScheduleHolidayDao" %>
+<%@ page import="ca.openosp.openo.commn.model.ScheduleHoliday" %>
+<%@ page import="ca.openosp.openo.commn.dao.MyGroupDao" %>
+<%@ page import="ca.openosp.openo.commn.model.MyGroup" %>
+<%@ page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
+<%@ page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
-<%@ page import="org.oscarehr.common.dao.ScheduleDateDao" %>
-<%@ page import="org.oscarehr.common.model.ScheduleDate" %>
-<%@ page import="org.oscarehr.common.dao.ProviderSiteDao" %>
+<%@ page import="ca.openosp.openo.commn.dao.ScheduleDateDao" %>
+<%@ page import="ca.openosp.openo.commn.model.ScheduleDate" %>
+<%@ page import="ca.openosp.openo.commn.dao.ProviderSiteDao" %>
 
 <%
     UserPropertyDAO userPropertyDao = SpringUtils.getBean(UserPropertyDAO.class);
@@ -53,7 +53,7 @@
 <%!
     //multisite starts =====================
     private List<Site> sites;
-    private boolean bMultisites = org.oscarehr.common.IsPropertiesOn.isMultisitesEnable();
+    private boolean bMultisites = ca.openosp.openo.commn.IsPropertiesOn.isMultisitesEnable();
 
     private List<Site> curUserSites = new ArrayList<Site>();
     private String[] curScheduleMultisite;
@@ -105,7 +105,7 @@
     int view = 0;
 
     /*
-     * Get all the forms, eforms, and quicklinks that the logged in provider
+     * Get all the forms, eforms, and quicklinks that the logged in providers
      * needs to see in all the appointment entries
      */
 
@@ -172,7 +172,7 @@
         selectedSite = (requestSite == null ? (String) session.getAttribute("site_selected") : requestSite);
 
         if (isSiteAccessPrivacy || isTeamAccessPrivacy) {
-            //user has Access Privacy, set user provider and group list
+            //user has Access Privacy, set user providers and group list
             String siteManagerProviderNo = (String) session.getAttribute("user");
             curUserSites = siteDao.getActiveSitesByProviderNo(siteManagerProviderNo);
             if (selectedSite == null) {
@@ -188,11 +188,11 @@
             CurrentSiteMap.put(s.getName(), "Y");
         }
 
-        CurrentSiteMap.put("NONE", "Y"); // added by vic for the reason that some provider could work in multiple clinics in same day, when the schedule template will set the default location to NONE.
+        CurrentSiteMap.put("NONE", "Y"); // added by vic for the reason that some providers could work in multiple clinics in same day, when the schedule template will set the default location to NONE.
 
         // a site has been seleceted
         if (selectedSite != null) {
-            //get site provider list
+            //get site providers list
             siteProviderNos = siteDao.getProviderNoBySiteLocation(selectedSite);
             siteGroups = siteDao.getGroupBySiteLocation(selectedSite);
         }
@@ -207,14 +207,14 @@
 //multisite ends =======================
 %>
 
-<%@ page import="java.lang.*, java.util.*,java.net.*,oscar.*" %>
+<%@ page import="java.lang.*, java.util.*,java.net.*,ca.openosp.*" %>
 <%
     java.util.Properties oscarVariables = OscarProperties.getInstance();
 %>
 
 <jsp:useBean id="scheduleHolidayBean" class="java.util.Hashtable"
              scope="session"/>
-<jsp:useBean id="providerNameBean" class="oscar.Dict" scope="page"/>
+<jsp:useBean id="providerNameBean" class="ca.openosp.Dict" scope="page"/>
 <jsp:useBean id="myGrpBean" class="java.util.Properties" scope="page"/>
 
 
@@ -301,8 +301,8 @@
 
     }
 %>
-<%@page import="org.oscarehr.common.dao.SiteDao" %>
-<%@page import="org.oscarehr.common.model.Site" %>
+<%@page import="ca.openosp.openo.commn.dao.SiteDao" %>
+<%@page import="ca.openosp.openo.commn.model.Site" %>
 <%@page import="ca.openosp.openo.appt.ApptUtil" %>
 
     <body bgcolor="#EEEEFF" onLoad="refreshAllTabAlerts();">
@@ -392,7 +392,7 @@
                 if (u.lastIndexOf("&providerview=") > 0) {
                     self.location.href = u.substring(0, u.lastIndexOf("&providerview="));
                 }
-                if (u.lastIndexOf("&mygroup_no=") > 0) { // group switch should be treated same as provider switch
+                if (u.lastIndexOf("&mygroup_no=") > 0) { // group switch should be treated same as providers switch
                     self.location.href = u.substring(0, u.lastIndexOf("&mygroup_no="));
                 } else {
                     history.go(0);
@@ -413,7 +413,7 @@
             }
 
             function refreshTabAlerts(id) {
-                var url = "../provider/tabAlertsRefresh.jsp";
+                var url = "../providers/tabAlertsRefresh.jsp";
                 var pars = "id=" + id;
 
                 var myAjax = new Ajax.Updater(id, url, {method: 'get', parameters: pars});
@@ -953,10 +953,10 @@
                         popupOscarRx(600, 1024, '../billing/CA/<%=prov%>/billingReportCenter.jsp?displaymode=billreport&providerview=<%=curUser_no%>');
                         return false;  //code for 'B'illing
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.calendarShortcut"/> :
-                        popupOscarRx(425, 430, '../share/CalendarPopup.jsp?urlfrom=../provider/providercontrol.jsp&year=<%=strYear%>&month=<%=strMonth%>&param=<%=URLEncoder.encode("&view=0&displaymode=day&dboperation=searchappointmentday","UTF-8")%>');
+                        popupOscarRx(425, 430, '../share/CalendarPopup.jsp?urlfrom=../providers/providercontrol.jsp&year=<%=strYear%>&month=<%=strMonth%>&param=<%=URLEncoder.encode("&view=0&displaymode=day&dboperation=searchappointmentday","UTF-8")%>');
                         return false;  //run code for 'C'alendar
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.edocShortcut"/> :
-                        popupOscarRx('700', '1024', '../documentManager/documentReport.jsp?function=provider&functionid=<%=curUser_no%>&curUser=<%=curUser_no%>', 'edocView');
+                        popupOscarRx('700', '1024', '../documentManager/documentReport.jsp?function=providers&functionid=<%=curUser_no%>&curUser=<%=curUser_no%>', 'edocView');
                         return false;  //run code for e'D'oc
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.resourcesShortcut"/> :
                         popupOscarRx(550, 687, '<%=resourcebaseurl%>');

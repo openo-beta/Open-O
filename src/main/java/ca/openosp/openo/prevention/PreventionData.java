@@ -29,26 +29,26 @@ import java.util.*;
 
 import javax.annotation.Nonnull;
 
+import ca.openosp.openo.commn.model.*;
+import ca.openosp.openo.commn.model.Prevention;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
-import org.oscarehr.PMmodule.caisi_integrator.RemotePreventionHelper;
+import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.IntegratorFallBackManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.RemotePreventionHelper;
 import ca.openosp.openo.caisi_integrator.ws.CachedDemographicPrevention;
 import ca.openosp.openo.caisi_integrator.ws.CachedFacility;
-import org.oscarehr.common.dao.PartialDateDao;
-import org.oscarehr.common.dao.PreventionDao;
-import org.oscarehr.common.dao.PreventionExtDao;
-import org.oscarehr.common.model.Prevention;
-import org.oscarehr.common.model.*;
+import ca.openosp.openo.commn.dao.PartialDateDao;
+import ca.openosp.openo.commn.dao.PreventionDao;
+import ca.openosp.openo.commn.dao.PreventionExtDao;
 import ca.openosp.openo.managers.DHIRSubmissionManager;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import ca.openosp.openo.provider.data.ProviderData;
+import ca.openosp.openo.providers.data.ProviderData;
 import ca.openosp.openo.util.DateUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 

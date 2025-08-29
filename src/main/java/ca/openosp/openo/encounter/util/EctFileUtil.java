@@ -32,7 +32,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 public class EctFileUtil {
     private static Logger logger = MiscUtils.getLogger();
@@ -61,7 +61,7 @@ public class EctFileUtil {
     }
 
     //project home is ignored because it now uses the getResourceAsStream method.
-    //Before it used the get absolutePath method. Which would change depending on the name of the web app.
+    //Before it used the get absolutePath method. Which would change depending on the name of the www app.
     public String[] loadData(String fileName, String projecthome, String path) {
         return loadData(fileName, "/oscar/" + path);
     }

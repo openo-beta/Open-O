@@ -27,11 +27,11 @@
 package ca.openosp.openo.encounter.pageUtil;
 
 
-import org.oscarehr.common.model.Tickler;
+import ca.openosp.openo.commn.model.Tickler;
 import ca.openosp.openo.managers.TicklerManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.util.DateUtils;
 import ca.openosp.openo.util.StringUtils;
 

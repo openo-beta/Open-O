@@ -29,12 +29,12 @@
 package ca.openosp.openo.managers;
 
 import ca.openosp.openo.caisi_integrator.ws.DemographicTransfer;
-import org.oscarehr.common.Gender;
-import org.oscarehr.common.exception.PatientDirectiveException;
-import org.oscarehr.common.model.*;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.ws.rest.to.model.DemographicSearchRequest;
-import org.oscarehr.ws.rest.to.model.DemographicSearchResult;
+import ca.openosp.openo.commn.Gender;
+import ca.openosp.openo.commn.exception.PatientDirectiveException;
+import ca.openosp.openo.commn.model.*;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.webserv.rest.to.model.DemographicSearchRequest;
+import ca.openosp.openo.webserv.rest.to.model.DemographicSearchResult;
 
 import java.util.*;
 
@@ -42,7 +42,7 @@ import java.util.*;
  * Will provide access to demographic data, as well as closely related data such as
  * extensions (DemographicExt), merge data, archive data, etc.
  * <p>
- * Future Use: Add privacy, security, and consent profiles
+ * Future Use: Add privacy, sec, and consent profiles
  */
 
 public interface DemographicManager {

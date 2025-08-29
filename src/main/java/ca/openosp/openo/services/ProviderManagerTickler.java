@@ -25,8 +25,8 @@ package ca.openosp.openo.services;
 
 import java.util.List;
 
-import ca.openosp.openo.dao.ProviderDAO;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.daos.ProviderDAO;
+import ca.openosp.openo.commn.model.Provider;
 
 /**
  * It doesn't look like anyone implements this, but meh, some one references it so it'll stay for now.
@@ -43,10 +43,10 @@ public interface ProviderManagerTickler {
     public List getProviders();
 
     /**
-     * Find a specific provider
+     * Find a specific providers
      *
      * @param provider_no
-     * @return The provider
+     * @return The providers
      */
     public Provider getProvider(String provider_no);
 

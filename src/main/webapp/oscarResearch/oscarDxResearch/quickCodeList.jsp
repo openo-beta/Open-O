@@ -45,8 +45,8 @@
 %>
 
 <%@ page
-        import="java.math.*, java.util.*, java.sql.*, java.net.*, oscar.oscarResearch.oscarDxResearch.bean.*" %>
-<%@ page import="ca.openosp.openo.oscarDxResearch.bean.*" %>
+        import="java.math.*, java.util.*, java.sql.*, java.net.*, ca.openosp.openo.dxresearch.bean.*" %>
+<%@ page import="ca.openosp.openo.dxresearch.bean.*" %>
 <%
     String demoNO = request.getParameter("demographicNo");
 

@@ -32,8 +32,9 @@ import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
+import ca.openosp.Misc;
 import org.apache.commons.codec.binary.Base64;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 public class UtilMisc {
     /**
@@ -429,7 +430,7 @@ public class UtilMisc {
         do {
             cols = new ArrayList();
             for (int j = 0; j < columns; j++) {
-                cols.add(oscar.Misc.getString(rs, j + 1));
+                cols.add(Misc.getString(rs, j + 1));
             }
             rows.add(cols);
         } while (rs.next());

@@ -28,16 +28,16 @@ import com.onelogin.saml2.Auth;
 import com.onelogin.saml2.settings.Saml2Settings;
 import com.onelogin.saml2.settings.SettingsBuilder;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.FacilityDao;
-import org.oscarehr.common.dao.ProviderPreferenceDao;
-import org.oscarehr.common.model.Facility;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.ProviderPreference;
-import org.oscarehr.common.model.Security;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SSOUtility;
-import org.oscarehr.utility.SessionConstants;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.FacilityDao;
+import ca.openosp.openo.commn.dao.ProviderPreferenceDao;
+import ca.openosp.openo.commn.model.Facility;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.ProviderPreference;
+import ca.openosp.openo.commn.model.Security;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SSOUtility;
+import ca.openosp.openo.utility.SessionConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ca.openosp.openo.login.LoginCheckLogin;
@@ -82,7 +82,7 @@ public class SsoAuthenticationManager implements Serializable {
             samlData.load(inputStream);
 
             /*
-             * Set service provider data:
+             * Set service providers data:
              * Data about OSCAR's identifiers and links for SSO
              * See onelogin.saml.properties file in resources for details.
              */
@@ -95,7 +95,7 @@ public class SsoAuthenticationManager implements Serializable {
         // do something with user_email here.
 
         /*
-         * Set identity provider data:
+         * Set identity providers data:
          * Data about the IDP OSCAR will use for SSO authentication
          */
         Map<SSOUtility.SSO_SETTING, String> sso_presets = SSOUtility.getSSOPresetsFromOscarProperties();
@@ -122,7 +122,7 @@ public class SsoAuthenticationManager implements Serializable {
 
         /* add session attributes;
          * NOTE: these are the ONLY attributes we add to a session.
-         * NO provider preferences here.
+         * NO providers preferences here.
          */
         logger.debug("Setting session SSO attributes: ");
         Collection<String> keys = attributes.keySet();
@@ -169,14 +169,14 @@ public class SsoAuthenticationManager implements Serializable {
      * Null data if user does not authenticate.
      *
      * @param sessionData         new or existing hashmap
-     * @param providerInformation data of the provider profile
+     * @param providerInformation data of the providers profile
      * @return session data or NULL
      */
     private Map<String, Object> createSession(Map<String, Object> sessionData, String[] providerInformation) {
 
         if (providerInformation != null && providerInformation.length > 0) {
 
-            logger.debug("SSO login confirmed with provider info: " + Arrays.toString(providerInformation));
+            logger.debug("SSO login confirmed with providers info: " + Arrays.toString(providerInformation));
             String providerNo = providerInformation[0];
             sessionData.put("user", providerNo);
             sessionData.put("userfirstname", providerInformation[1]);
@@ -185,13 +185,13 @@ public class SsoAuthenticationManager implements Serializable {
             sessionData.put("expired_days", providerInformation[5]);
             sessionData.put("fullSite", "true");
 
-            // only the provider class info here.  Nothing more.
+            // only the providers class info here.  Nothing more.
             sessionData.put(SessionConstants.LOGGED_IN_PROVIDER, getProvider(providerInformation[0]));
 
             // this will set ONLY if the user login checks out from ssoAuthenticationManager.checkLogin(nameId)
             sessionData.put(SessionConstants.LOGGED_IN_SECURITY, getSecurity());
 
-            // provider preferences.  Let's stop putting this into session
+            // providers preferences.  Let's stop putting this into session
             setUserPreferences(sessionData, providerNo);
 
             // not sure if this is needed yet

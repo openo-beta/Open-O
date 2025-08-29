@@ -35,25 +35,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hl7.fhir.dstu3.model.Bundle;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.CVCImmunizationDao;
-import org.oscarehr.common.dao.ConsentDao;
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.dao.DemographicExtDao;
-import org.oscarehr.common.dao.LookupListDao;
-import org.oscarehr.common.dao.LookupListItemDao;
-import org.oscarehr.common.dao.PartialDateDao;
-import org.oscarehr.common.dao.PreventionDao;
-import org.oscarehr.common.model.CVCImmunization;
-import org.oscarehr.common.model.Consent;
-import org.oscarehr.common.model.PartialDate;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.CVCImmunizationDao;
+import ca.openosp.openo.commn.dao.ConsentDao;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.dao.DemographicExtDao;
+import ca.openosp.openo.commn.dao.LookupListDao;
+import ca.openosp.openo.commn.dao.LookupListItemDao;
+import ca.openosp.openo.commn.dao.PartialDateDao;
+import ca.openosp.openo.commn.dao.PreventionDao;
+import ca.openosp.openo.commn.model.CVCImmunization;
+import ca.openosp.openo.commn.model.Consent;
+import ca.openosp.openo.commn.model.PartialDate;
 import ca.openosp.openo.integration.fhir.api.DHIR;
 import ca.openosp.openo.integration.fhir.builder.FhirBundleBuilder;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.provider.model.PreventionManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.provider.model.PreventionManager;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.prevention.PreventionData;
 import ca.openosp.openo.prevention.PreventionDisplayConfig;
@@ -87,7 +87,7 @@ public class AddPrevention2Action extends ActionSupport {
     public String execute() {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_prevention", "w", null)) {
-            throw new SecurityException("missing required security object (_prevention)");
+            throw new SecurityException("missing required sec object (_prevention)");
         }
 
         String sessionUser = (String) request.getSession().getAttribute("user");
@@ -112,7 +112,7 @@ public class AddPrevention2Action extends ActionSupport {
         String given = request.getParameter("given");
         String prevDate = request.getParameter("prevDate");
         String providerName = request.getParameter("providerName");
-        String providerNo = request.getParameter("provider");
+        String providerNo = request.getParameter("providers");
 
 
         String nextDate = request.getParameter("nextDate");
@@ -239,7 +239,7 @@ public class AddPrevention2Action extends ActionSupport {
 
         PreventionManager prvMgr = (PreventionManager) SpringUtils.getBean(PreventionManager.class);
         prvMgr.removePrevention(demographic_no);
-        MiscUtils.getLogger().debug("Given " + given + " prevDate " + prevDate + " providerName " + providerName + " provider " + providerNo);
+        MiscUtils.getLogger().debug("Given " + given + " prevDate " + prevDate + " providerName " + providerName + " providers " + providerNo);
 
 
         if (submitToDhir) {

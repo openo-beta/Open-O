@@ -24,7 +24,7 @@
 
 --%>
 
-<%@page import="org.oscarehr.common.model.Provider" %>
+<%@page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -40,23 +40,24 @@
     }
 %>
 
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
 <%@page
-        import="oscar.oscarEncounter.pageUtil.*,oscar.oscarEncounter.data.*" %>
+        import="ca.openosp.openo.encounter.pageUtil.*,ca.openosp.openo.encounter.data.*" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewConsultationRequestsUtil" %>
-<%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
+<%@ page import="ca.openosp.openo.providers.data.ProviderData" %>
+<%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 
 <%
     String demo = request.getParameter("de");
     String proNo = (String) session.getAttribute("user");
     DemographicData demoData = null;
-    org.oscarehr.common.model.Demographic demographic = null;
+    Demographic demographic = null;
 
     ProviderData pdata = new ProviderData(proNo);
     String team = pdata.getTeam();

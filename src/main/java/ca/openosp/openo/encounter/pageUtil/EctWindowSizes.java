@@ -33,9 +33,9 @@ package ca.openosp.openo.encounter.pageUtil;
 
 import java.util.Properties;
 
-import org.oscarehr.common.dao.EncounterWindowDao;
-import org.oscarehr.common.model.EncounterWindow;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.EncounterWindowDao;
+import ca.openosp.openo.commn.model.EncounterWindow;
+import ca.openosp.openo.utility.SpringUtils;
 
 /**
  * @author root

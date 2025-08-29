@@ -15,12 +15,12 @@
 %>
 
 <%@ page
-        import="java.math.*,java.util.*, java.sql.*, oscar.*, java.net.*,oscar.oscarBilling.ca.bc.MSP.*,oscar.util.*" %>
+        import="java.math.*,java.util.*, java.sql.*, ca.openosp.*, java.net.*,ca.openosp.openo.billing.ca.bc.MSP.*,ca.openosp.openo.util.*" %>
 
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.common.dao.ReportProviderDao" %>
-<%@page import="org.oscarehr.common.model.ReportProvider" %>
-<%@page import="org.oscarehr.common.model.Provider" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.commn.dao.ReportProviderDao" %>
+<%@page import="ca.openosp.openo.commn.model.ReportProvider" %>
+<%@page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile" %>
 <%@ page import="ca.openosp.openo.util.DateUtils" %>
 

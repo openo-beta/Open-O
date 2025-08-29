@@ -25,7 +25,7 @@
 package ca.openosp.openo.billing.CA.BC.dao;
 
 import ca.openosp.openo.billing.CA.BC.model.Hl7Pid;
-import org.oscarehr.common.dao.AbstractDaoImpl;
+import ca.openosp.openo.commn.dao.AbstractDaoImpl;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
@@ -66,9 +66,9 @@ public class Hl7PidDao extends AbstractDaoImpl<Hl7Pid> {
     }
 
     public List<Object[]> findSigned(Integer pid) {
-        String sql = "FROM Hl7Pid hl7_pid, Hl7Link hl7_link, Provider provider " +
+        String sql = "FROM Hl7Pid hl7_pid, Hl7Link hl7_link, Provider providers " +
                 "WHERE hl7_pid.id = hl7_link.id " +
-                "AND provider.ProviderNo = hl7_link.providerNo " +
+                "AND providers.ProviderNo = hl7_link.providerNo " +
                 "AND hl7_pid.id = :pid";
         Query query = entityManager.createQuery(sql);
         query.setParameter("pid", pid);

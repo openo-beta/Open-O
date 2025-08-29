@@ -38,16 +38,16 @@ import noNamespace.SitePatientVisitRecordsDocument;
 import org.apache.commons.validator.GenericValidator;
 import org.apache.xmlbeans.XmlCalendar;
 import org.apache.xmlbeans.XmlOptions;
-import org.oscarehr.common.dao.BillingDao;
-import org.oscarehr.common.model.Billing;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.BillingDao;
+import ca.openosp.openo.commn.model.Billing;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean;
-import ca.openosp.openo.provider.data.ProviderData;
-import ca.openosp.openo.rx.data.RxPatientData;
-import ca.openosp.openo.rx.data.RxPrescriptionData;
+import ca.openosp.openo.providers.data.ProviderData;
+import ca.openosp.openo.prescript.data.RxPatientData;
+import ca.openosp.openo.prescript.data.RxPrescriptionData;
 import ca.openosp.openo.util.ConversionUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 

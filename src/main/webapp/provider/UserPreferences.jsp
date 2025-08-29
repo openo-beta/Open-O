@@ -24,11 +24,11 @@
 
 --%>
 
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ include file="/taglibs.jsp" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="org.oscarehr.provider.web.UserPreference2Action" %>
-<%@ page import="org.oscarehr.common.model.UserProperty" %>
+<%@ page import="ca.openosp.openo.provider.web.UserPreference2Action" %>
+<%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 <%
     @SuppressWarnings("unchecked")
@@ -51,7 +51,7 @@
             //jQuery("#general").hide();
             jQuery("#scheduling").hide();
             jQuery("#encounter").hide();
-            jQuery("#rx").hide();
+            jQuery("#prescript").hide();
             jQuery("#consultation").hide();
             jQuery("#caisi").hide();
             jQuery("#billing").hide();
@@ -434,7 +434,7 @@
             </table>
             <br/><br/>
             <input type="submit" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.pref.btnSave"/>"/>
-        </div>    <!-- rx -->
+        </div>    <!-- prescript -->
 
 
         <div id="consultation" class="pref_pane">

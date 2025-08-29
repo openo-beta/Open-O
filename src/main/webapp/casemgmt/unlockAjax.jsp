@@ -42,7 +42,7 @@
 <%@ page import="java.util.Set, java.util.List, java.util.Iterator" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementIssue" %>
-<%@ page import="org.oscarehr.common.model.Provider" %>
+<%@ page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.openo.util.DateUtils" %>
 
 <% CaseManagementNote note = (CaseManagementNote) request.getAttribute("Note");

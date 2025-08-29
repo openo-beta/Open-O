@@ -37,31 +37,31 @@ import java.util.regex.Pattern;
 import ca.openosp.openo.lab.ca.all.parsers.PATHL7Handler;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.ConsultDocsDao;
-import org.oscarehr.common.dao.ConsultResponseDocDao;
-import org.oscarehr.common.dao.EFormDocsDao;
-import org.oscarehr.common.dao.Hl7TextInfoDao;
-import org.oscarehr.common.dao.Hl7TextMessageDao;
-import org.oscarehr.common.dao.MeasurementDao;
-import org.oscarehr.common.dao.MeasurementMapDao;
-import org.oscarehr.common.dao.MeasurementsDeletedDao;
-import org.oscarehr.common.dao.MeasurementsExtDao;
-import org.oscarehr.common.dao.PatientLabRoutingDao;
-import org.oscarehr.common.model.ConsultDocs;
-import org.oscarehr.common.model.ConsultResponseDoc;
-import org.oscarehr.common.model.EFormDocs;
-import org.oscarehr.common.model.Hl7TextInfo;
-import org.oscarehr.common.model.Hl7TextMessage;
-import org.oscarehr.common.model.Measurement;
-import org.oscarehr.common.model.MeasurementMap;
-import org.oscarehr.common.model.MeasurementType;
-import org.oscarehr.common.model.MeasurementsDeleted;
-import org.oscarehr.common.model.MeasurementsExt;
-import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ConsultDocsDao;
+import ca.openosp.openo.commn.dao.ConsultResponseDocDao;
+import ca.openosp.openo.commn.dao.EFormDocsDao;
+import ca.openosp.openo.commn.dao.Hl7TextInfoDao;
+import ca.openosp.openo.commn.dao.Hl7TextMessageDao;
+import ca.openosp.openo.commn.dao.MeasurementDao;
+import ca.openosp.openo.commn.dao.MeasurementMapDao;
+import ca.openosp.openo.commn.dao.MeasurementsDeletedDao;
+import ca.openosp.openo.commn.dao.MeasurementsExtDao;
+import ca.openosp.openo.commn.dao.PatientLabRoutingDao;
+import ca.openosp.openo.commn.model.ConsultDocs;
+import ca.openosp.openo.commn.model.ConsultResponseDoc;
+import ca.openosp.openo.commn.model.EFormDocs;
+import ca.openosp.openo.commn.model.Hl7TextInfo;
+import ca.openosp.openo.commn.model.Hl7TextMessage;
+import ca.openosp.openo.commn.model.Measurement;
+import ca.openosp.openo.commn.model.MeasurementMap;
+import ca.openosp.openo.commn.model.MeasurementType;
+import ca.openosp.openo.commn.model.MeasurementsDeleted;
+import ca.openosp.openo.commn.model.MeasurementsExt;
+import ca.openosp.openo.commn.model.PatientLabRouting;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
 import ca.openosp.openo.lab.ca.on.LabResultData;
@@ -532,7 +532,7 @@ public class Hl7textResultsData {
     public static LabResultData getNotAckLabResultDataFromLabNo(String labNo) {
         LabResultData lbData = new LabResultData(LabResultData.HL7TEXT);
         // note to self: lab reports not found in the providerLabRouting table will not show up - need to ensure every lab is entered in providerLabRouting, with '0'
-        // for the provider number if unable to find correct provider
+        // for the providers number if unable to find correct providers
 
         List<Hl7TextInfo> infos = hl7TxtInfoDao.findByLabId(ConversionUtils.fromIntString(labNo));
         if (infos.isEmpty()) return lbData;
@@ -639,7 +639,7 @@ public class Hl7textResultsData {
         } else if (demographicNo == null) {
             // note to self: lab reports not found in the providerLabRouting table will not show up -
             // need to ensure every lab is entered in providerLabRouting, with '0'
-            // for the provider number if unable to find correct provider
+            // for the providers number if unable to find correct providers
             routings = hl7TxtInfoDao.findLabsViaMagic(status, providerNo, patientFirstName, patientLastName, patientHealthNumber);
         } else {
             routings = hl7TxtInfoDao.findByDemographicId(ConversionUtils.fromIntString(demographicNo));
@@ -769,7 +769,7 @@ public class Hl7textResultsData {
 
         ArrayList<LabResultData> labResults = new ArrayList<LabResultData>();
         // note to self: lab reports not found in the providerLabRouting table will not show up - need to ensure every lab is entered in providerLabRouting, with '0'
-        // for the provider number if unable to find correct provider
+        // for the providers number if unable to find correct providers
 
         for (Object[] i : hl7TxtInfoDao.findLabAndDocsViaMagic(providerNo, demographicNo, patientFirstName, patientLastName, patientHealthNumber, status, isPaged, page, pageSize, mixLabsAndDocs, isAbnormal, searchProvider, patientSearch, startDate, endDate)) {
 

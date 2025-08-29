@@ -32,12 +32,12 @@ import java.util.Map;
 import java.util.Set;
 
 import ca.openosp.openo.model.BaseObject;
-import org.oscarehr.PMmodule.dao.ProgramAccessDAO;
-import org.oscarehr.PMmodule.dao.ProgramProviderDAO;
-import org.oscarehr.PMmodule.model.ProgramAccess;
-import org.oscarehr.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.PMmodule.dao.ProgramAccessDAO;
+import ca.openosp.openo.PMmodule.dao.ProgramProviderDAO;
+import ca.openosp.openo.PMmodule.model.ProgramAccess;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
 import ca.openosp.openo.casemgmt.dao.RoleProgramAccessDAO;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.model.security.Secrole;
 

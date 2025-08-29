@@ -26,7 +26,7 @@ package ca.openosp.openo.form.pharmaForms.formBPMH.web;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.form.pharmaForms.formBPMH.bean.BpmhForm2Bean;
 import ca.openosp.openo.form.pharmaForms.formBPMH.business.BpmhForm2Handler;
 import ca.openosp.openo.form.pharmaForms.formBPMH.pdf.PDFController;

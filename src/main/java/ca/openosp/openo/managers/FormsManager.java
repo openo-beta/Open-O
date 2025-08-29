@@ -31,12 +31,12 @@ package ca.openosp.openo.managers;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.oscarehr.common.dao.EFormDao.EFormSortOrder;
-import org.oscarehr.common.model.EForm;
-import org.oscarehr.common.model.EFormData;
-import org.oscarehr.common.model.EncounterForm;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.PDFGenerationException;
+import ca.openosp.openo.commn.dao.EFormDao.EFormSortOrder;
+import ca.openosp.openo.commn.model.EForm;
+import ca.openosp.openo.commn.model.EFormData;
+import ca.openosp.openo.commn.model.EncounterForm;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.PDFGenerationException;
 
 import ca.openosp.openo.form.util.FormTransportContainer;
 import ca.openosp.openo.encounter.data.EctFormData;

@@ -47,18 +47,19 @@ import java.util.Date;
 import java.util.ListIterator;
 import java.util.Properties;
 
+import ca.openosp.openo.utility.MiscUtils;
 import net.sf.json.JSONObject;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.ProviderDataDao;
-import org.oscarehr.common.model.Billing;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.ProviderData;
+import ca.openosp.openo.commn.dao.ProviderDataDao;
+import ca.openosp.openo.commn.model.Billing;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.ProviderData;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.billings.ca.bc.data.BillingHistoryDAO;
 import ca.openosp.openo.billings.ca.bc.data.BillingNote;
@@ -77,7 +78,7 @@ import ca.openosp.openo.billings.ca.bc.pageUtil.BillingSessionBean;
 public class QuickBillingBCHandler {
 
     // full logging to be added later. too pressed for time.
-    private static Logger log = org.oscarehr.utility.MiscUtils.getLogger();
+    private static Logger log = MiscUtils.getLogger();
 
     // default attributes for MSP billing.
     // create new attributes for dynamic form input.
@@ -200,16 +201,16 @@ public class QuickBillingBCHandler {
 
     /**
      * Set the header data for this group of billings.
-     * Header consists of a provider, service location, and service date and
+     * Header consists of a providers, service location, and service date and
      * is the header for a group of individual patients with the header data
-     * in common.
+     * in commons.
      *
      */
     public void setHeader(JSONObject billingEntry) {
 
         String visitLocation = billingEntry.getString("visitLocation");
         String visitDate = billingEntry.getString("visitDate");
-        String providerNo = billingEntry.getString("provider");
+        String providerNo = billingEntry.getString("providers");
         String creator = billingEntry.getString("creator");
 
         // if any of the variables are empty
@@ -337,7 +338,7 @@ public class QuickBillingBCHandler {
         //bean.setEndTimeMin(null);
         bean.setAdmissionDate(ADMISSION_DATE);
 
-        // provider data for billing
+        // providers data for billing
         // aka: ohip number, billing number, practitioner number, payee...
         bean.setBillingProvider(provider.getBillingNo());
         bean.setBillingPracNo(provider.getOhipNo());

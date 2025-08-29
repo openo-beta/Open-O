@@ -40,10 +40,10 @@
 %>
 
 
-<%@ page import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, java.net.*,oscar.MyDateFormat"
+<%@ page import="java.math.*, java.util.*, java.io.*, java.sql.*, ca.openosp.*, java.net.*,ca.openosp.MyDateFormat"
          errorPage="/errorpage.jsp" %>
 
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.dao.TeleplanS21Dao" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.model.TeleplanS21" %>
 
@@ -51,7 +51,7 @@
     TeleplanS21Dao teleplanS21Dao = SpringUtils.getBean(TeleplanS21Dao.class);
 %>
 
-<jsp:useBean id="documentBean" class="oscar.DocumentBean" scope="request"/>
+<jsp:useBean id="documentBean" class="ca.openosp.DocumentBean" scope="request"/>
 
 
 <%
@@ -68,7 +68,7 @@
 %>
 
 
-<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>

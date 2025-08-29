@@ -23,9 +23,10 @@
     Ontario, Canada
 
 --%>
-<%@page import="ca.openosp.openo.rx.data.RxPatientData" %>
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
+<%@page import="ca.openosp.openo.prescript.data.RxPatientData" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.commn.model.Allergy" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -35,7 +36,7 @@
 <%
     RxSessionBean bean2 = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
 
-    org.oscarehr.common.model.Allergy[] allergies = RxPatientData.getPatient(LoggedInInfo.getLoggedInInfoFromSession(request), bean2.getDemographicNo()).getActiveAllergies();
+    Allergy[] allergies = RxPatientData.getPatient(LoggedInInfo.getLoggedInInfoFromSession(request), bean2.getDemographicNo()).getActiveAllergies();
     String alle = "";
     if (allergies.length > 0) {
         alle = "Red";
@@ -82,7 +83,7 @@
 <script type="text/javascript">
 
     function goSD3(favoriteId) {
-        location.href = "oscarRx/SearchDrug3.jsp?usefav=true&favid=" + favoriteId;
+        location.href = "rx/SearchDrug3.jsp?usefav=true&favid=" + favoriteId;
     }
 
 </script>

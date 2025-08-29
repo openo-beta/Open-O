@@ -116,7 +116,7 @@
     }
 %>
 
-<%@page import="org.oscarehr.common.hl7.v2.oscar_to_oscar.OscarToOscarUtils" %>
+<%@page import="ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.OscarToOscarUtils" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

@@ -26,10 +26,10 @@
 package ca.openosp.openo.form.pharmaForms.formBPMH.bean;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.oscarehr.common.model.Allergy;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.DemographicCust;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.commn.model.Allergy;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.DemographicCust;
+import ca.openosp.openo.commn.model.Provider;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

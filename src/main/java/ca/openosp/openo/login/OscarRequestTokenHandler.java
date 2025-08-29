@@ -33,8 +33,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.AppDefinition;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.model.AppDefinition;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -46,7 +46,7 @@ import com.github.scribejava.core.oauth.OAuth10aService;
  * OAuth 1.0a Request Token Handler using ScribeJava library.
  * 
  * This class handles the first step of the OAuth 1.0a flow:
- * 1. Obtains a request token from the OAuth provider
+ * 1. Obtains a request token from the OAuth providers
  * 2. Stores the temporary token and secret
  * 3. Redirects the user to the authorization URL
  * 
@@ -102,7 +102,7 @@ public class OscarRequestTokenHandler {
             } catch (Exception e) {
                 logger.error("Failed to obtain request token: {}", e.getMessage(), e);
                 response.sendError(HttpServletResponse.SC_BAD_GATEWAY,
-                                   "OAuth provider communication error");
+                                   "OAuth providers communication error");
                 return;
             }
 

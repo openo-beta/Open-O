@@ -34,11 +34,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.oscarehr.common.dao.EFormDataDao;
-import org.oscarehr.common.model.EFormData;
-import org.oscarehr.common.model.enumerator.DocumentType;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.PDFGenerationException;
+import ca.openosp.openo.commn.dao.EFormDataDao;
+import ca.openosp.openo.commn.model.EFormData;
+import ca.openosp.openo.commn.model.enumerator.DocumentType;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.PDFGenerationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ca.openosp.openo.documentManager.ConvertToEdoc;
@@ -84,7 +84,7 @@ public class EformDataManagerImpl implements EformDataManager {
         Integer formid = null;
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_eform", SecurityInfoManager.UPDATE, null)) {
-            throw new RuntimeException("missing required security object (_eform)");
+            throw new RuntimeException("missing required sec object (_eform)");
         }
 
         EFormData eFormData = EFormUtil.toEFormData(eform);
@@ -107,7 +107,7 @@ public class EformDataManagerImpl implements EformDataManager {
     public Integer saveEformDataAsEDoc(LoggedInInfo loggedInInfo, String fdid) {
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_eform", SecurityInfoManager.UPDATE, null)) {
-            throw new RuntimeException("missing required security object (_eform)");
+            throw new RuntimeException("missing required sec object (_eform)");
         }
         Integer documentId = null;
         Integer formid = null;
@@ -132,7 +132,7 @@ public class EformDataManagerImpl implements EformDataManager {
 
     public Integer saveEFormWithAttachmentsAsEDoc(LoggedInInfo loggedInInfo, String fdid, String demographicId, Path eFormPDFPath) throws PDFGenerationException {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_eform", SecurityInfoManager.UPDATE, demographicId)) {
-            throw new RuntimeException("missing required security object (_eform)");
+            throw new RuntimeException("missing required sec object (_eform)");
         }
 
         EFormData eForm = eFormDataDao.find(Integer.parseInt(fdid));
@@ -144,7 +144,7 @@ public class EformDataManagerImpl implements EformDataManager {
 
     public EFormData findByFdid(LoggedInInfo loggedInInfo, Integer fdid) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_eform", SecurityInfoManager.READ, null)) {
-            throw new RuntimeException("missing required security object (_eform)");
+            throw new RuntimeException("missing required sec object (_eform)");
         }
         return eFormDataDao.find(fdid);
     }
@@ -157,7 +157,7 @@ public class EformDataManagerImpl implements EformDataManager {
     public Path createEformPDF(LoggedInInfo loggedInInfo, int fdid) throws PDFGenerationException {
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_eform", SecurityInfoManager.UPDATE, null)) {
-            throw new RuntimeException("missing required security object (_eform)");
+            throw new RuntimeException("missing required sec object (_eform)");
         }
 
         EFormData eformData = eFormDataDao.find(fdid);
@@ -187,7 +187,7 @@ public class EformDataManagerImpl implements EformDataManager {
     public List<Map<String, Object>> findCurrentByDemographicIdNoData(LoggedInInfo loggedInInfo, Integer demographicId) {
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_eform", SecurityInfoManager.READ, null)) {
-            throw new RuntimeException("missing required security object (_eform)");
+            throw new RuntimeException("missing required sec object (_eform)");
         }
 
         List<Map<String, Object>> results = eFormDataDao.findByDemographicIdCurrentNoData(demographicId, Boolean.TRUE);
@@ -201,7 +201,7 @@ public class EformDataManagerImpl implements EformDataManager {
 
     public ArrayList<HashMap<String, ? extends Object>> getHRMDocumentsAttachedToEForm(LoggedInInfo loggedInInfo, String fdid, String demographicId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_eform", SecurityInfoManager.READ, demographicId)) {
-            throw new RuntimeException("missing required security object (_eform)");
+            throw new RuntimeException("missing required sec object (_eform)");
         }
 
         List<String> attachedHRMDocumentIds = documentAttachmentManager.getEFormAttachments(loggedInInfo, Integer.parseInt(fdid), DocumentType.HRM, Integer.parseInt(demographicId));
@@ -220,7 +220,7 @@ public class EformDataManagerImpl implements EformDataManager {
 
     public List<EctFormData.PatientForm> getFormsAttachedToEForm(LoggedInInfo loggedInInfo, String fdid, String demographicId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_eform", SecurityInfoManager.READ, demographicId)) {
-            throw new RuntimeException("missing required security object (_eform)");
+            throw new RuntimeException("missing required sec object (_eform)");
         }
 
         List<String> attachedForms = documentAttachmentManager.getEFormAttachments(loggedInInfo, Integer.parseInt(fdid), DocumentType.FORM, Integer.parseInt(demographicId));
@@ -240,7 +240,7 @@ public class EformDataManagerImpl implements EformDataManager {
 
     public void removeEFormData(LoggedInInfo loggedInInfo, String fdid) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_eform", SecurityInfoManager.DELETE, null)) {
-            throw new RuntimeException("missing required security object (_eform)");
+            throw new RuntimeException("missing required sec object (_eform)");
         }
         EFormData eFormData = eFormDataDao.find(Integer.parseInt(fdid));
         if (eFormData == null) {

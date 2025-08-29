@@ -22,9 +22,9 @@
 
 package ca.openosp.openo.managers;
 
-import org.oscarehr.common.model.DigitalSignature;
-import org.oscarehr.common.model.enumerator.ModuleType;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.model.DigitalSignature;
+import ca.openosp.openo.commn.model.enumerator.ModuleType;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 public interface DigitalSignatureManager extends OscarManagerBase {
 
@@ -50,7 +50,7 @@ public interface DigitalSignatureManager extends OscarManagerBase {
      * and `demographicNo`.
      *
      * @param facilityId    The ID of the facility associated with the signature.
-     * @param providerNo    The provider's number associated with the signature.
+     * @param providerNo    The providers's number associated with the signature.
      * @param demographicNo The ID of the demographic entity associated with the signature.
      * @param imageData     The byte array representing the signature image.
      * @param moduleType    {@link ModuleType} The module from which the signature originated.
@@ -66,7 +66,7 @@ public interface DigitalSignatureManager extends OscarManagerBase {
      * <p>
      * This method retrieves a digital signature image from a temporary file, encrypts it,
      * and saves it to the database. The signature is associated with the logged-in user's
-     * facility and provider number, as well as the specified `demographicNo`.
+     * facility and providers number, as well as the specified `demographicNo`.
      * <p>
      * The `signatureRequestId` is used to locate the temporary signature file.  The method
      * checks if digital signatures are enabled for the current facility before proceeding.
@@ -74,7 +74,7 @@ public interface DigitalSignatureManager extends OscarManagerBase {
      * temporary signature file is not found, logging a debug message and returning `null`.
      *
      * @param loggedInInfo          Information about the currently logged-in user, used to
-     *                              determine facility and provider details.
+     *                              determine facility and providers details.
      * @param signatureRequestId    The ID used to locate the temporary signature image file.
      * @param demographicNo         The ID of the demographic entity associated with the signature.
      * @param moduleType            {@link ModuleType} The module from which the signature originated.

@@ -31,8 +31,9 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
-import org.oscarehr.common.dao.WorkFlowDao;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.model.WorkFlow;
+import ca.openosp.openo.commn.dao.WorkFlowDao;
+import ca.openosp.openo.utility.SpringUtils;
 
 /**
  * @author jay
@@ -47,9 +48,9 @@ public class WorkFlowState {
     public WorkFlowState() {
     }
 
-    //TODO: need to add which provider added it  OR i could just logg it as well
+    //TODO: need to add which providers added it  OR i could just logg it as well
     public int addToWorkFlow(String workflowType, String providerNo, String demographicNo, Date endDate, String current_state) {
-        org.oscarehr.common.model.WorkFlow wf = new org.oscarehr.common.model.WorkFlow();
+        WorkFlow wf = new WorkFlow();
         wf.setWorkflowType(workflowType);
         wf.setProviderNo(providerNo);
         wf.setDemographicNo(demographicNo);
@@ -62,7 +63,7 @@ public class WorkFlowState {
     }
 
     public void updateWorkFlowState(String workflowId, String state) {
-        org.oscarehr.common.model.WorkFlow wf = dao.find(Integer.parseInt(workflowId));
+        WorkFlow wf = dao.find(Integer.parseInt(workflowId));
         if (wf != null) {
             wf.setCurrentState(state);
             dao.merge(wf);
@@ -70,7 +71,7 @@ public class WorkFlowState {
     }
 
     public void updateWorkFlowState(String workflowId, String state, Date date) {
-        org.oscarehr.common.model.WorkFlow wf = dao.find(Integer.parseInt(workflowId));
+        WorkFlow wf = dao.find(Integer.parseInt(workflowId));
         if (wf != null) {
             wf.setCurrentState(state);
             wf.setCompletionDate(date);
@@ -82,8 +83,8 @@ public class WorkFlowState {
     public ArrayList getWorkFlowList(String workflowType) {
         ArrayList list = new ArrayList();
 
-        List<org.oscarehr.common.model.WorkFlow> ws = dao.findByWorkflowType(workflowType);
-        for (org.oscarehr.common.model.WorkFlow w : ws) {
+        List<WorkFlow> ws = dao.findByWorkflowType(workflowType);
+        for (WorkFlow w : ws) {
             Hashtable h = new Hashtable();
             h.put("ID", w.getId().toString());
             h.put("workflow_type", w.getWorkflowType());
@@ -102,8 +103,8 @@ public class WorkFlowState {
     public ArrayList getActiveWorkFlowList(String workflowType) {
         ArrayList list = new ArrayList();
 
-        List<org.oscarehr.common.model.WorkFlow> ws = dao.findActiveByWorkflowType(workflowType);
-        for (org.oscarehr.common.model.WorkFlow w : ws) {
+        List<WorkFlow> ws = dao.findActiveByWorkflowType(workflowType);
+        for (WorkFlow w : ws) {
             Hashtable h = new Hashtable();
             h.put("ID", w.getId().toString());
             h.put("workflow_type", w.getWorkflowType());
@@ -121,8 +122,8 @@ public class WorkFlowState {
 
     public ArrayList getActiveWorkFlowList(String workflowType, String demographicNo) {
         ArrayList list = new ArrayList();
-        List<org.oscarehr.common.model.WorkFlow> ws = dao.findActiveByWorkflowTypeAndDemographicNo(workflowType, demographicNo);
-        for (org.oscarehr.common.model.WorkFlow w : ws) {
+        List<WorkFlow> ws = dao.findActiveByWorkflowTypeAndDemographicNo(workflowType, demographicNo);
+        for (WorkFlow w : ws) {
             Hashtable h = new Hashtable();
             h.put("ID", w.getId().toString());
             h.put("workflow_type", w.getWorkflowType());

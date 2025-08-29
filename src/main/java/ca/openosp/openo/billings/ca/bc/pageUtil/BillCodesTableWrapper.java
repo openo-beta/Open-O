@@ -28,7 +28,7 @@ package ca.openosp.openo.billings.ca.bc.pageUtil;
 import java.util.Map;
 
 import org.displaytag.decorator.TableDecorator;
-import org.oscarehr.common.model.BillingService;
+import ca.openosp.openo.commn.model.BillingService;
 
 /**
  * A helper class for the displayTag Tag Library used to List of java beans for augmented tabular display

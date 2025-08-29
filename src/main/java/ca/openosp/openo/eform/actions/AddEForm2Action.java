@@ -27,21 +27,21 @@
 package ca.openosp.openo.eform.actions;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.enumerator.DocumentType;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.enumerator.DocumentType;
 import ca.openosp.openo.documentManager.DocumentAttachmentManager;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.EformDataManager;
 import ca.openosp.openo.managers.EmailManager;
 import ca.openosp.openo.managers.FaxManager.TransactionType;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.match.IMatchManager;
-import org.oscarehr.match.MatchManager;
-import org.oscarehr.match.MatchManagerException;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.PDFGenerationException;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.match.IMatchManager;
+import ca.openosp.openo.match.MatchManager;
+import ca.openosp.openo.match.MatchManagerException;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PDFGenerationException;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.eform.EFormLoader;
 import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.eform.data.DatabaseAP;
@@ -75,7 +75,7 @@ public class AddEForm2Action extends ActionSupport {
     public String execute() {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_eform", "w", null)) {
-            throw new SecurityException("missing required security object (_eform)");
+            throw new SecurityException("missing required sec object (_eform)");
         }
 
         logger.debug("==================SAVING ==============");
@@ -159,7 +159,7 @@ public class AddEForm2Action extends ActionSupport {
                         String inSQL = currentAP.getApInSQL();
 
                         inSQL = DatabaseAP.parserReplace("demographic", demographic_no, inSQL);
-                        inSQL = DatabaseAP.parserReplace("provider", providerNo, inSQL);
+                        inSQL = DatabaseAP.parserReplace("providers", providerNo, inSQL);
                         inSQL = DatabaseAP.parserReplace("fid", fid, inSQL);
 
                         inSQL = DatabaseAP.parserReplace("value", request.getParameter(field), inSQL);

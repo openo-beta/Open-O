@@ -23,22 +23,22 @@
     Ontario, Canada
 
 --%>
-<%@page import="ca.openosp.openo.rx.data.RxPatientData" %>
+<%@page import="ca.openosp.openo.prescript.data.RxPatientData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="oscar.oscarProvider.data.*, oscar.log.*" %>
+<%@ page import="ca.openosp.openo.providers.data.*, ca.openosp.openo.log.*" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="org.apache.logging.log4j.Logger" %>
-<%@ page import="oscar.*,java.lang.*,java.util.Date" %>
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
-<%@ page import="ca.openosp.openo.provider.data.ProSignatureData" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.util.RxUtil" %>
-<%@ page import="ca.openosp.openo.rx.data.RxProviderData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.*,java.lang.*,java.util.Date" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.providers.data.ProviderData" %>
+<%@ page import="ca.openosp.openo.providers.data.ProSignatureData" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.util.RxUtil" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxProviderData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -186,7 +186,7 @@
                            value="<%= StringEscapeUtils.escapeHtml(RxUtil.DateToString(rxDate, "MMMM d, yyyy")) %>"/>
                     <input type="hidden" name="sigDoctorName"
                            value="<%= StringEscapeUtils.escapeHtml(doctorName) %>"/>
-                    <!--img src="img/rx.gif" border="0"-->
+                    <!--img src="img/prescript.gif" border="0"-->
                 </td>
                 <td valign=top height="100px" id="clinicAddress"><b><%=doctorName%>
                 </b><br>
@@ -218,10 +218,10 @@
                                 <%= patient.getCity() %>, <%= patient.getProvince() %> <%= patient.getPostal() %><br>
                                 <%= patient.getPhone() %><br>
                                 <b><% if (!props.getProperty("showRxHin", "").equals("false")) { %>
-                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.oscarRx.hin"/><%= patient.getHin() %> <% } %>
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="ca.openosp.openo.rx.hin"/><%= patient.getHin() %> <% } %>
                                 </b><br>
                                 <% if (props.getProperty("showRxChartNo", "").equalsIgnoreCase("true")) { %>
-                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.oscarRx.chartNo"/><%=patient.getChartNo()%> <% } %></td>
+                                <fmt:setBundle basename="oscarResources"/><fmt:message key="ca.openosp.openo.rx.chartNo"/><%=patient.getChartNo()%> <% } %></td>
                             <td align=right valign=top>
                                 <b><%= RxUtil.DateToString(rxDate, "MMMM d, yyyy", request.getLocale()) %>
                                 </b></td>
@@ -242,7 +242,7 @@
                                         String fullOutLine = rx.getFullOutLine().replaceAll(";", "<br />");
 
                                         if (fullOutLine == null || fullOutLine.length() <= 6) {
-                                            org.oscarehr.utility.MiscUtils.getLogger();
+                                            ca.openosp.openo.utility.MiscUtils.getLogger();
                                             fullOutLine = "<span style=\"color:red;font-size:16;font-weight:bold\">An error occurred, please write a new prescription.</span><br />" + fullOutLine;
                                         }
                                 %>
@@ -263,8 +263,8 @@
                         </tr>
 
 
-                        <% if (oscar.OscarProperties.getInstance().getProperty("RX_FOOTER") != null) {
-                            out.write(oscar.OscarProperties.getInstance().getProperty("RX_FOOTER"));
+                        <% if (ca.openosp.OscarProperties.getInstance().getProperty("RX_FOOTER") != null) {
+                            out.write(ca.openosp.OscarProperties.getInstance().getProperty("RX_FOOTER"));
                         }%>
 
 
@@ -300,10 +300,10 @@
 
                         <%
                             }
-                            if (oscar.OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT") != null) {%>
+                            if (ca.openosp.OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT") != null) {%>
                         <tr valign=bottom align="center" style="font-size: 9px">
                             <td height=25px colspan="2"></br>
-                                <%= oscar.OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT") %>
+                                <%= ca.openosp.OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT") %>
                             </td>
                         </tr>
                         <%}%>

@@ -27,17 +27,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
-<%@ page import="java.util.*,oscar.oscarRx.data.*,oscar.oscarRx.pageUtil.*,oscar.oscarRx.util.*" %>
-<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@ page import="java.util.*,ca.openosp.openo.rx.data.*,ca.openosp.openo.rx.pageUtil.*,ca.openosp.openo.rx.util.*" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@ page import="ca.openosp.openo.rx.util.LimitedUseCode" %>
-<%@ page import="ca.openosp.openo.rx.util.RxUtil" %>
-<%@ page import="ca.openosp.openo.rx.data.RxDrugData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxCodesData" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.util.LimitedUseLookup" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxWriteScriptForm" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.prescript.util.LimitedUseCode" %>
+<%@ page import="ca.openosp.openo.prescript.util.RxUtil" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxDrugData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxCodesData" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.util.LimitedUseLookup" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxWriteScriptForm" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 
 <%long start = System.currentTimeMillis();%>
@@ -1440,7 +1440,7 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                             <br>
                             <!-- peice Went Here --> <%
                                 //RxPatientData.Patient.Allergy[] allerg = (RxPatientData.Patient.Allergy[]) request.getAttribute("ALLERGIES");
-                                org.oscarehr.common.model.Allergy[] allerg = bean.getAllergyWarnings(loggedInInfo, atcCode);
+                                Allergy[] allerg = bean.getAllergyWarnings(loggedInInfo, atcCode);
                                 if (allerg != null && allerg.length > 0) {
                                     for (int allergIndex = 0; allergIndex < allerg.length; allergIndex++) {
                             %>
@@ -1501,7 +1501,7 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                                         brandName);
 
                                     if (favoriteName.length > 0) {
-                                        window.location.href = '<%= request.getContextPath() %>/oscarRx/addFavoriteWriteScript.do?stashId='
+                                        window.location.href = '<%= request.getContextPath() %>/rx/addFavoriteWriteScript.do?stashId='
                                             + escape(stashId) + '&favoriteName=' + escape(favoriteName);
                                     }
                                 }

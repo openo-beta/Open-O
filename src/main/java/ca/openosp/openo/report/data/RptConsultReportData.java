@@ -30,21 +30,21 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.ConsultationRequestDao;
-import org.oscarehr.common.dao.ConsultationServiceDao;
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.dao.DocumentDao;
-import org.oscarehr.common.dao.DocumentDao.DocumentType;
-import org.oscarehr.common.dao.DocumentDao.Module;
-import org.oscarehr.common.dao.ProfessionalSpecialistDao;
-import org.oscarehr.common.model.ConsultationRequest;
-import org.oscarehr.common.model.ConsultationServices;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.Document;
-import org.oscarehr.common.model.ProfessionalSpecialist;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.ConsultationRequestDao;
+import ca.openosp.openo.commn.dao.ConsultationServiceDao;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.dao.DocumentDao;
+import ca.openosp.openo.commn.dao.DocumentDao.DocumentType;
+import ca.openosp.openo.commn.dao.DocumentDao.Module;
+import ca.openosp.openo.commn.dao.ProfessionalSpecialistDao;
+import ca.openosp.openo.commn.model.ConsultationRequest;
+import ca.openosp.openo.commn.model.ConsultationServices;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.Document;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 

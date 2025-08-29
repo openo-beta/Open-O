@@ -30,13 +30,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.common.dao.MeasurementDao;
-import org.oscarehr.common.dao.MeasurementTypeDao;
-import org.oscarehr.common.dao.MeasurementsExtDao;
-import org.oscarehr.common.model.Measurement;
-import org.oscarehr.common.model.MeasurementType;
-import org.oscarehr.common.model.MeasurementsExt;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.MeasurementDao;
+import ca.openosp.openo.commn.dao.MeasurementTypeDao;
+import ca.openosp.openo.commn.dao.MeasurementsExtDao;
+import ca.openosp.openo.commn.model.Measurement;
+import ca.openosp.openo.commn.model.MeasurementType;
+import ca.openosp.openo.commn.model.MeasurementsExt;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class ImportExportMeasurements {
 

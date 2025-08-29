@@ -42,10 +42,10 @@
     int oox = 0, ooy = 0;
 %>
 <%@ page
-        import="java.util.*, java.sql.*, java.net.*, oscar.util.*, oscar.form.graphic.*"
+        import="java.util.*, java.sql.*, java.net.*, ca.openosp.openo.util.*, ca.openosp.openo.form.graphic.*"
         errorPage="/errorpage.jsp" %>
-<%@ page import="oscar.form.*" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.form.*" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.graphic.FrmGraphicAR" %>
 <HTML>
 <head>

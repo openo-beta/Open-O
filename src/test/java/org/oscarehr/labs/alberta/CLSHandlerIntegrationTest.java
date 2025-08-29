@@ -83,11 +83,11 @@ import java.security.PublicKey;
 // 		InputStream is = this.getClass().getResourceAsStream("/labs/HL7-CLS/MillenniumUpgrade2010_Clinic_Validation_Current.hl7");
 // 		byte[] bytes = IOUtils.toByteArray(is);
 
-// 		Provider provider = new Provider();
-// 		provider.setProviderNo("1");
+// 		Provider providers = new Provider();
+// 		providers.setProviderNo("1");
 
 // 		LoggedInInfo l = new LoggedInInfo();
-// 		l.setLoggedInProvider(provider);
+// 		l.setLoggedInProvider(providers);
 // 		int statusCode = SendingUtils.send(l, bytes, url, publicOscarKey, publicServiceKey, "CLS");
 // 		logger.info("Completed Labs upload call with status " + statusCode);
 // 		assertEquals(200, statusCode);

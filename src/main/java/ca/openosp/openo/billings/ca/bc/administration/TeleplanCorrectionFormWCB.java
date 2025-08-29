@@ -29,12 +29,14 @@ import java.sql.ResultSet;
 import java.util.Date;
 import java.util.List;
 
+import ca.openosp.Misc;
+import ca.openosp.openo.commn.model.Demographic;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.Misc;
-import oscar.MyDateFormat;
+import ca.openosp.Misc;
+import ca.openosp.MyDateFormat;
 import ca.openosp.openo.demographic.data.DemographicData;
 import ca.openosp.openo.util.ConversionUtils;
 
@@ -387,7 +389,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_doi() {
-        return oscar.Misc.safeString(this.w_doi);
+        return Misc.safeString(this.w_doi);
     }
 
     public void setW_emparea(String emparea) {
@@ -395,7 +397,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_emparea() {
-        return oscar.Misc.safeString(this.w_emparea);
+        return Misc.safeString(this.w_emparea);
     }
 
     public void setW_empphone(String phone) {
@@ -403,11 +405,11 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_empphone() {
-        return oscar.Misc.safeString(this.w_empphone);
+        return Misc.safeString(this.w_empphone);
     }
 
     public String getW_reporttype() {
-        return oscar.Misc.safeString(this.w_reportype);
+        return Misc.safeString(this.w_reportype);
     }
 
     public void setW_reporttype(String w_freport) {
@@ -415,7 +417,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_mname() {
-        return oscar.Misc.safeString(w_mname);
+        return Misc.safeString(w_mname);
     }
 
     public void setW_mname(String w_mname) {
@@ -423,7 +425,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_gender() {
-        return oscar.Misc.safeString(w_gender);
+        return Misc.safeString(w_gender);
     }
 
     public void setW_gender(String w_gender) {
@@ -431,7 +433,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_area() {
-        return oscar.Misc.safeString(w_area);
+        return Misc.safeString(w_area);
     }
 
     public void setW_area(String w_area) {
@@ -439,7 +441,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_phone() {
-        return oscar.Misc.safeString(w_phone);
+        return Misc.safeString(w_phone);
     }
 
     public void setW_phone(String w_phone) {
@@ -447,7 +449,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_empname() {
-        return oscar.Misc.safeString(w_empname);
+        return Misc.safeString(w_empname);
     }
 
     public void setW_empname(String w_empname) {
@@ -455,7 +457,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_wcbno() {
-        return oscar.Misc.safeString(w_wcbno);
+        return Misc.safeString(w_wcbno);
     }
 
     public void setW_wcbno(String w_wcbno) {
@@ -463,7 +465,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_opaddress() {
-        return oscar.Misc.safeString(w_opaddress);
+        return Misc.safeString(w_opaddress);
     }
 
     public void setW_opaddress(String w_opaddress) {
@@ -471,7 +473,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_opcity() {
-        return oscar.Misc.safeString(w_opcity);
+        return Misc.safeString(w_opcity);
     }
 
     public void setW_opcity(String w_opcity) {
@@ -479,7 +481,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_rphysician() {
-        return oscar.Misc.safeString(w_rphysician);
+        return Misc.safeString(w_rphysician);
     }
 
     public void setW_rphysician(String w_rphysician) {
@@ -487,7 +489,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_duration() {
-        return oscar.Misc.safeString(w_duration);
+        return Misc.safeString(w_duration);
     }
 
     public void setW_duration(String w_duration) {
@@ -495,7 +497,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_ftreatment() {
-        return oscar.Misc.safeString(w_ftreatment);
+        return Misc.safeString(w_ftreatment);
     }
 
     public void setW_ftreatment(String w_ftreatment) {
@@ -503,7 +505,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_problem() {
-        return oscar.Misc.safeString(w_problem);
+        return Misc.safeString(w_problem);
     }
 
     public void setW_problem(String w_problem) {
@@ -511,7 +513,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_servicedate() {
-        return oscar.Misc.safeString(w_servicedate);
+        return Misc.safeString(w_servicedate);
     }
 
     public void setW_servicedate(String w_servicedate) {
@@ -519,7 +521,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_diagnosis() {
-        return oscar.Misc.safeString(w_diagnosis);
+        return Misc.safeString(w_diagnosis);
     }
 
     public void setW_diagnosis(String w_diagnosis) {
@@ -527,7 +529,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_icd9() {
-        return oscar.Misc.safeString(w_icd9);
+        return Misc.safeString(w_icd9);
     }
 
     public void setW_icd9(String w_icd9) {
@@ -535,7 +537,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_bp() {
-        return oscar.Misc.safeString(w_bp);
+        return Misc.safeString(w_bp);
     }
 
     public void setW_bp(String w_bp) {
@@ -543,7 +545,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_side() {
-        return oscar.Misc.safeString(w_side);
+        return Misc.safeString(w_side);
     }
 
     public void setW_side(String w_side) {
@@ -551,7 +553,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_noi() {
-        return oscar.Misc.safeString(w_noi);
+        return Misc.safeString(w_noi);
     }
 
     public void setW_noi(String w_noi) {
@@ -559,7 +561,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_work() {
-        return oscar.Misc.safeString(w_work);
+        return Misc.safeString(w_work);
     }
 
     public void setW_work(String w_work) {
@@ -567,7 +569,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_workdate() {
-        return oscar.Misc.safeString(w_workdate);
+        return Misc.safeString(w_workdate);
     }
 
     public void setW_workdate(String w_workdate) {
@@ -575,7 +577,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_clinicinfo() {
-        return oscar.Misc.safeString(w_clinicinfo);
+        return Misc.safeString(w_clinicinfo);
     }
 
     public void setW_clinicinfo(String w_clinicinfo) {
@@ -583,7 +585,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_capability() {
-        return oscar.Misc.safeString(w_capability);
+        return Misc.safeString(w_capability);
     }
 
     public void setW_capability(String w_capability) {
@@ -591,7 +593,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_capreason() {
-        return oscar.Misc.safeString(w_capreason);
+        return Misc.safeString(w_capreason);
     }
 
     public void setW_capreason(String w_capreason) {
@@ -599,7 +601,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_estimate() {
-        return oscar.Misc.safeString(w_estimate);
+        return Misc.safeString(w_estimate);
     }
 
     public void setW_estimate(String w_estimate) {
@@ -607,7 +609,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_rehab() {
-        return oscar.Misc.safeString(w_rehab);
+        return Misc.safeString(w_rehab);
     }
 
     public void setW_rehab(String w_rehab) {
@@ -615,7 +617,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_rehabtype() {
-        return oscar.Misc.safeString(w_rehabtype);
+        return Misc.safeString(w_rehabtype);
     }
 
     public void setW_rehabtype(String w_rehabtype) {
@@ -623,7 +625,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_estimatedate() {
-        return oscar.Misc.safeString(w_estimatedate);
+        return Misc.safeString(w_estimatedate);
     }
 
     public void setW_estimatedate(String w_estimatedate) {
@@ -631,7 +633,7 @@ public class TeleplanCorrectionFormWCB {
     }
 
     public String getW_tofollow() {
-        return oscar.Misc.safeString(w_tofollow);
+        return Misc.safeString(w_tofollow);
     }
 
     public void setW_tofollow(String w_tofollow) {
@@ -664,19 +666,19 @@ public class TeleplanCorrectionFormWCB {
     public String[] getDemographic() {
 
         return new String[]{
-                oscar.Misc.mysqlEscape(this.firstName),
-                oscar.Misc.mysqlEscape(this.lastName),
-                oscar.Misc.mysqlEscape(this.address),
-                oscar.Misc.mysqlEscape(this.city),
-                oscar.Misc.mysqlEscape(this.province),
-                oscar.Misc.mysqlEscape(this.postal),
-                oscar.Misc.mysqlEscape(this.yearOfBirth),
-                oscar.Misc.mysqlEscape(this.monthOfBirth),
-                oscar.Misc.mysqlEscape(this.dayOfBirth),
-                oscar.Misc.mysqlEscape(this.hin),
-                oscar.Misc.mysqlEscape(this.w_gender),
-                oscar.Misc.mysqlEscape(this.w_area) + oscar.Misc.mysqlEscape(this.w_phone),
-                oscar.Misc.mysqlEscape(this.demographicNumber)
+                Misc.mysqlEscape(this.firstName),
+                Misc.mysqlEscape(this.lastName),
+                Misc.mysqlEscape(this.address),
+                Misc.mysqlEscape(this.city),
+                Misc.mysqlEscape(this.province),
+                Misc.mysqlEscape(this.postal),
+                Misc.mysqlEscape(this.yearOfBirth),
+                Misc.mysqlEscape(this.monthOfBirth),
+                Misc.mysqlEscape(this.dayOfBirth),
+                Misc.mysqlEscape(this.hin),
+                Misc.mysqlEscape(this.w_gender),
+                Misc.mysqlEscape(this.w_area) + Misc.mysqlEscape(this.w_phone),
+                Misc.mysqlEscape(this.demographicNumber)
         };
 
     }
@@ -687,11 +689,11 @@ public class TeleplanCorrectionFormWCB {
         MiscUtils.getLogger().debug("reseting wcb with bill amount " + billamt);
 
         DemographicData demoData = new DemographicData();
-        org.oscarehr.common.model.Demographic demo = demoData.getDemographic(loggedInInfo, this.demographicNumber);
+        Demographic demo = demoData.getDemographic(loggedInInfo, this.demographicNumber);
 
         return new String[]{
-                oscar.Misc.mysqlEscape(this.w_reportype),
-                oscar.Misc.mysqlEscape(billamt),
+                Misc.mysqlEscape(this.w_reportype),
+                Misc.mysqlEscape(billamt),
                 demo.getFirstName(),//oscar.Misc.mysqlEscape(this.firstName),  //
                 demo.getLastName(),//oscar.Misc.mysqlEscape(this.lastName), //
                 "",//oscar.Misc.mysqlEscape(this.w_mname),//
@@ -700,42 +702,42 @@ public class TeleplanCorrectionFormWCB {
                 demo.getAddress(),//oscar.Misc.mysqlEscape(this.address),  //
                 demo.getCity(),//oscar.Misc.mysqlEscape(this.city),  //
                 demo.getPostal(),//oscar.Misc.mysqlEscape(this.postal), //
-                oscar.Misc.areaCode(demo.getPhone2()),//oscar.Misc.mysqlEscape(this.w_area),//
-                oscar.Misc.phoneNumber(demo.getPhone2()),//oscar.Misc.mysqlEscape(this.w_phone),//
+                Misc.areaCode(demo.getPhone2()),//oscar.Misc.mysqlEscape(this.w_area),//
+                Misc.phoneNumber(demo.getPhone2()),//oscar.Misc.mysqlEscape(this.w_phone),//
                 demo.getHin() + demo.getVer(),//oscar.Misc.mysqlEscape(this.hin),  //
-                oscar.Misc.mysqlEscape(this.w_empname),
-                oscar.Misc.mysqlEscape(this.w_emparea),
-                oscar.Misc.mysqlEscape(this.w_empphone),
-                oscar.Misc.mysqlEscape(this.w_wcbno),
-                oscar.Misc.mysqlEscape(this.w_opaddress),
-                oscar.Misc.mysqlEscape(this.w_opcity),
-                oscar.Misc.mysqlEscape(this.w_rphysician),
-                oscar.Misc.mysqlEscape(this.w_duration),
-                oscar.Misc.mysqlEscape(this.w_problem),
-                oscar.Misc.mysqlEscape(this.w_servicedate),
-                oscar.Misc.mysqlEscape(this.w_diagnosis),
-                oscar.Misc.mysqlEscape(this.w_icd9),
-                oscar.Misc.mysqlEscape(this.w_bp),
-                oscar.Misc.mysqlEscape(this.w_side),
-                oscar.Misc.mysqlEscape(this.w_noi),
-                oscar.Misc.mysqlEscape(this.w_work),
-                oscar.Misc.mysqlEscape(this.w_workdate),
-                oscar.Misc.mysqlEscape(this.w_clinicinfo),
-                oscar.Misc.mysqlEscape(this.w_capability),
-                oscar.Misc.mysqlEscape(this.w_capreason),
-                oscar.Misc.mysqlEscape(this.w_estimate),
-                oscar.Misc.mysqlEscape(this.w_rehab),
-                oscar.Misc.mysqlEscape(this.w_rehabtype),
-                oscar.Misc.mysqlEscape(this.w_wcbadvisor),
-                oscar.Misc.mysqlEscape(this.w_ftreatment),
-                oscar.Misc.mysqlEscape(this.w_estimatedate),
-                oscar.Misc.mysqlEscape(this.w_tofollow),
-                oscar.Misc.mysqlEscape(this.practitioner),
-                oscar.Misc.mysqlEscape(this.w_doi),
-                oscar.Misc.mysqlEscape(this.serviceLocation),
-                oscar.Misc.mysqlEscape(this.w_feeitem),
-                oscar.Misc.mysqlEscape(this.w_extrafeeitem),
-                oscar.Misc.mysqlEscape(this.billingNo)
+                Misc.mysqlEscape(this.w_empname),
+                Misc.mysqlEscape(this.w_emparea),
+                Misc.mysqlEscape(this.w_empphone),
+                Misc.mysqlEscape(this.w_wcbno),
+                Misc.mysqlEscape(this.w_opaddress),
+                Misc.mysqlEscape(this.w_opcity),
+                Misc.mysqlEscape(this.w_rphysician),
+                Misc.mysqlEscape(this.w_duration),
+                Misc.mysqlEscape(this.w_problem),
+                Misc.mysqlEscape(this.w_servicedate),
+                Misc.mysqlEscape(this.w_diagnosis),
+                Misc.mysqlEscape(this.w_icd9),
+                Misc.mysqlEscape(this.w_bp),
+                Misc.mysqlEscape(this.w_side),
+                Misc.mysqlEscape(this.w_noi),
+                Misc.mysqlEscape(this.w_work),
+                Misc.mysqlEscape(this.w_workdate),
+                Misc.mysqlEscape(this.w_clinicinfo),
+                Misc.mysqlEscape(this.w_capability),
+                Misc.mysqlEscape(this.w_capreason),
+                Misc.mysqlEscape(this.w_estimate),
+                Misc.mysqlEscape(this.w_rehab),
+                Misc.mysqlEscape(this.w_rehabtype),
+                Misc.mysqlEscape(this.w_wcbadvisor),
+                Misc.mysqlEscape(this.w_ftreatment),
+                Misc.mysqlEscape(this.w_estimatedate),
+                Misc.mysqlEscape(this.w_tofollow),
+                Misc.mysqlEscape(this.practitioner),
+                Misc.mysqlEscape(this.w_doi),
+                Misc.mysqlEscape(this.serviceLocation),
+                Misc.mysqlEscape(this.w_feeitem),
+                Misc.mysqlEscape(this.w_extrafeeitem),
+                Misc.mysqlEscape(this.billingNo)
         };
     }
 

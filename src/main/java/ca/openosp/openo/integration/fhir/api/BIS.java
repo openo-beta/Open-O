@@ -27,7 +27,7 @@ package ca.openosp.openo.integration.fhir.api;
 import ca.openosp.openo.integration.fhir.model.Patient;
 import org.hl7.fhir.dstu3.model.Attachment;
 import org.hl7.fhir.dstu3.model.Organization;
-import org.oscarehr.common.model.Clinic;
+import ca.openosp.openo.commn.model.Clinic;
 import ca.openosp.openo.integration.fhir.builder.FhirCommunicationBuilder;
 import ca.openosp.openo.integration.fhir.manager.OscarFhirConfigurationManager;
 import ca.openosp.openo.integration.fhir.manager.OscarFhirResourceManager;
@@ -35,7 +35,7 @@ import ca.openosp.openo.integration.fhir.model.ClinicalImpression;
 import ca.openosp.openo.integration.fhir.resources.Settings;
 import ca.openosp.openo.integration.fhir.resources.constants.FhirDestination;
 import ca.openosp.openo.integration.fhir.resources.constants.Region;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 public class BIS {
 
@@ -48,7 +48,7 @@ public class BIS {
         Patient patient = OscarFhirResourceManager.getPatientByDemographicNumber(configurationManager, demographicNo);
 
         // Practitioner
-        //Practitioner practitioner = new Practitioner(provider, configurationManager);
+        //Practitioner practitioner = new Practitioner(providers, configurationManager);
 
         FhirCommunicationBuilder fhirCommunicationBuilder = new FhirCommunicationBuilder(configurationManager);
         fhirCommunicationBuilder.setSubject(patient);

@@ -23,7 +23,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.Misc;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
 
@@ -73,31 +74,31 @@ public class FrmARBloodWorkTest {
             throws SQLException {
         int bwTestListSize = 0;
 
-        if (oscar.Misc.getString(rs, "pg1_labHb") != null && oscar.Misc.getString(rs, "pg1_labHb").length() > 0) {
+        if (Misc.getString(rs, "pg1_labHb") != null && Misc.getString(rs, "pg1_labHb").length() > 0) {
             bwTestListSize++;
         }
-        if (oscar.Misc.getString(rs, "pg1_labMCV") != null && oscar.Misc.getString(rs, "pg1_labMCV").length() > 0) {
+        if (Misc.getString(rs, "pg1_labMCV") != null && Misc.getString(rs, "pg1_labMCV").length() > 0) {
             bwTestListSize++;
         }
-        if (oscar.Misc.getString(rs, "pg1_labABO") != null && oscar.Misc.getString(rs, "pg1_labABO").length() > 0) {
+        if (Misc.getString(rs, "pg1_labABO") != null && Misc.getString(rs, "pg1_labABO").length() > 0) {
             bwTestListSize++;
         }
-        if (oscar.Misc.getString(rs, "pg1_labRh") != null && oscar.Misc.getString(rs, "pg1_labRh").length() > 0) {
+        if (Misc.getString(rs, "pg1_labRh") != null && Misc.getString(rs, "pg1_labRh").length() > 0) {
             bwTestListSize++;
         }
-        if (oscar.Misc.getString(rs, "pg1_labAntiScr") != null && oscar.Misc.getString(rs, "pg1_labAntiScr").length() > 0) {
+        if (Misc.getString(rs, "pg1_labAntiScr") != null && Misc.getString(rs, "pg1_labAntiScr").length() > 0) {
             bwTestListSize++;
         }
-        if (oscar.Misc.getString(rs, "pg1_labRubella") != null && oscar.Misc.getString(rs, "pg1_labRubella").length() > 0) {
+        if (Misc.getString(rs, "pg1_labRubella") != null && Misc.getString(rs, "pg1_labRubella").length() > 0) {
             bwTestListSize++;
         }
-        if (oscar.Misc.getString(rs, "pg1_labHBsAg") != null && oscar.Misc.getString(rs, "pg1_labHBsAg").length() > 0) {
+        if (Misc.getString(rs, "pg1_labHBsAg") != null && Misc.getString(rs, "pg1_labHBsAg").length() > 0) {
             bwTestListSize++;
         }
-        if (oscar.Misc.getString(rs, "pg1_labVDRL") != null && oscar.Misc.getString(rs, "pg1_labVDRL").length() > 0) {
+        if (Misc.getString(rs, "pg1_labVDRL") != null && Misc.getString(rs, "pg1_labVDRL").length() > 0) {
             bwTestListSize++;
         }
-        if (oscar.Misc.getString(rs, "pg1_labHIV") != null && oscar.Misc.getString(rs, "pg1_labHIV").length() > 0) {
+        if (Misc.getString(rs, "pg1_labHIV") != null && Misc.getString(rs, "pg1_labHIV").length() > 0) {
             bwTestListSize++;
         }
 
@@ -110,11 +111,11 @@ public class FrmARBloodWorkTest {
             throws SQLException {
         Properties props = new Properties();
 
-        if (oscar.Misc.getString(rs, "pg1_labABO") != null && oscar.Misc.getString(rs, "pg1_labABO").length() > 0) {
-            props.setProperty("pg1_labABO", oscar.Misc.getString(rs, "pg1_labABO"));
+        if (Misc.getString(rs, "pg1_labABO") != null && Misc.getString(rs, "pg1_labABO").length() > 0) {
+            props.setProperty("pg1_labABO", Misc.getString(rs, "pg1_labABO"));
         }
-        if (oscar.Misc.getString(rs, "pg1_labRh") != null && oscar.Misc.getString(rs, "pg1_labRh").length() > 0) {
-            props.setProperty("pg1_labRh", oscar.Misc.getString(rs, "pg1_labRh"));
+        if (Misc.getString(rs, "pg1_labRh") != null && Misc.getString(rs, "pg1_labRh").length() > 0) {
+            props.setProperty("pg1_labRh", Misc.getString(rs, "pg1_labRh"));
         }
         return props;
     }

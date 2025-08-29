@@ -51,9 +51,9 @@
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
 <%@ page
-        import="java.util.*, oscar.util.*, ca.openosp.openo.provider.data.ProviderData, org.oscarehr.utility.SpringUtils, org.oscarehr.common.dao.CtlDocClassDao" %>
-<%@ page import="org.oscarehr.common.model.DocumentExtraReviewer" %>
-<%@ page import="org.oscarehr.common.dao.DocumentExtraReviewerDao" %>
+        import="java.util.*, ca.openosp.openo.util.*, ca.openosp.openo.providers.data.ProviderData, ca.openosp.openo.utility.SpringUtils, ca.openosp.openo.commn.dao.CtlDocClassDao" %>
+<%@ page import="ca.openosp.openo.commn.model.DocumentExtraReviewer" %>
+<%@ page import="ca.openosp.openo.commn.dao.DocumentExtraReviewerDao" %>
 <%@ page import="ca.openosp.openo.documentManager.data.AddEditDocument2Form" %>
 <%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="ca.openosp.openo.documentManager.EDoc" %>
@@ -348,7 +348,7 @@
                        value="<%=Encode.forHtmlAttribute(StringUtils.trimToEmpty(formdata.getSourceFacility()))%>"/>
             </td>
         </tr>
-        <% if (module.equals("provider")) {%>
+        <% if (module.equals("providers")) {%>
         <tr>
             <td>Public?</td>
             <td><input type="checkbox" name="docPublic"

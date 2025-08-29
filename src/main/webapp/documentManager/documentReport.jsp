@@ -24,10 +24,10 @@
 
 --%>
 <!DOCTYPE html>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.utility.MiscUtils" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="org.oscarehr.common.dao.UserPropertyDAO, org.oscarehr.common.model.UserProperty" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.commn.dao.UserPropertyDAO, ca.openosp.openo.commn.model.UserProperty" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%
@@ -57,9 +57,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@ page import="java.util.*" %>
-<%@ page import="org.oscarehr.common.dao.CtlDocClassDao" %>
+<%@ page import="ca.openosp.openo.commn.dao.CtlDocClassDao" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.utility.SessionConstants" %>
+<%@page import="ca.openosp.openo.utility.SessionConstants" %>
 <%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
@@ -114,12 +114,12 @@
         demographicNo = moduleid;
     }
 
-//module can be either demographic or provider from what i can tell
+//module can be either demographic or providers from what i can tell
 
     String moduleName = "";
     if (module.equals("demographic")) {
         moduleName = EDocUtil.getDemographicName(loggedInInfo, moduleid);
-    } else if (module.equals("provider")) {
+    } else if (module.equals("providers")) {
         moduleName = EDocUtil.getProviderName(moduleid);
     }
 
@@ -382,7 +382,7 @@
 
                 categories.add(privatedocs);
                 categoryKeys.add(moduleName + "'s Private Documents");
-                if (module.equals("provider")) {
+                if (module.equals("providers")) {
                     ArrayList publicdocs = EDocUtil.listDocs(loggedInInfo, module, moduleid, view, EDocUtil.PUBLIC, EDocUtil.EDocSort.OBSERVATIONDATE, viewstatus);
                     categories.add(publicdocs);
                     categoryKeys.add("Public Documents");

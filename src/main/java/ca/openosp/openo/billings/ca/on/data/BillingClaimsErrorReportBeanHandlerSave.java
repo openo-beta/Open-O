@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Vector;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.billings.ca.on.bean.BillingClaimsErrorReportBean;
 import ca.openosp.openo.billings.ca.on.bean.BillingClaimsErrorReportBeanHandler;

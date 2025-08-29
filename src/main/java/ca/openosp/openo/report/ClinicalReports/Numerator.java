@@ -37,7 +37,7 @@ package ca.openosp.openo.report.ClinicalReports;
 
 import java.util.Hashtable;
 
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 /**
  * @author jay

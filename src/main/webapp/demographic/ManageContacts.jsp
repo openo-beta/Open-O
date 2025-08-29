@@ -25,8 +25,8 @@
 --%>
 
 <%@ page import="java.util.List" %>
-<%@ page import="org.oscarehr.common.model.Contact" %>
-<%@page import="org.oscarehr.common.model.DemographicContact" %>
+<%@ page import="ca.openosp.openo.commn.model.Contact" %>
+<%@page import="ca.openosp.openo.commn.model.DemographicContact" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -188,7 +188,7 @@
             }
 
             function search_provider(nameEl, valueEl) {
-                var url = '../provider/receptionistfindprovider.jsp?custom=true&form=contactForm&elementName=' + nameEl + '&elementId=' + valueEl;
+                var url = '../providers/receptionistfindprovider.jsp?custom=true&form=contactForm&elementName=' + nameEl + '&elementId=' + valueEl;
                 var popup = window.open(url, 'demographic_search');
                 demo_no_orig = document.contactForm.elements[valueEl].value;
                 //check_demo_no = setInterval("if (demo_no_orig != document.contactForm.elements[valueEl].value) updTklrList()",100);

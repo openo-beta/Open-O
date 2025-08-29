@@ -33,11 +33,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.dao.RemoteAttachmentsDao;
-import org.oscarehr.common.model.RemoteAttachments;
+import ca.openosp.openo.commn.dao.RemoteAttachmentsDao;
+import ca.openosp.openo.commn.model.RemoteAttachments;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 
@@ -54,7 +54,7 @@ public class MsgProceed2Action extends ActionSupport {
     public String execute() throws IOException, ServletException {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_msg", "w", null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         MsgSessionBean bean;

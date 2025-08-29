@@ -31,7 +31,7 @@ import org.apache.logging.log4j.Logger;
 import org.drools.RuleBase;
 
 import org.junit.Test;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;

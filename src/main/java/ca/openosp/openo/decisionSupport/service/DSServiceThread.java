@@ -32,9 +32,9 @@
 package ca.openosp.openo.decisionSupport.service;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.DbConnectionFilter;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.DbConnectionFilter;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
 /**
  * @author apavel

@@ -29,8 +29,9 @@ package ca.openosp.openo.report.ClinicalReports;
 import java.sql.ResultSet;
 import java.util.Hashtable;
 
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.Misc;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
 
@@ -130,7 +131,7 @@ public class SQLNumerator implements Numerator {
                 if (outputfields != null) {
                     outputValues = new Hashtable();
                     for (int i = 0; i < outputfields.length; i++) {
-                        outputValues.put(outputfields[i], oscar.Misc.getString(rs, outputfields[i]));
+                        outputValues.put(outputfields[i], Misc.getString(rs, outputfields[i]));
                     }
                     outputValues.put("_evaluation", Boolean.valueOf(evalTrue));
                 }

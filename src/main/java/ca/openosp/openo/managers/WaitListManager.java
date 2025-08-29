@@ -32,15 +32,15 @@ import java.util.Properties;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.velocity.VelocityContext;
-import org.oscarehr.PMmodule.dao.ProgramDao;
-import org.oscarehr.PMmodule.model.Program;
-import org.oscarehr.PMmodule.model.Vacancy;
-import org.oscarehr.common.dao.AdmissionDao;
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.model.Admission;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.VelocityUtils;
+import ca.openosp.openo.PMmodule.dao.ProgramDao;
+import ca.openosp.openo.PMmodule.model.Program;
+import ca.openosp.openo.PMmodule.model.Vacancy;
+import ca.openosp.openo.commn.dao.AdmissionDao;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.model.Admission;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.VelocityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

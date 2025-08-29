@@ -23,11 +23,11 @@
 
 --%>
 
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="java.util.Hashtable" %>
 <%@page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@page import="java.util.Collections" %>
-<%@page import="oscar.MyDateFormat" %>
+<%@page import="ca.openosp.MyDateFormat" %>
 <%@page import="ca.openosp.openo.util.DateUtils" %>
 <%@page import="java.util.ArrayList" %>
 
@@ -43,9 +43,9 @@
 <%@page import="java.net.URLDecoder, java.net.URLEncoder,java.util.Date, java.util.List" %>
 <%@page import="ca.openosp.openo.documentManager.EDocUtil,ca.openosp.openo.documentManager.EDoc" %>
 <%@page import="ca.openosp.openo.casemgmt.web.NoteDisplay,ca.openosp.openo.casemgmt.web.NoteDisplayLocal" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager,ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
-<%@page import="org.oscarehr.common.dao.CtlDocClassDao,org.oscarehr.common.dao.QueueDao" %>
+<%@page import="ca.openosp.openo.commn.dao.CtlDocClassDao,ca.openosp.openo.commn.dao.QueueDao" %>
 <%@page import="org.springframework.web.context.WebApplicationContext" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%

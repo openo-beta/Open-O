@@ -16,9 +16,9 @@ import ca.openosp.openo.hospitalReportManager.dao.HRMCategoryDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMSubClassDao;
 import ca.openosp.openo.hospitalReportManager.model.HRMSubClass;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -36,7 +36,7 @@ public class HRMMapping2Action extends ActionSupport {
         HRMSubClassDao hrmSubClassDao = (HRMSubClassDao) SpringUtils.getBean(HRMSubClassDao.class);
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin", "r", null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         try {

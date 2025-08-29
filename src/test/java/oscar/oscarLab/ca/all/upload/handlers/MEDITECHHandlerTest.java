@@ -50,7 +50,7 @@ import org.junit.runners.Parameterized;
 @RunWith(Parameterized.class)
 public class MEDITECHHandlerTest extends MEDITECHHandler {
 
-    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static Logger logger = ca.openosp.openo.utility.MiscUtils.getLogger();
     private static String hl7Body;
     private static ZipFile zipFile;
     private static int TEST_COUNT = 0;

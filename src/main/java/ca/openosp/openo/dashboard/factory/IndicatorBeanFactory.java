@@ -33,8 +33,8 @@ import ca.openosp.openo.dashboard.handler.IndicatorQueryHandler;
 import ca.openosp.openo.dashboard.handler.IndicatorTemplateXML;
 import ca.openosp.openo.dashboard.query.Parameter;
 import ca.openosp.openo.dashboard.query.RangeInterface;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 /**
  * Builds IndicatorBeans with executed query results

@@ -19,22 +19,23 @@
 
 package ca.openosp.openo.appt;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.AppointmentArchiveDao;
-import org.oscarehr.common.dao.OscarAppointmentDao;
-import org.oscarehr.common.dao.RScheduleDao;
-import org.oscarehr.common.dao.ScheduleDateDao;
-import org.oscarehr.common.model.Appointment;
-import org.oscarehr.common.model.RSchedule;
-import org.oscarehr.common.model.ScheduleDate;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.AppointmentArchiveDao;
+import ca.openosp.openo.commn.dao.OscarAppointmentDao;
+import ca.openosp.openo.commn.dao.RScheduleDao;
+import ca.openosp.openo.commn.dao.ScheduleDateDao;
+import ca.openosp.openo.commn.model.Appointment;
+import ca.openosp.openo.commn.model.RSchedule;
+import ca.openosp.openo.commn.model.ScheduleDate;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.SxmlMisc;
+import ca.openosp.SxmlMisc;
 import ca.openosp.openo.util.ConversionUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 
 public class JdbcApptImpl {
-    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static final Logger _logger = MiscUtils.getLogger();
     AppointmentArchiveDao appointmentArchiveDao = (AppointmentArchiveDao) SpringUtils.getBean(AppointmentArchiveDao.class);
     OscarAppointmentDao appointmentDao = (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class);
 

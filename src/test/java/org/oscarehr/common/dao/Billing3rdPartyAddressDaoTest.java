@@ -37,8 +37,9 @@ import org.junit.Test;
 import ca.openosp.openo.billing.CA.ON.model.Billing3rdPartyAddress;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.Billing3rdPartyAddressDao;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class Billing3rdPartyAddressDaoTest extends DaoTestFixtures {
 

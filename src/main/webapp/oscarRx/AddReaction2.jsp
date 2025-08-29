@@ -1,5 +1,6 @@
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPatientData" %><%--
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPatientData" %>
+<%@ page import="ca.openosp.openo.commn.model.Allergy" %><%--
 
     Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
     This software is published under the GPL GNU General Public License.
@@ -76,7 +77,7 @@
             Boolean nonDrug = null;
 
             if (allergyToArchive != null && !allergyToArchive.isEmpty()) {
-                org.oscarehr.common.model.Allergy a = patient.getAllergy(Integer.parseInt(allergyToArchive));
+                Allergy a = patient.getAllergy(Integer.parseInt(allergyToArchive));
                 if (a != null) {
                     reaction = a.getReaction();
                     startDate = a.getStartDateFormatted();
