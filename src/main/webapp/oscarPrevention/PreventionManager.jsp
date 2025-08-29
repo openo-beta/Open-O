@@ -24,12 +24,12 @@
 
 --%>
 
-<%@page import="oscar.oscarPrevention.*" %>
-<%@page import="org.oscarehr.common.model.Property" %>
-<%@page import="org.oscarehr.provider.model.PreventionManager" %>
-<%@page import="org.oscarehr.common.dao.PropertyDao" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="oscar.OscarProperties" %>
+<%@page import="ca.openosp.openo.prevention.*" %>
+<%@page import="ca.openosp.openo.commn.model.Property" %>
+<%@page import="ca.openosp.openo.provider.model.PreventionManager" %>
+<%@page import="ca.openosp.openo.commn.dao.PropertyDao" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.OscarProperties" %>
 
 <%@page import="java.util.ArrayList" %>
 <%@page import="java.util.List" %>

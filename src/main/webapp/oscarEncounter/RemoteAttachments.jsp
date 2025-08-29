@@ -39,9 +39,9 @@
     }
 %>
 
-<%@ page import="oscar.oscarEncounter.immunization.data.*" %>
+<%@ page import="ca.openosp.openo.encounter.immunization.data.*" %>
 <%@ page
-        import="oscar.oscarEncounter.immunization.pageUtil.*, java.util.*, org.w3c.dom.*" %>
+        import="ca.openosp.openo.encounter.immunization.pageUtil.*, java.util.*, org.w3c.dom.*" %>
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
 <%@ page import="ca.openosp.openo.encounter.data.EctRemoteAttachments" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>

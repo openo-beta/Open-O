@@ -37,16 +37,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.openo.commn.model.Demographic;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.BillingDao;
-import org.oscarehr.common.model.Billing;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.BillingDao;
+import ca.openosp.openo.commn.model.Billing;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.Misc;
-import oscar.MyDateFormat;
-import oscar.OscarProperties;
+import ca.openosp.Misc;
+import ca.openosp.MyDateFormat;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.billings.ca.bc.MSP.MSPBillingNote;
 import ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile;
@@ -98,7 +99,7 @@ public class BillingReProcessBill2Action extends ActionSupport {
             String billingmasterNo = frm.getBillingmasterNo();
             String demographicNo = frm.getDemoNo();
             DemographicData demoD = new DemographicData();
-            org.oscarehr.common.model.Demographic demo = demoD.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demographicNo);
+            Demographic demo = demoD.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demographicNo);
 
             logger.debug("RETRIEVING Using " + billingmasterNo);
             Billingmaster billingmaster = billingmasterDAO.getBillingMasterByBillingMasterNo(billingmasterNo);

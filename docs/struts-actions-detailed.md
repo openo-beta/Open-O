@@ -221,7 +221,7 @@ Document management and processing functionality.
 
 | Action Name | Class Name | Description |
 |-------------|------------|-------------|
-| DocumentDescriptionTemplate | org.oscarehr.provider.web.DocumentDescriptionTemplate2Action | Manages document description templates |
+| DocumentDescriptionTemplate | ca.openosp.openo.www.provider.DocumentDescriptionTemplate2Action | Manages document description templates |
 | documentManager/addDocumentType | org.oscarehr.documentManager.actions.AddDocumentType2Action | Adds new document types |
 | documentManager/addEditDocument | org.oscarehr.documentManager.actions.AddEditDocument2Action | Adds or edits documents |
 | documentManager/addEditHtml | org.oscarehr.documentManager.actions.AddEditHtml2Action | Adds or edits HTML documents |
@@ -367,7 +367,7 @@ System home page functionality.
 
 | Action Name | Class Name | Description |
 |-------------|------------|-------------|
-| Home | org.oscarehr.PMmodule.web.Home2Action | Displays system home page |
+| Home | ca.openosp.openo.web.PMmodule.Home2Action | Displays system home page |
 
 ## Hospital Report Manager Module
 
@@ -504,11 +504,11 @@ Ontario Laboratory Information System integration.
 
 | Action Name | Class Name | Description |
 |-------------|------------|-------------|
-| olis/AddToInbox | org.oscarehr.olis.OLISAddToInbox2Action | Adds OLIS results to inbox |
-| olis/Preferences | org.oscarehr.olis.OLISPreferences2Action | Manages OLIS preferences |
-| olis/Results | org.oscarehr.olis.OLISResults2Action | Retrieves OLIS lab results |
-| olis/Search | org.oscarehr.olis.OLISSearch2Action | Searches OLIS database |
-| olis/UploadSimulationData | org.oscarehr.olis.OLISUploadSimulationData2Action | Uploads OLIS simulation data |
+| olis/AddToInbox | ca.openosp.openo.olis.OLISAddToInbox2Action | Adds OLIS results to inbox |
+| olis/Preferences | ca.openosp.openo.olis.OLISPreferences2Action | Manages OLIS preferences |
+| olis/Results | ca.openosp.openo.olis.OLISResults2Action | Retrieves OLIS lab results |
+| olis/Search | ca.openosp.openo.olis.OLISSearch2Action | Searches OLIS database |
+| olis/UploadSimulationData | ca.openosp.openo.olis.OLISUploadSimulationData2Action | Uploads OLIS simulation data |
 
 ## OnCall Module
 
@@ -606,7 +606,7 @@ Clinical encounter management and workflow.
 | oscarEncounter/IncomingConsultation | oscar.oscarEncounter.oscarConsultationRequest.pageUtil.EctIncomingConsultation2Action | Processes incoming consultations |
 | oscarEncounter/IncomingEncounter | oscar.oscarEncounter.pageUtil.EctIncomingEncounter2Action | Processes incoming encounters |
 | oscarEncounter/InsertTemplate | oscar.oscarEncounter.pageUtil.EctInsertTemplate2Action | Inserts encounter templates |
-| oscarEncounter/MeasurementData | org.oscarehr.measurements.web.MeasurementData2Action | Manages measurement data |
+| oscarEncounter/MeasurementData | ca.openosp.openo.measurements.web.MeasurementData2Action | Manages measurement data |
 | oscarEncounter/Measurements2 | oscar.oscarEncounter.oscarMeasurements.pageUtil.EctMeasurements2Action | Manages encounter measurements |
 | oscarEncounter/Measurements | oscar.oscarEncounter.oscarMeasurements.pageUtil.EctMeasurements2Action | Manages clinical measurements |
 | oscarEncounter/oscarConsultation/printAttached | oscar.oscarEncounter.oscarConsultationRequest.pageUtil.ConsultationPrintDocs2Action | Prints attached consultation documents |
@@ -784,7 +784,7 @@ Prescription and medication management.
 | oscarRx/deleteFavorite2 | oscar.oscarRx.pageUtil.RxDeleteFavorite2Action | Deletes prescription favorites |
 | oscarRx/deleteFavorite | oscar.oscarRx.pageUtil.RxDeleteFavorite2Action | Deletes favorite prescriptions |
 | oscarRx/deleteRx | oscar.oscarRx.pageUtil.RxDeleteRx2Action | Deletes prescriptions |
-| oscarRx/Dispense | org.oscarehr.rx.dispensary.Dispensary2Action | Manages medication dispensing |
+| oscarRx/Dispense | ca.openosp.openo.dispensary.rx.Dispensary2Action | Manages medication dispensing |
 | oscarRx/drugInfo | oscar.oscarRx.pageUtil.RxDrugInfo2Action | Displays drug information |
 | oscarRx/GetmyDrugrefInfo | oscar.oscarRx.pageUtil.RxMyDrugrefInfo2Action | Gets drug reference information |
 | oscarRx/GetRxPageSizeInfo | oscar.oscarRx.pageUtil.RxRxPageSizeInfo2Action | Gets prescription page size info |
@@ -835,23 +835,23 @@ Program Management functionality.
 
 | Action Name | Class Name | Description |
 |-------------|------------|-------------|
-| PMmodule/Admin/DefaultRoleAccess | org.oscarehr.PMmodule.web.admin.DefaultRoleAccess2Action | Manages default role access |
-| PMmodule/Admin/SysAdmin | org.oscarehr.PMmodule.web.admin.AdminHome2Action | System administration interface |
-| PMmodule/AgencyManager | org.oscarehr.PMmodule.web.admin.AgencyManager2Action | Manages agencies |
-| PMmodule/AllVacancies | org.oscarehr.PMmodule.web.AllWaitingList2Action | Views all program vacancies |
-| PMmodule/ClientManager | org.oscarehr.PMmodule.web.ClientManager2Action | Manages program clients |
-| PMmodule/ClientSearch2 | org.oscarehr.PMmodule.web.ClientSearchAction22Action | Searches for clients |
-| PMmodule/FacilityManager | org.oscarehr.PMmodule.web.admin.FacilityManager2Action | Manages program facilities |
+| PMmodule/Admin/DefaultRoleAccess | ca.openosp.openo.admin.web.PMmodule.DefaultRoleAccess2Action | Manages default role access |
+| PMmodule/Admin/SysAdmin | ca.openosp.openo.admin.web.PMmodule.AdminHome2Action | System administration interface |
+| PMmodule/AgencyManager | ca.openosp.openo.admin.web.PMmodule.AgencyManager2Action | Manages agencies |
+| PMmodule/AllVacancies | ca.openosp.openo.web.PMmodule.AllWaitingList2Action | Views all program vacancies |
+| PMmodule/ClientManager | ca.openosp.openo.web.PMmodule.ClientManager2Action | Manages program clients |
+| PMmodule/ClientSearch2 | ca.openosp.openo.web.PMmodule.ClientSearchAction22Action | Searches for clients |
+| PMmodule/FacilityManager | ca.openosp.openo.admin.web.PMmodule.FacilityManager2Action | Manages program facilities |
 | PMmodule/HealthSafety | org.oscarehr.PMmodule.web.HealthSafety2Action | Manages health and safety |
-| PMmodule/ProgramManager | org.oscarehr.PMmodule.web.admin.ProgramManager2Action | Manages programs |
-| PMmodule/ProgramManagerView | org.oscarehr.PMmodule.web.admin.ProgramManagerView2Action | Views program management |
-| PMmodule/ProviderInfo | org.oscarehr.PMmodule.web.ProviderInfo2Action | Displays provider information |
-| PMmodule/ProviderSearch | org.oscarehr.PMmodule.web.ProviderSearch2Action | Searches for providers |
-| PMmodule/Reports/BasicReport | org.oscarehr.PMmodule.web.reports.BasicReport2Action | Generates basic reports |
-| PMmodule/Reports/ClientListsReport | org.oscarehr.PMmodule.web.reports.ClientListsReport2Action | Generates client list reports |
-| PMmodule/Reports/ProgramActivityReport | org.oscarehr.PMmodule.web.reports.ActivityReport2Action | Generates program activity reports |
-| PMmodule/StaffManager | org.oscarehr.PMmodule.web.admin.StaffManager2Action | Manages program staff |
-| PMmodule/VacancyClientMatch | org.oscarehr.PMmodule.web.VacancyClientMatch2Action | Matches clients to vacancies |
+| PMmodule/ProgramManager | ca.openosp.openo.admin.web.PMmodule.ProgramManager2Action | Manages programs |
+| PMmodule/ProgramManagerView | ca.openosp.openo.admin.web.PMmodule.ProgramManagerView2Action | Views program management |
+| PMmodule/ProviderInfo | ca.openosp.openo.web.PMmodule.ProviderInfo2Action | Displays provider information |
+| PMmodule/ProviderSearch | ca.openosp.openo.web.PMmodule.ProviderSearch2Action | Searches for providers |
+| PMmodule/Reports/BasicReport | ca.openosp.openo.reports.web.PMmodule.BasicReport2Action | Generates basic reports |
+| PMmodule/Reports/ClientListsReport | ca.openosp.openo.reports.web.PMmodule.ClientListsReport2Action | Generates client list reports |
+| PMmodule/Reports/ProgramActivityReport | ca.openosp.openo.reports.web.PMmodule.ActivityReport2Action | Generates program activity reports |
+| PMmodule/StaffManager | ca.openosp.openo.admin.web.PMmodule.StaffManager2Action | Manages program staff |
+| PMmodule/VacancyClientMatch | ca.openosp.openo.web.PMmodule.VacancyClientMatch2Action | Matches clients to vacancies |
 
 ## Population Module
 
@@ -892,12 +892,12 @@ Provider management and preferences.
 
 | Action Name | Class Name | Description |
 |-------------|------------|-------------|
-| provider/CppPreferences | org.oscarehr.provider.web.CppPreferences2Action | Manages CPP preferences |
-| provider/OlisPreferences | org.oscarehr.provider.web.OlisPreferences2Action | Manages OLIS preferences |
-| provider/rxInteractionWarningLevel | org.oscarehr.provider.web.ProviderRxInteractionWarningLevel2Action | Sets drug interaction warning levels |
+| provider/CppPreferences | ca.openosp.openo.www.provider.CppPreferences2Action | Manages CPP preferences |
+| provider/OlisPreferences | ca.openosp.openo.www.provider.OlisPreferences2Action | Manages OLIS preferences |
+| provider/rxInteractionWarningLevel | ca.openosp.openo.www.provider.ProviderRxInteractionWarningLevel2Action | Sets drug interaction warning levels |
 | provider/SearchProvider | org.oscarehr.common.web.SearchProviderAutoComplete2Action | Provides provider search autocomplete |
-| Provider/showPersonal | org.oscarehr.provider.web.DisplayPersonalInfoAppointment2Action | Shows provider personal information |
-| provider/UserPreference | org.oscarehr.provider.web.UserPreference2Action | Manages user preferences |
+| Provider/showPersonal | ca.openosp.openo.www.provider.DisplayPersonalInfoAppointment2Action | Shows provider personal information |
+| provider/UserPreference | ca.openosp.openo.www.provider.UserPreference2Action | Manages user preferences |
 
 ## Quick Billing Module
 
@@ -959,7 +959,7 @@ Work view management.
 
 | Action Name | Class Name | Description |
 |-------------|------------|-------------|
-| saveWorkView | org.oscarehr.provider.web.ProviderView2Action | Saves provider work views |
+| saveWorkView | ca.openosp.openo.www.provider.ProviderView2Action | Saves provider work views |
 
 ## Scratch Module
 
@@ -983,7 +983,7 @@ Security and authentication functionality.
 
 | Action Name | Class Name | Description |
 |-------------|------------|-------------|
-| securityRecord/mfa | org.oscarehr.security.MfaActions2Action | Manages multi-factor authentication |
+| securityRecord/mfa | ca.openosp.openo.security.MfaActions2Action | Manages multi-factor authentication |
 
 ## Set Provider Module
 
@@ -992,8 +992,8 @@ Provider configuration functionality.
 | Action Name | Class Name | Description |
 |-------------|------------|-------------|
 | setProviderColour | oscar.oscarProvider.pageUtil.ProEditColour2Action | Sets provider color preferences |
-| setProviderStaleDate | org.oscarehr.provider.web.ProviderProperty2Action | Sets provider stale date |
-| setTicklerPreferences | org.oscarehr.provider.web.ProviderProperty2Action | Sets tickler preferences |
+| setProviderStaleDate | ca.openosp.openo.www.provider.ProviderProperty2Action | Sets provider stale date |
+| setTicklerPreferences | ca.openosp.openo.www.provider.ProviderProperty2Action | Sets tickler preferences |
 
 ## Shelter Module
 

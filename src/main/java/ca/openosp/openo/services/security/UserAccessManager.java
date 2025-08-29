@@ -26,7 +26,7 @@ package ca.openosp.openo.services.security;
 
 import java.util.List;
 
-import ca.openosp.openo.dao.security.UserAccessDao;
+import ca.openosp.openo.daos.security.UserAccessDao;
 import ca.openosp.openo.services.LookupManager;
 
 public interface UserAccessManager {

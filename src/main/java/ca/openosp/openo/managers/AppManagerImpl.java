@@ -32,13 +32,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.AppDefinitionDao;
-import org.oscarehr.common.dao.AppUserDao;
-import org.oscarehr.common.model.AppDefinition;
-import org.oscarehr.common.model.AppUser;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.ws.rest.to.model.AppDefinitionTo1;
+import ca.openosp.openo.commn.dao.AppDefinitionDao;
+import ca.openosp.openo.commn.dao.AppUserDao;
+import ca.openosp.openo.commn.model.AppDefinition;
+import ca.openosp.openo.commn.model.AppUser;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.webserv.rest.to.model.AppDefinitionTo1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

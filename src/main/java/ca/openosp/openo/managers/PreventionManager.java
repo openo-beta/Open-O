@@ -30,9 +30,9 @@ package ca.openosp.openo.managers;
 
 import java.util.*;
 
-import org.oscarehr.common.model.Prevention;
-import org.oscarehr.common.model.PreventionExt;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.model.Prevention;
+import ca.openosp.openo.commn.model.PreventionExt;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 public interface PreventionManager {
 

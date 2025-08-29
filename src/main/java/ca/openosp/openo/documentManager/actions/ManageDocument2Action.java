@@ -26,6 +26,9 @@
 
 package ca.openosp.openo.documentManager.actions;
 
+import ca.openosp.OscarProperties;
+import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.commn.model.*;
 import com.itextpdf.text.pdf.PdfReader;
 import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
@@ -40,9 +43,9 @@ import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.jpedal.PdfDecoder;
 import org.jpedal.fonts.FontMappings;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager;
-import org.oscarehr.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.IntegratorFallBackManager;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
 import ca.openosp.openo.caisi_integrator.ws.CachedDemographicDocument;
 import ca.openosp.openo.caisi_integrator.ws.CachedDemographicDocumentContents;
 import ca.openosp.openo.caisi_integrator.ws.DemographicWs;
@@ -50,19 +53,17 @@ import ca.openosp.openo.caisi_integrator.ws.FacilityIdIntegerCompositePk;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.model.*;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.documentManager.IncomingDocUtil;
 import ca.openosp.openo.managers.ProgramManager2;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.encounter.data.EctProgram;
@@ -116,7 +117,7 @@ public class ManageDocument2Action extends ActionSupport {
         ACTIONS.put("display", ctx -> { ctx.display(); return "display"; });
         ACTIONS.put("viewAnnotationAcknowledgementTickler", ctx -> { ctx.viewAnnotationAcknowledgementTickler(); return "viewAnnotationAcknowledgementTickler"; });
         ACTIONS.put("viewDocumentDescription", ctx -> { ctx.viewDocumentDescription(); return "viewDocumentDescription"; });
-        //  Enable calling the method to remove provider
+        //  Enable calling the method to remove providers
         ACTIONS.put("removeLinkFromDocument", new ActionHandler() {
             public String handle(ManageDocument2Action action) {
                 action.removeLinkFromDocument();
@@ -155,7 +156,7 @@ public class ManageDocument2Action extends ActionSupport {
         String demog = request.getParameter("demog");
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
         LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ADD, LogConst.CON_DOCUMENT, documentId, request.getRemoteAddr(), demog);
@@ -172,7 +173,7 @@ public class ManageDocument2Action extends ActionSupport {
                     providerInboxRoutingDAO.addToProviderInbox(proNo, Integer.parseInt(documentId), LabResultData.DOCUMENT);
                 }
 
-                // Removes the link to the "0" provider so that the document no longer shows up as "unclaimed"
+                // Removes the link to the "0" providers so that the document no longer shows up as "unclaimed"
                 providerInboxRoutingDAO.removeLinkFromDocument("DOC", Integer.parseInt(documentId), "0");
             } catch (Exception e) {
                 MiscUtils.getLogger().error("Error", e);
@@ -248,7 +249,7 @@ public class ManageDocument2Action extends ActionSupport {
         String dn = request.getParameter("demo_no");
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "r", dn)) {
-            throw new SecurityException("missing required security object (_demographic)");
+            throw new SecurityException("missing required sec object (_demographic)");
         }
 
         HashMap hm = new HashMap();
@@ -267,7 +268,7 @@ public class ManageDocument2Action extends ActionSupport {
         String providerNo = request.getParameter("providerNo");
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
         providerInboxRoutingDAO.removeLinkFromDocument(docType, Integer.parseInt(docId), providerNo);
@@ -288,7 +289,7 @@ public class ManageDocument2Action extends ActionSupport {
         String queueId = request.getParameter("queueId");
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
         try {
@@ -306,7 +307,7 @@ public class ManageDocument2Action extends ActionSupport {
         String docType = request.getParameter("docType");// :consult<
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
         LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ADD, LogConst.CON_DOCUMENT, documentId, request.getRemoteAddr());
@@ -389,7 +390,7 @@ public class ManageDocument2Action extends ActionSupport {
         String prog_no = new EctProgram(se).getProgram(user_no);
         WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(se.getServletContext());
         CaseManagementManager cmm = (CaseManagementManager) ctx.getBean(CaseManagementManager.class);
-        cmn.setProviderNo("-1");// set the provider no to be -1 so the editor appear as 'System'.
+        cmn.setProviderNo("-1");// set the providers no to be -1 so the editor appear as 'System'.
         Provider provider = EDocUtil.getProvider(user_no);
         String provFirstName = "";
         String provLastName = "";
@@ -506,7 +507,7 @@ public class ManageDocument2Action extends ActionSupport {
      */
     public File createCacheVersion(Document d) throws Exception {
 
-        String docdownload = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docdownload = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
         File documentDir = new File(docdownload);
         File documentCacheDir = getDocumentCacheDir(docdownload);
         log.debug("Document Dir is a dir" + documentDir.isDirectory());
@@ -586,7 +587,7 @@ public class ManageDocument2Action extends ActionSupport {
 
     public void viewDocPage() {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "r", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
         log.debug("in viewDocPage");
@@ -631,7 +632,7 @@ public class ManageDocument2Action extends ActionSupport {
     public void view2() throws Exception {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "r", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
         String doc_no = request.getParameter("doc_no");
@@ -639,7 +640,7 @@ public class ManageDocument2Action extends ActionSupport {
 
         LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.READ, LogConst.CON_DOCUMENT, doc_no, request.getRemoteAddr());
 
-        String docdownload = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docdownload = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
         File documentDir = new File(docdownload);
         log.debug("Document Dir is a dir" + documentDir.isDirectory());
 
@@ -687,11 +688,11 @@ public class ManageDocument2Action extends ActionSupport {
     public void getDocPageNumber() {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "r", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
         String doc_no = request.getParameter("doc_no");
-        String docdownload = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docdownload = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
         // File documentDir = new File(docdownload);
         Document d = documentDao.getDocument(doc_no);
         String filePath = docdownload + d.getDocfilename();
@@ -713,7 +714,7 @@ public class ManageDocument2Action extends ActionSupport {
     public String downloadCDS() throws Exception {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "r", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
         // Sharing Center functionality has been removed
@@ -726,7 +727,7 @@ public class ManageDocument2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "r", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
         String temp = request.getParameter("remoteFacilityId");
@@ -857,7 +858,7 @@ public class ManageDocument2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "r", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
         String doc_no = request.getParameter("doc_no");
@@ -925,10 +926,10 @@ public class ManageDocument2Action extends ActionSupport {
         String destFilePath;
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
-        String savePath = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String savePath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
         if (!savePath.endsWith(File.separator)) {
             savePath += File.separator;
         }
@@ -1020,7 +1021,7 @@ public class ManageDocument2Action extends ActionSupport {
     public void viewIncomingDocPageAsPdf() throws Exception {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "r", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
         String pageNum = request.getParameter("curPage");
@@ -1059,7 +1060,7 @@ public class ManageDocument2Action extends ActionSupport {
 
     public int countNumOfPages(String fileName) { // count number of pages in a pdf file
         int numOfPage = 0;
-        String docdownload = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String docdownload = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
 
         if (!docdownload.endsWith(File.separator)) {
             docdownload += File.separator;
@@ -1081,7 +1082,7 @@ public class ManageDocument2Action extends ActionSupport {
     public void displayIncomingDocs() throws Exception {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "r", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
         String queueId = request.getParameter("queueId");
@@ -1119,7 +1120,7 @@ public class ManageDocument2Action extends ActionSupport {
 
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "r", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
         String pageNum = request.getParameter("curPage");

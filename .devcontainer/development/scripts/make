@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 
-# Script to manage building and deploying the openosp emr web application to Tomcat
+# Script to manage building and deploying the openosp emr www application to Tomcat
 # This script supports the following operations:
-# - clean: Cleans the project and removes the deployed web app from Tomcat.
+# - clean: Cleans the project and removes the deployed www app from Tomcat.
 # - install: Builds the project and deploys it to Tomcat. Optionally, you can run tests by passing --run-tests.
 
 # SCRIPT_DIR will hold the directory where this script is located.
@@ -12,8 +12,10 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # Function to handle the build and deploy logic
 # Takes a single argument ($1) which is a boolean indicating whether to run tests.
+# Takes a second argument ($2) which is a boolean indicating whether to compile JSPs.
 build_and_deploy() {
   run_tests="$1"
+  compile_jsps="$2"
 
   # Stop the Catalina server by calling the `server` script located in the same directory as this script.
   "$SCRIPT_DIR/server" stop
@@ -31,10 +33,16 @@ build_and_deploy() {
   # Build the project with or without tests based on the input argument
   # - If run_tests is true, it builds the project and runs tests.
   # - If run_tests is false, it skips tests during the build.
+  # - If compile_jsps is true, it compiles JSPs during the build.
+  jsp_profile=""
+  if [ "$compile_jsps" = true ]; then
+    jsp_profile="-Pjspc"
+  fi
+  
   if [ "$run_tests" = true ]; then
-    mvn clean -T 1C package war:exploded
+    mvn clean -T 1C package war:exploded $jsp_profile
   else
-    mvn clean -Dmaven.test.skip=true -T 1C package war:exploded
+    mvn clean -Dmaven.test.skip=true -T 1C package war:exploded $jsp_profile
   fi
 
   # Extract the version from the pom.xml file.
@@ -60,14 +68,18 @@ print_help() {
       echo "Usage: make [command] [flags]"
       echo ""
       echo "Commands:"
-      echo "  clean                  Clean the project and remove the target directory."
-      echo "  install [--run-tests]  Build and deploy the project. Run unit tests if --run-tests is specified."
-      echo "  lock                   Update the dependency lock file."
-      echo "  help                   Display this help message."
+      echo "  clean                           Clean the project and remove the target directory."
+      echo "  install [--run-tests] [--jspc]  Build and deploy the project. Run unit tests if --run-tests is specified."
+      echo "                                  Compile JSPs if --jspc is specified."
+      echo "  jspc                            Compile JSPs only (no deployment)."
+      echo "  lock                            Update the dependency lock file."
+      echo "  help                            Display this help message."
 }
 
 # Default behavior is to skip tests unless --run-tests is explicitly provided.
+# Default behavior is to skip JSP compilation unless --jspc is explicitly provided.
 run_tests=false
+compile_jsps=false
 
 # If no arguments are provided, display usage instructions and exit.
 if [ $# -eq 0 ]; then
@@ -84,13 +96,32 @@ for arg in "$@"; do
       rm -rf /usr/local/tomcat/webapps/oscar
       ;;
     install)
-      # Shift the arguments so that we can check for the optional --run-tests argument.
+      # Shift the arguments so that we can check for optional arguments.
       shift
-      if [ "$1" = "--run-tests" ]; then
-        run_tests=true
-      fi
-      # Run the build and deploy process, passing in whether or not to run tests.
-      build_and_deploy "$run_tests"
+      while [ $# -gt 0 ]; do
+        case "$1" in
+          --run-tests)
+            run_tests=true
+            shift
+            ;;
+          --jspc)
+            compile_jsps=true
+            shift
+            ;;
+          *)
+            echo "Unknown flag: $1"
+            print_help
+            exit 1
+            ;;
+        esac
+      done
+      # Run the build and deploy process, passing in whether or not to run tests and compile JSPs.
+      build_and_deploy "$run_tests" "$compile_jsps"
+      ;;
+    jspc)
+      # Compile JSPs only without deployment.
+      echo "Compiling JSPs..."
+      mvn compile -Pjspc
       ;;
     lock)
       # Update the maven dependency lock file.

@@ -35,7 +35,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.oscarehr.common.model.AbstractModel;
+import ca.openosp.openo.commn.model.AbstractModel;
 
 @Entity
 @Table(name = "billing_on_3rdPartyAddress")

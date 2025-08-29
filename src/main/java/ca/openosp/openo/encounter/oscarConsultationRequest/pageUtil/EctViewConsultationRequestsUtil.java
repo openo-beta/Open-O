@@ -26,18 +26,18 @@
 
 package ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil;
 
+import ca.openosp.openo.commn.model.*;
 import org.apache.commons.lang.time.DateFormatUtils;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.ConsultationRequestDao;
-import org.oscarehr.common.dao.ConsultationRequestExtDao;
-import org.oscarehr.common.dao.ConsultationServiceDao;
-import org.oscarehr.common.model.*;
-import org.oscarehr.common.model.enumerator.ConsultationRequestExtKey;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.ConsultationRequestDao;
+import ca.openosp.openo.commn.dao.ConsultationRequestExtDao;
+import ca.openosp.openo.commn.dao.ConsultationServiceDao;
+import ca.openosp.openo.commn.model.enumerator.ConsultationRequestExtKey;
 import ca.openosp.openo.managers.ConsultationManager;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;

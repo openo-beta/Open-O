@@ -42,7 +42,7 @@
 %>
 
 <%@ page import="java.util.*" %>
-<%@ page import="oscar.oscarReport.reportByTemplate.*" %>
+<%@ page import="ca.openosp.openo.report.reportByTemplate.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 

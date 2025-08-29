@@ -32,6 +32,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 
+import ca.openosp.Misc;
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.UtilDateUtilities;
 
@@ -53,28 +54,28 @@ public class EctMentalHealthRecord {
             rs = DBHandler.GetSQL(sql);
 
             if (rs.next()) {
-                java.util.Date dob = UtilDateUtilities.calcDate(oscar.Misc.getString(rs, "year_of_birth"), oscar.Misc.getString(rs, "month_of_birth"), oscar.Misc.getString(rs, "date_of_birth"));
+                java.util.Date dob = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), Misc.getString(rs, "month_of_birth"), Misc.getString(rs, "date_of_birth"));
 
-                props.setProperty("demographic_no", oscar.Misc.getString(rs, "demographic_no"));
-                props.setProperty("c_pName", oscar.Misc.getString(rs, "pName"));
-                props.setProperty("c_sex", oscar.Misc.getString(rs, "sex"));
+                props.setProperty("demographic_no", Misc.getString(rs, "demographic_no"));
+                props.setProperty("c_pName", Misc.getString(rs, "pName"));
+                props.setProperty("c_sex", Misc.getString(rs, "sex"));
                 props.setProperty("c_referralDate", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
                 props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
                 props.setProperty("formEdited", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
-                props.setProperty("c_address", oscar.Misc.getString(rs, "address"));
+                props.setProperty("c_address", Misc.getString(rs, "address"));
                 props.setProperty("c_birthDate", UtilDateUtilities.DateToString(dob, "yyyy/MM/dd"));
-                props.setProperty("c_homePhone", oscar.Misc.getString(rs, "phone"));
+                props.setProperty("c_homePhone", Misc.getString(rs, "phone"));
             }
             rs.close();
 
-            // from provider table
+            // from providers table
             sql = "SELECT CONCAT(last_name, ', ', first_name) AS provName "
-                    + "FROM provider WHERE provider_no = " + provNo;
+                    + "FROM providers WHERE provider_no = " + provNo;
 
             rs = DBHandler.GetSQL(sql);
 
             if (rs.next()) {
-                props.setProperty("c_referredBy", oscar.Misc.getString(rs, "provName"));
+                props.setProperty("c_referredBy", Misc.getString(rs, "provName"));
             }
             rs.close();
         } else {
@@ -103,7 +104,7 @@ public class EctMentalHealthRecord {
                                 value = UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd");
                             }
                         } else {
-                            value = oscar.Misc.getString(rs, i);
+                            value = Misc.getString(rs, i);
                         }
                     }
 

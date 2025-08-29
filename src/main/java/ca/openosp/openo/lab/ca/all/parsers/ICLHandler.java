@@ -23,6 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
 
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -40,7 +41,7 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
  */
 public class ICLHandler extends DefaultGenericHandler implements MessageHandler {
 
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
     ORU_R01 msg = null;
 
     /**

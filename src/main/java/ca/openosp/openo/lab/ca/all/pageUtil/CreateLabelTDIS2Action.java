@@ -13,12 +13,13 @@ package ca.openosp.openo.lab.ca.all.pageUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.Hl7TextInfoDao;
+import ca.openosp.openo.commn.dao.Hl7TextInfoDao;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -29,11 +30,11 @@ public class CreateLabelTDIS2Action extends ActionSupport {
     HttpServletResponse response = ServletActionContext.getResponse();
 
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
 
     public String execute() {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_lab", "w", null)) {
-            throw new SecurityException("missing required security object (_lab)");
+            throw new SecurityException("missing required sec object (_lab)");
         }
 
         String label = this.getLabel();//request.getParameter("label");

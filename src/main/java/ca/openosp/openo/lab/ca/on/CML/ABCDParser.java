@@ -34,26 +34,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import ca.openosp.Misc;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.LabPatientPhysicianInfoDao;
-import org.oscarehr.common.dao.LabReportInformationDao;
-import org.oscarehr.common.dao.LabTestResultsDao;
-import org.oscarehr.common.dao.PatientLabRoutingDao;
-import org.oscarehr.common.model.LabPatientPhysicianInfo;
-import org.oscarehr.common.model.LabReportInformation;
-import org.oscarehr.common.model.LabTestResults;
-import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.LabPatientPhysicianInfoDao;
+import ca.openosp.openo.commn.dao.LabReportInformationDao;
+import ca.openosp.openo.commn.dao.LabTestResultsDao;
+import ca.openosp.openo.commn.dao.PatientLabRoutingDao;
+import ca.openosp.openo.commn.model.LabPatientPhysicianInfo;
+import ca.openosp.openo.commn.model.LabReportInformation;
+import ca.openosp.openo.commn.model.LabTestResults;
+import ca.openosp.openo.commn.model.PatientLabRouting;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.lab.ca.all.upload.ProviderLabRouting;
 
 /**
  * @author root
  */
 public class ABCDParser {
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
 
     Atype reportFile = null;
     ArrayList<Atype> atypes = new ArrayList<Atype>();
@@ -107,13 +108,13 @@ public class ABCDParser {
         String providerNo = htable.get(docNum);
 
         if (providerNo == null || providerNo.equals("null")) {
-            logger.info("Could not find provider " + docNum + " now trying provider " + docNum.substring(0, (docNum.length() - 1)) + "  for lab: " + labId);
+            logger.info("Could not find providers " + docNum + " now trying providers " + docNum.substring(0, (docNum.length() - 1)) + "  for lab: " + labId);
             providerNo = htable.get(docNum.substring(0, (docNum.length() - 1)));
 
         }
 
         if (providerNo == null || providerNo.equals("null")) {
-            logger.info("Could not find provider " + docNum.substring(0, (docNum.length() - 1)) + "either  for lab: " + labId);
+            logger.info("Could not find providers " + docNum.substring(0, (docNum.length() - 1)) + "either  for lab: " + labId);
             logger.info("Setting Provider No to 0");
             providerNo = "0";
 
@@ -172,7 +173,7 @@ public class ABCDParser {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 count++;
-                demo = oscar.Misc.getString(rs, "demographic_no");
+                demo = Misc.getString(rs, "demographic_no");
             }
             rs.close();
             pstmt.close();
@@ -197,28 +198,28 @@ public class ABCDParser {
 
 
     private HashMap<String, String> getProviderHash(Connection conn) {
-        logger.info("Init - provider Hash table");
+        logger.info("Init - providers Hash table");
         HashMap<String, String> htable = new HashMap<String, String>();
         try {
-            String sql = "select provider_no, ohip_no from provider where ohip_no != '' ";
+            String sql = "select provider_no, ohip_no from providers where ohip_no != '' ";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.executeQuery();
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                String key = oscar.Misc.getString(rs, "ohip_no");
-                String value = oscar.Misc.getString(rs, "provider_no");
-                logger.info("Possible provider HashMap key " + key + " lab " + value);
+                String key = Misc.getString(rs, "ohip_no");
+                String value = Misc.getString(rs, "provider_no");
+                logger.info("Possible providers HashMap key " + key + " lab " + value);
                 if (key != null && value != null && !key.equals("null") && !value.equals("null")) {
                     htable.put(key, value);
-                    logger.info("Adding  to provider HashMap key " + key + " lab " + value);
+                    logger.info("Adding  to providers HashMap key " + key + " lab " + value);
                 }
             }
             pstmt.close();
         } catch (SQLException sqlE) {
             MiscUtils.getLogger().error("Error", sqlE);
         }
-        logger.info("provider hash table :" + htable);
+        logger.info("providers hash table :" + htable);
         return htable;
     }
 

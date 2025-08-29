@@ -1,6 +1,6 @@
 package ca.openosp.openo.caisi_integrator.ws;
 
-import org.oscarehr.hnr.ws.InvalidHinException;
+import ca.openosp.openo.ws.InvalidHinException;
 import javax.xml.ws.WebFault;
 
 @WebFault(name = "InvalidHinException", targetNamespace = "http://ws.hnr.oscarehr.org/")

@@ -34,10 +34,10 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.XmlUtils;
-import org.oscarehr.ws.rest.to.model.AllowedAppointmentTypeTransfer;
-import org.oscarehr.ws.rest.to.model.BookingProviderTransfer;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.XmlUtils;
+import ca.openosp.openo.webserv.rest.to.model.AllowedAppointmentTypeTransfer;
+import ca.openosp.openo.webserv.rest.to.model.BookingProviderTransfer;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 

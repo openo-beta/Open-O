@@ -99,9 +99,9 @@ FROM program_queue WHERE intake_id IS NOT NULL;
 --
 -- Java packages removed:
 -- - org.oscarehr.PMmodule.model.Intake* (all intake model classes)
--- - org.oscarehr.PMmodule.dao.GenericIntake* (all intake DAOs)
+-- - org.oscarehr.PMmodule.daos.GenericIntake* (all intake DAOs)
 -- - org.oscarehr.PMmodule.service.GenericIntakeManager*
--- - org.oscarehr.PMmodule.web.GenericIntake* (all intake actions)
+-- - org.oscarehr.PMmodule.www.GenericIntake* (all intake actions)
 -- - org.oscarehr.PMmodule.exporter.DATIS* (DATIS export functionality)
 -- - org.oscarehr.PMmodule.streethealth.StreetHealthIntakeReport*
 --

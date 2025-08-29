@@ -31,14 +31,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.dao.MessageListDao;
-import org.oscarehr.common.model.MessageList;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.commn.dao.MessageListDao;
+import ca.openosp.openo.commn.model.MessageList;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.managers.ProviderManager2;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 
@@ -54,7 +54,7 @@ public class MsgDisplayMessages2Action extends ActionSupport {
     public String execute() throws IOException, ServletException {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_msg", "r", null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         // Setup variables

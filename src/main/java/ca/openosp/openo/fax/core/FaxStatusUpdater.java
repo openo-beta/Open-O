@@ -40,12 +40,12 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.FaxConfigDao;
-import org.oscarehr.common.dao.FaxJobDao;
-import org.oscarehr.common.model.FaxConfig;
-import org.oscarehr.common.model.FaxJob;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.FaxConfigDao;
+import ca.openosp.openo.commn.dao.FaxJobDao;
+import ca.openosp.openo.commn.model.FaxConfig;
+import ca.openosp.openo.commn.model.FaxJob;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class FaxStatusUpdater {
 

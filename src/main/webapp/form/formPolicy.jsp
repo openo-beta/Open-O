@@ -43,11 +43,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
-<%@ page import="org.oscarehr.utility.LocaleUtils" %>
-<%@ page import="org.oscarehr.common.dao.DemographicDao" %>
-<%@ page import="org.oscarehr.common.model.Demographic" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.utility.LocaleUtils" %>
+<%@ page import="ca.openosp.openo.commn.dao.DemographicDao" %>
+<%@ page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 
 <%
     String formClass = "Policy";

@@ -24,6 +24,7 @@
 package ca.openosp.openo.documentManager;
 
 
+import ca.openosp.OscarProperties;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfCopy;
 import com.itextpdf.text.pdf.PdfName;
@@ -42,10 +43,10 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import org.oscarehr.common.dao.UserPropertyDAO;
-import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.UserPropertyDAO;
+import ca.openosp.openo.commn.model.UserProperty;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public final class IncomingDocUtil {
 
@@ -132,7 +133,7 @@ public final class IncomingDocUtil {
     public static String getIncomingDocumentDeletedFilePath(String queueId, String pdfDir) {
         String filePath;
 
-        filePath = oscar.OscarProperties.getInstance().getProperty("INCOMINGDOCUMENT_DIR");
+        filePath = OscarProperties.getInstance().getProperty("INCOMINGDOCUMENT_DIR");
 
         if (!filePath.endsWith(File.separator)) {
             filePath += File.separator;
@@ -156,7 +157,7 @@ public final class IncomingDocUtil {
     public static String getIncomingDocumentFilePath(String queueId, String pdfDir) {
         String filePath;
 
-        filePath = oscar.OscarProperties.getInstance().getProperty("INCOMINGDOCUMENT_DIR");
+        filePath = OscarProperties.getInstance().getProperty("INCOMINGDOCUMENT_DIR");
 
         if (!filePath.endsWith(File.separator)) {
             filePath += File.separator;
@@ -361,7 +362,7 @@ public final class IncomingDocUtil {
         }
 
         boolean success;
-        if (!oscar.OscarProperties.getInstance().getBooleanProperty("INCOMINGDOCUMENT_RECYCLEBIN", "true")) {
+        if (!OscarProperties.getInstance().getBooleanProperty("INCOMINGDOCUMENT_RECYCLEBIN", "true")) {
             File f1 = new File(deletePathFileName);
             success = f1.delete();
             if (!success) {
@@ -530,7 +531,7 @@ public final class IncomingDocUtil {
 
         File deletef = new File(deletePathName);
 
-        if (oscar.OscarProperties.getInstance().getBooleanProperty("INCOMINGDOCUMENT_RECYCLEBIN", "true")) {
+        if (OscarProperties.getInstance().getBooleanProperty("INCOMINGDOCUMENT_RECYCLEBIN", "true")) {
             success = f.renameTo(deletef);
             if (!success) {
                 throw new Exception("Error in renaming file from:" + filePathName + " to " + deletePathName);

@@ -30,9 +30,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import org.oscarehr.common.dao.MdsPIDDao;
-import org.oscarehr.common.model.MdsPID;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.MdsPIDDao;
+import ca.openosp.openo.commn.model.MdsPID;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 

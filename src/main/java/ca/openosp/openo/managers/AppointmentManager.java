@@ -29,10 +29,10 @@ package ca.openosp.openo.managers;
 
 import java.util.List;
 
-import org.oscarehr.common.model.Appointment;
-import org.oscarehr.common.model.AppointmentStatus;
-import org.oscarehr.common.model.LookupListItem;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.model.Appointment;
+import ca.openosp.openo.commn.model.AppointmentStatus;
+import ca.openosp.openo.commn.model.LookupListItem;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 public interface AppointmentManager {
 

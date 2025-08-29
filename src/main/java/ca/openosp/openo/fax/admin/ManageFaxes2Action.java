@@ -53,17 +53,17 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.FaxClientLogDao;
-import org.oscarehr.common.dao.FaxConfigDao;
-import org.oscarehr.common.dao.FaxJobDao;
-import org.oscarehr.common.model.FaxClientLog;
-import org.oscarehr.common.model.FaxConfig;
-import org.oscarehr.common.model.FaxJob;
+import ca.openosp.openo.commn.dao.FaxClientLogDao;
+import ca.openosp.openo.commn.dao.FaxConfigDao;
+import ca.openosp.openo.commn.dao.FaxJobDao;
+import ca.openosp.openo.commn.model.FaxClientLog;
+import ca.openosp.openo.commn.model.FaxConfig;
+import ca.openosp.openo.commn.model.FaxJob;
 import ca.openosp.openo.managers.FaxManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -98,7 +98,7 @@ public class ManageFaxes2Action extends ActionSupport {
         String jobId = request.getParameter("jobId");
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin", "w", null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         FaxJobDao faxJobDao = SpringUtils.getBean(FaxJobDao.class);
@@ -164,7 +164,7 @@ public class ManageFaxes2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", "w", null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         boolean success = false;
@@ -185,7 +185,7 @@ public class ManageFaxes2Action extends ActionSupport {
     public void viewFax() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_edoc", "r", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
         getPreview();
@@ -328,7 +328,7 @@ public class ManageFaxes2Action extends ActionSupport {
     public void SetCompleted() {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin", "w", null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
 

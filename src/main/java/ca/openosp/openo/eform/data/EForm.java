@@ -34,14 +34,14 @@ import org.apache.logging.log4j.Logger;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.TokenQueue;
 import org.jsoup.select.Elements;
-import org.oscarehr.common.OtherIdManager;
-import org.oscarehr.common.dao.EFormDataDao;
-import org.oscarehr.common.model.EFormData;
+import ca.openosp.openo.commn.OtherIdManager;
+import ca.openosp.openo.commn.dao.EFormDataDao;
+import ca.openosp.openo.commn.model.EFormData;
 import ca.openosp.openo.documentManager.ConvertToEdoc;
-import org.oscarehr.ui.servlet.ImageRenderingServlet;
-import org.oscarehr.utility.DigitalSignatureUtils;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.ui.servlet.ImageRenderingServlet;
+import ca.openosp.openo.utility.DigitalSignatureUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.owasp.encoder.Encode;
 import ca.openosp.openo.eform.EFormLoader;
 import ca.openosp.openo.eform.EFormUtil;
@@ -732,7 +732,7 @@ public class EForm extends EFormBase {
 
     public String replaceAllFields(String sql) {
         sql = DatabaseAP.parserReplace("demographic", demographicNo, sql);
-        sql = DatabaseAP.parserReplace("provider", providerNo, sql);
+        sql = DatabaseAP.parserReplace("providers", providerNo, sql);
         sql = DatabaseAP.parserReplace("appt_no", appointment_no, sql);
 
         sql = DatabaseAP.parserReplace(EFORM_DEMOGRAPHIC, getSqlParams(EFORM_DEMOGRAPHIC), sql);

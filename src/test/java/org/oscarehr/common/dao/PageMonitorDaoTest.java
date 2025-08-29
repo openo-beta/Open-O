@@ -44,9 +44,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.common.model.PageMonitor;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.model.PageMonitor;
+import ca.openosp.openo.commn.dao.PageMonitorDao;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class PageMonitorDaoTest extends DaoTestFixtures {
 

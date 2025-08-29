@@ -54,14 +54,14 @@ INSERT INTO ctl_doctype (module,doctype,status) VALUES ('demographic','radiology
 INSERT INTO ctl_doctype (module,doctype,status) VALUES ('demographic','pathology','A');
 INSERT INTO ctl_doctype (module,doctype,status) VALUES ('demographic','others','A');
 INSERT INTO ctl_doctype (module,doctype,status) VALUES ('demographic','photo','A');
-INSERT INTO ctl_doctype (module,doctype,status) VALUES ('provider','resource','A');
-INSERT INTO ctl_doctype (module,doctype,status) VALUES ('provider','desktop','A');
-INSERT INTO ctl_doctype (module,doctype,status) VALUES ('provider','handout','A');
-INSERT INTO ctl_doctype (module,doctype,status) VALUES ('provider','forms','A');
-INSERT INTO ctl_doctype (module,doctype,status) VALUES ('provider','others','A');
-INSERT INTO ctl_doctype (module,doctype,status) VALUES ('provider','share','A');
-INSERT INTO ctl_doctype (module,doctype,status) VALUES ('provider','photo','A');
-INSERT INTO `ctl_doctype` (`module`, `doctype`, `status`, `id`) VALUES('provider','invoice letterhead','A',null);
+INSERT INTO ctl_doctype (module,doctype,status) VALUES ('providers','resource','A');
+INSERT INTO ctl_doctype (module,doctype,status) VALUES ('providers','desktop','A');
+INSERT INTO ctl_doctype (module,doctype,status) VALUES ('providers','handout','A');
+INSERT INTO ctl_doctype (module,doctype,status) VALUES ('providers','forms','A');
+INSERT INTO ctl_doctype (module,doctype,status) VALUES ('providers','others','A');
+INSERT INTO ctl_doctype (module,doctype,status) VALUES ('providers','share','A');
+INSERT INTO ctl_doctype (module,doctype,status) VALUES ('providers','photo','A');
+INSERT INTO `ctl_doctype` (`module`, `doctype`, `status`, `id`) VALUES('providers','invoice letterhead','A',null);
 
 --
 -- Dumping data for table 'ctl_doc_class'
@@ -231,8 +231,8 @@ insert into ctl_doc_class (reportclass,subclass) values ("Consultant ReportB","P
 -- Dumping data for table 'ctl_document'
 --
 
-INSERT INTO ctl_document VALUES ('provider',999998,4953,'A');
-INSERT INTO ctl_document VALUES ('provider',999998,4954,'H');
+INSERT INTO ctl_document VALUES ('providers',999998,4953,'A');
+INSERT INTO ctl_document VALUES ('providers',999998,4954,'H');
 INSERT INTO ctl_document VALUES ('demographic',2147483647,4955,'A');
 
 --

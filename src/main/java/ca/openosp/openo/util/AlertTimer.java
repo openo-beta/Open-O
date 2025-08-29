@@ -30,14 +30,14 @@ import java.util.TimerTask;
 
 import ca.openosp.openo.billings.ca.bc.MSP.CDMReminderHlp;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.Security;
-import org.oscarehr.utility.DbConnectionFilter;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.ShutdownException;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.Security;
+import ca.openosp.openo.utility.DbConnectionFilter;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.ShutdownException;
+import ca.openosp.openo.utility.SpringUtils;
 
 /**
  * <p>Title:AlertTimer </p>
@@ -78,7 +78,7 @@ public class AlertTimer {
     class ReminderClass extends TimerTask {
         public void run() {
             // LoggedInInfo loggedInInfo=LoggedInInfo.getLoggedInInfoAsCurrentClassAndMethod();
-            // work around for the security object.
+            // work around for the sec object.
             String providerNo = "-1";
             ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
             LoggedInInfo loggedInInfo = new LoggedInInfo();

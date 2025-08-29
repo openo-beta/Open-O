@@ -26,11 +26,11 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Properties;
 
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.OscarRoleObjectPrivilege;
 
-import ca.openosp.openo.dao.security.SecobjprivilegeDao;
+import ca.openosp.openo.daos.security.SecobjprivilegeDao;
 import ca.openosp.openo.model.security.Secobjprivilege;
 
 public class SecurityManager {

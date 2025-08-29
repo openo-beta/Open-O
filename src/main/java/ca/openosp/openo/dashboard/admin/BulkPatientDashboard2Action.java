@@ -33,9 +33,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -137,7 +137,7 @@ public class BulkPatientDashboard2Action extends ActionSupport {
         if (!securityInfoManager.hasPrivilege(loggedInInfo,
                 "_dxresearch", SecurityInfoManager.WRITE, null)) {
             if (loggedInInfo != null && loggedInInfo.getLoggedInProvider() != null) {
-                logger.info("Provider " + loggedInInfo.getLoggedInProvider().getProviderNo() + " does not have write permission on _dxresearch security object");
+                logger.info("Provider " + loggedInInfo.getLoggedInProvider().getProviderNo() + " does not have write permission on _dxresearch sec object");
             }
             return "unauthorized";
         }
@@ -165,7 +165,7 @@ public class BulkPatientDashboard2Action extends ActionSupport {
         String subject = "Bulk addition to disease registry report.";
         String message = "Added ICD9 code {" + icd9code +
                 "} to disease registry for patient demographic_no {" + patientIdsJson + "}" +
-                " with provider no {" + providerNo + "}";
+                " with providers no {" + providerNo + "}";
 
         messageHandler.notifyProvider(subject, message, providerNo, null); //patientIdList);
         String mrp = getMRP(loggedInInfo);
@@ -203,7 +203,7 @@ public class BulkPatientDashboard2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = getProviderNo(loggedInInfo);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_demographic", SecurityInfoManager.WRITE, null)) {
-            logger.info("Provider " + providerNo + " does not have write permission on _demographic security object");
+            logger.info("Provider " + providerNo + " does not have write permission on _demographic sec object");
             return "unauthorized";
         }
 

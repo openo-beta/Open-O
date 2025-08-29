@@ -56,12 +56,12 @@ import com.lowagie.text.rtf.RtfWriter2;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tika.io.IOUtils;
-import org.oscarehr.common.dao.Hl7TextMessageDao;
-import org.oscarehr.common.model.Hl7TextMessage;
-import org.oscarehr.common.printing.FontSettings;
-import org.oscarehr.common.printing.PdfWriterFactory;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.Hl7TextMessageDao;
+import ca.openosp.openo.commn.model.Hl7TextMessage;
+import ca.openosp.openo.commn.printing.FontSettings;
+import ca.openosp.openo.commn.printing.PdfWriterFactory;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.all.Hl7textResultsData;
 import ca.openosp.openo.lab.ca.all.parsers.CLSHandler;

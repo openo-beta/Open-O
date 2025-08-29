@@ -25,24 +25,24 @@
 --%>
 
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
-<%@page import="org.oscarehr.common.model.UserProperty" %>
-<%@page import="org.oscarehr.common.dao.UserPropertyDAO" %>
-<%@page import="org.oscarehr.common.model.CVCMapping" %>
-<%@page import="org.oscarehr.common.dao.CVCMappingDao" %>
+<%@page import="ca.openosp.openo.commn.model.UserProperty" %>
+<%@page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
+<%@page import="ca.openosp.openo.commn.model.CVCMapping" %>
+<%@page import="ca.openosp.openo.commn.dao.CVCMappingDao" %>
 <%@page import="org.apache.commons.lang.StringUtils" %>
-<%@page import="org.oscarehr.common.model.DHIRSubmissionLog" %>
+<%@page import="ca.openosp.openo.commn.model.DHIRSubmissionLog" %>
 <%@page import="ca.openosp.openo.managers.DHIRSubmissionManager" %>
-<%@page import="org.oscarehr.common.model.Consent" %>
-<%@page import="org.oscarehr.common.dao.ConsentDao" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="org.oscarehr.utility.WebUtils" %>
-<%@page import="oscar.OscarProperties" %>
-<%@page import="oscar.oscarDemographic.data.*,java.util.*,oscar.oscarPrevention.*" %>
-<%@page import="org.oscarehr.common.dao.DemographicDao, org.oscarehr.common.model.Demographic" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.utility.LocaleUtils" %>
-<%@page import="org.oscarehr.utility.WebUtils" %>
-<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.commn.model.Consent" %>
+<%@page import="ca.openosp.openo.commn.dao.ConsentDao" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.WebUtils" %>
+<%@page import="ca.openosp.OscarProperties" %>
+<%@page import="ca.openosp.openo.demographic.data.*,java.util.*,ca.openosp.openo.prevention.*" %>
+<%@page import="ca.openosp.openo.commn.dao.DemographicDao, ca.openosp.openo.commn.model.Demographic" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.LocaleUtils" %>
+<%@page import="ca.openosp.openo.utility.WebUtils" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@page import="ca.openosp.openo.managers.PreventionManager" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -72,7 +72,7 @@
     String demographic_no = request.getParameter("demographic_no");
     DemographicData demoData = new DemographicData();
     String nameAge = demoData.getNameAgeString(loggedInInfo, demographic_no);
-    org.oscarehr.common.model.Demographic demo = demoData.getDemographic(loggedInInfo, demographic_no);
+    Demographic demo = demoData.getDemographic(loggedInInfo, demographic_no);
     String hin = demo.getHin() + demo.getVer();
     String mrp = demo.getProviderNo();
     PreventionManager preventionManager = SpringUtils.getBean(PreventionManager.class);
@@ -144,7 +144,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 
-<%@page import="org.oscarehr.utility.SessionConstants" %>
+<%@page import="ca.openosp.openo.utility.SessionConstants" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.prevention.PreventionData" %>
 <%@ page import="ca.openosp.openo.prevention.PreventionDS" %>
@@ -826,7 +826,7 @@
                         <input type="hidden" name="mrp" value="<%=mrp%>"/>
                         <input type="hidden" name="module" value="prevention">
                                 <%
-                 if (!oscar.OscarProperties.getInstance().getBooleanProperty("PREVENTION_CLASSIC_VIEW","yes")){
+                 if (!ca.openosp.OscarProperties.getInstance().getBooleanProperty("PREVENTION_CLASSIC_VIEW","yes")){
                    ArrayList<Map<String,Object>> hiddenlist = new ArrayList<Map<String,Object>>();
                   for (int i = 0 ; i < prevList.size(); i++){
                   		HashMap<String,String> h = prevList.get(i);
@@ -903,7 +903,7 @@
                                         <!--<%=refused(hdata.get("refused"))%>-->
                                         Date: <%=StringEscapeUtils.escapeHtml((String)hdata.get("prevention_date_no_time"))%>
                                                 <%if (hExt.get("comments") != null && (hExt.get("comments")).length()>0) {
-                    if (oscar.OscarProperties.getInstance().getBooleanProperty("prevention_show_comments","yes")){%>
+                    if (ca.openosp.OscarProperties.getInstance().getBooleanProperty("prevention_show_comments","yes")){%>
                                     <div class="comments">
                                         <span><%=StringEscapeUtils.escapeHtml((String) hExt.get("comments"))%></span>
                                     </div>
@@ -990,7 +990,7 @@
                                                 <!--<%=refused(hdata.get("refused"))%>-->
                                                 Date: <%=StringEscapeUtils.escapeHtml((String)hdata.get("prevention_date_no_time"))%>
                                                         <%if (hExt.get("comments") != null && (hExt.get("comments")).length()>0) {
-                     if (oscar.OscarProperties.getInstance().getBooleanProperty("prevention_show_comments","yes")){ %>
+                     if (ca.openosp.OscarProperties.getInstance().getBooleanProperty("prevention_show_comments","yes")){ %>
                                             <div class="comments">
                                                 <span><%=StringEscapeUtils.escapeHtml((String) hExt.get("comments"))%></span>
                                             </div>

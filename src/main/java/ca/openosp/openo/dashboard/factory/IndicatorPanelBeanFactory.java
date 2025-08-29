@@ -34,7 +34,7 @@ import ca.openosp.openo.dashboard.display.beans.IndicatorBean;
 import ca.openosp.openo.dashboard.display.beans.IndicatorPanelBean;
 import ca.openosp.openo.dashboard.handler.IndicatorTemplateXML;
 import ca.openosp.openo.managers.DashboardManagerImpl;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 /**
  * Builds the Panels that hold the Indicators by sub-category.

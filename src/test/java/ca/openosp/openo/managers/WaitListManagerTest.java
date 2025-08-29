@@ -34,11 +34,11 @@ import java.util.GregorianCalendar;
 import org.apache.commons.io.IOUtils;
 import org.apache.velocity.VelocityContext;
 import org.junit.Test;
-import org.oscarehr.PMmodule.model.Program;
-import org.oscarehr.PMmodule.model.Vacancy;
-import org.oscarehr.common.model.Demographic;
+import ca.openosp.openo.PMmodule.model.Program;
+import ca.openosp.openo.PMmodule.model.Vacancy;
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.managers.WaitListManager.AdmissionDemographicPair;
-import org.oscarehr.utility.VelocityUtils;
+import ca.openosp.openo.utility.VelocityUtils;
 
 public class WaitListManagerTest {
 

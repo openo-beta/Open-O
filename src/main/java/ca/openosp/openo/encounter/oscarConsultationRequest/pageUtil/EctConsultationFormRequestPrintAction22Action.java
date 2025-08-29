@@ -34,16 +34,16 @@ import javax.servlet.http.HttpServletResponse;
 import com.itextpdf.text.DocumentException;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.EFormData;
+import ca.openosp.openo.commn.model.EFormData;
 import ca.openosp.openo.hospitalReportManager.HRMPDFCreator;
 import ca.openosp.openo.managers.ConsultationManager;
 import ca.openosp.openo.managers.FaxManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.form.util.FormTransportContainer;
@@ -83,7 +83,7 @@ public class EctConsultationFormRequestPrintAction22Action extends ActionSupport
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", "r", null)) {
-            throw new SecurityException("missing required security object (_con)");
+            throw new SecurityException("missing required sec object (_con)");
         }
 
         String reqId = (String) request.getAttribute("reqId");

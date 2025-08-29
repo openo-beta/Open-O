@@ -28,16 +28,16 @@ package ca.openosp.openo.messenger.pageUtil;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
+import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import ca.openosp.openo.caisi_integrator.ws.CachedFacility;
 import ca.openosp.openo.caisi_integrator.ws.DemographicTransfer;
-import org.oscarehr.common.model.OscarMsgType;
+import ca.openosp.openo.commn.model.OscarMsgType;
 import ca.openosp.openo.managers.MessagingManager;
 import ca.openosp.openo.managers.MessengerDemographicManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.messenger.data.MsgDisplayMessage;
 
 import javax.servlet.ServletException;
@@ -62,7 +62,7 @@ public class MsgViewMessage2Action extends ActionSupport {
     public String execute() throws IOException, ServletException {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         MsgSessionBean bean = (MsgSessionBean) request.getSession().getAttribute("msgSessionBean");

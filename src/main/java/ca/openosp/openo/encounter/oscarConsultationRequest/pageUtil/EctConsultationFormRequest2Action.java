@@ -26,7 +26,10 @@
 
 package ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil;
 
+import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.commn.model.*;
 import ca.openosp.openo.managers.*;
+import ca.openosp.openo.utility.*;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.v26.message.ORU_R01;
 import ca.uhn.hl7v2.model.v26.message.REF_I12;
@@ -37,21 +40,18 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.hl7.v2.oscar_to_oscar.OruR01;
-import org.oscarehr.common.hl7.v2.oscar_to_oscar.OruR01.ObservationData;
-import org.oscarehr.common.hl7.v2.oscar_to_oscar.RefI12;
-import org.oscarehr.common.hl7.v2.oscar_to_oscar.SendingUtils;
-import org.oscarehr.common.model.*;
-import org.oscarehr.common.model.enumerator.DocumentType;
-import org.oscarehr.common.model.enumerator.ModuleType;
+import ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.OruR01;
+import ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.OruR01.ObservationData;
+import ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.RefI12;
+import ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.SendingUtils;
+import ca.openosp.openo.commn.model.enumerator.DocumentType;
+import ca.openosp.openo.commn.model.enumerator.ModuleType;
 import ca.openosp.openo.documentManager.DocumentAttachmentManager;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.fax.core.FaxRecipient;
 import ca.openosp.openo.managers.FaxManager.TransactionType;
-import org.oscarehr.utility.*;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
@@ -90,7 +90,7 @@ public class EctConsultationFormRequest2Action extends ActionSupport {
     public String execute() throws ServletException, IOException {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_con", "w", null)) {
-            throw new SecurityException("missing required security object (_con)");
+            throw new SecurityException("missing required sec object (_con)");
         }
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);

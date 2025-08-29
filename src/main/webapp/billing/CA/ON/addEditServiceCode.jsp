@@ -24,16 +24,17 @@
     }
 %>
 <%@ page errorPage="../../../appointment/errorpage.jsp"
-         import="java.util.*,java.sql.*,oscar.*,java.text.*, java.lang.*,java.net.*" %>
+         import="java.util.*,java.sql.*,ca.openosp.*,java.text.*, java.lang.*,java.net.*" %>
 
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page
-        import="org.oscarehr.utility.SpringUtils, org.oscarehr.common.dao.CSSStylesDAO, org.oscarehr.common.model.CssStyle, java.util.List" %>
-<%@ page import="org.oscarehr.common.model.BillingService" %>
-<%@ page import="org.oscarehr.common.dao.BillingServiceDao" %>
+        import="ca.openosp.openo.utility.SpringUtils, ca.openosp.openo.commn.dao.CSSStylesDAO, ca.openosp.openo.commn.model.CssStyle, java.util.List" %>
+<%@ page import="ca.openosp.openo.commn.model.BillingService" %>
+<%@ page import="ca.openosp.openo.commn.dao.BillingServiceDao" %>
 <%@ page import="ca.openosp.openo.billing.CA.ON.model.BillingPercLimit" %>
 <%@ page import="ca.openosp.openo.billing.CA.ON.dao.BillingPercLimitDao" %>
 <%@ page import="ca.openosp.openo.util.StringUtils" %>
+<%@ page import="ca.openosp.MyDateFormat" %>
 <%
     BillingServiceDao billingServiceDao = SpringUtils.getBean(BillingServiceDao.class);
     BillingPercLimitDao billingPercLimitDao = SpringUtils.getBean(BillingPercLimitDao.class);

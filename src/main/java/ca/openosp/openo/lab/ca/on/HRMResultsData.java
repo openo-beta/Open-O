@@ -15,7 +15,7 @@ import java.util.*;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.Demographic;
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.hospitalReportManager.HRMReport;
 import ca.openosp.openo.hospitalReportManager.HRMReportParser;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao;
@@ -25,9 +25,9 @@ import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToProvider;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class HRMResultsData {
 

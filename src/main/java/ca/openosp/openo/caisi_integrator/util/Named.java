@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 /**
  * The intent of this interface is so that any time I have
- * a dao model object that has a "name" (or any object that has a name),
+ * a daos model object that has a "name" (or any object that has a name),
  * I can use the comparator below to sort it before display it on the screen.
  * 
  * For the most part it's just so I don't have to write a slew of comparators

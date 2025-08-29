@@ -27,7 +27,7 @@ package ca.openosp.openo.fax.core;
 
 import java.util.Date;
 
-import org.oscarehr.common.model.FaxJob.STATUS;
+import ca.openosp.openo.commn.model.FaxJob.STATUS;
 
 import net.sf.json.JSONObject;
 

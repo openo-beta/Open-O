@@ -37,9 +37,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.common.model.ClinicLocation;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.model.ClinicLocation;
+import ca.openosp.openo.commn.dao.ClinicLocationDao;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class ClinicLocationDaoTest extends DaoTestFixtures {
 

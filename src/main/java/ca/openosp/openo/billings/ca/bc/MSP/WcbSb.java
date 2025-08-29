@@ -26,14 +26,15 @@ package ca.openosp.openo.billings.ca.bc.MSP;
 
 import java.math.BigDecimal;
 
+import ca.openosp.Misc;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.billing.CA.BC.model.Wcb;
-import org.oscarehr.common.dao.BillingServiceDao;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.BillingServiceDao;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.Misc;
-import oscar.OscarProperties;
+import ca.openosp.Misc;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
 import ca.openosp.openo.util.ConversionUtils;
@@ -377,7 +378,7 @@ public class WcbSb {
     }
 
     public String dateFormat(String date) {
-        return Misc.forwardZero(oscar.Misc.cleanNumber(date), 8);
+        return Misc.forwardZero(Misc.cleanNumber(date), 8);
     }
 
     public String getHtmlLine() {

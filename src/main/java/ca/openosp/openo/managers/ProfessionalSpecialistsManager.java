@@ -1,9 +1,9 @@
 //CHECKSTYLE:OFF
 package ca.openosp.openo.managers;
 
-import org.oscarehr.common.dao.ProfessionalSpecialistDao;
-import org.oscarehr.common.model.ProfessionalSpecialist;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.dao.ProfessionalSpecialistDao;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
+import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,14 +25,14 @@ public class ProfessionalSpecialistsManager implements Serializable {
 
     public ProfessionalSpecialist getProfessionalSpecialist(LoggedInInfo loggedInInfo, int id) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", SecurityInfoManager.READ, null)) {
-            throw new RuntimeException("missing required security object (_con)");
+            throw new RuntimeException("missing required sec object (_con)");
         }
         return professionalSpecialistDao.find(id);
     }
 
     public List<ProfessionalSpecialist> searchProfessionalSpecialist(LoggedInInfo loggedInInfo, String keyword) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", SecurityInfoManager.READ, null)) {
-            throw new RuntimeException("missing required security object (_con)");
+            throw new RuntimeException("missing required sec object (_con)");
         }
         return professionalSpecialistDao.search(keyword);
     }

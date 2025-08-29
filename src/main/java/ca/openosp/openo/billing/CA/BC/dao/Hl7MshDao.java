@@ -32,7 +32,7 @@ import javax.persistence.TypedQuery;
 
 import ca.openosp.openo.billing.CA.BC.model.Hl7Msh;
 import ca.openosp.openo.billing.CA.BC.util.PathNetLabResults;
-import org.oscarehr.common.dao.AbstractDaoImpl;
+import ca.openosp.openo.commn.dao.AbstractDaoImpl;
 import org.springframework.stereotype.Repository;
 
 @Repository

@@ -27,13 +27,14 @@ package ca.openosp.openo.dashboard.handler;
 
 import java.util.List;
 
-import org.oscarehr.PMmodule.service.ProviderManager;
-import org.oscarehr.common.model.OscarMsgType;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.PMmodule.service.ProviderManager;
+import ca.openosp.openo.commn.model.OscarMsgType;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.messenger.data.MessengerSystemMessage;
-import org.oscarehr.common.model.Security;
+import ca.openosp.openo.commn.model.Security;
 import ca.openosp.openo.managers.MessagingManager;
 
 public class MessageHandler {
@@ -65,7 +66,7 @@ public class MessageHandler {
 
         MessagingManager messagingManager = SpringUtils.getBean(MessagingManager.class);
         ProviderManager providerManager = SpringUtils.getBean(ProviderManager.class);
-        org.oscarehr.common.model.Provider provider = providerManager.getProvider(SYSTEM_USER_ID);
+        Provider provider = providerManager.getProvider(SYSTEM_USER_ID);
         Security security = new Security();
         LoggedInInfo loggedInInfo = new LoggedInInfo();
         loggedInInfo.setLoggedInProvider(provider);

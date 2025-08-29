@@ -7,7 +7,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.Misc;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -28,12 +29,12 @@ public class FrmAdfV2Record extends FrmRecord {
             if (rs.next()) {
                 java.util.Date date =
                         UtilDateUtilities.calcDate(
-                                oscar.Misc.getString(rs, "year_of_birth"),
-                                oscar.Misc.getString(rs, "month_of_birth"),
-                                oscar.Misc.getString(rs, "date_of_birth"));
+                                Misc.getString(rs, "year_of_birth"),
+                                Misc.getString(rs, "month_of_birth"),
+                                Misc.getString(rs, "date_of_birth"));
                 props.setProperty(
                         "demographic_no",
-                        oscar.Misc.getString(rs, "demographic_no"));
+                        Misc.getString(rs, "demographic_no"));
                 props.setProperty(
                         "formCreated",
                         UtilDateUtilities.DateToString(
@@ -41,24 +42,24 @@ public class FrmAdfV2Record extends FrmRecord {
                                 _dateFormat));
                 //props.setProperty("formEdited",
                 // UtilDateUtilities.DateToString(new Date(),_dateFormat));
-                props.setProperty("c_patientname", oscar.Misc.getString(rs, "last_name") + ", " + oscar.Misc.getString(rs, "first_name"));
+                props.setProperty("c_patientname", Misc.getString(rs, "last_name") + ", " + Misc.getString(rs, "first_name"));
                 props.setProperty(
                         "c_address",
-                        oscar.Misc.getString(rs, "address")
+                        Misc.getString(rs, "address")
                                 + ", "
-                                + oscar.Misc.getString(rs, "city")
+                                + Misc.getString(rs, "city")
                                 + ", "
-                                + oscar.Misc.getString(rs, "province")
+                                + Misc.getString(rs, "province")
                                 + " "
-                                + oscar.Misc.getString(rs, "postal"));
-                props.setProperty("c_phn", oscar.Misc.getString(rs, "hin"));
+                                + Misc.getString(rs, "postal"));
+                props.setProperty("c_phn", Misc.getString(rs, "hin"));
                 props.setProperty(
                         "pg1_dateOfBirth",
                         UtilDateUtilities.DateToString(date, _dateFormat));
                 props.setProperty(
                         "pg1_age",
                         String.valueOf(UtilDateUtilities.calcAge(date)));
-                props.setProperty("c_phone", oscar.Misc.getString(rs, "phone"));
+                props.setProperty("c_phone", Misc.getString(rs, "phone"));
                 props.setProperty(
                         "sigDate",
                         UtilDateUtilities.DateToString(

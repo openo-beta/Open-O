@@ -40,7 +40,7 @@ import java.util.Map;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.AcroFields;
 import com.itextpdf.text.pdf.AcroFields.Item;
@@ -87,7 +87,7 @@ public class PDFController {
     private static final Logger _Logger = MiscUtils.getLogger();
     private final String STRING_FILTER = "[^a-zA-Z0-9_' '!.!#]";
 
-    private static String[] ALLOWED_BEAN_PACKAGES = new String[]{"org.oscarehr.common.model",
+    private static String[] ALLOWED_BEAN_PACKAGES = new String[]{"org.oscarehr.commons.model",
             "oscar.form.pharmaForms.formBPMH.bean"};
 
     private static final String DATE_FORMAT = "MM-dd-yyyy";

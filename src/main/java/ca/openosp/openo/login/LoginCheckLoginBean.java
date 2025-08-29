@@ -29,21 +29,23 @@ package ca.openosp.openo.login;
 import java.util.Date;
 import java.util.List;
 
+import ca.openosp.Misc;
+import ca.openosp.OscarProperties;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.PMmodule.dao.SecUserRoleDao;
-import org.oscarehr.PMmodule.model.SecUserRole;
-import org.oscarehr.common.dao.SecurityDao;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.Security;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.dao.SecUserRoleDao;
+import ca.openosp.openo.PMmodule.model.SecUserRole;
+import ca.openosp.openo.commn.dao.SecurityDao;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.Security;
 import ca.openosp.openo.managers.MfaManager;
 import ca.openosp.openo.managers.SecurityManager;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SSOUtility;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SSOUtility;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.model.security.LdapSecurity;
 import org.owasp.encoder.Encode;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 
@@ -84,7 +86,7 @@ public final class LoginCheckLoginBean {
     public String[] authenticate() {
         security = getUserID();
 
-        // the user is not in security table
+        // the user is not in sec table
         if (security == null) {
             return cleanNullObj(LOG_PRE + "No Such User: " + username);
         }
@@ -92,7 +94,7 @@ public final class LoginCheckLoginBean {
 
         String sPin = pin;
 
-        if (sPin != null && oscar.OscarProperties.getInstance().isPINEncripted()) sPin = oscar.Misc.encryptPIN(sPin);
+        if (sPin != null && OscarProperties.getInstance().isPINEncripted()) sPin = Misc.encryptPIN(sPin);
 
         /*
          * Override PIN requirement when SSO is enabled
@@ -246,7 +248,7 @@ public final class LoginCheckLoginBean {
                 securityRecord = new LdapSecurity(securityRecord);
             }
 
-            // Gets the provider record
+            // Gets the providers record
             ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
             Provider provider = providerDao.getProvider(securityRecord.getProviderNo());
 

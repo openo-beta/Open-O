@@ -45,25 +45,25 @@ import com.itextpdf.text.pdf.*;
 import org.apache.commons.io.FileUtils;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.FaxConfigDao;
-import org.oscarehr.common.dao.FaxJobDao;
-import org.oscarehr.common.model.FaxConfig;
-import org.oscarehr.common.model.FaxJob;
-import org.oscarehr.common.model.FaxJob.Direction;
-import org.oscarehr.common.model.PharmacyInfo;
+import ca.openosp.openo.commn.dao.FaxConfigDao;
+import ca.openosp.openo.commn.dao.FaxJobDao;
+import ca.openosp.openo.commn.model.FaxConfig;
+import ca.openosp.openo.commn.model.FaxJob;
+import ca.openosp.openo.commn.model.FaxJob.Direction;
+import ca.openosp.openo.commn.model.PharmacyInfo;
 import ca.openosp.openo.managers.FaxManager;
 import ca.openosp.openo.managers.FaxManager.TransactionType;
-import org.oscarehr.utility.LocaleUtils;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import org.oscarehr.web.PrescriptionQrCodeUIBean;
+import ca.openosp.openo.utility.LocaleUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.openo.web.PrescriptionQrCodeUIBean;
 
 import org.owasp.encoder.Encode;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
-import ca.openosp.openo.rx.data.RxPharmacyData;
+import ca.openosp.openo.prescript.data.RxPharmacyData;
 
 public class FrmCustomedPDFServlet extends HttpServlet {
 
@@ -643,7 +643,7 @@ public class FrmCustomedPDFServlet extends HttpServlet {
             rx = "";
         }
 
-        // parse rx and put into a list of rx;
+        // parse prescript and put into a list of prescript;
         String[] rxA = rx.split(newline);
         List<String> listRx = new ArrayList<String>();
         String listElem = "";

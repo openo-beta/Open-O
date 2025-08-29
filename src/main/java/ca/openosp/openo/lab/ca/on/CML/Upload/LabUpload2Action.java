@@ -30,11 +30,11 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.DbConnectionFilter;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.DbConnectionFilter;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.lab.FileUploadCheck;
 import ca.openosp.openo.lab.ca.on.CML.ABCDParser;
 
@@ -49,11 +49,11 @@ public class LabUpload2Action extends ActionSupport {
     HttpServletResponse response = ServletActionContext.getResponse();
 
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-    Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger _logger = MiscUtils.getLogger();
 
     public String execute() {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_lab", "w", null)) {
-            throw new SecurityException("missing required security object (_lab)");
+            throw new SecurityException("missing required sec object (_lab)");
         }
 
         String filename = "";

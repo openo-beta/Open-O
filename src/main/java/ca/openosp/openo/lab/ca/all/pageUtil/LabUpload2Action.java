@@ -40,15 +40,15 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.common.OtherIdManager;
-import org.oscarehr.common.dao.OscarKeyDao;
-import org.oscarehr.common.dao.PublicKeyDao;
-import org.oscarehr.common.model.OscarKey;
-import org.oscarehr.common.model.OtherId;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.commn.OtherIdManager;
+import ca.openosp.openo.commn.dao.OscarKeyDao;
+import ca.openosp.openo.commn.dao.PublicKeyDao;
+import ca.openosp.openo.commn.model.OscarKey;
+import ca.openosp.openo.commn.model.OtherId;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.lab.FileUploadCheck;
 import ca.openosp.openo.lab.ca.all.parsers.HHSEmrDownloadHandler;
 import ca.openosp.openo.lab.ca.all.upload.HandlerClassFactory;
@@ -74,7 +74,7 @@ public class LabUpload2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    protected static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    protected static Logger logger = MiscUtils.getLogger();
 
     @Override
     public String execute() {
@@ -239,7 +239,7 @@ public class LabUpload2Action extends ActionSupport {
 
         try {
             PublicKeyDao publicKeyDao = (PublicKeyDao) SpringUtils.getBean(PublicKeyDao.class);
-            org.oscarehr.common.model.PublicKey publicKeyObject = publicKeyDao.find(service);
+            ca.openosp.openo.commn.model.PublicKey publicKeyObject = publicKeyDao.find(service);
 
             if (publicKeyObject != null) {
                 keyString = publicKeyObject.getBase64EncodedPublicKey();

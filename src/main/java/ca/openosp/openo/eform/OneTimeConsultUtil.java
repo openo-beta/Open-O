@@ -31,12 +31,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.EFormDataDao;
-import org.oscarehr.common.dao.EFormValueDao;
-import org.oscarehr.common.model.EFormData;
-import org.oscarehr.common.model.EFormValue;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.EFormDataDao;
+import ca.openosp.openo.commn.dao.EFormValueDao;
+import ca.openosp.openo.commn.model.EFormData;
+import ca.openosp.openo.commn.model.EFormValue;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 
 public class OneTimeConsultUtil {

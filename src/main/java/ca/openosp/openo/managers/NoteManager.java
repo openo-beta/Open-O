@@ -12,12 +12,12 @@ import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteExt;
 import ca.openosp.openo.casemgmt.model.Issue;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
-import org.oscarehr.common.model.enumerator.CppCode;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.ws.rest.conversion.CaseManagementIssueConverter;
-import org.oscarehr.ws.rest.to.model.NoteExtTo1;
-import org.oscarehr.ws.rest.to.model.NoteTo1;
+import ca.openosp.openo.commn.model.enumerator.CppCode;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.webserv.rest.conversion.CaseManagementIssueConverter;
+import ca.openosp.openo.webserv.rest.to.model.NoteExtTo1;
+import ca.openosp.openo.webserv.rest.to.model.NoteTo1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

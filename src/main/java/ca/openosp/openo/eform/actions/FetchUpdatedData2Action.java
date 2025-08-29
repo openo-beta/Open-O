@@ -22,8 +22,8 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.eform.EFormLoader;
 import ca.openosp.openo.eform.EFormUtil;
@@ -45,12 +45,12 @@ public final class FetchUpdatedData2Action extends ActionSupport {
 
     public String ajaxFetchData() throws IOException {
         String demographic = request.getParameter("demographic");
-        String provider = request.getParameter("provider");
+        String provider = request.getParameter("providers");
         String uuid = request.getParameter("uuid");
         String fields = request.getParameter("fields");
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_eform", "r", null)) {
-            throw new SecurityException("missing required security object (_eform)");
+            throw new SecurityException("missing required sec object (_eform)");
         }
 
 
@@ -67,7 +67,7 @@ public final class FetchUpdatedData2Action extends ActionSupport {
                     //replace ${demographic} with demogrpahicNo
                     if (sql != null) {
                         sql = DatabaseAP.parserReplace("demographic", demographic, sql);
-                        sql = DatabaseAP.parserReplace("provider", provider, sql);
+                        sql = DatabaseAP.parserReplace("providers", provider, sql);
                         sql = DatabaseAP.parserReplace("uuid", uuid, sql);
                         //sql = replaceAllFields(sql);
 

@@ -24,12 +24,13 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 
-import org.oscarehr.common.dao.ClinicDAO;
-import org.oscarehr.common.dao.ProfessionalSpecialistDao;
-import org.oscarehr.common.model.Clinic;
-import org.oscarehr.common.model.ProfessionalSpecialist;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.Misc;
+import ca.openosp.openo.commn.dao.ClinicDAO;
+import ca.openosp.openo.commn.dao.ProfessionalSpecialistDao;
+import ca.openosp.openo.commn.model.Clinic;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -51,17 +52,17 @@ public class FrmConsultantRecord extends FrmRecord {
 
             ResultSet rs = DBHandler.GetSQL(sql);
             if (rs.next()) {
-                java.util.Date date = UtilDateUtilities.calcDate(oscar.Misc.getString(rs, "year_of_birth"), oscar.Misc.getString(rs, "month_of_birth"), oscar.Misc.getString(rs, "date_of_birth"));
-                props.setProperty("demographic_no", oscar.Misc.getString(rs, "demographic_no"));
+                java.util.Date date = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), Misc.getString(rs, "month_of_birth"), Misc.getString(rs, "date_of_birth"));
+                props.setProperty("demographic_no", Misc.getString(rs, "demographic_no"));
                 props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
                 props.setProperty("consultTime", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
                 props.setProperty("formEdited", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
-                props.setProperty("p_name", oscar.Misc.getString(rs, "pName"));
-                props.setProperty("p_address1", oscar.Misc.getString(rs, "address"));
-                props.setProperty("p_address2", oscar.Misc.getString(rs, "address2"));
+                props.setProperty("p_name", Misc.getString(rs, "pName"));
+                props.setProperty("p_address1", Misc.getString(rs, "address"));
+                props.setProperty("p_address2", Misc.getString(rs, "address2"));
                 props.setProperty("p_birthdate", UtilDateUtilities.DateToString(date, "yyyy/MM/dd"));
-                props.setProperty("p_phone", oscar.Misc.getString(rs, "phone"));
-                props.setProperty("p_healthcard", oscar.Misc.getString(rs, "hic"));
+                props.setProperty("p_phone", Misc.getString(rs, "phone"));
+                props.setProperty("p_healthcard", Misc.getString(rs, "hic"));
             }
             rs.close();
 
@@ -99,10 +100,10 @@ public class FrmConsultantRecord extends FrmRecord {
     public String getProvName(int provider_no) throws SQLException {
 
         Properties props = new Properties();
-        String sql = "SELECT CONCAT('Dr. ', first_name, ' ', last_name) AS doc_Name FROM provider WHERE provider_no = " + provider_no;
+        String sql = "SELECT CONCAT('Dr. ', first_name, ' ', last_name) AS doc_Name FROM providers WHERE provider_no = " + provider_no;
         ResultSet rs = DBHandler.GetSQL(sql);
         if (rs.next()) {
-            props.setProperty("doc_name", oscar.Misc.getString(rs, "doc_Name"));
+            props.setProperty("doc_name", Misc.getString(rs, "doc_Name"));
         }
         rs.close();
         return props.getProperty("doc_name", "");
@@ -114,7 +115,7 @@ public class FrmConsultantRecord extends FrmRecord {
         ResultSet rs = DBHandler.GetSQL(sql);
         String refdocno, docno;
         if (rs.next()) {
-            docno = oscar.Misc.getString(rs, "family_doctor");
+            docno = Misc.getString(rs, "family_doctor");
             refdocno = docno.substring(8, docno.indexOf("</rdohip>"));
             if (refdocno != "") {
                 props.setProperty("refdocno", refdocno);

@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 /*
  * Author: Charles Liu <charles.liu@nondfa.com>

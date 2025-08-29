@@ -31,11 +31,11 @@ import java.util.List;
 
 import ca.openosp.openo.billing.CA.BC.dao.BillRecipientsDao;
 import ca.openosp.openo.billing.CA.BC.model.BillRecipients;
-import org.oscarehr.common.dao.BillingDao;
-import org.oscarehr.common.dao.BillingPaymentTypeDao;
-import org.oscarehr.common.model.Billing;
-import org.oscarehr.common.model.BillingPaymentType;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.BillingDao;
+import ca.openosp.openo.commn.dao.BillingPaymentTypeDao;
+import ca.openosp.openo.commn.model.Billing;
+import ca.openosp.openo.commn.model.BillingPaymentType;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.entities.PaymentType;

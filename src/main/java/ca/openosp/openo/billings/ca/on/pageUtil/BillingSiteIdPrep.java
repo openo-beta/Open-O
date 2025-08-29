@@ -19,7 +19,7 @@
 
 package ca.openosp.openo.billings.ca.on.pageUtil;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.appt.JdbcApptImpl;
 
 public class BillingSiteIdPrep {

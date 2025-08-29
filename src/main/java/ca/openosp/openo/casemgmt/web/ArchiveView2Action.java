@@ -26,8 +26,8 @@ package ca.openosp.openo.casemgmt.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.PMmodule.service.ProgramManager;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.service.ProgramManager;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

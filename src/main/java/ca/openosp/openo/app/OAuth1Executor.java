@@ -13,9 +13,9 @@ import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth10aService;
 
-import org.oscarehr.common.model.AppDefinition;
-import org.oscarehr.common.model.AppUser;
-import org.oscarehr.common.model.ServiceClient;
+import ca.openosp.openo.commn.model.AppDefinition;
+import ca.openosp.openo.commn.model.AppUser;
+import ca.openosp.openo.commn.model.ServiceClient;
 import ca.openosp.openo.login.OscarOAuthDataProvider;
 
 /**

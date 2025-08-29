@@ -39,17 +39,18 @@ import java.util.Properties;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+import ca.openosp.OscarProperties;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.utility.DateUtils;
-import org.oscarehr.common.dao.ClinicDAO;
-import org.oscarehr.common.dao.OscarAppointmentDao;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.model.Appointment;
-import org.oscarehr.common.model.Clinic;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.utility.DateUtils;
+import ca.openosp.openo.commn.dao.ClinicDAO;
+import ca.openosp.openo.commn.dao.OscarAppointmentDao;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.model.Appointment;
+import ca.openosp.openo.commn.model.Clinic;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 
@@ -101,7 +102,7 @@ public class AppointmentMailer implements MessageMailer {
 
     private void setMessageHeader() {
         if (this.message == null) {
-            Properties op = oscar.OscarProperties.getInstance();
+            Properties op = OscarProperties.getInstance();
 
             String msgTemplatePath = "";
             Appointment appt = dao.find(this.apptNo);
@@ -254,10 +255,10 @@ public class AppointmentMailer implements MessageMailer {
         //         mailSender.send(this.message);
 
         //         //Update appt history accordingly      
-        //         Appointment appt = dao.find(this.apptNo);
+        //         Appointment appt = daos.find(this.apptNo);
         //         if(appt != null) {
         //         	appt.setRemarks(appt.getRemarks() + "Emailed:" + DateUtils.getCurrentDateOnlyStr("-") +"\n");
-        //         	dao.merge(appt);
+        //         	daos.merge(appt);
         //         }
         //     }
         //     else {

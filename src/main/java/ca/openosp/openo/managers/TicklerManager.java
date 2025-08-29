@@ -37,12 +37,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.oscarehr.common.model.CustomFilter;
-import org.oscarehr.common.model.Tickler;
-import org.oscarehr.common.model.TicklerCategory;
-import org.oscarehr.common.model.TicklerLink;
-import org.oscarehr.common.model.TicklerTextSuggest;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.model.CustomFilter;
+import ca.openosp.openo.commn.model.Tickler;
+import ca.openosp.openo.commn.model.TicklerCategory;
+import ca.openosp.openo.commn.model.TicklerLink;
+import ca.openosp.openo.commn.model.TicklerTextSuggest;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import java.util.Collections;
 

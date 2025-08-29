@@ -29,9 +29,9 @@ package ca.openosp.openo.managers;
 
 import java.util.List;
 
-import org.oscarehr.common.model.OscarJob;
-import org.oscarehr.common.model.OscarJobType;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.model.OscarJob;
+import ca.openosp.openo.commn.model.OscarJobType;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 public interface OscarJobManager {
 

@@ -34,10 +34,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.oscarehr.common.dao.ReportByExamplesFavoriteDao;
-import org.oscarehr.common.model.ReportByExamplesFavorite;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ReportByExamplesFavoriteDao;
+import ca.openosp.openo.commn.model.ReportByExamplesFavorite;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.report.bean.RptByExampleQueryBeanHandler;
 

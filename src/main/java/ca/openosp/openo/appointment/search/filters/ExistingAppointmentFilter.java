@@ -30,19 +30,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.appointment.search.SearchConfig;
 import ca.openosp.openo.appointment.search.TimeSlot;
-import org.oscarehr.common.model.Appointment;
+import ca.openosp.openo.commn.model.Appointment;
 import ca.openosp.openo.managers.DayWorkSchedule;
-//import org.oscarehr.oscar.ws.manager.ScheduleManager;
-//import org.oscarehr.oscar.ws.utils.OscarServerWebServicesManager;
+//import org.oscarehr.oscar.webserv.manager.ScheduleManager;
+//import org.oscarehr.oscar.webserv.utils.OscarServerWebServicesManager;
 import ca.openosp.openo.managers.ScheduleManager;
 
-//import org.oscarehr.ws.AppointmentTransfer;
+//import org.oscarehr.webserv.AppointmentTransfer;
 
-//import org.oscarehr.ws.ScheduleWs;
+//import ca.openosp.openo.webserv.ScheduleWs;
 
 public class ExistingAppointmentFilter implements AvailableTimeSlotFilter {
 
@@ -60,7 +60,7 @@ public class ExistingAppointmentFilter implements AvailableTimeSlotFilter {
                 }
             }
         } catch (Exception e) {
-            logger.error("Error getting existing appointments provider:" + providerId + " could be oscar 12 will check it", e);
+            logger.error("Error getting existing appointments providers:" + providerId + " could be oscar 12 will check it", e);
 
         }
 

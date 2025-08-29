@@ -23,15 +23,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.BillingONCHeader1Dao;
-import org.oscarehr.common.model.BillingONCHeader1;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.BillingONCHeader1Dao;
+import ca.openosp.openo.commn.model.BillingONCHeader1;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 
 public class BillingStatusData {
-    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static final Logger _logger = MiscUtils.getLogger();
 
     public BillingStatusData() {
     }

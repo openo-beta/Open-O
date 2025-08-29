@@ -36,8 +36,8 @@ import javax.servlet.http.HttpSession;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBeanHandler;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasuringInstructionBeanHandler;
 import ca.openosp.openo.encounter.pageUtil.EctSessionBean;
@@ -56,7 +56,7 @@ public final class EctSetupMeasurements2Action extends ActionSupport {
             throws Exception {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_measurement", "r", null)) {
-            throw new SecurityException("missing required security object (_measurement)");
+            throw new SecurityException("missing required sec object (_measurement)");
         }
 
         HttpSession session = request.getSession();

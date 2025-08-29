@@ -28,11 +28,11 @@
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ page
-        import="oscar.oscarRx.data.*,java.util.*,org.oscarehr.common.dao.DrugReasonDao,org.oscarehr.common.model.DrugReason" %>
-<%@page import="org.oscarehr.utility.SpringUtils,ca.openosp.openo.util.StringUtils" %>
+        import="ca.openosp.openo.rx.data.*,java.util.*,ca.openosp.openo.commn.dao.DrugReasonDao,ca.openosp.openo.commn.model.DrugReason" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils,ca.openosp.openo.util.StringUtils" %>
 <%@ page
-        import="org.oscarehr.common.dao.DxresearchDAO,org.oscarehr.common.model.Dxresearch,org.oscarehr.common.dao.Icd9Dao,org.oscarehr.common.model.Icd9" %>
-<%@ page import="org.oscarehr.utility.MiscUtils" %>
+        import="ca.openosp.openo.commn.dao.DxresearchDAO,ca.openosp.openo.commn.model.Dxresearch,ca.openosp.openo.commn.dao.Icd9Dao,ca.openosp.openo.commn.model.Icd9" %>
+<%@ page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@page import="ca.openosp.openo.managers.CodingSystemManager" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%

@@ -32,7 +32,7 @@
       java.net.*,
       org.apache.commons.io.FileUtils,
       org.apache.commons.text.StringEscapeUtils,
-      oscar.OscarProperties,
+      ca.openosp.OscarProperties,
       ca.openosp.openo.util.FileSortByDate
 " %>
 

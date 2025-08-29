@@ -37,7 +37,7 @@ import org.jdom.Namespace;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import ca.openosp.openo.drools.RuleBaseFactory;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 /**
  * Class used to create Drools XML files

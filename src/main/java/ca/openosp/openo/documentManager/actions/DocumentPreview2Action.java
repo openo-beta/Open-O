@@ -6,18 +6,18 @@ import ca.openosp.openo.eform.EFormUtil;
 import ca.openosp.openo.encounter.data.EctFormData;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.EFormData;
-import org.oscarehr.common.model.enumerator.DocumentType;
+import ca.openosp.openo.commn.model.EFormData;
+import ca.openosp.openo.commn.model.enumerator.DocumentType;
 import ca.openosp.openo.documentManager.DocumentAttachmentManager;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.documentManager.data.AttachmentLabResultData;
 import ca.openosp.openo.hospitalReportManager.HRMUtil;
 import ca.openosp.openo.managers.FormsManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.PDFGenerationException;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PDFGenerationException;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.StringUtils;
 

@@ -48,9 +48,9 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.AbstractModel;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.model.AbstractModel;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
 /**
  * @author apavel

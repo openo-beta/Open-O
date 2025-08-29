@@ -25,7 +25,7 @@
 --%>
 
 <%@ page import="java.util.ResourceBundle" %>
-<% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
+<% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -46,6 +46,7 @@
 
 <%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConAddInstitutionForm" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
+<%@ page import="ca.openosp.OscarProperties" %>
 
 <html>
 

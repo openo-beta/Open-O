@@ -79,7 +79,7 @@ import cdshrm.PatientRecordDocument.PatientRecord;
 import cdshrm.ReportsReceivedDocument.ReportsReceived;
 import cdshrm.ReportsReceivedDocument.ReportsReceived.ResultStatus;
 import cdshrm.TransactionInformationDocument.TransactionInformation;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 /**
  * @author ronnie
@@ -114,7 +114,7 @@ public class CreateHRMFile {
         try {
             omdCdsDoc.save(file, options);
         } catch (IOException ex) {
-            org.oscarehr.utility.MiscUtils.getLogger();
+            ca.openosp.openo.utility.MiscUtils.getLogger();
         }
 
         MiscUtils.getLogger().debug("saved HRM file: " + filepath);
@@ -149,7 +149,7 @@ public class CreateHRMFile {
                 }
             }
         } else {
-            org.oscarehr.utility.MiscUtils.getLogger();
+            ca.openosp.openo.utility.MiscUtils.getLogger();
         }
 
         PersonNameStandard HRMpersonName = HRMdemo.addNewNames();

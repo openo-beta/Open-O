@@ -29,7 +29,7 @@ import java.util.Date;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
-import org.oscarehr.common.model.Security;
+import ca.openosp.openo.commn.model.Security;
 
 import ca.openosp.openo.login.jaas.LoginModuleFactory;
 import ca.openosp.openo.login.jaas.OscarCallbackHandler;
@@ -64,7 +64,7 @@ public class LdapSecurity extends Security {
      * Checks password and {@link #getUserName()} agains LDAP database.
      *
      * @return Returns trues if password validation agains the AD is successful and false otherwise
-     * @see org.oscarehr.common.model.Security#checkPassword(java.lang.String)
+     * @see Security#checkPassword(java.lang.String)
      */
     @Override
     public boolean checkPassword(String inputedPassword) {

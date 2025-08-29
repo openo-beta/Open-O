@@ -36,23 +36,23 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.AppointmentArchiveDao;
-import org.oscarehr.common.dao.AppointmentSearchDao;
-import org.oscarehr.common.dao.AppointmentStatusDao;
-import org.oscarehr.common.dao.LookupListDao;
-import org.oscarehr.common.dao.OscarAppointmentDao;
-import org.oscarehr.common.model.AppointmentSearch;
-import org.oscarehr.common.model.Demographic;
+import ca.openosp.openo.commn.dao.AppointmentArchiveDao;
+import ca.openosp.openo.commn.dao.AppointmentSearchDao;
+import ca.openosp.openo.commn.dao.AppointmentStatusDao;
+import ca.openosp.openo.commn.dao.LookupListDao;
+import ca.openosp.openo.commn.dao.OscarAppointmentDao;
+import ca.openosp.openo.commn.model.AppointmentSearch;
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.appointment.search.SearchConfig;
 import ca.openosp.openo.appointment.search.TimeSlot;
 import ca.openosp.openo.appointment.search.AppointmentType;
 import ca.openosp.openo.appointment.search.FilterDefinition;
 import ca.openosp.openo.appointment.search.Provider;
 import ca.openosp.openo.appointment.search.filters.AvailableTimeSlotFilter;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
 //import org.oscarehr.oscar_clinic_component.manager.BookingLearningManager;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.XmlUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.XmlUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -135,11 +135,11 @@ public class AppointmentSearchManagerImpl implements AppointmentSearchManager {
             for (Provider provider : providerMap.keySet()) {
                 DayWorkSchedule dayWorkSchedule = scheduleManager.getDayWorkSchedule(provider.getProviderNo(), calDayToSearch);
 
-                /// keep? or change ? Element searchedProviderRecord = recordProviderSearched(doc,searchRecord,provider.getProviderNo(),dayWorkScheduleTransfer, providerMap.get(provider));
+                /// keep? or change ? Element searchedProviderRecord = recordProviderSearched(doc,searchRecord,providers.getProviderNo(),dayWorkScheduleTransfer, providerMap.get(providers));
 
 
                 if (dayWorkSchedule == null || dayWorkSchedule.isHoliday()) continue;
-                // Is this still needed?  probably if (BookingLearningManager.isDaySetToSkip(clinic, provider.getProviderNo(), calDayToSearch, appointmentTypeId)) continue;
+                // Is this still needed?  probably if (BookingLearningManager.isDaySetToSkip(clinic, providers.getProviderNo(), calDayToSearch, appointmentTypeId)) continue;
 
                 List<TimeSlot> providerAppointments = AppointmentSearchManager.getAllowedTimesByType(dayWorkSchedule, providerMap.get(provider), provider.getProviderNo());
                 /// keep? or change ? recordFilterForSearchedProvider(doc,searchedProviderRecord,dayWorkScheduleTransfer,"N/A" , providerAppointments);

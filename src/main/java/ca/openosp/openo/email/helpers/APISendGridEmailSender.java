@@ -18,12 +18,12 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
-import org.oscarehr.common.model.EmailAttachment;
-import org.oscarehr.common.model.EmailConfig;
+import ca.openosp.openo.commn.model.EmailAttachment;
+import ca.openosp.openo.commn.model.EmailConfig;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.EmailSendingException;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.EmailSendingException;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -67,7 +67,7 @@ public class APISendGridEmailSender {
 
     public void send() throws EmailSendingException {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_email", SecurityInfoManager.WRITE, null)) {
-            throw new RuntimeException("missing required security object (_email)");
+            throw new RuntimeException("missing required sec object (_email)");
         }
 
         try {

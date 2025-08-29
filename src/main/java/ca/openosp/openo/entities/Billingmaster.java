@@ -42,7 +42,7 @@ import javax.persistence.Temporal;
 import ca.openosp.openo.util.UtilMisc;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.util.UtilDateUtilities;
 

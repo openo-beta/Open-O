@@ -183,7 +183,7 @@
         </ul>
     </div>
     <!-- <div class="show">
-        <img class="logo" src="web/img/kai.png"/>
+        <img class="logo" src="www/img/kai.png"/>
     </div> -->
     <div id="first"
          class="greyBox" <%=((tab == null || tab.equals("first")) ? "style='display:block;'" : "style='display:none;'") %> >

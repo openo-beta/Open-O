@@ -23,18 +23,19 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.common.dao.DxresearchDAO" %>
-<%@page import="org.oscarehr.common.model.Dxresearch" %>
-<%@page import="ca.openosp.openo.rx.data.RxPatientData" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.commn.dao.DxresearchDAO" %>
+<%@page import="ca.openosp.openo.commn.model.Dxresearch" %>
+<%@page import="ca.openosp.openo.prescript.data.RxPatientData" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.managers.CodingSystemManager" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager" %>
 <%@page import="ca.openosp.openo.casemgmt.model.Issue" %>
 <%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
 <%@page import="java.util.List" %>
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.commn.model.Allergy" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -44,7 +45,7 @@
 <%
     RxSessionBean bean2 = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
 
-    org.oscarehr.common.model.Allergy[] allergies = RxPatientData.getPatient(LoggedInInfo.getLoggedInInfoFromSession(request), bean2.getDemographicNo()).getActiveAllergies();
+    Allergy[] allergies = RxPatientData.getPatient(LoggedInInfo.getLoggedInInfoFromSession(request), bean2.getDemographicNo()).getActiveAllergies();
     String alle = "";
     if (allergies.length > 0) {
         alle = "Red";
@@ -132,7 +133,7 @@
 
     <p class="PropSheetLevel1CurrentItem"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgFavorites"/>
         <a href="${pageContext.request.contextPath}/oscarRx/EditFavorites2.jsp">edit</a>
-        <a href="${pageContext.request.contextPath}/oscarRx/CopyFavorites2.jsp">copy</a> <%-- <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgCopyFavorites"/> --%>
+        <a href="${pageContext.request.contextPath}/oscarRx/CopyFavorites2.jsp">copy</a> <%-- <fmt:setBundle basename="oscarResources"/><fmt:message key="rx.sideLinks.msgCopyFavorites"/> --%>
     </p>
     <p class="PropSheetMenuItemLevel1">
             <%

@@ -27,9 +27,9 @@
 
 
 <%@ page
-        import="oscar.oscarRx.pageUtil.*,oscar.oscarRx.data.*,java.util.*" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPharmacyData" %>
+        import="ca.openosp.openo.rx.pageUtil.*,ca.openosp.openo.rx.data.*,java.util.*" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPharmacyData" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -70,7 +70,7 @@
                 RxPharmacyData rxp = new RxPharmacyData();
                 rxp.deletePharmacy(request.getParameter("ID"));
 
-                response.sendRedirect(request.getContextPath() + "/oscarRx/SelectPharmacy2.jsp");
+                response.sendRedirect(request.getContextPath() + "/rx/SelectPharmacy2.jsp");
                 return;
             }
             ID = (String) request.getParameter("ID");
@@ -186,7 +186,7 @@
                     <tr>
                         <td>
                             <%
-                                String sBack = "oscarRx/SearchDrug.jsp";
+                                String sBack = "rx/SearchDrug.jsp";
                             %> <input type=button class="ControlPushButton"
                                       onclick="javascript:window.location.href='<%=sBack%>';"
                                       value="Back to Search Drug"/></td>

@@ -35,8 +35,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.common.model.DemographicPharmacy;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.model.DemographicPharmacy;
+import ca.openosp.openo.commn.dao.DemographicPharmacyDao;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class DemographicPharmacyDaoTest extends DaoTestFixtures {
 

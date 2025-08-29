@@ -31,8 +31,8 @@ import org.apache.commons.lang.StringEscapeUtils;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.documentManager.EDocUtil.EDocSort;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.util.DateUtils;
 import ca.openosp.openo.util.StringUtils;
 

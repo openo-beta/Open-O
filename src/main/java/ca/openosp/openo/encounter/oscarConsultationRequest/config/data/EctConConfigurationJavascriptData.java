@@ -26,9 +26,9 @@
 
 package ca.openosp.openo.encounter.oscarConsultationRequest.config.data;
 
-import org.oscarehr.common.dao.SpecialistsJavascriptDao;
-import org.oscarehr.common.model.SpecialistsJavascript;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.SpecialistsJavascriptDao;
+import ca.openosp.openo.commn.model.SpecialistsJavascript;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class EctConConfigurationJavascriptData {
 

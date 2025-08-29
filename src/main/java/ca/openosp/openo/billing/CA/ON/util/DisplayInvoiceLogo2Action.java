@@ -25,12 +25,13 @@
 
 package ca.openosp.openo.billing.CA.ON.util;
 
+import ca.openosp.openo.commn.model.Document;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.common.dao.DocumentDao;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.commn.dao.DocumentDao;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.OscarProperties;
 
 import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletRequest;
@@ -140,13 +141,13 @@ public class DisplayInvoiceLogo2Action extends ActionSupport {
             MiscUtils.getLogger().info("Can't get DocumentDAO bean");
             return fileName;
         }
-        List<org.oscarehr.common.model.Document> docList = docDao.findByDoctype(logoDocType);
+        List<Document> docList = docDao.findByDoctype(logoDocType);
         if (docList == null || docList.size() < 1) {
             MiscUtils.getLogger().info("Can't get document according to doctype: " + logoDocType);
             return fileName;
         }
 
-        org.oscarehr.common.model.Document doc = docList.get(docList.size() - 1);
+        Document doc = docList.get(docList.size() - 1);
         if (doc != null) {
             fileName = doc.getDocfilename();
         }

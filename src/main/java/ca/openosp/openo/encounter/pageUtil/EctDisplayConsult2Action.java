@@ -34,10 +34,10 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
 import ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewConsultationRequestsUtil;
-import org.oscarehr.common.dao.UserPropertyDAO;
-import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.dao.UserPropertyDAO;
+import ca.openosp.openo.commn.model.UserProperty;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import ca.openosp.openo.util.DateUtils;

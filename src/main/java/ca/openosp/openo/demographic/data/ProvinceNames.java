@@ -28,7 +28,7 @@ package ca.openosp.openo.demographic.data;
 
 import java.util.ArrayList;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 public class ProvinceNames extends ArrayList<String> {
 

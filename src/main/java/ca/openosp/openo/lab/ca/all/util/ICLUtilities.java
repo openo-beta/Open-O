@@ -28,9 +28,9 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 /*
  * @author David Daley, Indivica

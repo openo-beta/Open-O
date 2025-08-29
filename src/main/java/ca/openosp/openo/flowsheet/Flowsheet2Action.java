@@ -47,16 +47,16 @@ import org.apache.xmlbeans.XmlOptions;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.dao.FlowSheetUserCreatedDao;
-import org.oscarehr.common.dao.Icd9Dao;
-import org.oscarehr.common.dao.MeasurementTypeDao;
-import org.oscarehr.common.dao.ValidationsDao;
-import org.oscarehr.common.model.FlowSheetUserCreated;
-import org.oscarehr.common.model.Icd9;
-import org.oscarehr.common.model.MeasurementType;
-import org.oscarehr.common.model.Validations;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.dao.FlowSheetUserCreatedDao;
+import ca.openosp.openo.commn.dao.Icd9Dao;
+import ca.openosp.openo.commn.dao.MeasurementTypeDao;
+import ca.openosp.openo.commn.dao.ValidationsDao;
+import ca.openosp.openo.commn.model.FlowSheetUserCreated;
+import ca.openosp.openo.commn.model.Icd9;
+import ca.openosp.openo.commn.model.MeasurementType;
+import ca.openosp.openo.commn.model.Validations;
 import ca.openosp.openo.flowsheets.FlowsheetDocument;
 import ca.openosp.openo.flowsheets.FlowsheetDocument.Flowsheet;
 import ca.openosp.openo.flowsheets.FlowsheetDocument.Flowsheet.Header;
@@ -69,9 +69,9 @@ import ca.openosp.openo.flowsheets.FlowsheetDocument.Flowsheet.Header.Item.Rules
 import ca.openosp.openo.flowsheets.FlowsheetDocument.Flowsheet.Indicator;
 import ca.openosp.openo.flowsheets.FlowsheetDocument.Flowsheet.Measurement;
 import ca.openosp.openo.flowsheets.FlowsheetDocument.Flowsheet.Measurement.ValidationRule;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet;
 import ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig;
@@ -604,7 +604,7 @@ public class Flowsheet2Action extends ActionSupport {
         if ("patient".equals(scope)) {
             fsuc.setScopeDemographicNo(Integer.parseInt(demographicNo));
         }
-        if ("provider".equals(scope)) {
+        if ("providers".equals(scope)) {
             fsuc.setScopeProviderNo(providerNo);
         }
         fsuc.setDxcodeTriggers(triggers);

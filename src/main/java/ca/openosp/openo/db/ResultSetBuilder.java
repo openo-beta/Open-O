@@ -60,7 +60,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
-import org.oscarehr.common.model.ProviderLabRoutingModel;
+import ca.openosp.openo.commn.model.ProviderLabRoutingModel;
 
 import ca.openosp.openo.util.Textualizer;
 

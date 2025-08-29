@@ -28,14 +28,14 @@ import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.IndicatorTemplate;
+import ca.openosp.openo.commn.model.IndicatorTemplate;
 import ca.openosp.openo.dashboard.display.beans.DrilldownBean;
 import ca.openosp.openo.dashboard.handler.DrilldownQueryHandler;
 import ca.openosp.openo.dashboard.handler.IndicatorTemplateHandler;
 import ca.openosp.openo.dashboard.handler.IndicatorTemplateXML;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class DrilldownBeanFactory {
 

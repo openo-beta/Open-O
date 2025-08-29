@@ -31,11 +31,11 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import org.oscarehr.common.dao.ORNCkdScreeningReportLogDao;
-import org.oscarehr.common.model.ORNCkdScreeningReportLog;
-import org.oscarehr.utility.DbConnectionFilter;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ORNCkdScreeningReportLogDao;
+import ca.openosp.openo.commn.model.ORNCkdScreeningReportLog;
+import ca.openosp.openo.utility.DbConnectionFilter;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class ORNCkdScreeningReportThread extends Thread {
 

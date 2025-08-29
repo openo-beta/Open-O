@@ -54,10 +54,10 @@
 <%@ page import="java.util.*, java.sql.*" errorPage="../errorpage.jsp" %>
 
 <jsp:useBean id="providerNameBean" class="java.util.Properties" scope="page"/>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
-<%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@ page import="org.oscarehr.common.model.Provider" %>
-<%@ page import="org.oscarehr.common.dao.forms.FormsDao" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
+<%@ page import="ca.openosp.openo.commn.model.Provider" %>
+<%@ page import="ca.openosp.openo.commn.dao.forms.FormsDao" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 
 <%

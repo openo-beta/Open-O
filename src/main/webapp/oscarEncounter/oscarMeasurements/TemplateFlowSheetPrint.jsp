@@ -24,16 +24,16 @@
 
 --%>
 <!DOCTYPE html>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <% long startTime = System.currentTimeMillis(); %>
 <%@ page
-        import="oscar.oscarDemographic.data.*,java.util.*,oscar.oscarPrevention.*,oscar.oscarEncounter.oscarMeasurements.*,oscar.oscarEncounter.oscarMeasurements.bean.*,java.net.*" %>
+        import="ca.openosp.openo.demographic.data.*,java.util.*,ca.openosp.openo.prevention.*,ca.openosp.openo.encounter.oscarMeasurements.*,ca.openosp.openo.encounter.oscarMeasurements.bean.*,java.net.*" %>
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@ page import="org.springframework.web.context.WebApplicationContext" %>
-<%@ page import="org.oscarehr.common.dao.FlowSheetCustomizationDao,org.oscarehr.common.model.FlowSheetCustomization" %>
-<%@ page import="org.oscarehr.common.dao.FlowSheetDrugDao,org.oscarehr.common.model.FlowSheetDrug" %>
+<%@ page import="ca.openosp.openo.commn.dao.FlowSheetCustomizationDao,ca.openosp.openo.commn.model.FlowSheetCustomization" %>
+<%@ page import="ca.openosp.openo.commn.dao.FlowSheetDrugDao,ca.openosp.openo.commn.model.FlowSheetDrug" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.FlowSheetItem" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementInfo" %>
@@ -43,7 +43,7 @@
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean" %>
 <%@ page import="ca.openosp.openo.prevention.PreventionData" %>
 <%@ page import="ca.openosp.openo.prevention.Prevention" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

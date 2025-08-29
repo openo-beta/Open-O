@@ -33,12 +33,13 @@ package ca.openosp.openo.billings.ca.bc.MSP;
 
 import java.util.Date;
 
+import ca.openosp.Misc;
 import ca.openosp.openo.billing.CA.BC.dao.BillingNoteDao;
 import ca.openosp.openo.billing.CA.BC.model.BillingNotes;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.Misc;
+import ca.openosp.Misc;
 import ca.openosp.openo.util.ConversionUtils;
 
 /**
@@ -57,7 +58,7 @@ public class MSPBillingNote {
     }
 
     public void addNote(String billingmaster_no, String provider_no, String note) {
-        note = oscar.Misc.removeNewLine(note);
+        note = Misc.removeNewLine(note);
 
         BillingNotes b = new BillingNotes();
         b.setBillingmasterNo(Integer.parseInt(billingmaster_no));

@@ -51,12 +51,12 @@ import javax.servlet.http.HttpServletResponse;
 import com.itextpdf.text.*;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.printing.FontSettings;
-import org.oscarehr.common.printing.PdfWriterFactory;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.printing.FontSettings;
+import ca.openosp.openo.commn.printing.PdfWriterFactory;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.form.graphic.FrmGraphicFactory;
 import ca.openosp.openo.form.graphic.FrmPdfGraphic;
 import ca.openosp.openo.form.pdfservlet.FrmPDFPostValueProcessor;
@@ -74,7 +74,7 @@ import com.itextpdf.text.pdf.PdfWriter;
  */
 public class EFormPDFServlet extends HttpServlet {
 
-    Logger log = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger log = MiscUtils.getLogger();
 
     /**
      *

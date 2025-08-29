@@ -23,18 +23,18 @@
     Ontario, Canada
 
 --%>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.common.dao.DrugDao" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.commn.dao.DrugDao" %>
 <%@page import="java.util.List" %>
-<%@page import="org.oscarehr.common.model.Drug" %>
-<%@page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
-<%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
+<%@page import="ca.openosp.openo.commn.model.Drug" %>
+<%@page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
+<%@page import="ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
 <%@page import="ca.openosp.openo.caisi_integrator.ws.DemographicWs" %>
-<%@page import="org.oscarehr.utility.SessionConstants" %>
-<%@page import="org.oscarehr.oscarRx.StaticScriptBean" %>
+<%@page import="ca.openosp.openo.utility.SessionConstants" %>
+<%@page import="ca.openosp.openo.rx.StaticScriptBean" %>
 <%@page import="java.util.ArrayList" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -105,7 +105,7 @@
                 if (favoriteName.length > 0) {
                     var s = escape('?regionalIdentifier=<%=regionalIdentifier%>&cn=<%=cn%>');
 
-                    window.location.href = '<%=request.getContextPath() %>/oscarRx/addFavoriteStaticScript.do?drugId='
+                    window.location.href = '<%=request.getContextPath() %>/rx/addFavoriteStaticScript.do?drugId='
                         + escape(drugId) + '&favoriteName=' + escape(favoriteName)
                         + '&returnParams=' + s;
                 }

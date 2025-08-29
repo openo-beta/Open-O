@@ -31,11 +31,11 @@
         gridlayout = true;
     }
 %>
-<%@ page import="oscar.eform.data.*, oscar.eform.*, java.util.*, oscar.util.*" %>
-<%@ page import="java.util.*,oscar.oscarRx.data.*,oscar.oscarRx.pageUtil.*,java.io.*,org.apache.xmlrpc.*" %>
+<%@ page import="ca.openosp.openo.eform.data.*, ca.openosp.openo.eform.*, java.util.*, ca.openosp.openo.util.*" %>
+<%@ page import="java.util.*,ca.openosp.openo.rx.data.*,ca.openosp.openo.rx.pageUtil.*,java.io.*,org.apache.xmlrpc.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<%@page import="org.oscarehr.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

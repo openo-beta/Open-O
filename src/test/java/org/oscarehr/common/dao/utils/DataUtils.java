@@ -37,14 +37,14 @@ import javax.xml.parsers.SAXParserFactory;
 
 import ca.openosp.openo.util.UtilDateUtilities;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import org.oscarehr.common.dao.DaoTestFixtures;
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.dao.ProviderInboxRoutingDao;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.dao.ProviderInboxRoutingDao;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -106,7 +106,7 @@ public class DataUtils {
             demographicDao.save(d);
 
             if (logger.isInfoEnabled()) {
-                logger.info("Set provider " + p + " for " + d);
+                logger.info("Set providers " + p + " for " + d);
             }
         }
     }
@@ -161,7 +161,7 @@ public class DataUtils {
 	private static String getCanonicalPath(String fileName) {
 		String docDir = System.getProperty("DOCUMENT_DIR"); 
 		if (docDir == null || docDir.trim().equals("")) {
-			docDir = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+			docDir = ca.openosp.OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
 			docDir = "/var/lib/OscarDocument";
 		}
 		
@@ -259,7 +259,7 @@ public class DataUtils {
         private EntityKind getEntityKind(String elementName) {
             if (elementName.equals("demographic")) {
                 return EntityKind.DEMO;
-            } else if (elementName.equals("provider")) {
+            } else if (elementName.equals("providers")) {
                 return EntityKind.PROVIDER;
             }
             return null;
@@ -353,7 +353,7 @@ public class DataUtils {
             providerDao.updateProvider(provider);
 
             if (logger.isInfoEnabled()) {
-                logger.info("Created new provider: " + provider);
+                logger.info("Created new providers: " + provider);
             }
         }
     }

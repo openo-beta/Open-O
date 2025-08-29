@@ -36,9 +36,9 @@ import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
-import org.oscarehr.common.dao.FileUploadCheckDao;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.FileUploadCheckDao;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.ConversionUtils;
 
@@ -53,7 +53,7 @@ public final class FileUploadCheck {
 
     private static boolean hasFileBeenUploaded(String md5sum) {
         FileUploadCheckDao dao = SpringUtils.getBean(FileUploadCheckDao.class);
-        List<org.oscarehr.common.model.FileUploadCheck> checks = dao.findByMd5Sum(md5sum);
+        List<ca.openosp.openo.commn.model.FileUploadCheck> checks = dao.findByMd5Sum(md5sum);
         return !checks.isEmpty();
     }
 
@@ -73,14 +73,14 @@ public final class FileUploadCheck {
     public static Map<String, String> getFileInfo(Integer id) {
         Map<String, String> fileInfo = new HashMap<String, String>();
         FileUploadCheckDao dao = SpringUtils.getBean(FileUploadCheckDao.class);
-        org.oscarehr.common.model.FileUploadCheck c = dao.find(id);
+        ca.openosp.openo.commn.model.FileUploadCheck c = dao.find(id);
         if (c != null) {
             toMap(fileInfo, c);
         }
         return fileInfo;
     }
 
-    private static void toMap(Map<String, String> fileInfo, org.oscarehr.common.model.FileUploadCheck c) {
+    private static void toMap(Map<String, String> fileInfo, ca.openosp.openo.commn.model.FileUploadCheck c) {
         fileInfo.put("providerNo", c.getProviderNo());
         fileInfo.put("filename", c.getFilename());
         fileInfo.put("md5sum", c.getMd5sum());
@@ -90,10 +90,10 @@ public final class FileUploadCheck {
     public static Hashtable<String, String> getFileInfo(String md5sum) {
         Hashtable<String, String> fileInfo = new Hashtable<String, String>();
         FileUploadCheckDao dao = SpringUtils.getBean(FileUploadCheckDao.class);
-        List<org.oscarehr.common.model.FileUploadCheck> checks = dao.findByMd5Sum(md5sum);
+        List<ca.openosp.openo.commn.model.FileUploadCheck> checks = dao.findByMd5Sum(md5sum);
 
         if (!checks.isEmpty()) {
-            org.oscarehr.common.model.FileUploadCheck c = checks.get(0);
+            ca.openosp.openo.commn.model.FileUploadCheck c = checks.get(0);
             toMap(fileInfo, c);
         }
 
@@ -111,7 +111,7 @@ public final class FileUploadCheck {
             String md5sum = DigestUtils.md5Hex(IOUtils.toByteArray(is));
             if (!hasFileBeenUploaded(md5sum)) {
 
-                org.oscarehr.common.model.FileUploadCheck f = new org.oscarehr.common.model.FileUploadCheck();
+                ca.openosp.openo.commn.model.FileUploadCheck f = new ca.openosp.openo.commn.model.FileUploadCheck();
                 f.setProviderNo(provider);
                 f.setFilename(name);
                 f.setMd5sum(md5sum);

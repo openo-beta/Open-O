@@ -35,13 +35,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.dao.EncounterFormDao;
-import org.oscarehr.common.model.EncounterForm;
+import ca.openosp.openo.commn.dao.EncounterFormDao;
+import ca.openosp.openo.commn.model.EncounterForm;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -56,7 +56,7 @@ public class FrmSetupSelect2Action extends ActionSupport {
     public String execute()
             throws ServletException, IOException {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_form", "r", null)) {
-            throw new SecurityException("missing required security object (_form)");
+            throw new SecurityException("missing required sec object (_form)");
         }
 
         EncounterFormDao encounterFormDao = (EncounterFormDao) SpringUtils.getBean(EncounterFormDao.class);

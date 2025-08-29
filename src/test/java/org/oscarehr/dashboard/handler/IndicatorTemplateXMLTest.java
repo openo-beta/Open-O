@@ -128,7 +128,7 @@ public class IndicatorTemplateXMLTest {
 
     @Test
     public void testGetIndicatorParameters() {
-        assertEquals("provider", indicatorTemplateXML.getIndicatorParameters().get(0).getId());
+        assertEquals("providers", indicatorTemplateXML.getIndicatorParameters().get(0).getId());
     }
 
     @Test
@@ -153,7 +153,7 @@ public class IndicatorTemplateXMLTest {
 
     @Test
     public void testGetDrilldownParameters() {
-        assertEquals("provider", indicatorTemplateXML.getDrilldownParameters("null").get(0).getId());
+        assertEquals("providers", indicatorTemplateXML.getDrilldownParameters("null").get(0).getId());
     }
 
     @Test

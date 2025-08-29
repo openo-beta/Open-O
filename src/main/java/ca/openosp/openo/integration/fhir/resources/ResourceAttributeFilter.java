@@ -31,7 +31,7 @@ import java.util.Properties;
 
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.integration.fhir.interfaces.ResourceAttributeFilterInterface;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 public class ResourceAttributeFilter implements ResourceAttributeFilterInterface {
 

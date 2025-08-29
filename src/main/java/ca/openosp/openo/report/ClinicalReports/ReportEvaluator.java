@@ -32,8 +32,8 @@ import java.util.Hashtable;
 import java.util.List;
 
 import org.apache.commons.collections.KeyValue;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBean;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
@@ -183,7 +183,7 @@ public class ReportEvaluator {
             String[] repKeys = denominator.getReplaceableKeys();
             Hashtable repVals = denominator.getReplaceableValues();
             for (int i = 0; i < repKeys.length; i++) {
-                //provider_no:999998  if key is provider_no look up provider name
+                //provider_no:999998  if key is provider_no look up providers name
                 MiscUtils.getLogger().debug("repKeys " + repKeys[i]);
                 if (repKeys[i] != null && repKeys[i].equals("provider_no")) {
                     name.append("Provider: " + getProviderStringName("" + repVals.get(repKeys[i])));

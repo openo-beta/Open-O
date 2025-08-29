@@ -49,13 +49,14 @@
 <%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
 
 <%@ page
-        import="java.util.*, oscar.*, oscar.util.*, ca.openosp.openo.provider.data.ProviderData, org.oscarehr.utility.SpringUtils, org.oscarehr.common.dao.CtlDocClassDao" %>
+        import="java.util.*, ca.openosp.*, ca.openosp.openo.util.*, ca.openosp.openo.providers.data.ProviderData, ca.openosp.openo.utility.SpringUtils, ca.openosp.openo.commn.dao.CtlDocClassDao" %>
 <%@ page import="ca.openosp.openo.documentManager.data.AddEditDocument2Form" %>
 <%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <%@ page import="ca.openosp.openo.util.UtilMisc" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="ca.openosp.OscarProperties" %>
 <%
     String mode = "";
     if (request.getAttribute("mode") != null) {
@@ -384,7 +385,7 @@
                     id="obsdate"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif"
                                       alt="Calendar" border="0"/></a></td>
         </tr>
-        <% if (module.equals("provider")) {%>
+        <% if (module.equals("providers")) {%>
         <tr>
             <td>Public?</td>
             <td><input type="checkbox" name="docPublic"

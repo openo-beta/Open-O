@@ -25,14 +25,14 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.oscarehr.common.dao.CaseloadDao;
+import ca.openosp.openo.commn.dao.CaseloadDao;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import org.owasp.encoder.Encode;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.util.OscarRoleObjectPrivilege;
 import ca.openosp.openo.util.StringUtils;
@@ -58,7 +58,7 @@ public class CaseloadContent2Action extends ActionSupport {
     public String noteSearch() {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "r", null)) {
-            throw new SecurityException("missing required security object (_demographic)");
+            throw new SecurityException("missing required sec object (_demographic)");
         }
 
         String caseloadProv = request.getParameter("clProv");
@@ -223,7 +223,7 @@ public class CaseloadContent2Action extends ActionSupport {
         String[] clSearchParams;
         String[] clSortParams = null;
 
-        if ("all".equals(caseloadProgram) && "all".equals(caseloadProv)) { // program and provider are all
+        if ("all".equals(caseloadProgram) && "all".equals(caseloadProv)) { // program and providers are all
             Integer facilityId = loggedInInfo.getCurrentFacility().getId();
 
             if (!StringUtils.isNullOrEmpty(caseloadDx) && !StringUtils.isNullOrEmpty(caseloadRoster)) {
@@ -252,7 +252,7 @@ public class CaseloadContent2Action extends ActionSupport {
                 clSearchParams[0] = facilityId.toString();
             }
         } else if ("all".equals(caseloadProgram)) { // program is all
-            // demographics from a specific provider
+            // demographics from a specific providers
 
             Integer facilityId = loggedInInfo.getCurrentFacility().getId();
 
@@ -297,7 +297,7 @@ public class CaseloadContent2Action extends ActionSupport {
                 clSearchParams[3] = caseloadProv;
                 clSearchParams[4] = facilityId.toString();
             }
-        } else if ("all".equals(caseloadProv)) { // provider is all
+        } else if ("all".equals(caseloadProv)) { // providers is all
             // all demographics
             if (!StringUtils.isNullOrEmpty(caseloadDx) && !StringUtils.isNullOrEmpty(caseloadRoster)) {
                 // filter on dx and roster status
@@ -324,8 +324,8 @@ public class CaseloadContent2Action extends ActionSupport {
                 clSearchParams = new String[1];
                 clSearchParams[0] = caseloadProgram;
             }
-        } else { // program and provider aren't all
-            // demographics from a specific provider
+        } else { // program and providers aren't all
+            // demographics from a specific providers
             if (!StringUtils.isNullOrEmpty(caseloadDx) && !StringUtils.isNullOrEmpty(caseloadRoster)) {
                 // filter on dx
                 clSearchQuery = "search_provdemo_rodxfilter";
@@ -529,7 +529,7 @@ public class CaseloadContent2Action extends ActionSupport {
 
                 // add Rx button to string
                 if (isModuleLoaded(request, "TORONTO_RFQ", true) && hasPrivilege("_appointment.doctorLink", roleName$)) {
-                    buttons += "| <a href='#' onClick=\"popupOscarRx(700,1027,'../oscarRx/choosePatient.do?providerNo=" + curUser_no + "&demographicNo=" + demographic_no + "');return false;\">Rx</a> ";
+                    buttons += "| <a href='#' onClick=\"popupOscarRx(700,1027,'../rx/choosePatient.do?providerNo=" + curUser_no + "&demographicNo=" + demographic_no + "');return false;\">Rx</a> ";
                 }
 
                 // add Tickler button to string

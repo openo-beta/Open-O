@@ -24,23 +24,24 @@
  */
 package ca.openosp.openo.renal.web;
 
+import ca.openosp.OscarProperties;
+import ca.openosp.openo.utility.*;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.velocity.VelocityContext;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.dao.DxresearchDAO;
-import org.oscarehr.common.dao.MeasurementDao;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.Dxresearch;
-import org.oscarehr.common.model.Measurement;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.dao.DxresearchDAO;
+import ca.openosp.openo.commn.dao.MeasurementDao;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.Dxresearch;
+import ca.openosp.openo.commn.model.Measurement;
 import ca.openosp.openo.renal.CkdScreener;
 import ca.openosp.openo.renal.ORNCkdScreeningReportThread;
 import ca.openosp.openo.renal.ORNPreImplementationReportThread;
-import org.oscarehr.utility.*;
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.form.FrmLabReq07Record;
 import ca.openosp.openo.form.FrmLabReq10Record;
 
@@ -269,7 +270,7 @@ public class Renal2Action extends ActionSupport {
         String demographicNo = request.getParameter("demographic_no");
         response.setContentType("text/html");
         try {
-            String documentDir = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR", "");
+            String documentDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR", "");
             File f = new File(documentDir, "orn_patient_letter.txt");
             String template = IOUtils.toString(new FileInputStream(f));
 

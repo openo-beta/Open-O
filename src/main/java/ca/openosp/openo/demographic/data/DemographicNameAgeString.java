@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 /**
  * @author Jay Gallagher

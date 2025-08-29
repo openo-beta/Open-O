@@ -40,14 +40,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.common.dao.UserPropertyDAO;
-import org.oscarehr.common.model.UserProperty;
-import org.oscarehr.utility.DbConnectionFilter;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.UserPropertyDAO;
+import ca.openosp.openo.commn.model.UserProperty;
+import ca.openosp.openo.utility.DbConnectionFilter;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarDocumentCreator;
+import ca.openosp.OscarDocumentCreator;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -65,7 +65,7 @@ public class PrintClientLabLabel2Action extends ActionSupport {
     public String execute() {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_demographic", "r", null)) {
-            throw new SecurityException("missing required security object (_demographic)");
+            throw new SecurityException("missing required sec object (_demographic)");
         }
 
         //patient

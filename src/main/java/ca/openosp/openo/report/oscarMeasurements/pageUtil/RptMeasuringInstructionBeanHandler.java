@@ -27,9 +27,9 @@ package ca.openosp.openo.report.oscarMeasurements.pageUtil;
 
 import java.util.Vector;
 
-import org.oscarehr.common.dao.MeasurementTypeDao;
-import org.oscarehr.common.model.MeasurementType;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.MeasurementTypeDao;
+import ca.openosp.openo.commn.model.MeasurementType;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class RptMeasuringInstructionBeanHandler {
 

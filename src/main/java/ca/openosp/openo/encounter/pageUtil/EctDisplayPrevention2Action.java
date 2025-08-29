@@ -27,8 +27,8 @@
 package ca.openosp.openo.encounter.pageUtil;
 
 import ca.openosp.openo.caisi_integrator.ws.CachedDemographicPrevention;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.prevention.Prevention;
 import ca.openosp.openo.prevention.PreventionDS;
 import ca.openosp.openo.prevention.PreventionData;

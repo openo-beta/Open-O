@@ -27,15 +27,15 @@ package ca.openosp.openo.dashboard.display;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.dashboard.display.beans.DashboardBean;
 import ca.openosp.openo.managers.DashboardManager;
 import ca.openosp.openo.managers.ProviderManager2;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import java.util.ArrayList;
 import java.util.List;

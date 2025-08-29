@@ -26,9 +26,10 @@
 
 package ca.openosp.openo.login;
 
+import ca.openosp.OscarProperties;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.EncryptionUtils;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.EncryptionUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -47,7 +48,7 @@ import java.util.Objects;
  */
 public class Startup implements ServletContextListener {
 	private static final Logger logger = MiscUtils.getLogger();
-	private oscar.OscarProperties p = oscar.OscarProperties.getInstance();
+	private OscarProperties p = OscarProperties.getInstance();
 
     public void contextInitialized(ServletContextEvent sc) {
         logger.info("Starting OSCAR application ");

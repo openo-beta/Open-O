@@ -29,14 +29,14 @@ import ca.openosp.openo.billing.CA.BC.model.*;
 import ca.openosp.openo.entities.S21;
 import ca.openosp.openo.util.*;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.BillingDao;
-import org.oscarehr.common.dao.BillingPaymentTypeDao;
-import org.oscarehr.common.model.Billing;
-import org.oscarehr.common.model.BillingPaymentType;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.BillingDao;
+import ca.openosp.openo.commn.dao.BillingPaymentTypeDao;
+import ca.openosp.openo.commn.model.Billing;
+import ca.openosp.openo.commn.model.BillingPaymentType;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.entities.Billingmaster;
 import ca.openosp.openo.entities.MSPBill;
 import ca.openosp.openo.entities.Provider;
@@ -1110,8 +1110,8 @@ public class MSPReconcile {
             orderByClause = "order by b.provider_no,bt.sortOrder,bm.service_date,b.demographic_name";
             c12 = currentC12Records();
         }
-        String p = "select provider.first_name,provider.last_name,b.billingtype, b.update_date, bm.billingmaster_no,b.billing_no, " + " b.demographic_name,b.demographic_no,bm.billing_unit,bm.billing_code,bm.bill_amount,bm.billingstatus,bm.mva_claim_code,bm.service_location," + " bm.phn,bm.service_end_time,service_start_time,bm.service_to_day,bm.service_date,bm.oin_sex_code,b.dob,dx_code1,b.provider_no,apptProvider_no,bt.sortOrder "
-                + " from demographic,provider,billing as b left join billingtypes bt on b.billingtype = bt.billingtype ,billingmaster as bm left join billingstatus_types bs on bm.billingstatus = bs.billingstatus" + " where bm.billing_no=b.billing_no " + " and b.provider_no = provider.provider_no " + " and demographic.demographic_no = b.demographic_no " + criteriaQry + " " + orderByClause;
+        String p = "select providers.first_name,providers.last_name,b.billingtype, b.update_date, bm.billingmaster_no,b.billing_no, " + " b.demographic_name,b.demographic_no,bm.billing_unit,bm.billing_code,bm.bill_amount,bm.billingstatus,bm.mva_claim_code,bm.service_location," + " bm.phn,bm.service_end_time,service_start_time,bm.service_to_day,bm.service_date,bm.oin_sex_code,b.dob,dx_code1,b.provider_no,apptProvider_no,bt.sortOrder "
+                + " from demographic,providers,billing as b left join billingtypes bt on b.billingtype = bt.billingtype ,billingmaster as bm left join billingstatus_types bs on bm.billingstatus = bs.billingstatus" + " where bm.billing_no=b.billing_no " + " and b.provider_no = providers.provider_no " + " and demographic.demographic_no = b.demographic_no " + criteriaQry + " " + orderByClause;
 
         if (type.equals(REP_REJ)) {
             rejDetails = this.getRejectionDetails();
@@ -1618,7 +1618,7 @@ public class MSPReconcile {
         }
         if (providerNo != null && !providerNo.trim().equalsIgnoreCase("all")) {
             if (MSPReconcile.REP_PAYREF.equals(repType)) {
-                String[] row = SqlUtils.getRow("select ohip_no from provider where provider_no = " + providerNo);
+                String[] row = SqlUtils.getRow("select ohip_no from providers where provider_no = " + providerNo);
                 if (row != null && row.length > 0) {
                     String ohip_no = row[0];
                     criteriaQry += " and t_practitionerno = '" + ohip_no + "'";
@@ -1746,8 +1746,8 @@ public class MSPReconcile {
      */
     public ResultSet getMSPRemittanceQuery(String payeeNo, String s21Id) {
         MiscUtils.getLogger().debug(new java.util.Date() + ":MSPReconcile.getMSPRemittanceQuery(payeeNo, s21Id)");
-        String qry = "SELECT billing_code,provider.first_name,provider.last_name,t_practitionerno,t_s00type,billingmaster.service_date as 't_servicedate',t_payment," + "t_datacenter,billing.demographic_name,billing.demographic_no,teleplanS00.t_paidamt,t_exp1,t_exp2,t_exp3,t_exp4,t_exp5,t_exp6,t_dataseq " + " from teleplanS00,billing,billingmaster,provider " + " where teleplanS00.t_officeno = billingmaster.billingmaster_no " + " and teleplanS00.s21_id = " + s21Id
-                + " and billingmaster.billing_no = billing.billing_no " + " and provider.ohip_no= teleplanS00.t_practitionerno " + " and teleplanS00.t_practitionerno NOT LIKE '' and teleplanS00.t_payeeno LIKE '" + payeeNo + "' order by provider.first_name,t_servicedate,billing.demographic_name";
+        String qry = "SELECT billing_code,providers.first_name,providers.last_name,t_practitionerno,t_s00type,billingmaster.service_date as 't_servicedate',t_payment," + "t_datacenter,billing.demographic_name,billing.demographic_no,teleplanS00.t_paidamt,t_exp1,t_exp2,t_exp3,t_exp4,t_exp5,t_exp6,t_dataseq " + " from teleplanS00,billing,billingmaster,providers " + " where teleplanS00.t_officeno = billingmaster.billingmaster_no " + " and teleplanS00.s21_id = " + s21Id
+                + " and billingmaster.billing_no = billing.billing_no " + " and providers.ohip_no= teleplanS00.t_practitionerno " + " and teleplanS00.t_practitionerno NOT LIKE '' and teleplanS00.t_payeeno LIKE '" + payeeNo + "' order by providers.first_name,t_servicedate,billing.demographic_name";
 
         ResultSet rs = null;
         try {
@@ -1777,7 +1777,7 @@ public class MSPReconcile {
                 "from teleplanS00 ts00\n" +
                 "join billingmaster bm on ts00.t_officeno = bm.billingmaster_no\n" +
                 "join billing b on bm.billing_no = b.billing_no\n" +
-                "join provider p on p.ohip_no= ts00.t_practitionerno\n" +
+                "join providers p on p.ohip_no= ts00.t_practitionerno\n" +
                 "where ts00.s21_id = " + s21Id + "\n" +
                 "and ts00.t_practitionerno != '' \n" +
                 "and ts00.t_payeeno = '" + payeeNo + "'\n" +
@@ -1825,9 +1825,9 @@ public class MSPReconcile {
     }
 
     /**
-     * Returns a Provider instance according to the supplied provider number
+     * Returns a Provider instance according to the supplied providers number
      *
-     * @param providerNo String - The UID of the provider in question
+     * @param providerNo String - The UID of the providers in question
      * @param criteria   int - If criteria == 1, retrieve Provider by ohip_no else by provider_no
      * @return Provider
      * @todo This method belongs in a ProviderDAO type class
@@ -1835,7 +1835,7 @@ public class MSPReconcile {
     public Provider getProvider(String providerNo, int criteria) {
         Provider prov = new Provider();
 
-        // provider numbers are varchars (strings)
+        // providers numbers are varchars (strings)
         if (providerNo == null || providerNo.isEmpty()) {
             prov.setFirstName("");
             prov.setLastName("");
@@ -1843,11 +1843,11 @@ public class MSPReconcile {
         }
 
         ProviderDao dao = SpringUtils.getBean(ProviderDao.class);
-        org.oscarehr.common.model.Provider provider = null;
+        ca.openosp.openo.commn.model.Provider provider = null;
         boolean isSearchingProvidersByOhipNumber = criteria == 1;
 
         if (isSearchingProvidersByOhipNumber) {
-            List<org.oscarehr.common.model.Provider> providersByOhip = dao.getBillableProvidersByOHIPNo(providerNo);
+            List<ca.openosp.openo.commn.model.Provider> providersByOhip = dao.getBillableProvidersByOHIPNo(providerNo);
 
             if (providersByOhip != null) {
                 provider = providersByOhip.get(0); // get the first entry only.
@@ -1874,7 +1874,7 @@ public class MSPReconcile {
     public List<Provider> getAllProviders() {
         ArrayList<Provider> list = new ArrayList<Provider>();
         ProviderDao dao = SpringUtils.getBean(ProviderDao.class);
-        for (org.oscarehr.common.model.Provider p : dao.getProvidersByType("doctor")) {
+        for (ca.openosp.openo.commn.model.Provider p : dao.getProvidersByType("doctor")) {
             Provider prov = new Provider();
             prov.setFirstName(p.getFirstName());
             prov.setLastName(p.getLastName());

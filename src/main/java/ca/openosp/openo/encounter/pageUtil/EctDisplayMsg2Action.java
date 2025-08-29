@@ -26,11 +26,11 @@
 
 package ca.openosp.openo.encounter.pageUtil;
 
-import org.oscarehr.common.model.MessageTbl;
-import org.oscarehr.common.model.OscarMsgType;
+import ca.openosp.openo.commn.model.MessageTbl;
+import ca.openosp.openo.commn.model.OscarMsgType;
 import ca.openosp.openo.managers.MessagingManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;

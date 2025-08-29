@@ -37,7 +37,8 @@
     }
 %>
 
-<%@page import="org.oscarehr.common.model.Site" %>
+<%@page import="ca.openosp.openo.commn.model.Site" %>
+<%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -135,7 +136,7 @@
                             <td>Postal Code:</td>
                             <td><nested:text property="site.postal"></nested:text></td>
                         </tr>
-                        <% if (org.oscarehr.common.IsPropertiesOn.isProviderFormalizeEnable()) { %>
+                        <% if (IsPropertiesOn.isProviderFormalizeEnable()) { %>
                         <tr>
                             <td>ProviderID From:</td>
                             <td><nested:text property="site.providerIdFrom"></nested:text></td>

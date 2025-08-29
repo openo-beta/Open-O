@@ -38,11 +38,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.model.Demographic;
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 
@@ -64,7 +64,7 @@ public class SendMostResponProv2Action extends ActionSupport {
             throws ServletException, IOException {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_lab", "w", null)) {
-            throw new SecurityException("missing required security object (_lab)");
+            throw new SecurityException("missing required sec object (_lab)");
         }
 
         String demoId = request.getParameter("demoId");

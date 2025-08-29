@@ -33,7 +33,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.oscarehr.common.model.AbstractModel;
+import ca.openosp.openo.commn.model.AbstractModel;
 
 /**
  * Represents a user preferences in the Billing Module

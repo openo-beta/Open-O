@@ -43,33 +43,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ca.openosp.OscarProperties;
 import org.apache.commons.io.IOUtils;
-import org.oscarehr.PMmodule.caisi_integrator.ConformanceTestHelper;
-import org.oscarehr.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.PMmodule.caisi_integrator.ConformanceTestHelper;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
-import org.oscarehr.common.dao.DocumentExtraReviewerDao;
-import org.oscarehr.common.dao.DocumentStorageDao;
-import org.oscarehr.common.dao.ProviderInboxRoutingDao;
-import org.oscarehr.common.dao.QueueDocumentLinkDao;
-import org.oscarehr.common.dao.SecRoleDao;
-import org.oscarehr.common.model.DocumentExtraReviewer;
-import org.oscarehr.common.model.DocumentStorage;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.SecRole;
+import ca.openosp.openo.commn.dao.DocumentExtraReviewerDao;
+import ca.openosp.openo.commn.dao.DocumentStorageDao;
+import ca.openosp.openo.commn.dao.ProviderInboxRoutingDao;
+import ca.openosp.openo.commn.dao.QueueDocumentLinkDao;
+import ca.openosp.openo.commn.dao.SecRoleDao;
+import ca.openosp.openo.commn.model.DocumentExtraReviewer;
+import ca.openosp.openo.commn.model.DocumentStorage;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.SecRole;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.managers.ProgramManager2;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SessionConstants;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SessionConstants;
+import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import oscar.MyDateFormat;
+import ca.openosp.MyDateFormat;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.encounter.data.EctProgram;
@@ -91,7 +92,7 @@ public class AddEditDocument2Action extends ActionSupport {
         ResourceBundle props = ResourceBundle.getBundle("oscarResources");
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
         int numberOfPages = 0;
@@ -135,7 +136,7 @@ public class AddEditDocument2Action extends ActionSupport {
         newDoc.setNumberOfPages(numberOfPages);
         String doc_no = EDocUtil.addDocumentSQL(newDoc);
         LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ADD, LogConst.CON_DOCUMENT, doc_no, request.getRemoteAddr());
-        String providerId = request.getParameter("provider");
+        String providerId = request.getParameter("providers");
 
         if (providerId != null) { // TODO: THIS NEEDS TO RUN THRU THE lab forwarding rules!
             WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getSession().getServletContext());
@@ -161,7 +162,7 @@ public class AddEditDocument2Action extends ActionSupport {
     public static int countNumOfPages(String fileName) {// count number of pages in a local pdf file
 
         int numOfPage = 0;
-        String docdownload = oscar.OscarProperties.getInstance().getDocumentDirectory();
+        String docdownload = OscarProperties.getInstance().getDocumentDirectory();
         if (!docdownload.endsWith(File.separator)) {
             docdownload += File.separator;
         }
@@ -187,7 +188,7 @@ public class AddEditDocument2Action extends ActionSupport {
 
     public String execute2() {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
         if (this.getMode().equals("") && this.getFunction().equals("") && this.getFunctionId().equals("")) {
@@ -322,7 +323,7 @@ public class AddEditDocument2Action extends ActionSupport {
                 String prog_no = new EctProgram(se).getProgram(user_no);
                 WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(se.getServletContext());
                 CaseManagementManager cmm = (CaseManagementManager) ctx.getBean(CaseManagementManager.class);
-                cmn.setProviderNo("-1");// set the provider no to be -1 so the editor appear as 'System'.
+                cmn.setProviderNo("-1");// set the providers no to be -1 so the editor appear as 'System'.
 
                 Provider provider = EDocUtil.getProvider(this.getDocCreator());
                 String provFirstName = "";
@@ -374,7 +375,7 @@ public class AddEditDocument2Action extends ActionSupport {
         Hashtable errors = new Hashtable();
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
         try {
@@ -389,7 +390,7 @@ public class AddEditDocument2Action extends ActionSupport {
             String fileName = "";
             boolean updateFileContent = false;
 
-            if (oscar.OscarProperties.getInstance().getBooleanProperty("ALLOW_UPDATE_DOCUMENT_CONTENT", "true"))
+            if (OscarProperties.getInstance().getBooleanProperty("ALLOW_UPDATE_DOCUMENT_CONTENT", "true"))
             {
                 File docFile = this.getDocFile();
                 if (docFile != null && docFile.exists()) {
@@ -479,7 +480,7 @@ this.getSource(), 'A', this.getObservationDate(), reviewerId, reviewDateTime, th
         File file = null;
         try {
             // Get the base directory from properties
-            String docDir = oscar.OscarProperties.getInstance().getDocumentDirectory();
+            String docDir = OscarProperties.getInstance().getDocumentDirectory();
             Path baseDir = Paths.get(docDir).normalize().toAbsolutePath();
 
             // Resolve the full path

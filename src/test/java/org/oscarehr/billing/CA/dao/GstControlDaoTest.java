@@ -34,7 +34,7 @@ import ca.openosp.openo.billing.CA.model.GstControl;
 import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class GstControlDaoTest extends DaoTestFixtures {
 

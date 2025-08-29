@@ -7,7 +7,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-import org.oscarehr.common.model.EmailLog.EmailStatus;
+import ca.openosp.openo.commn.model.EmailLog.EmailStatus;
 
 public class EmailStatusResult implements Comparable<EmailStatusResult> {
     private Integer logId;

@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.oscarehr.PMmodule.model.Program;
+import ca.openosp.openo.PMmodule.model.Program;
 import ca.openosp.openo.caisi_integrator.ws.FacilityIdDemographicIssueCompositePk;
 import ca.openosp.openo.casemgmt.model.CaseManagementIssue;
 import ca.openosp.openo.casemgmt.model.Issue;

@@ -35,16 +35,16 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.oscarehr.common.dao.OscarAppointmentDao;
-import org.oscarehr.common.model.Appointment;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.commn.dao.OscarAppointmentDao;
+import ca.openosp.openo.commn.model.Appointment;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile;
 import ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile.Bill;
 import ca.openosp.openo.billings.ca.on.data.BillingClaimHeader1Data;
@@ -61,7 +61,7 @@ public class EctDisplayBilling2Action extends EctDisplayAction {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_billing", "r", null)) {
-            throw new SecurityException("missing required security object (_billing)");
+            throw new SecurityException("missing required sec object (_billing)");
         }
         String appointmentNo = request.getParameter("appointment_no");
 

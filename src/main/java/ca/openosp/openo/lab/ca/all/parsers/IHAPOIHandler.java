@@ -277,7 +277,7 @@ public class IHAPOIHandler extends MEDITECHHandler implements MessageHandler {
 
 
     /**
-     * IHA provides the provider list at the end of a report in custom Z segements
+     * IHA provides the providers list at the end of a report in custom Z segements
      * as a convenience.
      */
     @Override

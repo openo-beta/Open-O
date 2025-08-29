@@ -38,9 +38,9 @@
 %>
 
 <%@ page
-        import="oscar.form.*, oscar.OscarProperties, java.util.Date, ca.openosp.openo.util.UtilDateUtilities" %>
-<%@page import="org.oscarehr.common.dao.FrmLabReqPreSetDao, org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+        import="ca.openosp.openo.form.*, ca.openosp.OscarProperties, java.util.Date, ca.openosp.openo.util.UtilDateUtilities" %>
+<%@page import="ca.openosp.openo.commn.dao.FrmLabReqPreSetDao, ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmMentalHealthForm14Record" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>

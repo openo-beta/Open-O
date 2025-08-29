@@ -38,9 +38,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.oscarehr.common.dao.utils.EntityDataGenerator;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.common.model.DocumentDescriptionTemplate;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.model.DocumentDescriptionTemplate;
+import ca.openosp.openo.commn.dao.DocumentDescriptionTemplateDao;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class DocumentDescriptionTemplateDaoTest extends DaoTestFixtures {
 

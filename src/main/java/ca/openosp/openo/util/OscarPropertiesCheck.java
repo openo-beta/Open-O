@@ -30,7 +30,7 @@ package ca.openosp.openo.util;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 
 /**

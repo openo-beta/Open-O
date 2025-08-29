@@ -24,16 +24,16 @@
 
 --%>
 
-<%@page import="org.oscarehr.utility.SessionConstants" %>
-<%@page import="org.oscarehr.common.model.ProviderPreference" %>
+<%@page import="ca.openosp.openo.utility.SessionConstants" %>
+<%@page import="ca.openosp.openo.commn.model.ProviderPreference" %>
 <%
     String oldGroup_no = request.getParameter("mygroup_no") == null ? "." : request.getParameter("mygroup_no");
 %>
 <%@ page import="java.util.*,java.sql.*"
          errorPage="../provider/errorpage.jsp" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
-<%@ page import="org.oscarehr.common.model.MyGroup" %>
-<%@ page import="org.oscarehr.common.dao.MyGroupDao" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.commn.model.MyGroup" %>
+<%@ page import="ca.openosp.openo.commn.dao.MyGroupDao" %>
 
 <%
     MyGroupDao dao = SpringUtils.getBean(MyGroupDao.class);

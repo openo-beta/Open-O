@@ -32,12 +32,12 @@
 %>
 
 <%@ page
-        import="java.lang.*, java.util.*, java.text.*,java.security.*, oscar.*"
+        import="java.lang.*, java.util.*, java.text.*,java.security.*, ca.openosp.*"
         errorPage="/errorpage.jsp" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
-<%@ page import="org.oscarehr.common.model.Security" %>
-<%@ page import="org.oscarehr.common.dao.SecurityDao" %>
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.commn.model.Security" %>
+<%@ page import="ca.openosp.openo.commn.dao.SecurityDao" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.managers.SecurityManager" %>
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);

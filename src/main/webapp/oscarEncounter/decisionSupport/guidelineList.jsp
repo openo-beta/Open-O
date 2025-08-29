@@ -47,7 +47,7 @@
     }
 %>
 
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>

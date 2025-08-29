@@ -26,11 +26,11 @@ package ca.openosp.openo.managers;
 
 import java.util.List;
 
-import org.oscarehr.common.dao.DemographicPharmacyDao;
-import org.oscarehr.common.dao.PharmacyInfoDao;
-import org.oscarehr.common.model.DemographicPharmacy;
-import org.oscarehr.common.model.PharmacyInfo;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.dao.DemographicPharmacyDao;
+import ca.openosp.openo.commn.dao.PharmacyInfoDao;
+import ca.openosp.openo.commn.model.DemographicPharmacy;
+import ca.openosp.openo.commn.model.PharmacyInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +39,7 @@ import ca.openosp.openo.log.LogAction;
 /**
  * Will provide access to pharmacy data.
  * <p>
- * Future Use: Add privacy, security, and consent profiles
+ * Future Use: Add privacy, sec, and consent profiles
  */
 @Service
 public class PharmacyManager {

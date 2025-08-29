@@ -40,6 +40,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
@@ -47,7 +48,7 @@ import ca.openosp.openo.integration.mcedt.DelegateFactory;
 import ca.openosp.openo.integration.mcedt.McedtMessageCreator;
 import ca.openosp.openo.integration.mcedt.ResourceForm;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.util.ConversionUtils;
 import ca.ontario.health.edt.Detail;
 import ca.ontario.health.edt.DetailData;
@@ -65,7 +66,7 @@ public class Download2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static Logger logger = MiscUtils.getLogger();
     private boolean isFileToDownload = false;
 
     @Override

@@ -40,16 +40,16 @@
 
 <%@page import="java.util.Map" %>
 <%@page import="java.util.HashMap" %>
-<%@page import="org.oscarehr.PMmodule.caisi_integrator.RemotePreventionHelper" %>
-<%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.PMmodule.caisi_integrator.RemotePreventionHelper" %>
+<%@page import="ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.caisi_integrator.ws.DemographicWs" %>
 <%@page import="ca.openosp.openo.caisi_integrator.ws.FacilityIdIntegerCompositePk" %>
-<%@page import="org.oscarehr.utility.SessionConstants" %>
+<%@page import="ca.openosp.openo.utility.SessionConstants" %>
 <%@page import="ca.openosp.openo.caisi_integrator.ws.CachedDemographicPrevention" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="org.oscarehr.utility.MiscUtils" %>
-<%@page import="org.oscarehr.PMmodule.caisi_integrator.IntegratorFallBackManager" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@page import="ca.openosp.openo.PMmodule.caisi_integrator.IntegratorFallBackManager" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" >
 

@@ -27,7 +27,7 @@ import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.billings.ca.on.data.BillingReviewCodeItem;
 import ca.openosp.openo.billings.ca.on.data.BillingReviewPercItem;
@@ -37,7 +37,7 @@ import ca.openosp.openo.billings.ca.on.data.JdbcBillingPageUtil;
 import ca.openosp.openo.billings.ca.on.data.JdbcBillingReviewImpl;
 
 public class BillingReviewPrep {
-    private static final Logger _logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static final Logger _logger = MiscUtils.getLogger();
 
     JdbcBillingReviewImpl dbObj = new JdbcBillingReviewImpl();
 

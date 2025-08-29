@@ -39,10 +39,10 @@
     }
 %>
 
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page
-        import="java.util.*, org.w3c.dom.*, oscar.oscarEncounter.oscarConsultationRequest.pageUtil.*" %>
-<%@ page import="oscar.oscarClinic.*" %>
+        import="java.util.*, org.w3c.dom.*, ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.*" %>
+<%@ page import="ca.openosp.openo.clinic.*" %>
 <%@ page import="ca.openosp.openo.clinic.ClinicData" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFaxForm" %>

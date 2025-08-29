@@ -35,9 +35,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.oscarehr.common.dao.SecObjPrivilegeDao;
-import org.oscarehr.common.model.SecObjPrivilege;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.SecObjPrivilegeDao;
+import ca.openosp.openo.commn.model.SecObjPrivilege;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class BackupDownload extends GenericDownload {
 
@@ -64,7 +64,7 @@ public class BackupDownload extends GenericDownload {
         download(bDownload, res, dir, filename, null);
     }
 
-    //TODO: Refactor this out of the security tag.
+    //TODO: Refactor this out of the sec tag.
     private String rights = "r";
 
     private Object[] getPrivilegeProp(String objName) {

@@ -34,10 +34,10 @@ import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.integration.hl7.model.PatientId;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.Misc;
-import oscar.OscarProperties;
+import ca.openosp.Misc;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.util.UtilDateUtilities;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.Group;
@@ -53,7 +53,7 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
  */
 public class HHSEmrDownloadHandler extends DefaultGenericHandler implements MessageHandler {
 
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
     ArrayList<String> headerList = null;
     //   Message msg = null;
     //   Terser terser;
@@ -690,7 +690,7 @@ public class HHSEmrDownloadHandler extends DefaultGenericHandler implements Mess
 //
 
     /*
-     * Custom segment added by medseek because the HL7 messages did not contain "who" that we can route to the right provider in oscar.
+     * Custom segment added by medseek because the HL7 messages did not contain "who" that we can route to the right providers in oscar.
      *
      */
     @Override

@@ -37,14 +37,14 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.DemographicCustDao;
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.dao.IncomingLabRulesDao;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.DemographicCust;
-import org.oscarehr.common.model.IncomingLabRules;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.DemographicCustDao;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.dao.IncomingLabRulesDao;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.DemographicCust;
+import ca.openosp.openo.commn.model.IncomingLabRules;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentSubClassDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao;
@@ -53,9 +53,9 @@ import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentSubClass;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToProvider;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import org.springframework.core.io.ClassPathResource;
 
@@ -63,7 +63,7 @@ import org.xml.sax.SAXException;
 
 import omd.hrm.OmdCds;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 
 public class HRMReportParser {
@@ -233,13 +233,13 @@ public class HRMReportParser {
 
                 HRMReportParser.routeReportToDemographic(report, document);
                 HRMReportParser.doSimilarReportCheck(loggedInInfo, report, document);
-                // Attempt a route to the provider listed in the report -- if they don't exist, note that in the record
+                // Attempt a route to the providers listed in the report -- if they don't exist, note that in the record
                 Boolean routeSuccess = HRMReportParser.routeReportToProvider(report, document.getId());
                 if (!routeSuccess) {
 
-                    logger.info("Adding the provider name to the list of unidentified providers, for file:" + report.getFileLocation());
+                    logger.info("Adding the providers name to the list of unidentified providers, for file:" + report.getFileLocation());
 
-                    // Add the provider name to the list of unidentified providers for this report
+                    // Add the providers name to the list of unidentified providers for this report
                     document.setUnmatchedProviders((document.getUnmatchedProviders() != null ? document.getUnmatchedProviders() : "") + "|" + ((report.getDeliverToUserIdLastName() != null) ? report.getDeliverToUserIdLastName() + ", " + report.getDeliverToUserIdFirstName() : report.getDeliverToUserId()) + " (" + report.getDeliverToUserId() + ")");
                     hrmDocumentDao.merge(document);
                     // Route this report to the "system" user so that a search for "all" in the inbox will come up with them
@@ -542,16 +542,16 @@ public class HRMReportParser {
                 hrmDocumentToProviderDao.merge(providerRouting);
             }
 
-            //Gets the list of IncomingLabRules pertaining to the current provider
+            //Gets the list of IncomingLabRules pertaining to the current providers
             List<IncomingLabRules> incomingLabRules = incomingLabRulesDao.findCurrentByProviderNo(p.getProviderNo());
             //If the list is not null
             if (incomingLabRules != null) {
                 //For each labRule in the list
                 for (IncomingLabRules labRule : incomingLabRules) {
                     if (labRule.getForwardTypeStrings().contains("HRM")) {
-                        //Creates a string of the provider number that the lab will be forwarded to
+                        //Creates a string of the providers number that the lab will be forwarded to
                         String forwardProviderNumber = labRule.getFrwdProviderNo();
-                        //Checks to see if this provider is already linked to this lab
+                        //Checks to see if this providers is already linked to this lab
                         HRMDocumentToProvider hrmDocumentToProvider = hrmDocumentToProviderDao.findByHrmDocumentIdAndProviderNo(reportId, forwardProviderNumber);
                         //If a record was not found
                         if (hrmDocumentToProvider == null) {

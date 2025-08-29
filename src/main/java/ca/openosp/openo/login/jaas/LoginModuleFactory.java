@@ -32,9 +32,9 @@ import javax.security.auth.login.Configuration;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 /**
  * Factory for obtaining login modules

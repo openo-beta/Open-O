@@ -26,10 +26,10 @@ package ca.openosp.openo.login.jaas;
 
 import java.security.Principal;
 
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.commn.model.Provider;
 
 /**
- * Adapter class for bridging OSCAR provider to the JAAS principal.
+ * Adapter class for bridging OSCAR providers to the JAAS principal.
  */
 public class OscarPrincipal extends Provider implements Principal {
 
@@ -63,7 +63,7 @@ public class OscarPrincipal extends Provider implements Principal {
     /**
      * Creates a new instance deep copy of this instance.
      *
-     * @return Returns a new copy of the provider with all matching fields populated.
+     * @return Returns a new copy of the providers with all matching fields populated.
      */
     public Provider asProvider() {
         return new Provider(this);

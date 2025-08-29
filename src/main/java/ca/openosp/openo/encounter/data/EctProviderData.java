@@ -26,10 +26,10 @@
 package ca.openosp.openo.encounter.data;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.SxmlMisc;
+import ca.openosp.SxmlMisc;
 import ca.openosp.openo.clinic.ClinicData;
 
 public class EctProviderData {
@@ -98,7 +98,7 @@ public class EctProviderData {
     public Provider getProvider(String providerNo) {
         Provider provider = null;
         ProviderDao dao = SpringUtils.getBean(ProviderDao.class);
-        org.oscarehr.common.model.Provider p = dao.getProvider(providerNo);
+        ca.openosp.openo.commn.model.Provider p = dao.getProvider(providerNo);
         if (p != null) {
             String surname = p.getLastName();
             String firstName = p.getFirstName();

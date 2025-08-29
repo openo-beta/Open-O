@@ -41,7 +41,7 @@
 
 <%@page import="java.text.SimpleDateFormat" %>
 <%@ page
-        import="org.oscarehr.utility.WebUtils" %>
+        import="ca.openosp.openo.utility.WebUtils" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="java.util.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -49,13 +49,11 @@
 
 <%@ taglib uri="/WEB-INF/rewrite-tag.tld" prefix="rewrite" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
-<%@ page import="oscar.log.*" %>
-<%@ page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
-<%@ page import="org.oscarehr.common.model.Provider" %>
+<%@ page import="ca.openosp.openo.log.*" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
-<%@page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@page import="oscar.oscarLab.ca.all.*,oscar.oscarMDS.data.*" %>
-<%@page import="org.oscarehr.common.dao.*,org.oscarehr.common.model.*,org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
+<%@page import="ca.openosp.openo.lab.ca.all.*,ca.openosp.openo.mds.data.*" %>
+<%@page import="ca.openosp.openo.commn.dao.*,ca.openosp.openo.commn.model.*,ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="ca.openosp.openo.documentManager.EDoc" %>
 <%@ page import="ca.openosp.openo.documentManager.IncomingDocUtil" %>
@@ -63,6 +61,8 @@
 <%@ page import="ca.openosp.openo.log.LogConst" %>
 <%@ page import="ca.openosp.openo.lab.ca.all.AcknowledgementData" %>
 <%@ page import="ca.openosp.openo.mds.data.ReportStatus" %>
+<%@ page import="ca.openosp.openo.commn.dao.*" %>
+<%@ page import="ca.openosp.openo.commn.model.*" %>
 <%
 
     ProviderInboxRoutingDao providerInboxRoutingDao = SpringUtils.getBean(ProviderInboxRoutingDao.class);
@@ -114,8 +114,8 @@
 
     // Ensure that demographic id is not null, empty, or negative default value of "-1"
     if ((demographicID != null) && !demographicID.isEmpty() && !demographicID.equals("-1")) {
-        // If demographic number does not equal to provider number (only for patient tickler), get the patient name
-        // Else get the provider name (only for doctor tickler)
+        // If demographic number does not equal to providers number (only for patient tickler), get the patient name
+        // Else get the providers name (only for doctor tickler)
         if (!demographicID.equals(providerNo)) {
             DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
             Demographic demographic = demographicDao.getDemographic(demographicID);
@@ -779,7 +779,7 @@
     jQuery(setupDemoAutoCompletion());
 
     function setupProviderAutoCompletion() {
-        var url = "${pageContext.servletContext.contextPath}/provider/SearchProvider.do?method=labSearch";
+        var url = "${pageContext.servletContext.contextPath}/providers/SearchProvider.do?method=labSearch";
 
         jQuery("#autocompleteprov<%=docId%>").autocomplete({
             source: url,

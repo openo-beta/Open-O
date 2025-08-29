@@ -27,9 +27,9 @@
  */
 package ca.openosp.openo.managers;
 
-import org.oscarehr.common.model.Drug;
-import org.oscarehr.common.model.Prescription;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.model.Drug;
+import ca.openosp.openo.commn.model.Prescription;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import java.util.Date;
 import java.util.List;

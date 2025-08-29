@@ -26,7 +26,7 @@
 package ca.openosp.openo.billings.ca.bc.quickbilling;
 
 
-import org.oscarehr.common.model.ProviderData;
+import ca.openosp.openo.commn.model.ProviderData;
 import ca.openosp.openo.billings.ca.bc.data.BillingFormData.BillingVisit;
 import ca.openosp.openo.billings.ca.bc.pageUtil.BillingSessionBean;
 

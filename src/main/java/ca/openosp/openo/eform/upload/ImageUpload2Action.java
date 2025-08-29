@@ -29,10 +29,10 @@ package ca.openosp.openo.eform.upload;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.OscarProperties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,7 +54,7 @@ public class ImageUpload2Action extends ActionSupport {
     public String execute() {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_eform", "w", null)) {
-            throw new SecurityException("missing required security object (_eform)");
+            throw new SecurityException("missing required sec object (_eform)");
         }
 
         try {

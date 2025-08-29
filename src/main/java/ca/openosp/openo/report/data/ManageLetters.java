@@ -35,16 +35,16 @@ import java.util.Hashtable;
 import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperReport;
 
-import org.oscarehr.common.dao.LogLettersDao;
-import org.oscarehr.common.dao.ReportLettersDao;
-import org.oscarehr.common.model.LogLetters;
-import org.oscarehr.common.model.ReportLetters;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.LogLettersDao;
+import ca.openosp.openo.commn.dao.ReportLettersDao;
+import ca.openosp.openo.commn.model.LogLetters;
+import ca.openosp.openo.commn.model.ReportLetters;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.apache.logging.log4j.Logger;
 
 
-import oscar.OscarDocumentCreator;
+import ca.openosp.OscarDocumentCreator;
 
 /**
  * @author jay

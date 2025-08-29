@@ -32,7 +32,7 @@ import org.junit.Test;
 import ca.openosp.openo.billing.CA.BC.model.BillingPrivateTransactions;
 import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.entities.PrivateBillTransaction;
 import ca.openosp.openo.billings.ca.bc.data.PrivateBillTransactionsDAO;

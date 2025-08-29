@@ -38,7 +38,7 @@
 --    OR value LIKE '%know2act.org%'
 --    OR value LIKE '%K2A%';
 
--- Archive any provider preferences related to K2A
+-- Archive any providers preferences related to K2A
 -- CREATE TABLE IF NOT EXISTS provider_preference_k2a_archive_20250821 AS
 -- SELECT * FROM provider_preference
 -- WHERE prop_name LIKE '%k2a%'
@@ -93,7 +93,7 @@
 --    OR value LIKE '%know2act.org%'
 --    OR value LIKE '%K2A%';
 
--- Delete provider preferences related to K2A
+-- Delete providers preferences related to K2A
 -- DELETE FROM provider_preference
 -- WHERE prop_name LIKE '%k2a%'
 --    OR prop_name LIKE '%K2A%'

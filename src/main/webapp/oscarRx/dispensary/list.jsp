@@ -28,11 +28,11 @@
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@page import="java.util.List" %>
-<%@page import="org.oscarehr.common.model.Drug" %>
-<%@page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
-<%@page import="org.oscarehr.common.model.Demographic" %>
-<%@page import="org.oscarehr.common.model.Provider" %>
-<%@page import="org.oscarehr.common.model.DrugDispensing" %>
+<%@page import="ca.openosp.openo.commn.model.Drug" %>
+<%@page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
+<%@page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@page import="ca.openosp.openo.commn.model.Provider" %>
+<%@page import="ca.openosp.openo.commn.model.DrugDispensing" %>
 <%@page import="java.util.Map" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%
@@ -156,7 +156,7 @@
                 }
 
                 if ($("select[name='dispensedBy']").val() == 'Select Below') {
-                    alert('You must choose a dispensing provider');
+                    alert('You must choose a dispensing providers');
                     return false;
                 }
 
@@ -343,7 +343,7 @@
 
             function deleteDispensingEvent(id) {
                 if (confirm("Are you sure you want to delete this record?")) {
-                    location.href = "<%=request.getContextPath()%>/oscarRx/Dispense.do?method=delete&eventId=" + id + "&id=" + <%=request.getAttribute("id")%>;
+                    location.href = "<%=request.getContextPath()%>/rx/Dispense.do?method=delete&eventId=" + id + "&id=" + <%=request.getAttribute("id")%>;
                 }
             }
         </script>

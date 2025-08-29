@@ -26,16 +26,17 @@
 
 package ca.openosp.openo.waitinglist.pageUtil;
 
+import ca.openosp.openo.utility.MiscUtils;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.ProviderPreference;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SessionConstants;
-import ca.openosp.openo.provider.bean.ProviderNameBean;
-import ca.openosp.openo.provider.bean.ProviderNameBeanHandler;
-import ca.openosp.openo.provider.data.ProviderData;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.ProviderPreference;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SessionConstants;
+import ca.openosp.openo.providers.bean.ProviderNameBean;
+import ca.openosp.openo.providers.bean.ProviderNameBeanHandler;
+import ca.openosp.openo.providers.data.ProviderData;
 import ca.openosp.openo.waitinglist.bean.WLWaitingListBeanHandler;
 import ca.openosp.openo.waitinglist.bean.WLWaitingListNameBeanHandler;
 import ca.openosp.openo.waitinglist.util.WLWaitingListUtil;
@@ -52,7 +53,7 @@ public final class WLSetupDisplayWaitingList2Action extends ActionSupport {
     HttpServletResponse response = ServletActionContext.getResponse();
 
 
-    private Logger log = org.oscarehr.utility.MiscUtils.getLogger();
+    private Logger log = MiscUtils.getLogger();
 
     public String execute()
             throws Exception {

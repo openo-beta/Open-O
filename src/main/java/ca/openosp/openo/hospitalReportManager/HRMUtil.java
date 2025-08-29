@@ -24,10 +24,10 @@ import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
 import ca.openosp.openo.hospitalReportManager.model.HRMSubClass;
 import ca.openosp.openo.managers.NioFileManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.PDFGenerationException;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PDFGenerationException;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.on.HRMResultsData;
 import ca.openosp.openo.util.StringUtils;
@@ -281,7 +281,7 @@ public class HRMUtil {
 
     public static HRMDocument getHRMDocumentById(LoggedInInfo loggedInInfo, Integer hrmId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_hrm", "r", null)) {
-            throw new SecurityException("missing required security object (_hrm)");
+            throw new SecurityException("missing required sec object (_hrm)");
         }
 
         HRMDocument hrmDocument = hrmDocumentDao.find(hrmId);
@@ -335,7 +335,7 @@ public class HRMUtil {
 
     public static Path renderHRM(LoggedInInfo loggedInInfo, Integer hrmId) throws PDFGenerationException {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_hrm", "r", null)) {
-            throw new SecurityException("missing required security object (_hrm)");
+            throw new SecurityException("missing required sec object (_hrm)");
         }
 
         Path path = null;

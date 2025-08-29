@@ -33,23 +33,24 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.Misc;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.billing.CA.BC.dao.WcbDao;
 import ca.openosp.openo.billing.CA.BC.model.Wcb;
-import org.oscarehr.common.dao.BillingDao;
-import org.oscarehr.common.dao.BillingServiceDao;
-import org.oscarehr.common.model.Billing;
-import org.oscarehr.common.model.BillingService;
-import org.oscarehr.common.model.Demographic;
+import ca.openosp.openo.commn.dao.BillingDao;
+import ca.openosp.openo.commn.dao.BillingServiceDao;
+import ca.openosp.openo.commn.model.Billing;
+import ca.openosp.openo.commn.model.BillingService;
+import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile;
 import ca.openosp.openo.billings.ca.bc.data.BillingHistoryDAO;
 import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
-import ca.openosp.openo.provider.data.ProviderData;
+import ca.openosp.openo.providers.data.ProviderData;
 import ca.openosp.openo.util.ConversionUtils;
 import ca.openosp.openo.util.StringUtils;
 
@@ -142,8 +143,8 @@ public class TeleplanCorrectionActionWCB2Action extends ActionSupport {
                 w.setAddress(d.getAddress());
                 w.setCity(d.getCity());
                 w.setPostal(d.getPostal());
-                w.setArea(oscar.Misc.areaCode(d.getPhone2()));
-                w.setPhone(oscar.Misc.phoneNumber(d.getPhone2()));
+                w.setArea(Misc.areaCode(d.getPhone2()));
+                w.setPhone(Misc.phoneNumber(d.getPhone2()));
                 w.setPhn(d.getHin() + d.getVer());
                 w.setEmpName(this.getW_empname());
                 w.setEmpArea(this.getW_emparea());

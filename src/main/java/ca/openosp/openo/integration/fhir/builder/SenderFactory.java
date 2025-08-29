@@ -24,13 +24,14 @@ package ca.openosp.openo.integration.fhir.builder;
  * Ontario, Canada
  */
 
-import org.oscarehr.common.dao.ClinicDAO;
+import ca.openosp.openo.commn.model.Clinic;
+import ca.openosp.openo.commn.dao.ClinicDAO;
 import ca.openosp.openo.integration.fhir.model.Sender;
 import ca.openosp.openo.integration.fhir.resources.Settings;
 // import org.oscarehr.util.SpringUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 
 public final class SenderFactory {
@@ -60,7 +61,7 @@ public final class SenderFactory {
         }
 
         if (clinicDao != null) {
-            org.oscarehr.common.model.Clinic clinic = clinicDao.getClinic();
+            Clinic clinic = clinicDao.getClinic();
             sender.setClinic(clinic);
         }
 

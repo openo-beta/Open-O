@@ -28,7 +28,7 @@ package ca.openosp.openo.services;
 
 import java.util.List;
 
-import org.oscarehr.common.model.FacilityMessage;
+import ca.openosp.openo.commn.model.FacilityMessage;
 
 public interface OrganizationMessageManager {
     FacilityMessage getMessage(String messageId);

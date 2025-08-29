@@ -26,8 +26,8 @@ package ca.openosp.openo.managers;
 
 import java.util.List;
 
-import org.oscarehr.common.dao.DHIRSubmissionLogDao;
-import org.oscarehr.common.model.DHIRSubmissionLog;
+import ca.openosp.openo.commn.dao.DHIRSubmissionLogDao;
+import ca.openosp.openo.commn.model.DHIRSubmissionLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

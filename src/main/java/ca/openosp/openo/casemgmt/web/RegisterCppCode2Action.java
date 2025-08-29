@@ -30,8 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.CppUtils;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.CppUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

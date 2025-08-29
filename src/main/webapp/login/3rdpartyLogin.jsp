@@ -26,11 +26,11 @@
 --%>
 
 <%@ page import="com.github.scribejava.core.model.OAuth1RequestToken" %>
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.login.OAuthSessionMerger" %>
 <%@ page import="java.util.*" %>
 <%@ page import="javax.servlet.http.*" %>
-<%@ page import="org.oscarehr.utility.MiscUtils" %>
+<%@ page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.login.OAuthData" %>
 <%@ page import="ca.openosp.openo.login.OOBAuthorizationResponse" %>
 

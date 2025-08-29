@@ -25,17 +25,17 @@
 --%>
 
 <%@page import="org.apache.commons.lang.StringUtils" %>
-<%@page import="org.oscarehr.common.model.Allergy" %>
-<%@page import="org.oscarehr.PMmodule.caisi_integrator.RemoteDrugAllergyHelper" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="org.oscarehr.utility.MiscUtils" %>
-<%@page import="java.util.*,net.sf.json.*,java.lang.reflect.*,java.io.*,org.apache.xmlrpc.*,oscar.oscarRx.util.*,oscar.oscarRx.data.*" %>
-<%@ page import="org.oscarehr.common.dao.SystemPreferencesDao" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
-<%@ page import="org.oscarehr.common.model.SystemPreferences" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.data.RxDrugData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
+<%@page import="ca.openosp.openo.commn.model.Allergy" %>
+<%@page import="ca.openosp.openo.PMmodule.caisi_integrator.RemoteDrugAllergyHelper" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@page import="java.util.*,net.sf.json.*,java.lang.reflect.*,java.io.*,org.apache.xmlrpc.*,ca.openosp.openo.rx.util.*,ca.openosp.openo.rx.data.*" %>
+<%@ page import="ca.openosp.openo.commn.dao.SystemPreferencesDao" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.commn.model.SystemPreferences" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxDrugData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPatientData" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -58,7 +58,7 @@
     String atcCode = request.getParameter("atcCode");
     String id = request.getParameter("id");
 
-    String disabled = oscar.OscarProperties.getInstance().getProperty("rx3.disable_allergy_warnings", "false");
+    String disabled = ca.openosp.OscarProperties.getInstance().getProperty("rx3.disable_allergy_warnings", "false");
     if (disabled.equals("false")) {
 
 

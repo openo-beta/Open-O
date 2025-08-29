@@ -25,14 +25,14 @@
 
 package ca.openosp.openo.billings.ca.bc.data;
 
+import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.commn.model.*;
 import org.apache.velocity.tools.ConversionUtils;
-import org.oscarehr.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.billing.CA.BC.dao.BillingStatusTypesDao;
 import ca.openosp.openo.billing.CA.BC.model.BillingStatusTypes;
-import org.oscarehr.common.dao.*;
-import org.oscarehr.common.model.*;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.entities.BillingStatusType;
 import ca.openosp.openo.entities.PaymentType;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -61,7 +61,7 @@ public class BillingFormData {
         Billing billing = dao.find(billno);
         if (billing != null) return billing.getProviderNo();
 
-        MiscUtils.getLogger().error("Unable to find provider for " + billno);
+        MiscUtils.getLogger().error("Unable to find providers for " + billno);
         return null;
     }
 
@@ -388,11 +388,11 @@ public class BillingFormData {
 
     public String getServiceDesc(String code, String reg) {
         BillingServiceDao dao = SpringUtils.getBean(BillingServiceDao.class);
-        List<org.oscarehr.common.model.BillingService> services = dao.findBillingCodesByCode(code, reg);
+        List<ca.openosp.openo.commn.model.BillingService> services = dao.findBillingCodesByCode(code, reg);
         if (services.isEmpty())
             return "";
         int lastPosition = services.size() - 1;
-        org.oscarehr.common.model.BillingService service = services.get(lastPosition);
+        ca.openosp.openo.commn.model.BillingService service = services.get(lastPosition);
         if (service != null)
             return service.getDescription();
         return "";
@@ -419,7 +419,7 @@ public class BillingFormData {
         for (int i = 0; i < svc.length; i++) {
             String serviceCode = "A" + svc[i].getServiceCode();
 
-            for (org.oscarehr.common.model.BillingService b : dao.findByServiceCode(serviceCode))
+            for (ca.openosp.openo.commn.model.BillingService b : dao.findByServiceCode(serviceCode))
                 svc[i].price = b.getValue();
         }
     }

@@ -29,15 +29,15 @@
 package ca.openosp.openo.managers;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.DrugDao;
-import org.oscarehr.common.dao.FavoriteDao;
-import org.oscarehr.common.exception.AccessDeniedException;
-import org.oscarehr.common.model.Drug;
-import org.oscarehr.common.model.Favorite;
-import org.oscarehr.common.model.Prescription;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.ws.rest.to.model.RxStatus;
+import ca.openosp.openo.commn.dao.DrugDao;
+import ca.openosp.openo.commn.dao.FavoriteDao;
+import ca.openosp.openo.commn.exception.AccessDeniedException;
+import ca.openosp.openo.commn.model.Drug;
+import ca.openosp.openo.commn.model.Favorite;
+import ca.openosp.openo.commn.model.Prescription;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.webserv.rest.to.model.RxStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ca.openosp.openo.log.LogAction;
@@ -511,9 +511,9 @@ public class RxManagerImpl implements RxManager {
     }
 
     /**
-     * Gets a list of the provider's favorite drugs.
+     * Gets a list of the providers's favorite drugs.
      *
-     * @param pid the provider id.
+     * @param pid the providers id.
      * @return a list of favorite drugs, empty list if no favorites.
      */
     @Override
@@ -582,7 +582,7 @@ public class RxManagerImpl implements RxManager {
         }
 
         if (d.getProviderNo() == null || d.getProviderNo().equals("")) {
-            logger.debug("provider was null or blank returning false");
+            logger.debug("providers was null or blank returning false");
             return false;
         }
 
@@ -592,7 +592,7 @@ public class RxManagerImpl implements RxManager {
         }
 
         if (d.getRxDate() == null) {
-            logger.debug("rx date was null returning false");
+            logger.debug("prescript date was null returning false");
             return false;
         }
 

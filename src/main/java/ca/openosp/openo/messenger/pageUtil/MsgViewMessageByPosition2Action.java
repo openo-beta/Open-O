@@ -7,11 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
-import org.oscarehr.common.dao.ProviderDataDao;
-import org.oscarehr.common.model.ProviderData;
+import ca.openosp.openo.commn.dao.ProviderDataDao;
+import ca.openosp.openo.commn.model.ProviderData;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -24,7 +24,7 @@ public class MsgViewMessageByPosition2Action extends ActionSupport {
     public String execute() throws IOException, ServletException {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_msg", "r", null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         // Extract attributes we will need
@@ -53,9 +53,9 @@ public class MsgViewMessageByPosition2Action extends ActionSupport {
         String sql = "select m.messageid  "
                 + "from  messagetbl m, msgDemoMap mapp where mapp.demographic_no = '" + demographic_no + "'  "
                 + "and m.messageid = mapp.messageID  order by " + displayMsgBean.getOrderBy(orderBy);
-        FormsDao dao = SpringUtils.getBean(FormsDao.class);
+        FormsDao daos = SpringUtils.getBean(FormsDao.class);
         try {
-            Integer messageId = (Integer) dao.runNativeQueryWithOffset(sql, Integer.parseInt(messagePosition));
+            Integer messageId = (Integer) daos.runNativeQueryWithOffset(sql, Integer.parseInt(messagePosition));
             actionforward.addParameter("messageID", messageId.toString());
             actionforward.addParameter("from", "encounter");
             actionforward.addParameter("demographic_no", demographic_no);

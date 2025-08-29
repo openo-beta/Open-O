@@ -44,7 +44,7 @@ public class BaseLoginModuleTest {
 
     @Test
     public void testBaseLoginModule() throws Exception {
-        // System.setProperty("java.security.auth.login.config", "loginConfig.jaas");
+        // System.setProperty("java.sec.auth.login.config", "loginConfig.jaas");
         Configuration.setConfiguration(new OscarConfiguration("dummyConfig", TestLoginModule.class.getName()));
 
         LoginContext loginContext = new LoginContext("dummyConfig", new OscarCallbackHandler("dummy", "pass"));

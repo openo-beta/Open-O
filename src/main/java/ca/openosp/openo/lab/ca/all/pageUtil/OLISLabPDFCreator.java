@@ -35,11 +35,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.itextpdf.text.*;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.Hl7TextMessageDao;
-import org.oscarehr.common.model.Hl7TextMessage;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.Hl7TextMessageDao;
+import ca.openosp.openo.commn.model.Hl7TextMessage;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
@@ -48,7 +48,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.lab.ca.all.Hl7textResultsData;
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;

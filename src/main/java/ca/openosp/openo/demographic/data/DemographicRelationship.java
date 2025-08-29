@@ -25,11 +25,12 @@
 
 package ca.openosp.openo.demographic.data;
 
-import org.oscarehr.common.dao.RelationshipsDao;
-import org.oscarehr.common.model.Relationships;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.dao.RelationshipsDao;
+import ca.openosp.openo.commn.model.Relationships;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.util.ConversionUtils;
 
 import java.util.*;
@@ -139,7 +140,7 @@ public class DemographicRelationship {
             String demo = ConversionUtils.toIntString(r.getRelationDemographicNo());
 
             DemographicData dd = new DemographicData();
-            org.oscarehr.common.model.Demographic demographic = dd.getDemographic(loggedInInfo, demo);
+            Demographic demographic = dd.getDemographic(loggedInInfo, demo);
             h.put("lastName", demographic.getLastName());
             h.put("firstName", demographic.getFirstName());
             h.put("phone", demographic.getPhone());
@@ -165,7 +166,7 @@ public class DemographicRelationship {
             String demo = ConversionUtils.toIntString(r.getRelationDemographicNo());
 
             DemographicData dd = new DemographicData();
-            org.oscarehr.common.model.Demographic demographic = dd.getDemographic(loggedInInfo, demo);
+            Demographic demographic = dd.getDemographic(loggedInInfo, demo);
             h.put("lastName", demographic.getLastName());
             h.put("firstName", demographic.getFirstName());
             h.put("phone", demographic.getPhone());

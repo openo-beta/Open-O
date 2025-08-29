@@ -65,7 +65,7 @@ import ca.openosp.openo.lab.ca.all.parsers.MEDITECHHandler.UNSTRUCTURED;
 @RunWith(Parameterized.class)
 public class MEDITECHHandlerTest {
 
-    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static Logger logger = ca.openosp.openo.utility.MiscUtils.getLogger();
     private static MEDITECHHandler handler;
     private static ZipFile zipFile;
     private static Document hl7XML;

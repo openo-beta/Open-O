@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -31,7 +31,7 @@ public class ChangeDocStatus2Action extends ActionSupport {
 
     public String execute() {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
-            throw new SecurityException("missing required security object (_edoc)");
+            throw new SecurityException("missing required sec object (_edoc)");
         }
 
         if (!StringUtils.isEmpty(docTypeD)  && !StringUtils.isEmpty(statusD)) {

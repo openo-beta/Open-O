@@ -29,8 +29,7 @@ package ca.openosp.openo.casemgmt.dao;
 
 import java.util.List;
 
-import org.oscarehr.PMmodule.model.DefaultRoleAccess;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+import ca.openosp.openo.PMmodule.model.DefaultRoleAccess;
 
 public interface RoleProgramAccessDAO {
 

@@ -40,9 +40,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 
 /**
@@ -66,7 +66,7 @@ public class PreventionPrint2Action extends ActionSupport {
     public String execute() {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_prevention", "r", null)) {
-            throw new SecurityException("missing required security object (_prevention)");
+            throw new SecurityException("missing required sec object (_prevention)");
         }
 
 

@@ -23,23 +23,24 @@
     Ontario, Canada
 
 --%>
-<%@ page import="oscar.oscarProvider.data.*, oscar.OscarProperties, ca.openosp.openo.clinic.ClinicData, java.util.*" %>
-<%@page import="org.oscarehr.common.dao.SiteDao" %>
+<%@ page import="ca.openosp.openo.providers.data.*, ca.openosp.OscarProperties, ca.openosp.openo.clinic.ClinicData, java.util.*" %>
+<%@page import="ca.openosp.openo.commn.dao.SiteDao" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
-<%@page import="org.oscarehr.common.model.Site" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.common.model.Appointment" %>
-<%@page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
-<%@ page import="ca.openosp.openo.provider.data.ProviderData" %>
-<%@ page import="ca.openosp.openo.provider.data.ProSignatureData" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.data.RxProviderData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
+<%@page import="ca.openosp.openo.commn.model.Site" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.commn.model.Appointment" %>
+<%@page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
+<%@ page import="ca.openosp.openo.providers.data.ProviderData" %>
+<%@ page import="ca.openosp.openo.providers.data.ProSignatureData" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxProviderData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<%! boolean bMultisites = org.oscarehr.common.IsPropertiesOn.isMultisitesEnable(); %>
+<%! boolean bMultisites = IsPropertiesOn.isMultisitesEnable(); %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
@@ -81,7 +82,7 @@
             String createAnewRx;
             if (reprint.equalsIgnoreCase("true")) {
                 bean = (RxSessionBean) session.getAttribute("tmpBeanRX");
-                createAnewRx = "window.location.href = '" + request.getContextPath() + "/oscarRx/SearchDrug.jsp'";
+                createAnewRx = "window.location.href = '" + request.getContextPath() + "/rx/SearchDrug.jsp'";
             } else
                 createAnewRx = "javascript:clearPending('')";
 

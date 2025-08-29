@@ -30,12 +30,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.IndicatorTemplate;
+import ca.openosp.openo.commn.model.IndicatorTemplate;
 import ca.openosp.openo.dashboard.display.beans.IndicatorPanelBean;
 import ca.openosp.openo.dashboard.display.beans.PanelBean;
 import ca.openosp.openo.dashboard.handler.IndicatorTemplateHandler;
 import ca.openosp.openo.dashboard.handler.IndicatorTemplateXML;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 public class PanelBeanFactory {
     private static Logger logger = MiscUtils.getLogger();

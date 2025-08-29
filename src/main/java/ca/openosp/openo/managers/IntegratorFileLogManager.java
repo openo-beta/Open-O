@@ -27,9 +27,9 @@ package ca.openosp.openo.managers;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.common.dao.IntegratorFileLogDao;
-import org.oscarehr.common.model.IntegratorFileLog;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.dao.IntegratorFileLogDao;
+import ca.openosp.openo.commn.model.IntegratorFileLog;
+import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -32,10 +32,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.dao.ScratchPadDao;
-import org.oscarehr.common.model.ScratchPad;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ScratchPadDao;
+import ca.openosp.openo.commn.model.ScratchPad;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 /**
  * @author jay

@@ -37,8 +37,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import ca.openosp.openo.casemgmt.model.Issue;
-import org.oscarehr.common.dao.AbstractDaoImpl;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.dao.AbstractDaoImpl;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 

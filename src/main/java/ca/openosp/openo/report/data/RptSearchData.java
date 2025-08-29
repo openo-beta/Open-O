@@ -28,10 +28,10 @@ package ca.openosp.openo.report.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.dao.DemographicQueryFavouritesDao;
-import org.oscarehr.common.model.DemographicQueryFavourite;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.dao.DemographicQueryFavouritesDao;
+import ca.openosp.openo.commn.model.DemographicQueryFavourite;
+import ca.openosp.openo.utility.SpringUtils;
 
 /**
  * @author McMaster

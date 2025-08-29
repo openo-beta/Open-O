@@ -23,29 +23,29 @@
     Ontario, Canada
 
 --%>
-<%@page import="ca.openosp.openo.rx.data.RxPatientData" %>
+<%@page import="ca.openosp.openo.prescript.data.RxPatientData" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="ca.openosp.openo.provider.data.ProSignatureData, ca.openosp.openo.provider.data.ProviderData" %>
-<%@ page import="oscar.oscarRx.data.*" %>
+<%@ page import="ca.openosp.openo.providers.data.ProSignatureData, ca.openosp.openo.providers.data.ProviderData" %>
+<%@ page import="ca.openosp.openo.rx.data.*" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 
-<%@ page import="oscar.*,
+<%@ page import="ca.openosp.*,
                  java.lang.*,
                  java.util.Date,
                  java.text.SimpleDateFormat,
-                 ca.openosp.openo.rx.util.RxUtil,
+                 ca.openosp.openo.prescript.util.RxUtil,
                  org.springframework.web.context.WebApplicationContext,
                  org.springframework.web.context.support.WebApplicationContextUtils,
-                 org.oscarehr.common.dao.UserPropertyDAO,
-                 org.oscarehr.common.model.UserProperty" %>
+                 ca.openosp.openo.commn.dao.UserPropertyDAO,
+                 ca.openosp.openo.commn.model.UserProperty" %>
 
 <!-- Classes needed for signature injection -->
-<%@page import="org.oscarehr.common.model.*" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="org.oscarehr.utility.DigitalSignatureUtils" %>
-<%@page import="org.oscarehr.ui.servlet.ImageRenderingServlet" %>
+<%@page import="ca.openosp.openo.commn.model.*" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.utility.DigitalSignatureUtils" %>
+<%@page import="ca.openosp.openo.ui.servlet.ImageRenderingServlet" %>
 <!-- end -->
 <%@ page import="org.owasp.encoder.Encode" %>
 <%
@@ -56,14 +56,16 @@
     RxSessionBean bean = null;
 %>
 
-<%@page import="org.oscarehr.web.PrescriptionQrCodeUIBean" %>
+<%@page import="ca.openosp.openo.web.PrescriptionQrCodeUIBean" %>
 <%@ page import="ca.openosp.openo.managers.DemographicManager" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="java.util.Objects" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.data.RxProviderData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPharmacyData" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxProviderData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPharmacyData" %>
+<%@ page import="ca.openosp.openo.commn.model.DemographicExt" %>
+<%@ page import="ca.openosp.openo.commn.model.PharmacyInfo" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -341,7 +343,7 @@
                                                 + "<fmt:setBundle basename='oscarResources'/><fmt:message key='RxPreview.msgTel'/>" + ": " + patientPhone
                                                 + (patientDOB != null && !patientDOB.trim().equals("") ? "\n"
                                                 + "<fmt:setBundle basename='oscarResources'/><fmt:message key='RxPreview.msgDOB'/>" + ": " + patientDOB : "")
-                                                + (!patientHin.trim().equals("") ? "\n" + "<fmt:setBundle basename='oscarResources'/><fmt:message key='oscar.oscarRx.hin'/>" + ": " + patientHin : "");
+                                                + (!patientHin.trim().equals("") ? "\n" + "<fmt:setBundle basename='oscarResources'/><fmt:message key='oscar.rx.hin'/>" + ": " + patientHin : "");
                                     }
                                 %>
                                 <input type="hidden" name="doctorName"
@@ -424,7 +426,7 @@
                                        value="<%= StringEscapeUtils.escapeHtml(RxUtil.DateToString(rxDate, "MMMM d, yyyy")) %>"/>
                                 <input type="hidden" name="sigDoctorName"
                                        value="<%= StringEscapeUtils.escapeHtml(doctorName) %>"/>
-                                <!--img src="img/rx.gif" border="0"-->
+                                <!--img src="img/prescript.gif" border="0"-->
                             </th>
                             <th valign=top height="100px" id="clinicAddress">
                                 <b><%=doctorName%>
@@ -505,17 +507,17 @@
 										<oscar:oscarPropertiesCheck value="true" property="showRxBandNumber">
                                             <c:if test="${ not empty bandNumber }">
                                                 <br/>
-                                                <b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.oscarRx.bandNumber"/></b>
+                                                <b><fmt:setBundle basename="oscarResources"/><fmt:message key="ca.openosp.openo.rx.bandNumber"/></b>
                                                 <c:out value="${ bandNumber }"/>
                                             </c:if>
                                         </oscar:oscarPropertiesCheck>
 										<b>
 											<% if (!props.getProperty("showRxHin", "").equals("false")) { %>
-												<fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.oscarRx.hin"/><%= Encode.forHtmlContent(patientHin) %>
+												<fmt:setBundle basename="oscarResources"/><fmt:message key="ca.openosp.openo.rx.hin"/><%= Encode.forHtmlContent(patientHin) %>
 											<% } %>
 										</b><br>
 										<% if (props.getProperty("showRxChartNo", "").equalsIgnoreCase("true")) { %>
-											<fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.oscarRx.chartNo"/><%=ptChartNo%>
+											<fmt:setBundle basename="oscarResources"/><fmt:message key="ca.openosp.openo.rx.chartNo"/><%=ptChartNo%>
 										<% } %>
 								</span>
                                 <span style="float:right">
@@ -525,8 +527,8 @@
                         </tr>
                         </thead>
                         <tfoot>
-                        <% if (oscar.OscarProperties.getInstance().getProperty("RX_FOOTER") != null) {
-                            out.write(oscar.OscarProperties.getInstance().getProperty("RX_FOOTER"));
+                        <% if (ca.openosp.OscarProperties.getInstance().getProperty("RX_FOOTER") != null) {
+                            out.write(ca.openosp.OscarProperties.getInstance().getProperty("RX_FOOTER"));
                         } %>
 
                         <tr valign=bottom>
@@ -623,10 +625,10 @@
                         </tr>
                         <% } %>
 
-                        <% if (oscar.OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT") != null && oscar.OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT").length() > 0) { %>
+                        <% if (ca.openosp.OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT") != null && ca.openosp.OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT").length() > 0) { %>
                         <tr valign=bottom align="center">
                             <td height=25px colspan="2" style="font-size: 9px"></br>
-                                <%= oscar.OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT") %>
+                                <%= ca.openosp.OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT") %>
                             </td>
                         </tr>
                         <% } %>
@@ -641,7 +643,7 @@
                                 String fullOutLine = rx.getFullOutLine().replaceAll(";", "<br />");
 
                                 if (fullOutLine == null || fullOutLine.length() <= 6) {
-                                    org.oscarehr.utility.MiscUtils.getLogger();
+                                    ca.openosp.openo.utility.MiscUtils.getLogger();
                                     fullOutLine = "<span style=\"color:red;font-size:16;font-weight:bold\">An error occurred, please write a new prescription.</span><br />" + fullOutLine;
                                 }
                         %>

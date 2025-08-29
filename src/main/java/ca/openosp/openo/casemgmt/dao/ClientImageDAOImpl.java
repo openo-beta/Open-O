@@ -33,8 +33,8 @@ import java.util.List;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.casemgmt.model.ClientImage;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.QueueCache;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.QueueCache;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 /**

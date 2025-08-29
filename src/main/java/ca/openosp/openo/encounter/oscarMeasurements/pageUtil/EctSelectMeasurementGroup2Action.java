@@ -36,12 +36,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.oscarehr.common.dao.MeasurementGroupDao;
-import org.oscarehr.common.dao.MeasurementGroupStyleDao;
-import org.oscarehr.common.model.MeasurementGroup;
-import org.oscarehr.common.model.MeasurementGroupStyle;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.MeasurementGroupDao;
+import ca.openosp.openo.commn.dao.MeasurementGroupStyleDao;
+import ca.openosp.openo.commn.model.MeasurementGroup;
+import ca.openosp.openo.commn.model.MeasurementGroupStyle;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.managers.MeasurementManager;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctStyleSheetBeanHandler;

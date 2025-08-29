@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import ca.openosp.openo.util.UtilDateUtilities;
 

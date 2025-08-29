@@ -32,7 +32,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.oscarehr.utility.DbConnectionFilter;
+import ca.openosp.Misc;
+import ca.openosp.openo.utility.DbConnectionFilter;
 
 /**
  * deprecated Use JPA instead, no new code should be written against this class.
@@ -210,13 +211,13 @@ public final class DBPreparedHandler {
 
     public synchronized String getNewProviderNo() {
         try {
-            String pno = oscar.Misc.getRandomNumber(6);
-            String sql = "select count(*) from provider where provider_no= '" + pno + "'";
+            String pno = Misc.getRandomNumber(6);
+            String sql = "select count(*) from providers where provider_no= '" + pno + "'";
             ResultSet rs = queryResults(sql);
             while (rs.next()) {
                 if (rs.getInt(1) > 0) {
                     do {
-                        pno = oscar.Misc.getRandomNumber(6);
+                        pno = Misc.getRandomNumber(6);
                     } while (pno != null && pno.startsWith("0"));
                     sql = "select count(*) from prvider where provider_no= '" + pno + "'";
                     rs = queryResults(sql);

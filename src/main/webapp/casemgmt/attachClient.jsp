@@ -38,11 +38,11 @@
 %>
 
 <%@ include file="/common/messages.jsp" %>
-<%@page import="oscar.OscarProperties" %>
-<%@page import="org.oscarehr.PMmodule.web.utils.UserRoleUtils" %>
+<%@page import="ca.openosp.OscarProperties" %>
+<%@page import="ca.openosp.openo.PMmodule.web.utils.UserRoleUtils" %>
 <%@page import="java.util.*" %>
-<%@page import="org.oscarehr.common.model.Demographic" %>
-<%@page import="org.oscarehr.PMmodule.model.Program" %>
+<%@page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@page import="ca.openosp.openo.PMmodule.model.Program" %>
 
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>

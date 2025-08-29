@@ -24,7 +24,7 @@
 
 --%>
 
-<%@page import="org.oscarehr.common.model.PartialDate" %>
+<%@page import="ca.openosp.openo.commn.model.PartialDate" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.casemgmt.web.PrescriptDrug" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -34,7 +34,7 @@
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ page
-        import="oscar.oscarRx.data.*,ca.openosp.openo.demographic.data.DemographicData,oscar.OscarProperties,oscar.log.*" %>
+        import="ca.openosp.openo.rx.data.*,ca.openosp.openo.demographic.data.DemographicData,ca.openosp.OscarProperties,ca.openosp.openo.log.*" %>
 <%@page import="ca.openosp.openo.casemgmt.service.CaseManagementManager,
                 org.springframework.web.context.WebApplicationContext,
                 org.springframework.web.context.support.WebApplicationContextUtils,
@@ -43,20 +43,21 @@
 <%@page import="java.text.SimpleDateFormat" %>
 <%@page import="java.util.Calendar" %>
 <%@page import="java.util.Enumeration" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.utility.SessionConstants" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.SessionConstants" %>
 <%@page import="java.util.List,ca.openosp.openo.util.StringUtils" %>
-<%@page import="org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
-<%@page import="org.oscarehr.utility.LoggedInInfo,org.oscarehr.common.dao.DrugReasonDao,org.oscarehr.common.model.DrugReason" %>
-<%@page import="java.util.ArrayList,oscar.util.*,java.util.*,org.oscarehr.common.model.Drug,org.oscarehr.common.dao.*" %>
+<%@page import="ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo,ca.openosp.openo.commn.dao.DrugReasonDao,ca.openosp.openo.commn.model.DrugReason" %>
+<%@page import="java.util.ArrayList,ca.openosp.openo.util.*,java.util.*,ca.openosp.openo.commn.model.Drug,ca.openosp.openo.commn.dao.*" %>
 <%@page import="ca.openosp.openo.managers.DrugDispensingManager" %>
 <%@page import="ca.openosp.openo.managers.CodingSystemManager" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.services.security.SecurityManager" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPatientData" %>
-<%@ page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPatientData" %>
+<%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="ca.openosp.openo.commn.dao.PartialDateDao" %>
 
 <%
     RxPatientData.Patient patient = null;
@@ -203,7 +204,7 @@
             <th align="left"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgPrescription"/></b></th>
             <%if (securityManager.hasWriteAccess("_rx", roleName$, true)) {%>
             <th align="center" width="35px"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgReprescribe"/></b></th>
-            <%if (!OscarProperties.getInstance().getProperty("rx.delete_drug.hide", "false").equals("true")) {%>
+            <%if (!OscarProperties.getInstance().getProperty("prescript.delete_drug.hide", "false").equals("true")) {%>
             <th align="center" width="35px"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgDelete"/></b></th>
             <% }
             }
@@ -386,7 +387,7 @@
                 </form>
                 <%}%>
             </td>
-            <%if (!OscarProperties.getInstance().getProperty("rx.delete_drug.hide", "false").equals("true")) { %>
+            <%if (!OscarProperties.getInstance().getProperty("prescript.delete_drug.hide", "false").equals("true")) { %>
             <td width="20px" align="center" valign="top">
                 <%if (prescriptDrug.getRemoteFacilityName() == null) {%>
                 <a id="del_<%=prescriptIdInt%>" name="delete" <%=styleColor%> href="javascript:void(0);"
@@ -499,7 +500,7 @@
 
                 %>
                 <a href="javascript:void(0)"
-                   onclick="javascript:popupWindow(720,700,'<%=request.getContextPath()%>/oscarRx/Dispense.do?method=view&id=<%=prescriptDrug.getId()%>','Dispense<%=prescriptIdInt %>'); return false;">Dispense
+                   onclick="javascript:popupWindow(720,700,'<%=request.getContextPath()%>/rx/Dispense.do?method=view&id=<%=prescriptDrug.getId()%>','Dispense<%=prescriptIdInt %>'); return false;">Dispense
                     (<%=dispensingStatus%>)</a>
                 <%
                         }

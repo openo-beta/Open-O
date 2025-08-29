@@ -29,9 +29,9 @@
 <%@page import="java.util.Set" %>
 <%@page import="java.util.List" %>
 <%@page import="java.util.HashMap" %>
-<%@page import="org.oscarehr.common.model.ResidentOscarMsg" %>
-<%@page import="org.oscarehr.common.dao.ResidentOscarMsgDao" %>
-<%@page import="org.oscarehr.common.model.OscarMsgType" %>
+<%@page import="ca.openosp.openo.commn.model.ResidentOscarMsg" %>
+<%@page import="ca.openosp.openo.commn.dao.ResidentOscarMsgDao" %>
+<%@page import="ca.openosp.openo.commn.model.OscarMsgType" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String providerNo = (String) session.getAttribute("providerNo");
@@ -49,10 +49,10 @@
         return;
     }
 %>
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@page import="org.oscarehr.common.dao.UserPropertyDAO" %>
-<%@page import="org.oscarehr.common.model.UserProperty" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
+<%@page import="ca.openosp.openo.commn.model.UserProperty" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 
 
 <%
@@ -61,9 +61,10 @@
     if (request.getParameter("bFirstDisp") != null) bFirstDisp = (request.getParameter("bFirstDisp")).equals("true");
 %>
 <%@ page
-        import="oscar.oscarDemographic.data.*, java.util.Enumeration" %>
+        import="ca.openosp.openo.demographic.data.*, java.util.Enumeration" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
+<%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -492,7 +493,7 @@
 
                                                 String demographic_no = request.getParameter("demographic_no");
                                                 DemographicData demoData = new DemographicData();
-                                                org.oscarehr.common.model.Demographic demo = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demographic_no);
+                                                Demographic demo = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demographic_no);
                                                 String demoName = "";
                                                 String demoLastName = "";
                                                 String demoFirstName = "";
@@ -625,7 +626,7 @@
                                                                    <%=params%>');return false;">E</a>
                                                         <%} %>
 
-                                                        <a href="javascript:popupViewAttach(700,960,'../oscarRx/choosePatient.do?providerNo=<%=session.getAttribute("providerNo")%>&demographicNo=${ demographic.key }')">Rx</a>
+                                                        <a href="javascript:popupViewAttach(700,960,'../rx/choosePatient.do?providerNo=<%=session.getAttribute("providerNo")%>&demographicNo=${ demographic.key }')">Rx</a>
 
 
 

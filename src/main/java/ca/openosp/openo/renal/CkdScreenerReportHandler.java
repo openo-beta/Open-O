@@ -31,19 +31,19 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.dao.DemographicExtDao;
-import org.oscarehr.common.dao.DxresearchDAO;
-import org.oscarehr.common.dao.OscarAppointmentDao;
-import org.oscarehr.common.dao.OscarLogDao;
-import org.oscarehr.common.model.Appointment;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.DemographicExt;
-import org.oscarehr.common.model.Dxresearch;
-import org.oscarehr.common.model.OscarLog;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.dao.DemographicExtDao;
+import ca.openosp.openo.commn.dao.DxresearchDAO;
+import ca.openosp.openo.commn.dao.OscarAppointmentDao;
+import ca.openosp.openo.commn.dao.OscarLogDao;
+import ca.openosp.openo.commn.model.Appointment;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.DemographicExt;
+import ca.openosp.openo.commn.model.Dxresearch;
+import ca.openosp.openo.commn.model.OscarLog;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class CkdScreenerReportHandler {
 

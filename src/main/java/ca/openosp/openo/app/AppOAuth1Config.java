@@ -30,8 +30,8 @@ import java.util.Map;
 
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.XmlUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 

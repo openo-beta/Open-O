@@ -33,14 +33,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.ProfessionalSpecialistDao;
-import org.oscarehr.common.model.ProfessionalSpecialist;
+import ca.openosp.openo.commn.dao.ProfessionalSpecialistDao;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -60,7 +60,7 @@ public class EctConAddSpecialist2Action extends ActionSupport {
             throws ServletException, IOException {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_con", "w", null)) {
-            throw new SecurityException("missing required security object (_con)");
+            throw new SecurityException("missing required sec object (_con)");
         }
 
         ProfessionalSpecialist professionalSpecialist = null;

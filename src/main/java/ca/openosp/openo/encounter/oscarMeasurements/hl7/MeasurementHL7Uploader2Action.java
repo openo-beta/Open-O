@@ -32,20 +32,21 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.MeasurementDao;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.Measurement;
+import ca.openosp.openo.commn.dao.MeasurementDao;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.Measurement;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabUpload2Action;
 import ca.openosp.openo.lab.ca.all.util.Utilities;
 import ca.uhn.hl7v2.model.v23.datatype.CE;
@@ -66,7 +67,7 @@ public class MeasurementHL7Uploader2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static Logger logger = MiscUtils.getLogger();
     private static SimpleDateFormat sdf = new SimpleDateFormat(OscarProperties.getInstance().getProperty("oscar.measurements.hl7.datetime.format", "yyyyMMddHHmmss"));
 
     private static MeasurementDao measurementsDao = SpringUtils.getBean(MeasurementDao.class);
@@ -92,7 +93,7 @@ public class MeasurementHL7Uploader2Action extends ActionSupport {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_measurement", "w", null)) {
-            throw new SecurityException("missing required security object (_measurement)");
+            throw new SecurityException("missing required sec object (_measurement)");
         }
 
         Date dateEntered = new Date();

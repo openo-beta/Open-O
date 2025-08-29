@@ -35,20 +35,20 @@ import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.billing.CA.BC.model.Hl7Obx;
 import ca.openosp.openo.billing.CA.BC.model.Hl7Orc;
 import ca.openosp.openo.billing.CA.BC.model.Hl7Pid;
-import org.oscarehr.common.dao.LabTestResultsDao;
-import org.oscarehr.common.dao.MdsZMNDao;
-import org.oscarehr.common.dao.MeasurementDao;
-import org.oscarehr.common.dao.PatientLabRoutingDao;
-import org.oscarehr.common.model.LabPatientPhysicianInfo;
-import org.oscarehr.common.model.LabTestResults;
-import org.oscarehr.common.model.MdsMSH;
-import org.oscarehr.common.model.MdsOBX;
-import org.oscarehr.common.model.MdsZMN;
-import org.oscarehr.common.model.PatientLabRouting;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.LabTestResultsDao;
+import ca.openosp.openo.commn.dao.MdsZMNDao;
+import ca.openosp.openo.commn.dao.MeasurementDao;
+import ca.openosp.openo.commn.dao.PatientLabRoutingDao;
+import ca.openosp.openo.commn.model.LabPatientPhysicianInfo;
+import ca.openosp.openo.commn.model.LabTestResults;
+import ca.openosp.openo.commn.model.MdsMSH;
+import ca.openosp.openo.commn.model.MdsOBX;
+import ca.openosp.openo.commn.model.MdsZMN;
+import ca.openosp.openo.commn.model.PatientLabRouting;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
 import ca.openosp.openo.util.ConversionUtils;
@@ -286,7 +286,7 @@ public class CommonLabTestValues {
         }
 
         if (labType != null && labType.equals("CML")) {
-            // LabTestResultsDao dao = SpringUtils.getBean(LabTestResultsDao.class);
+            // LabTestResultsDao daos = SpringUtils.getBean(LabTestResultsDao.class);
             PatientLabRoutingDao dao = SpringUtils.getBean(PatientLabRoutingDao.class);
             for (Object[] i : dao.findRoutingsAndTests(demographicNo == null ? 0 : demographicNo, labType, testName)) {
                 PatientLabRouting p = (PatientLabRouting) i[0];
@@ -497,7 +497,7 @@ public class CommonLabTestValues {
                     dateOne = simpleDateFormat.parse((String) o1.get("collDate"));
                     dateTwo = simpleDateFormat.parse((String) o2.get("collDate"));
                 } catch (ParseException e) {
-                    logger.error("Issue while parsing date for common test values. Using current date.");
+                    logger.error("Issue while parsing date for commons test values. Using current date.");
                 } finally {
                     return dateOne.before(dateTwo) ? 1 : dateOne.equals(dateTwo) ? 0 : -1;
                 }

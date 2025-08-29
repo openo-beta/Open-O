@@ -24,47 +24,37 @@
 
 --%>
 <!DOCTYPE html>
-<%@ page import="org.oscarehr.common.dao.MyGroupAccessRestrictionDao" %>
-<%@ page import="org.oscarehr.common.dao.UserPropertyDAO" %>
-<%@ page import="org.oscarehr.PMmodule.dao.ProviderDao" %>
-<%@ page import="org.oscarehr.common.model.Provider" %>
-<%@ page import="org.oscarehr.common.dao.SiteDao" %>
-<%@ page import="org.oscarehr.common.model.Site" %>
-<%@ page import="org.oscarehr.common.dao.MyGroupDao" %>
-<%@ page import="org.oscarehr.common.model.MyGroup" %>
-<%@ page import="org.oscarehr.common.dao.ScheduleTemplateCodeDao" %>
-<%@ page import="org.oscarehr.common.model.ScheduleTemplateCode" %>
-<%@ page import="org.oscarehr.common.dao.ScheduleDateDao" %>
-<%@ page import="org.oscarehr.common.model.ScheduleDate" %>
-<%@ page import="org.oscarehr.common.dao.ProviderSiteDao" %>
-<%@ page import="org.oscarehr.common.model.ScheduleTemplate" %>
-<%@ page import="org.oscarehr.common.dao.OscarAppointmentDao" %>
-<%@ page import="org.oscarehr.common.model.Appointment" %>
-<%@ page import="org.oscarehr.common.model.UserProperty" %>
-<%@ page import="org.oscarehr.common.model.Tickler" %>
-<%@ page import="org.oscarehr.PMmodule.model.ProgramProvider" %>
-<%@ page import="org.oscarehr.common.model.LookupList" %>
-<%@ page import="org.oscarehr.common.model.LookupListItem" %>
+<%@ page import="ca.openosp.openo.commn.dao.MyGroupAccessRestrictionDao" %>
+<%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
+<%@ page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
+<%@ page import="ca.openosp.openo.commn.dao.SiteDao" %>
+<%@ page import="ca.openosp.openo.commn.dao.MyGroupDao" %>
+<%@ page import="ca.openosp.openo.commn.dao.ScheduleTemplateCodeDao" %>
+<%@ page import="ca.openosp.openo.commn.dao.ScheduleDateDao" %>
+<%@ page import="ca.openosp.openo.commn.dao.ProviderSiteDao" %>
+<%@ page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
+<%@ page import="ca.openosp.openo.PMmodule.model.ProgramProvider" %>
 
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
-<%@ page import="org.oscarehr.utility.MiscUtils" %>
-<%@ page import="org.oscarehr.utility.SessionConstants" %>
-<%@page import="oscar.util.*" %>
-<%@page import="org.oscarehr.common.dao.SiteDao" %>
-<%@page import="org.oscarehr.common.model.Site" %>
-<%@page import="org.oscarehr.web.admin.ProviderPreferencesUIBean" %>
-<%@page import="org.oscarehr.common.model.ProviderPreference" %>
-<%@ page import="org.oscarehr.managers.*" %>
-<%@ page import="java.util.*,java.text.*,java.net.*,oscar.*,oscar.util.*" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@ page import="ca.openosp.openo.utility.SessionConstants" %>
+<%@page import="ca.openosp.openo.util.*" %>
+<%@page import="ca.openosp.openo.commn.dao.SiteDao" %>
+<%@page import="ca.openosp.openo.commn.model.Site" %>
+<%@page import="ca.openosp.openo.web.admin.ProviderPreferencesUIBean" %>
+<%@page import="ca.openosp.openo.commn.model.ProviderPreference" %>
+<%@ page import="ca.openosp.openo.managers.*" %>
+<%@ page import="java.util.*,java.text.*,java.net.*,ca.openosp.*,ca.openosp.openo.util.*" %>
 <%@ page import="org.apache.commons.lang.*" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
-<%@ page import="org.oscarehr.common.model.*" %>
+<%@ page import="ca.openosp.openo.commn.model.*" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.managers.*" %>
 <%@ page import="ca.openosp.openo.util.UtilMisc" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="ca.openosp.openo.commn.model.*" %>
 
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/special_tag.tld" prefix="special" %>
@@ -142,7 +132,7 @@
     AppManager appManager = SpringUtils.getBean(AppManager.class);
     String resourcehelpHtml = "";
     UserProperty rbuHtml = userPropertyDao.getProp("resource_helpHtml");
-    PreventionManager providerPreventionManager = SpringUtils.getBean(PreventionManager.class);
+    ca.openosp.openo.managers.PreventionManager providerPreventionManager = SpringUtils.getBean(ca.openosp.openo.managers.PreventionManager.class);
 %>
 <%
     if (rbuHtml != null) {
@@ -158,7 +148,7 @@
 %>
 <%!
     //multisite starts =====================
-    private boolean bMultisites = org.oscarehr.common.IsPropertiesOn.isMultisitesEnable();
+    private boolean bMultisites = ca.openosp.openo.commn.IsPropertiesOn.isMultisitesEnable();
     private List<Site> sites = new ArrayList<Site>();
     private List<Site> curUserSites = new ArrayList<Site>();
     private List<String> siteProviderNos = new ArrayList<String>();
@@ -173,7 +163,7 @@
         selectedSite = (String) session.getAttribute("site_selected");
 
         if (selectedSite != null) {
-            //get site provider list
+            //get site providers list
             siteProviderNos = siteDao.getProviderNoBySiteLocation(selectedSite);
             siteGroups = siteDao.getGroupBySiteLocation(selectedSite);
         }
@@ -256,7 +246,7 @@
     }
 
     /*
-     * Get all the forms, eforms, and quicklinks that the logged in provider
+     * Get all the forms, eforms, and quicklinks that the logged in providers
      * needs to see in all the appointment entries
      */
 
@@ -303,11 +293,11 @@
 //        tklerProviderNo = curUser_no;
 //    }
 //
-//    if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.IsPropertiesOn.propertiesOn("OCAN_warning_window")) {
+//    if (ca.openosp.openo.commn.IsPropertiesOn.isCaisiEnable() && ca.openosp.openo.commn.IsPropertiesOn.propertiesOn("OCAN_warning_window")) {
 //        ocanWarningWindow = (String) session.getAttribute("ocanWarningWindow");
 //    }
 //
-//    if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.IsPropertiesOn.propertiesOn("CBI_REMINDER_WINDOW")) {
+//    if (ca.openosp.openo.commn.IsPropertiesOn.isCaisiEnable() && ca.openosp.openo.commn.IsPropertiesOn.propertiesOn("CBI_REMINDER_WINDOW")) {
 //        cbiReminderWindow = (String) session.getAttribute("cbiReminderWindow");
 //    }
 
@@ -335,7 +325,7 @@
     String dob = "";
     String demBday = "";
 
-    // List of statuses that are excluded from the schedule appointment count for each provider
+    // List of statuses that are excluded from the schedule appointment count for each providers
     List<String> noCountStatus = Arrays.asList("C", "CS", "CV", "N", "NS", "NV");
 
     String resourcebaseurl = oscarVariables.getProperty("resource_base_url");
@@ -476,7 +466,7 @@
             if (!caseload) {
         %>
         <c:if test="${empty sessionScope.archiveView or sessionScope.archiveView != true}">
-            <%!String refresh = oscar.OscarProperties.getInstance().getProperty("refresh.appointmentprovideradminday.jsp", "-1");%>
+            <%!String refresh = ca.openosp.OscarProperties.getInstance().getProperty("refresh.appointmentprovideradminday.jsp", "-1");%>
             <%="-1".equals(refresh) ? "" : "<meta http-equiv=\"refresh\" content=\"" + refresh + "\">"%>
         </c:if>
         <%
@@ -537,7 +527,7 @@
             }
 
             function goFilpView(s) {
-                self.location.href = "../schedule/scheduleflipview.jsp?originalpage=../provider/providercontrol.jsp&startDate=<%=year+"-"+month+"-"+day%>" + "&provider_no=" + s;
+                self.location.href = "../schedule/scheduleflipview.jsp?originalpage=../providers/providercontrol.jsp&startDate=<%=year+"-"+month+"-"+day%>" + "&provider_no=" + s;
             }
 
             function goWeekView(s) {
@@ -589,7 +579,7 @@
         <script src="${pageContext.request.contextPath}/csrfguard"></script>
     </head>
     <%
-        if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable()) {
+        if (ca.openosp.openo.commn.IsPropertiesOn.isCaisiEnable()) {
     %>
     <body onload="load();">
     <%
@@ -612,7 +602,7 @@
         int numProvider = 0, numAvailProvider = 0;
         String[] curProvider_no;
         String[] curProviderName;
-//initial provider bean for all the application
+//initial providers bean for all the application
         if (providerBean.isEmpty()) {
             for (Provider p : providerDao.getActiveProviders()) {
                 providerBean.setProperty(p.getProviderNo(), p.getFormattedName());
@@ -627,7 +617,7 @@
 
         List<Map<String, Object>> resultList = null;
 
-        if (mygroupno != null && providerBean.get(mygroupno) != null) { //single appointed provider view
+        if (mygroupno != null && providerBean.get(mygroupno) != null) { //single appointed providers view
             numProvider = 1;
             curProvider_no = new String[numProvider];
             curProviderName = new String[numProvider];
@@ -663,7 +653,7 @@
                 }
 
                 // _team_schedule_only does not support groups
-                // As well, the mobile version only shows the schedule of the login provider.
+                // As well, the mobile version only shows the schedule of the login providers.
                 if (numProvider == 0 || isTeamScheduleOnly || isMobileOptimized) {
                     numProvider = 1; //the login user
                     curProvider_no = new String[]{loggedInInfo1.getLoggedInProviderNo()};  //[numProvider];
@@ -959,7 +949,7 @@
                                 <security:oscarSec roleName="<%=roleName$%>" objectName="_edoc" rights="r">
                                     <li>
                                         <a HREF="#"
-                                           onclick="popup('700', '1024', '../documentManager/documentReport.jsp?function=provider&functionid=<%=loggedInInfo1.getLoggedInProviderNo()%>&curUser=<%=loggedInInfo1.getLoggedInProviderNo()%>', 'edocView');"
+                                           onclick="popup('700', '1024', '../documentManager/documentReport.jsp?function=providers&functionid=<%=loggedInInfo1.getLoggedInProviderNo()%>&curUser=<%=loggedInInfo1.getLoggedInProviderNo()%>', 'edocView');"
                                            TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewEdoc"/>'><fmt:setBundle basename="oscarResources"/><fmt:message key="global.edoc"/></a>
                                     </li>
                                 </security:oscarSec>
@@ -1005,7 +995,7 @@
                             <security:oscarSec roleName="<%=roleName$%>" objectName="_dashboardDisplay" rights="r">
                                 <%
                                     DashboardManager dashboardManager = SpringUtils.getBean(DashboardManager.class);
-                                    List<org.oscarehr.common.model.Dashboard> dashboards = dashboardManager.getActiveDashboards(loggedInInfo1);
+                                    List<ca.openosp.openo.commn.model.Dashboard> dashboards = dashboardManager.getActiveDashboards(loggedInInfo1);
                                     pageContext.setAttribute("dashboards", dashboards);
                                 %>
 
@@ -1153,7 +1143,7 @@
                 </a>
 
                 <%
-                    String calendarUrl = "../share/CalendarPopup.jsp?urlfrom=../provider/providercontrol.jsp" + "&year=" + strYear + "&month=" + strMonth + "&param=" + URLEncoder.encode("&view=0&displaymode=day&dboperation=searchappointmentday&viewall=" + viewall, "UTF-8");
+                    String calendarUrl = "../share/CalendarPopup.jsp?urlfrom=../providers/providercontrol.jsp" + "&year=" + strYear + "&month=" + strMonth + "&param=" + URLEncoder.encode("&view=0&displaymode=day&dboperation=searchappointmentday&viewall=" + viewall, "UTF-8");
 
                     if (isWeekView) {
                         calendarUrl += URLEncoder.encode("&provider_no=" + provNum, "UTF-8");
@@ -1239,7 +1229,7 @@
                     <%--                    if (view == 1) {--%>
                     <%--                %>--%>
                     <%--                <a href='providercontrol.jsp?year=<%=strYear%>&month=<%=strMonth%>&day=<%=strDay%>&view=0&displaymode=day&dboperation=searchappointmentday'><fmt:message--%>
-                    <%--                        key="provider.appointmentProviderAdminDay.grpView"/></a>--%>
+                    <%--                        key="providers.appointmentProviderAdminDay.grpView"/></a>--%>
                     <%--                <% } %>--%>
                     <%--&lt;%&ndash;                <% if (!isMobileOptimized) { %> <fmt:setBundle basename="oscarResources"/><fmt:message key="global.hello"/> <% } %>&ndash;%&gt;--%>
                     <%--&lt;%&ndash;                <% out.println(userfirstname + " " + userlastname); %>&ndash;%&gt;--%>
@@ -1475,7 +1465,7 @@
 
                             java.util.ResourceBundle wdProp = ResourceBundle.getBundle("oscarResources", request.getLocale());
 
-                            // for each provider schedule in the display
+                            // for each providers schedule in the display
                             for (int iterNum = 0; iterNum < iterMax; iterNum++) {
 
                                 if (isWeekView) {
@@ -1559,10 +1549,10 @@
                                 bColor = bColor ? false : true;
                         %>
                         <td valign="top" width="<%=isWeekView?100/7:100/numProvider%>%">
-                            <!-- for the first provider's schedule -->
+                            <!-- for the first providers's schedule -->
 
                             <table bgcolor="#486ebd">
-                                <!-- for the first provider's name -->
+                                <!-- for the first providers's name -->
                                 <tr>
                                     <td class="infirmaryView" NOWRAP ALIGN="center"
                                         BGCOLOR="<%=bColor?"#bfefff":"silver"%>">
@@ -1640,7 +1630,7 @@
                                         <!-- caisi infirmary view extension modify end ffffffffffffffff-->
                                     </td>
                                 </tr>
-                                <!-- END for the first provider's name -->
+                                <!-- END for the first providers's name -->
                                 <tr>
 
                                     <td valign="top">
@@ -2129,7 +2119,7 @@
 
                                                         <c:if test="${doctorLinkRights}">
                                                             &#124; <a href=#
-                                                                      onClick="popupWithApptNo(700,1027,'../oscarRx/choosePatient.do?providerNo=<%=loggedInInfo1.getLoggedInProviderNo()%>&demographicNo=<%=demographic_no%>','rx',<%=appointment.getId()%>)"
+                                                                      onClick="popupWithApptNo(700,1027,'../rx/choosePatient.do?providerNo=<%=loggedInInfo1.getLoggedInProviderNo()%>&demographicNo=<%=demographic_no%>','rx',<%=appointment.getId()%>)"
                                                                       title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.prescriptions"/>"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.rx"/>
                                                         </a>
 
@@ -2220,7 +2210,7 @@
                                                                 %>
 
                                             </table>
-                                            <!-- end table for each provider schedule display -->
+                                            <!-- end table for each providers schedule display -->
                                             <!-- caisi infirmary view extension add fffffffffff-->
                                         </c:if>
                                         <!-- caisi infirmary view extension add end fffffffffffffff-->
@@ -2228,7 +2218,7 @@
                                     </td>
                                 </tr>
 
-                            </table><!-- end table for each provider name -->
+                            </table><!-- end table for each providers name -->
 
                         </td>
                         <%
@@ -2278,10 +2268,10 @@
                         popupOscarRx(600, 1024, '../billing/CA/<%=prov%>/billingReportCenter.jsp?displaymode=billreport&providerview=<%=loggedInInfo1.getLoggedInProviderNo()%>');
                         return false;  //code for 'B'illing
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.calendarShortcut"/> :
-                        popupOscarRx(425, 430, '../share/CalendarPopup.jsp?urlfrom=../provider/providercontrol.jsp&year=<%=strYear%>&month=<%=strMonth%>&param=<%=URLEncoder.encode("&view=0&displaymode=day&dboperation=searchappointmentday","UTF-8")%>');
+                        popupOscarRx(425, 430, '../share/CalendarPopup.jsp?urlfrom=../providers/providercontrol.jsp&year=<%=strYear%>&month=<%=strMonth%>&param=<%=URLEncoder.encode("&view=0&displaymode=day&dboperation=searchappointmentday","UTF-8")%>');
                         return false;  //run code for 'C'alendar
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.edocShortcut"/> :
-                        popupOscarRx('700', '1024', '../documentManager/documentReport.jsp?function=provider&functionid=<%=loggedInInfo1.getLoggedInProviderNo()%>&curUser=<%=loggedInInfo1.getLoggedInProviderNo()%>', 'edocView');
+                        popupOscarRx('700', '1024', '../documentManager/documentReport.jsp?function=providers&functionid=<%=loggedInInfo1.getLoggedInProviderNo()%>&curUser=<%=loggedInInfo1.getLoggedInProviderNo()%>', 'edocView');
                         return false;  //run code for e'D'oc
                     case <fmt:setBundle basename="oscarResources"/><fmt:message key="global.resourcesShortcut"/> :
                         popupOscarRx(550, 687, '<%=resourcebaseurl%>');
@@ -2385,10 +2375,10 @@
 <script>
     const contextPath = document.getElementById("contextPath").value;
     const originalInboxLinkClickEvent = "popupInboxManager('" + contextPath + "/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=loggedInInfo1.getLoggedInProviderNo()%>');return false;";
-    const newInboxLinkClickEvent = "popupInboxManager('" + contextPath + "/web/inboxhub/Inboxhub.do?method=displayInboxForm', 800);return false;";
+    const newInboxLinkClickEvent = "popupInboxManager('" + contextPath + "/www/inboxhub/Inboxhub.do?method=displayInboxForm', 800);return false;";
 
     const originalUnclaimedLabLinkClickEvent = "popupInboxManager('" + contextPath + "/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=0&searchProviderNo=0&status=N&lname=&fname=&hnum=&pageNum=1&startIndex=0');return false;"
-    const newUnclaimedLabLinkClickEvent = "popupInboxManager('" + contextPath + "/web/inboxhub/Inboxhub.do?method=displayInboxForm&unclaimed=1', 800);return false;"
+    const newUnclaimedLabLinkClickEvent = "popupInboxManager('" + contextPath + "/www/inboxhub/Inboxhub.do?method=displayInboxForm&unclaimed=1', 800);return false;"
 
     document.getElementById("inboxLink").addEventListener("mouseup", function(event) {
         if(event.altKey) {

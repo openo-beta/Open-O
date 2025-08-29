@@ -30,7 +30,7 @@
 
 <%
     ArrayList<String> doctypesD = EDocUtil.getDoctypes("demographic");
-    ArrayList<String> doctypesP = EDocUtil.getDoctypes("provider");
+    ArrayList<String> doctypesP = EDocUtil.getDoctypes("providers");
 
     HashMap<String, String> doctypeerrors = new HashMap<String, String>();
     if (request.getAttribute("doctypeerrors") != null) {

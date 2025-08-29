@@ -30,10 +30,10 @@ import java.util.TimerTask;
 import javax.annotation.PreDestroy;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.stereotype.Component;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 @Component
 public class FaxSchedulerJob extends TimerTask {

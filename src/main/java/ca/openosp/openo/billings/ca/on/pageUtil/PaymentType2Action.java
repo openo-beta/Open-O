@@ -35,12 +35,12 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 
 
-import org.oscarehr.common.dao.BillingONPaymentDao;
-import org.oscarehr.common.dao.BillingPaymentTypeDao;
+import ca.openosp.openo.commn.dao.BillingONPaymentDao;
+import ca.openosp.openo.commn.dao.BillingPaymentTypeDao;
 
-import org.oscarehr.common.model.BillingPaymentType;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.model.BillingPaymentType;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

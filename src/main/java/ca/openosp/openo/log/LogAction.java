@@ -33,13 +33,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.OscarLogDao;
-import org.oscarehr.common.model.OscarLog;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.utility.DeamonThreadFactory;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.OscarLogDao;
+import ca.openosp.openo.commn.model.OscarLog;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.utility.DeamonThreadFactory;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class LogAction {
     private static Logger logger = MiscUtils.getLogger();

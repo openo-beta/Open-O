@@ -24,10 +24,10 @@
 
 --%>
 
-<%@page import="oscar.OscarProperties" %>
+<%@page import="ca.openosp.OscarProperties" %>
 <%@page import="java.util.*" %>
-<%@page import="ca.openosp.openo.rx.data.RxPrescriptionData" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
+<%@page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%

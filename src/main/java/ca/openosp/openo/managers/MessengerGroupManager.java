@@ -24,18 +24,18 @@
  */
 package ca.openosp.openo.managers;
 
+import ca.openosp.openo.commn.model.*;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.caisi_integrator.CaisiIntegratorManager;
-import org.oscarehr.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.caisi_integrator.ws.CachedFacility;
 import ca.openosp.openo.caisi_integrator.ws.CachedProvider;
 import ca.openosp.openo.caisi_integrator.ws.FacilityIdStringCompositePk;
-import org.oscarehr.common.dao.GroupMembersDao;
-import org.oscarehr.common.dao.GroupsDao;
-import org.oscarehr.common.dao.OscarCommLocationsDao;
-import org.oscarehr.common.model.*;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.dao.GroupMembersDao;
+import ca.openosp.openo.commn.dao.GroupsDao;
+import ca.openosp.openo.commn.dao.OscarCommLocationsDao;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,7 +72,7 @@ public class MessengerGroupManager {
      */
     public List<Groups> getGroups(LoggedInInfo loggedInInfo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         int available = groupsDao.getCountAll();
@@ -88,7 +88,7 @@ public class MessengerGroupManager {
      */
     public Map<String, List<MsgProviderData>> getAllMembers(LoggedInInfo loggedInInfo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         Map<String, List<MsgProviderData>> allMembers = new TreeMap<String, List<MsgProviderData>>();
@@ -111,13 +111,13 @@ public class MessengerGroupManager {
      */
     public Map<String, List<MsgProviderData>> getAllRemoteMembers(LoggedInInfo loggedInInfo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         Map<String, List<MsgProviderData>> remoteMembers = new TreeMap<String, List<MsgProviderData>>();
 
         if (!loggedInInfo.getCurrentFacility().isIntegratorEnabled()) {
-            logger.warn("Cannot retrieve remote provider contact list. Integrator is disabled.");
+            logger.warn("Cannot retrieve remote providers contact list. Integrator is disabled.");
             return remoteMembers;
         }
 
@@ -150,7 +150,7 @@ public class MessengerGroupManager {
      */
     public List<MsgProviderData> getAllLocalMembers(LoggedInInfo loggedInInfo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         // default facility Id for local members is 0
@@ -185,7 +185,7 @@ public class MessengerGroupManager {
      */
     public Map<Groups, List<MsgProviderData>> getAllGroupsWithMembers(LoggedInInfo loggedInInfo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         Map<Groups, List<MsgProviderData>> groupsMap = new TreeMap<Groups, List<MsgProviderData>>();
@@ -207,7 +207,7 @@ public class MessengerGroupManager {
      */
     public List<MsgProviderData> getGroupMembers(LoggedInInfo loggedInInfo, int groupId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         List<GroupMembers> groupMembers = Collections.emptyList();
@@ -255,7 +255,7 @@ public class MessengerGroupManager {
      */
     public MsgProviderData getMemberData(LoggedInInfo loggedInInfo, GroupMembers groupMember) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         return getMemberData(loggedInInfo, groupMember.getFacilityId(), groupMember.getProviderNo());
@@ -263,7 +263,7 @@ public class MessengerGroupManager {
 
     public MsgProviderData getMemberData(LoggedInInfo loggedInInfo, ContactIdentifier contactIdentifier) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         return getMemberData(loggedInInfo, contactIdentifier.getFacilityId(), contactIdentifier.getContactId());
@@ -288,7 +288,7 @@ public class MessengerGroupManager {
      */
     public MsgProviderData getLocalMember(LoggedInInfo loggedInInfo, String providerNo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
         MsgProviderData msgProviderData = null;
         Provider provider = providerManager.getProviderIfActive(loggedInInfo, providerNo);
@@ -301,7 +301,7 @@ public class MessengerGroupManager {
 
     /**
      * Get a remote contact member details(name, location, id etc...) based on the remote Provider Number and Facility Id
-     * Returns data for the provider located at the given Facility data.
+     * Returns data for the providers located at the given Facility data.
      *
      * @param loggedInInfo
      * @param providerNo
@@ -310,7 +310,7 @@ public class MessengerGroupManager {
      */
     public MsgProviderData getRemoteMember(LoggedInInfo loggedInInfo, String providerNo, int facilityId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         MsgProviderData messengerContact = null;
@@ -323,7 +323,7 @@ public class MessengerGroupManager {
         try {
             cachedProvider = CaisiIntegratorManager.getProvider(loggedInInfo, facility, facilityCompositePk);
         } catch (Exception e) {
-            logger.error("Error while getting remote provider list from Integrator. Could be offline. ", e);
+            logger.error("Error while getting remote providers list from Integrator. Could be offline. ", e);
         }
 
         if (cachedProvider != null) {
@@ -359,7 +359,7 @@ public class MessengerGroupManager {
     }
 
     /**
-     * All provider contacts (potential Oscar Messenger Members) from the local Oscar
+     * All providers contacts (potential Oscar Messenger Members) from the local Oscar
      * AND all the Integrated clinics that are connected.
      * This list is used in the Messenger Configuration to present potential members that can be enrolled into
      * the Oscar Messenger system.
@@ -369,7 +369,7 @@ public class MessengerGroupManager {
      */
     public Map<String, List<MsgProviderData>> getAllMessengerContacts(LoggedInInfo loggedInInfo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         Map<String, List<MsgProviderData>> providersMap = new TreeMap<String, List<MsgProviderData>>();
@@ -390,7 +390,7 @@ public class MessengerGroupManager {
      */
     public List<MsgProviderData> getAllLocalMessengerContactList(LoggedInInfo loggedInInfo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         List<MsgProviderData> messengerContactList = new ArrayList<MsgProviderData>();
@@ -407,7 +407,7 @@ public class MessengerGroupManager {
         checkMembership(messengerContactList);
         /*
          * LocationNo: not sure why. It may be related to "multisites", but then how
-         * is each provider identified??  Adding it anyway.
+         * is each providers identified??  Adding it anyway.
          */
         setLocalLocationId(messengerContactList);
         Collections.sort(messengerContactList, new SortLastName());
@@ -415,7 +415,7 @@ public class MessengerGroupManager {
     }
 
     /**
-     * All provider contacts (potential Oscar Messenger Members) from ALL remote Integrated Facilities (remote clinics).
+     * All providers contacts (potential Oscar Messenger Members) from ALL remote Integrated Facilities (remote clinics).
      * This list is used in the Messenger Configuration to present potential members that can be enrolled into
      * the Oscar Messenger system.
      * Sorted by facility name
@@ -425,13 +425,13 @@ public class MessengerGroupManager {
      */
     public Map<String, List<MsgProviderData>> getAllRemoteMessengerContactList(LoggedInInfo loggedInInfo) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.READ, null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         Map<String, List<MsgProviderData>> providersMap = new TreeMap<String, List<MsgProviderData>>();
 
         if (!loggedInInfo.getCurrentFacility().isIntegratorEnabled()) {
-            logger.debug("Cannot retrieve remote provider contact list. Integrator is disabled.");
+            logger.debug("Cannot retrieve remote providers contact list. Integrator is disabled.");
             return providersMap;
         }
 
@@ -443,7 +443,7 @@ public class MessengerGroupManager {
             remoteFacilities = CaisiIntegratorManager.getRemoteFacilitiesExcludingCurrent(loggedInInfo, facility);
             remoteProviders = CaisiIntegratorManager.getAllProviders(loggedInInfo, facility);
         } catch (Exception e) {
-            logger.error("Error while getting remote provider list from Integrator ", e);
+            logger.error("Error while getting remote providers list from Integrator ", e);
         }
 
         // re-sort lists by facility.
@@ -479,7 +479,7 @@ public class MessengerGroupManager {
      */
     public int addGroup(LoggedInInfo loggedInInfo, String groupName, int parentId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.WRITE, null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
         Groups group = new Groups();
         group.setGroupDesc(groupName);
@@ -498,7 +498,7 @@ public class MessengerGroupManager {
      */
     public boolean removeGroup(LoggedInInfo loggedInInfo, int groupId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.WRITE, null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
         boolean removed = false;
         if (groupsDao.remove(groupId)) {
@@ -525,7 +525,7 @@ public class MessengerGroupManager {
      */
     public int addMember(LoggedInInfo loggedInInfo, ContactIdentifier contactIdentifier, int groupId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.WRITE, null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         GroupMembers groupMembers = new GroupMembers();
@@ -562,7 +562,7 @@ public class MessengerGroupManager {
      */
     public boolean removeMember(LoggedInInfo loggedInInfo, ContactIdentifier contactIdentifier) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.WRITE, null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         List<GroupMembers> groupMembers = groupMembersDao.findByProviderNumberAndFacilityId(contactIdentifier.getContactId(), contactIdentifier.getFacilityId());
@@ -579,7 +579,7 @@ public class MessengerGroupManager {
      */
     public boolean removeGroupMember(LoggedInInfo loggedInInfo, ContactIdentifier contactIdentifier) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.WRITE, null)) {
-            throw new SecurityException("missing required security object (_admin)");
+            throw new SecurityException("missing required sec object (_admin)");
         }
 
         List<GroupMembers> groupMembers = groupMembersDao.findGroupMember(contactIdentifier.getContactId(), contactIdentifier.getGroupId());

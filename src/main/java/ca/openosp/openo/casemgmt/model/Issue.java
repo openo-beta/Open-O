@@ -26,7 +26,7 @@ package ca.openosp.openo.casemgmt.model;
 import java.util.Date;
 
 import ca.openosp.openo.model.BaseObject;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 public class Issue extends BaseObject {
     public static String CUSTOM_ISSUE = "userDefined";

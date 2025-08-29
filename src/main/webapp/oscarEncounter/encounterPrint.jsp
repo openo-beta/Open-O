@@ -42,13 +42,14 @@
     }
 %>
 
-<%@page import="oscar.oscarEncounter.data.*,java.net.*" %>
+<%@page import="ca.openosp.openo.encounter.data.*,java.net.*" %>
 <%@page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.encounter.pageUtil.EctSessionBean" %>
+<%@ page import="ca.openosp.OscarProperties" %>
 
 <jsp:useBean id="providerBean" class="java.util.Properties"
              scope="session"/>
-<% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
+<% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 
 <link rel="stylesheet" type="text/css" media="print" href="print.css"/>
 <link rel="stylesheet" type="text/css" href="encounterPrintStyles.css"/>

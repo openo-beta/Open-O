@@ -43,7 +43,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="java.util.*" %>
-<%@ page import="ca.openosp.openo.rx.pageUtil.RxSessionBean" %>
+<%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -261,7 +261,7 @@
                             <br>
                             <br>
                             <%
-                                String sBack = "oscarRx/ShowAllergies.jsp";
+                                String sBack = "rx/ShowAllergies.jsp";
                             %> <input type=button class="ControlPushButton"
                                       onclick="javascript:window.location.href='<%=sBack%>';"
                                       value="Back to View Allergies"/></td>

@@ -26,7 +26,8 @@
 
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
-<% java.util.Properties oscarVariables = oscar.OscarProperties.getInstance(); %>
+<%@ page import="ca.openosp.OscarProperties" %>
+<% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 

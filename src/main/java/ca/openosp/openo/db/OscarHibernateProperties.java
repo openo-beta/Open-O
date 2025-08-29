@@ -25,7 +25,7 @@ package ca.openosp.openo.db;
 
 import java.util.Properties;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 ;
 
 public class OscarHibernateProperties extends Properties {

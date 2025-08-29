@@ -39,8 +39,8 @@
 %>
 
 <%@ page language="java" %>
-<%@ page import="oscar.form.*" %>
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.form.*" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <%

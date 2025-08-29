@@ -10,27 +10,28 @@
 
 package ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil;
 
+import ca.openosp.openo.commn.IsPropertiesOn;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.dao.ProgramDao;
-import org.oscarehr.PMmodule.dao.ProviderDao;
-import org.oscarehr.common.dao.DocumentDao;
-import org.oscarehr.common.dao.SiteDao;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.DigitalSignature;
-import org.oscarehr.common.model.ProfessionalSpecialist;
-import org.oscarehr.common.model.Site;
+import ca.openosp.openo.PMmodule.dao.ProgramDao;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
+import ca.openosp.openo.commn.dao.DocumentDao;
+import ca.openosp.openo.commn.dao.SiteDao;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.DigitalSignature;
+import ca.openosp.openo.commn.model.ProfessionalSpecialist;
+import ca.openosp.openo.commn.model.Site;
 import ca.openosp.openo.fax.core.FaxRecipient;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.DigitalSignatureManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.clinic.ClinicData;
-import ca.openosp.openo.rx.data.RxProviderData;
-import ca.openosp.openo.rx.data.RxProviderData.Provider;
+import ca.openosp.openo.prescript.data.RxProviderData;
+import ca.openosp.openo.prescript.data.RxProviderData.Provider;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileInputStream;
@@ -173,7 +174,7 @@ public class ConsultationPDFCreator extends PdfPageEventHelper {
         // Creating a table with details for the consultation request.
         addTable(border, createConsultDetailTable());
 
-        // Add the provider's signature.
+        // Add the providers's signature.
         if (getlen(reqFrm.signatureImg) > 0) {
             addSignature(border);
         }
@@ -302,7 +303,7 @@ public class ConsultationPDFCreator extends PdfPageEventHelper {
             Site site = siteDao.getById(Integer.valueOf(reqFrm.siteName));
             if (site != null) {
                 if (site.getSiteLogoId() != null) {
-                    org.oscarehr.common.model.Document d = documentDao.getDocument(String.valueOf(site.getSiteLogoId()));
+                    ca.openosp.openo.commn.model.Document d = documentDao.getDocument(String.valueOf(site.getSiteLogoId()));
                     String dir = props.getProperty("DOCUMENT_DIR");
                     filename = dir.concat(d.getDocfilename());
                 } else {
@@ -368,7 +369,7 @@ public class ConsultationPDFCreator extends PdfPageEventHelper {
         // If not set to Patient Will Book then maybe a Custom Appointment Instruction is used.
         else if (OscarProperties.getInstance().getBooleanProperty("CONSULTATION_APPOINTMENT_INSTRUCTIONS_LOOKUP", "true")) {
             cell.setPhrase(new Phrase(reqFrm.getAppointmentInstructionsLabel(), boldFontHeading));
-        } else if (org.oscarehr.common.IsPropertiesOn.isMultisitesEnable()) {
+        } else if (IsPropertiesOn.isMultisitesEnable()) {
             cell.setPhrase(new Phrase("Please reply", boldFontHeading));
         } else {
             cell.setPhrase(new Phrase(
@@ -697,7 +698,7 @@ public class ConsultationPDFCreator extends PdfPageEventHelper {
 
     private PdfPTable createReferringPracAndMRPDetailTable(LoggedInInfo loggedInInfo) {
         ProviderDao proDAO = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
-        org.oscarehr.common.model.Provider pro = proDAO.getProvider(reqFrm.providerNo);
+        ca.openosp.openo.commn.model.Provider pro = proDAO.getProvider(reqFrm.providerNo);
         DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
         Demographic demo = demographicManager.getDemographic(loggedInInfo, Integer.parseInt(reqFrm.demoNo));
         String ohipNo = pro.getOhipNo();

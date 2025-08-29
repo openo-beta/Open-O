@@ -28,18 +28,18 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.DemographicDao;
-import org.oscarehr.common.dao.DxresearchDAO;
-import org.oscarehr.common.dao.MeasurementDao;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.Dxresearch;
-import org.oscarehr.common.model.Measurement;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.DemographicDao;
+import ca.openosp.openo.commn.dao.DxresearchDAO;
+import ca.openosp.openo.commn.dao.MeasurementDao;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.Dxresearch;
+import ca.openosp.openo.commn.model.Measurement;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
-import ca.openosp.openo.oscarTickler.TicklerCreator;
+import ca.openosp.OscarProperties;
+import ca.openosp.openo.tickler.TicklerCreator;
 
 public class CkdNotificationManager {
     private Logger logger = MiscUtils.getLogger();
@@ -108,17 +108,17 @@ public class CkdNotificationManager {
         }
 
         if (screeningDx != null) {
-            message += "Screening complete - <a href=\"javascript:void(0)\" onClick=\"popupPage(580,900,'../oscarResearch/oscarDxResearch/dxResearchUpdate.do?status=C&did=" + screeningDx.getId() + "&demographicNo=" + d.getDemographicNo() + "&providerNo=-1');\">Click Here</a>.<br/>";
-            message += "Screening not appropriate - <a href=\"javascript:void(0)\" onClick=\"popupPage(580,900,'../oscarResearch/oscarDxResearch/dxResearchUpdate.do?status=D&did=" + screeningDx.getId() + "&demographicNo=" + d.getDemographicNo() + "&providerNo=-1');\">Click Here</a>.<br/>";
+            message += "Screening complete - <a href=\"javascript:void(0)\" onClick=\"popupPage(580,900,'../oscarResearch/dxresearch/dxResearchUpdate.do?status=C&did=" + screeningDx.getId() + "&demographicNo=" + d.getDemographicNo() + "&providerNo=-1');\">Click Here</a>.<br/>";
+            message += "Screening not appropriate - <a href=\"javascript:void(0)\" onClick=\"popupPage(580,900,'../oscarResearch/dxresearch/dxResearchUpdate.do?status=D&did=" + screeningDx.getId() + "&demographicNo=" + d.getDemographicNo() + "&providerNo=-1');\">Click Here</a>.<br/>";
         }
 
         dxs = dxResearchDao.findByDemographicNoResearchCodeAndCodingSystem(d.getDemographicNo(), "585", "icd9");
         if (dxs.size() == 0) {
-            message += "<br/>Add 'Chronic Renal Failure' to Dx Registry, and prevent subsequent notifications - <a href=\"javascript:void(0);\" onClick=\"popupPage(580,900,'../oscarResearch/oscarDxResearch/dxResearch.do?selectedCodingSystem=icd9&xml_research1=585&xml_research2=&xml_research3=&xml_research4=&xml_research5=&demographicNo=" + d.getDemographicNo() + "&quickList=default&forward=');\">Click Here</a></br/>";
+            message += "<br/>Add 'Chronic Renal Failure' to Dx Registry, and prevent subsequent notifications - <a href=\"javascript:void(0);\" onClick=\"popupPage(580,900,'../oscarResearch/dxresearch/dxResearch.do?selectedCodingSystem=icd9&xml_research1=585&xml_research2=&xml_research3=&xml_research4=&xml_research5=&demographicNo=" + d.getDemographicNo() + "&quickList=default&forward=');\">Click Here</a></br/>";
         }
 
 
-        String labReqVer = oscar.OscarProperties.getInstance().getProperty("onare_labreqver", "07");
+        String labReqVer = OscarProperties.getInstance().getProperty("onare_labreqver", "07");
         if (labReqVer.equals("")) {
             labReqVer = "07";
         }

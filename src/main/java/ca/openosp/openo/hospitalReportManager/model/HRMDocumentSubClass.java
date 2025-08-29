@@ -17,7 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import org.oscarehr.common.model.AbstractModel;
+import ca.openosp.openo.commn.model.AbstractModel;
 
 @Entity
 public class HRMDocumentSubClass extends AbstractModel<Integer> {

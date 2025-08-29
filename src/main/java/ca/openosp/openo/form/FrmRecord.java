@@ -31,14 +31,14 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.oscarehr.common.dao.DemographicExtDao;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.DemographicExt;
+import ca.openosp.openo.commn.dao.DemographicExtDao;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.DemographicExt;
 import ca.openosp.openo.managers.DemographicManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.SxmlMisc;
+import ca.openosp.SxmlMisc;
 import ca.openosp.openo.util.UtilDateUtilities;
 
 /**

@@ -33,10 +33,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
-import ca.openosp.openo.provider.data.ProviderData;
+import ca.openosp.openo.providers.data.ProviderData;
 
 /**
  * @author jay
@@ -60,7 +60,7 @@ public class MsgSendDemographicMessage2Action extends ActionSupport {
         String provNo = (String) request.getSession().getAttribute("user");
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_msg", "w", null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         MsgSessionBean bean = new MsgSessionBean();

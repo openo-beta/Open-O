@@ -23,7 +23,7 @@
 package ca.openosp.openo.managers;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 public interface OscarManagerBase {
 

@@ -31,15 +31,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.model.IndicatorTemplate;
-import org.oscarehr.common.model.Provider;
+import ca.openosp.openo.commn.model.IndicatorTemplate;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.dashboard.handler.IndicatorTemplateHandler;
 import ca.openosp.openo.managers.DashboardManager;
 import ca.openosp.openo.managers.ProviderManager2;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import org.w3c.dom.NodeList;
 
 import net.sf.json.JSONArray;
@@ -66,7 +66,7 @@ public class OutcomesDashboard2Action extends ActionSupport {
 
     public String refreshIndicators() throws Exception {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_dashboardDisplay", "r", null)) {
-            throw new SecurityException("missing required security object (_dashboarDisplay)");
+            throw new SecurityException("missing required sec object (_dashboarDisplay)");
         }
 
         List<IndicatorTemplate> sharedIndicatorTemplates = dashboardManager.getIndicatorLibrary(LoggedInInfo.getLoggedInInfoFromSession(request));

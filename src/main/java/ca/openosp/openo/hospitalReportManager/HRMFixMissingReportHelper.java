@@ -30,14 +30,14 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.PropertyDao;
-import org.oscarehr.common.model.Property;
+import ca.openosp.openo.commn.dao.PropertyDao;
+import ca.openosp.openo.commn.model.Property;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 /**
  * See bug 4195.

@@ -28,8 +28,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.integration.mcedt.McedtConstants;
 import ca.openosp.openo.integration.mcedt.ResourceForm;
-import org.oscarehr.utility.MiscUtils;
-import oscar.OscarProperties;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.util.ConversionUtils;
 
 import javax.servlet.http.HttpServletRequest;

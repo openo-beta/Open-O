@@ -28,15 +28,15 @@ package ca.openosp.openo.messenger.pageUtil;
 
 import ca.openosp.openo.messenger.data.MsgMessageData;
 import net.sf.json.JSONArray;
-import org.oscarehr.common.dao.UserPropertyDAO;
-import org.oscarehr.common.model.OscarMsgType;
-import org.oscarehr.common.model.UserProperty;
+import ca.openosp.openo.commn.dao.UserPropertyDAO;
+import ca.openosp.openo.commn.model.OscarMsgType;
+import ca.openosp.openo.commn.model.UserProperty;
 import ca.openosp.openo.managers.MessagingManagerImpl;
 import ca.openosp.openo.managers.MessengerDemographicManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.messenger.data.ContactIdentifier;
 import ca.openosp.openo.messenger.data.MsgProviderData;
 
@@ -63,7 +63,7 @@ public class MsgCreateMessage2Action extends ActionSupport {
             throws IOException, ServletException {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", "w", null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         //FIXME no more sessions

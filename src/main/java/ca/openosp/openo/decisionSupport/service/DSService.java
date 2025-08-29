@@ -35,13 +35,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.DSGuidelineDao;
-import org.oscarehr.common.dao.DSGuidelineProviderMappingDao;
+import ca.openosp.openo.commn.dao.DSGuidelineDao;
+import ca.openosp.openo.commn.dao.DSGuidelineProviderMappingDao;
 import ca.openosp.openo.decisionSupport.model.DSConsequence;
 import ca.openosp.openo.decisionSupport.model.DSGuideline;
 import ca.openosp.openo.decisionSupport.model.DecisionSupportException;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -59,9 +59,9 @@ public abstract class DSService {
     }
 
     public List<DSConsequence> evaluateAndGetConsequences(LoggedInInfo loggedInInfo, String demographicNo, String providerNo) {
-        logger.debug("passed in provider: " + providerNo + " demographicNo" + demographicNo);
+        logger.debug("passed in providers: " + providerNo + " demographicNo" + demographicNo);
         List<DSGuideline> dsGuidelines = this.dSGuidelineDao.getDSGuidelinesByProvider(providerNo);
-        logger.info("Decision Support 'evaluateAndGetConsequences' has been called, reading " + dsGuidelines.size() + " for this provider");
+        logger.info("Decision Support 'evaluateAndGetConsequences' has been called, reading " + dsGuidelines.size() + " for this providers");
         ArrayList<DSConsequence> allResultingConsequences = new ArrayList<DSConsequence>();
         for (DSGuideline dsGuideline : dsGuidelines) {
             try {

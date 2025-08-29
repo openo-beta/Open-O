@@ -30,9 +30,9 @@
  */
 package ca.openosp.openo.casemgmt.common;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 /**
  * @author jackson
@@ -42,7 +42,7 @@ public class Colour {
     public static Colour getInstance() {
         Colour c = null;
         try {
-            String colourClass = OscarProperties.getInstance().getProperty("ColourClass", "org.oscarehr.casemgmt.common.Colour");
+            String colourClass = OscarProperties.getInstance().getProperty("ColourClass", "org.oscarehr.casemgmt.commons.Colour");
             if (colourClass.length() > 0) {
                 c = (Colour) Class.forName(colourClass).newInstance();
             }

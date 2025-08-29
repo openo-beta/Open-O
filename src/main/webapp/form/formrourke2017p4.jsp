@@ -39,13 +39,13 @@
     }
 %>
 
-<%@page import="org.oscarehr.utility.LoggedInInfo" %>
-<%@ page import="oscar.util.*, oscar.form.*, oscar.form.data.*" %>
+<%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.util.*, ca.openosp.openo.form.*, ca.openosp.openo.form.data.*" %>
 <%@ page import="ca.openosp.openo.encounter.data.EctFormData" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
-<%@ page import="org.oscarehr.common.dao.DemographicDao" %>
-<%@ page import="org.oscarehr.common.model.Demographic" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.commn.dao.DemographicDao" %>
+<%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@ page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@ page import="ca.openosp.openo.util.UtilMisc" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>

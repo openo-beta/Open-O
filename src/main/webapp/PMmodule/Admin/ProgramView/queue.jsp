@@ -26,14 +26,14 @@
 
 <%@page import="ca.openosp.openo.eform.EFormUtil" %>
 <%@ page import="java.util.*" %>
-<%@ page import="org.oscarehr.PMmodule.model.ProgramQueue" %>
-<%@ page import="org.oscarehr.PMmodule.web.admin.ProgramManager2Action.RemoteQueueEntry" %>
+<%@ page import="ca.openosp.openo.PMmodule.model.ProgramQueue" %>
+<%@ page import="ca.openosp.openo.PMmodule.web.admin.ProgramManager2Action.RemoteQueueEntry" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@page import="org.apache.commons.lang.time.DateFormatUtils" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
-<%@page import="org.oscarehr.common.model.Demographic" %>
-<%@page import="org.oscarehr.PMmodule.dao.ProgramProviderDAO" %>
-<%@page import="org.oscarehr.PMmodule.model.Program" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@page import="ca.openosp.openo.PMmodule.dao.ProgramProviderDAO" %>
+<%@page import="ca.openosp.openo.PMmodule.model.Program" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ include file="/taglibs.jsp" %>

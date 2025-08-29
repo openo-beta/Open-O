@@ -29,7 +29,7 @@ package ca.openosp.openo.managers;
 
 import java.util.*;
 
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import ca.openosp.openo.model.security.Secobjprivilege;
 import ca.openosp.openo.model.security.Secuserrole;

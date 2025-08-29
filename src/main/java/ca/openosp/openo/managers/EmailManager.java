@@ -16,32 +16,32 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.model.ProgramProvider;
-import org.oscarehr.PMmodule.service.ProgramManager;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.PMmodule.service.ProgramManager;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
-import org.oscarehr.common.dao.EmailConfigDaoImpl;
-import org.oscarehr.common.dao.EmailLogDaoImpl;
-import org.oscarehr.common.model.Demographic;
-import org.oscarehr.common.model.EmailAttachment;
-import org.oscarehr.common.model.EmailConfig;
-import org.oscarehr.common.model.EmailLog;
-import org.oscarehr.common.model.Provider;
-import org.oscarehr.common.model.EmailLog.ChartDisplayOption;
-import org.oscarehr.common.model.EmailLog.EmailStatus;
-import org.oscarehr.common.model.SecRole;
-import org.oscarehr.common.model.enumerator.DocumentType;
+import ca.openosp.openo.commn.dao.EmailConfigDaoImpl;
+import ca.openosp.openo.commn.dao.EmailLogDaoImpl;
+import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.EmailAttachment;
+import ca.openosp.openo.commn.model.EmailConfig;
+import ca.openosp.openo.commn.model.EmailLog;
+import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.EmailLog.ChartDisplayOption;
+import ca.openosp.openo.commn.model.EmailLog.EmailStatus;
+import ca.openosp.openo.commn.model.SecRole;
+import ca.openosp.openo.commn.model.enumerator.DocumentType;
 import ca.openosp.openo.documentManager.ConvertToEdoc;
 import ca.openosp.openo.documentManager.DocumentAttachmentManager;
 import ca.openosp.openo.email.core.EmailData;
 import ca.openosp.openo.email.core.EmailSender;
 import ca.openosp.openo.email.core.EmailStatusResult;
 import ca.openosp.openo.email.util.EmailNoteUtil;
-import org.oscarehr.utility.EmailSendingException;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.PDFEncryptionUtil;
+import ca.openosp.openo.utility.EmailSendingException;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PDFEncryptionUtil;
 import org.owasp.encoder.Encode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,7 +73,7 @@ public class EmailManager {
 
     public EmailLog sendEmail(LoggedInInfo loggedInInfo, EmailData emailData) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_email", SecurityInfoManager.WRITE, null)) {
-            throw new RuntimeException("missing required security object (_email)");
+            throw new RuntimeException("missing required sec object (_email)");
         }
 
         sanitizeEmailFields(emailData);
@@ -97,7 +97,7 @@ public class EmailManager {
 
     public EmailLog prepareEmailForOutbox(LoggedInInfo loggedInInfo, EmailData emailData) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_email", SecurityInfoManager.WRITE, null)) {
-            throw new RuntimeException("missing required security object (_email)");
+            throw new RuntimeException("missing required sec object (_email)");
         }
 
         EmailConfig emailConfig = emailConfigDao.findActiveEmailConfig(emailData.getSender());
@@ -127,7 +127,7 @@ public class EmailManager {
 
     public EmailLog updateEmailStatus(LoggedInInfo loggedInInfo, Integer emailLogId, EmailStatus emailStatus, String errorMessage) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_email", SecurityInfoManager.WRITE, null)) {
-            throw new RuntimeException("missing required security object (_email)");
+            throw new RuntimeException("missing required sec object (_email)");
         }
 
         EmailLog emailLog = emailLogDao.find(emailLogId);
@@ -136,7 +136,7 @@ public class EmailManager {
 
     public EmailLog updateEmailStatus(LoggedInInfo loggedInInfo, EmailLog emailLog, EmailStatus emailStatus, String errorMessage) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_email", SecurityInfoManager.WRITE, null)) {
-            throw new RuntimeException("missing required security object (_email)");
+            throw new RuntimeException("missing required sec object (_email)");
         }
 
         emailLog.setStatus(emailStatus);
@@ -152,7 +152,7 @@ public class EmailManager {
 
     public List<EmailStatusResult> getEmailStatusByDateDemographicSenderStatus(LoggedInInfo loggedInInfo, String dateBeginStr, String dateEndStr, String demographic_no, String senderEmailAddress, String emailStatus) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_email", SecurityInfoManager.READ, null)) {
-            throw new RuntimeException("missing required security object (_email)");
+            throw new RuntimeException("missing required sec object (_email)");
         }
 
         Date dateBegin = parseDate(dateBeginStr, "yyyy-MM-dd", "00:00:00");
@@ -167,7 +167,7 @@ public class EmailManager {
 
     public EmailLog getEmailLogByCaseManagementNoteId(LoggedInInfo loggedInInfo, Long noteId) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_email", SecurityInfoManager.READ, null)) {
-            throw new RuntimeException("missing required security object (_email)");
+            throw new RuntimeException("missing required sec object (_email)");
         }
 
         CaseManagementNoteLink caseManagementNoteLink = caseManagementManager.getLatestLinkByNote(noteId);
@@ -180,7 +180,7 @@ public class EmailManager {
 
     public void addEmailNote(LoggedInInfo loggedInInfo, EmailLog emailLog) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_email", SecurityInfoManager.READ, null)) {
-            throw new RuntimeException("missing required security object (_email)");
+            throw new RuntimeException("missing required sec object (_email)");
         }
 
         EmailNoteUtil emailNoteUtil = new EmailNoteUtil(loggedInInfo, emailLog);
@@ -315,7 +315,7 @@ public class EmailManager {
      * Converts a list of EmailLog arrays into a list of EmailStatusResult DTOs.
      * This method facilitates easy transfer of data to the UI layer.
      *
-     * @param resultList The list of EmailLog arrays containing email log data, demographic name, and provider name.
+     * @param resultList The list of EmailLog arrays containing email log data, demographic name, and providers name.
      * @return List of EmailStatusResult DTOs representing email status information.
      */
     private List<EmailStatusResult> retriveEmailStatusResultList(List<EmailLog> resultList) {

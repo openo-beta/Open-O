@@ -36,6 +36,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.OscarProperties;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -44,12 +45,12 @@ import net.sf.jasperreports.engine.JasperReport;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
 import ca.openosp.openo.managers.ProgramManager2;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
@@ -76,7 +77,7 @@ public class GeneratePatientLetters2Action extends ActionSupport {
     public String execute() {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_report", "r", null)) {
-            throw new SecurityException("missing required security object (_report)");
+            throw new SecurityException("missing required sec object (_report)");
         }
 
         String classpath = (String) request.getSession().getServletContext().getAttribute("org.apache.catalina.jsp_classpath");
@@ -160,7 +161,7 @@ public class GeneratePatientLetters2Action extends ActionSupport {
                 }
 
                 fileName = newDoc.getFileName();
-                String savePath = oscar.OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "/" + fileName;
+                String savePath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "/" + fileName;
                 if (log.isTraceEnabled()) {
                     log.trace("writing report to disk location " + savePath);
                 }

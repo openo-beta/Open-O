@@ -30,10 +30,10 @@ package ca.openosp.openo.managers;
 import java.util.Date;
 import java.util.List;
 
-import org.oscarehr.common.model.Consent;
-import org.oscarehr.common.model.ConsentType;
-import org.oscarehr.common.model.DemographicData;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.commn.model.Consent;
+import ca.openosp.openo.commn.model.ConsentType;
+import ca.openosp.openo.commn.model.DemographicData;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 /**
  * Manages the various consents required from patients for participation in specific programs

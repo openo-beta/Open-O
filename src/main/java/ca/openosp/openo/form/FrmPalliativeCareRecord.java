@@ -31,7 +31,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.Misc;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -48,11 +49,11 @@ public class FrmPalliativeCareRecord extends FrmRecord {
             ResultSet rs = DBHandler.GetSQL(sql);
 
             if (rs.next()) {
-                props.setProperty("demographic_no", oscar.Misc.getString(rs, "demographic_no"));
+                props.setProperty("demographic_no", Misc.getString(rs, "demographic_no"));
                 props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
                 //props.setProperty("formEdited", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
                 props.setProperty("formDate", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
-                props.setProperty("pName", oscar.Misc.getString(rs, "pName"));
+                props.setProperty("pName", Misc.getString(rs, "pName"));
             }
             rs.close();
 

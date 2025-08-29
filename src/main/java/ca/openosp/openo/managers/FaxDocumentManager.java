@@ -32,7 +32,7 @@ import java.nio.file.Path;
 
 import ca.openosp.openo.fax.core.FaxAccount;
 import ca.openosp.openo.fax.core.FaxRecipient;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import ca.openosp.openo.form.util.FormTransportContainer;
 

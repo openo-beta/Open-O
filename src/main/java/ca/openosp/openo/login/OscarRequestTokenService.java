@@ -39,7 +39,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -149,7 +149,7 @@ public class OscarRequestTokenService {
                         }
                     });
 
-            // Get request token from OAuth provider
+            // Get request token from OAuth providers
             OAuth1RequestToken requestToken = service.getRequestToken();
             
             if (requestToken == null || requestToken.getToken() == null) {
@@ -266,7 +266,7 @@ public class OscarRequestTokenService {
             }
         }
 
-        // Check if callback URL has common root with application URI
+        // Check if callback URL has commons root with application URI
         if (config.getApplicationURI() != null && !config.getApplicationURI().isEmpty()) {
             if (callbackUrl.startsWith(config.getApplicationURI())) {
                 return true;

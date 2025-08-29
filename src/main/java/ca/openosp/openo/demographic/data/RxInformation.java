@@ -26,11 +26,11 @@
 
 package ca.openosp.openo.demographic.data;
 
-import ca.openosp.openo.rx.data.RxPrescriptionData;
-import org.oscarehr.common.model.Allergy;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.prescript.data.RxPrescriptionData;
+import ca.openosp.openo.commn.model.Allergy;
+import ca.openosp.openo.utility.LoggedInInfo;
 
-import ca.openosp.openo.rx.data.RxPatientData;
+import ca.openosp.openo.prescript.data.RxPatientData;
 
 public class RxInformation {
     private String currentMedication;

@@ -25,6 +25,7 @@ package org.oscarehr.utility;
 
 import org.junit.Test;
 import org.springframework.util.Assert;
+import ca.openosp.openo.utility.SSOUtility;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

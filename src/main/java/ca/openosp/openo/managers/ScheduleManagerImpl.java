@@ -42,27 +42,27 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.AppointmentArchiveDao;
-import org.oscarehr.common.dao.AppointmentStatusDao;
-import org.oscarehr.common.dao.AppointmentTypeDao;
-import org.oscarehr.common.dao.OscarAppointmentDao;
-import org.oscarehr.common.dao.ScheduleDateDao;
-import org.oscarehr.common.dao.ScheduleHolidayDao;
-import org.oscarehr.common.dao.ScheduleTemplateCodeDao;
-import org.oscarehr.common.dao.ScheduleTemplateDao;
-import org.oscarehr.common.model.Appointment;
-import org.oscarehr.common.model.AppointmentArchive;
-import org.oscarehr.common.model.AppointmentStatus;
-import org.oscarehr.common.model.AppointmentType;
-import org.oscarehr.common.model.ConsentType;
-import org.oscarehr.common.model.ScheduleDate;
-import org.oscarehr.common.model.ScheduleHoliday;
-import org.oscarehr.common.model.ScheduleTemplate;
-import org.oscarehr.common.model.ScheduleTemplateCode;
-import org.oscarehr.common.model.ScheduleTemplatePrimaryKey;
-import org.oscarehr.common.model.Security;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.dao.AppointmentArchiveDao;
+import ca.openosp.openo.commn.dao.AppointmentStatusDao;
+import ca.openosp.openo.commn.dao.AppointmentTypeDao;
+import ca.openosp.openo.commn.dao.OscarAppointmentDao;
+import ca.openosp.openo.commn.dao.ScheduleDateDao;
+import ca.openosp.openo.commn.dao.ScheduleHolidayDao;
+import ca.openosp.openo.commn.dao.ScheduleTemplateCodeDao;
+import ca.openosp.openo.commn.dao.ScheduleTemplateDao;
+import ca.openosp.openo.commn.model.Appointment;
+import ca.openosp.openo.commn.model.AppointmentArchive;
+import ca.openosp.openo.commn.model.AppointmentStatus;
+import ca.openosp.openo.commn.model.AppointmentType;
+import ca.openosp.openo.commn.model.ConsentType;
+import ca.openosp.openo.commn.model.ScheduleDate;
+import ca.openosp.openo.commn.model.ScheduleHoliday;
+import ca.openosp.openo.commn.model.ScheduleTemplate;
+import ca.openosp.openo.commn.model.ScheduleTemplateCode;
+import ca.openosp.openo.commn.model.ScheduleTemplatePrimaryKey;
+import ca.openosp.openo.commn.model.Security;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -122,7 +122,7 @@ public class ScheduleManagerImpl implements ScheduleManager {
     public DayWorkSchedule getDayWorkSchedule(String providerNo, Calendar date) {
         // algorithm
         //----------
-        // select entries from scheduledate for the given day/provider where status = 'A' (for active?)
+        // select entries from scheduledate for the given day/providers where status = 'A' (for active?)
         // "hour" setting is the template to apply, i.e. template name
         // select entry from scheduletemplate to get the template to apply for the given day
         // timecode is a breakdown of the day into equal slots, where _ means nothing and some letter means a code in scheduletemplatecode

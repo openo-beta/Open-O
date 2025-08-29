@@ -29,12 +29,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
+import ca.openosp.Misc;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.AllergyDao;
-import org.oscarehr.common.model.Allergy;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.AllergyDao;
+import ca.openosp.openo.commn.model.Allergy;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -51,7 +52,7 @@ public class FrmDischargeSummaryRecord extends FrmRecord {
             try {
                 ResultSet rs0 = DBHandler.GetSQL(sql0);
                 if (rs0.next()) {
-                    props.setProperty("programName", oscar.Misc.getString(rs0, "programName"));
+                    props.setProperty("programName", Misc.getString(rs0, "programName"));
                 }
                 rs0.close();
             } catch (SQLException e) {
@@ -67,17 +68,17 @@ public class FrmDischargeSummaryRecord extends FrmRecord {
             try {
                 ResultSet rs = DBHandler.GetSQL(sql);
                 if (rs.next()) {
-                    Date dob = UtilDateUtilities.calcDate(oscar.Misc.getString(rs, "year_of_birth"), oscar.Misc.getString(rs, "month_of_birth"),
-                            oscar.Misc.getString(rs, "date_of_birth"));
-                    props.setProperty("demographic_no", oscar.Misc.getString(rs, "demographic_no"));
+                    Date dob = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), Misc.getString(rs, "month_of_birth"),
+                            Misc.getString(rs, "date_of_birth"));
+                    props.setProperty("demographic_no", Misc.getString(rs, "demographic_no"));
                     props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(),
                             "yyyy/MM/dd"));
                     //props.setProperty("formEdited",
                     // UtilDateUtilities.DateToString(new Date(), "yyyy-MM-dd
                     // HH:mm:ss"));
                     props.setProperty("birthDate", UtilDateUtilities.DateToString(dob, "yyyy/MM/dd"));
-                    props.setProperty("clientName", oscar.Misc.getString(rs, "clientName"));
-                    props.setProperty("ohip", oscar.Misc.getString(rs, "ohip"));
+                    props.setProperty("clientName", Misc.getString(rs, "clientName"));
+                    props.setProperty("ohip", Misc.getString(rs, "ohip"));
                 }
                 rs.close();
             } catch (SQLException e) {
@@ -86,7 +87,7 @@ public class FrmDischargeSummaryRecord extends FrmRecord {
             }
 
 
-            String sql1 = "SELECT CONCAT(CONCAT(last_name,', '),first_name) AS providerName FROM provider WHERE provider_no='" + providerNo + "'";
+            String sql1 = "SELECT CONCAT(CONCAT(last_name,', '),first_name) AS providerName FROM providers WHERE provider_no='" + providerNo + "'";
 
 
             try {
@@ -108,7 +109,7 @@ public class FrmDischargeSummaryRecord extends FrmRecord {
                 ResultSet rs2 = DBHandler.GetSQL(sql2);
                 if (rs2.next()) {
                     if (rs2.isFirst()) {
-                        String admitDate = oscar.Misc.getString(rs2, "admission_date").substring(0, 10);
+                        String admitDate = Misc.getString(rs2, "admission_date").substring(0, 10);
                         String admitDate_r = admitDate.replace("-", "/");
                         props.setProperty("admitDate", admitDate_r);
 
@@ -145,14 +146,14 @@ public class FrmDischargeSummaryRecord extends FrmRecord {
                 rs4 = DBHandler.GetSQL(sql4);
                 while (rs4.next()) {
 
-                    String sql5 = "SELECT description from issue where issue_id=" + oscar.Misc.getString(rs4, "issue_id");
+                    String sql5 = "SELECT description from issue where issue_id=" + Misc.getString(rs4, "issue_id");
                     ResultSet rs5 = DBHandler.GetSQL(sql5);
                     if (rs5.next()) {
                         if (rs4.isFirst()) {
-                            issues.append(oscar.Misc.getString(rs5, "description"));
+                            issues.append(Misc.getString(rs5, "description"));
                         } else {
                             issues.append(";");
-                            issues.append(oscar.Misc.getString(rs5, "description"));
+                            issues.append(Misc.getString(rs5, "description"));
                         }
                     }
                     rs5.close();
@@ -182,10 +183,10 @@ public class FrmDischargeSummaryRecord extends FrmRecord {
                 rs5 = DBHandler.GetSQL(sql5);
                 while (rs5.next()) {
                     if (rs5.isFirst()) {
-                        prescriptions.append(oscar.Misc.getString(rs5, "special"));
+                        prescriptions.append(Misc.getString(rs5, "special"));
                     } else {
                         //prescriptions.append(";");
-                        prescriptions.append(oscar.Misc.getString(rs5, "special"));
+                        prescriptions.append(Misc.getString(rs5, "special"));
                     }
                 }
                 props.setProperty("prescriptionSummary", prescriptions.toString());
@@ -233,16 +234,16 @@ public class FrmDischargeSummaryRecord extends FrmRecord {
                     + demographicNo;
             ResultSet rs = DBHandler.GetSQL(sql);
             if (rs.next()) {
-                Date dob = UtilDateUtilities.calcDate(oscar.Misc.getString(rs, "year_of_birth"), oscar.Misc.getString(rs, "month_of_birth"),
-                        oscar.Misc.getString(rs, "date_of_birth"));
-                props.setProperty("demographic_no", oscar.Misc.getString(rs, "demographic_no"));
+                Date dob = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), Misc.getString(rs, "month_of_birth"),
+                        Misc.getString(rs, "date_of_birth"));
+                props.setProperty("demographic_no", Misc.getString(rs, "demographic_no"));
                 props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(),
                         "yyyy/MM/dd"));
                 //props.setProperty("formEdited",
                 // UtilDateUtilities.DateToString(new Date(), "yyyy-MM-dd
                 // HH:mm:ss"));
                 props.setProperty("birthDate", UtilDateUtilities.DateToString(dob, "yyyy/MM/dd"));
-                props.setProperty("clientName", oscar.Misc.getString(rs, "pName"));
+                props.setProperty("clientName", Misc.getString(rs, "pName"));
             }
             rs.close();
         } else {

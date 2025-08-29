@@ -30,10 +30,10 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.Gender;
-import org.oscarehr.common.hl7.v2.oscar_to_oscar.DataTypeUtils;
-import org.oscarehr.common.hl7.v2.oscar_to_oscar.OscarToOscarUtils;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.Gender;
+import ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.DataTypeUtils;
+import ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.OscarToOscarUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
 import ca.openosp.openo.util.DateUtils;

@@ -32,6 +32,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 
+import ca.openosp.Misc;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.UtilDateUtilities;
 
@@ -44,12 +46,12 @@ public class EctType2DiabetesRecord {
             String sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName, year_of_birth, month_of_birth, date_of_birth FROM demographic WHERE demographic_no = " + demographicNo;
             ResultSet rs = DBHandler.GetSQL(sql);
             if (rs.next()) {
-                Date dob = UtilDateUtilities.calcDate(oscar.Misc.getString(rs, "year_of_birth"), oscar.Misc.getString(rs, "month_of_birth"), oscar.Misc.getString(rs, "date_of_birth"));
-                props.setProperty("demographic_no", oscar.Misc.getString(rs, "demographic_no"));
+                Date dob = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), Misc.getString(rs, "month_of_birth"), Misc.getString(rs, "date_of_birth"));
+                props.setProperty("demographic_no", Misc.getString(rs, "demographic_no"));
                 props.setProperty("formCreated", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
                 props.setProperty("formEdited", UtilDateUtilities.DateToString(new Date(), "yyyy/MM/dd"));
                 props.setProperty("birthDate", UtilDateUtilities.DateToString(dob, "yyyy/MM/dd"));
-                props.setProperty("pName", oscar.Misc.getString(rs, "pName"));
+                props.setProperty("pName", Misc.getString(rs, "pName"));
             }
             rs.close();
         } else {
@@ -68,7 +70,7 @@ public class EctType2DiabetesRecord {
                     } else if (md.getColumnTypeName(i).equalsIgnoreCase("date"))
                         value = UtilDateUtilities.DateToString(rs.getDate(i), "yyyy/MM/dd");
                     else
-                        value = oscar.Misc.getString(rs, i);
+                        value = Misc.getString(rs, i);
                     if (value != null)
                         props.setProperty(name, value);
                 }
@@ -82,7 +84,7 @@ public class EctType2DiabetesRecord {
     public int saveType2DiabetesRecord(Properties props) throws SQLException {
 
         /* if database = postgres, make a properties with ignore case */
-        String db_type = oscar.OscarProperties.getInstance().getProperty("db_type").trim();
+        String db_type = OscarProperties.getInstance().getProperty("db_type").trim();
         if (db_type.equalsIgnoreCase("postgresql")) {
             Properties temp = new Properties();
             java.util.Enumeration varEnum = props.propertyNames();

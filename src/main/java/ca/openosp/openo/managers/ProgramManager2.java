@@ -30,9 +30,9 @@ package ca.openosp.openo.managers;
 
 import java.util.List;
 
-import org.oscarehr.PMmodule.model.Program;
-import org.oscarehr.PMmodule.model.ProgramProvider;
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.openo.PMmodule.model.Program;
+import ca.openosp.openo.PMmodule.model.ProgramProvider;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 public interface ProgramManager2 {
 

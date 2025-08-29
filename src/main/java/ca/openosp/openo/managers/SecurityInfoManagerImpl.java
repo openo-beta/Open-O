@@ -30,16 +30,16 @@ package ca.openosp.openo.managers;
 import java.util.*;
 
 import org.apache.commons.lang.StringUtils;
-import org.oscarehr.common.exception.PatientDirectiveException;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.commn.exception.PatientDirectiveException;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ca.openosp.openo.util.OscarRoleObjectPrivilege;
 
-import ca.openosp.openo.dao.security.SecobjprivilegeDao;
-import ca.openosp.openo.dao.security.SecuserroleDao;
+import ca.openosp.openo.daos.security.SecobjprivilegeDao;
+import ca.openosp.openo.daos.security.SecuserroleDao;
 import ca.openosp.openo.model.security.Secobjprivilege;
 import ca.openosp.openo.model.security.Secuserrole;
 
@@ -81,12 +81,12 @@ public class SecurityInfoManagerImpl implements SecurityInfoManager {
     }
 
     /**
-     * Checks to see if this provider has the privilege to the security object being
+     * Checks to see if this providers has the privilege to the sec object being
      * requested.
      * <p>
      * The way it's coded now
      * <p>
-     * get all the roles associated with the logged in provider, including the
+     * get all the roles associated with the logged in providers, including the
      * roleName=providerNo.
      * find the privileges using the roles list.
      * <p>

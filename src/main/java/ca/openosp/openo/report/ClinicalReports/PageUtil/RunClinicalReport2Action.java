@@ -38,9 +38,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.KeyValue;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.report.ClinicalReports.ClinicalReportManager;
 import ca.openosp.openo.report.ClinicalReports.Denominator;
@@ -60,7 +60,7 @@ public class RunClinicalReport2Action extends ActionSupport {
             throws IOException, ServletException {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_report", "r", null)) {
-            throw new SecurityException("missing required security object (_report)");
+            throw new SecurityException("missing required sec object (_report)");
         }
 
         String numeratorId = request.getParameter("numerator");

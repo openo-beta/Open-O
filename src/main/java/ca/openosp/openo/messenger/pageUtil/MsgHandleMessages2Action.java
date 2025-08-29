@@ -33,13 +33,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.model.MessageTbl;
-import org.oscarehr.common.model.MsgDemoMap;
+import ca.openosp.openo.commn.model.MessageTbl;
+import ca.openosp.openo.commn.model.MsgDemoMap;
 import ca.openosp.openo.managers.MessagingManager;
 import ca.openosp.openo.managers.MessengerDemographicManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 
 import ca.openosp.openo.messenger.data.ContactIdentifier;
@@ -60,7 +60,7 @@ public class MsgHandleMessages2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_msg", "r", null)) {
-            throw new SecurityException("missing required security object (_msg)");
+            throw new SecurityException("missing required sec object (_msg)");
         }
 
         //String messageNo = frm.getMessageNo();

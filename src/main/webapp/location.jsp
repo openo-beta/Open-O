@@ -25,9 +25,9 @@
 --%>
 <%@ page import="java.util.*" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="org.oscarehr.utility.SpringUtils" %>
-<%@ page import="org.oscarehr.common.model.Facility" %>
-<%@ page import="org.oscarehr.utility.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.commn.model.Facility" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.util.LabelValueBean" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -74,7 +74,7 @@
 <script type="text/javascript">
     function setLocation() {
         var programIdForLocation = jQuery("#programIdForLocation").val();
-        window.location.href = "provider/providercontrol.jsp?<%=org.oscarehr.utility.SessionConstants.CURRENT_PROGRAM_ID%>=" + programIdForLocation;
+        window.location.href = "providers/providercontrol.jsp?<%=ca.openosp.openo.utility.SessionConstants.CURRENT_PROGRAM_ID%>=" + programIdForLocation;
     }
 </script>
 </html>

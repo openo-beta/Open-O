@@ -43,12 +43,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.common.dao.IncomingLabRulesDao;
-import org.oscarehr.common.model.IncomingLabRules;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.IncomingLabRulesDao;
+import ca.openosp.openo.commn.model.IncomingLabRules;
+import ca.openosp.openo.utility.SpringUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.lab.ForwardingRules;
 
 /**
@@ -62,7 +63,7 @@ public class ForwardingRules2Action extends ActionSupport {
     HttpServletResponse response = ServletActionContext.getResponse();
 
 
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
     private IncomingLabRulesDao dao = SpringUtils.getBean(IncomingLabRulesDao.class);
 
 
@@ -78,7 +79,7 @@ public class ForwardingRules2Action extends ActionSupport {
             operation = "";
         }
 
-        logger.info("ForwardingRules2Action performing: " + operation + " for provider: " + providerNo);
+        logger.info("ForwardingRules2Action performing: " + operation + " for providers: " + providerNo);
         if (operation.equals("update")) {
             String[] providerNums = request.getParameterValues("providerNums");
             if (providerNums == null) {
@@ -188,7 +189,7 @@ public class ForwardingRules2Action extends ActionSupport {
                 }
             }
         } catch (Exception e) {
-            logger.error("Could not remove provider '" + remProviderNum + "' from the forwarding rules", e);
+            logger.error("Could not remove providers '" + remProviderNum + "' from the forwarding rules", e);
             return false;
         }
         return true;

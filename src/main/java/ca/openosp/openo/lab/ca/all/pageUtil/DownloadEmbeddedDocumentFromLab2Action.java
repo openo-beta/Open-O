@@ -32,8 +32,8 @@ import javax.servlet.http.HttpServletResponse;
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import org.apache.commons.codec.binary.Base64;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
 import ca.openosp.openo.lab.ca.all.parsers.PATHL7Handler;
@@ -56,7 +56,7 @@ public class DownloadEmbeddedDocumentFromLab2Action extends ActionSupport {
         String legacy = request.getParameter("legacy");
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_lab", "r", null)) {
-            throw new SecurityException("missing required security object (_lab)");
+            throw new SecurityException("missing required sec object (_lab)");
         }
 
         //String hl7 = oscar.oscarLab.ca.all.parsers.Factory.getHL7Body(labNo);

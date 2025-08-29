@@ -1000,9 +1000,9 @@ clinic_ref_code
     //      errors.add("message", new ActionError("error.message.missing"));
     //   }
 
-    //   if (provider == null || provider.length == 0){
+    //   if (providers == null || providers.length == 0){
     //      errors.add(ActionErrors.GLOBAL_ERROR,
-    //              new ActionError("error.provider.missing"));
+    //              new ActionError("error.providers.missing"));
     //   }
 
     //   return errors;

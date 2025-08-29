@@ -32,7 +32,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.report.data.RptResultStruct;

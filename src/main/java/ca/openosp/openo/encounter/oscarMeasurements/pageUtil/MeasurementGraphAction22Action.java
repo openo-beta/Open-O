@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.demographic.data.DemographicNameAgeString;
-import ca.openosp.openo.rx.data.RxPrescriptionData;
+import ca.openosp.openo.prescript.data.RxPrescriptionData;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.Logger;
@@ -73,14 +73,14 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.xy.DefaultOHLCDataset;
 import org.jfree.data.xy.OHLCDataItem;
 import org.jfree.data.xy.XYDataset;
-import org.oscarehr.PMmodule.utility.UtilDateUtilities;
-import org.oscarehr.common.dao.MeasurementsExtDao;
-import org.oscarehr.common.model.MeasurementsExt;
+import ca.openosp.openo.PMmodule.utility.UtilDateUtilities;
+import ca.openosp.openo.commn.dao.MeasurementsExtDao;
+import ca.openosp.openo.commn.model.MeasurementsExt;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import org.oscarehr.utility.DbConnectionFilter;
-import org.oscarehr.utility.LoggedInInfo;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.DbConnectionFilter;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBean;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBeanHandler;
@@ -109,7 +109,7 @@ public class MeasurementGraphAction22Action extends ActionSupport {
         }
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_measurement", "r", null)) {
-            throw new SecurityException("missing required security object (_measurement)");
+            throw new SecurityException("missing required sec object (_measurement)");
         }
 
 

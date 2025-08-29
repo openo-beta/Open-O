@@ -39,7 +39,7 @@
 %>
 
 <%@ page
-        import="oscar.form.*, oscar.form.data.*, oscar.util.*, java.util.Date" %>
+        import="ca.openosp.openo.form.*, ca.openosp.openo.form.data.*, ca.openosp.openo.util.*, java.util.Date" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRourkeRecord" %>

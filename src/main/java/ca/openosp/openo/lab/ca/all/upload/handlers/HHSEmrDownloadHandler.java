@@ -28,11 +28,11 @@ package ca.openosp.openo.lab.ca.all.upload.handlers;
 
 
 import org.apache.logging.log4j.Logger;
-import org.oscarehr.utility.MiscUtils;
+import ca.openosp.openo.utility.MiscUtils;
 
 
 public class HHSEmrDownloadHandler extends DefaultHandler implements MessageHandler {
-    Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    Logger logger = MiscUtils.getLogger();
 
     @Override
     String getHl7Type() {

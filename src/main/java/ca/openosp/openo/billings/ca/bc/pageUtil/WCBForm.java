@@ -26,9 +26,10 @@
 
 package ca.openosp.openo.billings.ca.bc.pageUtil;
 
+import ca.openosp.Misc;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.oscarehr.utility.MiscUtils;
-import oscar.Misc;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.Misc;
 import ca.openosp.openo.entities.WCB;
 import ca.openosp.openo.util.UtilDateUtilities;
 
@@ -291,7 +292,7 @@ public final class WCBForm {
 
     public String getW_doi() {
 
-        return oscar.Misc.safeString(this.w_doi);
+        return Misc.safeString(this.w_doi);
 
     }
 
@@ -303,7 +304,7 @@ public final class WCBForm {
 
     public String getW_servicelocation() {
 
-        return oscar.Misc.safeString(this.w_servicelocation);
+        return Misc.safeString(this.w_servicelocation);
 
     }
 
@@ -315,7 +316,7 @@ public final class WCBForm {
 
     public String getW_emparea() {
 
-        return oscar.Misc.safeString(this.w_emparea);
+        return Misc.safeString(this.w_emparea);
 
     }
 
@@ -327,7 +328,7 @@ public final class WCBForm {
 
     public String getW_empphone() {
 
-        return oscar.Misc.safeString(this.w_empphone);
+        return Misc.safeString(this.w_empphone);
 
     }
 
@@ -339,7 +340,7 @@ public final class WCBForm {
 
     public String getW_postal() {
 
-        return oscar.Misc.safeString(this.w_postal);
+        return Misc.safeString(this.w_postal);
 
     }
 
@@ -363,7 +364,7 @@ public final class WCBForm {
 
     public String getW_reporttype() {
 
-        return oscar.Misc.safeString(this.w_reportype);
+        return Misc.safeString(this.w_reportype);
 
     }
 
@@ -379,7 +380,7 @@ public final class WCBForm {
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         }
-        return oscar.Misc.safeString(w_fname);
+        return Misc.safeString(w_fname);
 
     }
 
@@ -391,7 +392,7 @@ public final class WCBForm {
 
     public String getW_lname() {
 
-        return oscar.Misc.safeString(w_lname);
+        return Misc.safeString(w_lname);
 
     }
 
@@ -403,7 +404,7 @@ public final class WCBForm {
 
     public String getW_mname() {
 
-        return oscar.Misc.safeString(w_mname);
+        return Misc.safeString(w_mname);
 
     }
 
@@ -415,7 +416,7 @@ public final class WCBForm {
 
     public String getW_gender() {
 
-        return oscar.Misc.safeString(w_gender);
+        return Misc.safeString(w_gender);
 
     }
 
@@ -427,7 +428,7 @@ public final class WCBForm {
 
     public String getW_dob() {
 
-        return oscar.Misc.safeString(w_dob);
+        return Misc.safeString(w_dob);
 
     }
 
@@ -439,7 +440,7 @@ public final class WCBForm {
 
     public String getW_address() {
 
-        return oscar.Misc.safeString(w_address);
+        return Misc.safeString(w_address);
 
     }
 
@@ -451,7 +452,7 @@ public final class WCBForm {
 
     public String getW_city() {
 
-        return oscar.Misc.safeString(w_city);
+        return Misc.safeString(w_city);
 
     }
 
@@ -463,7 +464,7 @@ public final class WCBForm {
 
     public String getW_area() {
 
-        return oscar.Misc.safeString(w_area);
+        return Misc.safeString(w_area);
 
     }
 
@@ -475,7 +476,7 @@ public final class WCBForm {
 
     public String getW_phone() {
 
-        return oscar.Misc.safeString(w_phone);
+        return Misc.safeString(w_phone);
 
     }
 
@@ -487,7 +488,7 @@ public final class WCBForm {
 
     public String getW_phn() {
 
-        return oscar.Misc.safeString(w_phn);
+        return Misc.safeString(w_phn);
 
     }
 
@@ -499,7 +500,7 @@ public final class WCBForm {
 
     public String getW_empname() {
 
-        return oscar.Misc.safeString(w_empname);
+        return Misc.safeString(w_empname);
 
     }
 
@@ -511,7 +512,7 @@ public final class WCBForm {
 
     public String getW_wcbno() {
 
-        return oscar.Misc.safeString(w_wcbno);
+        return Misc.safeString(w_wcbno);
 
     }
 
@@ -523,7 +524,7 @@ public final class WCBForm {
 
     public String getW_opaddress() {
 
-        return oscar.Misc.safeString(w_opaddress);
+        return Misc.safeString(w_opaddress);
 
     }
 
@@ -535,7 +536,7 @@ public final class WCBForm {
 
     public String getW_opcity() {
 
-        return oscar.Misc.safeString(w_opcity);
+        return Misc.safeString(w_opcity);
 
     }
 
@@ -547,7 +548,7 @@ public final class WCBForm {
 
     public String getW_rphysician() {
 
-        return oscar.Misc.safeString(w_rphysician);
+        return Misc.safeString(w_rphysician);
 
     }
 
@@ -559,7 +560,7 @@ public final class WCBForm {
 
     public String getW_duration() {
 
-        return oscar.Misc.safeString(w_duration);
+        return Misc.safeString(w_duration);
 
     }
 
@@ -571,7 +572,7 @@ public final class WCBForm {
 
     public String getW_ftreatment() {
 
-        return oscar.Misc.safeString(w_ftreatment);
+        return Misc.safeString(w_ftreatment);
 
     }
 
@@ -583,7 +584,7 @@ public final class WCBForm {
 
     public String getW_problem() {
 
-        return oscar.Misc.safeString(w_problem);
+        return Misc.safeString(w_problem);
 
     }
 
@@ -595,7 +596,7 @@ public final class WCBForm {
 
     public String getW_servicedate() {
 
-        return oscar.Misc.safeString(w_servicedate);
+        return Misc.safeString(w_servicedate);
 
     }
 
@@ -607,7 +608,7 @@ public final class WCBForm {
 
     public String getW_diagnosis() {
 
-        return oscar.Misc.safeString(w_diagnosis);
+        return Misc.safeString(w_diagnosis);
 
     }
 
@@ -619,7 +620,7 @@ public final class WCBForm {
 
     public String getW_icd9() {
 
-        return oscar.Misc.safeString(w_icd9);
+        return Misc.safeString(w_icd9);
 
     }
 
@@ -631,7 +632,7 @@ public final class WCBForm {
 
     public String getW_bp() {
 
-        return oscar.Misc.safeString(w_bp);
+        return Misc.safeString(w_bp);
 
     }
 
@@ -643,7 +644,7 @@ public final class WCBForm {
 
     public String getW_side() {
 
-        return oscar.Misc.safeString(w_side);
+        return Misc.safeString(w_side);
 
     }
 
@@ -655,7 +656,7 @@ public final class WCBForm {
 
     public String getW_noi() {
 
-        return oscar.Misc.safeString(w_noi);
+        return Misc.safeString(w_noi);
 
     }
 
@@ -667,7 +668,7 @@ public final class WCBForm {
 
     public String getW_work() {
 
-        return oscar.Misc.safeString(w_work);
+        return Misc.safeString(w_work);
 
     }
 
@@ -679,7 +680,7 @@ public final class WCBForm {
 
     public String getW_workdate() {
 
-        return oscar.Misc.safeString(w_workdate);
+        return Misc.safeString(w_workdate);
 
     }
 
@@ -691,7 +692,7 @@ public final class WCBForm {
 
     public String getW_clinicinfo() {
 
-        return oscar.Misc.safeString(w_clinicinfo);
+        return Misc.safeString(w_clinicinfo);
 
     }
 
@@ -703,7 +704,7 @@ public final class WCBForm {
 
     public String getW_capability() {
 
-        return oscar.Misc.safeString(w_capability);
+        return Misc.safeString(w_capability);
 
     }
 
@@ -715,7 +716,7 @@ public final class WCBForm {
 
     public String getW_capreason() {
 
-        return oscar.Misc.safeString(w_capreason);
+        return Misc.safeString(w_capreason);
 
     }
 
@@ -727,7 +728,7 @@ public final class WCBForm {
 
     public String getW_estimate() {
 
-        return oscar.Misc.safeString(w_estimate);
+        return Misc.safeString(w_estimate);
 
     }
 
@@ -739,7 +740,7 @@ public final class WCBForm {
 
     public String getW_rehab() {
 
-        return oscar.Misc.safeString(w_rehab);
+        return Misc.safeString(w_rehab);
 
     }
 
@@ -751,7 +752,7 @@ public final class WCBForm {
 
     public String getW_rehabtype() {
 
-        return oscar.Misc.safeString(w_rehabtype);
+        return Misc.safeString(w_rehabtype);
 
     }
 
@@ -763,7 +764,7 @@ public final class WCBForm {
 
     public String getW_estimatedate() {
 
-        return oscar.Misc.safeString(w_estimatedate);
+        return Misc.safeString(w_estimatedate);
 
     }
 
@@ -775,7 +776,7 @@ public final class WCBForm {
 
     public String getW_tofollow() {
 
-        return oscar.Misc.safeString(w_tofollow);
+        return Misc.safeString(w_tofollow);
 
     }
 
@@ -787,7 +788,7 @@ public final class WCBForm {
 
     public String getW_payeeno() {
 
-        return oscar.Misc.safeString(w_payeeno);
+        return Misc.safeString(w_payeeno);
 
     }
 
@@ -799,7 +800,7 @@ public final class WCBForm {
 
     public String getW_pracno() {
 
-        return oscar.Misc.safeString(w_pracno);
+        return Misc.safeString(w_pracno);
 
     }
 
@@ -811,7 +812,7 @@ public final class WCBForm {
 
     public String getW_pracname() {
 
-        return oscar.Misc.safeString(w_pracname);
+        return Misc.safeString(w_pracname);
 
     }
 

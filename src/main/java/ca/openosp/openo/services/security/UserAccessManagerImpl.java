@@ -28,9 +28,9 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
-import ca.openosp.openo.dao.security.UserAccessDao;
+import ca.openosp.openo.daos.security.UserAccessDao;
 import ca.openosp.openo.model.security.UserAccessValue;
 import ca.openosp.openo.services.LookupManager;
 

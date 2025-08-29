@@ -7,7 +7,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 
-import org.oscarehr.utility.LoggedInInfo;
+import ca.openosp.Misc;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import ca.openosp.openo.login.DBHelp;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -24,26 +25,26 @@ public class FrmONARRecord extends FrmRecord {
                     + demographicNo;
             ResultSet rs = DBHelp.searchDBRecord(sql);
             if (rs.next()) {
-                java.util.Date date = UtilDateUtilities.calcDate(oscar.Misc.getString(rs, "year_of_birth"), rs
-                        .getString("month_of_birth"), oscar.Misc.getString(rs, "date_of_birth"));
-                props.setProperty("demographic_no", oscar.Misc.getString(rs, "demographic_no"));
+                java.util.Date date = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), rs
+                        .getString("month_of_birth"), Misc.getString(rs, "date_of_birth"));
+                props.setProperty("demographic_no", Misc.getString(rs, "demographic_no"));
                 props.setProperty("formCreated", UtilDateUtilities
                         .DateToString(new Date(), "yyyy/MM/dd"));
                 // props.setProperty("formEdited",
                 // UtilDateUtilities.DateToString(new Date(),"yyyy/MM/dd"));
-                props.setProperty("c_lastName", oscar.Misc.getString(rs, "last_name"));
-                props.setProperty("c_firstName", oscar.Misc.getString(rs, "first_name"));
-                props.setProperty("c_address", oscar.Misc.getString(rs, "address"));
-                props.setProperty("c_city", oscar.Misc.getString(rs, "city"));
-                props.setProperty("c_province", oscar.Misc.getString(rs, "province"));
-                props.setProperty("c_postal", oscar.Misc.getString(rs, "postal"));
-                props.setProperty("c_hin", oscar.Misc.getString(rs, "hin"));
-                props.setProperty("c_fileNo", oscar.Misc.getString(rs, "chart_no"));
+                props.setProperty("c_lastName", Misc.getString(rs, "last_name"));
+                props.setProperty("c_firstName", Misc.getString(rs, "first_name"));
+                props.setProperty("c_address", Misc.getString(rs, "address"));
+                props.setProperty("c_city", Misc.getString(rs, "city"));
+                props.setProperty("c_province", Misc.getString(rs, "province"));
+                props.setProperty("c_postal", Misc.getString(rs, "postal"));
+                props.setProperty("c_hin", Misc.getString(rs, "hin"));
+                props.setProperty("c_fileNo", Misc.getString(rs, "chart_no"));
                 props.setProperty("pg1_dateOfBirth", UtilDateUtilities.DateToString(date, "yyyy/MM/dd"));
-                props.setProperty("pg1_age", String.valueOf(UtilDateUtilities.calcAge(oscar.Misc.getString(rs, "year_of_birth"), rs
-                        .getString("month_of_birth"), oscar.Misc.getString(rs, "date_of_birth"))));
-                props.setProperty("pg1_homePhone", oscar.Misc.getString(rs, "phone"));
-                props.setProperty("pg1_workPhone", oscar.Misc.getString(rs, "phone2"));
+                props.setProperty("pg1_age", String.valueOf(UtilDateUtilities.calcAge(Misc.getString(rs, "year_of_birth"), rs
+                        .getString("month_of_birth"), Misc.getString(rs, "date_of_birth"))));
+                props.setProperty("pg1_homePhone", Misc.getString(rs, "phone"));
+                props.setProperty("pg1_workPhone", Misc.getString(rs, "phone2"));
                 props.setProperty("pg1_formDate", UtilDateUtilities.DateToString(new Date(),
                         "yyyy/MM/dd"));
             }

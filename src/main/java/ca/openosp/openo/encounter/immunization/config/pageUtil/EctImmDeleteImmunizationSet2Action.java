@@ -32,9 +32,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.oscarehr.common.dao.ConfigImmunizationDao;
-import org.oscarehr.common.model.ConfigImmunization;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.ConfigImmunizationDao;
+import ca.openosp.openo.commn.model.ConfigImmunization;
+import ca.openosp.openo.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;

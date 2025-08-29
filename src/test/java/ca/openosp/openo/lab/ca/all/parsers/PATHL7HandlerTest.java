@@ -66,7 +66,7 @@ import junit.framework.Assert;
 @RunWith(Parameterized.class)
 public class PATHL7HandlerTest {
 
-    private static Logger logger = org.oscarehr.utility.MiscUtils.getLogger();
+    private static Logger logger = ca.openosp.openo.utility.MiscUtils.getLogger();
 
     private static PATHL7Handler handler;
     private static ZipFile zipFile;

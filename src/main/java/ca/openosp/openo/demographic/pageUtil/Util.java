@@ -54,13 +54,13 @@ import org.apache.logging.log4j.Logger;
 import org.apache.xmlbeans.XmlCalendar;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteExt;
-import org.oscarehr.common.dao.PartialDateDao;
-import org.oscarehr.common.model.PartialDate;
-import org.oscarehr.utility.MiscUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.commn.dao.PartialDateDao;
+import ca.openosp.openo.commn.model.PartialDate;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.prevention.PreventionDisplayConfig;
-import ca.openosp.openo.provider.data.ProviderData;
+import ca.openosp.openo.providers.data.ProviderData;
 import ca.openosp.openo.util.StringUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 

@@ -24,8 +24,9 @@
 
 --%>
 <%@page import="ca.openosp.openo.billing.CA.BC.model.WcbNoiCode" %>
-<%@page import="org.oscarehr.utility.SpringUtils" %>
+<%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.billing.CA.BC.dao.WcbNoiCodeDao" %>
+<%@ page import="ca.openosp.Misc" %>
 <html>
     <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -40,7 +41,7 @@
         } else {
             searchStr = "%" + searchStr + "%";
         }
-        searchStr = oscar.Misc.mysqlEscape(searchStr);
+        searchStr = Misc.mysqlEscape(searchStr);
     %>
     <script language="JavaScript">
     function posttoText(index){

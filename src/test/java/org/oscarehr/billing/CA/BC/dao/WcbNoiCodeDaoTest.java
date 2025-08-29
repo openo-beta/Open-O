@@ -30,7 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.oscarehr.common.dao.DaoTestFixtures;
 import org.oscarehr.common.dao.utils.SchemaUtils;
-import org.oscarehr.utility.SpringUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 public class WcbNoiCodeDaoTest extends DaoTestFixtures {
 

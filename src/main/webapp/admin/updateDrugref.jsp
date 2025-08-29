@@ -57,7 +57,7 @@
         <script>
             function getUpdateTime() {
                 var data = "method=getLastUpdate";
-                var url = "<c:out value='${ctx}'/>" + "/oscarRx/updateDrugrefDB.do";
+                var url = "<c:out value='${ctx}'/>" + "/rx/updateDrugrefDB.do";
                 new Ajax.Request(url, {
                     method: 'post', parameters: data, onSuccess: function (transport) {
                         var json = transport.responseText.evalJSON();
@@ -81,7 +81,7 @@
 
             function updateDB() {
                 var data = "method=updateDB";
-                var url = "<c:out value='${ctx}'/>" + "/oscarRx/updateDrugrefDB.do";
+                var url = "<c:out value='${ctx}'/>" + "/rx/updateDrugrefDB.do";
                 new Ajax.Request(url, {
                     method: 'post', parameters: data, onSuccess: function (transport) {
                         var json = transport.responseText.evalJSON();
