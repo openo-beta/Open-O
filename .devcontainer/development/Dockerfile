@@ -44,6 +44,12 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | d
     && apt-get update \
     && apt-get install -y gh
 
+# Install Go
+RUN apt-get update && apt-get install -y golang-go
+
+# Install javadoc2md utility for converting Javadoc to Markdown
+RUN go install github.com/dburkart/javadoc2md/cmd/javadoc2md@latest
+
 # Install Claude Code CLI and Docusaurus
 RUN npm install -g @anthropic-ai/claude-code @docusaurus/core @docusaurus/preset-classic
 

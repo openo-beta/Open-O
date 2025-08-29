@@ -63,6 +63,110 @@ build_and_deploy() {
   "$SCRIPT_DIR/server" start
 }
 
+# Function to generate documentation and build static site
+generate_and_build_docs() {
+  echo "========================================="
+  echo "Generating and building documentation..."
+  echo "========================================="
+  
+  # Step 1: Clean previous documentation
+  echo ""
+  echo "Step 1: Cleaning previous documentation..."
+  rm -rf target/site/apidocs
+  rm -rf docs/api
+  rm -rf build
+  
+  # Step 2: Generate Javadoc HTML
+  echo ""
+  echo "Step 2: Generating Javadoc HTML documentation..."
+  mvn clean javadoc:javadoc
+  
+  # Step 3: Generate Markdown if javadoc2md is available
+  echo ""
+  echo "Step 3: Converting to Markdown..."
+  if command -v javadoc2md >/dev/null 2>&1; then
+    echo "Converting Javadoc to Markdown for Docusaurus..."
+    mkdir -p docs/api
+    javadoc2md -input src/main/java -output docs/api -skip-private
+    echo "✓ Markdown documentation generated in docs/api/"
+  else
+    echo "⚠ Warning: javadoc2md not found. Skipping Markdown generation."
+    echo "  To enable: rebuild the devcontainer with the updated Dockerfile."
+  fi
+  
+  # Step 4: Copy HTML docs to static folder
+  echo ""
+  echo "Step 4: Preparing static assets..."
+  mkdir -p docs/static
+  rm -rf docs/static/javadoc
+  cp -r target/site/apidocs/apidocs docs/static/javadoc
+  echo "✓ HTML documentation copied to docs/static/javadoc/"
+  
+  # Step 5: Install Docusaurus dependencies if needed
+  echo ""
+  echo "Step 5: Installing dependencies..."
+  if [ ! -d "node_modules" ]; then
+    echo "Installing Docusaurus dependencies..."
+    npm install
+  else
+    echo "✓ Dependencies already installed"
+  fi
+  
+  # Step 6: Build Docusaurus static site
+  echo ""
+  echo "Step 6: Building Docusaurus static site..."
+  npm run build
+  
+  # Summary
+  echo ""
+  echo "========================================="
+  echo "Documentation build complete!"
+  echo "========================================="
+  echo "Generated:"
+  echo "  • HTML Javadoc: target/site/apidocs/apidocs/index.html"
+  if [ -d "docs/api" ]; then
+    echo "  • Markdown API: docs/api/"
+  fi
+  echo "  • Static Javadoc: docs/static/javadoc/index.html"
+  echo "  • Production build: build/"
+  echo ""
+  echo "To serve locally: make docs-serve"
+  echo "To deploy: Copy the 'build/' directory to your web server"
+}
+
+# Function to start Docusaurus development server
+docusaurus_serve() {
+  echo "========================================="
+  echo "Starting Docusaurus documentation server"
+  echo "========================================="
+  
+  # Check if documentation exists, warn if not
+  if [ ! -d "docs/static/javadoc" ] && [ ! -d "docs/api" ]; then
+    echo ""
+    echo "⚠ Warning: No generated documentation found!"
+    echo "  Run 'make docs' first to generate documentation."
+    echo ""
+    read -p "Continue anyway? (y/n) " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+      exit 1
+    fi
+  fi
+  
+  # Install dependencies if node_modules doesn't exist
+  if [ ! -d "node_modules" ]; then
+    echo "Installing Docusaurus dependencies..."
+    npm install
+  fi
+  
+  # Start the development server
+  echo ""
+  echo "Starting Docusaurus at http://localhost:3000"
+  echo "Press Ctrl+C to stop the server"
+  echo ""
+  npm run start
+}
+
 # Function to display the script usage instructions.
 print_help() {
       echo "Usage: make [command] [flags]"
@@ -72,6 +176,8 @@ print_help() {
       echo "  install [--run-tests] [--jspc]  Build and deploy the project. Run unit tests if --run-tests is specified."
       echo "                                  Compile JSPs if --jspc is specified."
       echo "  jspc                            Compile JSPs only (no deployment)."
+      echo "  docs                            Generate all documentation and build static site for production."
+      echo "  docs-serve                      Start Docusaurus development server (http://localhost:3000)."
       echo "  lock                            Update the dependency lock file."
       echo "  help                            Display this help message."
 }
@@ -122,6 +228,14 @@ for arg in "$@"; do
       # Compile JSPs only without deployment.
       echo "Compiling JSPs..."
       mvn compile -Pjspc
+      ;;
+    docs)
+      # Generate all documentation and build static site.
+      generate_and_build_docs
+      ;;
+    docs-serve)
+      # Start Docusaurus development server.
+      docusaurus_serve
       ;;
     lock)
       # Update the maven dependency lock file.
