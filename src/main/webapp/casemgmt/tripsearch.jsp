@@ -32,10 +32,10 @@
 <%@page import="java.net.URLEncoder" %>
 <%@page import="org.apache.commons.httpclient.HttpClient" %>
 <%@page import="org.apache.commons.httpclient.methods.GetMethod" %>
-<%@page import="org.jdom.Document" %>
-<%@page import="org.jdom.Element" %>
-<%@page import="org.jdom.filter.ElementFilter" %>
-<%@page import="org.jdom.input.SAXBuilder" %>
+<%@page import="org.jdom2.Document" %>
+<%@page import="org.jdom2.Element" %>
+<%@page import="org.jdom2.filter.ElementFilter" %>
+<%@page import="org.jdom2.input.SAXBuilder" %>
 <%@page import="org.oscarehr.util.MiscUtils" %>
 <%@page import="org.apache.logging.log4j.Logger" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
