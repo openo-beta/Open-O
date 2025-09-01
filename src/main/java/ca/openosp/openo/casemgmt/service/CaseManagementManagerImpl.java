@@ -1475,12 +1475,7 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
             if (cmNote.getType().equals("local_note")) {
                 noteRole = cmNote.getRole();
-                com.quatro.model.security.Secrole secRole = RoleCache.getRole(Long.valueOf(noteRole));
-                if (secRole != null) {
-                    noteRoleName = secRole.getName().toLowerCase();
-                } else {
-                    noteRoleName = "unknown_role";
-                }
+                noteRoleName = RoleCache.getRole(Long.valueOf(noteRole)).getName().toLowerCase();
             }
             if (cmNote.getType().equals("remote_note")) {
                 noteRoleName = cmNote.getRole();

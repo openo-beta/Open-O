@@ -37,7 +37,7 @@ import java.util.List;
 
 import ca.openosp.openo.utility.MiscUtils;
 
-import oscar.OscarProperties;
+import ca.openosp.OscarProperties;
 
 
 /**
