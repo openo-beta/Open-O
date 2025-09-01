@@ -447,28 +447,6 @@
             </exclusions>
         </dependency>
 
-        <!--
-            At present, the maximum version we can bump org.apache.santuario:xmlsec to is 2.1.8.
-            If we aim to go beyond this version, we'll need to update 'ebs-client', 'edt-stubs',
-            and 'hcv-stubs' as they are currently utilizing xmlsec version 1.5.6.
-            Thus, we need to update all dependencies together.
-
-            The GitHub Dependabot suggested to upgrade to 2.2.6 or later version, but due to the 
-            compatible issues with other dependencies as mentioned above, we are staying at 2.1.8 for now.
-        -->
-        <dependency>
-            <groupId>org.apache.santuario</groupId>
-            <artifactId>xmlsec</artifactId>
-            <version>2.3.4</version>
-            <exclusions>
-                <!-- Not being used, excluded to avoid triggering security issue -->
-                <exclusion>
-                    <groupId>com.fasterxml.woodstox</groupId>
-                    <artifactId>woodstox-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
         <!-- hibernate / sql -->
         <dependency>
             <groupId>commons-dbcp</groupId>
@@ -1178,12 +1156,6 @@
         </dependency>
         
         <!-- OWASP ESAPI for ClickjackFilter -->
-        <dependency>
-            <groupId>org.owasp.esapi</groupId>
-            <artifactId>esapi</artifactId>
-            <version>2.5.2.0</version>
-        </dependency>
-
         <!-- Added higher version to avoid security issue, suggested by GitHub Dependabot -->
         <!-- https://mvnrepository.com/artifact/org.owasp.esapi/esapi -->
         <dependency>
