@@ -33,6 +33,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Path;
 
 import org.apache.logging.log4j.Logger;
 import org.oscarehr.util.MiscUtils;
@@ -93,10 +94,12 @@ public class TeleplanResponse {
                 
                 // Define allowed directory (configure this based on your needs)
                 File allowedDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
-                String canonicalPath = file2.getCanonicalPath();
-                String allowedPath = allowedDir.getCanonicalPath();
                 
-                if (!canonicalPath.startsWith(allowedPath)) {
+                // Convert to Path and normalize
+                Path filePath = file2.toPath().normalize().toAbsolutePath();
+                Path allowedPath = allowedDir.toPath().normalize().toAbsolutePath();
+                
+                if (!filePath.startsWith(allowedPath)) {
                     throw new SecurityException("File access not allowed outside designated directory");
                 }
 

@@ -29,6 +29,7 @@ package oscar.oscarBilling.ca.bc.pageUtil;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.nio.file.Path;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
@@ -167,10 +168,12 @@ public class ManageTeleplan2Action extends ActionSupport {
         
         // Define allowed directory (configure this based on your needs)
         File allowedDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
-        String canonicalPath = file.getCanonicalPath();
-        String allowedPath = allowedDir.getCanonicalPath();
+       
+        // Convert to Path and normalize
+        Path filePath = file.toPath().normalize().toAbsolutePath();
+        Path allowedPath = allowedDir.toPath().normalize().toAbsolutePath();
         
-        if (!canonicalPath.startsWith(allowedPath)) {
+        if (!filePath.startsWith(allowedPath)) {
             throw new SecurityException("File access not allowed outside designated directory");
         }
 
@@ -243,10 +246,12 @@ public class ManageTeleplan2Action extends ActionSupport {
         
         // Define allowed directory (configure this based on your needs)
         File allowedDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
-        String canonicalPath = file.getCanonicalPath();
-        String allowedPath = allowedDir.getCanonicalPath();
         
-        if (!canonicalPath.startsWith(allowedPath)) {
+        // Convert to Path and normalize
+        Path filePath = file.toPath().normalize().toAbsolutePath();
+        Path allowedPath = allowedDir.toPath().normalize().toAbsolutePath();
+        
+        if (!filePath.startsWith(allowedPath)) {
             throw new SecurityException("File access not allowed outside designated directory");
         }
         
@@ -548,10 +553,13 @@ public class ManageTeleplan2Action extends ActionSupport {
             
             // Define allowed directory (configure this based on your needs)
             File allowedDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
-            String canonicalPath = file.getCanonicalPath();
-            String allowedPath = allowedDir.getCanonicalPath();
             
-            if (!canonicalPath.startsWith(allowedPath)) {
+            // Convert to Path and normalize
+            Path filePath = file.toPath().normalize().toAbsolutePath();
+            Path allowedPath = allowedDir.toPath().normalize().toAbsolutePath();
+        
+            
+            if (!filePath.startsWith(allowedPath)) {
                 throw new SecurityException("File access not allowed outside designated directory");
             }
             
