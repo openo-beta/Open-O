@@ -25,7 +25,7 @@
 --%>
 
 <%@page
-        import="oscar.oscarDemographic.data.*,java.util.*,java.sql.Connection,oscar.oscarPrevention.*,oscar.oscarLab.ca.on.*,oscar.util.*,oscar.oscarLab.*,oscar.oscarLab.ca.all.util.CumulativeLabValuesComparator,org.jdom.*,oscar.oscarDB.*,org.jdom.input.*,java.io.InputStream" %>
+        import="oscar.oscarDemographic.data.*,java.util.*,java.sql.Connection,oscar.oscarPrevention.*,oscar.oscarLab.ca.on.*,oscar.util.*,oscar.oscarLab.*,oscar.oscarLab.ca.all.util.CumulativeLabValuesComparator,org.jdom2.*,oscar.oscarDB.*,org.jdom2.input.*,java.io.InputStream" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
