@@ -85,10 +85,24 @@ public class TeleplanResponse {
                 File file = new File(tempFile);
                 realFilename = "teleplan" + this.getFilename() + randNum;
                 File file2 = new File(directory + realFilename);
+
+                // Validate that the file exists and is within allowed directory
+                if (!file2.exists() || !file2.isFile()) {
+                    throw new IllegalArgumentException("Invalid file");
+                }
+                
+                // Define allowed directory (configure this based on your needs)
+                File allowedDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
+                String canonicalPath = file2.getCanonicalPath();
+                String allowedPath = allowedDir.getCanonicalPath();
+                
+                if (!canonicalPath.startsWith(allowedPath)) {
+                    throw new SecurityException("File access not allowed outside designated directory");
+                }
+
                 boolean success = file.renameTo(file2);
                 if (!success) {
                     log.error("File was not successfully renamed");
-                    // 
                 }
             }
 

@@ -98,10 +98,21 @@ public class OntarioMD {
     private Hashtable parseReturn(InputStream is) {
         Hashtable h = null;
         try {
+            // Create secure SAXBuilder with XXE protection
             SAXBuilder parser = new SAXBuilder();
+
+            // Disable external entity processing to prevent XXE attacks
+            parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            parser.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            parser.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            parser.setExpandEntities(false);
+
             Document doc = parser.build(is);
             Element root = doc.getRootElement();
+
             h = new Hashtable();
+
             String jsessionID = g(root.getDescendants(new ElementFilter("jsessionID")));
             String ptLoginToken = g(root.getDescendants(new ElementFilter("ptLoginToken")));
             String returnCode = g(root.getDescendants(new ElementFilter("returnCode")));

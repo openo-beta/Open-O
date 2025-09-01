@@ -36,6 +36,8 @@ import java.util.List;
 
 import org.oscarehr.util.MiscUtils;
 
+import oscar.OscarProperties;
+
 
 /**
  * @author jay
@@ -61,6 +63,20 @@ REM075 **          Description          This is a Title description   **
 REM076 **                                                             **        
      */
     public List parse(File f) throws Exception {
+        // Validate that the file exists and is within allowed directory
+        if (!f.exists() || !f.isFile()) {
+            throw new IllegalArgumentException("Invalid file");
+        }
+        
+        // Define allowed directory (configure this based on your needs)
+        File allowedDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
+        String canonicalPath = f.getCanonicalPath();
+        String allowedPath = allowedDir.getCanonicalPath();
+        
+        if (!canonicalPath.startsWith(allowedPath)) {
+            throw new SecurityException("File access not allowed outside designated directory");
+        }
+        
         BufferedReader buff = new BufferedReader(new FileReader(f));
 
         String line = null;

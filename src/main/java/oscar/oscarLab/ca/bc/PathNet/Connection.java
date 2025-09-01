@@ -145,6 +145,19 @@ public class Connection {
 
     public Document CreateDocument(InputStream input) throws SAXException, IOException, ParserConfigurationException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+        // Disable external entities
+        factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+        factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        
+        // Disable XInclude
+        factory.setXIncludeAware(false);
+        
+        // Disable expansion of entity references
+        factory.setExpandEntityReferences(false);
+
         DocumentBuilder builder = factory.newDocumentBuilder();
         return builder.parse(input);
     }
