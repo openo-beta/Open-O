@@ -35,20 +35,39 @@
 <%@ page import="ca.openosp.openo.login.OOBAuthorizationResponse" %>
 
 <%
-    // Determine if user already logged in to OSCAR
-    boolean loggedIn = false;
-    if (session.getAttribute("user") != null) {
-        loggedIn = OAuthSessionMerger.mergeSession(request);
+    // --- Make variables visible to the whole JSP ---
+    oscar.login.OAuthData oauthData = (oscar.login.OAuthData) request.getAttribute("oauthData");
+    if (oauthData == null) {
+        // also check alternate key used elsewhere during the migration
+        oauthData = (oscar.login.OAuthData) request.getAttribute("oauthauthorizationdata");
+    }
+    if (oauthData == null) {
+        oauthData = (oscar.login.OAuthData) session.getAttribute("oauthData");
+        if (oauthData == null) {
+            oauthData = (oscar.login.OAuthData) session.getAttribute("oauthauthorizationdata");
+        }
     }
 
-    // Retrieve OAuth1 flow data set by your controller
-    OAuthData oauthData = (OAuthData) request.getAttribute("oauthData");
-    OOBAuthorizationResponse oauthOobResponse =
-        (OOBAuthorizationResponse) request.getAttribute("oobauthorizationresponse");
+    oscar.login.OOBAuthorizationResponse oauthOobResponse =
+        (oscar.login.OOBAuthorizationResponse) request.getAttribute("oobauthorizationresponse");
+    if (oauthOobResponse == null) {
+        oauthOobResponse = (oscar.login.OOBAuthorizationResponse) session.getAttribute("oobauthorizationresponse");
+    }
 
-    LoggedInInfo loggedInInfo =
-        LoggedInInfo.getLoggedInInfoFromSession(request);
+    org.oscarehr.util.LoggedInInfo loggedInInfo =
+        org.oscarehr.util.LoggedInInfo.getLoggedInInfoFromSession(request);
+
+    boolean loggedIn = (session.getAttribute("user") != null) && (loggedInInfo != null);
+
+    // Try to merge only if we think we're logged in
+    if (loggedIn) {
+        boolean didMerge = oscar.login.OAuthSessionMerger.mergeSession(request);
+        if (!didMerge) {
+            loggedIn = false;
+        }
+    }
 %>
+
 
 <!DOCTYPE html>
 <html>
@@ -111,19 +130,23 @@
                     }
                 }, 'json');
         }
-        $(document).ready(function() {
-            if (loggedIn) {
-                $('#login_div').hide();
-                $('#scope_div').show();
-                $('#loggedin_div').show();
-                $('#providerName').text(
-                    loggedInInfo.getLoggedInProvider().getFormattedName()
-                );
-            }
-            if (oauthOobResponse != null) {
-                $('#login_div').hide();
-            }
-        });
+        $(document).ready(function(){
+            		if (<%= loggedIn %>) {
+                        $('#login_div').hide();
+                        $('#scope_div').show();
+                        $('#loggedin_div').show();
+                        $('#providerName').text('<%= (loggedInInfo != null && loggedInInfo.getLoggedInProvider() != null)
+                            ? loggedInInfo.getLoggedInProvider().getFormattedName()
+                            : "" %>');
+                    } else {
+                        $('#login_div').show();
+                        $('#scope_div').hide();
+                        $('#loggedin_div').hide();
+                    }
+                    if (<%= (oauthOobResponse != null) %>) {
+                        $('#login_div').hide();
+                    }
+            	});
     </script>
 </head>
 <body>
