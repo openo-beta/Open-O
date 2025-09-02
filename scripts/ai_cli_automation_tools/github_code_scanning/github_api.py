@@ -1,0 +1,139 @@
+#!/usr/bin/env python3
+"""
+GitHub Code Scanning API Module
+Handles all interactions with GitHub's code scanning alerts API
+"""
+
+import os
+import requests
+from typing import List, Dict, Optional
+from dotenv import load_dotenv
+
+
+class GitHubCodeScanning:
+    """Client for GitHub Code Scanning API operations"""
+    
+    def __init__(self, owner: str, repo: str, token: Optional[str] = None):
+        """
+        Initialize GitHub Code Scanning client
+        
+        Args:
+            owner: GitHub repository owner
+            repo: GitHub repository name
+            token: GitHub personal access token (optional, will load from env if not provided)
+        """
+        self.owner = owner
+        self.repo = repo
+        self.api_url = f"https://api.github.com/repos/{owner}/{repo}/code-scanning/alerts"
+        self.per_page = 100
+        self.token = token or self._load_token()
+        self.headers = {
+            "Accept": "application/vnd.github+json",
+            "Authorization": f"Bearer {self.token}"
+        }
+    
+    @staticmethod
+    def _load_token() -> str:
+        """
+        Load GitHub personal access token from environment
+        
+        Returns:
+            GitHub personal access token
+            
+        Raises:
+            ValueError: If token is not found in environment
+        """
+        load_dotenv(dotenv_path="./scripts/ai_cli_automation_tools/setup/.env")
+        token = os.getenv("PERSONAL_ACCESS_TOKEN")
+        if not token:
+            raise ValueError("PERSONAL_ACCESS_TOKEN was not found in environment variables")
+        return token
+    
+    def fetch_alerts(self, 
+                    state: str = "open", 
+                    rule_filter: Optional[str] = None,
+                    severity_filter: Optional[str] = None) -> List[Dict]:
+        """
+        Fetch all code scanning alerts with optional filters
+        
+        Args:
+            state: Alert state (open, closed, dismissed, fixed)
+            rule_filter: Filter by specific rule ID
+            severity_filter: Filter by severity level (critical, high, medium, low)
+            
+        Returns:
+            List of alert dictionaries
+        """
+        alerts = []
+        page = 1
+        
+        while True:
+            params = {
+                "per_page": self.per_page,
+                "page": page,
+                "state": state
+            }
+            
+            response = requests.get(self.api_url, headers=self.headers, params=params)
+            
+            if response.status_code != 200:
+                print(f"Error {response.status_code}: {response.text}")
+                break
+                
+            page_data = response.json()
+            if not page_data:
+                break
+                
+            alerts.extend(page_data)
+            page += 1
+        
+        # Apply filters
+        if rule_filter:
+            alerts = [a for a in alerts if a["rule"]["id"] == rule_filter]
+            
+        if severity_filter:
+            alerts = [
+                a for a in alerts 
+                if a["rule"].get("security_severity_level") == severity_filter
+            ]
+            
+        return alerts
+    
+    def dismiss_alert(self, alert_number: int, reason: str, comment: str = "") -> bool:
+        """
+        Dismiss a specific alert
+        
+        Args:
+            alert_number: The alert number to dismiss
+            reason: Dismissal reason (false_positive, won't_fix, used_in_tests)
+            comment: Optional comment explaining dismissal
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        url = f"{self.api_url}/{alert_number}"
+        payload = {
+            "state": "dismissed",
+            "dismissed_reason": reason,
+            "dismissed_comment": comment
+        }
+        
+        response = requests.patch(url, headers=self.headers, json=payload)
+        return response.status_code == 200
+    
+    def get_alert_by_number(self, alert_number: int) -> Optional[Dict]:
+        """
+        Get a specific alert by its number
+        
+        Args:
+            alert_number: The alert number
+            
+        Returns:
+            Alert dictionary or None if not found
+        """
+        url = f"{self.api_url}/{alert_number}"
+        response = requests.get(url, headers=self.headers)
+        
+        if response.status_code == 200:
+            return response.json()
+        return None
