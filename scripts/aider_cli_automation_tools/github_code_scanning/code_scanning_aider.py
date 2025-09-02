@@ -5,7 +5,7 @@ import requests
 import subprocess
 from dotenv import load_dotenv
 
-OWNER = "cc-ar-emr"
+OWNER = "openo-beta"
 REPO = "Open-O"
 GITHUB_API_URL = f"https://api.github.com/repos/{OWNER}/{REPO}/code-scanning/alerts"
 PER_PAGE = 100
