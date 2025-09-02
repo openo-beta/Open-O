@@ -2375,10 +2375,10 @@
 <script>
     const contextPath = document.getElementById("contextPath").value;
     const originalInboxLinkClickEvent = "popupInboxManager('" + contextPath + "/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=loggedInInfo1.getLoggedInProviderNo()%>');return false;";
-    const newInboxLinkClickEvent = "popupInboxManager('" + contextPath + "/www/inboxhub/Inboxhub.do?method=displayInboxForm', 800);return false;";
+    const newInboxLinkClickEvent = "popupInboxManager('" + contextPath + "/web/inboxhub/Inboxhub.do?method=displayInboxForm', 800);return false;";
 
     const originalUnclaimedLabLinkClickEvent = "popupInboxManager('" + contextPath + "/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=0&searchProviderNo=0&status=N&lname=&fname=&hnum=&pageNum=1&startIndex=0');return false;"
-    const newUnclaimedLabLinkClickEvent = "popupInboxManager('" + contextPath + "/www/inboxhub/Inboxhub.do?method=displayInboxForm&unclaimed=1', 800);return false;"
+    const newUnclaimedLabLinkClickEvent = "popupInboxManager('" + contextPath + "/web/inboxhub/Inboxhub.do?method=displayInboxForm&unclaimed=1', 800);return false;"
 
     document.getElementById("inboxLink").addEventListener("mouseup", function(event) {
         if(event.altKey) {

@@ -35,9 +35,9 @@
 package ca.openosp.openo.lab.ca.all.upload;
 
 import org.apache.logging.log4j.Logger;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.input.SAXBuilder;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.lab.ca.all.upload.handlers.DefaultHandler;
 import ca.openosp.openo.lab.ca.all.upload.handlers.MessageHandler;
