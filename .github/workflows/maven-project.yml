@@ -12,6 +12,7 @@
 #   - develop/bullfrog
 #   - develop/coyote
 #   - develop/dolphin
+#   - develop/dogfish
 #
 # Key Jobs:
 # - build: 
@@ -38,6 +39,7 @@ on:
       - develop/bullfrog
       - develop/coyote
       - develop/dolphin
+      - develop/dogfish
 
 jobs:
   build:
