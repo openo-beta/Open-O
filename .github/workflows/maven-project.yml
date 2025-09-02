@@ -70,13 +70,13 @@ jobs:
           compose-file: ".devcontainer/docker-compose.yml"
       
       - name: Generate make file
-        run: docker exec open-o_devcontainer .devcontainer/development/scripts/make lock
+        run: docker exec open-o_devcontainer-open-o .devcontainer/development/scripts/make lock
       
       - name: Build project
-        run: docker exec open-o_devcontainer .devcontainer/development/scripts/make install
+        run: docker exec open-o_devcontainer-open-o .devcontainer/development/scripts/make install
 
       - name: Run unit tests & build JSP files
-        run: docker exec open-o_devcontainer mvn package -Pjspc
+        run: docker exec open-o_devcontainer-open-o mvn package -Pjspc
 
   lint:
     runs-on: ubuntu-latest
@@ -106,4 +106,4 @@ jobs:
           compose-file: ".devcontainer/docker-compose.yml"
           
       - name: Run Maven Checkstyle plugin
-        run: docker exec open-o_devcontainer mvn checkstyle:checkstyle
+        run: docker exec open-o_devcontainer-open-o mvn checkstyle:checkstyle
