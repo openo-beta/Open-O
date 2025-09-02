@@ -117,16 +117,13 @@ public class TeleplanAPI {
 
     private TeleplanResponse processRequest(String url, List<NameValuePair> data) {
         TeleplanResponse tr = null;
-        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+        try {
             HttpPost post = new HttpPost(url);
             post.setEntity(new UrlEncodedFormEntity(data, "UTF-8"));
-
             try (CloseableHttpResponse response = httpclient.execute(post)) {
                 InputStream in = response.getEntity().getContent();
-
                 tr = new TeleplanResponse();
                 tr.processResponseStream(in);
-
                 TeleplanResponseDAO trDAO = new TeleplanResponseDAO();
                 trDAO.save(tr);
             }

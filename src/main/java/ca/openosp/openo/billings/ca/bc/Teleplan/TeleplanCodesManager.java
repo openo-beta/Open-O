@@ -63,12 +63,7 @@ REM030 **          Amount               for this Fee Item            **   REM031
 REM075 **          Description          This is a Title description   **                      
 REM076 **                                                             **        
      */
-    public List parse(File f) throws Exception {
-        // Validate that the file exists and is within allowed directory
-        if (!f.exists() || !f.isFile()) {
-            throw new IllegalArgumentException("Invalid file");
-        }
-        
+    public List parse(File f) throws Exception {        
         // Define allowed directory (configure this based on your needs)
         File allowedDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
         

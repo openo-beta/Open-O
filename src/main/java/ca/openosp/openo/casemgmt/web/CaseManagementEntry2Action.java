@@ -487,39 +487,28 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
             }
         }
 
-        String noteSort = request.getParameter("note_sort");
-        if (noteSort != null) {
-            session.setAttribute("note_sort", noteSort);
-        }
-
-        String[] filterRoles = request.getParameterValues("filter_roles");
-        if (filterRoles != null) {
-            if (filterRoles.length > 0) {
-                session.setAttribute("filter_roles", filterRoles);
-            } else {
-                session.removeAttribute("filter_roles");
-            }
-        }
-
-        String[] filterProviders = request.getParameterValues("filter_providers");
-        if (filterProviders != null) {
-            if (filterProviders.length > 0) {
-                session.setAttribute("filter_provider", filterProviders);
-            } else {
-                session.removeAttribute("filter_provider");
-            }
-        }
-
-        String[] issues = request.getParameterValues("issues");
-        if (issues != null) {
-            if (issues.length > 0) {
-                session.setAttribute("issues", issues);
-            } else {
-                session.removeAttribute("issues");
-            }
-        }
+        setOrRemove(session, "note_sort", request.getParameter("note_sort"));
+        setOrRemove(session, "filter_roles", request.getParameterValues("filter_roles"));
+        setOrRemove(session, "filter_provider", request.getParameterValues("filter_providers"));
+        setOrRemove(session, "issues", request.getParameterValues("issues"));
 
         return fwd;
+    }
+
+    private void setOrRemove(HttpSession session, String key, String value) {
+        if (value != null) {
+            session.setAttribute(key, value);
+        }
+    }
+
+    private void setOrRemove(HttpSession session, String key, String[] values) {
+        if (values == null) {
+            return;
+        } else if (values.length > 0) {
+            session.setAttribute(key, values);
+        } else {
+            session.removeAttribute(key);
+        }
     }
 
     private CaseManagementNote makeNewNote(String providerNo, String demographicNo, HttpServletRequest request) {

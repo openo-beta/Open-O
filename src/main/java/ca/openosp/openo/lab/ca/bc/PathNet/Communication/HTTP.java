@@ -55,6 +55,14 @@ public class HTTP {
         this.url = url;
     }
 
+    /**
+     * Executes HTTP GET request and returns response as InputStream.
+     * 
+     * @param queryString the query string to append to the URL
+     * @return InputStream containing response body, or null if no content. 
+     *         <b>Caller must close this stream.</b>
+     * @throws IOException if the HTTP request fails
+     */
     public InputStream Get(String queryString) throws IOException {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             URIBuilder uriBuilder = new URIBuilder(url);
@@ -64,7 +72,7 @@ public class HTTP {
             CloseableHttpResponse response = client.execute(get);
             HttpEntity entity = response.getEntity();
 
-            logger.error("Status code: " + response.getStatusLine().getStatusCode());
+            logger.debug("Status code: " + response.getStatusLine().getStatusCode());
 
             if (entity != null) {
                 return entity.getContent(); // caller must close this InputStream

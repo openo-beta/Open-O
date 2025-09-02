@@ -76,8 +76,7 @@ public class RptByExamplesFavorite2Action extends ActionSupport {
             String favoriteName = this.getFavoriteName();
             String query = this.getQuery();
 
-            String queryWithEscapeChar = StringEscapeUtils.escapeSql(query);///queryWithEscapeChar);
-            MiscUtils.getLogger().debug("escapeSql: " + queryWithEscapeChar);
+            String queryWithEscapeChar = StringEscapeUtils.escapeSql(query);
             write2Database(providerNo, favoriteName, queryWithEscapeChar);
         }
 

@@ -161,11 +161,6 @@ public class ManageTeleplan2Action extends ActionSupport {
 
         File file = tr.getFile();
         
-        // Validate that the file exists and is within allowed directory
-        if (!file.exists() || !file.isFile()) {
-            throw new IllegalArgumentException("Invalid file");
-        }
-        
         // Define allowed directory (configure this based on your needs)
         File allowedDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
        
@@ -238,11 +233,6 @@ public class ManageTeleplan2Action extends ActionSupport {
         log.debug("real filename " + tr.getRealFilename());
 
         File file = tr.getFile();
-
-        // Validate that the file exists and is within allowed directory
-        if (!file.exists() || !file.isFile()) {
-            throw new IllegalArgumentException("Invalid file");
-        }
         
         // Define allowed directory (configure this based on your needs)
         File allowedDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
@@ -545,11 +535,6 @@ public class ManageTeleplan2Action extends ActionSupport {
         String realFile = tr.getRealFilename();
         if (realFile != null && !realFile.trim().equals("")) {
             File file = tr.getFile();
-
-            // Validate that the file exists and is within allowed directory
-            if (!file.exists() || !file.isFile()) {
-                throw new IllegalArgumentException("Invalid file");
-            }
             
             // Define allowed directory (configure this based on your needs)
             File allowedDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));

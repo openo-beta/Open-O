@@ -276,7 +276,7 @@ public class Demographic2Action extends ActionSupport {
         try {
             new ObjectMapper().writeValue(response.getWriter(), result);
         } catch (Exception e) {
-            e.printStackTrace();
+            MiscUtils.getLogger().error("Error in checkForDuplicates", e);
         }
 
         return null;

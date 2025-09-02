@@ -86,11 +86,6 @@ public class TeleplanResponse {
                 File file = new File(tempFile);
                 realFilename = "teleplan" + this.getFilename() + randNum;
                 File file2 = new File(directory + realFilename);
-
-                // Validate that the file exists and is within allowed directory
-                if (!file2.exists() || !file2.isFile()) {
-                    throw new IllegalArgumentException("Invalid file");
-                }
                 
                 // Define allowed directory (configure this based on your needs)
                 File allowedDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
