@@ -23,6 +23,42 @@
     Ontario, Canada
 
 --%>
+
+<%--
+/**
+ * Document Transfer Initialization Page
+ *
+ * This JSP page provides the initial interface for the document transfer system
+ * in the OpenO EMR messenger. It allows users to input a demographic number and
+ * proceed to document selection for transfer to other healthcare providers.
+ *
+ * Main Features:
+ * - Simple form interface for demographic number input
+ * - Support for both XML and standard submission modes
+ * - Integration with document transfer workflow
+ * - Displays servlet path for debugging purposes
+ *
+ * Security Requirements:
+ * - Requires "_msg" object write permissions via security taglib
+ * - User session validation and role-based access control
+ *
+ * Request Parameters:
+ * - demo: Pre-populated demographic number (optional)
+ *
+ * Form Actions:
+ * - Submit to XML: Processes demographic for XML-based transfer
+ * - Submit: Standard form submission to SelectItems.jsp
+ * - Reset: Clears form fields
+ *
+ * Navigation Flow:
+ * 1. User enters or confirms demographic number
+ * 2. Clicks submit to proceed to SelectItems.jsp
+ * 3. SelectItems.jsp displays available documents for transfer
+ *
+ * @since 2003
+ */
+--%>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -46,6 +82,7 @@
 <body>
 <h1>Document Transfer</h1>
 
+<!-- Debug: Servlet Path -->
 <%= this.getServletContext().getRealPath(request.getServletPath()) %>
 
 <form method="post" action="SelectItems.jsp">Demographic No: <input

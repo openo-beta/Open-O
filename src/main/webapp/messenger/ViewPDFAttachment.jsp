@@ -24,6 +24,45 @@
 
 --%>
 
+<%--
+/**
+ * PDF Attachment File Listing Interface
+ *
+ * This JSP page provides an interface for viewing and downloading individual PDF files
+ * from message attachments. It displays a list of PDF files contained within an
+ * attachment and allows users to download specific files by clicking download buttons.
+ *
+ * Main Features:
+ * - Displays list of PDF files extracted from attachment data
+ * - Individual download buttons for each PDF file
+ * - Integration with PDF attachment processing system
+ * - Simple table-based interface for file selection
+ *
+ * Security Requirements:
+ * - Requires "_msg" object read permissions via security taglib
+ * - User session validation and role-based access control
+ * - Validates msgSessionBean presence and validity
+ *
+ * Request Attributes:
+ * - PDFAttachment: XML/data string containing PDF file information
+ *
+ * Session Dependencies:
+ * - msgSessionBean: Required for attachment context
+ * - PDFAttachment: Stored in session for form processing
+ *
+ * Processing:
+ * 1. Extracts PDF file titles from attachment data using Doc2PDF utility
+ * 2. Displays files in table format with download buttons
+ * 3. Submits selected file ID to ViewPDFFile action for download
+ *
+ * Form Integration:
+ * - Posts to ViewPDFFile.do action with file_id parameter
+ * - Passes attachment data as hidden form field
+ *
+ * @since 2003
+ */
+--%>
+
 <%@ page
         import="ca.openosp.openo.messenger.docxfer.send.*, ca.openosp.openo.messenger.docxfer.util.*, ca.openosp.openo.util.*" %>
 <%@ page import="java.util.*, org.w3c.dom.*" %>
@@ -63,8 +102,8 @@
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
 
     <%
+        // Extract and store PDF attachment data for processing
         String pdfAttch = (String) request.getAttribute("PDFAttachment");
-
         session.setAttribute("PDFAttachment", pdfAttch);
     %>
 
@@ -115,7 +154,10 @@
                 </table>
                 <table>
 
-                            <% Vector attVector = Doc2PDF.getXMLTagValue(pdfAttch, "TITLE" ); %>
+                            <% 
+                                // Extract PDF file titles from attachment data
+                                Vector attVector = Doc2PDF.getXMLTagValue(pdfAttch, "TITLE" ); 
+                            %>
                             <% for ( int i = 0 ; i < attVector.size(); i++) { %>
                     <tr>
                         <td bgcolor="#DDDDFF"><%=(String) attVector.get(i)%>

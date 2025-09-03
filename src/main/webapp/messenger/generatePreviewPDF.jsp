@@ -24,6 +24,49 @@
 
 --%>
 
+<%--
+/**
+ * PDF Preview Generation Page for Message Attachments
+ *
+ * This JSP page provides functionality to generate PDF previews of various medical documents
+ * that can be attached to messages in the OpenO EMR messenger system. It supports multiple
+ * types of attachments including demographic information, encounters, and prescriptions.
+ *
+ * Main Features:
+ * - Interactive document selection interface with checkboxes for multiple document types
+ * - Real-time PDF preview generation using client-side JavaScript
+ * - Support for demographic information, encounter records, and prescription profiles
+ * - Frameset-based preview display with automatic content loading
+ * - Batch attachment processing with progress tracking
+ *
+ * Security Requirements:
+ * - Requires "_msg" object read permissions via security taglib
+ * - User session validation and role-based access control
+ * - Validates demographic_no parameter for patient context
+ *
+ * Request Parameters:
+ * - demographic_no: Required patient demographic number for context
+ * - isPreview: Boolean flag indicating preview mode vs attachment mode
+ * - isAttaching: Boolean flag for attachment processing state
+ * - attachmentCount: Current attachment count for batch processing
+ *
+ * Session Dependencies:
+ * - msgSessionBean: Message session state management
+ * - EctSessionBean: Encounter session for patient context
+ * - RxSessionBean: Prescription session for medication data
+ * - Patient object for prescription profile generation
+ *
+ * JavaScript Functions:
+ * - PreviewPDF(): Initiates PDF preview generation in iframe
+ * - AttachingPDF(): Handles batch attachment processing
+ * - CheckSrcText(): Monitors iframe content loading for auto-submission
+ * - SetBottomURL(): Updates iframe source for document loading
+ * - GetBottomSRC(): Extracts HTML content from loaded iframe
+ *
+ * @since 2003
+ */
+--%>
+
 <%@ page
         import="ca.openosp.openo.messenger.docxfer.send.*,
                 ca.openosp.openo.messenger.docxfer.util.*,
@@ -110,9 +153,14 @@
 
 
         <script type="text/javascript">
+            // Global timer variables for monitoring iframe content loading
             var timerID = null
             var timerRunning = false
 
+            /**
+             * Updates the iframe source URL for document loading
+             * @param {string} url - URL to load in the preview iframe
+             */
             function SetBottomURL(url) {
                 f = parent.srcFrame;
 
@@ -124,19 +172,26 @@
                 f.location = loc;
             }
 
+            /**
+             * Extracts HTML content from the loaded iframe and stores in form field
+             */
             function GetBottomSRC() {
                 f = parent.srcFrame;
                 document.forms[0].srcText.value = f.document.body.innerHTML;
             }
 
+            /**
+             * Initiates PDF preview generation process
+             * @param {string} url - Document URL to preview
+             */
             function PreviewPDF(url) {
                 document.forms[0].srcText.value = "";
                 document.forms[0].isPreview.value = true;
                 SetBottomURL(url);
+                // Wait for iframe to load, then start monitoring content
                 setTimeout("GetBottomSRC()", 1000);
                 timerID = setInterval("CheckSrcText()", 1000);
                 timerRunning = true;
-
             }
 
             function testing() {
@@ -145,17 +200,22 @@
                 timerRunning = true;
             }
 
+            /**
+             * Handles batch PDF attachment processing for selected documents
+             * @param {number} number - Index of attachment to process (-1 for batch mode)
+             */
             function AttachingPDF(number) {
-
                 var uriArray = document.forms[0].uriArray;
                 var titleArray = document.forms[0].titleArray;
                 var indexArray = document.forms[0].indexArray;
                 var wantedIndex = 0;
+                
+                // Reset form state for attachment processing
                 document.forms[0].srcText.value = "";
                 document.forms[0].isPreview.value = false;
                 document.forms[0].isAttaching.value = true;
 
-
+                // Handle batch vs single attachment mode
                 if (number == -1) {
                     document.forms[0].isNew.value = true;
                     wantedIndex = -1;
@@ -165,6 +225,7 @@
 
                 j = 0;
 
+                // Find the specific attachment to process by index
                 if (number != -1) {
                     for (i = 0; i < indexArray.length; i++) {
                         if (indexArray[i].checked) {
@@ -173,13 +234,12 @@
                             }
                             j++;
                         }
-
                     }
                 } else {
+                    // Count checked items and find first one for batch processing
                     for (i = 0; i < indexArray.length; i++) {
                         if (indexArray[i].checked) {
                             j++;
-
                             if (wantedIndex < 0) {
                                 wantedIndex = i;
                             }
@@ -187,11 +247,13 @@
                     }
                 }
 
+                // Submit immediately if no items selected
                 if (j == 0) {
                     document.forms[0].submit();
                     return;
                 }
 
+                // Set up attachment processing with selected document
                 document.forms[0].attachmentCount.value = j;
                 document.forms[0].attachmentTitle.value = titleArray[wantedIndex].value;
                 SetBottomURL(uriArray[wantedIndex].value);
@@ -200,17 +262,17 @@
                 timerRunning = true;
             }
 
-
+            /**
+             * Monitors iframe content loading and submits form when content is ready
+             */
             function CheckSrcText() {
                 if (document.forms[0].srcText.value != "") {
                     if (timerRunning) {
                         clearInterval(timerID)
                     }
                     timerRunning = false
-
                     document.forms[0].submit();
                 }
-
                 return;
             }
 
@@ -343,7 +405,8 @@
                                 <tr>
                                     <td>
                                         <%
-                                            // Setup bean
+                                            // Setup prescription session bean and patient data for drug profile generation
+                                            // This ensures the prescription attachment has proper patient context
                                             RxSessionBean Rxbean;
 
                                             if (request.getSession().getAttribute("RxSessionBean") != null) {
@@ -354,12 +417,14 @@
 
                                             request.getSession().setAttribute("RxSessionBean", Rxbean);
 
+                                            // Load patient data for prescription context
                                             RxPatientData.Patient patient = RxPatientData.getPatient(loggedInInfo, demographic_no);
 
                                             if (patient != null) {
                                                 request.getSession().setAttribute("Patient", patient);
                                             }
 
+                                            // Set provider and demographic context for prescription profile
                                             Rxbean.setProviderNo((String) request.getSession().getAttribute("user"));
                                             Rxbean.setDemographicNo(Integer.parseInt(demographic_no));
 

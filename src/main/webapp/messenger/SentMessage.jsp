@@ -24,12 +24,42 @@
 
 --%>
 
+<%--
+  SentMessage.jsp - Message sent confirmation page
+  
+  This JSP page displays a confirmation message after successfully sending
+  a message through the messaging system. It provides feedback to the user
+  and offers navigation options to continue working.
+  
+  Main features:
+  - Displays success confirmation
+  - Shows message details (recipients, subject)
+  - Provides navigation options (close window, new message, inbox)
+  - Auto-refresh of parent window if in popup mode
+  
+  Security:
+  - Requires "_msg" object with read ("r") permissions
+  - Session validation through msgSessionBean
+  
+  Session dependencies:
+  - msgSessionBean: Must be valid for page access
+  - Contains sent message details for display
+  
+  UI elements:
+  - Success message with sent details
+  - Action buttons for next steps
+  - Auto-close timer option (if configured)
+  
+  @since 2003
+--%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%
+    // Build role string for security validation
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
 %>

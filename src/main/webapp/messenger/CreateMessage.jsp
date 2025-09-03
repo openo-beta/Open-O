@@ -23,6 +23,48 @@
     Ontario, Canada
 
 --%>
+<%--
+    CreateMessage.jsp - Main message composition interface for the OpenO EMR messaging system
+    
+    Purpose:
+    This JSP page provides the primary interface for healthcare providers to compose and send
+    internal messages within the EMR system. It supports creating new messages, replying to
+    existing messages, and forwarding messages with attachments.
+    
+    Key Features:
+    - Message composition with subject and body text
+    - Recipient selection from local and remote provider lists
+    - Group-based recipient management
+    - Patient demographic association for clinical messages
+    - Attachment support including PDF documents
+    - Delegate/proxy messaging capabilities
+    - Reply and forward functionality with quoted text
+    
+    Security:
+    - Requires write permissions on "_msg" object
+    - Session validation through msgSessionBean
+    - OWASP encoding for XSS prevention
+    
+    Dependencies:
+    - MsgSessionBean: Maintains message session state
+    - MessengerGroupManager: Handles provider groups and membership
+    - MessagingManager: Core messaging operations
+    - DemographicData: Patient information retrieval
+    
+    Request Parameters:
+    - subject: Initial message subject
+    - demographic_no: Associated patient ID
+    - delegate: Delegate/proxy provider ID
+    - ReSubject: Reply subject (from reply action)
+    - ReText: Quoted text for replies
+    
+    Session Attributes:
+    - msgSessionBean: Message composition session data
+    - userrole: Current user role
+    - user: Current username
+    
+    @since 2002
+--%>
 
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -46,20 +88,24 @@
 <%@ page import="ca.openosp.openo.managers.MessengerGroupManager" %>
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 <%
+    // Security check: Build role string from session attributes for authorization
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
 %>
+<%-- Security tag: Verify user has write permissions for messaging module --%>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_msg" rights="w" reverse="<%=true%>">
     <%authed = false; %>
     <%response.sendRedirect("../securityError.jsp?type=_msg");%>
 </security:oscarSec>
 <%
+    // Exit page execution if user is not authorized
     if (!authed) {
         return;
     }
 %>
 
 
+<%-- Session validation: Ensure message session bean exists and is valid --%>
 <c:if test="${empty sessionScope.msgSessionBean}">
     <c:redirect url="index.jsp"/>
 </c:if>
@@ -72,22 +118,28 @@
 
 
 <%
+    // Initialize messaging managers and retrieve provider/group data
     MessengerGroupManager groupManager = SpringUtils.getBean(MessengerGroupManager.class);
     Map<Groups, List<MsgProviderData>> groups = groupManager.getAllGroupsWithMembers(LoggedInInfo.getLoggedInInfoFromSession(request));
     Map<String, List<MsgProviderData>> remoteMembers = groupManager.getAllRemoteMembers(LoggedInInfo.getLoggedInInfoFromSession(request));
     List<MsgProviderData> localMembers = groupManager.getAllLocalMembers(LoggedInInfo.getLoggedInInfoFromSession(request));
     MessagingManager messagingManager = SpringUtils.getBean(MessagingManager.class);
 
+    // Store provider and group data in request scope for JSP access
     request.setAttribute("groupManager", groups);
     request.setAttribute("remoteMembers", remoteMembers);
     request.setAttribute("localMembers", localMembers);
 
+    // Set up message subject and body (from new message, reply, or forward)
     pageContext.setAttribute("messageSubject", request.getParameter("subject"));
+    // Note: Second setAttribute overwrites the first if ReSubject exists
     pageContext.setAttribute("messageSubject", request.getAttribute("ReSubject"));
     pageContext.setAttribute("messageBody", request.getAttribute("ReText"));
 
+    // Retrieve the message session bean for maintaining state
     MsgSessionBean bean = (MsgSessionBean) pageContext.findAttribute("bean");
 
+    // Handle patient demographic association if message is patient-related
     String demographic_no = (String) request.getAttribute("demographic_no");
     DemographicData demoData = new DemographicData();
     Demographic demo = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demographic_no);
@@ -96,6 +148,7 @@
         demoName = demo.getLastName() + ", " + demo.getFirstName();
     }
 
+    // Initialize delegate/proxy provider variables
     String delegate = "";
     String delegateName = "";
     boolean recall = (request.getParameter("recall") != null);

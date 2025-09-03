@@ -24,6 +24,63 @@
 
 --%>
 
+<%--
+/**
+ * Hierarchical Document Selection Interface
+ *
+ * This JSP page provides a comprehensive document selection interface for the
+ * document transfer system. It displays available patient documents in a
+ * hierarchical tree structure, allowing users to select specific items for
+ * transfer to other healthcare providers.
+ *
+ * Main Features:
+ * - Hierarchical tree-view display of patient documents and data
+ * - Interactive expand/collapse functionality for document categories
+ * - Checkbox selection for transferable items
+ * - Cross-browser compatibility (IE and Mozilla/Firefox support)
+ * - Integration with document generation and transfer workflow
+ *
+ * Security Requirements:
+ * - Requires "_msg" object write permissions via security taglib
+ * - User session validation and role-based access control
+ *
+ * Request Parameters:
+ * - val1: Provider number for document context
+ * - val2: Demographic number for patient context
+ *
+ * Processing Flow:
+ * 1. Creates new MsgSessionBean with provider context
+ * 2. Generates XML document structure for patient using MsgGenerate
+ * 3. Renders hierarchical tree interface using JSP scriptlet methods
+ * 4. Allows user selection of items for transfer
+ * 5. Submits selected items to PostItems.jsp for processing
+ *
+ * JavaScript Functions:
+ * - showTbl(): Toggles visibility of tree nodes (same as ViewAttachment.jsp)
+ * - expandAll(): Expands all collapsed tree nodes
+ * - collapseAll(): Collapses all expanded tree nodes
+ * - chkClick(): Prevents event bubbling for checkbox interactions
+ *
+ * Tree Rendering Methods (JSP scriptlets):
+ * - DrawDoc(): Renders root document tree structure
+ * - DrawTable(): Renders individual document categories/tables
+ * - DrawItem(): Renders selectable document items with checkboxes
+ * - DrawContent(): Renders detailed content fields within items
+ *
+ * Document Generation:
+ * - Uses MsgGenerate to create comprehensive patient document XML
+ * - Includes demographics, encounters, medications, lab results, etc.
+ * - Organizes data in hierarchical structure for easy selection
+ *
+ * Error Handling:
+ * - Redirects to error.html for XML generation failures
+ * - Validates demographic number format
+ * - Handles missing or invalid patient data gracefully
+ *
+ * @since 2003
+ */
+--%>
+
 <%@ page import=" java.util.*, org.w3c.dom.*" %>
 <%@ page
         import="ca.openosp.openo.messenger.docxfer.send.*,ca.openosp.openo.messenger.docxfer.util.*" %>
@@ -47,19 +104,15 @@
 
 
 <%
+    // Extract request parameters and setup message session
     String demoNo = request.getParameter("val2");
     String prov = request.getParameter("val1");
 
-    MsgSessionBean bean = null;
-    bean = new MsgSessionBean();
-
+    // Create and configure message session bean
+    MsgSessionBean bean = new MsgSessionBean();
     bean.setProviderNo(prov);
-
-
     bean.estUserName();
     request.getSession().setAttribute("msgSessionBean", bean);
-
-
 %>
 
 
@@ -76,13 +129,13 @@
     <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 
     <script language="javascript">
+        // Cross-browser event handling compatibility (same as ViewAttachment.jsp)
         var browserName = navigator.appName;
         if (browserName == "Netscape") {
-
             if (document.implementation) {
-                //this detects W3C DOM browsers (IE is not a W3C DOM Browser)
+                // Detects W3C DOM browsers (IE is not a W3C DOM Browser)
                 if (Event.prototype && Event.prototype.__defineGetter__) {
-                    //this detects Mozilla Based Browsers
+                    // Detects Mozilla Based Browsers - add srcElement property
                     Event.prototype.__defineGetter__("srcElement", function () {
                             var src = this.target;
                             if (src && src.nodeType == Node.TEXT_NODE)
@@ -94,11 +147,16 @@
             }
         }
 
+        /**
+         * Toggles tree node visibility and expand/collapse icons
+         * @param {string} tblName - Table ID to toggle
+         * @param {Event} event - Click event from tree node
+         */
         function showTbl(tblName, event) {
             var i;
-
             var span;
 
+            // Find the span element containing the tree node
             if (event.srcElement.tagName == 'SPAN') {
                 span = event.srcElement;
             } else {
@@ -112,6 +170,7 @@
             }
 
             if (span != 'undefined') {
+                // Toggle expand/collapse icon
                 var imgs = span.getElementsByTagName('IMG');
                 if (imgs.length > 0) {
                     var img = imgs.item(0);
@@ -123,12 +182,10 @@
                     }
                 }
 
+                // Toggle associated table visibility
                 var nods = span.parentNode.childNodes;
-
-
                 for (i = 0; i < nods.length; i++) {
                     var nod = nods.item(i);
-
                     if (nod.id == tblName) {
                         if (nod.style.display == "none") {
                             nod.style.display = "";
@@ -140,51 +197,56 @@
             }
         }
 
+        /**
+         * Expands all collapsed tree nodes
+         */
         function expandAll() {
             var i;
             var root = document.all('tblRoot');
-
             var col = root.getElementsByTagName('IMG');
 
             for (i = 0; i < col.length; i++) {
                 var nod = col.item(i);
-
                 if (nod.src.search('plus.gif') > -1) {
                     nod.click();
                 }
             }
         }
 
+        /**
+         * Collapses all expanded tree nodes
+         */
         function collapseAll() {
             var i;
             var root = document.all('tblRoot');
-
             var col = root.getElementsByTagName('IMG');
 
             for (i = 0; i < col.length; i++) {
                 var nod = col.item(i);
-
                 if (nod.src.search('minus.gif') > -1) {
                     nod.click();
                 }
             }
         }
 
+        /**
+         * Prevents event bubbling for checkbox clicks
+         */
         function chkClick() {
             event.cancelBubble = true;
         }
     </script>
     <%
+        // Generate patient document XML for selection interface
         Document xmlDoc = null;
 
         try {
             int demographicNo = Integer.parseInt(demoNo);
-
             MsgGenerate gen = new MsgGenerate();
-
+            // Generate comprehensive document structure for patient
             xmlDoc = gen.getDocument(demographicNo);
         } catch (Exception ex) {
-            MiscUtils.getLogger().error("Error", ex);
+            MiscUtils.getLogger().error("Error generating document XML", ex);
             response.sendRedirect("error.html");
         }
 
@@ -193,7 +255,6 @@
         }
 
         Element root = xmlDoc.getDocumentElement();
-
     %>
     <%!
         String spanStartRoot = "<span class=\"treeNode\" onclick=\"javascript:showTbl('tblRoot',event);\">"

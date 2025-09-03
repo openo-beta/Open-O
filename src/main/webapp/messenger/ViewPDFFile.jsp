@@ -24,6 +24,44 @@
 
 --%>
 
+<%--
+/**
+ * PDF File Viewer/Download Handler
+ *
+ * This JSP page handles the viewing and downloading of specific PDF files from
+ * message attachments. It validates session state and processes PDF file requests
+ * for individual files within attachment collections.
+ *
+ * Main Features:
+ * - Session validation for message context
+ * - PDF file identification and processing
+ * - Integration with attachment viewing workflow
+ *
+ * Security Requirements:
+ * - Requires "_msg" object read permissions via security taglib
+ * - User session validation and role-based access control
+ * - Validates msgSessionBean presence and validity
+ *
+ * Request Parameters:
+ * - id: PDF file identifier for processing
+ *
+ * Request Attributes:
+ * - PDFAttachment: PDF attachment data from previous processing step
+ *
+ * Session Dependencies:
+ * - msgSessionBean: Required for attachment management context
+ * - Must be valid session bean or redirects to index.jsp
+ *
+ * Processing Flow:
+ * 1. Validates user permissions and session state
+ * 2. Extracts PDF attachment data from request attributes
+ * 3. Processes specified PDF file for viewing/download
+ * 4. Note: Full implementation appears to be truncated in this file
+ *
+ * @since 2003
+ */
+--%>
+
 <%@ page
         import="ca.openosp.openo.messenger.docxfer.send.*, ca.openosp.openo.messenger.docxfer.util.*, ca.openosp.openo.util.*" %>
 <%@ page import="java.util.*, org.w3c.dom.*" %>
@@ -59,6 +97,7 @@
     %>
 </c:if>
 <%
+    // Extract PDF processing parameters
     String pdfAttch = (String) request.getAttribute("PDFAttachment");
     String id = request.getParameter("id");
 %>

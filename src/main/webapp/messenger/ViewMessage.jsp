@@ -24,6 +24,42 @@
 
 --%>
 
+<%--
+  ViewMessage.jsp - Primary message viewing interface
+  
+  This comprehensive JSP page displays individual messages with full details,
+  attachments, and action options. It supports viewing messages from various
+  sources including inbox, sent items, and demographic-specific messages.
+  
+  Main features:
+  - Full message display with sender, recipients, subject, body
+  - Attachment viewing and download capabilities
+  - Reply, forward, and delete actions
+  - Integration with case management notes
+  - Support for resident/supervisor message approval workflow
+  - PDF attachment preview
+  - Message thread navigation
+  
+  Security:
+  - Requires "_msg" object with read ("r") permissions
+  - Validates user access to specific messages
+  
+  Request parameters:
+  - messageID: Unique identifier of message to view
+  - boxType: Source mailbox (inbox, sent, deleted)
+  - demographic_no: Associated patient ID if applicable
+  - providerview: Filter for provider-specific views
+  - bFirstDisp: First display flag for marking as read
+  
+  Integration points:
+  - Case management notes for clinical documentation
+  - Resident supervision workflow
+  - PDF document management
+  - Patient encounter system
+  
+  @since 2003
+--%>
+
 <%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
 <%@page import="ca.openosp.openo.casemgmt.dao.CaseManagementNoteDAO" %>
 <%@page import="java.util.Set" %>
@@ -34,6 +70,7 @@
 <%@page import="ca.openosp.openo.commn.model.OscarMsgType" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
+    // Retrieve user information from session
     String providerNo = (String) session.getAttribute("providerNo");
     String curUser_no = (String) session.getAttribute("user");
     String roleName$ = (String) session.getAttribute("userrole") + "," + curUser_no;

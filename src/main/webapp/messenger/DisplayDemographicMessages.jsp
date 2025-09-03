@@ -24,6 +24,40 @@
 
 --%>
 
+<%--
+  DisplayDemographicMessages.jsp - Displays messages associated with a specific patient
+  
+  This JSP page shows all messages linked to a particular patient demographic record.
+  It provides a filtered view of the messaging system focused on patient-related
+  communications, useful for reviewing clinical correspondence and care coordination.
+  
+  Main features:
+  - Lists all messages associated with a demographic ID
+  - Sortable columns (date, subject, sender, status)
+  - Pagination support for large message lists
+  - Integration with patient encounter workflow
+  - Quick access to message details and actions
+  
+  Security:
+  - Requires "_msg" object with read ("r") permissions
+  - Session validation through msgSessionBean
+  
+  Request parameters:
+  - demographic_no: Patient ID to filter messages
+  - orderby: Sort column and direction
+  - moreMessages: Pagination flag
+  
+  Session attributes:
+  - msgSessionBean: Message display session state
+  - orderby: Current sort preference
+  
+  Display settings:
+  - Initial display: 20 messages
+  - Expandable to show all messages
+  
+  @since 2003
+--%>
+
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -35,6 +69,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
+    // Build role string for security check
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
 %>
@@ -43,30 +78,32 @@
     <%response.sendRedirect("../securityError.jsp?type=_msg");%>
 </security:oscarSec>
 <%
+    // Exit if user is not authorized
     if (!authed) {
         return;
     }
 %>
 
 <%
-
-    //pageContext.setAttribute("pageType",""+pageType);
-
-
+    // Handle sorting logic - toggle between ascending and descending
+    // Prefix with "!" indicates descending order
     if (request.getParameter("orderby") != null) {
         String orderby = request.getParameter("orderby");
         String sessionOrderby = (String) session.getAttribute("orderby");
         if (sessionOrderby != null && sessionOrderby.equals(orderby)) {
+            // Toggle sort direction if clicking same column
             orderby = "!" + orderby;
         }
         session.setAttribute("orderby", orderby);
     }
     String orderby = (String) session.getAttribute("orderby");
 
+    // Handle pagination - show more messages beyond initial display
     String moreMessages = "false";
     if (request.getParameter("moreMessages") != null) {
         moreMessages = request.getParameter("moreMessages");
     }
+    // Initial number of messages to display
     final int INITIAL_DISPLAY = 20;
 %>
 

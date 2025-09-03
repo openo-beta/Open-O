@@ -24,6 +24,56 @@
 
 --%>
 
+<%--
+/**
+ * Hierarchical Attachment Viewer
+ *
+ * This JSP page provides a hierarchical tree-view interface for viewing and managing
+ * message attachments in the OpenO EMR messenger system. It displays attachment data
+ * in an expandable/collapsible tree structure and allows users to save or modify
+ * attachments before sending messages.
+ *
+ * Main Features:
+ * - Interactive tree-view display of attachment data with expand/collapse functionality
+ * - XML-based attachment data parsing and rendering
+ * - Support for special AR (Antenatal Record) forms with custom navigation links
+ * - Form-based attachment management with save functionality
+ * - Cross-browser compatibility with IE and Mozilla/Firefox support
+ *
+ * Security Requirements:
+ * - Requires "_msg" object read permissions via security taglib
+ * - User session validation and role-based access control
+ * - Validates msgSessionBean presence and validity
+ *
+ * Request Attributes:
+ * - Attachment: XML string containing structured attachment data
+ * - attId: Attachment ID for form processing and AR form links
+ *
+ * Session Dependencies:
+ * - msgSessionBean: Required for attachment management context
+ * - Must be valid session bean or redirects to index.jsp
+ *
+ * JavaScript Functions:
+ * - showTbl(): Toggles visibility of tree nodes and updates expand/collapse icons
+ * - expandAll(): Expands all collapsed tree nodes
+ * - collapseAll(): Collapses all expanded tree nodes
+ * - chkClick(): Prevents event bubbling for checkbox clicks
+ * - popupViewAttach(): Opens attachment viewing popup windows
+ *
+ * XML Structure Support:
+ * - Document root with nested tables, items, and content elements
+ * - Supports removable and non-removable items
+ * - Field-based content display with name/value pairs
+ *
+ * AR Form Integration:
+ * - Special handling for AR Form attachments
+ * - Direct links to AR1, AR2 Pg1, and AR2 Pg2 forms
+ * - Integrated with encounter form system
+ *
+ * @since 2003
+ */
+--%>
+
 <%@ page
         import="ca.openosp.openo.messenger.docxfer.send.*,ca.openosp.openo.messenger.docxfer.util.*, ca.openosp.openo.util.*" %>
 <%@ page import="java.util.*, org.w3c.dom.*" %>
@@ -67,13 +117,13 @@
     <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 
     <script language="javascript">
+        // Cross-browser compatibility fix for IE vs Mozilla/Firefox event handling
         var browserName = navigator.appName;
         if (browserName == "Netscape") {
-
             if (document.implementation) {
-                //this detects W3C DOM browsers (IE is not a W3C DOM Browser)
+                // Detects W3C DOM browsers (IE is not a W3C DOM Browser)
                 if (Event.prototype && Event.prototype.__defineGetter__) {
-                    //this detects Mozilla Based Browsers
+                    // Detects Mozilla Based Browsers - add srcElement property for compatibility
                     Event.prototype.__defineGetter__("srcElement", function () {
                             var src = this.target;
                             if (src && src.nodeType == Node.TEXT_NODE)
@@ -85,11 +135,16 @@
             }
         }
 
+        /**
+         * Toggles visibility of tree table nodes and updates expand/collapse icons
+         * @param {string} tblName - ID of table to toggle (usually 'tblNode')
+         * @param {Event} event - Click event from tree node
+         */
         function showTbl(tblName, event) {
             var i;
-
             var span;
 
+            // Find the span element that contains the clickable tree node
             if (event.srcElement.tagName == 'SPAN') {
                 span = event.srcElement;
             } else {
@@ -103,6 +158,7 @@
             }
 
             if (span != 'undefined') {
+                // Toggle the expand/collapse icon
                 var imgs = span.getElementsByTagName('IMG');
                 if (imgs.length > 0) {
                     var img = imgs.item(0);
@@ -114,12 +170,10 @@
                     }
                 }
 
+                // Find and toggle the associated table visibility
                 var nods = span.parentNode.childNodes;
-
-
                 for (i = 0; i < nods.length; i++) {
                     var nod = nods.item(i);
-
                     if (nod.id == tblName) {
                         if (nod.style.display == "none") {
                             nod.style.display = "";
@@ -131,38 +185,47 @@
             }
         }
 
+        /**
+         * Expands all collapsed tree nodes by clicking plus icons
+         */
         function expandAll() {
             var i;
             var root = document.all('tblRoot');
-
             var col = root.getElementsByTagName('IMG');
 
+            // Click all plus icons to expand collapsed nodes
             for (i = 0; i < col.length; i++) {
                 var nod = col.item(i);
-
                 if (nod.src.search('plus.gif') > -1) {
                     nod.click();
                 }
             }
         }
 
+        /**
+         * Collapses all expanded tree nodes by clicking minus icons
+         */
         function collapseAll() {
             var i;
             var root = document.all('tblRoot');
-
             var col = root.getElementsByTagName('IMG');
 
+            // Click all minus icons to collapse expanded nodes
             for (i = 0; i < col.length; i++) {
                 var nod = col.item(i);
-
                 if (nod.src.search('minus.gif') > -1) {
                     nod.click();
                 }
             }
         }
 
-
-        function popupViewAttach(vheight, vwidth, varpage) { //open a new popup window
+        /**
+         * Opens attachment viewing popup window
+         * @param {number} vheight - Window height
+         * @param {number} vwidth - Window width  
+         * @param {string} varpage - Page URL to open
+         */
+        function popupViewAttach(vheight, vwidth, varpage) {
             var page = varpage;
             windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
             var popup = window.open(varpage, "oscarMVA", windowprops);
@@ -173,17 +236,20 @@
             }
         }
 
+        /**
+         * Prevents event bubbling when checkboxes are clicked
+         */
         function chkClick() {
             event.cancelBubble = true;
         }
     </script>
     <%
+        // Parse attachment XML data for tree display
         Document xmlDoc = null;
         String attch = (String) request.getAttribute("Attachment");
         xmlDoc = MsgCommxml.parseXML(attch);
 
         Element root = xmlDoc.getDocumentElement();
-
     %>
     <%!
         String spanStartRoot = "<span class=\"treeNode\" onclick=\"javascript:showTbl('tblRoot',event);\">"

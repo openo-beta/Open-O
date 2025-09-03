@@ -23,6 +23,36 @@
     Ontario, Canada
 
 --%>
+<%--
+    DisplayMessages.jsp - Main message inbox/outbox display interface for the OpenO EMR messaging system
+    
+    Purpose:
+    This JSP page displays the list of messages for healthcare providers, supporting
+    different views including inbox, sent messages, deleted messages, and demographic-specific
+    messages. It provides sorting, pagination, and message management capabilities.
+    
+    Key Features:
+    - Multiple message box types (inbox, sent, deleted, demographic)
+    - Column sorting with ascending/descending toggle
+    - Pagination support for large message lists
+    - Patient demographic filtering
+    - Security validation for read permissions
+    - Message status indicators (new, read, deleted)
+    - Quick actions (view, reply, forward, delete)
+    
+    Request Parameters:
+    - boxType: Type of message box to display (0=inbox, 1=sent, 2=deleted, 3=demographic)
+    - demographic_no: Filter messages for specific patient
+    - orderby: Column to sort by
+    - page: Current page number for pagination
+    
+    Session Requirements:
+    - msgSessionBean: Must be valid for page access
+    - userrole: User's role for security validation
+    - orderby: Stored sort preference
+    
+    @since 2002
+--%>
 
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -35,6 +65,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
+    // Build security role string from session attributes
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
 %>
@@ -43,29 +74,34 @@
     <%response.sendRedirect("../securityError.jsp?type=_msg");%>
 </security:oscarSec>
 <%
+    // Exit if user is not authorized
     if (!authed) {
         return;
     }
 %>
 
 <%
+    // Determine which message box to display based on boxType parameter
+    // 0 = Inbox (default), 1 = Sent, 2 = Deleted, 3 = Demographic-specific
     int pageType = 0;
     String boxType = request.getParameter("boxType");
     if (boxType == null || boxType.equals("")) {
-        pageType = 0;
+        pageType = 0;  // Default to inbox
     } else if (boxType.equals("1")) {
-        pageType = 1;
+        pageType = 1;  // Sent messages
     } else if (boxType.equals("2")) {
-        pageType = 2;
+        pageType = 2;  // Deleted messages
     } else if (boxType.equals("3")) {
-        pageType = 3;
+        pageType = 3;  // Demographic-specific messages
     } else {
-        pageType = 0;
-    }   //messageid
+        pageType = 0;  // Default to inbox for invalid values
+    }
 
+    // Handle demographic filtering if specified
     String demographic_no = request.getParameter("demographic_no");
     String demographic_name = "";
     if (demographic_no != null) {
+        // Retrieve patient name for display
         DemographicData demographic_data = new DemographicData();
         Demographic demographic = demographic_data.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demographic_no);
         if (demographic != null) {
