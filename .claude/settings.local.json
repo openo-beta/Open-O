@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(make:*)",
+      "Read(/usr/local/tomcat/webapps/oscar/messenger/**)",
+      "Bash(sed:*)",
+      "Bash(mv:*)",
+      "Bash(ls:*)",
+      "Bash(wc:*)",
+      "Bash(xargs:*)",
+      "Edit(/workspace/src/**)",
+      "Read(/workspace/src/**)",
+      "Write(/workspace/.claude/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
