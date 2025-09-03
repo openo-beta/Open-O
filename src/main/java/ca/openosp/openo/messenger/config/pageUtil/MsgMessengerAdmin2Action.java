@@ -183,7 +183,7 @@ public class MsgMessengerAdmin2Action extends ActionSupport {
 
         ResourceBundle oscarR = ResourceBundle.getBundle("oscarResources", request.getLocale());
 
-        if (update.equals(oscarR.getString("oscarMessenger.config.MessengerAdmin.btnUpdateGroupMembers"))) {
+        if (update.equals(oscarR.getString("messenger.config.MessengerAdmin.btnUpdateGroupMembers"))) {
 
             for (GroupMembers g : groupMembersDao.findByGroupId(Integer.parseInt(grpNo))) {
                 groupMembersDao.remove(g.getId());
@@ -200,7 +200,7 @@ public class MsgMessengerAdmin2Action extends ActionSupport {
             MsgAddressBookMaker addMake = new MsgAddressBookMaker();
             addMake.updateAddressBook();
             request.setAttribute("groupNo", grpNo);
-        } else if (delete.equals(oscarR.getString("oscarMessenger.config.MessengerAdmin.btnDeleteThisGroup"))) {
+        } else if (delete.equals(oscarR.getString("messenger.config.MessengerAdmin.btnDeleteThisGroup"))) {
             GroupsDao dao = SpringUtils.getBean(GroupsDao.class);
             Groups gg = dao.find(ConversionUtils.fromIntString(grpNo));
             if (gg != null) {

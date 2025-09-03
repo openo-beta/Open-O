@@ -60,7 +60,7 @@ public final class MsgDoc2PDF2Action extends ActionSupport {
                 this.setIsPreview(false);
 
             } else {
-                MiscUtils.getLogger().debug(" oscar.oscarMessenger.pageUtil.MsgSessionBean is null");
+                MiscUtils.getLogger().debug(" oscar.messenger.pageUtil.MsgSessionBean is null");
             }
         }
         return SUCCESS;

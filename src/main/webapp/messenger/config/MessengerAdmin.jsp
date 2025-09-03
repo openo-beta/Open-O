@@ -35,7 +35,7 @@
     <security:oscarSec roleName="${ sessionScope.userrole }" objectName="_admin" rights="r" reverse="${ false }">
 
         <head>
-            <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.config.MessengerAdmin.title"/></title>
+            <title><fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.config.MessengerAdmin.title"/></title>
 
             <script type="text/javascript"
                     src="${pageContext.request.contextPath}/library/jquery/jquery-ui-1.12.1.min.js"></script>
@@ -97,8 +97,8 @@
                 var ctx = '${pageContext.request.contextPath}';
 
                 function addMember(memberId, groupId) {
-                    $.post(ctx + "/oscarMessenger.do?method=add&member=" + memberId + "&group=" + groupId).success(function () {
-                        $('#group-member-list-' + groupId).load(ctx + '/oscarMessenger.do?method=fetch #group-member-list-' + groupId);
+                    $.post(ctx + "/messenger.do?method=add&member=" + memberId + "&group=" + groupId).success(function () {
+                        $('#group-member-list-' + groupId).load(ctx + '/messenger.do?method=fetch #group-member-list-' + groupId);
                         // check the appropriate checkbox in the member list display
                         $("div#addContacts input[type='checkbox'][value^='" + memberId + "']").prop("checked", true);
                     });
@@ -106,7 +106,7 @@
 
                 function removeMember(memberId, groupId) {
                     if (memberId) {
-                        $.post(ctx + "/oscarMessenger.do?method=remove&member=" + memberId).success(function () {
+                        $.post(ctx + "/messenger.do?method=remove&member=" + memberId).success(function () {
                             // remove from groups view too.
                             $('div#manageGroups i[id^=' + memberId + ']').parent().parent().remove();
                         });
@@ -115,7 +115,7 @@
 
                 function removeGroupMember(memberId, groupId) {
                     if (memberId) {
-                        $.post(ctx + "/oscarMessenger.do?method=remove&member=" + memberId + "&group=" + groupId).success(function () {
+                        $.post(ctx + "/messenger.do?method=remove&member=" + memberId + "&group=" + groupId).success(function () {
                             /*
                              * Add the group id back into selector as it is used to make the id's unique.
                              * Remove the selected value from the user interface
@@ -126,13 +126,13 @@
                 }
 
                 function createGroup(groupName) {
-                    $.post(ctx + "/oscarMessenger.do?method=create&groupName=" + groupName);
-                    $('#manageGroups').load(ctx + '/oscarMessenger.do?method=fetch #manageGroups');
+                    $.post(ctx + "/messenger.do?method=create&groupName=" + groupName);
+                    $('#manageGroups').load(ctx + '/messenger.do?method=fetch #manageGroups');
                 }
 
                 function deleteGroup(groupId) {
-                    $.post(ctx + "/oscarMessenger.do?method=remove&group=" + groupId);
-                    $('#manageGroups').load(ctx + '/oscarMessenger.do?method=fetch #manageGroups');
+                    $.post(ctx + "/messenger.do?method=remove&group=" + groupId);
+                    $('#manageGroups').load(ctx + '/messenger.do?method=fetch #manageGroups');
                 }
 
                 $(document).ready(function () {

@@ -79,7 +79,7 @@ public class MsgViewMessage2Action extends ActionSupport {
         String demographic_no = request.getParameter("demographic_no");
         String orderBy = request.getParameter("orderBy");
         // String msgCount = request.getParameter("msgCount");
-        String from = request.getParameter("from") == null ? "oscarMessenger" : request.getParameter("from");
+        String from = request.getParameter("from") == null ? "messenger" : request.getParameter("from");
         String boxType = request.getParameter("boxType") == null ? "" : request.getParameter("boxType");
 
         MsgDisplayMessage msgDisplayMessage = messagingManager.getInboxMessage(loggedInInfo, Integer.parseInt(messageNo));
@@ -169,7 +169,7 @@ public class MsgViewMessage2Action extends ActionSupport {
         request.getSession().setAttribute("today", simpleDateFormat.format(new Date(System.currentTimeMillis())));
 
 
-        String actionforward = request.getContextPath() + "/oscarMessenger/ViewMessage.jsp?boxType=" + boxType + "&linkMsgDemo=" + linkMsgDemo;
+        String actionforward = request.getContextPath() + "/messenger/ViewMessage.jsp?boxType=" + boxType + "&linkMsgDemo=" + linkMsgDemo;
 
         response.sendRedirect(actionforward);
         return NONE;

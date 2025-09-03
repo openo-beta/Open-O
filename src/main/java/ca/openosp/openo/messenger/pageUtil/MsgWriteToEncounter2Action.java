@@ -57,7 +57,7 @@ public class MsgWriteToEncounter2Action extends ActionSupport {
         forward.append("appointmentNo=").append("");
         forward.append("demographicNo=").append(request.getParameter("demographic_no"));
         forward.append("curProviderNo=").append(provider);
-        forward.append("reason=").append("oscarMessenger");
+        forward.append("reason=").append("messenger");
         forward.append("userName=").append(request.getSession().getAttribute("userfirstname") + " " + request.getSession().getAttribute("userlastname"));
         forward.append("curDate=").append(dateString);
         forward.append("appointmentDate=").append("");

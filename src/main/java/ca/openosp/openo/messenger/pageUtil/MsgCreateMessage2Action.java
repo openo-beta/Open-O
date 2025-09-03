@@ -119,7 +119,7 @@ public class MsgCreateMessage2Action extends ActionSupport {
                 || "1".equals(userPropertyDao.getProp(UserProperty.INTEGRATOR_DEMOGRAPHIC_CONSENT).getValue()))) {
             if (MessagingManagerImpl.doesContainRemoteRecipient(loggedInInfo, providerListing)
                     && !messengerDemographicManager.isPatientConsentedForIntegrator(loggedInInfo, Integer.parseInt(demographic_no))) {
-                return error("oscarMessenger.CreateMessage.patientConsentError");
+                return error("messenger.CreateMessage.patientConsentError");
             }
         }
 
@@ -127,7 +127,7 @@ public class MsgCreateMessage2Action extends ActionSupport {
          * The Integrator does not support attachments at this time.  Stop attachments from being sent externally.
          */
         if ((att != null || pdfAtt != null) && MessagingManagerImpl.doesContainRemoteRecipient(loggedInInfo, providerListing)) {
-            return error("oscarMessenger.CreateMessage.attachmentsNotPermitted");
+            return error("messenger.CreateMessage.attachmentsNotPermitted");
         }
 
         //FIXME remove these deprecated methods and use the Messenger Managers instead

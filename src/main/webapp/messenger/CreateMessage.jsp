@@ -114,7 +114,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.title"/></title>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.title"/></title>
 
         <link rel="stylesheet" type="text/css" href="encounterStyles.css">
 
@@ -153,18 +153,18 @@
                 // cannot send attachments to remote facilities
                 $("input:checked").each(function () {
                     if (this.id.split("-")[2] > 0 && $("#attachmentAlert").val()) {
-                        alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.attachmentsNotPermitted"/>");
+                        alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.attachmentsNotPermitted"/>");
                         return false;
                     }
                 })
 
                 if (document.forms[0].message.value.length == 0) {
-                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgEmptyMessage"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.msgEmptyMessage"/>");
                     return false;
                 }
                 val = validateCheckBoxes(document.forms[0]);
                 if (val == 0) {
-                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgNoProvider"/>");
+                    alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.msgNoProvider"/>");
                     return false;
                 }
                 return true
@@ -273,12 +273,12 @@
         <table class="MainTable" id="scrollNumber1">
             <tr class="MainTableTopRow">
                 <td class="MainTableTopRowLeftColumn">
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgMessenger"/>
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.msgMessenger"/>
                 </td>
                 <td class="MainTableTopRowRightColumn">
                     <table class="TopStatusBar">
                         <tr>
-                            <td><h2><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgCreate"/></h2>
+                            <td><h2><fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.msgCreate"/></h2>
                             </td>
                             <td>&nbsp;</td>
                             <td style="text-align: right">
@@ -303,9 +303,9 @@
                                             <table class=messButtonsA cellspacing=0 cellpadding=3>
                                                 <tr>
                                                     <td class="messengerButtonsA"><a
-                                                            href="${pageContext.request.contextPath}/oscarMessenger/DisplayMessages.jsp"
+                                                            href="${pageContext.request.contextPath}/messenger/DisplayMessages.jsp"
                                                             class="messengerButtons">
-                                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.ViewMessage.btnInbox"/>
+                                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.ViewMessage.btnInbox"/>
                                                     </a></td>
                                                 </tr>
                                             </table>
@@ -314,9 +314,9 @@
                                             <table class=messButtonsA cellspacing=0 cellpadding=3>
                                                 <tr>
                                                     <td class="messengerButtonsA"><a
-                                                            href="${pageContext.request.contextPath}/oscarMessenger/ClearMessage.do"
+                                                            href="${pageContext.request.contextPath}/messenger/ClearMessage.do"
                                                             class="messengerButtons">
-                                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.btnClear"/>
+                                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.btnClear"/>
                                                     </a></td>
                                                 </tr>
                                             </table>
@@ -326,7 +326,7 @@
                                                 <tr>
                                                     <td class="messengerButtonsA"><a
                                                             href="javascript:BackToOscar()"
-                                                            class="messengerButtons"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.btnExit"/></a></td>
+                                                            class="messengerButtons"><fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.btnExit"/></a></td>
                                                 </tr>
                                             </table>
                                         </td>
@@ -337,11 +337,11 @@
 
                         <tr>
                             <td>
-                                <form action="${pageContext.request.contextPath}/oscarMessenger/CreateMessage.do" method="post" onsubmit="return validatefields()">
+                                <form action="${pageContext.request.contextPath}/messenger/CreateMessage.do" method="post" onsubmit="return validatefields()">
                                     <table>
                                         <tr>
-                                            <th bgcolor="#DDDDFF" width="75"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgRecipients"/></th>
-                                            <th colspan="2" align="left" bgcolor="#DDDDFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgMessage"/></th>
+                                            <th bgcolor="#DDDDFF" width="75"><fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.msgRecipients"/></th>
+                                            <th colspan="2" align="left" bgcolor="#DDDDFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.msgMessage"/></th>
                                         </tr>
                                         <tr>
 
@@ -349,10 +349,10 @@
                                                 <table>
                                                     <tr>
                                                         <td><input type="submit" class="ControlPushButton"
-                                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.btnSendMessage"/>">
+                                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.btnSendMessage"/>">
                                                         </td>
                                                         <td><input type="button" class="ControlPushButton"
-                                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.btnSendnArchiveMessage"/>"
+                                                                   value="<fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.btnSendnArchiveMessage"/>"
                                                                    onClick="XMLHttpRequestSendnArch()">
                                                         </td>
                                                     </tr>
@@ -504,7 +504,7 @@
                                             <td bgcolor="#EEEEFF" valign=top colspan="2"><!--Message and Subject Cell-->
                                                 <div>
                                                     <label for="subject">
-                                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.formSubject"/> :
+                                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.formSubject"/> :
                                                     </label>
                                                     <input type="text" name="subject" id="subject" size="67" value="${messageSubject}"/>
                                                     <br>
@@ -520,7 +520,7 @@
                                                     if (att != null || pdfAtt != null) {
                                                 %>
                                                 <br>
-                                                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgAttachments"/>
+                                                <fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.msgAttachments"/>
                                                 <input type="hidden" id="attachmentAlert" name="attachmentAlert"
                                                        value="true"/>
                                                 <%
@@ -532,7 +532,7 @@
 
                                         <tr>
                                             <td bgcolor="#B8B8FF"></td>
-                                            <td bgcolor="#B8B8FF" colspan="2"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgLinkThisMessage"/></strong>
+                                            <td bgcolor="#B8B8FF" colspan="2"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.msgLinkThisMessage"/></strong>
                                             </td>
                                         </tr>
 
@@ -545,13 +545,13 @@
                                             </td>
                                             <td bgcolor="#EEEEFF">
                                                 <input type="button" class="ControlPushButton" name="searchDemo"
-                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgSearchDemographic"/>"
+                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.msgSearchDemographic"/>"
                                                        onclick="popupSearchDemo(document.forms[0].keyword.value)"/>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td bgcolor="#EEEEFF"></td>
-                                            <td bgcolor="#EEEEFF" colspan="2"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgSelectedDemographic"/></strong>
+                                            <td bgcolor="#EEEEFF" colspan="2"><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.msgSelectedDemographic"/></strong>
                                             </td>
                                         </tr>
                                         <tr>
@@ -583,10 +583,10 @@
                                             <td bgcolor="#EEEEFF">
                                                 <input type="button"
                                                        class="ControlPushButton" name="clearDemographic"
-                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgClearSelectedDemographic"/>"
+                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.msgClearSelectedDemographic"/>"
                                                        onclick='document.forms[0].demographic_no.value = ""; document.forms[0].selectedDemo.value = "none"'/>
                                                 <input type="button" class="ControlPushButton" name="attachDemo"
-                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgAttachDemographic"/>"
+                                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.msgAttachDemographic"/>"
                                                        onclick="popupAttachDemo(document.forms[0].demographic_no.value)"
                                                        style="display: "/>
                                             </td>

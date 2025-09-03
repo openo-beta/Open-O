@@ -101,7 +101,7 @@
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.title"/>
+        <title><fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.title"/>
         </title>
 
         <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
@@ -225,7 +225,7 @@
     <!--  -->
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.CreateMessage.msgMessenger"/></td>
+            <td class="MainTableTopRowLeftColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.CreateMessage.msgMessenger"/></td>
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
@@ -266,7 +266,7 @@
 
                     <tr>
 
-                        <td bgcolor="#EEEEFF"><form action="${pageContext.request.contextPath}/oscarMessenger/Doc2PDF.do" method="post">
+                        <td bgcolor="#EEEEFF"><form action="${pageContext.request.contextPath}/messenger/Doc2PDF.do" method="post">
 
 
                             <table border="0" cellpadding="0" cellspacing="1" width="400">

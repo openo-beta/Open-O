@@ -87,7 +87,7 @@
 <%-- <jsp:getProperty name="beanInstanceName"  property="propertyName" /> --%>
 
 
-<form action="${pageContext.request.contextPath}/oscarMessenger/ProcessDoc2PDF.do" method="post">
+<form action="${pageContext.request.contextPath}/messenger/ProcessDoc2PDF.do" method="post">
 
     Attaching <%=demographic_no%>
     <%=pdfTitle%>

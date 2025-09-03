@@ -97,7 +97,7 @@
     <tr>
         <td class="MainTableBottomRowLeftColumn"></td>
 
-        <form action="${pageContext.request.contextPath}/oscarMessenger/ViewPDFFile.do" method="post">
+        <form action="${pageContext.request.contextPath}/messenger/ViewPDFFile.do" method="post">
             <td class="MainTableBottomRowRightColumn">
                 <table cellspacing=3>
                     <tr>
