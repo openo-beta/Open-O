@@ -24,6 +24,37 @@
 
 --%>
 
+<%--
+/**
+ * Attachment Processing Frameset
+ *
+ * This JSP page creates a frameset for processing PDF attachments in the OpenO EMR
+ * messenger system. It displays the main attachment processing interface in the top
+ * frame and provides a hidden bottom frame for background processing operations.
+ *
+ * Main Features:
+ * - Two-frame layout with main interface and hidden processing frame
+ * - Passes demographic context and attachment parameters to processing page
+ * - Integrated with PDF generation and attachment workflow
+ *
+ * Request Parameters:
+ * - demographic_no: Required patient demographic number for context
+ * - uri: Document URI to be processed as attachment
+ * - pdfTitle: Display title for the PDF attachment
+ *
+ * Frame Structure:
+ * - attMain: Main interface (400px height) - processPDF.jsp
+ * - attFrame: Hidden processing frame (0px height) - initially empty
+ *
+ * Integration:
+ * - Used in conjunction with generatePreviewPDF.jsp workflow
+ * - Supports PDF generation from various medical document sources
+ * - Maintains patient context throughout attachment process
+ *
+ * @since 2003
+ */
+--%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -33,11 +64,11 @@
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <%
-String demographic_no = request.getParameter("demographic_no");
-String uri = request.getParameter("uri");
-String pdfTitle = request.getParameter("pdfTitle");
-
-%>
+            // Extract attachment processing parameters
+            String demographic_no = request.getParameter("demographic_no");
+            String uri = request.getParameter("uri");
+            String pdfTitle = request.getParameter("pdfTitle");
+        %>
 
     <title>OSCAR attachment <%=uri%>
     </title>

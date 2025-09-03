@@ -24,8 +24,40 @@
 
 --%>
 
+<%--
+  AdjustAttachments.jsp - Processes selected attachments for message composition
+  
+  This JSP page handles the selection and adjustment of attachments during the message
+  composition workflow. It processes checkbox selections from the previous page to
+  determine which attachments should be included with the message being composed.
+  
+  Main functionality:
+  - Validates user has write permissions for messaging
+  - Processes checkbox selections for attachments (items prefixed with "item")
+  - Decodes the Base64-encoded XML document containing attachment metadata
+  - Parses and filters the attachments based on user selections
+  - Updates the session bean with the filtered attachment list
+  - Redirects to demographic search for recipient selection
+  
+  Security:
+  - Requires "_msg" object with write ("w") permissions
+  - Redirects to security error page if unauthorized
+  
+  Session dependencies:
+  - Requires msgSessionBean in session for message composition state
+  - Validates bean existence and validity before processing
+  
+  Request parameters:
+  - xmlDoc: Base64-encoded XML document containing attachment information
+  - id: Encoded message ID
+  - item*: Checkbox parameters indicating selected attachments (e.g., item0, item1)
+  
+  @since 2003
+--%>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
+    // Build role name string for security check combining user role and user ID
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
 %>
@@ -34,6 +66,7 @@
     <%response.sendRedirect("../securityError.jsp?type=_msg");%>
 </security:oscarSec>
 <%
+    // Exit page processing if user is not authorized
     if (!authed) {
         return;
     }
@@ -59,34 +92,42 @@
 </c:if>
 
 <%
+    // Retrieve the message session bean from page context
     MsgSessionBean bean = (MsgSessionBean) pageContext.findAttribute("bean");
     String checks = "";
     java.util.Enumeration names = request.getParameterNames();
 
+    // Process all request parameters to find selected attachment checkboxes
+    // Checkboxes are named "item0", "item1", etc.
     while (names.hasMoreElements()) {
         String name = (String) names.nextElement();
         if (name.startsWith("item")) {
             if (request.getParameter(name).equalsIgnoreCase("on")) {
+                // Extract the item number and add to comma-separated list
                 checks += name.substring(4) + ",";
             }
         }
     }
 
+    // Decode the Base64-encoded XML document containing attachment metadata
     String xmlDoc = MsgCommxml.decode64(request.getParameter("xmlDoc"));
     String idEnc = request.getParameter("id");
 
+    // Parse the XML document and filter based on selected checkboxes
     String sXML = MsgCommxml.toXML(new MsgSendDocument().parseChecks(xmlDoc, checks));
 
-
+    // Update session bean with filtered attachments and redirect
     if (bean != null) {
         bean.setAttachment(sXML);
         bean.setMessageId(idEnc);
+        // Store encoded versions in request for potential use by next page
         request.setAttribute("XMLattachment", MsgCommxml.encode64(sXML));
         request.setAttribute("IDenc", idEnc);
-
     }
+    
+    // Redirect to demographic search page to select message recipients
     response.sendRedirect("Transfer/DemographicSearch.jsp");
 %>
 <%
-    //sXML
+    // Debug output placeholder - originally used to display processed XML
 %>

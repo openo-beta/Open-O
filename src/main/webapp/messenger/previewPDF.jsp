@@ -24,12 +24,38 @@
 
 --%>
 
-<%@ page
-        import="ca.openosp.openo.messenger.docxfer.send.*, ca.openosp.openo.messenger.docxfer.util.*, ca.openosp.openo.util.*" %>
-<%@ page import="java.util.*, org.w3c.dom.*" %>
-<%@ page import="ca.openosp.openo.messenger.pageUtil.MsgSessionBean" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%--
+/**
+ * PDF Preview Renderer
+ *
+ * This minimal JSP page renders HTML content as PDF for message attachment previews.
+ * It takes HTML source text from a form parameter and uses the Doc2PDF utility to
+ * generate and stream a PDF response directly to the client browser.
+ *
+ * Main Features:
+ * - Direct HTML to PDF conversion using Doc2PDF utility
+ * - Minimal processing with security validation
+ * - Streams PDF content directly to response output
+ *
+ * Security Requirements:
+ * - Requires "_msg" object read permissions via security taglib
+ * - User session validation and role-based access control
+ *
+ * Request Parameters:
+ * - srcText: Required HTML source content to convert to PDF
+ *
+ * Processing:
+ * 1. Validates user permissions
+ * 2. Extracts HTML content from srcText parameter
+ * 3. Wraps content in basic HTML structure
+ * 4. Uses Doc2PDF.parseString2PDF() to generate and stream PDF
+ *
+ * @since 2003
+ */
+--%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -46,19 +72,12 @@
     }
 %>
 
-<c:if test="${empty sessionScope.msgSessionBean}">
-    <% response.sendRedirect("index.jsp"); %>
-</c:if>
-<c:if test="${not empty sessionScope.msgSessionBean}">
-    <% 
-        // Directly accessing the bean from the session
-        MsgSessionBean bean = (MsgSessionBean) session.getAttribute("msgSessionBean");
-        if (!bean.isValid()) {
-            response.sendRedirect("index.jsp");
-        }
-    %>
-</c:if>
+<%@ page import="ca.openosp.openo.util.*" %>
+<%@ page import="ca.openosp.openo.util.Doc2PDF" %>
 <%
-    String pdfAttch = (String) request.getAttribute("PDFAttachment");
-    String id = request.getParameter("id");
+    // Extract HTML content and generate PDF response
+    String srcText = request.getParameter("srcText");
+    
+    // Convert HTML content to PDF and stream directly to response
+    Doc2PDF.parseString2PDF(request, response, "<HTML>" + srcText + "</HTML>");
 %>

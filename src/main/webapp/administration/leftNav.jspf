@@ -652,10 +652,10 @@ String curProvider_no = (String)session.getAttribute("user");
 				
 					<security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.messenger" rights="r" reverse="<%=false%>">
 							<li><a href='javascript:void(0);'
-								class="xlink" rel="${ctx}/oscarMessenger/DisplayMessages.do?providerNo=<%=curProvider_no%>&amp;userName=<%=userfirstname%>%20<%=userlastname%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.messages"/></a></li>
+								class="xlink" rel="${ctx}/messenger/DisplayMessages.do?providerNo=<%=curProvider_no%>&amp;userName=<%=userfirstname%>%20<%=userlastname%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.messages"/></a></li>
 								
 							<li>
-								<a href="${ctx}/oscarMessenger.do?method=fetch" class="contentLink">
+								<a href="${ctx}/messenger.do?method=fetch" class="contentLink">
 									<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnMessengerAdmin"/>
 								</a>
 							</li>
