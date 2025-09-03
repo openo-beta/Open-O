@@ -30,7 +30,7 @@ def setup_argparse() -> argparse.ArgumentParser:
     
     parser.add_argument(
         "--ai-tool",
-        choices=["aider", "claude-code", "custom"],
+        choices=["claude-code", "aider", "custom"],
         default="aider",
         help="Which AI tool to use"
     )
@@ -120,11 +120,11 @@ def interactive_mode():
     
     # Get AI tool preference
     print("\nWhich AI tool are you using?")
-    print("1. Aider")
-    print("2. Claude Code")
+    print("1. Claude Code")
+    print("2. Aider")
     print("3. Custom/Other")
     tool_choice = input("Enter choice (1-3): ").strip()
-    ai_tool = ["aider", "claude-code", "custom"][int(tool_choice) - 1] if tool_choice.isdigit() else "aider"
+    ai_tool = ["claude-code", "aider", "custom"][int(tool_choice) - 1] if tool_choice.isdigit() else "aider"
     
     # Get repository information
     owner = input("\nEnter repository owner [openo-beta]: ").strip() or "openo-beta"
@@ -242,7 +242,7 @@ def print_summary(results: dict, mode: str = "fix"):
                 print(f"  - {alert['rule']['id']}: {alert['most_recent_instance']['location']['path']}")
     else:
         print(f"False Positives: {len(results.get('false_positives', []))}")
-        print(f"True Positives: {len(results.get('true_positives', []))}")
+        print(f"Security Issues: {len(results.get('security_issues', []))}")
         print(f"Unclear/Needs Review: {len(results.get('unclear', []))}")
 
 
@@ -323,7 +323,6 @@ def main():
     except Exception as e:
         print(f"Error: {e}")
         sys.exit(1)
-
 
 if __name__ == "__main__":
     main()

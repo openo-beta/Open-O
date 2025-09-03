@@ -71,7 +71,7 @@ class AIAutomation:
         
         return prompt
     
-    def generate_false_positive_analysis_prompt(self, alert: Dict) -> str:
+    def generate_analysis_prompt(self, alert: Dict) -> str:
         """
         Generate a prompt for analyzing if an alert is a false positive
         
@@ -85,49 +85,47 @@ class AIAutomation:
         location = alert['most_recent_instance']['location']
         
         prompt = f"""Please analyze this code scanning alert to determine if it's a false positive:
+                    **Alert Information:**
+                    - Rule ID: {rule['id']}
+                    - Description: {rule.get('full_description', rule.get('description', 'N/A'))}
+                    - Severity: {rule.get('security_severity_level', 'N/A')}
+                    - CWE: {rule.get('tags', [])}
 
-**Alert Information:**
-- Rule ID: {rule['id']}
-- Description: {rule.get('full_description', rule.get('description', 'N/A'))}
-- Severity: {rule.get('security_severity_level', 'N/A')}
-- CWE: {rule.get('tags', [])}
+                    **Code Location:**
+                    - File: {location['path']}
+                    - Lines: {location.get('start_line', 'N/A')} to {location.get('end_line', 'N/A')}
 
-**Code Location:**
-- File: {location['path']}
-- Lines: {location.get('start_line', 'N/A')} to {location.get('end_line', 'N/A')}
+                    **Alert Message:**
+                    {alert.get('most_recent_instance', {}).get('message', {}).get('text', 'No specific message provided')}
 
-**Alert Message:**
-{alert.get('most_recent_instance', {}).get('message', {}).get('text', 'No specific message provided')}
+                    **Analysis Required:**
+                    Please examine the code and determine:
 
-**Analysis Required:**
-Please examine the code and determine:
+                    1. **Is this a false positive?** (YES/NO)
+                    2. **Reasoning:** Explain why this is or isn't a real security issue
+                    3. **Context Analysis:** 
+                    - Does the flagged code actually create the vulnerability described?
+                    - Are there existing mitigations that the scanner missed?
+                    - Is the data flow analysis correct?
+                    4. **If FALSE POSITIVE, explain:**
+                    - Why the scanner incorrectly flagged this
+                    - What context or pattern confused the scanner
+                    - Whether the code follows secure practices despite the alert
+                    5. **If SECURITY ISSUE, explain:**
+                    - The actual security risk
+                    - Potential attack vectors
+                    - Recommended fix approach
 
-1. **Is this a false positive?** (YES/NO)
-2. **Reasoning:** Explain why this is or isn't a real security issue
-3. **Context Analysis:** 
-   - Does the flagged code actually create the vulnerability described?
-   - Are there existing mitigations that the scanner missed?
-   - Is the data flow analysis correct?
-4. **If FALSE POSITIVE, explain:**
-   - Why the scanner incorrectly flagged this
-   - What context or pattern confused the scanner
-   - Whether the code follows secure practices despite the alert
-5. **If TRUE POSITIVE, explain:**
-   - The actual security risk
-   - Potential attack vectors
-   - Recommended fix approach
+                    **Response Format:**
+                    Start your response with "FALSE POSITIVE:" or "SECURITY ISSUE:" on the first line, followed by your analysis.
 
-**Response Format:**
-Start your response with "FALSE_POSITIVE:" or "TRUE_POSITIVE:" followed by your analysis.
-
-**Important:** Look for common false positive patterns like:
-- ORM/DAO usage with parameterized queries that scanner thinks is SQL injection
-- Escaped or sanitized input that scanner doesn't recognize
-- Security controls in different layers/files
-- Test code or mock data
-- Already validated input from trusted sources
-"""
-        
+                    **Important:** Look for common false positive patterns like:
+                    - ORM/DAO usage with parameterized queries that scanner thinks is SQL injection
+                    - Escaped or sanitized input that scanner doesn't recognize
+                    - Security controls in different layers/files
+                    - Test code or mock data
+                    - Already validated input from trusted sources
+                    """
         return prompt
     
     def _get_rule_specific_guidance(self, rule_id: str) -> str:
@@ -195,8 +193,9 @@ Start your response with "FALSE_POSITIVE:" or "TRUE_POSITIVE:" followed by your 
             file_dir = str(Path(file_path).parent)
             
             # Create a prompt that explicitly asks to edit the file
+            print(f"PROMPT IS: {prompt}")
             combined_prompt = f"Please edit the file {file_path} to fix the following issue:\n\n{prompt}\n\nIMPORTANT: You must actually edit and save the file with the fix."
-            
+
             # Build the claude command with prompt as last argument
             cmd = [
                 "claude",
@@ -217,7 +216,6 @@ Start your response with "FALSE_POSITIVE:" or "TRUE_POSITIVE:" followed by your 
             )
             
             return process.returncode
-        
         elif self.ai_tool == "aider":
             # Aider uses the shell script approach
             cmd = [self.ai_script_path, self.ai_tool, file_path]
@@ -243,7 +241,6 @@ Start your response with "FALSE_POSITIVE:" or "TRUE_POSITIVE:" followed by your 
             return_code = process.wait()
             
             return return_code
-        
         else:
             # Generic tool handling through shell script
             cmd = [self.ai_script_path, self.ai_tool, file_path]
@@ -270,22 +267,20 @@ Start your response with "FALSE_POSITIVE:" or "TRUE_POSITIVE:" followed by your 
     
     def analyze_false_positives(self, 
                                alerts: List[Dict], 
-                               output_file: Optional[str] = None,
-                               debug: bool = False) -> Dict[str, List]:
+                               output_file: Optional[str] = None) -> Dict[str, List]:
         """
         Analyze alerts for false positives
         
         Args:
             alerts: List of alert dictionaries
             output_file: Optional JSON file to save results
-            debug: If True, print Claude's full responses for debugging
             
         Returns:
-            Dictionary with 'false_positives' and 'true_positives' lists
+            Dictionary with 'false_positives' and 'security_issues' lists
         """
         results = {
             'false_positives': [],
-            'true_positives': [],
+            'security_issues': [],
             'unclear': []
         }
         
@@ -295,28 +290,16 @@ Start your response with "FALSE_POSITIVE:" or "TRUE_POSITIVE:" followed by your 
             
             print(f"\n[{i}/{len(alerts)}] Analyzing {rule} in {path}...")
             
-            prompt = self.generate_false_positive_analysis_prompt(alert)
+            prompt = self.generate_analysis_prompt(alert)
             
             # Run AI tool for analysis
             if self.ai_tool == "claude-code":
                 # For analysis, we need Claude to just analyze, not edit
-                # Claude CLI works better with simpler prompts and file references
-                
-                # Simplify the prompt for Claude CLI
-                simple_prompt = f"""Analyze the security alert in {path}:
-                
-Rule: {alert['rule']['id']}
-Description: {alert['rule'].get('description', 'N/A')}
-Line: {alert['most_recent_instance']['location'].get('start_line', 'N/A')}
-
-Determine if this is a FALSE_POSITIVE or TRUE_POSITIVE security issue.
-Start your response with either "FALSE_POSITIVE:" or "TRUE_POSITIVE:" followed by your reasoning.
-Do not edit the file, only analyze it."""
-                
+                # Claude CLI works better with simpler prompts and file references 
                 cmd = [
                     "claude",
                     "--print",
-                    simple_prompt
+                    prompt
                 ]
                 
                 # Capture output for analysis
@@ -328,73 +311,35 @@ Do not edit the file, only analyze it."""
                 )
                 
                 response = process.stdout if process.returncode == 0 else process.stderr
+
+                print(f"\n  Claude's response:")
+                print(f"  {response if response else '[No response]'}")
                 
-                # Debug mode: show what Claude actually returned
-                if debug:
-                    print(f"\n  DEBUG - Claude's response (first 500 chars):")
-                    print(f"  {response[:500] if response else '[No response]'}")
-                    print(f"  Return code: {process.returncode}")
-                
-                # More robust parsing - check for various indicators
-                response_lower = response.lower() if response else ""
-                
-                # Check for false positive indicators
-                false_positive_indicators = [
-                    "false_positive:",
-                    "false positive:",
-                    "this is a false positive",
-                    "not a real security issue",
-                    "not actually vulnerable",
-                    "scanner incorrectly flagged",
-                    "no actual vulnerability",
-                    "safe from sql injection",
-                    "properly parameterized",
-                    "uses prepared statements"
-                ]
-                
-                # Check for true positive indicators
-                true_positive_indicators = [
-                    "true_positive:",
-                    "true positive:",
-                    "this is a real security issue",
-                    "actual security risk",
-                    "vulnerable to",
-                    "security vulnerability",
-                    "needs to be fixed",
-                    "should be addressed",
-                    "confirms the vulnerability"
-                ]
-                
+                # Remove markdown formatting and check if it starts with the key phrases
+                response_clean = response.lower().replace('*', '').strip()
+                 
                 # Determine classification
-                is_false_positive = any(indicator in response_lower for indicator in false_positive_indicators)
-                is_true_positive = any(indicator in response_lower for indicator in true_positive_indicators)
-                
-                # Handle classification
-                if is_false_positive and not is_true_positive:
+                if response_clean.startswith("false positive:"):
                     results['false_positives'].append({
                         'alert': alert,
                         'analysis': response
                     })
                     print(f"  → Identified as FALSE POSITIVE")
-                elif is_true_positive and not is_false_positive:
-                    results['true_positives'].append({
+                elif response_clean.startswith("security issue:"):
+                    results['security_issues'].append({
                         'alert': alert,
                         'analysis': response
                     })
-                    print(f"  → Identified as TRUE POSITIVE")
+                    print(f"  → Identified as a SECURITY ISSUE")
                 else:
                     # Ambiguous or unclear
                     results['unclear'].append({
                         'alert': alert,
                         'analysis': response if response else 'Analysis failed or no response',
-                        'reason': 'Ambiguous response' if (is_false_positive and is_true_positive) else 'No clear determination'
+                        'reason': 'Ambiguous response'
                     })
                     print(f"  → UNCLEAR - requires manual review")
-                    if debug:
-                        if is_false_positive and is_true_positive:
-                            print(f"    Reason: Response contains both positive and negative indicators")
-                        else:
-                            print(f"    Reason: Response doesn't clearly indicate true/false positive")
+                    print(f"    Reason: Response doesn't clearly indicate true/false positive")
             else:
                 # For other tools, placeholder logic
                 print(f"Generated analysis prompt for {rule}")
@@ -407,8 +352,7 @@ Do not edit the file, only analyze it."""
         if output_file:
             with open(output_file, 'w') as f:
                 json.dump(results, f, indent=2)
-            print(f"\nAnalysis results saved to {output_file}")
-        
+            print(f"\nAnalysis results saved to {output_file}") 
         return results
     
     def batch_process_alerts(self, 
@@ -456,7 +400,7 @@ Do not edit the file, only analyze it."""
             if dry_run:
                 print(f"\n[{i}/{len(alerts)}] DRY RUN - {action} {rule} in {path}")
                 print("=" * 50)
-                print(prompt[:500] + "..." if len(prompt) > 500 else prompt)
+                print(prompt)
                 results['processed'].append(alert)
             else:
                 print(f"\n[{i}/{len(alerts)}] {action} {rule} in {path}...")
