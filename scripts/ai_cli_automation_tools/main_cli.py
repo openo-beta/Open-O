@@ -287,8 +287,7 @@ def main():
                 skip_extensions=args.skip_extensions,
                 dry_run=args.dry_run
             )
-            print_summary(results, mode="fix")
-            
+            print_summary(results, mode="fix") 
         else:  # analyze mode
             results = ai_client.analyze_false_positives(
                 alerts,

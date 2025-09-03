@@ -6,6 +6,7 @@ Handles prompt generation and AI CLI interactions (Aider, Claude Code, etc.)
 
 import subprocess
 import json
+import sys
 from typing import Dict, Optional, List
 from pathlib import Path
 
@@ -188,39 +189,96 @@ Start your response with "FALSE_POSITIVE:" or "TRUE_POSITIVE:" followed by your 
             return 1
         
         # Prepare command based on tool
-        cmd = [self.ai_script_path, self.ai_tool, file_path]
-        if auto_commit:
-            cmd.append("--auto-commit")
+        if self.ai_tool == "claude-code":
+            # Claude Code needs proper directory access and a clear prompt
+            # Get the directory of the file to allow Claude to edit it
+            file_dir = str(Path(file_path).parent)
+            
+            # Create a prompt that explicitly asks to edit the file
+            combined_prompt = f"Please edit the file {file_path} to fix the following issue:\n\n{prompt}\n\nIMPORTANT: You must actually edit and save the file with the fix."
+            
+            # Build the claude command with prompt as last argument
+            cmd = [
+                "claude",
+                "--print",  # Print mode for non-interactive
+                "--add-dir", file_dir,  # Give access to the directory
+                combined_prompt  # Prompt as positional argument
+            ]
+            
+            print(f"Running Claude Code for file: {file_path}")
+            print(f"Directory access granted: {file_dir}")
+            print(f"Sending prompt to Claude Code...")
+            
+            # Run Claude Code
+            process = subprocess.run(
+                cmd,
+                capture_output=False,  # Let Claude output go to terminal
+                text=True
+            )
+            
+            return process.returncode
         
-        # Run AI tool
-        process = subprocess.Popen(
-            cmd,
-            stdin=subprocess.PIPE,
-            stdout=None,  # Let output go to terminal
-            stderr=None,  # Let errors go to terminal
-            text=True,
-            bufsize=1
-        )
+        elif self.ai_tool == "aider":
+            # Aider uses the shell script approach
+            cmd = [self.ai_script_path, self.ai_tool, file_path]
+            if auto_commit:
+                cmd.append("--auto-commit")
+            
+            # Run AI tool
+            process = subprocess.Popen(
+                cmd,
+                stdin=subprocess.PIPE,
+                stdout=None,  # Let output go to terminal
+                stderr=None,  # Let errors go to terminal
+                text=True,
+                bufsize=1
+            )
+            
+            # Send prompt to aider via stdin
+            for line in prompt.splitlines():
+                process.stdin.write(line + "\n")
+                process.stdin.flush()
+            
+            process.stdin.close()
+            return_code = process.wait()
+            
+            return return_code
         
-        # Send prompt line by line
-        for line in prompt.splitlines():
-            process.stdin.write(line + "\n")
-            process.stdin.flush()
-        
-        process.stdin.close()
-        return_code = process.wait()
-        
-        return return_code
+        else:
+            # Generic tool handling through shell script
+            cmd = [self.ai_script_path, self.ai_tool, file_path]
+            if auto_commit:
+                cmd.append("--auto-commit")
+            
+            process = subprocess.Popen(
+                cmd,
+                stdin=subprocess.PIPE,
+                stdout=None,
+                stderr=None,
+                text=True,
+                bufsize=1
+            )
+            
+            for line in prompt.splitlines():
+                process.stdin.write(line + "\n")
+                process.stdin.flush()
+            
+            process.stdin.close()
+            return_code = process.wait()
+            
+            return return_code
     
     def analyze_false_positives(self, 
                                alerts: List[Dict], 
-                               output_file: Optional[str] = None) -> Dict[str, List]:
+                               output_file: Optional[str] = None,
+                               debug: bool = False) -> Dict[str, List]:
         """
         Analyze alerts for false positives
         
         Args:
             alerts: List of alert dictionaries
             output_file: Optional JSON file to save results
+            debug: If True, print Claude's full responses for debugging
             
         Returns:
             Dictionary with 'false_positives' and 'true_positives' lists
@@ -239,16 +297,111 @@ Start your response with "FALSE_POSITIVE:" or "TRUE_POSITIVE:" followed by your 
             
             prompt = self.generate_false_positive_analysis_prompt(alert)
             
-            # Here you would normally call the AI tool and parse response
-            # For now, this is a placeholder for the analysis logic
-            print(f"Generated analysis prompt for {rule}")
-            
-            # In production, you'd parse the AI response to categorize
-            # For demonstration, we'll just add to unclear
-            results['unclear'].append({
-                'alert': alert,
-                'analysis': 'Requires manual review'
-            })
+            # Run AI tool for analysis
+            if self.ai_tool == "claude-code":
+                # For analysis, we need Claude to just analyze, not edit
+                # Claude CLI works better with simpler prompts and file references
+                
+                # Simplify the prompt for Claude CLI
+                simple_prompt = f"""Analyze the security alert in {path}:
+                
+Rule: {alert['rule']['id']}
+Description: {alert['rule'].get('description', 'N/A')}
+Line: {alert['most_recent_instance']['location'].get('start_line', 'N/A')}
+
+Determine if this is a FALSE_POSITIVE or TRUE_POSITIVE security issue.
+Start your response with either "FALSE_POSITIVE:" or "TRUE_POSITIVE:" followed by your reasoning.
+Do not edit the file, only analyze it."""
+                
+                cmd = [
+                    "claude",
+                    "--print",
+                    simple_prompt
+                ]
+                
+                # Capture output for analysis
+                process = subprocess.run(
+                    cmd,
+                    capture_output=True,
+                    text=True,
+                    cwd=str(Path(path).parent.parent) if Path(path).parent.parent.exists() else "."
+                )
+                
+                response = process.stdout if process.returncode == 0 else process.stderr
+                
+                # Debug mode: show what Claude actually returned
+                if debug:
+                    print(f"\n  DEBUG - Claude's response (first 500 chars):")
+                    print(f"  {response[:500] if response else '[No response]'}")
+                    print(f"  Return code: {process.returncode}")
+                
+                # More robust parsing - check for various indicators
+                response_lower = response.lower() if response else ""
+                
+                # Check for false positive indicators
+                false_positive_indicators = [
+                    "false_positive:",
+                    "false positive:",
+                    "this is a false positive",
+                    "not a real security issue",
+                    "not actually vulnerable",
+                    "scanner incorrectly flagged",
+                    "no actual vulnerability",
+                    "safe from sql injection",
+                    "properly parameterized",
+                    "uses prepared statements"
+                ]
+                
+                # Check for true positive indicators
+                true_positive_indicators = [
+                    "true_positive:",
+                    "true positive:",
+                    "this is a real security issue",
+                    "actual security risk",
+                    "vulnerable to",
+                    "security vulnerability",
+                    "needs to be fixed",
+                    "should be addressed",
+                    "confirms the vulnerability"
+                ]
+                
+                # Determine classification
+                is_false_positive = any(indicator in response_lower for indicator in false_positive_indicators)
+                is_true_positive = any(indicator in response_lower for indicator in true_positive_indicators)
+                
+                # Handle classification
+                if is_false_positive and not is_true_positive:
+                    results['false_positives'].append({
+                        'alert': alert,
+                        'analysis': response
+                    })
+                    print(f"  → Identified as FALSE POSITIVE")
+                elif is_true_positive and not is_false_positive:
+                    results['true_positives'].append({
+                        'alert': alert,
+                        'analysis': response
+                    })
+                    print(f"  → Identified as TRUE POSITIVE")
+                else:
+                    # Ambiguous or unclear
+                    results['unclear'].append({
+                        'alert': alert,
+                        'analysis': response if response else 'Analysis failed or no response',
+                        'reason': 'Ambiguous response' if (is_false_positive and is_true_positive) else 'No clear determination'
+                    })
+                    print(f"  → UNCLEAR - requires manual review")
+                    if debug:
+                        if is_false_positive and is_true_positive:
+                            print(f"    Reason: Response contains both positive and negative indicators")
+                        else:
+                            print(f"    Reason: Response doesn't clearly indicate true/false positive")
+            else:
+                # For other tools, placeholder logic
+                print(f"Generated analysis prompt for {rule}")
+                results['unclear'].append({
+                    'alert': alert,
+                    'analysis': 'Requires manual review - tool integration pending'
+                })
         
         # Save results if output file specified
         if output_file:

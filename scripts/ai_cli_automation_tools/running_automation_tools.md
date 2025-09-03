@@ -38,7 +38,7 @@
     .venv/bin/python3 scripts/ai_cli_automation_tools/main_cli.py
     ```
 
-    Please see the main_cli.py for paramaters that can be added to the script call, such as "--ai-tool claude-code"
+    Please see the main_cli.py for paramaters that can be added to the script call, such as "--ai-tool claude-code --mode analyze"
 
 6. Follow the prompts listed and login / input your API key into claude code if you are using that option
 
