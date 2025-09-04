@@ -151,7 +151,7 @@ class AIAutomation:
             "unclear": "→ UNCLEAR - requires manual review",
         }
         print("AI Response Summary: \n", response)
-        print("  " + msgs[category])
+        print(f"{msgs[category]}")
 
     def analyze_alerts(self, alerts: List[Dict]):
         """

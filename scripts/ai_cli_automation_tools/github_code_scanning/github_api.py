@@ -8,6 +8,7 @@ import os
 import requests
 from typing import List, Dict, Optional
 from dotenv import load_dotenv
+from pathlib import Path
 
 class GitHubCodeScanning:  
     def __init__(self, owner: str, repo: str, token: Optional[str] = None):
@@ -24,11 +25,23 @@ class GitHubCodeScanning:
         self.repo = repo
         self.api_url = f"https://api.github.com/repos/{owner}/{repo}/code-scanning/alerts"
         self.per_page = 100
-        self.token = token or self._load_token()
+        self.token = token or self.load_github_token()
         self.headers = {"Accept": "application/vnd.github+json", "Authorization": f"Bearer {self.token}"}
     
-    @staticmethod
-    def _load_token() -> str:
+    def get_env_path(self, default_filename=".env"):
+        """
+        Gets the path to the .env file for the GitHub token
+
+        Args:
+            default_filename: Default filename for the .env file
+        Returns:
+            Full path to the .env file
+        """
+
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        return os.path.join(script_dir, "../setup", default_filename)
+
+    def load_github_token(self, dotenv_path=None):
         """
         Load GitHub personal access token from environment
         
@@ -39,17 +52,15 @@ class GitHubCodeScanning:
             ValueError: If token is not found in environment
         """
 
-        load_dotenv(dotenv_path="./scripts/ai_cli_automation_tools/setup/.env")
-        token = os.getenv("PERSONAL_ACCESS_TOKEN")
-        if token:
+        if dotenv_path is None:
+            dotenv_path = self.get_env_path()
+        load_dotenv(dotenv_path=dotenv_path)
+        if token := os.getenv("PERSONAL_ACCESS_TOKEN"):
             return token
         else:
-            raise ValueError("PERSONAL_ACCESS_TOKEN was not found in environment variables")
-    
-    def fetch_alerts(self, 
-                    state: str = "open", 
-                    rule_filter: Optional[str] = None,
-                    severity_filter: Optional[str] = None) -> List[Dict]:
+            raise ValueError("PERSONAL_ACCESS_TOKEN was not found in the environment variables")
+          
+    def fetch_alerts(self, state: str = "open", rule_filter: Optional[str] = None, severity_filter: Optional[str] = None) -> List[Dict]:
         """
         Fetch all code scanning alerts with optional filters
         
@@ -87,12 +98,12 @@ class GitHubCodeScanning:
         
         # Apply filters
         if rule_filter:
-            alerts = [a for a in alerts if a["rule"]["id"] == rule_filter]
+            alerts = [a for a in alerts if a.get("rule", {}).get("id") == rule_filter]
             
         if severity_filter:
             alerts = [
                 a for a in alerts 
-                if a["rule"].get("security_severity_level") == severity_filter
+                if aa.get("rule", {}).get("security_severity_level") == severity_filter
             ]
             
         return alerts

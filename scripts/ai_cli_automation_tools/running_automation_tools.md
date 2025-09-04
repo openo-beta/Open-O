@@ -33,7 +33,7 @@
         bash ./scripts/ai_cli_automation_tools/setup/install_packages.sh
     ```
 
-    **Before proceeding, if you are using claude code, login to your account if needed**
+    **Before proceeding, if you are using claude code, log in to your account if needed**
 
 7. Run the Python automation script by entering the command:  
     ```bash
