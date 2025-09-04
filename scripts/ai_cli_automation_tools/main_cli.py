@@ -8,6 +8,7 @@ import sys
 import argparse
 import json
 from typing import Optional
+from pathlib import Path
 from datetime import datetime
 
 # Import from the github_code_scanning subfolder
@@ -73,7 +74,7 @@ def setup_argparse() -> argparse.ArgumentParser:
     
     parser.add_argument(
         "--output",
-        help="Output file for results (JSON format)"
+        help="Output file name for analysis results (JSON format)"
     )
     
     return parser
@@ -128,7 +129,14 @@ def main():
             
         # Save results if output is specified
         if args.output:
-            with open(args.output, 'w') as f:
+            # Create output folder if it doesn't exist
+            output_dir = Path(__file__).parent / "output"
+            output_dir.mkdir(exist_ok=True)
+            
+            # Create full output path
+            output_path = output_dir / args.output
+
+            with open(output_path, 'w') as f:
                 json.dump({
                     'timestamp': datetime.now().isoformat(),
                     'mode': args.mode,
@@ -136,7 +144,7 @@ def main():
                     'repository': f"{args.owner}/{args.repo}",
                     'results': results
                 }, f, indent=2, default=str)
-            print(f"\nResults saved to {args.output}")
+            print(f"\nResults saved to: {output_path} as file name: {args.output}")
     except Exception as e:
         print(f"Error: {e}")
         sys.exit(1)
