@@ -25,15 +25,6 @@ echo "Installing required Python packages..."
 python3 -m pip install requests              # For HTTP requests to GitHub API
 python3 -m pip install python-dotenv        # For loading .env files
 
-# Additional packages that might be useful for the automation
-python3 -m pip install typing-extensions    # For better type hints (if using older Python)
-python3 -m pip install pathlib              # For path handling (usually built-in, but just in case)
-
-# If you plan to extend functionality
-python3 -m pip install pyyaml               # If you need to parse YAML configs
-python3 -m pip install colorama             # For colored terminal output
-python3 -m pip install tabulate             # For nice table formatting of results
-
 # Install uv for package management
 python3 -m pip install uv
 
