@@ -77,7 +77,7 @@ import org.springframework.stereotype.Component;
 
 import ca.openosp.openo.login.OscarOAuthDataProvider;
 import ca.openosp.openo.login.AppOAuth1Config;
-import ca.openosp.openo.dao.ProviderDao;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.webserv.oauth.OAuth1SignatureVerifier;
 

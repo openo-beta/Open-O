@@ -122,7 +122,6 @@
             <bean class="ca.openosp.openo.webserv.rest.RxLookupService"  autowire="byName"/>
             <bean class="ca.openosp.openo.webserv.rest.ProviderService"  autowire="byName"/>
             <bean class="ca.openosp.openo.webserv.rest.PatientDetailStatusService"  autowire="byName"/>
-            <bean class="ca.openosp.openo.webserv.rest.RSSFeedService"  autowire="byName"/>
             <bean class="ca.openosp.openo.webserv.rest.PersonaService"  autowire="byName"/>
             <bean class="ca.openosp.openo.webserv.rest.FormsService"  autowire="byName"/>
             <bean class="ca.openosp.openo.webserv.rest.OscarJobService"  autowire="byName"/>
