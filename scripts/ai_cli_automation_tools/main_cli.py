@@ -167,6 +167,7 @@ def main():
         if args.mode == "fix":
             ai.fix_alerts(alerts)
             results = None
+            print("Alerts fully processed for remediation. Please check your unstaged changes in git for the fixes.")
         else:
             results = ai.analyze_alerts(alerts)
             print_analysis_summary(results)

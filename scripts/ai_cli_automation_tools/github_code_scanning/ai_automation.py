@@ -184,4 +184,5 @@ class AIAutomation:
             rule = alert['rule']['id']
 
             prompt = self.generate_fix_prompt(alert)
-            self.execute_ai(prompt, mode="fix")
+            response = self.execute_ai(prompt, mode="fix")
+            print ("Full AI response to fix: \n", response)
