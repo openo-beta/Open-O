@@ -130,9 +130,9 @@ class AIAutomation:
             Category of response from the AI: (false positive, security issue, unclear)
         """
         low = text.lower().lstrip('*').strip()
-        if low.startswith("false positive:"):
+        if "false positive:" in low:
             return "false_positives"
-        if low.startswith("security issue:"):
+        if "security issue:" in low:
             return "security_issues"
         return "unclear"
 
@@ -150,7 +150,7 @@ class AIAutomation:
             "security_issues": "→ Identified as a SECURITY ISSUE",
             "unclear": "→ UNCLEAR - requires manual review",
         }
-        print("AI Response Summary: \n", response)
+        print("AI Response: \n", response)
         print(f"{msgs[category]}")
 
     def analyze_alerts(self, alerts: List[Dict]):
@@ -165,6 +165,7 @@ class AIAutomation:
 
         results = { "false_positives": [], "security_issues": [], "unclear": [] }
         for alert in alerts:
+            print(f"Analyzing alert: {alert['rule']['id']} at file path: {alert['most_recent_instance']['location']['path']}")
             raw = self.execute_ai(self.generate_analysis_prompt(alert), mode="analyze")
             cat = self._categorize(raw)
             results[cat].append({"alert": alert, "analysis": raw})
@@ -185,4 +186,5 @@ class AIAutomation:
 
             prompt = self.generate_fix_prompt(alert)
             response = self.execute_ai(prompt, mode="fix")
+            print(f"Fixing alert: {alert['rule']['id']} at file path: {alert['most_recent_instance']['location']['path']}")
             print ("Full AI response to fix: \n", response)

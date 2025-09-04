@@ -103,7 +103,7 @@ class GitHubCodeScanning:
         if severity_filter:
             alerts = [
                 a for a in alerts 
-                if aa.get("rule", {}).get("security_severity_level") == severity_filter
+                if a.get("rule", {}).get("security_severity_level") == severity_filter
             ]
             
         return alerts

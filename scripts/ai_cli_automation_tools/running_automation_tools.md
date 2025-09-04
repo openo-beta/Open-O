@@ -16,7 +16,7 @@
     *.min.js
     ```
 
-4. Input the following command in your terminal (`Ctrl + Shift + `\`) if you are using API keys:  
+4. Input the following command in your terminal use ``Ctrl + Shift + ` `` to open the terminal in VS Code) if you are using API keys:  
     ```bash
     export ANTHROPIC_API_KEY=<your_api_key_here>
     ```
