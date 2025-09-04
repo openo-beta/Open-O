@@ -19,6 +19,7 @@ class GitHubCodeScanning:
             repo: GitHub repository name
             token: GitHub personal access token (optional, will load from env if not provided)
         """
+        
         self.owner = owner
         self.repo = repo
         self.api_url = f"https://api.github.com/repos/{owner}/{repo}/code-scanning/alerts"
@@ -37,11 +38,13 @@ class GitHubCodeScanning:
         Raises:
             ValueError: If token is not found in environment
         """
+
         load_dotenv(dotenv_path="./scripts/ai_cli_automation_tools/setup/.env")
         token = os.getenv("PERSONAL_ACCESS_TOKEN")
-        if not token:
+        if token:
+            return token
+        else:
             raise ValueError("PERSONAL_ACCESS_TOKEN was not found in environment variables")
-        return token
     
     def fetch_alerts(self, 
                     state: str = "open", 
@@ -58,6 +61,7 @@ class GitHubCodeScanning:
         Returns:
             List of alert dictionaries
         """
+
         alerts = []
         page = 1
         
@@ -68,7 +72,7 @@ class GitHubCodeScanning:
                 "state": state
             }
             
-            response = requests.get(self.api_url, headers=self.headers, params=params)
+            response = requests.get(self.api_url, headers=self.headers, params=params, timeout=30)
             
             if response.status_code != 200:
                 print(f"Error {response.status_code}: {response.text}")

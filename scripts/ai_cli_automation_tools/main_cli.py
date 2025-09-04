@@ -79,72 +79,101 @@ def setup_argparse() -> argparse.ArgumentParser:
     
     return parser
 
-def main():
-    """Main method to run the CLI tool"""
-    parser = setup_argparse()
-    args = parser.parse_args()
+def initialize_clients(owner, repo, ai_tool):
+    """
+    Initilize the GitHub and AI clients
+        
+    Args:
+        owner: GitHub repository owner
+        repo: GitHub repository name
+        ai_tool: The AI tool to use (aider, claude-code, custom)
+    Returns:
+        GitHubCodeScanning instance, and AIAutomation instance
+    """
     
+    print(f"Initializing {ai_tool}…")
+    return GitHubCodeScanning(owner, repo), AIAutomation(ai_tool=ai_tool)
+
+def load_and_limit_alerts(github_client, state, rule, severity, limit):
+    """
+    Loads the github alerts and applies any limit if specified
+        
+    Args:
+        github_client: The github client instance
+        state: The alert state to filter on
+        rule: The rule ID to filter on
+        severity: The severity level to filter on
+        limit: The maximum number of alerts to return (None for no limit)
+    Returns:
+        List of alert dictionaries
+    """
+
+    alerts = github_client.fetch_alerts(
+        state=state, rule_filter=rule, severity_filter=severity
+    )
+    if limit:
+        alerts = alerts[:limit]
+    print(f"Found {len(alerts)} alerts to process.")
+    return alerts
+
+def print_analysis_summary(results):
+    """
+    Prints the analysis summary to the console
+        
+    Args:
+        results: The result tally (false positives, security issues, unclear)
+    """
+
+    print("\n" + "=" * 60)
+    print("Analysis Summary")
+    print("=" * 60)
+    print(f"False Positives: {len(results.get('false_positives', []))}")
+    print(f"Security Issues:  {len(results.get('security_issues', []))}")
+    print(f"Unclear/Review:   {len(results.get('unclear', []))}")
+
+def save_results(output, args, results):
+    """
+    Saves the results to a JSON file in the output directory
+        
+    Args:
+        output: The output file name
+        args: The command line arguments
+        results: The results dictionary to save to the output file
+    """
+
+    output_dir = Path(__file__).parent / "output"
+    output_dir.mkdir(exist_ok=True)
+    path = output_dir / output
+    with open(path, "w") as f:
+        json.dump({
+            "timestamp": datetime.now().isoformat(),
+            "mode": args.mode,
+            "ai_tool": args.ai_tool,
+            "repository": f"{args.owner}/{args.repo}",
+            "results": results
+        }, f, indent=2, default=str)
+    print(f"\nResults saved to: {path}")
+
+def main():
+    """Main function to run the CLI tool"""
+    args = setup_argparse().parse_args()
     try:
-        # Initialize clients
-        print(f"Initializing {args.ai_tool} for {args.mode} mode...")
-        github_client = GitHubCodeScanning(args.owner, args.repo)
-        ai_client = AIAutomation(ai_tool=args.ai_tool)
-        
-        # Fetch alerts
-        print(f"Fetching {args.state} alerts from {args.owner}/{args.repo}...")
-        alerts = github_client.fetch_alerts(
-            state=args.state,
-            rule_filter=args.rule,
-            severity_filter=args.severity
-        )
-        
+        github, ai = initialize_clients(args.owner, args.repo, args.ai_tool)
+        alerts = load_and_limit_alerts(github, args.state, args.rule, args.severity, args.limit)
         if not alerts:
             print("No matching alerts found.")
             return
-        
-        # Apply limit if specified
-        if args.limit:
-            alerts = alerts[:args.limit]
-        
-        print(f"Found {len(alerts)} alerts to process.")
-        
-        # Process based on mode
-        if args.mode == "fix":
-            ai_client.fix_alerts(
-                alerts,
-            )
-        else:
-            results = ai_client.analyze_alerts(
-                alerts,
-                output_file=args.output
-            )
-            
-            print("\n" + "=" * 60)
-            print("Analysis Summary")
-            print("=" * 60)
-            
-            print(f"False Positives: {len(results.get('false_positives', []))}")
-            print(f"Security Issues: {len(results.get('security_issues', []))}")
-            print(f"Unclear/Needs Review: {len(results.get('unclear', []))}")
-            
-        # Save results if output is specified
-        if args.output:
-            # Create output folder if it doesn't exist
-            output_dir = Path(__file__).parent / "output"
-            output_dir.mkdir(exist_ok=True)
-            
-            # Create full output path
-            output_path = output_dir / args.output
 
-            with open(output_path, 'w') as f:
-                json.dump({
-                    'timestamp': datetime.now().isoformat(),
-                    'mode': args.mode,
-                    'ai_tool': args.ai_tool,
-                    'repository': f"{args.owner}/{args.repo}",
-                    'results': results
-                }, f, indent=2, default=str)
-            print(f"\nResults saved to: {output_path} as file name: {args.output}")
+        if args.mode == "fix":
+            ai.fix_alerts(alerts)
+            results = None
+        else:
+            results = ai.analyze_alerts(alerts)
+            print_analysis_summary(results)
+
+        if args.output and results is not None:
+            save_results(args.output, args, results)
+
     except Exception as e:
         print(f"Error: {e}")
         sys.exit(1)

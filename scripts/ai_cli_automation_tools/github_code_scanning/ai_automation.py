@@ -10,7 +10,6 @@ import sys
 from typing import Dict, Optional, List
 from pathlib import Path
 
-
 class AIAutomation:
     def __init__(self, ai_script_path: str = "./scripts/ai_cli_automation_tools/setup/run_ai.sh", ai_tool: str = "claude-code"):
         """
@@ -20,9 +19,60 @@ class AIAutomation:
             ai_script_path: Path to the AI shell script
             ai_tool: Which AI tool to use ('claude-code', 'aider', etc.)
         """
+        
         self.ai_script_path = ai_script_path
         self.ai_tool = ai_tool
+    
+    FIX_PROMPT = """Please fix this security vulnerability:
+                    **Issue:** {rule_id} - {description}
+                    **Severity:** {severity} | **CWE:** {cwe}
+                    **Location:** {path} (lines {start_line}-{end_line})
+
+                    **Requirements:**
+                    1. Completely resolve the vulnerability
+                    2. Preserve existing functionality
+                    3. Follow security best practices
+
+                    **Context:** {message}"""
+
+    ANALYSIS_PROMPT = """Analyze this alert for false positive:
+                    **Alert:** {rule_id} - {description}
+                    **Severity:** {severity} | **Location:** {path}:{start_line}-{end_line}
+                    **Message:** {message}
+
+                    **Required Analysis:**
+                    1. Is this a false positive? (YES/NO)
+                    2. Explain reasoning
+                    3. Check for: existing mitigations, escaped input, test code, trusted sources
+
+                    **Response Format:** Start with "FALSE POSITIVE:" or "SECURITY ISSUE:" then explain.""" 
+
+    def generate_analysis_prompt(self, alert: Dict) -> str:
+        """
+        Generate a prompt for analyzing if an alert is a false positive
         
+        Args:
+            alerts: A list of alert dictionaries
+            
+        Returns:
+            String prompt to be build with the template builder
+        """
+        
+        return self.build_prompt(alert, self.ANALYSIS_PROMPT)
+
+    def generate_fix_prompt(self, alert: Dict) -> str:
+        """
+        Generate a prompt for fixing an alert
+        
+        Args:
+            alerts: A list of alert dictionaries
+            
+        Returns:
+            String prompt to be build with the template builder
+        """
+        
+        return self.build_prompt(alert, self.FIX_PROMPT)
+
     def build_prompt(self, alert: Dict, template: str) -> str:
         """
         Build a prompt from the alert data and template
@@ -34,6 +84,7 @@ class AIAutomation:
         Returns:
             Fully built string prompt for the AI tool
         """
+
         rule = alert['rule']
         loc = alert['most_recent_instance']['location']
         msg = alert.get('most_recent_instance', {}).get('message', {}).get('text', '')
@@ -50,118 +101,75 @@ class AIAutomation:
             end_col=loc.get('end_column', 'N/A'),
             message=msg or 'See the highlighted code section'
         )
-    
-    def generate_fix_prompt(self, alert: Dict) -> str:
-        """
-        Generate a prompt for fixing an alert
-        
-        Args:
-            alerts: A list of alert dictionaries
-            
-        Returns:
-            String prompt to be build with the template builder
-        """
-        template = """Please fix this security vulnerability:
-                    **Issue:** {rule_id} - {description}
-                    **Severity:** {severity} | **CWE:** {cwe}
-                    **Location:** {path} (lines {start_line}-{end_line})
-
-                    **Requirements:**
-                    1. Completely resolve the vulnerability
-                    2. Preserve existing functionality
-                    3. Follow security best practices
-
-                    **Context:** {message}"""
-        
-        prompt = self.build_prompt(alert, template)
-        return prompt
-    
-    def generate_analysis_prompt(self, alert: Dict) -> str:
-        """
-        Generate a prompt for analyzing if an alert is a false positive
-        
-        Args:
-            alerts: A list of alert dictionaries
-            
-        Returns:
-            String prompt to be build with the template builder
-        """
-        template = """Analyze this alert for false positive:
-                    **Alert:** {rule_id} - {description}
-                    **Severity:** {severity} | **Location:** {path}:{start_line}-{end_line}
-                    **Message:** {message}
-
-                    **Required Analysis:**
-                    1. Is this a false positive? (YES/NO)
-                    2. Explain reasoning
-                    3. Check for: existing mitigations, escaped input, test code, trusted sources
-
-                    **Response Format:** Start with "FALSE POSITIVE:" or "SECURITY ISSUE:" then explain.""" 
-        return self.build_prompt(alert, template)
 
     def execute_ai(self, prompt: str, mode: str) -> str:
-        if self.ai_tool == "claude-code" and mode == "analyze":
-            # For analysis, use Claude to just analyze, not edit
-            cmd = ["claude", "--print", prompt]
-        else:
-            # For other tools, use the AI script
-            cmd = [self.ai_script_path, self.ai_tool, prompt]
-            
-        # Execute command
-        process = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-        )
+        """
+        Executes the AI tool with the given prompt and mode
+        
+        Args:
+            prompt: The full prompt given to the AI
+            mode: 'fix' to remediate issues, 'analyze' to detect false positives
+        Returns:
+            output string from the AI tool
+        """
 
-        ai_output = process.stdout if process.returncode == 0 else process.stderr
+        cmd = (["claude", "--print", prompt] 
+               if self.ai_tool=="claude-code" and mode=="analyze"
+               else [self.ai_script_path, self.ai_tool, prompt])
+        proc = subprocess.run(cmd, capture_output=True, text=True)
+        out = proc.stdout if proc.returncode==0 else proc.stderr
+        return out or "[No response]"
 
-        print(f"\n  AI response:")
-        print(f"  {ai_output if ai_output else '[No response]'}")
+    def _categorize(self, text: str) -> str:
+        """
+        Creates the category of the AI analysis based on the response
+        
+        Args:
+            text: The full response from the AI
+        Returns:
+            Category of response from the AI: (false positive, security issue, unclear)
+        """
+        low = text.lower().lstrip('*').strip()
+        if low.startswith("false positive:"):
+            return "false_positives"
+        if low.startswith("security issue:"):
+            return "security_issues"
+        return "unclear"
 
-        return ai_output
+    def _report(self, response: str, category: str):
+        """
+        Creates a summary report of the AI analysis, and prints to the console
+        
+        Args:
+            response: The full response from the AI
+            category: The category of response from the AI: (false positive, security issue, unclear)
+        """
 
-    def analyze_alerts(self, alerts: List[Dict], output_file: Optional[str] = None) -> Dict[str, List]:
+        msgs = {
+            "false_positives": "→ Identified as a FALSE POSITIVE",
+            "security_issues": "→ Identified as a SECURITY ISSUE",
+            "unclear": "→ UNCLEAR - requires manual review",
+        }
+        print("AI Response Summary: \n", response)
+        print("  " + msgs[category])
+
+    def analyze_alerts(self, alerts: List[Dict]):
         """
         Analyze alerts for false positives
         
         Args:
             alerts: A list of alert dictionaries
-            output_file: Optional JSON file to save results
-            
         Returns:
             Dictionary with a list of results
         """
-        results = {
-            'false_positives': [],
-            'security_issues': [],
-            'unclear': []
-        }
 
-        for i, alert in enumerate(alerts, 1):
-            path = alert['most_recent_instance']['location']['path']
-            rule = alert['rule']['id']
-
-            prompt = self.generate_analysis_prompt(alert)
-            ai_output = self.execute_ai(prompt, mode="analyze")
-
-            response_clean = ai_output.lower().replace('*', '').strip()
-            alert_data = {
-                'alert': alert,
-                'analysis': ai_output
-            }
-
-            if response_clean.startswith("false positive:"):
-                results['false_positives'].append(alert_data)
-                print(f"  → Identified as a FALSE POSITIVE")
-            elif response_clean.startswith("security issue:"):
-                results['security_issues'].append(alert_data)
-                print(f"  → Identified as a SECURITY ISSUE")
-            else:
-                results['unclear'].append(alert_data)
-                print(f"  → UNCLEAR - requires manual review")
-
-            return results
+        results = { "false_positives": [], "security_issues": [], "unclear": [] }
+        for alert in alerts:
+            raw = self.execute_ai(self.generate_analysis_prompt(alert), mode="analyze")
+            cat = self._categorize(raw)
+            results[cat].append({"alert": alert, "analysis": raw})
+            self._report(raw, cat)
+        return results
 
     def fix_alerts(self, alerts: List[Dict]):
         """

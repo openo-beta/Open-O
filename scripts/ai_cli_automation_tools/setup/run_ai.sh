@@ -6,9 +6,9 @@ shift 2
 
 case "$AI_TOOL" in
     "aider")
-        aider "$FILE_PATH" $@ --yes --subtree-only
+        aider "$FILE_PATH" "$@" --yes --subtree-only
         ;;
     "claude-code")
-        claude --print "$FILE_PATH" $@ --permission-mode acceptEdits
+        claude --print "$FILE_PATH" "$@" --permission-mode acceptEdits
         ;;
 esac
