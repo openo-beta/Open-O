@@ -24,6 +24,26 @@
 
 --%>
 
+<%--
+  attachmentFrameset.jsp - Creates frameset for PDF attachment preview
+  
+  This JSP page creates a frameset structure for displaying PDF attachments
+  associated with a specific patient demographic. It divides the browser window
+  into two frames for preview and source management.
+  
+  Frame structure:
+  - Top frame (300px): Displays PDF preview via generatePreviewPDF.jsp
+  - Bottom frame (0px): Hidden frame for source/processing operations
+  
+  Request parameters:
+  - demographic_no: Patient demographic ID for attachment retrieval
+  
+  Error handling:
+  - Displays message if no demographic is selected
+  
+  @since 2003
+--%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -33,20 +53,24 @@
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <%
+// Retrieve the patient demographic number from request
 String demographic_no = request.getParameter("demographic_no");
 %>
 
     <title>OSCAR attachment</title>
 
         <% if ( demographic_no != null ) { %>
-
+    <%-- Create frameset when demographic is provided --%>
     <frameset rows="300,0">
+        <%-- Main frame: Shows the PDF preview for the selected demographic --%>
         <frame name="main"
                src="generatePreviewPDF.jsp?demographic_no=<%=demographic_no%>"
                noresize scrolling=auto marginheight=5 marginwidth=5>
+        <%-- Hidden source frame: Used for background processing --%>
         <frame name="srcFrame" src="">
     </frameset>
         <% } else { %>
+    <%-- Error message when no demographic selected --%>
     Please select a demographic.
         <% } %>
 </html>

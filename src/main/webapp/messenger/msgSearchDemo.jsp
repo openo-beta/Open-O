@@ -24,6 +24,51 @@
 
 --%>
 
+<%--
+/**
+ * Demographic Search Modal for Message Recipients
+ *
+ * This JSP page provides a demographic search interface used as a popup window
+ * for selecting message recipients in the OpenO EMR messenger system. It allows
+ * searching for active, inactive, or all patients and writing the selection back
+ * to the parent window's message composition form.
+ *
+ * Main Features:
+ * - Patient search with configurable search modes (name, phone, etc.)
+ * - Support for active, inactive, and all patient status filtering
+ * - Automatic form submission on first load when triggered from parent window
+ * - Selected demographic data written back to parent window's message form
+ * - Integrated with OpenO's demographic control system
+ *
+ * Security Requirements:
+ * - Requires "_msg" object read permissions via security taglib
+ * - User session validation and role-based access control
+ *
+ * Request Parameters:
+ * - keyword: Search term for patient lookup
+ * - demographic_no: Selected patient ID (returned from search results)
+ * - firstSearch: Boolean flag to auto-submit search on page load
+ * - search_mode: Search type (name, phone, etc.) from oscar.properties
+ *
+ * Session Dependencies:
+ * - Standard user session with role information
+ * - Integration with demographic control system
+ *
+ * JavaScript Functions:
+ * - searchInactive(): Search for inactive patients only
+ * - searchAll(): Search across all patient statuses
+ * - write2Parent(): Write selected demographic back to opener window
+ * - checkTypeIn(): Form validation (placeholder, always returns true)
+ *
+ * Parent Window Integration:
+ * - Updates opener's demographic_no field with selected patient ID
+ * - Updates selectedDemo field with patient display name
+ * - Automatically closes search window after selection
+ *
+ * @since 2003
+ */
+--%>
+
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -58,30 +103,44 @@
 
 
 <script language="JavaScript">
+    /**
+     * Search for inactive patients only
+     */
     function searchInactive() {
         document.titlesearch.ptstatus.value = "inactive";
         if (checkTypeIn()) document.titlesearch.submit();
     }
 
+    /**
+     * Search across all patient statuses (active and inactive)
+     */
     function searchAll() {
         document.titlesearch.ptstatus.value = "";
         if (checkTypeIn()) document.titlesearch.submit();
     }
 
+    /**
+     * Form validation placeholder - always returns true
+     * @return {boolean} Always true, no actual validation implemented
+     */
     function checkTypeIn() {
         return true;
     }
 
-
+    /**
+     * Write selected demographic data back to parent message window
+     * @param {string} keyword - Patient display name
+     * @param {string} demographic_no - Patient demographic number
+     */
     function write2Parent(keyword, demographic_no) {
-
+        // Update parent window's message form with selected patient
         opener.document.forms[0].demographic_no.value = demographic_no;
         opener.document.forms[0].selectedDemo.value = keyword;
         opener.document.forms[0].keyword.value = "";
-        //opener.setTimeout("document.encForm.enTextarea.scrollTop=2147483647", 0);  // setTimeout is needed to allow browser to realize that text field has been updated
+        
+        // Focus back to keyword field in parent window
         opener.document.forms[0].keyword.focus();
     }
-
 
 </script>
 
@@ -147,11 +206,8 @@
     </form>
 </table>
 <script>
-
-    if (<%=demographic_no%> !=
-    null
-    )
-    {
+    // Auto-close window and write selection back to parent if demographic was selected
+    if ("<%=demographic_no%>" != "null") {
         write2Parent("<%=keyword%>", "<%=demographic_no%>");
         self.window.close();
     }

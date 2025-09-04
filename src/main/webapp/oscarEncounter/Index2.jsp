@@ -920,7 +920,7 @@
                 var lastImage = $(lastName);
                 var expand;
                 var expandPath = "<c:out value="${ctx}"/>/oscarEncounter/graphics/expand.gif";
-                var collapsePath = "<c:out value="${ctx}"/>/oscarMessenger/img/collapse.gif";
+                var collapsePath = "<c:out value="${ctx}"/>/messenger/img/collapse.gif";
                 var transparentPath = "<c:out value="${ctx}"/>/images/clear.gif";
 
                 for (var idx = threshold; idx < items.length; ++idx) {
