@@ -637,7 +637,7 @@ public class ReportBuilder {
             asofDate = "'" + formatter.format(frm.getAgeAsOf()) + "'";
         }
 
-        // is this needed ??? oscar.oscarMessenger.util.MsgStringQuote s = new oscar.oscarMessenger.util.MsgStringQuote();
+        // is this needed ??? oscar.messenger.util.MsgStringQuote s = new oscar.messenger.util.MsgStringQuote();
 
         boolean theWhereFlag = true;
         boolean theFirstFlag = true;

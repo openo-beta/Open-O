@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(make:*)",
+      "Read(/usr/local/tomcat/webapps/oscar/messenger/**)",
+      "Bash(sed:*)",
+      "Bash(mv:*)",
+      "Bash(ls:*)",
+      "Bash(wc:*)",
+      "Bash(xargs:*)",
+      "Edit(/workspace/src/**)",
+      "Read(/workspace/src/**)",
+      "Write(/workspace/.claude/**)",
+      "Bash(git log:*)",
+      "Bash(for file in *)",
+      "Bash(do *)",
+      "Bash(done)",
+      "Bash(if *)",
+      "Bash(then *)",
+      "Bash(fi)",
+      "Bash(echo:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(cut:*)",
+      "Bash(sort:*)",
+      "Bash(basename:*)",
+      "Bash(sh -c:*)",
+      "Bash(test:*)",
+      "Bash([[:*)",
+      "Bash(while read:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

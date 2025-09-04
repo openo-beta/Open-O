@@ -24,30 +24,41 @@
 
 --%>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%--
+  selfCloseAndRefreshOpener.jsp - Closes popup and refreshes parent window
+  
+  This utility JSP page performs two actions when loaded:
+  1. Refreshes the parent window that opened this popup
+  2. Closes the current popup window
+  
+  This is commonly used after operations that modify data displayed in the
+  parent window, ensuring the parent shows updated information after the
+  popup completes its task.
+  
+  Usage scenarios:
+  - After sending a message (refreshes message list)
+  - After modifying message groups (updates group display)
+  - Following delegate selection (updates delegate info)
+  
+  Technical notes:
+  - top.opener refers to the window that opened this popup
+  - Refresh happens before close to ensure it executes
+  - Requires popup to be opened via window.open()
+  
+  @since 2003
+--%>
+
+<html>
 
 
-<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%
-    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-    boolean authed = true;
-%>
-<security:oscarSec roleName="<%=roleName$%>" objectName="_msg" rights="r" reverse="<%=true%>">
-    <%authed = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_msg");%>
-</security:oscarSec>
-<%
-    if (!authed) {
-        return;
-    }
-%>
+<body>
 
-<%@ page import="ca.openosp.openo.util.*" %>
-<%@ page import="ca.openosp.openo.util.Doc2PDF" %>
-<%
+<script>
+    // Refresh the parent window to show updated data
+    top.opener.location.reload();
+    // Close this popup window
+    top.window.close();
+</script>
 
-    String srcText = request.getParameter("srcText");
-
-    Doc2PDF.parseString2PDF(request, response, "<HTML>" + srcText + "</HTML>");
-
-%>
+</body>
+</html>

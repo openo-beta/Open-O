@@ -38,6 +38,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.Before;
+import org.oscarehr.common.dao.utils.SchemaUtils;
 import ca.openosp.openo.dashboard.query.DrillDownAction;
 import ca.openosp.openo.dashboard.query.RangeInterface;
 import ca.openosp.openo.dashboard.query.RangeInterface.Limit;
@@ -49,6 +51,11 @@ public class IndicatorTemplateXMLTest {
 
     private static IndicatorTemplateXML indicatorTemplateXML;
     private static Document xmlDocument;
+
+    @Before
+    public void before() throws Exception {
+        SchemaUtils.restoreTable("demographicExt");
+    }
 
     @BeforeClass
     public static void setUpBeforeClass() {

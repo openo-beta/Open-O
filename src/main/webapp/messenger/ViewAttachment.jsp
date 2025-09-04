@@ -24,9 +24,61 @@
 
 --%>
 
-<%@ page import=" java.util.*, org.w3c.dom.*" %>
+<%--
+/**
+ * Hierarchical Attachment Viewer
+ *
+ * This JSP page provides a hierarchical tree-view interface for viewing and managing
+ * message attachments in the OpenO EMR messenger system. It displays attachment data
+ * in an expandable/collapsible tree structure and allows users to save or modify
+ * attachments before sending messages.
+ *
+ * Main Features:
+ * - Interactive tree-view display of attachment data with expand/collapse functionality
+ * - XML-based attachment data parsing and rendering
+ * - Support for special AR (Antenatal Record) forms with custom navigation links
+ * - Form-based attachment management with save functionality
+ * - Cross-browser compatibility with IE and Mozilla/Firefox support
+ *
+ * Security Requirements:
+ * - Requires "_msg" object read permissions via security taglib
+ * - User session validation and role-based access control
+ * - Validates msgSessionBean presence and validity
+ *
+ * Request Attributes:
+ * - Attachment: XML string containing structured attachment data
+ * - attId: Attachment ID for form processing and AR form links
+ *
+ * Session Dependencies:
+ * - msgSessionBean: Required for attachment management context
+ * - Must be valid session bean or redirects to index.jsp
+ *
+ * JavaScript Functions:
+ * - showTbl(): Toggles visibility of tree nodes and updates expand/collapse icons
+ * - expandAll(): Expands all collapsed tree nodes
+ * - collapseAll(): Collapses all expanded tree nodes
+ * - chkClick(): Prevents event bubbling for checkbox clicks
+ * - popupViewAttach(): Opens attachment viewing popup windows
+ *
+ * XML Structure Support:
+ * - Document root with nested tables, items, and content elements
+ * - Supports removable and non-removable items
+ * - Field-based content display with name/value pairs
+ *
+ * AR Form Integration:
+ * - Special handling for AR Form attachments
+ * - Direct links to AR1, AR2 Pg1, and AR2 Pg2 forms
+ * - Integrated with encounter form system
+ *
+ * @since 2003
+ */
+--%>
+
 <%@ page
-        import="ca.openosp.openo.messenger.docxfer.send.*,ca.openosp.openo.messenger.docxfer.util.*" %>
+        import="ca.openosp.openo.messenger.docxfer.send.*,ca.openosp.openo.messenger.docxfer.util.*, ca.openosp.openo.util.*" %>
+<%@ page import="java.util.*, org.w3c.dom.*" %>
+<%@ page import="ca.openosp.openo.messenger.docxfer.util.MsgCommxml" %>
+<%@ page import="ca.openosp.openo.util.UtilXML" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -35,9 +87,9 @@
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
 %>
-<security:oscarSec roleName="<%=roleName$%>" objectName="_msg" rights="w" reverse="<%=true%>">
+<security:oscarSec roleName="<%=roleName$%>" objectName="_msg" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../../securityError.jsp?type=_msg");%>
+    <%response.sendRedirect("../securityError.jsp?type=_msg");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -46,43 +98,32 @@
 %>
 
 
-<%
-    String demoNo = request.getParameter("val2");
-    String prov = request.getParameter("val1");
+<c:if test="${empty sessionScope.msgSessionBean}">
+    <% response.sendRedirect("index.jsp"); %>
+</c:if>
+<c:choose>
+    <c:when test="${not empty sessionScope.msgSessionBean}">
+        <c:set var="bean" value="${sessionScope.msgSessionBean}" scope="page"/>
+        <c:if test="${bean.valid == false}">
+            <% response.sendRedirect("index.jsp"); %>
+        </c:if>
+    </c:when>
+</c:choose>
 
-    MsgSessionBean bean = null;
-    bean = new MsgSessionBean();
-
-    bean.setProviderNo(prov);
-
-
-    bean.estUserName();
-    request.getSession().setAttribute("msgSessionBean", bean);
-
-
-%>
-
-
-<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/encounterStyles.css">
-
-<%@page import="ca.openosp.openo.utility.MiscUtils" %>
-<%@ page import="ca.openosp.openo.messenger.pageUtil.MsgSessionBean" %>
-<%@ page import="ca.openosp.openo.messenger.docxfer.util.MsgCommxml" %>
-<%@ page import="ca.openosp.openo.messenger.docxfer.send.MsgGenerate" %>
+<link rel="stylesheet" type="text/css" href="encounterStyles.css">
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
-
     <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
 
     <script language="javascript">
+        // Cross-browser compatibility fix for IE vs Mozilla/Firefox event handling
         var browserName = navigator.appName;
         if (browserName == "Netscape") {
-
             if (document.implementation) {
-                //this detects W3C DOM browsers (IE is not a W3C DOM Browser)
+                // Detects W3C DOM browsers (IE is not a W3C DOM Browser)
                 if (Event.prototype && Event.prototype.__defineGetter__) {
-                    //this detects Mozilla Based Browsers
+                    // Detects Mozilla Based Browsers - add srcElement property for compatibility
                     Event.prototype.__defineGetter__("srcElement", function () {
                             var src = this.target;
                             if (src && src.nodeType == Node.TEXT_NODE)
@@ -94,11 +135,16 @@
             }
         }
 
+        /**
+         * Toggles visibility of tree table nodes and updates expand/collapse icons
+         * @param {string} tblName - ID of table to toggle (usually 'tblNode')
+         * @param {Event} event - Click event from tree node
+         */
         function showTbl(tblName, event) {
             var i;
-
             var span;
 
+            // Find the span element that contains the clickable tree node
             if (event.srcElement.tagName == 'SPAN') {
                 span = event.srcElement;
             } else {
@@ -112,6 +158,7 @@
             }
 
             if (span != 'undefined') {
+                // Toggle the expand/collapse icon
                 var imgs = span.getElementsByTagName('IMG');
                 if (imgs.length > 0) {
                     var img = imgs.item(0);
@@ -123,12 +170,10 @@
                     }
                 }
 
+                // Find and toggle the associated table visibility
                 var nods = span.parentNode.childNodes;
-
-
                 for (i = 0; i < nods.length; i++) {
                     var nod = nods.item(i);
-
                     if (nod.id == tblName) {
                         if (nod.style.display == "none") {
                             nod.style.display = "";
@@ -140,60 +185,71 @@
             }
         }
 
+        /**
+         * Expands all collapsed tree nodes by clicking plus icons
+         */
         function expandAll() {
             var i;
             var root = document.all('tblRoot');
-
             var col = root.getElementsByTagName('IMG');
 
+            // Click all plus icons to expand collapsed nodes
             for (i = 0; i < col.length; i++) {
                 var nod = col.item(i);
-
                 if (nod.src.search('plus.gif') > -1) {
                     nod.click();
                 }
             }
         }
 
+        /**
+         * Collapses all expanded tree nodes by clicking minus icons
+         */
         function collapseAll() {
             var i;
             var root = document.all('tblRoot');
-
             var col = root.getElementsByTagName('IMG');
 
+            // Click all minus icons to collapse expanded nodes
             for (i = 0; i < col.length; i++) {
                 var nod = col.item(i);
-
                 if (nod.src.search('minus.gif') > -1) {
                     nod.click();
                 }
             }
         }
 
+        /**
+         * Opens attachment viewing popup window
+         * @param {number} vheight - Window height
+         * @param {number} vwidth - Window width  
+         * @param {string} varpage - Page URL to open
+         */
+        function popupViewAttach(vheight, vwidth, varpage) {
+            var page = varpage;
+            windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+            var popup = window.open(varpage, "oscarMVA", windowprops);
+            if (popup != null) {
+                if (popup.opener == null) {
+                    popup.opener = self;
+                }
+            }
+        }
+
+        /**
+         * Prevents event bubbling when checkboxes are clicked
+         */
         function chkClick() {
             event.cancelBubble = true;
         }
     </script>
     <%
+        // Parse attachment XML data for tree display
         Document xmlDoc = null;
-
-        try {
-            int demographicNo = Integer.parseInt(demoNo);
-
-            MsgGenerate gen = new MsgGenerate();
-
-            xmlDoc = gen.getDocument(demographicNo);
-        } catch (Exception ex) {
-            MiscUtils.getLogger().error("Error", ex);
-            response.sendRedirect("error.html");
-        }
-
-        if (xmlDoc == null) {
-            response.sendRedirect("error.html");
-        }
+        String attch = (String) request.getAttribute("Attachment");
+        xmlDoc = MsgCommxml.parseXML(attch);
 
         Element root = xmlDoc.getDocumentElement();
-
     %>
     <%!
         String spanStartRoot = "<span class=\"treeNode\" onclick=\"javascript:showTbl('tblRoot',event);\">"
@@ -214,7 +270,6 @@
 
         void DrawDoc(Element root, JspWriter out)
                 throws javax.servlet.jsp.JspException, java.io.IOException {
-
             out.print(spanStartRoot + "Document Transfer" + spanEnd);
             out.print(tblStartRoot);
 
@@ -230,11 +285,10 @@
 
         void DrawTable(Element tbl, JspWriter out)
                 throws javax.servlet.jsp.JspException, java.io.IOException {
-            NodeList lst = tbl.getChildNodes();
-
             out.print(spanStart + tbl.getAttribute("name") + spanEnd);
             out.print(tblStart);
 
+            NodeList lst = tbl.getChildNodes();
             for (int i = 0; i < lst.getLength(); i++) {
                 out.print(tblRowStart);
                 DrawItem((Element) lst.item(i), out);
@@ -247,8 +301,8 @@
                 throws javax.servlet.jsp.JspException, java.io.IOException {
             out.print(spanStart);
             if (!item.getAttribute("removable").equalsIgnoreCase("false")) {
-                String sName = "item" + item.getAttribute("itemId");
-                out.print("<input type=checkbox name='" + sName + "' onclick='javascript:chkClick();'/>");
+                // String sName = "item" + item.getAttribute("itemId");
+                // out.print("<input type=checkbox name='" + sName + "' onclick='javascript:chkClick();'/>");
             }
             out.print(item.getAttribute("name") + ": " + item.getAttribute("value") + spanEnd);
             out.print(tblStartContent);
@@ -304,33 +358,31 @@
     <tr>
         <td class="MainTableLeftColumn">&nbsp;</td>
         <td class="MainTableRightColumn">
-            <%
-                //                <table width="100%" cellspacing=0 cellpadding=0>
-//                    <tr>
-//                        <td>
-//                            <div class="DivContentTitle">Document Transfer</div>
-//                        </td>
-//                        <td align=right>
-//                            <a href="javascript:window.close();">Close</a>
-//                        </td>
-//                    </tr>
-//                </table>
-            %>
             <hr style="color: #A9A9A9;">
-            Please Select the eDocs you would like to transfer for this patient.
-            Items without a check box will be sent by default.
             <div style="height: 6px;"></div>
 
-            <form method="POST" action="PostItems.jsp"><input type=hidden
-                                                              name="xmlDoc"
-                                                              value="<%= MsgCommxml.encode64(MsgCommxml.toXML(root)) %>"/> <% DrawDoc(root, out); %>
-                <br>
-                <input type=submit value="Send These eDocs"/></form>
+            <form method="POST" action="AdjustAttachments.jsp"><input
+                    type=hidden name="xmlDoc"
+                    value="<%= MsgCommxml.encode64(MsgCommxml.toXML(root)) %>"/> <input
+                    type=hidden name="id" value="<%= request.getAttribute("attId")%>"/>
 
-            <div style="font-size: 8pt; margin-top: 15px;"><a
-                    href="javascript:expandAll();">Expand All</a> &nbsp;|&nbsp; <a
-                    href="javascript:collapseAll();">Collapse All</a></div>
-
+                <% DrawDoc(root, out); %> <br>
+                <div style="font-size: 8pt; margin-top: 15px;"><input
+                        type=submit value="Save Attachments"/> <a
+                        href="javascript:expandAll();">Expand All</a> &nbsp;|&nbsp; <a
+                        href="javascript:collapseAll();">Collapse All</a> <%
+                    java.util.Properties prop = UtilXML.getPropText(xmlDoc, "table", "sqlFrom", "name"); //
+                    if (prop.getProperty("formAR") != null && prop.getProperty("formAR").equals("AR Form")) {
+                %> &nbsp;|&nbsp; <a
+                        href="<%= request.getContextPath() %>/oscarEncounter/formCommARPg1.jsp?messageid=<%=request.getAttribute("attId")%>">AR1</a>
+                    &nbsp;|&nbsp; <a
+                            href="<%= request.getContextPath() %>/oscarEncounter/formCommARPg2.jsp?messageid=<%=request.getAttribute("attId")%>">AR2
+                        Pg1</a> &nbsp;|&nbsp; <a
+                            href="<%= request.getContextPath() %>/oscarEncounter/formCommARPg3.jsp?messageid=<%=request.getAttribute("attId")%>">AR2
+                        Pg2</a> <%
+                        } %>
+                </div>
+            </form>
         </td>
     </tr>
     <tr>

@@ -24,13 +24,33 @@
 
 --%>
 
+<%--
+  selfClose.jsp - Utility page for closing popup windows
+  
+  This simple JSP page automatically closes the current browser window or tab
+  when loaded. It's typically used after completing an action in a popup window
+  to return control to the parent window.
+  
+  Usage scenarios:
+  - After completing message composition in a popup
+  - Following successful attachment upload
+  - After delegate selection or cancellation
+  
+  Technical note:
+  - Uses top.window.close() to ensure the topmost window is closed
+  - Works in popup windows opened via JavaScript
+  - May be blocked by browser security in regular tabs
+  
+  @since 2003
+--%>
+
 <html>
 
 
 <body>
 
 <script>
-    top.opener.location.reload();
+    // Close the current popup window
     top.window.close();
 </script>
 

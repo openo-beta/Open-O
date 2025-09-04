@@ -32,10 +32,10 @@ import java.util.List;
 import org.apache.logging.log4j.Logger;
 import org.drools.RuleBase;
 import org.drools.io.RuleBaseLoader;
-import org.jdom.Element;
-import org.jdom.Namespace;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
+import org.jdom2.Element;
+import org.jdom2.Namespace;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 import ca.openosp.openo.drools.RuleBaseFactory;
 import ca.openosp.openo.utility.MiscUtils;
 

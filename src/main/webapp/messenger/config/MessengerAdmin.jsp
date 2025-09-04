@@ -24,6 +24,39 @@
 
 --%>
 
+<%--
+  MessengerAdmin.jsp - Administrative interface for managing messenger groups
+  
+  This JSP provides a comprehensive interface for administrators to manage messenger
+  groups and their members. It allows creation, deletion, and modification of
+  provider groups used for message distribution within the healthcare system.
+  
+  Main features:
+  - Create new messenger groups
+  - Rename existing groups
+  - Delete groups (with confirmation)
+  - Add/remove providers from groups
+  - Display hierarchical group structure
+  - Support for local and remote (Integrator) groups
+  
+  Security:
+  - Requires "_admin" object with read ("r") permissions
+  - Role-based access control via security tags
+  
+  UI Components:
+  - jQuery UI for interactive elements
+  - Accordion-style group display
+  - Drag-and-drop member management (if enabled)
+  - Ajax-based operations for seamless updates
+  
+  Dependencies:
+  - jQuery and jQuery UI libraries
+  - MessengerAdmin2Action for backend processing
+  - MsgMessengerGroupData for data access
+  
+  @since 2003
+--%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -35,7 +68,7 @@
     <security:oscarSec roleName="${ sessionScope.userrole }" objectName="_admin" rights="r" reverse="${ false }">
 
         <head>
-            <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMessenger.config.MessengerAdmin.title"/></title>
+            <title><fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.config.MessengerAdmin.title"/></title>
 
             <script type="text/javascript"
                     src="${pageContext.request.contextPath}/library/jquery/jquery-ui-1.12.1.min.js"></script>
@@ -94,20 +127,36 @@
             </style>
 
             <script type="text/javascript">
+                // Store application context path for Ajax requests
                 var ctx = '${pageContext.request.contextPath}';
 
+                /**
+                 * Adds a provider member to a messenger group.
+                 * Updates the group member list display and checks the corresponding checkbox.
+                 * 
+                 * @param {string} memberId - The ID of the provider to add
+                 * @param {string} groupId - The ID of the group to add the member to
+                 */
                 function addMember(memberId, groupId) {
-                    $.post(ctx + "/oscarMessenger.do?method=add&member=" + memberId + "&group=" + groupId).success(function () {
-                        $('#group-member-list-' + groupId).load(ctx + '/oscarMessenger.do?method=fetch #group-member-list-' + groupId);
-                        // check the appropriate checkbox in the member list display
+                    $.post(ctx + "/messenger.do?method=add&member=" + memberId + "&group=" + groupId).success(function () {
+                        // Reload the group member list to show the new member
+                        $('#group-member-list-' + groupId).load(ctx + '/messenger.do?method=fetch #group-member-list-' + groupId);
+                        // Check the appropriate checkbox in the member list display
                         $("div#addContacts input[type='checkbox'][value^='" + memberId + "']").prop("checked", true);
                     });
                 }
 
+                /**
+                 * Removes a provider member from a messenger group.
+                 * Updates both the groups view and unchecks the member checkbox.
+                 * 
+                 * @param {string} memberId - The ID of the provider to remove
+                 * @param {string} groupId - The ID of the group (used for display updates)
+                 */
                 function removeMember(memberId, groupId) {
                     if (memberId) {
-                        $.post(ctx + "/oscarMessenger.do?method=remove&member=" + memberId).success(function () {
-                            // remove from groups view too.
+                        $.post(ctx + "/messenger.do?method=remove&member=" + memberId).success(function () {
+                            // Remove from groups view display
                             $('div#manageGroups i[id^=' + memberId + ']').parent().parent().remove();
                         });
                     }
@@ -115,7 +164,7 @@
 
                 function removeGroupMember(memberId, groupId) {
                     if (memberId) {
-                        $.post(ctx + "/oscarMessenger.do?method=remove&member=" + memberId + "&group=" + groupId).success(function () {
+                        $.post(ctx + "/messenger.do?method=remove&member=" + memberId + "&group=" + groupId).success(function () {
                             /*
                              * Add the group id back into selector as it is used to make the id's unique.
                              * Remove the selected value from the user interface
@@ -126,13 +175,13 @@
                 }
 
                 function createGroup(groupName) {
-                    $.post(ctx + "/oscarMessenger.do?method=create&groupName=" + groupName);
-                    $('#manageGroups').load(ctx + '/oscarMessenger.do?method=fetch #manageGroups');
+                    $.post(ctx + "/messenger.do?method=create&groupName=" + groupName);
+                    $('#manageGroups').load(ctx + '/messenger.do?method=fetch #manageGroups');
                 }
 
                 function deleteGroup(groupId) {
-                    $.post(ctx + "/oscarMessenger.do?method=remove&group=" + groupId);
-                    $('#manageGroups').load(ctx + '/oscarMessenger.do?method=fetch #manageGroups');
+                    $.post(ctx + "/messenger.do?method=remove&group=" + groupId);
+                    $('#manageGroups').load(ctx + '/messenger.do?method=fetch #manageGroups');
                 }
 
                 $(document).ready(function () {

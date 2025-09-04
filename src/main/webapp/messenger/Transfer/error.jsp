@@ -24,6 +24,42 @@
 
 --%>
 
+<%--
+/**
+ * Session Expiration Error Page
+ *
+ * This JSP page displays an error message when a user's messenger session has
+ * expired or failed. It provides a simple error notification and instructions
+ * for the user to retry their request by returning to the main application.
+ *
+ * Main Features:
+ * - Clear session expiration error message
+ * - User-friendly explanation of the error condition
+ * - Instructions for resolving the issue
+ * - Close window functionality for popup contexts
+ *
+ * Error Conditions:
+ * - Expired oscarEncounter session
+ * - Invalid session state
+ * - General session-related failures
+ *
+ * User Actions:
+ * - Close window and return to main OSCAR application
+ * - Retry the original request after re-establishing session
+ *
+ * Usage Context:
+ * - Displayed when document transfer or attachment operations fail due to session issues
+ * - Can appear in popup windows or main application context
+ * - Part of error handling workflow for messenger operations
+ *
+ * Technical Support:
+ * - Advises users to contact technical support for persistent issues
+ * - Indicates potential system errors beyond normal session expiration
+ *
+ * @since 2003
+ */
+--%>
+
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
