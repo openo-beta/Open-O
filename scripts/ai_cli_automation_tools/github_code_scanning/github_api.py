@@ -9,10 +9,7 @@ import requests
 from typing import List, Dict, Optional
 from dotenv import load_dotenv
 
-
-class GitHubCodeScanning:
-    """Client for GitHub Code Scanning API operations"""
-    
+class GitHubCodeScanning:  
     def __init__(self, owner: str, repo: str, token: Optional[str] = None):
         """
         Initialize GitHub Code Scanning client
@@ -27,10 +24,7 @@ class GitHubCodeScanning:
         self.api_url = f"https://api.github.com/repos/{owner}/{repo}/code-scanning/alerts"
         self.per_page = 100
         self.token = token or self._load_token()
-        self.headers = {
-            "Accept": "application/vnd.github+json",
-            "Authorization": f"Bearer {self.token}"
-        }
+        self.headers = {"Accept": "application/vnd.github+json", "Authorization": f"Bearer {self.token}"}
     
     @staticmethod
     def _load_token() -> str:
@@ -98,42 +92,3 @@ class GitHubCodeScanning:
             ]
             
         return alerts
-    
-    def dismiss_alert(self, alert_number: int, reason: str, comment: str = "") -> bool:
-        """
-        Dismiss a specific alert
-        
-        Args:
-            alert_number: The alert number to dismiss
-            reason: Dismissal reason (false_positive, won't_fix, used_in_tests)
-            comment: Optional comment explaining dismissal
-            
-        Returns:
-            True if successful, False otherwise
-        """
-        url = f"{self.api_url}/{alert_number}"
-        payload = {
-            "state": "dismissed",
-            "dismissed_reason": reason,
-            "dismissed_comment": comment
-        }
-        
-        response = requests.patch(url, headers=self.headers, json=payload)
-        return response.status_code == 200
-    
-    def get_alert_by_number(self, alert_number: int) -> Optional[Dict]:
-        """
-        Get a specific alert by its number
-        
-        Args:
-            alert_number: The alert number
-            
-        Returns:
-            Alert dictionary or None if not found
-        """
-        url = f"{self.api_url}/{alert_number}"
-        response = requests.get(url, headers=self.headers)
-        
-        if response.status_code == 200:
-            return response.json()
-        return None

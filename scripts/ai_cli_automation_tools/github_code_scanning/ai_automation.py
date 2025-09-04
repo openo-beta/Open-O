@@ -12,63 +12,68 @@ from pathlib import Path
 
 
 class AIAutomation:
-    """Handles AI CLI automation for code fixes and false positive detection"""
-    
-    def __init__(self, 
-                 ai_script_path: str = "./scripts/ai_cli_automation_tools/setup/run_ai.sh",
-                 ai_tool: str = "aider"):
+    def __init__(self, ai_script_path: str = "./scripts/ai_cli_automation_tools/setup/run_ai.sh", ai_tool: str = "claude-code"):
         """
         Initialize AI automation
         
         Args:
             ai_script_path: Path to the AI shell script
-            ai_tool: Which AI tool to use ('aider', 'claude-code', etc.)
+            ai_tool: Which AI tool to use ('claude-code', 'aider', etc.)
         """
         self.ai_script_path = ai_script_path
         self.ai_tool = ai_tool
         
-    def generate_fix_prompt(self, alert: Dict) -> str:
+    def build_prompt(self, alert: Dict, template: str) -> str:
         """
-        Generate a prompt for fixing security issues
-        Works with both Aider and Claude Code
+        Build a prompt from the alert data and template
         
         Args:
-            alert: GitHub code scanning alert dictionary
-            
+            alert: A single alert passed in
+            template: The prompt template to use
+
         Returns:
-            Formatted prompt string for AI tool
+            Fully built string prompt for the AI tool
         """
         rule = alert['rule']
-        location = alert['most_recent_instance']['location']
+        loc = alert['most_recent_instance']['location']
+        msg = alert.get('most_recent_instance', {}).get('message', {}).get('text', '')
         
-        prompt = f"""Please fix this security vulnerability in the code:
-
-**Security Issue Details:**
-- Rule ID: {rule['id']}
-- Description: {rule.get('full_description', rule.get('description', 'N/A'))}
-- Severity: {rule.get('security_severity_level', 'N/A')}
-- CWE: {rule.get('tags', [])}
-
-**Exact Location:**
-- File: {location['path']}
-- Lines: {location.get('start_line', 'N/A')} to {location.get('end_line', 'N/A')}
-- Columns: {location.get('start_column', 'N/A')} to {location.get('end_column', 'N/A')}
-
-**Requirements for the Fix:**
-1. Completely resolve the security vulnerability
-2. Preserve all existing functionality
-3. Follow security best practices for this type of issue
-4. Add a brief comment explaining the security fix
-5. Ensure the fix doesn't introduce new vulnerabilities
-
-**Code Context:**
-{alert.get('most_recent_instance', {}).get('message', {}).get('text', 'See the highlighted code section')}
-"""
+        return template.format(
+            rule_id=rule['id'],
+            description=rule.get('full_description', rule.get('description', 'N/A')),
+            severity=rule.get('security_severity_level', 'N/A'),
+            cwe=rule.get('tags', []),
+            path=loc['path'],
+            start_line=loc.get('start_line', 'N/A'),
+            end_line=loc.get('end_line', 'N/A'),
+            start_col=loc.get('start_column', 'N/A'),
+            end_col=loc.get('end_column', 'N/A'),
+            message=msg or 'See the highlighted code section'
+        )
+    
+    def generate_fix_prompt(self, alert: Dict) -> str:
+        """
+        Generate a prompt for fixing an alert
         
-        # Add tool-specific and rule-specific guidance
-        prompt += self._get_rule_specific_guidance(rule['id'])
-        prompt += self._get_tool_specific_instructions()
+        Args:
+            alerts: A list of alert dictionaries
+            
+        Returns:
+            String prompt to be build with the template builder
+        """
+        template = """Please fix this security vulnerability:
+                    **Issue:** {rule_id} - {description}
+                    **Severity:** {severity} | **CWE:** {cwe}
+                    **Location:** {path} (lines {start_line}-{end_line})
+
+                    **Requirements:**
+                    1. Completely resolve the vulnerability
+                    2. Preserve existing functionality
+                    3. Follow security best practices
+
+                    **Context:** {message}"""
         
+        prompt = self.build_prompt(alert, template)
         return prompt
     
     def generate_analysis_prompt(self, alert: Dict) -> str:
@@ -76,341 +81,99 @@ class AIAutomation:
         Generate a prompt for analyzing if an alert is a false positive
         
         Args:
-            alert: GitHub code scanning alert dictionary
+            alerts: A list of alert dictionaries
             
         Returns:
-            Formatted prompt string for false positive analysis
+            String prompt to be build with the template builder
         """
-        rule = alert['rule']
-        location = alert['most_recent_instance']['location']
-        
-        prompt = f"""Please analyze this code scanning alert to determine if it's a false positive:
-                    **Alert Information:**
-                    - Rule ID: {rule['id']}
-                    - Description: {rule.get('full_description', rule.get('description', 'N/A'))}
-                    - Severity: {rule.get('security_severity_level', 'N/A')}
-                    - CWE: {rule.get('tags', [])}
+        template = """Analyze this alert for false positive:
+                    **Alert:** {rule_id} - {description}
+                    **Severity:** {severity} | **Location:** {path}:{start_line}-{end_line}
+                    **Message:** {message}
 
-                    **Code Location:**
-                    - File: {location['path']}
-                    - Lines: {location.get('start_line', 'N/A')} to {location.get('end_line', 'N/A')}
+                    **Required Analysis:**
+                    1. Is this a false positive? (YES/NO)
+                    2. Explain reasoning
+                    3. Check for: existing mitigations, escaped input, test code, trusted sources
 
-                    **Alert Message:**
-                    {alert.get('most_recent_instance', {}).get('message', {}).get('text', 'No specific message provided')}
+                    **Response Format:** Start with "FALSE POSITIVE:" or "SECURITY ISSUE:" then explain.""" 
+        return self.build_prompt(alert, template)
 
-                    **Analysis Required:**
-                    Please examine the code and determine:
-
-                    1. **Is this a false positive?** (YES/NO)
-                    2. **Reasoning:** Explain why this is or isn't a real security issue
-                    3. **Context Analysis:** 
-                    - Does the flagged code actually create the vulnerability described?
-                    - Are there existing mitigations that the scanner missed?
-                    - Is the data flow analysis correct?
-                    4. **If FALSE POSITIVE, explain:**
-                    - Why the scanner incorrectly flagged this
-                    - What context or pattern confused the scanner
-                    - Whether the code follows secure practices despite the alert
-                    5. **If SECURITY ISSUE, explain:**
-                    - The actual security risk
-                    - Potential attack vectors
-                    - Recommended fix approach
-
-                    **Response Format:**
-                    Start your response with "FALSE POSITIVE:" or "SECURITY ISSUE:" on the first line, followed by your analysis.
-
-                    **Important:** Look for common false positive patterns like:
-                    - ORM/DAO usage with parameterized queries that scanner thinks is SQL injection
-                    - Escaped or sanitized input that scanner doesn't recognize
-                    - Security controls in different layers/files
-                    - Test code or mock data
-                    - Already validated input from trusted sources
-                    """
-        return prompt
-    
-    def _get_rule_specific_guidance(self, rule_id: str) -> str:
-        """
-        Get rule-specific guidance for common vulnerability types
-        Works with both Aider and Claude Code
-        
-        Args:
-            rule_id: The rule identifier
-            
-        Returns:
-            Additional guidance string
-        """
-        guidance_map = {
-            "sql-injection": "\n**Specific Fix Guidance:** Use parameterized queries or prepared statements. Never concatenate user input into SQL strings. If using an ORM, ensure you're using the query builder properly.",
-            "xss": "\n**Specific Fix Guidance:** Sanitize and escape all user input before rendering. Use context-appropriate encoding (HTML, JavaScript, URL, CSS). Consider using a templating engine with auto-escaping.",
-            "path-traversal": "\n**Specific Fix Guidance:** Validate and sanitize file paths. Use allowlists for permitted directories. Resolve canonical paths and ensure they're within expected boundaries.",
-            "hardcoded-credentials": "\n**Specific Fix Guidance:** Move credentials to environment variables or secure configuration management. Never commit secrets to version control.",
-            "weak-cryptography": "\n**Specific Fix Guidance:** Use strong, modern cryptographic algorithms (AES-256, SHA-256+). Ensure proper key management and avoid deprecated algorithms.",
-            "command-injection": "\n**Specific Fix Guidance:** Avoid shell execution with user input. If necessary, use parameterized commands or strict input validation with allowlists.",
-            "xxe": "\n**Specific Fix Guidance:** Disable external entity processing in XML parsers. Configure parsers to prevent XXE attacks.",
-            "insecure-deserialization": "\n**Specific Fix Guidance:** Avoid deserializing untrusted data. If necessary, use safe serialization formats like JSON and validate input structure.",
-        }
-        
-        for key, guidance in guidance_map.items():
-            if key in rule_id.lower():
-                return guidance
-        return "\n**Note:** Ensure the fix addresses the root cause, not just the symptom."
-    
-    def _get_tool_specific_instructions(self) -> str:
-        """
-        Get tool-specific instructions for Aider, Claude Code, etc.
-        
-        Returns:
-            Tool-specific instruction string
-        """
-        if self.ai_tool == "claude-code":
-            return "\n**Claude Code Instructions:** Make the minimal necessary changes to fix the security issue. Preserve code style and formatting."
-        elif self.ai_tool == "aider":
-            return "\n**Aider Instructions:** Apply the fix directly to the file. Ensure the change is atomic and focused on the security issue."
+    def execute_ai(self, prompt: str, mode: str) -> str:
+        if self.ai_tool == "claude-code" and mode == "analyze":
+            # For analysis, use Claude to just analyze, not edit
+            cmd = ["claude", "--print", prompt]
         else:
-            return "\n**AI Tool Instructions:** Fix the security issue with minimal, focused changes."
-    
-    def run_ai_tool(self, file_path: str, prompt: str, auto_commit: bool = False) -> int:
-        """
-        Execute AI tool (Aider, Claude Code, etc.) with the given file and prompt
-        
-        Args:
-            file_path: Path to the file to fix
-            prompt: The prompt to send to the AI tool
-            auto_commit: Whether to auto-commit changes
+            # For other tools, use the AI script
+            cmd = [self.ai_script_path, self.ai_tool, prompt]
             
-        Returns:
-            Process return code
-        """
-        # Validate file exists
-        if not Path(file_path).exists():
-            print(f"Warning: File {file_path} does not exist")
-            return 1
-        
-        # Prepare command based on tool
-        if self.ai_tool == "claude-code":
-            # Claude Code needs proper directory access and a clear prompt
-            # Get the directory of the file to allow Claude to edit it
-            file_dir = str(Path(file_path).parent)
-            
-            # Create a prompt that explicitly asks to edit the file
-            print(f"PROMPT IS: {prompt}")
-            combined_prompt = f"Please edit the file {file_path} to fix the following issue:\n\n{prompt}\n\nIMPORTANT: You must actually edit and save the file with the fix."
+        # Execute command
+        process = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+        )
 
-            # Build the claude command with prompt as last argument
-            cmd = [
-                "claude",
-                "--print",  # Print mode for non-interactive
-                "--add-dir", file_dir,  # Give access to the directory
-                combined_prompt  # Prompt as positional argument
-            ]
-            
-            print(f"Running Claude Code for file: {file_path}")
-            print(f"Directory access granted: {file_dir}")
-            print(f"Sending prompt to Claude Code...")
-            
-            # Run Claude Code
-            process = subprocess.run(
-                cmd,
-                capture_output=False,  # Let Claude output go to terminal
-                text=True
-            )
-            
-            return process.returncode
-        elif self.ai_tool == "aider":
-            # Aider uses the shell script approach
-            cmd = [self.ai_script_path, self.ai_tool, file_path]
-            if auto_commit:
-                cmd.append("--auto-commit")
-            
-            # Run AI tool
-            process = subprocess.Popen(
-                cmd,
-                stdin=subprocess.PIPE,
-                stdout=None,  # Let output go to terminal
-                stderr=None,  # Let errors go to terminal
-                text=True,
-                bufsize=1
-            )
-            
-            # Send prompt to aider via stdin
-            for line in prompt.splitlines():
-                process.stdin.write(line + "\n")
-                process.stdin.flush()
-            
-            process.stdin.close()
-            return_code = process.wait()
-            
-            return return_code
-        else:
-            # Generic tool handling through shell script
-            cmd = [self.ai_script_path, self.ai_tool, file_path]
-            if auto_commit:
-                cmd.append("--auto-commit")
-            
-            process = subprocess.Popen(
-                cmd,
-                stdin=subprocess.PIPE,
-                stdout=None,
-                stderr=None,
-                text=True,
-                bufsize=1
-            )
-            
-            for line in prompt.splitlines():
-                process.stdin.write(line + "\n")
-                process.stdin.flush()
-            
-            process.stdin.close()
-            return_code = process.wait()
-            
-            return return_code
-    
-    def analyze_false_positives(self, 
-                               alerts: List[Dict], 
-                               output_file: Optional[str] = None) -> Dict[str, List]:
+        ai_output = process.stdout if process.returncode == 0 else process.stderr
+
+        print(f"\n  AI response:")
+        print(f"  {ai_output if ai_output else '[No response]'}")
+
+        return ai_output
+
+    def analyze_alerts(self, alerts: List[Dict], output_file: Optional[str] = None) -> Dict[str, List]:
         """
         Analyze alerts for false positives
         
         Args:
-            alerts: List of alert dictionaries
+            alerts: A list of alert dictionaries
             output_file: Optional JSON file to save results
             
         Returns:
-            Dictionary with 'false_positives' and 'security_issues' lists
+            Dictionary with a list of results
         """
         results = {
             'false_positives': [],
             'security_issues': [],
             'unclear': []
         }
-        
-        for i, alert in enumerate(alerts, 1):
-            path = alert['most_recent_instance']['location']['path']
-            rule = alert['rule']['id']
-            
-            print(f"\n[{i}/{len(alerts)}] Analyzing {rule} in {path}...")
-            
-            prompt = self.generate_analysis_prompt(alert)
-            
-            # Run AI tool for analysis
-            if self.ai_tool == "claude-code":
-                # For analysis, we need Claude to just analyze, not edit
-                # Claude CLI works better with simpler prompts and file references 
-                cmd = [
-                    "claude",
-                    "--print",
-                    prompt
-                ]
-                
-                # Capture output for analysis
-                process = subprocess.run(
-                    cmd,
-                    capture_output=True,
-                    text=True,
-                    cwd=str(Path(path).parent.parent) if Path(path).parent.parent.exists() else "."
-                )
-                
-                response = process.stdout if process.returncode == 0 else process.stderr
 
-                print(f"\n  Claude's response:")
-                print(f"  {response if response else '[No response]'}")
-                
-                # Remove markdown formatting and check if it starts with the key phrases
-                response_clean = response.lower().replace('*', '').strip()
-                 
-                # Determine classification
-                if response_clean.startswith("false positive:"):
-                    results['false_positives'].append({
-                        'alert': alert,
-                        'analysis': response
-                    })
-                    print(f"  → Identified as FALSE POSITIVE")
-                elif response_clean.startswith("security issue:"):
-                    results['security_issues'].append({
-                        'alert': alert,
-                        'analysis': response
-                    })
-                    print(f"  → Identified as a SECURITY ISSUE")
-                else:
-                    # Ambiguous or unclear
-                    results['unclear'].append({
-                        'alert': alert,
-                        'analysis': response if response else 'Analysis failed or no response',
-                        'reason': 'Ambiguous response'
-                    })
-                    print(f"  → UNCLEAR - requires manual review")
-                    print(f"    Reason: Response doesn't clearly indicate true/false positive")
-            else:
-                # For other tools, placeholder logic
-                print(f"Generated analysis prompt for {rule}")
-                results['unclear'].append({
-                    'alert': alert,
-                    'analysis': 'Requires manual review - tool integration pending'
-                })
-        
-        # Save results if output file specified
-        if output_file:
-            with open(output_file, 'w') as f:
-                json.dump(results, f, indent=2)
-            print(f"\nAnalysis results saved to {output_file}") 
-        return results
-    
-    def batch_process_alerts(self, 
-                           alerts: List[Dict],
-                           mode: str = "fix",
-                           skip_extensions: Optional[List[str]] = None,
-                           dry_run: bool = False) -> Dict[str, List]:
-        """
-        Process multiple alerts in batch for fixes or false positive analysis
-        
-        Args:
-            alerts: List of alert dictionaries
-            mode: Processing mode ('fix' or 'analyze')
-            skip_extensions: File extensions to skip (e.g., ['.js', '.css'])
-            dry_run: If True, only generate prompts without running AI tool
-            
-        Returns:
-            Dictionary with processing results
-        """
-        skip_extensions = skip_extensions or []
-        results = {
-            'processed': [],
-            'skipped': [],
-            'failed': []
-        }
-        
         for i, alert in enumerate(alerts, 1):
             path = alert['most_recent_instance']['location']['path']
             rule = alert['rule']['id']
-            
-            # Check if should skip
-            if any(path.endswith(ext) for ext in skip_extensions):
-                print(f"[{i}/{len(alerts)}] Skipping {path} (excluded extension)")
-                results['skipped'].append(alert)
-                continue
-            
-            # Generate appropriate prompt based on mode
-            if mode == "fix":
-                prompt = self.generate_fix_prompt(alert)
-                action = "Fixing"
+
+            prompt = self.generate_analysis_prompt(alert)
+            ai_output = self.execute_ai(prompt, mode="analyze")
+
+            response_clean = ai_output.lower().replace('*', '').strip()
+            alert_data = {
+                'alert': alert,
+                'analysis': ai_output
+            }
+
+            if response_clean.startswith("false positive:"):
+                results['false_positives'].append(alert_data)
+                print(f"  → Identified as a FALSE POSITIVE")
+            elif response_clean.startswith("security issue:"):
+                results['security_issues'].append(alert_data)
+                print(f"  → Identified as a SECURITY ISSUE")
             else:
-                prompt = self.generate_false_positive_analysis_prompt(alert)
-                action = "Analyzing"
-            
-            if dry_run:
-                print(f"\n[{i}/{len(alerts)}] DRY RUN - {action} {rule} in {path}")
-                print("=" * 50)
-                print(prompt)
-                results['processed'].append(alert)
-            else:
-                print(f"\n[{i}/{len(alerts)}] {action} {rule} in {path}...")
-                return_code = self.run_ai_tool(path, prompt)
-                
-                if return_code == 0:
-                    results['processed'].append(alert)
-                    print(f"✓ Successfully processed")
-                else:
-                    results['failed'].append(alert)
-                    print(f"✗ Failed to process")
-        
-        return results
+                results['unclear'].append(alert_data)
+                print(f"  → UNCLEAR - requires manual review")
+
+            return results
+
+    def fix_alerts(self, alerts: List[Dict]):
+        """
+        Fix security issues in alerts
+
+        Args:
+            alerts: A list of alert dictionaries
+        """
+
+        for i, alert in enumerate(alerts, 1):
+            path = alert['most_recent_instance']['location']['path']
+            rule = alert['rule']['id']
+
+            prompt = self.generate_fix_prompt(alert)
+            self.execute_ai(prompt, mode="fix")

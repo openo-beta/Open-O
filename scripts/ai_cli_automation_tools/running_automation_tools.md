@@ -33,16 +33,19 @@
         bash ./scripts/ai_cli_automation_tools/setup/install_packages.sh
     ```
 
-5. Run the Python automation script by entering the command:  
+    **Before proceeding, if you are using claude code, login to your account if needed**
+
+7. Run the Python automation script by entering the command:  
     ```bash
     .venv/bin/python3 scripts/ai_cli_automation_tools/main_cli.py
     ```
 
-    Please see the main_cli.py for paramaters that can be added to the script call, such as "--ai-tool claude-code --mode analyze"
+    **Please type --help at the end of the script call to see all parameters supported**
 
-6. Follow the prompts listed and login / input your API key into claude code if you are using that option
+    **Try to limit file edits per branch to around 20 files if possible**
+    - aider will automatically commit changes
+    - claude-code will save changes and you will need to commit them yourself
 
 **Possible additions that could be added later:**
 - Automated branch and pull request creation    
-    - not currently added to give more control for ensuring current alerts are resolved without issues
-- More sortable types to look for results with
+    - not currently added to give more control for ensuring current alerts are resolved or analyzed without issues
