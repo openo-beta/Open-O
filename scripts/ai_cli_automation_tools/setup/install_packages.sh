@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -e  # Exit if any command fails
 
 # Prevent re-installing if already done
@@ -13,19 +12,23 @@ if [ ! -d ".venv" ]; then
     echo "Installing Python system packages..."
     apt update
     apt install -y python3-venv python3-pip
-
     echo "Creating virtual environment..."
     python3 -m venv .venv
-    source .venv/bin/activate
 fi
 
-# Install packages
-python3 -m pip install requests
-python3 -m pip install python-dotenv
-python -m pip install uv
-uv tool install --force --python python3.12 --with pip aider-chat@latest
+# Activate virtual environment
+source .venv/bin/activate
 
-echo "All packages have been installed."
+echo "Installing required Python packages..."
+
+# Core packages needed for the GitHub code scanning tools
+python3 -m pip install requests              # For HTTP requests to GitHub API
+python3 -m pip install python-dotenv        # For loading .env files
+
+# Install uv for package management
+python3 -m pip install uv
+
+echo "All packages have been installed successfully."
 
 # Mark installation as complete
 touch .venv/.installed_marker
