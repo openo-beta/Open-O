@@ -20,16 +20,16 @@
          Component scans
          ========================================================= -->
     <!-- NEW: pick up your OAuth1 controllers + helpers -->
-    <context:component-scan base-package="org.oscarehr.ws.oauth"/>
+    <context:component-scan base-package="ca.openosp.openo.webserv.oauth"/>
     <!-- Provider + legacy OAuth session merger lives here -->
-    <context:component-scan base-package="oscar.login"/>
+    <context:component-scan base-package="ca.openosp.openo.login"/>
 
     <!-- Keep existing REST resources (cookie-auth) and SOAP WS -->
-    <context:component-scan base-package="org.oscarehr.ws.rest"/>
-    <context:component-scan base-package="org.oscarehr.ws.rest.util"/>
-    <context:component-scan base-package="org.oscarehr.ws.rest.conversion"/>
-    <context:component-scan base-package="org.oscarehr.ws">
-        <context:exclude-filter type="assignable" expression="org.oscarehr.ws.SystemInfoWs"/>
+    <context:component-scan base-package="ca.openosp.openo.webserv.rest"/>
+    <context:component-scan base-package="ca.openosp.openo.webserv.rest.util"/>
+    <context:component-scan base-package="ca.openosp.openo.webserv.rest.conversion"/>
+    <context:component-scan base-package="ca.openosp.openo.webserv">
+        <context:exclude-filter type="assignable" expression="ca.openosp.openo.webserv.SystemInfoWs"/>
     </context:component-scan>
 
     <aop:aspectj-autoproxy/>
@@ -50,15 +50,13 @@
 
     <cxf:bus>
 		<cxf:properties>
-			<entry key="ws-security.ut.validator" value="ca.openosp.openo.webserv.OscarUsernameTokenValidator" />
+			<entry key="ws-security.ut.validator" value-ref="oscarUsernameTokenValidator" />
 		</cxf:properties>
 		
+		<!-- logging interceptors
 		<cxf:outInterceptors>
 			<ref bean="loggingOutInterceptor" />
-		</cxf:outInterceptors>
-		
-		<!-- logging interceptors 
-		 
+		</cxf:outInterceptors> 
 		<cxf:inInterceptors>
 			<ref bean="loggingInInterceptor" />
 		</cxf:inInterceptors>
@@ -77,7 +75,8 @@
 	<!-- The WS classes are turned into spring beans to allow autowiring etc, then the endpoints reference them -->
  	<context:component-scan base-package="ca.openosp.openo.webserv"/>
 	
-	<bean id="authenticationInWSS4JInterceptor" class="ca.openosp.openo.webserv.AuthenticationInWSS4JInterceptor" />
+	<bean id="authenticationInWSS4JInterceptor" class="ca.openosp.openo.webserv.AuthenticationInWSS4JInterceptor" autowire="byType" />
+	<bean id="oscarUsernameTokenValidator" class="ca.openosp.openo.webserv.OscarUsernameTokenValidator" autowire="byType" />
 
 	<!-- www service endpoints -->
 	<jaxws:endpoint implementor="#systemInfoWs" address="/SystemInfoService"/>		

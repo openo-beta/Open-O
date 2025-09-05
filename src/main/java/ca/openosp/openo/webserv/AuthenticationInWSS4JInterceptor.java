@@ -39,6 +39,8 @@ import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 import org.apache.logging.log4j.Logger;
 import org.apache.wss4j.common.WSS4JConstants;
 import org.apache.wss4j.dom.handler.WSHandlerConstants;
+import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.PostConstruct;
 import ca.openosp.openo.commn.model.OscarLog;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
@@ -53,11 +55,20 @@ import ca.openosp.openo.log.LogAction;
 public class AuthenticationInWSS4JInterceptor extends WSS4JInInterceptor implements CallbackHandler {
     private static final Logger logger = MiscUtils.getLogger();
 
+    @Autowired
+    private OscarUsernameTokenValidator oscarUsernameTokenValidator;
+
     public AuthenticationInWSS4JInterceptor() {
+        // Properties will be set in postConstruct() after dependency injection
+    }
+
+    @PostConstruct
+    public void initialize() {
         HashMap<String, Object> properties = new HashMap<String, Object>();
         properties.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
         properties.put(WSHandlerConstants.PASSWORD_TYPE, WSS4JConstants.PW_TEXT);
         properties.put(WSHandlerConstants.PW_CALLBACK_REF, this);
+        properties.put("ws-security.ut.validator", oscarUsernameTokenValidator);
 
         setProperties(properties);
     }
