@@ -60,7 +60,7 @@ class GitHubCodeScanning:
         else:
             raise ValueError("PERSONAL_ACCESS_TOKEN was not found in the environment variables")
           
-    def fetch_alerts(self, state: str = "open", rule_filter: Optional[str] = None, severity_filter: Optional[str] = None) -> List[Dict]:
+    def fetch_alerts(self, state: str = "open", rule_filter: Optional[str] = None, severity_filter: Optional[str] = None, starting_id: Optional[int] = None) -> List[Dict]:
         """
         Fetch all code scanning alerts with optional filters
         
@@ -105,5 +105,8 @@ class GitHubCodeScanning:
                 a for a in alerts 
                 if a.get("rule", {}).get("security_severity_level") == severity_filter
             ]
+
+        if starting_id is not None:
+            alerts = [a for a in alerts if a.get("number", 0) <= starting_id]
             
         return alerts
