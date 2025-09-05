@@ -131,7 +131,7 @@ public class Recommendation {
         }
 
         RuleBaseCreator rcb = new RuleBaseCreator();
-        Element ruleElement = rcb.getRule(ruleName, "oscar.oscarEncounter.oscarMeasurements.MeasurementInfo", list, consequence);
+        Element ruleElement = rcb.getRule(ruleName, "ca.openosp.openo.encounter.oscarMeasurements.MeasurementInfo", list, consequence);
 
 
         return ruleElement;
