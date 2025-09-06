@@ -2095,30 +2095,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         // Use searchIssuesNoRolesConcerned to bypass program/role restrictions
         List<Issue> searchResults = caseManagementMgr.searchIssuesNoRolesConcerned(providerNo, programId, search);
 
-        // Don't remove issues which we already have. But don't insert duplicate issues when save the issues.
-//		List<CaseManagementIssue> existingIssues = new ArrayList<>();
-//		List<Issue> filteredSearchResults;
-//
-//		if (request.getParameter("amp;all") != null) {
-//			filteredSearchResults = new ArrayList<>(searchResults);
-//		} else {
-//			filteredSearchResults = new ArrayList<>();
-//			Map<Long, CaseManagementIssue> existingIssuesMap = convertIssueListToMap(existingIssues);
-//			for (Issue issue : searchResults) {
-//				if (existingIssuesMap.get(issue.getId()) == null) {
-//					filteredSearchResults.add(issue);
-//				}
-//			}
-//
-//		}
-
-//		CheckIssueBoxBean[] issueList = new CheckIssueBoxBean[filteredSearchResults.size()];
-//		for (int i = 0; i < filteredSearchResults.size(); i++) {
-//			issueList[i] = new CheckIssueBoxBean();
-//			issueList[i].setIssue(filteredSearchResults.get(i));
-//		}
-//
-//		this.setNewIssueCheckList(issueList);
         JSONUtil.jsonResponse(response, JsonUtil.pojoCollectionToJson(searchResults));
         return null;
     }
@@ -2834,7 +2810,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         return null;
     }
 
-
     public String getRefNo(String referal) {
         if (referal == null) return "";
         int start = referal.indexOf("<rdohip>");
@@ -2850,7 +2825,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         }
         return ref;
     }
-
 
     /**
      * gets all the notes
