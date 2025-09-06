@@ -76,6 +76,12 @@ def setup_argparse() -> argparse.ArgumentParser:
         "--output",
         help="Output file name for analysis results (JSON format)"
     )
+
+    parser.add_argument(
+        "--starting-id",
+        type=int,
+        help="Starting alert ID (useful for resuming interrupted runs, processes alerts with ID <= starting-id)"
+    )
     
     return parser
 
@@ -94,7 +100,7 @@ def initialize_clients(owner, repo, ai_tool):
     print(f"Initializing {ai_tool}…")
     return GitHubCodeScanning(owner, repo), AIAutomation(ai_tool=ai_tool)
 
-def load_and_limit_alerts(github_client, state, rule, severity, limit):
+def load_and_limit_alerts(github_client, state, rule, severity, limit, starting_id):
     """
     Loads the github alerts and applies any limit if specified
         
@@ -109,7 +115,7 @@ def load_and_limit_alerts(github_client, state, rule, severity, limit):
     """
 
     alerts = github_client.fetch_alerts(
-        state=state, rule_filter=rule, severity_filter=severity
+        state=state, rule_filter=rule, severity_filter=severity, starting_id=starting_id
     )
     if limit:
         alerts = alerts[:limit]
@@ -159,7 +165,7 @@ def main():
     args = setup_argparse().parse_args()
     try:
         github, ai = initialize_clients(args.owner, args.repo, args.ai_tool)
-        alerts = load_and_limit_alerts(github, args.state, args.rule, args.severity, args.limit)
+        alerts = load_and_limit_alerts(github, args.state, args.rule, args.severity, args.limit, args.starting_id)
         if not alerts:
             print("No matching alerts found.")
             return
