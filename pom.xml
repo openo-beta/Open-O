@@ -119,13 +119,6 @@
     </reporting>
 
     <dependencies>
-        <!-- Apache Santuario XML Security for Java -->
-        <dependency>
-            <groupId>org.apache.santuario</groupId>
-            <artifactId>xmlsec</artifactId>
-            <version>3.0.4</version>
-        </dependency>
-
         <!-- For Jasper Reports and backwards compatibility -->
         <!-- throws an compilation error when removed/commented -->
         <dependency>
@@ -149,10 +142,10 @@
                     <groupId>log4j</groupId>
                     <artifactId>log4j</artifactId>
                 </exclusion>
-                <exclusion>
+                <!-- <exclusion>
                     <groupId>org.apache.logging.log4j</groupId>
                     <artifactId>log4j-core</artifactId>
-                </exclusion>
+                </exclusion> -->
             </exclusions>
         </dependency>
 
@@ -443,6 +436,10 @@
                 <exclusion>
                     <groupId>org.codehaus.woodstox</groupId>
                     <artifactId>woodstox-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.santuario</groupId>
+                    <artifactId>xmlsec</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
