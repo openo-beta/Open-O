@@ -32,8 +32,9 @@
         <hapifhir.version>6.4.0</hapifhir.version>
         <!-- Apache CXF Version -->
         <cxf.version>3.5.11</cxf.version>
+        <sonar.organization>openo-beta</sonar.organization>
     </properties>
-
+      
     <repositories>
         <!-- local folder including manually installed dependencies -->
         <repository>
