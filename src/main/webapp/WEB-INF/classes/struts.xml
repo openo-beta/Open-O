@@ -2261,7 +2261,6 @@
             <result name="showInbox">/billing/CA/ON/viewMOHFiles.jsp</result>
         </action-->
         <action name="billing/ca/on/DisplayInvoiceLogo" class="ca.openosp.openo.billing.CA.ON.util.DisplayInvoiceLogo2Action"/>
-        <action name="cvc" class="org.oscarehr.integration.born.CVCTester2Action"/>
         <action name="admin/AuditLogPurge" class="ca.openosp.openo.admin.web.AuditLogPurge2Action">
             <result name="success">/admin/auditLogPurge.jsp</result>
         </action>
