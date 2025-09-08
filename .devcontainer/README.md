@@ -201,7 +201,7 @@ mvn se.vandmo:dependency-lock-maven-plugin:lock
 * Ensure its set to version - v0.26.19  
 
 2. Add new server   
-* use on disk - /usr/local/tomact/  
+* use on disk - /usr/local/tomcat/  
 
 3. Make make-debug executable   
     ```bash
@@ -216,7 +216,7 @@ mvn se.vandmo:dependency-lock-maven-plugin:lock
     If you encounter an error "/usr/bin/env: ‘sh\r’: No such file or directory /usr/bin/env: use -[v]S to pass options in shebang lines".   
     Run: 
     ```bash
-    apt-get update && apt-get install -y dos2unix dos2unix .devcontainer/development/scripts/make2
+    apt-get update && apt-get install -y dos2unix .devcontainer/development/scripts/make-debug
     ```
 
     then re-run the script.
