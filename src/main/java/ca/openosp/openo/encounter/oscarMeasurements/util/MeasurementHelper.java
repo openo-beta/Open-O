@@ -75,7 +75,8 @@ public class MeasurementHelper {
      * 
      * @see MeasurementFlowSheet#getMessages(MeasurementInfo)
      * @see MeasurementInfo#getMeasurements(List)
-     */\n    public static boolean flowSheetRequiresWork(String demographic_no, MeasurementFlowSheet mFlowsheet) throws Exception {
+     */
+    public static boolean flowSheetRequiresWork(String demographic_no, MeasurementFlowSheet mFlowsheet) throws Exception {
         MeasurementInfo mi = new MeasurementInfo(demographic_no);
         List<String> measurements = mFlowsheet.getMeasurementList();
         mi.getMeasurements(measurements);
