@@ -665,91 +665,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
-        <action name="oscarEncounter/displayOcularProcedure" class="oscar.oscarEncounter.pageUtil.EctDisplayOcularProcedure2Action">
-            <result name="labs">/oscarEncounter/displayLabs.do</result>
-			<result name="forms">/oscarEncounter/displayForms.do</result>
-			<result name="msgs">/oscarEncounter/displayMessages.do</result>
-			<result name="eforms">/oscarEncounter/displayEForms.do</result>
-			<result name="docs">/oscarEncounter/displayDocuments.do</result>
-			<result name="measurements">/oscarEncounter/displayMeasurements.do</result>
-			<result name="tickler">/oscarEncounter/displayTickler.do</result>
-			<result name="Dx">/oscarEncounter/displayDisease.do</result>
-			<result name="preventions">/oscarEncounter/displayPrevention.do</result>
-			<result name="consultation">/oscarEncounter/displayConsultation.do</result>
-			<result name="allergies">/oscarEncounter/displayAllergy.do</result>
-			<result name="unresolvedIssues">/oscarEncounter/displayIssues.do</result>
-			<result name="resolvedIssues">/oscarEncounter/displayIssues.do</result>
-			<result name="Rx">/oscarEncounter/displayRx.do</result>
-			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
-			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
-			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			
-			<result name="eams">/eaaps/displayEctEaaps.do</result>
-        </action>
-        <action name="oscarEncounter/displaySpecsHistory" class="oscar.oscarEncounter.pageUtil.EctDisplaySpecsHistory2Action">
-            <result name="labs">/oscarEncounter/displayLabs.do</result>
-			<result name="forms">/oscarEncounter/displayForms.do</result>
-			<result name="msgs">/oscarEncounter/displayMessages.do</result>
-			<result name="eforms">/oscarEncounter/displayEForms.do</result>
-			<result name="docs">/oscarEncounter/displayDocuments.do</result>
-			<result name="measurements">/oscarEncounter/displayMeasurements.do</result>
-			<result name="tickler">/oscarEncounter/displayTickler.do</result>
-			<result name="Dx">/oscarEncounter/displayDisease.do</result>
-			<result name="preventions">/oscarEncounter/displayPrevention.do</result>
-			<result name="consultation">/oscarEncounter/displayConsultation.do</result>
-			<result name="allergies">/oscarEncounter/displayAllergy.do</result>
-			<result name="unresolvedIssues">/oscarEncounter/displayIssues.do</result>
-			<result name="resolvedIssues">/oscarEncounter/displayIssues.do</result>
-			<result name="Rx">/oscarEncounter/displayRx.do</result>
-			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
-			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
-			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			
-			<result name="eams">/eaaps/displayEctEaaps.do</result>
-        </action>
-        <action name="oscarEncounter/displayMacro" class="oscar.oscarEncounter.pageUtil.EctDisplayMacro2Action">
-            <result name="labs">/oscarEncounter/displayLabs.do</result>
-			<result name="forms">/oscarEncounter/displayForms.do</result>
-			<result name="msgs">/oscarEncounter/displayMessages.do</result>
-			<result name="eforms">/oscarEncounter/displayEForms.do</result>
-			<result name="docs">/oscarEncounter/displayDocuments.do</result>
-			<result name="measurements">/oscarEncounter/displayMeasurements.do</result>
-			<result name="tickler">/oscarEncounter/displayTickler.do</result>
-			<result name="Dx">/oscarEncounter/displayDisease.do</result>
-			<result name="preventions">/oscarEncounter/displayPrevention.do</result>
-			<result name="consultation">/oscarEncounter/displayConsultation.do</result>
-			<result name="allergies">/oscarEncounter/displayAllergy.do</result>
-			<result name="unresolvedIssues">/oscarEncounter/displayIssues.do</result>
-			<result name="resolvedIssues">/oscarEncounter/displayIssues.do</result>
-			<result name="Rx">/oscarEncounter/displayRx.do</result>
-			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
-			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
-			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			
-			<result name="eams">/eaaps/displayEctEaaps.do</result>
-        </action>
         <action name="oscarEncounter/displayAppointmentHistory" class="ca.openosp.openo.encounter.pageUtil.EctDisplayAppointmentHistory2Action">
-            <result name="labs">/oscarEncounter/displayLabs.do</result>
-			<result name="forms">/oscarEncounter/displayForms.do</result>
-			<result name="msgs">/oscarEncounter/displayMessages.do</result>
-			<result name="eforms">/oscarEncounter/displayEForms.do</result>
-			<result name="docs">/oscarEncounter/displayDocuments.do</result>
-			<result name="measurements">/oscarEncounter/displayMeasurements.do</result>
-			<result name="tickler">/oscarEncounter/displayTickler.do</result>
-			<result name="Dx">/oscarEncounter/displayDisease.do</result>
-			<result name="preventions">/oscarEncounter/displayPrevention.do</result>
-			<result name="consultation">/oscarEncounter/displayConsultation.do</result>
-			<result name="allergies">/oscarEncounter/displayAllergy.do</result>
-			<result name="unresolvedIssues">/oscarEncounter/displayIssues.do</result>
-			<result name="resolvedIssues">/oscarEncounter/displayIssues.do</result>
-			<result name="Rx">/oscarEncounter/displayRx.do</result>
-			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
-			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
-			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			
-			<result name="eams">/eaaps/displayEctEaaps.do</result>
-        </action>
-        <action name="oscarEncounter/displayConReport" class="oscar.oscarEncounter.pageUtil.EctDisplayConReport2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -940,27 +856,6 @@
         </action>
         <action name="report/printLabDaySheetAction" class="ca.openosp.openo.report.pageUtil.printLabDaySheet2Action"/>
         <action name="oscarEncounter/displayDiagrams" class="ca.openosp.openo.encounter.pageUtil.EctDisplayDiagram2Action">
-            <result name="labs">/oscarEncounter/displayLabs.do</result>
-			<result name="forms">/oscarEncounter/displayForms.do</result>
-			<result name="msgs">/oscarEncounter/displayMessages.do</result>
-			<result name="eforms">/oscarEncounter/displayEForms.do</result>
-			<result name="docs">/oscarEncounter/displayDocuments.do</result>
-			<result name="measurements">/oscarEncounter/displayMeasurements.do</result>
-			<result name="tickler">/oscarEncounter/displayTickler.do</result>
-			<result name="Dx">/oscarEncounter/displayDisease.do</result>
-			<result name="preventions">/oscarEncounter/displayPrevention.do</result>
-			<result name="consultation">/oscarEncounter/displayConsultation.do</result>
-			<result name="allergies">/oscarEncounter/displayAllergy.do</result>
-			<result name="unresolvedIssues">/oscarEncounter/displayIssues.do</result>
-			<result name="resolvedIssues">/oscarEncounter/displayIssues.do</result>
-			<result name="Rx">/oscarEncounter/displayRx.do</result>
-			<result name="success">/oscarEncounter/LeftNavBarDisplay.jsp</result>
-			<result name="error">/oscarEncounter/LeftNavBarError.jsp</result>
-			<result name="HRM">/oscarEncounter/displayHRM.do</result>
-			
-			<result name="eams">/eaaps/displayEctEaaps.do</result>
-        </action>
-        <action name="oscarEncounter/displayExaminationHistory" class="oscar.oscarEncounter.pageUtil.EctDisplayExaminationHistory2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
 			<result name="msgs">/oscarEncounter/displayMessages.do</result>
@@ -2366,7 +2261,6 @@
             <result name="showInbox">/billing/CA/ON/viewMOHFiles.jsp</result>
         </action-->
         <action name="billing/ca/on/DisplayInvoiceLogo" class="ca.openosp.openo.billing.CA.ON.util.DisplayInvoiceLogo2Action"/>
-        <action name="cvc" class="org.oscarehr.integration.born.CVCTester2Action"/>
         <action name="admin/AuditLogPurge" class="ca.openosp.openo.admin.web.AuditLogPurge2Action">
             <result name="success">/admin/auditLogPurge.jsp</result>
         </action>
