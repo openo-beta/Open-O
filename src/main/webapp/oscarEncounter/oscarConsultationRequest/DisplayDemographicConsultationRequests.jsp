@@ -137,7 +137,7 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 	jQuery(document).ready( function () {
 	    jQuery('#consultTable').DataTable({
 			"lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "<bean:message key="oscarEncounter.LeftNavBar.AllLabs"/>"] ],
-			"order": [[6,'desc']],
+			"order": [[7,'desc']],
 			"language": {
 				"url": "<%=request.getContextPath() %>/library/DataTables/i18n/<bean:message key="global.i18nLanguagecode"/>.json"
 			},
@@ -192,7 +192,7 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 		<td class="MainTableLeftColumn">
 		<table class="table">
 			<tr>
-				<td NOWRAP>
+				<td style="white-space:nowrap">
 					<a href="javascript:popupOscarRx(700,960,'ConsultationFormRequest.jsp?de=<%= Encode.forUriComponent(demo) %>&teamVar=<%= Encode.forUriComponent(team) %>')">
 						<bean:message
 							key="oscarEncounter.oscarConsultationRequest.ConsultChoice.btnNewCon" />
@@ -239,6 +239,8 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 							key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgRefDate" />
 						</th>
 					</tr>
+					</thead>
+					<tbody>
 					<%
 					for (int i = 0; i < theRequests.ids.size(); i++){
 						String id       = (String) theRequests.ids.get(i);
@@ -252,7 +254,7 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 						Provider cProv  = (Provider) theRequests.consultProvider.get(i);
 					%>
 					<tr>
-						<td class="stat<%= Encode.forHtmlAttribute(status) %>" width="75">
+						<td class="stat<%= Encode.forHtmlAttribute(status) %>" >
 						<% if (status.equals("1")){ %> <bean:message
 							key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgNothingDone" />
 						<% }else if(status.equals("2")) { %> <bean:message
@@ -278,7 +280,7 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 						<td class="stat<%= Encode.forHtmlAttribute(status) %>"><a
 							href="javascript:popupOscarRx(700,960,'../../oscarEncounter/ViewRequest.do?de=<%= Encode.forUriComponent(demo) %>&requestId=<%= Encode.forUriComponent(id) %>')">
 						<%= Encode.forHtml(patient) %> </a></td>
-						<td class="stat<%= Encode.forHtmlAttribute(status) %>"><%= Encode.forHtml(provide) %></td>
+						<td class="stat<%= Encode.forHtmlAttribute(status) %>"><%= Encode.forHtml(provider) %></td>
 						<td class="stat<%= Encode.forHtmlAttribute(status) %>"><%= (cProv != null) ? Encode.forHtml(cProv.getFormattedName()) : "" %></td>
 						<td class="stat<%= Encode.forHtmlAttribute(status) %>">
 							<a href="javascript:popupOscarRx(700,960,'../../oscarEncounter/ViewRequest.do?de=<%= Encode.forUriComponent(demo) %>&requestId=<%= Encode.forUriComponent(id) %>')">
