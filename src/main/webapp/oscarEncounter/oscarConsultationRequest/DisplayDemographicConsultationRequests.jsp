@@ -55,7 +55,10 @@ if(!authed) {
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
-
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@page
+	import="oscar.oscarEncounter.pageUtil.*,oscar.oscarEncounter.data.*"%>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 
 <%
 String demo = request.getParameter("de");
@@ -134,7 +137,7 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 	jQuery(document).ready( function () {
 	    jQuery('#consultTable').DataTable({
 			"lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "<bean:message key="oscarEncounter.LeftNavBar.AllLabs"/>"] ],
-			"order": [[6,'desc']],
+			"order": [[7,'desc']],
 			"language": {
 				"url": "<%=request.getContextPath() %>/library/DataTables/i18n/<bean:message key="global.i18nLanguagecode"/>.json"
 			},
@@ -175,8 +178,11 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 			<tr>
 				<td class="Header" style="white-space:nowrap"><h4><bean:message
 					key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgConsReqFor" />
-				<%=Encode.forHtmlContent(demographic.getLastName()) %>, <%=Encode.forHtmlContent(demographic.getFirstName())%> <%=demographic.getSex()%>
-				<%=demographic.getAge()%></h4></td>
+					<%= Encode.forHtml(demographic.getLastName()) %>, 
+					<%= Encode.forHtml(demographic.getFirstName()) %> 
+					<%= Encode.forHtml(demographic.getSex()) %> 
+					<%= Encode.forHtml(demographic.getAge()) %>
+				</td>
 				<td></td>
 			</tr>
 		</table>
@@ -186,10 +192,11 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 		<td class="MainTableLeftColumn">
 		<table class="table">
 			<tr>
-				<td style="white-space:nowrap; padding-left: 0"><a
-					href="javascript:popupOscarRx(700,960,'${pageContext.request.contextPath}/oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp?de=<%=demo%>&teamVar=<%=team%>')">
-				<bean:message
-					key="oscarEncounter.oscarConsultationRequest.ConsultChoice.btnNewCon" /></a>
+				<td style="white-space:nowrap">
+					<a href="javascript:popupOscarRx(700,960,'ConsultationFormRequest.jsp?de=<%= Encode.forUriComponent(demo) %>&teamVar=<%= Encode.forUriComponent(team) %>')">
+						<bean:message
+							key="oscarEncounter.oscarConsultationRequest.ConsultChoice.btnNewCon" />
+					</a>
 				</td>
 			</tr>
 		</table>
@@ -226,6 +233,9 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 							key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgService" />
 						</th>
 						<th ><bean:message
+							key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgSpecialist" />
+						</th>
+						<th ><bean:message
 							key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgRefDate" />
 						</th>
 					</tr>
@@ -233,18 +243,18 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 					<tbody>
 					<%
 					for (int i = 0; i < theRequests.ids.size(); i++){
-						String id       = (String) theRequests.ids.elementAt(i);
-						String status   = (String) theRequests.status.elementAt(i);
-						String patient  = (String) theRequests.patient.elementAt(i);
-						String provider = (String) theRequests.provider.elementAt(i);
-						String service  = (String) theRequests.service.elementAt(i);
-						String date     = (String) theRequests.date.elementAt(i);
-						//String ptToBook = (String) theRequests.patientWillBook.elementAt(i);
-						String urgency  = (String) theRequests.urgency.elementAt(i);
-						Provider cProv  = (Provider) theRequests.consultProvider.elementAt(i);
+						String id       = (String) theRequests.ids.get(i);
+						String status   = (String) theRequests.status.get(i);
+						String patient  = (String) theRequests.patient.get(i);
+						String provider = (String) theRequests.provider.get(i);
+						String service  = (String) theRequests.service.get(i);
+						String specialist = (String) theRequests.vSpecialist.get(i);
+						String date     = (String) theRequests.date.get(i);
+						String urgency  = (String) theRequests.urgency.get(i);
+						Provider cProv  = (Provider) theRequests.consultProvider.get(i);
 					%>
 					<tr>
-						<td class="stat<%=status%>" >
+						<td class="stat<%= Encode.forHtmlAttribute(status) %>" >
 						<% if (status.equals("1")){ %> <bean:message
 							key="oscarEncounter.oscarConsultationRequest.DisplayDemographicConsultationRequests.msgNothingDone" />
 						<% }else if(status.equals("2")) { %> <bean:message
@@ -267,17 +277,20 @@ theRequests.estConsultationVecByDemographic(LoggedInInfo.getLoggedInInfoFromSess
 							key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgReturn" />
 						<% } %>
 						</td>
-						<td class="stat<%=status%>"><a
-							href="javascript:popupOscarRx(700,960,'../../oscarEncounter/ViewRequest.do?de=<%=demo%>&requestId=<%=id%>')">
-						<%=patient%> </a></td>
-						<td class="stat<%=status%>"><%=Encode.forHtmlContent(provider)%></td>
-						<td class="stat<%=status%>"><%=(cProv != null) ? Encode.forHtmlContent(cProv.getFormattedName()) : ""%></td>
-						<td class="stat<%=status%>">
-							<a href="javascript:popupOscarRx(700,960,'../../oscarEncounter/ViewRequest.do?de=<%=demo%>&requestId=<%=id%>')">
-								<%=Encode.forHtmlContent(StringUtils.trimToEmpty(service))%>
+						<td class="stat<%= Encode.forHtmlAttribute(status) %>"><a
+							href="javascript:popupOscarRx(700,960,'../../oscarEncounter/ViewRequest.do?de=<%= Encode.forUriComponent(demo) %>&requestId=<%= Encode.forUriComponent(id) %>')">
+						<%= Encode.forHtml(patient) %> </a></td>
+						<td class="stat<%= Encode.forHtmlAttribute(status) %>"><%= Encode.forHtml(provider) %></td>
+						<td class="stat<%= Encode.forHtmlAttribute(status) %>"><%= (cProv != null) ? Encode.forHtml(cProv.getFormattedName()) : "" %></td>
+						<td class="stat<%= Encode.forHtmlAttribute(status) %>">
+							<a href="javascript:popupOscarRx(700,960,'../../oscarEncounter/ViewRequest.do?de=<%= Encode.forUriComponent(demo) %>&requestId=<%= Encode.forUriComponent(id) %>')">
+								<%= Encode.forHtml(StringUtils.trimToEmpty(service)) %>
 							</a>
 						</td>
-						<td class="stat<%=status%>"><%=date%></td>
+						<td class="stat<%= Encode.forHtmlAttribute(status) %>">
+							<%= Encode.forHtml(StringUtils.trimToEmpty(specialist)) %>
+						</td>
+						<td class="stat<%= Encode.forHtmlAttribute(status) %>"><%= Encode.forHtml(date) %></td>
 					</tr>
 					<%}%>
 					</tbody>
