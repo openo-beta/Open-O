@@ -68,7 +68,6 @@ public class AuthenticationInWSS4JInterceptor extends WSS4JInInterceptor impleme
         properties.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
         properties.put(WSHandlerConstants.PASSWORD_TYPE, WSS4JConstants.PW_TEXT);
         properties.put(WSHandlerConstants.PW_CALLBACK_REF, this);
-        properties.put("ws-security.ut.validator", oscarUsernameTokenValidator);
 
         setProperties(properties);
     }
@@ -78,6 +77,9 @@ public class AuthenticationInWSS4JInterceptor extends WSS4JInInterceptor impleme
         HttpServletRequest request = (HttpServletRequest) message.get(AbstractHTTPDestination.HTTP_REQUEST);
         if (request == null) return; // it's an outgoing request
         String ip = request.getRemoteAddr();
+
+        // Ensure our custom validator is used for this message
+        message.put("ws-security.ut.validator", oscarUsernameTokenValidator);
 
         try {
             super.handleMessage(message);

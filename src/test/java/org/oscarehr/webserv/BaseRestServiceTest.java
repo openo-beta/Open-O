@@ -282,7 +282,7 @@ public abstract class BaseRestServiceTest {
         }
 
         // go to the root of REST services
-        client.replacePath("/webserv/rs");
+        client.replacePath("/ws/rs");
 
 
         // create service
