@@ -32,7 +32,7 @@ def setup_argparse() -> argparse.ArgumentParser:
     parser.add_argument(
         "--ai-tool",
         choices=["claude-code", "aider", "custom"],
-        default="aider",
+        default="claude-code",
         help="Which AI tool to use"
     )
     
@@ -75,6 +75,13 @@ def setup_argparse() -> argparse.ArgumentParser:
     parser.add_argument(
         "--output",
         help="Output file name for analysis results (JSON format)"
+    )
+
+    parser.add_argument(
+        "--verbose-output",
+        default="false",
+        choices=["true", "false"],
+        help="Increased detail of output results (JSON format)"
     )
 
     parser.add_argument(
@@ -150,14 +157,36 @@ def save_results(output, args, results):
     output_dir = Path(__file__).parent / "output"
     output_dir.mkdir(exist_ok=True)
     path = output_dir / output
+    
+    # Build output structure
+    output_data = {
+        "timestamp": datetime.now().isoformat(),
+        "mode": args.mode,
+        "ai_tool": args.ai_tool,
+        "repository": f"{args.owner}/{args.repo}",
+    }
+    
+    # Process each category in results
+    for category, items in results.items():
+        if args.verbose_output == "false" and isinstance(items, list):
+            # Filter to only essential fields
+            filtered_items = [
+                {
+                    "alert": {
+                        "number": item.get("alert", {}).get("number"),
+                        "html_url": item.get("alert", {}).get("html_url")
+                    },
+                    "analysis": item.get("analysis")
+                }
+                for item in items
+            ]
+            output_data[category] = filtered_items
+        else:
+            # Include everything
+            output_data[category] = items
+    
     with open(path, "w") as f:
-        json.dump({
-            "timestamp": datetime.now().isoformat(),
-            "mode": args.mode,
-            "ai_tool": args.ai_tool,
-            "repository": f"{args.owner}/{args.repo}",
-            "results": results
-        }, f, indent=2, default=str)
+        json.dump(output_data, f, indent=2, default=str)
     print(f"\nResults saved to: {path}")
 
 def main():
