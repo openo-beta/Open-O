@@ -23,7 +23,13 @@ class AIAutomation:
         self.ai_script_path = ai_script_path
         self.ai_tool = ai_tool
     
-    FIX_PROMPT = """Please fix this security vulnerability:
+    FIX_PROMPT = """[SECURITY FIX CONTEXT]
+                    Fix the specific vulnerability below. Focus on this issue, but consider:
+                    - Existing security utilities/libraries used in this codebase
+                    - The data flow that leads to this vulnerability
+                    - Project coding patterns and conventions where relevant
+
+                    Please fix this security vulnerability:
                     **Issue:** {rule_id} - {description}
                     **Severity:** {severity} | **CWE:** {cwe}
                     **Location:** {path} (lines {start_line}-{end_line})
@@ -32,10 +38,17 @@ class AIAutomation:
                     1. Completely resolve the vulnerability
                     2. Preserve existing functionality
                     3. Follow security best practices
-
+                    4. Use secure coding patterns appropriate for this specific vulnerability. Each fix should be self-contained and not depend on fixes from other alerts.
                     **Context:** {message}"""
 
-    ANALYSIS_PROMPT = """Analyze this alert for false positive:
+    ANALYSIS_PROMPT = """[SECURITY ANALYSIS CONTEXT]
+                    Focus on analyzing this specific alert, but you may examine:
+                    - The call chain and data flow related to this vulnerability
+                    - Input validation and sanitization steps in the execution path
+                    - How the flagged variables/methods are defined and used elsewhere
+                    - Security controls that may exist upstream or downstream
+
+                    Analyze this alert for false positive:
                     **Alert:** {rule_id} - {description}
                     **Severity:** {severity} | **Location:** {path}:{start_line}-{end_line}
                     **Message:** {message}
