@@ -28,22 +28,41 @@ import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.context.ApplicationEvent;
 
+/**
+ * Represents an event triggered when the status of an appointment changes.
+ * This event is published whenever an appointment's status is updated (e.g., from 'scheduled' to 'confirmed', 'cancelled', etc.).
+ * It extends Spring's {@link ApplicationEvent}, making it easy to integrate with Spring's event handling mechanism.
+ * Listeners can subscribe to this event to perform actions based on the status change, such as sending notifications,
+ * updating UI components, or triggering other business processes.
+ */
 public class AppointmentStatusChangeEvent extends ApplicationEvent {
     Logger logger = MiscUtils.getLogger();
 
     /**
-     * The ID of the appointment whose status has changed.
+     * The unique identifier of the appointment whose status has changed.
+     * This is a critical piece of information for listeners to identify the specific appointment.
      */
     private final String appointment_no;
     /**
-     * The ID of the providers who has the appointment.
+     * The unique identifier of the provider associated with the appointment.
+     * This helps in contexts where provider-specific logic needs to be executed.
      */
     private final String provider_no;
     /**
-     * The new appointment status.
+     * The new status of the appointment.
+     * This field holds the updated status, which is the core information of this event.
      */
     private final String status;
 
+    /**
+     * Constructs a new {@code AppointmentStatusChangeEvent}.
+     *
+     * @param source The object on which the event initially occurred. Typically, this is the service or component
+     *               that initiated the status change.
+     * @param appointment_no The unique identifier for the appointment that has undergone a status change. Must not be null.
+     * @param provider_no The unique identifier for the provider of the appointment. Must not be null.
+     * @param status The new status of the appointment. Must not be null.
+     */
     public AppointmentStatusChangeEvent(Object source, String appointment_no, String provider_no, String status) {
         super(source);
         this.appointment_no = appointment_no;
@@ -52,10 +71,13 @@ public class AppointmentStatusChangeEvent extends ApplicationEvent {
         logger.debug("Object up " + source.getClass().getName());
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Compares this event with another object for equality.
+     * Two {@code AppointmentStatusChangeEvent} objects are considered equal if they have the same appointment number,
+     * provider number, and status. This is useful for testing and for managing events in collections.
      *
-     * @see java.lang.Object#equals(java.lang.Object)
+     * @param obj The object to compare against.
+     * @return {@code true} if the objects are equal, {@code false} otherwise.
      */
     @Override
     public boolean equals(Object obj) {
@@ -94,36 +116,41 @@ public class AppointmentStatusChangeEvent extends ApplicationEvent {
     }
 
     /**
-     * Returns the ID of the appointment whose status has changed.
+     * Retrieves the unique identifier of the appointment whose status has changed.
+     * This ID allows listeners to fetch the full appointment details if needed.
      *
-     * @return The current ID of the appointment whose status has changed.
+     * @return The appointment's unique identifier.
      */
     public final String getAppointment_no() {
         return this.appointment_no;
     }
 
     /**
-     * Returns the ID of the providers who has the appointment.
+     * Retrieves the unique identifier of the provider for the appointment.
+     * This can be used to perform provider-specific actions in response to the event.
      *
-     * @return The current ID of the providers who has the appointment.
+     * @return The provider's unique identifier.
      */
     public final String getProvider_no() {
         return this.provider_no;
     }
 
     /**
-     * Returns the new appointment status.
+     * Retrieves the new status of the appointment.
+     * This is the central piece of information in the event, indicating the appointment's new state.
      *
-     * @return The current value of the new appointment status.
+     * @return The new appointment status.
      */
     public final String getStatus() {
         return this.status;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Generates a hash code for this event.
+     * The hash code is calculated based on the appointment number, provider number, and status,
+     * ensuring that equal objects have equal hash codes. This is important for use in hash-based collections.
      *
-     * @see java.lang.Object#hashCode()
+     * @return The hash code for this event.
      */
     @Override
     public int hashCode() {
@@ -139,10 +166,12 @@ public class AppointmentStatusChangeEvent extends ApplicationEvent {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Provides a string representation of the event.
+     * The output includes the appointment number, provider number, and new status, which is useful for
+     * logging and debugging purposes.
      *
-     * @see java.lang.Object#toString()
+     * @return A string summary of the event.
      */
     @Override
     public String toString() {

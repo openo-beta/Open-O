@@ -28,28 +28,68 @@ import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.context.ApplicationEvent;
 
+/**
+ * Represents an event that is triggered when a new appointment is created within the application.
+ * This event extends Spring's {@link ApplicationEvent}, allowing it to be published and consumed
+ * by any Spring-managed bean that implements {@link org.springframework.context.ApplicationListener}.
+ * <p>
+ * This event encapsulates the essential information about the created appointment, namely the
+ * appointment number and the provider number associated with it. This information can then be
+ * used by listeners to perform actions such as sending notifications, updating other parts of
+ * the system, or triggering workflows.
+ * <p>
+ * For example, a listener could be implemented to send an email confirmation to the patient and
+ * the provider whenever a new appointment is scheduled.
+ */
 public class AppointmentCreatedEvent extends ApplicationEvent {
     Logger logger = MiscUtils.getLogger();
 
     /**
-     * The ID of the appointment whose status has changed.
+     * The unique identifier for the newly created appointment. This ID is used to fetch
+     * detailed information about the appointment from the database or other data sources.
+     * It is crucial for uniquely identifying the appointment that this event pertains to.
      */
     private final String appointment_no;
     /**
-     * The ID of the providers who has the appointment.
+     * The unique identifier for the provider associated with the newly created appointment.
+     * This helps in identifying which healthcare provider the appointment is for, which is
+     * essential for scheduling, notifications, and record-keeping.
      */
     private final String provider_no;
 
+    /**
+     * Constructs a new {@code AppointmentCreatedEvent}. This is the primary and only way to
+     * create an instance of this event.
+     *
+     * @param source The object on which the event initially occurred. In many cases, this will be
+     *               the service or component that is responsible for creating the appointment.
+     *               It is a standard part of the Spring event mechanism.
+     * @param appointment_no The unique identifier for the newly created appointment. This value
+     *                       is essential for listeners to identify and process the appointment.
+     *                       It must not be null.
+     * @param provider_no The unique identifier for the provider associated with the appointment.
+     *                    This value is also critical for listeners to correctly handle the event.
+     *                    It must not be null.
+     */
     public AppointmentCreatedEvent(Object source, String appointment_no, String provider_no) {
         super(source);
         this.appointment_no = appointment_no;
         this.provider_no = provider_no;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Compares this {@code AppointmentCreatedEvent} with another object for equality. The result is
+     * {@code true} if and only if the argument is not {@code null} and is an
+     * {@code AppointmentCreatedEvent} object that has the same appointment number and provider number
+     * as this object.
+     * <p>
+     * This method is essential for comparing two event instances, for example in tests or in
+     * collections. It ensures that two events are considered the same if they refer to the
+     * same appointment and provider.
      *
-     * @see java.lang.Object#equals(java.lang.Object)
+     * @param obj The object to compare this {@code AppointmentCreatedEvent} against.
+     * @return {@code true} if the given object represents an {@code AppointmentCreatedEvent}
+     *         equivalent to this one, {@code false} otherwise.
      */
     @Override
     public boolean equals(Object obj) {
@@ -82,28 +122,40 @@ public class AppointmentCreatedEvent extends ApplicationEvent {
     }
 
     /**
-     * Returns the ID of the appointment whose status has changed.
+     * Retrieves the unique identifier of the appointment associated with this event. This ID
+     * is a key piece of information that listeners will use to fetch more details about the
+     * appointment.
      *
-     * @return The current ID of the appointment whose status has changed.
+     * @return The unique identifier for the appointment. This is the value that was provided
+     *         at the time of the event's construction.
      */
     public final String getAppointment_no() {
         return this.appointment_no;
     }
 
     /**
-     * Returns the ID of the providers who has the appointment.
+     * Retrieves the unique identifier of the provider associated with this appointment event.
+     * This allows listeners to know which provider the appointment is for, which can be
+     * critical for logic such as checking a provider's schedule or sending provider-specific
+     * notifications.
      *
-     * @return The current ID of the providers who has the appointment.
+     * @return The unique identifier for the provider. This is the value that was provided
+     *         at the time of the event's construction.
      */
     public final String getProvider_no() {
         return this.provider_no;
     }
 
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Returns a hash code value for the object. This method is supported for the benefit of
+     * hash tables such as those provided by {@link java.util.HashMap}.
+     * <p>
+     * The hash code is generated based on the appointment number and provider number, which are
+     * the core components of this event's identity. This ensures that two equal
+     * {@code AppointmentCreatedEvent} objects will have the same hash code.
      *
-     * @see java.lang.Object#hashCode()
+     * @return A hash code value for this object.
      */
     @Override
     public int hashCode() {
@@ -117,10 +169,13 @@ public class AppointmentCreatedEvent extends ApplicationEvent {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Returns a string representation of the {@code AppointmentCreatedEvent}. This is primarily
+     * used for logging and debugging purposes. The string includes the class name, the
+     * appointment number, and the provider number, providing a concise summary of the event's
+     * state.
      *
-     * @see java.lang.Object#toString()
+     * @return A string representation of the object, useful for logging and debugging.
      */
     @Override
     public String toString() {
