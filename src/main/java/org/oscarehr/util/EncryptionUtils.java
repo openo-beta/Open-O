@@ -56,7 +56,7 @@ public final class EncryptionUtils {
 
     private static MessageDigest initMessageDigest() {
         try {
-            return MessageDigest.getInstance("SHA-1");
+            return MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException var1) {
             logger.error("Error", var1);
             return null;
@@ -130,7 +130,7 @@ public final class EncryptionUtils {
         if (secretKey == null) {
             return plainData;
         } else {
-            Cipher cipher = Cipher.getInstance("AES");
+            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
             cipher.init(1, secretKey);
             return cipher.doFinal(plainData);
         }
@@ -145,7 +145,7 @@ public final class EncryptionUtils {
         if (secretKey == null) {
             return encryptedData;
         } else {
-            Cipher cipher = Cipher.getInstance("AES");
+            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
             cipher.init(2, secretKey);
             return cipher.doFinal(encryptedData);
         }
