@@ -1215,10 +1215,25 @@ public final class EDocUtil {
         return filePath.toAbsolutePath().toString();
     }
 
-    public static void writeContent(String fileName, byte[] content) throws IOException {
+    private static void writeContent(String fileName, byte[] content) throws IOException {
+        String docDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+
+        // Extract just the filename (no path components)
+        Path fileNamePath = Paths.get(fileName);
+        String baseFileName = fileNamePath.getFileName().toString();
+    
+        // Build the full safe path
+        Path docDirPath = Paths.get(docDir).toAbsolutePath().normalize();
+        Path targetPath = docDirPath.resolve(baseFileName).normalize();
+        
+        // Security check - ensure we're still within the document directory
+        if (!targetPath.startsWith(docDirPath)) {
+            throw new SecurityException("Invalid file path");
+        }
+
         OutputStream os = null;
         try {
-            File file = new File(fileName);
+            File file = new File(targetPath.toString());
             if (!file.exists()) {
                 file.createNewFile();
             }
