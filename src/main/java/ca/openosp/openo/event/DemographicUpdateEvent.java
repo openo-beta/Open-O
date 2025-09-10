@@ -44,9 +44,7 @@ public class DemographicUpdateEvent extends ApplicationEvent {
     Logger logger = MiscUtils.getLogger();
 
     /**
-     * The unique identifier for the demographic record that has been updated.
-     * This number is the core data of the event, enabling listeners to know which record
-     * was modified.
+     * The unique identifier for the updated demographic record, used by listeners to identify the modified record.
      */
     private Integer demographicNo;
 

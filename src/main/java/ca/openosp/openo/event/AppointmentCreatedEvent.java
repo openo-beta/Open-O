@@ -45,15 +45,11 @@ public class AppointmentCreatedEvent extends ApplicationEvent {
     Logger logger = MiscUtils.getLogger();
 
     /**
-     * The unique identifier for the newly created appointment. This ID is used to fetch
-     * detailed information about the appointment from the database or other data sources.
-     * It is crucial for uniquely identifying the appointment that this event pertains to.
+     * The unique identifier for the newly created appointment, used to fetch detailed information and uniquely identify the record.
      */
     private final String appointment_no;
     /**
-     * The unique identifier for the provider associated with the newly created appointment.
-     * This helps in identifying which healthcare provider the appointment is for, which is
-     * essential for scheduling, notifications, and record-keeping.
+     * The unique identifier for the provider of the new appointment, essential for scheduling and notifications.
      */
     private final String provider_no;
 

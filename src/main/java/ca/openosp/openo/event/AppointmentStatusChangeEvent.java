@@ -39,18 +39,15 @@ public class AppointmentStatusChangeEvent extends ApplicationEvent {
     Logger logger = MiscUtils.getLogger();
 
     /**
-     * The unique identifier of the appointment whose status has changed.
-     * This is a critical piece of information for listeners to identify the specific appointment.
+     * The unique identifier for the appointment whose status has changed, allowing listeners to identify the correct record.
      */
     private final String appointment_no;
     /**
-     * The unique identifier of the provider associated with the appointment.
-     * This helps in contexts where provider-specific logic needs to be executed.
+     * The unique identifier for the provider of the appointment, used for provider-specific logic.
      */
     private final String provider_no;
     /**
-     * The new status of the appointment.
-     * This field holds the updated status, which is the core information of this event.
+     * The new status of the appointment, which is the core information of this event.
      */
     private final String status;
 

@@ -43,9 +43,7 @@ public class DemographicCreateEvent extends ApplicationEvent {
     Logger logger = MiscUtils.getLogger();
 
     /**
-     * The unique identifier for the newly created demographic record.
-     * This number is the key piece of data in the event, used by listeners to identify
-     * and act upon the specific record that was created.
+     * The unique identifier for the newly created demographic record, used by listeners to identify and process the record.
      */
     private Integer demographicNo;
 
