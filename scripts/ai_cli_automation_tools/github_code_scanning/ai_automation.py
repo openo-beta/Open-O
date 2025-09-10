@@ -9,6 +9,7 @@ import json
 import sys
 from typing import Dict, Optional, List
 from pathlib import Path
+import textwrap
 
 class AIAutomation:
     def __init__(self, ai_script_path: str = "./scripts/ai_cli_automation_tools/setup/run_ai.sh", ai_tool: str = "claude-code"):
@@ -23,7 +24,7 @@ class AIAutomation:
         self.ai_script_path = ai_script_path
         self.ai_tool = ai_tool
     
-    FIX_PROMPT = """[SECURITY FIX CONTEXT]
+    FIX_PROMPT = textwrap.dedent("""[SECURITY FIX CONTEXT]
                     Fix the specific vulnerability below. Focus on this issue, but consider:
                     - Existing security utilities/libraries used in this codebase
                     - The data flow that leads to this vulnerability
@@ -39,9 +40,9 @@ class AIAutomation:
                     2. Preserve existing functionality
                     3. Follow security best practices
                     4. Use secure coding patterns appropriate for this specific vulnerability. Each fix should be self-contained and not depend on fixes from other alerts.
-                    **Context:** {message}"""
+                    **Context:** {message}""").strip()
 
-    ANALYSIS_PROMPT = """[SECURITY ANALYSIS CONTEXT]
+    ANALYSIS_PROMPT = textwrap.dedent("""[SECURITY ANALYSIS CONTEXT]
                     Focus on analyzing this specific alert, but you may examine:
                     - The call chain and data flow related to this vulnerability
                     - Input validation and sanitization steps in the execution path
@@ -58,7 +59,7 @@ class AIAutomation:
                     2. Explain reasoning
                     3. Check for: existing mitigations, escaped input, test code, trusted sources
 
-                    **Response Format:** Start with "FALSE POSITIVE:" or "SECURITY ISSUE:" then explain.""" 
+                    **Response Format:** Start with "FALSE POSITIVE:" or "SECURITY ISSUE:" then explain.""").strip()
 
     def generate_analysis_prompt(self, alert: Dict) -> str:
         """

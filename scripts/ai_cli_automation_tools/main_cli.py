@@ -79,8 +79,7 @@ def setup_argparse() -> argparse.ArgumentParser:
 
     parser.add_argument(
         "--verbose-output",
-        default="false",
-        choices=["true", "false"],
+        action="store_true",
         help="Increased detail of output results (JSON format)"
     )
 
@@ -168,7 +167,7 @@ def save_results(output, args, results):
     
     # Process each category in results
     for category, items in results.items():
-        if args.verbose_output == "false" and isinstance(items, list):
+        if not args.verbose_output and isinstance(items, list):
             # Filter to only essential fields
             filtered_items = [
                 {
