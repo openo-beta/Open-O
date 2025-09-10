@@ -354,7 +354,6 @@ String curProvider_no = (String)session.getAttribute("user");
 						class="contentLink"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnFluBillingReport"/></a></li>
 					<li><a href="${ctx}/oscarReport/obec.jsp" class="contentLink">Overnight
 							Batch</a></li>
-					<li><a href="${ctx}/oscarReport/oscarReportRehabStudy.jsp" class="contentLink"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.rehabStudy"/></a></li>
 								
 					<caisi:isModuleLoad moduleName="caisi">		
 						<li><a href="javascript:void(0);"
@@ -381,7 +380,6 @@ String curProvider_no = (String)session.getAttribute("user");
 					
 					<li><a href="${ctx}/admin/UsageReport.jsp" class="contentLink"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.usageRpt"/></a></li>
 					<li><a href="javascript:void(0);" class="xlink" rel="${ctx}/report/DxresearchReport.do"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.DiseaseRegistry"/></a></li>
-					<li><a href="javascript:void(0);" class="xlink" rel="${ctx}/admin/demographicstudy.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.btnStudy"/></a></li>
 
 			<%
 				if (oscarVariables.getProperty("billregion", "").equals("ON"))
