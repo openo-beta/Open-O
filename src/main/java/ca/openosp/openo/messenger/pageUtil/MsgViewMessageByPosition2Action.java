@@ -27,68 +27,54 @@ package ca.openosp.openo.messenger.pageUtil;
 
 import java.io.IOException;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
-import ca.openosp.openo.commn.dao.ProviderDataDao;
-import ca.openosp.openo.commn.model.ProviderData;
-import ca.openosp.openo.managers.SecurityInfoManager;
-import ca.openosp.openo.utility.LoggedInInfo;
-import ca.openosp.openo.utility.SpringUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import ca.openosp.openo.commn.dao.ProviderDataDao;
+import ca.openosp.openo.commn.dao.forms.FormsDao;
+import ca.openosp.openo.commn.model.ProviderData;
+import ca.openosp.openo.managers.SecurityInfoManager;
+import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.SpringUtils;
+
 /**
  * Struts2 action for viewing messages by their position in a demographic-specific message list.
- * 
- * <p>This action was intended to allow navigation through messages associated with a specific
- * patient demographic based on message position (e.g., first, next, previous, last). However,
- * the core functionality is currently commented out and non-functional, making this essentially
- * a stub implementation that only ensures a session bean exists.</p>
- * 
- * <p>Current functionality:</p>
+ *
+ * <p>This action allows navigation through messages associated with a specific
+ * patient demographic based on message position (e.g., first, next, previous, last).</p>
+ *
+ * <p>Functionality:</p>
  * <ul>
- *   <li>Validates read permissions for messaging</li>
- *   <li>Ensures a message session bean exists</li>
- *   <li>Returns SUCCESS without performing the intended navigation</li>
+ *   <li>Validates read permissions for messaging.</li>
+ *   <li>Ensures a message session bean exists.</li>
+ *   <li>Queries for a message ID based on its ordered position within a demographic's message list.</li>
+ *   <li>Sets action properties to be forwarded to the message viewing action ({@link MsgViewMessage2Action}).</li>
  * </ul>
- * 
- * <p>Intended functionality (commented out):</p>
- * <ul>
- *   <li>Navigate to a specific message by position within a demographic's message list</li>
- *   <li>Support ordering of messages by different criteria</li>
- *   <li>Forward to the message viewing page with appropriate parameters</li>
- * </ul>
- * 
- * <p>The commented code shows an attempt to:</p>
- * <ol>
- *   <li>Query messages for a specific demographic</li>
- *   <li>Order them based on the orderBy parameter</li>
- *   <li>Retrieve the message ID at the specified position</li>
- *   <li>Forward to the message viewing action with the retrieved message ID</li>
- * </ol>
- * 
- * <p>This action appears to be incomplete or abandoned, as the main logic is disabled
- * and the action always returns SUCCESS without meaningful processing.</p>
- * 
- * @version 2.0
- * @since 2024
+ *
+ * <p>This action is configured in Struts to redirect to {@code MsgViewMessage2Action},
+ * passing the retrieved {@code messageID} and other relevant parameters.</p>
+ *
+ * @version 2.1
+ * @since 2025
  * @see MsgViewMessage2Action
  * @see MsgDisplayMessagesBean
- * @deprecated This action is non-functional with core logic commented out
+ * @deprecated This action is deprecated and may be removed in a future release.
  */
+@Deprecated
 public class MsgViewMessageByPosition2Action extends ActionSupport {
-    /**
-     * HTTP request object for accessing session and parameters.
-     */
-    HttpServletRequest request = ServletActionContext.getRequest();
-    
-    /**
-     * HTTP response object, maintained for consistency but not actively used.
-     */
-    HttpServletResponse response = ServletActionContext.getResponse();
+
+    private String messageID;
+    private String from;
+    private String demographic_no;
+    private String messagePosition;
 
     /**
      * Security manager for enforcing read permissions on messaging operations.
@@ -96,33 +82,28 @@ public class MsgViewMessageByPosition2Action extends ActionSupport {
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     /**
-     * Executes the message-by-position viewing workflow (currently non-functional).
-     * 
-     * <p>This method currently only performs basic session initialization and returns
-     * SUCCESS. The actual position-based message retrieval logic is commented out,
-     * making this action effectively a no-op beyond ensuring a session bean exists.</p>
-     * 
-     * <p>Parameters expected but not used:</p>
+     * Executes the message-by-position viewing workflow.
+     *
+     * <p>This method performs session initialization, permission checks, and then
+     * retrieves a specific message ID by its position in an ordered list for a given
+     * demographic. The results are set as action properties, which are then used by
+     * the Struts2 result configuration (typically a {@code redirectAction}) to forward
+     * to the appropriate message viewing action.</p>
+     *
+     * <p>Request Parameters:</p>
      * <ul>
-     *   <li>orderBy - How to order the messages (default "date")</li>
-     *   <li>messagePosition - The position of the message to retrieve</li>
-     *   <li>demographic_no - The patient demographic number</li>
+     *   <li>{@code orderBy} - How to order the messages (default "date").</li>
+     *   <li>{@code messagePosition} - The 0-indexed position of the message to retrieve.</li>
+     *   <li>{@code demographic_no} - The patient demographic number.</li>
      * </ul>
-     * 
-     * <p>The commented section shows an attempt to:</p>
-     * <ol>
-     *   <li>Build SQL to retrieve message IDs for a demographic</li>
-     *   <li>Apply ordering based on the orderBy parameter</li>
-     *   <li>Use offset to get the message at the specified position</li>
-     *   <li>Forward to the view message action with the retrieved ID</li>
-     * </ol>
-     * 
-     * @return SUCCESS constant regardless of input or processing
+     *
+     * @return {@code SUCCESS} if the operation completes (or fails gracefully).
      * @throws IOException if there's an I/O error
      * @throws ServletException if there's a servlet processing error
      * @throws SecurityException if user lacks read permissions for messaging
      */
     public String execute() throws IOException, ServletException {
+        HttpServletRequest request = ServletActionContext.getRequest();
 
         // Verify user has read permission for messages
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_msg", "r", null)) {
@@ -146,47 +127,70 @@ public class MsgViewMessageByPosition2Action extends ActionSupport {
             request.getSession().setAttribute("msgSessionBean", bean);
         }
 
-        // Extract parameters that would be used for position-based navigation
+        // Extract parameters for position-based navigation
         String orderBy = request.getParameter("orderBy") == null ? "date" : request.getParameter("orderBy");
-        String messagePosition = request.getParameter("messagePosition");
-        String demographic_no = request.getParameter("demographic_no");
+        this.messagePosition = request.getParameter("messagePosition");
+        this.demographic_no = request.getParameter("demographic_no");
+        this.from = "encounter"; // Set 'from' parameter as in the original action
 
-        /*
-         * DISABLED FUNCTIONALITY:
-         * The following code was intended to retrieve a message by its position
-         * in a demographic-specific message list. It would:
-         * 1. Create a query to get all message IDs for the demographic
-         * 2. Apply ordering based on the orderBy parameter
-         * 3. Use offset to retrieve the message ID at the specified position
-         * 4. Forward to the message viewing page with that message ID
-         * 
-         * This code is commented out, possibly due to:
-         * - Migration issues from Struts 1 to Struts 2 (ParameterActionForward not available)
-         * - Security concerns with SQL injection (demographic_no directly concatenated)
-         * - Incomplete implementation of the offset query method
-         * 
-         * Original code:
-         * MsgDisplayMessagesBean displayMsgBean = new MsgDisplayMessagesBean();
-         * ParameterActionForward actionforward = new ParameterActionForward(mapping.findForward("success"));
-         * 
-         * String sql = "select m.messageid  "
-         *         + "from  messagetbl m, msgDemoMap mapp where mapp.demographic_no = '" + demographic_no + "'  "
-         *         + "and m.messageid = mapp.messageID  order by " + displayMsgBean.getOrderBy(orderBy);
-         * FormsDao daos = SpringUtils.getBean(FormsDao.class);
-         * try {
-         *     Integer messageId = (Integer) daos.runNativeQueryWithOffset(sql, Integer.parseInt(messagePosition));
-         *     actionforward.addParameter("messageID", messageId.toString());
-         *     actionforward.addParameter("from", "encounter");
-         *     actionforward.addParameter("demographic_no", demographic_no);
-         *     actionforward.addParameter("messagePostion", messagePosition);
-         * } catch (Exception e) {
-         *     MiscUtils.getLogger().error("error", e);
-         * }
-         * 
-         * return actionforward;
-         */
-        
-        // Currently returns SUCCESS without any actual processing
+        MsgDisplayMessagesBean displayMsgBean = new MsgDisplayMessagesBean();
+
+        String sql = "select m.messageid "
+                + "from messagetbl m, msgDemoMap mapp where mapp.demographic_no = :demographic_no "
+                + "and m.messageid = mapp.messageID order by " + displayMsgBean.getOrderBy(orderBy);
+
+        FormsDao dao = SpringUtils.getBean(FormsDao.class);
+        EntityManager em = dao.getEntityManager();
+
+        try {
+            Query query = em.createNativeQuery(sql);
+            query.setParameter("demographic_no", this.demographic_no);
+            query.setFirstResult(Integer.parseInt(this.messagePosition));
+            query.setMaxResults(1);
+            Integer messageIdResult = (Integer) query.getSingleResult();
+
+            if (messageIdResult != null) {
+                this.messageID = messageIdResult.toString();
+            }
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Error retrieving message by position", e);
+            // Optionally add an action error to be displayed on the page
+            addActionError("Could not retrieve the requested message.");
+        }
+
         return SUCCESS;
+    }
+
+    // Getters and Setters for Struts2 to use in the result
+    public String getMessageID() {
+        return messageID;
+    }
+
+    public void setMessageID(String messageID) {
+        this.messageID = messageID;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getDemographic_no() {
+        return demographic_no;
+    }
+
+    public void setDemographic_no(String demographic_no) {
+        this.demographic_no = demographic_no;
+    }
+
+    public String getMessagePosition() {
+        return messagePosition;
+    }
+
+    public void setMessagePosition(String messagePosition) {
+        this.messagePosition = messagePosition;
     }
 }
