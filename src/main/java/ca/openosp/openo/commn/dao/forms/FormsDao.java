@@ -25,7 +25,9 @@
 package ca.openosp.openo.commn.dao.forms;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -235,4 +237,52 @@ public class FormsDao {
         return query.getSingleResult();
     }
 
+    /**
+     * Executes a parameterized native SQL query with named parameters.
+     * Parameters should be passed as alternating name-value pairs.
+     * 
+     * @param sql The SQL query with named parameters (e.g., :paramName)
+     * @param params Alternating parameter names and values (name1, value1, name2, value2, ...)
+     * @return List of Object arrays containing the query results
+     * @throws IllegalArgumentException if params array has odd length
+     */
+    @SuppressWarnings("unchecked")
+    public List<Object[]> runParameterizedNativeQuery(String sql, Object... params) {
+        if (params.length % 2 != 0) {
+            throw new IllegalArgumentException("Parameters must be provided in name-value pairs");
+        }
+        
+        // Convert :paramName syntax to ?1, ?2, etc. for JPA native queries
+        Map<String, Integer> paramPositions = new HashMap<>();
+        String processedSql = sql;
+        int position = 1;
+        
+        // Process parameters in order they appear
+        for (int i = 0; i < params.length; i += 2) {
+            String paramName = (String) params[i];
+            String placeholder = ":" + paramName;
+            
+            if (processedSql.contains(placeholder)) {
+                paramPositions.put(paramName, position);
+                processedSql = processedSql.replace(placeholder, "?" + position);
+                position++;
+            }
+        }
+        
+        // Create and execute query
+        Query query = entityManager.createNativeQuery(processedSql);
+        
+        // Set parameter values
+        for (int i = 0; i < params.length; i += 2) {
+            String paramName = (String) params[i];
+            Object paramValue = params[i + 1];
+            
+            Integer pos = paramPositions.get(paramName);
+            if (pos != null) {
+                query.setParameter(pos, paramValue);
+            }
+        }
+        
+        return query.getResultList();
+    }
 }
