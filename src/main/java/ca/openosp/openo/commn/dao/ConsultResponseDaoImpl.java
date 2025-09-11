@@ -27,6 +27,8 @@
  */
 package ca.openosp.openo.commn.dao;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -36,6 +38,7 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.FastDateFormat;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.commn.model.ConsultationResponse;
+import ca.openosp.openo.consultations.ConsultationRequestSearchFilter;
 import ca.openosp.openo.consultations.ConsultationResponseSearchFilter;
 import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.stereotype.Repository;
@@ -127,22 +130,22 @@ public class ConsultResponseDaoImpl extends AbstractDaoImpl<ConsultationResponse
     
     private void setQueryParameters(Query query, ConsultationResponseSearchFilter filter) {
         if (filter.getAppointmentStartDate() != null) {
-            query.setParameter("appointmentStartDate", FastDateFormat.getInstance("yyyy-MM-dd").format(filter.getAppointmentStartDate()));
+            query.setParameter("appointmentStartDate", filter.getAppointmentStartDate());
         }
         if (filter.getAppointmentEndDate() != null) {
-            query.setParameter("appointmentEndDate", DateFormatUtils.ISO_DATE_FORMAT.format(filter.getAppointmentEndDate()) + " 23:59:59");
+            query.setParameter("appointmentEndDate", setCalender(filter.getAppointmentEndDate()).getTime());
         }
         if (filter.getReferralStartDate() != null) {
-            query.setParameter("referralStartDate", DateFormatUtils.ISO_DATE_FORMAT.format(filter.getReferralStartDate()));
+            query.setParameter("referralStartDate",filter.getReferralStartDate());
         }
         if (filter.getReferralEndDate() != null) {
-            query.setParameter("referralEndDate", DateFormatUtils.ISO_DATE_FORMAT.format(filter.getReferralEndDate()) + " 23:59:59");
+            query.setParameter("referralEndDate", setCalender(filter.getReferralEndDate()).getTime());
         }
         if (filter.getResponseStartDate() != null) {
-            query.setParameter("responseStartDate", DateFormatUtils.ISO_DATE_FORMAT.format(filter.getResponseStartDate()));
+            query.setParameter("responseStartDate",filter.getResponseStartDate());
         }
         if (filter.getResponseEndDate() != null) {
-            query.setParameter("responseEndDate", DateFormatUtils.ISO_DATE_FORMAT.format(filter.getResponseEndDate()) + " 23:59:59");
+            query.setParameter("responseEndDate", setCalender(filter.getResponseEndDate()).getTime());
         }
         if (filter.getStatus() != null) {
             query.setParameter("status", String.valueOf(filter.getStatus()));
@@ -211,5 +214,14 @@ public class ConsultResponseDaoImpl extends AbstractDaoImpl<ConsultationResponse
                 // Default to referral date if unknown sort mode
                 return "cr.referralDate " + orderDir;
         }
+    }
+
+    private Calendar setCalender(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        return cal;
     }
 }

@@ -27,6 +27,7 @@
  */
 package ca.openosp.openo.commn.dao;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -226,22 +227,22 @@ public class ConsultRequestDaoImpl extends AbstractDaoImpl<ConsultationRequest> 
 
         if (filter.getAppointmentStartDate() != null) {
             sql.append("and cr.appointmentDate >= :appointmentStartDate ");
-            queryWithParams.addParam("appointmentStartDate", FastDateFormat.getInstance("yyyy-MM-dd").format(filter.getAppointmentStartDate()));
+            queryWithParams.addParam("appointmentStartDate", filter.getAppointmentStartDate());
         }
 
         if (filter.getAppointmentEndDate() != null) {
             sql.append("and cr.appointmentDate <= :appointmentEndDate ");
-            queryWithParams.addParam("appointmentEndDate", DateFormatUtils.ISO_DATE_FORMAT.format(filter.getAppointmentEndDate()) + " 23:59:59");
+            queryWithParams.addParam("appointmentEndDate", setCalender(filter.getAppointmentEndDate()).getTime());
         }
 
         if (filter.getReferralStartDate() != null) {
             sql.append("and cr.referralDate >= :referralStartDate ");
-            queryWithParams.addParam("referralStartDate", DateFormatUtils.ISO_DATE_FORMAT.format(filter.getReferralStartDate()) + "' ");
+            queryWithParams.addParam("referralStartDate", filter.getReferralStartDate());
         }
 
         if (filter.getReferralEndDate() != null) {
             sql.append("and cr.referralDate <= :referralEndDate ");
-            queryWithParams.addParam("referralEndDate", DateFormatUtils.ISO_DATE_FORMAT.format(filter.getReferralEndDate()) + " 23:59:59");
+            queryWithParams.addParam("referralEndDate", setCalender(filter.getReferralEndDate()).getTime());
         }
 
         if (filter.getStatus() != null) {
@@ -311,5 +312,14 @@ public class ConsultRequestDaoImpl extends AbstractDaoImpl<ConsultationRequest> 
 
         queryWithParams.sql = sql.toString();
         return queryWithParams;
+    }
+
+    private Calendar setCalender(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        return cal;
     }
 }
