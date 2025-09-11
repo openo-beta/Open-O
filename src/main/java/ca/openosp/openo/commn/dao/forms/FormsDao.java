@@ -251,32 +251,14 @@ public class FormsDao {
         if (params.length % 2 != 0) {
             throw new IllegalArgumentException("Parameters must be provided in name-value pairs");
         }
-    
-        Map<String, Integer> paramPositions = new HashMap<>();
-        Map<Integer, Object> positionalParams = new HashMap<>();
-        String processedSql = sql;
-        int position = 1;
-    
-        // Process each unique parameter
+        
+        Query query = entityManager.createNativeQuery(sql);
+        
         for (int i = 0; i < params.length; i += 2) {
             String paramName = (String) params[i];
             Object paramValue = params[i + 1];
-            String placeholder = ":" + paramName;
-            
-            // Only process if this parameter exists in the SQL
-            if (processedSql.contains(placeholder)) {
-                // Replace ALL occurrences of this parameter with the same position
-                processedSql = processedSql.replaceAll(
-                    Pattern.quote(placeholder) + "\\b",  // Word boundary to avoid :name matching :name2
-                    "?" + position
-                );
-                positionalParams.put(position, paramValue);
-                position++;
-            }
+            query.setParameter(paramName, paramValue);
         }
-    
-        Query query = entityManager.createNativeQuery(processedSql);
-        positionalParams.forEach(query::setParameter);
         
         return query.getResultList();
     }

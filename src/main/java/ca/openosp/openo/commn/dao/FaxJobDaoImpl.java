@@ -55,85 +55,59 @@ public class FaxJobDaoImpl extends AbstractDaoImpl<FaxJob> implements FaxJobDao 
             sql.append("where");
         }
 
-        boolean firstclause = false;
-        int counter = 1;
+        boolean firstClause = false;
 
         if (demographic_no != null) {
-            firstclause = true;
-            sql.append(" job.demographicNo = ?" + counter++);
+            if (!firstClause) sql.append(" and ");
+            sql.append("job.demographicNo = :demographic");
+            firstClause = false;
         }
-
         if (status != null) {
-            if (firstclause) {
-                sql.append(" and job.status = ?" + counter++);
-            } else {
-                firstclause = true;
-                sql.append(" job.status = ?" + counter++);
-            }
-
+            if (!firstClause) sql.append(" and ");
+            sql.append("job.status = :status");
+            firstClause = false;
         }
-
         if (team != null) {
-            if (firstclause) {
-                sql.append(" and job.user = ?" + counter++);
-            } else {
-                firstclause = true;
-                sql.append(" job.user = ?" + counter++);
-            }
+            if (!firstClause) sql.append(" and ");
+            sql.append("job.user = :team");
+            firstClause = false;
         }
-
         if (beginDate != null) {
-            if (firstclause) {
-                sql.append(" and job.stamp >= ?" + counter++);
-            } else {
-                firstclause = true;
-                sql.append(" job.stamp >= ?" + counter++);
-            }
+            if (!firstClause) sql.append(" and ");
+            sql.append("job.stamp >= :beginDate");
+            firstClause = false;
         }
-
         if (endDate != null) {
-            if (firstclause) {
-                sql.append(" and job.stamp <= ?" + counter++);
-            } else {
-                firstclause = true;
-                sql.append(" job.stamp <= ?" + counter++);
-            }
+            if (!firstClause) sql.append(" and ");
+            sql.append("job.stamp <= :endDate");
+            firstClause = false;
         }
-
         if (provider_no != null) {
-            if (firstclause) {
-                sql.append(" and job.oscarUser = ?" + counter++);
-            } else {
-                firstclause = true;
-                sql.append(" job.oscarUser = ?" + counter++);
-            }
+            if (!firstClause) sql.append(" and ");
+            sql.append("job.oscarUser = :provider");
+            firstClause = false;
         }
-
-        counter = 1;
+        
+        // Create query and set parameters
         Query query = entityManager.createQuery(sql.toString());
-
+        
         if (demographic_no != null) {
-            query.setParameter(counter++, Integer.parseInt(demographic_no));
+            query.setParameter("demographic", Integer.parseInt(demographic_no));
         }
-
         if (status != null) {
-            query.setParameter(counter++, FaxJob.STATUS.valueOf(status));
+            query.setParameter("status", FaxJob.STATUS.valueOf(status));
         }
-
         if (team != null) {
-            query.setParameter(counter++, team);
+            query.setParameter("team", team);
         }
-
         if (beginDate != null) {
-            query.setParameter(counter++, beginDate);
+            query.setParameter("beginDate", beginDate);
         }
-
         if (endDate != null) {
-            query.setParameter(counter++, endDate);
+            query.setParameter("endDate", endDate);
         }
-
         if (provider_no != null) {
-            query.setParameter(counter++, provider_no);
+            query.setParameter("provider", provider_no);
         }
 
         List<FaxJob> faxJobList = query.getResultList();

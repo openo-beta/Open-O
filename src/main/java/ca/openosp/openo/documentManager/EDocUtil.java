@@ -1217,7 +1217,7 @@ public final class EDocUtil {
     }
 
     private static void writeContent(String fileName, byte[] content) throws IOException {
-        if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
+        if (fileName.contains("..")) {
             throw new SecurityException("Invalid filename");
         }
 

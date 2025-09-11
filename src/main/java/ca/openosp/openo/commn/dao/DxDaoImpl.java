@@ -77,13 +77,13 @@ public class DxDaoImpl extends AbstractDaoImpl<DxAssociation> implements DxDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<Object[]> findCodingSystemDescription(String codingSystem, String code) {
+        // Validate codingSystem to prevent SQL injection - only allow alphanumeric and underscore
+        if (codingSystem == null || !codingSystem.matches("^[a-zA-Z0-9_]+$")) {
+            MiscUtils.getLogger().warn("Invalid coding system name: " + codingSystem);
+            return new ArrayList<Object[]>();
+        }
+
         try {
-            // Validate codingSystem to prevent SQL injection - only allow alphanumeric and underscore
-            if (codingSystem == null || !codingSystem.matches("^[a-zA-Z0-9_]+$")) {
-                MiscUtils.getLogger().warn("Invalid coding system name: " + codingSystem);
-                return new ArrayList<Object[]>();
-            }
-            
             // Use parameterized query for the code value, table/column names must be validated
             String sql = "SELECT " + codingSystem + ", description FROM " + codingSystem + " WHERE " + codingSystem
                     + " = ?1";
@@ -91,7 +91,7 @@ public class DxDaoImpl extends AbstractDaoImpl<DxAssociation> implements DxDao {
             query.setParameter(1, code);
             return query.getResultList();
         } catch (Exception e) {
-            // TODO Add exclude to the test instead when it's merged
+            MiscUtils.getLogger().error("Error querying coding system: " + codingSystem, e);
             return new ArrayList<Object[]>();
         }
     }
