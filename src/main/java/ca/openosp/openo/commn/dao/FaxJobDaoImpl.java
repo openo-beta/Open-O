@@ -75,10 +75,10 @@ public class FaxJobDaoImpl extends AbstractDaoImpl<FaxJob> implements FaxJobDao 
 
         if (team != null) {
             if (firstclause) {
-                sql.append(" and job.user = '" + team + "'");
+                sql.append(" and job.user = ?" + counter++);
             } else {
                 firstclause = true;
-                sql.append(" job.user = '" + team + "'");
+                sql.append(" job.user = ?" + counter++);
             }
         }
 
@@ -102,14 +102,27 @@ public class FaxJobDaoImpl extends AbstractDaoImpl<FaxJob> implements FaxJobDao 
 
         if (provider_no != null) {
             if (firstclause) {
-                sql.append(" and job.oscarUser = '" + provider_no + "'");
+                sql.append(" and job.oscarUser = ?" + counter++);
             } else {
-                sql.append(" job.oscarUser = '" + provider_no + "'");
+                firstclause = true;
+                sql.append(" job.oscarUser = ?" + counter++);
             }
         }
 
         counter = 1;
         Query query = entityManager.createQuery(sql.toString());
+
+        if (demographic_no != null) {
+            query.setParameter(counter++, Integer.parseInt(demographic_no));
+        }
+
+        if (status != null) {
+            query.setParameter(counter++, FaxJob.STATUS.valueOf(status));
+        }
+
+        if (team != null) {
+            query.setParameter(counter++, team);
+        }
 
         if (beginDate != null) {
             query.setParameter(counter++, beginDate);
@@ -119,12 +132,8 @@ public class FaxJobDaoImpl extends AbstractDaoImpl<FaxJob> implements FaxJobDao 
             query.setParameter(counter++, endDate);
         }
 
-        if (status != null) {
-            query.setParameter(counter++, FaxJob.STATUS.valueOf(status));
-        }
-
-        if (demographic_no != null) {
-            query.setParameter(counter++, Integer.parseInt(demographic_no));
+        if (provider_no != null) {
+            query.setParameter(counter++, provider_no);
         }
 
         List<FaxJob> faxJobList = query.getResultList();

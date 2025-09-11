@@ -49,7 +49,16 @@ public class HrmLogDaoImpl extends AbstractDaoImpl<HrmLog> implements HrmLogDao 
         if (providerNo != null) {
             sql += " WHERE d.initiatingProviderNo = ?1";
         }
-        Query query = entityManager.createQuery(sql + " order by d." + orderColumn + " " + orderDirection);
+        
+        // Whitelist validation for orderColumn to prevent SQL injection
+        String validatedOrderColumn = validateOrderColumn(orderColumn);
+        String validatedOrderDirection = validateOrderDirection(orderDirection);
+        
+        if (validatedOrderColumn != null && validatedOrderDirection != null) {
+            sql += " ORDER BY d." + validatedOrderColumn + " " + validatedOrderDirection;
+        }
+        
+        Query query = entityManager.createQuery(sql);
 
         if (providerNo != null) {
             query.setParameter(1, providerNo);
@@ -58,6 +67,51 @@ public class HrmLogDaoImpl extends AbstractDaoImpl<HrmLog> implements HrmLogDao 
         query.setMaxResults(length);
 
         return query.getResultList();
+    }
+    
+    /**
+     * Validates the order column against a whitelist of allowed columns
+     * @param orderColumn the column name to validate
+     * @return the validated column name or null if invalid
+     */
+    private String validateOrderColumn(String orderColumn) {
+        if (orderColumn == null) {
+            return null;
+        }
+        
+        // Whitelist of allowed columns based on HrmLog entity fields
+        switch (orderColumn) {
+            case "id":
+            case "started":
+            case "initiatingProviderNo":
+            case "transactionType":
+            case "externalSystem":
+            case "error":
+            case "connected":
+            case "downloadedFiles":
+            case "numFilesDownloaded":
+            case "deleted":
+                return orderColumn;
+            default:
+                return null;
+        }
+    }
+    
+    /**
+     * Validates the order direction against allowed values
+     * @param orderDirection the direction to validate
+     * @return the validated direction or null if invalid
+     */
+    private String validateOrderDirection(String orderDirection) {
+        if (orderDirection == null) {
+            return null;
+        }
+        
+        String direction = orderDirection.toUpperCase().trim();
+        if ("ASC".equals(direction) || "DESC".equals(direction)) {
+            return direction;
+        }
+        return null;
     }
 
 }

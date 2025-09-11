@@ -31,10 +31,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.SchemaFactory;
@@ -65,7 +68,6 @@ import ca.openosp.openo.olis.OLISProtocolSocketFactory;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
-import org.xml.sax.InputSource;
 
 import ca.openosp.openo.olis1.queries.Query;
 
@@ -199,16 +201,37 @@ public class Driver {
         olisResponse = olisResponse.replaceAll("<Errors", "<Errors xmlns=\"\" ");
 
         try {
-            DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
+            // Create DocumentBuilderFactory with XXE prevention
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+            // Disable external entities
+            dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            dbf.setXIncludeAware(false);
+            dbf.setExpandEntityReferences(false);
+            dbf.newDocumentBuilder();
+            
+            // Create SchemaFactory with XXE prevention
+            SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 
             Source schemaFile = new StreamSource(new File(OscarProperties.getInstance().getProperty("olis_response_schema")));
             factory.newSchema(schemaFile);
 
             JAXBContext jc = JAXBContext.newInstance("ca.ssha._2005.hial");
             Unmarshaller u = jc.createUnmarshaller();
+            
+            // Create secure XMLInputFactory for JAXB unmarshalling
+            XMLInputFactory xif = XMLInputFactory.newInstance();
+            xif.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+            xif.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+            XMLStreamReader xsr = xif.createXMLStreamReader(new StringReader(olisResponse));
+            
             @SuppressWarnings("unchecked")
-            Response root = ((JAXBElement<Response>) u.unmarshal(new InputSource(new StringReader(olisResponse)))).getValue();
+            Response root = ((JAXBElement<Response>) u.unmarshal(xsr)).getValue();
 
             if (root.getErrors() != null) {
                 List<String> errorStringList = new LinkedList<String>();
