@@ -107,7 +107,7 @@ public class DocumentService extends AbstractServiceImpl {
 
         // Validate access
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_edoc", SecurityInfoManager.WRITE, "")) {
-            logger.error("Write Access Denied _edoc for providers {}", loggedInInfo.getLoggedInProviderNo());
+            logger.error("Write Access Denied _edoc for provider {}", loggedInInfo.getLoggedInProviderNo());
             return Response.status(Response.Status.FORBIDDEN).entity(createResponseMap(documentTo1.getFileName(), "Failed", "Access Denied")).build();
         }
 
