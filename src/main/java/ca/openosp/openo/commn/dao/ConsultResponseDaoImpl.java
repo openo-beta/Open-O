@@ -145,7 +145,7 @@ public class ConsultResponseDaoImpl extends AbstractDaoImpl<ConsultationResponse
             query.setParameter("responseEndDate", DateFormatUtils.ISO_DATE_FORMAT.format(filter.getResponseEndDate()) + " 23:59:59");
         }
         if (filter.getStatus() != null) {
-            query.setParameter("status", filter.getStatus());
+            query.setParameter("status", String.valueOf(filter.getStatus()));
         }
         if (StringUtils.isNotBlank(filter.getTeam())) {
             query.setParameter("team", filter.getTeam());

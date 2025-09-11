@@ -33,6 +33,8 @@ import java.util.List;
 import javax.persistence.Query;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.FastDateFormat;
 import ca.openosp.openo.commn.PaginationQuery;
 import ca.openosp.openo.commn.model.ConsultationRequest;
 import ca.openosp.openo.consultations.ConsultationQuery;
@@ -224,39 +226,27 @@ public class ConsultRequestDaoImpl extends AbstractDaoImpl<ConsultationRequest> 
 
         if (filter.getAppointmentStartDate() != null) {
             sql.append("and cr.appointmentDate >= :appointmentStartDate ");
-            queryWithParams.addParam("appointmentStartDate", filter.getAppointmentStartDate());
+            queryWithParams.addParam("appointmentStartDate", FastDateFormat.getInstance("yyyy-MM-dd").format(filter.getAppointmentStartDate()));
         }
 
         if (filter.getAppointmentEndDate() != null) {
             sql.append("and cr.appointmentDate <= :appointmentEndDate ");
-            // Create a date object for end of day
-            java.util.Calendar cal = java.util.Calendar.getInstance();
-            cal.setTime(filter.getAppointmentEndDate());
-            cal.set(java.util.Calendar.HOUR_OF_DAY, 23);
-            cal.set(java.util.Calendar.MINUTE, 59);
-            cal.set(java.util.Calendar.SECOND, 59);
-            queryWithParams.addParam("appointmentEndDate", cal.getTime());
+            queryWithParams.addParam("appointmentEndDate", DateFormatUtils.ISO_DATE_FORMAT.format(filter.getAppointmentEndDate()) + " 23:59:59");
         }
 
         if (filter.getReferralStartDate() != null) {
             sql.append("and cr.referralDate >= :referralStartDate ");
-            queryWithParams.addParam("referralStartDate", filter.getReferralStartDate());
+            queryWithParams.addParam("referralStartDate", DateFormatUtils.ISO_DATE_FORMAT.format(filter.getReferralStartDate()) + "' ");
         }
 
         if (filter.getReferralEndDate() != null) {
             sql.append("and cr.referralDate <= :referralEndDate ");
-            // Create a date object for end of day
-            java.util.Calendar cal = java.util.Calendar.getInstance();
-            cal.setTime(filter.getReferralEndDate());
-            cal.set(java.util.Calendar.HOUR_OF_DAY, 23);
-            cal.set(java.util.Calendar.MINUTE, 59);
-            cal.set(java.util.Calendar.SECOND, 59);
-            queryWithParams.addParam("referralEndDate", cal.getTime());
+            queryWithParams.addParam("referralEndDate", DateFormatUtils.ISO_DATE_FORMAT.format(filter.getReferralEndDate()) + " 23:59:59");
         }
 
         if (filter.getStatus() != null) {
             sql.append("and cr.status = :status ");
-            queryWithParams.addParam("status", filter.getStatus());
+            queryWithParams.addParam("status", String.valueOf(filter.getStatus()));
         } else {
             sql.append("and cr.status!=4 and cr.status!=5 and cr.status!=7 ");
         }
