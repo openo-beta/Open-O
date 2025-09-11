@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -1225,10 +1226,29 @@ public final class EDocUtil {
         // Build the full safe path
         Path docDirPath = Paths.get(docDir).toAbsolutePath().normalize();
         Path targetPath = docDirPath.resolve(baseFileName).normalize();
-        
-        // Security check - ensure we're still within the document directory
-        if (!targetPath.startsWith(docDirPath)) {
-            throw new SecurityException("Invalid file path");
+
+        // Resolve any symbolic links to get the real path
+        try {
+            // toRealPath() follows symlinks and gives you the actual path
+            Path realPath = targetPath.toRealPath();
+            
+            // Now check if the REAL path is still within docDir
+            if (!realPath.startsWith(docDirPath.toRealPath())) {
+                throw new SecurityException("Invalid file path - escapes document directory");
+            }
+        } catch (NoSuchFileException e) {
+            // File doesn't exist yet (for new files), check the parent directory
+            Path parentPath = targetPath.getParent();
+            if (parentPath != null && Files.exists(parentPath)) {
+                Path realParentPath = parentPath.toRealPath();
+                if (!realParentPath.startsWith(docDirPath.toRealPath())) {
+                    throw new SecurityException("Invalid file path - parent escapes document directory");
+                }
+            }
+            // If parent doesn't exist either, the original check is sufficient
+            else if (!targetPath.startsWith(docDirPath)) {
+                throw new SecurityException("Invalid file path");
+            }
         }
 
         OutputStream os = null;

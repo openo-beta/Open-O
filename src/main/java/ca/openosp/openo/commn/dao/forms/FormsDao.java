@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -246,42 +247,36 @@ public class FormsDao {
      * @return List of Object arrays containing the query results
      * @throws IllegalArgumentException if params array has odd length
      */
-    @SuppressWarnings("unchecked")
     public List<Object[]> runParameterizedNativeQuery(String sql, Object... params) {
         if (params.length % 2 != 0) {
             throw new IllegalArgumentException("Parameters must be provided in name-value pairs");
         }
-        
-        // Convert :paramName syntax to ?1, ?2, etc. for JPA native queries
+    
         Map<String, Integer> paramPositions = new HashMap<>();
+        Map<Integer, Object> positionalParams = new HashMap<>();
         String processedSql = sql;
         int position = 1;
-        
-        // Process parameters in order they appear
-        for (int i = 0; i < params.length; i += 2) {
-            String paramName = (String) params[i];
-            String placeholder = ":" + paramName;
-            
-            if (processedSql.contains(placeholder)) {
-                paramPositions.put(paramName, position);
-                processedSql = processedSql.replace(placeholder, "?" + position);
-                position++;
-            }
-        }
-        
-        // Create and execute query
-        Query query = entityManager.createNativeQuery(processedSql);
-        
-        // Set parameter values
+    
+        // Process each unique parameter
         for (int i = 0; i < params.length; i += 2) {
             String paramName = (String) params[i];
             Object paramValue = params[i + 1];
+            String placeholder = ":" + paramName;
             
-            Integer pos = paramPositions.get(paramName);
-            if (pos != null) {
-                query.setParameter(pos, paramValue);
+            // Only process if this parameter exists in the SQL
+            if (processedSql.contains(placeholder)) {
+                // Replace ALL occurrences of this parameter with the same position
+                processedSql = processedSql.replaceAll(
+                    Pattern.quote(placeholder) + "\\b",  // Word boundary to avoid :name matching :name2
+                    "?" + position
+                );
+                positionalParams.put(position, paramValue);
+                position++;
             }
         }
+    
+        Query query = entityManager.createNativeQuery(processedSql);
+        positionalParams.forEach(query::setParameter);
         
         return query.getResultList();
     }

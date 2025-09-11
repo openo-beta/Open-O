@@ -36,6 +36,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
@@ -43,6 +44,8 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.SchemaFactory;
 
 import ca.openosp.openo.messenger.data.MsgMessageData;
+
+import org.apache.logging.log4j.Logger;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaCertStore;
 import org.bouncycastle.cms.CMSProcessableByteArray;
@@ -87,6 +90,8 @@ public class Driver {
     private static OscarLogDao logDao = (OscarLogDao) SpringUtils.getBean(OscarLogDao.class);
     //	private static OLISResultsDao olisResultsDao = SpringUtils.getBean(OLISResultsDao.class);
     private static OLISQueryLogDao olisQueryLogDao = SpringUtils.getBean(OLISQueryLogDao.class);
+
+    private static final Logger logger = MiscUtils.getLogger();
 
 
     public static String submitOLISQuery(LoggedInInfo loggedInInfo, HttpServletRequest request, Query query) {
@@ -204,14 +209,22 @@ public class Driver {
             // Create DocumentBuilderFactory with XXE prevention
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-            // Disable external entities
-            dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-            dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-            dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
-            dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-            dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-            dbf.setXIncludeAware(false);
-            dbf.setExpandEntityReferences(false);
+            try {
+                // Disable external entities
+                dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+                dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+                dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+                dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+                dbf.setXIncludeAware(false);
+                dbf.setExpandEntityReferences(false);
+
+            } catch (ParserConfigurationException e) {
+                // FAIL SECURELY - don't process XML if we can't secure it
+                logger.error("Failed to configure XXE prevention: {}", e.getMessage());
+                throw new SecurityException("Cannot securely configure XML parser", e);
+            }
+
             dbf.newDocumentBuilder();
             
             // Create SchemaFactory with XXE prevention

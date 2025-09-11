@@ -28,6 +28,7 @@
 package ca.openosp.openo.commn.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Query;
 
@@ -68,6 +69,21 @@ public class HrmLogDaoImpl extends AbstractDaoImpl<HrmLog> implements HrmLogDao 
 
         return query.getResultList();
     }
+
+    private static final Set<String> VALID_ORDER_COLUMNS = Set.of(
+        "id",
+        "started",
+        "initiatingProviderNo",
+        "transactionType",
+        "externalSystem",
+        "error",
+        "connected",
+        "downloadedFiles",
+        "numFilesDownloaded",
+        "deleted"
+    );
+
+    private static final Set<String> VALID_ORDER_DIRECTIONS = Set.of("ASC", "DESC");
     
     /**
      * Validates the order column against a whitelist of allowed columns
@@ -75,26 +91,7 @@ public class HrmLogDaoImpl extends AbstractDaoImpl<HrmLog> implements HrmLogDao 
      * @return the validated column name or null if invalid
      */
     private String validateOrderColumn(String orderColumn) {
-        if (orderColumn == null) {
-            return null;
-        }
-        
-        // Whitelist of allowed columns based on HrmLog entity fields
-        switch (orderColumn) {
-            case "id":
-            case "started":
-            case "initiatingProviderNo":
-            case "transactionType":
-            case "externalSystem":
-            case "error":
-            case "connected":
-            case "downloadedFiles":
-            case "numFilesDownloaded":
-            case "deleted":
-                return orderColumn;
-            default:
-                return null;
-        }
+        return VALID_ORDER_COLUMNS.contains(orderColumn) ? orderColumn : null;
     }
     
     /**
@@ -103,15 +100,9 @@ public class HrmLogDaoImpl extends AbstractDaoImpl<HrmLog> implements HrmLogDao 
      * @return the validated direction or null if invalid
      */
     private String validateOrderDirection(String orderDirection) {
-        if (orderDirection == null) {
-            return null;
-        }
-        
-        String direction = orderDirection.toUpperCase().trim();
-        if ("ASC".equals(direction) || "DESC".equals(direction)) {
-            return direction;
-        }
-        return null;
+        if (orderDirection == null) return null;
+        String dir = orderDirection.trim().toUpperCase();
+        return VALID_ORDER_DIRECTIONS.contains(dir) ? dir : null;
     }
 
 }

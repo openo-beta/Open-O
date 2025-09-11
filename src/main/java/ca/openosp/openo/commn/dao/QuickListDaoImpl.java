@@ -94,6 +94,7 @@ public class QuickListDaoImpl extends AbstractDaoImpl<QuickList> implements Quic
         try {
             // Validate codingSystem to prevent SQL injection - only allow known valid table names
             if (codingSystem == null || codingSystem.isEmpty()) {
+                logger.error("no coding system provided");
                 return new ArrayList<Object[]>();
             }
             

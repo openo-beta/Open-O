@@ -157,7 +157,7 @@ public class ConsultResponseDaoImpl extends AbstractDaoImpl<ConsultationResponse
             query.setParameter("demographicNo", filter.getDemographicNo());
         }
         if (filter.getMrpNo() != null && filter.getMrpNo() > 0) {
-            query.setParameter("mrpNo", String.valueOf(filter.getMrpNo()));
+            query.setParameter("mrpNo", filter.getMrpNo());
         }
     }
     
