@@ -1217,15 +1217,15 @@ public final class EDocUtil {
     }
 
     private static void writeContent(String fileName, byte[] content) throws IOException {
-        String docDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
+            throw new SecurityException("Invalid filename");
+        }
 
-        // Extract just the filename (no path components)
-        Path fileNamePath = Paths.get(fileName);
-        String baseFileName = fileNamePath.getFileName().toString();
-    
-        // Build the full safe path
+        String docDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
         Path docDirPath = Paths.get(docDir).toAbsolutePath().normalize();
-        Path targetPath = docDirPath.resolve(baseFileName).normalize();
+        
+        
+        Path targetPath = docDirPath.resolve(fileName).normalize();
 
         // Resolve any symbolic links to get the real path
         try {
