@@ -152,7 +152,7 @@ public class OscarJobService extends AbstractServiceImpl {
         job.setEnabled("on".equals(params.getFirst("job.enabled")) ? true : false);
         job.setName(params.getFirst("job.name"));
         job.setOscarJobTypeId(Integer.parseInt(params.getFirst("job.oscarJobTypeId")));
-        job.setProviderNo(params.getFirst("job.providers"));
+        job.setProviderNo(params.getFirst("job.provider"));
         job.setUpdated(new Date());
 
         OscarJob result = null;

@@ -98,7 +98,7 @@ public class LabService extends AbstractServiceImpl {
 
 		String type = labT.getType();
 		if (!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", SecurityInfoManager.WRITE, "")) {
-			logger.error("Write Access Denied _lab for providers {}", loggedInInfo.getLoggedInProviderNo());
+			logger.error("Write Access Denied _lab for provider {}", loggedInInfo.getLoggedInProviderNo());
 			return Response.status(Response.Status.FORBIDDEN).entity(createResponseMap(labT.getFileName(), "Failed", "Access Denied", null, type)).build();
 		}
 
