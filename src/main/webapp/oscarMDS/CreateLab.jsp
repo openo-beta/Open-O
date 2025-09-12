@@ -40,6 +40,7 @@
 %>
 
 <%@page contentType="text/html" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -75,7 +76,13 @@
 
         function deleteTest(id) {
             var testId = jQuery("input[name='test_" + id + ".id']").val();
-            jQuery("form[name='testForm']").append("<input type=\"hidden\" name=\"test.delete\" value=\"" + testId + "\"/>");
+            // Create the hidden input element safely to prevent XSS
+            var hiddenInput = jQuery("<input>").attr({
+                type: "hidden",
+                name: "test.delete",
+                value: testId
+            });
+            jQuery("form[name='testForm']").append(hiddenInput);
             jQuery("#test_" + id).remove();
 
         }

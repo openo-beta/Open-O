@@ -25,9 +25,31 @@ function ts_makeSortable(table) {
     for (var i = 0; i < firstRow.cells.length; i++) {
         var cell = firstRow.cells[i];
         var txt = ts_getInnerText(cell);
-        cell.innerHTML = '<a href="#" class="sortheader" ' +
-            'onclick="ts_resortTable(this, ' + i + ');return false;">' +
-            txt + '<span class="sortarrow">&nbsp;&nbsp;&nbsp;</span></a>';
+        
+        // Create elements using DOM methods to prevent XSS
+        var link = document.createElement('a');
+        link.href = '#';
+        link.className = 'sortheader';
+        link.onclick = (function(index) {
+            return function() {
+                ts_resortTable(this, index);
+                return false;
+            };
+        })(i);
+        
+        // Use textContent to safely add the text
+        var textNode = document.createTextNode(txt);
+        link.appendChild(textNode);
+        
+        // Create and append the sort arrow span
+        var arrowSpan = document.createElement('span');
+        arrowSpan.className = 'sortarrow';
+        arrowSpan.innerHTML = '&nbsp;&nbsp;&nbsp;';
+        link.appendChild(arrowSpan);
+        
+        // Clear the cell and add the link
+        cell.innerHTML = '';
+        cell.appendChild(link);
     }
 }
 

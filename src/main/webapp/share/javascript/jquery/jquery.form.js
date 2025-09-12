@@ -295,9 +295,13 @@
                 try {
                     if (s.extraData) {
                         for (var n in s.extraData) {
-                            extraInputs.push(
-                                $('<input type="hidden" name="' + n + '" value="' + s.extraData[n] + '" />')
-                                    .appendTo(form)[0]);
+                            // Create input element using jQuery methods to prevent XSS
+                            var $input = $('<input>').attr({
+                                type: 'hidden',
+                                name: n,
+                                value: s.extraData[n]
+                            });
+                            extraInputs.push($input.appendTo(form)[0]);
                         }
                     }
 
