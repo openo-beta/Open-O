@@ -78,6 +78,8 @@ public class EctAddShortMeasurement2Action extends ActionSupport {
             MiscUtils.getLogger().debug("followUpType:" + followUpType + " followUpValue: " + followUpValue + " demos:" + demos + " providerNo:" + providerNo + " comment:" + comment);
             fup.markFollowupProcedure(followUpType, followUpValue, demos, providerNo, new Date(), comment);
             
+            response.setContentType("text/plain; charset=UTF-8");
+
             // Properly encode user input to prevent XSS vulnerability
             String encodedId = URLEncoder.encode(id != null ? id : "", "UTF-8");
             String encodedFollowupValue = URLEncoder.encode(followUpValue != null ? followUpValue : "", "UTF-8");

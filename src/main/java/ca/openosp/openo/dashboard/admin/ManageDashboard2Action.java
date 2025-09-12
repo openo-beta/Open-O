@@ -131,21 +131,32 @@ public class ManageDashboard2Action extends ActionSupport {
                 factory.setValidating(true);
                 factory.setNamespaceAware(true);
                 
-                // Disable external entities to prevent XXE attacks
-                factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-                factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-                factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+                try {
+                    // Disable external entities to prevent XXE attacks
+                    factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+                    factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                    factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+                    factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+                
+                } catch (Exception e) {
+                    MiscUtils.getLogger().error("Failed to set XML parser features to prevent XXE attacks", e);
+                    throw new RuntimeException(e);
+                }
                 
                 SAXParser parser = factory.newSAXParser();
-                
                 // Configure SAXReader to prevent XXE attacks
                 SAXReader xmlReader = new SAXReader();
-                xmlReader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-                xmlReader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-                xmlReader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-                xmlReader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
                 
+                try {
+                    xmlReader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+                    xmlReader.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                    xmlReader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+                    xmlReader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+                } catch (Exception e) {
+                    MiscUtils.getLogger().error("Failed to set XML parser features to prevent XXE attacks", e);
+                    throw new RuntimeException(e);
+                }
+
                 Document xmlDocument = (Document) xmlReader.read(Files.newBufferedReader(indicatorTemplateFile.toPath()));
                 parser.setProperty(
                         "http://java.sun.com/xml/jaxp/properties/schemaLanguage",

@@ -464,16 +464,43 @@ public class BillingDocumentErrorReportUpload2Action extends ActionSupport {
         if (fileName == null || fileName.trim().isEmpty()) {
             return null;
         }
+
+        // First normalize Unicode to prevent homoglyph attacks
+        // This converts characters to their canonical form
+        String normalized = java.text.Normalizer.normalize(fileName, java.text.Normalizer.Form.NFKC);
+    
+        // URL decode to catch encoded traversal attempts like %2e%2e
+        String decoded = normalized;
+        try {
+            // Decode multiple times to catch double-encoding
+            for (int i = 0; i < 3; i++) {
+                String temp = java.net.URLDecoder.decode(decoded, "UTF-8");
+                if (temp.equals(decoded)) {
+                    break; // No more encoding layers
+                }
+                decoded = temp;
+            }
+        } catch (Exception e) {
+            // If decoding fails, reject the filename
+            return null;
+        }
     
         // First, extract just the filename (remove any path components)
-        String baseName = new File(fileName).getName();
+        String baseName = new File(decoded).getName();
         
         // Remove dangerous characters and sequences in a single pass
         // Using character class for efficiency
-        String sanitized = baseName.replaceAll(
-            "[\\\\/:*?\"<>|~$\0-\037]|\\.\\./?",  // Dangerous chars and .. sequences
-            ""
-        );
+            String sanitized = baseName
+                // Remove path traversal sequences (including Unicode variations)
+                .replaceAll("\\.\\.+[/\\\\]?", "")
+                // Remove control characters (U+0000 to U+001F and U+007F to U+009F)
+                .replaceAll("[\\p{Cntrl}]", "")
+                // Remove format characters that could be used for tricks
+                .replaceAll("[\\p{Cf}]", "")
+                // Remove traditional dangerous file system characters
+                .replaceAll("[\\\\/:*?\"<>|~$]", "")
+                // Remove zero-width characters that could hide malicious content
+                .replaceAll("[\\u200B-\\u200F\\u202A-\\u202E\\uFEFF]", "");
 
         // Trim the result
         sanitized = sanitized.trim();

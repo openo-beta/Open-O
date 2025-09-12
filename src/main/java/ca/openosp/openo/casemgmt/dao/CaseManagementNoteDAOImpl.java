@@ -639,15 +639,17 @@ public class CaseManagementNoteDAOImpl extends HibernateDaoSupport implements Ca
         try {
             c = DbConnectionFilter.getThreadLocalDbConnection();
             String sqlCommand = "select count(distinct uuid) from casemgmt_note where provider_no = ?1 and observation_date >= ?2 and observation_date <= ?3";
-            PreparedStatement ps = c.prepareStatement(sqlCommand);
-            ps.setString(1, providerNo);
-            ps.setTimestamp(2, new Timestamp(startDate.getTime()));
-            ps.setTimestamp(3, new Timestamp(endDate.getTime()));
+            try (PreparedStatement ps = c.prepareStatement(sqlCommand)) {
+                ps.setString(1, providerNo);
+                ps.setTimestamp(2, new Timestamp(startDate.getTime()));
+                ps.setTimestamp(3, new Timestamp(endDate.getTime()));
 
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-
-            ret = rs.getInt(1);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        ret = rs.getInt(1);
+                    }
+                }
+            }
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
         }

@@ -495,7 +495,7 @@ public class FaxManagerImpl implements FaxManager {
      */
     @Override
     public Path getFaxPreviewImage(LoggedInInfo loggedInInfo, String filePath, int pageNumber) {
-        String file = EDocUtil.resovePath(filePath);
+        String file = EDocUtil.resolvePath(filePath);
         return getFaxPreviewImage(loggedInInfo, Paths.get(file), pageNumber);
     }
 
@@ -506,7 +506,7 @@ public class FaxManagerImpl implements FaxManager {
      */
     @Override
     public Path getFaxPreviewImage(LoggedInInfo loggedInInfo, String filePath) {
-        String file = EDocUtil.resovePath(filePath);
+        String file = EDocUtil.resolvePath(filePath);
         return getFaxPreviewImage(loggedInInfo, Paths.get(file), 1);
     }
 

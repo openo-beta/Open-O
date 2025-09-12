@@ -1212,34 +1212,29 @@ public final class EDocUtil {
         Path inputPath = Paths.get(fileName);
         
         try {
-            // if not found in the given path then look in OSCAR's default.
-            if (!Files.exists(inputPath)) {
-                String docDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
-                if (docDir == null || docDir.trim().isEmpty()) {
-                    throw new IllegalStateException("DOCUMENT_DIR is not configured");
-                }
-                
-                File documentDir = new File(docDir);
-                String canonicalDocDir = documentDir.getCanonicalPath();
-                
-                String baseFileName = inputPath.getFileName().toString();
-                
-                // Always resolve the file within the document directory
-                File file = new File(documentDir, baseFileName);
-                
-                // Get the canonical path to resolve any symbolic links or relative paths
-                String canonicalPath = file.getCanonicalPath();
-                
-                // Validate that the resolved path is within the allowed document directory
-                if (!canonicalPath.startsWith(canonicalDocDir + File.separator)) {
-                    logger.warn("Path is outside of the document directory: " + fileName);
-                    throw new SecurityException("Access denied: File is outside the document directory");
-                }
-                
-                return canonicalPath;
+            String docDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+            if (docDir == null || docDir.trim().isEmpty()) {
+                throw new IllegalStateException("DOCUMENT_DIR is not configured");
             }
-
-            return inputPath.toAbsolutePath().toString();
+            
+            File documentDir = new File(docDir);
+            String canonicalDocDir = documentDir.getCanonicalPath();
+            
+            String baseFileName = inputPath.getFileName().toString();
+            
+            // Always resolve the file within the document directory
+            File file = new File(documentDir, baseFileName);
+            
+            // Get the canonical path to resolve any symbolic links or relative paths
+            String canonicalPath = file.getCanonicalPath();
+            
+            // Validate that the resolved path is within the allowed document directory
+            if (!canonicalPath.startsWith(canonicalDocDir + File.separator)) {
+                logger.warn("Path is outside of the document directory: " + fileName);
+                throw new SecurityException("Access denied: File is outside the document directory");
+            }
+            
+            return canonicalPath;
             
         } catch (IOException e) {
             logger.error("Error resolving file path: " + fileName, e);
@@ -1284,7 +1279,7 @@ public final class EDocUtil {
         int pagecount = 0;
 
         try {
-            // resovePath now validates the path is within allowed directories
+            // resolvePath now validates the path is within allowed directories
             String resolvedPath = resolvePath(fileName);
             Path path = Paths.get(resolvedPath);
             

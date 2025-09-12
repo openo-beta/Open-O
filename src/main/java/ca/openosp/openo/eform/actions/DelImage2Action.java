@@ -36,6 +36,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.OscarProperties;
@@ -84,7 +85,12 @@ public class DelImage2Action extends ActionSupport {
             
             // Only delete if the file exists and is a regular file (not a directory)
             if (image.exists() && image.isFile()) {
-                image.delete();
+                boolean deleted =image.delete();
+
+                if (!deleted) {
+                    MiscUtils.getLogger().error("Failed to delete image file: " + imgpath);
+                    return ERROR;
+                }
             }
             
         } catch (IOException e) {
