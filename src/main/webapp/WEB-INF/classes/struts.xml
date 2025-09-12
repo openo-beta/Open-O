@@ -2025,12 +2025,13 @@
             </result>
         </action>
         <action name="hospitalReportManager/Display" class="ca.openosp.openo.hospitalReportManager.HRMDisplayReport2Action">
-            <result name="display">/hospitalReportManager/displayHRMReport.jsp</result>
+            <result name="display" type="dispatcher">/hospitalReportManager/displayHRMReport.jsp</result>
         </action>
         <action name="hospitalReportManager/hrmKeyUploader" class="ca.openosp.openo.hospitalReportManager.HRMUploadKey2Action">
             <result name="success">/hospitalReportManager/hrmPreferences.jsp</result>
         </action>
         <action name="hospitalReportManager/UploadLab" class="ca.openosp.openo.hospitalReportManager.HRMUploadLab2Action">
+            <interceptor-ref name="defaultStack"/>
             <result name="success">/hospitalReportManager/hospitalReportManager.jsp</result>
         </action>
         <action name="hospitalReportManager/Modify" class="ca.openosp.openo.hospitalReportManager.HRMModifyDocument2Action">

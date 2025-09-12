@@ -9,31 +9,38 @@
  */
 package ca.openosp.openo.hospitalReportManager;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import ca.openosp.openo.lab.ca.all.util.Utilities;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
-
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
-import java.io.InputStream;
-import java.io.IOException;
-
-import ca.openosp.openo.lab.ca.all.util.Utilities;
-
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
-public class HRMUploadLab2Action extends ActionSupport {
-    HttpServletRequest request = ServletActionContext.getRequest();
-    HttpServletResponse response = ServletActionContext.getResponse();
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+public class HRMUploadLab2Action extends ActionSupport {
+    private List<File> uploads;
+    private List<String> uploadsContentType;
+    private List<String> uploadsFileName;
+
+    public void setUploads(List<File> uploads) {
+        this.uploads = uploads;
+    }
+
+    public void setUploadsContentType(List<String> uploadsContentType) {
+        this.uploadsContentType = uploadsContentType;
+    }
+
+    public void setUploadsFileName(List<String> uploadsFileName) {
+        this.uploadsFileName = uploadsFileName;
+    }
 
     public enum FileStatus {
         COMPLETED,
@@ -43,29 +50,26 @@ public class HRMUploadLab2Action extends ActionSupport {
 
     @Override
     public String execute() {
-        String success = SUCCESS;
-        if (!ServletFileUpload.isMultipartContent(request)) {
-            return success;
-        }
-
+        HttpServletRequest request = ServletActionContext.getRequest();
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        List<FileItem> fileItems = getFiles(request);
-        if (fileItems == null) {
-            return success;
+
+        if (uploads != null && !uploads.isEmpty()) {
+            Map<String, FileStatus> filesStatusMap = processFiles(loggedInInfo);
+            request.setAttribute("filesStatusMap", filesStatusMap);
+            return SUCCESS;
         }
 
-        Map<String, FileStatus> filesStatusMap = processFiles(loggedInInfo, fileItems);
-        request.setAttribute("filesStatusMap", filesStatusMap);
-        return success;
+        return ERROR;
     }
 
-    private Map<String, FileStatus> processFiles(LoggedInInfo loggedInInfo, List<FileItem> fileItems) {
+    private Map<String, FileStatus> processFiles(LoggedInInfo loggedInInfo) {
         Map<String, FileStatus> filesStatusMap = new HashMap<>();
 
-        for (FileItem fileItem : fileItems) {
-            String fileName = fileItem.getName();
+        for (int i = 0; i < uploads.size(); i++) {
+            File file = uploads.get(i);
+            String fileName = uploadsFileName.get(i);
 
-            try (InputStream inputStream = fileItem.getInputStream()) {
+            try (InputStream inputStream = new FileInputStream(file)) {
                 String filePath = Utilities.saveFile(inputStream, fileName);
                 HRMReport report = HRMReportParser.parseReport(loggedInInfo, filePath);
                 FileStatus fileStatus = handleHRMReport(loggedInInfo, report);
@@ -77,18 +81,6 @@ public class HRMUploadLab2Action extends ActionSupport {
         }
 
         return filesStatusMap;
-    }
-
-    private List<FileItem> getFiles(HttpServletRequest request) {
-        DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
-        ServletFileUpload servletFileUpload = new ServletFileUpload(diskFileItemFactory);
-
-        try {
-            return servletFileUpload.parseRequest(request);
-        } catch (FileUploadException e) {
-            MiscUtils.getLogger().error("Error occurred while uploading files", e);
-            return null;
-        }
     }
 
     private FileStatus handleHRMReport(LoggedInInfo loggedInInfo, HRMReport report) {
