@@ -130,8 +130,22 @@ public class ManageDashboard2Action extends ActionSupport {
                 SAXParserFactory factory = SAXParserFactory.newInstance();
                 factory.setValidating(true);
                 factory.setNamespaceAware(true);
+                
+                // Disable external entities to prevent XXE attacks
+                factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+                factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+                
                 SAXParser parser = factory.newSAXParser();
+                
+                // Configure SAXReader to prevent XXE attacks
                 SAXReader xmlReader = new SAXReader();
+                xmlReader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+                xmlReader.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                xmlReader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+                xmlReader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+                
                 Document xmlDocument = (Document) xmlReader.read(Files.newBufferedReader(indicatorTemplateFile.toPath()));
                 parser.setProperty(
                         "http://java.sun.com/xml/jaxp/properties/schemaLanguage",
@@ -190,9 +204,11 @@ public class ManageDashboard2Action extends ActionSupport {
         if (indicatorName == null || indicatorName.isEmpty()) {
             indicatorName = "indicator_template-" + System.currentTimeMillis() + ".xml";
         } else {
-            indicatorName = indicatorName + ".xml";
+            // Sanitize filename to prevent HTTP response splitting
+            String baseName = sanitizeHeaderValue(indicatorName);
+            indicatorName = baseName + ".xml";
         }
-
+        
         xmlTemplate = dashboardManager.exportIndicatorTemplate(loggedInInfo, Integer.parseInt(indicator));
 
         if (xmlTemplate != null) {
@@ -371,5 +387,33 @@ public class ManageDashboard2Action extends ActionSupport {
 
     public void setIndicatorTemplateFile(File indicatorTemplateFile) {
         this.indicatorTemplateFile = indicatorTemplateFile;
+    }
+    
+    /**
+     * Sanitizes a value to be used in an HTTP header to prevent response splitting attacks.
+     * Removes all control characters including carriage return and line feed.
+     * 
+     * @param value The value to sanitize
+     * @return The sanitized header value
+     */
+    private String sanitizeHeaderValue(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return "indicator_template";
+        }
+    
+        // Remove dangerous characters
+        String sanitized = value
+            .replaceAll("[\r\n\u0000-\u001F\u007F-\u009F]", "")  // Control characters
+            .replaceAll("[\"';]", "")  // Quotes and semicolons (break headers)
+            .replaceAll("[/\\\\:*?<>|]", "_")  // Filesystem reserved characters
+            .replaceAll("\\.xml$", "")  // Remove .xml if already present
+            .trim();
+        
+        // Ensure not empty after sanitization
+        if (sanitized.isEmpty()) {
+            return "indicator_template";
+        }
+        
+        return sanitized;
     }
 }

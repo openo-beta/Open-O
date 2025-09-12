@@ -441,17 +441,26 @@ public class CaseManagementNoteDAOImpl extends HibernateDaoSupport implements Ca
     @Override
     public Collection<CaseManagementNote> findNotesByDemographicAndIssueCode(Integer demographic_no,
                                                                              String[] issueCodes) {
-        String issueCodeList = null;
-        if (issueCodes != null && issueCodes.length > 0)
-            issueCodeList = SqlUtils.constructInClauseForStatements(issueCodes, true);
-
-        String sqlCommand = "select distinct casemgmt_note.note_id from issue,casemgmt_issue,casemgmt_issue_notes,casemgmt_note where casemgmt_issue.issue_id=issue.issue_id and casemgmt_issue.demographic_no='"
-                + demographic_no + "' " + (issueCodeList != null ? "and issue.code in " + issueCodeList : "")
-                + " and casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_issue_notes.note_id=casemgmt_note.note_id";
         Session session = currentSession();
         List<CaseManagementNote> notes = new ArrayList<CaseManagementNote>();
         try {
-            SQLQuery query = session.createSQLQuery(sqlCommand);
+            StringBuilder sqlCommand = new StringBuilder(
+                "select distinct casemgmt_note.note_id from issue,casemgmt_issue,casemgmt_issue_notes,casemgmt_note " +
+                "where casemgmt_issue.issue_id=issue.issue_id and casemgmt_issue.demographic_no=:demographicNo ");
+            
+            if (issueCodes != null && issueCodes.length > 0) {
+                sqlCommand.append("and issue.code in (:issueCodes) ");
+            }
+            
+            sqlCommand.append("and casemgmt_issue_notes.id=casemgmt_issue.id and casemgmt_issue_notes.note_id=casemgmt_note.note_id");
+            
+            SQLQuery query = session.createSQLQuery(sqlCommand.toString());
+            query.setParameter("demographicNo", demographic_no);
+            
+            if (issueCodes != null && issueCodes.length > 0) {
+                query.setParameterList("issueCodes", issueCodes);
+            }
+            
             @SuppressWarnings("unchecked")
             List<Integer> ids = query.list();
             for (Integer id : ids)
@@ -603,8 +612,11 @@ public class CaseManagementNoteDAOImpl extends HibernateDaoSupport implements Ca
         Session session = currentSession();
         try {
             SQLQuery query = session.createSQLQuery(
-                    "select casemgmt_issue.id from casemgmt_issue_notes,casemgmt_issue,issue   where issue.issue_id=casemgmt_issue.issue_id and casemgmt_issue.id=casemgmt_issue_notes.id and demographic_no="
-                            + demographicId + " and issue.code='" + issueCode + "'");
+                    "select casemgmt_issue.id from casemgmt_issue_notes,casemgmt_issue,issue " +
+                    "where issue.issue_id=casemgmt_issue.issue_id and casemgmt_issue.id=casemgmt_issue_notes.id " +
+                    "and demographic_no=:demographicId and issue.code=:issueCode");
+            query.setParameter("demographicId", demographicId);
+            query.setParameter("issueCode", issueCode);
             List results = query.list();
             // log.info("haveIssue - DAO - # of results = " + results.size());
             if (results.size() > 0)
@@ -650,11 +662,11 @@ public class CaseManagementNoteDAOImpl extends HibernateDaoSupport implements Ca
         Connection c = null;
         try {
             c = DbConnectionFilter.getThreadLocalDbConnection();
-            String sql = "select issue_id from issue where code = '" + issueCode + "' ";
+            String sql = "select issue_id from issue where code = ?";
             log.debug(sql);
             PreparedStatement ps = c.prepareStatement(sql);
-            // ps.setString(1, issueCode);
-            ResultSet rs = ps.executeQuery(sql);
+            ps.setString(1, issueCode);
+            ResultSet rs = ps.executeQuery();
             String id = null;
             if (rs.next()) {
                 id = rs.getString("issue_id");
@@ -665,7 +677,7 @@ public class CaseManagementNoteDAOImpl extends HibernateDaoSupport implements Ca
 
             log.debug("issue Code " + issueCode + " id :" + id);
 
-            String sqlCommand = "select count(distinct uuid) from casemgmt_issue c, casemgmt_issue_notes cin, casemgmt_note cn where c.issue_id = ?1 and c.id = cin.id and cin.note_id = cn.note_id and cn.provider_no = ?2  and observation_date >= ?3 and observation_date <= ?4";
+            String sqlCommand = "select count(distinct uuid) from casemgmt_issue c, casemgmt_issue_notes cin, casemgmt_note cn where c.issue_id = ? and c.id = cin.id and cin.note_id = cn.note_id and cn.provider_no = ?  and observation_date >= ? and observation_date <= ?";
             log.debug(sqlCommand);
             ps = c.prepareStatement(sqlCommand);
             ps.setString(1, id);
