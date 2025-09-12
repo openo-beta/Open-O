@@ -55,6 +55,7 @@ import java.util.Map;
 @Service
 @Path("/document")
 @Component("documentService")
+@Consumes(MediaType.APPLICATION_JSON)
 public class DocumentService extends AbstractServiceImpl {
     private static Logger logger = MiscUtils.getLogger();
 
