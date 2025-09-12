@@ -28,6 +28,8 @@ package ca.openosp.openo.eform.actions;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -85,10 +87,11 @@ public class DelImage2Action extends ActionSupport {
             
             // Only delete if the file exists and is a regular file (not a directory)
             if (image.exists() && image.isFile()) {
-                boolean deleted =image.delete();
-
-                if (!deleted) {
-                    MiscUtils.getLogger().error("Failed to delete image file: " + imgpath);
+                try {
+                    Path imagePath = image.toPath();
+                    Files.delete(imagePath); 
+                } catch (IOException e) {
+                    MiscUtils.getLogger().error("Error deleting the image file: " + imgpath, e);
                     return ERROR;
                 }
             }

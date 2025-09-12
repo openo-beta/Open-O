@@ -664,33 +664,43 @@ public class CaseManagementNoteDAOImpl extends HibernateDaoSupport implements Ca
         Connection c = null;
         try {
             c = DbConnectionFilter.getThreadLocalDbConnection();
-            String sql = "select issue_id from issue where code = ?";
-            log.debug(sql);
-            PreparedStatement ps = c.prepareStatement(sql);
-            ps.setString(1, issueCode);
-            ResultSet rs = ps.executeQuery();
-            String id = null;
-            if (rs.next()) {
-                id = rs.getString("issue_id");
-            } else {
-                log.debug("Could not find issueCode " + issueCode);
-                return 0;
+
+            // Step 1: Get issue_id from issue code
+            String getIssueIdSql = "SELECT issue_id FROM issue WHERE code = ?";
+            log.debug(getIssueIdSql);
+
+            String issueId = null;
+            try (PreparedStatement ps1 = c.prepareStatement(getIssueIdSql)) {
+                ps1.setString(1, issueCode);
+            
+                try (ResultSet rs1 = ps1.executeQuery()) {
+                    if (rs1.next()) {
+                        issueId = rs1.getString("issue_id");
+                    } else {
+                        log.debug("Could not find issueCode: " + issueCode);
+                        return 0;
+                    }
+                }
             }
 
-            log.debug("issue Code " + issueCode + " id :" + id);
+            log.debug("issue Code " + issueCode + " id :" + issueId);
 
             String sqlCommand = "select count(distinct uuid) from casemgmt_issue c, casemgmt_issue_notes cin, casemgmt_note cn where c.issue_id = ? and c.id = cin.id and cin.note_id = cn.note_id and cn.provider_no = ?  and observation_date >= ? and observation_date <= ?";
+            
             log.debug(sqlCommand);
-            ps = c.prepareStatement(sqlCommand);
-            ps.setString(1, id);
-            ps.setString(2, providerNo);
-            ps.setTimestamp(3, new Timestamp(startDate.getTime()));
-            ps.setTimestamp(4, new Timestamp(endDate.getTime()));
 
-            rs = ps.executeQuery();
-            rs.next();
-
-            ret = rs.getInt(1);
+            try (PreparedStatement ps2 = c.prepareStatement(sqlCommand)) {
+                ps2.setString(1, issueId);
+                ps2.setString(2, providerNo);
+                ps2.setTimestamp(3, new Timestamp(startDate.getTime()));
+                ps2.setTimestamp(4, new Timestamp(endDate.getTime()));
+                
+                try (ResultSet rs2 = ps2.executeQuery()) {
+                    if (rs2.next()) {
+                        return rs2.getInt(1);
+                    }
+                }
+            }
         } catch (Exception e) {
             log.error("Error counting notes for issue :" + issueCode, e);
         }

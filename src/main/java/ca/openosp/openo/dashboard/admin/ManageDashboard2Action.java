@@ -33,6 +33,9 @@ import org.dom4j.Document;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.SAXValidator;
 import org.dom4j.util.XMLErrorHandler;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
+
 import ca.openosp.openo.commn.model.Dashboard;
 import ca.openosp.openo.commn.model.IndicatorTemplate;
 import ca.openosp.openo.managers.DashboardManager;
@@ -138,7 +141,7 @@ public class ManageDashboard2Action extends ActionSupport {
                     factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
                     factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
                 
-                } catch (Exception e) {
+                } catch (SAXNotRecognizedException | SAXNotSupportedException e) {
                     MiscUtils.getLogger().error("Failed to set XML parser features to prevent XXE attacks", e);
                     throw new RuntimeException(e);
                 }
@@ -152,7 +155,7 @@ public class ManageDashboard2Action extends ActionSupport {
                     xmlReader.setFeature("http://xml.org/sax/features/external-general-entities", false);
                     xmlReader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
                     xmlReader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-                } catch (Exception e) {
+                } catch (SAXNotRecognizedException | SAXNotSupportedException e) {
                     MiscUtils.getLogger().error("Failed to set XML parser features to prevent XXE attacks", e);
                     throw new RuntimeException(e);
                 }
