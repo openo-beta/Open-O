@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,6 +26,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import ca.openosp.openo.messenger.data.MsgMessageData;
@@ -407,6 +410,31 @@ public class SFTPConnector {
     public String decryptFile(String fullPath) throws Exception {
         return decryptFile(fullPath, null);
     }
+    
+    /**
+     * Encrypts a file using secure AES/GCM mode.
+     * This method should be used for all new file encryptions.
+     * 
+     * @param plainText The text content to encrypt
+     * @param encryptionKey The encryption key (will use OMD_HRM_DECRYPTION_KEY if null)
+     * @return The encrypted data as a byte array
+     * @throws Exception if encryption fails
+     */
+    public byte[] encryptData(String plainText, String encryptionKey) throws Exception {
+        if (encryptionKey == null) {
+            encryptionKey = OscarProperties.getInstance().getProperty("OMD_HRM_DECRYPTION_KEY");
+        }
+        
+        if (encryptionKey == null) {
+            throw new IllegalArgumentException("Encryption key not provided and OMD_HRM_DECRYPTION_KEY not configured");
+        }
+        
+        byte keyBytes[] = toHex(encryptionKey);
+        SecretKeySpec key = new SecretKeySpec(keyBytes, "AES");
+        
+        byte[] plainData = plainText.getBytes("UTF-8");
+        return encryptWithGCM(plainData, key);
+    }
 
     /**
      * Given the absolute path of an encrypted file, decrypt the file using the specified AES key at the top. Return the
@@ -438,11 +466,108 @@ public class SFTPConnector {
 
         byte keyBytes[] = toHex(decryptionKey);
         SecretKeySpec key = new SecretKeySpec(keyBytes, "AES");
-        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding", "SunJCE");
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        byte[] decode = cipher.doFinal(fileInBytes);
+        
+        // First, try to decrypt using the secure GCM mode (for new files)
+        byte[] decode = null;
+        try {
+            decode = decryptWithGCM(fileInBytes, key);
+            logger.info("Successfully decrypted file using AES/GCM mode");
+        } catch (Exception gcmException) {
+            // If GCM fails, the file might be encrypted with the legacy ECB mode
+            // Try ECB decryption for backward compatibility
+            logger.warn("GCM decryption failed, attempting legacy ECB decryption for backward compatibility. " +
+                          "Please consider re-encrypting this file with GCM mode for better security.");
+            try {
+                decode = decryptWithECB(fileInBytes, key);
+                logger.warn("File was decrypted using legacy ECB mode. ECB mode is insecure and should be migrated to GCM.");
+            } catch (Exception ecbException) {
+                // Both methods failed, throw an exception with details
+                throw new Exception("Failed to decrypt file. Neither GCM nor legacy ECB decryption succeeded. " +
+                                  "GCM error: " + gcmException.getMessage() + ", ECB error: " + ecbException.getMessage());
+            }
+        }
 
         return new String(decode);
+    }
+    
+    /**
+     * Encrypts data using AES/GCM mode (secure mode)
+     * This method should be used for all new encryptions.
+     * GCM provides authenticated encryption with built-in integrity checking.
+     * 
+     * @param plainData The data to encrypt
+     * @param key The AES secret key
+     * @return The encrypted data with IV prepended
+     * @throws Exception if encryption fails
+     */
+    private byte[] encryptWithGCM(byte[] plainData, SecretKeySpec key) throws Exception {
+        // Generate a random 12-byte IV for GCM
+        byte[] iv = new byte[12];
+        SecureRandom secureRandom = new SecureRandom();
+        secureRandom.nextBytes(iv);
+        
+        // Initialize cipher with GCM mode
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+        GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv); // 128-bit authentication tag
+        cipher.init(Cipher.ENCRYPT_MODE, key, gcmSpec);
+        
+        // Encrypt the data
+        byte[] cipherText = cipher.doFinal(plainData);
+        
+        // Combine IV and ciphertext
+        ByteBuffer byteBuffer = ByteBuffer.allocate(iv.length + cipherText.length);
+        byteBuffer.put(iv);
+        byteBuffer.put(cipherText);
+        
+        return byteBuffer.array();
+    }
+    
+    /**
+     * Decrypts data using AES/GCM mode (secure mode)
+     * GCM provides authenticated encryption with built-in integrity checking
+     * 
+     * @param encryptedData The encrypted data with IV prepended
+     * @param key The AES secret key
+     * @return The decrypted data
+     * @throws Exception if decryption fails
+     */
+    private byte[] decryptWithGCM(byte[] encryptedData, SecretKeySpec key) throws Exception {
+        // GCM mode expects the IV to be prepended to the encrypted data
+        // Standard GCM uses a 12-byte (96-bit) IV
+        if (encryptedData.length < 12) {
+            throw new IllegalArgumentException("Encrypted data too short for GCM mode");
+        }
+        
+        // Extract IV and ciphertext
+        ByteBuffer byteBuffer = ByteBuffer.wrap(encryptedData);
+        byte[] iv = new byte[12];
+        byteBuffer.get(iv);
+        byte[] cipherText = new byte[byteBuffer.remaining()];
+        byteBuffer.get(cipherText);
+        
+        // Initialize cipher with GCM mode
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+        GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv); // 128-bit authentication tag
+        cipher.init(Cipher.DECRYPT_MODE, key, gcmSpec);
+        
+        return cipher.doFinal(cipherText);
+    }
+    
+    /**
+     * Decrypts data using legacy AES/ECB mode (insecure, for backward compatibility only)
+     * This method should only be used for decrypting existing files that were encrypted with ECB mode.
+     * ECB mode is vulnerable to various attacks and should not be used for new encryptions.
+     * 
+     * @param encryptedData The encrypted data
+     * @param key The AES secret key
+     * @return The decrypted data
+     * @throws Exception if decryption fails
+     */
+    private byte[] decryptWithECB(byte[] encryptedData, SecretKeySpec key) throws Exception {
+        // Legacy ECB mode - insecure but needed for backward compatibility
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        return cipher.doFinal(encryptedData);
     }
 
     /**
@@ -796,43 +921,3 @@ public class SFTPConnector {
     }
 
 }
-/*
-class MyUserInfo implements UserInfo {
-
-	@Override
-	public String getPassphrase() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getPassword() {
-		return "password";
-	}
-
-	@Override
-	public boolean promptPassword(String message) {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean promptPassphrase(String message) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean promptYesNo(String message) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void showMessage(String message) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-}
-*/

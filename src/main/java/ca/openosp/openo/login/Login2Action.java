@@ -250,6 +250,14 @@ public final class Login2Action extends ActionSupport {
 
             logger.debug("nextPage: " + nextPage);
             if (nextPage != null) {
+                // Validate the redirect URL to prevent open redirect vulnerability
+                if (!isValidInternalRedirect(nextPage)) {
+                    logger.warn("Invalid redirect URL attempted: " + nextPage);
+                    String newURL = "/loginfailed.jsp?errormsg=Invalid redirect URL";
+                    response.sendRedirect(newURL);
+                    return NONE;
+                }
+                
                 // set current facility
                 String facilityIdString = request.getParameter(SELECTED_FACILITY_ID);
                 Facility facility = facilityDao.find(Integer.parseInt(facilityIdString));
@@ -776,6 +784,62 @@ public final class Login2Action extends ActionSupport {
 
     public ApplicationContext getAppContext() {
         return WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
+    }
+
+    /**
+     * Validates that a redirect URL is safe and points to an internal application page.
+     * This prevents open redirect vulnerabilities by ensuring redirects only go to
+     * pages within this application.
+     * 
+     * @param url The URL to validate
+     * @return true if the URL is safe for redirect, false otherwise
+     */
+    private boolean isValidInternalRedirect(String url) {
+        if (url == null || url.trim().isEmpty()) {
+            return false;
+        }
+
+        // Remove any leading/trailing whitespace
+        url = url.trim();
+
+        // Check for relative URLs (safe if they don't contain protocol-relative URLs)
+        if (url.startsWith("/") && !url.startsWith("//")) {
+            // Ensure it doesn't contain protocol indicators that could be exploited
+            return !url.contains("://");
+        }
+
+        // Check if URL starts with the application's context path
+        String contextPath = request.getContextPath();
+        if (!contextPath.isEmpty() && url.startsWith(contextPath + "/")) {
+            return true;
+        }
+
+        // Allow specific known internal pages commonly used after login
+        if (url.equals("provider/providercontrol.jsp") || 
+            url.equals("select_facility.jsp") ||
+            url.equals("caisiPMM") ||
+            url.equals("provider") ||
+            url.equals("programLocation")) {
+            return true;
+        }
+
+        // Reject any URL that contains a protocol (http://, https://, ftp://, etc.)
+        if (url.contains("://")) {
+            return false;
+        }
+
+        // Reject URLs with @ symbol (could be used for credential passing)
+        if (url.contains("@")) {
+            return false;
+        }
+
+        // Reject URLs with backslashes (could be used for path traversal)
+        if (url.contains("\\")) {
+            return false;
+        }
+
+        // Default to rejecting the URL for safety
+        return false;
     }
 
     private String username;

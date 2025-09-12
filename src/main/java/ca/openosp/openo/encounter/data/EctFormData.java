@@ -27,6 +27,8 @@
 package ca.openosp.openo.encounter.data;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -141,20 +143,23 @@ public class EctFormData {
             c = DbConnectionFilter.getThreadLocalDbConnection();
 
             if (!table.equals("form")) {
-                String sql = "SELECT max(ID) ID, demographic_no, formCreated, date(formEdited) 'lastEdited', max(formEdited) 'frmEdited' FROM " + table + " WHERE demographic_no=" + demoNo + " group by lastEdited";
+                String sql = "SELECT max(ID) ID, demographic_no, formCreated, date(formEdited) 'lastEdited', max(formEdited) 'frmEdited' FROM " + table + " WHERE demographic_no=? group by lastEdited";
 
-                Statement s = c.createStatement();
-                ResultSet rs = s.executeQuery(sql);
+                PreparedStatement ps = c.prepareStatement(sql);
+                ps.setString(1, demoNo);
+                ResultSet rs = ps.executeQuery();
 
                 while (rs.next()) {
                     PatientForm frm = new PatientForm(formName, rs.getInt("ID"), rs.getInt("demographic_no"), rs.getDate("formCreated"), rs.getTimestamp("frmEdited"), jsp);
                     forms.add(frm);
                 }
             } else {
-                String sql = "SELECT form_no, demographic_no, form_date from " + table + " where demographic_no=" + demoNo + " order by form_no desc";
+                // For "form" table, we use hardcoded table name since we already validated it equals "form"
+                String sql = "SELECT form_no, demographic_no, form_date from form where demographic_no=? order by form_no desc";
 
-                Statement s = c.createStatement();
-                ResultSet rs = s.executeQuery(sql);
+                PreparedStatement ps = c.prepareStatement(sql);
+                ps.setString(1, demoNo);
+                ResultSet rs = ps.executeQuery();
 
                 while (rs.next()) {
                     PatientForm frm = new PatientForm(formName, rs.getInt("form_no"), rs.getInt("demographic_no"), rs.getDate("form_date"), rs.getDate("form_date"));
@@ -199,11 +204,12 @@ public class EctFormData {
         try {
             c = DbConnectionFilter.getThreadLocalDbConnection();
 
-            if (!table.equals("form")) {
-                String sql = "SELECT ID, demographic_no, formCreated, formEdited FROM " + table + " WHERE demographic_no=" + demoNo + " ORDER BY ID DESC";
+            if (!table.equals("form")) { 
+                String sql = "SELECT ID, demographic_no, formCreated, formEdited FROM " + table + " WHERE demographic_no=? ORDER BY ID DESC";
 
-                Statement s = c.createStatement();
-                ResultSet rs = s.executeQuery(sql);
+                PreparedStatement ps = c.prepareStatement(sql);
+                ps.setString(1, demoNo);
+                ResultSet rs = ps.executeQuery();
 
                 while (rs.next()) {
                     PatientForm frm = new PatientForm(formName, rs.getInt("ID"), rs.getInt("demographic_no"), rs.getDate("formCreated"), rs.getTimestamp("formEdited"));
@@ -214,10 +220,12 @@ public class EctFormData {
                     forms.add(frm);
                 }
             } else {
-                String sql = "SELECT form_no, demographic_no, form_date from " + table + " where demographic_no=" + demoNo + " order by form_no desc";
+                // For "form" table, we use hardcoded table name since we already validated it equals "form"
+                String sql = "SELECT form_no, demographic_no, form_date from form where demographic_no=? order by form_no desc";
 
-                Statement s = c.createStatement();
-                ResultSet rs = s.executeQuery(sql);
+                PreparedStatement ps = c.prepareStatement(sql);
+                ps.setString(1, demoNo);
+                ResultSet rs = ps.executeQuery();
 
                 while (rs.next()) {
                     PatientForm frm = new PatientForm(formName, rs.getInt("form_no"), rs.getInt("demographic_no"), rs.getDate("form_date"), rs.getDate("form_date"));

@@ -25,9 +25,6 @@
 
 package ca.openosp.openo.utility;
 
-import java.security.cert.X509Certificate;
-import javax.net.ssl.X509TrustManager;
-
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
@@ -75,16 +72,15 @@ public class CxfClientUtils {
         } catch (Throwable var3) {
         }
 
+        // Security fix: removed support for allow_all_ssl_certificates to prevent CWE-295 vulnerability
         boolean allowAllSsl = Boolean.parseBoolean(ConfigXmlUtils.getPropertyString("misc", "allow_all_ssl_certificates"));
         if (allowAllSsl) {
-            try {
-                MiscUtils.setJvmDefaultSSLSocketFactoryAllowAllCertificates();
-            } catch (Exception var2) {
-                logger.error("Unexpected error", var2);
-            }
+            logger.warn("SECURITY WARNING: allow_all_ssl_certificates is deprecated and ignored for security reasons. " +
+                       "Configure proper trust stores for self-signed certificates instead.");
+            // Do not call the insecure method anymore
         }
 
-        logger.info("CxfClientUtils using : connectionTimeout=" + connectionTimeout + ", receiveTimeout=" + receiveTimeout + ", useGZip=" + useGZip + ", gZipThreshold=" + gZipThreshold + ", allowAllSsl=" + allowAllSsl);
+        logger.info("CxfClientUtils using : connectionTimeout=" + connectionTimeout + ", receiveTimeout=" + receiveTimeout + ", useGZip=" + useGZip + ", gZipThreshold=" + gZipThreshold);
     }
 
     public static void configureClientConnection(Object wsPort) {
@@ -118,10 +114,17 @@ public class CxfClientUtils {
             tslClientParameters = new TLSClientParameters();
         }
 
-        tslClientParameters.setDisableCNCheck(true);
-        CxfClientUtils.TrustAllManager[] tam = new CxfClientUtils.TrustAllManager[]{new CxfClientUtils.TrustAllManager()};
-        tslClientParameters.setTrustManagers(tam);
-        tslClientParameters.setSecureSocketProtocol("SSLv3");
+        // Security fix: removed insecure TrustAllManager and properly configure TLS
+        // Use default trust managers which validate certificates against the JVM trust store
+        // Do not set custom trust managers - let CXF use the default secure ones
+        
+        // Security fix: enable CN check for hostname verification (was disabled before)
+        tslClientParameters.setDisableCNCheck(false);
+        
+        // Security fix: use secure TLS protocol instead of obsolete SSLv3
+        tslClientParameters.setSecureSocketProtocol("TLS");
+        
+        // Use default certificate validation
         httpConduit.setTlsClientParameters(tslClientParameters);
     }
 
@@ -132,20 +135,5 @@ public class CxfClientUtils {
 
     static {
         initialiseFromConfigXml();
-    }
-
-    public static class TrustAllManager implements X509TrustManager {
-        public TrustAllManager() {
-        }
-
-        public X509Certificate[] getAcceptedIssuers() {
-            return new X509Certificate[0];
-        }
-
-        public void checkClientTrusted(X509Certificate[] certs, String authType) {
-        }
-
-        public void checkServerTrusted(X509Certificate[] certs, String authType) {
-        }
     }
 }

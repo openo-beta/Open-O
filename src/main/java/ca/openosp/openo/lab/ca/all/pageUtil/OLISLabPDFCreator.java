@@ -24,14 +24,14 @@
  */
 package ca.openosp.openo.lab.ca.all.pageUtil;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.io.FilenameUtils;
 
 import com.itextpdf.text.*;
 import org.apache.logging.log4j.Logger;
@@ -118,11 +118,44 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
             LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
             String uuidToAdd = request.getParameter("uuid");
-            String fileName = System.getProperty("java.io.tmpdir") + "/olis_" + uuidToAdd + ".response";
+            
+            // Validate UUID parameter to prevent path injection
+            if (uuidToAdd == null || uuidToAdd.trim().isEmpty()) {
+                logger.error("Invalid UUID parameter: null or empty");
+                request.setAttribute("result", "Error");
+                return;
+            }
+            
+            // Sanitize the UUID to prevent path traversal - removes any path components
+            String sanitizedUuid = FilenameUtils.getName(uuidToAdd);
+            
+            // Additional validation: UUID should not contain path separators or special characters
+            if (!sanitizedUuid.equals(uuidToAdd) || sanitizedUuid.contains("..") || 
+                sanitizedUuid.contains("/") || sanitizedUuid.contains("\\")) {
+                logger.error("Potential path traversal attempt detected in UUID parameter");
+                request.setAttribute("result", "Error");
+                return;
+            }
+            
             String hl7Parsed = "";
             try {
-                if (Files.exists(Paths.get(fileName))) {
-                    ArrayList<String> hl7Body = Utilities.separateMessages(fileName);
+                // Get the temp directory and create File objects for canonical path validation
+                File tempDir = new File(System.getProperty("java.io.tmpdir"));
+                File targetFile = new File(tempDir, "olis_" + sanitizedUuid + ".response");
+                
+                // Validate that the canonical path is within the temp directory
+                String canonicalTempPath = tempDir.getCanonicalPath();
+                String canonicalFilePath = targetFile.getCanonicalPath();
+                
+                if (!canonicalFilePath.startsWith(canonicalTempPath + File.separator)) {
+                    logger.error("Attempted path traversal detected - file outside temp directory");
+                    request.setAttribute("result", "Error");
+                    return;
+                }
+                
+                // Now safe to check if file exists and read it
+                if (targetFile.exists() && targetFile.isFile()) {
+                    ArrayList<String> hl7Body = Utilities.separateMessages(canonicalFilePath);
                     for (String hl7Text : hl7Body) {
                         hl7Parsed += hl7Text.replace("\\E\\", "\\SLASHHACK\\").replace("µ", "\\MUHACK\\").replace("\\H\\", "\\.H\\").replace("\\N\\", "\\.N\\");
                     }

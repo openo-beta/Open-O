@@ -49,7 +49,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ca.openosp.openo.utility.CxfClientUtils.TrustAllManager;
 
 /**
  * When using the shutdown hook...
@@ -232,18 +231,28 @@ public final class MiscUtils {
         }
     }
 
+    /**
+     * @deprecated This method has been modified to use proper certificate validation instead of trusting all certificates.
+     * The previous implementation was vulnerable to man-in-the-middle attacks (CWE-295).
+     * For environments requiring self-signed certificates, configure proper trust stores instead.
+     */
+    @Deprecated
     public static void setJvmDefaultSSLSocketFactoryAllowAllCertificates() throws NoSuchAlgorithmException, KeyManagementException {
-        TrustAllManager[] tam = new TrustAllManager[]{new TrustAllManager()};
+        Logger logger = getLogger();
+        logger.warn("setJvmDefaultSSLSocketFactoryAllowAllCertificates called - using secure default certificate validation");
+        
+        // Use default SSL context with proper certificate validation
+        // This will use the JVM's default trust store (cacerts) which contains trusted CA certificates
         SSLContext ctx = SSLContext.getInstance("TLS");
-        ctx.init((KeyManager[]) null, tam, new SecureRandom());
+        ctx.init(null, null, new SecureRandom());
         SSLSocketFactory sslSocketFactory = ctx.getSocketFactory();
         HttpsURLConnection.setDefaultSSLSocketFactory(sslSocketFactory);
-        HostnameVerifier hostNameVerifier = new HostnameVerifier() {
-            public boolean verify(String host, SSLSession sslSession) {
-                return true;
-            }
-        };
-        HttpsURLConnection.setDefaultHostnameVerifier(hostNameVerifier);
+        
+        // Use default hostname verifier that performs proper validation
+        // This ensures the certificate's CN or SAN matches the hostname
+        HttpsURLConnection.setDefaultHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier());
+        
+        logger.info("SSL configuration set to use proper certificate validation");
     }
 
     public static boolean soundex(String s1, String s2) throws EncoderException {

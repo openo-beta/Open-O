@@ -178,13 +178,16 @@ public class LabUpload2Action extends ActionSupport {
             PrivateKey key = getServerPrivate();
 
             // Decrypt the secret key using the servers private key
-            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            // Using OAEP padding with SHA-256 for secure RSA encryption to prevent padding oracle attacks
+            // Explicitly specifying OAEP parameters to ensure secure padding is used
+            Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
             cipher.init(Cipher.DECRYPT_MODE, key);
             byte[] newSecretKey = cipher.doFinal(Base64.decodeBase64(skey));
 
             // Decrypt the message using the secret key
             SecretKeySpec skeySpec = new SecretKeySpec(newSecretKey, "AES");
-            Cipher msgCipher = Cipher.getInstance("AES");
+            // Using ECB mode for backward compatibility - newer implementations should use GCM or CBC with IV
+            Cipher msgCipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             msgCipher.init(Cipher.DECRYPT_MODE, skeySpec);
 
             is = new CipherInputStream(is, msgCipher);

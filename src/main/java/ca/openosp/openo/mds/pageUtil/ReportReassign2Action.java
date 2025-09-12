@@ -28,6 +28,7 @@ package ca.openosp.openo.mds.pageUtil;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -177,22 +178,53 @@ public class ReportReassign2Action extends ActionSupport {
 
             }
 
-            newURL = request.getRequestURI();
-
-            if (newURL.contains("labDisplay.jsp")) {
-                newURL = newURL + "?providerNo=" + providerNo + "&searchProviderNo=" + searchProviderNo + "&status=" + status + "&segmentID=" + flaggedLabsList.get(0);
-                // the segmentID is needed when being called from a lab display
-            } else {
-                newURL = newURL + "&providerNo=" + providerNo + "&searchProviderNo=" + searchProviderNo + "&status=" + status + "&segmentID=" + flaggedLabsList.get(0);
+            // Build safe redirect URL using context path to prevent open redirect vulnerability
+            String contextPath = request.getContextPath();
+            String requestURI = request.getRequestURI();
+            
+            // Extract the path relative to the context, ensuring it stays within the application
+            String relativePath = "";
+            if (requestURI != null && requestURI.startsWith(contextPath)) {
+                relativePath = requestURI.substring(contextPath.length());
             }
-            if (request.getParameter("lname") != null) {
-                newURL = newURL + "&lname=" + request.getParameter("lname");
+            
+            // Default to a safe page if the path is suspicious or empty
+            if (relativePath.isEmpty() || relativePath.contains("..") || !relativePath.startsWith("/")) {
+                relativePath = "/lab/CA/ALL/labDisplay.jsp";
             }
-            if (request.getParameter("fname") != null) {
-                newURL = newURL + "&fname=" + request.getParameter("fname");
+            
+            // Build the new URL with the context path to ensure it stays within the application
+            newURL = contextPath + relativePath;
+            
+            // Add query parameters with proper URL encoding to prevent injection
+            String queryDelimiter = relativePath.contains("labDisplay.jsp") ? "?" : "&";
+            
+            // Build query string with proper null checks and encoding
+            StringBuilder queryParams = new StringBuilder();
+            queryParams.append(queryDelimiter);
+            queryParams.append("providerNo=").append(URLEncoder.encode(providerNo != null ? providerNo : "", "UTF-8"));
+            queryParams.append("&searchProviderNo=").append(URLEncoder.encode(searchProviderNo != null ? searchProviderNo : "", "UTF-8"));
+            queryParams.append("&status=").append(URLEncoder.encode(status != null ? status : "", "UTF-8"));
+            
+            // Add segmentID if flaggedLabsList is not empty
+            if (!flaggedLabsList.isEmpty() && flaggedLabsList.get(0).length > 0) {
+                queryParams.append("&segmentID=").append(URLEncoder.encode(flaggedLabsList.get(0)[0], "UTF-8"));
             }
-            if (request.getParameter("hnum") != null) {
-                newURL = newURL + "&hnum=" + request.getParameter("hnum");
+            
+            newURL = newURL + queryParams.toString();
+            
+            // Add optional parameters with proper encoding
+            String lname = request.getParameter("lname");
+            if (lname != null) {
+                newURL = newURL + "&lname=" + URLEncoder.encode(lname, "UTF-8");
+            }
+            String fname = request.getParameter("fname");
+            if (fname != null) {
+                newURL = newURL + "&fname=" + URLEncoder.encode(fname, "UTF-8");
+            }
+            String hnum = request.getParameter("hnum");
+            if (hnum != null) {
+                newURL = newURL + "&hnum=" + URLEncoder.encode(hnum, "UTF-8");
             }
         } catch (Exception e) {
             logger.error("exception in ReportReassign2Action", e);
