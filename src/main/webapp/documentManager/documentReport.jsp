@@ -360,7 +360,7 @@
         </h2>
 
         <% if (module.equals("demographic")) { %>
-        <oscar:nameage demographicNo="<%=moduleid%>"/>
+        <oscar:nameage demographicNo="<%=Encode.forHtmlAttribute(moduleid)%>"/>
         <%} %>
 
         <jsp:include page="addDocument.jsp">
@@ -371,7 +371,7 @@
 
         <form action="${pageContext.request.contextPath}/documentManager/combinePDFs.do" method="post">
             <input type="hidden" name="curUser" value="<%=curUser%>">
-            <input type="hidden" name="demoId" value="<%=moduleid%>">
+            <input type="hidden" name="demoId" value="<%=Encode.forHtmlAttribute(moduleid)%>">
             <div class="documentLists"><%-- STUFF TO DISPLAY --%> <%
                 ArrayList categories = new ArrayList();
                 ArrayList categoryKeys = new ArrayList();
@@ -411,7 +411,7 @@
                                 <div class="form-group">
                                         <%--      <label for="viewstatus"><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgViewStatus"/></label>--%>
                                     <select class="form-control" id="viewstatus" name="viewstatus"
-                                            onchange="window.location.href='?function=<%=module%>&functionid=<%=moduleid%>&view=<%=view%>&viewstatus='+this.options[this.selectedIndex].value;">
+                                            onchange="var val = encodeURIComponent(this.options[this.selectedIndex].value); window.location.href='?function=<%=Encode.forJavaScriptAttribute(module)%>&functionid=<%=Encode.forJavaScriptAttribute(moduleid)%>&view=<%=Encode.forJavaScriptAttribute(view)%>&viewstatus=' + val;">
                                         <option value="all"
                                                 <%=viewstatus.equalsIgnoreCase("all") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgAll"/></option>
                                         <option value="deleted"
@@ -427,13 +427,13 @@
                                         <%--          <label for="view"><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgView"/></label>--%>
                                     <select id="viewdoctype<%=i%>" name="view" id="view"
                                             class="input-medium form-control"
-                                            onchange="window.location.href='?function=<%=module%>&functionid=<%=moduleid%>&view='+this.options[this.selectedIndex].value;">
+                                            onchange="var val = encodeURIComponent(this.options[this.selectedIndex].value); window.location.href='?function=<%=Encode.forJavaScriptAttribute(module)%>&functionid=<%=Encode.forJavaScriptAttribute(moduleid)%>&view=' + val;">
                                         <option value="">All</option>
                                         <%
                                             for (int i3 = 0; i3 < doctypes.size(); i3++) {
                                                 String doctype = (String) doctypes.get(i3); %>
-                                        <option value="<%= doctype%>"
-                                                <%=(view.equalsIgnoreCase(doctype)) ? "selected" : ""%>><%= doctype%>
+                                        <option value="<%= Encode.forHtmlAttribute(doctype)%>"
+                                                <%=(view.equalsIgnoreCase(doctype)) ? "selected" : ""%>><%= Encode.forHtmlContent(doctype)%>
                                         </option>
                                         <%}%>
 
@@ -442,7 +442,7 @@
                                 <%if (DocumentBrowserLink) {%>
                                 <div class="form-group">
                                     <a class="btn btn-link form-control"
-                                       href="${ pageContext.request.contextPath }/documentManager/documentBrowser.jsp?function=<%=module%>&functionid=<%=moduleid%>&categorykey=<%=Encode.forUri(currentkey)%>">
+                                       href="${ pageContext.request.contextPath }/documentManager/documentBrowser.jsp?function=<%=Encode.forUriComponent(module)%>&functionid=<%=Encode.forUriComponent(moduleid)%>&categorykey=<%=Encode.forUri(currentkey)%>">
                                         <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgBrowser"/>
                                     </a>
                                 </div>
@@ -562,7 +562,7 @@
                                             if (curdoc.getRemoteFacilityId() == null) {
                                                 if (curdoc.getCreatorId().equalsIgnoreCase(user_no)) {
                                                     if (curdoc.getStatus() == 'D') { %>
-                                        <a href="documentReport.jsp?undelDocumentNo=<%=curdoc.getDocId()%>&function=<%=module%>&functionid=<%=moduleid%>&viewstatus=<%=viewstatus%>"
+                                        <a href="documentReport.jsp?undelDocumentNo=<%=curdoc.getDocId()%>&function=<%=Encode.forUriComponent(module)%>&functionid=<%=Encode.forUriComponent(moduleid)%>&viewstatus=<%=Encode.forUriComponent(viewstatus)%>"
                                            class="btn btn-link" style="padding:0;"
                                            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.btnUnDelete"/>">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -577,7 +577,7 @@
                                         } else { // curdoc get status
                                         %>
                                         <a style="color:red; padding:0;"
-                                           href="javascript: checkDelete('documentReport.jsp?delDocumentNo=<%=curdoc.getDocId()%>&function=<%=module%>&functionid=<%=moduleid%>&viewstatus=<%=viewstatus%>','<%=StringEscapeUtils.escapeJavaScript(curdoc.getDescription())%>')"
+                                           href="javascript: checkDelete('documentReport.jsp?delDocumentNo=<%=curdoc.getDocId()%>&function=<%=Encode.forJavaScriptAttribute(module)%>&functionid=<%=Encode.forJavaScriptAttribute(moduleid)%>&viewstatus=<%=Encode.forJavaScriptAttribute(viewstatus)%>','<%=StringEscapeUtils.escapeJavaScript(curdoc.getDescription())%>')"
                                            class="btn btn-link" title="Delete">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                  fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -591,7 +591,7 @@
                                         <security:oscarSec roleName="<%=roleName$%>"
                                                            objectName="_admin,_admin.edocdelete" rights="r">
                                             <% if (curdoc.getStatus() == 'D') {%>
-                                            <a href="documentReport.jsp?undelDocumentNo=<%=curdoc.getDocId()%>&function=<%=module%>&functionid=<%=moduleid%>&viewstatus=<%=viewstatus%>"
+                                            <a href="documentReport.jsp?undelDocumentNo=<%=curdoc.getDocId()%>&function=<%=Encode.forUriComponent(module)%>&functionid=<%=Encode.forUriComponent(moduleid)%>&viewstatus=<%=Encode.forUriComponent(viewstatus)%>"
                                                title="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.btnUnDelete"/>"
                                                class="btn btn-link" style="padding:0;">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -604,7 +604,7 @@
                                             </a>
                                             <% } else { // curdoc get status %>
                                             <a style="color:red;padding:0;"
-                                               href="javascript: checkDelete('documentReport.jsp?delDocumentNo=<%=curdoc.getDocId()%>&function=<%=module%>&functionid=<%=moduleid%>&viewstatus=<%=viewstatus%>','<%=StringEscapeUtils.escapeJavaScript(curdoc.getDescription())%>')"
+                                               href="javascript: checkDelete('documentReport.jsp?delDocumentNo=<%=curdoc.getDocId()%>&function=<%=Encode.forJavaScriptAttribute(module)%>&functionid=<%=Encode.forJavaScriptAttribute(moduleid)%>&viewstatus=<%=Encode.forJavaScriptAttribute(viewstatus)%>','<%=StringEscapeUtils.escapeJavaScript(curdoc.getDescription())%>')"
                                                class="btn btn-link" title="Delete">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                      fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -620,7 +620,7 @@
                                         <% if (curdoc.getStatus() != 'D') {
                                             if (curdoc.getStatus() == 'H') { %>
                                         <a href="javascript:void(0)"
-                                           onclick="popup1(450, 600, 'addedithtmldocument.jsp?editDocumentNo=<%=curdoc.getDocId()%>&function=<%=module%>&functionid=<%=moduleid%>', 'EditDoc')"
+                                           onclick="popup1(450, 600, 'addedithtmldocument.jsp?editDocumentNo=<%=curdoc.getDocId()%>&function=<%=Encode.forJavaScriptAttribute(module)%>&functionid=<%=Encode.forJavaScriptAttribute(moduleid)%>', 'EditDoc')"
                                            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.btnEdit"/>"
                                            class="btn btn-link" style="padding:0;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -633,7 +633,7 @@
                                         </a>
                                         <%} else {%>
                                         <a href="javascript:void(0)"
-                                           onclick="popup1(350, 500, 'editDocument.jsp?editDocumentNo=<%=curdoc.getDocId()%>&function=<%=module%>&functionid=<%=moduleid%>', 'EditDoc')"
+                                           onclick="popup1(350, 500, 'editDocument.jsp?editDocumentNo=<%=curdoc.getDocId()%>&function=<%=Encode.forJavaScriptAttribute(module)%>&functionid=<%=Encode.forJavaScriptAttribute(moduleid)%>', 'EditDoc')"
                                            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.btnEdit"/>"
                                            class="btn btn-link" style="padding:0;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -650,7 +650,7 @@
 
                                         <% if (module.equals("demographic")) {%>
                                         <a href="javascript:void(0)" title="Annotation"
-                                           onclick="window.open('${ pageContext.request.contextPath }/annotation/annotation.jsp?display=<%=annotation_display%>&table_id=<%=curdoc.getDocId()%>&demo=<%=moduleid%>','anwin','width=400,height=500');"
+                                           onclick="window.open('${ pageContext.request.contextPath }/annotation/annotation.jsp?display=<%=Encode.forJavaScriptAttribute(annotation_display)%>&table_id=<%=curdoc.getDocId()%>&demo=<%=Encode.forJavaScriptAttribute(moduleid)%>','anwin','width=400,height=500');"
                                            class="btn btn-link" style="padding:0">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                  fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
