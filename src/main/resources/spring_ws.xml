@@ -246,12 +246,19 @@
     <alias name="oscarOAuthDataProvider" alias="oauthProvider"/>
 
 
-    <bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
+	<!-- 
+		Switched from Jettison (org.codehaus.jettison) to FasterXML Jackson 
+		for JSON handling in CXF JAX-RS providers. 
+		This ensures better compatibility and consistency of REST API 
+		request/response serialization and deserialization. 
+		Also excluded cxf-rt-rs-extension-providers to avoid Jettison being pulled in transitively.
+	-->
+    <!-- <bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
         <property name="dropRootElement" value="true"/>
         <property name="serializeAsArray" value="true"/>
         <property name="arrayKeys" ref="jsonKeys"/>
         <property name="dropCollectionWrapperElement" value="true"/>
-    </bean>
+    </bean> -->
 
     <!-- =========================================================
          View resolver for OAuth authorize JSPs (Spring MVC)
