@@ -28,8 +28,11 @@ package ca.openosp.openo.utility;
 
 import java.io.IOException;
 import java.net.ConnectException;
+import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.net.ssl.X509TrustManager;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
@@ -70,6 +73,24 @@ import ca.openosp.OscarProperties;
 public class CxfClientUtilsOld {
     private static long connectionTimeout = Long.parseLong(OscarProperties.getInstance().getProperty("web_service_client.connection_timeout_ms"));
     private static long receiveTimeout = Long.parseLong(OscarProperties.getInstance().getProperty("web_service_client.received_timeout_ms"));
+
+
+    public static class TrustAllManager implements X509TrustManager {
+        @Override
+        public X509Certificate[] getAcceptedIssuers() {
+            return new X509Certificate[0];
+        }
+
+        @Override
+        public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+            // trust all no work required
+        }
+
+        @Override
+        public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+            // trust all no work required
+        }
+    }
 
     public static class GenericPasswordCallbackHandler implements CallbackHandler {
         private String password;

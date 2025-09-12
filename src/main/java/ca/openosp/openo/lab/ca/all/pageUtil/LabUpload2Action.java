@@ -57,6 +57,7 @@ import ca.openosp.openo.lab.ca.all.util.Utilities;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -186,18 +187,44 @@ public class LabUpload2Action extends ActionSupport {
 
             // Decrypt the message using the secret key
             SecretKeySpec skeySpec = new SecretKeySpec(newSecretKey, "AES");
-            // Using ECB mode for backward compatibility - newer implementations should use GCM or CBC with IV
-            Cipher msgCipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-            msgCipher.init(Cipher.DECRYPT_MODE, skeySpec);
-
-            is = new CipherInputStream(is, msgCipher);
-
+            is = decryptAutoDetect(is, skeySpec);
+           
             // Return the decrypted message
             return (new BufferedInputStream(is));
 
         } catch (Exception e) {
             logger.error("Could not decrypt the message", e);
             return (null);
+        }
+    }
+
+    private static InputStream decryptAutoDetect(InputStream is, SecretKeySpec key) throws Exception {
+        // Mark stream for reset if possible
+        is.mark(20);
+        
+        // Check for version header in new files
+        byte[] header = new byte[4];
+        int read = is.read(header);
+        
+        if (read == 4 && "GCM1".equals(new String(header))) {
+            // New format with GCM
+            byte[] iv = new byte[12];
+            is.read(iv);
+            
+            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+            GCMParameterSpec spec = new GCMParameterSpec(128, iv);
+            cipher.init(Cipher.DECRYPT_MODE, key, spec);
+            
+            return new CipherInputStream(is, cipher);
+        } else {
+            // Legacy ECB format
+            is.reset(); // Go back to start
+            
+            logger.warn("Processing legacy ECB file");
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.DECRYPT_MODE, key);
+            
+            return new CipherInputStream(is, cipher);
         }
     }
 
