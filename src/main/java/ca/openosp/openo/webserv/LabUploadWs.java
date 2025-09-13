@@ -50,7 +50,7 @@ import java.text.ParseException;
 import java.util.Date;
 
 
-@WebService
+@WebService(targetNamespace = "http://ws.oscarehr.org/")
 @Component
 @GZIP(threshold = AbstractWs.GZIP_THRESHOLD)
 public class LabUploadWs extends AbstractWs {
