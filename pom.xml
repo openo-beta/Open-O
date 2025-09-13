@@ -858,6 +858,13 @@
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
             <version>2.39.1</version>
+            <!-- Exclude it to avoid conflict with the apache.cxf's jakarta.ws.rs-api -->
+            <exclusions>
+                <exclusion>
+                <groupId>jakarta.ws.rs</groupId>
+                <artifactId>jakarta.ws.rs-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- AXIS2 (for OLIS) -->
@@ -890,6 +897,11 @@
                 <exclusion>
                     <groupId>org.apache.ant</groupId>
                     <artifactId>ant</artifactId>
+                </exclusion>
+                <!-- Exclude old JAX-RS API to avoid conflict with jakarta.ws.rs -->
+                <exclusion>
+                    <groupId>javax.ws.rs</groupId>
+                    <artifactId>jsr311-api</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
