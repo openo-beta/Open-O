@@ -55,10 +55,26 @@ public class UtilXML {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             
             // Disable external entities to prevent XXE attacks
-            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-            factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-            factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-            factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            try {
+                factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            } catch (Exception e) {
+                MiscUtils.getLogger().warn("Could not set feature: disallow-doctype-decl", e);
+            }
+            try {
+                factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            } catch (Exception e) {
+                MiscUtils.getLogger().warn("Could not set feature: external-general-entities", e);
+            }
+            try {
+                factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            } catch (Exception e) {
+                MiscUtils.getLogger().warn("Could not set feature: external-parameter-entities", e);
+            }
+            try {
+                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            } catch (Exception e) {
+                MiscUtils.getLogger().warn("Could not set feature: load-external-dtd", e);
+            }
             
             // Disable XInclude
             factory.setXIncludeAware(false);
