@@ -211,7 +211,7 @@ public class LabUploadWs extends AbstractWs {
     public String uploadPDF(@WebParam(name = "file_name") String fileName,
                             @WebParam(name = "contents") byte[] contents,
                             @WebParam(name = "oscar_provider_no") String oscarProviderNo) {
-        logger.error("uploadPDF called file name " + fileName + " providers " + oscarProviderNo + " contnets " + contents);
+        logger.error("uploadPDF called file name " + fileName + " provider " + oscarProviderNo + " contnets " + contents);
         String returnMessageHandler = "{\"success\":0,\"message\":\"\"}";
 
         try (ByteArrayInputStream is = new ByteArrayInputStream(contents)) {
