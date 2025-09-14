@@ -36,18 +36,50 @@ import ca.openosp.openo.utility.SpringUtils;
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
+ * Struts2 action responsible for managing prescription favorites functionality including
+ * copying favorites between providers and managing sharing privileges.
  *
- * @author toby
+ * This action handles three main operations:
+ * <ul>
+ * <li>Copying selected favorite prescriptions from one provider to another</li>
+ * <li>Updating sharing privileges for a provider's favorites</li>
+ * <li>Refreshing the view with a selected provider's favorites</li>
+ * </ul>
+ *
+ * The action supports method-based routing using the 'dispatch' parameter to determine
+ * which operation to perform: 'copy', 'update', or default 'refresh'.
+ *
+ * @since 2025-04-07
  */
 public class CopyFavorites2Action extends ActionSupport {
+    /** HTTP request object for accessing request parameters and attributes */
     HttpServletRequest request = ServletActionContext.getRequest();
+
+    /** HTTP response object for sending responses back to the client */
     HttpServletResponse response = ServletActionContext.getResponse();
 
 
+    /** Logger instance for debugging and error tracking */
     private static final Logger logger = MiscUtils.getLogger();
+
+    /** Data access object for managing favorites privilege settings */
     FavoritesPrivilegeDao favoritesPrivilegeDao = SpringUtils.getBean(FavoritesPrivilegeDao.class);
+
+    /** Data access object for managing favorites prescriptions */
     FavoritesDao favoritesDao = SpringUtils.getBean(FavoritesDao.class);
     
+    /**
+     * Main entry point for the action that routes to specific methods based on the 'dispatch' parameter.
+     *
+     * Supports three dispatch methods:
+     * <ul>
+     * <li>'update' - Updates sharing privileges for a provider's favorites</li>
+     * <li>'copy' - Copies selected favorites from one provider to another</li>
+     * <li>default - Refreshes the view with selected provider information</li>
+     * </ul>
+     *
+     * @return String Struts2 result string, typically "success"
+     */
     public String execute() {
         String method = request.getParameter("dispatch");
         if ("update".equals(method)) {
@@ -59,65 +91,110 @@ public class CopyFavorites2Action extends ActionSupport {
     }
 
 
+    /**
+     * Updates the sharing privilege settings for a provider's prescription favorites.
+     *
+     * This method processes form data to determine whether a provider's favorites
+     * should be shared with other providers. The sharing setting is stored in the
+     * database via the FavoritesPrivilegeDao.
+     *
+     * @return String Struts2 SUCCESS result
+     */
     public String update() {
         logger.debug("copyFavorites-update");
-        
-        //LazyValidatorForm lazyForm = (LazyValidatorForm) form;
-        String providerNo = request.getParameter("userProviderNo");//lazyForm.get("userProviderNo").toString();
-        int share = Integer.parseInt(request.getParameter("rb_share"));//Integer.parseInt(lazyForm.get("rb_share").toString());
+
+        // Extract provider number from request parameters
+        String providerNo = request.getParameter("userProviderNo");
+
+        // Parse share radio button value (0=false, 1=true)
+        int share = Integer.parseInt(request.getParameter("rb_share"));
+
+        // Update the sharing privilege in the database
         favoritesPrivilegeDao.setFavoritesPrivilege(providerNo, share==0?false:true, false);
 
         return SUCCESS;
     }
 
+    /**
+     * Refreshes the favorites view by setting the selected provider for copying operations.
+     *
+     * This method extracts the selected provider from the dropdown list and sets it
+     * as a request attribute for use by the JSP view. This allows the interface to
+     * display the selected provider's favorites for potential copying.
+     *
+     * @return String Struts2 SUCCESS result
+     */
     public String refresh() {
         logger.debug("copyFavorites-refresh");
 
-        //LazyValidatorForm lazyForm = (LazyValidatorForm) form;
-        //String providerNo = lazyForm.get("ddl_provider").toString();
+        // Get the selected provider from dropdown parameter
         String providerNo = request.getParameter("ddl_provider");
+
+        // Set as request attribute for JSP access
         request.setAttribute("copyProviderNo", providerNo);
 
         return SUCCESS;
     }
 
+    /**
+     * Copies selected favorite prescriptions from one provider to another provider.
+     *
+     * This method processes a form containing checkboxes for favorite selection and
+     * creates duplicate entries for the target provider. Each selected favorite is
+     * cloned using BeanUtils.copyProperties() and assigned to the destination provider.
+     *
+     * The copying process involves:
+     * <ol>
+     * <li>Validating that a source provider is selected</li>
+     * <li>Collecting all selected favorite IDs from form checkboxes</li>
+     * <li>Creating copies of each selected favorite</li>
+     * <li>Assigning copies to the target provider and persisting to database</li>
+     * </ol>
+     *
+     * @return String Struts2 SUCCESS result
+     */
     public String copy() {
         logger.debug("copyFavorites-copy");
 
-        //LazyValidatorForm lazyForm = (LazyValidatorForm) form;
-        //String providerNo = lazyForm.get("userProviderNo").toString();
-        
+        // Get the target provider who will receive the copied favorites
         String providerNo = request.getParameter("providerNo");
-        //if( lazyForm.get("ddl_provider") == null || lazyForm.get("ddl_provider").toString()=="")
+
+        // Validate that a source provider is selected
         if (request.getParameter("ddl_provider") == null || request.getParameter("ddl_provider").equals(""))
             return SUCCESS;
 
-        //int count = Integer.parseInt(lazyForm.get("countFavorites").toString());
+        // Get the count of available favorites to check
         int count = Integer.parseInt(request.getParameter("countFavorites"));
         List<Integer> favIDs = new ArrayList<Integer>();
+
+        // Collect IDs of selected favorites from form checkboxes
         for (int i=0;i<count;i++){
             String search = "selected"+i;
-            //if (lazyForm.get(search)!=null){
             if (request.getParameter(search) != null) {
-                //int id = Integer.parseInt(lazyForm.get("fldFavoriteId"+i).toString());
                 int id = Integer.parseInt(request.getParameter("fldFavoriteId"+i));
                 favIDs.add(id);
             }
         }
-       
+
+        // Copy each selected favorite to the target provider
         for(Integer id:favIDs) {
         	Favorites f = favoritesDao.find(id);
         	Favorites copy = new Favorites();
         	try {
+        		// Clone the favorite using Apache Commons BeanUtils
 	        	BeanUtils.copyProperties(copy, f);
+
+	        	// Assign to target provider and clear ID for new record
 	        	copy.setProviderNo(providerNo);
 	        	copy.setId(null);
+
+	        	// Persist the new favorite record
 	        	favoritesDao.persist(copy);
         	}catch(Exception e) {
         		logger.error("error",e);
         	}
         }
-         
+
         return SUCCESS;
     }
 

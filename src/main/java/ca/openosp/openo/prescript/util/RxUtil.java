@@ -42,12 +42,55 @@ import ca.openosp.openo.prescript.data.RxCodesData;
 import ca.openosp.openo.prescript.data.RxPrescriptionData;
 import ca.openosp.openo.prescript.pageUtil.RxSessionBean;
 
+/**
+ * Comprehensive utility class for prescription processing and clinical decision support.
+ * This class provides essential functionality for the prescription system including
+ * date/time processing, medication instruction parsing, drug interaction checking,
+ * renal dosing calculations, and prescription validation.
+ *
+ * <p>Key functionality includes:</p>
+ * <ul>
+ * <li>Date and time formatting utilities for prescription dates</li>
+ * <li>Complex instruction parsing with frequency, dosage, and duration extraction</li>
+ * <li>Creatinine clearance calculations for renal dosing</li>
+ * <li>Prescription history analysis and duplicate checking</li>
+ * <li>Drug interaction and allergy warning processing</li>
+ * <li>Prescription validation and policy compliance checking</li>
+ * <li>Clinical decision support for medication management</li>
+ * </ul>
+ *
+ * <p>The class uses sophisticated regular expression patterns to parse free-text
+ * prescription instructions and extract structured data including dosages, frequencies,
+ * routes of administration, and duration specifications.</p>
+ *
+ * @since 2004-02-05
+ */
 public class RxUtil {
 
+    /**
+     * Default date pattern used for prescription date formatting.
+     */
     private static String defaultPattern = "yyyy/MM/dd";
+
+    /**
+     * Locale setting for Canadian date and number formatting.
+     */
     private static Locale locale = Locale.CANADA;
+
+    /**
+     * Default quantity for prescriptions when not specified.
+     */
     private static String defaultQuantity = "30";
+
+    /**
+     * Logger instance for this class.
+     */
     private static final Logger logger = MiscUtils.getLogger();
+
+    /**
+     * Array of number words (zero through ten) used in instruction parsing.
+     * Supports case-insensitive matching via regex patterns.
+     */
     private static String[] zeroToTen = {"(?i)zero", "(?i)one", "(?i)two", "(?i)three", "(?i)four", "(?i)five", "(?i)six", "(?i)seven", "(?i)eight", "(?i)nine", "(?i)ten"};
 
     public static void setDefaultQuantity(String quantity) {
@@ -177,12 +220,7 @@ public class RxUtil {
         }
     }
 
-    /**
-     * Method for calculating creatinine clearance takes age, weight in kg and CREATININE values an returns Clcr
-     * age must be greater than zero.
-     * weight must be greater than zero
-     */
-    public static int getClcr(int age, double weight, double sCr, boolean female) throws Exception {
+    /**\n     * Calculates creatinine clearance using the Cockcroft-Gault equation for renal dosing adjustments.\n     * This method is essential for determining appropriate medication dosing in patients with\n     * varying degrees of renal impairment.\n     *\n     * <p>The Cockcroft-Gault equation used is:</p>\n     * <pre>\n     * ClCr = ((140 - age) × weight) / (sCr × 0.8)\n     * For females: ClCr = ClCr × 0.85\n     * </pre>\n     *\n     * <p>Result is used with renal dosing recommendations to determine if dose adjustments\n     * are necessary for medications that are renally eliminated.</p>\n     *\n     * @param age int patient age in years (must be greater than 0)\n     * @param weight double patient weight in kilograms (must be greater than 0)\n     * @param sCr double serum creatinine in mg/dL (must be greater than 0)\n     * @param female boolean true if patient is female (requires 15% reduction in calculation)\n     * @return int calculated creatinine clearance in mL/min, rounded to nearest integer\n     * @throws Exception if any parameter is less than or equal to 0\n     */\n    public static int getClcr(int age, double weight, double sCr, boolean female) throws Exception {
         if (age < 0) {
             throw new Exception("age must be greater than 0");
         }

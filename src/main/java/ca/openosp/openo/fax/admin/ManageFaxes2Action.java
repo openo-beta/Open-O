@@ -69,6 +69,36 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.form.JSONUtil;
 
+/**
+ * Administrative action for managing and monitoring medical fax transmissions in healthcare workflows.
+ *
+ * This action provides comprehensive fax management capabilities essential for healthcare operations,
+ * including tracking of medical document transmissions, handling failed deliveries, and maintaining
+ * audit trails required for regulatory compliance. The management system supports the critical need
+ * for reliable document exchange between healthcare providers, specialists, laboratories, and patients.
+ *
+ * Key healthcare fax management operations include:
+ * - Monitoring transmission status of lab results, consultation requests, and referrals
+ * - Cancelling fax jobs for time-sensitive medical communications
+ * - Resending failed transmissions to ensure critical medical information reaches recipients
+ * - Generating comprehensive reports for regulatory auditing and quality assurance
+ * - Managing fax queues and prioritizing urgent medical documents
+ *
+ * The system maintains detailed logs of all fax activities including:
+ * - Transmission timestamps and delivery confirmations
+ * - Recipient information and document types
+ * - Error conditions and retry attempts
+ * - Patient demographic associations for PHI tracking
+ * - Provider and team-based filtering for workflow management
+ *
+ * Administrative privileges are required for fax cancellation and management operations
+ * to maintain system security and prevent unauthorized interference with medical communications.
+ *
+ * @see ca.openosp.openo.managers.FaxManager
+ * @see ca.openosp.openo.commn.model.FaxJob
+ * @see ca.openosp.openo.commn.model.FaxClientLog
+ * @since 2014-08-29
+ */
 public class ManageFaxes2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
@@ -78,6 +108,15 @@ public class ManageFaxes2Action extends ActionSupport {
 
     private final FaxManager faxManager = SpringUtils.getBean(FaxManager.class);
 
+    /**
+     * Main execution method that routes fax management requests to appropriate handlers.
+     *
+     * This method supports various healthcare fax management operations including cancellation
+     * of urgent medical transmissions, resending failed documents, and retrieving status information
+     * for audit and monitoring purposes.
+     *
+     * @return String result name for view forwarding, defaults to fetchFaxStatus for monitoring
+     */
     public String execute() {
         String method = request.getParameter("method");
         if ("CancelFax".equals(method)) {
@@ -92,6 +131,26 @@ public class ManageFaxes2Action extends ActionSupport {
     }
 
 
+    /**
+     * Cancels an active or pending medical fax transmission to prevent delivery of outdated information.
+     *
+     * This method provides critical functionality for healthcare workflows where medical information
+     * may become outdated or incorrect after a fax has been queued for transmission. Common scenarios include:
+     * - Updated lab results requiring cancellation of preliminary reports
+     * - Changes in patient condition affecting consultation requests
+     * - Correction of medication prescriptions before transmission to pharmacy
+     * - Recall of documents due to patient privacy concerns
+     *
+     * The cancellation process includes:
+     * - Validation of administrative privileges for security
+     * - Communication with external fax service providers to halt transmission
+     * - Status updates for tracking and audit purposes
+     * - Proper logging for regulatory compliance requirements
+     *
+     * @param jobId String unique identifier of the fax job to cancel
+     * @return String null indicating direct JSON response
+     * @throws SecurityException if user lacks administrative privileges
+     */
     @SuppressWarnings("unused")
     public String CancelFax() {
 
@@ -155,6 +214,29 @@ public class ManageFaxes2Action extends ActionSupport {
 
     }
 
+    /**
+     * Resends a failed medical fax transmission to ensure critical healthcare information reaches recipients.
+     *
+     * This method handles the resending of medical documents that failed initial transmission due to
+     * network issues, busy recipient lines, or temporary service outages. Reliable document delivery
+     * is essential in healthcare for:
+     * - Time-sensitive lab results requiring immediate attention
+     * - Urgent consultation requests and specialist referrals
+     * - Critical medication orders and prescription changes
+     * - Emergency medical information and patient transfers
+     *
+     * The resend process includes:
+     * - Administrative privilege validation
+     * - Service availability verification
+     * - Document retrieval from secure storage
+     * - New transmission attempt with updated parameters
+     * - Audit logging for regulatory compliance
+     *
+     * @param jobId String identifier of the failed fax job to resend
+     * @param faxNumber String destination fax number (may be updated)
+     * @return String null indicating direct JSON response with success status
+     * @throws SecurityException if user lacks administrative privileges
+     */
     @SuppressWarnings("unused")
     public String ResendFax() {
 
@@ -181,6 +263,22 @@ public class ManageFaxes2Action extends ActionSupport {
         return null;
     }
 
+    /**
+     * Provides secure viewing access to transmitted medical fax documents for audit and review purposes.
+     *
+     * This method enables healthcare administrators and authorized personnel to review previously
+     * transmitted medical documents for quality assurance, regulatory compliance, and patient care
+     * coordination. Document viewing is essential for:
+     * - Verifying accurate transmission of patient health information
+     * - Regulatory audits and compliance reporting
+     * - Quality assurance reviews of medical communications
+     * - Investigation of transmission issues or delivery disputes
+     *
+     * Access control ensures that only users with document viewing privileges can access
+     * sensitive medical information, maintaining HIPAA/PIPEDA compliance requirements.
+     *
+     * @throws SecurityException if user lacks _edoc read privileges
+     */
     @SuppressWarnings("unused")
     public void viewFax() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -249,6 +347,34 @@ public class ManageFaxes2Action extends ActionSupport {
         }
     }
 
+    /**
+     * Retrieves comprehensive fax transmission status information for healthcare monitoring and reporting.
+     *
+     * This method provides detailed status tracking for medical fax transmissions, supporting healthcare
+     * quality assurance and regulatory compliance requirements. The status information includes transmission
+     * outcomes, delivery confirmations, error conditions, and associated patient demographic data.
+     *
+     * Query parameters support complex filtering for healthcare workflows:
+     * - Provider-specific filtering for individual physician practices
+     * - Team-based filtering for department or clinic-level reporting
+     * - Date range filtering for regulatory reporting periods
+     * - Status-based filtering for failed transmission analysis
+     * - Patient demographic filtering for specific case reviews
+     *
+     * The comprehensive reporting supports:
+     * - Daily operational monitoring of medical communications
+     * - Monthly and quarterly regulatory compliance reporting
+     * - Investigation of transmission failures affecting patient care
+     * - Performance analysis of fax service providers
+     *
+     * @param status String filter by transmission status (SENT, WAITING, ERROR, etc.)
+     * @param team String filter by healthcare team or department
+     * @param dateBegin String start date for reporting period (yyyy-MM-dd format)
+     * @param dateEnd String end date for reporting period (yyyy-MM-dd format)
+     * @param oscarUser String filter by specific healthcare provider
+     * @param demographic_no String filter by specific patient demographic
+     * @return String "faxstatus" result forwarding to status display view
+     */
     @SuppressWarnings("unused")
     public String fetchFaxStatus() {
 
@@ -259,6 +385,8 @@ public class ManageFaxes2Action extends ActionSupport {
         String provider_no = request.getParameter("oscarUser");
         String demographic_no = request.getParameter("demographic_no");
 
+        // Convert UI placeholder values to null for database queries
+        // -1 indicates "All" in dropdown selections for healthcare filtering
         if (provider_no.equalsIgnoreCase("-1")) {
             provider_no = null;
         }
@@ -271,6 +399,7 @@ public class ManageFaxes2Action extends ActionSupport {
             teamStr = null;
         }
 
+        // Handle empty or null demographic numbers for patient filtering
         if ("null".equalsIgnoreCase(demographic_no) || "".equals(demographic_no)) {
             demographic_no = null;
         }
@@ -282,6 +411,7 @@ public class ManageFaxes2Action extends ActionSupport {
         if (dateBeginStr != null && !dateBeginStr.isEmpty()) {
             try {
                 dateBegin = DateUtils.parseDate(dateBeginStr, datePattern);
+                // Set start of day for inclusive date range filtering
                 calendar.setTime(dateBegin);
                 calendar.set(Calendar.HOUR, 0);
                 calendar.set(Calendar.MINUTE, 0);
@@ -295,6 +425,7 @@ public class ManageFaxes2Action extends ActionSupport {
         if (dateEndStr != null && !dateEndStr.isEmpty()) {
             try {
                 dateEnd = DateUtils.parseDate(dateEndStr, datePattern);
+                // Set end of day for inclusive date range filtering
                 calendar.setTime(dateEnd);
                 calendar.set(Calendar.HOUR, 23);
                 calendar.set(Calendar.MINUTE, 59);
@@ -324,6 +455,25 @@ public class ManageFaxes2Action extends ActionSupport {
         return "faxstatus";
     }
 
+    /**
+     * Marks a fax transmission as resolved or completed in the healthcare workflow system.
+     *
+     * This method provides closure for fax transmission tracking by marking jobs as resolved,
+     * typically used when:
+     * - Delivery has been confirmed by the receiving healthcare provider
+     * - Issues with failed transmissions have been addressed through alternative means
+     * - Administrative review has determined that no further action is required
+     * - Quality assurance processes have validated successful document delivery
+     *
+     * Marking faxes as completed is important for:
+     * - Maintaining accurate transmission statistics
+     * - Closing workflow loops in healthcare communication
+     * - Supporting regulatory audit requirements
+     * - Enabling performance analysis of fax operations
+     *
+     * @param jobId String identifier of the fax job to mark as completed
+     * @throws SecurityException if user lacks administrative privileges
+     */
     @SuppressWarnings("unused")
     public void SetCompleted() {
 

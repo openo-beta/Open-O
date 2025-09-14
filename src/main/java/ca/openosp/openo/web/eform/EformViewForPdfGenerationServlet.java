@@ -38,15 +38,52 @@ import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.utility.MiscUtils;
 
 /**
- * The purpose of this servlet is to allow a local process to convert an html page into a pdf file in a manner similar to viewing a pdf with a browser and selecting print to file
+ * Electronic form PDF generation servlet for healthcare documentation processing.
+ *
+ * This servlet provides secure access to electronic form data specifically for PDF
+ * generation purposes in the OpenO EMR system. It ensures that only local processes
+ * can access healthcare forms for conversion to PDF format, maintaining PHI security
+ * while enabling document generation workflows.
+ *
+ * The servlet acts as a security wrapper around the electronic form display JSP,
+ * restricting access to localhost only and forwarding valid requests to the
+ * underlying form rendering engine. This pattern is commonly used for automated
+ * document generation where external PDF conversion tools need to access form
+ * content without compromising system security.
+ *
+ * <p>Healthcare forms processed by this servlet may contain sensitive patient
+ * information including medical history, test results, treatment plans, and
+ * demographic data. The localhost-only restriction ensures these forms can
+ * only be accessed by authorized server-side processes.</p>
+ *
+ * @since August 2010
+ * @see ca.openosp.openo.eform
  */
 public final class EformViewForPdfGenerationServlet extends HttpServlet {
 
     private static final Logger logger = MiscUtils.getLogger();
 
+    /**
+     * Handles HTTP GET requests for electronic form PDF generation access.
+     *
+     * This method enforces strict localhost-only security by validating the
+     * remote IP address before allowing access to healthcare form data. Valid
+     * requests are forwarded to the electronic form display JSP for rendering.
+     *
+     * <p>The security check ensures that only local PDF generation processes
+     * can access patient health information, maintaining HIPAA/PIPEDA compliance
+     * by preventing external access to sensitive healthcare data.</p>
+     *
+     * @param request HttpServletRequest containing form ID and display parameters
+     * @param response HttpServletResponse for form content delivery or error responses
+     * @throws ServletException if the request cannot be processed
+     * @throws IOException if an I/O error occurs during request forwarding
+     *
+     * @see javax.servlet.http.HttpServlet#doGet(HttpServletRequest, HttpServletResponse)
+     */
     @Override
     public final void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // ensure it's a local machine request... no one else should be calling this servlet.
+        // Ensure it's a local machine request to protect PHI from external access
         String remoteAddress = request.getRemoteAddr();
         logger.debug("EformPdfServlet request from : " + remoteAddress);
         if (!"127.0.0.1".equals(remoteAddress)) {
@@ -55,7 +92,8 @@ public final class EformViewForPdfGenerationServlet extends HttpServlet {
             return;
         }
 
-        // https://127.0.0.1:8443/oscar/eform/efmshowform_data.jsp?fdid=2&parentAjaxId=eforms
+        // Forward to electronic form display JSP for PDF generation
+        // Example: https://127.0.0.1:8443/oscar/eform/efmshowform_data.jsp?fdid=2&parentAjaxId=eforms
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/eform/efmshowform_data.jsp");
         requestDispatcher.forward(request, response);
     }

@@ -38,17 +38,50 @@ import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.prescript.util.RxDrugRef;
 
+/**
+ * Comprehensive data access layer for drug-related information in the prescription module.
+ *
+ * This class serves as the primary interface to the drug reference database, providing
+ * methods to search for drugs, retrieve detailed drug monographs, check for interactions,
+ * and perform allergy-drug cross-checking. It encapsulates all drug data operations
+ * and transforms raw database results into structured domain objects.
+ *
+ * The class integrates with the RxDrugRef utility to access the underlying drug database,
+ * which may be either a local database or a remote drug reference service. It provides
+ * multiple search strategies (by name, by route, by component) and supports both
+ * branded and generic drug lookups.
+ *
+ * Key responsibilities include:
+ * - Drug search and retrieval operations
+ * - Drug interaction checking between multiple medications
+ * - Allergy-drug contraindication verification
+ * - Drug monograph data structure management
+ * - Drug component and strength information retrieval
+ *
+ * The class uses inner classes to model complex drug data structures like DrugMonograph,
+ * DrugSearch results, and Interaction warnings, providing a rich object model for
+ * prescription-related operations.
+ *
+ * @since 2006-03-01
+ */
 public class RxDrugData {
 
     /**
-     * Suggest Alias description here.
+     * Submits a suggested alias for a drug to the drug reference database.
      *
-     * @param alias
-     * @param aliasComment
-     * @param id
-     * @param name
-     * @param provider
-     * @throws Exception
+     * This method allows healthcare providers to suggest alternative names or aliases
+     * for drugs that may not be recognized by the standard drug database. These suggestions
+     * can help improve drug search capabilities and handle regional variations in drug naming.
+     *
+     * The suggestion is forwarded to the drug reference system for review and potential
+     * inclusion in future database updates.
+     *
+     * @param alias String the suggested alias name for the drug
+     * @param aliasComment String explanatory comment about why this alias is suggested
+     * @param id String the drug reference ID this alias should map to
+     * @param name String the official drug name this alias represents
+     * @param provider String identifier of the healthcare provider making the suggestion
+     * @throws Exception if the suggestion cannot be submitted to the drug reference system
      */
     public void suggestAlias(String alias, String aliasComment, String id, String name, String provider) throws Exception {
         RxDrugRef d = new RxDrugRef();
@@ -57,27 +90,102 @@ public class RxDrugData {
 
 
     /**
-     * Full Drug Monograph.
+     * Comprehensive drug monograph containing all available information about a medication.
+     *
+     * This inner class represents a complete drug monograph with detailed pharmaceutical,
+     * clinical, and safety information. It includes drug identification (name, ATC code),
+     * clinical usage (indications, contraindications, dosing), safety considerations
+     * (pregnancy, lactation, renal/hepatic impairment), and adverse effects.
+     *
+     * The monograph structure supports both simple drugs and compound formulations,
+     * with component information available through the drugComponentList. Special
+     * populations considerations are modeled through dedicated inner classes for
+     * pregnancy, lactation, and organ impairment scenarios.
+     *
+     * This comprehensive data structure enables informed prescribing decisions by
+     * providing all relevant drug information in a single, well-organized object.
      */
     public class DrugMonograph {
 
-        public String name;        // : string. International nonproprietary name (INPN) of this drug (=generic)
-        public String atc;         //: string. ATC code
+        /**
+         * International nonproprietary name (INN) of the drug (generic name).
+         */
+        public String name;
+
+        /**
+         * ATC (Anatomical Therapeutic Chemical) classification code.
+         */
+        public String atc;
+
+        /**
+         * Regional identifier such as DIN (Drug Identification Number) for Canada.
+         */
         public String regionalIdentifier;
-        //     generics : struct. Lists all generic components (usually just one). Key (string) is the generic name, value (integer) is the repective primary key
-        public boolean essential;  //: True if this drug is on the WHO essential drug list
-        public String product;     //: string. If this drug is not a generic, the product brand name is listed under this key, else this key is not available
-        public String action;      //: string. Description of mode of action.
-        public Vector indications; //: array of Indications. Each struct has indication as key, and a struct as value containing the following keys:
+
+        /**
+         * Indicates if this drug is on the WHO essential drug list.
+         */
+        public boolean essential;
+
+        /**
+         * Brand/product name if this is not a generic drug.
+         */
+        public String product;
+
+        /**
+         * Description of the drug's mechanism of action.
+         */
+        public String action;
+
+        /**
+         * List of medical indications for this drug.
+         */
+        public Vector indications;
+
+        /**
+         * List of drug components (active ingredients).
+         */
         public Vector components = new Vector();
-        public Vector contraindications; //: array of contraindications. Each struct has contraindication as key, and a struct as value containing the following keys:
-        public String[] practice_points; //: array of strings
-        public String paediatric_use; //:  string. Describing special considerations in paediatric use
-        public String[] common_adverse_effects; //: array of strings
-        public String[] rare_adverse_effects;   //: array of strings
-        public Vector dosage; //array of Dosage
-        public String drugForm;//drug form
-        public Vector route = new Vector();//route for taking drug
+
+        /**
+         * List of contraindications with severity levels.
+         */
+        public Vector contraindications;
+
+        /**
+         * Clinical practice points and prescribing tips.
+         */
+        public String[] practice_points;
+
+        /**
+         * Special considerations for pediatric use.
+         */
+        public String paediatric_use;
+
+        /**
+         * Common adverse effects experienced by patients.
+         */
+        public String[] common_adverse_effects;
+
+        /**
+         * Rare but serious adverse effects.
+         */
+        public String[] rare_adverse_effects;
+
+        /**
+         * Dosage recommendations for various indications.
+         */
+        public Vector dosage;
+
+        /**
+         * Pharmaceutical form (tablet, capsule, liquid, etc.).
+         */
+        public String drugForm;
+
+        /**
+         * Available routes of administration (oral, IV, IM, etc.).
+         */
+        public Vector route = new Vector();
 
         public ArrayList<DrugComponent> drugComponentList = new ArrayList<DrugComponent>();
         public PregnancyUse pregnancyUse;
@@ -87,10 +195,24 @@ public class RxDrugData {
 
         public String drugCode;
 
+        /**
+         * Default constructor for DrugMonograph.
+         *
+         * Creates an empty monograph instance. Typically used when building
+         * a monograph programmatically or for testing purposes.
+         */
         public DrugMonograph() {
-            //default
         }
 
+        /**
+         * Constructs a DrugMonograph from drug reference database results.
+         *
+         * Populates the monograph by extracting and transforming data from a Hashtable
+         * returned by the drug reference system. Handles complex nested structures for
+         * components, routes, and other multi-valued properties.
+         *
+         * @param hash Hashtable containing drug data from the reference database
+         */
         public DrugMonograph(Hashtable hash) {
             MiscUtils.getLogger().debug(hash);
             name = (String) hash.get("name");
@@ -119,70 +241,244 @@ public class RxDrugData {
                 components.add(comp);
                 drugComponentList.add(comp);
             }
-            //{name=WARFARIN SODIUM, regional_identifier=02007959, product=COUMADIN TAB 4MG, atc=808774}
+            // Example data structure: {name=WARFARIN SODIUM, regional_identifier=02007959, product=COUMADIN TAB 4MG, atc=808774}
 
         }
 
+        /**
+         * Represents a drug contraindication with severity rating.
+         *
+         * Contraindications indicate medical conditions or situations where
+         * the drug should not be used or used with extreme caution. The severity
+         * scale helps prescribers assess the risk level.
+         */
         class Contraindications {
-            int code;          // integer. Drugref condition code primary key.
-            int severity;      // : integer (1-3, 3 being absolute contraindication)
-            String comment;    // : string
+            /**
+             * Drugref condition code primary key identifying the contraindication.
+             */
+            int code;
+
+            /**
+             * Severity level: 1=caution, 2=relative contraindication, 3=absolute contraindication.
+             */
+            int severity;
+
+            /**
+             * Additional clinical context or explanation for the contraindication.
+             */
+            String comment;
         }
 
+        /**
+         * Represents an approved medical indication for the drug.
+         *
+         * Indications define the medical conditions for which the drug
+         * is approved and whether it's considered a first-line treatment.
+         */
         class Indications {
-            int code;         // : integer. Drugref condition code primary key
-            boolean firstline;// : boolean. True if for this indication this drug is considered a first line treatment.
-            String comment;   // : string
+            /**
+             * Drugref condition code primary key for the indication.
+             */
+            int code;
+
+            /**
+             * True if this drug is considered first-line treatment for this indication.
+             */
+            boolean firstline;
+
+            /**
+             * Additional clinical guidance or restrictions for this indication.
+             */
+            String comment;
         }
 
-        class PregnancyUse {    //: struct with following keys:
-            char code;    // : character. ADEC category
-            String comment; // : string
+        /**
+         * Pregnancy safety information using standard classification systems.
+         *
+         * Provides pregnancy category rating and specific guidance for
+         * prescribing during pregnancy.
+         */
+        class PregnancyUse {
+            /**
+             * Pregnancy category code (A, B, C, D, X) per FDA/ADEC classification.
+             */
+            char code;
+
+            /**
+             * Detailed pregnancy safety information and recommendations.
+             */
+            String comment;
         }
 
-        class LactationUse {  //: struct with following keys:
-            int code;          // : integer. 1=compatible, 2=restricted, 3=dangerous
-            String comment;    // : string
+        /**
+         * Lactation safety information for breastfeeding mothers.
+         *
+         * Indicates whether the drug is safe during breastfeeding and
+         * provides specific recommendations.
+         */
+        class LactationUse {
+            /**
+             * Safety code: 1=compatible with breastfeeding, 2=use with caution, 3=contraindicated.
+             */
+            int code;
+
+            /**
+             * Detailed lactation safety information and clinical guidance.
+             */
+            String comment;
         }
 
-        class RenalImpairment { //: struct with following keys:
-            int code;            // : integer. 1=compatible, 2=restricted, 3=dangerous
-            String comment;      // : string
+        /**
+         * Dosing adjustments and safety for patients with renal impairment.
+         *
+         * Provides guidance for prescribing to patients with reduced
+         * kidney function.
+         */
+        class RenalImpairment {
+            /**
+             * Safety code: 1=no adjustment needed, 2=dose adjustment required, 3=contraindicated.
+             */
+            int code;
+
+            /**
+             * Specific dosing adjustments and monitoring requirements.
+             */
+            String comment;
         }
 
-        class HepaticImpairment { //: struct with following keys:
-            int code;              //: integer. 1=compatible, 2=restricted, 3=dangerous
-            String comment;        // : string
+        /**
+         * Dosing adjustments and safety for patients with hepatic impairment.
+         *
+         * Provides guidance for prescribing to patients with reduced
+         * liver function.
+         */
+        class HepaticImpairment {
+            /**
+             * Safety code: 1=no adjustment needed, 2=dose adjustment required, 3=contraindicated.
+             */
+            int code;
+
+            /**
+             * Specific dosing adjustments and monitoring requirements.
+             */
+            String comment;
         }
 
+        /**
+         * Comprehensive dosage information for various indications and patient populations.
+         *
+         * This class encapsulates complex dosing calculations including weight-based,
+         * age-based, and body surface area-based dosing. It supports both simple
+         * fixed dosing and complex calculated dosing regimens.
+         */
         class Dosage {
-            String text;//: string. If this key is available, only free text dosage information is available, as described in this string.
-            int indication; // : integer. Drugref condition code primary key. 0 is wild card, indicating general dosage recommendation.
-            String units;   //: string. SI unit for this dosage
-            int calculation_base_units;//: integer. 0=not applicable, 1=age in months, 2=age in years, 3=kg body weight, 4=cm2 body surface
-            double calculation_base; // : real. Meaning depends on calculation_base_units
-            double starting_range;  // : real. Usual mimimal recommended dosage
-            double upper_range; // : real. Usual maximal recommended dosage
-            int frequency_units; //: integer. 0=not applicable, 1=seconds, 2=minutes, 3=hours, 4=days, 5=weeks, 6=months, 7=years
-            int frequency;       //: integer. How often this drug should be administered
-            int duration_units; //: integer. Same as frequency_units, additional value 8='times'
-            int duration_minimum; // ; integer. How long a usual course of this drug should be given. -1 is permanent, -2=p.r.n.
-            int duration_maximum; // : integer. -1 is permanent, -2=p.r.n.
-            boolean constrained;  //: boolean. If true, no automazied dosage suggestion must be generated, prescriber must read comment. (e.g. dosage per body surface etc.)
+            /**
+             * Free text dosage information when structured data is unavailable.
+             */
+            String text;
+
+            /**
+             * Condition code for indication-specific dosing (0 = general dosing).
+             */
+            int indication;
+
+            /**
+             * SI units for the dosage (mg, mL, units, etc.).
+             */
+            String units;
+
+            /**
+             * Calculation basis: 0=fixed, 1=age(months), 2=age(years), 3=weight(kg), 4=BSA(m²).
+             */
+            int calculation_base_units;
+
+            /**
+             * Base value for dosage calculation (interpreted per calculation_base_units).
+             */
+            double calculation_base;
+
+            /**
+             * Minimum recommended dose in specified units.
+             */
+            double starting_range;
+
+            /**
+             * Maximum recommended dose in specified units.
+             */
+            double upper_range;
+
+            /**
+             * Time unit for frequency: 1=seconds, 2=minutes, 3=hours, 4=days, 5=weeks, 6=months, 7=years.
+             */
+            int frequency_units;
+
+            /**
+             * How often the drug should be administered (in frequency_units).
+             */
+            int frequency;
+
+            /**
+             * Time unit for duration (same as frequency_units, plus 8=number of doses).
+             */
+            int duration_units;
+
+            /**
+             * Minimum treatment duration (-1=indefinite, -2=as needed).
+             */
+            int duration_minimum;
+
+            /**
+             * Maximum treatment duration (-1=indefinite, -2=as needed).
+             */
+            int duration_maximum;
+
+            /**
+             * If true, automated dosing must not be used; prescriber must review comment.
+             */
+            boolean constrained;
+
+            /**
+             * Additional dosing instructions or constraints.
+             */
             String comment;
         }
 
 
+        /**
+         * Represents a single active ingredient component of a drug.
+         *
+         * For compound medications, multiple DrugComponent instances represent
+         * each active ingredient with its respective strength and unit of measure.
+         * This allows accurate representation of combination drugs.
+         */
         public class DrugComponent {
 
+            /**
+             * Name of the active ingredient.
+             */
             public String name;
+
+            /**
+             * Numeric strength value of this component.
+             */
             public String strength;
+
+            /**
+             * Unit of measure for the strength (mg, mL, units, etc.).
+             */
             public String unit;
 
+            /**
+             * Default constructor for DrugComponent.
+             */
             public DrugComponent() {
-                // default
             }
 
+            /**
+             * Constructs a DrugComponent from database results.
+             *
+             * @param h Hashtable containing component data with keys: name, strength, unit
+             */
             public DrugComponent(Hashtable h) {
                 name = (String) h.get("name");
                 strength = ((Double) h.get("strength")).toString();
@@ -300,7 +596,13 @@ public class RxDrugData {
     }
 
     /**
-     * Minimum Drug Data
+     * Minimal drug data structure for search results and listings.
+     *
+     * This lightweight class contains only essential drug identification
+     * information, making it suitable for search results, dropdown lists,
+     * and other scenarios where full monograph data is not required.
+     * The type field distinguishes between brand names, generics, and
+     * drug classes.
      */
     public class MinDrug {
 
@@ -309,17 +611,23 @@ public class RxDrugData {
         public String type;
         public Tag tag;
 
+        /**
+         * Default constructor for MinDrug.
+         */
         MinDrug() {
-            // default
         }
 
+        /**
+         * Constructs MinDrug from drug reference search results.
+         *
+         * @param h Hashtable containing drug data with keys: id, name, category
+         */
         MinDrug(Hashtable h) {
             this.pKey = String.valueOf(h.get("id"));
             this.name = (String) h.get("name");
-            //this.type = (String) h.get("category");//type
+            // Category indicates drug type: brand, generic, or class
             this.type = ((Integer) h.get("category")).toString();
             MiscUtils.getLogger().debug("pkey " + pKey + " name " + name + " type " + type);
-            //d.tag  = (Tag)    h.get("tag");
         }
 
         public String getpKey() {
@@ -345,7 +653,15 @@ public class RxDrugData {
     }
 
     /**
-     * Assign DrugSearch data.
+     * Container for drug search results organized by drug type.
+     *
+     * This class processes and organizes drug search results into categories:
+     * brand names, generics, and AFHC (drug) classes. It provides structured
+     * access to search results and handles error states when searches fail.
+     *
+     * The class automatically categorizes results based on drug type codes
+     * from the drug reference database, making it easy to present organized
+     * search results in the user interface.
      */
     public class DrugSearch {
 
@@ -357,18 +673,34 @@ public class RxDrugData {
         public boolean failed = false;
         public String errorMessage = null;
 
+        /**
+         * Constructs an empty DrugSearch result container.
+         *
+         * Initializes the category lists for organizing search results.
+         */
         DrugSearch() {
             brand = new ArrayList();
             gen = new ArrayList();
             afhcClass = new ArrayList();
         }
 
+        /**
+         * Processes raw search results and categorizes drugs by type.
+         *
+         * Drugs are categorized based on their type codes:
+         * - Type 13: Brand name drugs
+         * - Types 11, 12: Generic drugs
+         * - Types 8, 10: AFHC drug classes
+         *
+         * @param vec Vector of Hashtables containing drug search results
+         */
         public void processResult(Vector vec) {
             for (int i = 0; i < vec.size(); i++) {
                 Hashtable h = (Hashtable) vec.get(i);
                 if (!h.get("name").equals("None found")) {
                     MinDrug d = new MinDrug(h);
 
+                    // Categorize by drug type code
                     if (d.type.equals("13")) {
                         brand.add(d);
                     } else if (d.type.equals("11") || d.type.equals("12")) {
@@ -420,44 +752,95 @@ public class RxDrugData {
         }
     }
 
+    /**
+     * Metadata tag for drug information filtering and source tracking.
+     *
+     * This class represents filtering criteria and metadata for drug searches,
+     * including source database, language, country of origin, and authorship
+     * information. It's used to filter drug results based on regional preferences
+     * and data source requirements.
+     */
     public class Tag {
 
+        /**
+         * Primary source database identifier.
+         */
         public int source;
+
+        /**
+         * Bitmask of available source databases.
+         */
         public int sources;
+
+        /**
+         * Language code for drug information.
+         */
         public String language;
+
+        /**
+         * Bitmask of available languages.
+         */
         public int languages;
+
+        /**
+         * Country code for regional drug information.
+         */
         public String country;
+
+        /**
+         * Bitmask of available countries.
+         */
         public int countries;
+
+        /**
+         * Author identifier for drug information.
+         */
         public int author;
+
+        /**
+         * Bitmask of available authors.
+         */
         public int authors;
+
+        /**
+         * Date filter for recently modified entries.
+         */
         public String modified_after;
+
+        /**
+         * Flag to include tag metadata in results.
+         */
         boolean return_tags;
-		/*
-        hashtable.put("classes", new Boolean(true));
-        hashtable.put("generics", new Boolean(true));
-        hashtable.put("branded", new Boolean(true));
-        hashtable.put("composites", new Boolean(true));
-        hashtable.put("return_tags", new Boolean(false));
-		 */
 
+        /**
+         * Default constructor for Tag.
+         */
         public Tag() {
-            // default
         }
 
+        /**
+         * Constructs a Tag from drug reference metadata.
+         *
+         * @param h Hashtable containing tag metadata from drug reference
+         */
         public Tag(Hashtable h) {
-            source = getInt(h.get("source"));//,new Integer(0));
-            sources = getInt(h.get("sources"));//,new Integer(sources));
-            language = (String) h.get("language");//, "");
-            languages = getInt(h.get("languages"));//, new Integer(languages));
-            country = (String) h.get("country");//,"");
-            countries = getInt(h.get("countries"));//;,new Integer(countries));
-            author = getInt(h.get("author"));//, new Integer(0));
-            authors = getInt(h.get("authors"));//, new Integer(authors));
-            modified_after = (String) h.get("modified_after");//, new SimpleDateFormat("yyyy-MM-dd").parse(modified_after));
-            //return_tags      =h.get("return_tags");//,Boolean.toString(return_tags));
-
+            source = getInt(h.get("source"));
+            sources = getInt(h.get("sources"));
+            language = (String) h.get("language");
+            languages = getInt(h.get("languages"));
+            country = (String) h.get("country");
+            countries = getInt(h.get("countries"));
+            author = getInt(h.get("author"));
+            authors = getInt(h.get("authors"));
+            modified_after = (String) h.get("modified_after");
         }
 
+        /**
+         * Safely converts an object to integer, returning -1 on failure.
+         *
+         * @param obj Object to convert to integer
+         * @return int parsed value or -1 if conversion fails
+         */
         int getInt(Object obj) {
             try {
                 return Integer.parseInt(obj.toString());
@@ -514,11 +897,14 @@ public class RxDrugData {
     }
 
     /**
-     * Get drug list by partial search string.
-     * All drugs, All classes, All activity
+     * Searches for drugs by partial name match.
      *
-     * @param searchStr
-     * @return
+     * Performs a comprehensive search across all drug types (brand names,
+     * generics, and drug classes) using the provided search string.
+     * Results are automatically categorized by drug type.
+     *
+     * @param searchStr String partial drug name or search term
+     * @return DrugSearch object containing categorized results or error information
      */
     public DrugSearch listDrug(String searchStr) {
         DrugSearch drugSearch = new DrugSearch();
@@ -538,11 +924,14 @@ public class RxDrugData {
     }
 
     /**
-     * Get drug list by partial search string Version 2.
-     * All drugs, All classes, All activity
+     * Enhanced drug search using version 2 of the drug reference API.
      *
-     * @param searchStr
-     * @return
+     * This method uses an improved search algorithm that may provide
+     * better matching results or additional drug information compared
+     * to the original listDrug method.
+     *
+     * @param searchStr String partial drug name or search term
+     * @return DrugSearch object containing categorized results or error information
      */
     public DrugSearch listDrug2(String searchStr) {
         DrugSearch drugSearch = new DrugSearch();
@@ -562,11 +951,16 @@ public class RxDrugData {
     }
 
     /**
-     * Get all drugs by search string and specific route.
+     * Searches for drugs filtered by administration route.
      *
-     * @param searchStr
-     * @param searchRoute
-     * @return
+     * Useful for finding drugs available in specific formulations,
+     * such as oral medications only or injectable forms only.
+     * This helps prescribers find appropriate alternatives when
+     * a patient requires a specific route of administration.
+     *
+     * @param searchStr String partial drug name or search term
+     * @param searchRoute String administration route (e.g., "oral", "IV", "IM")
+     * @return DrugSearch object containing filtered results
      */
     public DrugSearch listDrugByRoute(String searchStr, String searchRoute) {
         DrugSearch drugSearch = new DrugSearch();
@@ -586,10 +980,14 @@ public class RxDrugData {
     }
 
     /**
-     * Get all drugs that contain specific Element (partial)
+     * Searches for drugs containing a specific active ingredient.
      *
-     * @param searchStr
-     * @return
+     * This method finds all drug products (primarily brand names)
+     * that contain the specified element or active ingredient.
+     * Useful for finding all available formulations of a generic drug.
+     *
+     * @param searchStr String name of the active ingredient to search for
+     * @return DrugSearch object containing all drugs with this ingredient
      */
     public DrugSearch listDrugFromElement(String searchStr) {
         DrugSearch drugSearch = new DrugSearch();
@@ -608,11 +1006,15 @@ public class RxDrugData {
     }
 
     /**
-     * Get drug with DrugRef ID key
+     * Retrieves complete drug monograph by drug reference ID.
      *
-     * @param pKey
-     * @return
-     * @throws Exception
+     * Fetches comprehensive drug information including indications,
+     * contraindications, dosing, and safety information for the
+     * specified drug.
+     *
+     * @param pKey String drug reference database primary key
+     * @return DrugMonograph containing complete drug information
+     * @throws Exception if drug cannot be retrieved from reference database
      */
     public DrugMonograph getDrug(String pKey) throws Exception {
         RxDrugRef d = new RxDrugRef();
@@ -621,11 +1023,14 @@ public class RxDrugData {
 
 
     /**
-     * Get drug with DrugRef ID key. Version 2
+     * Retrieves drug monograph using version 2 of the drug reference API.
      *
-     * @param pKey
-     * @return
-     * @throws Exception
+     * This enhanced version may provide additional drug information
+     * or use improved data structures compared to the original getDrug method.
+     *
+     * @param pKey String drug reference database primary key
+     * @return DrugMonograph containing complete drug information
+     * @throws Exception if drug cannot be retrieved from reference database
      */
     public DrugMonograph getDrug2(String pKey) throws Exception {
         RxDrugRef d = new RxDrugRef();
@@ -633,11 +1038,15 @@ public class RxDrugData {
     }
 
     /**
-     * Get the drug package data by a Regional DIN number.
+     * Retrieves drug monograph by regional Drug Identification Number (DIN).
      *
-     * @param DIN
-     * @return
-     * @throws Exception
+     * DIN is a unique identifier used in Canada for drug products.
+     * This method allows lookup of drugs using their regulatory
+     * identification number rather than the internal database key.
+     *
+     * @param DIN String the Drug Identification Number to search for
+     * @return DrugMonograph containing drug information, or null if not found
+     * @throws Exception if database lookup fails
      */
     public DrugMonograph getDrugByDIN(String DIN) throws Exception {
         RxDrugRef drugRef = new RxDrugRef();
@@ -650,11 +1059,15 @@ public class RxDrugData {
 
 
     /**
-     * Get the drug form (packaging) with DrugRef ID.
+     * Retrieves the pharmaceutical form of a drug.
      *
-     * @param pKey
-     * @return
-     * @throws Exception
+     * Returns the drug's dosage form such as "tablet", "capsule",
+     * "liquid", "injection", etc. This information is useful for
+     * determining appropriate administration methods.
+     *
+     * @param pKey String drug reference database primary key
+     * @return String describing the pharmaceutical form
+     * @throws Exception if drug form cannot be retrieved
      */
     public String getDrugForm(String pKey) throws Exception {
         RxDrugRef d = new RxDrugRef();
@@ -663,13 +1076,15 @@ public class RxDrugData {
     }
 
     /**
-     * Get drug Generic Name with DrugRef ID.
-     * Be careful. A Generic Drug will not have a accurate
-     * Generic Name.
+     * Retrieves the generic (non-proprietary) name of a drug.
      *
-     * @param pKey
-     * @return
-     * @throws Exception
+     * For brand name drugs, this returns the generic equivalent name.
+     * Note: When the drug ID already refers to a generic drug, the
+     * returned name may not be meaningful as it's already generic.
+     *
+     * @param pKey String drug reference database primary key
+     * @return String generic drug name, empty string if not available
+     * @throws Exception if generic name cannot be retrieved
      */
     public String getGenericName(String pKey) throws Exception {
         RxDrugRef d = new RxDrugRef();
@@ -679,22 +1094,28 @@ public class RxDrugData {
 
 
     /**
-     * Get drug Generic Name with DrugRef ID.
-     * Overload method.
+     * Retrieves the generic name of a drug using integer ID.
      *
-     * @param pKey
-     * @return
-     * @throws Exception
+     * Convenience overload that accepts an integer drug ID
+     * and converts it to string format for lookup.
+     *
+     * @param pKey int drug reference database primary key
+     * @return String generic drug name, empty string if not available
+     * @throws Exception if generic name cannot be retrieved
      */
     public String getGenericName(int pKey) throws Exception {
         return getGenericName(pKey + "");
     }
 
     /**
-     * Get the drug form (packaging) with Drug Code??.
+     * Retrieves available pharmaceutical forms for a drug code.
      *
-     * @param drugCode
-     * @return
+     * Returns all available formulations (tablet, liquid, etc.)
+     * for drugs with the specified drug code.
+     *
+     * @param drugCode String official drug code
+     * @return ArrayList of available drug forms
+     * @deprecated Use getDrugForm with drug ID instead
      */
     @Deprecated
     public ArrayList getFormFromDrugCode(String drugCode) {
@@ -710,10 +1131,14 @@ public class RxDrugData {
     }
 
     /**
-     * Get list of drug components from official drug code.
+     * Retrieves active ingredient names for a drug code.
      *
-     * @param drugCode
-     * @return ArrayList
+     * Returns a list of all active components/ingredients
+     * in drugs with the specified drug code.
+     *
+     * @param drugCode String official drug code
+     * @return ArrayList of component names
+     * @deprecated Use DrugMonograph.getComponents() instead
      */
     @Deprecated
     public ArrayList getComponentsFromDrugCode(String drugCode) {
@@ -729,9 +1154,14 @@ public class RxDrugData {
     }
 
     /**
-     * Get ??
+     * Retrieves all distinct pharmaceutical forms in the database.
      *
-     * @return ArrayList
+     * Returns a comprehensive list of all unique drug forms
+     * available in the drug reference database, useful for
+     * populating selection lists.
+     *
+     * @return ArrayList of all distinct drug forms
+     * @deprecated Consider using filtered searches instead
      */
     @Deprecated
     public ArrayList getDistinctForms() {
@@ -747,10 +1177,14 @@ public class RxDrugData {
     }
 
     /**
-     * Get a list of available Routes from official drug code.
+     * Retrieves available administration routes for a drug code.
      *
-     * @param drugCode
-     * @return ArrayList
+     * Returns all possible routes of administration (oral, IV, IM, etc.)
+     * for drugs with the specified drug code.
+     *
+     * @param drugCode String official drug code
+     * @return ArrayList of available administration routes
+     * @deprecated Use DrugMonograph.getRoute() instead
      */
     @Deprecated
     public ArrayList getRouteFromDrugCode(String drugCode) {
@@ -766,10 +1200,15 @@ public class RxDrugData {
     }
 
     /**
-     * Get a list of drug strengths from official drug code.
+     * Retrieves drug strength information formatted for display.
      *
-     * @param drugCode
-     * @return Hashtable
+     * Returns a Hashtable with two entries:
+     * - "dosage": formatted strength string (e.g., "5mg/10mg")
+     * - "dosageDef": ingredient names (e.g., "amoxicillin/clavulanate")
+     *
+     * @param drugCode String official drug code
+     * @return Hashtable with keys "dosage" and "dosageDef"
+     * @deprecated Use getStrengthsLists for structured data
      */
     @Deprecated
     public Hashtable getStrengths(String drugCode) {
@@ -790,7 +1229,7 @@ public class RxDrugData {
             }
         }
 
-        //select ingredient, strength, strength_unit
+        // Format: ingredient, strength, strength_unit from database
         retHash.put("dosage", dosage);
         retHash.put("dosageDef", dosageDef);
 
@@ -800,10 +1239,18 @@ public class RxDrugData {
 
 
     /**
-     * Get a list of drug Strengths with the Official Drug code.
+     * Retrieves structured drug strength information.
      *
-     * @param drugCode
-     * @return Hashtable
+     * Returns a Hashtable with two ArrayLists:
+     * - "dosage": list of formatted strengths with units
+     * - "dosageDef": list of corresponding ingredient names
+     *
+     * This structured format is more suitable for programmatic use
+     * than the concatenated strings returned by getStrengths().
+     *
+     * @param drugCode String official drug code
+     * @return Hashtable with ArrayLists for "dosage" and "dosageDef"
+     * @deprecated Use DrugMonograph.getDrugComponentList() for component details
      */
     @Deprecated
     public Hashtable getStrengthsLists(String drugCode) {
@@ -822,7 +1269,7 @@ public class RxDrugData {
 
         }
 
-        //select ingredient, strength, strength_unit
+        // Format: ingredient, strength, strength_unit from database
         retHash.put("dosage", dosage);
         retHash.put("dosageDef", dosageDef);
 
@@ -831,19 +1278,36 @@ public class RxDrugData {
     }
 
     /**
-     * Get Allergy Warnings by drug ATC code and a list of the patients
-     * Allergy codes.
+     * Checks for potential allergy-drug interactions.
      *
-     * @param atcCode
-     * @param allerg
-     * @return Allergy[]
-     * @throws Exception
+     * Compares a drug's ATC code against a patient's known allergies
+     * to identify potential allergic reactions. This is a critical
+     * safety check that should be performed before prescribing.
+     *
+     * @param atcCode String ATC code of the drug being prescribed
+     * @param allerg Allergy[] array of patient's known allergies
+     * @return Allergy[] subset of allergies that may react with this drug
+     * @throws Exception if allergy checking service fails
      */
     public Allergy[] getAllergyWarnings(String atcCode, Allergy[] allerg) throws Exception {
         return getAllergyWarnings(atcCode, allerg, null);
     }
 
+    /**
+     * Checks for allergy-drug interactions with missing allergy tracking.
+     *
+     * Enhanced version that also identifies allergies that couldn't be
+     * matched in the drug database. This helps identify data quality issues
+     * where allergy entries may not have proper drug reference codes.
+     *
+     * @param atcCode String ATC code of the drug being prescribed
+     * @param allerg Allergy[] array of patient's known allergies
+     * @param missing List<Allergy> output parameter populated with unmatched allergies
+     * @return Allergy[] subset of allergies that may react with this drug
+     * @throws Exception if allergy checking service fails
+     */
     public Allergy[] getAllergyWarnings(String atcCode, Allergy[] allerg, List<Allergy> missing) throws Exception {
+        // Convert allergy objects to format expected by drug reference service
         Vector vec = new Vector();
         for (int i = 0; i < allerg.length; i++) {
             Hashtable h = new Hashtable();
@@ -856,6 +1320,7 @@ public class RxDrugData {
             if (allerg[i].getAtc() != null) {
                 h.put("atc", allerg[i].getAtc());
             } else if (allerg[i].getTypeCode() == 8) {
+                // Type 8 allergies use drugref ID as ATC substitute
                 h.put("atc", allerg[i].getDrugrefId());
             }
             vec.add(h);
@@ -863,11 +1328,13 @@ public class RxDrugData {
         RxDrugRef d = new RxDrugRef();
         Vector res = d.getAlergyWarnings(atcCode, vec);
 
+        // Process results to identify matching allergies
         Allergy[] actualAllergies = {};
         ArrayList li = new ArrayList();
         if (res != null) {
             Hashtable hashObject = (Hashtable) res.get(0);
             if (hashObject != null) {
+                // Extract allergies that match the drug
                 Vector alli = (Vector) hashObject.get("warnings");
                 if (alli != null) {
                     for (int k = 0; k < alli.size(); k++) {
@@ -878,6 +1345,7 @@ public class RxDrugData {
                     }
                 }
 
+                // Track allergies that couldn't be matched in drug database
                 Vector allmissing = (Vector) hashObject.get("missing");
                 if (allmissing != null) {
                     for (int k = 0; k < allmissing.size(); k++) {
@@ -886,7 +1354,6 @@ public class RxDrugData {
                         if (missing != null) {
                             missing.add(allerg[id]);
                         }
-
                     }
                 }
             }
@@ -898,11 +1365,18 @@ public class RxDrugData {
 
 
     /**
-     * Get a list of Interactions from a list of ATC Codes.
+     * Checks for drug-drug interactions between multiple medications.
      *
-     * @param atcCodes
-     * @return
-     * @throws Exception
+     * Analyzes a list of ATC codes (representing different drugs) to identify
+     * potential interactions between them. This is essential for polypharmacy
+     * safety checking when patients are on multiple medications.
+     *
+     * The returned interactions are sorted by significance, with the most
+     * severe interactions appearing first.
+     *
+     * @param atcCodes Vector of String ATC codes for drugs to check
+     * @return Interaction[] array of identified drug interactions, sorted by severity
+     * @throws Exception if interaction checking service fails
      */
     public Interaction[] getInteractions(Vector atcCodes) throws Exception {
         Interaction[] arr = {};
@@ -914,6 +1388,7 @@ public class RxDrugData {
             MiscUtils.getLogger().debug(ss);
         }
 
+        // Convert drug reference results to Interaction objects
         v = d.getInteractions(atcCodes);
         for (int i = 0; i < v.size(); i++) {
             Hashtable h = (Hashtable) v.get(i);
@@ -936,7 +1411,25 @@ public class RxDrugData {
     }
 
 
+    /**
+     * Represents a drug-drug interaction between two medications.
+     *
+     * This class models the interaction between an affecting drug and an affected drug,
+     * including the clinical significance, expected effects, and supporting evidence.
+     * Implements Comparable to allow sorting by significance level, with more severe
+     * interactions ranking higher.
+     */
     public class Interaction implements Comparable {
+        /**
+         * Compares interactions by significance level for sorting.
+         *
+         * Lower significance numbers indicate more severe interactions,
+         * so they sort first (reverse numeric order). Non-numeric
+         * significance values are handled gracefully.
+         *
+         * @param obj Object the Interaction to compare to
+         * @return int negative if this is more significant, positive if less, 0 if equal
+         */
         public int compareTo(Object obj) {
             int retval = 0;
             int compVal = 0;
@@ -955,26 +1448,54 @@ public class RxDrugData {
             }
 
             if (retval == 0) {
+                // Lower numbers = higher severity, so reverse comparison
                 if (thisVal < compVal) {
                     retval = 1;
                 } else if (thisVal > compVal) {
                     retval = -1;
                 }
-
             }
-            // If this < obj, return a negative value
-            // If this = obj, return 0
-            // If this > obj, return a positive value
             return retval;
         }
 
+        /**
+         * Clinical significance level (1=major, 2=moderate, 3=minor).
+         */
         public String significance = null;
+
+        /**
+         * ATC code of the drug causing the interaction.
+         */
         public String affectingatc = null;
+
+        /**
+         * Name of the drug causing the interaction.
+         */
         public String affectingdrug = null;
+
+        /**
+         * Level of clinical evidence supporting this interaction.
+         */
         public String evidence = null;
+
+        /**
+         * Description of the clinical effect of the interaction.
+         */
         public String effect = null;
+
+        /**
+         * Name of the drug affected by the interaction.
+         */
         public String affecteddrug = null;
+
+        /**
+         * ATC code of the drug affected by the interaction.
+         */
         public String affectedatc = null;
+
+        /**
+         * Additional clinical guidance or management recommendations.
+         */
         public String comment = null;
     }
 

@@ -30,12 +30,41 @@ import ca.openosp.openo.commn.dao.DemographicDao;
 import ca.openosp.openo.utility.SpringUtils;
 
 
+/**
+ * Utility class for Electronic Form Manager (EFM) patient form list operations.
+ * This class was designed to provide functionality for managing patient-specific
+ * electronic form lists, including form assignment, completion tracking, and
+ * access control for clinical workflows.
+ *
+ * <p>Intended functionality includes:</p>
+ * <ul>
+ *   <li>Patient-specific electronic form list management</li>
+ *   <li>Form completion status tracking</li>
+ *   <li>Clinical workflow integration for electronic forms</li>
+ *   <li>Demographics-based form filtering and organization</li>
+ * </ul>
+ *
+ * <p>This class currently serves as a foundation for future electronic form
+ * management features in the OpenO EMR system. The DemographicDao dependency
+ * indicates planned integration with patient demographic information for
+ * form assignment and management workflows.</p>
+ *
+ * <p>Note: This class is currently a placeholder with no implemented functionality.</p>
+ *
+ * @since August 11, 2010
+ * @see DemographicDao
+ */
 public final class EfmPatientFormList {
 
+    /** DAO for patient demographic operations */
     private static DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
 
+    /**
+     * Private constructor to prevent instantiation of this utility class.
+     * All methods in this class should be static utility methods.
+     */
     private EfmPatientFormList() {
-        // not meant to instantiate this
+        // Utility class - not meant to be instantiated
     }
 
 }

@@ -26,7 +26,28 @@
 package ca.openosp.openo.entities;
 
 /**
- * Encapsulates data from table immunizations
+ * Patient immunization record entity.
+ *
+ * This entity represents immunization records for patients, storing vaccination history and
+ * immunization status information. It provides essential tracking for preventive care and
+ * public health monitoring in accordance with immunization schedules and guidelines.
+ *
+ * Key clinical information includes:
+ * - Patient demographic linkage for vaccination records
+ * - Healthcare provider who administered or recorded the immunization
+ * - Immunization details and vaccine information
+ * - Vaccination dates and schedule compliance
+ * - Record archival status for data management
+ *
+ * This entity supports:
+ * - Vaccine administration tracking
+ * - Immunization schedule management
+ * - Public health reporting requirements
+ * - Clinical decision support for preventive care
+ * - Integration with provincial immunization registries
+ *
+ * @see ca.openosp.openo.entities.Demographic for patient demographic information
+ * @since November 1, 2004
  */
 public class Immunizations {
     /**
@@ -40,20 +61,22 @@ public class Immunizations {
     private short archived;
 
     /**
-     * Class constructor with no arguments.
+     * Default constructor for patient immunization record entity.
+     * Initializes all fields to their default values.
      */
     public Immunizations() {
     }
 
     /**
-     * Full constructor
+     * Complete constructor for patient immunization record entity.
+     * Creates a fully initialized immunization record with all required fields.
      *
-     * @param id             int
-     * @param demographicNo  int
-     * @param providerNo     String
-     * @param _immunizations String
-     * @param saveDate       String
-     * @param archived       short
+     * @param id             int unique identifier for this immunization record
+     * @param demographicNo  int patient demographic number linking to patient record
+     * @param providerNo     String healthcare provider number who administered/recorded
+     * @param _immunizations String immunization details and vaccine information
+     * @param saveDate       String date when this immunization record was saved
+     * @param archived       short archival status (0=active, 1=archived)
      */
     public Immunizations(int id, int demographicNo, String providerNo,
                          String _immunizations, String saveDate,
@@ -67,63 +90,71 @@ public class Immunizations {
     }
 
     /**
-     * Gets the id
+     * Gets the unique immunization record identifier.
+     * This is the database primary key for this immunization record.
      *
-     * @return int id
+     * @return int the unique immunization record identifier
      */
     public int getId() {
         return id;
     }
 
     /**
-     * Gets the demographicNo
+     * Gets the patient demographic number.
+     * Links this immunization record to the specific patient demographic record.
      *
-     * @return int demographicNo
+     * @return int the patient demographic number
      */
     public int getDemographicNo() {
         return demographicNo;
     }
 
     /**
-     * Gets the providerNo
+     * Gets the healthcare provider number.
+     * Identifies the provider who administered the vaccine or recorded the immunization.
      *
-     * @return String providerNo
+     * @return String the healthcare provider number, empty string if null
      */
     public String getProviderNo() {
         return (providerNo != null ? providerNo : "");
     }
 
     /**
-     * Gets the _immunizations
+     * Gets the immunization details and vaccine information.
+     * Contains specific information about the vaccines administered, including
+     * vaccine type, dosage, batch numbers, and administration details.
      *
-     * @return String _immunizations
+     * @return String the immunization details, empty string if null
      */
     public String get_immunizations() {
         return (_immunizations != null ? _immunizations : "");
     }
 
     /**
-     * Gets the saveDate
+     * Gets the save date for this immunization record.
+     * The date when this immunization record was created or last updated in the system.
      *
-     * @return String saveDate
+     * @return String the save date, may be null
      */
     public String getSaveDate() {
         return saveDate;
     }
 
     /**
-     * Gets the archived
+     * Gets the archival status of this immunization record.
+     * Indicates whether this record is active or has been archived.
      *
-     * @return short archived
+     * @return short the archival status (0=active, 1=archived)
      */
     public short getArchived() {
         return archived;
     }
 
     /**
-     * Sets the id
+     * Sets the unique immunization record identifier.
+     * This is the database primary key for this immunization record.
      *
-     * @param id int
+     * @param id int the unique immunization record identifier
      */
     public void setId(int id) {
         this.id = id;

@@ -57,17 +57,58 @@ import ca.openosp.OscarProperties;
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 
-
+/**
+ * Utility class for OLIS (Ontario Laboratories Information System) response processing and duplicate detection.
+ * <p>
+ * This class provides essential utilities for handling OLIS laboratory results, including:
+ * - XML response parsing and content extraction
+ * - Duplicate laboratory result detection across different laboratory providers
+ * - Laboratory-specific accession number normalization
+ * - Integration with existing HL7 lab result storage system
+ * <p>
+ * The duplicate detection system handles laboratory-specific accession number formats for:
+ * - Canadian Medical Laboratories (CML)
+ * - Gamma Dynacare Medical Laboratories (GDML)
+ * - LifeLabs Medical Laboratory Services
+ * - Alpha Laboratories
+ * <p>
+ * Each laboratory has unique accession number formatting that requires normalization
+ * to match against existing direct lab interface results stored in the system.
+ *
+ * @since 2008
+ */
 public class OLISUtils {
+    /** Logger for OLIS utility operations and duplicate detection */
     static Logger logger = MiscUtils.getLogger();
 
+    /** DAO for accessing HL7 text info records to check for duplicates */
     static Hl7TextInfoDao hl7TextInfoDao = SpringUtils.getBean(Hl7TextInfoDao.class);
 
-    static final public String CMLIndentifier = "2.16.840.1.113883.3.59.1:5407";// Canadian Medical Laboratories
-    static final public String GammaDyancareIndentifier = "2.16.840.1.113883.3.59.1:5552";// Gamma Dynacare
-    static final public String LifeLabsIndentifier = "2.16.840.1.113883.3.59.1:5687";// LifeLabs
-    static final public String AlphaLabsIndetifier = "2.16.840.1.113883.3.59.1:5254";// Alpha Laboratories"
+    /** OID identifier for Canadian Medical Laboratories */
+    static final public String CMLIndentifier = "2.16.840.1.113883.3.59.1:5407";
+    /** OID identifier for Gamma Dynacare Medical Laboratories */
+    static final public String GammaDyancareIndentifier = "2.16.840.1.113883.3.59.1:5552";
+    /** OID identifier for LifeLabs Medical Laboratory Services */
+    static final public String LifeLabsIndentifier = "2.16.840.1.113883.3.59.1:5687";
+    /** OID identifier for Alpha Laboratories */
+    static final public String AlphaLabsIndetifier = "2.16.840.1.113883.3.59.1:5254";
 
+    /**
+     * Extracts the content section from an OLIS XML response message.
+     * <p>
+     * This method processes OLIS XML responses by:
+     * 1. Normalizing XML namespace declarations
+     * 2. Validating against OLIS response schema (if configured)
+     * 3. Unmarshalling XML to Response object using JAXB
+     * 4. Extracting and returning the content portion
+     * <p>
+     * The response XML typically contains nested Content and Error sections that need
+     * special namespace handling for proper parsing.
+     *
+     * @param response String the raw OLIS XML response
+     * @return String the extracted content portion of the response
+     * @throws Exception if XML parsing, validation, or unmarshalling fails
+     */
     public static String getOLISResponseContent(String response) throws Exception {
         response = response.replaceAll("<Content", "<Content xmlns=\"\" ");
         response = response.replaceAll("<Errors", "<Errors xmlns=\"\" ");
@@ -94,11 +135,32 @@ public class OLISUtils {
     }
 
 
+    /**
+     * Checks if an OLIS HL7 message is a duplicate of an existing laboratory result.
+     * <p>
+     * This method creates an OLIS HL7 handler from the message and delegates to the
+     * handler-based duplicate check method.
+     *
+     * @param loggedInInfo LoggedInInfo the current user session information
+     * @param msg String the HL7 message content to check
+     * @return boolean true if this is a duplicate result, false otherwise
+     */
     public static boolean isDuplicate(LoggedInInfo loggedInInfo, String msg) {
         OLISHL7Handler h = (OLISHL7Handler) Factory.getHandler("OLIS_HL7", msg);
         return isDuplicate(loggedInInfo, h, msg);
     }
 
+    /**
+     * Checks if an OLIS HL7 message from a file is a duplicate of an existing laboratory result.
+     * <p>
+     * This method reads the file content and delegates to the string-based duplicate check.
+     *
+     * @param loggedInInfo LoggedInInfo the current user session information
+     * @param file File the file containing HL7 message content to check
+     * @return boolean true if this is a duplicate result, false otherwise
+     * @throws FileNotFoundException if the specified file cannot be found
+     * @throws IOException if there is an error reading the file
+     */
     public static boolean isDuplicate(LoggedInInfo loggedInInfo, File file) throws FileNotFoundException, IOException {
         String msg = null;
         InputStream in = null;
@@ -112,6 +174,17 @@ public class OLISUtils {
     }
 
 
+    /**
+     * Performs duplicate detection using an OLIS HL7 handler to extract key identifiers.
+     * <p>
+     * This method extracts laboratory identifiers from the HL7 handler and delegates
+     * to the identifier-based duplicate check method.
+     *
+     * @param loggedInInfo LoggedInInfo the current user session information
+     * @param h OLISHL7Handler the HL7 message handler containing parsed lab data
+     * @param msg String the original HL7 message content for logging
+     * @return boolean true if this is a duplicate result, false otherwise
+     */
     public static boolean isDuplicate(LoggedInInfo loggedInInfo, OLISHL7Handler h, String msg) {
 
         String sendingFacility = h.getPlacerGroupNumber();//getPerformingFacilityNameOnly();

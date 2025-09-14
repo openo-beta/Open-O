@@ -26,23 +26,40 @@
 package ca.openosp.openo.entities;
 
 /**
- * Encapsulates data from table billcenter
+ * Healthcare billing center entity representing organizational units for billing management.
+ * This entity encapsulates the data from the billcenter table, which defines billing centers
+ * or cost centers used for organizing and categorizing billing activities within healthcare facilities.
+ *
+ * Billing centers are used to group billing activities by department, location, or other
+ * organizational criteria, facilitating financial reporting and billing management.
+ *
+ * @see Billactivity
+ * @see Billingmaster
+ * @since November 1, 2004
  */
 public class Billcenter {
+    /**
+     * Unique code identifying the billing center
+     */
     private String billcenterCode;
+
+    /**
+     * Descriptive name of the billing center
+     */
     private String billcenterDesc;
 
     /**
-     * Class constructor with no arguments.
+     * Default constructor creating an empty Billcenter instance.
+     * All fields will be initialized to their default values.
      */
     public Billcenter() {
     }
 
     /**
-     * Full constructor
+     * Full constructor creating a Billcenter instance with specified code and description.
      *
-     * @param billcenterCode String
-     * @param billcenterDesc String
+     * @param billcenterCode String the unique billing center code
+     * @param billcenterDesc String the descriptive name of the billing center
      */
     public Billcenter(String billcenterCode, String billcenterDesc) {
         this.billcenterCode = billcenterCode;
@@ -50,36 +67,36 @@ public class Billcenter {
     }
 
     /**
-     * Gets the billcenterCode
+     * Gets the unique code identifying the billing center.
      *
-     * @return String billcenterCode
+     * @return String the billing center code, never null (empty string if null)
      */
     public String getBillcenterCode() {
         return (billcenterCode != null ? billcenterCode : "");
     }
 
     /**
-     * Gets the billcenterDesc
+     * Gets the descriptive name of the billing center.
      *
-     * @return String billcenterDesc
+     * @return String the billing center description, never null (empty string if null)
      */
     public String getBillcenterDesc() {
         return (billcenterDesc != null ? billcenterDesc : "");
     }
 
     /**
-     * Sets the billcenterCode
+     * Sets the unique code identifying the billing center.
      *
-     * @param billcenterCode String
+     * @param billcenterCode String the billing center code
      */
     public void setBillcenterCode(String billcenterCode) {
         this.billcenterCode = billcenterCode;
     }
 
     /**
-     * Sets the billcenterDesc
+     * Sets the descriptive name of the billing center.
      *
-     * @param billcenterDesc String
+     * @param billcenterDesc String the billing center description
      */
     public void setBillcenterDesc(String billcenterDesc) {
         this.billcenterDesc = billcenterDesc;

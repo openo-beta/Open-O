@@ -26,7 +26,27 @@
 package ca.openosp.openo.entities;
 
 /**
- * Encapsulates data from table hl7_obr
+ * Healthcare Laboratory Observation Request (HL7 OBR) segment entity.
+ *
+ * This entity represents the HL7 v2.x OBR (Observation Request) segment, which contains information
+ * about laboratory test orders and requests. The OBR segment is a critical component in healthcare
+ * messaging for communicating laboratory order details between healthcare systems.
+ *
+ * Key clinical information stored includes:
+ * - Order identification (placer and filler order numbers)
+ * - Service/test identification and priority
+ * - Specimen collection and processing details
+ * - Provider information and callback contacts
+ * - Test timing and scheduling information
+ * - Result status and reporting details
+ *
+ * This entity follows HL7 v2.x messaging standards and is used for laboratory information
+ * system integration, supporting both inbound and outbound lab order processing.
+ *
+ * @see <a href="http://www.hl7.org/implement/standards/product_brief.cfm?product_id=185">HL7 v2.x Standard</a>
+ * @see Hl7Obx for related observation results
+ * @see Hl7Orc for common order segment
+ * @since November 1, 2004
  */
 public class Hl7Obr {
     /**
@@ -80,60 +100,62 @@ public class Hl7Obr {
     private String note;
 
     /**
-     * Class constructor with no arguments.
+     * Default constructor for HL7 OBR (Observation Request) segment entity.
+     * Initializes all fields to their default values.
      */
     public Hl7Obr() {
     }
 
     /**
-     * Full constructor
+     * Complete constructor for HL7 OBR (Observation Request) segment entity.
+     * Creates a fully initialized OBR segment with all HL7 standard fields.
      *
-     * @param obrId                               int
-     * @param pidId                               int
-     * @param setId                               String
-     * @param placerOrderNumber                   String
-     * @param fillerOrderNumber                   String
-     * @param universalServiceId                  String
-     * @param priority                            String
-     * @param requestedDateTime                   String
-     * @param observationDateTime                 String
-     * @param observationEndDateTime              String
-     * @param collectionVolume                    String
-     * @param collectorIdentifier                 String
-     * @param specimenActionCode                  String
-     * @param dangerCode                          String
-     * @param relevantClinicalInfo                String
-     * @param specimenReceivedDateTime            String
-     * @param specimenSource                      String
-     * @param orderingProvider                    String
-     * @param orderCallbackPhoneNumber            String
-     * @param placersField1                       String
-     * @param palcersField2                       String
-     * @param fillerField1                        String
-     * @param fillerField2                        String
-     * @param resultsReportStatusChange           String
-     * @param chargeToPractice                    String
-     * @param diagnosticServiceSectId             String
-     * @param resultStatus                        String
-     * @param parentResult                        String
-     * @param quantityTiming                      String
-     * @param resultCopiesTo                      String
-     * @param parentNumber                        String
-     * @param transportationMode                  String
-     * @param reasonForStudy                      String
-     * @param principalResultInterpreter          String
-     * @param assistantResultInterpreter          String
-     * @param technician                          String
-     * @param transcriptionist                    String
-     * @param scheduledDateTime                   String
-     * @param transportArranged                   String
-     * @param numberOfSampleContainers            String
-     * @param transportLogisticsOfCollectedSample String
-     * @param collectorComment                    String
-     * @param transportArrangementResponsibility  String
-     * @param escortRequired                      String
-     * @param plannedPatientTransportComment      String
-     * @param note                                String
+     * @param obrId                               int unique identifier for this OBR record
+     * @param pidId                               int patient identifier linking to PID segment
+     * @param setId                               String set ID for OBR segment (OBR.1)
+     * @param placerOrderNumber                   String order number assigned by placer (OBR.2)
+     * @param fillerOrderNumber                   String order number assigned by filler (OBR.3)
+     * @param universalServiceId                  String universal service identifier (OBR.4)
+     * @param priority                            String order priority (S=STAT, A=ASAP, R=Routine) (OBR.5)
+     * @param requestedDateTime                   String date/time order was requested (OBR.6)
+     * @param observationDateTime                 String date/time of observation (OBR.7)
+     * @param observationEndDateTime              String end date/time of observation (OBR.8)
+     * @param collectionVolume                    String specimen collection volume (OBR.9)
+     * @param collectorIdentifier                 String identifier of specimen collector (OBR.10)
+     * @param specimenActionCode                  String specimen action code (OBR.11)
+     * @param dangerCode                          String danger/hazard code for specimen (OBR.12)
+     * @param relevantClinicalInfo                String relevant clinical information (OBR.13)
+     * @param specimenReceivedDateTime            String date/time specimen was received (OBR.14)
+     * @param specimenSource                      String source of specimen (OBR.15)
+     * @param orderingProvider                    String ordering provider information (OBR.16)
+     * @param orderCallbackPhoneNumber            String callback phone number (OBR.17)
+     * @param placersField1                       String placer field 1 (OBR.18)
+     * @param palcersField2                       String placer field 2 (OBR.19) [Note: typo in original field name]
+     * @param fillerField1                        String filler field 1 (OBR.20)
+     * @param fillerField2                        String filler field 2 (OBR.21)
+     * @param resultsReportStatusChange           String results report status change (OBR.22)
+     * @param chargeToPractice                    String charge to practice indicator (OBR.23)
+     * @param diagnosticServiceSectId             String diagnostic service section ID (OBR.24)
+     * @param resultStatus                        String result status (OBR.25)
+     * @param parentResult                        String parent result reference (OBR.26)
+     * @param quantityTiming                      String quantity/timing information (OBR.27)
+     * @param resultCopiesTo                      String result copies to (OBR.28)
+     * @param parentNumber                        String parent order number (OBR.29)
+     * @param transportationMode                  String transportation mode (OBR.30)
+     * @param reasonForStudy                      String reason for study (OBR.31)
+     * @param principalResultInterpreter          String principal result interpreter (OBR.32)
+     * @param assistantResultInterpreter          String assistant result interpreter (OBR.33)
+     * @param technician                          String technician information (OBR.34)
+     * @param transcriptionist                    String transcriptionist information (OBR.35)
+     * @param scheduledDateTime                   String scheduled date/time (OBR.36)
+     * @param transportArranged                   String transport arrangement status (OBR.37)
+     * @param numberOfSampleContainers            String number of sample containers (OBR.38)
+     * @param transportLogisticsOfCollectedSample String transport logistics details (OBR.39)
+     * @param collectorComment                    String collector comment (OBR.40)
+     * @param transportArrangementResponsibility  String transport arrangement responsibility (OBR.41)
+     * @param escortRequired                      String escort required indicator (OBR.42)
+     * @param plannedPatientTransportComment      String planned patient transport comment (OBR.43)
+     * @param note                                String additional notes or comments
      */
     public Hl7Obr(int obrId, int pidId, String setId, String placerOrderNumber,
                   String fillerOrderNumber, String universalServiceId,
@@ -212,135 +234,150 @@ public class Hl7Obr {
     }
 
     /**
-     * Gets the obrId
+     * Gets the unique OBR record identifier.
+     * This is the database primary key for this OBR segment record.
      *
-     * @return int obrId
+     * @return int the unique OBR record identifier
      */
     public int getObrId() {
         return obrId;
     }
 
     /**
-     * Gets the pidId
+     * Gets the patient identifier linking this OBR to the corresponding PID segment.
+     * This creates the relationship between the observation request and the patient.
      *
-     * @return int pidId
+     * @return int the patient identifier from the related PID segment
      */
     public int getPidId() {
         return pidId;
     }
 
     /**
-     * Gets the setId
+     * Gets the set ID for this OBR segment (HL7 field OBR.1).
+     * Used to identify different instances of OBR segments within a message.
      *
-     * @return String setId
+     * @return String the set ID, empty string if null
      */
     public String getSetId() {
         return (setId != null ? setId : "");
     }
 
     /**
-     * Gets the placerOrderNumber
+     * Gets the placer order number (HL7 field OBR.2).
+     * This is the order number assigned by the entity placing the order (typically the EMR).
      *
-     * @return String placerOrderNumber
+     * @return String the placer order number, empty string if null
      */
     public String getPlacerOrderNumber() {
         return (placerOrderNumber != null ? placerOrderNumber : "");
     }
 
     /**
-     * Gets the fillerOrderNumber
+     * Gets the filler order number (HL7 field OBR.3).
+     * This is the order number assigned by the entity fulfilling the order (typically the lab).
      *
-     * @return String fillerOrderNumber
+     * @return String the filler order number, empty string if null
      */
     public String getFillerOrderNumber() {
         return (fillerOrderNumber != null ? fillerOrderNumber : "");
     }
 
     /**
-     * Gets the universalServiceId
+     * Gets the universal service identifier (HL7 field OBR.4).
+     * This identifies the specific test or service being requested, often using LOINC codes.
      *
-     * @return String universalServiceId
+     * @return String the universal service identifier, empty string if null
      */
     public String getUniversalServiceId() {
         return (universalServiceId != null ? universalServiceId : "");
     }
 
     /**
-     * Gets the priority
+     * Gets the order priority (HL7 field OBR.5).
+     * Common values: S=STAT (urgent), A=ASAP (as soon as possible), R=Routine.
      *
-     * @return String priority
+     * @return String the order priority code, empty string if null
      */
     public String getPriority() {
         return (priority != null ? priority : "");
     }
 
     /**
-     * Gets the requestedDateTime
+     * Gets the requested date/time (HL7 field OBR.6).
+     * The date and time when the order was requested.
      *
-     * @return String requestedDateTime
+     * @return String the requested date/time, may be null
      */
     public String getRequestedDateTime() {
         return requestedDateTime;
     }
 
     /**
-     * Gets the observationDateTime
+     * Gets the observation date/time (HL7 field OBR.7).
+     * The date and time when the observation/test was performed.
      *
-     * @return String observationDateTime
+     * @return String the observation date/time, may be null
      */
     public String getObservationDateTime() {
         return observationDateTime;
     }
 
     /**
-     * Gets the observationEndDateTime
+     * Gets the observation end date/time (HL7 field OBR.8).
+     * The date and time when the observation/test was completed.
      *
-     * @return String observationEndDateTime
+     * @return String the observation end date/time, may be null
      */
     public String getObservationEndDateTime() {
         return observationEndDateTime;
     }
 
     /**
-     * Gets the collectionVolume
+     * Gets the specimen collection volume (HL7 field OBR.9).
+     * The volume of specimen to be collected for the test.
      *
-     * @return String collectionVolume
+     * @return String the collection volume, empty string if null
      */
     public String getCollectionVolume() {
         return (collectionVolume != null ? collectionVolume : "");
     }
 
     /**
-     * Gets the collectorIdentifier
+     * Gets the collector identifier (HL7 field OBR.10).
+     * Identifies the person or entity who collected the specimen.
      *
-     * @return String collectorIdentifier
+     * @return String the collector identifier, empty string if null
      */
     public String getCollectorIdentifier() {
         return (collectorIdentifier != null ? collectorIdentifier : "");
     }
 
     /**
-     * Gets the specimenActionCode
+     * Gets the specimen action code (HL7 field OBR.11).
+     * Indicates the action to be taken with the specimen (e.g., A=Add, G=Generated).
      *
-     * @return String specimenActionCode
+     * @return String the specimen action code, empty string if null
      */
     public String getSpecimenActionCode() {
         return (specimenActionCode != null ? specimenActionCode : "");
     }
 
     /**
-     * Gets the dangerCode
+     * Gets the danger code (HL7 field OBR.12).
+     * Indicates any hazards or special precautions for handling the specimen.
      *
-     * @return String dangerCode
+     * @return String the danger code, empty string if null
      */
     public String getDangerCode() {
         return (dangerCode != null ? dangerCode : "");
     }
 
     /**
-     * Gets the relevantClinicalInfo
+     * Gets the relevant clinical information (HL7 field OBR.13).
+     * Clinical information relevant to the interpretation of the test results.
      *
-     * @return String relevantClinicalInfo
+     * @return String the relevant clinical information, empty string if null
      */
     public String getRelevantClinicalInfo() {
         return (relevantClinicalInfo != null ? relevantClinicalInfo : "");
@@ -631,18 +668,20 @@ public class Hl7Obr {
     }
 
     /**
-     * Sets the obrId
+     * Sets the unique OBR record identifier.
+     * This is the database primary key for this OBR segment record.
      *
-     * @param obrId int
+     * @param obrId int the unique OBR record identifier
      */
     public void setObrId(int obrId) {
         this.obrId = obrId;
     }
 
     /**
-     * Sets the pidId
+     * Sets the patient identifier linking this OBR to the corresponding PID segment.
+     * This creates the relationship between the observation request and the patient.
      *
-     * @param pidId int
+     * @param pidId int the patient identifier from the related PID segment
      */
     public void setPidId(int pidId) {
         this.pidId = pidId;

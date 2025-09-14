@@ -26,7 +26,26 @@
 package ca.openosp.openo.entities;
 
 /**
- * Encapsulates data from table hl7_orc
+ * Healthcare Common Order (HL7 ORC) segment entity.
+ *
+ * This entity represents the HL7 v2.x ORC (Common Order) segment, which contains information
+ * that is common to all orders. The ORC segment provides order control and status information
+ * and is typically paired with order-specific segments like OBR for laboratory orders.
+ *
+ * Key clinical information stored includes:
+ * - Order control codes (NW=New order, CA=Cancel, etc.)
+ * - Order numbers from both placer and filler systems
+ * - Order status and response flags
+ * - Provider information and entry details
+ * - Transaction timestamps and verification data
+ * - Order effective dates and timing information
+ *
+ * This entity follows HL7 v2.x messaging standards and is essential for order management
+ * in healthcare information systems, providing order lifecycle tracking and control.
+ *
+ * @see <a href="http://www.hl7.org/implement/standards/product_brief.cfm?product_id=185">HL7 v2.x Standard</a>
+ * @see Hl7Obr for related observation requests
+ * @since November 1, 2004
  */
 public class Hl7Orc {
     /**
@@ -55,35 +74,37 @@ public class Hl7Orc {
     private String actionBy;
 
     /**
-     * Class constructor with no arguments.
+     * Default constructor for HL7 ORC (Common Order) segment entity.
+     * Initializes all fields to their default values.
      */
     public Hl7Orc() {
     }
 
     /**
-     * Full constructor
+     * Complete constructor for HL7 ORC (Common Order) segment entity.
+     * Creates a fully initialized ORC segment with all HL7 standard fields.
      *
-     * @param orcId                  int
-     * @param pidId                  int
-     * @param orderControl           String
-     * @param placerOrderNumber1     String
-     * @param fillerOrderNumber      String
-     * @param placerOrderNumber2     String
-     * @param orderStatus            String
-     * @param responseFlag           String
-     * @param quantityTiming         String
-     * @param parent                 String
-     * @param dateTimeOfTransaction  String
-     * @param enteredBy              String
-     * @param verifiedBy             String
-     * @param orderingProvider       String
-     * @param entererLocation        String
-     * @param callbackPhoneNumber    String
-     * @param orderEffectiveDateTime String
-     * @param orderControlCodeReason String
-     * @param enteringOrganization   String
-     * @param enteringDevice         String
-     * @param actionBy               String
+     * @param orcId                  int unique identifier for this ORC record
+     * @param pidId                  int patient identifier linking to PID segment
+     * @param orderControl           String order control code (NW=New, CA=Cancel) (ORC.1)
+     * @param placerOrderNumber1     String placer order number (ORC.2)
+     * @param fillerOrderNumber      String filler order number (ORC.3)
+     * @param placerOrderNumber2     String placer group number (ORC.4)
+     * @param orderStatus            String order status (A=Active, C=Cancelled) (ORC.5)
+     * @param responseFlag           String response flag (ORC.6)
+     * @param quantityTiming         String quantity/timing information (ORC.7)
+     * @param parent                 String parent order reference (ORC.8)
+     * @param dateTimeOfTransaction  String transaction date/time (ORC.9)
+     * @param enteredBy              String person who entered the order (ORC.10)
+     * @param verifiedBy             String person who verified the order (ORC.11)
+     * @param orderingProvider       String ordering provider information (ORC.12)
+     * @param entererLocation        String location where order was entered (ORC.13)
+     * @param callbackPhoneNumber    String callback phone number (ORC.14)
+     * @param orderEffectiveDateTime String order effective date/time (ORC.15)
+     * @param orderControlCodeReason String reason for order control code (ORC.16)
+     * @param enteringOrganization   String entering organization (ORC.17)
+     * @param enteringDevice         String entering device (ORC.18)
+     * @param actionBy               String action by person/entity (ORC.19)
      */
     public Hl7Orc(int orcId, int pidId, String orderControl,
                   String placerOrderNumber1, String fillerOrderNumber,
@@ -119,45 +140,50 @@ public class Hl7Orc {
     }
 
     /**
-     * Gets the orcId
+     * Gets the unique ORC record identifier.
+     * This is the database primary key for this ORC segment record.
      *
-     * @return int orcId
+     * @return int the unique ORC record identifier
      */
     public int getOrcId() {
         return orcId;
     }
 
     /**
-     * Gets the pidId
+     * Gets the patient identifier linking this ORC to the corresponding PID segment.
+     * This creates the relationship between the common order and the patient.
      *
-     * @return int pidId
+     * @return int the patient identifier from the related PID segment
      */
     public int getPidId() {
         return pidId;
     }
 
     /**
-     * Gets the orderControl
+     * Gets the order control code (HL7 field ORC.1).
+     * Specifies the action to be taken: NW=New order, CA=Cancel order, OC=Order changed.
      *
-     * @return String orderControl
+     * @return String the order control code, empty string if null
      */
     public String getOrderControl() {
         return (orderControl != null ? orderControl : "");
     }
 
     /**
-     * Gets the placerOrderNumber1
+     * Gets the placer order number (HL7 field ORC.2).
+     * The order number assigned by the entity placing the order (typically the EMR).
      *
-     * @return String placerOrderNumber1
+     * @return String the placer order number, empty string if null
      */
     public String getPlacerOrderNumber1() {
         return (placerOrderNumber1 != null ? placerOrderNumber1 : "");
     }
 
     /**
-     * Gets the fillerOrderNumber
+     * Gets the filler order number (HL7 field ORC.3).
+     * The order number assigned by the entity fulfilling the order (typically the lab).
      *
-     * @return String fillerOrderNumber
+     * @return String the filler order number, empty string if null
      */
     public String getFillerOrderNumber() {
         return (fillerOrderNumber != null ? fillerOrderNumber : "");
@@ -173,9 +199,10 @@ public class Hl7Orc {
     }
 
     /**
-     * Gets the orderStatus
+     * Gets the order status (HL7 field ORC.5).
+     * Current status of the order: A=Active, C=Cancelled, S=Suspended, etc.
      *
-     * @return String orderStatus
+     * @return String the order status code, empty string if null
      */
     public String getOrderStatus() {
         return (orderStatus != null ? orderStatus : "");
@@ -209,9 +236,10 @@ public class Hl7Orc {
     }
 
     /**
-     * Gets the dateTimeOfTransaction
+     * Gets the transaction date/time (HL7 field ORC.9).
+     * The date and time when this transaction was processed.
      *
-     * @return String dateTimeOfTransaction
+     * @return String the transaction date/time, may be null
      */
     public String getDateTimeOfTransaction() {
         return dateTimeOfTransaction;

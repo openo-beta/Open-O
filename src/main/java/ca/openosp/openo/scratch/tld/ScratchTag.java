@@ -32,6 +32,39 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import ca.openosp.openo.utility.MiscUtils;
 
+/**
+ * JSP custom tag for displaying clinical scratch pad status indicators in the OpenO EMR system.
+ *
+ * <p>This custom tag provides visual feedback to healthcare providers about the status of their
+ * scratch pad content. It displays different notepad icons based on whether the provider has
+ * active scratch pad content, helping with clinical workflow by providing immediate visual
+ * cues about temporary note availability.</p>
+ *
+ * <p>The scratch pad system supports clinical workflow by:</p>
+ * <ul>
+ *   <li>Providing visual indicators for providers about their temporary note status</li>
+ *   <li>Helping providers quickly identify when they have unsaved clinical observations</li>
+ *   <li>Supporting multi-provider environments with provider-specific visual cues</li>
+ *   <li>Integrating seamlessly with JSP pages in the clinical interface</li>
+ * </ul>
+ *
+ * <p>Usage in JSP pages:</p>
+ * <pre>
+ * &lt;%@ taglib uri="/WEB-INF/scratch.tld" prefix="scratch" %&gt;
+ * &lt;scratch:scratchTag providerNo="${providerNo}" /&gt;
+ * </pre>
+ *
+ * <p>The tag outputs different images based on scratch pad status:</p>
+ * <ul>
+ *   <li>notepad.gif - Provider has active scratch pad content</li>
+ *   <li>notepad_blank.gif - No active scratch pad content</li>
+ * </ul>
+ *
+ * @see Scratch2Action
+ * @see ScratchData
+ * @see ca.openosp.openo.commn.model.ScratchPad
+ * @since July 2003
+ */
 public class ScratchTag extends TagSupport {
 
     public ScratchTag() {
@@ -69,6 +102,15 @@ public class ScratchTag extends TagSupport {
         return EVAL_PAGE;
     }
 
+    /**
+     * The unique identifier for the healthcare provider whose scratch pad status is being checked.
+     * This is set via the providerNo attribute in the JSP tag.
+     */
     private String providerNo;
+
+    /**
+     * Flag indicating whether the provider has active scratch pad content.
+     * Currently defaults to true for performance reasons in clinical environments.
+     */
     private boolean scratchFilled;
 }

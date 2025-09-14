@@ -53,57 +53,94 @@ import ca.openosp.openo.utility.MiscUtils;
 
 
 /**
- * <p>A callback object that can wait up to a specified amount
- * of time for the XML-RPC response. Suggested use is as follows:
- * </p>
+ * Asynchronous XML-RPC callback implementation with configurable timeout support.
+ * This class provides a mechanism to wait for XML-RPC responses with a maximum timeout
+ * period, preventing indefinite blocking on slow or unresponsive web services.
+ *
+ * <p>The class implements the AsyncCallback interface and provides timeout functionality
+ * for XML-RPC operations, particularly useful when integrating with external drug
+ * reference services that may experience network latency or service interruptions.</p>
+ *
+ * <p>Typical usage pattern:</p>
  * <pre>
- *   // Wait for 10 seconds.
- *   TimingOutCallback callback = new TimingOutCallback(10 * 1000);
- *   XmlRpcClient client = new XmlRpcClient(url);
- *   client.executeAsync(methodName, aVector, callback);
- *   try {
- *       return callback.waitForResponse();
- *   } catch (TimeoutException e) {
- *       MiscUtils.getLogger().debug("No response from server.");
- *   } catch (Exception e) {
- *       MiscUtils.getLogger().debug("Server returned an error message.");
- *   }
+ * // Wait for 10 seconds maximum
+ * TimingOutCallback callback = new TimingOutCallback(10 * 1000);
+ * XmlRpcClient client = new XmlRpcClient(url);
+ * client.executeAsync(methodName, parameters, callback);
+ * try {
+ *     Object result = callback.waitForResponse();
+ *     // Process successful response
+ * } catch (TimeoutException e) {
+ *     // Handle timeout - service may be slow or unavailable
+ * } catch (Exception e) {
+ *     // Handle other service errors
+ * }
  * </pre>
+ *
+ * <p>This implementation is thread-safe and uses Java's wait/notify mechanism
+ * for efficient blocking and signaling between threads.</p>
+ *
+ * @since 2007-04-16
  */
 public class TimingOutCallback implements AsyncCallback {
     /**
-     * This exception is thrown, if the request times out.
+     * Exception thrown when an XML-RPC request exceeds the configured timeout period.
+     * This exception extends XmlRpcException to maintain compatibility with existing
+     * XML-RPC error handling patterns.
      */
     public static class TimeoutException extends XmlRpcException {
         private static final long serialVersionUID = 4875266372372105081L;
 
         /**
-         * Creates a new instance with the given error code and
-         * error message.
+         * Creates a new TimeoutException with the specified error code and message.
+         *
+         * @param pCode int the error code (typically 0 for timeout)
+         * @param message String descriptive message about the timeout
          */
         public TimeoutException(int pCode, String message) {
             super(pCode, message);
         }
     }
 
+    /**
+     * Maximum time to wait for a response, in milliseconds.
+     */
     private final long timeout;
+
+    /**
+     * The result object returned by the XML-RPC call, if successful.
+     * This field is public for direct access after waitForResponse() completes.
+     */
     public Object result;
+
+    /**
+     * Any error that occurred during the XML-RPC call.
+     */
     private Throwable error;
+
+    /**
+     * Flag indicating whether a response (success or error) has been received.
+     */
     private boolean responseSeen;
 
     /**
-     * Waits the specified number of milliseconds for a response.
+     * Creates a new TimingOutCallback with the specified timeout period.
+     *
+     * @param pTimeout long maximum time to wait for response, in milliseconds
      */
     public TimingOutCallback(long pTimeout) {
         timeout = pTimeout;
     }
 
     /**
-     * Called to wait for the response.
+     * Waits for the XML-RPC response up to the configured timeout period.
+     * This method blocks the calling thread until either a response is received
+     * or the timeout period expires.
      *
-     * @throws InterruptedException The thread was interrupted.
-     * @throws TimeoutException     No response was received after waiting the specified time.
-     * @throws Throwable            An error was returned by the server.
+     * @return Object the result returned by the XML-RPC call
+     * @throws InterruptedException if the waiting thread is interrupted
+     * @throws TimeoutException if no response is received within the timeout period
+     * @throws Throwable if the XML-RPC call returned an error
      */
     public synchronized Object waitForResponse() throws Throwable {
         if (!responseSeen) {
@@ -118,31 +155,59 @@ public class TimingOutCallback implements AsyncCallback {
         return result;
     }
 
+    /**
+     * Handles error responses from XML-RPC calls.
+     * This method is called automatically by the XML-RPC framework when an error occurs.
+     *
+     * @param pRequest XmlRpcRequest the original request that failed
+     * @param pError Throwable the error that occurred during the call
+     */
     public synchronized void handleError(XmlRpcRequest pRequest, Throwable pError) {
         responseSeen = true;
         error = pError;
         notify();
     }
 
+    /**
+     * Handles successful responses from XML-RPC calls.
+     * This method is called automatically by the XML-RPC framework when a call succeeds.
+     *
+     * @param pRequest XmlRpcRequest the original request that succeeded
+     * @param pResult Object the result returned by the XML-RPC call
+     */
     public synchronized void handleResult(XmlRpcRequest pRequest, Object pResult) {
         responseSeen = true;
         result = pResult;
         notify();
     }
 
+    /**
+     * Alternative result handler for XML-RPC responses.
+     * This method provides compatibility with different XML-RPC client implementations.
+     *
+     * @param arg0 Object the result returned by the XML-RPC call
+     * @param arg1 URL the service endpoint URL
+     * @param arg2 String additional response information
+     */
     public synchronized void handleResult(Object arg0, URL arg1, String arg2) {
         responseSeen = true;
         MiscUtils.getLogger().debug("arg2" + arg2);
         result = arg0;
         this.notify();
-        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Alternative error handler for XML-RPC responses.
+     * This method provides compatibility with different XML-RPC client implementations.
+     *
+     * @param arg0 Exception the error that occurred during the call
+     * @param arg1 URL the service endpoint URL
+     * @param arg2 String additional error information
+     */
     public synchronized void handleError(Exception arg0, URL arg1, String arg2) {
         responseSeen = true;
         MiscUtils.getLogger().error("Error", arg0);
         error = arg0;
         this.notify();
-        //throw new UnsupportedOperationException("Not supported yet.");
     }
 }

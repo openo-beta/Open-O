@@ -33,14 +33,32 @@ import java.util.Date;
 import java.util.Enumeration;
 
 /**
- * Represents a Bill in the BC Billing module
+ * Medical Services Plan (MSP) and general billing entity for British Columbia.
  *
- * @author not attributable
- * @version 1.0
- * @todo This class should be renamed since it represents any type of bill(ICBC,WCB,Private)
- * Furthermore, it is based on the MSPReconcile.Bill inner class which wasn't written to the Java Bean standard
- * (public accessors/modifiers and private members). Therefore, for backwards compatibility the members of this class are public.
- * This class needs to be refactored
+ * This entity represents billing information for various payment types in the BC healthcare
+ * system, including MSP, ICBC (Motor Vehicle Accidents), WCB (Workers' Compensation Board),
+ * and private insurance billing. Originally designed for BC MSP billing, it has evolved
+ * to support multiple billing scenarios.
+ *
+ * Key billing components include:
+ * - Patient demographic and appointment information
+ * - Service codes, dates, and billing amounts
+ * - Diagnostic codes (dx1, dx2, dx3) for clinical justification
+ * - Provider information and billing details
+ * - Payment status and reconciliation data
+ * - Explanation codes for claim rejections or adjustments
+ *
+ * Special features for BC healthcare:
+ * - Integration with Teleplan (BC MSP billing system)
+ * - WCB and ICBC injury claim support
+ * - Aging analysis for accounts receivable management
+ * - Multi-payee and payment method tracking
+ *
+ * Note: This class uses public fields for backward compatibility with legacy systems.
+ * Future refactoring should implement proper encapsulation following JavaBean standards.
+ *
+ * @see <a href="https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/msp">BC MSP Information</a>
+ * @since June 11, 2005
  */
 public class MSPBill {
     public String serviceDateRange = "";
@@ -102,12 +120,20 @@ public class MSPBill {
     public String amtOwing;
     public String adjustmentCodeAmt = "";
 
-    //  public String gst="0.00";
-//  public String gstNo="";
+    /**
+     * Default constructor for MSP billing entity.
+     * Initializes the utility date handler for billing date calculations.
+     */
     public MSPBill() {
         ut = new UtilDateUtilities();
     }
 
+    /**
+     * Checks if this bill is for Workers' Compensation Board (WCB).
+     * WCB bills are for workplace-related injuries and have special processing requirements.
+     *
+     * @return boolean true if this is a WCB bill, false otherwise
+     */
     public boolean isWCB() {
         return billingtype.equals("WCB");
     }
@@ -389,10 +415,12 @@ public class MSPBill {
     }
 
     /**
-     * Returns an int value representing the date range of a bill's age in days
-     * since its initial service date
+     * Calculates the aging category for accounts receivable management.
+     * Returns a string code representing how many days old this bill is since service date:
+     * "1" = 0-30 days, "2" = 31-60 days, "3" = 61-90 days, "4" = 91+ days.
+     * This is essential for aging reports and collection management in healthcare billing.
      *
-     * @return int
+     * @return String the aging category code ("0", "1", "2", "3", or "4")
      */
     public String getServiceDateRange() {
         String ret = "0";
@@ -503,9 +531,11 @@ public class MSPBill {
     }
 
     /**
-     * Returns a concatenated string of explanation codes for a specific bill
+     * Gets the concatenated explanation codes for this bill.
+     * Explanation codes are used by MSP and other payers to indicate
+     * reasons for claim adjustments, rejections, or special handling.
      *
-     * @return String
+     * @return String concatenated explanation codes
      */
     public String getExpString() {
         return this.expString;
@@ -516,10 +546,14 @@ public class MSPBill {
     }
 
     /**
-     * Returns a formatted summary of the explanation code for a specific rejected bill
+     * Gets a formatted summary of explanation codes for rejected bills.
+     * Provides human-readable descriptions of why claims were rejected or adjusted
+     * by MSP or other payers. Each code is formatted as "code:description\n".
      *
-     * @return String
-     * @todo This really ought to go into a presentation class
+     * Note: This method contains presentation logic that should be refactored
+     * into a separate presentation layer class.
+     *
+     * @return String formatted explanation code summary with descriptions
      */
     public String getExpSum() {
         String summary = "";
@@ -592,9 +626,6 @@ public class MSPBill {
         return adjustmentCodeAmt;
     }
 
-//  public String getGst() {
-//    return gst;
-//  }
 
     public void setPaymentMethodName(String paymentMethodName) {
         this.paymentMethodName = paymentMethodName;
@@ -628,15 +659,4 @@ public class MSPBill {
         this.adjustmentCodeAmt = adjustmentCodeAmt;
     }
 
-//  public void setGst(String gst) {
-//    this.gst = (gst != null && !gst.trim().isEmpty() ? gst : "0.00");
-//  }
-//
-//  public String getGstNo() {
-//    return gstNo;
-//  }
-//
-//  public void setGstNo(String gstNo) {
-//    this.gstNo = gstNo;
-//  }
 }

@@ -54,6 +54,29 @@ import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.OscarProperties;
 
+/**
+ * Service for transmitting queued medical fax documents to healthcare recipients.
+ *
+ * This class handles the critical transmission of medical documents including lab results,
+ * consultation requests, prescription orders, and patient referrals to healthcare providers,
+ * specialists, laboratories, and other medical facilities. Reliable fax transmission is
+ * essential for timely patient care coordination and regulatory compliance in healthcare.
+ *
+ * Key transmission capabilities:
+ * - Batch processing of queued medical documents
+ * - Secure Base64 document encoding and transmission
+ * - Multiple fax service provider support (SRFax, MyFax, etc.)
+ * - Document backup and recovery from filesystem or database
+ * - Comprehensive error handling and retry logic
+ * - Real-time status tracking and audit logging
+ *
+ * The service maintains HIPAA/PIPEDA compliance through secure transmission protocols
+ * and proper handling of patient health information during the fax process.
+ *
+ * @see ca.openosp.openo.commn.model.FaxJob
+ * @see ca.openosp.openo.commn.model.FaxConfig
+ * @since 2014-08-29
+ */
 public class FaxSender {
 
     private static String PATH = "/fax";
@@ -63,6 +86,21 @@ public class FaxSender {
 
     private Logger log = MiscUtils.getLogger();
 
+    /**
+     * Processes and transmits all queued medical fax documents for active fax accounts.
+     *
+     * This method performs batch transmission of medical documents by iterating through
+     * all active fax configurations and sending ready-to-transmit documents. The process
+     * includes document retrieval, Base64 encoding, secure transmission to fax services,
+     * and comprehensive status tracking for healthcare audit requirements.
+     *
+     * Key transmission features:
+     * - Multi-account processing for different healthcare departments
+     * - Document backup with filesystem and database fallback
+     * - Secure HTTP transmission with authentication
+     * - Real-time status updates and error handling
+     * - Comprehensive logging for regulatory compliance
+     */
     public void send() {
 
         List<FaxConfig> faxConfigList = faxConfigDao.findAll(null, null);

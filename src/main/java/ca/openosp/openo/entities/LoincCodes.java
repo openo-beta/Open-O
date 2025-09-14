@@ -25,10 +25,31 @@
 
 package ca.openosp.openo.entities;
 
-;
-
 /**
- * Encapsulates data from table loincCodes
+ * LOINC (Logical Observation Identifiers Names and Codes) codes entity.
+ *
+ * This entity represents the comprehensive LOINC database, which provides universal
+ * identifiers for laboratory and clinical observations. LOINC is the international
+ * standard for identifying health measurements, observations, and documents.
+ *
+ * Key LOINC components include:
+ * - Unique LOINC numbers for each test/observation
+ * - Standardized component and property definitions
+ * - System, scale, and method specifications
+ * - Cross-references to multiple coding systems (SNOMED CT, ICD, CPT)
+ * - Multi-language support for international use
+ *
+ * This entity supports:
+ * - Standardized laboratory test identification
+ * - Interoperability between healthcare systems
+ * - Clinical decision support and order management
+ * - Public health reporting and surveillance
+ * - Integration with HL7 messaging standards
+ *
+ * @see <a href="https://loinc.org/">Official LOINC Website</a>
+ * @see Hl7Obx for HL7 OBX segments using LOINC codes
+ * @see LabTest for laboratory tests with LOINC integration
+ * @since November 1, 2004
  */
 public class LoincCodes {
     private String loincNum;
@@ -94,7 +115,8 @@ public class LoincCodes {
     private String orderObs;
 
     /**
-     * Class constructor with no arguments.
+     * Default constructor for LOINC codes entity.
+     * Initializes all LOINC fields to their default values.
      */
     public LoincCodes() {
     }
@@ -249,27 +271,33 @@ public class LoincCodes {
     }
 
     /**
-     * Gets the loincNum
+     * Gets the LOINC number (unique identifier).
+     * The LOINC number is the primary identifier for each test or observation
+     * and is used globally for standardized test identification.
      *
-     * @return String loincNum
+     * @return String the LOINC number, empty string if null
      */
     public String getLoincNum() {
         return (loincNum != null ? loincNum : "");
     }
 
     /**
-     * Gets the component
+     * Gets the component (analyte or what is measured).
+     * The component represents what is being measured or observed,
+     * such as "Glucose", "Hemoglobin", or "Blood pressure".
      *
-     * @return String component
+     * @return String the component name, empty string if null
      */
     public String getComponent() {
         return (component != null ? component : "");
     }
 
     /**
-     * Gets the property
+     * Gets the property (characteristic measured).
+     * The property describes the characteristic of the component being measured,
+     * such as "Mass concentration", "Substance concentration", or "Pressure".
      *
-     * @return String property
+     * @return String the property type, empty string if null
      */
     public String getProperty() {
         return (property != null ? property : "");
@@ -285,27 +313,33 @@ public class LoincCodes {
     }
 
     /**
-     * Gets the system
+     * Gets the system (specimen or subject).
+     * The system identifies the specimen type or subject being tested,
+     * such as "Blood", "Urine", "Serum", or "Patient".
      *
-     * @return String system
+     * @return String the system/specimen type, empty string if null
      */
     public String getSystem() {
         return (system != null ? system : "");
     }
 
     /**
-     * Gets the scaleTyp
+     * Gets the scale type (measurement scale).
+     * The scale type indicates how the observation is measured:
+     * Qn=Quantitative, Ord=Ordinal, Nom=Nominal, Nar=Narrative.
      *
-     * @return String scaleTyp
+     * @return String the scale type, empty string if null
      */
     public String getScaleTyp() {
         return (scaleTyp != null ? scaleTyp : "");
     }
 
     /**
-     * Gets the methodTyp
+     * Gets the method type (measurement method).
+     * The method describes how the measurement is performed,
+     * such as specific laboratory techniques or procedures.
      *
-     * @return String methodTyp
+     * @return String the method type, empty string if null
      */
     public String getMethodTyp() {
         return (methodTyp != null ? methodTyp : "");
@@ -321,9 +355,11 @@ public class LoincCodes {
     }
 
     /**
-     * Gets the _class
+     * Gets the LOINC class (category classification).
+     * The class groups related tests into categories such as
+     * "CHEM" (Chemistry), "HEMA" (Hematology), "MICRO" (Microbiology).
      *
-     * @return String _class
+     * @return String the LOINC class, empty string if null
      */
     public String get_class() {
         return (_class != null ? _class : "");
@@ -438,9 +474,11 @@ public class LoincCodes {
     }
 
     /**
-     * Gets the snowmedCd
+     * Gets the SNOMED CT code cross-reference.
+     * Links this LOINC code to corresponding SNOMED CT concepts
+     * for enhanced interoperability and clinical terminology integration.
      *
-     * @return String snowmedCd
+     * @return String the SNOMED CT code, empty string if null
      */
     public String getSnowmedCd() {
         return (snowmedCd != null ? snowmedCd : "");

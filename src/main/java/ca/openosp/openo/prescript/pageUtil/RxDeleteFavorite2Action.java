@@ -42,21 +42,52 @@ import ca.openosp.openo.prescript.data.RxPrescriptionData;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
+/**
+ * Struts2 action for deleting favorite prescriptions.
+ * <p>
+ * This action handles the deletion of favorite prescription templates
+ * from the prescription system. Favorite prescriptions allow providers
+ * to save commonly used prescription configurations for quick reuse.
+ * <p>
+ * The action validates user permissions and performs the deletion
+ * operation on the specified favorite prescription record.
+ *
+ * @since 2008
+ */
 public final class RxDeleteFavorite2Action extends ActionSupport {
+    /** HTTP request object for accessing request parameters */
     HttpServletRequest request = ServletActionContext.getRequest();
+
+    /** HTTP response object for handling the response */
     HttpServletResponse response = ServletActionContext.getResponse();
 
+    /** Security manager for validating user permissions */
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
 
+    /**
+     * Main execution method for deleting favorite prescriptions.
+     * <p>
+     * This method:
+     * 1. Validates user permissions for prescription updates
+     * 2. Retrieves the favorite ID from request parameters
+     * 3. Deletes the specified favorite prescription
+     *
+     * @return String the result status (SUCCESS) to continue with the workflow
+     * @throws IOException if an input/output error occurs
+     * @throws ServletException if a servlet error occurs
+     * @throws RuntimeException if user lacks required prescription permissions
+     */
     public String execute()
             throws IOException, ServletException {
 
+        // Validate user has permission to update prescriptions
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_rx", "u", null)) {
             throw new RuntimeException("missing required sec object (_rx)");
         }
 
 
+        // Parse favorite ID and delete the favorite prescription
         int favoriteId = Integer.parseInt(this.getFavoriteId());
         new RxPrescriptionData().deleteFavorite(favoriteId);
 
@@ -64,12 +95,23 @@ public final class RxDeleteFavorite2Action extends ActionSupport {
         return SUCCESS;
     }
 
+    /** ID of the favorite prescription to delete */
     private String favoriteId = null;
 
+    /**
+     * Gets the favorite prescription ID.
+     *
+     * @return String the favorite prescription ID
+     */
     public String getFavoriteId() {
         return (this.favoriteId);
     }
 
+    /**
+     * Sets the favorite prescription ID to delete.
+     *
+     * @param favoriteId String the favorite prescription ID
+     */
     public void setFavoriteId(String favoriteId) {
         this.favoriteId = favoriteId;
     }

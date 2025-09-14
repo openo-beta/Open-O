@@ -49,17 +49,56 @@ import ca.openosp.openo.prescript.data.RxPatientData;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
+/**
+ * Struts2 action for adding allergies in the prescription module.
+ *
+ * This action handles the creation of new allergy records for patients,
+ * including drug allergies, non-drug allergies, and environmental allergies.
+ * It supports partial date entry for onset dates and manages archiving of
+ * replaced allergy records.
+ *
+ * The action validates security privileges, processes allergy data including
+ * severity and reaction information, and logs all changes for audit purposes.
+ * It integrates with the drug reference system to link allergies to specific
+ * medications when applicable.
+ *
+ * @since 2008-11-20
+ */
 public final class RxAddAllergy2Action extends ActionSupport {
+    /**
+     * HTTP request object.
+     */
     HttpServletRequest request = ServletActionContext.getRequest();
+
+    /**
+     * HTTP response object.
+     */
     HttpServletResponse response = ServletActionContext.getResponse();
 
+    /**
+     * Security manager for privilege checking.
+     */
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
+    /**
+     * Executes the add allergy action.
+     *
+     * Processes allergy form data, creates new allergy record, and
+     * optionally archives a replaced allergy. Validates security
+     * privileges and logs all actions for audit trail.
+     *
+     * @return String SUCCESS on successful addition
+     * @throws IOException if I/O error occurs
+     * @throws ServletException if servlet error occurs
+     * @throws RuntimeException if user lacks required privileges
+     */
     public String execute() throws IOException, ServletException {
+        // Verify user has write permission for allergies
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_allergy", "w", null)) {
             throw new RuntimeException("missing required sec object (_allergy)");
         }
 
+        // Get allergy identifier (drug reference ID or ATC code)
         String id = request.getParameter("ID");
         if (id != null && "null".equals(id)) {
             id = "";
@@ -78,12 +117,16 @@ public final class RxAddAllergy2Action extends ActionSupport {
 
         String nonDrug = request.getParameter("nonDrug");
 
+        // Retrieve patient from session and create new allergy
         RxPatientData.Patient patient = (RxPatientData.Patient) request.getSession().getAttribute("Patient");
         Allergy allergy = new Allergy();
+
+        // Set drug reference ID for type 13 (drug allergy)
         if (type != null && "13".equals(type)) {
             allergy.setDrugrefId(id);
         }
 
+        // Set ATC code for type 8 (ATC-based allergy)
         if (type != null && "8".equals(type)) {
             allergy.setAtc(id);
         }
@@ -91,6 +134,7 @@ public final class RxAddAllergy2Action extends ActionSupport {
         allergy.setTypeCode(Integer.parseInt(type));
         allergy.setReaction(description);
 
+        // Handle partial date entry (full date, year-month, or year only)
         if (startDate.length() >= 8 && getCharOccur(startDate, '-') == 2) {
             allergy.setStartDate(RxUtil.StringToDate(startDate, "yyyy-MM-dd"));
         } else if (startDate.length() >= 6 && getCharOccur(startDate, '-') >= 1) {
@@ -105,6 +149,7 @@ public final class RxAddAllergy2Action extends ActionSupport {
         allergy.setOnsetOfReaction(onSetOfReaction);
         allergy.setLifeStage(lifeStage);
 
+        // Set non-drug allergy flag
         if (nonDrug != null && "on".equals(nonDrug)) {
             allergy.setNonDrug(true);
 
@@ -113,6 +158,7 @@ public final class RxAddAllergy2Action extends ActionSupport {
         }
 
 
+        // Link allergy to drug monograph for drug allergies
         if (type != null && type.equals("13")) {
             RxDrugData drugData = new RxDrugData();
             try {
@@ -126,11 +172,14 @@ public final class RxAddAllergy2Action extends ActionSupport {
         allergy.setDemographicNo(patient.getDemographicNo());
         allergy.setArchived(false);
 
+        // Add allergy to patient record
         patient.addAllergy(RxUtil.Today(), allergy);
 
+        // Log the addition for audit trail
         String ip = request.getRemoteAddr();
         LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ADD, LogConst.CON_ALLERGY, "" + allergy.getAllergyId(), ip, "" + patient.getDemographicNo(), allergy.getAuditString());
 
+        // Archive replaced allergy if specified
         if (allergyToArchive != null && !allergyToArchive.isEmpty() && !"null".equals(allergyToArchive)) {
             patient.deleteAllergy(Integer.parseInt(allergyToArchive));
             LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ARCHIVE, LogConst.CON_ALLERGY, "" + allergyToArchive, ip, "" + patient.getDemographicNo(), null);
@@ -139,6 +188,15 @@ public final class RxAddAllergy2Action extends ActionSupport {
         return SUCCESS;
     }
 
+    /**
+     * Counts occurrences of a character in a string.
+     *
+     * Used to determine date format based on delimiter count.
+     *
+     * @param str String to search
+     * @param ch char character to count
+     * @return int number of occurrences
+     */
     private int getCharOccur(String str, char ch) {
         int occurence = 0, from = 0;
         while (str.indexOf(ch, from) >= 0) {

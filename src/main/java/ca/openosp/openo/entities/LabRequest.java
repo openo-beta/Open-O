@@ -26,23 +26,44 @@ package ca.openosp.openo.entities;
 
 
 /**
- * Encapsulates data from table labRequest
+ * Laboratory request entity linking requests to HL7 OBR segments.
+ *
+ * This entity represents the relationship between laboratory requests and their
+ * corresponding HL7 OBR (Observation Request) segments. It provides a bridge
+ * between internal lab request management and standardized HL7 messaging.
+ *
+ * Key functionality includes:
+ * - Linking internal lab requests to HL7 OBR message segments
+ * - Supporting laboratory order tracking and management
+ * - Enabling integration between EMR lab orders and HL7 messaging
+ * - Facilitating laboratory information system (LIS) communication
+ *
+ * This entity supports:
+ * - Laboratory order workflow management
+ * - HL7 message processing and routing
+ * - Integration with external laboratory systems
+ * - Order status tracking and result correlation
+ *
+ * @see Hl7Obr for HL7 OBR segment details
+ * @since October 11, 2004
  */
 public class LabRequest {
     private int id;
     private int hl7ObrId;
 
     /**
-     * Class constructor with no arguments.
+     * Default constructor for laboratory request entity.
+     * Initializes all fields to their default values.
      */
     public LabRequest() {
     }
 
     /**
-     * Full constructor
+     * Complete constructor for laboratory request entity.
+     * Creates a fully initialized lab request with HL7 OBR linkage.
      *
-     * @param id       int
-     * @param hl7ObrId int
+     * @param id       int unique identifier for this lab request
+     * @param hl7ObrId int identifier of the related HL7 OBR segment
      */
     public LabRequest(int id, int hl7ObrId) {
         this.id = id;
@@ -50,36 +71,42 @@ public class LabRequest {
     }
 
     /**
-     * Gets the id
+     * Gets the unique laboratory request identifier.
+     * This is the database primary key for this lab request record.
      *
-     * @return int id
+     * @return int the unique lab request identifier
      */
     public int getId() {
         return id;
     }
 
     /**
-     * Gets the hl7ObrId
+     * Gets the HL7 OBR segment identifier.
+     * Links this lab request to its corresponding HL7 OBR (Observation Request) segment.
      *
-     * @return int hl7ObrId
+     * @return int the HL7 OBR segment identifier
+     * @see Hl7Obr for OBR segment details
      */
     public int getHl7ObrId() {
         return hl7ObrId;
     }
 
     /**
-     * Sets the id
+     * Sets the unique laboratory request identifier.
+     * This is the database primary key for this lab request record.
      *
-     * @param id int
+     * @param id int the unique lab request identifier
      */
     public void setId(int id) {
         this.id = id;
     }
 
     /**
-     * Sets the hl7ObrId
+     * Sets the HL7 OBR segment identifier.
+     * Links this lab request to its corresponding HL7 OBR segment.
      *
-     * @param hl7ObrId int
+     * @param hl7ObrId int the HL7 OBR segment identifier
+     * @see Hl7Obr for OBR segment details
      */
     public void setHl7ObrId(int hl7ObrId) {
         this.hl7ObrId = hl7ObrId;

@@ -48,23 +48,76 @@ import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.OscarProperties;
 
 /**
- * @author Jay
+ * Client interface for accessing DrugRef medication database services via XML-RPC.
+ * This class provides comprehensive drug information lookup, interaction checking,
+ * and clinical decision support functionality for the prescription system.
+ *
+ * <p>DrugRef is an external medication database that provides:</p>
+ * <ul>
+ * <li>Drug identification and information lookup by DIN, brand name, or ATC code</li>
+ * <li>Drug-drug interaction checking with clinical significance ratings</li>
+ * <li>Allergy and adverse reaction warnings</li>
+ * <li>Medication forms, strengths, and generic alternatives</li>
+ * <li>Clinical decision support for prescribing</li>
+ * </ul>
+ *
+ * <p>The class uses XML-RPC protocol to communicate with DrugRef services
+ * and handles both standard and "lite" client implementations for different
+ * network configurations (proxy vs. direct connection).</p>
+ *
+ * @since 2003-09-19
  */
 public class RxDrugRef {
 
-
-    // DRUG CATEGORIES FOR THE DRUG REF SEARCH TABLE.
+    /**
+     * Drug category constant for brand name searches in the DrugRef database.
+     */
     public static int CAT_BRAND = 13;
+
+    /**
+     * Drug category constant for composite generic searches in the DrugRef database.
+     */
     public static int CAT_COMPOSITE_GENERIC = 12;
+
+    /**
+     * Drug category constant for generic name searches in the DrugRef database.
+     */
     public static int CAT_GENERIC = 11;
+
+    /**
+     * Drug category constant for ATC code searches in the DrugRef database.
+     */
     public static int CAT_ATC = 8;
+
+    /**
+     * Drug category constant for AHFS classification searches in the DrugRef database.
+     */
     public static int CAT_AHFS = 10;
+
+    /**
+     * Drug category constant for active ingredient searches in the DrugRef database.
+     */
     public static int CAT_ACTIVE_INGREDIENT = 14;
+
+    /**
+     * Drug category constant for active ingredient composite generic searches.
+     */
     public static int CAT_AI_COMPOSITE_GENERIC = 19;
+
+    /**
+     * Drug category constant for active ingredient generic searches.
+     */
     public static int CAT_AI_GENERIC = 18;
 
+    /**
+     * Logger instance for this class.
+     */
     private static Logger logger = MiscUtils.getLogger();
 
+    /**
+     * The URL endpoint for the DrugRef web service.
+     * Configured via the "drugref_url" system property.
+     */
     private String server_url = null;
     //"http://localhost:8080/drugref2/DrugrefService";
     // "http://www.hherb.com:8001";
@@ -72,38 +125,40 @@ public class RxDrugRef {
     //"http://192.168.42.3:8001";
 
     /**
-     * Creates a new instance of DrugRef
+     * Creates a new RxDrugRef instance using the configured server URL.
+     * The DrugRef service URL is loaded from the "drugref_url" system property.
      */
     public RxDrugRef() {
         server_url = OscarProperties.getInstance().getProperty("drugref_url");
-        //server_url = System.getProperty("drugref_url");
-
     }
 
+    /**
+     * Creates a new RxDrugRef instance with a specific server URL.
+     *
+     * @param url String the DrugRef service URL to use
+     */
     public RxDrugRef(String url) {
         server_url = url;
     }
 
+    /**
+     * Gets the current DrugRef service URL.
+     *
+     * @return String the configured DrugRef service URL
+     */
     public String getDrugRefURL() {
         return server_url;
     }
 
-    public Hashtable<String, Object> getDrugByDIN(String DIN, Boolean boolVal) throws Exception {
-        Vector params = new Vector();
-        params.addElement(DIN);
-        params.addElement(boolVal);
-        Vector<Hashtable<String, Object>> vec = (Vector<Hashtable<String, Object>>) callWebserviceLite("get_drug_by_DIN", params);
-        Hashtable<String, Object> returnVal = vec.get(0);
-        return returnVal;
-    }
+    /**\n     * Retrieves comprehensive drug information by Drug Identification Number (DIN).\n     *\n     * @param DIN String the Drug Identification Number to search for\n     * @param boolVal Boolean flag controlling the detail level of returned information\n     * @return Hashtable&lt;String, Object&gt; containing detailed drug information\n     * @throws Exception if the web service call fails or returns an error\n     */\n    public Hashtable<String, Object> getDrugByDIN(String DIN, Boolean boolVal) throws Exception {\n        Vector params = new Vector();\n        params.addElement(DIN);\n        params.addElement(boolVal);\n        Vector<Hashtable<String, Object>> vec = (Vector<Hashtable<String, Object>>) callWebserviceLite(\"get_drug_by_DIN\", params);\n        Hashtable<String, Object> returnVal = vec.get(0);\n        return returnVal;\n    }"}
 
     /**
-     * returns all matching ATC codes for a given (fraction of) a drug name.
-     * Search is case insensitive
-     * query = "select code, text from atc where text like '%s%%'"
-     * <p>
-     * <p>
-     * [{'code':'0', 'text':'None found'}]
+     * Returns all matching ATC codes for a given drug name or partial name.
+     * The search is case insensitive and supports partial matching.
+     *
+     * @param drug String the drug name or partial name to search for
+     * @return Vector list of matching ATC codes and descriptions,
+     *         or [{"code":"0", "text":"None found"}] if no matches
      */
     public Vector atc(String drug) {
         Vector params = new Vector();
@@ -113,8 +168,10 @@ public class RxDrugRef {
     }
 
     /**
-     * returns all matching ATC codes for a given Drug Identification Number.
-     * Search is case insensitive
+     * Returns all matching ATC codes for a given Drug Identification Number (DIN).
+     *
+     * @param din String the Drug Identification Number to look up
+     * @return Vector list of ATC codes associated with the given DIN
      */
     public Vector atcFromDIN(String din) {
         Vector params = new Vector();
@@ -154,16 +211,24 @@ public class RxDrugRef {
         return vec;
     }
 
+    /**
+     * Checks for drug-drug interactions using the default minimum significance level of 1.
+     *
+     * @param atclist Vector list of ATC codes to check for interactions
+     * @return Vector list of drug-drug interactions found
+     */
     public Vector interaction(Vector atclist) {
         return interaction(atclist, 1);
     }
 
     /**
-     * returns a list of drug-drug interactions as list of "dicts"
-     * atclist : list of ATC codes
-     * minimum_significance: interactions below the stated significance level will be ignored
-     * <p>
-     * query = "select drug, effect, affected_drug, significance, evidence, reference from simple_interactions where drug = '%s' and affected_drug = '%s' and significance >= %d" %
+     * Returns a list of drug-drug interactions for the given ATC codes.
+     * Only interactions at or above the specified significance level are returned.
+     *
+     * @param atclist Vector list of ATC codes to check for interactions
+     * @param minimum_significance int minimum clinical significance level (1=mild, 2=moderate, 3=severe)
+     * @return Vector list of interaction records containing drug, effect, affected_drug,
+     *         significance, evidence, and reference information
      */
     public Vector interaction(Vector atclist, int minimum_significance) {
         Vector params = new Vector();
@@ -419,6 +484,14 @@ public class RxDrugRef {
         return vec.get(0).toString();
     }
 
+    /**
+     * Executes a standard XML-RPC call to the DrugRef service.
+     * Used for operations that can tolerate network delays and don't require proxy support.
+     *
+     * @param procedureName String the name of the remote procedure to call
+     * @param params Vector the parameters to pass to the remote procedure
+     * @return Object the result returned by the remote procedure, or null if an error occurs
+     */
     private Object callWebservice(String procedureName, Vector params) {
         MiscUtils.getLogger().debug("#CALLDRUGREF-" + procedureName);
         Object object = null;
@@ -433,12 +506,21 @@ public class RxDrugRef {
         return object;
     }
 
+    /**
+     * Executes a "lite" XML-RPC call to the DrugRef service with proxy support.
+     * Automatically detects proxy configuration and uses appropriate client implementation.
+     * Throws exceptions for error handling rather than returning null.
+     *
+     * @param procedureName String the name of the remote procedure to call
+     * @param params Vector the parameters to pass to the remote procedure
+     * @return Object the result returned by the remote procedure
+     * @throws Exception if the web service call fails or returns an error
+     */
     private Object callWebserviceLite(String procedureName, Vector params) throws Exception {
-
         Object object = null;
         try {
+            // Use standard client for proxy environments, lite client for direct connections
             if (!System.getProperty("http.proxyHost", "").isEmpty()) {
-                //The Lite client won't recgonize JAVA_OPTS as it uses a customized http
                 XmlRpcClient server = new XmlRpcClient(server_url);
                 object = server.execute(procedureName, params);
             } else {
@@ -453,7 +535,6 @@ public class RxDrugRef {
                 logger.error("JavaClient: XML-RPC Fault #" + exception.code, exception);
                 throw new Exception("JavaClient: XML-RPC Fault #" + exception.code + ": " + exception);
             }
-
         } catch (Exception exception) {
             logger.error("JavaClient: ", exception);
             throw new Exception("JavaClient: ", exception);

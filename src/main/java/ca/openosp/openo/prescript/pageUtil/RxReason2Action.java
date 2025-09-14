@@ -44,12 +44,39 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Struts2 action for managing drug prescription reasons and ICD codes.
+ * <p>
+ * This action handles the association of clinical reasons (ICD-9 codes)
+ * with prescribed medications. It provides functionality to add new drug
+ * reasons and archive existing ones. Drug reasons help establish clinical
+ * justification for prescriptions and support clinical decision-making.
+ * <p>
+ * The action integrates with ICD-9 code validation to ensure proper
+ * clinical coding and maintains audit logs for all reason management
+ * operations.
+ *
+ * @since 2008
+ */
 public final class RxReason2Action extends ActionSupport {
+    /** HTTP request object for accessing request parameters and session */
     HttpServletRequest request = ServletActionContext.getRequest();
+
+    /** HTTP response object for handling the response */
     HttpServletResponse response = ServletActionContext.getResponse();
 
+    /** Security manager for validating user permissions */
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
+    /**
+     * Main execution method for drug reason management.
+     * <p>
+     * Routes to the appropriate method based on the "method" parameter:
+     * - archiveReason: Archives an existing drug reason
+     * - Default: Adds a new drug reason
+     *
+     * @return String the result status for the performed operation
+     */
     public String execute() {
         if ("archiveReason".equals(request.getParameter("method"))) {
             return archiveReason();
@@ -68,8 +95,16 @@ public final class RxReason2Action extends ActionSupport {
     private String providerNo = null;
     private Integer demographicNo = null;
      */
+    /**
+     * Adds a new drug reason with ICD-9 code validation.
+     * <p>
+     * This method validates parameters, checks ICD-9 codes, and creates
+     * new drug reason entries with proper audit logging.
+     *
+     * @return String "close" if successful, SUCCESS with error message if validation fails
+     */
     public String addDrugReason() {
-
+        // Validate user has permission to access prescription functionality
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_rx", "r", null)) {
             throw new RuntimeException("missing required sec object (_rx)");
         }
@@ -135,8 +170,16 @@ public final class RxReason2Action extends ActionSupport {
     }
 
 
+    /**
+     * Archives an existing drug reason.
+     * <p>
+     * This method sets the archived flag and reason for an existing
+     * drug reason entry and logs the operation for audit purposes.
+     *
+     * @return String SUCCESS with confirmation message
+     */
     public String archiveReason() {
-
+        // Validate user has permission to access prescription functionality
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_rx", "r", null)) {
             throw new RuntimeException("missing required sec object (_rx)");
         }

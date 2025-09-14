@@ -26,7 +26,29 @@
 package ca.openosp.openo.entities;
 
 /**
- * Encapsulates data from table insclaim
+ * Insurance claim information entity.
+ *
+ * This entity represents insurance claim data for patients, including coverage details,
+ * claim numbers, deductibles, and benefits information. It supports various types of
+ * insurance including private insurance, Workers' Compensation Board (WCB), and Motor
+ * Vehicle Accident (MVA) claims.
+ *
+ * Key insurance information includes:
+ * - Patient record linkage and claim identification
+ * - Insurance provider and coverage details
+ * - Deductibles, maximums, and percentage coverage
+ * - Claim status and payment tracking
+ * - Provider and referral information
+ * - Injury-related claim details for WCB/MVA cases
+ *
+ * This entity supports:
+ * - Insurance eligibility verification
+ * - Claims processing and billing
+ * - Benefits calculation and coverage determination
+ * - Multi-payer insurance scenarios
+ * - Workers' compensation and motor vehicle claims
+ *
+ * @since November 1, 2004
  */
 public class Insclaim {
     private String insclaimno;
@@ -63,46 +85,48 @@ public class Insclaim {
     private String injurynat;
 
     /**
-     * Class constructor with no arguments.
+     * Default constructor for insurance claim entity.
+     * Initializes all fields to their default values.
      */
     public Insclaim() {
     }
 
     /**
-     * Full constructor
+     * Complete constructor for insurance claim entity.
+     * Creates a fully initialized insurance claim with all coverage and benefits details.
      *
-     * @param insclaimno String
-     * @param insclaimnm String
-     * @param ptrecid    String
-     * @param insurer    String
-     * @param rank       String
-     * @param rcploc     String
-     * @param pppayee    int
-     * @param idnum      String
-     * @param claimnum   String
-     * @param code       String
-     * @param indefinite int
-     * @param resetdate  String
-     * @param termStart  String
-     * @param termEnd    String
-     * @param percent    double
-     * @param deductI    double
-     * @param vchargeI   double
-     * @param deductT    double
-     * @param maxDI      double
-     * @param maxDTerm   double
-     * @param maxITerm   int
-     * @param prevInv    int
-     * @param invCount   int
-     * @param dolCount   double
-     * @param dedCount   double
-     * @param mdno       String
-     * @param refmdno    String
-     * @param backupins  String
-     * @param injurydate String
-     * @param injuryarea String
-     * @param injurypos  String
-     * @param injurynat  String
+     * @param insclaimno String insurance claim number (unique identifier)
+     * @param insclaimnm String insurance claim name or description
+     * @param ptrecid    String patient record identifier
+     * @param insurer    String insurance company or provider name
+     * @param rank       String insurance rank or priority level
+     * @param rcploc     String recipient location code
+     * @param pppayee    int payee indicator for payments
+     * @param idnum      String insurance identification number
+     * @param claimnum   String claim number assigned by insurer
+     * @param code       String insurance code or type
+     * @param indefinite int indefinite coverage indicator (0=limited, 1=indefinite)
+     * @param resetdate  String date when coverage resets
+     * @param termStart  String coverage term start date
+     * @param termEnd    String coverage term end date
+     * @param percent    double coverage percentage (0.0-100.0)
+     * @param deductI    double individual deductible amount
+     * @param vchargeI   double individual variable charge amount
+     * @param deductT    double total deductible amount
+     * @param maxDI      double maximum deductible for individual
+     * @param maxDTerm   double maximum deductible for term
+     * @param maxITerm   int maximum individual term limit
+     * @param prevInv    int previous invoice count
+     * @param invCount   int current invoice count
+     * @param dolCount   double dollar amount count
+     * @param dedCount   double deductible count applied
+     * @param mdno       String medical doctor number (primary physician)
+     * @param refmdno    String referring medical doctor number
+     * @param backupins  String backup insurance information
+     * @param injurydate String injury date (for WCB/MVA claims)
+     * @param injuryarea String injury area or body part affected
+     * @param injurypos  String injury position or location
+     * @param injurynat  String injury nature or type description
      */
     public Insclaim(String insclaimno, String insclaimnm, String ptrecid,
                     String insurer, String rank, String rcploc, int pppayee,
@@ -151,36 +175,40 @@ public class Insclaim {
     }
 
     /**
-     * Gets the insclaimno
+     * Gets the insurance claim number.
+     * This is the unique identifier for this insurance claim record.
      *
-     * @return String insclaimno
+     * @return String the insurance claim number, empty string if null
      */
     public String getInsclaimno() {
         return (insclaimno != null ? insclaimno : "");
     }
 
     /**
-     * Gets the insclaimnm
+     * Gets the insurance claim name or description.
+     * Provides a readable name or description for this insurance claim.
      *
-     * @return String insclaimnm
+     * @return String the insurance claim name, empty string if null
      */
     public String getInsclaimnm() {
         return (insclaimnm != null ? insclaimnm : "");
     }
 
     /**
-     * Gets the ptrecid
+     * Gets the patient record identifier.
+     * Links this insurance claim to the specific patient record.
      *
-     * @return String ptrecid
+     * @return String the patient record identifier, empty string if null
      */
     public String getPtrecid() {
         return (ptrecid != null ? ptrecid : "");
     }
 
     /**
-     * Gets the insurer
+     * Gets the insurance company or provider name.
+     * Identifies the insurance company providing coverage for this claim.
      *
-     * @return String insurer
+     * @return String the insurer name, empty string if null
      */
     public String getInsurer() {
         return (insurer != null ? insurer : "");
@@ -277,18 +305,20 @@ public class Insclaim {
     }
 
     /**
-     * Gets the percent
+     * Gets the coverage percentage.
+     * The percentage of costs covered by this insurance (0.0-100.0).
      *
-     * @return double percent
+     * @return double the coverage percentage
      */
     public double getPercent() {
         return percent;
     }
 
     /**
-     * Gets the deductI
+     * Gets the individual deductible amount.
+     * The deductible amount that must be met by the individual before coverage applies.
      *
-     * @return double deductI
+     * @return double the individual deductible amount
      */
     public double getDeductI() {
         return deductI;
@@ -403,9 +433,10 @@ public class Insclaim {
     }
 
     /**
-     * Gets the injurydate
+     * Gets the injury date (for WCB/MVA claims).
+     * The date when the injury occurred that is covered by this insurance claim.
      *
-     * @return String injurydate
+     * @return String the injury date, may be null
      */
     public String getInjurydate() {
         return injurydate;

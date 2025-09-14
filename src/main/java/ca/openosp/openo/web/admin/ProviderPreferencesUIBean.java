@@ -43,25 +43,68 @@ import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.utility.WebUtils;
 
+/**
+ * UI Bean for managing healthcare provider preference settings in the OpenO EMR system.
+ * This class handles the complex logic for updating, retrieving, and managing provider-specific
+ * configurations that customize the clinical workflow experience for individual healthcare providers.
+ *
+ * <p>Provider preference categories include:</p>
+ * <ul>
+ *   <li>Clinical workflow settings (tickler warnings, scheduling preferences)</li>
+ *   <li>Billing preferences (default codes, service types, billing locations)</li>
+ *   <li>Appointment screen customization (forms, eforms, quick links)</li>
+ *   <li>Electronic prescription integration (eRx settings)</li>
+ *   <li>CAISI integration settings for program management</li>
+ *   <li>Display and interface preferences (color templates, form name lengths)</li>
+ * </ul>
+ *
+ * <p>The class provides both read and write operations for preferences, with automatic
+ * preference record creation for new providers. It supports session-based fallback values
+ * and handles complex form collections for appointment screen customization.</p>
+ *
+ * @since September 5, 2010
+ * @see ProviderPreference
+ * @see EForm
+ * @see EncounterForm
+ */
 public final class ProviderPreferencesUIBean {
 
     private static final ProviderPreferenceDao providerPreferenceDao = (ProviderPreferenceDao) SpringUtils.getBean(ProviderPreferenceDao.class);
     private static final EFormDao eFormDao = (EFormDao) SpringUtils.getBean(EFormDao.class);
     private static final EncounterFormDao encounterFormDao = (EncounterFormDao) SpringUtils.getBean(EncounterFormDao.class);
 
+    /**
+     * Updates or creates provider preferences based on HTTP request parameters and session attributes.
+     * This method processes a wide range of preference settings including clinical workflow,
+     * billing defaults, appointment screen customization, and external system integrations.
+     *
+     * <p>Processed preference categories:</p>
+     * <ul>
+     *   <li>Tickler warning settings for clinical alerts</li>
+     *   <li>CAISI program management module settings</li>
+     *   <li>Billing preferences (service types, locations, diagnosis codes)</li>
+     *   <li>Scheduling preferences (hours, intervals, color templates)</li>
+     *   <li>Appointment screen forms and electronic forms selection</li>
+     *   <li>Electronic prescription (eRx) integration settings</li>
+     *   <li>Prescription QR code printing preferences</li>
+     * </ul>
+     *
+     * @param request HttpServletRequest containing preference parameters from the admin interface
+     * @return ProviderPreference the updated or newly created provider preference record
+     */
     public static final ProviderPreference updateOrCreateProviderPreferences(HttpServletRequest request) {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
         ProviderPreference providerPreference = getProviderPreference(providerNo);
 
-        // update preferences based on request parameters
+        // Update preferences based on request parameters and session fallback values
         String temp;
         HttpSession session = request.getSession();
 
         boolean updatePreferences = Boolean.parseBoolean(request.getParameter("updatePreference"));
 
-        // new tickler window
+        // Configure tickler warning window preferences for clinical alerts
         temp = StringUtils.trimToNull(request.getParameter("new_tickler_warning_window"));
         if (temp != null) {
             providerPreference.setNewTicklerWarningWindow(temp);
@@ -70,7 +113,7 @@ public final class ProviderPreferencesUIBean {
             if (temp != null) providerPreference.setNewTicklerWarningWindow(temp);
         }
 
-        // default pmm
+        // Configure default Program Management Module (PMM) settings for CAISI integration
         temp = StringUtils.trimToNull(request.getParameter("default_pmm"));
         if (temp != null) {
             providerPreference.setDefaultCaisiPmm(temp);
@@ -80,7 +123,7 @@ public final class ProviderPreferencesUIBean {
             else providerPreference.setDefaultCaisiPmm(temp);
         }
 
-        // default billing preference (edit or delete)
+        // Configure billing record handling preferences (edit vs delete behavior)
         temp = StringUtils.trimToNull(request.getParameter("caisiBillingPreferenceNotDelete"));
         if (temp != null) {
             try {
@@ -103,7 +146,7 @@ public final class ProviderPreferencesUIBean {
             }
         }
 
-        // default billing dxCode
+        // Configure default diagnosis code for billing entries
         temp = StringUtils.trimToNull(request.getParameter("dxCode"));
         if (temp != null) providerPreference.setDefaultDxCode(temp);
 
@@ -123,7 +166,7 @@ public final class ProviderPreferencesUIBean {
         } catch (Exception e) {
             MiscUtils.getLogger().warn("user entered invalid values");
         }
-        // rest
+        // Configure scheduling and display preferences
 
         temp = StringUtils.trimToNull(request.getParameter("every_min"));
         if (temp != null) providerPreference.setEveryMin(Integer.parseInt(temp));
@@ -143,7 +186,7 @@ public final class ProviderPreferencesUIBean {
 
         providerPreference.setPrintQrCodeOnPrescriptions(WebUtils.isChecked(request, "prescriptionQrCodes"));
 
-        // get encounterForms for appointment screen
+        // Configure encounter forms displayed on appointment scheduling screen
         temp = StringUtils.trimToNull(request.getParameter("appointmentScreenFormsNameDisplayLength"));
         if (temp != null) providerPreference.setAppointmentScreenLinkNameDisplayLength(Integer.parseInt(temp));
 
@@ -157,13 +200,8 @@ public final class ProviderPreferencesUIBean {
             }
         }
 
-        /*
-         * Get eForms for appointment screen
-         *
-         * This code is adapted to add the name of each
-         * eForm into the datatable.  The display methods in the schedule
-         * have been adapted to display a name and ID.
-         */
+        // Configure electronic forms (eForms) displayed on appointment scheduling screen
+        // Each eForm is stored with both ID and name for display purposes in the schedule interface
         String[] formIds = request.getParameterValues("eformId");
         Collection<ProviderPreference.EformLink> eFormsIdsList = providerPreference.getAppointmentScreenEForms();
         eFormsIdsList.clear();
@@ -179,7 +217,7 @@ public final class ProviderPreferencesUIBean {
             }
         }
 
-        // external prescriber prefs
+        // Configure external electronic prescription (eRx) system integration settings
         providerPreference.setERxEnabled(WebUtils.isChecked(request, "erx_enable"));
 
         temp = StringUtils.trimToNull(request.getParameter("erx_username"));
@@ -202,8 +240,16 @@ public final class ProviderPreferencesUIBean {
     }
 
     /**
-     * Some day we'll fix this so preferences are created when providers are created, it was suppose to be that way
-     * but something got missed somewhere.
+     * Retrieves provider preferences for the specified provider, creating default preferences if none exist.
+     * This method ensures that every provider has a preference record available, automatically creating
+     * one with default values if the provider doesn't have preferences configured yet.
+     *
+     * <p>This lazy initialization approach handles the common scenario where providers are created
+     * but preferences are not immediately configured, ensuring the application doesn't fail when
+     * accessing preference-dependent features.</p>
+     *
+     * @param providerNo String the unique provider identifier
+     * @return ProviderPreference the existing or newly created provider preferences
      */
     public static ProviderPreference getProviderPreference(String providerNo) {
 
@@ -218,38 +264,91 @@ public final class ProviderPreferencesUIBean {
         return providerPreference;
     }
 
+    /**
+     * Retrieves all active electronic forms (eForms) available in the system, sorted by form name.
+     * These eForms can be configured to appear on provider appointment screens for quick access
+     * during patient encounters and scheduling workflows.
+     *
+     * @return List<EForm> all active eForms sorted alphabetically by form name
+     */
     public static List<EForm> getAllEForms() {
         List<EForm> results = eFormDao.findAll(true);
         Collections.sort(results, EForm.FORM_NAME_COMPARATOR);
         return (results);
     }
 
+    /**
+     * Retrieves all encounter forms available in the system, sorted by form name.
+     * Encounter forms are clinical templates used during patient visits and can be
+     * configured to appear on provider appointment screens for quick access.
+     *
+     * @return List<EncounterForm> all encounter forms sorted alphabetically by form name
+     */
     public static List<EncounterForm> getAllEncounterForms() {
         List<EncounterForm> results = encounterFormDao.findAll();
         Collections.sort(results, EncounterForm.FORM_NAME_COMPARATOR);
         return (results);
     }
 
+    /**
+     * Retrieves the encounter form names selected by a provider for display on their appointment screen.
+     * These forms will appear as quick-access links during scheduling and patient encounters.
+     *
+     * @param providerNo String the unique provider identifier
+     * @return Collection<String> the names of encounter forms configured for the provider's appointment screen
+     */
     public static Collection<String> getCheckedEncounterFormNames(String providerNo) {
         ProviderPreference providerPreference = getProviderPreference(providerNo);
         return (providerPreference.getAppointmentScreenForms());
     }
 
+    /**
+     * Retrieves the electronic form links selected by a provider for display on their appointment screen.
+     * Each link contains both the eForm ID and display name for presentation in the scheduling interface.
+     *
+     * @param providerNo String the unique provider identifier
+     * @return Collection<ProviderPreference.EformLink> the eForm links configured for the provider's appointment screen
+     */
     public static Collection<ProviderPreference.EformLink> getCheckedEFormIds(String providerNo) {
         ProviderPreference providerPreference = getProviderPreference(providerNo);
         return (providerPreference.getAppointmentScreenEForms());
     }
 
+    /**
+     * Retrieves provider preferences by provider number without automatic creation.
+     * Unlike getProviderPreference(), this method returns null if no preferences exist
+     * rather than creating default preferences.
+     *
+     * @param providerNo String the unique provider identifier
+     * @return ProviderPreference the existing provider preferences, or null if none exist
+     */
     public static ProviderPreference getProviderPreferenceByProviderNo(String providerNo) {
         return providerPreferenceDao.find(providerNo);
     }
 
+    /**
+     * Retrieves the quick links configured by a provider for display on their appointment screen.
+     * Quick links provide fast access to frequently used external websites, resources, or
+     * internal system functions during clinical workflows.
+     *
+     * @param providerNo String the unique provider identifier
+     * @return Collection<ProviderPreference.QuickLink> the quick links configured for the provider's appointment screen
+     */
     public static Collection<ProviderPreference.QuickLink> getQuickLinks(String providerNo) {
         ProviderPreference providerPreference = getProviderPreference(providerNo);
 
         return (providerPreference.getAppointmentScreenQuickLinks());
     }
 
+    /**
+     * Adds a new quick link to the provider's appointment screen configuration.
+     * Quick links enable providers to access frequently used resources directly from
+     * the scheduling interface, improving clinical workflow efficiency.
+     *
+     * @param providerNo String the unique provider identifier
+     * @param name String the display name for the quick link
+     * @param url String the URL or resource location for the quick link
+     */
     public static void addQuickLink(String providerNo, String name, String url) {
         ProviderPreference providerPreference = getProviderPreference(providerNo);
 
@@ -264,6 +363,13 @@ public final class ProviderPreferencesUIBean {
         providerPreferenceDao.merge(providerPreference);
     }
 
+    /**
+     * Removes a quick link from the provider's appointment screen configuration.
+     * This method searches for a quick link by name and removes the first matching entry.
+     *
+     * @param providerNo String the unique provider identifier
+     * @param name String the display name of the quick link to remove
+     */
     public static void removeQuickLink(String providerNo, String name) {
         ProviderPreference providerPreference = getProviderPreference(providerNo);
 
@@ -271,7 +377,7 @@ public final class ProviderPreferencesUIBean {
 
         for (ProviderPreference.QuickLink quickLink : quickLinks) {
             if (name.equals(quickLink.getName())) {
-                // it should be okay to modify the list while we're iterating through it, as long as we don't touch it after it's modified.
+                // Safe to modify collection during iteration since we break immediately after removal
                 quickLinks.remove(quickLink);
                 break;
             }

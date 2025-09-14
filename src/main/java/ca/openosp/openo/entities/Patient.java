@@ -25,6 +25,31 @@
 
 package ca.openosp.openo.entities;
 
+/**
+ * Patient entity representing core patient demographic and contact information
+ * for healthcare encounters within OpenO EMR. This entity serves as a data transfer
+ * object for patient information exchange and billing operations, particularly for
+ * integration with provincial healthcare systems and billing modules.
+ *
+ * <p>This entity includes essential patient identifiers such as Health Insurance Number (HIN)
+ * verification code, demographic details, contact information, and administrative identifiers
+ * used throughout the EMR system. The entity supports Canadian healthcare requirements
+ * including provincial health insurance number validation and multi-jurisdictional
+ * patient management.
+ *
+ * <p>Key healthcare features include:
+ * <ul>
+ * <li>Health Insurance Number (HIN) with verification code for provincial billing
+ * <li>Comprehensive demographic information for patient identification
+ * <li>Multiple contact methods including phone, email, and postal addresses
+ * <li>Provider assignment and chart number management
+ * <li>Birth date handling with multiple format support for clinical documentation
+ * </ul>
+ *
+ * @see ca.openosp.openo.commn.model.Demographic
+ * @see ca.openosp.openo.entities.Provider
+ * @since November 1, 2004
+ */
 public class Patient {
     private String firstName;
     private String lastName;
@@ -46,13 +71,27 @@ public class Patient {
     private String chartNo;
     private String demographicNo;
 
+    /**
+     * Default constructor for Patient entity.
+     * Creates a new Patient instance with all fields initialized to null.
+     */
     public Patient() {
     }
 
+    /**
+     * Gets the patient's first name.
+     *
+     * @return String the patient's first name
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * Sets the patient's first name.
+     *
+     * @param firstName String the patient's first name
+     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -155,26 +194,50 @@ public class Patient {
         this.dateOfBirth = dateOfBirth;
     }
 
+    /**
+     * Gets the Health Insurance Number (HIN) for provincial healthcare billing.
+     * This is the patient's unique identifier within their provincial healthcare system.
+     *
+     * @return String the Health Insurance Number
+     */
     public String getHin() {
         return hin;
     }
 
+    /**
+     * Sets the Health Insurance Number (HIN) for provincial healthcare billing.
+     *
+     * @param hin String the Health Insurance Number
+     */
     public void setHin(String hin) {
         this.hin = hin;
     }
 
+    /**
+     * Gets the HIN verification code used for validating the Health Insurance Number.
+     * This code is typically required for provincial billing validation.
+     *
+     * @return String the HIN verification code
+     */
     public String getVer() {
         return ver;
     }
 
+    /**
+     * Sets the HIN verification code used for validating the Health Insurance Number.
+     *
+     * @param ver String the HIN verification code
+     */
     public void setVer(String ver) {
         this.ver = ver;
     }
 
     /**
-     * getBirthDate
+     * Constructs the complete birth date in MM/DD/YYYY format for clinical documentation.
+     * This method combines the separate birth date components into a standardized format
+     * commonly used in healthcare systems.
      *
-     * @return String
+     * @return String the formatted birth date as YYYY/MM/DD
      */
     public String getBirthDate() {
         return this.yearOfBirth + "/" + this.getMonthOfBirth() + "/" +
@@ -189,30 +252,71 @@ public class Patient {
         this.id = id;
     }
 
+    /**
+     * Gets the assigned healthcare provider number for this patient.
+     * This identifies the primary care provider responsible for the patient's care.
+     *
+     * @return int the provider number
+     * @see ca.openosp.openo.entities.Provider
+     */
     public int getProviderNo() {
         return providerNo;
     }
 
+    /**
+     * Sets the assigned healthcare provider number for this patient.
+     *
+     * @param providerNo int the provider number
+     */
     public void setProviderNo(int providerNo) {
         this.providerNo = providerNo;
     }
 
+    /**
+     * Gets the patient's chart number used for medical record identification.
+     * This is typically a clinic-specific identifier for organizing patient records.
+     *
+     * @return String the chart number
+     */
     public String getChartNo() {
         return chartNo;
     }
 
+    /**
+     * Gets the patient's demographic number (primary key) from the EMR system.
+     * This is the unique identifier used throughout the OpenO EMR database.
+     *
+     * @return String the demographic number
+     */
     public String getDemographicNo() {
         return demographicNo;
     }
 
+    /**
+     * Sets the patient's chart number used for medical record identification.
+     *
+     * @param chartNo String the chart number
+     */
     public void setChartNo(String chartNo) {
         this.chartNo = chartNo;
     }
 
+    /**
+     * Sets the patient's demographic number (primary key) from the EMR system.
+     *
+     * @param demographicNo String the demographic number
+     */
     public void setDemographicNo(String demographicNo) {
         this.demographicNo = demographicNo;
     }
 
+    /**
+     * Constructs the complete birth date in ISO format (YYYY-MM-DD) for database operations.
+     * This method provides the birth date in standard ISO format commonly used for
+     * database storage and clinical system integration.
+     *
+     * @return String the formatted birth date as YYYY-MM-DD
+     */
     public String getBirthDay() {
         return this.yearOfBirth + "-" + this.monthOfBirth + "-" + this.dateOfBirth;
     }

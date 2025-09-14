@@ -28,50 +28,125 @@ package ca.openosp.openo.entities;
 import java.util.Date;
 
 /**
- * Encapsulates data from table billactivity
+ * Healthcare billing activity entity representing provincial billing submission records and their processing status.
+ * This entity encapsulates the data from the billactivity table, which tracks billing batch submissions
+ * to provincial healthcare insurance providers (e.g., OHIP in Ontario, MSP in BC).
+ *
+ * Each Billactivity record represents a billing batch containing multiple claims that have been
+ * formatted and prepared for submission to the provincial billing system. The entity tracks
+ * both HTML formatted files for provider viewing and OHIP/provincial formatted files for
+ * electronic submission.
+ *
+ * @see Billingmaster
+ * @see Billingdetail
+ * @see BillHistory
+ * @since November 1, 2004
  */
 public class Billactivity {
+    /**
+     * Month code identifying the billing period (format: YYYYMM)
+     */
     private String monthCode;
+
+    /**
+     * Number of billing records in this batch
+     */
     private int batchcount;
+
+    /**
+     * Filename of the HTML formatted report for provider viewing
+     */
     private String htmlfilename;
+
+    /**
+     * Filename of the provincial billing system formatted file (e.g., OHIP format)
+     */
     private String ohipfilename;
+
+    /**
+     * Provider's provincial health insurance number (e.g., OHIP number)
+     */
     private String providerohipno;
+
+    /**
+     * Billing group number for multi-provider clinics
+     */
     private String groupno;
+
+    /**
+     * Username of the user who created this billing batch
+     */
     private String creator;
+
+    /**
+     * HTML content of the billing report
+     */
     private String htmlcontext;
+
+    /**
+     * Provincial billing system formatted content (e.g., OHIP EDI format)
+     */
     private String ohipcontext;
+
+    /**
+     * Claim record data in provincial format
+     */
     private String claimrecord;
+
+    /**
+     * Date and time when this billing activity was last updated
+     */
     private Date updatedatetime;
+
+    /**
+     * Status of the billing submission (SENT, NOTSENT, etc.)
+     */
     private String status;
+
+    /**
+     * Total amount of all claims in this billing batch
+     */
     private String total;
+
+    /**
+     * Unique identifier for this billing activity record
+     */
     private int id;
 
+    /**
+     * Status constant indicating the billing batch has been sent to the provincial system
+     */
     public static final String SENT = "S";
+
+    /**
+     * Status constant indicating the billing batch has not been sent (awaiting submission)
+     */
     public static final String NOTSENT = "A";
 
 
     /**
-     * Class constructor with no arguments.
+     * Default constructor creating an empty Billactivity instance.
+     * All fields will be initialized to their default values.
      */
     public Billactivity() {
     }
 
     /**
-     * Full constructor
+     * Full constructor creating a Billactivity instance with all field values.
      *
-     * @param monthCode      String
-     * @param batchcount     int
-     * @param htmlfilename   String
-     * @param ohipfilename   String
-     * @param providerohipno String
-     * @param groupno        String
-     * @param creator        String
-     * @param htmlcontext    String
-     * @param ohipcontext    String
-     * @param claimrecord    String
-     * @param updatedatetime String
-     * @param status         String
-     * @param total          String
+     * @param monthCode      String the billing period month code (format: YYYYMM)
+     * @param batchcount     int the number of billing records in this batch
+     * @param htmlfilename   String the filename of the HTML formatted report
+     * @param ohipfilename   String the filename of the provincial billing file
+     * @param providerohipno String the provider's provincial health insurance number
+     * @param groupno        String the billing group number
+     * @param creator        String the username of the batch creator
+     * @param htmlcontext    String the HTML content of the billing report
+     * @param ohipcontext    String the provincial billing system formatted content
+     * @param claimrecord    String the claim record data in provincial format
+     * @param updatedatetime Date the date and time of last update
+     * @param status         String the submission status (SENT, NOTSENT)
+     * @param total          String the total amount of all claims in the batch
      */
     public Billactivity(String monthCode, int batchcount, String htmlfilename,
                         String ohipfilename, String providerohipno,
@@ -94,216 +169,218 @@ public class Billactivity {
     }
 
     /**
-     * Gets the monthCode
+     * Gets the billing period month code.
      *
-     * @return String monthCode
+     * @return String the month code in YYYYMM format, never null (empty string if null)
      */
     public String getMonthCode() {
         return (monthCode != null ? monthCode : "");
     }
 
     /**
-     * Gets the batchcount
+     * Gets the number of billing records in this batch.
      *
-     * @return int batchcount
+     * @return int the count of billing records included in this submission batch
      */
     public int getBatchcount() {
         return batchcount;
     }
 
     /**
-     * Gets the htmlfilename
+     * Gets the filename of the HTML formatted billing report.
      *
-     * @return String htmlfilename
+     * @return String the HTML report filename, never null (empty string if null)
      */
     public String getHtmlfilename() {
         return (htmlfilename != null ? htmlfilename : "");
     }
 
     /**
-     * Gets the ohipfilename
+     * Gets the filename of the provincial billing system formatted file.
      *
-     * @return String ohipfilename
+     * @return String the provincial billing file name (e.g., OHIP format), never null (empty string if null)
      */
     public String getOhipfilename() {
         return (ohipfilename != null ? ohipfilename : "");
     }
 
     /**
-     * Gets the providerohipno
+     * Gets the provider's provincial health insurance number.
      *
-     * @return String providerohipno
+     * @return String the provider's provincial number (e.g., OHIP number), never null (empty string if null)
      */
     public String getProviderohipno() {
         return (providerohipno != null ? providerohipno : "");
     }
 
     /**
-     * Gets the groupno
+     * Gets the billing group number for multi-provider clinics.
      *
-     * @return String groupno
+     * @return String the billing group identifier, never null (empty string if null)
      */
     public String getGroupno() {
         return (groupno != null ? groupno : "");
     }
 
     /**
-     * Gets the creator
+     * Gets the username of the user who created this billing batch.
      *
-     * @return String creator
+     * @return String the creator's username, never null (empty string if null)
      */
     public String getCreator() {
         return (creator != null ? creator : "");
     }
 
     /**
-     * Gets the htmlcontext
+     * Gets the HTML content of the billing report.
      *
-     * @return String htmlcontext
+     * @return String the full HTML content for provider viewing, never null (empty string if null)
      */
     public String getHtmlcontext() {
         return (htmlcontext != null ? htmlcontext : "");
     }
 
     /**
-     * Gets the ohipcontext
+     * Gets the provincial billing system formatted content.
      *
-     * @return String ohipcontext
+     * @return String the formatted content for provincial submission (e.g., OHIP EDI format), never null (empty string if null)
      */
     public String getOhipcontext() {
         return (ohipcontext != null ? ohipcontext : "");
     }
 
     /**
-     * Gets the claimrecord
+     * Gets the claim record data in provincial format.
      *
-     * @return String claimrecord
+     * @return String the claim record data formatted for provincial billing system, never null (empty string if null)
      */
     public String getClaimrecord() {
         return (claimrecord != null ? claimrecord : "");
     }
 
     /**
-     * Gets the updatedatetime
+     * Gets the date and time when this billing activity was last updated.
      *
-     * @return String updatedatetime
+     * @return Date the timestamp of the last update, may be null
      */
     public Date getUpdatedatetime() {
         return updatedatetime;
     }
 
     /**
-     * Gets the status
+     * Gets the submission status of this billing batch.
      *
-     * @return String status
+     * @return String the status (SENT, NOTSENT), never null (empty string if null)
+     * @see #SENT
+     * @see #NOTSENT
      */
     public String getStatus() {
         return (status != null ? status : "");
     }
 
     /**
-     * Gets the total
+     * Gets the total amount of all claims in this billing batch.
      *
-     * @return String total
+     * @return String the monetary total as a string, never null (empty string if null)
      */
     public String getTotal() {
         return (total != null ? total : "");
     }
 
     /**
-     * Sets the monthCode
+     * Sets the billing period month code.
      *
-     * @param monthCode String
+     * @param monthCode String the month code in YYYYMM format
      */
     public void setMonthCode(String monthCode) {
         this.monthCode = monthCode;
     }
 
     /**
-     * Sets the batchcount
+     * Sets the number of billing records in this batch.
      *
-     * @param batchcount int
+     * @param batchcount int the count of billing records in this submission batch
      */
     public void setBatchcount(int batchcount) {
         this.batchcount = batchcount;
     }
 
     /**
-     * Sets the htmlfilename
+     * Sets the filename of the HTML formatted billing report.
      *
-     * @param htmlfilename String
+     * @param htmlfilename String the HTML report filename
      */
     public void setHtmlfilename(String htmlfilename) {
         this.htmlfilename = htmlfilename;
     }
 
     /**
-     * Sets the ohipfilename
+     * Sets the filename of the provincial billing system formatted file.
      *
-     * @param ohipfilename String
+     * @param ohipfilename String the provincial billing file name (e.g., OHIP format)
      */
     public void setOhipfilename(String ohipfilename) {
         this.ohipfilename = ohipfilename;
     }
 
     /**
-     * Sets the providerohipno
+     * Sets the provider's provincial health insurance number.
      *
-     * @param providerohipno String
+     * @param providerohipno String the provider's provincial number (e.g., OHIP number)
      */
     public void setProviderohipno(String providerohipno) {
         this.providerohipno = providerohipno;
     }
 
     /**
-     * Sets the groupno
+     * Sets the billing group number for multi-provider clinics.
      *
-     * @param groupno String
+     * @param groupno String the billing group identifier
      */
     public void setGroupno(String groupno) {
         this.groupno = groupno;
     }
 
     /**
-     * Sets the creator
+     * Sets the username of the user who created this billing batch.
      *
-     * @param creator String
+     * @param creator String the creator's username
      */
     public void setCreator(String creator) {
         this.creator = creator;
     }
 
     /**
-     * Sets the htmlcontext
+     * Sets the HTML content of the billing report.
      *
-     * @param htmlcontext String
+     * @param htmlcontext String the full HTML content for provider viewing
      */
     public void setHtmlcontext(String htmlcontext) {
         this.htmlcontext = htmlcontext;
     }
 
     /**
-     * Sets the ohipcontext
+     * Sets the provincial billing system formatted content.
      *
-     * @param ohipcontext String
+     * @param ohipcontext String the formatted content for provincial submission (e.g., OHIP EDI format)
      */
     public void setOhipcontext(String ohipcontext) {
         this.ohipcontext = ohipcontext;
     }
 
     /**
-     * Sets the claimrecord
+     * Sets the claim record data in provincial format.
      *
-     * @param claimrecord String
+     * @param claimrecord String the claim record data formatted for provincial billing system
      */
     public void setClaimrecord(String claimrecord) {
         this.claimrecord = claimrecord;
     }
 
     /**
-     * Sets the updatedatetime
+     * Sets the date and time when this billing activity was last updated.
      *
-     * @param updatedatetime String
+     * @param updatedatetime Date the timestamp of the last update
      */
     public void setUpdatedatetime(Date updatedatetime) {
         this.updatedatetime = updatedatetime;
@@ -311,27 +388,39 @@ public class Billactivity {
 
 
     /**
-     * Sets the status
+     * Sets the submission status of this billing batch.
      *
-     * @param status String
+     * @param status String the status (SENT, NOTSENT)
+     * @see #SENT
+     * @see #NOTSENT
      */
     public void setStatus(String status) {
         this.status = status;
     }
 
     /**
-     * Sets the total
+     * Sets the total amount of all claims in this billing batch.
      *
-     * @param total String
+     * @param total String the monetary total as a string
      */
     public void setTotal(String total) {
         this.total = total;
     }
 
+    /**
+     * Gets the unique identifier for this billing activity record.
+     *
+     * @return int the unique billing activity ID
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Sets the unique identifier for this billing activity record.
+     *
+     * @param id int the unique billing activity ID
+     */
     public void setId(int id) {
         this.id = id;
     }

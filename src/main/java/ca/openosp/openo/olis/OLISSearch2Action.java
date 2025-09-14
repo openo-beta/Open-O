@@ -74,16 +74,69 @@ import ca.openosp.openo.olis1.queries.Z50Query;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
+/**
+ * OLIS Search Action for building and submitting various types of laboratory result queries.
+ * <p>
+ * This Struts2 action handles the creation and submission of multiple OLIS query types (Z01-Z08, Z50)
+ * for retrieving laboratory results from the Ontario Laboratories Information System. Each query type
+ * serves different search purposes and has specific parameter requirements.
+ * <p>
+ * Supported Query Types:
+ * - Z01: Patient-specific lab results with comprehensive filtering options
+ * - Z02: Retrieve all test results for a patient
+ * - Z04: Provider-specific lab result queries
+ * - Z05: Laboratory destination queries
+ * - Z06: Facility-based queries
+ * - Z07: General time-based lab queries
+ * - Z08: Historical lab result queries
+ * - Z50: Patient demographic search by name/DOB
+ * <p>
+ * Key Features:
+ * - Dynamic query parameter mapping from HTTP requests to OLIS objects
+ * - Patient demographic integration via database lookups
+ * - Healthcare provider information resolution
+ * - Consent management and audit logging for privacy compliance
+ * - Query result caching for re-execution with consent overrides
+ * - Support for multiple requesting healthcare providers
+ *
+ * @since 2008
+ */
 public class OLISSearch2Action extends ActionSupport {
+    /** HTTP servlet request containing query parameters */
     HttpServletRequest request = ServletActionContext.getRequest();
+    /** HTTP servlet response for result handling */
     HttpServletResponse response = ServletActionContext.getResponse();
 
-
+    /** DAO for patient demographic data access */
     private DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
+    /** DAO for healthcare provider information access */
     private ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
 
+    /** Static cache for storing query objects for re-execution with consent overrides */
     public static HashMap<String, Query> searchQueryMap = new HashMap<String, Query>();
 
+    /**
+     * Main execution method that processes OLIS search requests and builds appropriate query objects.
+     * <p>
+     * This method handles two primary scenarios:
+     * 1. Re-execution of cached queries (when redo=true) with optional consent overrides
+     * 2. New query creation based on queryType parameter and associated form data
+     * <p>
+     * For new queries, the method:
+     * - Parses query type and creates appropriate OLIS query object
+     * - Maps HTTP parameters to query-specific OLIS parameter objects
+     * - Resolves patient demographics and provider information from database
+     * - Handles consent management and audit logging
+     * - Submits query to OLIS via Driver
+     * <p>
+     * For query re-execution:
+     * - Retrieves cached query by UUID
+     * - Applies consent overrides if requested
+     * - Logs consent override events for audit purposes
+     * - Re-submits modified query
+     *
+     * @return String "results" to forward to results page
+     */
     public String execute() {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -138,8 +191,11 @@ public class OLISSearch2Action extends ActionSupport {
                     "yyyy-MM-dd"
             };
 
+            // Z01 Query: Comprehensive patient-specific lab results with advanced filtering
             if (queryType.equalsIgnoreCase("Z01")) {
                 query = new Z01Query();
+
+                // Parse result timestamp range for filtering lab results
                 String startTimePeriod = request.getParameter("startTimePeriod");
                 String endTimePeriod = request.getParameter("endTimePeriod");
 
@@ -398,6 +454,7 @@ public class OLISSearch2Action extends ActionSupport {
 
                 }
 
+            // Z02 Query: Retrieve all test results for a specific patient
             } else if (queryType.equalsIgnoreCase("Z02")) {
                 query = new Z02Query();
 
@@ -826,6 +883,15 @@ public class OLISSearch2Action extends ActionSupport {
 
     }
 
+    /**
+     * Converts a date to the end of that day (23:59:59) for inclusive date range searching.
+     * <p>
+     * This utility method is used to ensure that when users specify an end date for lab result
+     * filtering, the search includes results from the entire day rather than just midnight.
+     *
+     * @param d Date the date to convert
+     * @return Date the same date set to 23:59:59
+     */
     private Date changeToEndOfDay(Date d) {
         Calendar c = Calendar.getInstance();
         c.setTime(d);

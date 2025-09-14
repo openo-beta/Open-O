@@ -26,7 +26,25 @@
 package ca.openosp.openo.entities;
 
 /**
- * Encapsulates data from table ichppccode
+ * International Classification of Health Problems in Primary Care (ICHPPC) diagnostic codes entity.
+ *
+ * This entity represents ICHPPC diagnostic codes, which are used for standardized classification
+ * of health problems encountered in primary care settings. ICHPPC codes provide a systematic
+ * way to categorize and code diagnoses in family practice and primary healthcare environments.
+ *
+ * The ICHPPC classification system was developed specifically for primary care use and includes:
+ * - Diagnostic codes for common primary care conditions
+ * - Standardized descriptions of health problems
+ * - Cross-references to other classification systems
+ *
+ * These codes are essential for:
+ * - Clinical documentation and record keeping
+ * - Billing and administrative purposes
+ * - Statistical analysis and quality improvement
+ * - Integration with other healthcare coding systems
+ *
+ * @see <a href="https://www.who.int/classifications/icd/en/">WHO International Classifications</a>
+ * @since November 1, 2004
  */
 public class Ichppccode {
     private String _ichppccode;
@@ -34,17 +52,19 @@ public class Ichppccode {
     private String description;
 
     /**
-     * Class constructor with no arguments.
+     * Default constructor for ICHPPC diagnostic code entity.
+     * Initializes all fields to their default values.
      */
     public Ichppccode() {
     }
 
     /**
-     * Full constructor
+     * Complete constructor for ICHPPC diagnostic code entity.
+     * Creates a fully initialized ICHPPC code with all required fields.
      *
-     * @param _ichppccode    String
-     * @param diagnosticCode String
-     * @param description    String
+     * @param _ichppccode    String the ICHPPC code identifier
+     * @param diagnosticCode String the diagnostic code value
+     * @param description    String the human-readable description of the diagnosis
      */
     public Ichppccode(String _ichppccode, String diagnosticCode,
                       String description) {
@@ -54,54 +74,60 @@ public class Ichppccode {
     }
 
     /**
-     * Gets the _ichppccode
+     * Gets the ICHPPC code identifier.
+     * This is the unique identifier for this ICHPPC diagnostic code.
      *
-     * @return String _ichppccode
+     * @return String the ICHPPC code identifier, empty string if null
      */
     public String get_ichppccode() {
         return (_ichppccode != null ? _ichppccode : "");
     }
 
     /**
-     * Gets the diagnosticCode
+     * Gets the diagnostic code value.
+     * This is the actual diagnostic code used for clinical documentation and billing.
      *
-     * @return String diagnosticCode
+     * @return String the diagnostic code, empty string if null
      */
     public String getDiagnosticCode() {
         return (diagnosticCode != null ? diagnosticCode : "");
     }
 
     /**
-     * Gets the description
+     * Gets the human-readable description of the diagnosis.
+     * Provides a clear, clinical description of the health problem or condition.
      *
-     * @return String description
+     * @return String the diagnostic description, empty string if null
      */
     public String getDescription() {
         return (description != null ? description : "");
     }
 
     /**
-     * Sets the _ichppccode
+     * Sets the ICHPPC code identifier.
+     * This is the unique identifier for this ICHPPC diagnostic code.
      *
-     * @param _ichppccode String
+     * @param _ichppccode String the ICHPPC code identifier
      */
     public void set_ichppccode(String _ichppccode) {
         this._ichppccode = _ichppccode;
     }
 
     /**
-     * Sets the diagnosticCode
+     * Sets the diagnostic code value.
+     * This is the actual diagnostic code used for clinical documentation and billing.
      *
-     * @param diagnosticCode String
+     * @param diagnosticCode String the diagnostic code
      */
     public void setDiagnosticCode(String diagnosticCode) {
         this.diagnosticCode = diagnosticCode;
     }
 
     /**
-     * Sets the description
+     * Sets the human-readable description of the diagnosis.
+     * Provides a clear, clinical description of the health problem or condition.
      *
-     * @param description String
+     * @param description String the diagnostic description
      */
     public void setDescription(String description) {
         this.description = description;

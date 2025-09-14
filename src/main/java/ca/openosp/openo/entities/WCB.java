@@ -42,7 +42,54 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import ca.openosp.openo.util.StringUtils;
 
 /**
- * @author jaygallagher
+ * WCB (Workers' Compensation Board) entity representing workplace injury claims and
+ * medical assessments within OpenO EMR. This entity manages comprehensive information
+ * for workers' compensation medical reporting, supporting the complex requirements
+ * of workplace injury documentation, treatment tracking, and return-to-work assessments
+ * in Canadian healthcare settings.
+ *
+ * <p>Workers' Compensation Board systems across Canada require detailed medical
+ * reporting for workplace injuries. This entity captures all necessary information
+ * for WCB forms, medical assessments, treatment documentation, and return-to-work
+ * evaluations, ensuring compliance with provincial WCB requirements and supporting
+ * injured workers through their recovery process.
+ *
+ * <p>Key WCB management features include:
+ * <ul>
+ * <li>Comprehensive worker demographic and injury information collection
+ * <li>Detailed medical assessment and diagnosis documentation
+ * <li>Treatment planning and rehabilitation recommendations
+ * <li>Work capacity evaluations and return-to-work assessments
+ * <li>Integration with billing systems for WCB claim processing
+ * <li>Multi-step form validation for different WCB reporting requirements
+ * </ul>
+ *
+ * <p>WCB form categories and validation include:
+ * <ul>
+ * <li><strong>Basic Information:</strong> Worker demographics, injury details, and medical history
+ * <li><strong>Medical Assessment:</strong> Diagnosis, treatment, and clinical findings
+ * <li><strong>Work Capacity:</strong> Functional limitations and return-to-work recommendations
+ * <li><strong>Rehabilitation:</strong> Treatment plans and rehabilitation program recommendations
+ * </ul>
+ *
+ * <p>The entity includes sophisticated validation methods that ensure data completeness
+ * based on form requirements and WCB reporting standards. Different validation levels
+ * support various reporting scenarios from basic injury reports to comprehensive
+ * medical assessments.
+ *
+ * <p>Critical healthcare workflow integration includes:
+ * <ul>
+ * <li>Provider identification and professional responsibility tracking
+ * <li>Patient demographic linking for comprehensive medical records
+ * <li>Billing integration for WCB payment processing
+ * <li>Clinical documentation supporting treatment decisions
+ * <li>Quality assurance through comprehensive form validation
+ * </ul>
+ *
+ * @see ca.openosp.openo.entities.Patient
+ * @see ca.openosp.openo.entities.Provider
+ * @see ca.openosp.openo.entities.PaymentType
+ * @since November 1, 2004
  */
 @Entity
 @Table(name = "wcb")
@@ -405,10 +452,24 @@ public class WCB {
         this.w_diagnosis = w_diagnosis;
     }
 
+    /**
+     * Gets the ICD-9 diagnostic code for the workplace injury.
+     * This code provides standardized classification of the medical diagnosis
+     * associated with the workplace injury for WCB processing and reporting.
+     *
+     * @return String the ICD-9 diagnostic code
+     */
     public String getW_icd9() {
         return w_icd9;
     }
 
+    /**
+     * Sets the ICD-9 diagnostic code for the workplace injury.
+     * This code must conform to standard ICD-9 formatting for proper
+     * WCB claim processing and medical record integration.
+     *
+     * @param w_icd9 String the ICD-9 diagnostic code
+     */
     public void setW_icd9(String w_icd9) {
         this.w_icd9 = w_icd9;
     }
@@ -549,10 +610,24 @@ public class WCB {
         this.w_pracno = w_pracno;
     }
 
+    /**
+     * Gets the date of injury for the workplace incident.
+     * This is a critical field for WCB claims, establishing the timeline
+     * for injury occurrence and treatment eligibility.
+     *
+     * @return Date the date when the workplace injury occurred
+     */
     public Date getW_doi() {
         return w_doi;
     }
 
+    /**
+     * Sets the date of injury for the workplace incident.
+     * This date must be accurate for proper WCB claim processing
+     * and determines eligibility timelines for benefits and treatment.
+     *
+     * @param w_doi Date the date when the workplace injury occurred
+     */
     public void setW_doi(Date w_doi) {
         this.w_doi = w_doi;
     }
@@ -597,10 +672,33 @@ public class WCB {
         this.formNeeded = formNeeded;
     }
 
+    /**
+     * Generates a string representation of this WCB entity using reflection.
+     * This method provides a comprehensive view of all field values for debugging
+     * and logging purposes.
+     *
+     * @return String complete string representation of the WCB entity
+     */
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
     }
 
+    /**
+     * Performs comprehensive validation of WCB form data for complete medical assessments.
+     * This method validates all required fields for full WCB reporting, ensuring
+     * compliance with Workers' Compensation Board documentation requirements.
+     *
+     * <p>Validation includes:
+     * <ul>
+     * <li>Basic demographic information (name, DOB, gender, PHN)
+     * <li>Injury details and diagnosis information
+     * <li>Fee item validation for billing purposes
+     * <li>Conditional validation based on form completion requirements
+     * <li>Work capacity and rehabilitation assessments (if form needed)
+     * </ul>
+     *
+     * @return List&lt;String&gt; collection of validation error message keys for internationalization
+     */
     public List verify() {
         List errors = new ArrayList();
 
@@ -724,18 +822,45 @@ public class WCB {
         return errors;
     }
 
+    /**
+     * Validates that a field value is not null or blank.
+     * This utility method checks for both null values and empty strings,
+     * adding the specified error code to the errors list if validation fails.
+     *
+     * @param s Object the value to validate
+     * @param errors List&lt;String&gt; the error collection to add validation failures
+     * @param code String the error message key to add if validation fails
+     */
     void checkNullOrBlankValue(Object s, List errors, String code) {
         if (s == null || "".equals(s)) {
             errors.add(code);
         }
     }
 
+    /**
+     * Validates that a field value is not null.
+     * This utility method checks for null values only, allowing empty strings,
+     * and adds the specified error code to the errors list if validation fails.
+     *
+     * @param s Object the value to validate
+     * @param errors List&lt;String&gt; the error collection to add validation failures
+     * @param code String the error message key to add if validation fails
+     */
     void checkNullValue(Object s, List errors, String code) {
         if (s == null) {
             errors.add(code);
         }
     }
 
+    /**
+     * Validates that a field value is not null and contains only numeric characters.
+     * This utility method ensures fields that should contain numbers (like phone numbers,
+     * codes, etc.) are properly formatted for WCB processing.
+     *
+     * @param s Object the value to validate
+     * @param errors List&lt;String&gt; the error collection to add validation failures
+     * @param code String the error message key to add if validation fails
+     */
     void checkNullAndNumericValue(Object s, List errors, String code) {
         if (s == null || !StringUtils.isNumeric("" + s)) {
             errors.add(code);
@@ -762,6 +887,21 @@ public class WCB {
     DR34  1 of 4  C02  P36   DIAGNOSTIC-CODE-1        Yes     No            ** 
     DR50  1 of 4  C02  P06   PAYEE-NUM                Yes     No            **
     DR51  1 of 4  C02  P08   PRACTITIONER-NUM         Yes     No            **
+     */
+    /**
+     * Performs basic validation for WCB claims that do not require full form completion.
+     * This method validates essential information needed for simple WCB billing without
+     * the comprehensive medical assessment requirements of full form processing.
+     *
+     * <p>Basic validation includes:
+     * <ul>
+     * <li>Worker identification (name, DOB, gender)
+     * <li>Provincial health number (PHN) validation
+     * <li>Date of injury and nature of injury codes
+     * <li>Basic anatomical position and body part validation
+     * </ul>
+     *
+     * @return List&lt;String&gt; collection of validation error message keys for basic WCB requirements
      */
     public List verifyFormNotNeeded() {
         List errors = new ArrayList();
@@ -821,6 +961,24 @@ public class WCB {
     DR50   1 of 4 C02  P06   PAYEE-NUM                      Yes    No 
     DR51   1 of 4 C02  P08   PRACTITIONER-NUM               Yes    No 
     DR57   1 of 4 N01  P22   WCB-Vendor-Spec-Version        Yes    Yes      
+     */
+    /**
+     * Performs the most comprehensive validation for complete WCB medical forms.
+     * This method validates all possible fields and requirements for full medical
+     * assessment forms, ensuring complete compliance with Workers' Compensation
+     * Board comprehensive reporting standards.
+     *
+     * <p>Comprehensive validation includes:
+     * <ul>
+     * <li>All basic demographic and injury information
+     * <li>Complete employer and workplace information
+     * <li>Detailed medical assessment and treatment information
+     * <li>Work capacity evaluations and restrictions
+     * <li>Rehabilitation assessments and recommendations
+     * <li>Clinical information and treatment plans
+     * </ul>
+     *
+     * @return List&lt;String&gt; collection of all possible validation error message keys
      */
     public List verifyEverythingOnForm() {
         List errors = new ArrayList();

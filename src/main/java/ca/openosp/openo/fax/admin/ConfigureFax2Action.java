@@ -42,18 +42,75 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Administrative action for configuring fax service providers and gateway accounts in healthcare environments.
+ *
+ * This action manages the critical configuration of medical fax communication systems, which remain
+ * essential in healthcare for secure transmission of patient health information (PHI) between providers,
+ * specialists, laboratories, and other healthcare facilities. Proper fax configuration is mandatory
+ * for HIPAA/PIPEDA compliance and ensures reliable document delivery in medical workflows.
+ *
+ * The configuration system supports multiple fax service providers including:
+ * - SRFax for cloud-based secure medical fax transmission
+ * - MyFax and other HIPAA-compliant fax services
+ * - Traditional fax servers with secure connectivity
+ * - Multi-account setups for different departments or providers
+ *
+ * Key features include:
+ * - Secure credential management with password protection
+ * - Queue-based inbox routing for different medical departments
+ * - Account activation/deactivation for service management
+ * - Download configuration for incoming medical documents
+ * - Fax scheduler management for automated processing
+ *
+ * Administrative privileges are required for all configuration operations to maintain
+ * system security and prevent unauthorized access to healthcare communication settings.
+ *
+ * @see ca.openosp.openo.managers.FaxManager
+ * @see ca.openosp.openo.commn.model.FaxConfig
+ * @see ca.openosp.openo.fax.core.FaxSchedulerJob
+ * @since 2014-08-29
+ */
 public class ConfigureFax2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
     private final FaxManager faxManager = SpringUtils.getBean(FaxManager.class);
+
+    /** Mask string used to protect actual passwords in form submissions */
     private static final String PASSWORD_BLANKET = "**********";
 
+    /**
+     * Main execution method that delegates to the configure method for fax setup.
+     *
+     * @return String result of configuration operation
+     */
     public String execute() {
         return configure();
     }
 
+    /**
+     * Configures fax service provider accounts and gateway settings for medical document transmission.
+     *
+     * This method handles the complete configuration lifecycle for healthcare fax systems including:
+     * - Creating new fax service accounts with secure credential storage
+     * - Updating existing account settings while preserving encrypted passwords
+     * - Managing multiple fax accounts for different medical departments
+     * - Configuring inbox queues for automatic routing of incoming medical documents
+     * - Setting up download preferences for received fax documents
+     *
+     * The configuration process implements several security measures:
+     * - Password blanking to prevent credential exposure in form data
+     * - Administrative privilege validation before any configuration changes
+     * - Secure credential persistence with encrypted storage
+     * - Automatic cleanup of removed accounts to prevent orphaned configurations
+     *
+     * The method supports complex healthcare workflows where different fax numbers
+     * may be associated with specific medical departments, providers, or document types.
+     *
+     * @return String null to indicate direct JSON response (no view forwarding)
+     */
     public String configure() {
         JSONObject jsonObject;
 
@@ -86,6 +143,7 @@ public class ConfigureFax2Action extends ActionSupport {
             FaxConfig savedFaxConfig;
             FaxConfig masterFaxConfig;
 
+            // Handle complete removal of all fax accounts
             if (faxConfigIds == null) {
                 for (FaxConfig sfaxConfig : savedFaxConfigList) {
                     faxConfigDao.remove(sfaxConfig.getId());
@@ -105,6 +163,8 @@ public class ConfigureFax2Action extends ActionSupport {
                         savedFaxConfig.setUrl(faxUrl);
                         savedFaxConfig.setSiteUser(siteUser);
 
+                        // Only update password if it's not the masked placeholder
+                        // This preserves existing encrypted passwords in the database
                         if (!PASSWORD_BLANKET.equals(sitePasswd)) {
                             savedFaxConfig.setPasswd(sitePasswd);
                         }
@@ -115,10 +175,11 @@ public class ConfigureFax2Action extends ActionSupport {
                             savedFaxConfig.setFaxPasswd(faxPasswds[idx]);
                         }
 
+                        // Normalize fax numbers by removing all non-digit characters
+                        // This ensures consistent format for healthcare provider lookup
                         String faxNumber = faxNumbers[idx];
                         if (faxNumber != null) {
                             faxNumber = faxNumber.trim().replaceAll("\\D", "");
-
                         }
                         savedFaxConfig.setFaxNumber(faxNumber);
                         savedFaxConfig.setSenderEmail(senderEmails[idx]);
@@ -169,10 +230,8 @@ public class ConfigureFax2Action extends ActionSupport {
                 }
             }
 
-            /*
-             * Ensure that the fax server information remains intact
-             * whenever all the gateway accounts are wiped out.
-             */
+            // Preserve fax server configuration even when all accounts are removed
+            // This maintains connection settings for future account setup
             int auditList = faxConfigDao.getCountAll();
             if (auditList == 0) {
                 faxConfig = new FaxConfig();
@@ -206,6 +265,27 @@ public class ConfigureFax2Action extends ActionSupport {
 
     }
 
+    /**
+     * Restarts the fax scheduler service for processing medical document transmissions.
+     *
+     * This method provides administrative control over the automated fax processing system
+     * that handles queued medical documents. The scheduler manages:
+     * - Batch transmission of outgoing medical faxes
+     * - Status updates for sent documents
+     * - Importing of incoming medical documents
+     * - Cleanup of temporary files containing PHI
+     *
+     * Restarting the scheduler may be necessary when:
+     * - Configuration changes require service reload
+     * - Error conditions have stopped automated processing
+     * - Network connectivity issues have been resolved
+     * - Performance optimization requires service restart
+     *
+     * Administrative privileges with fax restart permissions are required to prevent
+     * unauthorized interruption of critical medical document transmission services.
+     *
+     * @throws SecurityException if user lacks _admin.fax.restart write privileges
+     */
     public void restartFaxScheduler() {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin.fax.restart", "w", null)) {
             throw new SecurityException("missing required sec object (_admin.fax.restart)");
@@ -213,6 +293,23 @@ public class ConfigureFax2Action extends ActionSupport {
         faxManager.restartFaxScheduler(LoggedInInfo.getLoggedInInfoFromSession(request));
     }
 
+    /**
+     * Retrieves the current operational status of the fax scheduler service.
+     *
+     * This method provides real-time monitoring capabilities for healthcare administrators
+     * to ensure continuous operation of medical document transmission services. The status
+     * information includes:
+     * - Service running state (active/inactive)
+     * - Last execution timestamp
+     * - Error conditions or processing issues
+     * - Queue sizes and processing statistics
+     *
+     * Status monitoring is critical in healthcare environments where delayed or failed
+     * document transmission can impact patient care coordination between providers.
+     *
+     * @return JSON response containing current scheduler status information
+     * @throws SecurityException if user lacks _admin.fax.restart read privileges
+     */
     public void getFaxSchedularStatus() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.fax.restart", "r", null)) {

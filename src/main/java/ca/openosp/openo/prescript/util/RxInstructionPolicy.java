@@ -33,6 +33,26 @@ import java.util.regex.Pattern;
 
 import ca.openosp.OscarProperties;
 
+/**
+ * Utility class for validating prescription instructions against institutional policies.
+ * This class implements medication safety policies to prevent dangerous abbreviations
+ * and error-prone notation in prescription instructions.
+ *
+ * <p>The class currently supports the St. Joseph's Hospital (stjoes) medication safety policy,
+ * which includes checks for:</p>
+ * <ul>
+ * <li>Dangerous abbreviations (U, I.U., MS, MgSO4, etc.)</li>
+ * <li>Unsafe route abbreviations (S.C., SC, A.S., A.D., O.S., O.D., etc.)</li>
+ * <li>Volume measurements requiring standardization (CC, C.C. should be ml or mL)</li>
+ * <li>Decimal point notation errors (.1 should be 0.1, 10.0 should be 10)</li>
+ * <li>Frequency abbreviations (q.d., q.o.d., o.d. should be spelled out)</li>
+ * </ul>
+ *
+ * <p>These policies are based on Joint Commission and ISMP (Institute for Safe Medication Practices)
+ * recommendations for reducing medication errors.</p>
+ *
+ * @since 2007-04-16
+ */
 public class RxInstructionPolicy {
 
     public static List<String> checkInstructions(String instr) {
@@ -51,7 +71,7 @@ public class RxInstructionPolicy {
         return errors;
     }
 
-    public static void applyStJoesPolicy(String instr, List<String> errors) {
+    /**\n     * Applies the St. Joseph's Hospital medication safety policy to prescription instructions.\n     * This method checks for dangerous abbreviations and notation patterns that can lead\n     * to medication errors.\n     *\n     * <p>The policy checks are based on Joint Commission and ISMP \"Do Not Use\" lists\n     * and include validation for units, routes, volumes, decimal notation, and frequencies.</p>\n     *\n     * @param instr String the prescription instruction text to validate\n     * @param errors List&lt;String&gt; collection to which violation messages are added\n     */\n    public static void applyStJoesPolicy(String instr, List<String> errors) {
         //unit
         addPolicy(new String[]{"\\s+(?i)U\\b", "\\b\\d+(?i)U\\b"}, instr, errors, "U", "Unit");
         addPolicy(new String[]{"\\s+(?i)I.U.", "\\b\\d+(?i)I.U.\\b"}, instr, errors, "I.U.", "Unit");
@@ -117,6 +137,16 @@ public class RxInstructionPolicy {
 
     }
 
+    /**
+     * Helper method that applies a specific policy check using regular expression patterns.
+     * If any pattern matches the instructions, a policy violation message is added to the errors list.
+     *
+     * @param patterns String[] array of regex patterns to check against the instructions
+     * @param instructions String the prescription instruction text to validate
+     * @param errors List&lt;String&gt; collection to which violation messages are added
+     * @param violation String the problematic text that was found
+     * @param replacement String the recommended replacement text, or null if no replacement suggested
+     */
     private static void addPolicy(String[] patterns, String instructions, List<String> errors, String violation, String replacement) {
         for (String p : patterns) {
             Pattern p1 = Pattern.compile(p);
