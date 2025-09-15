@@ -44,7 +44,7 @@ public final class OAuth1Utils {
 
     static {
         // keep previous CXF consumer behavior for callers that still pass this around
-        logger.warn("OAuth1Utils is deprecated and OAuth1 client support has been removed.");
+        logger.warn("OAuth1Utils is deprecated.");
     }
 
     private OAuth1Utils() {}
