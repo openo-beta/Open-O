@@ -190,7 +190,9 @@ public class ReportReassign2Action extends ActionSupport {
             
             // Default to a safe page if the path is suspicious or empty
             if (relativePath.isEmpty() || relativePath.contains("..") || !relativePath.startsWith("/")) {
-                relativePath = "/lab/CA/ALL/labDisplay.jsp";
+                logger.warn("Suspicious or invalid redirect path detected: '{}'. Sending error response.", relativePath);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid redirect path.");
+                return null;
             }
             
             // Build the new URL with the context path to ensure it stays within the application
