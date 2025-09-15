@@ -47,6 +47,24 @@ import org.apache.wss4j.dom.handler.WSHandlerConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+/**
+ * WS-Security interceptor for CAISI Integrator web service authentication.
+ *
+ * <p>This interceptor extends WSS4JOutInterceptor to provide specialized authentication
+ * for CAISI (Client Access to Integrated Services Information) integrator web services.
+ * It adds both username/password authentication via WS-Security standards and custom
+ * SOAP headers containing the requesting provider information for healthcare provider
+ * context tracking and audit compliance.</p>
+ *
+ * <p>The interceptor ensures that all healthcare data access through the integrator
+ * is properly authenticated and includes the requesting provider's identifier for
+ * audit trails and privacy compliance (HIPAA/PIPEDA requirements).</p>
+ *
+ * @see WSS4JOutInterceptor
+ * @see CallbackHandler
+ * @see CaisiIntegratorManager
+ * @since February 12, 2009
+ */
 public class AuthenticationOutWSS4JInterceptorForIntegrator extends WSS4JOutInterceptor implements CallbackHandler {
     private static final String REQUESTING_CAISI_PROVIDER_NO_KEY = "requestingCaisiProviderNo";
     private static QName REQUESTING_CAISI_PROVIDER_NO_QNAME = new QName("http://oscarehr.org/caisi", REQUESTING_CAISI_PROVIDER_NO_KEY, "caisi");
@@ -54,10 +72,23 @@ public class AuthenticationOutWSS4JInterceptorForIntegrator extends WSS4JOutInte
     private String password = null;
     private String oscarProviderNo = null;
 
+    /**
+     * Constructs the authentication interceptor with healthcare provider credentials.
+     *
+     * <p>Initializes WS-Security with username/password authentication and configures
+     * the provider context for healthcare audit compliance. The provider number is
+     * used to track which healthcare provider is making requests through the integrator.</p>
+     *
+     * @param user String the username for integrator authentication
+     * @param password String the password for integrator authentication
+     * @param oscarProviderNo String the healthcare provider number making the request
+     * @since February 12, 2009
+     */
     public AuthenticationOutWSS4JInterceptorForIntegrator(String user, String password, String oscarProviderNo) {
         this.password = password;
         this.oscarProviderNo = oscarProviderNo;
 
+        // Configure WS-Security properties for username token authentication
         HashMap<String, Object> properties = new HashMap<String, Object>();
         properties.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
         properties.put(WSHandlerConstants.USER, user);
@@ -67,8 +98,17 @@ public class AuthenticationOutWSS4JInterceptorForIntegrator extends WSS4JOutInte
         setProperties(properties);
     }
 
-    // don't like @override until jdk1.6?
-    // @Override
+    /**
+     * Handles password callback for WS-Security authentication.
+     *
+     * <p>Implementation of CallbackHandler interface that provides the password
+     * for username token authentication when requested by the WS-Security framework.</p>
+     *
+     * @param callbacks Callback[] array of callbacks to handle
+     * @throws IOException if I/O error occurs during callback handling
+     * @throws UnsupportedCallbackException if callback type is not supported
+     * @since February 12, 2009
+     */
     public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
         for (Callback callback : callbacks) {
             if (callback instanceof WSPasswordCallback) {
@@ -78,11 +118,33 @@ public class AuthenticationOutWSS4JInterceptorForIntegrator extends WSS4JOutInte
         }
     }
 
+    /**
+     * Handles outbound SOAP messages by adding provider context and security.
+     *
+     * <p>Intercepts outbound SOAP messages to add the requesting provider's identifier
+     * as a custom SOAP header before applying WS-Security processing. This ensures
+     * healthcare provider context is available for audit and authorization purposes.</p>
+     *
+     * @param message SoapMessage the outbound SOAP message to process
+     * @throws Fault if message processing fails
+     * @since February 12, 2009
+     */
     public void handleMessage(SoapMessage message) throws Fault {
         addRequestingCaisiProviderNo(message, oscarProviderNo);
         super.handleMessage(message);
     }
 
+    /**
+     * Adds the requesting provider number as a SOAP header for healthcare audit tracking.
+     *
+     * <p>Creates and adds a custom SOAP header containing the healthcare provider's
+     * identifier to enable proper audit trails and privacy compliance tracking
+     * throughout the CAISI integration system.</p>
+     *
+     * @param message SoapMessage the SOAP message to add the header to
+     * @param providerNo String the healthcare provider number to include
+     * @since February 12, 2009
+     */
     private static void addRequestingCaisiProviderNo(SoapMessage message, String providerNo) {
         List<Header> headers = message.getHeaders();
 
@@ -91,6 +153,18 @@ public class AuthenticationOutWSS4JInterceptorForIntegrator extends WSS4JOutInte
         }
     }
 
+    /**
+     * Creates a SOAP header with the specified qualified name and value.
+     *
+     * <p>Utility method for creating properly formatted SOAP headers with
+     * the CAISI namespace for healthcare provider context information.</p>
+     *
+     * @param qName QName the qualified name for the header element
+     * @param key String the local name for the header element
+     * @param value String the text content for the header element
+     * @return Header the created SOAP header
+     * @since February 12, 2009
+     */
     private static Header createHeader(QName qName, String key, String value) {
         Document document = DOMUtils.createDocument();
 

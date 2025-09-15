@@ -51,10 +51,49 @@ import ca.openosp.OscarProperties;
 import ca.openosp.openo.tickler.TicklerCreator;
 import ca.openosp.openo.util.DateUtils;
 
+/**
+ * Utility class for CAISI integrator conformance testing and data synchronization features.
+ *
+ * <p>This helper class provides specialized functionality for healthcare system integration
+ * testing and conformance validation. It includes methods for processing remote provider
+ * communications, synchronizing demographic data, and validating data consistency across
+ * integrated healthcare facilities.</p>
+ *
+ * <p><strong>Key Features:</strong></p>
+ * <ul>
+ *   <li>Remote provider message follow-up processing via tickler system</li>
+ *   <li>Cross-facility demographic data synchronization</li>
+ *   <li>Data consistency validation between local and remote records</li>
+ *   <li>Conformance testing support for healthcare integration standards</li>
+ * </ul>
+ *
+ * <p>The class is designed to support regulatory compliance testing and ensure
+ * that healthcare data integration meets clinical workflow requirements while
+ * maintaining HIPAA/PIPEDA privacy standards.</p>
+ *
+ * @see CaisiIntegratorManager
+ * @see TicklerCreator
+ * @since June 19, 2011
+ */
 public final class ConformanceTestHelper {
     private static Logger logger = MiscUtils.getLogger();
     public static boolean enableConformanceOnlyTestFeatures = Boolean.parseBoolean(OscarProperties.getInstance().getProperty("ENABLE_CONFORMANCE_ONLY_FEATURES"));
 
+    /**
+     * Retrieves remote provider follow-up messages and creates local tickler entries.
+     *
+     * <p>Processes provider communication messages of type "FOLLOWUP" from remote CAISI
+     * facilities and converts them into local tickler reminders. This enables cross-facility
+     * care coordination by ensuring that follow-up tasks from remote providers are visible
+     * in the local provider's task list.</p>
+     *
+     * <p>The method extracts demographic ID, provider information, and message content
+     * from XML-formatted provider communications and creates appropriately formatted
+     * tickler entries with proper attribution to the original sender.</p>
+     *
+     * @param loggedInInfo LoggedInInfo the current user's session information
+     * @since June 19, 2011
+     */
     public static void populateLocalTicklerWithRemoteProviderMessageFollowUps(LoggedInInfo loggedInInfo) {
         try {
             ProviderWs providerWs = CaisiIntegratorManager.getProviderWs(loggedInInfo, loggedInInfo.getCurrentFacility());
@@ -91,6 +130,20 @@ public final class ConformanceTestHelper {
         }
     }
 
+    /**
+     * Copies demographic properties from remote linked records to local demographic.
+     *
+     * <p>Synchronizes demographic information from the first linked remote demographic
+     * record to the local demographic record. This ensures data consistency across
+     * integrated facilities when patient information is updated remotely.</p>
+     *
+     * <p>The method retrieves directly linked demographics and applies field-level
+     * updates while preserving roster date information for audit purposes.</p>
+     *
+     * @param loggedInInfo LoggedInInfo the current user's session information
+     * @param localDemographicId Integer the local demographic ID to update
+     * @since June 19, 2011
+     */
     public static void copyLinkedDemographicsPropertiesToLocal(LoggedInInfo loggedInInfo, Integer localDemographicId) {
         try {
             DemographicWs demographicWs = CaisiIntegratorManager.getDemographicWs(loggedInInfo, loggedInInfo.getCurrentFacility());
@@ -117,6 +170,23 @@ public final class ConformanceTestHelper {
         }
     }
 
+    /**
+     * Checks if remote demographic data differs from local demographic data.
+     *
+     * <p>Performs field-by-field comparison between the local demographic record
+     * and the first linked remote demographic to detect data inconsistencies.
+     * This is used to identify when synchronization is needed or when conflicts
+     * exist between facilities.</p>
+     *
+     * <p>Compares core demographic fields including birth date, contact information,
+     * health insurance details, and address information using appropriate null-safe
+     * comparison methods.</p>
+     *
+     * @param loggedInInfo LoggedInInfo the current user's session information
+     * @param localDemographicId Integer the local demographic ID to compare
+     * @return boolean true if differences are detected, false if data matches
+     * @since June 19, 2011
+     */
     public static boolean hasDifferentRemoteDemographics(LoggedInInfo loggedInInfo, Integer localDemographicId) {
         boolean ret = false;
         try {
@@ -171,13 +241,23 @@ public final class ConformanceTestHelper {
     }
 
 
-    /*
-    local remote
-    null  null   = false
-    value null   = false
-    null  value  = true
-    value value  = compare
-    */
+    /**
+     * Determines if a remote date is different from a local date.
+     *
+     * <p>Compares two Calendar objects with special null handling logic:
+     * - Both null: no difference (false)
+     * - Local has value, remote is null: no difference (false)
+     * - Local is null, remote has value: difference detected (true)
+     * - Both have values: compare dates for differences (true if different)</p>
+     *
+     * <p>This logic prioritizes remote data when present while avoiding
+     * overwrites when remote data is missing.</p>
+     *
+     * @param local Calendar the local date value
+     * @param remote Calendar the remote date value
+     * @return boolean true if remote date should override local, false otherwise
+     * @since June 19, 2011
+     */
     public static boolean isRemoteDateDifferent(Calendar local, Calendar remote) {
         boolean isRemoteDateDifferent = false;
         if (remote != null) {

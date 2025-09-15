@@ -28,32 +28,70 @@ import java.util.List;
 
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
+/**
+ * Hibernate-based implementation of the UserAccessDao interface.
+ * <p>
+ * This class queries the UserAccessValue view/entity which aggregates user permissions
+ * across roles and organizational units. The implementation supports multi-facility
+ * deployments with shelter-based filtering.
+ * </p>
+ * <p>
+ * The queries use LIKE patterns to match shelter IDs within comma-separated value fields,
+ * which is a legacy database design pattern that should be considered for normalization
+ * in future refactoring.
+ * </p>
+ *
+ * @since 2005-01-01
+ * @see UserAccessDao
+ */
 public class UserAccessDaoImpl extends HibernateDaoSupport implements UserAccessDao {
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Queries UserAccessValue with optional shelter filtering using LIKE pattern.
+     * The shelter ID is embedded in a CSV field using pattern 'S{id},' for matching.
+     * This legacy pattern should be refactored to use proper relational design.
+     * </p>
+     */
     @Override
     public List GetUserAccessList(String providerNo, Integer shelterId) {
         String sSQL = "";
         if (shelterId != null && shelterId.intValue() > 0) {
+            // Building LIKE pattern for CSV field - legacy design
+            // Pattern: '%S{shelterId},%' matches shelter ID in CSV list
             String s = "'%S" + shelterId.toString() + ",%'";
             sSQL = "from UserAccessValue s where s.providerNo= ?0 " +
                     " and s.orgCdcsv like " + s + " order by s.functionCd, s.privilege desc, s.orgCd";
         } else {
+            // No shelter filter - return all access for provider
             sSQL = "from UserAccessValue s where s.providerNo= ?0 " +
                     " order by s.functionCd, s.privilege desc, s.orgCd";
         }
         return getHibernateTemplate().find(sSQL, providerNo);
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Joins UserAccessValue with LstOrgcd to retrieve organization codes.
+     * Filters for at least read privilege ('r' or higher) to determine access.
+     * Uses string comparison for privilege levels which relies on character ordering.
+     * </p>
+     */
     @Override
     public List GetUserOrgAccessList(String providerNo, Integer shelterId) {
         String sSQL = "";
         if (shelterId != null && shelterId.intValue() > 0) {
+            // Complex join with shelter filtering in CSV field
+            // privilege>='r' uses string comparison (r=read, w=write, x=delete)
             sSQL = "select distinct o.codecsv from UserAccessValue s, LstOrgcd o " +
                     "where s.providerNo= ?0 and s.privilege>='r' and s.orgCd=o.code " +
                     " and o.codecsv like '%S" + shelterId.toString() + ",%'" +
                     " order by o.codecsv";
             return getHibernateTemplate().find(sSQL, providerNo);
         } else {
+            // No shelter filter - all organizations with read access
             sSQL = "select distinct o.codecsv from UserAccessValue s, LstOrgcd o where s.providerNo= ?0 and s.privilege>='r' and s.orgCd=o.code order by o.codecsv";
             return getHibernateTemplate().find(sSQL, providerNo);
         }

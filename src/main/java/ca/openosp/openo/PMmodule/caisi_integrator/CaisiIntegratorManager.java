@@ -85,29 +85,64 @@ import ca.openosp.openo.webserv.rest.to.model.DemographicSearchRequest.SEARCHMOD
 
 
 /**
- * This class is a manager for integration related functionality. <br />
- * <br />
- * Disregarding the current code base which may not properly conform to the standards... <br />
- * <br />
- * All privacy related data access should be logged (read and write). As a result, if data is cached locally, the cached read must also be logged locally. If we currently can not log the access locally for what ever reason (such as current schema is a mess
- * and we don't have a good logging facility), then the data should not be cached and individual requests should be made to the service providers. This presumes the service providers conforms to access logging standards and therefore you push the logging
- * responsibility to the other application since we are currently unable to provide that locally. When and if a good local logging facility is made available, local caching can then occur. <br />
- * <br />
- * Note that not all data is privacy related, examples include a Facility and it's information is not covered under the regulations for privacy of an individual. Note also that for some reason we're only concerned about client privacy, providers seem to
- * not be covered and or have no expectation of privacy (although we could be wrong in this interpretation).
+ * Central manager for CAISI (Client Access to Integrated Services Information) integration functionality.
+ *
+ * <p>This manager provides the primary interface for healthcare data integration across multiple
+ * CAISI-enabled facilities. It handles secure web service connections, patient data synchronization,
+ * consent management, and inter-facility communication while ensuring compliance with healthcare
+ * privacy regulations (HIPAA/PIPEDA).</p>
+ *
+ * <p><strong>Privacy and Audit Compliance:</strong><br>
+ * All patient health information (PHI) access must be logged for audit trails. When data is cached
+ * locally, the cached read operations must also be logged to maintain complete audit compliance.
+ * If proper local logging cannot be guaranteed, data should be retrieved directly from service
+ * providers to ensure they handle audit logging responsibilities.</p>
+ *
+ * <p><strong>Caching Strategy:</strong><br>
+ * - Non-PHI data (facilities, providers, programs) can be cached safely
+ * - PHI data requires careful audit logging before caching
+ * - Provider-segmented cache keys ensure data separation</p>
+ *
+ * <p><strong>Supported Integration Features:</strong></p>
+ * <ul>
+ *   <li>Multi-facility patient demographic linking</li>
+ *   <li>Consent management and sharing preferences</li>
+ *   <li>Clinical notes, prescriptions, and lab results sharing</li>
+ *   <li>Provider communication and referral management</li>
+ *   <li>Healthcare Master Patient Index (HNR) integration</li>
+ *   <li>Real-time synchronization and offline fallback support</li>
+ * </ul>
+ *
+ * @see AuthenticationOutWSS4JInterceptorForIntegrator
+ * @see IntegratorFallBackManager
+ * @see ConformanceTestHelper
+ * @since April 21, 2008
  */
 public class CaisiIntegratorManager {
 
     /**
-     * only non-audited data should be cached in here
+     * Cache for non-PHI data that doesn't require audit logging.
+     * Only facility, provider, and program data should be cached here.
      */
     private static QueueCache<String, Object> basicDataCache = new QueueCache<String, Object>(4, 100, org.apache.commons.lang.time.DateUtils.MILLIS_PER_HOUR, null);
 
     /**
-     * data put here should be segmented by the requesting providers as part of the cache key
+     * Cache for provider-segmented data where cache keys include requesting provider context.
+     * Used for PHI data that requires provider-specific access tracking.
      */
     private static QueueCache<String, Object> segmentedDataCache = new QueueCache<String, Object>(4, 100, org.apache.commons.lang.time.DateUtils.MILLIS_PER_HOUR, null);
 
+    /**
+     * Sets the integrator offline status in the user's session.
+     *
+     * <p>Manages the offline state when connectivity issues are detected with
+     * the CAISI integrator services. When offline, the system falls back to
+     * locally cached data to maintain healthcare service continuity.</p>
+     *
+     * @param session HttpSession the user's HTTP session
+     * @param status boolean true to mark integrator as offline, false to mark as online
+     * @since April 21, 2008
+     */
     public static void setIntegratorOffline(HttpSession session, boolean status) {
         if (status) {
             session.setAttribute(SessionConstants.INTEGRATOR_OFFLINE, true);
@@ -116,6 +151,17 @@ public class CaisiIntegratorManager {
         }
     }
 
+    /**
+     * Checks for network connectivity errors and sets integrator offline if needed.
+     *
+     * <p>Analyzes exceptions to determine if they indicate network connectivity issues
+     * with the CAISI integrator services. If connection problems are detected, automatically
+     * switches the session to offline mode to enable fallback to cached data.</p>
+     *
+     * @param session HttpSession the user's HTTP session
+     * @param exception Throwable the exception to analyze for connectivity issues
+     * @since April 21, 2008
+     */
     public static void checkForConnectionError(HttpSession session, Throwable exception) {
         Throwable rootException = ExceptionUtils.getRootCause(exception);
         MiscUtils.getLogger().debug("Exception: " + exception.getClass().getName() + " --- " + rootException.getClass().getName());
@@ -125,6 +171,16 @@ public class CaisiIntegratorManager {
         }
     }
 
+    /**
+     * Checks if the integrator is currently in offline mode for this session.
+     *
+     * <p>Determines whether the CAISI integrator services are available or if the
+     * system should use cached/fallback data due to connectivity issues.</p>
+     *
+     * @param session HttpSession the user's HTTP session
+     * @return boolean true if integrator is offline, false if online
+     * @since April 21, 2008
+     */
     public static boolean isIntegratorOffline(HttpSession session) {
         Object object = session.getAttribute(SessionConstants.INTEGRATOR_OFFLINE);
         if (object != null) {
@@ -133,10 +189,28 @@ public class CaisiIntegratorManager {
         return false;
     }
 
+    /**
+     * Checks if integrated referrals are enabled for a facility.
+     *
+     * @param facility Facility the facility to check
+     * @return boolean true if both integrator and integrated referrals are enabled
+     * @since April 21, 2008
+     */
     public static boolean isEnableIntegratedReferrals(Facility facility) {
         return (facility.isIntegratorEnabled() && facility.isEnableIntegratedReferrals());
     }
 
+    /**
+     * Adds authentication interceptor to web service client for CAISI integrator access.
+     *
+     * <p>Configures the CXF client with WS-Security authentication and provider context
+     * for secure healthcare data access with proper audit trail information.</p>
+     *
+     * @param loggedInInfo LoggedInInfo the logged in user's information
+     * @param facility Facility the facility configuration with integrator credentials
+     * @param wsPort Object the web service port to configure
+     * @since April 21, 2008
+     */
     private static void addAuthenticationInterceptor(LoggedInInfo loggedInInfo, Facility facility, Object wsPort) {
         Client cxfClient = ClientProxy.getClient(wsPort);
         String providerNo = null;

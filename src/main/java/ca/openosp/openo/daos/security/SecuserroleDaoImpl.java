@@ -44,53 +44,78 @@ import ca.openosp.openo.model.security.Secuserrole;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * A data access object (DAO) providing persistence and search support for
- * Secuserrole entities. Transaction control of the save(), update() and
- * delete() operations can directly support Spring container-managed
- * transactions or they can be augmented to handle user-managed Spring
- * transactions. Each of these methods provides additional information for how
- * to configure it for the desired type of transaction control.
+ * Hibernate-based implementation of the SecuserroleDao interface.
+ * <p>
+ * This class manages user-role assignments with support for complex organizational
+ * hierarchies and multi-facility deployments. It implements batch operations with
+ * update-then-insert logic to prevent duplicates and maintains audit trails through
+ * automatic lastUpdateDate tracking.
+ * </p>
+ * <p>
+ * The implementation uses both HibernateTemplate and direct Session access depending
+ * on the complexity of the operation. Session management includes manual closing in
+ * some methods due to legacy code patterns that should be refactored.
+ * </p>
+ * <p>
+ * Several methods contain SQL injection vulnerabilities due to string concatenation
+ * in query building. These are marked with warnings and should be refactored to use
+ * parameterized queries.
+ * </p>
  *
- * @author MyEclipse Persistence Tools
- * @see Secuserrole
+ * @since 2005-01-01
+ * @see SecuserroleDao
+ * @see ca.openosp.openo.model.security.Secuserrole
  */
 @Transactional
 public class SecuserroleDaoImpl extends HibernateDaoSupport implements SecuserroleDao {
+    /** Logger for debugging and audit */
     private static final Logger logger = MiscUtils.getLogger();
-    // property constants
+    /** Direct SessionFactory reference for complex queries */
     public SessionFactory sessionFactory;
 
+    /**
+     * Sets the SessionFactory with Spring autowiring.
+     *
+     * @param sessionFactory SessionFactory the Hibernate session factory
+     */
     @Autowired
     public void setSessionFactoryOverride(SessionFactory sessionFactory) {
         super.setSessionFactory(sessionFactory);
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Implements update-then-insert pattern to prevent duplicates.
+     * Automatically sets lastUpdateDate for audit trail.
+     * Note: Contains commented-out session management code from legacy migration.
+     * </p>
+     */
     @Override
     public void saveAll(List list) {
         logger.debug("saving ALL Secuserrole instances");
-        // Session session = getSession();
         Session session = currentSession();
+        // Semicolon on separate line is likely a typo from refactoring
         ;
         try {
             for (int i = 0; i < list.size(); i++) {
                 Secuserrole obj = (Secuserrole) list.get(i);
+                // Set audit timestamp
                 obj.setLastUpdateDate(new Date());
+                // Try update first
                 int rowcount = update(obj);
 
                 if (rowcount <= 0) {
+                    // No existing record, insert new
                     session.save(obj);
                 }
 
             }
-            // this.getHibernateTemplate().saveOrUpdateAll(list);
             logger.debug("save ALL successful");
         } catch (RuntimeException re) {
             logger.error("save ALL failed", re);
             throw re;
         }
-        // finally {
-        // this.releaseSession(session);
-        // }
     }
 
     @Override
@@ -180,13 +205,23 @@ public class SecuserroleDaoImpl extends HibernateDaoSupport implements Secuserro
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Updates active status and lastUpdateDate for an existing assignment.
+     * WARNING: Uses string concatenation - SQL injection vulnerability.
+     * This method should be refactored to use parameterized queries.
+     * </p>
+     */
     @Override
     public int update(Secuserrole instance) {
         logger.debug("Update Secuserrole instance");
-        // Session session = getSession();
         Session session = currentSession();
+        // Semicolon on separate line is likely a typo
         ;
         try {
+            // WARNING: String concatenation creates SQL injection risk
+            // Should use parameterized queries instead
             String queryString = "update Secuserrole as model set model.activeyn ='" + instance.getActiveyn()
                     + "' , lastUpdateDate=now() "
                     + " where model.providerNo ='" + instance.getProviderNo() + "'"
@@ -309,6 +344,18 @@ public class SecuserroleDaoImpl extends HibernateDaoSupport implements Secuserro
 
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Searches for staff assignments using complex organizational hierarchy queries.
+     * Uses StringEscapeUtils.escapeSql for basic SQL injection protection, but this
+     * is not sufficient - should use parameterized queries instead.
+     * </p>
+     * <p>
+     * The query excludes organization codes starting with 'R' or 'O' which appear
+     * to be special system codes. Uses LIKE with concatenation for CSV field matching.
+     * </p>
+     */
     @Override
     public List searchByCriteria(StaffForm staffForm) {
 
@@ -316,10 +363,11 @@ public class SecuserroleDaoImpl extends HibernateDaoSupport implements Secuserro
         try {
 
             String AND = " and ";
-            // String OR = " or ";
 
             String orgcd = staffForm.getOrgcd();
 
+            // Complex join with organization hierarchy
+            // WARNING: String concatenation with orgcd - injection risk
             String queryString = "select a from Secuserrole a, LstOrgcd b"
                     + " where b.code ='" + orgcd + "'"
                     + " and b.codecsv like '%' || a.orgcd || ',%'"
@@ -329,11 +377,13 @@ public class SecuserroleDaoImpl extends HibernateDaoSupport implements Secuserro
             String lname = staffForm.getLastName();
 
             if (fname != null && fname.length() > 0) {
+                // Basic SQL escaping - not sufficient for security
                 fname = StringEscapeUtils.escapeSql(fname);
                 fname = fname.toLowerCase();
                 queryString = queryString + AND + "lower(a.providerFName) like '%" + fname + "%'";
             }
             if (lname != null && lname.length() > 0) {
+                // Basic SQL escaping - not sufficient for security
                 lname = StringEscapeUtils.escapeSql(lname);
                 lname = lname.toLowerCase();
                 queryString = queryString + AND + "lower(a.providerLName) like '%" + lname + "%'";

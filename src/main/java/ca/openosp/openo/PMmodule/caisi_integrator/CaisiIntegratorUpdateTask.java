@@ -195,6 +195,56 @@ import ca.openosp.openo.lab.ca.all.web.LabDisplayHelper;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
 
+/**
+ * CAISI Integrator data synchronization and export task for multi-facility healthcare integration.
+ *
+ * <p>This comprehensive background task manages the bidirectional synchronization of healthcare data
+ * between OpenO EMR installations and the CAISI (Client Access to Integrated Services Information)
+ * Integrator network. It handles the collection, serialization, and transmission of patient healthcare
+ * data across multiple healthcare facilities while maintaining strict privacy controls and consent
+ * verification.</p>
+ *
+ * <p>The task operates as a scheduled TimerTask that periodically exports updated patient records,
+ * clinical documentation, medications, allergies, lab results, and other healthcare data to the
+ * CAISI Integrator for sharing with authorized healthcare providers across the integrated network.
+ * It implements sophisticated change detection, consent verification, and data packaging mechanisms
+ * to ensure efficient and secure healthcare data exchange.</p>
+ *
+ * <p>Key functionalities include:</p>
+ * <ul>
+ * <li><strong>Patient Data Export:</strong> Comprehensive serialization of demographics, clinical notes,
+ *     medications, allergies, lab results, forms, preventions, admissions, and documents</li>
+ * <li><strong>Consent Verification:</strong> Integration with patient consent management to ensure
+ *     only authorized data sharing occurs in compliance with privacy regulations</li>
+ * <li><strong>Change Detection:</strong> Incremental synchronization based on last update timestamps
+ *     to minimize network traffic and processing overhead</li>
+ * <li><strong>Data Packaging:</strong> Creation of compressed archives containing serialized healthcare
+ *     data with metadata for efficient transmission</li>
+ * <li><strong>Multi-facility Support:</strong> Coordination of data sharing across multiple healthcare
+ *     facilities within the integrated network</li>
+ * <li><strong>Error Handling:</strong> Robust error recovery and logging for production healthcare
+ *     environments</li>
+ * </ul>
+ *
+ * <p>The task maintains strict adherence to healthcare privacy regulations (HIPAA/PIPEDA) by:</p>
+ * <ul>
+ * <li>Verifying patient consent before data export</li>
+ * <li>Maintaining audit trails for all data access and transmission</li>
+ * <li>Implementing secure data serialization and transmission protocols</li>
+ * <li>Supporting patient-controlled data sharing preferences</li>
+ * </ul>
+ *
+ * <p>Data synchronization covers all major healthcare record types including patient demographics,
+ * clinical notes, medication lists, allergy information, laboratory results, medical forms,
+ * prevention records, hospital admissions, appointments, and medical documents. The task creates
+ * compressed archives of this data for efficient network transmission while maintaining data
+ * integrity and security.</p>
+ *
+ * @see CaisiIntegratorManager
+ * @see IntegratorFallBackManager
+ * @see TimerTask
+ * @since 2006-12-16
+ */
 public class CaisiIntegratorUpdateTask extends TimerTask {
 
     private static final Logger logger = MiscUtils.getLogger();
@@ -264,6 +314,18 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
 
     private static TimerTask timerTask = null;
 
+    /**
+     * Starts the CAISI Integrator synchronization task with configured update interval.
+     *
+     * <p>This method initializes and schedules the background task that handles healthcare data
+     * synchronization with the CAISI Integrator network. The task runs at regular intervals
+     * as specified by the INTEGRATOR_UPDATE_PERIOD system property (default 15 minutes).</p>
+     *
+     * <p>The task is implemented as a daemon thread to ensure it doesn't prevent JVM shutdown
+     * and uses synchronized access to prevent multiple instances from running simultaneously.</p>
+     *
+     * @since 2006-12-16
+     */
     public static synchronized void startTask() {
         if (timerTask == null) {
             long period = 0;
@@ -285,6 +347,14 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
         }
     }
 
+    /**
+     * Stops the running CAISI Integrator synchronization task.
+     *
+     * <p>This method cancels the scheduled background task and cleans up resources.
+     * It ensures graceful shutdown of the data synchronization process.</p>
+     *
+     * @since 2006-12-16
+     */
     public static synchronized void stopTask() {
         if (timerTask != null) {
             timerTask.cancel();
@@ -295,8 +365,26 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
     }
 
     @Override
+    /**
+     * Main execution method for the CAISI Integrator synchronization task.
+     *
+     * <p>This method is called periodically by the Timer to perform healthcare data synchronization
+     * with the CAISI Integrator network. It creates a system authentication context and initiates
+     * data export for all configured healthcare facilities.</p>
+     *
+     * <p>The method handles the complete synchronization workflow including:</p>
+     * <ul>
+     * <li>Authentication and authorization setup</li>
+     * <li>Facility iteration and data collection</li>
+     * <li>Error handling and logging</li>
+     * <li>Resource cleanup</li>
+     * </ul>
+     *
+     * @since 2006-12-16
+     */
     public void run() {
 
+        // Check if data push has been administratively disabled
         if (isPushDisabled()) {
             logger.warn(
                     "skipping push to integrator because it's been disabled from the admin ui (Property table - DisableIntegratorPushes");
@@ -347,6 +435,25 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
         }
     }
 
+    /**
+     * Initiates healthcare data export for all integrator-enabled facilities.
+     *
+     * <p>This method coordinates the data synchronization process across all healthcare facilities
+     * that have CAISI Integrator connectivity enabled. It handles facility iteration, data collection,
+     * and error recovery while maintaining comprehensive logging for audit and troubleshooting purposes.</p>
+     *
+     * <p>For each facility, the method:</p>
+     * <ul>
+     * <li>Checks integrator connectivity status</li>
+     * <li>Collects updated healthcare records</li>
+     * <li>Serializes and packages data for transmission</li>
+     * <li>Handles connection failures gracefully</li>
+     * <li>Maintains synchronization timestamps</li>
+     * </ul>
+     *
+     * @param loggedInInfo the system authentication context for data access and transmission
+     * @since 2006-12-16
+     */
     public void pushAllFacilities(LoggedInInfo loggedInInfo) {
         List<Facility> facilities = facilityDao.findAll(true);
 
@@ -694,6 +801,12 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
         return false;
     }
 
+    /**
+     * Checks if healthcare data push to the integrator has been administratively disabled.
+     *
+     * @return true if data push is disabled, false otherwise
+     * @since 2006-12-16
+     */
     private boolean isPushDisabled() {
         UserProperty prop = userPropertyDao.getProp(IntegratorPushManager.DISABLE_INTEGRATOR_PUSH_PROP);
 
@@ -703,6 +816,13 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
         return false;
     }
 
+    /**
+     * Verifies patient consent for data sharing across the healthcare network.
+     *
+     * @param demographicNo the patient's unique identifier
+     * @return true if patient has consented to data sharing, false otherwise
+     * @since 2006-12-16
+     */
     private boolean checkPatientConsent(int demographicNo) {
         return patientConsentManager.hasPatientConsented(demographicNo, this.consentType);
     }
@@ -2566,6 +2686,16 @@ public class CaisiIntegratorUpdateTask extends TimerTask {
         return outputDirectory;
     }
 
+    /**
+     * Sets the output directory for healthcare data export files.
+     *
+     * <p>This method configures the filesystem location where serialized healthcare data files
+     * and compressed archives are created during the synchronization process. The directory
+     * must be writable by the application and have sufficient space for healthcare data exports.</p>
+     *
+     * @param outputDirectory the filesystem path where export files will be created
+     * @since 2006-12-16
+     */
     public static void setOutputDirectory(String outputDirectory) {
         CaisiIntegratorUpdateTask.outputDirectory = outputDirectory;
     }

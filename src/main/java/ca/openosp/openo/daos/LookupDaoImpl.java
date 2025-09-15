@@ -56,29 +56,76 @@ import ca.openosp.openo.utils.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.hibernate.SessionFactory;
 
+/**
+ * Implementation of the LookupDao interface.
+ *
+ * This class provides the concrete implementation for managing lookup tables
+ * and codes in the EMR system. It handles complex SQL generation for dynamic
+ * lookup table structures, supporting both flat and hierarchical code organizations.
+ *
+ * The implementation features:
+ * - Dynamic SQL generation based on field definitions
+ * - Support for tree-structured hierarchical codes
+ * - Generic column mapping using indexes (1-17)
+ * - Organization code management with parent-child relationships
+ * - Stored procedure execution for complex operations
+ * - Integration with provider and facility management
+ *
+ * Column mapping convention:
+ * - Index 1: Code
+ * - Index 2: Description
+ * - Index 3: Active flag
+ * - Index 4: Display Order
+ * - Index 5: Parent Code
+ * - Index 6: Buf1
+ * - Index 7: Code Tree
+ * - Index 8: Last Update User
+ * - Index 9: Last Update Date
+ * - Index 10-16: Buf3-Buf9
+ * - Index 17: Code CSV
+ *
+ * @since 2009-01-01
+ */
 public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
 
-    /*
-     * Column property mappings defined by the generic idx
-     * 1 - Code 2 - Description 3 Active
-     * 4 - Display Order, 5 - ParentCode 6 - Buf1 7 - CodeTree
-     * 8 - Last Update User 9 - Last Update Date
-     * 10 - 16 Buf3 - Buf9 17 - CodeCSV
+    /**
+     * Provider DAO for provider-related lookups.
      */
     private ProviderDao providerDao;
 
+    /**
+     * Hibernate session factory for database operations.
+     */
     public SessionFactory sessionFactory;
 
+    /**
+     * Sets the Hibernate session factory.
+     *
+     * Spring autowired method to inject the session factory.
+     *
+     * @param sessionFactory SessionFactory Hibernate session factory
+     */
     @Autowired
     public void setSessionFactoryOverride(SessionFactory sessionFactory) {
         super.setSessionFactory(sessionFactory);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Delegates to the overloaded method with empty parent code.
+     */
     @Override
     public List LoadCodeList(String tableId, boolean activeOnly, String code, String codeDesc) {
         return LoadCodeList(tableId, activeOnly, "", code, codeDesc);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Retrieves a single code by loading the code list and returning
+     * the first match.
+     */
     @Override
     public LookupCodeValue GetCode(String tableId, String code) {
         if (code == null || "".equals(code))
@@ -91,20 +138,30 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         return lkv;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Loads lookup codes with dynamic SQL generation based on field definitions.
+     * Handles both flat and hierarchical code structures.
+     */
     @Override
     public List LoadCodeList(String tableId, boolean activeOnly, String parentCode, String code, String codeDesc) {
         String pCd = parentCode;
+        // User table doesn't support parent codes
         if ("USR".equals(tableId))
             parentCode = null;
         LookupTableDefValue tableDef = GetLookupTableDef(tableId);
         if (tableDef == null)
             return (new ArrayList<LookupCodeValue>());
         List fields = LoadFieldDefList(tableId);
+        // Prepare parameters and field names arrays
         DBPreparedHandlerParam[] params = new DBPreparedHandlerParam[100];
         String fieldNames[] = new String[17];
         String sSQL1 = "";
         String sSQL = "select distinct ";
         boolean activeFieldExists = true;
+
+        // Build dynamic SQL based on field definitions
         for (int i = 1; i <= 17; i++) {
             boolean ok = false;
             for (int j = 0; j < fields.size(); j++) {
@@ -136,16 +193,19 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         sSQL1 = Misc.replace(sSQL, "s.", "a.") + " a,";
         sSQL += " s where 1=1";
         int i = 0;
+        // Filter by active status if requested
         if (activeFieldExists && activeOnly) {
             sSQL += " and " + fieldNames[2] + "=?";
             params[i++] = new DBPreparedHandlerParam(1);
         }
+        // Filter by parent code for hierarchical structures
         if (!Utility.IsEmpty(parentCode)) {
             sSQL += " and " + fieldNames[4] + "=?";
             params[i++] = new DBPreparedHandlerParam(parentCode);
         }
+        // Filter by code value(s)
         if (!Utility.IsEmpty(code)) {
-            // org table is different from other tables
+            // Organization table uses LIKE for hierarchical matching
             if (tableId.equals("ORG")) {
                 sSQL += " and " + fieldNames[0] + " like ('%'||";
                 String[] codes = code.split(",");
@@ -170,11 +230,13 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
                 sSQL += ")";
             }
         }
+        // Filter by description (case-insensitive partial match)
         if (!Utility.IsEmpty(codeDesc)) {
             sSQL += " and upper(" + fieldNames[1] + ") like ?";
             params[i++] = new DBPreparedHandlerParam("%" + codeDesc.toUpperCase() + "%");
         }
 
+        // Handle tree-structured tables with hierarchical relationships
         if (tableDef.isTree()) {
             sSQL = sSQL1 + "(" + sSQL + ") b";
             sSQL += " where b." + fieldNames[6] + " like a." + fieldNames[6] + "||'%'";
@@ -238,6 +300,14 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         return list;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Retrieves the table definition for a given lookup table ID.
+     * This method queries the system metadata to find the configuration
+     * for dynamic lookup tables, including table name, hierarchy settings,
+     * and other structural information.
+     */
     @Override
     public LookupTableDefValue GetLookupTableDef(String tableId) {
         String sSQL = "from LookupTableDefValue s where s.tableId= ?0";
@@ -249,6 +319,14 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Loads the field definitions for a specific lookup table.
+     * Field definitions define the structure, data types, and mapping
+     * of columns in dynamic lookup tables. The results are ordered
+     * by field index for consistent column ordering.
+     */
     @Override
     public List LoadFieldDefList(String tableId) {
         String sSql = "from FieldDefValue s where s.tableId=?0 order by s.fieldIndex ";
@@ -259,12 +337,22 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         return getHibernateTemplate().find(sSql, params);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Retrieves field values for a specific code in a lookup table.
+     * This method dynamically builds a SQL query based on the table's field
+     * definitions and populates the field definition objects with actual values.
+     * Date fields are formatted according to their editability settings,
+     * and lookup fields are resolved to their descriptive values.
+     */
     @Override
     public List GetCodeFieldValues(LookupTableDefValue tableDef, String code) {
         String tableName = tableDef.getTableName();
         List fs = LoadFieldDefList(tableDef.getTableId());
         String idFieldName = "";
 
+        // Build dynamic SQL based on field definitions
         String sql = "select ";
         for (int i = 0; i < fs.size(); i++) {
             FieldDefValue fdv = (FieldDefValue) fs.get(i);
@@ -282,9 +370,11 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         try {
             ResultSet rs = db.queryResults(sql);
             if (rs.next()) {
+                // Populate field values from result set
                 for (int i = 0; i < fs.size(); i++) {
                     FieldDefValue fdv = (FieldDefValue) fs.get(i);
                     String val = Misc.getString(rs, (i + 1));
+                    // Format date fields based on editability
                     if ("D".equals(fdv.getFieldType()))
                         if (fdv.isEditable()) {
                             val = MyDateFormat.getStandardDate(MyDateFormat.getCalendarwithTime(val));
@@ -295,6 +385,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
                 }
             }
             rs.close();
+            // Resolve lookup field descriptions
             for (int i = 0; i < fs.size(); i++) {
                 FieldDefValue fdv = (FieldDefValue) fs.get(i);
                 if (!Utility.IsEmpty(fdv.getLookupTable())) {
@@ -309,11 +400,22 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         return fs;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Retrieves all field values for all codes in a lookup table.
+     * This method returns a list of field definition lists, where each
+     * inner list represents the field values for one code record.
+     * All date fields are formatted with full date-time precision,
+     * and lookup fields are resolved to their descriptions.
+     */
     @Override
     public List<List> GetCodeFieldValues(LookupTableDefValue tableDef) {
         String tableName = tableDef.getTableName();
         List fs = LoadFieldDefList(tableDef.getTableId());
         ArrayList<List> codes = new ArrayList<List>();
+
+        // Build SQL to select all fields
         String sql = "select ";
         for (int i = 0; i < fs.size(); i++) {
             FieldDefValue fdv = (FieldDefValue) fs.get(i);
@@ -328,12 +430,15 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         try {
             ResultSet rs = db.queryResults(sql);
             while (rs.next()) {
+                // Process each row and populate field values
                 for (int i = 0; i < fs.size(); i++) {
                     FieldDefValue fdv = (FieldDefValue) fs.get(i);
                     String val = Misc.getString(rs, (i + 1));
+                    // Format all date fields with full date-time
                     if ("D".equals(fdv.getFieldType()))
                         val = MyDateFormat.getStandardDateTime(MyDateFormat.getCalendarwithTime(val));
                     fdv.setVal(val);
+                    // Resolve lookup descriptions
                     if (!Utility.IsEmpty(fdv.getLookupTable())) {
                         LookupCodeValue lkv = GetCode(fdv.getLookupTable(), val);
                         if (lkv != null)
@@ -349,6 +454,19 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         return codes;
     }
 
+    /**
+     * Generates the next sequential ID for auto-increment fields.
+     *
+     * This method queries the maximum value of the specified ID field
+     * and returns the next sequential number. Used for tables that
+     * manage their own sequence generation rather than relying on
+     * database auto-increment features.
+     *
+     * @param idFieldName String the name of the ID field to query
+     * @param tableName String the name of the table to query
+     * @return int the next available ID value (max + 1)
+     * @throws SQLException if database query fails
+     */
     private int GetNextId(String idFieldName, String tableName) throws SQLException {
         String sql = "select max(" + idFieldName + ")";
         sql += " from " + tableName;
@@ -361,6 +479,16 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         return id + 1;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Saves a lookup code value using field definition list.
+     * This method handles both insert and update operations, and includes
+     * special processing for organization tables (OGN, SHL) and properties
+     * table (PRP). Organization codes are automatically synchronized to
+     * the hierarchical organization structure, while properties are
+     * updated in the runtime configuration.
+     */
     @Override
     public String SaveCodeValue(boolean isNew, LookupTableDefValue tableDef, List fieldDefList) throws SQLException {
         String id = "";
@@ -370,9 +498,13 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
             id = UpdateCodeValue(tableDef, fieldDefList);
         }
         String tableId = tableDef.getTableId();
+
+        // Handle organization code synchronization
         if ("OGN,SHL".indexOf(tableId) >= 0) {
             SaveAsOrgCode(GetCode(tableId, id), tableId);
         }
+
+        // Handle properties table updates
         if ("PRP".equals(tableId)) {
             OscarProperties prp = OscarProperties.getInstance();
             LookupCodeValue prpCd = GetCode(tableId, id);
@@ -383,64 +515,76 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         return id;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Saves a lookup code value using LookupCodeValue object.
+     * This method converts the code value object into field definitions
+     * by mapping each property to its corresponding generic index position.
+     * The mapping follows the standard column convention documented in
+     * the class header. After conversion, delegates to the field-based
+     * save method.
+     */
     @Override
     public String SaveCodeValue(boolean isNew, LookupCodeValue codeValue) throws SQLException {
         String tableId = codeValue.getPrefix();
         LookupTableDefValue tableDef = GetLookupTableDef(tableId);
         List fieldDefList = this.LoadFieldDefList(tableId);
+
+        // Map code value properties to field definitions based on generic index
         for (int i = 0; i < fieldDefList.size(); i++) {
             FieldDefValue fdv = (FieldDefValue) fieldDefList.get(i);
 
             switch (fdv.getGenericIdx()) {
-                case 1:
+                case 1: // Code
                     fdv.setVal(codeValue.getCode());
                     break;
-                case 2:
+                case 2: // Description
                     fdv.setVal(codeValue.getDescription());
                     break;
-                case 3:
+                case 3: // Active flag
                     fdv.setVal(codeValue.isActive() ? "1" : "0");
                     break;
-                case 4:
+                case 4: // Display Order
                     fdv.setVal(String.valueOf(codeValue.getOrderByIndex()));
                     break;
-                case 5:
+                case 5: // Parent Code
                     fdv.setVal(codeValue.getParentCode());
                     break;
-                case 6:
+                case 6: // Buf1
                     fdv.setVal(codeValue.getBuf1());
                     break;
-                case 7:
+                case 7: // Code Tree
                     fdv.setVal(codeValue.getCodeTree());
                     break;
-                case 8:
+                case 8: // Last Update User
                     fdv.setVal(codeValue.getLastUpdateUser());
                     break;
-                case 9:
+                case 9: // Last Update Date
                     fdv.setVal(MyDateFormat.getStandardDateTime(codeValue.getLastUpdateDate()));
                     break;
-                case 10:
+                case 10: // Buf3
                     fdv.setVal(codeValue.getBuf3());
                     break;
-                case 11:
+                case 11: // Buf4
                     fdv.setVal(codeValue.getBuf4());
                     break;
-                case 12:
+                case 12: // Buf5
                     fdv.setVal(codeValue.getBuf5());
                     break;
-                case 13:
+                case 13: // Buf6
                     fdv.setVal(codeValue.getBuf6());
                     break;
-                case 14:
+                case 14: // Buf7
                     fdv.setVal(codeValue.getBuf7());
                     break;
-                case 15:
+                case 15: // Buf8
                     fdv.setVal(codeValue.getBuf8());
                     break;
-                case 16:
+                case 16: // Buf9
                     fdv.setVal(codeValue.getBuf9());
                     break;
-                case 17:
+                case 17: // Code CSV
                     fdv.setVal(codeValue.getCodecsv());
                     break;
             }
@@ -452,6 +596,19 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         }
     }
 
+    /**
+     * Inserts a new code value record into the lookup table.
+     *
+     * This method dynamically constructs an INSERT SQL statement based on
+     * the field definitions and handles auto-generated IDs, data type
+     * conversions, and duplicate checking. The method ensures data integrity
+     * by validating that the code doesn't already exist before insertion.
+     *
+     * @param tableDef LookupTableDefValue the table definition containing metadata
+     * @param fieldDefList List<FieldDefValue> the field definitions with values to insert
+     * @return String the ID of the inserted record
+     * @throws SQLException if the code already exists or database operation fails
+     */
     private String InsertCodeValue(LookupTableDefValue tableDef, List fieldDefList) throws SQLException {
         String tableName = tableDef.getTableName();
         String idFieldVal = "";
@@ -459,25 +616,33 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         DBPreparedHandlerParam[] params = new DBPreparedHandlerParam[fieldDefList.size()];
         String phs = "";
         String sql = "insert into  " + tableName + "(";
+
+        // Build SQL and prepare parameters based on field definitions
         for (int i = 0; i < fieldDefList.size(); i++) {
             FieldDefValue fdv = (FieldDefValue) fieldDefList.get(i);
             sql += fdv.getFieldSQL() + ",";
             phs += "?,";
+
+            // Handle ID field (generic index 1)
             if (fdv.getGenericIdx() == 1) {
                 if (fdv.isAuto()) {
+                    // Generate next ID for auto-increment fields
                     idFieldVal = String.valueOf(GetNextId(fdv.getFieldSQL(), tableName));
                     fdv.setVal(idFieldVal);
                 } else {
                     idFieldVal = fdv.getVal();
                 }
             }
+
+            // Set parameter based on field type
             if ("S".equals(fdv.getFieldType())) {
                 params[i] = new DBPreparedHandlerParam(fdv.getVal());
             } else if ("D".equals(fdv.getFieldType())) {
-                // for last update date Using calendar Instance
+                // Convert date strings to SQL Date objects
                 params[i] = new DBPreparedHandlerParam(
                         new java.sql.Date(MyDateFormat.getCalendarwithTime(fdv.getVal()).getTime().getTime()));
             } else {
+                // Handle integer fields
                 params[i] = new DBPreparedHandlerParam(Integer.valueOf(fdv.getVal()).intValue());
             }
         }
@@ -485,7 +650,7 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         phs = phs.substring(0, phs.length() - 1);
         sql += ") values (" + phs + ")";
 
-        // check the existence of the code
+        // Validate code uniqueness before insertion
         LookupCodeValue lkv = GetCode(tableDef.getTableId(), idFieldVal);
         if (lkv != null) {
             throw new SQLException("The Code Already Exists.");
@@ -496,6 +661,19 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         return idFieldVal;
     }
 
+    /**
+     * Updates an existing code value record in the lookup table.
+     *
+     * This method dynamically constructs an UPDATE SQL statement based on
+     * the field definitions and handles data type conversions. Date fields
+     * are processed differently based on their editability - editable dates
+     * use date-only format while non-editable dates include time information.
+     *
+     * @param tableDef LookupTableDefValue the table definition containing metadata
+     * @param fieldDefList List<FieldDefValue> the field definitions with values to update
+     * @return String the ID of the updated record
+     * @throws SQLException if database operation fails
+     */
     private String UpdateCodeValue(LookupTableDefValue tableDef, List fieldDefList) throws SQLException {
         String tableName = tableDef.getTableName();
         String idFieldName = "";
@@ -503,30 +681,41 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
 
         DBPreparedHandlerParam[] params = new DBPreparedHandlerParam[fieldDefList.size() + 1];
         String sql = "update " + tableName + " set ";
+
+        // Build UPDATE SQL and prepare parameters
         for (int i = 0; i < fieldDefList.size(); i++) {
             FieldDefValue fdv = (FieldDefValue) fieldDefList.get(i);
+
+            // Identify ID field for WHERE clause
             if (fdv.getGenericIdx() == 1) {
                 idFieldName = fdv.getFieldSQL();
                 idFieldVal = fdv.getVal();
             }
 
             sql += fdv.getFieldSQL() + "=?,";
+
+            // Set parameter based on field type
             if ("S".equals(fdv.getFieldType())) {
                 params[i] = new DBPreparedHandlerParam(fdv.getVal());
             } else if ("D".equals(fdv.getFieldType())) {
+                // Handle date fields based on editability
                 if (fdv.isEditable()) {
+                    // Editable dates: date-only format
                     params[i] = new DBPreparedHandlerParam(
                             new java.sql.Date(MyDateFormat.getCalendar(fdv.getVal()).getTime().getTime()));
                 } else {
+                    // Non-editable dates: full date-time format
                     params[i] = new DBPreparedHandlerParam(
                             new java.sql.Date(MyDateFormat.getCalendarwithTime(fdv.getVal()).getTime().getTime()));
                 }
             } else {
+                // Handle integer fields
                 params[i] = new DBPreparedHandlerParam(Integer.valueOf(fdv.getVal()).intValue());
             }
         }
         sql = sql.substring(0, sql.length() - 1);
         sql += " where " + idFieldName + "=?";
+        // Use the ID field value as WHERE clause parameter
         params[fieldDefList.size()] = params[0];
 
         queryExecuteUpdate(sql, params);
@@ -534,25 +723,40 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         return idFieldVal;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Saves a program as an organization code in the hierarchical structure.
+     * This method creates or updates a program entry in the organization
+     * lookup table, maintaining the tree structure and CSV relationships.
+     * Programs are prefixed with 'P' and linked to their parent facility.
+     * Updates to existing programs trigger cascade updates to child nodes.
+     */
     @Override
     public void SaveAsOrgCode(Program program) throws SQLException {
 
+        // Generate formatted program ID with padding
         String programId = "0000000" + program.getId().toString();
         programId = "P" + programId.substring(programId.length() - 7);
         String fullCode = "P" + program.getId();
 
+        // Generate formatted facility ID for hierarchy lookup
         String facilityId = "0000000" + String.valueOf(program.getFacilityId());
         facilityId = "F" + facilityId.substring(facilityId.length() - 7);
 
+        // Get parent facility code to build hierarchy
         LookupCodeValue fcd = GetCode("ORG", "F" + program.getFacilityId());
         fullCode = fcd.getBuf1() + fullCode;
 
+        // Check if program code already exists
         boolean isNew = false;
         LookupCodeValue pcd = GetCode("ORG", "P" + program.getId());
         if (pcd == null) {
             isNew = true;
             pcd = new LookupCodeValue();
         }
+
+        // Set program organization code properties
         pcd.setPrefix("ORG");
         pcd.setCode("P" + program.getId());
         pcd.setCodeTree(fcd.getCodeTree() + programId);
@@ -563,6 +767,8 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         pcd.setOrderByIndex(0);
         pcd.setLastUpdateDate(Calendar.getInstance());
         pcd.setLastUpdateUser(program.getLastUpdateUser());
+
+        // Update hierarchy and status for existing programs
         if (!isNew) {
             this.updateOrgTree(pcd.getCode(), pcd);
             this.updateOrgStatus(pcd.getCode(), pcd);
@@ -570,8 +776,22 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         this.SaveCodeValue(isNew, pcd);
     }
 
+    /**
+     * Updates the organizational tree structure for child nodes.
+     *
+     * When an organization code changes its hierarchy information
+     * (tree code, CSV path, or full code), this method cascades
+     * those changes to all child nodes in the organization tree.
+     * Uses SQL REPLACE function to update all matching patterns
+     * in the hierarchical structure fields.
+     *
+     * @param orgCd String the organization code being updated
+     * @param newCd LookupCodeValue the new code value with updated hierarchy
+     */
     private void updateOrgTree(String orgCd, LookupCodeValue newCd) {
         LookupCodeValue oldCd = GetCode("ORG", orgCd);
+
+        // Only update if hierarchy has changed
         if (!oldCd.getCodecsv().equals(newCd.getCodecsv())) {
             String oldFullCode = oldCd.getBuf1();
             String oldTreeCode = oldCd.getCodeTree();
@@ -581,12 +801,12 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
             String newTreeCode = newCd.getCodeTree();
             String newCsv = newCd.getCodecsv();
 
+            // Update all child nodes with new hierarchy information
             String sql = "update lst_orgcd set fullcode = replace(fullcode, :oldFullCode, :newFullCode), "
                     + "codetree = replace(codetree, :oldTreeCode, :newTreeCode), "
                     + "codecsv = replace(codecsv, :oldCsv, :newCsv) "
                     + "where codecsv like :oldCsvPattern";
 
-            // Session session = getSession();
             Session session = sessionFactory.getCurrentSession();
             try {
                 session.createSQLQuery(sql)
@@ -599,21 +819,34 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
                     .setParameter("oldCsvPattern", oldCsv + "_%")
                     .executeUpdate();
             } finally {
-                // this.releaseSession(session);
                 session.close();
             }
-
         }
-
     }
 
+    /**
+     * Updates the active status of child organization nodes.
+     *
+     * When an organization is deactivated, this method ensures
+     * that all child nodes in the hierarchy are also deactivated
+     * to maintain organizational consistency. Uses the CSV path
+     * pattern matching to find all descendant organizations.
+     *
+     * @param orgCd String the organization code being updated
+     * @param newCd LookupCodeValue the new code value with updated status
+     */
     private void updateOrgStatus(String orgCd, LookupCodeValue newCd) {
         LookupCodeValue oldCd = GetCode("ORG", orgCd);
+
+        // If organization is being deactivated, deactivate all children
         if (!newCd.isActive()) {
             String oldCsv = oldCd.getCodecsv() + "_%";
 
+            // Find all child organization codes
             List<LstOrgcd> o = (List<LstOrgcd>) this.getHibernateTemplate()
                     .find("FROM LstOrgcd o WHERE o.codecsv like ?0", oldCsv);
+
+            // Deactivate each child organization
             for (LstOrgcd l : o) {
                 l.setActiveyn(0);
                 this.getHibernateTemplate().update(l);
@@ -621,38 +854,63 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Determines if one organization is a child of another in the hierarchy.
+     * This method checks if org1 is a parent or ancestor of org2 by comparing
+     * their full codes. The hierarchical relationship is determined by
+     * checking if org1's full code is contained within org2's full code.
+     */
     @Override
     public boolean inOrg(String org1, String org2) {
         boolean isInString = false;
         String sql = "From LstOrgcd a where  a.fullcode like %?0";
 
+        // Find organization objects by full code pattern
         LstOrgcd orgObj1 = (LstOrgcd) getHibernateTemplate().find(sql, new Object[]{org1});
         LstOrgcd orgObj2 = (LstOrgcd) getHibernateTemplate().find(sql, new Object[]{org2});
+
+        // Check if org1 is contained within org2's hierarchy
         if (orgObj2.getFullcode().indexOf(orgObj1.getFullcode()) > 0)
             isInString = true;
         return isInString;
-
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Saves a facility as an organization code in the hierarchical structure.
+     * This method creates or updates a facility entry in the organization
+     * lookup table, maintaining the tree structure and CSV relationships.
+     * Facilities are prefixed with 'F' and linked to their parent organization.
+     * Updates to existing facilities trigger cascade updates to child nodes.
+     */
     @Override
     public void SaveAsOrgCode(Facility facility) throws SQLException {
 
+        // Generate formatted facility ID with padding
         String facilityId = "0000000" + facility.getId().toString();
         facilityId = "F" + facilityId.substring(facilityId.length() - 7);
         String fullCode = "F" + facility.getId();
 
+        // Generate formatted organization ID for hierarchy lookup
         String orgId = "0000000" + String.valueOf(facility.getOrgId());
         orgId = "S" + orgId.substring(orgId.length() - 7);
 
+        // Get parent organization code to build hierarchy
         LookupCodeValue ocd = GetCode("ORG", "S" + facility.getOrgId());
         fullCode = ocd.getBuf1() + fullCode;
 
+        // Check if facility code already exists
         boolean isNew = false;
         LookupCodeValue fcd = GetCode("ORG", "F" + facility.getId());
         if (fcd == null) {
             isNew = true;
             fcd = new LookupCodeValue();
         }
+
+        // Set facility organization code properties
         fcd.setPrefix("ORG");
         fcd.setCode("F" + facility.getId());
         fcd.setCodeTree(ocd.getCodeTree() + facilityId);
@@ -662,7 +920,8 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         fcd.setActive(!facility.isDisabled());
         fcd.setOrderByIndex(0);
         fcd.setLastUpdateDate(Calendar.getInstance());
-        // fcd.setLastUpdateUser(facility.getLastUpdateUser());
+
+        // Update hierarchy and status for existing facilities
         if (!isNew) {
             this.updateOrgTree(fcd.getCode(), fcd);
             this.updateOrgStatus(fcd.getCode(), fcd);
@@ -670,30 +929,47 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         this.SaveCodeValue(isNew, fcd);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Saves a lookup code value as an organization code in the hierarchical structure.
+     * This method creates or updates organization entries based on lookup table
+     * codes, determining the appropriate prefix and parent relationships.
+     * Organization tables (OGN) use 'O' prefix with 'R' parents, while
+     * shelter tables (SHL) use 'S' prefix with 'O' parents. Updates to existing
+     * organization codes trigger cascade updates to child nodes.
+     */
     @Override
     public void SaveAsOrgCode(LookupCodeValue orgVal, String tableId) throws SQLException {
 
+        // Determine organization prefix based on table ID
         String orgPrefix = tableId.substring(0, 1);
         String orgPrefixP = "R1";
+        // Parent of Organization is R, parent of Shelter is O
         if ("S".equals(orgPrefix))
-            orgPrefixP = "O"; // parent of Organization is R, parent of Shelter is O.
+            orgPrefixP = "O";
 
+        // Generate formatted organization ID with padding
         String orgId = "0000000" + orgVal.getCode();
         orgId = orgPrefix + orgId.substring(orgId.length() - 7);
 
         String orgCd = orgPrefix + orgVal.getCode();
         String parentCd = orgPrefixP + orgVal.getParentCode();
 
+        // Find parent organization code
         LookupCodeValue pCd = GetCode("ORG", parentCd);
         if (pCd == null)
             return;
 
+        // Check if organization code already exists
         LookupCodeValue ocd = GetCode("ORG", orgCd);
         boolean isNew = false;
         if (ocd == null) {
             isNew = true;
             ocd = new LookupCodeValue();
         }
+
+        // Set organization code properties
         ocd.setPrefix("ORG");
         ocd.setCode(orgCd);
         ocd.setCodeTree(pCd.getCodeTree() + orgId);
@@ -704,6 +980,8 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         ocd.setOrderByIndex(0);
         ocd.setLastUpdateDate(Calendar.getInstance());
         ocd.setLastUpdateUser(orgVal.getLastUpdateUser());
+
+        // Update hierarchy and status for existing organization codes
         if (!isNew) {
             this.updateOrgTree(ocd.getCode(), ocd);
             this.updateOrgStatus(ocd.getCode(), ocd);
@@ -711,29 +989,55 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         this.SaveCodeValue(isNew, ocd);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Executes a stored procedure with the provided parameters.
+     * This method provides a simple interface for executing database
+     * stored procedures, handling parameter passing and error management.
+     * Used for complex database operations that are better implemented
+     * as stored procedures rather than dynamic SQL.
+     */
     @Override
     public void runProcedure(String procName, String[] params) throws SQLException {
         DBPreparedHandler db = new DBPreparedHandler();
         db.procExecute(procName, params);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Counts the number of active clients in an organization hierarchy.
+     * This method checks both admitted clients (admission table) and
+     * clients in program queues. It uses the organizational hierarchy
+     * CSV structure to find all programs within the specified organization
+     * and its sub-organizations. Returns the count from admissions if
+     * any exist, otherwise returns the count from program queues.
+     */
     @Override
     public int getCountOfActiveClient(String orgCd) throws SQLException {
+        // Count admitted clients in organization hierarchy
         String sql = "select count(*) from admission where admission_status='" + KeyConstants.INTAKE_STATUS_ADMITTED
                 + "' and  'P' || program_id in (" + " select code from lst_orgcd  where codecsv like '%' || '" + orgCd
                 + ",' || '%')";
+
+        // Count clients in program queues within organization hierarchy
         String sql1 = "select count(*) from program_queue where  'P' || program_id in ("
                 + " select code from lst_orgcd  where codecsv like '%' || '" + orgCd + ",' || '%')";
 
         DBPreparedHandler db = new DBPreparedHandler();
 
+        // First check admitted clients
         ResultSet rs = db.queryResults(sql);
         int id = 0;
         if (rs.next())
             id = rs.getInt(1);
+
+        // If admitted clients exist, return that count
         if (id > 0)
             return id;
 
+        // Otherwise check program queue
         rs.close();
         rs = db.queryResults(sql1);
         if (rs.next())
@@ -742,13 +1046,37 @@ public class LookupDaoImpl extends HibernateDaoSupport implements LookupDao {
         return id;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Sets the provider DAO for provider-related lookups.
+     * This method allows dependency injection of the provider DAO,
+     * which is used specifically for filtering user lookup codes
+     * based on program membership and provider access controls.
+     */
     @Override
     public void setProviderDao(ProviderDao providerDao) {
         this.providerDao = providerDao;
     }
 
+    /**
+     * Executes a parameterized SQL update statement.
+     *
+     * This method handles the low-level execution of prepared statements
+     * with proper parameter binding based on parameter types. It supports
+     * string, date, integer, and timestamp parameters, with null handling.
+     * Used internally by insert and update operations to ensure proper
+     * SQL parameter binding and prevent SQL injection vulnerabilities.
+     *
+     * @param preparedSQL String the parameterized SQL statement
+     * @param params DBPreparedHandlerParam[] array of parameters with types
+     * @return int the number of rows affected by the update
+     * @throws SQLException if the SQL execution fails
+     */
     private int queryExecuteUpdate(String preparedSQL, DBPreparedHandlerParam[] params) throws SQLException {
         PreparedStatement preparedStmt = DbConnectionFilter.getThreadLocalDbConnection().prepareStatement(preparedSQL);
+
+        // Bind parameters based on their types
         for (int i = 0; i < params.length; i++) {
             DBPreparedHandlerParam param = params[i];
 

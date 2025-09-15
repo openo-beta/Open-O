@@ -26,9 +26,46 @@ package ca.openosp.openo.daos.security;
 
 import java.util.List;
 
+/**
+ * Data Access Object interface for retrieving user access permissions in the OpenO EMR system.
+ * <p>
+ * This interface provides methods to query user access rights based on provider number
+ * and optional shelter/facility context. It supports multi-facility installations where
+ * access rights may vary by organizational unit.
+ * </p>
+ * <p>
+ * The interface works with UserAccessValue entities which represent computed access
+ * permissions derived from the user's roles and the organization's security configuration.
+ * </p>
+ *
+ * @since 2005-01-01
+ * @see ca.openosp.openo.model.UserAccessValue
+ */
 public interface UserAccessDao {
+    /**
+     * Retrieves the complete access list for a provider, optionally filtered by shelter.
+     * <p>
+     * Returns UserAccessValue entities ordered by function code, privilege level (descending),
+     * and organization code. This ordering ensures higher privileges appear first.
+     * </p>
+     *
+     * @param providerNo String the provider's unique identifier
+     * @param shelterId Integer optional shelter ID for filtering (null for all shelters)
+     * @return List list of UserAccessValue entities representing access permissions
+     */
     public List GetUserAccessList(String providerNo, Integer shelterId);
 
+    /**
+     * Retrieves distinct organization access codes for a provider.
+     * <p>
+     * Returns a list of organization code CSV strings that the provider has
+     * at least read access to, useful for determining facility-level access.
+     * </p>
+     *
+     * @param providerNo String the provider's unique identifier
+     * @param shelterId Integer optional shelter ID for filtering
+     * @return List list of organization code CSV strings
+     */
     public List GetUserOrgAccessList(String providerNo, Integer shelterId);
 
 }

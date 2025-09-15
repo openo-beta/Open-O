@@ -33,21 +33,57 @@ import ca.openosp.openo.commn.model.Provider;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 /**
- * This couldn't possibly work, it's not a spring managed bean according to the xml files.
- * But oh well, some one imports this class and tries to have it injected so I'll
- * leave the code here so it compiles. what ever...
+ * Implementation of the ProviderDAO interface.
+ *
+ * This class provides the concrete Hibernate-based implementation for
+ * managing healthcare provider data access. It extends HibernateDaoSupport
+ * to leverage Spring's Hibernate integration features.
+ *
+ * The implementation uses HQL (Hibernate Query Language) to retrieve
+ * provider information from the database, supporting operations for:
+ * - Fetching all providers ordered by last name
+ * - Looking up individual providers by their unique identifier
+ * - Searching providers by first and last name combination
+ *
+ * Note: Historical implementation note indicates this class may have
+ * Spring configuration issues. The implementation is maintained for
+ * backward compatibility with existing code dependencies.
+ *
+ * @since 2012-01-01
+ * @deprecated Consider using ca.openosp.openo.PMmodule.dao.ProviderDao implementation instead
  */
 public class ProviderDAOImpl extends HibernateDaoSupport implements ProviderDAO {
 
+    /**
+     * {@inheritDoc}
+     *
+     * Retrieves all providers ordered alphabetically by last name
+     * using HQL query.
+     */
     @SuppressWarnings("unchecked")
     public List<Provider> getProviders() {
         return (List<Provider>) getHibernateTemplate().find("from Provider p order by p.lastName");
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Uses Hibernate's get method for direct primary key lookup,
+     * providing efficient single provider retrieval.
+     */
     public Provider getProvider(String provider_no) {
         return getHibernateTemplate().get(Provider.class, provider_no);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Searches for provider using HQL with positional parameters.
+     * Returns the first matching provider if multiple exist.
+     *
+     * Note: This method may throw IndexOutOfBoundsException if no
+     * provider matches the name criteria.
+     */
     public Provider getProviderByName(String lastName, String firstName) {
         return (Provider) getHibernateTemplate().find("from Provider p where p.first_name = ?0 and p.last_name = ?1", firstName, lastName).get(0);
     }

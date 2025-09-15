@@ -35,10 +35,27 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import ca.openosp.openo.model.security.Secrole;
 
+/**
+ * Hibernate-based implementation of the SecroleDao interface.
+ * <p>
+ * Manages persistence of security role definitions using HibernateTemplate.
+ * All queries use HQL for database independence and leverage Hibernate's
+ * caching mechanisms for performance optimization.
+ * </p>
+ *
+ * @since 2005-01-01
+ * @see SecroleDao
+ * @see ca.openosp.openo.model.security.Secrole
+ */
 public class SecroleDaoImpl extends HibernateDaoSupport implements SecroleDao {
 
+    /** Logger for debugging and audit */
     private Logger logger = MiscUtils.getLogger();
 
+    /**
+     * {@inheritDoc}
+     * Retrieves all roles ordered alphabetically by name for consistent display.
+     */
     @Override
     public List<Secrole> getRoles() {
         @SuppressWarnings("unchecked")
@@ -49,12 +66,17 @@ public class SecroleDaoImpl extends HibernateDaoSupport implements SecroleDao {
         return results;
     }
 
+    /**
+     * {@inheritDoc}
+     * Uses Hibernate's get() method for efficient retrieval by primary key.
+     */
     @Override
     public Secrole getRole(Integer id) {
         if (id == null || id.intValue() <= 0) {
             throw new IllegalArgumentException();
         }
 
+        // Convert Integer to Long for entity ID type
         Secrole result = this.getHibernateTemplate().get(Secrole.class, Long.valueOf(id));
 
         logger.debug("getRole: id=" + id + ",found=" + (result != null));
@@ -62,6 +84,13 @@ public class SecroleDaoImpl extends HibernateDaoSupport implements SecroleDao {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * WARNING: Uses string concatenation in HQL - potential SQL injection risk.
+     * Should be refactored to use parameterized queries.
+     * </p>
+     */
     @Override
     public Secrole getRoleByName(String roleName) {
         Secrole result = null;
@@ -69,6 +98,7 @@ public class SecroleDaoImpl extends HibernateDaoSupport implements SecroleDao {
             throw new IllegalArgumentException();
         }
 
+        // WARNING: String concatenation - SQL injection risk
         List lst = this.getHibernateTemplate().find("from Secrole r where r.roleName='" + roleName + "'");
         if (lst != null && lst.size() > 0)
             result = (Secrole) lst.get(0);
@@ -78,11 +108,19 @@ public class SecroleDaoImpl extends HibernateDaoSupport implements SecroleDao {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     * Filters for system-defined roles using userDefined flag.
+     */
     @Override
     public List getDefaultRoles() {
         return this.getHibernateTemplate().find("from Secrole r where r.userDefined=0");
     }
 
+    /**
+     * {@inheritDoc}
+     * Uses saveOrUpdate for intelligent INSERT/UPDATE determination.
+     */
     @Override
     public void save(Secrole secrole) {
         if (secrole == null) {
