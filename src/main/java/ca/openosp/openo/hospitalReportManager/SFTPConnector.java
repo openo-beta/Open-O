@@ -500,7 +500,7 @@ public class SFTPConnector {
         
         // Extract IV and ciphertext
         ByteBuffer byteBuffer = ByteBuffer.wrap(encryptedData);
-        byte[] iv = new byte[12];
+        byte[] iv = new byte[GCM_IV_LENGTH];
         byteBuffer.get(iv);
         byte[] cipherText = new byte[byteBuffer.remaining()];
         byteBuffer.get(cipherText);

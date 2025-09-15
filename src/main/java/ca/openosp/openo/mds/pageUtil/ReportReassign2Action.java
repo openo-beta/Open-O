@@ -32,6 +32,7 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -49,6 +50,7 @@ import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
@@ -59,6 +61,15 @@ public class ReportReassign2Action extends ActionSupport {
 
     private final Logger logger = MiscUtils.getLogger();
     private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+
+    // Define a map of allowed Struts actions
+    private static final Map<String, String> ACTION_REDIRECTS = Map.of(
+        "oscarMDS/ReportReassign", "oscarMDS/ReportReassign.do",
+        "lab/CA/ALL/Forward", "lab/CA/ALL/Forward.do",
+        "lab/CA/BC/Forward", "lab/CA/BC/Forward.do",
+        "lab/CA/ON/Forward", "lab/CA/ON/Forward.do",
+        "oscarMDS/Forward", "oscarMDS/Forward.do"
+    );
 
     public ReportReassign2Action() {
     }
@@ -181,18 +192,9 @@ public class ReportReassign2Action extends ActionSupport {
 
             // Build safe redirect URL using context path to prevent open redirect vulnerability
             String contextPath = request.getContextPath();
-            String requestURI = request.getRequestURI();
+            String currentAction = ActionContext.getContext().getName();
 
-            URI uri = new URI(requestURI);
-            String normalizedPath = uri.normalize().getPath();
-
-            if (!normalizedPath.startsWith(contextPath)) {
-                logger.warn("Suspicious redirect path detected: '{}'. Sending error response.", normalizedPath);
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid redirect path.");
-            }
-            
-            // Extract the path relative to the context, ensuring it stays within the application
-            String relativePath = normalizedPath.substring(contextPath.length());
+            String relativePath = ACTION_REDIRECTS.get(currentAction);
             
             // Default to a safe page if the path is suspicious or empty
             if (relativePath.isEmpty() || relativePath.contains("..") || !relativePath.startsWith("/")) {
@@ -202,14 +204,10 @@ public class ReportReassign2Action extends ActionSupport {
             }
             
             // Build the new URL with the context path to ensure it stays within the application
-            newURL = contextPath + relativePath;
-            
-            // Add query parameters with proper URL encoding to prevent injection
-            String queryDelimiter = relativePath.contains("labDisplay.jsp") ? "?" : "&";
+            newURL = contextPath + relativePath + "?";
             
             // Build query string with proper null checks and encoding
             StringBuilder queryParams = new StringBuilder();
-            queryParams.append(queryDelimiter);
             queryParams.append("providerNo=").append(URLEncoder.encode(providerNo != null ? providerNo : "", "UTF-8"));
             queryParams.append("&searchProviderNo=").append(URLEncoder.encode(searchProviderNo != null ? searchProviderNo : "", "UTF-8"));
             queryParams.append("&status=").append(URLEncoder.encode(status != null ? status : "", "UTF-8"));
