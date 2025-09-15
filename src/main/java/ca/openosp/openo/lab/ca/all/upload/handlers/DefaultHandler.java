@@ -142,6 +142,7 @@ public class DefaultHandler implements MessageHandler {
             
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false);
+            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             // Use the validated file object instead of creating a new FileInputStream with the raw path
             Document doc = factory.newDocumentBuilder().parse(file);
             return (doc);
