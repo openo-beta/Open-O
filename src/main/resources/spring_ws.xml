@@ -260,6 +260,28 @@
         <property name="dropCollectionWrapperElement" value="true"/>
     </bean> -->
 
+	<!-- Jackson 2 ObjectMapper -->
+    <bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
+        <!-- <property name="serializationInclusion">
+            <util:constant static-field="com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL"/>
+        </property> -->
+
+        <!-- If you rely on JAXB-style annotations (@XmlRootElement, etc.) -->
+        <!-- This lets Jackson 2 understand them -->
+        <property name="annotationIntrospector">
+            <bean class="com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector">
+                <constructor-arg>
+                    <bean class="com.fasterxml.jackson.databind.type.TypeFactory" factory-method="defaultInstance"/>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- Jackson 2 JAX-RS provider -->
+    <bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider">
+        <property name="mapper" ref="jacksonObjectMapper"/>
+    </bean>
+
     <!-- =========================================================
          View resolver for OAuth authorize JSPs (Spring MVC)
          Adjust prefix/suffix to match your project.
