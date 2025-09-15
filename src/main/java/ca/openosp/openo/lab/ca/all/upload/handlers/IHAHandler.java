@@ -28,25 +28,15 @@
 
 package ca.openosp.openo.lab.ca.all.upload.handlers;
 
-import java.io.FileInputStream;
-//*import java.sql.Connection;
-//*import java.sql.PreparedStatement;
-//*import java.sql.ResultSet;
-//*import java.sql.SQLException;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-//*import ca.uhn.hl7v2.HL7Exception;
-//*import ca.uhn.hl7v2.model.Segment;
-
-
-//*import org.apache.commons.lang.StringUtils;
 import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.commn.hl7.v2.oscar_to_oscar.DynamicHapiLoaderUtils;
 import ca.openosp.openo.utility.LoggedInInfo;
-//*import org.oscarehr.util.DbConnectionFilter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -55,6 +45,7 @@ import org.w3c.dom.Node;
 
 import ca.openosp.openo.lab.ca.all.parsers.DefaultGenericHandler;
 import ca.openosp.openo.lab.ca.all.upload.MessageUploader;
+import ca.openosp.OscarProperties;
 
 @Deprecated
 /**
@@ -189,13 +180,38 @@ public class IHAHandler extends DefaultGenericHandler implements MessageHandler 
      */
     private Document getXML(String fileName) {
         try {
+            // Validate the file path to prevent path traversal attacks
+            File file = new File(fileName);
+            
+            // Get the canonical path to resolve any relative path components
+            String canonicalPath = file.getCanonicalPath();
+            
+            // Ensure the file exists and is a regular file
+            if (!file.exists() || !file.isFile()) {
+                logger.error("File does not exist or is not a regular file: " + fileName);
+                return null;
+            }
+            
+            // Additional validation: ensure the file is within the expected document directory
+            OscarProperties props = OscarProperties.getInstance();
+            String documentDir = props.getProperty("DOCUMENT_DIR");
+            if (documentDir != null && !documentDir.isEmpty()) {
+                File docDir = new File(documentDir).getCanonicalFile();
+                if (!canonicalPath.startsWith(docDir.getCanonicalPath() + File.separator)) {
+                    logger.error("Attempted to access file outside document directory: " + canonicalPath);
+                    throw new SecurityException("Access denied: file outside permitted directory");
+                }
+            }
+            
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false);
-            Document doc = factory.newDocumentBuilder().parse(new FileInputStream(fileName));
+            // Use the validated file object instead of creating a new FileInputStream with the raw path
+            Document doc = factory.newDocumentBuilder().parse(file);
             return (doc);
 
             // Ignore exceptions and return false
         } catch (Exception e) {
+            logger.error("Error parsing XML file: " + fileName, e);
             return (null);
         }
     }

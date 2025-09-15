@@ -2,21 +2,50 @@ window.onload = function () { // wait for load in a dumb way because B-0
     var cw = '/*!\n * Bootstrap v3.0.0\n *\n * Copyright 2013 Twitter, Inc\n * Licensed under the Apache License v2.0\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Designed and built with all the love in the world @twitter by @mdo and @fat.\n */\n\n'
 
     function showError(msg, err) {
-        $('<div id="bsCustomizerAlert" class="bs-customizer-alert">\
-        <div class="container">\
-          <a href="#bsCustomizerAlert" data-dismiss="alert" class="close pull-right">&times;</a>\
-          <p class="bs-customizer-alert-text"><span class="glyphicon glyphicon-warning-sign"></span>' + msg + '</p>' +
-            (err.extract ? '<pre class="bs-customizer-alert-extract">' + err.extract.join('\n') + '</pre>' : '') + '\
-        </div>\
-      </div>').appendTo('body').alert()
+        // Create elements using jQuery's safe methods to prevent XSS
+        var alertDiv = $('<div id="bsCustomizerAlert" class="bs-customizer-alert"></div>');
+        var containerDiv = $('<div class="container"></div>');
+        var closeLink = $('<a href="#bsCustomizerAlert" data-dismiss="alert" class="close pull-right">&times;</a>');
+        var alertText = $('<p class="bs-customizer-alert-text"></p>');
+        var warningIcon = $('<span class="glyphicon glyphicon-warning-sign"></span>');
+        
+        // Safely append the warning icon and message text
+        var msgWrapper = $('<div>').html(msg);
+        msgWrapper.find('script, iframe, object, embed, form').remove();
+        msgWrapper.find('*').removeAttr('onclick onmouseover onerror onload');
+        alertText.append(msgWrapper.html());
+        
+        containerDiv.append(closeLink);
+        containerDiv.append(alertText);
+        
+        // If there's an extract, safely add it
+        if (err.extract) {
+            var extractPre = $('<pre class="bs-customizer-alert-extract"></pre>');
+            // Escape the extract content to prevent XSS
+            extractPre.text(err.extract.join('\n'));
+            containerDiv.append(extractPre);
+        }
+        
+        alertDiv.append(containerDiv);
+        alertDiv.appendTo('body').alert();
         throw err
     }
 
     function showCallout(msg, showUpTop) {
-        var callout = $('<div class="bs-callout bs-callout-danger">\
-       <h4>Attention!</h4>\
-      <p>' + msg + '</p>\
-    </div>')
+        // Create elements using jQuery's safe methods to prevent XSS
+        var callout = $('<div class="bs-callout bs-callout-danger"></div>');
+        var heading = $('<h4>Attention!</h4>');
+        var paragraph = $('<p></p>');
+        
+        // Since msg contains HTML tags (like <code> and <a>), we need to append it as HTML
+        // but in a controlled way
+        var msgWrapper2 = $('<div>').html(msg);
+        msgWrapper2.find('script, iframe, object, embed, form').remove();
+        msgWrapper2.find('*').removeAttr('onclick onmouseover onerror onload');
+        paragraph.append(msgWrapper2.html());
+        
+        callout.append(heading);
+        callout.append(paragraph);
 
         if (showUpTop) {
             callout.appendTo('.bs-docs-container')
