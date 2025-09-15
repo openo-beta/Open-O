@@ -527,8 +527,8 @@
             
             // For the data format the server expects
             // First escape single quotes in the actual values to prevent breaking the format
-            var safeName = name.replace(/'/g, "\\'");
-            var safeFax = fax.replace(/'/g, "\\'");
+            var safeName = name.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+            var safeFax = fax.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
             
             // Build the format the server expects
             var submitValue = "'name':'" + safeName + "','fax':'" + safeFax + "'";

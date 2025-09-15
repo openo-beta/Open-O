@@ -1027,14 +1027,19 @@ dojo.flash.Communicator.prototype = {
         // Using global flag /g ensures ALL occurrences are replaced, not just the first one
         data = data.replace(/\\/g, "&custom_backslash;");
         
-        // Now escape other special characters
-        // These won't affect our custom backslash encoding since it doesn't contain these characters
-        data = data.replace(/\n/g, "\\n");
-        data = data.replace(/\r/g, "\\r");
-        data = data.replace(/\f/g, "\\f");
-        data = data.replace(/\0/g, "\\0"); // null character
-        data = data.replace(/'/g, "\\'");
-        data = data.replace(/"/g, '\\"');
+        // Now escape other special characters and meta-characters in a single step
+        // This blanket replacement covers newlines, carriage returns, form feeds, nulls, single and double quotes
+        data = data.replace(/[\n\r\f\0'"]/g, function (c) {
+            switch (c) {
+                case '\n': return "\\n";
+                case '\r': return "\\r";
+                case '\f': return "\\f";
+                case '\0': return "\\0";
+                case "'":  return "\\'";
+                case '"':  return '\\"';
+                default:   return c;
+            }
+        });
 
         return data;
     },

@@ -491,7 +491,7 @@ dojo.widget.defineWidget(
                 /***************** cut out all <script> tags, push them into scripts array ***************/
                 // Fixed regex to properly match script tags with variations in spacing and case
                 // Handles cases like </script >, </SCRIPT>, etc.
-                var regex = /<script([^>]*)>([\s\S]*?)<\/script\s*>/gi;
+                var regex = /<script([^>]*)>([\s\S]*?)<\/script(?:\s[^>]*)?>/gi;
                 var regexSrc = /src=(['"]?)([^"']*)\1/i;
                 var regexDojoJs = /.*(\bdojo\b\.js(?:\.uncompressed\.js)?)$/;
                 var regexInvalid = /(?:var )?\bdjConfig\b(?:[\s]*=[\s]*\{[^}]+\}|\.[\w]*[\s]*=[\s]*[^;\n]*)?;?|dojo\.hostenv\.writeIncludes\(\s*\);?/g;
