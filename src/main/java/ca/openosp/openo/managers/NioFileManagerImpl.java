@@ -76,7 +76,7 @@ public class NioFileManagerImpl implements NioFileManager {
     public Path hasCacheVersion2(LoggedInInfo loggedInInfo, String filename, Integer pageNum) {
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_edoc", SecurityInfoManager.READ, "")) {
-            throw new RuntimeException("Read Access Denied _edoc for providers " + loggedInInfo.getLoggedInProviderNo());
+            throw new RuntimeException("Read Access Denied _edoc for provider " + loggedInInfo.getLoggedInProviderNo());
         }
 
         if (filename.contains(File.separator)) {
@@ -95,7 +95,7 @@ public class NioFileManagerImpl implements NioFileManager {
     public Path getDocumentCacheDirectory(LoggedInInfo loggedInInfo) {
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_edoc", SecurityInfoManager.READ, "")) {
-            throw new RuntimeException("Read Access Denied _edoc for providers " + loggedInInfo.getLoggedInProviderNo());
+            throw new RuntimeException("Read Access Denied _edoc for provider " + loggedInInfo.getLoggedInProviderNo());
         }
 
         Path cacheDir = Paths.get(BASE_DOCUMENT_DIR, context.getContextPath(), DOCUMENT_CACHE_DIRECTORY);
@@ -119,7 +119,7 @@ public class NioFileManagerImpl implements NioFileManager {
     public Path createCacheVersion2(LoggedInInfo loggedInInfo, String sourceDirectory, String filename, Integer pageNum) {
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_edoc", SecurityInfoManager.WRITE, "")) {
-            throw new RuntimeException("Read Access Denied _edoc for providers " + loggedInInfo.getLoggedInProviderNo());
+            throw new RuntimeException("Read Access Denied _edoc for provider " + loggedInInfo.getLoggedInProviderNo());
         }
 
         if (filename.contains(File.separator)) {
