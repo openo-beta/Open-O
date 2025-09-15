@@ -28,6 +28,7 @@ package ca.openosp.openo.mds.pageUtil;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -181,12 +182,17 @@ public class ReportReassign2Action extends ActionSupport {
             // Build safe redirect URL using context path to prevent open redirect vulnerability
             String contextPath = request.getContextPath();
             String requestURI = request.getRequestURI();
+
+            URI uri = new URI(requestURI);
+            String normalizedPath = uri.normalize().getPath();
+
+            if (!normalizedPath.startsWith(contextPath)) {
+                logger.warn("Suspicious redirect path detected: '{}'. Sending error response.", normalizedPath);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid redirect path.");
+            }
             
             // Extract the path relative to the context, ensuring it stays within the application
-            String relativePath = "";
-            if (requestURI != null && requestURI.startsWith(contextPath)) {
-                relativePath = requestURI.substring(contextPath.length());
-            }
+            String relativePath = normalizedPath.substring(contextPath.length());
             
             // Default to a safe page if the path is suspicious or empty
             if (relativePath.isEmpty() || relativePath.contains("..") || !relativePath.startsWith("/")) {

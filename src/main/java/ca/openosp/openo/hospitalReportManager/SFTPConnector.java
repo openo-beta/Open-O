@@ -59,6 +59,8 @@ import ca.openosp.openo.messenger.data.MsgProviderData;
  * SFTP Connector to interact with servers and return the server's reply/file data.
  */
 public class SFTPConnector {
+    private static final int GCM_IV_LENGTH = 12;  // 96 bits standard for GCM
+    private static final int GCM_TAG_LENGTH = 128; // 128 bits authentication tag
 
     private static org.apache.logging.log4j.Logger logger = MiscUtils.getLogger();
 
@@ -492,7 +494,7 @@ public class SFTPConnector {
     private byte[] decryptWithGCM(byte[] encryptedData, SecretKeySpec key) throws Exception {
         // GCM mode expects the IV to be prepended to the encrypted data
         // Standard GCM uses a 12-byte (96-bit) IV
-        if (encryptedData.length < 12) {
+        if (encryptedData.length < GCM_IV_LENGTH) {
             throw new IllegalArgumentException("Encrypted data too short for GCM mode");
         }
         
@@ -505,7 +507,7 @@ public class SFTPConnector {
         
         // Initialize cipher with GCM mode
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv); // 128-bit authentication tag
+        GCMParameterSpec gcmSpec = new GCMParameterSpec(GCM_TAG_LENGTH, iv); // 128-bit authentication tag
         cipher.init(Cipher.DECRYPT_MODE, key, gcmSpec);
         
         return cipher.doFinal(cipherText);
