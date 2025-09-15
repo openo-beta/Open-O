@@ -410,31 +410,6 @@ public class SFTPConnector {
     public String decryptFile(String fullPath) throws Exception {
         return decryptFile(fullPath, null);
     }
-    
-    /**
-     * Encrypts a file using secure AES/GCM mode.
-     * This method should be used for all new file encryptions.
-     * 
-     * @param plainText The text content to encrypt
-     * @param encryptionKey The encryption key (will use OMD_HRM_DECRYPTION_KEY if null)
-     * @return The encrypted data as a byte array
-     * @throws Exception if encryption fails
-     */
-    public byte[] encryptData(String plainText, String encryptionKey) throws Exception {
-        if (encryptionKey == null) {
-            encryptionKey = OscarProperties.getInstance().getProperty("OMD_HRM_DECRYPTION_KEY");
-        }
-        
-        if (encryptionKey == null) {
-            throw new IllegalArgumentException("Encryption key not provided and OMD_HRM_DECRYPTION_KEY not configured");
-        }
-        
-        byte keyBytes[] = toHex(encryptionKey);
-        SecretKeySpec key = new SecretKeySpec(keyBytes, "AES");
-        
-        byte[] plainData = plainText.getBytes("UTF-8");
-        return encryptWithGCM(plainData, key);
-    }
 
     /**
      * Given the absolute path of an encrypted file, decrypt the file using the specified AES key at the top. Return the
@@ -503,38 +478,6 @@ public class SFTPConnector {
         }
 
         return new String(decode);
-    }
-    
-    /**
-     * Encrypts data using AES/GCM mode (secure mode)
-     * This method should be used for all new encryptions.
-     * GCM provides authenticated encryption with built-in integrity checking.
-     * 
-     * @param plainData The data to encrypt
-     * @param key The AES secret key
-     * @return The encrypted data with IV prepended
-     * @throws Exception if encryption fails
-     */
-    private byte[] encryptWithGCM(byte[] plainData, SecretKeySpec key) throws Exception {
-        // Generate a random 12-byte IV for GCM
-        byte[] iv = new byte[12];
-        SecureRandom secureRandom = new SecureRandom();
-        secureRandom.nextBytes(iv);
-        
-        // Initialize cipher with GCM mode
-        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv); // 128-bit authentication tag
-        cipher.init(Cipher.ENCRYPT_MODE, key, gcmSpec);
-        
-        // Encrypt the data
-        byte[] cipherText = cipher.doFinal(plainData);
-        
-        // Combine IV and ciphertext
-        ByteBuffer byteBuffer = ByteBuffer.allocate(iv.length + cipherText.length);
-        byteBuffer.put(iv);
-        byteBuffer.put(cipherText);
-        
-        return byteBuffer.array();
     }
     
     /**
