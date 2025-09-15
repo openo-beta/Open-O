@@ -32,6 +32,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
@@ -40,6 +41,8 @@ import ca.openosp.openo.utility.LoggedInInfo;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -205,6 +208,19 @@ public class IHAHandler extends DefaultGenericHandler implements MessageHandler 
             
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false);
+
+            try {
+                // Disable external entities to prevent XXE attacks
+                factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+                factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            
+            } catch (ParserConfigurationException e) {
+                MiscUtils.getLogger().error("Failed to set XML parser features to prevent XXE attacks", e);
+                throw new RuntimeException(e);
+            }
+            
             // Use the validated file object instead of creating a new FileInputStream with the raw path
             Document doc = factory.newDocumentBuilder().parse(file);
             return (doc);

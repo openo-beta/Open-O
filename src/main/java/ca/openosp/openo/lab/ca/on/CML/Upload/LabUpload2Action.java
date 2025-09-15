@@ -89,7 +89,7 @@ public class LabUpload2Action extends ActionSupport {
                     String tempDirCanonical = tempDirFile.getCanonicalPath();
                     
                     // Check if the file is within the temp directory
-                    if (!canonicalPath.startsWith(tempDirCanonical)) {
+                    if (!canonicalPath.startsWith(tempDirCanonical + File.separator)) {
                         _logger.error("Attempted path traversal attack detected for file: " + canonicalPath);
                         outcome = "accessDenied";
                         request.setAttribute("outcome", outcome);
@@ -120,7 +120,7 @@ public class LabUpload2Action extends ActionSupport {
                         File docDirFile = new File(documentDir);
                         String docDirCanonical = docDirFile.getCanonicalPath();
                         
-                        if (!localCanonicalPath.startsWith(docDirCanonical)) {
+                        if (!localCanonicalPath.startsWith(docDirCanonical + File.separator)) {
                             _logger.error("Attempted path traversal in localFileName: " + localCanonicalPath);
                             outcome = "accessDenied";
                             request.setAttribute("outcome", outcome);
@@ -206,7 +206,7 @@ public class LabUpload2Action extends ActionSupport {
             String targetCanonicalPath = targetFile.getCanonicalPath();
             
             // Ensure the target file is within the document directory
-            if (!targetCanonicalPath.startsWith(docDirCanonical)) {
+            if (!targetCanonicalPath.startsWith(docDirCanonical + File.separator)) {
                 MiscUtils.getLogger().error("Path traversal attempt in saveFile: " + targetCanonicalPath);
                 return null;
             }

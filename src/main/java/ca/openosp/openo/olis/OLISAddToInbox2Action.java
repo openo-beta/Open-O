@@ -81,7 +81,7 @@ public class OLISAddToInbox2Action extends ActionSupport {
         try {
             fileLocation = file.getCanonicalPath();
             String canonicalTmpDir = tempDirectory.getCanonicalPath();
-            if (!fileLocation.startsWith(canonicalTmpDir)) {
+            if (!fileLocation.startsWith(canonicalTmpDir + File.separator)) {
                 logger.error("Attempted path traversal detected for UUID: " + uuidToAdd);
                 request.setAttribute("result", "Error");
                 return "ajax";

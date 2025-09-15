@@ -95,7 +95,7 @@ public class ManagePatientLetters2Action extends ActionSupport {
                 String tempDirCanonical = tempDirFile.getCanonicalPath();
                 
                 // Verify the file is within the temp directory to prevent directory traversal
-                if (!canonicalPath.startsWith(tempDirCanonical)) {
+                if (!canonicalPath.startsWith(tempDirCanonical + File.separator)) {
                     log.error("Attempted path traversal attack detected for file: " + canonicalPath);
                     throw new SecurityException("Invalid file upload - path traversal detected");
                 }

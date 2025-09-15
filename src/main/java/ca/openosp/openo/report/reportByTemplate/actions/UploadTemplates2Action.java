@@ -78,7 +78,7 @@ public class UploadTemplates2Action extends ActionSupport {
                     String tempDirCanonical = tempDirFile.getCanonicalPath();
                     
                     // Verify the file is within the temp directory
-                    if (!canonicalPath.startsWith(tempDirCanonical)) {
+                    if (!canonicalPath.startsWith(tempDirCanonical + File.separator)) {
                         MiscUtils.getLogger().error("Attempted path traversal attack detected for file: " + canonicalPath);
                         message = "Error: Invalid file upload";
                         request.setAttribute("message", message);
