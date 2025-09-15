@@ -55,8 +55,10 @@ import ca.openosp.openo.lab.ca.all.upload.HandlerClassFactory;
 import ca.openosp.openo.lab.ca.all.upload.handlers.MessageHandler;
 import ca.openosp.openo.lab.ca.all.util.Utilities;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
@@ -178,12 +180,19 @@ public class LabUpload2Action extends ActionSupport {
             // retrieve the servers private key
             PrivateKey key = getServerPrivate();
 
-            // Decrypt the secret key using the servers private key
-            // Using OAEP padding with SHA-256 for secure RSA encryption to prevent padding oracle attacks
-            // Explicitly specifying OAEP parameters to ensure secure padding is used
-            Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
-            cipher.init(Cipher.DECRYPT_MODE, key);
-            byte[] newSecretKey = cipher.doFinal(Base64.decodeBase64(skey));
+            // Try OAEP first (for new data), fall back to PKCS1 (for legacy data)
+            byte[] newSecretKey;
+            try {
+                Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
+                cipher.init(Cipher.DECRYPT_MODE, key);
+                newSecretKey = cipher.doFinal(Base64.decodeBase64(skey));
+            } catch (BadPaddingException | IllegalBlockSizeException e) {
+                // Fall back to PKCS1 for legacy data
+                logger.warn("Falling back to PKCS1 padding for legacy data decryption");
+                Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+                cipher.init(Cipher.DECRYPT_MODE, key);
+                newSecretKey = cipher.doFinal(Base64.decodeBase64(skey));
+            }
 
             // Decrypt the message using the secret key
             SecretKeySpec skeySpec = new SecretKeySpec(newSecretKey, "AES");

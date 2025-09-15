@@ -467,23 +467,38 @@ public class SFTPConnector {
         byte keyBytes[] = toHex(decryptionKey);
         SecretKeySpec key = new SecretKeySpec(keyBytes, "AES");
         
+        // Read configuration to determine if ECB fallback is allowed
+        boolean allowEcbFallback = true;
+        String allowEcbFallbackProp = OscarProperties.getInstance().getProperty("OMD_HRM_ALLOW_ECB_FALLBACK");
+        if (allowEcbFallbackProp != null) {
+            allowEcbFallback = Boolean.parseBoolean(allowEcbFallbackProp);
+        }
+
         // First, try to decrypt using the secure GCM mode (for new files)
         byte[] decode = null;
         try {
             decode = decryptWithGCM(fileInBytes, key);
             logger.info("Successfully decrypted file using AES/GCM mode");
         } catch (Exception gcmException) {
+            if (!allowEcbFallback) {
+                logger.error("GCM decryption failed and ECB fallback is disabled by configuration. " +
+                              "File cannot be decrypted. Set OMD_HRM_ALLOW_ECB_FALLBACK=true to enable legacy decryption.");
+                throw new Exception("Failed to decrypt file. GCM decryption failed and ECB fallback is disabled. " +
+                                    "GCM error: " + gcmException.getMessage());
+            }
             // If GCM fails, the file might be encrypted with the legacy ECB mode
             // Try ECB decryption for backward compatibility
             logger.warn("GCM decryption failed, attempting legacy ECB decryption for backward compatibility. " +
                           "Please consider re-encrypting this file with GCM mode for better security.");
             try {
                 decode = decryptWithECB(fileInBytes, key);
-                logger.warn("File was decrypted using legacy ECB mode. ECB mode is insecure and should be migrated to GCM.");
+                logger.warn("SECURITY WARNING: File was decrypted using legacy ECB mode. ECB mode is insecure and should be migrated to GCM. " +
+                              "Set OMD_HRM_ALLOW_ECB_FALLBACK=false in properties to disable this fallback.");
             } catch (Exception ecbException) {
-                // Both methods failed, throw an exception with details
-                throw new Exception("Failed to decrypt file. Neither GCM nor legacy ECB decryption succeeded. " +
-                                  "GCM error: " + gcmException.getMessage() + ", ECB error: " + ecbException.getMessage());
+                // If ECB also fails, rethrow the original GCM exception for clarity
+                logger.error("Both GCM and ECB decryption failed. File cannot be decrypted.");
+                throw new Exception("Failed to decrypt file. GCM error: " + gcmException.getMessage() +
+                                    " ECB error: " + ecbException.getMessage());
             }
         }
 
