@@ -577,7 +577,7 @@
                                         } else { // curdoc get status
                                         %>
                                         <a style="color:red; padding:0;"
-                                           href="javascript: checkDelete('documentReport.jsp?delDocumentNo=<%=Encode.forJavaScript(Encode.forUriComponent(String.valueOf(curdoc.getDocId())))%>&function=<%=Encode.forJavaScript(Encode.forUriComponent(module))%>&functionid=<%=Encode.forJavaScript(Encode.forUriComponent(moduleid))%>&viewstatus=<%=Encode.forJavaScript(Encode.forUriComponent(viewstatus))%>','<%=SEncode.forJavaScript(curdoc.getDescription())%>')"
+                                           href="javascript: checkDelete('documentReport.jsp?delDocumentNo=<%=Encode.forJavaScript(Encode.forUriComponent(String.valueOf(curdoc.getDocId())))%>&function=<%=Encode.forJavaScript(Encode.forUriComponent(module))%>&functionid=<%=Encode.forJavaScript(Encode.forUriComponent(moduleid))%>&viewstatus=<%=Encode.forJavaScript(Encode.forUriComponent(viewstatus))%>','<%=Encode.forJavaScript(curdoc.getDescription())%>')"
                                            class="btn btn-link" title="Delete">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                  fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
