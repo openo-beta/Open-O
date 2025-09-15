@@ -1043,7 +1043,7 @@
                 // Use the browser's URL constructor for robust validation
                 // This is more secure and efficient than complex regex
                 try {
-                    var url = new URL(value);
+                    const url = new URL(value);
                     // Check if protocol is allowed
                     return /^(https?|s?ftp):$/i.test(url.protocol.slice(0, -1));
                 } catch (e) {

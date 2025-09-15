@@ -24,7 +24,7 @@
 
             var update = function () {
 
-                var val = this.value.replace(/&/g, '&amp;')
+                const val = this.value.replace(/&/g, '&amp;')
                     .replace(/</g, '&lt;')
                     .replace(/>/g, '&gt;')
                     .replace(/\n/g, '<br/>');

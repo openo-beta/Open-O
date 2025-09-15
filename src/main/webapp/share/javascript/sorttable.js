@@ -16,41 +16,32 @@ function sortables_init() {
 }
 
 function ts_makeSortable(table) {
-    if (table.rows && table.rows.length > 0) {
-        var firstRow = table.rows[0];
-    }
-    if (!firstRow) return;
+  const headerRow = table.tHead?.rows[0] || table.rows[0];
+  if (!headerRow) return;
 
-    // We have a first row: assume it's the header, and make its contents clickable links
-    for (var i = 0; i < firstRow.cells.length; i++) {
-        var cell = firstRow.cells[i];
-        var txt = ts_getInnerText(cell);
-        
-        // Create elements using DOM methods to prevent XSS
-        var link = document.createElement('a');
-        link.href = '#';
-        link.className = 'sortheader';
-        link.onclick = (function(index) {
-            return function() {
-                ts_resortTable(this, index);
-                return false;
-            };
-        })(i);
-        
-        // Use textContent to safely add the text
-        var textNode = document.createTextNode(txt);
-        link.appendChild(textNode);
-        
-        // Create and append the sort arrow span
-        var arrowSpan = document.createElement('span');
-        arrowSpan.className = 'sortarrow';
-        arrowSpan.innerHTML = '&nbsp;&nbsp;&nbsp;';
-        link.appendChild(arrowSpan);
-        
-        // Clear the cell and add the link
-        cell.innerHTML = '';
-        cell.appendChild(link);
-    }
+  // build each header cell as a sort link
+  Array.from(headerRow.cells).forEach((cell, idx) => {
+    const txt = ts_getInnerText(cell);
+    cell.textContent = '';                  // clear cell
+    const a = document.createElement('a');
+    a.href = '#';
+    a.className = 'sortheader';
+    a.dataset.col = idx;                    // store column index
+    a.textContent = txt;
+    const span = document.createElement('span');
+    span.className = 'sortarrow';
+    span.textContent = '\u00A0\u00A0\u00A0'; // non-breaking spaces
+    a.append(span);
+    cell.append(a);
+  });
+
+  // delegate all clicks to one handler
+  headerRow.addEventListener('click', e => {
+    const a = e.target.closest('a.sortheader');
+    if (!a) return;
+    e.preventDefault();
+    ts_resortTable(a, Number(a.dataset.col));
+  });
 }
 
 function ts_getInnerText(el) {

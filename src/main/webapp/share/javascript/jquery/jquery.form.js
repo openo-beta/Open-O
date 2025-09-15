@@ -291,12 +291,12 @@
                 }
 
                 // add "extra" data to form if provided in options
-                var extraInputs = [];
+                let extraInputs = [];
                 try {
                     if (s.extraData) {
-                        for (var n in s.extraData) {
+                        for (let n in s.extraData) {
                             // Create input element using jQuery methods to prevent XSS
-                            var $input = $('<input>').attr({
+                            const $input = $('<input>').attr({
                                 type: 'hidden',
                                 name: n,
                                 value: s.extraData[n]
