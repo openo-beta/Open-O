@@ -44,13 +44,6 @@ name: CRDA Scan
 
 # Controls when the workflow will run
 on:
-  # TODO: Customize trigger events based on your DevSecOps processes
-  #
-  # This workflow is made to run with OpenShift starter workflow
-  # https://github.com/actions/starter-workflows/blob/main/deployments/openshift.yml
-  # However, if you want to run this workflow as a standalone workflow, please
-  # uncomment the 'push' trigger below and configure it based on your requirements.
-  #
   workflow_call:
     secrets:
       CRDA_KEY:
@@ -123,6 +116,6 @@ jobs:
         id: scan
         uses: redhat-actions/crda@v1
         with:
-          crda_key: ${{ secrets.CRDA_KEY }}           # Either use crda_key or snyk_token
-          # snyk_token: ${{ secrets.SNYK_TOKEN }}
+          # crda_key: ${{ secrets.CRDA_KEY }}           # Either use crda_key or snyk_token
+          snyk_token: ${{ secrets.SNYK_TOKEN }}
           # upload_artifact: false                    # Set this to false to skip artifact upload
