@@ -85,8 +85,7 @@ public class ExcellerisOntarioHandler implements MessageHandler {
             
             // Ensure the canonical path is within the document directory
             // Must check this BEFORE any file operations
-            if (!canonicalPath.startsWith(docDir.getCanonicalPath() + File.separator) &&
-                !canonicalPath.equals(docDir.getCanonicalPath())) {
+            if (!canonicalPath.startsWith(docDir.getCanonicalPath() + File.separator)) {
                 logger.error("Attempted path traversal detected - file outside document directory: " + canonicalPath);
                 throw new SecurityException("Access denied: file outside permitted directory");
             }
