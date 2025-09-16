@@ -459,7 +459,6 @@ opener.refreshView();</script>
                             <div id="autocomplete_choices<%=currentDocId%>" class="autocomplete"></div>
 
                             <script type="text/javascript">       <%-- testDemocomp2.jsp    --%>
-                            //new Ajax.Autocompleter("autocompletedemo<%=currentDocId%>", "autocomplete_choices<%=currentDocId%>", "../demographic/SearchDemographic.do", {minChars: 3, afterUpdateElement: saveDemoId});
 
 
                             YAHOO.example.BasicRemote = function () {
@@ -710,7 +709,6 @@ opener.refreshView();</script>
                             <div id="autocomplete_choices<%=currentDocId%>" class="autocomplete"></div>
 
                             <script type="text/javascript">       <%-- testDemocomp2.jsp    --%>
-                            //new Ajax.Autocompleter("autocompletedemo<%=currentDocId%>", "autocomplete_choices<%=currentDocId%>", "../demographic/SearchDemographic.do", {minChars: 3, afterUpdateElement: saveDemoId});
 
 
                             YAHOO.example.BasicRemote = function () {
