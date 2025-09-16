@@ -3,6 +3,7 @@
 <struts>
     <constant name="struts.mapper.action.prefix.enabled" value="false"/>
 	<constant name="struts.action.extension" value="do" />
+    <constant name="struts.devMode" value="${struts.devMode}"/>
     <constant name="struts.objectFactory" value="spring"/>
     <constant name="struts.enable.SlashesInActionNames" value="true" />
     <constant name="struts.serve.static" value="true" />
