@@ -152,6 +152,11 @@
         border-radius: 5%;
     }
 
+    .list-drugs td:nth-child(5) {
+        word-break: break-word;
+        white-space: normal;
+    }
+
 
 </style>
 
@@ -179,7 +184,7 @@ if (heading != null){
 <h4 style="margin-bottom:1px;margin-top:3px;"><%=Encode.forHtmlContent(heading)%></h4>
 <%}%>
 <div class="drugProfileText" style="">
-    <table width="100%" cellpadding="3" border="0" class="sortable" id="Drug_table<%=Encode.forHtmlContent(heading)%>">
+    <table width="100%" cellpadding="3" border="0" class="list-drugs sortable" id="Drug_table<%=Encode.forHtmlContent(heading)%>">
         <tr>
         	<th align="left"><b>Entered Date</b></th>
             <th align="left"><b><bean:message key="SearchDrug.msgRxDate"/></b></th>
@@ -326,7 +331,7 @@ if (heading != null){
             <td width="20px" align="center" valign="top">
                 <%if (prescriptDrug.getRemoteFacilityName() == null) {%>
                 <div style="display: flex; align-items: center;">
-                    <% String cbxId = "reRxCheckBox_" + prescriptIdInt + Math.abs(new Random().nextInt(10001)); %>
+                    <% String cbxId = "reRxCheckBox_" + prescriptIdInt; %>
                     <input id="<%=cbxId%>" type=CHECKBOX
                            onclick="updateReRxStatusForPrescribedDrug(this, <%=prescriptIdInt%>)"
                            <%if(reRxDrugList.contains(prescriptIdInt.toString())){%>checked<%}%>

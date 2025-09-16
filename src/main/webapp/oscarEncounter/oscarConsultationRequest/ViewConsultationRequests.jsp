@@ -200,6 +200,9 @@ background-color: #B8B8FF;
 td.stat4 {
 background-color: #eeeeff;
 }
+td.stat5 {
+background-color:rgb(212, 212, 254);
+}
 
 th.VCRheads {
 background-color: #ddddff;
@@ -330,7 +333,7 @@ function gotoPage(next) {
                                  <option value="-1"><bean:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formTeamNotApplicable"/></option>
                                 <%    }
                                    for (int i =0; i < consultUtil.teamVec.size();i++){
-                                     String te = (String) consultUtil.teamVec.elementAt(i);                                                                        
+                                     String te = (String) consultUtil.teamVec.get(i);                                                                        
                                      if (te.equals(team)){
                                 %>
                                     <option value="<%=te%>" selected><%=te%></option>
@@ -432,26 +435,27 @@ function gotoPage(next) {
                             for (int i = 0; i < theRequests.ids.size(); i++){
                              //multisites. skip record if not belong to same site/team
                              if (isSiteAccessPrivacy || isTeamAccessPrivacy) {
-                             	if(providerMap.get(theRequests.providerNo.elementAt(i))== null)  continue;
+                             	if(providerMap.get(theRequests.providerNo.get(i))== null)  continue;
                              }	
                             	
-                            String id      =  theRequests.ids.elementAt(i);
-                            String status  =  theRequests.status.elementAt(i);
-                            String patient =  theRequests.patient.elementAt(i);
-                            String provide =  theRequests.provider.elementAt(i);
-                            String service =  theRequests.service.elementAt(i);
-                            String date    =  theRequests.date.elementAt(i);
-                            String demo    =  theRequests.demographicNo.elementAt(i);
-                            String appt    =  theRequests.apptDate.elementAt(i);
-                            String patBook =  theRequests.patientWillBook.elementAt(i);
-                            String urgency =  theRequests.urgency.elementAt(i);
-                            String sendTo  =  theRequests.teams.elementAt(i);
+                            String id      =  theRequests.ids.get(i);
+                            String status  =  theRequests.status.get(i);
+                            String patient =  theRequests.patient.get(i);
+                            String provide =  theRequests.provider.get(i);
+                            String service =  theRequests.service.get(i);
+                            boolean eReferral = theRequests.eReferral.get(i);
+                            String date    =  theRequests.date.get(i);
+                            String demo    =  theRequests.demographicNo.get(i);
+                            String appt    =  theRequests.apptDate.get(i);
+                            String patBook =  theRequests.patientWillBook.get(i);
+                            String urgency =  theRequests.urgency.get(i);
+                            String sendTo  =  theRequests.teams.get(i);
                             if (sendTo==null) sendTo = "-1";
-                            String specialist = theRequests.vSpecialist.elementAt(i);
-                            String followUpDate = theRequests.followUpDate.elementAt(i);
+                            String specialist = theRequests.vSpecialist.get(i);
+                            String followUpDate = theRequests.followUpDate.get(i);
                             String siteName = ""; 
                             if (bMultisites) {
-                            	siteName =  theRequests.siteName.elementAt(i);
+                            	siteName =  theRequests.siteName.get(i);
                             }
                             if(status.equals("1") && dateGreaterThan(date, Calendar.WEEK_OF_YEAR, -1)){
                                 tickerList.add(demo);
@@ -496,7 +500,9 @@ function gotoPage(next) {
                                     <bean:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgPR"/>      
                                     <% }else if(status.equals("4")) { %>
                                     <bean:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgDONE"/>    
-                                    <% } %>
+                                    <% }else if(status.equals("5")) { %>
+                                    <bean:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgBC"/>
+                                    <%}%>
 								</td>
                                 <td class="stat<%=status%>">
 			            <% if (urgency.equals("1")){ %>
@@ -532,7 +538,9 @@ function gotoPage(next) {
                                     <a href="javascript:popupOscarRx(700,960,'<%=request.getContextPath()%>/oscarEncounter/ViewRequest.do?requestId=<%=id%>')">
                                         <%=specialist%>
                                     </a>
-
+                                    <% if (eReferral) { %>   
+                                    <span>(via OCEAN)</span>                      
+                                    <%} %> 
                                 </td>
                                 <td class="stat<%=status%>">
                                     <%=date%>
