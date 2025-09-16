@@ -697,8 +697,7 @@
                 <oscar:oscarPropertiesCheck property="IMMUNIZATION_IN_PREVENTION"
                                             value="yes">
                     <a href="javascript: function myFunction() {return false; }"
-                       onclick="javascript:popup(700,960,'<rewrite:reWrite
-                               jspPage="<%=request.getContextPath()%>/oscarEncounter/immunization/initSchedule.do"/>?demographic_no=<%=demographic_no%>','oldImms')">Old
+                       onclick="javascript:popup(700,960,'<%=request.getContextPath()%>/oscarEncounter/immunization/initSchedule.do?demographic_no=<%=demographic_no%>','oldImms')">Old
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="global.immunizations"/></a>
                     <br>
                 </oscar:oscarPropertiesCheck></td>
@@ -821,7 +820,7 @@
 
 
                     <div>
-                        <input type="hidden" name="demographic_no" value="<%=demographic_no%>">
+                        <input type="hidden" name="demographic_no" value="<%=demographic_no%>"/>
                         <input type="hidden" name="hin" value="<%=hin%>"/>
                         <input type="hidden" name="mrp" value="<%=mrp%>"/>
                         <input type="hidden" name="module" value="prevention">
