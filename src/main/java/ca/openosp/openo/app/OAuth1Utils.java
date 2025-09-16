@@ -52,7 +52,7 @@ public final class OAuth1Utils {
     /** Provide a CXF JSONProvider (legacy callers expect this). */
     public static List<Object> getProviderK2A() {
         // return Collections.singletonList(new JSONProvider<Object>());
-        logger.warn("OAuth1Utils.getProviderK2A called, but OAuth1 client is disabled.");
+        logger.warn("OAuth1Utils.getProviderK2A called.");
         return null;
     }
 
@@ -65,7 +65,7 @@ public final class OAuth1Utils {
         String requestURI,
         String baseRequestURI
     ) {
-        logger.warn("OAuth1Utils.getOAuthGetResponse called, but OAuth1 client is disabled. URI={}", requestURI);
+        logger.warn("OAuth1Utils.getOAuthGetResponse called. URI={}", requestURI);
         return null;
     }
 
@@ -78,7 +78,7 @@ public final class OAuth1Utils {
         List<Object> providers,
         Object payload
     ) {
-        logger.warn("OAuth1Utils.getOAuthPostResponse called, but OAuth1 client is disabled. URI={}", requestURI);
+        logger.warn("OAuth1Utils.getOAuthPostResponse called. URI={}", requestURI);
         return null;
     }
 
@@ -88,6 +88,6 @@ public final class OAuth1Utils {
         String requestURI,
         String auditURI
     ) {
-        logger.warn("OAuth1Utils.getOAuthDeleteResponse called, but OAuth1 client is disabled. URI={}", requestURI);
+        logger.warn("OAuth1Utils.getOAuthDeleteResponse called. URI={}", requestURI);
     }
 }
