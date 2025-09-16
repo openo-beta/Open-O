@@ -1045,7 +1045,7 @@
                 try {
                     const url = new URL(value);
                     // Check if protocol is allowed
-                    return /^(https?|s?ftp):$/i.test(url.protocol.slice(0, -1));
+                    return /^(https?|s?ftp):$/i.test(url.protocol);
                 } catch (e) {
                     // If URL constructor fails, it's not a valid URL
                     return false;
