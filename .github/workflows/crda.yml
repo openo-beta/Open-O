@@ -74,8 +74,10 @@ permissions:
 jobs:
   crda-scan:
     permissions:
-      contents: read            # for actions/checkout to fetch code
-      security-events: write    # for redhat-actions/crda to upload SARIF results
+      contents: read
+      security-events: write
+      issues: write          # needed to read/add labels on the PR
+      pull-requests: read   
     name: Scan project vulnerabilities with CRDA
     runs-on: ubuntu-latest
     steps:
