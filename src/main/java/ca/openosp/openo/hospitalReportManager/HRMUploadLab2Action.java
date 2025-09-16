@@ -56,10 +56,12 @@ public class HRMUploadLab2Action extends ActionSupport {
         if (uploads != null && !uploads.isEmpty()) {
             Map<String, FileStatus> filesStatusMap = processFiles(loggedInInfo);
             request.setAttribute("filesStatusMap", filesStatusMap);
-            return SUCCESS;
+        } else {
+            // No files uploaded - return empty map to preserve original flow
+            request.setAttribute("filesStatusMap", new HashMap<>());
         }
 
-        return ERROR;
+        return SUCCESS;
     }
 
     private Map<String, FileStatus> processFiles(LoggedInInfo loggedInInfo) {

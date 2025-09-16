@@ -11,7 +11,6 @@
 package ca.openosp.openo.hospitalReportManager;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToProviderDao;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToProvider;
@@ -32,7 +31,7 @@ public class HRMDisplayReport2Action extends ActionSupport {
     private String status;            // report status
     private String demoName;          // patient / demo name
     private String duplicateLabIds;   // duplicate ids if any
-    private boolean isListView;       // flag if rendering list view
+    private boolean listView;       // flag if rendering list view
 
     // getters/setters
     public void setId(Integer id) { this.id = id; }
@@ -56,19 +55,18 @@ public class HRMDisplayReport2Action extends ActionSupport {
     public void setDuplicateLabIds(String duplicateLabIds) { this.duplicateLabIds = duplicateLabIds; }
     public String getDuplicateLabIds() { return duplicateLabIds; }
 
-    public void setIsListView(boolean isListView) { this.isListView = isListView; }
-    public boolean getIsListView() { return isListView; }
+    public void setListView(boolean listView) { this.listView = listView; }
+    public boolean isListView() { return listView; }
 
     // --- Existing service/dao wiring ---
     private static HRMDocumentToProviderDao hrmDocumentToProviderDao =
             (HRMDocumentToProviderDao) SpringUtils.getBean(HRMDocumentToProviderDao.class);
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
-    HttpServletRequest request = ServletActionContext.getRequest();
-    HttpServletResponse response = ServletActionContext.getResponse();
-
     @Override
     public String execute() {
+        HttpServletRequest request = ServletActionContext.getRequest();
+
         // check privilege
         if (!securityInfoManager.hasPrivilege(
                 LoggedInInfo.getLoggedInInfoFromSession(request),
@@ -85,7 +83,7 @@ public class HRMDisplayReport2Action extends ActionSupport {
         request.setAttribute("status", status);
         request.setAttribute("demoName", demoName);
         request.setAttribute("duplicateLabIds", duplicateLabIds);
-        request.setAttribute("isListView", isListView);
+        request.setAttribute("isListView", listView);
 
         return "display";
     }
