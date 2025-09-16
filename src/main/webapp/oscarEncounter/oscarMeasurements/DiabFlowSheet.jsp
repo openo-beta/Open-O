@@ -985,7 +985,7 @@
 
                         String onclick = "";
                         if (!differentInstr) {
-                            onclick = "onclick=\"popup(600,1000,'../../oscarEncounter/GraphMeasurements.do?demographic_no=" + demographic_no + "&type=" + h2.get("measurement_type") + "');\"";
+                            onclick = "onclick=\"popup(600,1000,'<%=request.getContextPath()%>/oscarEncounter/GraphMeasurements.do?demographic_no=" + demographic_no + "&type=" + h2.get("measurement_type") + "');\"";
                         }
                 %>
                 <span  <%=onclick %> class="inlinesparkline" values="
@@ -1029,7 +1029,7 @@
 
                         String onclick = "";
                         if (!differentInstr) {
-                            onclick = "onclick=\"popup(600,1000,'../../oscarEncounter/GraphMeasurements.do?demographic_no=" + demographic_no + "&type=" + h2.get("measurement_type") + "');\"";
+                            onclick = "onclick=\"popup(600,1000,'<%=request.getContextPath()%>/oscarEncounter/GraphMeasurements.do?demographic_no=" + demographic_no + "&type=" + h2.get("measurement_type") + "');\"";
                         }
 
                         List<String> first = new ArrayList<String>();

@@ -698,7 +698,7 @@
                                             value="yes">
                     <a href="javascript: function myFunction() {return false; }"
                        onclick="javascript:popup(700,960,'<rewrite:reWrite
-                               jspPage="../oscarEncounter/immunization/initSchedule.do"/>?demographic_no=<%=demographic_no%>','oldImms')">Old
+                               jspPage="<%=request.getContextPath()%>/oscarEncounter/immunization/initSchedule.do"/>?demographic_no=<%=demographic_no%>','oldImms')">Old
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="global.immunizations"/></a>
                     <br>
                 </oscar:oscarPropertiesCheck></td>
@@ -1212,7 +1212,7 @@
 
         YAHOO.example.BasicRemote = function () {
             if ($("lotNumberToAdd2") && $("lotNumberToAdd2_choices")) {
-                var url = "../cvc.do?method=query";
+                var url = "<%=request.getContextPath()%>/cvc.do?method=query";
                 var oDS = new YAHOO.util.XHRDataSource(url, {
                     connMethodPost: true,
                     connXhrMode: 'ignoreStaleResponses'

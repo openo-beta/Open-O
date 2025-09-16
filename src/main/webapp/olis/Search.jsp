@@ -463,7 +463,7 @@ opener.refreshView();</script>
 
 
                             YAHOO.example.BasicRemote = function () {
-                                var url = "../demographic/SearchDemographic.do";
+                                var url = "<%=request.getContextPath()%>/demographic/SearchDemographic.do";
                                 var oDS = new YAHOO.util.XHRDataSource(url, {
                                     connMethodPost: true,
                                     connXhrMode: 'ignoreStaleResponses'
@@ -714,7 +714,7 @@ opener.refreshView();</script>
 
 
                             YAHOO.example.BasicRemote = function () {
-                                var url = "../demographic/SearchDemographic.do";
+                                var url = "<%=request.getContextPath()%>/demographic/SearchDemographic.do";
                                 var oDS = new YAHOO.util.XHRDataSource(url, {
                                     connMethodPost: true,
                                     connXhrMode: 'ignoreStaleResponses'
