@@ -77,7 +77,7 @@ public class HRMUploadLab2Action extends ActionSupport {
                 FileStatus fileStatus = handleHRMReport(loggedInInfo, report);
                 filesStatusMap.put(fileName, fileStatus);
             } catch (IOException e) {
-                MiscUtils.getLogger().error("Error occurred while processing file", e);
+                MiscUtils.getLogger().error("Error occurred while processing file '{}': {}", fileName, e);
                 filesStatusMap.put(fileName, FileStatus.INVALID);
             }
         }
