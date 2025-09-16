@@ -227,7 +227,10 @@
             ConsultationManager consultationManager = SpringUtils.getBean(ConsultationManager.class);
             List<EctFormData.PatientForm> attachedForms = consultationManager.getAttachedForms(loggedInInfo, Integer.parseInt(requestId), Integer.parseInt(demo));
             List<EFormData> attachedEForms = consultationManager.getAttachedEForms(requestId);
+
+            System.out.println("Fetching attached HRM documents for requestId=" + requestId + " and demo=" + demo);
             ArrayList<HashMap<String, ? extends Object>> attachedHRMDocuments = consultationManager.getAttachedHRMDocuments(loggedInInfo, demo, requestId);
+            System.out.println("Attached HRM Documents count: " + (attachedHRMDocuments != null ? attachedHRMDocuments.size() : 0));
 
             Collections.sort(attachedLabs);
             List<LabResultData> attachedLabsSortedByVersions = new ArrayList<>();

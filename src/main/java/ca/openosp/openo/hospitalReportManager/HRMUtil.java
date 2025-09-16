@@ -61,7 +61,10 @@ public class HRMUtil {
         ArrayList<HashMap<String, ? extends Object>> hrmdocslist = new ArrayList<HashMap<String, ?>>();
 
         //get a list of all HRM documents linked to a particular demographic
+        System.out.println("Fetching HRM documents for demographicNo=" + demographicNo);
         List<HRMDocumentToDemographic> hrmDocResultsDemographic = hrmDocumentToDemographicDao.findByDemographicNo(demographicNo);
+        System.out.println("HRM documents fetched: " +
+        (hrmDocResultsDemographic != null ? hrmDocResultsDemographic.size() : 0));
         List<HRMDocument> hrmDocumentsAll = new LinkedList<HRMDocument>();
         HashMap<String, ArrayList<Integer>> duplicateLabIds = new HashMap<String, ArrayList<Integer>>();
 
@@ -87,18 +90,47 @@ public class HRMUtil {
 
             String categoryName = "";
             if (hrmDocument.getHrmCategoryId() != null) {
-                HRMCategory category = hrmCategoryDao.find(hrmDocument.getHrmCategoryId());
+                // Log before fetching HRM category
+System.out.println("Fetching HRMCategory for categoryId=" + hrmDocument.getHrmCategoryId());
+
+HRMCategory category = hrmCategoryDao.find(hrmDocument.getHrmCategoryId());
+
+System.out.println("HRMCategory fetched: " + (category != null ? category.getCategoryName() : "null"));
+
                 categoryName = category.getCategoryName();
             }
 
             String dispSubClass = "";
             HRMSubClass hrmSubClass;
-            List<HRMDocumentSubClass> subClassList = hrmDocumentSubClassDao.getSubClassesByDocumentId(hrmDocument.getId());
+            // Log before fetching HRMDocumentSubClass list
+System.out.println("Fetching HRMDocumentSubClass list for documentId=" + hrmDocument.getId());
+
+List<HRMDocumentSubClass> subClassList =
+        hrmDocumentSubClassDao.getSubClassesByDocumentId(hrmDocument.getId());
+
+System.out.println("HRMDocumentSubClass list size: " +
+        (subClassList != null ? subClassList.size() : 0));
+
             if (hrmReport.getFirstReportClass().equalsIgnoreCase("Diagnostic Imaging Report") || hrmReport.getFirstReportClass().equalsIgnoreCase("Cardio Respiratory Report")) {
                 //Get first sub class to display on eChart
                 if (subClassList != null && subClassList.size() > 0) {
                     HRMDocumentSubClass firstSubClass = subClassList.get(0);
-                    hrmSubClass = hrmSubClassDao.findApplicableSubClassMapping(hrmReport.getFirstReportClass(), firstSubClass.getSubClass(), firstSubClass.getSubClassMnemonic(), hrmReport.getSendingFacilityId());
+                    // Log before fetching HRMSubClass mapping
+System.out.println("Fetching HRMSubClass mapping with params: " +
+        "firstReportClass=" + hrmReport.getFirstReportClass() +
+        ", subClass=" + firstSubClass.getSubClass() +
+        ", subClassMnemonic=" + firstSubClass.getSubClassMnemonic() +
+        ", sendingFacilityId=" + hrmReport.getSendingFacilityId());
+
+hrmSubClass = hrmSubClassDao.findApplicableSubClassMapping(
+        hrmReport.getFirstReportClass(),
+        firstSubClass.getSubClass(),
+        firstSubClass.getSubClassMnemonic(),
+        hrmReport.getSendingFacilityId()
+);
+
+System.out.println("HRMSubClass fetched: " + (hrmSubClass != null ? hrmSubClass.getSubClassDescription() : "null"));
+
                     dispSubClass = hrmSubClass != null ? hrmSubClass.getSubClassDescription() : "";
                 }
 
