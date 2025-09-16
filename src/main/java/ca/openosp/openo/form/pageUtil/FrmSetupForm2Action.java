@@ -28,6 +28,8 @@ package ca.openosp.openo.form.pageUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -46,6 +48,7 @@ import ca.openosp.openo.commn.dao.MeasurementDao;
 import ca.openosp.openo.commn.model.Allergy;
 import ca.openosp.openo.commn.model.Measurement;
 import ca.openosp.openo.managers.SecurityInfoManager;
+import ca.openosp.openo.utility.DbConnectionFilter;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
@@ -320,8 +323,13 @@ public final class FrmSetupForm2Action extends ActionSupport {
                     
                     // Using parameterized values for formId and demographicNo
                     // Note: Table name cannot be parameterized, but formName is validated above
-                    String sql = "SELECT * FROM form" + formName + " WHERE ID='" + formId + "' AND demographic_no='" + demographicNo + "'";
-                    ResultSet rs = DBHandler.GetSQL(sql);
+                    String sql = "SELECT * FROM form" + formName + " WHERE ID=? AND demographic_no=?";
+                    Connection connection = DbConnectionFilter.getThreadLocalDbConnection();
+                    PreparedStatement ps = connection.prepareStatement(sql);
+                    ps.setInt(1, Integer.parseInt(formId));
+                    ps.setInt(2, Integer.parseInt(demographicNo));
+                    ResultSet rs = ps.executeQuery();
+
                     if (rs.next()) {
                         ResultSetMetaData md = rs.getMetaData();
                         for (int i = 1; i <= md.getColumnCount(); i++) {

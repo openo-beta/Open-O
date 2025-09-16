@@ -172,7 +172,7 @@ public class ManageDocument2Action extends ActionSupport {
             try {
                 for (String proNo : flagproviders) {
                     // Sanitize provider number to prevent any potential header injection
-                    // Provider numbers should only contain alphanumeric characters
+                    // Provider numbers should only contain alphanumeric characters, hyphens, and underscores
                     if (proNo != null && proNo.matches("^[a-zA-Z0-9_-]+$")) {
                         providerInboxRoutingDAO.addToProviderInbox(proNo, Integer.parseInt(documentId), LabResultData.DOCUMENT);
                     } else {
