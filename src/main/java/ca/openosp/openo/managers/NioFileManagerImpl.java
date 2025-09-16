@@ -477,7 +477,7 @@ public class NioFileManagerImpl implements NioFileManager {
      * This method considers both locations.
      */
     private String getDocumentDirectory() {
-        String document_dir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String document_dir = DOCUMENT_DIRECTORY;
         if (document_dir == null || !Files.isDirectory(Paths.get(document_dir))) {
             document_dir = String.valueOf(Paths.get(BASE_DOCUMENT_DIR, "document"));
         }

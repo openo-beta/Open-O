@@ -1,6 +1,37 @@
 window.onload = function () { // wait for load in a dumb way because B-0
     var cw = '/*!\n * Bootstrap v3.0.0\n *\n * Copyright 2013 Twitter, Inc\n * Licensed under the Apache License v2.0\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Designed and built with all the love in the world @twitter by @mdo and @fat.\n */\n\n'
 
+    function sanitizeHTML(html) {
+        var wrapper = $('<div>').html(html);
+        
+        // Remove dangerous elements
+        wrapper.find('script, iframe, object, embed, form, link, meta, base, applet').remove();
+        
+        // Remove ALL event handlers (there are 70+ of them!)
+        wrapper.find('*').each(function() {
+            var attributes = this.attributes;
+            var toRemove = [];
+            
+            // Collect all attributes that start with 'on' or contain 'javascript:'
+            for (var i = 0; i < attributes.length; i++) {
+                var attr = attributes[i];
+                if (attr.name.startsWith('on') || 
+                    attr.value.toLowerCase().includes('javascript:')) {
+                    toRemove.push(attr.name);
+                }
+            }
+            
+            // Remove collected attributes
+            var $this = $(this);
+            toRemove.forEach(function(attrName) {
+                $this.removeAttr(attrName);
+            });
+        });
+        
+        return wrapper.html();
+    }
+
+    
     function showError(msg, err) {
         // Create elements using jQuery's safe methods to prevent XSS
         var alertDiv = $('<div id="bsCustomizerAlert" class="bs-customizer-alert"></div>');
@@ -9,11 +40,7 @@ window.onload = function () { // wait for load in a dumb way because B-0
         var alertText = $('<p class="bs-customizer-alert-text"></p>');
         var warningIcon = $('<span class="glyphicon glyphicon-warning-sign"></span>');
         
-        // Safely append the warning icon and message text
-        var msgWrapper = $('<div>').html(msg);
-        msgWrapper.find('script, iframe, object, embed, form').remove();
-        msgWrapper.find('*').removeAttr('onclick onmouseover onerror onload');
-        alertText.append(msgWrapper.html());
+        alertText.append(sanitizeHTML(msg));
         
         containerDiv.append(closeLink);
         containerDiv.append(alertText);
@@ -37,12 +64,7 @@ window.onload = function () { // wait for load in a dumb way because B-0
         var heading = $('<h4>Attention!</h4>');
         var paragraph = $('<p></p>');
         
-        // Since msg contains HTML tags (like <code> and <a>), we need to append it as HTML
-        // but in a controlled way
-        var msgWrapper2 = $('<div>').html(msg);
-        msgWrapper2.find('script, iframe, object, embed, form').remove();
-        msgWrapper2.find('*').removeAttr('onclick onmouseover onerror onload');
-        paragraph.append(msgWrapper2.html());
+        paragraph.append(sanitizeHTML(msg));
         
         callout.append(heading);
         callout.append(paragraph);
