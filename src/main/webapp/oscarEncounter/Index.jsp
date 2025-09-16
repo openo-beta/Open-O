@@ -24,6 +24,12 @@
 
 --%>
 
+<%--
+    DEPRECATED: This is the legacy encounter page.
+    It is displayed for users who are not enabled for the new encounter page (Index2.jsp).
+    The selection logic is in ca.openosp.openo.encounter.pageUtil.EctIncomingEncounter2Action.java
+--%>
+
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.prescript.data.RxPatientData" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>

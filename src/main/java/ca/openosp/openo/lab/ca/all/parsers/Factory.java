@@ -117,7 +117,7 @@ public final class Factory {
         Path labTypesPath = null;
 
         try {
-            labTypesPath = Paths.get(Factory.class.getClassLoader().getResource("oscar/oscarLab/ca/all/upload/message_config.xml").toURI());
+            labTypesPath = Paths.get(Factory.class.getClassLoader().getResource("ca/openosp/openo/lab/ca/all/parsers/message_config.xml").toURI());
         } catch (URISyntaxException e2) {
             logger.error("Could not default Message configuration file ", e2);
         }
@@ -158,7 +158,7 @@ public final class Factory {
                     if (className.indexOf(".") != -1) {
                         msgHandler = className;
                     } else {
-                        msgHandler = "oscar.oscarLab.ca.all.parsers." + className;
+                        msgHandler = "ca.openosp.openo.lab.ca.all.parsers." + className;
                     }
                 }
             }

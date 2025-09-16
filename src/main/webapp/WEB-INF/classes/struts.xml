@@ -3,6 +3,7 @@
 <struts>
     <constant name="struts.mapper.action.prefix.enabled" value="false"/>
 	<constant name="struts.action.extension" value="do" />
+    <constant name="struts.devMode" value="${struts.devMode}"/>
     <constant name="struts.objectFactory" value="spring"/>
     <constant name="struts.enable.SlashesInActionNames" value="true" />
     <constant name="struts.serve.static" value="true" />
@@ -155,9 +156,10 @@
             <result name="success">/messenger/ViewMessage.jsp</result>
             <result name="viewFromEncounter">/messenger/ViewMessageFromEncounter.jsp</result>
         </action>
-        <!--action name="messenger/ViewMessageByPosition" class="oscar.messenger.pageUtil.MsgViewMessageByPosition2Action">
+        <!-- DEPRECATED: This action is used by the legacy encounter page (oscarEncounter/Index.jsp) -->
+        <action name="messenger/ViewMessageByPosition" class="ca.openosp.openo.messenger.pageUtil.MsgViewMessageByPosition2Action">
             <result name="success">/messenger/ViewMessage.do</result>
-        </action-->
+        </action>
         <action name="messenger/Doc2PDF" class="ca.openosp.openo.messenger.pageUtil.MsgAttachPDF2Action">
             <result name="success">/messenger/selfCloseAndRefreshOpener.jsp</result>
             <result name="attaching">/messenger/generatePreviewPDF.jsp</result>
@@ -2024,12 +2026,13 @@
             </result>
         </action>
         <action name="hospitalReportManager/Display" class="ca.openosp.openo.hospitalReportManager.HRMDisplayReport2Action">
-            <result name="display">/hospitalReportManager/displayHRMReport.jsp</result>
+            <result name="display" type="dispatcher">/hospitalReportManager/displayHRMReport.jsp</result>
         </action>
         <action name="hospitalReportManager/hrmKeyUploader" class="ca.openosp.openo.hospitalReportManager.HRMUploadKey2Action">
             <result name="success">/hospitalReportManager/hrmPreferences.jsp</result>
         </action>
         <action name="hospitalReportManager/UploadLab" class="ca.openosp.openo.hospitalReportManager.HRMUploadLab2Action">
+            <interceptor-ref name="defaultStack"/>
             <result name="success">/hospitalReportManager/hospitalReportManager.jsp</result>
         </action>
         <action name="hospitalReportManager/Modify" class="ca.openosp.openo.hospitalReportManager.HRMModifyDocument2Action">

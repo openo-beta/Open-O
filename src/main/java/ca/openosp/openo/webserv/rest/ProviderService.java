@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -75,6 +76,7 @@ import org.springframework.stereotype.Component;
 @Component("ProviderService")
 @Path("/providerService/")
 @Produces("application/xml")
+@Consumes(MediaType.APPLICATION_JSON)
 public class ProviderService extends AbstractServiceImpl {
 
     private static final Logger logger = MiscUtils.getLogger();
@@ -417,7 +419,7 @@ public class ProviderService extends AbstractServiceImpl {
                 String pn = h.getProviderNo();
                 providerList.add(Integer.valueOf(pn));
             } catch (
-                    Exception e) {/*empty*/} /*No need to do anything. Just want to avoid a NumberFormatException from providers numbers with alphanumeric Characters*/
+                    Exception e) {/*empty*/} /*No need to do anything. Just want to avoid a NumberFormatException from provider numbers with alphanumeric Characters*/
         }
 
         String suggestProviderNo = "";

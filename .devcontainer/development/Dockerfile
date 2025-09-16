@@ -4,6 +4,8 @@ FROM tomcat:9.0.97-jdk21-temurin
 ENV CATALINA_HOME /usr/local/tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
 ENV CATALINA_OPTS="--add-opens java.base/java.net=ALL-UNNAMED -Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
+ENV JPDA_ADDRESS=8000
+ENV JPDA_TRANSPORT=dt_socket
 
 # Copy Tomcat installation from the official Tomcat image
 COPY --from=tomcat:9.0.97 /usr/local/tomcat $CATALINA_HOME
@@ -52,6 +54,9 @@ RUN go install github.com/dburkart/javadoc2md/cmd/javadoc2md@latest
 
 # Install Claude Code CLI and Docusaurus
 RUN npm install -g @anthropic-ai/claude-code @docusaurus/core @docusaurus/preset-classic
+
+# Install Gemini CLI.
+RUN npm install -g @google/gemini-cli
 
 # Install pipx and Aider AI coding assistant
 RUN apt-get update && apt-get install -y pipx && \
