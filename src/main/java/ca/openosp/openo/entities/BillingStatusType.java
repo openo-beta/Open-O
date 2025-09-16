@@ -26,64 +26,115 @@
 package ca.openosp.openo.entities;
 
 /**
- * <p>Title:BillingStatusType </p>
+ * Healthcare billing status type entity representing standardized billing status codes and their descriptions.
+ * This entity encapsulates the various status codes used by provincial healthcare billing systems
+ * (such as MSP in British Columbia) to track the lifecycle and processing state of billing claims.
  *
- * <p>Description: Represents a bill status type as defined by MSP</p>
+ * Each BillingStatusType record defines a specific status code with its display name and sort order,
+ * enabling consistent status tracking across the billing system. Common statuses include submitted,
+ * paid, rejected, under review, and various error conditions.
  *
- * @author not attributable
- * @version 1.0
+ * @see Billingmaster
+ * @see BillHistory
+ * @since November 1, 2004
  */
 public class BillingStatusType {
 
     /**
-     * Single char MSP status code
+     * Single character provincial billing status code (e.g., 'O' for submitted, 'P' for paid)
      */
     private String billingstatus;
 
     /**
-     * The textual description to be displayed in the view
+     * Human-readable description of the billing status for display in user interfaces
      */
     private String displayName;
 
     /**
-     * The rank number indicating the correct location of this instance in a sorted list
+     * Sort order number indicating the display sequence of this status in lists
      */
     private Integer sortOrder;
+
+    /**
+     * Extended display name providing additional detail about the billing status
+     */
     private String displayNameExt;
 
+    /**
+     * Default constructor creating an empty BillingStatusType instance.
+     * All fields will be initialized to their default values.
+     */
     public BillingStatusType() {
     }
 
+    /**
+     * Sets the provincial billing status code.
+     *
+     * @param billingstatus String the single character status code
+     */
     public void setBillingstatus(String billingstatus) {
-
         this.billingstatus = billingstatus;
     }
 
+    /**
+     * Sets the human-readable description of the billing status.
+     *
+     * @param displayName String the display name for user interfaces
+     */
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
+    /**
+     * Sets the sort order number for display sequence.
+     *
+     * @param sortOrder Integer the sort order (lower numbers appear first)
+     */
     public void setSortOrder(Integer sortOrder) {
         this.sortOrder = sortOrder;
     }
 
+    /**
+     * Sets the extended display name providing additional status detail.
+     *
+     * @param displayNameExt String the extended display name
+     */
     public void setDisplayNameExt(String displayNameExt) {
         this.displayNameExt = displayNameExt;
     }
 
+    /**
+     * Gets the provincial billing status code.
+     *
+     * @return String the single character status code
+     */
     public String getBillingstatus() {
-
         return billingstatus;
     }
 
+    /**
+     * Gets the human-readable description of the billing status.
+     *
+     * @return String the display name for user interfaces
+     */
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * Gets the sort order number for display sequence.
+     *
+     * @return Integer the sort order (lower numbers appear first), may be null
+     */
     public Integer getSortOrder() {
         return sortOrder;
     }
 
+    /**
+     * Gets the extended display name providing additional status detail.
+     *
+     * @return String the extended display name, may be null
+     */
     public String getDisplayNameExt() {
         return displayNameExt;
     }

@@ -30,20 +30,39 @@ import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+/**
+ * Represents the acknowledgment status of a laboratory report by a healthcare provider.
+ * <p>
+ * This class encapsulates the workflow state of laboratory reports in the MDS system,
+ * tracking which providers have reviewed, acknowledged, or commented on specific lab results.
+ * It supports the laboratory workflow management features that ensure proper follow-up
+ * and documentation of laboratory result review.
+ * <p>
+ * Key features include:
+ * <ul>
+ * <li>Provider identification and status tracking</li>
+ * <li>Timestamp formatting for clinical workflow displays</li>
+ * <li>Comment management for provider annotations</li>
+ * <li>Support for multiple timestamp formats (string and long)</li>
+ * </ul>
+ *
+ * @since February 4, 2004
+ */
 public class ReportStatus {
 
+    /** Healthcare provider name for display purposes */
     private String providerName;
-
+    /** MDS provider number from laboratory system */
     private String providerNo;
-
+    /** Status of report review (e.g., "Acknowledged", "Filed") */
     private String status;
-
+    /** Provider comment or annotation on the report */
     private String comment;
-
+    /** Formatted timestamp of status change for display */
     private String timestamp;
-
+    /** Laboratory report segment identifier */
     private String segmentID;
-
+    /** OpenO EMR provider number for internal linking */
     private String oscarProviderNo;
 
     public ReportStatus() {

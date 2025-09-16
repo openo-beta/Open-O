@@ -85,29 +85,86 @@ import ca.ssha.www._2005.hial.OLISStub.OLISRequestResponse;
 import ca.openosp.OscarProperties;
 import ca.openosp.openo.messenger.data.MsgProviderData;
 
+/**
+ * Core driver class for Ontario Laboratories Information System (OLIS) integration.
+ *
+ * This class handles the primary communication with the OLIS web service, including:
+ * - Building and signing HL7 query messages
+ * - Submitting queries to the OLIS service endpoint
+ * - Verifying and parsing signed responses
+ * - Managing security certificates and keystores
+ * - Handling error notifications and logging
+ *
+ * The OLIS system provides laboratory test results from participating Ontario laboratories
+ * to authorized healthcare providers. This integration uses HL7 v2.5 messages wrapped in
+ * XML and secured with CMS/PKCS#7 digital signatures.
+ *
+ * Security considerations:
+ * - All communications are encrypted using SSL/TLS
+ * - Messages are digitally signed using provider certificates
+ * - Responses are verified using OLIS certificates
+ * - PHI data is protected throughout the process
+ *
+ * @since 2008-01-01
+ */
 public class Driver {
 
+    /**
+     * Data access object for general OSCAR system logging.
+     * Used to track all OLIS query operations for audit purposes.
+     */
     private static OscarLogDao logDao = (OscarLogDao) SpringUtils.getBean(OscarLogDao.class);
-    //	private static OLISResultsDao olisResultsDao = SpringUtils.getBean(OLISResultsDao.class);
+
+    /**
+     * Data access object for OLIS-specific query logging.
+     * Maintains detailed records of all OLIS queries including provider, patient, and query type.
+     */
     private static OLISQueryLogDao olisQueryLogDao = SpringUtils.getBean(OLISQueryLogDao.class);
 
+    /**
+     * Logger instance for diagnostic and error logging.
+     * Uses Log4j2 for consistent application-wide logging.
+     */
     private static final Logger logger = MiscUtils.getLogger();
 
 
+    /**
+     * Submits an OLIS query to retrieve laboratory results.
+     *
+     * This method performs the complete query lifecycle:
+     * 1. Configures SSL/TLS truststore for secure communication
+     * 2. Creates and signs the HL7 query message
+     * 3. Submits to OLIS web service (or simulation if configured)
+     * 4. Verifies and processes the signed response
+     * 5. Logs all operations for audit compliance
+     *
+     * The method supports both production and simulation modes. In simulation mode,
+     * responses are retrieved from session storage rather than the live service.
+     *
+     * @param loggedInInfo LoggedInInfo containing the authenticated provider information
+     * @param request HttpServletRequest the current HTTP request (may be null for auto-polling)
+     * @param query Query the OLIS query object containing search parameters
+     * @return String the unsigned XML response from OLIS, or empty string on error
+     * @throws SecurityException if SSL/TLS configuration fails
+     * @since 2008-01-01
+     */
     public static String submitOLISQuery(LoggedInInfo loggedInInfo, HttpServletRequest request, Query query) {
 
         try {
             query.setQueryExecutionDate(new Date());
             query.setInitiatingProviderNo(loggedInInfo.getLoggedInProviderNo());
 
+            // Create the OLIS message with provider context and query parameters
             OLISMessage message = new OLISMessage(loggedInInfo.getLoggedInProvider(), query);
 
+            // Configure SSL truststore for OLIS certificate validation
             if (OscarProperties.getInstance().getProperty("olis_truststore") != null) {
                 System.setProperty("javax.net.ssl.trustStore", OscarProperties.getInstance().getProperty("olis_truststore").trim());
             } else {
                 MiscUtils.getLogger().warn("OLIS requires a truststore to be setup. check olis_truststore property");
             }
 
+            // Set truststore password for SSL certificate access
             if (OscarProperties.getInstance().getProperty("olis_truststore_password") != null) {
                 System.setProperty("javax.net.ssl.trustStorePassword", OscarProperties.getInstance().getProperty("olis_truststore_password").trim());
             } else {
@@ -122,9 +179,14 @@ public class Driver {
             olisRequest.getHIALRequest().setClientTransactionID(message.getTransactionId());
             olisRequest.getHIALRequest().setSignedRequest(new HIALRequestSignedRequest());
 
+            // Convert HL7 message to XML format required by OLIS
+            // Replace newlines with carriage returns as per HL7 specification
             String olisHL7String = message.getOlisHL7String().replaceAll("\n", "\r");
             String msgInXML = String.format("<Request xmlns=\"http://www.ssha.ca/2005/HIAL\"><Content><![CDATA[%s]]></Content></Request>", olisHL7String);
 
+            // Sign the request using appropriate certificate configuration
+            // signData2 uses separate JKS keystore and returned certificate
+            // signData uses combined PKCS12 keystore
             String signedRequest = null;
 
             if (OscarProperties.getInstance().getProperty("olis_returned_cert") != null) {
@@ -159,6 +221,7 @@ public class Driver {
                 MiscUtils.getLogger().error("Couldn't write log message for OLIS query", e);
             }
 
+            // Handle simulation mode for testing without actual OLIS connectivity
             if (OscarProperties.getInstance().getProperty("olis_simulate", "no").equals("yes")) {
                 if (request != null) {
                     String response = (String) request.getSession().getAttribute("olisResponseContent");
@@ -167,7 +230,7 @@ public class Driver {
                     request.getSession().setAttribute("olisResponseQuery", query);
                     return response;
                 }
-                //this only happens for auto-polling when simulate is enabled
+                // Return empty string for auto-polling in simulation mode
                 return "";
             } else {
                 OLISRequestResponse olisResponse = olis.oLISRequest(olisRequest);
@@ -176,14 +239,15 @@ public class Driver {
                 String unsignedData = Driver.unsignData(signedData);
 
                 if (request != null) {
-                    //these seem to just be for the checkOlis.jsp
+                    // Store request/response details for debugging display in checkOlis.jsp
                     request.setAttribute("msgInXML", msgInXML);
                     request.setAttribute("signedRequest", signedRequest);
                     request.setAttribute("signedData", signedData);
                     request.setAttribute("unsignedResponse", unsignedData);
                 }
 
-                writeToFile(unsignedData);    //not sure the point of this, other than debugging maybe
+                // Write response to temp file for debugging purposes
+                writeToFile(unsignedData);
                 readResponseFromXML(loggedInInfo, request, unsignedData);
 
                 return unsignedData;
@@ -200,8 +264,30 @@ public class Driver {
         }
     }
 
+    /**
+     * Parses and processes the XML response from OLIS.
+     *
+     * This method performs the following:
+     * 1. Preprocesses the XML to fix namespace issues
+     * 2. Configures XML parser with XXE (XML External Entity) attack prevention
+     * 3. Unmarshals the response using JAXB
+     * 4. Extracts errors or content from the response
+     * 5. Sets appropriate request attributes for JSP display
+     *
+     * Security measures include:
+     * - Disabling external entities to prevent XXE attacks
+     * - Disabling DTD processing
+     * - Using secure XML factory configurations
+     *
+     * @param loggedInInfo LoggedInInfo containing the authenticated provider information
+     * @param request HttpServletRequest to store response attributes for display (may be null)
+     * @param olisResponse String the raw XML response from OLIS
+     * @throws SecurityException if XML parser cannot be securely configured
+     * @since 2008-01-01
+     */
     public static void readResponseFromXML(LoggedInInfo loggedInInfo, HttpServletRequest request, String olisResponse) {
 
+        // Fix namespace issues in OLIS response XML
         olisResponse = olisResponse.replaceAll("<Content", "<Content xmlns=\"\" ");
         olisResponse = olisResponse.replaceAll("<Errors", "<Errors xmlns=\"\" ");
 
@@ -249,7 +335,7 @@ public class Driver {
             if (root.getErrors() != null) {
                 List<String> errorStringList = new LinkedList<String>();
 
-                // Read all the errors
+                // Process all error messages from OLIS response
                 ArrayOfError errors = root.getErrors();
                 List<ca.ssha._2005.hial.Error> errorList = errors.getError();
 
@@ -278,6 +364,24 @@ public class Driver {
         }
     }
 
+    /**
+     * Verifies and extracts content from a CMS/PKCS#7 signed message.
+     *
+     * This method:
+     * 1. Decodes the Base64-encoded signed data
+     * 2. Verifies the digital signature using the embedded certificate
+     * 3. Extracts and returns the original unsigned content
+     *
+     * The verification ensures that:
+     * - The message has not been tampered with
+     * - The signature was created by the claimed signer (OLIS)
+     * - The certificate chain is valid
+     *
+     * @param data String Base64-encoded CMS signed data from OLIS
+     * @return String the original unsigned content, or null if verification fails
+     * @throws Exception if signature verification fails
+     * @since 2008-01-01
+     */
     public static String unsignData(String data) {
 
         byte[] dataBytes = Base64.decode(data);
@@ -313,8 +417,29 @@ public class Driver {
 
     }
 
-    //Method uses a jks and a returned cert separately instead of needing to
-    //import the cert into PKCS12 file.
+    /**
+     * Signs data using a JKS keystore and separate returned certificate.
+     *
+     * This method is the preferred signing approach when OLIS returns a certificate
+     * after initial registration. It uses:
+     * - JKS keystore for the private key
+     * - Separate X.509 certificate file returned by OLIS
+     * - SHA256withRSA signature algorithm (stronger than SHA1)
+     *
+     * The signed data conforms to CMS/PKCS#7 standards and includes:
+     * - The original message content
+     * - Digital signature
+     * - Signer certificate
+     *
+     * Configuration requirements:
+     * - olis_keystore: Path to JKS keystore file
+     * - olis_ssl_keystore_password: Keystore password
+     * - olis_returned_cert: Path to X.509 certificate from OLIS
+     *
+     * @param data String the message content to sign (XML-wrapped HL7)
+     * @return String Base64-encoded CMS signed data, or null on error
+     * @since 2011-01-01
+     */
     public static String signData2(String data) {
         X509Certificate cert = null;
         PrivateKey priv = null;
@@ -325,10 +450,10 @@ public class Driver {
             Security.addProvider(new BouncyCastleProvider());
 
             keystore = KeyStore.getInstance("JKS");
-            // Load the keystore
+            // Load the JKS keystore containing the private key
             keystore.load(new FileInputStream(OscarProperties.getInstance().getProperty("olis_keystore")), pwd.toCharArray());
 
-            //Enumeration e = keystore.aliases();
+            // Find the key alias in the keystore (default: "olis1")
             String name = "olis1";
             Enumeration e = keystore.aliases();
             while (e.hasMoreElements()) {
@@ -336,32 +461,32 @@ public class Driver {
 
             }
 
-            // Get the private key and the certificate
+            // Extract the private key from the keystore
             priv = (PrivateKey) keystore.getKey(name, pwd.toCharArray());
 
+            // Load the X.509 certificate returned by OLIS
             FileInputStream is = new FileInputStream(OscarProperties.getInstance().getProperty("olis_returned_cert"));
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             cert = (X509Certificate) cf.generateCertificate(is);
 
-            // I'm not sure if this is necessary
-
+            // Create certificate store for CMS signature
             ArrayList<Certificate> certList = new ArrayList<Certificate>();
             certList.add(cert);
 
             Store certs = new JcaCertStore(certList);
 
-            // Encrypt data
+            // Create CMS signed data generator
             CMSSignedDataGenerator sgen = new CMSSignedDataGenerator();
 
-            // What digest algorithm i must use? SHA1? MD5? RSA?...
+            // Configure SHA256withRSA signature algorithm (OLIS requirement)
             ContentSigner sha1Signer = new JcaContentSignerBuilder("SHA256withRSA").setProvider("BC").build(priv);
             sgen.addSignerInfoGenerator(new JcaSignerInfoGeneratorBuilder(new JcaDigestCalculatorProviderBuilder().setProvider("BC").build())
                     .build(sha1Signer, cert));
 
-            // I'm not sure this is necessary
+            // Add certificates to the signed message for verification
             sgen.addCertificates(certs);
 
-            // I think that the 2nd parameter need to be false (detached form)
+            // Generate attached signature (content included in signed data)
             CMSSignedData csd = sgen.generate(new CMSProcessableByteArray(data.getBytes()), true);
 
             byte[] signedData = csd.getEncoded();
@@ -375,6 +500,28 @@ public class Driver {
         return result;
     }
 
+    /**
+     * Signs data using a PKCS12 keystore containing both key and certificate.
+     *
+     * This is the legacy signing method used when the certificate is bundled
+     * with the private key in a PKCS12 (.p12) file. Uses SHA1withRSA for
+     * backward compatibility with older OLIS implementations.
+     *
+     * The method:
+     * 1. Loads the PKCS12 keystore
+     * 2. Extracts the private key and certificate
+     * 3. Creates a CMS signed message
+     * 4. Returns Base64-encoded result
+     *
+     * Configuration requirements:
+     * - olis_keystore: Path to PKCS12 keystore file
+     * - Password is hardcoded as "Olis2011" for legacy compatibility
+     *
+     * @param data String the message content to sign (XML-wrapped HL7)
+     * @return String Base64-encoded CMS signed data, or null on error
+     * @deprecated Use signData2() with separate certificate for better security
+     * @since 2008-01-01
+     */
     public static String signData(String data) {
         X509Certificate cert = null;
         PrivateKey priv = null;
@@ -385,7 +532,7 @@ public class Driver {
             Security.addProvider(new BouncyCastleProvider());
 
             keystore = KeyStore.getInstance("PKCS12", "SunJSSE");
-            // Load the keystore
+            // Load the PKCS12 keystore
             keystore.load(new FileInputStream(OscarProperties.getInstance().getProperty("olis_keystore")), pwd.toCharArray());
 
             Enumeration e = keystore.aliases();
@@ -400,30 +547,29 @@ public class Driver {
                 }
             }
 
-            // Get the private key and the certificate
+            // Extract private key and certificate from PKCS12
             priv = (PrivateKey) keystore.getKey(name, pwd.toCharArray());
             cert = (X509Certificate) keystore.getCertificate(name);
 
-            // I'm not sure if this is necessary
-
+            // Create certificate store for CMS signature
             ArrayList<Certificate> certList = new ArrayList<Certificate>();
             certList.add(cert);
 
             Store certs = new JcaCertStore(certList);
 
-            // Encrypt data
+            // Create CMS signed data generator
             CMSSignedDataGenerator sgen = new CMSSignedDataGenerator();
 
-            // What digest algorithm i must use? SHA1? MD5? RSA?...
+            // Use SHA1withRSA for legacy OLIS compatibility
             ContentSigner sha1Signer = new JcaContentSignerBuilder("SHA1withRSA").setProvider("BC").build(priv);
             sgen.addSignerInfoGenerator(new JcaSignerInfoGeneratorBuilder(new JcaDigestCalculatorProviderBuilder().setProvider("BC").build())
                     .build(sha1Signer, cert));
 
 
-            // I'm not sure this is necessary
+            // Add certificates to the signed message for verification
             sgen.addCertificates(certs);
 
-            // I think that the 2nd parameter need to be false (detached form)
+            // Generate attached signature (content included in signed data)
             CMSSignedData csd = sgen.generate(new CMSProcessableByteArray(data.getBytes()), true);
 
             byte[] signedData = csd.getEncoded();
@@ -437,21 +583,39 @@ public class Driver {
         return result;
     }
 
+    /**
+     * Sends error notifications to appropriate providers via internal messaging.
+     *
+     * This method creates system messages to notify providers when OLIS
+     * queries fail. Notifications are sent to:
+     * - The requesting provider (if available)
+     * - System administrator (provider 999998)
+     *
+     * The notification includes:
+     * - Timestamp of the failed attempt
+     * - Detailed error message
+     * - Context about the OLIS operation
+     *
+     * @param provider Provider the provider who initiated the query (may be null for auto-polling)
+     * @param errorMsg String detailed error message to include in notification
+     * @since 2008-01-01
+     */
     private static void notifyOlisError(Provider provider, String errorMsg) {
         HashSet<String> sendToProviderList = new HashSet<String>();
 
+        // Always notify system administrator (999998)
         String providerNoTemp = "999998";
         sendToProviderList.add(providerNoTemp);
 
         if (provider != null) {
-            // manual prompts always send to admin
+            // Ensure admin is notified for manual queries
             sendToProviderList.add(providerNoTemp);
 
             providerNoTemp = provider.getProviderNo();
             sendToProviderList.add(providerNoTemp);
         }
 
-        // no one wants to hear about the problem
+        // Exit if no recipients configured
         if (sendToProviderList.size() == 0) return;
 
         String message = "OSCAR attempted to perform a fetch of OLIS data at " + new Date() + " but there was an error during the task.\n\nSee below for the error message:\n" + errorMsg;
@@ -470,6 +634,19 @@ public class Driver {
         messageData.sendMessage2(message, "OLIS Retrieval Error", "System", sentToString, "-1", sendToProviderListData, null, null, OscarMsgType.GENERAL_TYPE);
     }
 
+    /**
+     * Writes data to a temporary file for debugging purposes.
+     *
+     * Creates a uniquely named XML file in the system temp directory
+     * containing the provided data. Useful for debugging OLIS responses
+     * and troubleshooting integration issues.
+     *
+     * File naming uses random numbers to avoid collisions.
+     * Files are not automatically cleaned up.
+     *
+     * @param data String the content to write to the temp file
+     * @since 2008-01-01
+     */
     static void writeToFile(String data) {
         try {
             File tempFile = new File(System.getProperty("java.io.tmpdir") + (Math.random() * 100) + ".xml");

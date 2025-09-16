@@ -47,12 +47,43 @@ import ca.openosp.openo.commn.model.FaxJob;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
+/**
+ * Service for updating transmission status of active medical fax jobs from external fax providers.
+ *
+ * This class maintains real-time synchronization between the OpenO EMR system and external
+ * fax service providers by polling for status updates on all in-progress medical document
+ * transmissions. Accurate status tracking is critical for healthcare operations to ensure
+ * delivery confirmation of time-sensitive medical communications.
+ *
+ * Status monitoring capabilities:
+ * - Real-time polling of external fax service providers
+ * - Comprehensive status updates for all active transmission jobs
+ * - Integration with healthcare provider notification systems
+ * - Audit trail maintenance for regulatory compliance
+ * - Error detection and reporting for failed medical transmissions
+ *
+ * The service ensures healthcare providers receive timely notification of successful
+ * document delivery or transmission failures requiring attention, supporting quality
+ * patient care coordination between medical facilities.
+ *
+ * @see ca.openosp.openo.commn.model.FaxJob
+ * @see ca.openosp.openo.commn.model.FaxConfig
+ * @since 2014-08-29
+ */
 public class FaxStatusUpdater {
 
     private FaxJobDao faxJobDao = SpringUtils.getBean(FaxJobDao.class);
     private FaxConfigDao faxConfigDao = SpringUtils.getBean(FaxConfigDao.class);
     private Logger log = MiscUtils.getLogger();
 
+    /**
+     * Updates transmission status for all active medical fax jobs by polling external providers.
+     *
+     * This method synchronizes the local fax job status with external fax service providers
+     * to provide real-time delivery confirmation and error reporting. The update process
+     * is essential for healthcare providers to know when critical medical documents have
+     * been successfully delivered or require attention due to transmission failures.
+     */
     public void updateStatus() {
 
         List<FaxJob> faxJobList = faxJobDao.getInprogressFaxesByJobId();

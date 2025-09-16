@@ -45,13 +45,48 @@ import ca.openosp.openo.prescript.util.RxUtil;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
+/**
+ * Struts2 action for adding prescriptions to favorites.
+ *
+ * This action handles saving prescriptions as favorites for quick reuse.
+ * Providers can save frequently prescribed medications with their preferred
+ * dosing instructions as templates. Supports saving both existing prescriptions
+ * from the database and pending prescriptions from the session stash.
+ *
+ * The action provides two methods:
+ * - Standard favorite addition from prescription form
+ * - AJAX-based addition for the Rx3 interface
+ *
+ * @since 2008-11-20
+ */
 public final class RxAddFavorite2Action extends ActionSupport {
+    /**
+     * HTTP request object.
+     */
     HttpServletRequest request = ServletActionContext.getRequest();
+
+    /**
+     * HTTP response object.
+     */
     HttpServletResponse response = ServletActionContext.getResponse();
 
+    /**
+     * Security manager for privilege checking.
+     */
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
 
+    /**
+     * Executes the add favorite action.
+     *
+     * Routes to appropriate method based on parameter. Adds prescription
+     * to provider's favorites either from database or session stash.
+     *
+     * @return String "success" on completion or null for AJAX calls
+     * @throws IOException if I/O error occurs
+     * @throws ServletException if servlet error occurs
+     * @throws RuntimeException if user lacks required privileges
+     */
     public String execute()
             throws IOException, ServletException {
 
@@ -59,6 +94,7 @@ public final class RxAddFavorite2Action extends ActionSupport {
             return addFav2();
         }
         
+        // Verify user has prescription write privileges
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_rx", "w", null)) {
             throw new RuntimeException("missing required sec object (_rx)");
         }
@@ -86,10 +122,20 @@ public final class RxAddFavorite2Action extends ActionSupport {
         return "success";
     }
 
-    //used with rx3
+    /**
+     * AJAX method for adding favorites in Rx3 interface.
+     *
+     * Handles asynchronous favorite addition without page refresh.
+     * Uses random ID instead of stash index for identification.
+     *
+     * @return String null for AJAX response
+     * @throws IOException if I/O error occurs
+     * @throws RuntimeException if user lacks required privileges
+     */
     public String addFav2()
             throws IOException {
 
+        // Verify user has prescription write privileges
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_rx", "w", null)) {
             throw new RuntimeException("missing required sec object (_rx)");
         }
@@ -124,9 +170,24 @@ public final class RxAddFavorite2Action extends ActionSupport {
     }
 
 
+    /**
+     * Database ID of drug to add to favorites.
+     */
     private String drugId = null;
+
+    /**
+     * Stash index of prescription to add to favorites.
+     */
     private String stashId = null;
+
+    /**
+     * User-defined name for the favorite.
+     */
     private String favoriteName = null;
+
+    /**
+     * Return parameters for redirect.
+     */
     private String returnParams = null;
 
     public String getDrugId() {

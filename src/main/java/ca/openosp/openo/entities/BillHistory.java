@@ -30,45 +30,104 @@ import java.util.Date;
 import ca.openosp.openo.util.UtilMisc;
 
 /**
- * BillHistory  represents an archive of a modification event on a specific line(BillingMaster Record) of a Bill
+ * Healthcare billing history entity representing audit trail records for billing modifications.
+ * This entity maintains an archive of all modification events performed on specific billing records
+ * (BillingMaster entries), providing a complete audit trail for billing activities.
  *
- * @author Joel Legris
- * @version 1.0
+ * Each BillHistory record captures the state of a billing record at the time of modification,
+ * including the practitioner who made the change, the billing status, amounts, and payment details.
+ * This ensures regulatory compliance and enables tracking of all billing-related activities.
+ *
+ * @see Billingmaster
+ * @see Billactivity
+ * @since November 1, 2004
  */
 public class BillHistory {
 
+    /**
+     * Unique identifier for this billing history record
+     */
     private int id;
+
+    /**
+     * Reference to the billing master record that was modified
+     */
     private int billingMasterNo;
+
+    /**
+     * Practitioner number of the provider who made the billing modification
+     */
     private String practitioner_no = "";
+
+    /**
+     * Status of the billing record at the time of the modification
+     */
     private String billingStatus = "";
+
+    /**
+     * Date and time when this archive entry was created
+     */
     private Date archiveDate;
+
+    /**
+     * Type of billing (e.g., OHIP, private, WCB)
+     */
     private String billingtype = "";
+
+    /**
+     * Sequence number for the billing record
+     */
     private String seqNum = "";
+
+    /**
+     * Monetary amount of the billing claim
+     */
     private double amount;
+
+    /**
+     * Amount received/paid for this billing claim
+     */
     private double amountReceived;
+
+    /**
+     * Identifier for the payment type
+     */
     private String paymentTypeId;
+
+    /**
+     * Descriptive text for the payment type
+     */
     private String paymentTypeDesc;
 
+    /**
+     * Default constructor creating an empty BillHistory instance.
+     * All fields will be initialized to their default values.
+     */
     public BillHistory() {
     }
 
+    /**
+     * Sets the unique identifier for this billing history record.
+     *
+     * @param id int the unique billing history ID
+     */
     public void setId(int id) {
         this.id = id;
     }
 
     /**
-     * Sets the billingMaster Number of the records which is being tracked
+     * Sets the reference to the billing master record that was modified.
      *
-     * @param billingMasterNo int
+     * @param billingMasterNo int the billing master record number being tracked
      */
     public void setBillingMasterNo(int billingMasterNo) {
         this.billingMasterNo = billingMasterNo;
     }
 
     /**
-     * Sets the number of the provider who is responsible for initiating this audit event
+     * Sets the practitioner number of the provider who made the billing modification.
      *
-     * @param practitioner_no String
+     * @param practitioner_no String the provider number responsible for the modification
      */
     public void setPractitioner_no(String practitioner_no) {
 
@@ -76,92 +135,174 @@ public class BillHistory {
     }
 
     /**
-     * Set the status of the billingMaster record at the time of the event
+     * Sets the status of the billing record at the time of the modification.
      *
-     * @param billingStatus String
+     * @param billingStatus String the billing status at the time of archiving
      */
     public void setBillingStatus(String billingStatus) {
         this.billingStatus = billingStatus;
     }
 
     /**
-     * Sets the Date of the event
+     * Sets the date and time when this archive entry was created.
      *
-     * @param archiveDate Date
+     * @param archiveDate Date the timestamp when this billing modification occurred
      */
     public void setArchiveDate(Date archiveDate) {
         this.archiveDate = archiveDate;
     }
 
+    /**
+     * Sets the type of billing for this record.
+     *
+     * @param billingtype String the billing type (e.g., OHIP, private, WCB)
+     */
     public void setBillingtype(String billingtype) {
-
         this.billingtype = billingtype;
     }
 
+    /**
+     * Sets the sequence number for the billing record.
+     *
+     * @param seqNum String the sequence number
+     */
     public void setSeqNum(String seqNum) {
-
         this.seqNum = seqNum;
     }
 
+    /**
+     * Sets the monetary amount of the billing claim.
+     * The amount is automatically formatted to currency precision.
+     *
+     * @param amount double the billing claim amount
+     */
     public void setAmount(double amount) {
         this.amount = UtilMisc.toCurrencyDouble(amount);
     }
 
+    /**
+     * Sets the amount received/paid for this billing claim.
+     * The amount is automatically formatted to currency precision.
+     *
+     * @param amountReceived double the amount received or paid
+     */
     public void setAmountReceived(double amountReceived) {
         this.amountReceived = UtilMisc.toCurrencyDouble(amountReceived);
     }
 
+    /**
+     * Sets the identifier for the payment type.
+     *
+     * @param paymentTypeId String the payment type identifier
+     */
     public void setPaymentTypeId(String paymentTypeId) {
         this.paymentTypeId = paymentTypeId;
     }
 
+    /**
+     * Sets the descriptive text for the payment type.
+     *
+     * @param paymentTypeDesc String the payment type description
+     */
     public void setPaymentTypeDesc(String paymentTypeDesc) {
         this.paymentTypeDesc = paymentTypeDesc;
     }
 
+    /**
+     * Gets the unique identifier for this billing history record.
+     *
+     * @return int the unique billing history ID
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Gets the reference to the billing master record that was modified.
+     *
+     * @return int the billing master record number being tracked
+     */
     public int getBillingMasterNo() {
         return billingMasterNo;
     }
 
+    /**
+     * Gets the practitioner number of the provider who made the billing modification.
+     *
+     * @return String the provider number responsible for the modification
+     */
     public String getPractitioner_no() {
-
         return practitioner_no;
     }
 
+    /**
+     * Gets the status of the billing record at the time of the modification.
+     *
+     * @return String the billing status at the time of archiving
+     */
     public String getBillingStatus() {
         return billingStatus;
     }
 
+    /**
+     * Gets the date and time when this archive entry was created.
+     *
+     * @return Date the timestamp when this billing modification occurred
+     */
     public Date getArchiveDate() {
         return archiveDate;
     }
 
+    /**
+     * Gets the type of billing for this record.
+     *
+     * @return String the billing type (e.g., OHIP, private, WCB)
+     */
     public String getBillingtype() {
-
         return billingtype;
     }
 
+    /**
+     * Gets the sequence number for the billing record.
+     *
+     * @return String the sequence number
+     */
     public String getSeqNum() {
-
         return seqNum;
     }
 
+    /**
+     * Gets the monetary amount of the billing claim.
+     *
+     * @return double the billing claim amount formatted to currency precision
+     */
     public double getAmount() {
         return amount;
     }
 
+    /**
+     * Gets the amount received/paid for this billing claim.
+     *
+     * @return double the amount received or paid formatted to currency precision
+     */
     public double getAmountReceived() {
         return amountReceived;
     }
 
+    /**
+     * Gets the identifier for the payment type.
+     *
+     * @return String the payment type identifier
+     */
     public String getPaymentTypeId() {
         return paymentTypeId;
     }
 
+    /**
+     * Gets the descriptive text for the payment type.
+     *
+     * @return String the payment type description
+     */
     public String getPaymentTypeDesc() {
         return paymentTypeDesc;
     }

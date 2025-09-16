@@ -26,7 +26,18 @@
 
 package ca.openosp.openo.prescript.data;
 
-
+/**
+ * Data access class for managing prescription-related allergy information.
+ *
+ * This class provides methods for retrieving, storing, and managing allergy data
+ * within the prescription module. It serves as a data access layer for allergy
+ * information that is used during prescription creation and validation processes.
+ *
+ * The class is designed to work in conjunction with the prescription workflow,
+ * ensuring that allergy checks are performed when medications are prescribed.
+ *
+ * @since 2006-03-01
+ */
 public class RxAllergyData {
 
 

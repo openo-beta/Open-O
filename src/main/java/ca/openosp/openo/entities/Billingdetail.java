@@ -26,40 +26,85 @@
 package ca.openosp.openo.entities;
 
 /**
- * Encapsulates data from table billingdetail
+ * Healthcare billing detail entity representing individual line items within billing transactions.
+ * This entity encapsulates the data from the billingdetail table, which stores detailed information
+ * about specific healthcare services billed to provincial insurance systems or private payers.
+ *
+ * Each Billingdetail record represents a single service or procedure that was performed,
+ * including the service code, description, amount, diagnostic codes, and billing status.
+ * These details are associated with a parent billing record and are used to generate
+ * claims for submission to insurance providers.
+ *
+ * @see Billingmaster
+ * @see Billactivity
+ * @see BillHistory
+ * @since November 1, 2004
  */
 public class Billingdetail {
     /**
-     * auto_increment
+     * Auto-increment unique identifier for this billing detail record
      */
     private int billingDtNo;
+
+    /**
+     * Reference to the parent billing record (billingmaster)
+     */
     private int billingNo;
+
+    /**
+     * Provincial service code identifying the healthcare service performed
+     */
     private String serviceCode;
+
+    /**
+     * Descriptive text of the healthcare service provided
+     */
     private String serviceDesc;
+
+    /**
+     * Monetary amount to be billed for this service
+     */
     private String billingAmount;
+
+    /**
+     * Diagnostic code (ICD-9/ICD-10) associated with this service
+     */
     private String diagnosticCode;
+
+    /**
+     * Date when the appointment/service was provided
+     */
     private String appointmentDate;
+
+    /**
+     * Current status of this billing detail (e.g., submitted, paid, rejected)
+     */
     private String status;
+
+    /**
+     * Billing units or quantity for the service provided
+     */
     private String billingunit;
 
     /**
-     * Class constructor with no arguments.
+     * Default constructor creating an empty Billingdetail instance.
+     * All fields will be initialized to their default values.
      */
     public Billingdetail() {
     }
 
     /**
-     * Full constructor
+     * Full constructor creating a Billingdetail instance with all field values.
      *
-     * @param billingDtNo     int
-     * @param billingNo       int
-     * @param serviceCode     String
-     * @param serviceDesc     String
-     * @param billingAmount   String
-     * @param diagnosticCode  String
-     * @param appointmentDate String
-     * @param status          String
-     * @param billingunit     String
+     * @param billingDtNo     int the unique billing detail ID
+     * @param billingNo       int the parent billing record ID
+     * @param serviceCode     String the provincial service code
+     * @param serviceDesc     String the healthcare service description
+     * @param billingAmount   String the monetary amount for this service
+     * @param diagnosticCode  String the diagnostic code (ICD-9/ICD-10)
+     * @param appointmentDate String the date when service was provided
+     * @param status          String the billing status
+     * @param billingunit     String the billing units or quantity
      */
     public Billingdetail(int billingDtNo, int billingNo, String serviceCode,
                          String serviceDesc, String billingAmount,
@@ -77,162 +122,162 @@ public class Billingdetail {
     }
 
     /**
-     * Gets the billingDtNo
+     * Gets the unique identifier for this billing detail record.
      *
-     * @return int billingDtNo
+     * @return int the auto-increment billing detail number
      */
     public int getBillingDtNo() {
         return billingDtNo;
     }
 
     /**
-     * Gets the billingNo
+     * Gets the reference to the parent billing record.
      *
-     * @return int billingNo
+     * @return int the billing master record number
      */
     public int getBillingNo() {
         return billingNo;
     }
 
     /**
-     * Gets the serviceCode
+     * Gets the provincial service code identifying the healthcare service.
      *
-     * @return String serviceCode
+     * @return String the service code, never null (empty string if null)
      */
     public String getServiceCode() {
         return (serviceCode != null ? serviceCode : "");
     }
 
     /**
-     * Gets the serviceDesc
+     * Gets the descriptive text of the healthcare service provided.
      *
-     * @return String serviceDesc
+     * @return String the service description, never null (empty string if null)
      */
     public String getServiceDesc() {
         return (serviceDesc != null ? serviceDesc : "");
     }
 
     /**
-     * Gets the billingAmount
+     * Gets the monetary amount to be billed for this service.
      *
-     * @return String billingAmount
+     * @return String the billing amount as a string, never null (empty string if null)
      */
     public String getBillingAmount() {
         return (billingAmount != null ? billingAmount : "");
     }
 
     /**
-     * Gets the diagnosticCode
+     * Gets the diagnostic code associated with this service.
      *
-     * @return String diagnosticCode
+     * @return String the diagnostic code (ICD-9/ICD-10), never null (empty string if null)
      */
     public String getDiagnosticCode() {
         return (diagnosticCode != null ? diagnosticCode : "");
     }
 
     /**
-     * Gets the appointmentDate
+     * Gets the date when the appointment/service was provided.
      *
-     * @return String appointmentDate
+     * @return String the appointment date, may be null
      */
     public String getAppointmentDate() {
         return appointmentDate;
     }
 
     /**
-     * Gets the status
+     * Gets the current status of this billing detail.
      *
-     * @return String status
+     * @return String the billing status (e.g., submitted, paid, rejected), never null (empty string if null)
      */
     public String getStatus() {
         return (status != null ? status : "");
     }
 
     /**
-     * Gets the billingunit
+     * Gets the billing units or quantity for the service provided.
      *
-     * @return String billingunit
+     * @return String the billing units, never null (empty string if null)
      */
     public String getBillingunit() {
         return (billingunit != null ? billingunit : "");
     }
 
     /**
-     * Sets the billingDtNo
+     * Sets the unique identifier for this billing detail record.
      *
-     * @param billingDtNo int
+     * @param billingDtNo int the auto-increment billing detail number
      */
     public void setBillingDtNo(int billingDtNo) {
         this.billingDtNo = billingDtNo;
     }
 
     /**
-     * Sets the billingNo
+     * Sets the reference to the parent billing record.
      *
-     * @param billingNo int
+     * @param billingNo int the billing master record number
      */
     public void setBillingNo(int billingNo) {
         this.billingNo = billingNo;
     }
 
     /**
-     * Sets the serviceCode
+     * Sets the provincial service code identifying the healthcare service.
      *
-     * @param serviceCode String
+     * @param serviceCode String the service code
      */
     public void setServiceCode(String serviceCode) {
         this.serviceCode = serviceCode;
     }
 
     /**
-     * Sets the serviceDesc
+     * Sets the descriptive text of the healthcare service provided.
      *
-     * @param serviceDesc String
+     * @param serviceDesc String the service description
      */
     public void setServiceDesc(String serviceDesc) {
         this.serviceDesc = serviceDesc;
     }
 
     /**
-     * Sets the billingAmount
+     * Sets the monetary amount to be billed for this service.
      *
-     * @param billingAmount String
+     * @param billingAmount String the billing amount as a string
      */
     public void setBillingAmount(String billingAmount) {
         this.billingAmount = billingAmount;
     }
 
     /**
-     * Sets the diagnosticCode
+     * Sets the diagnostic code associated with this service.
      *
-     * @param diagnosticCode String
+     * @param diagnosticCode String the diagnostic code (ICD-9/ICD-10)
      */
     public void setDiagnosticCode(String diagnosticCode) {
         this.diagnosticCode = diagnosticCode;
     }
 
     /**
-     * Sets the appointmentDate
+     * Sets the date when the appointment/service was provided.
      *
-     * @param appointmentDate String
+     * @param appointmentDate String the appointment date
      */
     public void setAppointmentDate(String appointmentDate) {
         this.appointmentDate = appointmentDate;
     }
 
     /**
-     * Sets the status
+     * Sets the current status of this billing detail.
      *
-     * @param status String
+     * @param status String the billing status (e.g., submitted, paid, rejected)
      */
     public void setStatus(String status) {
         this.status = status;
     }
 
     /**
-     * Sets the billingunit
+     * Sets the billing units or quantity for the service provided.
      *
-     * @param billingunit String
+     * @param billingunit String the billing units
      */
     public void setBillingunit(String billingunit) {
         this.billingunit = billingunit;

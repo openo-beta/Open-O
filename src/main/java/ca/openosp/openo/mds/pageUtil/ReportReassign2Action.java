@@ -50,17 +50,63 @@ import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
+/**
+ * Struts2 action for reassigning (forwarding) laboratory reports to other healthcare providers in MDS system.
+ * <p>
+ * This action handles the critical workflow of routing laboratory results to appropriate healthcare
+ * providers, enabling proper follow-up and care coordination. It supports bulk operations for
+ * forwarding multiple lab results simultaneously and manages provider favorite lists for
+ * frequently used routing destinations.
+ * <p>
+ * Key functionality includes:
+ * <ul>
+ * <li>Security validation requiring lab write privileges</li>
+ * <li>Bulk laboratory result forwarding to selected providers</li>
+ * <li>Provider favorite list management for streamlined workflows</li>
+ * <li>JSON-based parameter processing for complex routing operations</li>
+ * <li>AJAX support for seamless user interface integration</li>
+ * <li>Comprehensive error handling and logging</li>
+ * </ul>
+ * The action ensures that laboratory results reach the appropriate providers for
+ * timely review and patient care coordination.
+ *
+ * @since February 4, 2004
+ */
 public class ReportReassign2Action extends ActionSupport {
+    /** HTTP request object for accessing parameters and session data */
     HttpServletRequest request = ServletActionContext.getRequest();
+    /** HTTP response object for handling redirects and JSON responses */
     HttpServletResponse response = ServletActionContext.getResponse();
 
-
+    /** Logger for debugging and error tracking */
     private final Logger logger = MiscUtils.getLogger();
+    /** Security manager for validating user access to laboratory functions */
     private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
+    /**
+     * Default constructor for ReportReassign2Action.
+     */
     public ReportReassign2Action() {
     }
 
+    /**
+     * Executes laboratory report reassignment to selected healthcare providers.
+     * <p>
+     * This method orchestrates the complex workflow of laboratory report forwarding:
+     * <ul>
+     * <li>Validates security privileges for lab write access</li>
+     * <li>Processes JSON parameters for selected providers and lab results</li>
+     * <li>Updates laboratory routing tables for selected results</li>
+     * <li>Manages provider favorite lists for future use</li>
+     * <li>Returns appropriate response (redirect or JSON) based on request type</li>
+     * </ul>
+     * The method supports both regular form submissions and AJAX requests,
+     * enabling flexible integration with different user interface patterns.
+     *
+     * @return String Struts result constant or null for AJAX responses
+     * @throws ServletException if servlet processing fails
+     * @throws IOException if I/O operations fail during processing
+     */
     public String execute()
             throws ServletException, IOException {
 

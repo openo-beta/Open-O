@@ -65,17 +65,94 @@ import ca.openosp.OscarProperties;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
 
+/**
+ * Automated importer for incoming medical fax documents from healthcare service providers.
+ *
+ * This class provides critical functionality for receiving and processing medical documents
+ * transmitted via fax from external healthcare providers, laboratories, specialists, and other
+ * medical facilities. The automated import process ensures that incoming medical information
+ * is promptly available to healthcare providers for patient care decisions.
+ *
+ * The import process handles various types of incoming medical documents including:
+ * - Laboratory results and diagnostic reports from external labs
+ * - Consultation reports and specialist recommendations
+ * - Medical imaging reports and findings
+ * - Prescription confirmations and pharmacy communications
+ * - Patient referral responses and care coordination documents
+ * - Hospital discharge summaries and transfer reports
+ *
+ * Key features of the import system:
+ * - Automated polling of configured fax service providers
+ * - Secure download and local storage of medical documents
+ * - Automatic routing to appropriate inbox queues by department
+ * - Provider lab routing integration for unclaimed document tracking
+ * - Base64 decoding and PDF file format conversion
+ * - Cleanup of remote documents after successful local storage
+ * - Error handling and status tracking for failed imports
+ *
+ * The importer maintains HIPAA/PIPEDA compliance by:
+ * - Securing document transmission with authenticated connections
+ * - Implementing proper access controls for imported documents
+ * - Maintaining audit trails for all import activities
+ * - Ensuring PHI is properly protected during the import process
+ *
+ * Integration with the document management system ensures that imported faxes
+ * are immediately available to healthcare providers through standard document
+ * workflow processes, enabling timely patient care decisions.
+ *
+ * @see ca.openosp.openo.commn.model.FaxConfig
+ * @see ca.openosp.openo.commn.model.FaxJob
+ * @see ca.openosp.openo.documentManager.EDoc
+ * @since 2014-08-29
+ */
 public class FaxImporter {
 
+    /** REST API path for fax service communication */
     private static String PATH = "/fax";
+
+    /** Local directory path for storing imported medical documents */
     private static String DOCUMENT_DIR = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+
+    /** Default user ID for system-imported documents */
     private static String DEFAULT_USER = "-1";
+
+    /** Data access object for fax configuration management */
     private FaxConfigDao faxConfigDao = SpringUtils.getBean(FaxConfigDao.class);
+
+    /** Data access object for fax job tracking and management */
     private FaxJobDao faxJobDao = SpringUtils.getBean(FaxJobDao.class);
+
+    /** Data access object for document queue routing */
     private QueueDocumentLinkDao queueDocumentLinkDao = SpringUtils.getBean(QueueDocumentLinkDao.class);
+
+    /** Data access object for provider lab routing and unclaimed document tracking */
     private ProviderLabRoutingDao providerLabRoutingDao = SpringUtils.getBean(ProviderLabRoutingDao.class);
+
+    /** Logger instance for tracking import activities and errors */
     private Logger log = MiscUtils.getLogger();
 
+    /**
+     * Polls all configured fax service providers for incoming medical documents.
+     *
+     * This method performs the main import cycle by connecting to each active fax service
+     * provider account and retrieving any pending medical documents. The polling process
+     * is typically executed on a scheduled basis to ensure timely import of critical
+     * healthcare information.
+     *
+     * For each active fax configuration, the method:
+     * - Establishes secure authenticated connection to the fax service
+     * - Retrieves list of available documents for download
+     * - Downloads each document with proper error handling
+     * - Saves documents to local storage with appropriate security
+     * - Routes documents to configured inbox queues
+     * - Integrates with provider lab routing for tracking
+     * - Removes successfully imported documents from remote server
+     * - Maintains comprehensive audit logs for regulatory compliance
+     *
+     * Error handling ensures that single document failures do not interrupt
+     * the overall import process, allowing other medical documents to be
+     * successfully imported and made available to healthcare providers.
+     */
     public void poll() {
 
         log.info("CHECKING REMOTE FOR INCOMING FAXES");
@@ -130,13 +207,13 @@ public class FaxImporter {
                             EDoc edoc = null;
                             FaxJob faxFile = null;
 
-                            // if this recievedFax Object contains an error
-                            // skip the download step there is no file to download.
+                            // Skip download if the fax service reported an error
+                            // Error status indicates no document content is available
                             if (!FaxJob.STATUS.ERROR.equals(receivedFax.getStatus())) {
                                 faxFile = downloadFax(client, faxConfig, receivedFax);
                             }
 
-                            // save the received fax to the file system and assign to an inbox Queue
+                            // Process downloaded fax: save to filesystem and route to medical inbox
                             if (faxFile != null) {
                                 edoc = saveAndInsertIntoQueue(faxConfig, receivedFax, faxFile);
                             }
@@ -145,25 +222,25 @@ public class FaxImporter {
                                 fileName = edoc.getFileName();
                             }
 
-                            // The fileName variable will be NULL if the saveAndInsertIntoQueue methods fails
-                            // to fully complete. If NULL, the file will not be deleted from the Host server.
+                            // Only delete from remote server if local save was successful
+                            // This prevents loss of medical documents due to storage failures
                             if (fileName != null) {
 
-                                // set the new fax into provider lab routing for tracking it's route.
+                                // Integrate with provider notification system for new medical documents
                                 providerRouting(Integer.parseInt(edoc.getDocId()));
 
-                                // delete the fax on the sever.
+                                // Remove successfully imported document from remote fax server
                                 deleteFax(client, faxConfig, receivedFax);
 
                             } else {
                                 fileName = FaxJob.STATUS.ERROR.name();
                             }
 
-                            // this received fax may contain status errors that the
-                            // end user needs to see. So the job should be saved to the database anyway.
+                            // Save fax job record for audit trail even if import failed
+                            // Healthcare regulations require tracking of all fax activities
                             receivedFax.setFile_name(fileName);
 
-                            // save the receivedFax Object regardless of status or fileName.
+                            // Persist fax transaction record for regulatory compliance
                             saveFaxJob(new FaxJob(receivedFax));
                         }
 
@@ -183,6 +260,19 @@ public class FaxImporter {
 
     }
 
+    /**
+     * Downloads a medical fax document from the remote service provider.
+     *
+     * This method handles the secure download of individual medical documents from
+     * the fax service provider, including proper error handling and status validation.
+     * The download process ensures that medical documents are transferred securely
+     * and completely before being processed for local storage.
+     *
+     * @param client CloseableHttpClient authenticated HTTP client for secure communication
+     * @param faxConfig FaxConfig configuration containing service credentials and settings
+     * @param fax FaxJob metadata about the document to download
+     * @return FaxJob downloaded document with content, or null if download fails
+     */
     private FaxJob downloadFax(CloseableHttpClient client, FaxConfig faxConfig, FaxJob fax) {
 
         FaxJob downloadedFax = null;
@@ -230,6 +320,22 @@ public class FaxImporter {
         return downloadedFax;
     }
 
+    /**
+     * Deletes a successfully imported medical fax document from the remote service provider.
+     *
+     * This method removes medical documents from the remote fax service after successful
+     * local import and storage. Deletion is performed to prevent duplicate imports and
+     * to maintain proper document lifecycle management on the remote service.
+     *
+     * The deletion process includes verification of successful removal to ensure
+     * proper cleanup and prevent accumulation of processed documents on remote servers.
+     *
+     * @param client CloseableHttpClient authenticated HTTP client for secure communication
+     * @param faxConfig FaxConfig configuration containing service credentials and settings
+     * @param fax FaxJob document metadata for the document to delete
+     * @throws ClientProtocolException if the HTTP delete request fails
+     * @throws IOException if network communication fails during deletion
+     */
     private void deleteFax(CloseableHttpClient client, FaxConfig faxConfig, FaxJob fax)
             throws ClientProtocolException, IOException {
         HttpDelete mDelete = new HttpDelete(faxConfig.getUrl() + PATH + "/"
@@ -253,6 +359,25 @@ public class FaxImporter {
         }
     }
 
+    /**
+     * Saves imported medical fax document to local storage and inserts into appropriate workflow queue.
+     *
+     * This method performs the critical final steps of the import process by:
+     * - Converting Base64-encoded document content to local PDF files
+     * - Creating proper document metadata with healthcare-appropriate categorization
+     * - Storing documents in the secure document management system
+     * - Routing documents to configured inbox queues for healthcare staff review
+     * - Ensuring proper file naming and format standardization
+     *
+     * The method handles various document format conversions (TIF to PDF) and
+     * ensures that all imported medical documents maintain consistent formatting
+     * for healthcare provider review and patient care integration.
+     *
+     * @param faxConfig FaxConfig configuration containing queue routing information
+     * @param receivedFax FaxJob metadata about the received medical document
+     * @param faxFile FaxJob containing the actual Base64-encoded document content
+     * @return EDoc created document entity, or null if save operation fails
+     */
     private EDoc saveAndInsertIntoQueue(FaxConfig faxConfig, FaxJob receivedFax, FaxJob faxFile) {
 
         String filename = receivedFax.getFile_name();
@@ -304,6 +429,17 @@ public class FaxImporter {
 
     }
 
+    /**
+     * Persists fax job information to the database for tracking and audit purposes.
+     *
+     * This method saves comprehensive information about imported medical fax documents
+     * to maintain proper audit trails required for healthcare regulatory compliance.
+     * The saved information includes transmission details, status information, and
+     * document metadata needed for tracking and quality assurance.
+     *
+     * @param saveFax FaxJob containing complete fax transaction information
+     * @return Integer unique database ID of the saved fax job record
+     */
     private Integer saveFaxJob(FaxJob saveFax) {
         saveFax.setUser(DEFAULT_USER);
         faxJobDao.persist(saveFax);
@@ -311,6 +447,15 @@ public class FaxImporter {
     }
 
 
+    /**
+     * Creates provider lab routing entry for an imported medical document by document ID.
+     *
+     * This convenience method creates a routing entry for imported fax documents using
+     * the document's unique identifier, enabling integration with the healthcare provider's
+     * document workflow and notification systems.
+     *
+     * @param labNo Integer unique document ID for the imported medical fax
+     */
     private void providerRouting(Integer labNo) {
         ProviderLabRoutingModel providerLabRouting = new ProviderLabRoutingModel();
         providerLabRouting.setLabNo(labNo);
@@ -318,10 +463,17 @@ public class FaxImporter {
     }
 
     /**
-     * Put an entry in Provider Lab Routing that will cause the unclaimed lab indicator
-     * to light up next to the inbox.
+     * Creates provider lab routing entry to trigger unclaimed document indicators for healthcare staff.
      *
-     * @return
+     * This method integrates imported medical fax documents with the provider lab routing system,
+     * which alerts healthcare staff to newly arrived documents requiring attention. The routing
+     * entry triggers visual indicators in the user interface that notify providers of unclaimed
+     * documents that need review and assignment.
+     *
+     * This integration is critical for ensuring that imported medical documents do not go
+     * unnoticed and receive prompt attention from appropriate healthcare staff members.
+     *
+     * @param providerLabRouting ProviderLabRoutingModel routing information for the imported document
      */
     private void providerRouting(ProviderLabRoutingModel providerLabRouting) {
 

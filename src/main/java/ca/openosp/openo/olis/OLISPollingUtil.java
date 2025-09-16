@@ -182,6 +182,7 @@ public class OLISPollingUtil {
                 olisProviderPreferences.setStartTime(timeStampForNextStartDate);
             }
 
+            // Persist updated preferences
             if (olisProviderPreferences.getId() != null) {
                 olisProviderPreferencesDao.merge(olisProviderPreferences);
             } else {
@@ -303,6 +304,7 @@ public class OLISPollingUtil {
                 olisProviderPreferences.setStartTime(timeStampForNextStartDate);
             }
 
+            // Persist updated preferences
             if (olisProviderPreferences.getId() != null) {
                 olisProviderPreferencesDao.merge(olisProviderPreferences);
             } else {

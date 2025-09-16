@@ -45,40 +45,85 @@ import ca.openosp.openo.prescript.data.RxPatientData;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
+/**
+ * Struts2 action for deleting or activating patient allergies in the prescription module.
+ * <p>
+ * This action handles the deletion and activation of patient allergies within
+ * the prescription interface. It supports both permanent deletion and activation
+ * of previously archived allergies. All operations are logged for audit purposes
+ * with detailed information about the allergy changes.
+ * <p>
+ * The action validates security permissions for allergy management and integrates
+ * with the patient data model to maintain allergy records. It supports different
+ * operations based on the action parameter (activate vs delete).
+ *
+ * @since 2008
+ */
 public final class RxDeleteAllergy2Action extends ActionSupport {
+    /** HTTP request object for accessing request parameters and session */
     HttpServletRequest request = ServletActionContext.getRequest();
+
+    /** HTTP response object for handling the response */
     HttpServletResponse response = ServletActionContext.getResponse();
 
+    /** Security manager for validating user permissions */
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
+    /**
+     * Main execution method for processing allergy deletion or activation requests.
+     * <p>
+     * This method:
+     * 1. Validates user permissions for allergy updates
+     * 2. Retrieves the patient object from the session
+     * 3. Processes the allergy operation (delete or activate)
+     * 4. Logs the operation for audit purposes
+     * 5. Sets demographic number as request attribute if provided
+     * <p>
+     * The method supports two operations:
+     * - Delete: Marks the allergy as deleted
+     * - Activate: Reactivates a previously archived allergy
+     *
+     * @return String the result status (SUCCESS) to continue with the workflow
+     * @throws IOException if an input/output error occurs
+     * @throws ServletException if a servlet error occurs
+     * @throws RuntimeException if user lacks required allergy permissions
+     */
     public String execute()
             throws IOException, ServletException {
 
+        // Validate user has permission to update allergy information
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_allergy", "u", null)) {
             throw new RuntimeException("missing required sec object (_allergy)");
         }
 
 
-        // Setup variables
-        // Add allergy
-
+        // Extract request parameters
         int id = Integer.parseInt(request.getParameter("ID"));
         String demographicNo = request.getParameter("demographicNo");
         String action = request.getParameter("action");
 
+        // Retrieve patient object from session
         RxPatientData.Patient patient = (RxPatientData.Patient) request.getSession().getAttribute("Patient");
 
+        // Get the allergy record for audit logging
         Allergy allergy = patient.getAllergy(id);
+        String ip = request.getRemoteAddr();
+        String userId = (String) request.getSession().getAttribute("user");
+
+        // Process the requested operation
         if (action != null && action.equals("activate")) {
+            // Reactivate a previously archived allergy
             patient.activateAllergy(id);
-            String ip = request.getRemoteAddr();
-            LogAction.addLog((String) request.getSession().getAttribute("user"), "Activate", LogConst.CON_ALLERGY, "" + id, ip, "" + patient.getDemographicNo(), allergy.getAuditString());
+            LogAction.addLog(userId, "Activate", LogConst.CON_ALLERGY, "" + id, ip,
+                           "" + patient.getDemographicNo(), allergy.getAuditString());
         } else {
+            // Delete (archive) the allergy
             patient.deleteAllergy(id);
-            String ip = request.getRemoteAddr();
-            LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.DELETE, LogConst.CON_ALLERGY, "" + id, ip, "" + patient.getDemographicNo(), allergy.getAuditString());
+            LogAction.addLog(userId, LogConst.DELETE, LogConst.CON_ALLERGY, "" + id, ip,
+                           "" + patient.getDemographicNo(), allergy.getAuditString());
         }
 
+        // Set demographic number as request attribute for downstream processing
         if (demographicNo != null) {
             request.setAttribute("demographicNo", demographicNo);
         }

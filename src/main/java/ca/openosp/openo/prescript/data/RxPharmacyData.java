@@ -24,12 +24,6 @@
  */
 
 
-/*
- * RxPharmacyData.java
- *
- * Created on September 29, 2004, 3:41 PM
- */
-
 package ca.openosp.openo.prescript.data;
 
 import ca.openosp.openo.commn.dao.DemographicPharmacyDao;
@@ -44,33 +38,62 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author Jay Gallagher
+ * Data access layer for pharmacy information management.
+ *
+ * This class provides comprehensive pharmacy data management functionality including
+ * pharmacy CRUD operations, patient-pharmacy associations, and pharmacy searches.
+ * It maintains the relationship between patients and their preferred pharmacies,
+ * supporting multiple pharmacies per patient with preference ordering.
+ *
+ * The class tracks pharmacy information history, allowing for historical data
+ * retention when pharmacy details change (e.g., address or phone number updates).
+ * This is critical for prescription tracking and regulatory compliance.
+ *
+ * Key features include:
+ * - Pharmacy creation, update, and soft deletion
+ * - Patient-pharmacy linking with preference ordering
+ * - Pharmacy search by name, city, or address
+ * - Historical pharmacy data retention
+ *
+ * @since 2004-09-29
  */
 public class RxPharmacyData {
 
+    /**
+     * DAO for pharmacy information access.
+     */
     private PharmacyInfoDao pharmacyInfoDao = (PharmacyInfoDao) SpringUtils.getBean(PharmacyInfoDao.class);
+
+    /**
+     * DAO for patient-pharmacy relationship management.
+     */
     private DemographicPharmacyDao demographicPharmacyDao = (DemographicPharmacyDao) SpringUtils.getBean(DemographicPharmacyDao.class);
 
     /**
-     * Creates a new instance of RxPharmacyData
+     * Default constructor for RxPharmacyData.
      */
     public RxPharmacyData() {
     }
 
 
     /**
-     * Used to add a new pharmacy
+     * Adds a new pharmacy to the system.
      *
-     * @param name
-     * @param address
-     * @param city
-     * @param province
-     * @param postalCode
-     * @param phone1
-     * @param phone2
-     * @param fax
-     * @param email
-     * @param notes
+     * Creates a new pharmacy record with complete contact and location information.
+     * The method is synchronized to prevent duplicate pharmacy creation during
+     * concurrent operations.
+     *
+     * @param name String pharmacy name
+     * @param address String street address
+     * @param city String city name
+     * @param province String province/state code
+     * @param postalCode String postal/zip code
+     * @param phone1 String primary phone number
+     * @param phone2 String secondary phone number
+     * @param fax String fax number
+     * @param email String email address
+     * @param serviceLocationIdentifier String unique identifier for electronic prescribing
+     * @param notes String additional notes or instructions
      */
     synchronized public void addPharmacy(String name, String address, String city, String province, String postalCode, String phone1, String phone2, String fax, String email, String serviceLocationIdentifier, String notes) {
         pharmacyInfoDao.addPharmacy(name, address, city, province, postalCode, phone1, phone2, fax, email, serviceLocationIdentifier, notes);
@@ -78,28 +101,37 @@ public class RxPharmacyData {
 
 
     /**
-     * Used to update an new pharmacy.  Creates a new record for this pharmacy with the same pharmacyID
+     * Updates an existing pharmacy's information.
      *
-     * @param ID         pharmacy ID
-     * @param name
-     * @param address
-     * @param city
-     * @param province
-     * @param postalCode
-     * @param phone1
-     * @param phone2
-     * @param fax
-     * @param email
-     * @param notes
+     * Creates a new record for the pharmacy while maintaining the same pharmacy ID.
+     * This preserves historical data for audit and prescription tracking purposes.
+     * The previous record remains for historical reference.
+     *
+     * @param ID String pharmacy ID to update
+     * @param name String updated pharmacy name
+     * @param address String updated street address
+     * @param city String updated city name
+     * @param province String updated province/state code
+     * @param postalCode String updated postal/zip code
+     * @param phone1 String updated primary phone number
+     * @param phone2 String updated secondary phone number
+     * @param fax String updated fax number
+     * @param email String updated email address
+     * @param serviceLocationIdentifier String updated identifier for electronic prescribing
+     * @param notes String updated notes or instructions
      */
     public void updatePharmacy(String ID, String name, String address, String city, String province, String postalCode, String phone1, String phone2, String fax, String email, String serviceLocationIdentifier, String notes) {
         pharmacyInfoDao.updatePharmacy(Integer.parseInt(ID), name, address, city, province, postalCode, phone1, phone2, fax, email, serviceLocationIdentifier, notes);
     }
 
     /**
-     * set the status of the pharmacy to 0, this will not be found in the getAllPharmacy queries
+     * Soft deletes a pharmacy from the system.
      *
-     * @param ID
+     * Sets the pharmacy status to inactive (0) rather than physically deleting.
+     * Also unlinks all patient associations with this pharmacy. The pharmacy
+     * data is retained for historical and audit purposes.
+     *
+     * @param ID String pharmacy ID to delete
      */
     public void deletePharmacy(String ID) {
 
@@ -113,10 +145,13 @@ public class RxPharmacyData {
     }
 
     /**
-     * Returns the latest data about a pharmacy.
+     * Retrieves the current pharmacy information.
      *
-     * @param ID pharmacy id
-     * @return returns a pharmacy class corresponding latest data from the pharmacy ID
+     * Returns the most recent record for a pharmacy, reflecting any updates
+     * that have been made to address, phone numbers, or other details.
+     *
+     * @param ID String pharmacy ID
+     * @return PharmacyInfo current pharmacy data, null if not found
      */
     public PharmacyInfo getPharmacy(String ID) {
         PharmacyInfo pharmacyInfo = pharmacyInfoDao.getPharmacy(Integer.parseInt(ID));
@@ -124,10 +159,14 @@ public class RxPharmacyData {
     }
 
     /**
-     * Returns the data about a pharmacy record.  This would be used to see prior addresses or phone numbers of a pharmacy.
+     * Retrieves a specific historical pharmacy record.
      *
-     * @param recordID pharmacy Record ID
-     * @return Pharmacy data class
+     * Used to access historical pharmacy data, such as previous addresses
+     * or phone numbers. Each update creates a new record, allowing access
+     * to pharmacy information at specific points in time.
+     *
+     * @param recordID String specific pharmacy record ID
+     * @return PharmacyInfo historical pharmacy data
      */
     public PharmacyInfo getPharmacyByRecordID(String recordID) {
         return pharmacyInfoDao.getPharmacyByRecordID(Integer.parseInt(recordID));
@@ -135,19 +174,28 @@ public class RxPharmacyData {
 
 
     /**
-     * Used to get a list of all the active pharmacies with their latest data
+     * Retrieves all active pharmacies in the system.
      *
-     * @return ArrayList of Pharmacy classes
+     * Returns only active pharmacies (status != 0) with their most current
+     * information. Deleted pharmacies are excluded from results.
+     *
+     * @return List<PharmacyInfo> all active pharmacies
      */
     public List<PharmacyInfo> getAllPharmacies() {
         return pharmacyInfoDao.getAllPharmacies();
     }
 
     /**
-     * Used to link a patient with a pharmacy.
+     * Associates a pharmacy with a patient.
      *
-     * @param pharmacyId    Id of the pharmacy
-     * @param demographicNo Patient demographic number
+     * Links a pharmacy to a patient's profile with a preference order.
+     * Patients can have multiple preferred pharmacies ranked by preference.
+     * Lower preference numbers indicate higher priority.
+     *
+     * @param pharmacyId String pharmacy ID to link
+     * @param demographicNo String patient demographic number
+     * @param preferredOrder String preference ranking (1 = primary, 2 = secondary, etc.)
+     * @return PharmacyInfo the linked pharmacy with preference order set
      */
     public PharmacyInfo addPharmacyToDemographic(String pharmacyId, String demographicNo, String preferredOrder) {
         demographicPharmacyDao.addPharmacyToDemographic(Integer.parseInt(pharmacyId), Integer.parseInt(demographicNo), Integer.parseInt(preferredOrder));
@@ -160,31 +208,40 @@ public class RxPharmacyData {
     }
 
     /**
-     * Used to get the most recent pharmacy associated with this patient.  Returns a Pharmacy object with the latest data about that pharmacy.
+     * Retrieves all pharmacies associated with a patient.
      *
-     * @param demographicNo patients demographic number
-     * @return Pharmacy data object
+     * Returns a list of pharmacies linked to the patient, sorted by preference order.
+     * Each pharmacy includes its preference ranking. Returns null if the demographic
+     * number is invalid or if no pharmacies are linked.
+     *
+     * @param demographicNo String patient demographic number
+     * @return List<PharmacyInfo> patient's pharmacies sorted by preference, null if none
      */
     public List<PharmacyInfo> getPharmacyFromDemographic(String demographicNo) {
 
+		// Validate demographic number
 		if (demographicNo == null || demographicNo.isEmpty() || !demographicNo.matches("\\d+")) {
 			return null;
 		}
 
 
+        // Get patient-pharmacy associations
         List<DemographicPharmacy> dpList = demographicPharmacyDao.findByDemographicId(Integer.parseInt(demographicNo));
         if (dpList.isEmpty()) {
             return null;
         }
 
+        // Extract pharmacy IDs
         List<Integer> pharmacyIds = new ArrayList<Integer>();
         for (DemographicPharmacy demoPharmacy : dpList) {
             pharmacyIds.add(demoPharmacy.getPharmacyId());
             MiscUtils.getLogger().debug("ADDING ID " + demoPharmacy.getPharmacyId());
         }
 
+        // Get pharmacy details
         List<PharmacyInfo> pharmacyInfos = pharmacyInfoDao.getPharmacies(pharmacyIds);
 
+        // Set preference order for each pharmacy
         for (DemographicPharmacy demographicPharmacy : dpList) {
             for (PharmacyInfo pharmacyInfo : pharmacyInfos) {
                 if (demographicPharmacy.getPharmacyId() == pharmacyInfo.getId()) {
@@ -194,27 +251,49 @@ public class RxPharmacyData {
             }
         }
 
+        // Sort by preference order
         Collections.sort(pharmacyInfos);
         return pharmacyInfos;
     }
 
+    /**
+     * Searches for pharmacy cities matching a search term.
+     *
+     * Used for auto-complete functionality when searching for pharmacies
+     * by city. Returns distinct city names that match the search term.
+     *
+     * @param searchTerm String partial city name to search
+     * @return List<String> matching city names
+     */
     public List<String> searchPharmacyCity(String searchTerm) {
 
         return pharmacyInfoDao.searchPharmacyByCity(searchTerm);
 
     }
 
+    /**
+     * Searches for pharmacies by name and/or city.
+     *
+     * Supports compound searches using comma separation (e.g., "Pharmacy Name, City").
+     * If no comma is present, searches by name only. The search matches partial
+     * strings in pharmacy name, address, or city fields.
+     *
+     * @param searchTerm String search query, optionally comma-separated for name,city
+     * @return List<PharmacyInfo> matching pharmacies
+     */
     public List<PharmacyInfo> searchPharmacy(String searchTerm) {
 
         String[] terms;
         String name = "", city = "";
 
+        // Parse search term for name and city components
         if (searchTerm.indexOf(",") > -1) {
             terms = searchTerm.split(",", -1);
 
             switch (terms.length) {
                 case 2:
                     city = terms[1];
+                    // Fall through intentionally
                 case 1:
                     name = terms[0];
             }
@@ -226,12 +305,31 @@ public class RxPharmacyData {
 
     }
 
+    /**
+     * Removes the association between a patient and a pharmacy.
+     *
+     * Unlinks a pharmacy from a patient's profile without deleting
+     * either the patient or pharmacy records.
+     *
+     * @param pharmacyId String pharmacy ID to unlink
+     * @param demographicNo String patient demographic number
+     */
     public void unlinkPharmacy(String pharmacyId, String demographicNo) {
 
         demographicPharmacyDao.unlinkPharmacy(Integer.parseInt(pharmacyId), Integer.parseInt(demographicNo));
 
     }
 
+    /**
+     * Counts patients who have selected a pharmacy as their preferred.
+     *
+     * Returns the total number of patients who have this pharmacy set
+     * as their primary (preferred) pharmacy. Useful for pharmacy usage
+     * statistics and impact analysis before deletion.
+     *
+     * @param pharmacyId String pharmacy ID to count patients for
+     * @return Long number of patients preferring this pharmacy
+     */
     public Long getTotalDemographicsPreferedToPharmacyByPharmacyId(String pharmacyId) {
         return demographicPharmacyDao.getTotalDemographicsPreferedToPharmacyByPharmacyId(Integer.parseInt(pharmacyId));
     }

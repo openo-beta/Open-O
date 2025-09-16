@@ -17,7 +17,8 @@
       "Bash(cat:*)",
       "Read(//usr/local/tomcat/logs/**)",
       "Bash(awk:*)",
-      "Bash(jstack:*)"
+      "Bash(jstack:*)",
+      "Bash(git log:*)"
     ],
     "deny": [],
     "ask": []

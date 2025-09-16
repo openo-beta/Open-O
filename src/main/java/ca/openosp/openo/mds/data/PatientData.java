@@ -100,34 +100,78 @@ public class PatientData {
             this.workPhone = "";
         }
 
+        /**
+         * Gets the formatted patient name for clinical display.
+         *
+         * @return String patient name in "Last, First Middle" format
+         */
         public String getPatientName() {
             return this.patientName;
         }
 
+        /**
+         * Gets the patient's sex/gender identifier.
+         *
+         * @return String patient sex (typically "M" or "F")
+         */
         public String getSex() {
             return this.sex;
         }
 
+        /**
+         * Gets the formatted date of birth for clinical display.
+         *
+         * @return String date of birth in "dd-MMM-yyyy" format, or empty string if unavailable
+         */
         public String getDOB() {
             return this.dOB;
         }
 
+        /**
+         * Gets the calculated current age of the patient.
+         *
+         * @return String current age in years, or "N/A" if date of birth unavailable
+         */
         public String getAge() {
             return this.age;
         }
 
+        /**
+         * Gets the patient's home phone number.
+         *
+         * @return String home phone number for patient contact
+         */
         public String getHomePhone() {
             return this.homePhone;
         }
 
+        /**
+         * Gets the patient's work phone number.
+         * <p>
+         * Note: Work phone is not currently supported in MDS integration.
+         *
+         * @return String work phone number (always empty in current implementation)
+         */
         public String getWorkPhone() {
             return this.workPhone;
         }
 
+        /**
+         * Gets the patient's location information.
+         * <p>
+         * Note: Patient location is not currently used in MDS integration.
+         *
+         * @return String patient location (always empty in current implementation)
+         */
         public String getPatientLocation() {
             return this.patientLocation;
         }
 
+        /**
+         * Gets the patient's Canadian health insurance number.
+         *
+         * @return String health insurance number for patient identification
+         */
         public String getHealthNumber() {
             return this.healthNumber;
         }

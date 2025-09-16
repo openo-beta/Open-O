@@ -23,6 +23,26 @@
 
 package ca.openosp.openo.web;
 
+/**
+ * Enumeration of Clinical Data Store (CDS) Version 4.0 function codes for Ontario mental health services.
+ * This enum defines the standardized function codes used in Ontario's mental health reporting system
+ * to categorize different types of mental health services and programs provided by healthcare facilities.
+ *
+ * <p>The CDS 4.0 function codes are used for:</p>
+ * <ul>
+ *   <li>Standardized reporting to Ontario Ministry of Health</li>
+ *   <li>Service categorization for funding and statistics</li>
+ *   <li>Program classification in mental health facilities</li>
+ *   <li>Quality assurance and outcome measurement</li>
+ * </ul>
+ *
+ * <p>Each function code represents a specific type of mental health service delivery model,
+ * from crisis intervention and acute care to community support and rehabilitation programs.
+ * These codes ensure consistent reporting across Ontario's mental health system.</p>
+ *
+ * @since September 25, 2009
+ * @see Cds4ReportUIBean
+ */
 public enum Cds4FunctionCode {
     code0AS("0AS", "Abuse Services"),
     code0AB("0AB", "Alternative Businesses"),
@@ -54,18 +74,40 @@ public enum Cds4FunctionCode {
     code0SH("0SH", " Supportive Housing"),
     codeEMP("EMP", " Vocational/Employment");
 
+    /** The official Ontario CDS function code identifier */
     private String functionCode = null;
+
+    /** The descriptive name of the mental health service function */
     private String functionName = null;
 
+    /**
+     * Constructs a CDS function code with its identifier and descriptive name.
+     *
+     * @param functionCode String the official CDS function code identifier
+     * @param functionName String the descriptive name of the mental health service
+     */
     Cds4FunctionCode(String functionCode, String functionName) {
         this.functionCode = functionCode;
         this.functionName = functionName;
     }
 
+    /**
+     * Returns the official Ontario CDS function code identifier.
+     * This is the standardized code used in government reporting and data submissions.
+     *
+     * @return String the CDS function code identifier (e.g., "ACT", "CMH", "CSB")
+     */
     public String getFunctionCode() {
         return functionCode;
     }
 
+    /**
+     * Returns the descriptive name of the mental health service function.
+     * This provides a human-readable description of what type of mental health service
+     * is represented by the function code.
+     *
+     * @return String the descriptive name of the mental health service function
+     */
     public String getFunctionName() {
         return functionName;
     }

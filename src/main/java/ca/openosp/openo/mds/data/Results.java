@@ -24,17 +24,44 @@
  */
 
 
-// Decompiled by DJ v3.5.5.77 Copyright 2003 Atanas Neshkov  Date: 05/12/2003 11:02:22 AM
-// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
-// Decompiler options: packimports(3) 
-// Source File Name:   Results.java
-
 package ca.openosp.openo.mds.data;
 
 import java.util.ArrayList;
 
+/**
+ * Represents individual laboratory test results with associated metadata and interpretation information.
+ * <p>
+ * This class encapsulates a single laboratory test result from the MDS (Medical Data Systems)
+ * laboratory provider, including the test value, reference ranges, abnormal flags, and any
+ * associated notes or comments. Each Results instance corresponds to an OBX (Observation Result)
+ * segment in the HL7 laboratory message structure.
+ * <p>
+ * Key features include:
+ * <ul>
+ * <li>Test result values with units and reference ranges</li>
+ * <li>Abnormal flag interpretation for clinical significance</li>
+ * <li>Result status interpretation (Final, Preliminary, etc.)</li>
+ * <li>Associated notes and comments from laboratory</li>
+ * <li>Laboratory identification and traceability</li>
+ * </ul>
+ *
+ * @since February 4, 2004
+ */
 public class Results {
 
+    /**
+     * Constructs a Results instance with complete laboratory test information.
+     *
+     * @param n String the test name
+     * @param rR String the reference range
+     * @param u String the units of measurement
+     * @param oV String the observation value (test result)
+     * @param aF String the abnormal flags
+     * @param oI String the observation identifier
+     * @param rS String the result status code
+     * @param newnotes ArrayList the associated notes
+     * @param lID String the laboratory ID
+     */
     Results(String n, String rR, String u, String oV, String aF, String oI, String rS, ArrayList newnotes, String lID) {
         name = n;
         referenceRange = rR;
@@ -47,14 +74,23 @@ public class Results {
         labID = lID;
     }
 
+    /** Human-readable test name (e.g., "Hemoglobin", "Glucose") */
     public String name;
+    /** Units of measurement for the test result */
     public String units;
+    /** Reference range for normal values */
     public String referenceRange;
+    /** The actual test result value */
     public String observationValue;
+    /** Abnormal flags indicating clinical significance */
     public String abnormalFlags;
+    /** Observation identifier from laboratory system */
     public String observationIden;
+    /** Interpreted result status (Final, Preliminary, etc.) */
     public String resultStatus;
+    /** Collection of notes and comments associated with this result */
     public ArrayList notes;
+    /** Laboratory identifier for traceability */
     public String labID;
 
     private String resultInterpret(String rS) {
@@ -85,7 +121,14 @@ public class Results {
     }
 
 
-    //notes ArrayList should only contain String objects.
+    /**
+     * Retrieves a specific note by index from the notes collection.
+     * <p>
+     * Note: The notes ArrayList should only contain String objects.
+     *
+     * @param i int the index of the note to retrieve
+     * @return String the note at the specified index, or empty string if not found
+     */
     public String getLabNotes(int i) {
         String ret = "";
         if (notes != null && notes.size() > i) {

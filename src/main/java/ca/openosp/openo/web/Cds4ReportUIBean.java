@@ -58,6 +58,39 @@ import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.util.DateUtils;
 
+/**
+ * UI Bean for generating Clinical Data Store (CDS) Version 4.0 reports for Ontario mental health services.
+ * This comprehensive reporting system processes mental health program data and generates standardized
+ * reports required by the Ontario Ministry of Health for mental health service funding and quality assurance.
+ *
+ * <p>Key reporting features include:</p>
+ * <ul>
+ *   <li>Cohort-based analysis (0-10 year service duration buckets)</li>
+ *   <li>Single vs. multiple admission tracking and analysis</li>
+ *   <li>Hospitalization history reporting (before, during, and after program admission)</li>
+ *   <li>Demographics analysis with age range categorization</li>
+ *   <li>Service function code reporting for different mental health programs</li>
+ *   <li>Anonymous client handling and data privacy protection</li>
+ * </ul>
+ *
+ * <p>The reporting system processes CDS forms submitted by mental health programs and generates
+ * statistical summaries organized by cohort buckets representing years of service engagement.
+ * All data processing respects client privacy requirements and handles both identified and
+ * anonymous client records appropriately.</p>
+ *
+ * <p>This class manages complex data aggregation including:</p>
+ * <ul>
+ *   <li>Admission sorting by single/multiple episodes</li>
+ *   <li>Cohort bucket assignment based on service duration</li>
+ *   <li>Hospitalization day calculations across multiple time periods</li>
+ *   <li>Age-based demographics reporting with statistical aggregations</li>
+ * </ul>
+ *
+ * @since September 18, 2009
+ * @see Cds4FunctionCode
+ * @see CdsClientForm
+ * @see CdsFormOption
+ */
 public final class Cds4ReportUIBean {
 
     private static Logger logger = MiscUtils.getLogger();
@@ -71,28 +104,51 @@ public final class Cds4ReportUIBean {
     private static CdsHospitalisationDaysDao cdsHospitalisationDaysDao = (CdsHospitalisationDaysDao) SpringUtils.getBean(CdsHospitalisationDaysDao.class);
     private static DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
 
+    /** Number of cohort buckets for service duration analysis (0-10 years) */
     public static final int NUMBER_OF_COHORT_BUCKETS = 11;
+
+    /** Number of data columns including cohort buckets plus multiple admissions column */
     private static final int NUMBER_OF_DATA_ROW_COLUMNS = NUMBER_OF_COHORT_BUCKETS + 1;
 
+    /**
+     * Enumeration for minimum/maximum calculations in age and statistical analysis.
+     */
     enum MinMax {
-        MIN, MAX
+        /** Minimum value selection */
+        MIN,
+        /** Maximum value selection */
+        MAX
     }
 
+    /**
+     * Data structure for organizing client admissions by single vs. multiple admission categories.
+     * This class manages the complex categorization of client records for CDS reporting,
+     * separating clients with single program episodes from those with multiple admissions
+     * across different time periods.
+     */
     public static class SingleMultiAdmissions {
-        // key=clientId
+        /** Map of clients with single program admissions (key=clientId, value=CdsClientForm) */
         public HashMap<Integer, CdsClientForm> singleAdmissions = new HashMap<Integer, CdsClientForm>();
 
-        // this is a map where key=0-10 representing each cohort bucket., value is a collection of CdsClientForms
+        /** Cohort bucket organization for single admissions (key=0-10 year buckets, value=CdsClientForm collection) */
         public MultiValueMap singleAdmissionCohortBuckets = new MultiValueMap();
 
-        // key=clientId
+        /** Map of clients with multiple admissions showing latest forms (key=clientId, value=latest CdsClientForm) */
         public HashMap<Integer, CdsClientForm> multipleAdmissionsLatestForms = new HashMap<Integer, CdsClientForm>();
 
+        /** Collection of all forms from clients with multiple admissions */
         public ArrayList<CdsClientForm> multipleAdmissionsAllForms = new ArrayList<CdsClientForm>();
 
-        // this is a map where key=0-10 representing each cohort bucket., value is a collection of CdsClientForms
+        /** Cohort bucket organization for multiple admissions (key=0-10 year buckets, value=CdsClientForm collection) */
         public MultiValueMap multipleAdmissionCohortBuckets = new MultiValueMap();
 
+        /**
+         * Adds a CDS form to the multiple admissions collection, ensuring only the most recent
+         * form version for each admission is retained. This prevents duplicate reporting of
+         * form data when multiple versions exist for the same program admission.
+         *
+         * @param cdsClientForm CdsClientForm the form to add to the multiple admissions collection
+         */
         public void addUniqueCdsProgramFormToMultipleAdmissionsAllForms(CdsClientForm cdsClientForm) {
             for (CdsClientForm tempForm : multipleAdmissionsAllForms) {
                 if (tempForm.getCdsFormVersion().equals(cdsClientForm.getCdsFormVersion()) && tempForm.getAdmissionId().equals(cdsClientForm.getAdmissionId())) {
@@ -107,29 +163,63 @@ public final class Cds4ReportUIBean {
         }
     }
 
-    /**
-     * key=admissionId, value=admission
-     */
+    /** Map of admissions included in the report (key=admissionId, value=Admission) */
     private HashMap<Integer, Admission> admissionMap = null;
+
+    /** Categorized admission data structure for single vs. multiple admission analysis */
     private SingleMultiAdmissions singleMultiAdmissions = null;
+
+    /** The functional centre (service area) being reported on */
     private FunctionalCentre functionalCentre = null;
+
+    /** Report start date (inclusive) */
     private GregorianCalendar startDate = new GregorianCalendar();
+
+    /** Report end date (exclusive for calculations, but represents inclusive end date) */
     private GregorianCalendar endDateExclusive = new GregorianCalendar();
+
+    /** Set of provider IDs to include in the report (null means include all) */
     private HashSet<String> providerIdsToReportOn = null;
+
+    /** Set of program IDs to include in the report (null means include all) */
     private HashSet<Integer> programIdsToReportOn = null;
+
+    /** Current user session information */
     private LoggedInInfo loggedInInfo = null;
 
     /**
-     * End dates should be treated as inclusive.
+     * Constructs a CDS 4.0 report generator for the specified parameters and date range.
+     * This constructor initializes all the data structures needed for generating comprehensive
+     * mental health service reports, including admission categorization, cohort analysis,
+     * and provider/program filtering.
+     *
+     * <p>The constructor performs the following initialization steps:</p>
+     * <ul>
+     *   <li>Sets up date ranges (end date is treated as inclusive for user interface)</li>
+     *   <li>Configures provider and program filtering</li>
+     *   <li>Loads functional centre information</li>
+     *   <li>Builds admission maps with appropriate filtering</li>
+     *   <li>Categorizes admissions into single/multiple admission groups</li>
+     *   <li>Organizes data into cohort buckets for analysis</li>
+     * </ul>
+     *
+     * @param loggedInInfo LoggedInInfo current user session for facility context
+     * @param functionalCentreId String the functional centre ID to report on
+     * @param startDate Date the inclusive start date for the reporting period
+     * @param endDateInclusive Date the inclusive end date for the reporting period
+     * @param providerIdList String[] array of provider IDs to include (null for all providers)
+     * @param programIds HashSet<Integer> set of program IDs to include (null for all programs)
      */
     public Cds4ReportUIBean(LoggedInInfo loggedInInfo, String functionalCentreId, Date startDate, Date endDateInclusive, String[] providerIdList, HashSet<Integer> programIds) {
 
         this.loggedInInfo = loggedInInfo;
         this.startDate.setTime(startDate);
         this.endDateExclusive.setTime(endDateInclusive);
-        this.endDateExclusive.add(GregorianCalendar.DAY_OF_YEAR, 1); // add 1 to make exclusive
 
-        // put providerId's in a Hash for quicker searches.
+        // Convert inclusive end date to exclusive for internal calculations
+        this.endDateExclusive.add(GregorianCalendar.DAY_OF_YEAR, 1);
+
+        // Convert provider ID array to HashSet for efficient lookups during filtering
         if (providerIdList != null) {
             providerIdsToReportOn = new HashSet<String>();
             for (String s : providerIdList) {
@@ -141,22 +231,49 @@ public final class Cds4ReportUIBean {
 
         functionalCentre = functionalCentreDao.find(functionalCentreId);
 
+        // Build admission map with filtering applied
         admissionMap = getAdmissionMap();
 
+        // Categorize admissions and organize into cohort buckets
         singleMultiAdmissions = getAdmissionsSortedSingleMulti();
     }
 
+    /**
+     * Returns an HTML-escaped display string for the functional centre being reported on.
+     * This provides a user-friendly identifier combining the account ID and description
+     * for display in report headers and administrative interfaces.
+     *
+     * @return String HTML-escaped functional centre description in format "AccountID, Description"
+     */
     public String getFunctionalCentreDescription() {
         return (StringEscapeUtils.escapeHtml(functionalCentre.getAccountId() + ", " + functionalCentre.getDescription()));
     }
 
+    /**
+     * Returns a formatted, HTML-escaped date range string for report display.
+     * This converts the internal exclusive end date back to an inclusive date
+     * for user-friendly display in report headers and interfaces.
+     *
+     * @return String HTML-escaped date range in format "yyyy-MM-dd to yyyy-MM-dd (inclusive)"
+     */
     public String getDateRangeForDisplay() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         GregorianCalendar displayEndDate = (GregorianCalendar) endDateExclusive.clone();
+
+        // Convert back to inclusive end date for display
         displayEndDate.add(GregorianCalendar.DAY_OF_YEAR, -1);
+
         return (StringEscapeUtils.escapeHtml(simpleDateFormat.format(startDate.getTime()) + " to " + simpleDateFormat.format(displayEndDate.getTime()) + " (inclusive)"));
     }
 
+    /**
+     * Retrieves all CDS form options for version 4.0 reporting.
+     * These options define the standardized data elements and categories
+     * used in Ontario mental health service reporting. Each option represents
+     * a specific data field or question that must be reported to the Ministry of Health.
+     *
+     * @return List<CdsFormOption> all form options for CDS version 4.0
+     */
     public static List<CdsFormOption> getCdsFormOptions() {
         return (cdsFormOptionDao.findByVersion("4"));
     }
@@ -311,6 +428,30 @@ public final class Cds4ReportUIBean {
     }
 
 
+    /**
+     * Generates a data row for CDS reporting based on the specified form option category.
+     * This is the main dispatcher method that routes CDS data categories to their appropriate
+     * processing methods. Each CDS category (007, 008, 009, etc.) has specific calculation
+     * logic for different types of mental health service data.
+     *
+     * <p>The returned array contains:</p>
+     * <ul>
+     *   <li>Index 0: Multiple admissions count</li>
+     *   <li>Indexes 1-11: Cohort bucket counts (0-10 years of service)</li>
+     * </ul>
+     *
+     * <p>CDS categories include:</p>
+     * <ul>
+     *   <li>007: Client identification and demographics</li>
+     *   <li>07a: Waiting list analysis</li>
+     *   <li>008-019: Service delivery and outcome measures</li>
+     *   <li>020-021: Hospitalization tracking (before/during program)</li>
+     *   <li>022-031: Additional clinical and outcome indicators</li>
+     * </ul>
+     *
+     * @param cdsFormOption CdsFormOption the CDS data category to generate data for
+     * @return int[] array of counts organized by multiple admissions and cohort buckets
+     */
     public int[] getDataRow(CdsFormOption cdsFormOption) {
         if (cdsFormOption.getCdsDataCategory().startsWith("007-")) return (get007DataLine(cdsFormOption));
         else if (cdsFormOption.getCdsDataCategory().startsWith("07a-")) return (get07aDataLine(cdsFormOption));

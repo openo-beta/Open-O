@@ -43,6 +43,28 @@ import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
+/**
+ * Struts2 action for searching and locating patient demographics for laboratory result matching in MDS system.
+ * <p>
+ * This action facilitates the patient search workflow when laboratory results cannot be automatically
+ * matched to patient demographics. It attempts to locate the correct patient record and redirects
+ * to appropriate pages based on the search results, supporting the manual patient matching process
+ * that is essential for proper laboratory result filing.
+ * <p>
+ * Key functionality includes:
+ * <ul>
+ * <li>Security validation requiring lab read privileges</li>
+ * <li>Patient demographic search based on laboratory information</li>
+ * <li>Intelligent redirection based on search success or failure</li>
+ * <li>URL parameter encoding for proper data transmission</li>
+ * <li>Integration with patient search and electronic chart workflows</li>
+ * <li>Error handling for failed search operations</li>
+ * </ul>
+ * This action is crucial for resolving unmatched laboratory results and ensuring
+ * proper patient-lab result associations.
+ *
+ * @since February 4, 2004
+ */
 public class SearchPatient2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
@@ -54,6 +76,18 @@ public class SearchPatient2Action extends ActionSupport {
     public SearchPatient2Action() {
     }
 
+    /**
+     * Executes patient search for laboratory result matching.
+     * <p>
+     * This method attempts to locate patient demographics associated with
+     * laboratory results and redirects to appropriate pages based on search
+     * results. It handles both successful matches (redirecting to patient search)
+     * and failed matches (redirecting to electronic chart for manual matching).
+     *
+     * @return String Struts result constant (NONE for redirect)
+     * @throws ServletException if servlet processing fails
+     * @throws IOException if I/O operations fail during redirect
+     */
     public String execute()
             throws ServletException, IOException {
 

@@ -51,6 +51,28 @@ import ca.openosp.openo.util.ConversionUtils;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
+/**
+ * Struts2 action for updating laboratory report status and managing provider acknowledgments in MDS system.
+ * <p>
+ * This action handles the core workflow of laboratory result review and acknowledgment by healthcare
+ * providers. It manages status transitions (new, acknowledged, filed) and supports provider comments
+ * and annotations. The action includes audit logging for regulatory compliance and supports both
+ * single report updates and multi-lab acknowledgment workflows.
+ * <p>
+ * Key functionality includes:
+ * <ul>
+ * <li>Security validation requiring lab write privileges</li>
+ * <li>Laboratory report status updates (acknowledge, file, comment)</li>
+ * <li>Multi-laboratory batch processing for related results</li>
+ * <li>Provider comment management with timestamps</li>
+ * <li>Comprehensive audit logging for compliance</li>
+ * <li>AJAX support for seamless user interface integration</li>
+ * </ul>
+ * This action is critical for maintaining proper laboratory workflow and ensuring
+ * that all results are properly reviewed and documented by healthcare providers.
+ *
+ * @since February 4, 2004
+ */
 public class ReportStatusUpdate2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
@@ -63,6 +85,17 @@ public class ReportStatusUpdate2Action extends ActionSupport {
     public ReportStatusUpdate2Action() {
     }
 
+    /**
+     * Main execution method that routes to specific status update operations.
+     * <p>
+     * This method determines the type of operation requested and routes to the
+     * appropriate handler method. It supports both main status updates and
+     * comment-only operations based on the method parameter.
+     *
+     * @return String Struts result indicating success, failure, or null for AJAX
+     * @throws ServletException if servlet processing fails
+     * @throws IOException if I/O operations fail
+     */
     public String execute() throws ServletException, IOException {
         if ("addComment".equals(request.getParameter("method"))) {
             return addComment();
@@ -70,6 +103,15 @@ public class ReportStatusUpdate2Action extends ActionSupport {
         return executemain();
     }
 
+    /**
+     * Executes main laboratory report status update operations.
+     * <p>
+     * This method handles primary status changes including acknowledgment,
+     * filing, and comment updates. It includes audit logging for acknowledged
+     * results and supports multi-lab batch processing for related results.
+     *
+     * @return String Struts result indicating success or failure
+     */
     public String executemain() {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_lab", "w", null)) {
@@ -112,6 +154,15 @@ public class ReportStatusUpdate2Action extends ActionSupport {
         }
     }
 
+    /**
+     * Adds or updates comments on laboratory reports.
+     * <p>
+     * This method handles comment-only updates for laboratory reports,
+     * returning a JSON response with timestamp information for client-side
+     * display updates.
+     *
+     * @return String null (JSON response written directly)
+     */
     public String addComment() {
         int labNo = Integer.parseInt(request.getParameter("segmentID"));
         String providerNo = request.getParameter("providerNo");
@@ -143,6 +194,17 @@ public class ReportStatusUpdate2Action extends ActionSupport {
         return null;
     }
 
+    /**
+     * Retrieves the demographic ID associated with a laboratory result for audit logging.
+     * <p>
+     * This utility method looks up the patient demographic ID linked to a specific
+     * laboratory result, enabling proper audit trail creation that identifies
+     * which patient's records were accessed.
+     *
+     * @param labType String the type of laboratory result (HL7, MDS, etc.)
+     * @param labNo int the laboratory result number
+     * @return String the demographic ID or empty string if not found
+     */
     private static String getDemographicIdFromLab(String labType, int labNo) {
         String demographicID = "";
         PatientLabRoutingDao dao = SpringUtils.getBean(PatientLabRoutingDao.class);

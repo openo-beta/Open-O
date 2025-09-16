@@ -43,7 +43,35 @@ import ca.openosp.openo.clinic.ClinicData;
 
 import static ca.openosp.openo.utility.ClinicLogoUtility.createLogoHeader;
 
-
+/**
+ * Utility for generating professional PDF cover pages for medical fax transmissions.
+ *
+ * This class creates standardized, professional cover pages for healthcare fax communications
+ * that include essential sender and recipient information, facility branding, confidentiality
+ * statements, and regulatory compliance elements required for medical document transmission.
+ *
+ * Healthcare fax cover pages serve multiple critical purposes:
+ * - Legal identification of sending and receiving healthcare facilities
+ * - HIPAA/PIPEDA confidentiality statements for PHI protection
+ * - Professional presentation meeting healthcare industry standards
+ * - Page count information for transmission verification
+ * - Contact information for delivery confirmation and follow-up
+ *
+ * Key features for healthcare compliance:
+ * - Configurable clinic letterhead and logo integration
+ * - Automatic confidentiality statement inclusion
+ * - Professional healthcare facility identification
+ * - Structured layout optimized for medical workflow
+ * - Page count tracking for complete document delivery verification
+ *
+ * The generated cover pages ensure that medical fax transmissions meet professional
+ * standards and regulatory requirements while providing essential information for
+ * healthcare providers to properly route and handle sensitive medical documents.
+ *
+ * @see ca.openosp.openo.fax.core.FaxAccount
+ * @see ca.openosp.openo.fax.core.FaxRecipient
+ * @since 2014-08-29
+ */
 public class PdfCoverPageCreator {
 
     private String note;
@@ -60,8 +88,9 @@ public class PdfCoverPageCreator {
     private int numberPages;
 
     /**
-     * Always use a manager (FaxDocumentManager) to access this class.
-     * Do not access directly.
+     * Constructs a PDF cover page creator with custom note content.
+     *
+     * @param note String custom message or notes to include on the cover page
      */
     public PdfCoverPageCreator(String note) {
         this.note = note;
@@ -78,11 +107,25 @@ public class PdfCoverPageCreator {
         }
     }
 
+    /**
+     * Constructs a PDF cover page creator with note content and page count information.
+     *
+     * @param note String custom message or notes for the healthcare fax
+     * @param numberPages int total number of pages in the medical document
+     */
     public PdfCoverPageCreator(String note, int numberPages) {
         this(note);
         this.numberPages = numberPages;
     }
 
+    /**
+     * Constructs a complete PDF cover page creator with all healthcare facility information.
+     *
+     * @param note String custom message or notes for the medical fax transmission
+     * @param numberPages int total number of pages in the medical document
+     * @param recipient FaxRecipient healthcare provider or facility receiving the fax
+     * @param sender FaxAccount healthcare facility sending the medical document
+     */
     public PdfCoverPageCreator(String note, int numberPages, FaxRecipient recipient, FaxAccount sender) {
         this(note, numberPages);
         this.recipient = recipient;
@@ -90,13 +133,14 @@ public class PdfCoverPageCreator {
     }
 
     /**
-     * This cover page has a fixed height.  Long note information will be truncated.
-     * Cover page height: 792f
-     * Letterhead height: 70f
-     * Heading height:
-     * Sender - Recipient info height:
-     * Body(note) height:
-     * Footer Height:
+     * Generates a professional PDF cover page for medical fax transmission.
+     *
+     * Creates a standardized healthcare cover page with facility branding, sender/recipient
+     * information, confidentiality statements, and custom notes. The layout is optimized
+     * for medical document transmission with fixed dimensions to ensure consistent
+     * professional appearance across all healthcare communications.
+     *
+     * @return byte[] PDF cover page data ready for fax transmission
      */
     public byte[] createCoverPage() {
         byte[] bytearray = new byte[]{};

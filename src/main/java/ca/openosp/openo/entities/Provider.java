@@ -26,7 +26,43 @@
 package ca.openosp.openo.entities;
 
 /**
- * Encapsulates data from table providers
+ * Provider entity representing healthcare providers and practitioners within OpenO EMR.
+ * This entity encapsulates comprehensive healthcare provider information including
+ * professional credentials, contact details, specialization, and provincial registration
+ * numbers required for Canadian healthcare billing and regulatory compliance.
+ *
+ * <p>Healthcare providers in OpenO EMR include physicians, nurse practitioners, specialists,
+ * residents, and other healthcare professionals authorized to provide medical services.
+ * This entity supports multi-jurisdictional requirements across Canadian provinces,
+ * maintaining essential identifiers for billing systems like OHIP (Ontario), MSP (BC),
+ * and other provincial healthcare programs.
+ *
+ * <p>Key healthcare provider features include:
+ * <ul>
+ * <li>Professional identification with provider numbers and billing credentials
+ * <li>Provincial healthcare registration numbers (OHIP, RMA, HSO numbers)
+ * <li>Medical specialization and team assignment for clinical workflow
+ * <li>Contact information for professional communication and referrals
+ * <li>Status tracking for active/inactive provider management
+ * <li>Supervisory relationships for training and oversight programs
+ * </ul>
+ *
+ * <p>Provider credentials and identifiers include:
+ * <ul>
+ * <li><strong>OHIP Number:</strong> Ontario Health Insurance Plan provider identifier
+ * <li><strong>RMA Number:</strong> Registered Medical Assistant identification
+ * <li><strong>Billing Number:</strong> Provincial billing system identifier
+ * <li><strong>HSO Number:</strong> Health Service Organization identifier
+ * </ul>
+ *
+ * <p>This entity supports clinical workflows including appointment scheduling,
+ * billing operations, clinical documentation, and inter-provider communication.
+ * Provider information is essential for maintaining regulatory compliance and
+ * ensuring proper attribution of healthcare services.
+ *
+ * @see ca.openosp.openo.entities.Patient
+ * @see ca.openosp.openo.entities.Prescription
+ * @since November 1, 2004
  */
 public class Provider {
     private String providerNo = "";
@@ -51,7 +87,10 @@ public class Provider {
 
 
     /**
-     * Class constructor with no arguments.
+     * Default constructor for Provider entity.
+     * Creates a new Provider instance with all String fields initialized to empty strings.
+     * This constructor ensures that getter methods return empty strings rather than null
+     * values, which is important for UI display and data processing consistency.
      */
     public Provider() {
     }
@@ -105,9 +144,11 @@ public class Provider {
     }
 
     /**
-     * Gets the providerNo
+     * Gets the unique healthcare provider number used throughout the EMR system.
+     * This identifier is used for linking clinical activities, appointments, prescriptions,
+     * and billing records to the specific healthcare provider.
      *
-     * @return String providerNo
+     * @return String the provider number, never null (returns empty string if not set)
      */
     public String getProviderNo() {
         return (providerNo != null ? providerNo : "");
@@ -132,10 +173,13 @@ public class Provider {
     }
 
     /**
-     * Gets the providerType
+     * Gets the provider type classification.
+     * This field was previously used for categorizing healthcare providers but has been
+     * superseded by more specific provider role and specialty tracking systems.
      *
-     * @return String providerType
-     * @deprecated no longer is use 2010-04-23, marked for future removal
+     * @return String the provider type, never null (returns empty string if not set)
+     * @deprecated No longer in use as of April 23, 2010. Use specialty and team fields instead.
+     *             Marked for future removal in favor of more granular provider classification.
      */
     @Deprecated
     public String getProviderType() {
@@ -143,18 +187,23 @@ public class Provider {
     }
 
     /**
-     * Gets the specialty
+     * Gets the medical specialty or area of clinical expertise for this provider.
+     * This field indicates the provider's specialization such as Family Medicine,
+     * Internal Medicine, Pediatrics, Surgery, etc., which is used for referral
+     * routing and clinical care coordination.
      *
-     * @return String specialty
+     * @return String the medical specialty, never null (returns empty string if not set)
      */
     public String getSpecialty() {
         return (specialty != null ? specialty : "");
     }
 
     /**
-     * Gets the team
+     * Gets the healthcare team or clinical group assignment for this provider.
+     * Team assignments facilitate collaborative care models, shared patient panels,
+     * and interdisciplinary healthcare delivery within the EMR system.
      *
-     * @return String team
+     * @return String the team assignment, never null (returns empty string if not set)
      */
     public String getTeam() {
         return (team != null ? team : "");
@@ -206,36 +255,45 @@ public class Provider {
     }
 
     /**
-     * Gets the ohipNo
+     * Gets the OHIP (Ontario Health Insurance Plan) provider number.
+     * This identifier is required for billing medical services to the Ontario
+     * Ministry of Health and Long-Term Care. Essential for regulatory compliance
+     * and payment processing in Ontario healthcare.
      *
-     * @return String ohipNo
+     * @return String the OHIP provider number, never null (returns empty string if not set)
      */
     public String getOhipNo() {
         return (ohipNo != null ? ohipNo : "");
     }
 
     /**
-     * Gets the rmaNo
+     * Gets the RMA (Registered Medical Assistant) number.
+     * This identifier is used for healthcare support staff and medical assistants
+     * who provide clinical support under physician supervision.
      *
-     * @return String rmaNo
+     * @return String the RMA number, never null (returns empty string if not set)
      */
     public String getRmaNo() {
         return (rmaNo != null ? rmaNo : "");
     }
 
     /**
-     * Gets the billingNo
+     * Gets the provincial billing number used for healthcare service billing.
+     * This identifier varies by province and is used for submitting claims to
+     * provincial healthcare plans (MSP in BC, OHIP in Ontario, etc.).
      *
-     * @return String billingNo
+     * @return String the billing number, never null (returns empty string if not set)
      */
     public String getBillingNo() {
         return (billingNo != null ? billingNo : "");
     }
 
     /**
-     * Gets the hsoNo
+     * Gets the HSO (Health Service Organization) number.
+     * HSOs are organized healthcare delivery models that provide comprehensive
+     * care through capitation funding rather than fee-for-service billing.
      *
-     * @return String hsoNo
+     * @return String the HSO number, never null (returns empty string if not set)
      */
     public String getHsoNo() {
         return (hsoNo != null ? hsoNo : "");
@@ -268,6 +326,13 @@ public class Provider {
         return (providerActivity != null ? providerActivity : "");
     }
 
+    /**
+     * Gets the supervisor provider number for this healthcare provider.
+     * This field establishes supervisory relationships important for training programs,
+     * resident supervision, and clinical oversight in academic healthcare settings.
+     *
+     * @return String the supervisor provider number, never null (returns empty string if not set)
+     */
     public String getSupervisor() {
         return (supervisor != null ? supervisor : "");
     }
@@ -435,23 +500,33 @@ public class Provider {
     }
 
 
+    /**
+     * Sets the supervisor provider number for this healthcare provider.
+     *
+     * @param supervisor String the supervisor provider number
+     */
     public void setSupervisor(String supervisor) {
         this.supervisor = supervisor;
     }
 
     /**
-     * getFullName
+     * Constructs the provider's full name by combining first and last names.
+     * This convenience method provides a formatted full name for display purposes
+     * in user interfaces, reports, and clinical documentation.
      *
-     * @return String
+     * @return String the provider's full name in "FirstName LastName" format
      */
     public String getFullName() {
         return this.firstName + " " + this.lastName;
     }
 
     /**
-     * getInitials
+     * Constructs the provider's initials from first and last names.
+     * This method extracts the first character from both first and last names
+     * to create a two-character initial combination for compact display purposes
+     * in clinical interfaces and appointment scheduling.
      *
-     * @return Object
+     * @return String the provider's initials (first letter of first name + first letter of last name)
      */
     public String getInitials() {
         String firstInit = "";

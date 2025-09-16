@@ -26,7 +26,27 @@
 package ca.openosp.openo.entities;
 
 /**
- * Encapsulates data from table hl7_obx
+ * Healthcare Laboratory Observation Result (HL7 OBX) segment entity.
+ *
+ * This entity represents the HL7 v2.x OBX (Observation/Result) segment, which contains actual
+ * laboratory test results, observations, and measurements. The OBX segment is paired with OBR
+ * segments to provide complete laboratory information in healthcare messaging.
+ *
+ * Key clinical information stored includes:
+ * - Test results and values with units of measurement
+ * - Reference ranges and abnormal flags
+ * - LOINC codes for standardized test identification
+ * - Result status and observation methods
+ * - Responsible observer and producer information
+ * - Date/time stamps for observations
+ *
+ * This entity follows HL7 v2.x messaging standards and supports laboratory information
+ * system integration for both inbound and outbound result processing.
+ *
+ * @see <a href="http://www.hl7.org/implement/standards/product_brief.cfm?product_id=185">HL7 v2.x Standard</a>
+ * @see Hl7Obr for related observation requests
+ * @see LoincCodes for LOINC code definitions
+ * @since November 1, 2004
  */
 public class Hl7Obx {
     /**
@@ -55,35 +75,37 @@ public class Hl7Obx {
     private String note;
 
     /**
-     * Class constructor with no arguments.
+     * Default constructor for HL7 OBX (Observation/Result) segment entity.
+     * Initializes all fields to their default values.
      */
     public Hl7Obx() {
     }
 
     /**
-     * Full constructor
+     * Complete constructor for HL7 OBX (Observation/Result) segment entity.
+     * Creates a fully initialized OBX segment with all HL7 standard fields.
      *
-     * @param obxId                   int
-     * @param obrId                   int
-     * @param setId                   String
-     * @param valueType               String
-     * @param observationIdentifier   String
-     * @param loincNum                String
-     * @param observationSubId        String
-     * @param observationResults      String
-     * @param units                   String
-     * @param referenceRange          String
-     * @param abnormalFlags           String
-     * @param probability             String
-     * @param natureOfAbnormalTest    String
-     * @param observationResultStatus String
-     * @param dateLastNormalValue     String
-     * @param userDefinedAccessChecks String
-     * @param observationDateTime     String
-     * @param producerId              String
-     * @param responsibleObserver     String
-     * @param observationMethod       String
-     * @param note                    String
+     * @param obxId                   int unique identifier for this OBX record
+     * @param obrId                   int related OBR record identifier
+     * @param setId                   String set ID for OBX segment (OBX.1)
+     * @param valueType               String value type (NM=Numeric, ST=String, etc.) (OBX.2)
+     * @param observationIdentifier   String observation identifier (OBX.3)
+     * @param loincNum                String LOINC code for standardized test identification
+     * @param observationSubId        String observation sub-ID for repeated values (OBX.4)
+     * @param observationResults      String actual test result or observation value (OBX.5)
+     * @param units                   String units of measurement (OBX.6)
+     * @param referenceRange          String normal reference range (OBX.7)
+     * @param abnormalFlags           String abnormal flags (H=High, L=Low, N=Normal) (OBX.8)
+     * @param probability             String probability of abnormality (OBX.9)
+     * @param natureOfAbnormalTest    String nature of abnormal test (OBX.10)
+     * @param observationResultStatus String result status (F=Final, P=Preliminary) (OBX.11)
+     * @param dateLastNormalValue     String date of last normal value (OBX.12)
+     * @param userDefinedAccessChecks String user-defined access checks (OBX.13)
+     * @param observationDateTime     String date/time of observation (OBX.14)
+     * @param producerId              String producer ID (OBX.15)
+     * @param responsibleObserver     String responsible observer (OBX.16)
+     * @param observationMethod       String observation method (OBX.17)
+     * @param note                    String additional notes or comments
      */
     public Hl7Obx(int obxId, int obrId, String setId, String valueType,
                   String observationIdentifier, String loincNum,
@@ -118,54 +140,62 @@ public class Hl7Obx {
     }
 
     /**
-     * Gets the obxId
+     * Gets the unique OBX record identifier.
+     * This is the database primary key for this OBX segment record.
      *
-     * @return int obxId
+     * @return int the unique OBX record identifier
      */
     public int getObxId() {
         return obxId;
     }
 
     /**
-     * Gets the obrId
+     * Gets the related OBR record identifier.
+     * This links the observation result to its corresponding request.
      *
-     * @return int obrId
+     * @return int the OBR record identifier this result belongs to
      */
     public int getObrId() {
         return obrId;
     }
 
     /**
-     * Gets the setId
+     * Gets the set ID for this OBX segment (HL7 field OBX.1).
+     * Used to identify different instances of OBX segments within a message.
      *
-     * @return String setId
+     * @return String the set ID, empty string if null
      */
     public String getSetId() {
         return (setId != null ? setId : "");
     }
 
     /**
-     * Gets the valueType
+     * Gets the value type (HL7 field OBX.2).
+     * Specifies the data type of the observation value (NM=Numeric, ST=String, etc.).
      *
-     * @return String valueType
+     * @return String the value type code, empty string if null
      */
     public String getValueType() {
         return (valueType != null ? valueType : "");
     }
 
     /**
-     * Gets the observationIdentifier
+     * Gets the observation identifier (HL7 field OBX.3).
+     * Identifies the specific observation or test being reported.
      *
-     * @return String observationIdentifier
+     * @return String the observation identifier, empty string if null
      */
     public String getObservationIdentifier() {
         return (observationIdentifier != null ? observationIdentifier : "");
     }
 
     /**
-     * Gets the loincNum
+     * Gets the LOINC number for standardized test identification.
+     * LOINC (Logical Observation Identifiers Names and Codes) provides universal
+     * identifiers for laboratory and clinical observations.
      *
-     * @return String loincNum
+     * @return String the LOINC code, empty string if null
+     * @see LoincCodes for complete LOINC code definitions
      */
     public String getLoincNum() {
         return (loincNum != null ? loincNum : "");
@@ -181,9 +211,10 @@ public class Hl7Obx {
     }
 
     /**
-     * Gets the observationResults
+     * Gets the observation results (HL7 field OBX.5).
+     * The actual test result, measurement value, or clinical observation.
      *
-     * @return String observationResults
+     * @return String the observation result value, empty string if null
      */
     public String getObservationResults() {
         return (observationResults != null ? observationResults : "");

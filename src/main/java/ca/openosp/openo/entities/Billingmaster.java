@@ -47,7 +47,23 @@ import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 
 /**
- * Encapsulates data from table billingmaster
+ * Healthcare billing master entity representing the core billing record for provincial healthcare claims.
+ * This JPA entity encapsulates the data from the billingmaster table, which serves as the primary record
+ * for healthcare service billing transactions submitted to provincial insurance systems (OHIP, MSP, etc.).
+ *
+ * Each Billingmaster record represents a complete billing transaction containing all necessary information
+ * for claim submission including patient demographics, provider information, service details, diagnostic codes,
+ * and provincial-specific billing data. The entity supports multiple provincial billing formats and includes
+ * specialized fields for Workers' Compensation Board (WCB) claims and Motor Vehicle Accident (MVA) claims.
+ *
+ * The entity includes comprehensive audit tracking with creation dates and billing status management,
+ * supporting the complete lifecycle of healthcare billing from initial claim creation through payment processing.
+ *
+ * @see Billingdetail
+ * @see Billactivity
+ * @see BillHistory
+ * @see BillingStatusType
+ * @since November 1, 2004
  */
 @Entity
 @Table(name = "billingmaster")
@@ -70,27 +86,66 @@ import ca.openosp.openo.util.UtilDateUtilities;
 public class Billingmaster {
 
     /**
-     * auto_increment
+     * Auto-increment unique identifier for this billing master record.
+     * Primary key for the billingmaster table.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "billingmaster_no")
     private int billingmasterNo;
+    /**
+     * Billing number reference linking to related billing records
+     */
     @Column(name = "billing_no")
     private int billingNo;
+
+    /**
+     * Date when this billing record was created
+     */
     @Temporal(value = javax.persistence.TemporalType.DATE)
     private Date createdate;
+
+    /**
+     * Current status of the billing claim (e.g., 'O' for submitted, 'P' for paid)
+     */
     private String billingstatus;
+
+    /**
+     * Reference to the patient demographic record
+     */
     @Column(name = "demographic_no")
     private int demographicNo;
+
+    /**
+     * Reference to the appointment record associated with this billing
+     */
     @Column(name = "appointment_no")
     private int appointmentNo;
+    /**
+     * Provincial claim code identifying the type of claim
+     */
     private String claimcode;
+
+    /**
+     * Data center code for provincial billing system routing
+     */
     private String datacenter;
+
+    /**
+     * Payee number identifying who should receive payment
+     */
     @Column(name = "payee_no")
     private String payeeNo;
+
+    /**
+     * Practitioner number of the healthcare provider
+     */
     @Column(name = "practitioner_no")
     private String practitionerNo;
+
+    /**
+     * Patient's Personal Health Number (provincial health card number)
+     */
     private String phn;
     @Column(name = "name_verify")
     private String nameVerify;
@@ -194,7 +249,8 @@ public class Billingmaster {
     private int paymentMethod;
 
     /**
-     * Class constructor with no arguments.
+     * Default constructor creating an empty Billingmaster instance.
+     * All fields will be initialized to their default values.
      */
     public Billingmaster() {
     }
@@ -350,104 +406,112 @@ public class Billingmaster {
     }
 
     /**
-     * Gets the billingmasterNo
+     * Gets the unique identifier for this billing master record.
      *
-     * @return int billingmasterNo
+     * @return int the auto-increment billing master number (primary key)
      */
     public int getBillingmasterNo() {
         return billingmasterNo;
     }
 
     /**
-     * Gets the billingNo
+     * Gets the billing number reference linking to related billing records.
      *
-     * @return int billingNo
+     * @return int the billing number
      */
     public int getBillingNo() {
         return billingNo;
     }
 
     /**
-     * Gets the createdate
+     * Gets the date when this billing record was created.
      *
-     * @return String createdate
+     * @return Date the creation date, may be null
      */
     public Date getCreatedate() {
         return createdate;
     }
 
     /**
-     * Gets the billingstatus
+     * Gets the current status of the billing claim.
      *
-     * @return String billingstatus
+     * @return String the billing status (e.g., 'O' for submitted, 'P' for paid), never null (empty string if null)
      */
     public String getBillingstatus() {
         return (billingstatus != null ? billingstatus : "");
     }
 
     /**
-     * Gets the demographicNo
+     * Gets the reference to the patient demographic record.
      *
-     * @return int demographicNo
+     * @return int the demographic record number
      */
     public int getDemographicNo() {
         return demographicNo;
     }
 
     /**
-     * Gets the appointmentNo
+     * Gets the reference to the appointment record associated with this billing.
      *
-     * @return int appointmentNo
+     * @return int the appointment record number
      */
     public int getAppointmentNo() {
         return appointmentNo;
     }
 
     /**
-     * Gets the claimcode
+     * Gets the provincial claim code identifying the type of claim.
      *
-     * @return String claimcode
+     * @return String the claim code, never null (empty string if null)
      */
     public String getClaimcode() {
         return (claimcode != null ? claimcode : "");
     }
 
     /**
-     * Gets the datacenter
+     * Gets the data center code for provincial billing system routing.
      *
-     * @return String datacenter
+     * @return String the data center code, never null (empty string if null)
      */
     public String getDatacenter() {
         return (datacenter != null ? datacenter : "");
     }
 
     /**
-     * Gets the payeeNo
+     * Gets the payee number identifying who should receive payment.
      *
-     * @return String payeeNo
+     * @return String the payee number, never null (empty string if null)
      */
     public String getPayeeNo() {
         return (payeeNo != null ? payeeNo : "");
     }
 
     /**
-     * Gets the practitionerNo
+     * Gets the practitioner number of the healthcare provider.
      *
-     * @return String practitionerNo
+     * @return String the practitioner number, never null (empty string if null)
      */
     public String getPractitionerNo() {
         return (practitionerNo != null ? practitionerNo : "");
     }
 
     /**
-     * Gets the phn
+     * Gets the patient's Personal Health Number (provincial health card number).
      *
-     * @return String phn
+     * @return String the PHN, never null (empty string if null)
      */
     public String getPhn() {
         return (phn != null ? phn : "");
     }
 
+    /**
+     * Sets the name verification field using patient's first and last names.
+     * Creates a formatted name verification string from the first character of the first name
+     * and first two characters of the last name for provincial billing validation.
+     *
+     * @param firstName String the patient's first name
+     * @param lastName String the patient's last name
+     */
     public void setNameVerify(String firstName, String lastName) {
         if (lastName.length() < 2) {
             lastName += "   ";
@@ -455,13 +519,14 @@ public class Billingmaster {
         if (firstName.length() < 1) {
             firstName += "   ";
         }
+        // Format as "F LL" where F is first initial and LL is first two letters of last name
         nameVerify = UtilMisc.mysqlEscape(firstName.substring(0, 1) + " " + lastName.substring(0, 2));
     }
 
     /**
-     * Gets the nameVerify
+     * Gets the name verification field used for provincial billing validation.
      *
-     * @return String nameVerify
+     * @return String the formatted name verification (e.g., "J SM" for John Smith), never null (empty string if null)
      */
     public String getNameVerify() {
         return (nameVerify != null ? nameVerify : "");
@@ -539,6 +604,12 @@ public class Billingmaster {
         return (billAmount != null ? billAmount : "");
     }
 
+    /**
+     * Gets the bill amount as a double value for calculations.
+     *
+     * @return double the bill amount as a numeric value
+     * @throws NumberFormatException if the bill amount cannot be parsed as a double
+     */
     public double getBillAmountAsDouble() {
         return Double.parseDouble(getBillAmount());
     }
@@ -561,6 +632,12 @@ public class Billingmaster {
         return (serviceDate != null ? serviceDate : "");
     }
 
+    /**
+     * Gets the service date as a Date object for date calculations.
+     * Parses the service date string (yyyyMMdd format) into a Date object.
+     *
+     * @return Date the service date as a Date object, null if parsing fails
+     */
     public Date getServiceDateAsDate() {
         Date d = null;
         try {
@@ -1444,12 +1521,24 @@ public class Billingmaster {
         this.paymentMethod = paymentMethod;
     }
 
+    /**
+     * Returns a string representation of this Billingmaster object.
+     * Uses reflection to include all field values in a multi-line format.
+     *
+     * @return String detailed string representation of all field values
+     */
     public String toString() {
         return ToStringBuilder.reflectionToString(this,
                 ToStringStyle.MULTI_LINE_STYLE);
     }
 
     ////
+    /**
+     * Gets the billing amount as a BigDecimal for precise currency calculations.
+     * Parses the bill amount string and formats it to 2 decimal places with proper rounding.
+     *
+     * @return BigDecimal the bill amount with 2 decimal places, 0.00 if parsing fails
+     */
     public BigDecimal getBillingAmountBigDecimal() {
         BigDecimal bdFee = null;
         try {
@@ -1461,6 +1550,12 @@ public class Billingmaster {
         return bdFee;
     }
 
+    /**
+     * Determines if this billing record has an associated note record.
+     * Checks if the correspondence code indicates a note ('N') or both note and payment ('B').
+     *
+     * @return boolean true if correspondence code is 'N' or 'B', false otherwise
+     */
     public boolean hasNoteRecord() {
         boolean retval = false;
         try {

@@ -23,29 +23,61 @@ import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
 /**
- * A job can start many tasks
+ * OLIS Scheduler Job for automated polling of laboratory results from Ontario Laboratories Information System.
+ * <p>
+ * This class extends TimerTask to provide scheduled execution of OLIS polling operations based on
+ * system preferences. The job checks configured time windows, frequency settings, and last run times
+ * to determine when to execute OLIS result retrieval.
+ * <p>
+ * Key features:
+ * - Time window validation (start/end times)
+ * - Frequency-based polling control
+ * - Automatic database connection cleanup
+ * - Comprehensive logging of operations
+ * - Integration with OLISSystemPreferences for configuration
  *
- * @author Indivica
+ * @since 2008
  */
 public class OLISSchedulerJob extends TimerTask {
 
+    /** Logger for tracking OLIS polling operations and errors */
     private static final Logger logger = MiscUtils.getLogger();
 
+    /**
+     * Executes the OLIS polling task based on system preferences and timing constraints.
+     * <p>
+     * This method performs the following operations:
+     * 1. Retrieves OLIS system preferences from database
+     * 2. Validates current time against configured time windows
+     * 3. Checks polling frequency to prevent excessive requests
+     * 4. Initiates OLIS result polling if conditions are met
+     * 5. Updates last run timestamp in preferences
+     * <p>
+     * The job will skip execution if:
+     * - No preferences are configured
+     * - Current time is outside configured time window
+     * - Insufficient time has passed since last poll based on frequency setting
+     *
+     * @throws RuntimeException if database operations or OLIS polling fails
+     */
     @Override
     public void run() {
         try {
             logger.info("starting OLIS poller job");
+
+            // Retrieve OLIS system preferences to check if polling is enabled and configured
             OLISSystemPreferencesDao olisPrefDao = (OLISSystemPreferencesDao) SpringUtils.getBean(OLISSystemPreferencesDao.class);
-            ;
             OLISSystemPreferences olisPrefs = olisPrefDao.getPreferences();
             if (olisPrefs == null) {
-                // not set to run at all
+                // OLIS preferences not configured - skip polling
                 logger.info("Don't need to run right now..no prefs");
                 return;
             }
             Date now = new Date();
             SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMddHHmmssZ");
             Date startDate = null, endDate = null;
+
+            // Parse configured time window from preferences
             try {
                 if (olisPrefs.getStartTime() != null && olisPrefs.getStartTime().trim().length() > 0)
                     startDate = dateFormatter.parse(olisPrefs.getStartTime());
@@ -53,18 +85,20 @@ public class OLISSchedulerJob extends TimerTask {
                 if (olisPrefs.getEndTime() != null && olisPrefs.getEndTime().trim().length() > 0)
                     endDate = dateFormatter.parse(olisPrefs.getEndTime());
             } catch (ParseException e) {
-                logger.error("Error", e);
+                logger.error("Error parsing OLIS time window preferences", e);
             }
             logger.info("start date = " + startDate);
             logger.info("end date = " + endDate);
 
+            // Check if current time falls within configured polling window
             if ((startDate != null && now.before(startDate)) || (endDate != null && now.after(endDate))) {
-                logger.info("Don't need to run right now");
+                logger.info("Don't need to run right now - outside time window");
                 return;
             }
 
+            // Check polling frequency to prevent excessive OLIS requests
             if (olisPrefs.getLastRun() != null) {
-                // check to see if we are past last run + frequency interval
+                // Verify sufficient time has passed since last poll based on configured frequency
                 int freqMins = (olisPrefs.getPollFrequency() != null) ? olisPrefs.getPollFrequency() : 0;
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(olisPrefs.getLastRun());
@@ -77,13 +111,17 @@ public class OLISSchedulerJob extends TimerTask {
             }
 
             logger.info("===== OLIS JOB RUNNING....");
+
+            // Update last run timestamp before polling to prevent concurrent executions
             olisPrefs.setLastRun(new Date());
             olisPrefDao.merge(olisPrefs);
 
+            // Execute OLIS polling to retrieve new laboratory results
             OLISPollingUtil.requestResults(null);
         } catch (Exception e) {
-            logger.error("error", e);
+            logger.error("Error during OLIS polling execution", e);
         } finally {
+            // Ensure database connections are properly released after job execution
             DbConnectionFilter.releaseAllThreadDbResources();
         }
     }
