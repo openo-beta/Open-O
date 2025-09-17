@@ -25,47 +25,129 @@
 
 package ca.openosp.openo.webserv;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.ServletInputStream;
+import javax.servlet.ReadListener;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
-/**
- * Our www services are inherently stateless so we want to prevent excessive session object build up. This is caused because
- * the oscar permissions system sets credentials into the session space upon authentication.
- */
-// @WebFilter(urlPatterns={"/ws/*"})
-public class WebServiceSessionInvalidatingFilter implements javax.servlet.Filter {
+public class WebServiceSessionInvalidatingFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         // nothing
     }
 
+    // Custom wrapper with cached body
+    private static class CachedRequestWrapper extends HttpServletRequestWrapper {
+        private byte[] cachedBody;
+        private boolean bodyRead = false;
+
+        public CachedRequestWrapper(HttpServletRequest request) throws IOException {
+            super(request);
+            // Don't read the body in constructor - only when actually needed
+        }
+
+        private void cacheBodyIfNeeded() throws IOException {
+            if (!bodyRead) {
+                try (InputStream is = super.getInputStream()) {
+                    cachedBody = is.readAllBytes();
+                } catch (Exception e) {
+                    cachedBody = new byte[0];
+                }
+                bodyRead = true;
+            }
+        }
+
+        @Override
+        public BufferedReader getReader() throws IOException {
+            cacheBodyIfNeeded();
+            String body = new String(cachedBody, StandardCharsets.UTF_8);
+            return new BufferedReader(new StringReader(body));
+        }
+
+        @Override
+        public ServletInputStream getInputStream() throws IOException {
+            cacheBodyIfNeeded();
+            
+            return new ServletInputStream() {
+                private ByteArrayInputStream bais = new ByteArrayInputStream(cachedBody);
+                
+                @Override 
+                public int read() throws IOException { 
+                    return bais.read(); 
+                }
+                
+                @Override 
+                public int read(byte[] b) throws IOException {
+                    return bais.read(b);
+                }
+                
+                @Override 
+                public int read(byte[] b, int off, int len) throws IOException {
+                    return bais.read(b, off, len);
+                }
+                
+                @Override 
+                public boolean isFinished() { 
+                    return bais.available() == 0; 
+                }
+                
+                @Override 
+                public boolean isReady() { 
+                    return true; 
+                }
+                
+                @Override 
+                public void setReadListener(ReadListener listener) {
+                    // For async processing - not typically needed for synchronous requests
+                }
+            };
+        }
+
+        public String getCachedBody() throws IOException {
+            cacheBodyIfNeeded();
+            return new String(cachedBody, StandardCharsets.UTF_8);
+        }
+    }
+
     @Override
-    public void doFilter(ServletRequest tmpRequest, ServletResponse tmpResponse, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest tmpRequest, ServletResponse tmpResponse, FilterChain chain)
+            throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) tmpRequest;
+        CachedRequestWrapper wrappedRequest = new CachedRequestWrapper(request);
+        
+        System.out.println("\n------------------------------------------------------------------------------------ Incoming Request ------------------------------------------------------------------------------------");
+        System.out.println("Method: " + wrappedRequest.getMethod());
+        System.out.println("Request URL: " + wrappedRequest.getRequestURL());
+        System.out.println("Content-Type: " + wrappedRequest.getContentType());
+        System.out.println("Content-Length: " + wrappedRequest.getContentLength());
+        
+        // Only log body for POST/PUT requests and only if there's content
+        if (("POST".equalsIgnoreCase(wrappedRequest.getMethod()) ||
+             "PUT".equalsIgnoreCase(wrappedRequest.getMethod())) &&
+            wrappedRequest.getContentLength() > 0) {
+            
+            try {
+                String body = wrappedRequest.getCachedBody();
+                if (body != null && !body.trim().isEmpty()) {
+                    System.out.println("Request Body:\n" + body);
+                }
+            } catch (Exception e) {
+                System.out.println("Could not read request body: " + e.getMessage());
+            }
+        }
 
         try {
-            chain.doFilter(tmpRequest, tmpResponse);
+            chain.doFilter(wrappedRequest, tmpResponse);
         } finally {
-            String requestURL = request.getRequestURL().toString();
-
-            //don't apply to REST calls, we want those to be available to the www interface without losing session
-            if (requestURL.indexOf("/ws/rs/") == -1 && requestURL.indexOf("/ws/oauth/") == -1 && requestURL.indexOf("/ws/services/") == -1) {
-                HttpSession session = request.getSession(false);
-                if (session != null) session.invalidate();
-            }
-            //I still need to figure out how to invalidate REST sessions that are stateless.
+            System.out.println("------------------------------------------------------------------------------------ End of Request ------------------------------------------------------------------------------------\n");
         }
     }
 
     @Override
     public void destroy() {
-        // can't think of anything to do right now.
+        // nothing
     }
 }
