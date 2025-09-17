@@ -71,8 +71,6 @@
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 
 <%
-
-
     boolean isSiteAccessPrivacy = false;
     boolean isTeamAccessPrivacy = false;
     String provider_dboperation = "search_provider";
@@ -92,12 +90,6 @@
     %>
 
 </security:oscarSec>
-
-<%
-    GregorianCalendar now = new GregorianCalendar();
-    GregorianCalendar cal = (GregorianCalendar) now.clone();
-    String today = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DATE);
-%>
 
 <html>
     <head>
@@ -268,6 +260,11 @@
     </head>
     <body bgcolor="ivory" bgproperties="fixed" onLoad="setfocus()"
           topmargin="0" leftmargin="0" rightmargin="0"> 
+    <%
+        GregorianCalendar now = new GregorianCalendar();
+        GregorianCalendar cal = (GregorianCalendar) now.clone();
+        String today = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DATE);
+    %>
     <form name='report'>
         <table border=0 cellspacing=0 cellpadding=0 width="100%">
             <tr bgcolor="#486ebd">
@@ -336,67 +333,26 @@
                 <td width="300"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formDaySheet"/></td>
                 <td><select name="provider_no">
                     <%
-                        ResultSet rsgroup = null;
-                        try {
-                            System.out.println("Calling queryResults with: " + mygroup_dboperation);
-                            rsgroup = reportMainBean.queryResults(mygroup_dboperation);
-                            System.out.println("Query successful!");
+                        ResultSet rsgroup = reportMainBean.queryResults(mygroup_dboperation);
 
-                            // Check if ResultSet is empty
-                            if (!rsgroup.isBeforeFirst()) {
-                                System.out.println("WARNING: ResultSet is empty!");
-                                out.println("<option>No groups found</option>");
-                            } else {
-                                System.out.println("ResultSet has data");
-                            }
-                        } catch (Exception e) {
-                            System.out.println("Query failed for: " + mygroup_dboperation);
-                            System.out.println("Error: " + e.getMessage());
-                            e.printStackTrace();
-                            throw e; // Re-throw to see it in the browser
-                        }
-
-                        // Debug each row
-                        int rowCount = 0;
                         while (rsgroup.next()) {
-                            rowCount++;
-                            String groupNo = rsgroup.getString("mygroup_no");
-                            System.out.println("Row " + rowCount + ": mygroup_no = " + groupNo);
-                            
-                            if (isTeamAccessPrivacy) {
-                                System.out.println("  Skipping due to TeamAccessPrivacy");
-                                continue;
-                            }
+                            if (isTeamAccessPrivacy)
+                                continue;    //skip mygroup display if user have TeamAccessPrivacy
                     %>
                     <option value="<%="_grp_"+rsgroup.getString("mygroup_no")%>"
                             <%=mygroupno.equals(rsgroup.getString("mygroup_no")) ? "selected" : ""%>><%="GRP: " + rsgroup.getString("mygroup_no")%>
                     </option>
                     <%
                         }
-                        System.out.println("Total group rows: " + rowCount);
                     %>
                     <%
-                        // Now the providers query
-                        System.out.println("=== SECOND QUERY - Providers ===");
-                        try {
-                            rsgroup = reportMainBean.queryResults(provider_dboperation);
-                            System.out.println("Provider query successful");
-                            
-                            int providerCount = 0;
-                            while (rsgroup.next()) {
-                                providerCount++;
-                                System.out.println("Provider " + providerCount + ": " + 
-                                    rsgroup.getString("last_name") + ", " + rsgroup.getString("first_name"));
+                        rsgroup = reportMainBean.queryResults(provider_dboperation);
+                        while (rsgroup.next()) {
                     %>
                     <option value="<%=rsgroup.getString("provider_no")%>"
                             <%=curUser_no.equals(rsgroup.getString("provider_no")) ? "selected" : ""%>><%=rsgroup.getString("last_name") + ", " + rsgroup.getString("first_name")%>
                     </option>
                     <%
-                            }
-                        System.out.println("Total providers: " + providerCount);
-                        } catch (Exception e) {
-                            System.out.println("Provider query failed!");
-                            e.printStackTrace();
                         }
                     %>
                     <option value="*"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formAllProviders"/></option>
