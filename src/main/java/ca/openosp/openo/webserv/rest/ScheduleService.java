@@ -257,18 +257,31 @@ public class ScheduleService extends AbstractServiceImpl {
     @Consumes("application/json")
     @Produces("application/json")
     public SchedulingResponse findExistAppointments(@PathParam("demographicNo") Integer demographicNo) {
+        // Log incoming request
+        System.out.println("Incoming request - findExistAppointments for demographicNo: " + demographicNo);
+        
         SchedulingResponse response = new SchedulingResponse();
         List<AppointmentTo1> appts = getAppointmentHistoryWithoutDeleted(demographicNo);
-
+        
+        System.out.println("Retrieved " + (appts != null ? appts.size() : 0) + " appointments for demographicNo: " + demographicNo);
+        
         Map<Integer, BillingDetailTo1> apptIdBillingMap = getAppointmentIdToBillingDetailMap(demographicNo);
-
+        
+        System.out.println("Retrieved billing details for " + (apptIdBillingMap != null ? apptIdBillingMap.size() : 0) + " appointments");
+        
         for (AppointmentTo1 appt : appts) {
             if (apptIdBillingMap.containsKey(appt.getId())) {
                 appt.setBillingDetail(apptIdBillingMap.get(appt.getId()));
             }
         }
-
+        
         response.setAppointments(appts);
+        
+        // Log outgoing response
+        System.out.println("Outgoing response - returning " + 
+            (response.getAppointments() != null ? response.getAppointments().size() : 0) + 
+            " appointments for demographicNo: " + demographicNo);
+        
         return response;
     }
 

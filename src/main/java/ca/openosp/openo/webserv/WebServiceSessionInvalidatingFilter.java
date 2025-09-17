@@ -118,7 +118,7 @@ public class WebServiceSessionInvalidatingFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) tmpRequest;
         CachedRequestWrapper wrappedRequest = new CachedRequestWrapper(request);
         
-        System.out.println("\n------------------------------------------------------------------------------------ Incoming Request ------------------------------------------------------------------------------------");
+        System.out.println("\n--------------------------------------------------- Incoming Request ---------------------------------------------------");
         System.out.println("Method: " + wrappedRequest.getMethod());
         System.out.println("Request URL: " + wrappedRequest.getRequestURL());
         System.out.println("Content-Type: " + wrappedRequest.getContentType());
@@ -142,7 +142,7 @@ public class WebServiceSessionInvalidatingFilter implements Filter {
         try {
             chain.doFilter(wrappedRequest, tmpResponse);
         } finally {
-            System.out.println("------------------------------------------------------------------------------------ End of Request ------------------------------------------------------------------------------------\n");
+            System.out.println("------------------------------------------------- End of Request -------------------------------------------------\n");
         }
     }
 

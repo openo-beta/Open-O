@@ -232,8 +232,15 @@ public class DemographicService extends AbstractServiceImpl {
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public DemographicTo1 getDemographicData(@PathParam("dataId") Integer id, @QueryParam("includes[]") List<String> include) throws PatientDirectiveException {
         LoggedInInfo loggedInInfo = getLoggedInInfo();
-        Demographic demo = demographicManager.getDemographic(getLoggedInInfo(), id);
-        if (demo == null) return null;
+        // --- Incoming log ---
+        System.out.println("Incoming request: getDemographicData id=" + id + ", includes=" + include 
+            + ", user=" + loggedInInfo.getLoggedInProviderNo());
+
+        Demographic demo = demographicManager.getDemographic(loggedInInfo, id);
+        if (demo == null) {
+            System.out.println("Outgoing response: demographic not found for id=" + id);
+            return null;
+        }
 
         List<DemographicExt> demoExts = demographicManager.getDemographicExts(getLoggedInInfo(), id);
         if (demoExts != null && !demoExts.isEmpty()) {
@@ -408,6 +415,14 @@ public class DemographicService extends AbstractServiceImpl {
             List<String> singleLineMedications = rxManager.getCurrentSingleLineMedications(loggedInInfo, demo.getDemographicNo());
             result.setMedicationSummary(singleLineMedications);
         }
+
+        // --- Outgoing log ---
+        System.out.println("Outgoing response: Demographic id=" + id 
+            + ", name=" + demo.getLastName() + ", doctors=" 
+            + (result.getDoctors() != null ? result.getDoctors().size() : 0)
+            + ", nurses=" + (result.getNurses() != null ? result.getNurses().size() : 0)
+            + ", midwives=" + (result.getMidwives() != null ? result.getMidwives().size() : 0)
+            + ", contacts=" + (result.getDemoContacts() != null ? result.getDemoContacts().size() : 0));
 
         return result;
     }

@@ -141,22 +141,40 @@ public class ProviderService extends AbstractServiceImpl {
         try {
             logger.debug("Retrieving active providers as JSON");
 
+            // Incoming log: who is calling & initial state
+            System.out.println("Incoming request to getProvidersAsJSON by user: " 
+                + getLoggedInInfo().getLoggedInProviderNo());
+
             JsonConfig config = new JsonConfig();
             config.registerJsonBeanProcessor(java.sql.Date.class, new JsDateJsonBeanProcessor());
 
-            List<ProviderTo1> providers = new ProviderConverter().getAllAsTransferObjects(getLoggedInInfo(), providerDao.getActiveProviders());
+            List<ProviderTo1> providers = new ProviderConverter()
+                .getAllAsTransferObjects(getLoggedInInfo(), providerDao.getActiveProviders());
+
+            // Log the retrieved providers list size (incoming data from DB)
+            System.out.println("Fetched providers from DB, count = " + providers.size());
 
             AbstractSearchResponse<ProviderTo1> response = new AbstractSearchResponse<ProviderTo1>();
             response.setContent(providers);
             response.setTimestamp(new Date());
             response.setTotal(response.getContent().size());
 
+            // Outgoing log: response details
+            System.out.println("Outgoing response: total providers = " 
+                + response.getTotal() + ", timestamp = " + response.getTimestamp());
+
             logger.info("Successfully retrieved {} providers as JSON", response.getTotal());
             return response;
             
         } catch (Exception e) {
             logger.error("Error retrieving providers as JSON: {}", e.getMessage(), e);
-            throw new javax.ws.rs.WebApplicationException(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR);
+
+            // Outgoing error log
+            System.out.println("Outgoing response: INTERNAL_SERVER_ERROR - " + e.getMessage());
+
+            throw new javax.ws.rs.WebApplicationException(
+                javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
