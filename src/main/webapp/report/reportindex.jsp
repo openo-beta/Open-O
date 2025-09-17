@@ -745,11 +745,6 @@
                 <td></td>
                 <td></td>
             </tr>
-            <tr>
-                <td width="2"><%=j%>
-                    <%j++;%>
-                </td>
-            </tr>
 
             <tr>
                 <td width="2"><%=j%>
