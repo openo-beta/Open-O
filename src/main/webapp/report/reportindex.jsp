@@ -40,18 +40,23 @@
 %>
 
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="ca.openosp.openo.commn.model.ProviderPreference" %>
+<%@ page import="ca.openosp.openo.utility.SessionConstants" %>
 <%
     String country = request.getLocale().getCountry();
 
     ProviderPreference providerPreference = (ProviderPreference) session.getAttribute(SessionConstants.LOGGED_IN_PROVIDER_PREFERENCE);
     String curUser_no = (String) session.getAttribute("user");
-    String mygroupno = providerPreference.getMyGroupNo();
+    String mygroupno = "";
+    if (providerPreference != null) {
+        mygroupno = providerPreference.getMyGroupNo();
+    }
     mygroupno = StringUtils.trimToEmpty(mygroupno);
     String billingRegion = (ca.openosp.OscarProperties.getInstance()).getProperty("billregion");
 %>
 <%@ page
         import="java.util.*, ca.openosp.*, java.sql.*, java.text.*, java.net.*"
-        errorPage="../appointment/errorpage.jsp" %>
+        errorPage="/errorpage.jsp" %>
 <jsp:useBean id="reportMainBean" class="ca.openosp.AppointmentMainBean"
              scope="session"/>
 <% if (!reportMainBean.getBDoConfigure()) { %>
@@ -59,6 +64,7 @@
 <% } %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -86,6 +92,13 @@
     %>
 
 </security:oscarSec>
+
+<%
+    GregorianCalendar now = new GregorianCalendar();
+    GregorianCalendar cal = (GregorianCalendar) now.clone();
+    String today = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DATE);
+%>
+
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -109,7 +122,7 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/caisi_report_tools.js"></script>
 
 
-        <script language="JavaScript">
+        <script type="text/javascript">
             <!--
             function setfocus() {
                 this.focus();
@@ -254,12 +267,7 @@
         </script>
     </head>
     <body bgcolor="ivory" bgproperties="fixed" onLoad="setfocus()"
-          topmargin="0" leftmargin="0" rightmargin="0">
-    <%
-        GregorianCalendar now = new GregorianCalendar();
-        GregorianCalendar cal = (GregorianCalendar) now.clone();
-        String today = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DATE);
-    %>
+          topmargin="0" leftmargin="0" rightmargin="0"> 
     <form name='report'>
         <table border=0 cellspacing=0 cellpadding=0 width="100%">
             <tr bgcolor="#486ebd">
@@ -328,25 +336,67 @@
                 <td width="300"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formDaySheet"/></td>
                 <td><select name="provider_no">
                     <%
-                        ResultSet rsgroup = reportMainBean.queryResults(mygroup_dboperation);
+                        ResultSet rsgroup = null;
+                        try {
+                            System.out.println("Calling queryResults with: " + mygroup_dboperation);
+                            rsgroup = reportMainBean.queryResults(mygroup_dboperation);
+                            System.out.println("Query successful!");
+
+                            // Check if ResultSet is empty
+                            if (!rsgroup.isBeforeFirst()) {
+                                System.out.println("WARNING: ResultSet is empty!");
+                                out.println("<option>No groups found</option>");
+                            } else {
+                                System.out.println("ResultSet has data");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Query failed for: " + mygroup_dboperation);
+                            System.out.println("Error: " + e.getMessage());
+                            e.printStackTrace();
+                            throw e; // Re-throw to see it in the browser
+                        }
+
+                        // Debug each row
+                        int rowCount = 0;
                         while (rsgroup.next()) {
-                            if (isTeamAccessPrivacy)
-                                continue;    //skip mygroup display if user have TeamAccessPrivacy
+                            rowCount++;
+                            String groupNo = rsgroup.getString("mygroup_no");
+                            System.out.println("Row " + rowCount + ": mygroup_no = " + groupNo);
+                            
+                            if (isTeamAccessPrivacy) {
+                                System.out.println("  Skipping due to TeamAccessPrivacy");
+                                continue;
+                            }
                     %>
                     <option value="<%="_grp_"+rsgroup.getString("mygroup_no")%>"
                             <%=mygroupno.equals(rsgroup.getString("mygroup_no")) ? "selected" : ""%>><%="GRP: " + rsgroup.getString("mygroup_no")%>
                     </option>
                     <%
                         }
+                        System.out.println("Total group rows: " + rowCount);
                     %>
                     <%
-                        rsgroup = reportMainBean.queryResults(provider_dboperation);
-                        while (rsgroup.next()) {
+                        // Now the providers query
+                        System.out.println("=== SECOND QUERY - Providers ===");
+                        try {
+                            rsgroup = reportMainBean.queryResults(provider_dboperation);
+                            System.out.println("Provider query successful");
+                            
+                            int providerCount = 0;
+                            while (rsgroup.next()) {
+                                providerCount++;
+                                System.out.println("Provider " + providerCount + ": " + 
+                                    rsgroup.getString("last_name") + ", " + rsgroup.getString("first_name"));
                     %>
                     <option value="<%=rsgroup.getString("provider_no")%>"
                             <%=curUser_no.equals(rsgroup.getString("provider_no")) ? "selected" : ""%>><%=rsgroup.getString("last_name") + ", " + rsgroup.getString("first_name")%>
                     </option>
                     <%
+                            }
+                        System.out.println("Total providers: " + providerCount);
+                        } catch (Exception e) {
+                            System.out.println("Provider query failed!");
+                            e.printStackTrace();
                         }
                     %>
                     <option value="*"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formAllProviders"/></option>
@@ -640,7 +690,7 @@
                         cal.add(cal.DATE, 0);
                         String NoShowEDate = cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE);
                     %> <fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.msgStart"/>: <input name="nsdate" type="input" size="8"
-                                                                                 id="NoShowDate" <%=NoShowEDate%>> <a
+                                                                                 id="NoShowDate" value="<%=NoShowEDate%>"> <a
                         HREF="#"
                         onClick="popupPage(310,430,'../share/CalendarPopup.jsp?urlfrom=../report/reportindex.jsp&year=<%=now.get(Calendar.YEAR)%>&month=<%=now.get(Calendar.MONTH)+1%>&param=<%=URLEncoder.encode("&formdatebox=document.getElementsByName('nsdate')[0].value")%>')"><img
                         title=Calendar " src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"><a>
