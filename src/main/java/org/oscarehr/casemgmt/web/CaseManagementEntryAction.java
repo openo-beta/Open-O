@@ -415,7 +415,7 @@ public class CaseManagementEntryAction extends BaseCaseManagementEntryAction {
 
 		session.setAttribute("casemgmtNoteLock", casemgmtNoteLock);
 
-		String frmName = "caseManagementEntryForm" + demono;
+		String frmName = "caseManagementEntryForm";
 		logger.debug("Setting session form - " + frmName + " - " + String.valueOf(cform != null));
 		logger.debug("note in cform " + cform.getCaseNote_note());
 		session.setAttribute(frmName, cform);
@@ -865,7 +865,7 @@ public class CaseManagementEntryAction extends BaseCaseManagementEntryAction {
 			}
 		}
 		// update note issues
-		String sessionFrmName = "caseManagementEntryForm" + demo;
+		String sessionFrmName = "caseManagementEntryForm";
 		CaseManagementEntryFormBean sessionFrm = (CaseManagementEntryFormBean) session.getAttribute(sessionFrmName);
 		Set<CaseManagementIssue> issueSet = new HashSet<CaseManagementIssue>();
 		Set<CaseManagementNote> noteSet = new HashSet<CaseManagementNote>();
@@ -1161,7 +1161,7 @@ public class CaseManagementEntryAction extends BaseCaseManagementEntryAction {
 		//Before we do anything we make sure we still have the lock on the note
 		HttpSession session = request.getSession();
 		String demo = getDemographicNo(request);
-		String sessionFrmName = "caseManagementEntryForm" + demo;
+		String sessionFrmName = "caseManagementEntryForm";
 
 		CaseManagementEntryFormBean sessionFrm = (CaseManagementEntryFormBean) session.getAttribute(sessionFrmName);
 
@@ -1722,7 +1722,7 @@ public class CaseManagementEntryAction extends BaseCaseManagementEntryAction {
 
 		note.setReporter_program_team(team);
 
-		String sessionName = "caseManagementEntryForm" + demo;
+		String sessionName = "caseManagementEntryForm";
 		CaseManagementEntryFormBean sessionFrm = (CaseManagementEntryFormBean) session.getAttribute(sessionName);
 		List<CaseManagementIssue> issuelist = new ArrayList<CaseManagementIssue>();
 		Set<CaseManagementIssue> issueset = new HashSet<CaseManagementIssue>();
@@ -1834,7 +1834,7 @@ public class CaseManagementEntryAction extends BaseCaseManagementEntryAction {
 		String noteId = request.getParameter("noteId");
 		String forceRelease = request.getParameter("force");
 		HttpSession session = request.getSession();
-		String sessionFrmName = "caseManagementEntryForm" + demoNo;
+
 
 		try {
 			CasemgmtNoteLock casemgmtNoteLockSession = (CasemgmtNoteLock) session.getAttribute("casemgmtNoteLock");
@@ -2076,7 +2076,7 @@ public class CaseManagementEntryAction extends BaseCaseManagementEntryAction {
 		request.setAttribute("change_flag", "true");
 		CaseManagementEntryFormBean cform = (CaseManagementEntryFormBean) form;
 		String demono = getDemographicNo(request);
-		String sessionFrmName = "caseManagementEntryForm" + demono;
+		String sessionFrmName = "caseManagementEntryForm";
 		CaseManagementEntryFormBean sessionFrm = (CaseManagementEntryFormBean) session.getAttribute(sessionFrmName);
 		CaseManagementNote note = sessionFrm.getCaseNote();
 		String noteTxt = cform.getCaseNote_note();
@@ -2188,7 +2188,7 @@ public class CaseManagementEntryAction extends BaseCaseManagementEntryAction {
 			issueList[i].setIssue(issue);
 		}
 		logger.debug("Community issue reconciliation complete");
-		String sessionFrmName = "caseManagementEntryForm" + demono;
+		String sessionFrmName = "caseManagementEntryForm";
 		CaseManagementEntryFormBean sessionFrm = (CaseManagementEntryFormBean) session.getAttribute(sessionFrmName);
 		sessionFrm.setNewIssueCheckList(issueList);
 		sessionFrm.setShowList("true");
@@ -2208,7 +2208,7 @@ public class CaseManagementEntryAction extends BaseCaseManagementEntryAction {
 		// String providerNo = getProviderNo(request);
 
 		CaseManagementEntryFormBean cform = (CaseManagementEntryFormBean) form;
-		String sessionFrmName = "caseManagementEntryForm" + this.getDemographicNo(request);
+		String sessionFrmName = "caseManagementEntryForm";
 		CaseManagementEntryFormBean sessionFrm = (CaseManagementEntryFormBean) session.getAttribute(sessionFrmName);
 
 		// check to see if this issue has already been associated with this demographic
@@ -2258,7 +2258,7 @@ public class CaseManagementEntryAction extends BaseCaseManagementEntryAction {
 		request.setAttribute("demoAge", getDemoAge(demono));
 		request.setAttribute("demoDOB", getDemoDOB(demono));
 
-		String sessionFrmName = "caseManagementEntryForm" + demono;
+		String sessionFrmName = "caseManagementEntryForm";
 		CaseManagementEntryFormBean sessionFrm = (CaseManagementEntryFormBean) session.getAttribute(sessionFrmName);
 
 		if (sessionFrm != null && cform != null) {
@@ -2458,7 +2458,7 @@ public class CaseManagementEntryAction extends BaseCaseManagementEntryAction {
 		int idx = Integer.parseInt(strIndex);
 
 		String substitution = request.getParameter("newIssueId");
-		String sessionFrmName = "caseManagementEntryForm" + getDemographicNo(request);
+		String sessionFrmName = "caseManagementEntryForm";
 		CaseManagementEntryFormBean sessionFrm = (CaseManagementEntryFormBean) session.getAttribute(sessionFrmName);
 
 		CheckBoxBean[] curIssues = sessionFrm.getIssueCheckList();
@@ -2498,7 +2498,7 @@ public class CaseManagementEntryAction extends BaseCaseManagementEntryAction {
 
 		CaseManagementEntryFormBean cform = (CaseManagementEntryFormBean) form;
 		String demono = getDemographicNo(request);
-		String sessionFrmName = "caseManagementEntryForm" + demono;
+		String sessionFrmName = "caseManagementEntryForm";
 		CaseManagementEntryFormBean sessionFrm = (CaseManagementEntryFormBean) session.getAttribute(sessionFrmName);
 
 		// noteSave(cform, request);
@@ -2576,7 +2576,7 @@ public class CaseManagementEntryAction extends BaseCaseManagementEntryAction {
 		session.setAttribute("issueStatusChanged", "true");
 		CaseManagementEntryFormBean cform = (CaseManagementEntryFormBean) form;
 		String demono = getDemographicNo(request);
-		String sessionFrmName = "caseManagementEntryForm" + demono;
+		String sessionFrmName = "caseManagementEntryForm";
 		CaseManagementEntryFormBean sessionFrm = (CaseManagementEntryFormBean) session.getAttribute(sessionFrmName);
 
 		request.setAttribute("demoName", getDemoName(demono));
@@ -2760,10 +2760,7 @@ public class CaseManagementEntryAction extends BaseCaseManagementEntryAction {
 	}
 
 	public ActionForward cleanup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
-		String demoNo = this.getDemographicNo(request);
-		String sessionFrmName = "caseManagementEntryForm" + demoNo;
-
-        request.getSession().setAttribute(sessionFrmName, null);
+    request.getSession().setAttribute("caseManagementEntryForm", null);
 		request.getSession().setAttribute("EctSessionBean", null);
 
 		return null;
