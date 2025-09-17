@@ -981,8 +981,9 @@
                                         EctFormData.PatientForm pfrm = pforms[0];
                                 %>
 
-                                <option
-                                        value="<%="<%=request.getContextPath()%>/form/forwardshortcutname.do?formname="+frm.getFormName()+"&demographic_no="+demoNo%>"><%=frm.getFormName()%>&nbsp;Cr:<%=pfrm.getCreated()%>&nbsp;Ed:<%=pfrm.getEdited()%>
+                                <option value="<%=request.getContextPath()%>/form/forwardshortcutname.do?formname=<%=frm.getFormName()%>&demographic_no=<%=demoNo%>">
+                                    <%=frm.getFormName()%>&nbsp;Cr:<%=pfrm.getCreated()%>&nbsp;Ed:<%=pfrm.getEdited()%>
+                                </option>
                                             <%}}}
 
                             %>
@@ -1052,11 +1053,22 @@
                             </select></td>
             </td>
         </tr>
+
+        <%
+            String msgUrl = request.getContextPath()
+                + "/messenger/DisplayDemographicMessages.do"
+                + "?orderby=date&boxType=3"
+                + "&demographic_no=" + demoNo
+                + "&providerNo=" + provNo
+                + "&userName=" + providerName;
+        %>
+
         <tr>
-            <td><a href=#
-                   onClick='popupOscarRx(600,900,"<rewrite:reWrite
-                           jspPage="<%=request.getContextPath()%>/messenger/DisplayDemographicMessages.do"/>?orderby=date&boxType=3&demographic_no=<%=demoNo%>&providerNo=<%=provNo%>&userName=<%=providerName%>"); return false;'>
-                -All Messages-</a></td>
+            <td>
+                <a href="#" onClick="popupOscarRx(600,900,'<%=msgUrl%>'); return false;">
+                -All Messages-
+                </a>
+            </td>
         </tr>
         <!-- <tr><td>&nbsp;</td></tr> -->
         </form>
