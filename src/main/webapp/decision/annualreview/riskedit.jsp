@@ -27,6 +27,10 @@
 <%
     String user_no = (String) session.getAttribute("user");
     String folderPath = pageContext.getServletContext().getRealPath("/decision/annualreview/");
+
+    if (folderPath == null) {
+        throw new NullPointerException("Cannot resolve real path for /decision/annualreview/ - check deployment configuration");
+    }
 %>
 <%@ page import="java.util.*, java.sql.*, java.io.*, ca.openosp.*"
          errorPage="/errorpage.jsp" %>

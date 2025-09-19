@@ -33,7 +33,7 @@
             : ("0");
     String curUser_no = (String) session.getAttribute("user");
 %>
-<%@ page errorPage="../../appointment/errorpage.jsp"
+<%@ page errorPage="/errorpage.jsp"
          import="java.util.*,
                  java.sql.*,
                  ca.openosp.*,
@@ -44,6 +44,10 @@
 <%
     DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
     String folderPath = pageContext.getServletContext().getRealPath("/decision/annualreview/");
+
+    if (folderPath == null) {
+        throw new NullPointerException("Cannot resolve real path for /decision/annualreview/ - check deployment configuration");
+    }
 %>
 
 <jsp:useBean id="riskDataBean" class="java.util.Properties" scope="page"/>
