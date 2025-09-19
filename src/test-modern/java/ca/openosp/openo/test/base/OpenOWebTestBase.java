@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025. OpenOSP EMR
+ * Copyright (c) 2025. Magenta Health. All Rights Reserved.
  * Web/Controller Test Base Class for Struts2 Actions
  */
 package ca.openosp.openo.test.base;

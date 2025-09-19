@@ -5,8 +5,7 @@
 ## Core Context 
 
 **Domain**: Canadian healthcare EMR system with multi-jurisdictional compliance (BC, ON, generic)
-**Stack**: Java 21, Spring 5.3.39, Maven 3, Tomcat 9.0.97, MariaDB/MySQL  
-**Architecture**: Multi-layered healthcare web application with complex medical database schema
+**Stack**: Java 21, Spring 5.3.39, Hibernate 5.x, Maven 3, Tomcat 9.0.97, MariaDB/MySQL  
 **Regulatory**: HIPAA/PIPEDA compliance REQUIRED - PHI protection is CRITICAL
 
 ## Essential Commands
@@ -23,19 +22,10 @@ make install --run-integration-tests # Build and run only modern integration tes
 server start/stop/restart     # Tomcat management
 server log                    # Tail application logs
 
-# Maven Operations
-mvn clean compile            # Build Java project
-mvn test                     # Run test suite
-mvn package                  # Create WAR file
-
 # Database & Environment
 db-connect                   # Connect to MariaDB as root
 debug-on / debug-off         # Toggle DEBUG/INFO logging levels
 
-# AI Development Tools
-claude                       # Claude Code CLI
-aider                        # AI pair programming
-aider --model claude-3-5-sonnet-20241022
 gh pr create                 # GitHub pull request creation
 ```
 
@@ -48,92 +38,6 @@ gh pr create                 # GitHub pull request creation
 - CodeQL security scanning must pass
 - PHI (Patient Health Information) must NEVER be logged or exposed
 
-## CSRF Protection Requirements (OWASP CSRF Guard 4.5.0)
-
-**CRITICAL**: OpenO uses OWASP CSRF Guard 4.5.0 with custom filters. Forms loaded dynamically via AJAX require special handling.
-
-### Form Requirements
-All POST/PUT/DELETE forms MUST have:
-```html
-<form action="/path" method="post" name="formName" id="formId">
-```
-
-### Dynamic Content Pattern
-**CRITICAL**: Forms loaded via AJAX after page init won't have CSRF tokens automatically!
-
-CSRF Guard 4.5.0 provides global variables:
-- `window.CSRF_TOKEN_NAME` = "CSRF-TOKEN" (field name)
-- `window.CSRF_TOKEN_VALUE` = actual token value
-
-```javascript
-// WRONG - Will cause 403 Forbidden
-$('#container').html(ajaxResponseHtml);
-
-// CORRECT - Manually add token to dynamically loaded forms
-$('#container').html(ajaxResponseHtml);
-setTimeout(function() {
-    if (window.CSRF_TOKEN_NAME && window.CSRF_TOKEN_VALUE) {
-        $('form').each(function() {
-            if ($(this).find('input[name="' + window.CSRF_TOKEN_NAME + '"]').length === 0) {
-                $('<input>').attr({
-                    type: 'hidden',
-                    name: window.CSRF_TOKEN_NAME,
-                    value: window.CSRF_TOKEN_VALUE
-                }).appendTo(this);
-            }
-        });
-    }
-}, 100);
-```
-
-### Common CSRF Issues
-- **403 on form submit**: Check if form was loaded dynamically
-- **Missing token**: Form needs `method="post"` and `name` attributes
-- **AJAX forms**: Must call `injectTokens()` after DOM insertion
-- **Token in URL**: Never use `window.location` with parameters - use `postNavigate()` function instead
-
-### URL Parameter Protection Pattern (November 2024 Update)
-**CRITICAL**: CSRF tokens must NEVER appear in URLs. Use POST for navigation with parameters:
-
-```javascript
-// WRONG - Exposes CSRF token in URL
-window.location.href = 'page.jsp?id=' + id;
-
-// CORRECT - Uses POST to prevent token exposure
-function postNavigate(url, params) {
-    var form = document.createElement('form');
-    form.method = 'POST';
-    form.action = url;
-    
-    for (var key in params) {
-        if (params.hasOwnProperty(key)) {
-            var field = document.createElement('input');
-            field.type = 'hidden';
-            field.name = key;
-            field.value = params[key];
-            form.appendChild(field);
-        }
-    }
-    
-    // Add CSRF token if available
-    if (window.CSRF_TOKEN_NAME && window.CSRF_TOKEN_VALUE) {
-        var csrfField = document.createElement('input');
-        csrfField.type = 'hidden';
-        csrfField.name = window.CSRF_TOKEN_NAME;
-        csrfField.value = window.CSRF_TOKEN_VALUE;
-        form.appendChild(csrfField);
-    }
-    
-    document.body.appendChild(form);
-    form.submit();
-}
-
-// Usage
-postNavigate('page.jsp', {id: '123', action: 'edit'});
-```
-
-**Full Documentation**: See `/workspace/docs/csrf-protection.md` for complete CSRF implementation details
-
 ## Package Structure (2025 Migration)
 
 **CRITICAL**: Use NEW namespace `ca.openosp.openo.*` for ALL code
@@ -141,6 +45,7 @@ postNavigate('page.jsp', {id: '123', action: 'edit'});
 - **DAO Classes**: `ca.openosp.openo.commn.dao.*` (note: "commn" not "common")
 - **Models**: `ca.openosp.openo.commn.model.*`
 - **Exception**: `ProviderDao` at `ca.openosp.openo.dao.ProviderDao`
+- **Test Utilities**: Remain at `org.oscarehr.common.dao.*` for backward compatibility
 
 ## Struts2 Migration Pattern ("2Action")
 
@@ -193,9 +98,6 @@ public class Example2Action extends ActionSupport {
 3. Debug logging: `debug-on` → `server restart` → `debug-off`
 
 ## Modern Test Framework (JUnit 5)
-
-**Status**: ✅ Production Ready - Scalable multi-file structure implemented for 50+ tests
-
 **Key Features**:
 - **Parallel Structure**: `src/test-modern/` separate from legacy `src/test/`
 - **Zero Impact**: Legacy tests unchanged, both suites run automatically
@@ -306,13 +208,6 @@ When asked to write tests, you MUST:
 4. **Extend OpenOTestBase** for Spring context handling
 5. **Use @PersistenceContext(unitName = "testPersistenceUnit")** for EntityManager
 
-**Test Execution**:
-```bash
-mvn test                    # Runs modern tests first, then legacy
-mvn test -Dtest=TestName    # Run specific test
-make install --run-tests    # Includes both test suites
-```
-
 ## Code Quality Standards
 
 **Security (CodeQL Integration)**:
@@ -357,7 +252,6 @@ private SomeManager someManager = SpringUtils.getBean(SomeManager.class);
 - **Teleplan**: BC MSP billing system with specialized upload/download
 - **MCEDT**: Medical Certificate Electronic Data Transfer
 - **DrugRef**: Drug reference database integration
-- **MyOSCAR**: Patient portal integration
 
 **Medical Forms Integration**:
 - **Rourke Growth Charts**: Multiple versions (2006, 2009, 2017, 2020) for pediatric care
@@ -489,6 +383,14 @@ When fixing compilation errors after package refactoring:
 - **Logging**: Enhanced logging in development environment with `debug-on`/`debug-off` aliases
 - **AI Tools Available**: Claude Code CLI, Aider AI pair programming, GitHub CLI, Docusaurus
 - **Custom Terminal**: Welcome message displays all available tools and shortcuts on bash startup
+
+### DevContainer Custom Scripts
+Located in `/scripts` directory within the container (copied from `.devcontainer/development/scripts/`):
+make lock                     # Update Maven dependency lock file
+- **Process**: Stops Tomcat → Builds WAR → Creates symlink → Starts Tomcat
+- **Configuration**: Auto-creates `over_ride_config.properties` from template
+- **Parallel builds**: Uses `-T 1C` for faster Maven builds
+- **Deployment**: Handles versioned WAR directories with symlinks to `/usr/local/tomcat/webapps/oscar`
 
 ## Architecture Patterns
 
@@ -674,14 +576,13 @@ This migration pattern allows OpenO EMR to modernize incrementally while maintai
 ### Docker Setup
 - Development environment runs in Docker containers
 - Tomcat container with Java 21 and debugging enabled
-- MariaDB container for database
+- MariaDB database container
 - Maven repository caching for faster builds
 - Port 8080 for web application, 3306 for database
 
 ### IDE Configuration
 - VS Code with Java extension pack
 - Remote development in Docker container
-- Maven integration for dependency management
 - Debugging support on port 8000
 
 ## Database Schema Patterns

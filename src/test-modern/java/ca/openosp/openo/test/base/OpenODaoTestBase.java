@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025. OpenOSP EMR
+ * Copyright (c) 2025. Magenta Health. All Rights Reserved.
  * DAO Test Base Class with Database Support
  */
 package ca.openosp.openo.test.base;

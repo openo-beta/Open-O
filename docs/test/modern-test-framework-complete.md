@@ -561,6 +561,6 @@ New tests should be written in `src/test-modern/` using JUnit 5 and the establis
 
 ---
 
-*Last Updated: January 2025*
+*Last Updated: September 2025*
 *Version: 1.0*
 *Status: Production Ready*
