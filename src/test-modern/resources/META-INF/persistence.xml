@@ -1,0 +1,49 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+             http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+             version="1.0">
+
+    <!--
+        JPA Persistence Configuration for Modern Test Framework
+
+        This persistence unit is configured for testing with the following characteristics:
+
+        Mixed Mapping Strategy:
+        - Legacy entities (Provider, Demographic, Program) use Hibernate .hbm.xml mappings
+        - Modern entities (Tickler and related) use JPA annotations
+        - This dual approach maintains compatibility with the production codebase
+
+        Entity Management:
+        - Entities are explicitly listed to prevent classpath scanning issues
+        - exclude-unlisted-classes=true ensures only listed entities are loaded
+        - This prevents conflicts with production persistence units
+
+        Transaction Type:
+        - RESOURCE_LOCAL for programmatic transaction management
+        - Works with Spring's @Transactional annotation for automatic rollback
+
+        Note: The entity list must be kept in sync with test requirements.
+        Add new entities here when they're needed for testing.
+    -->
+    <persistence-unit name="testPersistenceUnit" transaction-type="RESOURCE_LOCAL">
+        <!-- Legacy entities mapped through Hibernate .hbm.xml files for backward compatibility -->
+        <mapping-file>ca/openosp/openo/commn/model/Provider.hbm.xml</mapping-file>
+        <mapping-file>ca/openosp/openo/commn/model/Demographic.hbm.xml</mapping-file>
+        <mapping-file>ca/openosp/openo/PMmodule/model/Program.hbm.xml</mapping-file>
+
+        <!-- Modern entities using JPA annotations - explicitly listed for test isolation -->
+        <class>ca.openosp.openo.commn.model.Tickler</class>
+        <class>ca.openosp.openo.commn.model.TicklerComment</class>
+        <class>ca.openosp.openo.commn.model.TicklerUpdate</class>
+        <class>ca.openosp.openo.commn.model.TicklerCategory</class>
+        <class>ca.openosp.openo.commn.model.TicklerLink</class>
+        <class>ca.openosp.openo.commn.model.TicklerTextSuggest</class>
+        <class>ca.openosp.openo.commn.model.CustomFilter</class>
+        <class>ca.openosp.openo.commn.model.OscarLog</class>
+
+        <!-- Prevent automatic entity scanning to avoid conflicts with production entities -->
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    </persistence-unit>
+
+</persistence>
