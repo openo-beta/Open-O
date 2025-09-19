@@ -72,6 +72,7 @@ public final class Factory {
             Hl7TextMessage hl7TextMessage = hl7TextMessageDao.find(Integer.parseInt(segmentID));
 
             String type = hl7TextMessage.getType();
+            System.out.println("type: " + type);
             String hl7Body = new String(Base64.decodeBase64(hl7TextMessage.getBase64EncodedeMessage()), MiscUtils.DEFAULT_UTF8_ENCODING);
             return getHandler(type, hl7Body);
         } catch (Exception e) {
@@ -162,6 +163,7 @@ public final class Factory {
                     }
                 }
             }
+            System.out.println("msgHandler: " + msgHandler);
 
             // create and return the message handler
             if (msgHandler.equals("")) {
@@ -192,7 +194,7 @@ public final class Factory {
         } catch (NoSuchFileException e) {
             logger.error("Could not default Message configuration file ", e);
         } catch (Exception e) {
-            logger.error("Could not create message handler", e);
+            logger.error("Could not create message handler: " + e.getMessage());
         }
 
         return null;

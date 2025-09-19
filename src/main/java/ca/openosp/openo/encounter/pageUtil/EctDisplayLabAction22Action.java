@@ -334,6 +334,8 @@ public class EctDisplayLabAction22Action extends EctDisplayAction {
         }
 
         public MessageHandler getLocalHandler(String segmentId) {
+            System.out.println("---------------------------------------------------------------------------------------");
+            System.out.println("segmentId: " + segmentId);
             return Factory.getHandler(segmentId);
         }
     }

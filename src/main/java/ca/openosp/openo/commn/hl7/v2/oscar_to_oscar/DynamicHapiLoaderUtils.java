@@ -79,7 +79,8 @@ public final class DynamicHapiLoaderUtils {
         hackedMessageClass = hackedHapiClassLoader.loadClass(Message.class.getName());
         hackedSegmentClass = hackedHapiClassLoader.loadClass(Segment.class.getName());
         hackedTerserClass = hackedHapiClassLoader.loadClass(Terser.class.getName());
-        hackedTerserUtilsClass = hackedHapiClassLoader.loadClass(TerserUtil.class.getName());
+        hackedTerserUtilsClass = hackedHapiClassLoader.loadClass(TerserUtil.class.getSimpleName());
+        System.out.println("================================================================================\nFull name: " + hackedTerserUtilsClass.getName() + "\n================================================================================");
 
         hackedParseMethod = hackedPipedParserClass.getMethod("parse", String.class);
         hackedEncodeMethod = hackedPipedParserClass.getMethod("encode", hackedMessageClass);
