@@ -43,6 +43,7 @@
 <%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
 <%
     DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
+    String folderPath = pageContext.getServletContext().getRealPath("/decision/annualreview/");
 %>
 
 <jsp:useBean id="riskDataBean" class="java.util.Properties" scope="page"/>
@@ -135,7 +136,7 @@
     </xml>
     <%
             //set the riskdata bean from xml file
-            Properties savedar1risk1 = risks.getRiskName("../../decision/annualreview/desannualreviewplannerrisk.xml");
+            Properties savedar1risk1 = risks.getRiskName(folderPath + "desannualreviewplannerrisk.xml");
             StringBuffer tt;
 
             for (Enumeration e = savedar1risk1.propertyNames(); e.hasMoreElements(); ) {
@@ -194,12 +195,12 @@
         <tr>
             <td width="20%" valign='top'>
                 <%
-                    out.println(risks.doStuff(oscarVariables.getProperty("tomcat_path") + "webapps/" + oscarVariables.getProperty("project_home") + "/decision/annualreview/desannualreviewplannerrisk.xml"));
+                    out.println(risks.doStuff(folderPath + "desannualreviewplannerrisk.xml"));
                 %>
             </td>
             <td>
                     <%
-            out.println(checklist.doStuff(oscarVariables.getProperty("tomcat_path") +"webapps/"+ oscarVariables.getProperty("project_home") + "/decision/annualreview/desannualreviewplannerriskchecklist.xml", riskDataBean));
+            out.println(checklist.doStuff(folderPath + "desannualreviewplannerriskchecklist.xml", riskDataBean));
 %>
 
         </tr>
