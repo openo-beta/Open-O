@@ -185,7 +185,7 @@
                             <c:forEach var="data" items="${measurementsData.measurementsDataVector}" varStatus="ctr">
 
                                 <!-- Open the row once, add optional background color if remoteFacility is present -->
-                                <tr class="data" style="${not empty data.remoteFacility ? 'background-color:#ffcccc;' : ''}"></tr>
+                                <tr class="data" style="${not empty data.remoteFacility ? 'background-color:#ffcccc;' : ''}">
                                     <!-- Type -->
                                     <td>
                                         <a title="${data.typeDescription}">${data.type}</a>
@@ -284,7 +284,6 @@
                     </table>
                 </td>
             </tr>
-            </tbody>
         </table>
         <c:if test="${not empty type}">
             <input type="hidden" name="type" value="${type}">
