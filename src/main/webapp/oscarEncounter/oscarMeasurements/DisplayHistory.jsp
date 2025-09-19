@@ -224,7 +224,7 @@
                                     </td>
 
                                     <!-- Delete Checkbox (only render if user has rights & not remote data) -->
-                                    <security:oscarSec roleName="<%userroleName%>" objectName="_flowsheet" rights="w">
+                                    <security:oscarSec roleName="<%=userroleName%>" objectName="_flowsheet" rights="w">
                                         <td class="DoNotPrint">
                                             <c:if test="${empty data.remoteFacility}">
                                                 <input type="checkbox" name="deleteCheckbox" value="${data.id}">
