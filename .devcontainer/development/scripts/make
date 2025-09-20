@@ -47,13 +47,21 @@ build_and_deploy() {
   fi
   
   if [ "$run_tests" = true ]; then
-    # Run all tests (modern + legacy)
-    mvn clean -T 1C package war:exploded $jsp_profile $dev_mode_flag
+    # Run all tests (modern first, then legacy)
+    echo "Building application..."
+    mvn clean -Dmaven.test.skip=true -T 1C package war:exploded $jsp_profile $dev_mode_flag
+    echo ""
+    echo "Running modern tests..."
+    mvn test -Dtest="ca.openosp.openo.tickler.dao.*UnitTest,ca.openosp.openo.tickler.dao.*IntegrationTest,ca.openosp.openo.tickler.manager.*UnitTest,ca.openosp.openo.test.simple.*Test"
+    echo ""
+    echo "Running legacy tests..."
+    mvn test -DskipModernTests=true
   elif [ "$run_tests" = "modern" ]; then
-    # Run only modern tests by skipping legacy tests
-    mvn clean -DskipTests=true -T 1C package war:exploded $jsp_profile $dev_mode_flag
-    # Then run just the modern tests from test-modern directory
-    mvn test -Dtest="**/*Test,**/*Tests" -DskipTests=false
+    # Run only modern tests by building first without tests, then running specific modern tests
+    mvn clean -Dmaven.test.skip=true -T 1C package war:exploded $jsp_profile $dev_mode_flag
+    echo ""
+    echo "Running modern tests..."
+    mvn test -Dtest="ca.openosp.openo.tickler.dao.*UnitTest,ca.openosp.openo.tickler.dao.*IntegrationTest,ca.openosp.openo.tickler.manager.*UnitTest,ca.openosp.openo.test.simple.*Test"
   elif [ "$run_tests" = "legacy" ]; then
     # Run only legacy tests by skipping modern tests
     mvn clean -DskipModernTests=true -T 1C package war:exploded $jsp_profile $dev_mode_flag
