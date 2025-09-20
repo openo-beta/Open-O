@@ -35,7 +35,6 @@ gh pr create                 # GitHub pull request creation
 - Use `Encode.forHtml()`, `Encode.forJavaScript()` for ALL user inputs
 - Parameterized queries ONLY - never string concatenation
 - ALL actions MUST include `SecurityInfoManager.hasPrivilege()` checks
-- CodeQL security scanning must pass
 - PHI (Patient Health Information) must NEVER be logged or exposed
 
 ## Package Structure (2025 Migration)
@@ -89,7 +88,6 @@ public class Example2Action extends ActionSupport {
 
 **DevContainer Environment**:
 - Docker-based development with debugging on port 8000
-- AI tools available: Claude Code CLI, Aider, GitHub CLI, Docusaurus
 - Custom terminal with tool reminders on bash startup
 
 **Build & Deploy Cycle**:
@@ -314,16 +312,6 @@ Multiple modular application contexts:
 - **Inter-EMR**: Data sharing via Integrator system across multiple OSCAR installations
 - **Provincial Billing**: Direct integration with Teleplan (BC MSP) and other systems
 
-## Recent Development Context (2025)
-
-### Encounter Window Modernization (September 2025)
-**COMPLETED**: Major refactoring of the encounter window interface
-- **Bootstrap 5 Migration**: Upgraded to Bootstrap 5.3.0 from CDN for modern UI patterns
-- **Vanilla JavaScript**: Replaced jQuery dependencies with vanilla JS where possible
-- **CSRF Protection**: Fixed critical issues with dynamically loaded forms via AJAX
-- **Note Layout Fix**: Corrected note entry positioning to remain at bottom of scrollable area
-- **Window Sizing**: Implemented content-based auto-sizing instead of full-screen maximization
-
 ### Major Namespace Migration (August 2025)
 **CRITICAL**: Completed migration `org.oscarehr.*` / `oscar.*` → `ca.openosp.openo.*`
 - **When writing new code**: Always use `ca.openosp.openo.*` package structure
@@ -361,14 +349,6 @@ When fixing compilation errors after package refactoring:
 
 ### Active Code Cleanup (2025)
 - **Modules Removed**: MyDrugRef, BORN integration, HealthSafety, legacy email notifications
-- **Philosophy**: Reduce attack surface by removing unused functionality
-- **Security Focus**: CodeQL integration with mandatory security scanning
-
-### OAuth Implementation (Migration in Progress)
-- **Current migration**: Moving from CXF OAuth2 to ScribeJava OAuth1.0a
-- **New classes**: Use `OscarOAuthDataProvider`, `OAuth1Executor`, `OAuth1Utils`
-- **Services affected**: ProviderService, ConsentService migrated to new OAuth
-- **Pattern**: Enhanced error handling and logging for OAuth flows
 
 ### Code Maintenance Approach
 - **Active cleanup**: Project aggressively removes unused code and dependencies
@@ -381,7 +361,6 @@ When fixing compilation errors after package refactoring:
 - **Debug port**: 8000 for remote debugging
 - **Database**: Hibernate schema validation disabled - manual migration control
 - **Logging**: Enhanced logging in development environment with `debug-on`/`debug-off` aliases
-- **AI Tools Available**: Claude Code CLI, Aider AI pair programming, GitHub CLI, Docusaurus
 - **Custom Terminal**: Welcome message displays all available tools and shortcuts on bash startup
 
 ### DevContainer Custom Scripts
@@ -498,25 +477,7 @@ if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(re
 - No changes required to existing JSP forms and links
 - Seamless user experience during migration
 
-#### **Migration Benefits**
-
-**1. Risk Mitigation**
-- Incremental migration reduces risk of breaking changes
-- Both frameworks run simultaneously
-- Easy rollback capability if issues arise
-
-**2. Team Productivity** 
-- Developers can work on both legacy and new actions
-- No need to stop feature development during migration
-- Clear naming convention prevents confusion
-
-**3. Maintenance Efficiency**
-- Clear identification of migrated vs. legacy actions
-- Consistent patterns for new development
-- Simplified testing and debugging
-
 #### **Best Practices for 2Action Development**
-
 **1. Security First**
 - Always include security privilege checks
 - Use appropriate security objects for healthcare data
@@ -723,7 +684,7 @@ src/main/webapp/WEB-INF/Owasp.CsrfGuard.properties # CSRF Guard configuration
 src/main/webapp/WEB-INF/csrfguard.js               # Client-side token injection
 src/main/java/ca/openosp/openo/app/CSRFPreservingFilter.java    # Custom CSRF filter
 src/main/java/ca/openosp/openo/app/CsrfJavaScriptInjectionFilter.java # JS injection
-docs/csrf-protection.md                            # Complete CSRF documentation
+
 ```
 
 ### Healthcare Domain Examples
@@ -748,10 +709,9 @@ src/main/java/ca/openosp/openo/fhir/                               # FHIR implem
 # Study These 2Action Implementations
 src/main/java/ca/openosp/openo/tickler/pageUtil/AddTickler2Action.java      # Simple execute pattern
 src/main/java/ca/openosp/openo/caseload/CaseloadContent2Action.java         # Method-based routing
-src/main/java/ca/openosp/openo/encounter/pageUtil/EctDisplay*2Action.java   # Inheritance pattern
-
+src/main/java/ca/openosp/openo/encounter/pageUtil/EctDisplay*2Action.java   
 # Base Classes for 2Actions
-src/main/java/ca/openosp/openo/encounter/pageUtil/EctDisplayAction.java     # Base class example
+src/main/java/ca/openosp/openo/encounter/pageUtil/EctDisplayAction.java    
 ```
 
 ### Spring Integration Patterns
@@ -820,16 +780,7 @@ void shouldReturnTickler_whenValidIdProvided() {
     assertThat(found).isEqualTo(saved);
 }
 
-// 3. Add negative test cases:
-@Test
-@DisplayName("should return null when ID does not exist")
-void shouldReturnNull_whenIdDoesNotExist() {
-    // When
-    Tickler found = ticklerDao.find(999999);
-
-    // Then
-    assertThat(found).isNull();
-}
+3. Add negative test cases
 ```
 
 #### BDD Test Writing Quick Reference
@@ -849,10 +800,6 @@ void shouldPerformExpectedBehavior_whenConditionIsMet() {  // camelCase with ONE
     assertThat(result.getValue()).isEqualTo(expected);
 }
 
-// ❌ WRONG - Common mistakes
-@DisplayName("Should return value")  // Don't capitalize "Should"
-void test_findById()  // Don't use "test" prefix or underscores in method parts
-void find_by_id_returns_value()  // Too many underscores, not camelCase
 ```
 
 **Test Execution Commands:**
@@ -898,7 +845,6 @@ mvn test -T 4C                    # 4 threads per CPU core for parallel executio
 ### Documentation & Architecture
 ```bash
 # Project Documentation
-docs/csrf-protection.md                           # CSRF protection implementation & troubleshooting
 docs/encounter-window-architecture.md             # Encounter window & AJAX patterns
 docs/Password_System.md                           # Security architecture details
 docs/struts-actions-detailed.md                   # Action mapping documentation

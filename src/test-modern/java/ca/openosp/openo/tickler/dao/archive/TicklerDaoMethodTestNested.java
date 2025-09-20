@@ -73,7 +73,7 @@ class TicklerDaoMethodTestNested extends OpenOTestBase {
     @Autowired
     private TicklerDao ticklerDao;
 
-    @PersistenceContext(unitName = "testPersistenceUnit")
+    @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager entityManager;
 
     /**

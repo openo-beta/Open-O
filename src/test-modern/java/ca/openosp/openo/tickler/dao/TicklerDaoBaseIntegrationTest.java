@@ -64,7 +64,7 @@ public abstract class TicklerDaoBaseIntegrationTest extends OpenOTestBase {
     @Autowired
     protected TicklerDao ticklerDao;
 
-    @PersistenceContext(unitName = "testPersistenceUnit")
+    @PersistenceContext(unitName = "entityManagerFactory")
     protected EntityManager entityManager;
 
     /**

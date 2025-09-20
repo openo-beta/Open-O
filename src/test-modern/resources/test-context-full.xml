@@ -87,60 +87,66 @@
         <property name="poolPreparedStatements" value="false" />
     </bean>
 
-    <!-- Hibernate SessionFactory -->
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="mappingResources">
-            <list>
-                <!-- Include only the essential hbm.xml mappings -->
-                <value>ca/openosp/openo/commn/model/Provider.hbm.xml</value>
-                <value>ca/openosp/openo/commn/model/Demographic.hbm.xml</value>
-                <value>ca/openosp/openo/PMmodule/model/Program.hbm.xml</value>
-            </list>
-        </property>
-        <!-- Only include specific annotated classes we need for Tickler -->
-        <property name="annotatedClasses">
-            <list>
-                <value>ca.openosp.openo.commn.model.Tickler</value>
-                <value>ca.openosp.openo.commn.model.TicklerComment</value>
-                <value>ca.openosp.openo.commn.model.TicklerUpdate</value>
-                <value>ca.openosp.openo.commn.model.TicklerTextSuggest</value>
-                <value>ca.openosp.openo.commn.model.TicklerCategory</value>
-                <value>ca.openosp.openo.commn.model.TicklerLink</value>
-                <value>ca.openosp.openo.commn.model.CustomFilter</value>
-            </list>
-        </property>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-                <prop key="hibernate.hbm2ddl.auto">create</prop>
-                <prop key="hibernate.cache.use_second_level_cache">false</prop>
-                <prop key="hibernate.cache.use_query_cache">false</prop>
-                <prop key="hibernate.flushMode">AUTO</prop>
-            </props>
+    <!-- Initialize lookup tables after EntityManagerFactory -->
+    <bean id="databaseInitializer" class="org.springframework.jdbc.datasource.init.DataSourceInitializer">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="databasePopulator">
+            <bean class="org.springframework.jdbc.datasource.init.ResourceDatabasePopulator">
+                <property name="scripts">
+                    <list>
+                        <value>classpath:test-lookup-tables.sql</value>
+                    </list>
+                </property>
+                <property name="sqlScriptEncoding" value="UTF-8"/>
+            </bean>
         </property>
     </bean>
 
-    <!-- JPA EntityManagerFactory - entities defined in persistence.xml -->
+    <!-- SessionFactory extracted from EntityManagerFactory for compatibility -->
+    <bean id="sessionFactory" factory-bean="&amp;entityManagerFactory" factory-method="getNativeEntityManagerFactory" />
+
+    <!-- JPA EntityManagerFactory - use the SessionFactory we configured -->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="persistenceUnitName" value="testPersistenceUnit" />
-        <!-- Don't scan packages - everything is listed in persistence.xml -->
+        <property name="persistenceUnitName" value="entityManagerFactory" />
+        <property name="persistenceProvider">
+            <bean class="org.hibernate.jpa.HibernatePersistenceProvider" />
+        </property>
+        <!-- Scan all packages with entities -->
+        <property name="packagesToScan">
+            <list>
+                <value>ca.openosp.openo</value>
+            </list>
+        </property>
+        <!-- Use same mappings as SessionFactory -->
+        <property name="mappingResources">
+            <list>
+                <value>ca/openosp/openo/commn/model/Provider.hbm.xml</value>
+                <value>ca/openosp/openo/commn/model/Demographic.hbm.xml</value>
+                <value>ca/openosp/openo/PMmodule/model/Program.hbm.xml</value>
+                <value>ca/openosp/openo/PMmodule/model/ProgramClientStatus.hbm.xml</value>
+                <value>ca/openosp/openo/PMmodule/model/ProgramTeam.hbm.xml</value>
+                <value>ca/openosp/openo/PMmodule/model/ProgramAccess.hbm.xml</value>
+                <value>ca/openosp/openo/PMmodule/model/AccessType.hbm.xml</value>
+                <value>com/quatro/model/security/Secrole.hbm.xml</value>
+            </list>
+        </property>
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
                 <property name="database" value="H2" />
-                <property name="showSql" value="${hibernate.show_sql}" />
+                <property name="showSql" value="true" />
                 <property name="generateDdl" value="true" />
             </bean>
         </property>
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.hbm2ddl.auto">create</prop>
                 <prop key="hibernate.cache.use_second_level_cache">false</prop>
-                <prop key="hibernate.id.new_generator_mappings">false</prop>
+                <prop key="hibernate.id.new_generator_mappings">true</prop>
+                <prop key="hibernate.archive.autodetection">class,hbm</prop>
+                <prop key="hibernate.ejb.metamodel.population">enabled</prop>
             </props>
         </property>
     </bean>
@@ -177,7 +183,8 @@
 
     <!-- Manually define managers -->
     <bean id="ticklerManager" class="ca.openosp.openo.managers.TicklerManagerImpl" autowire="byName" />
-    <bean id="securityInfoManager" class="ca.openosp.openo.managers.SecurityInfoManagerImpl" autowire="byName" />
+    <!-- Use mock SecurityInfoManager that always grants access for tests -->
+    <bean id="securityInfoManager" class="ca.openosp.openo.test.mocks.MockSecurityInfoManager" />
     <bean id="programManager" class="ca.openosp.openo.PMmodule.service.ProgramManagerImpl" autowire="byName">
         <property name="enabled" value="${pmm.refer.temporaryAdmission.enabled}" />
     </bean>
