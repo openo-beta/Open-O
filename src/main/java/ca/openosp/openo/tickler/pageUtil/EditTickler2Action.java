@@ -245,7 +245,7 @@ public class EditTickler2Action extends ActionSupport {
                 textSuggestId = Integer.parseInt(inactiveTextStr);
             } catch (NumberFormatException e) {
                 //probably a new text suggestion then
-                logger.error("textSuggestId in inactiveText cannot be parsed as an int:", e);
+                logger.error("textSuggestId in inactiveText cannot be parsed as an int. Value: '{}'", inactiveTextStr, e);
             }
 
             TicklerTextSuggest ts = null;
