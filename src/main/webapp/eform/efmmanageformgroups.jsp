@@ -58,7 +58,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        <script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery.js"></script>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.frmGroups"/></title>
 
         <style>
