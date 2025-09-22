@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @XmlRootElement
 public class DemographicTo1 implements Serializable {
@@ -43,7 +44,10 @@ public class DemographicTo1 implements Serializable {
     private String phone;
     private String alternativePhone;
     private String patientStatus;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date patientStatusDate;
+
     private String rosterStatus;
     private String providerNo;
     private String hin;
@@ -54,7 +58,10 @@ public class DemographicTo1 implements Serializable {
     private String dobDay;
     private String sex;
     private String sexDesc;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dateJoined;
+    
     private String familyDoctor;
     private String firstName;
     private String lastName;

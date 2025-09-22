@@ -28,12 +28,21 @@ package ca.openosp.openo.webserv;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 import javax.servlet.ServletInputStream;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.ReadListener;
+import javax.servlet.WriteListener;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Enumeration;
+import java.util.Collection;
+import java.util.logging.Logger;
 
 public class WebServiceSessionInvalidatingFilter implements Filter {
+    private static final Logger logger = Logger.getLogger(WebServiceSessionInvalidatingFilter.class.getName());
+    
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         // nothing
@@ -112,37 +121,300 @@ public class WebServiceSessionInvalidatingFilter implements Filter {
         }
     }
 
+    // Custom response wrapper to capture response body
+    private static class CachedResponseWrapper extends HttpServletResponseWrapper {
+        private ByteArrayOutputStream cachedBody;
+        private ServletOutputStream outputStream;
+        private PrintWriter writer;
+        private boolean outputStreamUsed = false;
+        private boolean writerUsed = false;
+
+        public CachedResponseWrapper(HttpServletResponse response) {
+            super(response);
+            this.cachedBody = new ByteArrayOutputStream();
+        }
+
+        @Override
+        public ServletOutputStream getOutputStream() throws IOException {
+            if (writerUsed) {
+                throw new IllegalStateException("getWriter() has already been called on this response.");
+            }
+            
+            if (outputStream == null) {
+                outputStream = new ServletOutputStream() {
+                    @Override
+                    public void write(int b) throws IOException {
+                        cachedBody.write(b);
+                        CachedResponseWrapper.super.getResponse().getOutputStream().write(b);
+                    }
+                    
+                    @Override
+                    public void write(byte[] b) throws IOException {
+                        cachedBody.write(b);
+                        CachedResponseWrapper.super.getResponse().getOutputStream().write(b);
+                    }
+                    
+                    @Override
+                    public void write(byte[] b, int off, int len) throws IOException {
+                        cachedBody.write(b, off, len);
+                        CachedResponseWrapper.super.getResponse().getOutputStream().write(b, off, len);
+                    }
+                    
+                    @Override
+                    public boolean isReady() {
+                        return true;
+                    }
+                    
+                    @Override
+                    public void setWriteListener(WriteListener listener) {
+                        // For async processing
+                    }
+                };
+            }
+            outputStreamUsed = true;
+            return outputStream;
+        }
+
+        @Override
+        public PrintWriter getWriter() throws IOException {
+            if (outputStreamUsed) {
+                throw new IllegalStateException("getOutputStream() has already been called on this response.");
+            }
+            
+            if (writer == null) {
+                String encoding = getCharacterEncoding();
+                if (encoding == null) {
+                    encoding = StandardCharsets.UTF_8.name();
+                }
+                
+                writer = new PrintWriter(new OutputStreamWriter(new TeeOutputStream(
+                    cachedBody, super.getResponse().getOutputStream()), encoding));
+            }
+            writerUsed = true;
+            return writer;
+        }
+        
+        @Override
+        public void flushBuffer() throws IOException {
+            if (writer != null) {
+                writer.flush();
+            }
+            if (outputStream != null) {
+                outputStream.flush();
+            }
+            super.flushBuffer();
+        }
+
+        public String getCachedBody() {
+            try {
+                if (writer != null) {
+                    writer.flush();
+                }
+                String encoding = getCharacterEncoding();
+                if (encoding == null) {
+                    encoding = StandardCharsets.UTF_8.name();
+                }
+                return cachedBody.toString(encoding);
+            } catch (Exception e) {
+                return cachedBody.toString();
+            }
+        }
+    }
+    
+    // Helper class to write to two output streams simultaneously
+    private static class TeeOutputStream extends OutputStream {
+        private OutputStream out1;
+        private OutputStream out2;
+        
+        public TeeOutputStream(OutputStream out1, OutputStream out2) {
+            this.out1 = out1;
+            this.out2 = out2;
+        }
+        
+        @Override
+        public void write(int b) throws IOException {
+            out1.write(b);
+            out2.write(b);
+        }
+        
+        @Override
+        public void write(byte[] b) throws IOException {
+            out1.write(b);
+            out2.write(b);
+        }
+        
+        @Override
+        public void write(byte[] b, int off, int len) throws IOException {
+            out1.write(b, off, len);
+            out2.write(b, off, len);
+        }
+        
+        @Override
+        public void flush() throws IOException {
+            out1.flush();
+            out2.flush();
+        }
+        
+        @Override
+        public void close() throws IOException {
+            out1.close();
+            out2.close();
+        }
+    }
+
     @Override
     public void doFilter(ServletRequest tmpRequest, ServletResponse tmpResponse, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) tmpRequest;
-        CachedRequestWrapper wrappedRequest = new CachedRequestWrapper(request);
+        HttpServletResponse response = (HttpServletResponse) tmpResponse;
         
-        System.out.println("\n--------------------------------------------------- Incoming Request ---------------------------------------------------");
+        CachedRequestWrapper wrappedRequest = new CachedRequestWrapper(request);
+        CachedResponseWrapper wrappedResponse = new CachedResponseWrapper(response);
+        
+        // Log incoming request
+        long startTime = System.currentTimeMillis();
+        System.out.println("\n=== [" + new java.util.Date() + "] Incoming Request ===");
         System.out.println("Method: " + wrappedRequest.getMethod());
         System.out.println("Request URL: " + wrappedRequest.getRequestURL());
+        System.out.println("Query String: " + wrappedRequest.getQueryString());
         System.out.println("Content-Type: " + wrappedRequest.getContentType());
         System.out.println("Content-Length: " + wrappedRequest.getContentLength());
+        System.out.println("Remote Address: " + wrappedRequest.getRemoteAddr());
+        System.out.println("User Agent: " + wrappedRequest.getHeader("User-Agent"));
         
-        // Only log body for POST/PUT requests and only if there's content
-        if (("POST".equalsIgnoreCase(wrappedRequest.getMethod()) ||
-             "PUT".equalsIgnoreCase(wrappedRequest.getMethod())) &&
-            wrappedRequest.getContentLength() > 0) {
+        // Log request headers (optional - can be verbose)
+        System.out.println("\n--- Request Headers ---");
+        Enumeration<String> headerNames = wrappedRequest.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            System.out.println(headerName + ": " + wrappedRequest.getHeader(headerName));
+        }
+        
+        // Log request parameters
+        if (wrappedRequest.getParameterMap().size() > 0) {
+            System.out.println("\n--- Request Parameters ---");
+            wrappedRequest.getParameterMap().forEach((key, values) -> {
+                System.out.println(key + ": " + String.join(", ", values));
+            });
+        }
+        
+        // Log request body
+        if (wrappedRequest.getContentLength() > 0 || 
+            (wrappedRequest.getContentType() != null && !wrappedRequest.getContentType().isEmpty())) {
             
             try {
                 String body = wrappedRequest.getCachedBody();
                 if (body != null && !body.trim().isEmpty()) {
-                    System.out.println("Request Body:\n" + body);
+                    System.out.println("\n--- Request Body ---");
+                    if (wrappedRequest.getContentType() != null && 
+                        wrappedRequest.getContentType().contains("application/json")) {
+                        System.out.println("JSON Body:");
+                        System.out.println(formatJson(body));
+                    } else {
+                        System.out.println("Body:");
+                        System.out.println(body);
+                    }
+                } else {
+                    System.out.println("\n--- Request Body: (empty) ---");
                 }
             } catch (Exception e) {
-                System.out.println("Could not read request body: " + e.getMessage());
+                System.out.println("\n--- Could not read request body: " + e.getMessage() + " ---");
             }
         }
 
         try {
-            chain.doFilter(wrappedRequest, tmpResponse);
+            // Process the request
+            chain.doFilter(wrappedRequest, wrappedResponse);
+            
+            // Ensure response is flushed
+            wrappedResponse.flushBuffer();
+            
         } finally {
-            System.out.println("------------------------------------------------- End of Request -------------------------------------------------\n");
+            // Log outgoing response
+            long duration = System.currentTimeMillis() - startTime;
+            System.out.println("\n=== [" + new java.util.Date() + "] Outgoing Response ===");
+            System.out.println("Status: " + wrappedResponse.getStatus());
+            System.out.println("Content-Type: " + wrappedResponse.getContentType());
+            
+            // Log response headers
+            System.out.println("\n--- Response Headers ---");
+            Collection<String> responseHeaderNames = wrappedResponse.getHeaderNames();
+            for (String headerName : responseHeaderNames) {
+                Collection<String> headerValues = wrappedResponse.getHeaders(headerName);
+                System.out.println(headerName + ": " + String.join(", ", headerValues));
+            }
+            
+            // Log response body
+            try {
+                String responseBody = wrappedResponse.getCachedBody();
+                if (responseBody != null && !responseBody.trim().isEmpty()) {
+                    System.out.println("\n--- Response Body ---");
+                    if (wrappedResponse.getContentType() != null && 
+                        wrappedResponse.getContentType().contains("application/json")) {
+                        System.out.println("JSON Response:");
+                        System.out.println(responseBody);
+                    } else {
+                        System.out.println("Response:");
+                        System.out.println(responseBody);
+                    }
+                } else {
+                    System.out.println("\n--- Response Body: (empty) ---");
+                }
+            } catch (Exception e) {
+                System.out.println("\n--- Could not read response body: " + e.getMessage() + " ---");
+            }
+            
+            System.out.println("=== Request completed in " + duration + "ms ===\n");
+        }
+    }
+    
+    // Simple JSON formatter (basic indentation)
+    private String formatJson(String json) {
+        try {
+            StringBuilder formatted = new StringBuilder();
+            int indent = 0;
+            boolean inString = false;
+            char prev = 0;
+            
+            for (char c : json.toCharArray()) {
+                if (c == '"' && prev != '\\') {
+                    inString = !inString;
+                }
+                
+                if (!inString) {
+                    if (c == '{' || c == '[') {
+                        formatted.append(c).append('\n');
+                        indent += 2;
+                        addIndent(formatted, indent);
+                    } else if (c == '}' || c == ']') {
+                        formatted.append('\n');
+                        indent -= 2;
+                        addIndent(formatted, indent);
+                        formatted.append(c);
+                    } else if (c == ',') {
+                        formatted.append(c).append('\n');
+                        addIndent(formatted, indent);
+                    } else if (c == ':') {
+                        formatted.append(c).append(' ');
+                    } else if (c != ' ' && c != '\t' && c != '\n' && c != '\r') {
+                        formatted.append(c);
+                    } else if (inString) {
+                        formatted.append(c);
+                    }
+                } else {
+                    formatted.append(c);
+                }
+                prev = c;
+            }
+            return formatted.toString();
+        } catch (Exception e) {
+            return json; // Return original if formatting fails
+        }
+    }
+    
+    private void addIndent(StringBuilder sb, int indent) {
+        for (int i = 0; i < indent; i++) {
+            sb.append(' ');
         }
     }
 

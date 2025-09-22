@@ -26,6 +26,7 @@ package ca.openosp.openo.webserv.rest.to.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ProviderTo1 implements Serializable {
 
@@ -46,7 +47,10 @@ public class ProviderTo1 implements Serializable {
     private Sex1 sex;
     private String ohipNo;
     private String specialty;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dob;
+    
     private String hsoNo;
     private String providerActivity;
     private String rmaNo;
