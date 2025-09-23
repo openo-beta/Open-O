@@ -32,6 +32,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script type="text/javascript" language="javascript">
             function showImage(url, id) {
