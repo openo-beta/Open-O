@@ -49,6 +49,8 @@ public final class EctSetupHistoryIndex2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
+    private EctMeasurementsDataBeanHandler measurementsData;
+
     private Logger logger = MiscUtils.getLogger();
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
@@ -68,14 +70,11 @@ public final class EctSetupHistoryIndex2Action extends ActionSupport {
 
             request.getSession().setAttribute("EctSessionBean", bean);
 
-            EctMeasurementsDataBeanHandler hd = new EctMeasurementsDataBeanHandler(demo);
+            measurementsData = new EctMeasurementsDataBeanHandler(demo);
             if (loggedInInfo.getCurrentFacility().isIntegratorEnabled()) {
-                List<EctMeasurementsDataBean> measureTypes = (List<EctMeasurementsDataBean>) hd.getMeasurementsDataVector();
+                List<EctMeasurementsDataBean> measureTypes = (List<EctMeasurementsDataBean>) measurementsData.getMeasurementsDataVector();
                 EctMeasurementsDataBeanHandler.addRemoteMeasurementsTypes(loggedInInfo, measureTypes, demo);
             }
-
-            HttpSession session = request.getSession();
-            session.setAttribute("measurementsData", hd);
 
             return "continue";
 
@@ -83,6 +82,10 @@ public final class EctSetupHistoryIndex2Action extends ActionSupport {
             logger.debug("cannot get the EctSessionBean");
         }
         return "newcontinue";
+    }
+
+    public EctMeasurementsDataBeanHandler getMeasurementsData() {
+        return measurementsData;
     }
 
 }
