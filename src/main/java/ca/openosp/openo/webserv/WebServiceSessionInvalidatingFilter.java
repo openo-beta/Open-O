@@ -31,9 +31,14 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -339,7 +344,7 @@ public class WebServiceSessionInvalidatingFilter implements Filter {
             
            
             // Only log detailed response info for demographics requests
-            if (isDemographicsRequest) {
+            //if (isDemographicsRequest) {
                 // Log response headers
                 System.out.println("\n--- Response Headers ---");
                 Collection<String> responseHeaderNames = wrappedResponse.getHeaderNames();
@@ -352,13 +357,13 @@ public class WebServiceSessionInvalidatingFilter implements Filter {
                 try {
                     String responseBody = wrappedResponse.getCachedBody();
                     if (responseBody != null && !responseBody.trim().isEmpty()) {
-                        System.out.println("\n--- Response Body ---");
+                        System.out.println("\n--- Response Body (Date/Time fields only) ---");
                         if (wrappedResponse.getContentType() != null && 
                             wrappedResponse.getContentType().contains("application/json")) {
-                            System.out.println("JSON Response:");
-                            System.out.println(responseBody);
+                            System.out.println("JSON Response (filtered):");
+                            printDateTimeFields(responseBody);
                         } else {
-                            System.out.println("Response:");
+                            System.out.println("Response (non-JSON):");
                             System.out.println(responseBody);
                         }
                     } else {
@@ -367,11 +372,70 @@ public class WebServiceSessionInvalidatingFilter implements Filter {
                 } catch (Exception e) {
                     System.out.println("\n--- Could not read response body: " + e.getMessage() + " ---");
                 }
-            } else {
-                System.out.println("\n--- Response details omitted (not a demographics request) ---");
-            }
+            // } else {
+            //     System.out.println("\n--- Response details omitted (not a demographics request) ---");
+            // }
             
             System.out.println("=== Request completed in " + duration + "ms ===\n");
+        }
+    }
+
+    // Method to print only date/time related fields from JSON
+    private void printDateTimeFields(String jsonBody) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(jsonBody);
+
+            boolean found = printDateTimeFieldsRecursive(root, "");
+            if (!found) {
+                System.out.println("No date/time fields found in response.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error parsing JSON for date/time fields: " + e.getMessage());
+        }
+    }
+
+    private boolean printDateTimeFieldsRecursive(JsonNode node, String path) {
+        boolean foundAny = false;
+
+        if (node.isObject()) {
+            Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
+            while (fields.hasNext()) {
+                Map.Entry<String, JsonNode> entry = fields.next();
+                String key = entry.getKey().toLowerCase();
+                JsonNode value = entry.getValue();
+
+                if (key.contains("date") || key.contains("time") || key.contains("dob")) {
+                    System.out.print(path + entry.getKey() + ": " + value.toString() + " ,");
+                    foundAny = true;
+                }
+                // Recurse into nested nodes
+                foundAny |= printDateTimeFieldsRecursive(value, path + entry.getKey() + ".");
+            }
+        } else if (node.isArray()) {
+            for (int i = 0; i < node.size(); i++) {
+                foundAny |= printDateTimeFieldsRecursive(node.get(i), path + "[" + i + "].");
+            }
+        }
+
+        return foundAny;
+    }
+    
+    // Fallback method using simple string matching
+    private void printDateTimeFieldsSimple(String jsonBody) {
+        boolean foundDateTimeFields = false;
+        String[] lines = jsonBody.split("\n");
+        
+        for (String line : lines) {
+            String lowerLine = line.toLowerCase();
+            if ((lowerLine.contains("date") || lowerLine.contains("time")) && lowerLine.contains(":")) {
+                System.out.println(line.trim());
+                foundDateTimeFields = true;
+            }
+        }
+        
+        if (!foundDateTimeFields) {
+            System.out.println("No date/time fields found in response.");
         }
     }
     
