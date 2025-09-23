@@ -27,6 +27,8 @@ package ca.openosp.openo.webserv.rest.to.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import ca.openosp.openo.commn.model.Appointment.BookingSource;
 import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.commn.model.Provider;
@@ -39,6 +41,7 @@ public class AppointmentTo1 implements Serializable {
 
     private String providerNo;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date appointmentDate;
 
     private Date startTime;
