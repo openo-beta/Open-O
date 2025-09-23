@@ -58,7 +58,7 @@
     </head>
 
 
-    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/encounterStyles.css">
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
     <style type="text/css" media="print">
         .noprint {
             display: none;
