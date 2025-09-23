@@ -68,7 +68,7 @@ public final class EctSetupDisplayHistory2Action extends ActionSupport {
             Integer demo = Integer.valueOf(bean.getDemographicNo());
             request.setAttribute("demographicNo", demo);
             if (type != null) {
-                measurementsData  = new EctMeasurementsDataBeanHandler(demo, type);
+                measurementsData = new EctMeasurementsDataBeanHandler(demo, type);
                 if (loggedInInfo.getCurrentFacility().isIntegratorEnabled()) {
                     List<EctMeasurementsDataBean> measures = (List<EctMeasurementsDataBean>) measurementsData.getMeasurementsDataVector();
                     EctMeasurementsDataBeanHandler.addRemoteMeasurements(loggedInInfo, measures, type, demo);
