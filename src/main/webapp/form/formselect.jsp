@@ -41,7 +41,7 @@
 
     <div class="well">
 
-        <form action="${pageContext.request.contextPath}/form/select.do" method="post" styleId="selectForm">
+        <form action="${pageContext.request.contextPath}/form/select.do" method="post" id="selectForm" name="selectForm">
             <table id="scrollNumber1" name="encounterTable">
                 <tr>
                     <td class="MainTableLeftColumn"></td>
