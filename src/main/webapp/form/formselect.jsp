@@ -62,7 +62,10 @@
                                         <td><select multiple="true" name="selectedAddTypes"
                                                          size="10" style="width:150">
                                             <c:forEach var="f" items="${formHiddenVector}">
-                                                <option value="${f.formName}" <c:if test="${fn:contains(param.savedAddSelection, f.formName)}">selected</c:if>>
+                                                <c:set var="searchIn" value=",${param.savedAddSelection}," />
+                                                <c:set var="searchFor" value=",${f.formName}," />
+                                                <option value="${f.formName}"
+                                                        <c:if test="${not empty param.savedAddSelection and (param.savedAddSelection eq f.formName or fn:contains(searchIn, searchFor))}">selected</c:if>>
                                                         ${f.formName}
                                                 </option>
                                             </c:forEach>
@@ -87,7 +90,10 @@
                                         <td><select multiple="true"
                                                          name="selectedDeleteTypes" size="10" style="width:150">
                                             <c:forEach var="f" items="${formShownVector}">
-                                                <option value="${f.formName}" <c:if test="${fn:contains(param.savedDeleteSelection, f.formName)}">selected</c:if>>
+                                                <c:set var="searchIn" value=",${param.savedDeleteSelection}," />
+                                                <c:set var="searchFor" value=",${f.formName}," />
+                                                <option value="${f.formName}" 
+                                                        <c:if test="${not empty param.savedDeleteSelection and (param.savedDeleteSelection eq f.formName or fn:contains(searchIn, searchFor))}">selected</c:if>>
                                                         ${f.formName}
                                                 </option>
                                             </c:forEach>
@@ -126,16 +132,27 @@
             var savedDelete = $("#savedDeleteSelection").val();
             
             if (savedAdd) {
-                $("select[name='selectedAddTypes']").val(savedAdd);
+                // Split comma-separated string back into array for multiple select
+                var addArray = savedAdd.split(',').filter(function(item) { 
+                    return item.trim() !== ''; 
+                });
+                $("select[name='selectedAddTypes']").val(addArray);
             }
             if (savedDelete) {
-                $("select[name='selectedDeleteTypes']").val(savedDelete);
+                // Split comma-separated string back into array for multiple select
+                var deleteArray = savedDelete.split(',').filter(function(item) { 
+                    return item.trim() !== ''; 
+                });
+                $("select[name='selectedDeleteTypes']").val(deleteArray);
             }
 
             $(".function").click(function () {
                 // Save current selections to hidden fields
-                $("#savedAddSelection").val($("select[name='selectedAddTypes']").val() || '');
-                $("#savedDeleteSelection").val($("select[name='selectedDeleteTypes']").val() || '');
+                var addSelections = $("select[name='selectedAddTypes']").val() || [];
+                var deleteSelections = $("select[name='selectedDeleteTypes']").val() || [];
+
+                $("#savedAddSelection").val(Array.isArray(addSelections) ? addSelections.join(',') : addSelections);
+                $("#savedDeleteSelection").val(Array.isArray(deleteSelections) ? deleteSelections.join(',') : deleteSelections);
 
                 $("#forward").val($(this).attr("id"));
                 $("#selectForm").submit();
