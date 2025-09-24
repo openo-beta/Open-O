@@ -2054,12 +2054,12 @@
         </action>
         <action name="caseload/CaseloadContent" class="ca.openosp.openo.caseload.CaseloadContent2Action"/>
         <action name="tickler/EditTickler" class="ca.openosp.openo.tickler.pageUtil.EditTickler2Action">
-            <result name="close">/closenreload.html</result>
+            <result name="close">/closenreload.jsp</result>
             <result name="failure">/failure.jsp</result>
             <result name="error">/errorpage.jsp</result>
         </action>
         <action name="tickler/EditTicklerTextSuggest" class="ca.openosp.openo.tickler.pageUtil.EditTickler2Action">
-            <result name="close">/closenreload.html</result>
+            <result name="close">/closenreload.jsp</result>
             <result name="error">/errorpage.jsp</result>
         </action>
         <action name="CodeSearch" class="ca.openosp.openo.commn.web.CodeSearchService2Action"/>
