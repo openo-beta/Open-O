@@ -57,10 +57,6 @@
             function set(text) {
                 document.forms[1].newQuery.value = text;
             };
-
-            function submitFavouriteForm() {
-                document.getElementById("favouriteForm").submit();
-            }
         </script>
 
     </head>
@@ -107,7 +103,7 @@
                                 <td>
                                     <input type="button"
                                         value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgAddToFavorite"/>"
-                                         onclick="set('<c:out value="${escapedQuery}" escapeXml="true"/>'); submitFavouriteForm();" />
+                                        onclick="set('<c:out value="${escapedQuery}" escapeXml="true"/>'); submit();" />
                             </tr>
                         </c:forEach>
                     </form>
