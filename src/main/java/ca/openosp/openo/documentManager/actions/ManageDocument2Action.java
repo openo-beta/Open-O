@@ -137,10 +137,23 @@ public class ManageDocument2Action extends ActionSupport {
                 return handler.handle(this);
             } catch (Exception e) {
                 log.error("Error in " + method + "():", e);
+                return "error";
             }
         }
 
-        return documentUpdate();
+        // Only call documentUpdate() if no method is specified and required parameters are present
+        if (method == null || method.trim().isEmpty()) {
+            String documentId = request.getParameter("documentId");
+            String documentDescription = request.getParameter("documentDescription");
+
+            // Check if this looks like a documentUpdate request
+            if (documentId != null || documentDescription != null) {
+                return documentUpdate();
+            }
+        }
+
+        log.error("No valid method found and insufficient parameters for documentUpdate. Method: " + method);
+        return "error";
     }
 
     // Functional interface for our handlers.
@@ -311,10 +324,19 @@ public class ManageDocument2Action extends ActionSupport {
         String observationDate = request.getParameter("observationDate");// :2008-08-22<
         String documentDescription = request.getParameter("documentDescription");// :test2<
         String documentId = request.getParameter("documentId");// :29<
+        // Also check for doc_no parameter (used by display method URLs)
+        if (documentId == null || documentId.trim().isEmpty()) {
+            documentId = request.getParameter("doc_no");
+        }
         String docType = request.getParameter("docType");// :consult<
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_edoc", "w", null)) {
             throw new SecurityException("missing required sec object (_edoc)");
+        }
+
+        if (documentId == null || documentId.trim().isEmpty()) {
+            log.error("Document ID is null or empty, cannot process document update");
+            return "error";
         }
 
         LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ADD, LogConst.CON_DOCUMENT, documentId, request.getRemoteAddr());
@@ -338,6 +360,9 @@ public class ManageDocument2Action extends ActionSupport {
                         log.warn("Invalid provider number format: " + (proNo != null ? proNo.replaceAll("[\r\n]", "") : "null"));
                     }
                 }
+            } catch (NumberFormatException e) {
+                log.error("Invalid document ID format: " + documentId, e);
+                return "error";
             } catch (Exception e) {
                 MiscUtils.getLogger().error("Error", e);
             }
@@ -356,19 +381,29 @@ public class ManageDocument2Action extends ActionSupport {
             documentDao.merge(d);
         }
 
-        try {
-            CtlDocument ctlDocument = ctlDocumentDao.getCtrlDocument(Integer.parseInt(documentId));
-            if (ctlDocument != null) {
-                ctlDocument.getId().setModuleId(Integer.parseInt(demog));
-                ctlDocumentDao.merge(ctlDocument);
-                // save a document created note
-                if (ctlDocument.isDemographicDocument()) {
-                    // save note
-                    saveDocNote(request, d.getDocdesc(), demog, documentId);
+        if (documentId != null && !documentId.trim().isEmpty()) {
+            try {
+                CtlDocument ctlDocument = ctlDocumentDao.getCtrlDocument(Integer.parseInt(documentId));
+                if (ctlDocument != null) {
+                    if (demog != null && !demog.trim().isEmpty()) {
+                        ctlDocument.getId().setModuleId(Integer.parseInt(demog));
+                        ctlDocumentDao.merge(ctlDocument);
+                        // save a document created note
+                        if (ctlDocument.isDemographicDocument() && d != null) {
+                            // save note
+                            saveDocNote(request, d.getDocdesc(), demog, documentId);
+                        }
+                    } else {
+                        log.warn("Demographics parameter is null or empty, skipping ctlDocument update");
+                    }
                 }
+            } catch (NumberFormatException e) {
+                log.error("Invalid number format for documentId: " + documentId + " or demog: " + demog, e);
+            } catch (Exception e) {
+                MiscUtils.getLogger().error("Error", e);
             }
-        } catch (Exception e) {
-            MiscUtils.getLogger().error("Error", e);
+        } else {
+            log.warn("Document ID is null or empty, skipping ctlDocument operations");
         }
 
         String providerNo = request.getParameter("providerNo");
@@ -615,6 +650,16 @@ public class ManageDocument2Action extends ActionSupport {
         LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.READ, LogConst.CON_DOCUMENT, doc_no, request.getRemoteAddr());
 
         Document d = documentDao.getDocument(doc_no);
+        if (d == null) {
+            log.error("Document not found for ID: " + doc_no);
+            try {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Document not found");
+            } catch (IOException e) {
+                log.error("Error sending error response", e);
+            }
+            return;
+        }
+
         log.debug("Document Name :" + d.getDocfilename());
         //if the file is not a pdf, use display function
         if (!(d.getContenttype().equals("application/pdf") || d.getDocfilename().endsWith(".pdf"))) {
@@ -821,6 +866,9 @@ public class ManageDocument2Action extends ActionSupport {
                 }
             }
 
+            if (remoteDocument == null || remoteDocumentContents == null) {
+                throw new IllegalStateException("Remote document not found or contents unavailable for document ID: " + doc_no);
+            }
 
             docxml = remoteDocument.getDocXml();
             contentType = remoteDocument.getContentType();
@@ -947,6 +995,12 @@ public class ManageDocument2Action extends ActionSupport {
             throw new IllegalArgumentException("Invalid parameters");
         }
         
+        // Validate queueId and pdfDir to prevent directory traversal
+        if (queueId1.contains("..") || queueId1.contains("/") || queueId1.contains("\\") ||
+            pdfDir.contains("..") || pdfDir.contains("/") || pdfDir.contains("\\")) {
+            throw new SecurityException("Invalid directory parameters");
+        }
+        
         // Sanitize filename to prevent path traversal
         String sanitizedPdfName = FilenameUtils.getName(pdfName);
         if (!sanitizedPdfName.equals(pdfName)) {
@@ -980,7 +1034,10 @@ public class ManageDocument2Action extends ActionSupport {
         newDoc.setDocSubClass(docSubClass);
         newDoc.setDocPublic("0");
         fileName = newDoc.getFileName();
-        destFilePath = savePath + fileName;
+        // Sanitize the filename to match what the file system will actually create
+        String sanitizedFileName = fileName.replaceAll("[^a-zA-Z0-9._-]", "");
+        newDoc.setFileName(sanitizedFileName);
+        destFilePath = savePath + sanitizedFileName;
         String doc_no = "";
 
         // Validate destination path is within allowed directory
@@ -999,7 +1056,9 @@ public class ManageDocument2Action extends ActionSupport {
         boolean success = f1.renameTo(new File(destFilePath));
         if (!success) {
             log.error("Not able to move " + f1.getName() + " to " + destFilePath);
-            // File was not successfully moved
+            // File was not successfully moved - return error to prevent orphaned database entries
+            request.setAttribute("errorMessage", "Failed to save document file. Please try again.");
+            return "error";
         } else {
 
             newDoc.setContentType("application/pdf");
