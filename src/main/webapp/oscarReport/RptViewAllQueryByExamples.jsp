@@ -75,9 +75,9 @@
                     <form action="${pageContext.request.contextPath}/oscarReport/RptViewAllQueryByExamples.do" method="post">
                         <tr>
                             <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgAllQueriesExecutedFrom"/>:
-                                <input type="text" name="startDate" size="8"/>
+                                <input type="text" name="startDate" value="${startDate}" size="8"/>
                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgTo"/>
-                                <input type="text" name="endDate" size="8"/> <input type="submit"
+                                <input type="text" name="endDate" value="${endDate}" size="8"/> <input type="submit"
                                                                          value="Refresh"/></td>
                         </tr>
                     </form>
