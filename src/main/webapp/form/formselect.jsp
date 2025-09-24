@@ -28,6 +28,7 @@
 <%@ page import="java.util.*,ca.openosp.openo.report.pageUtil.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 
 
@@ -42,6 +43,9 @@
     <div class="well">
 
         <form action="${pageContext.request.contextPath}/form/select.do" method="post" id="selectForm" name="selectForm">
+            <input type="hidden" id="savedAddSelection" name="savedAddSelection" value="${param.savedAddSelection}" />
+            <input type="hidden" id="savedDeleteSelection" name="savedDeleteSelection" value="${param.savedDeleteSelection}" />
+            
             <table id="scrollNumber1" name="encounterTable">
                 <tr>
                     <td class="MainTableLeftColumn"></td>
@@ -58,7 +62,7 @@
                                         <td><select multiple="true" name="selectedAddTypes"
                                                          size="10" style="width:150">
                                             <c:forEach var="f" items="${formHiddenVector}">
-                                                <option value="${f.formName}">
+                                                <option value="${f.formName}" <c:if test="${fn:contains(param.savedAddSelection, f.formName)}">selected</c:if>>
                                                         ${f.formName}
                                                 </option>
                                             </c:forEach>
@@ -83,7 +87,7 @@
                                         <td><select multiple="true"
                                                          name="selectedDeleteTypes" size="10" style="width:150">
                                             <c:forEach var="f" items="${formShownVector}">
-                                                <option value="${f.formName}">
+                                                <option value="${f.formName}" <c:if test="${fn:contains(param.savedDeleteSelection, f.formName)}">selected</c:if>>
                                                         ${f.formName}
                                                 </option>
                                             </c:forEach>
@@ -117,11 +121,23 @@
         registerFormSubmit('selectForm', 'dynamic-content');
 
         $(document).ready(function () {
+            // Restore selections on page load
+            var savedAdd = $("#savedAddSelection").val();
+            var savedDelete = $("#savedDeleteSelection").val();
+            
+            if (savedAdd) {
+                $("select[name='selectedAddTypes']").val(savedAdd);
+            }
+            if (savedDelete) {
+                $("select[name='selectedDeleteTypes']").val(savedDelete);
+            }
 
             $(".function").click(function () {
+                // Save current selections to hidden fields
+                $("#savedAddSelection").val($("select[name='selectedAddTypes']").val() || '');
+                $("#savedDeleteSelection").val($("select[name='selectedDeleteTypes']").val() || '');
+
                 $("#forward").val($(this).attr("id"));
-
-
                 $("#selectForm").submit();
             });
 
