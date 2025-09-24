@@ -114,10 +114,10 @@ public class ManageDocument2Action extends ActionSupport {
     // Static initializer used to set the actions of the map for the execute function
     static {
         ACTIONS.put("refileDocumentAjax", ctx -> ctx.refileDocumentAjax());
-        ACTIONS.put("viewDocPage", ctx -> { ctx.viewDocPage(); return "viewDocPage"; });
-        ACTIONS.put("display", ctx -> { ctx.display(); return "display"; });
-        ACTIONS.put("viewAnnotationAcknowledgementTickler", ctx -> { ctx.viewAnnotationAcknowledgementTickler(); return "viewAnnotationAcknowledgementTickler"; });
-        ACTIONS.put("viewDocumentDescription", ctx -> { ctx.viewDocumentDescription(); return "viewDocumentDescription"; });
+        ACTIONS.put("viewDocPage", ctx -> { ctx.viewDocPage(); return null; });
+        ACTIONS.put("display", ctx -> { ctx.display(); return null; });
+        ACTIONS.put("viewAnnotationAcknowledgementTickler", ctx -> { ctx.viewAnnotationAcknowledgementTickler(); return null; });
+        ACTIONS.put("viewDocumentDescription", ctx -> { ctx.viewDocumentDescription(); return null; });
         //  Enable calling the method to remove providers
         ACTIONS.put("removeLinkFromDocument", new ActionHandler() {
             public String handle(ManageDocument2Action action) {
@@ -137,6 +137,7 @@ public class ManageDocument2Action extends ActionSupport {
                 return handler.handle(this);
             } catch (Exception e) {
                 log.error("Error in " + method + "():", e);
+                addActionError("An error occurred while processing the document. Please try again or contact your system administrator.");
                 return "error";
             }
         }
@@ -153,6 +154,7 @@ public class ManageDocument2Action extends ActionSupport {
         }
 
         log.error("No valid method found and insufficient parameters for documentUpdate. Method: " + method);
+        addActionError("Invalid request. The requested operation could not be performed.");
         return "error";
     }
 
@@ -336,6 +338,7 @@ public class ManageDocument2Action extends ActionSupport {
 
         if (documentId == null || documentId.trim().isEmpty()) {
             log.error("Document ID is null or empty, cannot process document update");
+            addActionError("Document ID is missing. Cannot process document update.");
             return "error";
         }
 
@@ -362,6 +365,7 @@ public class ManageDocument2Action extends ActionSupport {
                 }
             } catch (NumberFormatException e) {
                 log.error("Invalid document ID format: " + documentId, e);
+                addActionError("Invalid document ID format. Please check the document ID and try again.");
                 return "error";
             } catch (Exception e) {
                 MiscUtils.getLogger().error("Error", e);
@@ -1036,13 +1040,38 @@ public class ManageDocument2Action extends ActionSupport {
         fileName = newDoc.getFileName();
         // Sanitize the filename to match what the file system will actually create
         String sanitizedFileName = fileName.replaceAll("[^a-zA-Z0-9._-]", "");
+
+        // Ensure sanitized filename is not empty and has a minimum length
+        if (sanitizedFileName.trim().isEmpty() || sanitizedFileName.length() < 1) {
+            // Generate a fallback filename with timestamp
+            String timestamp = String.valueOf(System.currentTimeMillis());
+            sanitizedFileName = "document_" + timestamp + ".dat";
+        }
+
+        // Ensure filename uniqueness by checking if file already exists
+        File destFile = new File(savePath + sanitizedFileName);
+        String originalSanitized = sanitizedFileName;
+        int counter = 1;
+        while (destFile.exists()) {
+            String nameWithoutExt = originalSanitized;
+            String extension = "";
+            int lastDot = originalSanitized.lastIndexOf(".");
+            if (lastDot > 0) {
+                nameWithoutExt = originalSanitized.substring(0, lastDot);
+                extension = originalSanitized.substring(lastDot);
+            }
+            sanitizedFileName = nameWithoutExt + "_" + counter + extension;
+            destFile = new File(savePath + sanitizedFileName);
+            counter++;
+        }
+
         newDoc.setFileName(sanitizedFileName);
         destFilePath = savePath + sanitizedFileName;
         String doc_no = "";
 
         // Validate destination path is within allowed directory
-        File destFile = new File(destFilePath);
-        String canonicalDest = destFile.getCanonicalPath();
+        File finalDestFile = new File(destFilePath);
+        String canonicalDest = finalDestFile.getCanonicalPath();
         File saveDir = new File(savePath);
         String canonicalSaveDir = saveDir.getCanonicalPath();
         
@@ -1056,8 +1085,14 @@ public class ManageDocument2Action extends ActionSupport {
         boolean success = f1.renameTo(new File(destFilePath));
         if (!success) {
             log.error("Not able to move " + f1.getName() + " to " + destFilePath);
-            // File was not successfully moved - return error to prevent orphaned database entries
-            request.setAttribute("errorMessage", "Failed to save document file. Please try again.");
+            // File was not successfully moved - attempt to delete temp file to prevent orphaned files
+            boolean deleted = f1.delete();
+            if (!deleted) {
+                log.warn("Failed to delete temporary file: " + f1.getAbsolutePath());
+            }
+            String documentId = request.getParameter("documentId");
+            log.error("Failed to save document file for document ID: " + documentId);
+            addActionError("Failed to save document file. Please try again or contact your system administrator.");
             return "error";
         } else {
 
