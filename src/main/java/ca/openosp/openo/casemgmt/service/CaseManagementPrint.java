@@ -71,6 +71,9 @@ public class CaseManagementPrint {
 
         if (printAllNotes) {
             noteIds = getAllNoteIds(loggedInInfo, request, "" + demographicNo);
+            if (noteIds == null) {
+                noteIds = new String[0];
+            }
         }
 
         if (useDateRange) {
@@ -370,7 +373,6 @@ public class CaseManagementPrint {
             criteria.setProgramId(programId);
         }
 
-
         if (se.getAttribute("CaseManagementViewAction_filter_roles") != null) {
             criteria.getRoles().addAll((List<String>) se.getAttribute("CaseManagementViewAction_filter_roles"));
         }
@@ -379,10 +381,9 @@ public class CaseManagementPrint {
             criteria.getProviders().addAll((List<String>) se.getAttribute("CaseManagementViewAction_filter_providers"));
         }
 
-        if (se.getAttribute("CaseManagementViewAction_filter_providers") != null) {
+        if (se.getAttribute("CaseManagementViewAction_filter_issues") != null) {
             criteria.getIssues().addAll((List<String>) se.getAttribute("CaseManagementViewAction_filter_issues"));
         }
-
 
         if (logger.isDebugEnabled()) {
             logger.debug("SEARCHING FOR NOTES WITH CRITERIA: " + criteria);
@@ -390,15 +391,14 @@ public class CaseManagementPrint {
 
         NoteSelectionResult result = noteService.findNotes(loggedInInfo, criteria);
 
-
         List<String> buf = new ArrayList<String>();
-        for (NoteDisplay nd : result.getNotes()) {
-            if (!(nd instanceof NoteDisplayLocal)) {
-                continue;
+        if (result != null && result.getNotes() != null) {
+            for (NoteDisplay nd : result.getNotes()) {
+                if (nd instanceof NoteDisplayLocal) {
+                    buf.add(nd.getNoteId().toString());
+                }
             }
-            buf.add(nd.getNoteId().toString());
         }
-
 
         return buf.toArray(new String[0]);
     }
@@ -448,15 +448,14 @@ public class CaseManagementPrint {
 
         NoteSelectionResult result = noteService.findNotes(loggedInInfo, criteria);
 
-
         List<String> buf = new ArrayList<String>();
-        for (NoteDisplay nd : result.getNotes()) {
-            if (!(nd instanceof NoteDisplayLocal)) {
-                continue;
+        if (result != null && result.getNotes() != null) {
+            for (NoteDisplay nd : result.getNotes()) {
+                if (nd instanceof NoteDisplayLocal) {
+                    buf.add(nd.getNoteId().toString());
+                }
             }
-            buf.add(nd.getNoteId().toString());
         }
-
 
         return buf.toArray(new String[0]);
     }

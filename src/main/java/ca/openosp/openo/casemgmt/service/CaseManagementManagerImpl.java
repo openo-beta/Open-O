@@ -1478,11 +1478,31 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
 
             if (cmNote.getType().equals("local_note")) {
                 noteRole = cmNote.getRole();
-                noteRoleName = RoleCache.getRole(Long.valueOf(noteRole)).getName().toLowerCase();
+                if (noteRole != null && !noteRole.trim().isEmpty()) {
+                    try {
+                        Long roleId = Long.valueOf(noteRole);
+                        logger.debug("Looking up role ID: " + roleId + " in RoleCache");
+                        Secrole noteSecrole = RoleCache.getRole(roleId);
+                        if (noteSecrole != null) {
+                            noteRoleName = noteSecrole.getName().toLowerCase();
+                            logger.debug("Found role: " + noteRoleName + " for ID: " + roleId);
+                        } else {
+                            noteRoleName = "";
+                        }
+                    } catch (NumberFormatException e) {
+                        logger.warn("Invalid role format: '" + noteRole + "' - not a valid Long");
+                        noteRoleName = "";
+                    }
+                } else {
+                    logger.debug("Note has null or empty role");
+                    noteRoleName = "";
+                }
             }
+
             if (cmNote.getType().equals("remote_note")) {
                 noteRoleName = cmNote.getRole();
             }
+
             ProgramAccess pa = null;
             boolean add = false;
 
