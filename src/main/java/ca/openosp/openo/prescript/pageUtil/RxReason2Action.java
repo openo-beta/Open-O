@@ -80,7 +80,7 @@ public final class RxReason2Action extends ActionSupport {
         String codingSystem = request.getParameter("codingSystem");
         String primaryReasonFlagStr = request.getParameter("primaryReasonFlag");
         String comments = request.getParameter("comments");
-        String code = request.getParameter("code");
+        String code = request.getParameter("jsonDxSearch");
 
         String drugIdStr = request.getParameter("drugId");
         String demographicNo = request.getParameter("demographicNo");
