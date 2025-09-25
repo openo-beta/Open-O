@@ -275,7 +275,7 @@ public class WebServiceSessionInvalidatingFilter implements Filter {
 
         // Check if this is a demographics request
         String requestPath = wrappedRequest.getRequestURI();
-        boolean isDemographicsRequest = requestPath != null && requestPath.contains("/demographics");
+        boolean isDemographicsRequest = requestPath != null && (requestPath.contains("/demographics/4") || requestPath.contains("/providers_json") || requestPath.contains("/appointmentHistory"));
         
         // Log incoming request
         long startTime = System.currentTimeMillis();
@@ -344,7 +344,7 @@ public class WebServiceSessionInvalidatingFilter implements Filter {
             
            
             // Only log detailed response info for demographics requests
-            //if (isDemographicsRequest) {
+            if (!isDemographicsRequest) {
                 // Log response headers
                 System.out.println("\n--- Response Headers ---");
                 Collection<String> responseHeaderNames = wrappedResponse.getHeaderNames();
@@ -360,8 +360,9 @@ public class WebServiceSessionInvalidatingFilter implements Filter {
                         System.out.println("\n--- Response Body (Date/Time fields only) ---");
                         if (wrappedResponse.getContentType() != null && 
                             wrappedResponse.getContentType().contains("application/json")) {
-                            System.out.println("JSON Response (filtered):");
-                            printDateTimeFields(responseBody);
+                            // System.out.println("JSON Response (filtered):");
+                            // printDateTimeFields(responseBody);
+                            System.out.println(responseBody);
                         } else {
                             System.out.println("Response (non-JSON):");
                             System.out.println(responseBody);
@@ -372,9 +373,9 @@ public class WebServiceSessionInvalidatingFilter implements Filter {
                 } catch (Exception e) {
                     System.out.println("\n--- Could not read response body: " + e.getMessage() + " ---");
                 }
-            // } else {
-            //     System.out.println("\n--- Response details omitted (not a demographics request) ---");
-            // }
+            } else {
+                System.out.println("\n--- Response details omitted (not a demographics request) ---");
+            }
             
             System.out.println("=== Request completed in " + duration + "ms ===\n");
         }
