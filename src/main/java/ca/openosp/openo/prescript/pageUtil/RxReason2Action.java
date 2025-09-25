@@ -134,7 +134,11 @@ public final class RxReason2Action extends ActionSupport {
         return "close";
     }
 
-
+    /**
+     * Used for archiving the current reason, will set the value of the archived flag to true and set the reason.
+     * And will show a success message to the user
+     * @return "success" which will redirect back to the "SelectReason.jsp" page
+     */
     public String archiveReason() {
 
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_rx", "r", null)) {
