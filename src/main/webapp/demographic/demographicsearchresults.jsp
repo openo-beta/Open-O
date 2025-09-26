@@ -107,7 +107,6 @@
     }
     String orderBy = request.getParameter("orderby");
 
-    // ISSUE LOCATION
     String ptStatus = request.getParameter("ptstatus") == null ? "active" : request.getParameter("ptstatus");
     ;
 
