@@ -76,9 +76,6 @@ public class IndicatorQueryHandlerTest {
 
     @BeforeClass
     public static void setUpBeforeClass() {
-        SpringUtils.getBeanFactory();
-        SpringUtils.getBean(ExcludeDemographicHandler.class);
-
         URL url = Thread.currentThread().getContextClassLoader().getResource("indicatorXMLTemplates/diabetes_hba1c_in_range_test.xml");
         byte[] byteArray = null;
         InputStream is = null;
