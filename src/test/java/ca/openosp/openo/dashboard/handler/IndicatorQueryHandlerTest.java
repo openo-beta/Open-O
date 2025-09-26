@@ -38,6 +38,7 @@ import ca.openosp.openo.dashboard.handler.IndicatorTemplateXML;
 import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.beans.factory.BeanFactory;
 
 import ca.openosp.openo.dashboard.display.beans.GraphPlot;
 import ca.openosp.openo.dashboard.query.Parameter;
@@ -75,6 +76,7 @@ public class IndicatorQueryHandlerTest {
 
     @BeforeClass
     public static void setUpBeforeClass() {
+        SpringUtils.getBeanFactory();
         SpringUtils.getBean(ExcludeDemographicHandler.class);
 
         URL url = Thread.currentThread().getContextClassLoader().getResource("indicatorXMLTemplates/diabetes_hba1c_in_range_test.xml");
