@@ -910,7 +910,7 @@
         // Log the error to the console
         System.err.println("JSP Processing Error:");
         e.printStackTrace(System.err);
-        request.getRequestDispatcher("/error.jsp").forward(request, response);
+        request.getRequestDispatcher("/errorpage.jsp").forward(request, response);
         return;
     }
     %>
