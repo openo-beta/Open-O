@@ -43,6 +43,7 @@ import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CaseManagementPrint {
 
@@ -68,20 +69,19 @@ public class CaseManagementPrint {
 
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-
         if (printAllNotes) {
-            noteIds = getAllNoteIds(loggedInInfo, request, "" + demographicNo);
-            if (noteIds == null) {
-                noteIds = new String[0];
-            }
+            List<CaseManagementNote> allNotes = caseManagementMgr.getNotes(String.valueOf(demographicNo));
+            noteIds = allNotes.stream()
+                .map(note -> note.getId().toString())
+                .toArray(String[]::new);
         }
 
         if (useDateRange) {
-            noteIds = getAllNoteIdsWithinDateRange(loggedInInfo, request, "" + demographicNo, startDate.getTime(), endDate.getTime());
+            noteIds = getAllNoteIdsWithinDateRange(loggedInInfo, request, String.valueOf(demographicNo), startDate.getTime(), endDate.getTime());
         }
         logger.debug("NOTES2PRINT: " + noteIds);
 
-        String demono = "" + demographicNo;
+        String demono = String.valueOf(demographicNo);
         request.setAttribute("demoName", getDemoName(demono));
         request.setAttribute("demoSex", getDemoSex(demono));
         request.setAttribute("demoAge", getDemoAge(demono));
@@ -92,15 +92,15 @@ public class CaseManagementPrint {
         request.setAttribute("demoDOB", dob);
 
 
-        List<CaseManagementNote> notes = new ArrayList<CaseManagementNote>();
-        List<String> remoteNoteUUIDs = new ArrayList<String>();
+        List<CaseManagementNote> notes = new ArrayList<>();
+        List<String> remoteNoteUUIDs = new ArrayList<>();
         String uuid;
-        for (int idx = 0; idx < noteIds.length; ++idx) {
-            if (noteIds[idx].startsWith("UUID")) {
-                uuid = noteIds[idx].substring(4);
+        for (String noteIdStr : noteIds) {
+            if (noteIdStr.startsWith("UUID")) {
+                uuid = noteIdStr.substring(4);
                 remoteNoteUUIDs.add(uuid);
             } else {
-                Long noteId = ConversionUtils.fromLongString(noteIds[idx]);
+                Long noteId = ConversionUtils.fromLongString(noteIdStr);
                 if (noteId > 0) {
                     CaseManagementNote note = this.caseManagementMgr.getNote(noteId.toString());
                     if (note != null && note.getProviderNo() != null
@@ -111,7 +111,7 @@ public class CaseManagementPrint {
             }
         }
 
-        if (loggedInInfo.getCurrentFacility().isIntegratorEnabled() && remoteNoteUUIDs.size() > 0) {
+        if (loggedInInfo.getCurrentFacility().isIntegratorEnabled() && !remoteNoteUUIDs.isEmpty()) {
             DemographicWs demographicWs = CaisiIntegratorManager.getDemographicWs(loggedInInfo, loggedInInfo.getCurrentFacility());
             List<CachedDemographicNote> remoteNotes = demographicWs.getLinkedCachedDemographicNotes(Integer.parseInt(demono));
             for (CachedDemographicNote remoteNote : remoteNotes) {
@@ -137,33 +137,35 @@ public class CaseManagementPrint {
 
         //How should i filter out observation dates?
         if (!printAllNotes && (startDate != null && endDate != null)) {
-            List<CaseManagementNote> dateFilteredList = new ArrayList<CaseManagementNote>();
             logger.debug("start date " + startDate);
             logger.debug("end date " + endDate);
 
-            for (CaseManagementNote cmn : notes) {
-                logger.debug("cmn " + cmn.getId() + "  -- " + cmn.getObservation_date() + " ? start date " + startDate.getTime().before(cmn.getObservation_date()) + " end date " + endDate.getTime().after(cmn.getObservation_date()));
-                if (startDate.getTime().before(cmn.getObservation_date()) && endDate.getTime().after(cmn.getObservation_date())) {
-                    dateFilteredList.add(cmn);
-                }
-            }
-            notes = dateFilteredList;
+            notes = notes.stream()
+                .filter(cmn -> {
+                    logger.debug("cmn " + cmn.getId() + "  -- " + cmn.getObservation_date() +
+                        " ? start date " + startDate.getTime().before(cmn.getObservation_date()) +
+                        " end date " + endDate.getTime().after(cmn.getObservation_date()));
+
+                    return startDate.getTime().before(cmn.getObservation_date()) &&
+                           endDate.getTime().after(cmn.getObservation_date());
+                })
+                .collect(Collectors.toList());
         }
 
         List<CaseManagementNote> issueNotes;
         List<CaseManagementNote> tmpNotes;
         HashMap<String, List<CaseManagementNote>> cpp = null;
         if (printCPP) {
-            cpp = new HashMap<String, List<CaseManagementNote>>();
+            cpp = new HashMap<>();
             String[] issueCodes = {"OMeds", "SocHistory", "MedHistory", "Concerns", "Reminders", "FamHistory", "RiskFactors"};
-            for (int j = 0; j < issueCodes.length; ++j) {
-                List<Issue> issues = caseManagementMgr.getIssueInfoByCode(providerNo, issueCodes[j]);
-                String[] issueIds = getIssueIds(issues);// = new String[issues.size()];
+            for (String issueCode : issueCodes) {
+                List<Issue> issues = caseManagementMgr.getIssueInfoByCode(providerNo, issueCode);
+                String[] issueIds = getIssueIds(issues);
                 tmpNotes = caseManagementMgr.getNotes(demono, issueIds);
-                issueNotes = new ArrayList<CaseManagementNote>();
-                for (int k = 0; k < tmpNotes.size(); ++k) {
-                    if (!tmpNotes.get(k).isLocked() && !tmpNotes.get(k).isArchived()) {
-                        List<CaseManagementNoteExt> exts = caseManagementMgr.getExtByNote(tmpNotes.get(k).getId());
+                issueNotes = new ArrayList<>();
+                for (CaseManagementNote tmpNote : tmpNotes) {
+                    if (!tmpNote.isLocked() && !tmpNote.isArchived()) {
+                        List<CaseManagementNoteExt> exts = caseManagementMgr.getExtByNote(tmpNote.getId());
                         boolean exclude = false;
                         for (CaseManagementNoteExt ext : exts) {
                             if (ext.getKeyVal().equals("Hide Cpp")) {
@@ -173,11 +175,11 @@ public class CaseManagementPrint {
                             }
                         }
                         if (!exclude) {
-                            issueNotes.add(tmpNotes.get(k));
+                            issueNotes.add(tmpNote);
                         }
                     }
                 }
-                cpp.put(issueCodes[j], issueNotes);
+                cpp.put(issueCode, issueNotes);
             }
         }
         String demoNo = null;
@@ -429,7 +431,8 @@ public class CaseManagementPrint {
             criteria.setProgramId(programId);
         }
 
-
+        // Apply session filters if they exist (set by CaseManagementView2Action)
+        // If no filters are present, criteria will have empty lists which means "no filtering" - get all notes
         if (se.getAttribute("CaseManagementViewAction_filter_roles") != null) {
             criteria.getRoles().addAll((List<String>) se.getAttribute("CaseManagementViewAction_filter_roles"));
         }
