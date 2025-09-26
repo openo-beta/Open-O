@@ -42,6 +42,7 @@ import org.junit.Test;
 import ca.openosp.openo.dashboard.display.beans.GraphPlot;
 import ca.openosp.openo.dashboard.query.Parameter;
 import ca.openosp.openo.dashboard.query.RangeInterface;
+import ca.openosp.openo.utility.SpringUtils;
 
 /**
  * Cannot automate this test because the EntityManager is called
@@ -74,6 +75,7 @@ public class IndicatorQueryHandlerTest {
 
     @BeforeClass
     public static void setUpBeforeClass() {
+        SpringUtils.getBean(ExcludeDemographicHandler.class);
 
         URL url = Thread.currentThread().getContextClassLoader().getResource("indicatorXMLTemplates/diabetes_hba1c_in_range_test.xml");
         byte[] byteArray = null;
