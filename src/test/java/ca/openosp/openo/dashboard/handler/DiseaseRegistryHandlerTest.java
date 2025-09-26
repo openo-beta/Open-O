@@ -33,6 +33,9 @@ import java.util.List;
 import ca.openosp.openo.dashboard.handler.DiseaseRegistryHandler;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import ca.openosp.openo.commn.dao.DemographicDao;
 import ca.openosp.openo.commn.dao.DxresearchDAO;
 import ca.openosp.openo.commn.dao.utils.EntityDataGenerator;
@@ -43,9 +46,10 @@ import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.SpringUtils;
 
+@RunWith(SpringRunner.class)
 public class DiseaseRegistryHandlerTest {
 
-    private static DemographicDao demographicDao;
+    private static DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
     private DxresearchDAO dXdao = (DxresearchDAO) SpringUtils.getBean(DxresearchDAO.class);
     Date now = new java.util.Date();
     static Demographic demographic;
@@ -54,9 +58,7 @@ public class DiseaseRegistryHandlerTest {
     private static DiseaseRegistryHandler diseaseRegistryHandler;
 
     @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-        demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
-        
+    public static void setUpBeforeClass() throws Exception {  
         SchemaUtils.restoreTable("dxresearch", "demographic", "lst_gender", "admission", "demographic_merged",
                 "program", "health_safety", "provider", "providersite", "site", "program_team",
                 "log", "Facility", "demographicExt", "measurements", "measurementType", "measurementsExt",

@@ -38,7 +38,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.junit.Before;
 import ca.openosp.openo.commn.dao.utils.SchemaUtils;
 import ca.openosp.openo.dashboard.query.DrillDownAction;
@@ -49,7 +51,7 @@ import ca.openosp.openo.utility.SpringUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-
+@RunWith(SpringRunner.class)
 public class IndicatorTemplateXMLTest {
 
     private static IndicatorTemplateXML indicatorTemplateXML;
@@ -62,8 +64,6 @@ public class IndicatorTemplateXMLTest {
 
     @BeforeClass
     public static void setUpBeforeClass() {
-        SpringUtils.getBeanFactory();
-
         URL url = Thread.currentThread().getContextClassLoader().getResource("indicatorXMLTemplates/diabetes_hba1c_test.xml");
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);

@@ -33,14 +33,15 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import ca.openosp.openo.commn.dao.DemographicExtDao;
 import ca.openosp.openo.dashboard.query.Column;
 import ca.openosp.openo.dashboard.query.DrillDownAction;
 import ca.openosp.openo.dashboard.query.Parameter;
 import ca.openosp.openo.dashboard.query.RangeInterface;
-import ca.openosp.openo.utility.SpringUtils;
 
+@RunWith(SpringRunner.class)
 public class DrilldownQueryHandlerTest {
 
     private static List<Column> columns;
@@ -67,8 +68,6 @@ public class DrilldownQueryHandlerTest {
 
     @BeforeClass
     public static void setUpBeforeClass() {
-        SpringUtils.getBeanFactory();
-
         URL url = Thread.currentThread().getContextClassLoader().getResource("indicatorXMLTemplates/diabetes_hba1c_in_range_test.xml");
         byte[] byteArray = null;
         InputStream is = null;
