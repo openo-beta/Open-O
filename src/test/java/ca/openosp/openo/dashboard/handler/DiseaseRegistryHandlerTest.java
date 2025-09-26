@@ -45,8 +45,7 @@ import ca.openosp.openo.utility.SpringUtils;
 
 public class DiseaseRegistryHandlerTest {
 
-    //	private static Logger logger = MiscUtils.getLogger();
-    private static DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
+    private static DemographicDao demographicDao;
     private DxresearchDAO dXdao = (DxresearchDAO) SpringUtils.getBean(DxresearchDAO.class);
     Date now = new java.util.Date();
     static Demographic demographic;
@@ -56,6 +55,8 @@ public class DiseaseRegistryHandlerTest {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
+        demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
+        
         SchemaUtils.restoreTable("dxresearch", "demographic", "lst_gender", "admission", "demographic_merged",
                 "program", "health_safety", "provider", "providersite", "site", "program_team",
                 "log", "Facility", "demographicExt", "measurements", "measurementType", "measurementsExt",

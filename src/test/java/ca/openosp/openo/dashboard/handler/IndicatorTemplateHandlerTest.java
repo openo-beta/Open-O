@@ -27,10 +27,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import ca.openosp.openo.dashboard.handler.IndicatorTemplateHandler;
 import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import ca.openosp.openo.utility.SpringUtils;
 
 public class IndicatorTemplateHandlerTest {
 
@@ -38,6 +39,7 @@ public class IndicatorTemplateHandlerTest {
 
     @BeforeClass
     public static void setUpBeforeClass() {
+        SpringUtils.getBeanFactory();
         URL url = Thread.currentThread().getContextClassLoader().getResource("indicatorXMLTemplates/diabetes_hba1c_test.xml");
 
         try {
