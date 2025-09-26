@@ -30,12 +30,9 @@ import java.net.URL;
 import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.openosp.openo.utility.SpringUtils;
 
-@RunWith(SpringRunner.class)
 public class IndicatorTemplateHandlerTest {
 
     private static IndicatorTemplateHandler templateHandler;

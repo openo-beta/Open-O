@@ -33,15 +33,12 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.openosp.openo.dashboard.query.Column;
 import ca.openosp.openo.dashboard.query.DrillDownAction;
 import ca.openosp.openo.dashboard.query.Parameter;
 import ca.openosp.openo.dashboard.query.RangeInterface;
 
-@RunWith(SpringRunner.class)
 public class DrilldownQueryHandlerTest {
 
     private static List<Column> columns;

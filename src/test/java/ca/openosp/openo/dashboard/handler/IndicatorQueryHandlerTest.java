@@ -38,8 +38,6 @@ import ca.openosp.openo.dashboard.handler.IndicatorTemplateXML;
 import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.openosp.openo.dashboard.display.beans.GraphPlot;
 import ca.openosp.openo.dashboard.query.Parameter;
@@ -49,7 +47,6 @@ import ca.openosp.openo.dashboard.query.RangeInterface;
  * Cannot automate this test because the EntityManager is called
  * through spring utils.
  */
-@RunWith(SpringRunner.class)
 public class IndicatorQueryHandlerTest {
 
     private static String query = "SELECT COUNT(fin.patient) AS \"DM Patients\", IF ( COUNT(fin.patient) > 0, "

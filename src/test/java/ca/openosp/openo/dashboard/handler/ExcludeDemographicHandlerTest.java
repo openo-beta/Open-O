@@ -26,8 +26,6 @@ package ca.openosp.openo.dashboard.handler;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.openosp.openo.commn.dao.DemographicDao;
 import ca.openosp.openo.commn.dao.utils.EntityDataGenerator;
@@ -43,7 +41,6 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-@RunWith(SpringRunner.class)
 public class ExcludeDemographicHandlerTest {
 
     private static DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);

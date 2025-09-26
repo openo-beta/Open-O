@@ -33,8 +33,6 @@ import java.util.List;
 import ca.openosp.openo.dashboard.handler.DiseaseRegistryHandler;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.openosp.openo.commn.dao.DemographicDao;
 import ca.openosp.openo.commn.dao.DxresearchDAO;
@@ -46,7 +44,6 @@ import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.SpringUtils;
 
-@RunWith(SpringRunner.class)
 public class DiseaseRegistryHandlerTest {
 
     private static DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
