@@ -39,7 +39,7 @@ import ca.openosp.openo.dashboard.query.DrillDownAction;
 import ca.openosp.openo.dashboard.query.Parameter;
 import ca.openosp.openo.dashboard.query.RangeInterface;
 
-public class DrilldownQueryHandlerTest {
+public class DrilldownQueryHandlerTest extends ExcludeDemographicHandler {
 
     private static List<Column> columns;
     private static List<Parameter> parameters;
