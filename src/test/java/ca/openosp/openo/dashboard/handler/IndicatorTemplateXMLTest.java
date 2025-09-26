@@ -46,7 +46,7 @@ import ca.openosp.openo.dashboard.query.RangeInterface.Limit;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-public class IndicatorTemplateXMLTest extends ExcludeDemographicHandler {
+public class IndicatorTemplateXMLTest {
 
     private static IndicatorTemplateXML indicatorTemplateXML;
     private static Document xmlDocument;

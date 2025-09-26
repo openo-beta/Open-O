@@ -47,7 +47,7 @@ import ca.openosp.openo.dashboard.query.RangeInterface;
  * Cannot automate this test because the EntityManager is called
  * through spring utils.
  */
-public class IndicatorQueryHandlerTest extends ExcludeDemographicHandler {
+public class IndicatorQueryHandlerTest {
 
     private static String query = "SELECT COUNT(fin.patient) AS \"DM Patients\", IF ( COUNT(fin.patient) > 0, "
             + "ROUND( SUM( CASE WHEN fin.a1c > 2 THEN 1 ELSE 0 END ) * 100 / COUNT(fin.patient) , 1 ), 0) AS \"HbA1c (%)\", "

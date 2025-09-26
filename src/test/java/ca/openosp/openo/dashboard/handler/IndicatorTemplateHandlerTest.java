@@ -31,7 +31,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class IndicatorTemplateHandlerTest extends ExcludeDemographicHandler {
+public class IndicatorTemplateHandlerTest {
 
     private static IndicatorTemplateHandler templateHandler;
 
