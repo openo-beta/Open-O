@@ -25,7 +25,6 @@ package ca.openosp.openo.dashboard.handler;
 
 import static org.junit.Assert.*;
 
-import ca.openosp.openo.dashboard.handler.IndicatorTemplateXML;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -43,7 +42,6 @@ import ca.openosp.openo.commn.dao.utils.SchemaUtils;
 import ca.openosp.openo.dashboard.query.DrillDownAction;
 import ca.openosp.openo.dashboard.query.RangeInterface;
 import ca.openosp.openo.dashboard.query.RangeInterface.Limit;
-import ca.openosp.openo.utility.SpringUtils;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;

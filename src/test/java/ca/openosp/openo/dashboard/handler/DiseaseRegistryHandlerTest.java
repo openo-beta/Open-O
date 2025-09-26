@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ca.openosp.openo.dashboard.handler.DiseaseRegistryHandler;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -55,7 +54,7 @@ public class DiseaseRegistryHandlerTest {
     private static DiseaseRegistryHandler diseaseRegistryHandler;
 
     @BeforeClass
-    public static void setUpBeforeClass() throws Exception {  
+    public static void setUpBeforeClass() throws Exception {
         SchemaUtils.restoreTable("dxresearch", "demographic", "lst_gender", "admission", "demographic_merged",
                 "program", "health_safety", "provider", "providersite", "site", "program_team",
                 "log", "Facility", "demographicExt", "measurements", "measurementType", "measurementsExt",

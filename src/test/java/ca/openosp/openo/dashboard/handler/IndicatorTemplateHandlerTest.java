@@ -31,8 +31,6 @@ import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ca.openosp.openo.utility.SpringUtils;
-
 public class IndicatorTemplateHandlerTest {
 
     private static IndicatorTemplateHandler templateHandler;
