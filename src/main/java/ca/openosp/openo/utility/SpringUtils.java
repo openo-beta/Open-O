@@ -27,6 +27,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 
 /**
  * This class holds utilities used to work with spring.
@@ -38,6 +39,14 @@ public class SpringUtils {
      * This variable is populated by one of the context listeners.
      */
     private static BeanFactory beanFactory;
+
+    static {
+        // Auto-initialize with a default bean factory if none is set
+        // This prevents NPEs if the class is called without first initilizing properly
+        if (beanFactory == null) {
+            beanFactory = new DefaultListableBeanFactory();
+        }
+    }
 
     public static Object getBean(String beanName) {
         return (beanFactory.getBean(beanName));
