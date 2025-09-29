@@ -31,14 +31,16 @@
 	String demographic_no = request.getParameter("demographic_no");
 	String deepColor = "#CCCCFF" , weakColor = "#EEEEFF" ;
 %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="java.util.*, ca.openosp.openo.eform.*"%>
-<%@ page import="ca.openosp.openo.util.LoggedInInfo" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.managers.DemographicManager" %>
+<%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%
 	LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -58,10 +60,13 @@
 <%
 	Demographic demographic = demographicManager.getDemographic(loggedInInfo, demographic_no);
 %>
+
+<fmt:setBundle basename="oscarResources"/>
+
 <html>
 	<head>
 		<title>
-            <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.title" />
+            <fmt:message key="eform.showmyform.title" />
         </title>
 
 		<link href="${pageContext.request.contextPath}/library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet">
@@ -104,10 +109,10 @@
 
 				let table = jQuery('#efmTable').DataTable({
 					"pageLength": 15,
-					"lengthMenu": [ [15, 30, 60, 120, -1], [15, 30, 60, 120, '<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.All"/>'] ],
+					"lengthMenu": [ [15, 30, 60, 120, -1], [15, 30, 60, 120, "<fmt:message key='demographic.search.All'/>"] ],
 					"order": [2],
 					"language": {
-						"url": "<%=request.getContextPath() %>/library/DataTables/i18n/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.i18nLanguagecode"/>.json"
+						"url": "<%=request.getContextPath() %>/library/DataTables/i18n/<fmt:message key='global.i18nLanguagecode'/>.json"
 					}
 				});
 
@@ -157,25 +162,25 @@
 				<path d="M5.884 6.68a.5.5 0 1 0-.768.64L7.349 10l-2.233 2.68a.5.5 0 0 0 .768.64L8 10.781l2.116 2.54a.5.5 0 0 0 .768-.641L8.651 10l2.233-2.68a.5.5 0 0 0-.768-.64L8 9.219l-2.116-2.54z"></path>
 				<path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"></path>
 			</svg>
-			<fmt:setBundle basename="oscarResources"/><fmt:message key="eform.independent.btnDeleted" />
+			<fmt:message key="eform.independent.btnDeleted" />
 		</h2>
 		<span><%= Encode.forHtml(demographic.getDisplayName()) %></span>
 	</div>
 		<div class="menu-columns">
 			<div class="left-column">
 
-				<a href="${pageContext.request.contextPath}/demographic/demographiccontrol.jsp?demographic_no=<%=demographic_no%>&appointment=<%=appointment%>&displaymode=edit&dboperation=search_detail"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.btnMasterFile" /></a>
+				<a href="${pageContext.request.contextPath}/demographic/demographiccontrol.jsp?demographic_no=<%=demographic_no%>&appointment=<%=appointment%>&displaymode=edit&dboperation=search_detail"><fmt:message key="demographic.demographiceditdemographic.btnMasterFile" /></a>
 
 				
 				<a href="efmformslistadd.jsp?demographic_no=<%=demographic_no%>&appointment=<%=appointment%>&parentAjaxId=<%=parentAjaxId%>" class="current"> 
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.btnAddEForm"/></a>
+                    <fmt:message key="eform.showmyform.btnAddEForm"/></a>
 				<a href="efmpatientformlist.jsp?demographic_no=<%=demographic_no%>&appointment=<%=appointment%>&parentAjaxId=<%=parentAjaxId%>">
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.calldeletedformdata.btnGoToForm"/></a>
+                    <fmt:message key="eform.calldeletedformdata.btnGoToForm"/></a>
 <%--			<a href="efmpatientformlistdeleted.jsp?demographic_no=<%=demographic_no%>&appointment=<%=appointment%>&parentAjaxId=<%=parentAjaxId%>">
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.btnDeleted"/></a>--%>
+                    <fmt:message key="eform.showmyform.btnDeleted"/></a>--%>
 				<security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.eform" rights="r" reverse="<%=false%>" >
 					<a href="#" onclick="javascript: return popup(600, 1200, '${pageContext.request.contextPath}/administration/?show=Forms', 'manageeforms');" style="color: #835921;">
-                        <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.msgManageEFrm"/></a>
+                        <fmt:message key="eform.showmyform.msgManageEFrm"/></a>
 				</security:oscarSec>
 			</div>
 			<div class="right-column">
@@ -185,16 +190,16 @@
 					<thead>
 					<tr>
 						<th>
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.btnFormName" />
+                            <fmt:message key="eform.showmyform.btnFormName" />
 						</th>
 						<th>
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.btnSubject" />
+                            <fmt:message key="eform.showmyform.btnSubject" />
                         </th>
 						<th>
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.formDate" />
+                            <fmt:message key="eform.showmyform.formDate" />
                         </th>
 						<th>
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.msgAction" />
+                            <fmt:message key="eform.showmyform.msgAction" />
                         </th>
 					</tr>
 					</thead>
@@ -213,7 +218,7 @@
 						<td ><%=curform.get("formDate")%></td>
 						<td ><a
 								href="${pageContext.request.contextPath}/eform/unRemoveEForm.do?fdid=<%=curform.get("fdid")%>&demographic_no=<%=demographic_no%>&parentAjaxId=<%=parentAjaxId%>" onClick="javascript: return confirm('Are you sure you want to restore this eform?');">
-                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnRestore" /></a></td>
+                                    <fmt:message key="global.btnRestore" /></a></td>
 					</tr>
 					<%
 						}
