@@ -124,8 +124,8 @@ ${isBlocker ? '⚠️ **Note:** This is marked as a blocker. Please verify urgen
 
             // Check for verification keywords
             const commentBody = comment.body.toLowerCase();
-            const verified = /verified|fixed|resolved|works/.test(commentBody);
-            const notFixed = /not fixed|still broken|persists|not working/.test(commentBody);
+            const verified = /\b(verified|fixed|resolved|works)\b/.test(commentBody);
+            const notFixed = /\b(not fixed|still broken|persists|not working)\b/.test(commentBody);
 
             if (isAuthor) {
               if (verified && issue.state === 'open') {
