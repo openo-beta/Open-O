@@ -1473,33 +1473,14 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
                 filteredNotes.add(cmNote);
                 continue;
             }
-            String noteRole = null;
-            String noteRoleName = "";
 
+            String noteRole;
+            String noteRoleName;
             if (cmNote.getType().equals("local_note")) {
                 noteRole = cmNote.getRole();
-                if (noteRole != null && !noteRole.trim().isEmpty()) {
-                    try {
-                        Long roleId = Long.valueOf(noteRole);
-                        logger.debug("Looking up role ID: " + roleId + " in RoleCache");
-                        Secrole noteSecrole = RoleCache.getRole(roleId);
-                        if (noteSecrole != null) {
-                            noteRoleName = noteSecrole.getName().toLowerCase();
-                            logger.debug("Found role: " + noteRoleName + " for ID: " + roleId);
-                        } else {
-                            noteRoleName = "";
-                        }
-                    } catch (NumberFormatException e) {
-                        logger.warn("Invalid role format: '" + noteRole + "' - not a valid Long");
-                        noteRoleName = "";
-                    }
-                } else {
-                    logger.debug("Note has null or empty role");
-                    noteRoleName = "";
-                }
-            }
-
-            if (cmNote.getType().equals("remote_note")) {
+                noteRoleName = safeGetRoleName(noteRole);
+            } else { // remote_note
+                noteRole = cmNote.getRole();
                 noteRoleName = cmNote.getRole();
             }
 
@@ -2725,6 +2706,32 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
         }
 
         return noteStr.toString();
+    }
+
+    /**
+     * Helper method to safely extract role name from role ID string with proper error handling and logging.
+     *
+     * @param roleIdStr The role ID as a string
+     * @return The lowercase role name, or empty string if role ID is invalid or role not found
+     */
+    private String safeGetRoleName(String roleIdStr) {
+        if (roleIdStr == null || roleIdStr.trim().isEmpty()) {
+            logger.debug("Note has null or empty role");
+            return "";
+        }
+        try {
+            Long roleId = Long.valueOf(roleIdStr);
+            logger.debug("Looking up role ID: " + roleId);
+            Secrole secrole = RoleCache.getRole(roleId);
+            if (secrole != null) {
+                String name = secrole.getName().toLowerCase();
+                logger.debug("Found role: " + name + " for ID: " + roleId);
+                return name;
+            }
+        } catch (NumberFormatException e) {
+            logger.warn("Invalid role format: '" + roleIdStr + "' - not a valid Long");
+        }
+        return "";
     }
 
 }
