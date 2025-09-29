@@ -69,16 +69,19 @@ public class CaseManagementPrint {
 
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-        if (printAllNotes) {
+        // Get all or date range noteIds.
+        if (printAllNotes && useDateRange) {
+            List<CaseManagementNote> dateRangeNotes = caseManagementMgr.getNotesInDateRange(String.valueOf(demographicNo), startDate.getTime(), endDate.getTime());
+            noteIds = dateRangeNotes.stream()
+                .map(note -> note.getId().toString())
+                .toArray(String[]::new);
+        } else if (printAllNotes) {
             List<CaseManagementNote> allNotes = caseManagementMgr.getNotes(String.valueOf(demographicNo));
             noteIds = allNotes.stream()
                 .map(note -> note.getId().toString())
                 .toArray(String[]::new);
         }
 
-        if (useDateRange) {
-            noteIds = getAllNoteIdsWithinDateRange(loggedInInfo, request, String.valueOf(demographicNo), startDate.getTime(), endDate.getTime());
-        }
         logger.debug("NOTES2PRINT: " + noteIds);
 
         String demono = String.valueOf(demographicNo);
@@ -135,19 +138,26 @@ public class CaseManagementPrint {
             Collections.sort(notes, CaseManagementNote.noteObservationDateComparator);
         }
 
-        //How should i filter out observation dates?
-        if (!printAllNotes && (startDate != null && endDate != null)) {
-            logger.debug("start date " + startDate);
-            logger.debug("end date " + endDate);
+        // Filter notes by date range if specified and not already filtered by caseManagementMgr
+        if (useDateRange && (startDate != null && endDate != null) && !printAllNotes) {
+            logger.debug("Filtering notes by date range - start date: " + startDate + ", end date: " + endDate);
 
             notes = notes.stream()
                 .filter(cmn -> {
-                    logger.debug("cmn " + cmn.getId() + "  -- " + cmn.getObservation_date() +
-                        " ? start date " + startDate.getTime().before(cmn.getObservation_date()) +
-                        " end date " + endDate.getTime().after(cmn.getObservation_date()));
+                    Date noteDate = cmn.getObservation_date();
+                    if (noteDate == null) {
+                        logger.debug("Note " + cmn.getId() + " has null observation date - excluding");
+                        return false;
+                    }
 
-                    return startDate.getTime().before(cmn.getObservation_date()) &&
-                           endDate.getTime().after(cmn.getObservation_date());
+                    boolean afterStart = !startDate.getTime().after(noteDate);
+                    boolean beforeEnd = !endDate.getTime().before(noteDate);
+                    boolean inRange = afterStart && beforeEnd;
+
+                    logger.debug("Note " + cmn.getId() + " date " + noteDate +
+                        " - after start: " + afterStart + ", before end: " + beforeEnd + ", in range: " + inRange);
+
+                    return inRange;
                 })
                 .collect(Collectors.toList());
         }
