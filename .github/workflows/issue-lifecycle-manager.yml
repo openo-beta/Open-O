@@ -89,15 +89,26 @@ ${isBlocker ? '⚠️ **Note:** This is marked as a blocker. Please verify urgen
                 const newLabels = ['status: pending-verification'];
                 if (!isBlocker) {
                   // Remove needs-triage if present
-                  const updatedLabels = labels.filter(l => l !== 'status: needs-triage');
-                  updatedLabels.push(...newLabels);
+                  if (labels.includes('status: needs-triage')) {
+                    await github.rest.issues.removeLabel({
+                      owner,
+                      repo,
+                      issue_number: issueNumber,
+                      name: 'status: needs-triage'
+                    });
+                  }
 
-                  await github.rest.issues.setLabels({
-                    owner,
-                    repo,
-                    issue_number: issueNumber,
-                    labels: updatedLabels
-                  });
+                  // Add new status label if not already present
+                  for (const label of newLabels) {
+                    if (!labels.includes(label)) {
+                      await github.rest.issues.addLabels({
+                        owner,
+                        repo,
+                        issue_number: issueNumber,
+                        labels: [label]
+                      });
+                    }
+                  }
                 }
 
               } catch (error) {
