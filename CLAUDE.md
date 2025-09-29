@@ -630,6 +630,45 @@ billing: diagnostic_codes, provincial_billing_integration
 
 ---
 
+## Issue Management & Automation
+
+### Automated Issue Lifecycle
+When a PR is merged that references an issue (using keywords like `fixes #123`, `closes #456`, `resolves #789`):
+1. **Automatic notification** - Issue reporter is @mentioned with request to verify the fix
+2. **Status tracking** - Issue gets `status: pending-verification` label
+3. **Verification response** - If reporter comments "verified" or "fixed", issue auto-closes with `status: verified-fixed`
+4. **Failed fix detection** - If reporter says "not fixed" or "still broken", adds `status: fix-failed` label
+
+**Automated Status Labels:**
+- `status: pending-verification` - Fix has been merged, awaiting reporter confirmation
+- `status: verified-fixed` - Reporter confirmed the fix works
+- `status: fix-failed` - Reporter confirmed the fix doesn't work
+
+### Issue Labeling Standards
+
+**Every issue should have at minimum:**
+1. **Type label** (required) - What kind of issue is it?
+   - `type: bug` - Something isn't working as expected
+   - `type: feature` - New feature or request
+   - `type: documentation` - Documentation improvements
+   - `type: maintenance` - Code refactoring, dependency updates
+   - `type: regression` - Something that used to work but is broken
+   - `type: security` - Security related issue
+   - `type: test` - Test improvements or additions
+
+2. **Priority label** (required) - How urgent is it?
+   - `priority: critical` - Must be fixed ASAP (production broken)
+   - `priority: high` - Stalls work on the project or its dependents
+   - `priority: medium` - Not blocking but should be addressed soon
+   - `priority: low` - Nice to have but not urgent
+
+3. **Status label** (as needed) - Current state
+   - `status: needs-triage` - Needs maintainer review
+   - `status: confirmed` - Issue has been reproduced
+
+4. **Additional labels** (optional):
+   - **Special labels**: `blocker`, `good first issue`, `help wanted`, `dependencies`
+
 ## Commit Standards & Quick Reference
 
 **Commit Format**: [Conventional Commits](https://www.conventionalcommits.org/) - `feat:`, `fix:`, `chore:`, `update:`
