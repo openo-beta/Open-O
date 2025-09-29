@@ -31,7 +31,9 @@ import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class IndicatorTemplateHandlerTest {
+import ca.openosp.openo.commn.dao.DaoTestFixtures;
+
+public class IndicatorTemplateHandlerTest extends DaoTestFixtures {
 
     private static IndicatorTemplateHandler templateHandler;
 

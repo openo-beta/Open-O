@@ -27,6 +27,7 @@ package ca.openosp.openo.dashboard.handler;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.openosp.openo.commn.dao.DaoTestFixtures;
 import ca.openosp.openo.commn.dao.DemographicDao;
 import ca.openosp.openo.commn.dao.utils.EntityDataGenerator;
 import ca.openosp.openo.commn.dao.utils.SchemaUtils;
@@ -41,7 +42,7 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExcludeDemographicHandlerTest {
+public class ExcludeDemographicHandlerTest extends DaoTestFixtures {
 
     private static DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
     private static ExcludeDemographicHandler excludeDemographicHandler;

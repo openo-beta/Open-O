@@ -33,6 +33,7 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.openosp.openo.commn.dao.DaoTestFixtures;
 import ca.openosp.openo.commn.dao.DemographicDao;
 import ca.openosp.openo.commn.dao.DxresearchDAO;
 import ca.openosp.openo.commn.dao.utils.EntityDataGenerator;
@@ -43,7 +44,7 @@ import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.SpringUtils;
 
-public class DiseaseRegistryHandlerTest {
+public class DiseaseRegistryHandlerTest extends DaoTestFixtures {
 
     private static DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
     private DxresearchDAO dXdao = (DxresearchDAO) SpringUtils.getBean(DxresearchDAO.class);

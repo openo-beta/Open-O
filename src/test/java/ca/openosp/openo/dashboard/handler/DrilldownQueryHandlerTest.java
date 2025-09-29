@@ -34,12 +34,13 @@ import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.openosp.openo.commn.dao.DaoTestFixtures;
 import ca.openosp.openo.dashboard.query.Column;
 import ca.openosp.openo.dashboard.query.DrillDownAction;
 import ca.openosp.openo.dashboard.query.Parameter;
 import ca.openosp.openo.dashboard.query.RangeInterface;
 
-public class DrilldownQueryHandlerTest {
+public class DrilldownQueryHandlerTest extends DaoTestFixtures {
 
     private static List<Column> columns;
     private static List<Parameter> parameters;

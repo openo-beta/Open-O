@@ -38,6 +38,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.Before;
+
+import ca.openosp.openo.commn.dao.DaoTestFixtures;
 import ca.openosp.openo.commn.dao.utils.SchemaUtils;
 import ca.openosp.openo.dashboard.query.DrillDownAction;
 import ca.openosp.openo.dashboard.query.RangeInterface;
@@ -46,7 +48,7 @@ import ca.openosp.openo.dashboard.query.RangeInterface.Limit;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-public class IndicatorTemplateXMLTest {
+public class IndicatorTemplateXMLTest extends DaoTestFixtures {
 
     private static IndicatorTemplateXML indicatorTemplateXML;
     private static Document xmlDocument;
