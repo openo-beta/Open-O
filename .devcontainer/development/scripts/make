@@ -47,7 +47,32 @@ build_and_deploy() {
   fi
   
   if [ "$run_tests" = true ]; then
-    mvn clean -T 1C package war:exploded $jsp_profile $dev_mode_flag
+    # Run all tests (modern first, then legacy)
+    echo "Building application..."
+    mvn clean -Dmaven.test.skip=true -T 1C package war:exploded $jsp_profile $dev_mode_flag
+    echo ""
+    echo "Running modern tests..."
+    mvn test -Dtest="ca.openosp.openo.tickler.dao.*UnitTest,ca.openosp.openo.tickler.dao.*IntegrationTest,ca.openosp.openo.tickler.manager.*UnitTest,ca.openosp.openo.test.simple.*Test"
+    echo ""
+    echo "Running legacy tests..."
+    mvn test -DskipModernTests=true
+  elif [ "$run_tests" = "modern" ]; then
+    # Run only modern tests by building first without tests, then running specific modern tests
+    mvn clean -Dmaven.test.skip=true -T 1C package war:exploded $jsp_profile $dev_mode_flag
+    echo ""
+    echo "Running modern tests..."
+    mvn test -Dtest="ca.openosp.openo.tickler.dao.*UnitTest,ca.openosp.openo.tickler.dao.*IntegrationTest,ca.openosp.openo.tickler.manager.*UnitTest,ca.openosp.openo.test.simple.*Test"
+  elif [ "$run_tests" = "legacy" ]; then
+    # Run only legacy tests by skipping modern tests
+    mvn clean -DskipModernTests=true -T 1C package war:exploded $jsp_profile $dev_mode_flag
+  elif [ "$run_tests" = "unit" ]; then
+    # Run only modern unit tests
+    mvn clean -Dmaven.test.skip=true -T 1C package war:exploded $jsp_profile $dev_mode_flag
+    mvn test -Dgroups="unit" -DskipTests=false -DskipModernTests=false
+  elif [ "$run_tests" = "integration" ]; then
+    # Run only modern integration tests
+    mvn clean -Dmaven.test.skip=true -T 1C package war:exploded $jsp_profile $dev_mode_flag
+    mvn test -Dgroups="integration" -DskipTests=false -DskipModernTests=false
   else
     mvn clean -Dmaven.test.skip=true -T 1C package war:exploded $jsp_profile $dev_mode_flag
   fi
@@ -180,9 +205,15 @@ print_help() {
       echo ""
       echo "Commands:"
       echo "  clean                                         Clean the project and remove the target directory."
-      echo "  install [--run-tests] [--jspc] [--dev-mode]   Build and deploy the project. Run unit tests if --run-tests is specified."
-      echo "                                                Compile JSPs if --jspc is specified."
-      echo "                                                Enable Struts dev mode if --dev-mode is specified."
+      echo "  install [options]                             Build and deploy the project."
+      echo "    Options:"
+      echo "      --run-tests                             Run all tests (modern + legacy)"
+      echo "      --run-modern-tests                      Run only modern tests (JUnit 5)"
+      echo "      --run-legacy-tests                      Run only legacy tests (JUnit 4)"
+      echo "      --run-unit-tests                        Run only modern unit tests"
+      echo "      --run-integration-tests                 Run only modern integration tests"
+      echo "      --jspc                                  Compile JSPs"
+      echo "      --dev-mode                              Enable Struts dev mode"
       echo "  jspc                                          Compile JSPs only (no deployment)."
       echo "  docs                                          Generate all documentation and build static site for production."
       echo "  docs-serve                                    Start Docusaurus development server (http://localhost:3000)."
@@ -217,6 +248,22 @@ for arg in "$@"; do
         case "$1" in
           --run-tests)
             run_tests=true
+            shift
+            ;;
+          --run-modern-tests)
+            run_tests="modern"
+            shift
+            ;;
+          --run-legacy-tests)
+            run_tests="legacy"
+            shift
+            ;;
+          --run-unit-tests)
+            run_tests="unit"
+            shift
+            ;;
+          --run-integration-tests)
+            run_tests="integration"
             shift
             ;;
           --jspc)
