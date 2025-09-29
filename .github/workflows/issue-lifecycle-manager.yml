@@ -11,6 +11,10 @@ on:
   push:
     branches: [main, develop, master] # Create labels on push to main branches
 
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
 jobs:
   handle-pr-merge:
     if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
