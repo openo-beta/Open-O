@@ -29,8 +29,7 @@ EOF
 
 find_struts1_actions() {
     # Find *2Action.java files with definitive Struts 1 patterns
-    find /workspace -name "*2Action.java" -type f | \
-    xargs grep -l "ActionForm\|DynaActionForm\|ActionMapping\|ActionForward\|ServletFileUpload\|FileItem" 2>/dev/null | \
+    find /workspace -name "*2Action.java" -type f -exec grep -l "ActionForm\|DynaActionForm\|ActionMapping\|ActionForward\|ServletFileUpload\|FileItem" {} + 2>/dev/null | \
     sort
 }
 
