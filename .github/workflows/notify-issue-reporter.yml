@@ -1,4 +1,7 @@
 name: Notify Issue Reporter on PR Merge
+permissions:
+  contents: read
+  issues: write
 
 on:
   pull_request:
