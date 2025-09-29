@@ -431,7 +431,7 @@
             <result name="printLabReq">/form/formlabreqprint.jsp</result>
             <result name="save">/form/forwardname.jsp</result>
             <result name="graph">/form/createpdf</result>
-            <result name="failure">/errorpage.jspp</result>
+            <result name="failure">/errorpage.jsp</result>
         </action>
         <action name="form/forwardshortcutname" class="ca.openosp.openo.form.pageUtil.FormForward2Action"/>
         <action name="form/SetupForm" class="ca.openosp.openo.form.pageUtil.FrmSetupForm2Action"/>
