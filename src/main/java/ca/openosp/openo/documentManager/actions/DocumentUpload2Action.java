@@ -75,7 +75,7 @@ public class DocumentUpload2Action extends ActionSupport {
         if (docFile == null) {
             map.put("error", 4);
         } else if (destination != null && destination.equals("incomingDocs")) {
-            String fileName = docFile.getName();
+            String fileName = this.filedataFileName;
             if (!fileName.toLowerCase().endsWith(".pdf")) {
                 map.put("error", props.getString("dms.documentUpload.onlyPdf"));
             } else if (docFile.length() == 0) {
@@ -110,7 +110,7 @@ public class DocumentUpload2Action extends ActionSupport {
             }
         } else {
             int numberOfPages = 0;
-            String fileName = MiscUtils.sanitizeFileName(docFile.getName());
+            String fileName = MiscUtils.sanitizeFileName(this.filedataFileName);
             String user = (String) request.getSession().getAttribute("user");
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             EDoc newDoc = new EDoc("", "", fileName, "", user, user, this.getSource(), 'A',
@@ -278,12 +278,17 @@ public class DocumentUpload2Action extends ActionSupport {
                           .replaceAll("\"", "")         // Remove quotes
                           .replaceAll("\\*", "")        // Remove asterisks
                           .replaceAll("\\?", "");       // Remove question marks
-        
+
+        // Reject filenames starting with . (hidden files)
+        if (baseName.startsWith(".")) {
+            return null;
+        }
+
         // Ensure the filename ends with .pdf (case insensitive)
         if (!baseName.toLowerCase().endsWith(".pdf")) {
             return null;
         }
-        
+
         // Additional validation - ensure the filename is not empty after sanitization
         if (baseName.trim().isEmpty() || baseName.equals(".pdf")) {
             return null;
@@ -343,6 +348,8 @@ public class DocumentUpload2Action extends ActionSupport {
     private File docFile;
 
     private File filedata;
+    private String filedataFileName;
+    private String filedataContentType;
 
     private String docPublic = "";
     private String mode = "";
@@ -479,5 +486,21 @@ public class DocumentUpload2Action extends ActionSupport {
 
     public void setFiledata(File Filedata) {
         this.filedata = Filedata;
+    }
+
+    public String getFiledataFileName() {
+        return filedataFileName;
+    }
+
+    public void setFiledataFileName(String filedataFileName) {
+        this.filedataFileName = filedataFileName;
+    }
+
+    public String getFiledataContentType() {
+        return filedataContentType;
+    }
+
+    public void setFiledataContentType(String filedataContentType) {
+        this.filedataContentType = filedataContentType;
     }
 }
