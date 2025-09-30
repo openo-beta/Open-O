@@ -118,6 +118,8 @@ public class ManageDocument2Action extends ActionSupport {
         ACTIONS.put("display", ctx -> { ctx.display(); return null; });
         ACTIONS.put("viewAnnotationAcknowledgementTickler", ctx -> { ctx.viewAnnotationAcknowledgementTickler(); return null; });
         ACTIONS.put("viewDocumentDescription", ctx -> { ctx.viewDocumentDescription(); return null; });
+        ACTIONS.put("documentUpdate", ctx -> { ctx.documentUpdate(); return null; });
+        ACTIONS.put("documentUpdateAjax", ctx -> { ctx.documentUpdateAjax(); return null; });
         //  Enable calling the method to remove providers
         ACTIONS.put("removeLinkFromDocument", new ActionHandler() {
             public String handle(ManageDocument2Action action) {
