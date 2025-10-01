@@ -72,6 +72,9 @@ public class DocumentUpload2Action extends ActionSupport {
         HashMap<String, Object> map = new HashMap<String, Object>();
         File docFile = this.getFiledata();
         String destination = request.getParameter("destination");
+
+        System.out.println("Destination: " + destination);
+
         ResourceBundle props = ResourceBundle.getBundle("oscarResources");
         if (docFile == null) {
             map.put("error", 4);
@@ -146,7 +149,7 @@ public class DocumentUpload2Action extends ActionSupport {
             String doc_no = EDocUtil.addDocumentSQL(newDoc);
             LogAction.addLog((String) request.getSession().getAttribute("user"), LogConst.ADD, LogConst.CON_DOCUMENT, doc_no, request.getRemoteAddr());
 
-            String providerId = request.getParameter("providers");
+            String providerId = request.getParameter("provider");
             if (providerId != null) {
                 WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getSession().getServletContext());
                 ProviderInboxRoutingDao providerInboxRoutingDao = (ProviderInboxRoutingDao) ctx.getBean(ProviderInboxRoutingDao.class);
