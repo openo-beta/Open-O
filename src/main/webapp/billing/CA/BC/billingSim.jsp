@@ -144,7 +144,7 @@
         <tr>
             <td width="220"><b><font face="Arial, Helvetica, sans-serif"
                                      size="2" color="#003366"> Select Provider </font></b></td>
-            <td width="254"><select name="provider">
+            <td width="254"><select name="providers">
                 <option value="%"><b>All Providers</b></option>
                 <%
                     String proFirst = "";
