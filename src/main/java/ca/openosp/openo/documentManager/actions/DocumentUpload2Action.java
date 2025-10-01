@@ -72,9 +72,6 @@ public class DocumentUpload2Action extends ActionSupport {
         HashMap<String, Object> map = new HashMap<String, Object>();
         File docFile = this.getFiledata();
         String destination = request.getParameter("destination");
-
-        System.out.println("Destination: " + destination);
-
         ResourceBundle props = ResourceBundle.getBundle("oscarResources");
         if (docFile == null) {
             map.put("error", 4);
