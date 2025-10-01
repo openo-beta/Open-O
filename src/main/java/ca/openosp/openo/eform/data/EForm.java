@@ -696,7 +696,6 @@ public class EForm extends EFormBase {
             log.debug("SQL----" + sql);
             ArrayList<String> names = DatabaseAP.parserGetNames(output); // a list of ${apName} --> apName
             sql = DatabaseAP.parserClean(sql); // replaces all other ${apName} expressions with 'apName'
-
             if (ap.isJsonOutput()) {
                 JSONArray values = EFormUtil.getJsonValues(names, sql);
                 output = values.toString(); //in case of JsonOutput, return the whole JSONArray and let the javascript deal with it
@@ -732,6 +731,7 @@ public class EForm extends EFormBase {
 
     public String replaceAllFields(String sql) {
         sql = DatabaseAP.parserReplace("demographic", demographicNo, sql);
+        sql = DatabaseAP.parserReplace("provider", providerNo, sql);
         sql = DatabaseAP.parserReplace("providers", providerNo, sql);
         sql = DatabaseAP.parserReplace("appt_no", appointment_no, sql);
 
