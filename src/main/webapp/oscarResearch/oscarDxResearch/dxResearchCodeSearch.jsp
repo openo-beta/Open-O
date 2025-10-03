@@ -30,7 +30,7 @@
 
 <%
     String user_no;
-    user_no = (String) session.getAttribute("user");
+    user_no = (String) session.getAttribute("user"); 
 %>
 
 <html>
