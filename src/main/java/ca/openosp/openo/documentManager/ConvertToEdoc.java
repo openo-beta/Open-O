@@ -334,9 +334,9 @@ public final class ConvertToEdoc {
         renderer.createPDF(os, true);
     }
 
-    public static Document getDocument(final String documenString, String realPath) {
+    public static Document getDocument(final String documentString, String realPath) {
 		ConvertToEdoc.realPath = realPath;
-		return getDocument(documenString);
+		return getDocument(documentString);
 	}
 
     /**
