@@ -80,6 +80,7 @@
 <%
     String annotation_display = CaseManagementNoteLink.DISP_ALLERGY;
     RxPatientData.Patient patient = (RxPatientData.Patient) session.getAttribute("Patient");
+    request.setAttribute("patient", patient);
     SecurityManager securityManager = new SecurityManager();
 %>
 <html>
@@ -371,10 +372,10 @@
             <td colspan="2">
                 <jsp:include page="TopLinks.jsp">
                     <jsp:param value="Allergies" name="title"/>
-                    <jsp:param value="${ patient.surname }, ${ patient.firstName }" name="patientName"/>
-                    <jsp:param value="${ patient.sex }" name="sex"/>
-                    <jsp:param value="${ patient.age }" name="age"/>
-                    <jsp:param value="${ patient.demographicNo }" name="demographicNo"/>
+                    <jsp:param value="${ patient.getSurname() }, ${ patient.getFirstName() }" name="patientName"/>
+                    <jsp:param value="${ patient.getSex() }" name="sex"/>
+                    <jsp:param value="${ patient.getAge() }" name="age"/>
+                    <jsp:param value="${ patient.getDemographicNo() }" name="demographicNo"/>
                     <jsp:param value="<%= roleName2$ %>" name="security"/>
                     <jsp:param value='<%= (String)session.getAttribute("demographicNo") %>' name="demographicNo"/>
                 </jsp:include>
@@ -406,11 +407,11 @@
                                 <tr>
                                     <td>
                                         <b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.nameText"/></b>
-                                        ${patient.surname}, ${patient.firstName}<br/>
+                                        ${patient.getSurname() }, ${patient.getFirstName() }<br/>
                                     </td>
                                     <td>&nbsp;</td>
                                     <td><b>Age:</b>
-                                        ${patient.age}<br/>
+                                        ${patient.getAge() }<br/>
                                     </td>
                                 </tr>
                             </table>
@@ -590,7 +591,7 @@
                                                     %>
                                                     <a href="#" title="Annotation"
                                                        onclick="window.open('../annotation/annotation.jsp?display=<%=annotation_display%>&table_id=<%=String.valueOf(allergy.getAllergyId())%>&demo=
-                                                           ${patient.demographicNo}','anwin','width=400,height=500');">
+                                                           ${patient.getDemographicNo() }','anwin','width=400,height=500');">
                                                         <% if (existingAnnots.size() > 0) {%>
                                                         <img src="<%= request.getContextPath() %>/images/filledNotes.gif" border="0"/>
                                                         <% } else { %>
