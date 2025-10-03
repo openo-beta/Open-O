@@ -49,16 +49,26 @@ build_and_deploy() {
   fi
   
   if [ "$run_tests" = true ]; then
-    # Run all tests (modern first, then legacy)
-    echo "Building application..."
-    # Build WITH modern profile for the modern tests that will follow
+    # Run all tests in complete isolation (modern first, then legacy)
+    echo "========================================="
+    echo "Running all tests in isolation"
+    echo "========================================="
+
+    # First, run the complete modern test workflow
+    echo ""
+    echo ">>> PHASE 1: Modern Tests Workflow"
+    echo "Building application with modern profile..."
     mvn clean -DskipModernTests=true -DskipLegacyTests=true -T 1C package war:exploded -Pmodern-tests -Ddependency.lock.filename=dependencies-lock-modern.json $jsp_profile $dev_mode_flag
     echo ""
-    echo "Running all tests (modern + legacy)..."
-    # Run modern tests WITH JUnit 5 profile activated and modern lock file
     echo "Running modern tests..."
     mvn test -Pmodern-tests -DskipLegacyTests=true -Ddependency.lock.filename=dependencies-lock-modern.json
-    # Run legacy tests WITHOUT JUnit 5 profile using default lock file
+
+    # Then, run the complete legacy test workflow
+    echo ""
+    echo ">>> PHASE 2: Legacy Tests Workflow"
+    echo "Building application without modern profile..."
+    mvn clean -DskipModernTests=true -DskipLegacyTests=true -T 1C package war:exploded $jsp_profile $dev_mode_flag
+    echo ""
     echo "Running legacy tests..."
     mvn test -DskipModernTests=true
   elif [ "$run_tests" = "modern" ]; then
