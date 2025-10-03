@@ -186,7 +186,7 @@
                     if (isEmpty()) {
                         $(".highLightButton").removeClass("highLightButton");
                         var form = $("#searchAllergy2");
-                        var url = "${ pageContext.servletContext.contextPath }" + form.attr('action');
+                        var url = form.attr('action');
                         var params = form.serializeArray();
                         var json = {};
                         $.each(params, function () {
