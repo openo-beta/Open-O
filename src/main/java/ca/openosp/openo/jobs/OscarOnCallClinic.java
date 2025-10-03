@@ -67,16 +67,43 @@ import ca.openosp.OscarProperties;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
 
+/**
+ * This class implements a runnable job that processes appointments from the
+ * "On-Call Clinic" for the previous day. Its primary function is to generate
+ * PDF documents summarizing the visit and send them to the patient's primary
+ * care provider (PCP).
+ *
+ * The job performs the following steps:
+ * 1. It checks if the previous day was designated as an On-Call Clinic day.
+ * 2. If so, it fetches all appointments from that day that occurred in a schedule
+ *    template named "P:OnCallClinic".
+ * 3. For each valid appointment, it determines if the patient showed up or was a no-show.
+ * 4. It generates a PDF document tailored to the appointment outcome (attended or no-show).
+ *    This document details which patient was seen (or not seen), by which on-call provider,
+ *    and on what date.
+ * 5. The generated PDF is then saved as an eDoc (electronic document) within the patient's chart.
+ * 6. Finally, the eDoc is routed to the inbox of the patient's regular PCP for their review.
+ *
+ * This process ensures that PCPs are kept informed about their patients' interactions
+ * with the on-call clinic, facilitating continuity of care.
+ */
 public class OscarOnCallClinic implements OscarRunnable {
     private Provider provider = null;
     private static String SCHEDULE_TEMPLATE = "P:OnCallClinic";
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE MMMM d, yyyy");
     private static String DOCUMENTDIR = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
 
+    /**
+     * The main execution method for the OscarOnCallClinic job. This method is
+     * triggered by the scheduling system. It identifies and processes on-call clinic
+     * appointments from the previous day, generating and sending notification
+     * documents to the patients' primary care providers.
+     */
     @Override
     public void run() {
         MiscUtils.getLogger().info("Starting OSCAR ON CALL CLINIC Job");
         OnCallClinicDao onCallClinicDao = SpringUtils.getBean(OnCallClinicDao.class);
+        // Set the calendar to yesterday to process the previous day's appointments.
         Calendar yesterday = Calendar.getInstance();
         MiscUtils.getLogger().info("DATE " + yesterday.getTime());
         yesterday.add(Calendar.DATE, -1);
@@ -87,28 +114,34 @@ public class OscarOnCallClinic implements OscarRunnable {
         MiscUtils.getLogger().info("DATE " + yesterday.getTime());
         Date d = yesterday.getTime();
 
+        // Check if yesterday was an on-call clinic day. If not, the job does nothing.
         if (onCallClinicDao.findByDate(d) != null) {
             MiscUtils.getLogger().info("YESTERDAY WAS ON CALL CLINIC");
 
             OscarAppointmentDao appointmentDao = SpringUtils.getBean(OscarAppointmentDao.class);
             ProviderDataDao providerDataDao = SpringUtils.getBean(ProviderDataDao.class);
             ScheduleDateDao scheduleDateDao = SpringUtils.getBean(ScheduleDateDao.class);
+            // Find all appointments that occurred yesterday.
             List<Object[]> results = appointmentDao.findAppointments(d, d);
             MiscUtils.getLogger().info("FOUND " + results.size() + " appointments");
 
             for (Object[] result : results) {
                 Appointment appointment = (Appointment) result[0];
+                // Skip any appointments that were canceled.
                 if (appointment.getStatus().matches(".*C.*")) {
                     MiscUtils.getLogger().info("Skipping appointment as it is canceled");
                 } else {
+                    // Verify that the appointment was part of the official "OnCallClinic" schedule.
                     ScheduleDate scheduleDate = scheduleDateDao.findByProviderNoAndDate(appointment.getProviderNo(), appointment.getAppointmentDate());
                     if (scheduleDate != null && scheduleDate.getHour().equalsIgnoreCase(SCHEDULE_TEMPLATE)) {
                         Demographic demographic = (Demographic) result[1];
+                        // Ensure the patient has a primary provider and that it's not the on-call provider.
                         if (demographic.getProviderNo() != null && !demographic.getProviderNo().equals(appointment.getProviderNo())) {
                             ProviderData providerData = providerDataDao.find(appointment.getProviderNo());
 
                             String filename = "OSCAROnCallClinic" + new Date().getTime() + ".pdf";
 
+                            // Differentiate between patients who did not show up ('N' status) and those who did.
                             if (appointment.getStatus().matches(".*N.*")) {
                                 if (makeNoShowApptDocument(filename, appointment, demographic, providerData)) {
                                     SendDocument(filename, demographic);
@@ -131,6 +164,16 @@ public class OscarOnCallClinic implements OscarRunnable {
     }
 
 
+    /**
+     * Creates a PDF document for a patient who did NOT show up for their on-call clinic appointment.
+     * The document notifies the patient's primary care provider of the missed appointment.
+     *
+     * @param filename The name of the PDF file to be created.
+     * @param appointment The appointment object containing details of the missed appointment.
+     * @param demographic The demographic object for the patient.
+     * @param providerData The provider object for the on-call physician.
+     * @return {@code true} if the document was created successfully, {@code false} otherwise.
+     */
     private Boolean makeNoShowApptDocument(String filename, Appointment appointment, Demographic demographic, ProviderData providerData) {
         Document document = new Document();
 
@@ -190,6 +233,16 @@ public class OscarOnCallClinic implements OscarRunnable {
 
     }
 
+    /**
+     * Creates a PDF document for a patient who attended their on-call clinic appointment.
+     * The document informs the patient's primary care provider that the visit occurred.
+     *
+     * @param filename The name of the PDF file to be created.
+     * @param appointment The appointment object containing details of the visit.
+     * @param demographic The demographic object for the patient.
+     * @param providerData The provider object for the on-call physician.
+     * @return {@code true} if the document was created successfully, {@code false} otherwise.
+     */
     private Boolean makeGoodApptDocument(String filename, Appointment appointment, Demographic demographic, ProviderData providerData) {
         Document document = new Document();
 
@@ -248,6 +301,13 @@ public class OscarOnCallClinic implements OscarRunnable {
         return true;
     }
 
+    /**
+     * Saves the generated PDF as an eDoc in the patient's chart and routes it to the
+     * primary care provider's inbox.
+     *
+     * @param fileName The filename of the PDF document to be sent.
+     * @param demographic The demographic object of the patient to whom the document belongs.
+     */
     private void SendDocument(String fileName, Demographic demographic) {
         String user = "System";
         String mrp = demographic.getProviderNo();
@@ -288,18 +348,38 @@ public class OscarOnCallClinic implements OscarRunnable {
     }
 
 
+    /**
+     * Sets the provider context for this job. This is typically the provider
+     * under whose authority the job is executed (e.g., a system or admin provider).
+     *
+     * @param provider The provider object representing the user running the job.
+     */
     @Override
     public void setLoggedInProvider(Provider provider) {
         this.provider = provider;
 
     }
 
+    /**
+     * Sets the security context for this job. This method is required by the
+     * OscarRunnable interface but is not utilized in this implementation, as the
+     * necessary security context is derived from the logged-in provider.
+     *
+     * @param security The security object, which is not used in this job.
+     */
     @Override
     public void setLoggedInSecurity(Security security) {
         // TODO Auto-generated method stub
-
+        // This method is intentionally left empty. The security context for this job
+        // is managed via the Provider object, and no separate security object is needed.
     }
 
+    /**
+     * A configuration method required by the OscarRunnable interface. This method
+     * is not used in this implementation as the job has no external configuration parameters.
+     *
+     * @param string Configuration string (not used).
+     */
     @Override
     public void setConfig(String string) {
     }
