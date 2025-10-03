@@ -377,7 +377,6 @@
                     <jsp:param value="${ patient.getAge() }" name="age"/>
                     <jsp:param value="${ patient.getDemographicNo() }" name="demographicNo"/>
                     <jsp:param value="<%= roleName2$ %>" name="security"/>
-                    <jsp:param value='<%= (String)session.getAttribute("demographicNo") %>' name="demographicNo"/>
                 </jsp:include>
             </td>
         </tr>
