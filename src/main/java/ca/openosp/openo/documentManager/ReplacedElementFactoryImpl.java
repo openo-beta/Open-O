@@ -67,10 +67,10 @@ public class ReplacedElementFactoryImpl implements ReplacedElementFactory {
                 fsImage = imageForPDF(attribute, userAgentCallback);
             } catch (BadElementException e1) {
                 fsImage = null;
-                logger.error("", e);
+                logger.debug("Could not create image element: " + e1.getMessage());
             } catch (IOException e1) {
                 fsImage = null;
-                logger.error("", e);
+                logger.debug("Could not load image: " + e1.getMessage());
             }
             if (fsImage != null) {
                 if (width != -1 || height != -1) {
@@ -87,12 +87,35 @@ public class ReplacedElementFactoryImpl implements ReplacedElementFactory {
     }
 
     protected final FSImage imageForPDF(String attribute, UserAgentCallback uac) throws IOException, BadElementException {
-        FSImage fsImage;
-        try (InputStream input = new FileInputStream(attribute)) {
-            byte[] bytes = IOUtils.toByteArray(input);
-            Image image = Image.getInstance(bytes);
-            fsImage = new ITextFSImage(image);
+        FSImage fsImage = null;
+
+        // Handle data URIs (base64 encoded images)
+        if (attribute != null && attribute.startsWith("data:")) {
+            try {
+                String base64Data = attribute.substring(attribute.indexOf(",") + 1);
+                byte[] decodedBytes = java.util.Base64.getDecoder().decode(base64Data);
+                Image image = Image.getInstance(decodedBytes);
+                fsImage = new ITextFSImage(image);
+                return fsImage;
+            } catch (Exception e) {
+                logger.warn("Failed to decode data URI image: " + e.getMessage());
+                return null;
+            }
         }
+
+        // Handle file paths
+        if (attribute != null && !attribute.isEmpty()) {
+            try (InputStream input = new FileInputStream(attribute)) {
+                byte[] bytes = IOUtils.toByteArray(input);
+                Image image = Image.getInstance(bytes);
+                fsImage = new ITextFSImage(image);
+            } catch (Exception e) {
+                logger.warn("Failed to load image from file: " + attribute + " - " + e.getMessage());
+                // Try with a placeholder image or just return null
+                return null;
+            }
+        }
+
         return fsImage;
     }
 

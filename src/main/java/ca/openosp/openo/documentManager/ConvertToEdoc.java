@@ -52,7 +52,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Stream;
 
 /**
  * A utility that converts HTML into a PDF and returns an Oscar eDoc object.
@@ -77,7 +76,6 @@ public final class ConvertToEdoc {
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     private static final String DEFAULT_CONTENT_TYPE = "application/pdf";
     private static final String SYSTEM_ID = "-1";
-    private static String contextPath;
     private static String realPath;
     private static final NioFileManager nioFileManager = SpringUtils.getBean(NioFileManager.class);
 
@@ -170,7 +168,6 @@ public final class ConvertToEdoc {
             providerNo = formTransportContainer.getLoggedInInfo().getLoggedInProviderNo();
         }
         // this should be the same for every thread.
-        ConvertToEdoc.contextPath = formTransportContainer.getContextPath();
         ConvertToEdoc.realPath = formTransportContainer.getRealPath();
 
         EDoc edoc = null;
@@ -211,7 +208,6 @@ public final class ConvertToEdoc {
      */
     public synchronized static Path saveAsTempPDF(FormTransportContainer formTransportContainer) {
         String htmlString = formTransportContainer.getHTML();
-        ConvertToEdoc.contextPath = formTransportContainer.getContextPath();
         ConvertToEdoc.realPath = formTransportContainer.getRealPath();
         String filename = buildFilename(formTransportContainer.getFormName(), formTransportContainer.getDemographicNo());
         return execute(htmlString, filename);
@@ -243,6 +239,15 @@ public final class ConvertToEdoc {
             logger.error("Exception parsing file to PDF. File not saved. ", e1);
         } catch (IOException e) {
             logger.error("Problem while writing PDF file to filesystem. " + filename, e);
+        } catch (Exception e) {
+            logger.error("Unexpected error during PDF conversion for " + filename, e);
+            // Try with minimal processing as last resort
+            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+                renderPDF(eformString, os);
+                path = nioFileManager.saveTempFile(filename, os);
+            } catch (Exception fallbackError) {
+                logger.error("Fallback conversion also failed for " + filename, fallbackError);
+            }
         }
 
         return path;
@@ -308,30 +313,101 @@ public final class ConvertToEdoc {
             throws DocumentException, IOException {
 
         OscarProperties props = OscarProperties.getInstance();
-        String cmd = props.getProperty("WKHTMLTOPDF_COMMAND");
-        String args = props.getProperty("WKHTMLTOPDF_ARGS");
+        String cmd = props.getProperty("WKHTMLTOPDF_COMMAND", "/usr/bin/wkhtmltopdf");
+        String args = props.getProperty("WKHTMLTOPDF_ARGS", "--enable-local-file-access --minimum-font-size 10 --print-media-type --encoding utf-8 -T 10mm -L 8mm -R 8mm --disable-javascript");
 
         EDocConverterInterface converter = "internal".equalsIgnoreCase(cmd) ? new InternalEDocConverter() : new ExternalEDocConverter(cmd, args);
 
+        boolean conversionSuccessful = false;
         try {
             converter.convert(document, os);
+            conversionSuccessful = os.size() > 0;
         } catch(Exception e) {
-            logger.error("Primary conversion failed", e);
-            fallbackRender(document, os);
+            logger.warn("Primary PDF conversion failed, attempting fallback: " + e.getMessage());
+        }
+
+        // Try fallback if primary failed or produced empty output
+        if (!conversionSuccessful) {
+            try {
+                os.reset();
+                fallbackRender(document, os);
+            } catch (Exception fallbackError) {
+                logger.error("Fallback PDF conversion also failed", fallbackError);
+                DocumentException docEx = new DocumentException("PDF conversion failed with all methods");
+                docEx.initCause(fallbackError);
+                throw docEx;
+            }
         }
     }
 
     private static void fallbackRender(String document, OutputStream os)
             throws DocumentException, IOException {
-        ITextRenderer renderer = new ITextRenderer();
-        SharedContext sharedContext = renderer.getSharedContext();
-        sharedContext.setPrint(true);
-        sharedContext.setInteractive(false);
-        sharedContext.setReplacedElementFactory(new ReplacedElementFactoryImpl());
-        sharedContext.getTextRenderer().setSmoothingThreshold(0);
-        renderer.setDocumentFromString(document, null);
-        renderer.layout();
-        renderer.createPDF(os, true);
+        try {
+            // Clean up the HTML for Flying Saucer
+            document = prepareDocumentForFlyingSaucer(document);
+
+            ITextRenderer renderer = new ITextRenderer();
+            SharedContext sharedContext = renderer.getSharedContext();
+            sharedContext.setPrint(true);
+            sharedContext.setInteractive(false);
+            sharedContext.setReplacedElementFactory(new ReplacedElementFactoryImpl());
+            sharedContext.getTextRenderer().setSmoothingThreshold(0);
+
+            // Set base URL for relative resources
+            String baseUrl = null;
+            if (ConvertToEdoc.realPath != null) {
+                baseUrl = "file://" + ConvertToEdoc.realPath + "/";
+            }
+
+            renderer.setDocumentFromString(document, baseUrl);
+            renderer.layout();
+            renderer.createPDF(os, true);
+        } catch (Exception e) {
+            logger.error("Flying Saucer rendering failed", e);
+            DocumentException docEx = new DocumentException("Could not render PDF with Flying Saucer");
+            docEx.initCause(e);
+            throw docEx;
+        }
+    }
+
+    /**
+     * Prepare document for Flying Saucer which requires strict XHTML
+     */
+    private static String prepareDocumentForFlyingSaucer(String document) {
+        try {
+            Document doc = Jsoup.parse(document);
+
+            // Ensure all tags are properly closed
+            doc.outputSettings()
+                .syntax(Document.OutputSettings.Syntax.xml)
+                .escapeMode(Entities.EscapeMode.xhtml)
+                .charset("UTF-8")
+                .prettyPrint(false);
+
+            // Fix common XHTML issues
+            // Convert <br> to <br/>
+            doc.select("br").forEach(element -> {
+                element.tagName("br");
+            });
+
+            // Ensure all img tags have alt attributes
+            doc.select("img:not([alt])").attr("alt", "");
+
+            // Remove any script tags as they can cause issues
+            doc.select("script").remove();
+
+            // Ensure input tags are self-closing
+            doc.select("input").forEach(element -> {
+                if (!element.hasAttr("type")) {
+                    element.attr("type", "text");
+                }
+            });
+
+            return doc.outerHtml();
+        } catch (Exception e) {
+            logger.warn("Could not prepare document for Flying Saucer, using original", e);
+            return document;
+        }
     }
 
     public static Document getDocument(final String documentString, String realPath) {
@@ -359,12 +435,21 @@ public final class ConvertToEdoc {
 
         Document document = Jsoup.parse(documentString);
         document.outputSettings()
-            .syntax(Document.OutputSettings.Syntax.xml)  // Enforce XML syntax
+            .syntax(Document.OutputSettings.Syntax.html)  // Use HTML syntax for better compatibility
             .escapeMode(Entities.EscapeMode.xhtml)
+            .charset("UTF-8")
             .prettyPrint(false);
 
+        // Ensure head and body exist
+        if (document.head() == null) {
+            document.appendElement("head");
+        }
+        if (document.body() == null) {
+            document.appendElement("body");
+        }
+
         /*
-         * remove invalid, suspicious, and CDN links
+         * Process and validate resource paths
          */
         validateResourcePaths(document);
 
@@ -502,13 +587,22 @@ public final class ConvertToEdoc {
             List<String> potentialFilePaths = new ArrayList<>();
 
             /*
-             * NO EXTERNAL LINKS. These are removed.
-             * eForms are often imported from unknown sources.
-             * Developers tend to use insecure CDN's, links to images, tracking tokens,
-             * and advertisements.
+             * Handle external links more intelligently
+             * Allow secure HTTPS resources but remove tracking/ads
              */
             if (path.startsWith("http") || path.startsWith("HTTP")) {
-                element.remove();
+                // Allow https resources from trusted CDNs for fonts/icons
+                if (path.startsWith("https://") &&
+                    (path.contains("fonts.googleapis.com") ||
+                     path.contains("fonts.gstatic.com") ||
+                     path.contains("cdnjs.cloudflare.com/ajax/libs/font-awesome"))) {
+                    // Keep trusted resources
+                    logger.debug("Allowing trusted external resource: " + path);
+                } else {
+                    // Remove untrusted external resources
+                    logger.debug("Removing external resource: " + path);
+                    element.remove();
+                }
             }
 
             // internal GET links are validated.
@@ -563,36 +657,60 @@ public final class ConvertToEdoc {
      * @return String fully resolved absolute path
      */
     private static String getRealPath(String uri) {
-        String contextRealPath = "";
-
-        logger.debug("Context path set to " + contextPath);
-
-        if (ConvertToEdoc.realPath != null) {
-            logger.debug("Relative file path " + uri);
-            try {
-				Path basePath = Paths.get(ConvertToEdoc.realPath);
-				String fileNameToFind = Paths.get(uri).getFileName().toString();
-
-				try (Stream<Path> paths = Files.walk(basePath)) {
-					Path found = paths
-						.filter(Files::isRegularFile)
-						.filter(path -> path.getFileName().toString().equals(fileNameToFind))
-						.findFirst()
-						.orElse(null);
-
-					if (found != null) { 
-						contextRealPath = found.toAbsolutePath().toString(); 
-					} else {
-						contextRealPath = uri;
-					}
-				}
-			} catch (Exception e) {
-				logger.error("Error while searching file in directory: " + ConvertToEdoc.realPath, e);
-			}
+        if (uri == null || uri.isEmpty()) {
+            return "";
         }
 
-        logger.debug("Absolute file path " + contextRealPath);
+        String contextRealPath = uri;
+        logger.debug("Processing URI: " + uri);
 
+        // Handle data URIs (base64 encoded images)
+        if (uri.startsWith("data:")) {
+            return uri;
+        }
+
+        // Handle absolute paths
+        Path uriPath = Paths.get(uri);
+        if (uriPath.isAbsolute() && Files.exists(uriPath)) {
+            return uriPath.toString();
+        }
+
+        // Try to resolve relative paths
+        if (ConvertToEdoc.realPath != null) {
+            try {
+                // First try direct path resolution
+                Path basePath = Paths.get(ConvertToEdoc.realPath);
+                Path resolved = basePath.resolve(uri).normalize();
+                if (Files.exists(resolved)) {
+                    contextRealPath = resolved.toAbsolutePath().toString();
+                    logger.debug("Resolved to: " + contextRealPath);
+                    return contextRealPath;
+                }
+
+                // Try common web directories
+                String[] commonDirs = {"images", "css", "js", "resources", "assets"};
+                for (String dir : commonDirs) {
+                    resolved = basePath.resolve(dir).resolve(uri).normalize();
+                    if (Files.exists(resolved)) {
+                        contextRealPath = resolved.toAbsolutePath().toString();
+                        logger.debug("Found in " + dir + ": " + contextRealPath);
+                        return contextRealPath;
+                    }
+                }
+
+                // Last resort: check eform image directory
+                Path eformImagePath = Paths.get(getImageDirectory(), uri);
+                if (Files.exists(eformImagePath)) {
+                    contextRealPath = eformImagePath.toAbsolutePath().toString();
+                    logger.debug("Found in eform images: " + contextRealPath);
+                    return contextRealPath;
+                }
+            } catch (Exception e) {
+                logger.debug("Could not resolve path for: " + uri, e);
+            }
+        }
+
+        logger.debug("Using original URI: " + contextRealPath);
         return contextRealPath;
     }
 
@@ -633,7 +751,7 @@ public final class ConvertToEdoc {
                 finalLinks = new ArrayList<>();
             }
 
-            if (validLink != null) {
+            if (validLink != null && finalLinks != null) {
                 finalLinks.add(validLink);
             }
         }
@@ -710,22 +828,118 @@ public final class ConvertToEdoc {
      * and fetch the HTML template resources.
      */
     private static String tidyDocument(final String documentString) {
-        Document document = getDocument(documentString);
+        try {
+            Document document = getDocument(documentString);
 
-        /*
-         * Use the w3c Document output to interpret the external image
-         * and css links into absolute links that can be
-         * read by the HTMLtoPDF parser.
-         */
-        translateResourcePaths(document);
-        addCss(document);
+            // Preserve form inputs by converting them to visible text for PDF
+            preserveFormInputsForPDF(document);
 
-        /*
-         * Convert edited Document object back to String
-         * Mostly because the htmltopdf tools require String input
-         * for some strange reason.
-         */
-        return documentToString(document);
+            /*
+             * Use the w3c Document output to interpret the external image
+             * and css links into absolute links that can be
+             * read by the HTMLtoPDF parser.
+             */
+            translateResourcePaths(document);
+            addCss(document);
+
+            // Add print-specific CSS
+            addPrintStyles(document);
+
+            /*
+             * Convert edited Document object back to String
+             * Mostly because the htmltopdf tools require String input
+             * for some strange reason.
+             */
+            return documentToString(document);
+        } catch (Exception e) {
+            logger.error("Error tidying document, using original", e);
+            return documentString;
+        }
+    }
+
+    /**
+     * Preserve form input values for PDF rendering
+     */
+    private static void preserveFormInputsForPDF(Document document) {
+        try {
+            // Handle text inputs
+            document.select("input[type=text], input:not([type])").forEach(input -> {
+                String value = input.attr("value");
+                if (!value.isEmpty()) {
+                    Element span = document.createElement("span");
+                    span.addClass("pdf-input-text");
+                    span.text(value);
+                    span.attr("style", "border-bottom: 1px solid #000; display: inline-block; min-width: 100px; padding: 2px;");
+                    input.replaceWith(span);
+                }
+            });
+
+            // Handle checkboxes
+            document.select("input[type=checkbox]").forEach(checkbox -> {
+                boolean isChecked = checkbox.hasAttr("checked");
+                Element span = document.createElement("span");
+                span.addClass("pdf-checkbox");
+                span.text(isChecked ? "☑" : "☐");
+                span.attr("style", "font-size: 14px;");
+                checkbox.replaceWith(span);
+            });
+
+            // Handle radio buttons
+            document.select("input[type=radio]").forEach(radio -> {
+                boolean isChecked = radio.hasAttr("checked");
+                Element span = document.createElement("span");
+                span.addClass("pdf-radio");
+                span.text(isChecked ? "◉" : "○");
+                span.attr("style", "font-size: 14px;");
+                radio.replaceWith(span);
+            });
+
+            // Handle textareas
+            document.select("textarea").forEach(textarea -> {
+                String text = textarea.text();
+                if (!text.isEmpty()) {
+                    Element div = document.createElement("div");
+                    div.addClass("pdf-textarea");
+                    div.attr("style", "border: 1px solid #000; padding: 4px; white-space: pre-wrap;");
+                    div.text(text);
+                    textarea.replaceWith(div);
+                }
+            });
+
+            // Handle select dropdowns
+            document.select("select").forEach(select -> {
+                Elements selected = select.select("option[selected]");
+                String value = selected.isEmpty() ? "" : selected.first().text();
+                if (!value.isEmpty()) {
+                    Element span = document.createElement("span");
+                    span.addClass("pdf-select");
+                    span.text(value);
+                    span.attr("style", "border: 1px solid #000; padding: 2px 4px;");
+                    select.replaceWith(span);
+                }
+            });
+        } catch (Exception e) {
+            logger.warn("Error preserving form inputs for PDF", e);
+        }
+    }
+
+    /**
+     * Add print-specific styles to improve PDF rendering
+     */
+    private static void addPrintStyles(Document document) {
+        Element style = document.createElement("style");
+        style.attr("type", "text/css");
+        style.text(
+            "@media print {" +
+            "  body { margin: 0; padding: 10px; }" +
+            "  * { overflow: visible !important; }" +
+            "  .no-print { display: none !important; }" +
+            "  a { color: #000; text-decoration: none; }" +
+            "  table { page-break-inside: avoid; }" +
+            "  tr { page-break-inside: avoid; }" +
+            "}"
+        );
+        getHeadElement(document).appendChild(style);
     }
 
     /**
