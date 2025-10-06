@@ -39,6 +39,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.apache.logging.log4j.Logger;
@@ -177,8 +178,16 @@ public class HRM2Action extends ActionSupport {
                         throw new RuntimeException("Invalid filename provided");
                     }
 
+                    // Additional safeguard: extract only the filename component
+                    String safeFileName = FilenameUtils.getName(sanitizedFileName);
+                    if (safeFileName == null || safeFileName.isEmpty()) {
+                        MiscUtils.getLogger().error("Unable to extract safe filename from: '{}'", sanitizedFileName);
+                        obj.put("message", "Error: Invalid filename");
+                        throw new RuntimeException("Invalid filename after sanitization");
+                    }
+
                     // Copy uploaded file to document directory
-                    File destinationFile = new File(downloadDirectory, sanitizedFileName);
+                    File destinationFile = new File(downloadDirectory, safeFileName);
 
                     // Validate that the uploaded file is a real file inside the temp directory
                     File tempDir = (File) request.getServletContext().getAttribute("javax.servlet.context.tempdir");
@@ -207,7 +216,7 @@ public class HRM2Action extends ActionSupport {
                     HRMReport report = HRMReportParser.parseReport(loggedInInfo, destinationFile.getAbsolutePath());
                     if (report != null) {
                         HRMReportParser.addReportToInbox(loggedInInfo, report);
-                        obj.put("message", sanitizedFileName + " successfully saved");
+                        obj.put("message", safeFileName + " successfully saved");
                     } else {
                         obj.put("message", "Error: Could not parse report");
                         throw new RuntimeException("Failed to parse HRM report");
@@ -274,8 +283,16 @@ public class HRM2Action extends ActionSupport {
                         throw new RuntimeException("Invalid filename provided");
                     }
 
+                    // Additional safeguard: extract only the filename component
+                    String safeFileName = FilenameUtils.getName(sanitizedFileName);
+                    if (safeFileName == null || safeFileName.isEmpty()) {
+                        MiscUtils.getLogger().error("Unable to extract safe filename from: '{}'", sanitizedFileName);
+                        obj.put("message", "Error: Invalid filename");
+                        throw new RuntimeException("Invalid filename after sanitization");
+                    }
+
                     // Copy uploaded file to private key directory
-                    File destinationFile = new File(privateKeyDirectory, sanitizedFileName);
+                    File destinationFile = new File(privateKeyDirectory, safeFileName);
 
                     // Validate that the uploaded file is a real file inside the temp directory
                     File tempDir = (File) request.getServletContext().getAttribute("javax.servlet.context.tempdir");
@@ -301,9 +318,9 @@ public class HRM2Action extends ActionSupport {
                     }
 
                     // Update user property with the private key filename
-                    saveUserProperty("hrm_private_key_file", sanitizedFileName);
+                    saveUserProperty("hrm_private_key_file", safeFileName);
 
-                    obj.put("message", sanitizedFileName + " successfully saved");
+                    obj.put("message", safeFileName + " successfully saved");
                 }
             } else {
                 obj.put("message", "Error: No file uploaded");
