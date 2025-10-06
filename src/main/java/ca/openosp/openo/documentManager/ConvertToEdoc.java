@@ -313,16 +313,11 @@ public final class ConvertToEdoc {
 
         EDocConverterInterface converter = "internal".equalsIgnoreCase(cmd) ? new InternalEDocConverter() : new ExternalEDocConverter(cmd, args);
 
-        boolean conversionSuccessful = false;
         try {
             converter.convert(document, os);
-            conversionSuccessful = os.size() > 0;
         } catch(Exception e) {
             logger.warn("Primary PDF conversion failed, attempting fallback: " + e.getMessage());
-        }
 
-        // Try fallback if primary failed or produced empty output
-        if (!conversionSuccessful) {
             try {
                 os.reset();
                 fallbackRender(document, os);
@@ -347,13 +342,7 @@ public final class ConvertToEdoc {
         sharedContext.setReplacedElementFactory(new ReplacedElementFactoryImpl());
         sharedContext.getTextRenderer().setSmoothingThreshold(0);
         
-        // Set base URL for relative resources
-        String baseUrl = null;
-        if (ConvertToEdoc.realPath != null) {
-            baseUrl = "file://" + ConvertToEdoc.realPath + "/";
-        }
-        
-        renderer.setDocumentFromString(doc.outerHtml(), baseUrl);
+        renderer.setDocumentFromString(doc.outerHtml(), null);
         renderer.layout();
         renderer.createPDF(os, true);
     }
@@ -613,11 +602,7 @@ public final class ConvertToEdoc {
      * @return String fully resolved absolute path
      */
     private static String getRealPath(String uri) {
-        if (uri == null || uri.isEmpty()) {
-            return "";
-        }
-
-        String contextRealPath = uri;
+        String contextRealPath = "";
 
         // Try to resolve relative paths
         if (ConvertToEdoc.realPath != null) {
@@ -760,27 +745,22 @@ public final class ConvertToEdoc {
      * and fetch the HTML template resources.
      */
     private static String tidyDocument(final String documentString) {
-        try {
-            Document document = getDocument(documentString);
+        Document document = getDocument(documentString);
 
-            /*
-             * Use the w3c Document output to interpret the external image
-             * and css links into absolute links that can be
-             * read by the HTMLtoPDF parser.
-             */
-            translateResourcePaths(document);
-            addCss(document);
+        /*
+         * Use the w3c Document output to interpret the external image
+         * and css links into absolute links that can be
+         * read by the HTMLtoPDF parser.
+         */
+        translateResourcePaths(document);
+        addCss(document);
 
-            /*
-             * Convert edited Document object back to String
-             * Mostly because the htmltopdf tools require String input
-             * for some strange reason.
-             */
-            return documentToString(document);
-        } catch (Exception e) {
-            logger.error("Error tidying document, using original", e);
-            return documentString;
-        }
+        /*
+         * Convert edited Document object back to String
+         * Mostly because the htmltopdf tools require String input
+         * for some strange reason.
+         */
+        return documentToString(document);
     }
 
     /**
