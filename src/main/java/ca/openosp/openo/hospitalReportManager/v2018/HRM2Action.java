@@ -26,6 +26,7 @@ package ca.openosp.openo.hospitalReportManager.v2018;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLDecoder;
 import java.text.Normalizer;
@@ -178,6 +179,26 @@ public class HRM2Action extends ActionSupport {
 
                     // Copy uploaded file to document directory
                     File destinationFile = new File(downloadDirectory, sanitizedFileName);
+
+                    // Validate that the uploaded file is a real file inside the temp directory
+                    File tempDir = (File) request.getServletContext().getAttribute("javax.servlet.context.tempdir");
+                    if (tempDir != null) {
+                        try {
+                            String tempDirCanonicalPath = tempDir.getCanonicalPath();
+                            String uploadedFileCanonicalPath = uploadedFile.getCanonicalPath();
+                            if (!uploadedFileCanonicalPath.startsWith(tempDirCanonicalPath + File.separator)
+                                    || !uploadedFile.isFile() || !uploadedFile.canRead()) {
+                                MiscUtils.getLogger().error("Attempted to read uploaded file outside of tempdir: '{}'", uploadedFileCanonicalPath);
+                                obj.put("message", "Error: Invalid uploaded file location");
+                                throw new RuntimeException("Invalid uploaded file location");
+                            }
+                        } catch (IOException ioException) {
+                            MiscUtils.getLogger().error("Error validating uploaded file path", ioException);
+                            obj.put("message", "Error: File validation failed");
+                            throw new RuntimeException("File validation failed", ioException);
+                        }
+                    }
+
                     try (InputStream inputStream = new FileInputStream(uploadedFile)) {
                         java.nio.file.Files.copy(inputStream, destinationFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
                     }
@@ -255,6 +276,26 @@ public class HRM2Action extends ActionSupport {
 
                     // Copy uploaded file to private key directory
                     File destinationFile = new File(privateKeyDirectory, sanitizedFileName);
+
+                    // Validate that the uploaded file is a real file inside the temp directory
+                    File tempDir = (File) request.getServletContext().getAttribute("javax.servlet.context.tempdir");
+                    if (tempDir != null) {
+                        try {
+                            String tempDirCanonicalPath = tempDir.getCanonicalPath();
+                            String uploadedFileCanonicalPath = uploadedFile.getCanonicalPath();
+                            if (!uploadedFileCanonicalPath.startsWith(tempDirCanonicalPath + File.separator)
+                                    || !uploadedFile.isFile() || !uploadedFile.canRead()) {
+                                MiscUtils.getLogger().error("Attempted to read uploaded file outside of tempdir: '{}'", uploadedFileCanonicalPath);
+                                obj.put("message", "Error: Invalid uploaded file location");
+                                throw new RuntimeException("Invalid uploaded file location");
+                            }
+                        } catch (IOException ioException) {
+                            MiscUtils.getLogger().error("Error validating uploaded file path", ioException);
+                            obj.put("message", "Error: File validation failed");
+                            throw new RuntimeException("File validation failed", ioException);
+                        }
+                    }
+
                     try (InputStream inputStream = new FileInputStream(uploadedFile)) {
                         java.nio.file.Files.copy(inputStream, destinationFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
                     }
@@ -846,13 +887,9 @@ public class HRM2Action extends ActionSupport {
 
             for (HRMDocument d : docs) {
                 HRMCategory category = null;
-                //Provider providers = null;
                 if (d.getHrmCategoryId() != null) {
                     category = hrmCategoryDao.find(d.getHrmCategoryId());
                 }
-                //if(d.getRecipientProviderNo() != null) {
-                //	providers = providerDao.getProvider(d.getRecipientProviderNo());
-                //}
 
                 List<HRMDocumentToDemographic> ptList = hrmDocumentToDemographicDao.findByHrmDocumentId(d.getId().toString());
                 Integer demographicNo = ptList.get(0).getDemographicNo();
