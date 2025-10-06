@@ -52,6 +52,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * A utility that converts HTML into a PDF and returns an Oscar eDoc object.
@@ -76,6 +77,9 @@ public final class ConvertToEdoc {
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     private static final String DEFAULT_CONTENT_TYPE = "application/pdf";
     private static final String SYSTEM_ID = "-1";
+    private static final String DEFAULT_WKHTMLTOPDF_COMMAND = "/usr/bin/wkhtmltopdf";
+    private static final String DEFAULT_WKHTMLTOPDF_ARGS = "--enable-local-file-access --minimum-font-size 10 --print-media-type --encoding utf-8 -T 10mm -L 8mm -R 8mm --disable-javascript";
+    
     private static String realPath;
     private static final NioFileManager nioFileManager = SpringUtils.getBean(NioFileManager.class);
 
@@ -239,15 +243,6 @@ public final class ConvertToEdoc {
             logger.error("Exception parsing file to PDF. File not saved. ", e1);
         } catch (IOException e) {
             logger.error("Problem while writing PDF file to filesystem. " + filename, e);
-        } catch (Exception e) {
-            logger.error("Unexpected error during PDF conversion for " + filename, e);
-            // Try with minimal processing as last resort
-            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-                renderPDF(eformString, os);
-                path = nioFileManager.saveTempFile(filename, os);
-            } catch (Exception fallbackError) {
-                logger.error("Fallback conversion also failed for " + filename, fallbackError);
-            }
         }
 
         return path;
@@ -313,8 +308,8 @@ public final class ConvertToEdoc {
             throws DocumentException, IOException {
 
         OscarProperties props = OscarProperties.getInstance();
-        String cmd = props.getProperty("WKHTMLTOPDF_COMMAND", "/usr/bin/wkhtmltopdf");
-        String args = props.getProperty("WKHTMLTOPDF_ARGS", "--enable-local-file-access --minimum-font-size 10 --print-media-type --encoding utf-8 -T 10mm -L 8mm -R 8mm --disable-javascript");
+        String cmd = props.getProperty("WKHTMLTOPDF_COMMAND", DEFAULT_WKHTMLTOPDF_COMMAND);
+        String args = props.getProperty("WKHTMLTOPDF_ARGS", DEFAULT_WKHTMLTOPDF_ARGS);
 
         EDocConverterInterface converter = "internal".equalsIgnoreCase(cmd) ? new InternalEDocConverter() : new ExternalEDocConverter(cmd, args);
 
@@ -662,55 +657,31 @@ public final class ConvertToEdoc {
         }
 
         String contextRealPath = uri;
-        logger.debug("Processing URI: " + uri);
-
-        // Handle data URIs (base64 encoded images)
-        if (uri.startsWith("data:")) {
-            return uri;
-        }
-
-        // Handle absolute paths
-        Path uriPath = Paths.get(uri);
-        if (uriPath.isAbsolute() && Files.exists(uriPath)) {
-            return uriPath.toString();
-        }
 
         // Try to resolve relative paths
         if (ConvertToEdoc.realPath != null) {
             try {
-                // First try direct path resolution
-                Path basePath = Paths.get(ConvertToEdoc.realPath);
-                Path resolved = basePath.resolve(uri).normalize();
-                if (Files.exists(resolved)) {
-                    contextRealPath = resolved.toAbsolutePath().toString();
-                    logger.debug("Resolved to: " + contextRealPath);
-                    return contextRealPath;
-                }
+				Path basePath = Paths.get(ConvertToEdoc.realPath);
+				String fileNameToFind = Paths.get(uri).getFileName().toString();
 
-                // Try common web directories
-                String[] commonDirs = {"images", "css", "js", "resources", "assets"};
-                for (String dir : commonDirs) {
-                    resolved = basePath.resolve(dir).resolve(uri).normalize();
-                    if (Files.exists(resolved)) {
-                        contextRealPath = resolved.toAbsolutePath().toString();
-                        logger.debug("Found in " + dir + ": " + contextRealPath);
-                        return contextRealPath;
-                    }
-                }
+				try (Stream<Path> paths = Files.walk(basePath)) {
+					Path found = paths
+						.filter(Files::isRegularFile)
+						.filter(path -> path.getFileName().toString().equals(fileNameToFind))
+						.findFirst()
+						.orElse(null);
 
-                // Last resort: check eform image directory
-                Path eformImagePath = Paths.get(getImageDirectory(), uri);
-                if (Files.exists(eformImagePath)) {
-                    contextRealPath = eformImagePath.toAbsolutePath().toString();
-                    logger.debug("Found in eform images: " + contextRealPath);
-                    return contextRealPath;
-                }
-            } catch (Exception e) {
-                logger.debug("Could not resolve path for: " + uri, e);
-            }
+					if (found != null) { 
+						contextRealPath = found.toAbsolutePath().toString(); 
+					} else {
+						contextRealPath = uri;
+					}
+				}
+			} catch (Exception e) {
+				logger.error("Error while searching file in directory: " + ConvertToEdoc.realPath, e);
+			}
         }
 
-        logger.debug("Using original URI: " + contextRealPath);
         return contextRealPath;
     }
 
@@ -751,7 +722,7 @@ public final class ConvertToEdoc {
                 finalLinks = new ArrayList<>();
             }
 
-            if (validLink != null && finalLinks != null) {
+            if (validLink != null) {
                 finalLinks.add(validLink);
             }
         }
@@ -831,9 +802,6 @@ public final class ConvertToEdoc {
         try {
             Document document = getDocument(documentString);
 
-            // Preserve form inputs by converting them to visible text for PDF
-            preserveFormInputsForPDF(document);
-
             /*
              * Use the w3c Document output to interpret the external image
              * and css links into absolute links that can be
@@ -841,9 +809,6 @@ public final class ConvertToEdoc {
              */
             translateResourcePaths(document);
             addCss(document);
-
-            // Add print-specific CSS
-            addPrintStyles(document);
 
             /*
              * Convert edited Document object back to String
@@ -855,91 +820,6 @@ public final class ConvertToEdoc {
             logger.error("Error tidying document, using original", e);
             return documentString;
         }
-    }
-
-    /**
-     * Preserve form input values for PDF rendering
-     */
-    private static void preserveFormInputsForPDF(Document document) {
-        try {
-            // Handle text inputs
-            document.select("input[type=text], input:not([type])").forEach(input -> {
-                String value = input.attr("value");
-                if (!value.isEmpty()) {
-                    Element span = document.createElement("span");
-                    span.addClass("pdf-input-text");
-                    span.text(value);
-                    span.attr("style", "border-bottom: 1px solid #000; display: inline-block; min-width: 100px; padding: 2px;");
-                    input.replaceWith(span);
-                }
-            });
-
-            // Handle checkboxes
-            document.select("input[type=checkbox]").forEach(checkbox -> {
-                boolean isChecked = checkbox.hasAttr("checked");
-                Element span = document.createElement("span");
-                span.addClass("pdf-checkbox");
-                span.text(isChecked ? "☑" : "☐");
-                span.attr("style", "font-size: 14px;");
-                checkbox.replaceWith(span);
-            });
-
-            // Handle radio buttons
-            document.select("input[type=radio]").forEach(radio -> {
-                boolean isChecked = radio.hasAttr("checked");
-                Element span = document.createElement("span");
-                span.addClass("pdf-radio");
-                span.text(isChecked ? "◉" : "○");
-                span.attr("style", "font-size: 14px;");
-                radio.replaceWith(span);
-            });
-
-            // Handle textareas
-            document.select("textarea").forEach(textarea -> {
-                String text = textarea.text();
-                if (!text.isEmpty()) {
-                    Element div = document.createElement("div");
-                    div.addClass("pdf-textarea");
-                    div.attr("style", "border: 1px solid #000; padding: 4px; white-space: pre-wrap;");
-                    div.text(text);
-                    textarea.replaceWith(div);
-                }
-            });
-
-            // Handle select dropdowns
-            document.select("select").forEach(select -> {
-                Elements selected = select.select("option[selected]");
-                String value = selected.isEmpty() ? "" : selected.first().text();
-                if (!value.isEmpty()) {
-                    Element span = document.createElement("span");
-                    span.addClass("pdf-select");
-                    span.text(value);
-                    span.attr("style", "border: 1px solid #000; padding: 2px 4px;");
-                    select.replaceWith(span);
-                }
-            });
-        } catch (Exception e) {
-            logger.warn("Error preserving form inputs for PDF", e);
-        }
-    }
-
-    /**
-     * Add print-specific styles to improve PDF rendering
-     */
-    private static void addPrintStyles(Document document) {
-        Element style = document.createElement("style");
-        style.attr("type", "text/css");
-        style.text(
-            "@media print {" +
-            "  body { margin: 0; padding: 10px; }" +
-            "  * { overflow: visible !important; }" +
-            "  .no-print { display: none !important; }" +
-            "  a { color: #000; text-decoration: none; }" +
-            "  table { page-break-inside: avoid; }" +
-            "  tr { page-break-inside: avoid; }" +
-            "}"
-        );
-        getHeadElement(document).appendChild(style);
     }
 
     /**
