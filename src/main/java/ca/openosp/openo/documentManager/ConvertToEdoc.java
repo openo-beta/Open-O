@@ -336,73 +336,51 @@ public final class ConvertToEdoc {
     }
 
     private static void fallbackRender(String document, OutputStream os)
-            throws DocumentException, IOException {
-        try {
-            // Clean up the HTML for Flying Saucer
-            document = prepareDocumentForFlyingSaucer(document);
-
-            ITextRenderer renderer = new ITextRenderer();
-            SharedContext sharedContext = renderer.getSharedContext();
-            sharedContext.setPrint(true);
-            sharedContext.setInteractive(false);
-            sharedContext.setReplacedElementFactory(new ReplacedElementFactoryImpl());
-            sharedContext.getTextRenderer().setSmoothingThreshold(0);
-
-            // Set base URL for relative resources
-            String baseUrl = null;
-            if (ConvertToEdoc.realPath != null) {
-                baseUrl = "file://" + ConvertToEdoc.realPath + "/";
-            }
-
-            renderer.setDocumentFromString(document, baseUrl);
-            renderer.layout();
-            renderer.createPDF(os, true);
-        } catch (Exception e) {
-            logger.error("Flying Saucer rendering failed", e);
-            DocumentException docEx = new DocumentException("Could not render PDF with Flying Saucer");
-            docEx.initCause(e);
-            throw docEx;
+        throws DocumentException, IOException {
+        // Prepare document for Flying Saucer's strict XHTML requirements
+        Document doc = prepareDocumentForFlyingSaucer(document);
+        
+        ITextRenderer renderer = new ITextRenderer();
+        SharedContext sharedContext = renderer.getSharedContext();
+        sharedContext.setPrint(true);
+        sharedContext.setInteractive(false);
+        sharedContext.setReplacedElementFactory(new ReplacedElementFactoryImpl());
+        sharedContext.getTextRenderer().setSmoothingThreshold(0);
+        
+        // Set base URL for relative resources
+        String baseUrl = null;
+        if (ConvertToEdoc.realPath != null) {
+            baseUrl = "file://" + ConvertToEdoc.realPath + "/";
         }
+        
+        renderer.setDocumentFromString(doc.outerHtml(), baseUrl);
+        renderer.layout();
+        renderer.createPDF(os, true);
     }
 
     /**
      * Prepare document for Flying Saucer which requires strict XHTML
      */
-    private static String prepareDocumentForFlyingSaucer(String document) {
-        try {
-            Document doc = Jsoup.parse(document);
-
-            // Ensure all tags are properly closed
-            doc.outputSettings()
-                .syntax(Document.OutputSettings.Syntax.xml)
-                .escapeMode(Entities.EscapeMode.xhtml)
-                .charset("UTF-8")
-                .prettyPrint(false);
-
-            // Fix common XHTML issues
-            // Convert <br> to <br/>
-            doc.select("br").forEach(element -> {
-                element.tagName("br");
-            });
-
-            // Ensure all img tags have alt attributes
-            doc.select("img:not([alt])").attr("alt", "");
-
-            // Remove any script tags as they can cause issues
-            doc.select("script").remove();
-
-            // Ensure input tags are self-closing
-            doc.select("input").forEach(element -> {
-                if (!element.hasAttr("type")) {
-                    element.attr("type", "text");
-                }
-            });
-
-            return doc.outerHtml();
-        } catch (Exception e) {
-            logger.warn("Could not prepare document for Flying Saucer, using original", e);
-            return document;
-        }
+    private static Document prepareDocumentForFlyingSaucer(String document) {
+        Document doc = Jsoup.parse(document);
+        
+        // Flying Saucer requires XML/XHTML syntax
+        doc.outputSettings()
+            .syntax(Document.OutputSettings.Syntax.xml)  // Self-closes tags automatically
+            .escapeMode(Entities.EscapeMode.xhtml)
+            .charset("UTF-8")
+            .prettyPrint(false);
+        
+        // Remove scripts (Flying Saucer can't execute them)
+        doc.select("script").remove();
+        
+        // Ensure img tags have alt attributes (XHTML requirement)
+        doc.select("img:not([alt])").attr("alt", "");
+        
+        // Ensure input tags have type attribute
+        doc.select("input:not([type])").attr("type", "text");
+        
+        return doc;
     }
 
     public static Document getDocument(final String documentString, String realPath) {
@@ -434,14 +412,6 @@ public final class ConvertToEdoc {
             .escapeMode(Entities.EscapeMode.xhtml)
             .charset("UTF-8")
             .prettyPrint(false);
-
-        // Ensure head and body exist
-        if (document.head() == null) {
-            document.appendElement("head");
-        }
-        if (document.body() == null) {
-            document.appendElement("body");
-        }
 
         /*
          * Process and validate resource paths
@@ -582,22 +552,13 @@ public final class ConvertToEdoc {
             List<String> potentialFilePaths = new ArrayList<>();
 
             /*
-             * Handle external links more intelligently
-             * Allow secure HTTPS resources but remove tracking/ads
+             * NO EXTERNAL LINKS. These are removed.
+             * eForms are often imported from unknown sources.
+             * Developers tend to use insecure CDN's, links to images, tracking tokens,
+             * and advertisements.
              */
             if (path.startsWith("http") || path.startsWith("HTTP")) {
-                // Allow https resources from trusted CDNs for fonts/icons
-                if (path.startsWith("https://") &&
-                    (path.contains("fonts.googleapis.com") ||
-                     path.contains("fonts.gstatic.com") ||
-                     path.contains("cdnjs.cloudflare.com/ajax/libs/font-awesome"))) {
-                    // Keep trusted resources
-                    logger.debug("Allowing trusted external resource: " + path);
-                } else {
-                    // Remove untrusted external resources
-                    logger.debug("Removing external resource: " + path);
-                    element.remove();
-                }
+                element.remove();
             }
 
             // internal GET links are validated.
