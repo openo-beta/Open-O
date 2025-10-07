@@ -505,7 +505,7 @@
                     <tr bgcolor="<%=(linenum % 2 == 1 ? highlight : "")%>"
                         class="<%=lineClass%>">
                         <td valign="top" align="left">&nbsp; &nbsp; <a
-                                href="<%= request.getContextPath() %>/ON/labValues.jsp?testName=<%=thisResult.testName%>&demo=<%=lab.getDemographicNo()%>&labType=BCP"><%=thisResult.testName %>
+                                href="${pageContext.request.contextPath}/lab/CA/ON/labValues.jsp?testName=<%=thisResult.testName%>&demo=<%=lab.getDemographicNo()%>&labType=BCP"><%=thisResult.testName %>
                         </a></td>
                         <td align="right"><%=thisResult.result %>
                         </td>
