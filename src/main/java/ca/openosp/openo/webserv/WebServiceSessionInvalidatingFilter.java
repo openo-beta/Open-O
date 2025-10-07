@@ -362,7 +362,7 @@ public class WebServiceSessionInvalidatingFilter implements Filter {
                             wrappedResponse.getContentType().contains("application/json")) {
                             // System.out.println("JSON Response (filtered):");
                             // printDateTimeFields(responseBody);
-                            System.out.println(responseBody);
+                            //System.out.println(responseBody);
                         } else {
                             System.out.println("Response (non-JSON):");
                             System.out.println(responseBody);
