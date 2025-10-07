@@ -1229,7 +1229,7 @@ public final class EDocUtil {
             if (!canonicalPath.startsWith(canonicalDocDir + File.separator) && 
                 !canonicalPath.startsWith(canonicalTempDir + File.separator)) {
                 logger.warn("Path is outside of the allowed directories: " + fileName);
-                throw new SecurityException("Access denied: File is outside the allowed directoires");
+                throw new SecurityException("Access denied: File is outside the allowed directories");
             }
             
             return canonicalPath;
