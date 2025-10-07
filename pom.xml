@@ -1897,6 +1897,10 @@
                     <name>!skipModernTests</name>
                 </property>
             </activation>
+            <properties>
+                <!-- Use modern lock file when modern-tests profile is active -->
+                <dependency.lock.filename>dependencies-lock-modern.json</dependency.lock.filename>
+            </properties>
             <dependencies>
                 <!-- JUnit 5 (Jupiter) -->
                 <dependency>
