@@ -323,7 +323,10 @@ public final class ConvertToEdoc {
                 fallbackRender(document, os);
             } catch (Exception fallbackError) {
                 logger.error("Fallback PDF conversion also failed", fallbackError);
-                DocumentException docEx = new DocumentException("PDF conversion failed with all methods");
+                String combinedMessage = "PDF conversion failed with all methods. "
+                        + "Primary error: " + e.getMessage()
+                        + "; Fallback error: " + fallbackError.getMessage();
+                DocumentException docEx = new DocumentException(combinedMessage);
                 docEx.initCause(fallbackError);
                 throw docEx;
             }
