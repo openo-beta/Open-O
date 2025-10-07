@@ -71,6 +71,20 @@ jobs:
         with:
           compose-file: ".devcontainer/docker-compose.yml"
 
+      # Setup test configuration file from template
+      - name: Setup test configuration
+        run: |
+          docker exec openo-tomcat-dev bash -c "
+            config_dir='/workspace/src/test/resources'
+            properties_file=\"\${config_dir}/over_ride_config.properties\"
+            template_file=\"\${properties_file}.template\"
+
+            if [ -f \"\$template_file\" ] && [ ! -f \"\$properties_file\" ]; then
+              echo 'Setting up over_ride_config.properties...'
+              cp \"\$template_file\" \"\$properties_file\"
+            fi
+          "
+
       # Run isolated test phases matching 'make install --run-tests' pattern
 
       - name: Phase 1 - Build with modern profile
