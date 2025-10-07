@@ -93,7 +93,7 @@ jobs:
             echo '========================================='
             echo 'Phase 1: Modern Tests Workflow'
             echo '========================================='
-            mvn clean -DskipModernTests=true -DskipLegacyTests=true -T 1C package war:exploded -Pmodern-tests -Pjspc -Ddependency.lock.filename=dependencies-lock-modern.json
+            mvn clean -DskipModernTests=true -DskipLegacyTests=true -T 1C package war:exploded -Pmodern-tests -Ddependency.lock.filename=dependencies-lock-modern.json
           "
 
       - name: Phase 1 - Run modern tests
@@ -117,7 +117,7 @@ jobs:
             echo '========================================='
             echo 'Phase 2: Legacy Tests Workflow'
             echo '========================================='
-            mvn clean -DskipModernTests=true -DskipLegacyTests=true -T 1C package war:exploded -Pjspc
+            mvn clean -DskipModernTests=true -DskipLegacyTests=true -T 1C package war:exploded
           "
 
       - name: Phase 2 - Run legacy tests
