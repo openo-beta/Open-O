@@ -118,7 +118,7 @@ public class DemographicManagerImpl implements DemographicManager {
 	 *  Get the patient demographic profile.
 	 *  This method also sets the Demographic.MRP and Demographic.nextAppointment
 	 *  properties.
-	 * @param  loggedInInfo
+	 * @param loggedInInfo
 	 * @param demographicId
 	 * @return
 	 * @throws PatientDirectiveException
