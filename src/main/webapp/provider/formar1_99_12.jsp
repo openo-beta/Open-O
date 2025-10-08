@@ -1438,7 +1438,7 @@
     </table>
     <%
         if (bNewList) {
-            out.println(risks.doStuff(new String("../webapps/" + oscarVariables.getProperty("project_home") + "/providers/obarrisks_99_12.xml")));
+            out.println(risks.doStuff(new String("../webapps/" + oscarVariables.getProperty("project_home") + "/provider/obarrisks_99_12.xml")));
         }
     %>
 </form>
