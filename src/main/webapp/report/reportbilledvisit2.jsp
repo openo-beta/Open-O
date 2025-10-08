@@ -62,7 +62,7 @@
     params[0] = new DBPreparedHandlerParam(MyDateFormat.getSysDate(sdate));
     params[1] = new DBPreparedHandlerParam(MyDateFormat.getSysDate(edate));
 // get nurse name list
-    String sql = "select provider_no, last_name, first_name from providers where provider_type like 'nurse%'";
+    String sql = "select provider_no, last_name, first_name from provider where provider_type like 'nurse%'";
     ResultSet rs = db.queryResults(sql);
     while (rs.next()) {
         vNurse.add(ca.openosp.Misc.getString(rs, "last_name") + ", " + ca.openosp.Misc.getString(rs, "first_name"));

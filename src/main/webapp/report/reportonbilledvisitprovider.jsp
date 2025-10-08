@@ -119,7 +119,7 @@
         oldRoleList.add(Misc.getString(rs, "provider_no"));
     }
 
-    query = "select * from providers order by first_name, last_name";
+    query = "select * from provider order by first_name, last_name";
     rs = dbObj.queryResults(query);
 
     while (rs.next()) {
