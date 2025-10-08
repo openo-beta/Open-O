@@ -100,6 +100,7 @@ jobs:
         run: |
           docker exec openo-tomcat-dev bash -c "
             echo 'Running modern tests...'
+            rm -rf /workspace/target/test-classes
             mvn test -Pmodern-tests -DskipLegacyTests=true -Ddependency.lock.filename=dependencies-lock-modern.json
           "
 
@@ -124,6 +125,7 @@ jobs:
         run: |
           docker exec openo-tomcat-dev bash -c "
             echo 'Running legacy tests...'
+            rm -rf /workspace/target/test-classes
             mvn test -DskipModernTests=true
           "
 
