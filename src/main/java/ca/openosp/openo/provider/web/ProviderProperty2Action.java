@@ -1798,7 +1798,8 @@ public class ProviderProperty2Action extends ActionSupport {
         String providerValue = request.getParameter("taskAssigneeSelection.value");
 
         UserProperty a = this.getTaskAssigneeSelection();
-        if ("providers".equals(radioValue)) {
+
+        if ("provider".equals(radioValue)) {
             a.setValue(providerValue); // providerNo
         } else {
             a.setValue(radioValue); // default or mrp
