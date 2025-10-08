@@ -1752,6 +1752,10 @@
                                 <include>**/test/**/*Tests.java</include>
                                 <include>**/tickler/**/*Test.java</include>
                             </includes>
+                            <excludes>
+                                <!-- Exclude archive tests from modern test run -->
+                                <exclude>**/archive/**/*Test.java</exclude>
+                            </excludes>
                             <argLine>
                                 -Xmx2048m
                                 -Dnet.bytebuddy.experimental=true
