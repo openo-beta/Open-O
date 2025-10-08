@@ -308,7 +308,7 @@
                         if (providerNo != null && !providerNo.isEmpty() && !bCh1.getProviderNo().equals(providerNo)) {
                             // Check to make sure that the providers account associated with the bill matches the
                             // providers record we are searching on since it is not necessarily true:
-                            // radetail.providerOhipNo == providers.ohip_no && billing_on_cheader1.provider_no == providers.provider_no
+                            // radetail.providerOhipNo == provider.ohip_no && billing_on_cheader1.provider_no == provider.provider_no
                             continue;
                         }
 
