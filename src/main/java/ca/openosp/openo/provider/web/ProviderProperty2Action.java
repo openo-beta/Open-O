@@ -1724,7 +1724,7 @@ public class ProviderProperty2Action extends ActionSupport {
 
         String msgSuccess = "provider.setLabRecall.msgSuccess";
         if (delete) {
-            msgSuccess = "providers.setLabRecall.msgDeleted";
+            msgSuccess = "provider.setLabRecall.msgDeleted";
         }
         request.setAttribute("providermsgSuccess", msgSuccess);
         request.setAttribute("method", "saveLabRecallPrefs");
