@@ -62,7 +62,7 @@
 <p><font face="Arial, Helvetica, sans-serif" size="2"><b>Teleplan
     Billing Report Generator</b></font></p>
 <form name="form1" method="post"
-      action="../../../servlet/oscar.DocumentTeleplanReportUploadServlet"
+      action="<%= request.getContextPath() %>/servlet/oscar.DocumentTeleplanReportUploadServlet"
       ENCTYPE="multipart/form-data"><font
         face="Arial, Helvetica, sans-serif" size="2"> </font>
     <table width="400" border="0">

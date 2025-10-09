@@ -26,7 +26,7 @@
 
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%
-    if (session.getAttribute("user") == null) response.sendRedirect("../../logout.jsp");
+    if (session.getAttribute("user") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
 %>
 
 <%@ page import="java.util.*" %>

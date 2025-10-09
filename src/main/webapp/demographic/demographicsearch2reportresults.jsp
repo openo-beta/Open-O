@@ -282,12 +282,12 @@
     <script language="JavaScript">
         <!--
         function last() {
-            document.nextform.action = "demographicsearch2reportresults.jsp?originalpage=<%=request.getParameter("originalpage")%>&keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nLastPage%>&limit2=<%=strLimit%>";
+            document.nextform.action = "<%= request.getContextPath() %>/demographic/demographicsearch2reportresults.jsp?originalpage=<%=request.getParameter("originalpage")%>&keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nLastPage%>&limit2=<%=strLimit%>";
             //document.nextform.submit();
         }
 
         function next() {
-            document.nextform.action = "demographicsearch2reportresults.jsp?originalpage=<%=request.getParameter("originalpage")%>&keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nNextPage%>&limit2=<%=strLimit%>";
+            document.nextform.action = "<%= request.getContextPath() %>/demographic/demographicsearch2reportresults.jsp?originalpage=<%=request.getParameter("originalpage")%>&keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nNextPage%>&limit2=<%=strLimit%>";
             //document.nextform.submit();
         }
 

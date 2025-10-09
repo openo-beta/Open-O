@@ -82,7 +82,7 @@
 
             function valid(form) {
                 if (validateServiceType(form)) {
-                    form.action = "dbManageBillingform_add.jsp"
+                    form.action = "<%= request.getContextPath() %>/billing/dbManageBillingform_add.jsp"
                     form.submit()
                 } else {
                 }

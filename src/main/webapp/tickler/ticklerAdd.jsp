@@ -267,9 +267,9 @@
             function validate(form, writeToEncounter) {
                 if (validateDemoNo(form) <%=caisiEnabled?"&& validateSelectedProgram()":""%>) {
                     if (writeToEncounter) {
-                        form.action = "dbTicklerAdd.jsp?writeToEncounter=true";
+                        form.action = "<%= request.getContextPath() %>/tickler/dbTicklerAdd.jsp?writeToEncounter=true";
                     } else {
-                        form.action = "dbTicklerAdd.jsp?updateTicklerNav=true";
+                        form.action = "<%= request.getContextPath() %>/tickler/dbTicklerAdd.jsp?updateTicklerNav=true";
                     }
                     form.submit();
                 }
