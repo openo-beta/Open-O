@@ -43,10 +43,10 @@
             }
             if (val1.substring(0, 1) == "P" || val1.substring(0, 1) == "S") {
                 if (document.all) {
-                    document.all.form1.action = "../../../servlet/oscar.DocumentUploadServlet";
+                    document.all.form1.action = "${pageContext.request.contextPath}/servlet/ca.openosp.DocumentUploadServlet";
                     document.all.form1.submit();
                 } else {
-                    document.getElementById('form1').action = "../../../servlet/oscar.DocumentUploadServlet";
+                    document.getElementById('form1').action = "${pageContext.request.contextPath}/servlet/ca.openosp.DocumentUploadServlet";
                     document.getElementById('form1').submit();
                 }
             } else {

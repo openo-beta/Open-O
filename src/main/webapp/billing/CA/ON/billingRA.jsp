@@ -52,7 +52,7 @@
 <p>
 <table width="400" border="0">
     <form name="form1" method="post"
-          action="../../../servlet/oscar.DocumentUploadServlet"
+          action="${pageContext.request.contextPath}/servlet/ca.openosp.DocumentUploadServlet"
           ENCTYPE="multipart/form-data" onsubmit="return onSubmit();">
         <tr>
             <td width="181"><b><font face="Arial, Helvetica, sans-serif"
