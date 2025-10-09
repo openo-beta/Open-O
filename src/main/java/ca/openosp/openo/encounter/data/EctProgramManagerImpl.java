@@ -80,16 +80,19 @@ public class EctProgramManagerImpl implements EctProgramManager {
 
     public List<LabelValueBean> getProgramBeans(String providerNo, Integer facilityId) {
         if (providerNo == null || "".equalsIgnoreCase(providerNo.trim())) return new ArrayList<LabelValueBean>();
-        Iterator iter = programProviderDAOT.getProgramProvidersByProvider(providerNo).iterator();
+        Iterator<ProgramProvider> iter = programProviderDAOT.getProgramProvidersByProvider(providerNo).iterator();
         ArrayList<LabelValueBean> pList = new ArrayList<LabelValueBean>();
         while (iter.hasNext()) {
-            ProgramProvider p = (ProgramProvider) iter.next();
+            ProgramProvider p = iter.next();
             if (p != null && p.getProgramId() != null && p.getProgramId().longValue() > 0) {
                 Program program = programDao.getProgram(new Integer(p.getProgramId().intValue()));
 
+                // Check if program is null before accessing its methods
+                if (program == null) continue;
+
                 if (facilityId != null && program.getFacilityId() != facilityId.intValue()) continue;
 
-                if (program != null && program.isActive())
+                if (program.isActive())
                     pList.add(new LabelValueBean(program.getName(), program.getId().toString()));
             }
         }
@@ -111,10 +114,10 @@ public class EctProgramManagerImpl implements EctProgramManager {
 
     public List<LabelValueBean> getProgramForApptViewBeans(String providerNo, Integer facilityId) {
         if (providerNo == null || "".equalsIgnoreCase(providerNo.trim())) return new ArrayList<LabelValueBean>();
-        Iterator iter = programProviderDAOT.getProgramProvidersByProvider(providerNo).iterator();
+        Iterator<ProgramProvider> iter = programProviderDAOT.getProgramProvidersByProvider(providerNo).iterator();
         ArrayList<LabelValueBean> pList = new ArrayList<LabelValueBean>();
         while (iter.hasNext()) {
-            ProgramProvider p = (ProgramProvider) iter.next();
+            ProgramProvider p = iter.next();
             if (p != null && p.getProgramId() != null && p.getProgramId().longValue() > 0) {
                 Program program = programDao.getProgramForApptView(new Integer(p.getProgramId().intValue()));
                 if (program == null) continue;

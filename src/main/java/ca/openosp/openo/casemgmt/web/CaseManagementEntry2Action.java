@@ -3533,12 +3533,14 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         // We read form values directly from request parameters in issueChange() instead
         if (issueCheckList != null && !issueCheckList.isEmpty()) {
             try {
+                CheckBoxBean firstItem = issueCheckList.get(0);
                 // Check if the first item has a persisted issue (has an ID)
-                if (issueCheckList.get(0).getIssue() != null && issueCheckList.get(0).getIssue().getId() != null) {
+                if (firstItem != null && firstItem.getIssue() != null && firstItem.getIssue().getId() != null) {
                     this.issueCheckList = issueCheckList;
                 }
-            } catch (Exception e) {
-                // Ignore - this is from Struts parameter binding with unpersisted objects
+            } catch (IndexOutOfBoundsException | NullPointerException e) {
+                // Expected during Struts parameter binding with unpersisted objects
+                logger.debug("Ignoring issueCheckList from Struts binding: {}", e.getMessage());
             }
         }
     }
