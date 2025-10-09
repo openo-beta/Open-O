@@ -45,7 +45,7 @@
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_rx" rights="w" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_rx");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_rx");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -599,7 +599,7 @@
 
 
     .ui-autocomplete-loading {
-        background: white url('../images/ui-anim_basic_16x16.gif') right center no-repeat;
+        background: white url('<%= request.getContextPath() %>/images/ui-anim_basic_16x16.gif') right center no-repeat;
     }
 
     .ui-autocomplete {

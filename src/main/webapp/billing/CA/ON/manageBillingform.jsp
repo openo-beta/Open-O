@@ -30,7 +30,7 @@
 
 
 <%@ page import="java.util.*, java.sql.*, ca.openosp.*, java.net.*" %>
-<%@ include file="../../../admin/dbconnection.jsp" %>
+<%@ include file="/admin/dbconnection.jsp" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.CtlBillingService" %>
 <%@ page import="ca.openosp.openo.commn.dao.CtlBillingServiceDao" %>
