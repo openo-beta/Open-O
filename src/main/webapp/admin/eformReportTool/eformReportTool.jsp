@@ -129,7 +129,7 @@
                                                 }
 
                                                 $.ajax({
-                                                        url: '../../ws/rs/reporting/eformReportTool/add',
+                                                        url: '${pageContext.request.contextPath}/ws/rs/reporting/eformReportTool/add',
                                                         type: 'POST',
                                                         data: JSON
                                                             .stringify(e),
@@ -164,7 +164,7 @@
                     });
 
             function fetchEFormsAndOpenDialog() {
-                jQuery.getJSON("../../ws/rs/forms/allEForms", {}, function (xml) {
+                jQuery.getJSON("${pageContext.request.contextPath}/ws/rs/forms/allEForms", {}, function (xml) {
                     $("#eformReportToolEformId option").remove();
                     //alert(JSON.stringify(xml));
                     if (xml.content) {
@@ -184,7 +184,7 @@
                     id: eftId
                 };
                 $.ajax({
-                    url: '../../ws/rs/reporting/eformReportTool/populate',
+                    url: '${pageContext.request.contextPath}/ws/rs/reporting/eformReportTool/populate',
                     type: 'POST',
                     data: JSON.stringify(e),
                     contentType: "application/json; charset=utf-8",
@@ -203,7 +203,7 @@
                     id: eftId
                 };
                 $.ajax({
-                    url: '../../ws/rs/reporting/eformReportTool/markLatest',
+                    url: '${pageContext.request.contextPath}/ws/rs/reporting/eformReportTool/markLatest',
                     type: 'POST',
                     data: JSON.stringify(e),
                     contentType: "application/json; charset=utf-8",
@@ -223,7 +223,7 @@
                         id: eftId
                     };
                     $.ajax({
-                        url: '../../ws/rs/reporting/eformReportTool/remove',
+                        url: '${pageContext.request.contextPath}/ws/rs/reporting/eformReportTool/remove',
                         type: 'POST',
                         data: JSON.stringify(e),
                         contentType: "application/json; charset=utf-8",
@@ -242,7 +242,7 @@
             function listReports() {
                 $
                     .ajax({
-                        url: '../../ws/rs/reporting/eformReportTool/list',
+                        url: '${pageContext.request.contextPath}/ws/rs/reporting/eformReportTool/list',
                         type: 'GET',
                         dataType: 'json',
                         success: function (data) {
