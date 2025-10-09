@@ -91,28 +91,6 @@
                         listReports();
 
                         $("#btnAdd").bind('click', function () {
-                            /*
-                            var e = {
-                                name : 'testing',
-                                eformId : 3,
-                                expiryDate : new Date(),
-                                providerNo : '999998'
-                            };
-                            $.ajax({
-                                url : '../../webserv/rs/reporting/eformReportTool/add',
-                                type : 'POST',
-                                data : JSON.stringify(e),
-                                contentType : "application/json; charset=utf-8",
-                                dataType : 'json',
-                                success : function(data) {
-                                    //	alert(data);
-                                    listReports();
-                                },
-                                error : function(data) {
-                                    alert('error:' + data);
-                                }
-                            });
-                             */
                             fetchEFormsAndOpenDialog();
 
                         });
@@ -149,25 +127,19 @@
                                                         "#eformExpiryDate")
                                                         .val();
                                                 }
-                                                //alert(JSON.stringify(e));
 
-                                                $
-                                                    .ajax({
+                                                $.ajax({
                                                         url: '../../ws/rs/reporting/eformReportTool/add',
                                                         type: 'POST',
                                                         data: JSON
                                                             .stringify(e),
                                                         contentType: "application/json; charset=utf-8",
                                                         dataType: 'json',
-                                                        success: function (
-                                                            data) {
-                                                            //	alert(data);
+                                                        success: function (data) {
                                                             listReports();
                                                         },
-                                                        error: function (
-                                                            data) {
-                                                            alert('error:'
-                                                                + data);
+                                                        error: function (xhr, status, error) {
+                                                            alert('Error: ' + error + '\nHTTP Status: ' + xhr.status);
                                                         }
                                                     });
 
@@ -220,8 +192,8 @@
                     success: function (data) {
                         listReports();
                     },
-                    error: function (data) {
-                        alert('error:' + data);
+                    error: function (xhr, status, error) {
+                        alert('Error: ' + error + '\nHTTP Status: ' + xhr.status);
                     }
                 });
             }
@@ -239,8 +211,8 @@
                     success: function (data) {
                         listReports();
                     },
-                    error: function (data) {
-                        alert('error:' + data);
+                    error: function (xhr, status, error) {
+                        alert('Error: ' + error + '\nHTTP Status: ' + xhr.status);
                     }
                 });
             }
@@ -260,8 +232,8 @@
                             listReports();
 
                         },
-                        error: function (data) {
-                            alert('error:' + data);
+                        error: function (xhr, status, error) {
+                            alert('Error: ' + error + '\nHTTP Status: ' + xhr.status);
                         }
                     });
                 }
@@ -321,8 +293,8 @@
                             }
 
                         },
-                        error: function (data) {
-                            alert('error:' + data);
+                        error: function (xhr, status, error) {
+                            alert('Error: ' + error + '\nHTTP Status: ' + xhr.status);
                         }
                     });
 
