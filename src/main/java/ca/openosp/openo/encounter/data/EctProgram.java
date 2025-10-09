@@ -21,35 +21,69 @@
  * Toronto, Ontario, Canada
  */
 
-
 package ca.openosp.openo.encounter.data;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import ca.openosp.openo.util.LabelValueBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 /**
+ *
  * @author rjonasz
  */
 public class EctProgram {
     private HttpSession se;
-
-    /**
-     * Creates a new instance of EctProgram
-     */
+    /** Creates a new instance of EctProgram */
     public EctProgram(HttpSession se) {
         this.se = se;
     }
 
     public String getProgram(String providerNo) {
-        return "0";
+        List<LabelValueBean> programBean;
+
+        EctProgramManager manager = getEctProgramManager();
+        programBean = manager.getProgramBeans(providerNo, null);
+
+        //get default program
+        int defaultprogramId = manager.getDefaultProgramId(providerNo);
+        boolean defaultInList = false;
+        for (int i = 0; i < programBean.size(); i++) {
+            int id = Integer.parseInt(programBean.get(i).getValue());
+            if (defaultprogramId == id) defaultInList = true;
+        }
+        if (!defaultInList) defaultprogramId = 0;
+
+        int OriprogramId = 0;
+        if (programBean.size() > 0) {
+            OriprogramId = Integer.parseInt(programBean.get(0).getValue());
+        }
+
+        int programId = 0;
+        if (defaultprogramId != 0 && OriprogramId != 0) {
+            programId = defaultprogramId;
+        } else {
+            if (OriprogramId == 0) {
+                programId = 0;
+            }
+            if (defaultprogramId == 0 && OriprogramId != 0) {
+                programId = OriprogramId;
+            }
+        }
+
+        return String.valueOf(programId);
     }
 
     public ApplicationContext getAppContext() {
         return WebApplicationContextUtils.getWebApplicationContext(
-                se.getServletContext());
+        		se.getServletContext());
     }
 
-
+    public EctProgramManager getEctProgramManager() {
+		EctProgramManager manager = (EctProgramManager) getAppContext()
+				.getBean("ectProgramManager");
+		return manager;
+    }
 }
