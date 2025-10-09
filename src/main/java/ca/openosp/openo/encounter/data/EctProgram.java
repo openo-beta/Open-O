@@ -28,6 +28,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import ca.openosp.openo.util.LabelValueBean;
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 /**
@@ -42,38 +43,34 @@ public class EctProgram {
     }
 
     public String getProgram(String providerNo) {
-        List<LabelValueBean> programBean;
-
         EctProgramManager manager = getEctProgramManager();
-        programBean = manager.getProgramBeans(providerNo, null);
+        List<LabelValueBean> programBeans = manager.getProgramBeans(providerNo, null);
 
-        //get default program
-        int defaultprogramId = manager.getDefaultProgramId(providerNo);
-        boolean defaultInList = false;
-        for (int i = 0; i < programBean.size(); i++) {
-            int id = Integer.parseInt(programBean.get(i).getValue());
-            if (defaultprogramId == id) defaultInList = true;
-        }
-        if (!defaultInList) defaultprogramId = 0;
-
-        int OriprogramId = 0;
-        if (programBean.size() > 0) {
-            OriprogramId = Integer.parseInt(programBean.get(0).getValue());
+        // If no programs available, return 0
+        if (programBeans.isEmpty()) {
+            return "0";
         }
 
-        int programId = 0;
-        if (defaultprogramId != 0 && OriprogramId != 0) {
-            programId = defaultprogramId;
+        // Get provider's default program ID
+        int defaultProgramId = manager.getDefaultProgramId(providerNo);
+
+        // Check if default program exists in available programs
+        boolean defaultExists = false;
+        for (LabelValueBean bean : programBeans) {
+            int id = NumberUtils.toInt(bean.getValue(), 0);
+            if (id == defaultProgramId) {
+                defaultExists = true;
+                break;
+            }
+        }
+
+        // Return default if it exists in list, otherwise return first available program
+        if (defaultExists) {
+            return String.valueOf(defaultProgramId);
         } else {
-            if (OriprogramId == 0) {
-                programId = 0;
-            }
-            if (defaultprogramId == 0 && OriprogramId != 0) {
-                programId = OriprogramId;
-            }
+            int firstProgramId = NumberUtils.toInt(programBeans.get(0).getValue(), 0);
+            return String.valueOf(firstProgramId);
         }
-
-        return String.valueOf(programId);
     }
 
     public ApplicationContext getAppContext() {
