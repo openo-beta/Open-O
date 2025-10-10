@@ -1002,7 +1002,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     <a href="form/formbcar2007pg2.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">AR2
                         <font size=-2>(pg.1)</font></a> |
                     AR2<font size=-2>(pg.2)</font> |
-                    <!--a href="javascript: popupFixedPage(700,950,'../decision/antenatal/antenatalplanner.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>');">AR Planner</a-->
+                    <!--a href="javascript: popupFixedPage(700,950,'<%= request.getContextPath() %>/decision/antenatal/antenatalplanner.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>');">AR Planner</a-->
                 </td>
                 <%
                     }
@@ -3011,7 +3011,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                     <a href="form/formbcar2007pg2.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>">AR2
                         <font size=-2>(pg.1)</font></a> |
                     AR2<font size=-2>(pg.2)</font> |
-                    <!--a href="javascript: popupFixedPage(700,950,'../decision/antenatal/antenatalplanner.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>');">AR Planner</a-->
+                    <!--a href="javascript: popupFixedPage(700,950,'<%= request.getContextPath() %>/decision/antenatal/antenatalplanner.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>');">AR Planner</a-->
                 </td>
                 <%
                     }

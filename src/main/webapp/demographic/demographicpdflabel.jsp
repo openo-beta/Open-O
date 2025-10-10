@@ -23,7 +23,6 @@
     Ontario, Canada
 
 --%>
-<%-- @ taglib uri="../WEB-INF/taglibs-log.tld" prefix="log" --%>
 <%
     String demographic$ = request.getParameter("demographic_no");
 %>

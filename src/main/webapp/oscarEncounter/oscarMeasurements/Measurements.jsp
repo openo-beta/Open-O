@@ -55,11 +55,11 @@
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
 
-        <link href="/oscar/css/bootstrap.css" rel="stylesheet" type="text/css">
-        <link href="/oscar/css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
+        <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+        <link href="css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
 
 
-        <link rel="stylesheet" href="/oscar/css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
 
         <style>
             body {
