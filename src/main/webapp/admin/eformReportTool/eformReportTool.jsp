@@ -33,7 +33,7 @@
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.reporting" rights="w" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../../securityError.jsp?type=_admin&type=_admin.reporting");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_admin&type=_admin.reporting");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -192,7 +192,7 @@
                     });
 
             function fetchEFormsAndOpenDialog() {
-                jQuery.getJSON("../../ws/rs/forms/allEForms", {}, function (xml) {
+                jQuery.getJSON("<%= request.getContextPath() %>/ws/rs/forms/allEForms", {}, function (xml) {
                     $("#eformReportToolEformId option").remove();
                     //alert(JSON.stringify(xml));
                     if (xml.content) {
