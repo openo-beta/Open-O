@@ -549,7 +549,7 @@ end broken -->
             </tr>
             <tr>
                 <td colspan="2"><a href=#
-                                   onClick="popupPage(700,720,'../../../oscarReport/manageProvider.jsp?action=billingreport')"
+                                   onClick="popupPage(700,720,'<%= request.getContextPath() %>/oscarReport/manageProvider.jsp?action=billingreport')"
                                    class="btn btn-link">
                     Manage Provider List</a></td>
             </tr>

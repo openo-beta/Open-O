@@ -28,7 +28,7 @@
 <%@page import="ca.openosp.openo.util.DateUtils" %>
 <%@page import="ca.openosp.OscarProperties" %>
 <%
-    if (session.getAttribute("user") == null) response.sendRedirect("../../../../logout.jsp");
+    if (session.getAttribute("user") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
     String user_no = "";
     user_no = (String) session.getAttribute("user");
 %>

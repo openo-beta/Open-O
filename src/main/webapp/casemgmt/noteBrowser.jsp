@@ -61,13 +61,13 @@
 <security:oscarSec roleName="<%=roleName$%>" objectName="_eChart"
                    rights="r" reverse="<%=true%>">
     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.noteBrowser.accessDenied"/>
-    <% response.sendRedirect("../noRights.html"); %>
+    <% response.sendRedirect(request.getContextPath() + "/noRights.html"); %>
 </security:oscarSec>
 <security:oscarSec roleName="<%=roleName$%>"
                    objectName='<%="_eChart$"+demographicID%>' rights="o"
                    reverse="<%=false%>">
     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.noteBrowser.accessDenied"/>
-    <% response.sendRedirect("../noRights.html"); %>
+    <% response.sendRedirect(request.getContextPath() + "/noRights.html"); %>
 </security:oscarSec>
 
 <%
