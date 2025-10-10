@@ -752,21 +752,21 @@
                         <%--				<li>&nbsp; <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.titleFactorAuth"/>--%>
                         <%--				<ul>--%>
                         <%--					<li><a href="#"--%>
-                        <%--						onclick="popupPage(500,700,'../gatekeeper/ip/show');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.ipFilter"/></a></li>--%>
+                        <%--						onclick="popupPage(500,700,'<%= request.getContextPath() %>/gatekeeper/ip/show');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.ipFilter"/></a></li>--%>
                         <%--					<li><a href="#"--%>
-                        <%--						onclick="popupPage(500,700,'../gatekeeper/cert/?act=super');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.setCert"/></a></li>--%>
+                        <%--						onclick="popupPage(500,700,'<%= request.getContextPath() %>/gatekeeper/cert/?act=super');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.setCert"/></a></li>--%>
                         <%--					<li><a href="#"--%>
-                        <%--						onclick="popupPage(500,700,'../gatekeeper/supercert');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.genCert"/></a></li>--%>
+                        <%--						onclick="popupPage(500,700,'<%= request.getContextPath() %>/gatekeeper/supercert');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.genCert"/></a></li>--%>
                         <%--					<li><a href="#"--%>
-                        <%--						onclick="popupPage(500,700,'../gatekeeper/clear');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.clearCookie"/></a></li>--%>
+                        <%--						onclick="popupPage(500,700,'<%= request.getContextPath() %>/gatekeeper/clear');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.clearCookie"/></a></li>--%>
                         <%--					<li><a href="#"--%>
-                        <%--						onclick="popupPage(500,700,'../gatekeeper/quest/adminQuestions');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.adminSecQuestions"/></a></li>--%>
+                        <%--						onclick="popupPage(500,700,'<%= request.getContextPath() %>/gatekeeper/quest/adminQuestions');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.adminSecQuestions"/></a></li>--%>
                         <%--					<li><a href="#"--%>
-                        <%--						onclick="popupPage(500,700,'../gatekeeper/policyadmin/select');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.adminSecPolicies"/></a></li>--%>
+                        <%--						onclick="popupPage(500,700,'<%= request.getContextPath() %>/gatekeeper/policyadmin/select');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.adminSecPolicies"/></a></li>--%>
                         <%--					<li><a href="#"--%>
-                        <%--						onclick="popupPage(500,700,'../gatekeeper/banremover/show');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.removeBans"/></a></li>--%>
+                        <%--						onclick="popupPage(500,700,'<%= request.getContextPath() %>/gatekeeper/banremover/show');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.removeBans"/></a></li>--%>
                         <%--					<li><a href="#"--%>
-                        <%--						onclick="popupPage(500,700,'../gatekeeper/matrixadmin/show');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.genMatrixCards"/></a></li>--%>
+                        <%--						onclick="popupPage(500,700,'<%= request.getContextPath() %>/gatekeeper/matrixadmin/show');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.genMatrixCards"/></a></li>--%>
                         <%--				</ul>--%>
                         <%--				</li>--%>
                         <%--			</sec:oscarSec>--%>
