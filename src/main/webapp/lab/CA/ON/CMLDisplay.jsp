@@ -139,7 +139,7 @@
 
 <body>
 <!-- form forwarding of the lab -->
-<form name="reassignForm" method="post" action="Forward.do"><input
+<form name="reassignForm" method="post" action="<%= request.getContextPath() %>/lab/CA/ON/Forward.do"><input
         type="hidden" name="flaggedLabs"
         value="<%= segmentID %>"/> <input
         type="hidden" name="selectedProviders" value=""/>
