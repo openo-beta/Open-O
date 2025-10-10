@@ -101,7 +101,7 @@
                 document.serviceform.submit();
             }
             if (saveTemp == 1) {
-                popupPage(30, 200, '../provider/notice.htm');
+                popupPage(30, 200, '<%= request.getContextPath() %>/provider/notice.htm');
                 document.serviceform.target = "printlocation";
                 document.serviceform.cmd.value = "Save";
                 document.serviceform.submit();

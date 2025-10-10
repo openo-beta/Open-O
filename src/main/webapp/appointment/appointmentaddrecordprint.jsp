@@ -125,7 +125,7 @@
 
         <script LANGUAGE="JavaScript">
             self.opener.refresh();
-            popupPage(350, 750, '../report/reportdaysheet.jsp?dsmode=new&provider_no=<%=request.getParameter("provider_no")%>&sdate=<%=request.getParameter("appointment_date")%>');
+            popupPage(350, 750, '<%= request.getContextPath() %>/report/reportdaysheet.jsp?dsmode=new&provider_no=<%=request.getParameter("provider_no")%>&sdate=<%=request.getParameter("appointment_date")%>');
             self.close();
         </script>
         <%

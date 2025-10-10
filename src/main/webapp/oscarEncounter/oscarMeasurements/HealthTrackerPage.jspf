@@ -1317,7 +1317,7 @@ $(document).ready(function(){ $(id).trigger('slid.bs.carousel'); });
 	        </span>
    		</div><!-- col-lg-5 -->
    		<div class="col-lg-7 data-input-area">
-   			<button type="button" class="btn btn-default" value="Add" onclick="javascript:fsPopup(465,635,'../../oscarPrevention/AddPreventionData.jsp?prevention=<%= response.encodeURL( prevType) %>&amp;demographic_no=<%=demographic_no%>','addPreventionData<%=Math.abs( prevType.hashCode() ) %>')"><span class="glyphicon glyphicon-plus"></span></button>
+   			<button type="button" class="btn btn-default" value="Add" onclick="javascript:fsPopup(465,635, '<%= request.getContextPath() %>/oscarPrevention/AddPreventionData.jsp?prevention=<%= response.encodeURL( prevType) %>&amp;demographic_no=<%=demographic_no%>','addPreventionData<%=Math.abs( prevType.hashCode() ) %>')"><span class="glyphicon glyphicon-plus"></span></button>
    		</div><!-- col-lg-7 -->
    	</div>
   </div>
@@ -1348,7 +1348,7 @@ $(document).ready(function(){ $(id).trigger('slid.bs.carousel'); });
 		        }
 		%>
 
-		<div class="preventionProcedure"  onclick="javascript:fsPopup(465,635,'../../oscarPrevention/AddPreventionData.jsp?id=<%=hdata.get("id")%>&amp;demographic_no=<%=demographic_no%>','addPreventionData')" >
+		<div class="preventionProcedure"  onclick="javascript:fsPopup(465,635, '<%= request.getContextPath() %>/oscarPrevention/AddPreventionData.jsp?id=<%=hdata.get("id")%>&amp;demographic_no=<%=demographic_no%>','addPreventionData')" >
 
 		<p align="center">
 		<span rel="popover" data-container="body" data-html="true" data-content='Entered by: <%=hdata.get("provider_name")%>'  data-trigger="hover">

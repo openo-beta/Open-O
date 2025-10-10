@@ -901,7 +901,7 @@
                             <TD ROWSPAN="1" class="<%=cellColour%>">
                                 <%if (Boolean.parseBoolean(OscarProperties.getInstance().getProperty("tickler_edit_enabled"))) {%>
                                 <a href=#
-                                   onClick="popupPage(600,800, '../tickler/ticklerEdit.jsp?tickler_no=<%=t.getId()%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.editTickler"/></a>
+                                   onClick="popupPage(600,800, '<%= request.getContextPath() %>/tickler/ticklerEdit.jsp?tickler_no=<%=t.getId()%>')"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.editTickler"/></a>
                                 <% } %>
                             </TD>
                             <TD ROWSPAN="1" class="<%=cellColour%>"><a

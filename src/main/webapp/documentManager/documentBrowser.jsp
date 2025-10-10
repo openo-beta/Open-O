@@ -378,7 +378,7 @@ Remote documents not supported
         }
 
         function DocAnnotation() {
-            popup(350, 500, '../annotation/annotation.jsp?display=Documents&table_id=' + docid + '&demo=<%=demographicID%>', 'anwin');
+            popup(350, 500, '<%= request.getContextPath() %>/annotation/annotation.jsp?display=Documents&table_id=' + docid + '&demo=<%=demographicID%>', 'anwin');
         }
 
         function DocEdit() {

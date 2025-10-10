@@ -67,7 +67,7 @@
         %>
         <a class="links" onmouseover="this.className='linkhover'"
            onmouseout="this.className='links'"
-           href="javascript:popupPage(700,960,'<%=winName%>','../oscarPrevention/index.jsp?demographic_no=<%=bean.demographicNo%>')">
+           href="javascript:popupPage(700,960,'<%=winName%>','<%= request.getContextPath() %>/oscarPrevention/index.jsp?demographic_no=<%=bean.demographicNo%>')">
             <oscar:preventionWarnings demographicNo="<%=bean.demographicNo%>">prevention</oscar:preventionWarnings></a>
     </oscar:oscarPropertiesCheck></li>
     <%-- <li>

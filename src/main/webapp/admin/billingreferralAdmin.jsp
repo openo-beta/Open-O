@@ -73,7 +73,7 @@
 
 
             function openAddSpecialist() {
-                popupOscarRx(625, 1024, '../oscarEncounter/oscarConsultationRequest/config/AddSpecialist.jsp');
+                popupOscarRx(625, 1024, '<%= request.getContextPath() %>/oscarEncounter/oscarConsultationRequest/config/AddSpecialist.jsp');
                 return false;
             }
 

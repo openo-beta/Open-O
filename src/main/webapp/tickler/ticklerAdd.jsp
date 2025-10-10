@@ -415,7 +415,7 @@
                     }
                 %>
                 <INPUT TYPE="hidden" name="search_mode" VALUE="<%=searchMode%>">
-                <INPUT TYPE="hidden" name="originalpage" VALUE="../tickler/ticklerAdd.jsp">
+                <INPUT TYPE="hidden" name="originalpage" VALUE="<%= request.getContextPath() %>/tickler/ticklerAdd.jsp">
                 <INPUT TYPE="hidden" name="limit1" VALUE="0">
                 <INPUT TYPE="hidden" name="limit2" VALUE="5">
                 <!--input type="hidden" name="displaymode" value="TicklerSearch" -->

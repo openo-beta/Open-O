@@ -372,7 +372,7 @@
                                 %>
                                 <tr>
                                     <td>
-                                        <% currentURI = "../oscarEncounter/echarthistoryprint.jsp?echartid=" + ec.getId() + "&demographic_no=" + demographic_no; %>
+                                        <% currentURI = request.getContextPath() + "/oscarEncounter/echarthistoryprint.jsp?echartid=" + ec.getId() + "&demographic_no=" + demographic_no; %>
                                         <input type="checkbox" name="uriArray" value="<%=currentURI%>"
                                                        style="display:none"/>
                                         <input type="checkbox" name="indexArray" value="<%= Integer.toString(indexCount++) %>"/>
@@ -428,7 +428,7 @@
                                             Rxbean.setProviderNo((String) request.getSession().getAttribute("user"));
                                             Rxbean.setDemographicNo(Integer.parseInt(demographic_no));
 
-                                        %> <% currentURI = "../oscarRx/PrintDrugProfile.jsp?demographic_no=" + demographic_no; %>
+                                        %> <% currentURI = request.getContextPath() + "/oscarRx/PrintDrugProfile.jsp?demographic_no=" + demographic_no; %>
 
                                         <input type="checkbox" name="uriArray" value="<%=currentURI%>"
                                                        style="display:none"/>

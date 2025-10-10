@@ -1157,7 +1157,7 @@
                    onClick="popupPage(700,1000, '<%= request.getContextPath() %>/tickler/ticklerMain.jsp?demoview=<%=bean.demographicNo%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.viewTickler"/></a><br>
                 <a href="javascript: function myFunction() {return false; }"
                    onClick="popupPage(150,200,'calculators.jsp?sex=<%=bean.patientSex%>&age=<%=pAge%>'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.calculators"/></a><br>
-                <!--a href="#" onClick="popupPage(700,1000, '../lab/CumulativeLabValues.jsp?demographic_no=<%=bean.demographicNo%>');return false;">Cumulative Labs</a><br-->
+                <!--a href="#" onClick="popupPage(700,1000, '<%= request.getContextPath() %>/lab/CumulativeLabValues.jsp?demographic_no=<%=bean.demographicNo%>');return false;">Cumulative Labs</a><br-->
 
                 <select name="selectCurrentForms"
                         onChange="javascript:selectBox(this)" class="ControlSelect"

@@ -613,7 +613,7 @@
                                                                value="<Encode:forHtmlAttribute value='${ demographic.value }' />"/>
                                                     </td>
                                                     <td bgcolor="#EEEEFF">
-                                                        <a href="javascript:popupViewAttach(700,960,'../demographic/demographiccontrol.jsp?demographic_no=${ demographic.key }&displaymode=edit&dboperation=search_detail')">M</a>
+                                                        <a href="javascript:popupViewAttach(700,960, '<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=${ demographic.key }&displaymode=edit&dboperation=search_detail')">M</a>
 
                                                         <%
                                                             //Hide old echart link
@@ -675,7 +675,7 @@
                                                 <tr>
                                                     <td bgcolor="#EEEEFF"></td>
                                                     <td bgcolor="#EEEEFF"><a
-                                                            href="javascript:popupStart(400,850,'../demographic/demographiccontrol.jsp?demographic_no=${ demographic.key }&last_name=<%=demoLastName%>&first_name=<%=demoFirstName%>&orderby=appointment_date&displaymode=appt_history&dboperation=appt_history&limit1=0&limit2=25','ApptHist')"
+                                                            href="javascript:popupStart(400,850, '<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=${ demographic.key }&last_name=<%=demoLastName%>&first_name=<%=demoFirstName%>&orderby=appointment_date&displaymode=appt_history&dboperation=appt_history&limit1=0&limit2=25','ApptHist')"
                                                             title="Click to see appointment history">Next Appt:
                                                         <oscar:nextAppt
                                                                 demographicNo="${ demographic.key }"/></a></td>

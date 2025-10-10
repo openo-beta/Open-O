@@ -163,7 +163,7 @@
             else if (reason.compareTo("P") == 0) reason = "Bill Patient";
 
             prop.setProperty("DESCRIPTION", reason + "(" + note + ")");
-            String tempStr = "<a href=# onClick='popupPage(700,720, \"../../../billing/CA/ON/billingCorrection.jsp?billing_no="
+            String tempStr = "<a href=# onClick='popupPage(700,720, \"<%= request.getContextPath() %>/billing/CA/ON/billingCorrection.jsp?billing_no="
                     + rs.getString("id") + "&dboperation=search_bill&hotclick=0\"); return false;' title='"
                     + reason + "'>" + rs.getString("id") + "</a>";
             prop.setProperty("ACCOUNT", tempStr);

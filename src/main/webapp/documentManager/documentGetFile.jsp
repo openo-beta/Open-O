@@ -59,7 +59,7 @@
         String filePath = docdownload + '/' + filename;
         if (filetype.compareTo("active") == 0) {
             if (downloadMethod == null) {
-                filePath = "../../OscarDocument" + request.getContextPath() + "/document/" + filename;
+                filePath = request.getContextPath() + "/OscarDocument/document/" + filename;
 %>
 <html>
     <head>

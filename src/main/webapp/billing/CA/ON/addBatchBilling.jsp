@@ -33,7 +33,7 @@
 <%@ page import="ca.openosp.openo.PMmodule.dao.ProviderDao, ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
 
-<%@include file="../../../casemgmt/taglibs.jsp" %>
+<%@include file="/casemgmt/taglibs.jsp" %>
 
 <%
     GregorianCalendar now = new GregorianCalendar();

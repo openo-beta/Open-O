@@ -625,7 +625,7 @@
             }
 
             input#referalDate, input#appointmentDate, input#followUpDate {
-                background-image: url(../../images/cal.gif);
+                background-image: url(<%= request.getContextPath() %>/images/cal.gif);
                 background-position-x: right;
                 background-position-y: center;
                 background-repeat: no-repeat;

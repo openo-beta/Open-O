@@ -201,7 +201,7 @@
                                         %>
                                         <tr>
                                             <td class="fieldBox" bgcolor="#ddddff"><a
-                                                    href="javascript:popupOscarConsultationConfig(700,960,'../form/formlabreq07.jsp?demographic_no=<%=demoData.demoNo%>&formId=<%=demoLab.requestId%>&provNo=<%=demoLab.proNo%>&readOnly=true')"><%=demoLab.referalDate%>
+                                                    href="javascript:popupOscarConsultationConfig(700,960, '<%= request.getContextPath() %>/form/formlabreq07.jsp?demographic_no=<%=demoData.demoNo%>&formId=<%=demoLab.requestId%>&provNo=<%=demoLab.proNo%>&readOnly=true')"><%=demoLab.referalDate%>
                                             </a>
                                             </td>
                                         </tr>
@@ -261,9 +261,9 @@
                                                 String labURL = "";
 
                                                 if (labType != null && labType.equals("CML")) {
-                                                    labURL = "../lab/CA/ON/CMLDisplay.jsp?providerNo=" + pros + "&segmentID=" + lab_no;
+                                                    labURL = "<%= request.getContextPath() %>/lab/CA/ON/CMLDisplay.jsp?providerNo=" + pros + "&segmentID=" + lab_no;
                                                 } else {
-                                                    labURL = "../oscarMDS/SegmentDisplay.jsp?providerNo=" + pros + "&segmentID=" + lab_no;
+                                                    labURL = "<%= request.getContextPath() %>/oscarMDS/SegmentDisplay.jsp?providerNo=" + pros + "&segmentID=" + lab_no;
                                                 }
 
                                         %>

@@ -72,13 +72,13 @@
             HashMap hMap = (HashMap) list.get(k);
             String labDisplayLink = "";
             if (labType.equals(LabResultData.MDS)) {
-                labDisplayLink = "../oscarMDS/SegmentDisplay.jsp?segmentID=" + hMap.get("lab_no") + "&providerNo=" + session.getValue("user");
+                labDisplayLink = request.getContextPath() + "/oscarMDS/SegmentDisplay.jsp?segmentID=" + hMap.get("lab_no") + "&providerNo=" + session.getValue("user");
             } else if (labType.equals(LabResultData.CML)) {
-                labDisplayLink = "../lab/CA/ON/CMLDisplay.jsp?segmentID=" + hMap.get("lab_no") + "&providerNo=" + session.getValue("user");
+                labDisplayLink = request.getContextPath() + "/lab/CA/ON/CMLDisplay.jsp?segmentID=" + hMap.get("lab_no") + "&providerNo=" + session.getValue("user");
             } else if (labType.equals(LabResultData.HL7TEXT)) {
-                labDisplayLink = "../lab/CA/ALL/labDisplay.jsp?segmentID=" + hMap.get("lab_no") + "&providerNo=" + session.getValue("user");
+                labDisplayLink = request.getContextPath() + "/lab/CA/ALL/labDisplay.jsp?segmentID=" + hMap.get("lab_no") + "&providerNo=" + session.getValue("user");
             } else if (labType.equals(LabResultData.EXCELLERIS)) {
-                labDisplayLink = "../lab/CA/BC/labDisplay.jsp?segmentID=" + hMap.get("lab_no") + "&providerNo=" + session.getValue("user");
+                labDisplayLink = request.getContextPath() + "/lab/CA/BC/labDisplay.jsp?segmentID=" + hMap.get("lab_no") + "&providerNo=" + session.getValue("user");
             }
 
     %>

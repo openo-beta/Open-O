@@ -218,7 +218,7 @@
 
                 var newNode = document.createElement('div');
                 var img = document.createElement('img');
-                img.setAttribute('src', '../images/osx-pinwheel.gif');
+                img.setAttribute('src', '<%= request.getContextPath() %>/images/osx-pinwheel.gif');
 
                 newNode.appendChild(img)
                 var ran_number = Math.round(Math.random() * 1000000);

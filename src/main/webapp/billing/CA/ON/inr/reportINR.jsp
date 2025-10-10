@@ -312,7 +312,7 @@
             <tr>
                 <td>
                     <a href="#"
-                       onClick='rs("billingcalendar","../billingCalendarPopup.jsp?year=<%=curYear%>&month=<%=curMonth%>&type=service","380","300","0")'>Service
+                       onClick='rs("billingcalendar","<%= request.getContextPath() %>/billing/CA/ON/billingCalendarPopup.jsp?year=<%=curYear%>&month=<%=curMonth%>&type=service","380","300","0")'>Service
                         Date:</a>
                     <input type="text" name="xml_appointment_date"
                            value="<%=now.get(Calendar.YEAR)+"-"+(now.get(Calendar.MONTH)+1)+"-"+now.get(Calendar.DAY_OF_MONTH)%>"

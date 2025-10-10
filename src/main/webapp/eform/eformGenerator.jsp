@@ -1063,7 +1063,7 @@ and other liscences (MIT, LGPL etc) as indicated
                 textTop += "\tticklerToSend.priority = urgency;\n"
                 textTop += "\treturn $.ajax({\n"
                 textTop += "\t\ttype: 'POST',\n"
-                textTop += "\t\turl: '../ws/rs/tickler/add',\n"
+                textTop += "\t\turl: '<%= request.getContextPath() %>/ws/rs/tickler/add',\n"
                 textTop += "\t\tdataType:'json',\n"
                 textTop += "\t\tcontentType:'application/json',\n"
                 textTop += "\t\tdata: JSON.stringify(ticklerToSend)\n"

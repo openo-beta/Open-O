@@ -161,7 +161,7 @@
                     post_params: {"method": "multifast"},
                     use_query_string: true,
 
-                    flash_url: "../share/swfupload_f9.swf",
+                    flash_url: "<%= request.getContextPath() %>/share/swfupload_f9.swf",
 
                     file_size_limit: "100 MB",
                     file_types: "*.pdf",

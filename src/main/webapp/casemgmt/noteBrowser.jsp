@@ -401,7 +401,7 @@
         }
 
         function DocAnnotation() {
-            popup(350, 500, '../annotation/annotation.jsp?display=Documents&table_id=' + docid + '&demo=<%=demographicID%>', 'anwin');
+            popup(350, 500, '<%= request.getContextPath() %>/annotation/annotation.jsp?display=Documents&table_id=' + docid + '&demo=<%=demographicID%>', 'anwin');
         }
 
         function DocEdit() {
@@ -413,10 +413,10 @@
             var doctype = selected[0].value.substring(docidindexend + 1, selected[0].value.length);
 
             if (doctype == 'text/html') {
-                popup(450, 600, '../documentManager/addedithtmldocument.jsp?editDocumentNo=' + docid + '&function=<%=module%>&functionid=<%=demographicID%>', 'EditDoc');
+                popup(450, 600, '<%= request.getContextPath() %>/documentManager/addedithtmldocument.jsp?editDocumentNo=' + docid + '&function=<%=module%>&functionid=<%=demographicID%>', 'EditDoc');
             } else {
 
-                popup(350, 500, '../documentManager/editDocument.jsp?editDocumentNo=' + docid + '&function=<%=module%>&functionid=<%=demographicID%>', 'EditDoc');
+                popup(350, 500, '<%= request.getContextPath() %>/documentManager/editDocument.jsp?editDocumentNo=' + docid + '&function=<%=module%>&functionid=<%=demographicID%>', 'EditDoc');
             }
         }
 
