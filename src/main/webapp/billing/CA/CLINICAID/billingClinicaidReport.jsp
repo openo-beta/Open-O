@@ -155,7 +155,7 @@
 
             prop.setProperty("DESCRIPTION", reason);
 
-            String clinicaid_link = "../../billing/billingClinicAid.jsp?" +
+            String clinicaid_link = request.getContextPath() + "/billing/billingClinicAid.jsp?" +
                     "billing_action=create_invoice&" +
                     "demographic_no=" + demographic_no + "&service_start_date=" +
                     URLEncoder.encode(service_start_date, "UTF-8") +

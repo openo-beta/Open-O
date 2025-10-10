@@ -582,7 +582,7 @@
         </script>
     </head>
     <body id="body">
-    <jsp:include page="../images/spinner.jsp" flush="true"/>
+    <jsp:include page="/images/spinner.jsp" flush="true"/>
     <div id="header">
         <jsp:include page="newEncounterHeader.jsp"/>
     </div>

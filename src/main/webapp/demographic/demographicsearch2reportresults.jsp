@@ -184,7 +184,7 @@
     <table width="100%" border="0" cellpadding="0" cellspacing="1"
            bgcolor="#C0C0C0">
         <form method="post" name="addform"
-              action="../appointment/addappointment.jsp">
+              action="<%= request.getContextPath() %>/appointment/addappointment.jsp">
             <tr class="title">
                 <TH width="20%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearch2apptresults.demographicId"/></b></TH>
                 <TH width="20%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearch2apptresults.lastName"/></b></TH>

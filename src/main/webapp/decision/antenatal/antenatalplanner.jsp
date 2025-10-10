@@ -130,7 +130,7 @@
         xmlText = "<xml><planner><%=risk_content%><%=checklist_content%></planner></xml>";
     </script>
     <%
-            String riskFilePath = "../webapps/" + oscarVariables.getProperty("project_home") + "/decision/antenatal/desantenatalplannerrisks_99_12.xml";
+            String riskFilePath = application.getRealPath("/decision/antenatal/desantenatalplannerrisks_99_12.xml");
 
             File file = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "desantenatalplannerrisks_99_12.xml");
             if (file.isFile() || file.canRead()) {
@@ -170,7 +170,7 @@
         <tr>
             <td width="10%" valign='top'>
                 <%
-                    String riskFilePath = "../webapps/" + oscarVariables.getProperty("project_home") + "/decision/antenatal/desantenatalplannerrisks_99_12.xml";
+                    String riskFilePath = application.getRealPath("/decision/antenatal/desantenatalplannerrisks_99_12.xml");
 
                     File file = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "/desantenatalplannerrisks_99_12.xml");
                     if (file.isFile() || file.canRead()) {
@@ -211,7 +211,7 @@ else {
 		  }
     }
 
-    String checkListFilePath = "../webapps/"+oscarVariables.getProperty("project_home")+"/decision/antenatal/desantenatalplannerchecklist_99_12.xml";
+    String checkListFilePath = application.getRealPath("/decision/antenatal/desantenatalplannerchecklist_99_12.xml");
 
     file = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR")+"/desantenatalplannerchecklist_99_12.xml");
     if(file.isFile() || file.canRead()) {

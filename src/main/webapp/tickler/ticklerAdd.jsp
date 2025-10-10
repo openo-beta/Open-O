@@ -385,7 +385,7 @@
     </table>
 
     <div class="container-fluid well">
-        <form name="ADDAPPT" method="post" action="../appointment/appointmentcontrol.jsp">
+        <form name="ADDAPPT" method="post" action="<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp">
             <table class="table-condensed">
                 <tr>
                     <td colspan="2">

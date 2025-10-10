@@ -102,7 +102,7 @@
 <%
 
 
-        String riskFilePath = "../webapps/" + oscarVariables.getProperty("project_home") + "/decision/antenatal/desantenatalplannerrisks_99_12.xml";
+        String riskFilePath = application.getRealPath("/decision/antenatal/desantenatalplannerrisks_99_12.xml");
 
         File file = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "desantenatalplannerrisks_99_12.xml");
         if (file.isFile() || file.canRead()) {
@@ -176,7 +176,7 @@
             }
         }
 
-        String checkListFilePath = "../webapps/" + oscarVariables.getProperty("project_home") + "/decision/antenatal/desantenatalplannerchecklist_99_12.xml";
+        String checkListFilePath = application.getRealPath("/decision/antenatal/desantenatalplannerchecklist_99_12.xml");
 
         File file = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "desantenatalplannerchecklist_99_12.xml");
         if (file.isFile() || file.canRead()) {

@@ -421,7 +421,7 @@
         </style>
     </head>
     <body>
-    <jsp:include page="../../../images/spinner.jsp" flush="true"/>
+    <jsp:include page="/images/spinner.jsp" flush="true"/>
     <h3>
         <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.invoiceRpts"/>
     </h3>

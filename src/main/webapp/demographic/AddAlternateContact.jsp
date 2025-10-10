@@ -128,7 +128,7 @@
             <td valign="top" class="MainTableRightColumn">
 
                 <form id="ADDAPPT" method="post"
-                      action="../appointment/appointmentcontrol.jsp">
+                      action="<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp">
                     <div>Name: <input type="text" name="keyword" size="25" value=""/>
 
                         <input type="submit" name="Submit" value="Search"/> <input

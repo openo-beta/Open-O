@@ -380,7 +380,7 @@
     </SCRIPT>
 
     <form method="post" name="nextform"
-          action="../demographic/demographiccontrol.jsp"><input
+          action="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp"><input
             type="hidden" name="labNo" value="<%=request.getParameter("labNo")%>">
         <input type="hidden" name="labType"
                value="<%=request.getParameter("labType")%>"/> <%

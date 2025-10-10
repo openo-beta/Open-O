@@ -55,7 +55,7 @@
     <head>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.title"/></title>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
-        <jsp:include page="../images/spinner.jsp" flush="true"/>
+        <jsp:include page="/images/spinner.jsp" flush="true"/>
 
 		<script src="${pageContext.request.contextPath}/csrfguard"></script>
 

@@ -124,7 +124,7 @@
 </head>
 <body onLoad="setfocus()" bgproperties="fixed" topmargin="0"
       leftmargin="0" rightmargin="0" bgcolor="#c4e9f6">
-<form name="serviceform" action="../provider/providercontrol.jsp"
+<form name="serviceform" action="<%= request.getContextPath() %>/provider/providercontrol.jsp"
       method="POST" onSubmit="return (onSubmitForm());">
     <%
         //if bNewForm is false (0), then it should be able to display xml data.
@@ -261,7 +261,7 @@
                                                                                                     value="0"> <input
                         type="hidden" name="cmd" value="">
                     <%
-                        String newFormURL = "../provider/providercontrol.jsp?";
+                        String newFormURL = request.getContextPath() + "/provider/providercontrol.jsp?";
                         if (request.getParameter("demographic_no") != null)
                             newFormURL += "demographic_no=" + request.getParameter("demographic_no");
                         if (request.getParameter("appointment_no") != null)

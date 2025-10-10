@@ -63,7 +63,7 @@
     </head>
 
     <body class="BodyStyle" vlink="#0000FF">
-    <jsp:include page="../../../images/spinner.jsp" flush="true"/>
+    <jsp:include page="/images/spinner.jsp" flush="true"/>
     <script>
         ShowSpin(true);
         document.onreadystatechange = function () {
