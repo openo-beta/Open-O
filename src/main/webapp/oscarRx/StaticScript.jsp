@@ -229,7 +229,7 @@
                         <td><br/>
                             <br/>
                             <input type="button" value="Back To Search Drug" class="ControlPushButton"
-                                   onclick="javascript:window.location.href='oscarRx/SearchDrug.jsp';"/></td>
+                                   onclick="javascript:window.location.href='<%= request.getContextPath() %>/oscarRx/SearchDrug.jsp';"/></td>
                     </tr>
                     <!----End new rows here-->
                     <tr height="100%">

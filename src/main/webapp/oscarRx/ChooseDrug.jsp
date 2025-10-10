@@ -336,7 +336,7 @@
                             <script language="javascript">
                                 function customWarning() {
                                     if (confirm("<fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseDrug.msgCustomWarning"/>") == true) {
-                                        window.location.href = 'oscarRx/chooseDrug.do?demographicNo=<%= response.encodeURL(demoNo) %>';
+                                        window.location.href = '<%= request.getContextPath() %>/oscarRx/chooseDrug.do?demographicNo=<%= response.encodeURL(demoNo) %>';
                                     }
                                 }
                             </script>

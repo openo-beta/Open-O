@@ -402,7 +402,7 @@
                     opener.window.refresh();
                     window.close();
                 } else {
-                    window.location.href = "oscarRx/SearchDrug3.jsp";
+                    window.location.href = "<%= request.getContextPath() %>/oscarRx/SearchDrug3.jsp";
                 }
             }
 
