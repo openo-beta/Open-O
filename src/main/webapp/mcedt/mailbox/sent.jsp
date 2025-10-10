@@ -140,7 +140,7 @@
                 control.disabled = true;
             }
             var temp = jQuery("#serviceId").val();
-            window.location.href = "resourceInfo.do?resourceId=" + resourceId + "&serviceId=" + jQuery("#serviceId").val();
+            window.location.href = "<%= request.getContextPath() %>/mcedt/resourceInfo.do?resourceId=" + resourceId + "&serviceId=" + jQuery("#serviceId").val();
             return false;
 
         }
@@ -150,7 +150,7 @@
                 control.disabled = true;
             }
 
-            window.location.href = "reSubmit.do?resourceId=" + resourceId + "&serviceId=" + jQuery("#serviceId").val();
+            window.location.href = "<%= request.getContextPath() %>/mcedt/reSubmit.do?resourceId=" + resourceId + "&serviceId=" + jQuery("#serviceId").val();
             return false;
 
         }

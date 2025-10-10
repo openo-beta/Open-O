@@ -126,7 +126,7 @@
     }
     
     // Redirect to demographic search page to select message recipients
-    response.sendRedirect("Transfer/DemographicSearch.jsp");
+    response.sendRedirect(request.getContextPath() + "/messenger/Transfer/DemographicSearch.jsp");
 %>
 <%
     // Debug output placeholder - originally used to display processed XML

@@ -163,7 +163,7 @@
                     }
                 }
             }
-            response.sendRedirect("scheduletemplateapplying.jsp?provider_no=" + param[0] + "&provider_name=" + URLEncoder.encode(request.getParameter("provider_name")));
+            response.sendRedirect(request.getContextPath() + "/schedule/scheduletemplateapplying.jsp?provider_no=" + param[0] + "&provider_name=" + URLEncoder.encode(request.getParameter("provider_name")));
         } else {
     %>
 

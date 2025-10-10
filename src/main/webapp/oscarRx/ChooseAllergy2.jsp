@@ -90,20 +90,20 @@
                 if (isEmpty() == true) {
                     name = name.toUpperCase();
                     alert(name);
-                    window.location = "addReaction2.do?ID=0&type=0&name=" + name;
+                    window.location = "<%= request.getContextPath() %>/oscarRx/addReaction2.do?ID=0&type=0&name=" + name;
                 }
             }
 
             function addPenicillinAllergy() {
-                window.location = "addReaction2.do?ID=44452&name=PENICILLINS&type=10";
+                window.location = "<%= request.getContextPath() %>/oscarRx/addReaction2.do?ID=44452&name=PENICILLINS&type=10";
             }
 
             function addSulfonamideAllergy() {
-                window.location = "addReaction2.do?ID=44159&name=SULFONAMIDES&type=10";
+                window.location = "<%= request.getContextPath() %>/oscarRx/addReaction2.do?ID=44159&name=SULFONAMIDES&type=10";
             }
 
             function addCustomNKDA() {
-                window.location = "addReaction2.do?ID=0&type=0&name=NKDA";
+                window.location = "<%= request.getContextPath() %>/oscarRx/addReaction2.do?ID=0&type=0&name=NKDA";
             }
 
             function toggleSection(typecode) {
@@ -134,8 +134,8 @@
                        height="100%">
                     <tr>
                         <td width="0%" valign="top">
-                            <div class="DivCCBreadCrumbs"><a href="SearchDrug3.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a>&nbsp;&gt;&nbsp; <a
-                                    href="ShowAllergies2.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="EditAllergies.title"/></a>&nbsp;&gt;&nbsp; <b><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseAllergy.title"/></b></div>
+                            <div class="DivCCBreadCrumbs"><a href="<%= request.getContextPath() %>/oscarRx/SearchDrug3.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.title"/></a>&nbsp;&gt;&nbsp; <a
+                                    href="<%= request.getContextPath() %>/oscarRx/ShowAllergies2.jsp"> <fmt:setBundle basename="oscarResources"/><fmt:message key="EditAllergies.title"/></a>&nbsp;&gt;&nbsp; <b><fmt:setBundle basename="oscarResources"/><fmt:message key="ChooseAllergy.title"/></b></div>
                         </td>
                     </tr>
                     <!----Start new rows here-->
@@ -245,14 +245,14 @@
                                                     <!-- 判断是否为平铺结果显示 -->
                                                     <c:if test="${flatResults}">
                                                         <c:forEach var="allergy" items="${flatMap}">
-                                                            <a href="addReaction.do?ID=${allergy.value.drugrefId}&name=${fn:escapeXml(allergy.value.description)}&type=${allergy.value.typeCode}">
+                                                            <a href="<%= request.getContextPath() %>/oscarRx/addReaction.do?ID=${allergy.value.drugrefId}&name=${fn:escapeXml(allergy.value.description)}&type=${allergy.value.typeCode}">
                                                                     ${allergy.value.description}
                                                             </a>
 
                                                             <!-- 显示药物分类 -->
                                                             <c:forEach var="drugClass" items="${drugClassHash[allergy.value.drugrefId]}">
                                                                 &nbsp;&nbsp;&nbsp;
-                                                                <a style="color: orange" href="addReaction.do?ID=${drugClass[0]}&name=${fn:escapeXml(drugClass[1])}&type=10">
+                                                                <a style="color: orange" href="<%= request.getContextPath() %>/oscarRx/addReaction.do?ID=${drugClass[0]}&name=${fn:escapeXml(drugClass[1])}&type=10">
                                                                         ${drugClass[1]}
                                                                 </a>
                                                             </c:forEach>
@@ -273,14 +273,14 @@
 
                                                                 <div id="${type}_content" style="display: ${type == 11 || type == 12 ? 'none' : 'block'}">
                                                                     <c:forEach var="allergy" items="${allergyResults[type]}">
-                                                                        <a href="addReaction.do?ID=${allergy.drugrefId}&name=${fn:escapeXml(allergy.description)}&type=${allergy.typeCode}">
+                                                                        <a href="<%= request.getContextPath() %>/oscarRx/addReaction.do?ID=${allergy.drugrefId}&name=${fn:escapeXml(allergy.description)}&type=${allergy.typeCode}">
                                                                                 ${allergy.description}
                                                                         </a>
 
                                                                         <!-- 显示药物分类 -->
                                                                         <c:forEach var="drugClass" items="${drugClassHash[allergy.drugrefId]}">
                                                                             &nbsp;&nbsp;&nbsp;
-                                                                            <a style="color: orange" href="addReaction.do?ID=${drugClass[0]}&name=${fn:escapeXml(drugClass[1])}&type=10">
+                                                                            <a style="color: orange" href="<%= request.getContextPath() %>/oscarRx/addReaction.do?ID=${drugClass[0]}&name=${fn:escapeXml(drugClass[1])}&type=10">
                                                                                     ${drugClass[1]}
                                                                             </a>
                                                                         </c:forEach>
@@ -295,7 +295,7 @@
                                         </div>
 
                                         <%
-                                            String sBack = "ShowAllergies2.jsp";
+                                            String sBack = request.getContextPath() + "/oscarRx/ShowAllergies2.jsp";
                                         %> <input type=button class="ControlPushButton"
                                                   onclick="javascript:window.location.href='<%=sBack%>';"
                                                   value="Back to View Allergies"/></td>

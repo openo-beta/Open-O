@@ -139,7 +139,7 @@
     if (bean == null) {
         bean = (MsgSessionBean) request.getSession().getAttribute("msgSessionBean");
         if (bean == null) {
-            response.sendRedirect("errorpage.jsp?message=Session expired");
+            response.sendRedirect(request.getContextPath() + "/errorpage.jsp?message=Session expired");
             return;
         }
     }

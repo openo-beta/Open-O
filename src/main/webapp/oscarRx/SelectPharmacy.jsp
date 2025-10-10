@@ -107,7 +107,7 @@
                     <tr>
                         <td>
                             <div class="DivContentSectionHead"><a
-                                    href="oscarRx/ManagePharmacy.jsp?type=Add"><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.addLink"/></a></div>
+                                    href="<%= request.getContextPath() %>/oscarRx/ManagePharmacy.jsp?type=Add"><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.addLink"/></a></div>
                         </td>
                     </tr>
                     <tr>
@@ -132,7 +132,7 @@
                                     %>
                                     <tr>
                                         <td><a
-                                                href="LinkPharmacy.do?ID=<%=ph.getId()%>&DemoId=<%=patient.getDemographicNo()%>"><%=ph.getName()%>
+                                                href="<%= request.getContextPath() %>/oscarRx/LinkPharmacy.do?ID=<%=ph.getId()%>&DemoId=<%=patient.getDemographicNo()%>"><%=ph.getName()%>
                                         </a></td>
                                         <td><%=ph.getAddress()%>
                                         </td>
@@ -142,8 +142,8 @@
                                         </td>
                                         <td><%=ph.getFax()%>
                                         </td>
-                                        <td><a href="oscarRx/ManagePharmacy.jsp?type=Edit&ID=<%=ph.getId()%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.editLink"/></a></td>
-                                        <td><a href="oscarRx/ManagePharmacy.jsp?type=Delete&ID=<%=ph.getId()%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.deleteLink"/></a></td>
+                                        <td><a href="<%= request.getContextPath() %>/oscarRx/ManagePharmacy.jsp?type=Edit&ID=<%=ph.getId()%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.editLink"/></a></td>
+                                        <td><a href="<%= request.getContextPath() %>/oscarRx/ManagePharmacy.jsp?type=Delete&ID=<%=ph.getId()%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.deleteLink"/></a></td>
                                     </tr>
                                     <% } %>
                                 </table>

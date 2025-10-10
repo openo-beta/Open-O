@@ -122,7 +122,7 @@
             if (pinUpdateRequired) {
                 errorMsg = "PIN Update Sucsessfull However, " + errorMsg;
             }
-            response.sendRedirect("providerchangepassword.jsp?errormsg=" + errorMsg);
+            response.sendRedirect(request.getContextPath() + "/provider/providerchangepassword.jsp?errormsg=" + errorMsg);
         }
 
         out.println("<script language='javascript'>self.close();</script>");

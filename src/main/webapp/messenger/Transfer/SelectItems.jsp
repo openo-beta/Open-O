@@ -247,11 +247,11 @@
             xmlDoc = gen.getDocument(demographicNo);
         } catch (Exception ex) {
             MiscUtils.getLogger().error("Error generating document XML", ex);
-            response.sendRedirect("error.html");
+            response.sendRedirect(request.getContextPath() + "/messenger/Transfer/error.html");
         }
 
         if (xmlDoc == null) {
-            response.sendRedirect("error.html");
+            response.sendRedirect(request.getContextPath() + "/messenger/Transfer/error.html");
         }
 
         Element root = xmlDoc.getDocumentElement();

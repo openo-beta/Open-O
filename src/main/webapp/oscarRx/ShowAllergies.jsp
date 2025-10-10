@@ -166,16 +166,16 @@
                 var name = document.getElementById('searchString').value;
                 if (isEmpty() == true) {
                     name = name.toUpperCase();
-                    window.location = "addReaction.do?ID=0&type=0&name=" + encodeURIComponent(name);
+                    window.location = "<%= request.getContextPath() %>/oscarRx/addReaction.do?ID=0&type=0&name=" + encodeURIComponent(name);
                 }
             }
 
             function moveAllergyDown(allergyId) {
-                window.location = "showAllergy.do?method=reorder&direction=down&demographicNo=" + <%=bean.getDemographicNo()%> +"&allergyId=" + allergyId;
+                window.location = "<%= request.getContextPath() %>/oscarRx/showAllergy.do?method=reorder&direction=down&demographicNo=" + <%=bean.getDemographicNo()%> +"&allergyId=" + allergyId;
             }
 
             function moveAllergyUp(allergyId) {
-                window.location = "showAllergy.do?method=reorder&direction=up&demographicNo=" + <%=bean.getDemographicNo()%> +"&allergyId=" + allergyId;
+                window.location = "<%= request.getContextPath() %>/oscarRx/showAllergy.do?method=reorder&direction=up&demographicNo=" + <%=bean.getDemographicNo()%> +"&allergyId=" + allergyId;
             }
 
             function show_Search_Criteria() {
@@ -404,7 +404,7 @@
                                                         <%
                                                             if (displayAllergy.getRemoteFacilityId() == null && securityManager.hasDeleteAccess("_allergies", roleName2$)) {
                                                         %>
-                                                        <a href="deleteAllergy.do?ID=<%= String.valueOf(displayAllergy.getId()) %>&demographicNo=<%=demoNo %>&action=<%=actionPath %>"
+                                                        <a href="<%= request.getContextPath() %>/oscarRx/deleteAllergy.do?ID=<%= String.valueOf(displayAllergy.getId()) %>&demographicNo=<%=demoNo %>&action=<%=actionPath %>"
                                                            onClick="return confirm('Are you sure you want to set the allergy <%=displayAllergy.getDescription() %> to <%=labelConfirmAction%>?');"><%=labelAction%>
                                                         </a>
                                                         <% } %>

@@ -484,11 +484,11 @@ maybe use jquery/ajax to post this data instead of submitting a form to send ALL
             <div class="module-block DoNotPrint">
                 <%if (!printView) {%>
                 <%if (request.getParameter("htracker") != null) {%>
-                <a href="HealthTrackerPage.jspf?demographic_no=<%=demographic_no%>&template=<%=temp%>"
+                <a href="<%= request.getContextPath() %>/oscarEncounter/oscarMeasurements/HealthTrackerPage.jspf?demographic_no=<%=demographic_no%>&template=<%=temp%>"
                    title="go back to <%=temp%>">&lt;&lt; <%=flowSheet%>
                 </a> <br/>
                 <%} else {%>
-                <a href="TemplateFlowSheet.jsp?demographic_no=<%=demographic_no%>&template=<%=temp%>"
+                <a href="<%= request.getContextPath() %>/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp?demographic_no=<%=demographic_no%>&template=<%=temp%>"
                    title="go back to <%=temp%>">&lt;&lt; <%=flowSheet%>
                 </a> <br/>
                 <%} %>
