@@ -869,7 +869,7 @@
                     <td width="2"><%=j%><%j++;%></td>
                     <td width="1"></td>
                     <td width="300"><a href="javascript:void(0);"
-                                       onclick="popupPage(600,800,'../oscarReport/reportByTemplate/homePage.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.rptbyTemplate"/></a></td>
+                                       onclick="popupPage(600,800,'<%= request.getContextPath() %>/oscarReport/reportByTemplate/homePage.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.rptbyTemplate"/></a></td>
 
                 </tr>
             </security:oscarSec>
