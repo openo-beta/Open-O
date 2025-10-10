@@ -42,7 +42,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%
     if (session.getValue("user") == null)
-        response.sendRedirect("../logout.jsp");
+        response.sendRedirect(request.getContextPath() + "/logout.jsp");
 %>
 <%@page import="java.util.*, ca.openosp.openo.demographic.data.*" %>
 <%@page import="ca.openosp.openo.billing.ca.bc.data.*,ca.openosp.openo.billing.ca.bc.pageUtil.*,ca.openosp.*,ca.openosp.oscarClinic.*" %>

@@ -45,7 +45,7 @@
 %>
 
 <%@ page import="java.util.*, java.sql.*, ca.openosp.openo.util.*,ca.openosp.*" errorPage="/errorpage.jsp" %>
-<%@ include file="../../../admin/dbconnection.jsp" %>
+<%@ include file="/admin/dbconnection.jsp" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.billing.CA.model.BillActivity" %>
 <%@page import="ca.openosp.openo.commn.model.Provider" %>

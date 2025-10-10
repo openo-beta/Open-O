@@ -94,7 +94,7 @@
 %>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
 
-<%@ include file="../admin/dbconnection.jsp" %>
+<%@ include file="/admin/dbconnection.jsp" %>
 <%
     java.util.Locale vLocale = request.getLocale();
 

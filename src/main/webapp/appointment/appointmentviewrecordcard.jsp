@@ -65,7 +65,7 @@
             }
         </style>
     </head>
-    <body background="../images/gray_bg.jpg"
+    <body background="<%= request.getContextPath() %>/images/gray_bg.jpg"
           bgproperties="fixed" onload="window.print()">
     <center>
         <div class="DoNotPrint">

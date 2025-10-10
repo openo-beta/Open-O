@@ -50,7 +50,7 @@
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%
     if (session.getAttribute("userrole") == null) {
-        response.sendRedirect("../logout.jsp");
+        response.sendRedirect(request.getContextPath() + "/logout.jsp");
     }
 
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);

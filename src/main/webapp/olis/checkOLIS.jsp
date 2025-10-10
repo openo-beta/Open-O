@@ -38,11 +38,11 @@
 <%
     if (session.getAttribute("userrole") == null) {
 
-        response.sendRedirect("../logout.jsp");
+        response.sendRedirect(request.getContextPath() + "/logout.jsp");
     }
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 %><security:oscarSec roleName="<%=roleName$%>" objectName="_admin" rights="r" reverse="<%=true%>"><%
-    response.sendRedirect("../logout.jsp");
+    response.sendRedirect(request.getContextPath() + "/logout.jsp");
 %></security:oscarSec>
 <%
 

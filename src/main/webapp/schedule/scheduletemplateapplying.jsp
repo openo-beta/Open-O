@@ -50,10 +50,10 @@
 <html>
 
     <%
-        if (session.getAttribute("user") == null) response.sendRedirect("../logout.jsp");
+        if (session.getAttribute("user") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
         String CurProviderNo = (String) session.getAttribute("user");
 
-        if (session.getAttribute("userrole") == null) response.sendRedirect("../logout.jsp");
+        if (session.getAttribute("userrole") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
         String CurRoleName = session.getAttribute("userrole") + "," + session.getAttribute("user");
 
         boolean isSiteAccessPrivacy = false;

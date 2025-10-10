@@ -25,7 +25,7 @@
 --%>
 
 <%
-    if (session.getValue("user") == null) response.sendRedirect("../logout.jsp");
+    if (session.getValue("user") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
     String demographic_no = request.getParameter("demographic_no") != null ? request.getParameter("demographic_no") : ("null");
     String form_no = request.getParameter("formId") != null ? request.getParameter("formId") : ("0");
     String query_name = request.getParameter("query_name") != null ? request.getParameter("query_name") : ("");
@@ -36,7 +36,7 @@
 <jsp:useBean id="riskDataBean" class="java.util.Properties" scope="page"/>
 <jsp:useBean id="risks" class="ca.openosp.openo.decision.DesAntenatalPlannerRisks_99_12" scope="page"/>
 <jsp:useBean id="checklist" class="ca.openosp.openo.decision.DesAntenatalPlannerChecklist_99_12" scope="page"/>
-<%@ include file="../../admin/dbconnection.jsp" %>
+<%@ include file="/../admin/dbconnection.jsp" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.model.Desaprisk" %>
 <%@page import="ca.openosp.openo.commn.dao.DesapriskDao" %>

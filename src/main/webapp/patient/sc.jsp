@@ -36,7 +36,7 @@
 <jsp:useBean id="checklist" class="ca.openosp.OBChecklist_99_12" scope="page"/>
 <jsp:useBean id="risks" class="ca.openosp.OBRisks_99_12" scope="page"/>
 
-<%@ include file="../admin/dbconnection.jsp" %>
+<%@ include file="/admin/dbconnection.jsp" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.DemographicAccessoryDao" %>
 <%@page import="ca.openosp.openo.commn.model.DemographicAccessory" %>

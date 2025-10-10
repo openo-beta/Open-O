@@ -40,7 +40,7 @@
 %>
 
 <%
-    if (session.getAttribute("user") == null) response.sendRedirect("../logout.jsp");
+    if (session.getAttribute("user") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
     String deepcolor = "#CCCCFF", weakcolor = "#EEEEFF", tableTitle = "#99ccff";
     boolean bEdit = request.getParameter("appointment_no") != null ? true : false;
 %>

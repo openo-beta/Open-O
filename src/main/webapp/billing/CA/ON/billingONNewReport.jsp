@@ -42,7 +42,7 @@
 %>
 
 <%@ page import="java.util.*, java.sql.*, ca.openosp.openo.login.*, ca.openosp.*, java.net.*" errorPage="/errorpage.jsp" %>
-<%@ include file="../../../admin/dbconnection.jsp" %>
+<%@ include file="/admin/dbconnection.jsp" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.ReportProvider" %>
 <%@ page import="ca.openosp.openo.commn.dao.ReportProviderDao" %>

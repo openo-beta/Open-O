@@ -39,7 +39,7 @@
 <jsp:useBean id="daySheetBean" class="ca.openosp.AppointmentMainBean" scope="page"/>
 <jsp:useBean id="myGroupBean" class="java.util.Properties" scope="page"/>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
-<%@ include file="../admin/dbconnection.jsp" %>
+<%@ include file="/admin/dbconnection.jsp" %>
 <%@ page import="java.util.*, java.sql.*, ca.openosp.*, java.text.*" %>
 <%@ page import="ca.openosp.openo.commn.dao.AppointmentArchiveDao" %>
 <%@ page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>

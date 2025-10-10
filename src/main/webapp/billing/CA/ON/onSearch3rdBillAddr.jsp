@@ -23,7 +23,7 @@
 <%
     //
     if (session.getAttribute("user") == null) {
-        response.sendRedirect("../logout.jsp");
+        response.sendRedirect(request.getContextPath() + "/logout.jsp");
     }
     String strLimit1 = request.getParameter("limit1") == null ? "1" : request.getParameter("limit1");
     String strLimit2 = request.getParameter("limit2") == null ? "25" : request.getParameter("limit2");

@@ -29,7 +29,7 @@
     ReportProviderDao reportProviderDao = SpringUtils.getBean(ReportProviderDao.class);
 %>
 
-<%@ include file="../../../../../admin/dbconnection.jsp" %>
+<%@ include file="/admin/dbconnection.jsp" %>
 
 <%
     GregorianCalendar now = new GregorianCalendar();
