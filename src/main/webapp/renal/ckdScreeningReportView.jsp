@@ -35,7 +35,7 @@
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_report" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_report");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_report");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -199,7 +199,7 @@
             .info {
                 color: #00529B;
                 background-color: #BDE5F8;
-                background-image: url('../images/info_msgbox.png');
+                background-image: url('<%= request.getContextPath() %>/images/info_msgbox.png');
             }
 
         </style>

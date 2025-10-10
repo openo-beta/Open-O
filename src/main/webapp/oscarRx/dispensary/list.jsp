@@ -41,7 +41,7 @@
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_dispensing" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_dispensing");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_dispensing");%>
 </security:oscarSec>
 <%
     if (!authed) {

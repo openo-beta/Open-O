@@ -1405,7 +1405,7 @@
             StringBuffer tt;
             if (f != null) {
                 temp = f.getContent();
-                Properties savedar1risk1 = risks.getRiskName("../webapps/" + oscarVariables.getProperty("project_home") + "/providers/obarrisks_99_12.xml");
+                Properties savedar1risk1 = risks.getRiskName(application.getRealPath("/providers/obarrisks_99_12.xml"));
                 for (Enumeration e = savedar1risk1.propertyNames(); e.hasMoreElements(); ) {
                     tt = new StringBuffer().append(e.nextElement());
                     if (SxmlMisc.getXmlContent(temp, savedar1risk1.getProperty(tt.toString())) != null)
@@ -1595,7 +1595,7 @@
                 if (SxmlMisc.getXmlContent(temp, "<xml_nadref>", "</xml_nadref>") != null)
                     savedar1risk.setProperty("75", "xml_nadref");
             }
-            out.println(checklist.doStuff(new String("../webapps/" + oscarVariables.getProperty("project_home") + "/providers/obarchecklist_99_12.xml"), savedar1risk));
+            out.println(checklist.doStuff(new String(application.getRealPath("/providers/obarchecklist_99_12.xml"), savedar1risk)));
         }
     }
 

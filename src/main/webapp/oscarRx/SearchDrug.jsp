@@ -44,7 +44,7 @@
 %>
 <security:oscarSec roleName="<%=roleName2$%>" objectName="_rx" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_rx");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_rx");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -154,7 +154,7 @@
 
 
             function goOMD() {
-                var docURL = "../commons/OntarioMDRedirect.jsp?keyword=eCPS&params=" + document.RxSearchDrugForm.searchString.value;
+                var docURL = "<%= request.getContextPath() %>/common/OntarioMDRedirect.jsp?keyword=eCPS&params=" + document.RxSearchDrugForm.searchString.value;
                 popupDrugOfChoice(743, 817, docURL);
             }
 
