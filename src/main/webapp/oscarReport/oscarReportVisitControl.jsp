@@ -31,7 +31,7 @@
 %>
 <security:oscarSec roleName="<%=roleName2$%>" objectName="_report,_admin.reporting" rights="r" reverse="<%=true%>">
     <%authed2 = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_report&type=_admin.reporting");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_report&type=_admin.reporting");%>
 </security:oscarSec>
 <%
     if (!authed2) {
@@ -105,7 +105,7 @@
 <body>
 <div class="hidden-print" style="float:right;">
     <a style="font-size:10px" href="#"
-       onclick="popupPage(700,720,'../oscarReport/manageProvider.jsp?action=visitreport')">Manage Visit Report
+       onclick="popupPage(700,720,'<%= request.getContextPath() %>/oscarReport/manageProvider.jsp?action=visitreport')">Manage Visit Report
         Providers</a>
 </div>
 

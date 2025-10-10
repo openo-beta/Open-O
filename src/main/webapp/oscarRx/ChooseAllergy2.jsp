@@ -31,7 +31,7 @@
 %>
 <security:oscarSec roleName="<%=roleName2$%>" objectName="_allergy" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_allergy");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_allergy");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -109,10 +109,10 @@
             function toggleSection(typecode) {
                 var imgsrc = document.getElementById(typecode + "_img").src;
                 if (imgsrc.indexOf('expander') != -1) {
-                    document.getElementById(typecode + "_img").src = '../images/collapser.png';
+                    document.getElementById(typecode + "_img").src = '<%= request.getContextPath() %>/images/collapser.png';
                     Effect.BlindDown(document.getElementById(typecode + "_content"), {duration: 0.1});
                 } else {
-                    document.getElementById(typecode + "_img").src = '../images/expander.png';
+                    document.getElementById(typecode + "_img").src = '<%= request.getContextPath() %>/images/expander.png';
                     Effect.BlindUp(document.getElementById(typecode + "_content"), {duration: 0.1});
                 }
 
