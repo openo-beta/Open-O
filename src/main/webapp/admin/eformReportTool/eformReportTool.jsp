@@ -192,7 +192,7 @@
                     });
 
             function fetchEFormsAndOpenDialog() {
-                jQuery.getJSON("<%= request.getContextPath() %>/ws/rs/forms/allEForms", {}, function (xml) {
+                jQuery.getJSON("../../ws/rs/forms/allEForms", {}, function (xml) {
                     $("#eformReportToolEformId option").remove();
                     //alert(JSON.stringify(xml));
                     if (xml.content) {

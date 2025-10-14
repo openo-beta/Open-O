@@ -186,7 +186,7 @@
                     <tr>
                         <td>
                             <%
-                                String sBack = "<%= request.getContextPath() %>/oscarRx/SearchDrug.jsp";
+                                String sBack = request.getContextPath() + "/oscarRx/SearchDrug.jsp";
                             %> <input type=button class="ControlPushButton"
                                       onclick="javascript:window.location.href='<%=sBack%>';"
                                       value="Back to Search Drug"/></td>
