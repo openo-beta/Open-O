@@ -32,11 +32,8 @@ function onPrint() {
     var ret = checkAllDates();
     if (ret == true) {
         //ret = confirm("Do you wish to save this form and view the print preview?");
-        // Note: This JS file cannot use JSP tags. Context path should be passed as parameter
-        // or this function should be overridden in the including JSP page
-        var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
-        popupFixedPage(650, 850, contextPath + '/provider/notice.htm');
-        document.forms[0].action = contextPath + "/form/createpdf?__title=&__cfgfile=&__cfgfile=&__template=";
+        popupFixedPage(650, 850, '../provider/notice.htm');
+        document.forms[0].action = "../form/createpdf?__title=&__cfgfile=&__cfgfile=&__template=";
         document.forms[0].target = "planner";
         document.forms[0].submit();
         document.forms[0].target = "apptProviderSearch";
