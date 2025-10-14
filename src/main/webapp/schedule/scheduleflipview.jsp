@@ -85,7 +85,7 @@
     String originalPagePath = request.getContextPath() + "/provider/providercontrol.jsp";
 
     if (originalPage.equals("waitingList")) {
-        originalPagePath = "<%= request.getContextPath() %>/oscarWaitingList/DisplayWaitingList.jsp";
+        originalPagePath = request.getContextPath() + "/oscarWaitingList/DisplayWaitingList.jsp";
     }
 %>
 <%@ page

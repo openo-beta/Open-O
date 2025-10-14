@@ -261,9 +261,9 @@
                                                 String labURL = "";
 
                                                 if (labType != null && labType.equals("CML")) {
-                                                    labURL = request.getContextPath() + /lab/CA/ON/CMLDisplay.jsp?providerNo=" + pros + "&segmentID=" + lab_no;
+                                                    labURL = request.getContextPath() + "/lab/CA/ON/CMLDisplay.jsp?providerNo=" + pros + "&segmentID=" + lab_no;
                                                 } else {
-                                                    labURL = request.getContextPath() + /oscarMDS/SegmentDisplay.jsp?providerNo=" + pros + "&segmentID=" + lab_no;
+                                                    labURL = request.getContextPath() + "/oscarMDS/SegmentDisplay.jsp?providerNo=" + pros + "&segmentID=" + lab_no;
                                                 }
 
                                         %>
