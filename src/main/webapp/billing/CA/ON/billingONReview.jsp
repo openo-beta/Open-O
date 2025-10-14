@@ -1311,7 +1311,7 @@
 
     function addToDiseaseRegistry() {
         if (validateItems()) {
-            var url = "<%=request.getContextPath()%>/oscarResearch/dxresearch/dxResearch.do";
+            var url = "<%=request.getContextPath()%>/oscarResearch/oscarDxResearch/dxResearch.do";
             //var data = Form.serialize(dxForm);
             data = jQuery('#dxForm').serialize();
             //new Ajax.Updater('dxListing',url, {method: 'post',postBody: data,asynchronous:true,onComplete: getNewCurrentDxCodeList});
@@ -1341,7 +1341,7 @@
 
     function getNewCurrentDxCodeList(origRequest) {
         //alert("calling get NEW current Dx Code List");
-        var url = "<%= request.getContextPath() %>/oscarResearch/dxresearch/currentCodeList.jsp";
+        var url = "<%= request.getContextPath() %>/oscarResearch/oscarDxResearch/currentCodeList.jsp";
         var ran_number = Math.round(Math.random() * 1000000);
         var params = "demographicNo=<%=demo_no%>&rand=" + ran_number;  //hack to get around ie caching the page
         //alert(params);

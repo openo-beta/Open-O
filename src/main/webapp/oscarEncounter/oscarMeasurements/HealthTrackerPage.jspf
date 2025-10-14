@@ -1768,7 +1768,7 @@ $(document).ready(function () {
     $("[rel=tooltip]").tooltip();
 
     $("[id^=dxlink]").on( "click", function(){
-        var link = "<%=request.getContextPath()%>/oscarResearch/dxresearch/dxResearch.do";
+        var link = "<%=request.getContextPath()%>/oscarResearch/oscarDxResearch/dxResearch.do";
         //alert(link);
         $.ajax({
             url: link,

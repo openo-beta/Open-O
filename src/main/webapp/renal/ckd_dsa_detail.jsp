@@ -179,7 +179,7 @@
 
     dxs = dxResearchDao.findByDemographicNoResearchCodeAndCodingSystem(Integer.parseInt(demographicNo), "585", "icd9");
     if (dxs.size() == 0) {
-        String popupUrl = request.getContextPath() + "/oscarResearch/dxresearch/dxResearch.do"
+        String popupUrl = request.getContextPath() + "/oscarResearch/oscarDxResearch/dxResearch.do"
                         + "?selectedCodingSystem=icd9"
                         + "&xml_research1=585"
                         + "&xml_research2="
