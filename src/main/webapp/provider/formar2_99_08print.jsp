@@ -691,7 +691,7 @@
 <div ID="graphic"
      STYLE="position:absolute; visibility:visible; z-index:2; left:<%=3+oox%>px; top:<%=653+ooy%>px; width:501px; height:280px;">
     <embed type="image/svg+xml"
-           src="<%= request.getContextPath() %>/form/formar2svg.jsp?bgimage=<%=URLEncoder.encode("<%= request.getContextPath() %>/images/formar2_99_08gra.gif")%>&bgimagewidth=222&bgimageheight=276<%=urlparam%>"
+        src="<%= request.getContextPath() %>/form/formar2svg.jsp?bgimage=<%=URLEncoder.encode("../images/formar2_99_08gra.gif")%>&bgimagewidth=222&bgimageheight=276<%=urlparam%>"
            width="221" height="276" wmode="transparent"/>
 </div>
 <%

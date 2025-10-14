@@ -1595,7 +1595,7 @@
                 if (SxmlMisc.getXmlContent(temp, "<xml_nadref>", "</xml_nadref>") != null)
                     savedar1risk.setProperty("75", "xml_nadref");
             }
-            out.println(checklist.doStuff(new String(application.getRealPath("/providers/obarchecklist_99_12.xml"), savedar1risk)));
+            out.println(checklist.doStuff(application.getRealPath("/providers/obarchecklist_99_12.xml"), savedar1risk));
         }
     }
 
