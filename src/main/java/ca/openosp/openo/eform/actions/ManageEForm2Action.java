@@ -67,7 +67,11 @@ public class ManageEForm2Action extends ActionSupport {
         MiscUtils.getLogger().debug("fid: " + fid);
         response.setContentType("application/zip");  //octet-stream
         EForm eForm = new EForm(fid, "1");
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + eForm.getFormName().replaceAll("\\s", fid) + ".zip\"");
+        
+        // Sanitize the form name to prevent HTTP response splitting attacks
+        String sanitizedFormName = sanitizeHeaderValue(eForm.getFormName().replaceAll("\\s", fid));
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + sanitizedFormName + ".zip\"");
+        
         EFormExportZip eFormExportZip = new EFormExportZip();
         List<EForm> eForms = new ArrayList<EForm>();
         eForms.add(eForm);
@@ -104,5 +108,30 @@ public class ManageEForm2Action extends ActionSupport {
 
     public void setZippedForm(File zippedForm) {
         this.zippedForm = zippedForm;
+    }
+    
+    /**
+     * Sanitizes a string value to make it safe for use in HTTP headers.
+     * This method removes control characters that could be used for HTTP response splitting attacks.
+     * 
+     * @param value The string value to sanitize (typically a filename)
+     * @return The sanitized string safe for use in HTTP headers
+     */
+    private String sanitizeHeaderValue(String value) {
+        if (value == null) {
+            return "";
+        }
+        
+        // Remove all control characters including CR (\r) and LF (\n)
+        // This prevents HTTP response splitting attacks
+        // Also remove other control characters that could cause issues
+        String sanitized = value.replaceAll("[\r\n\u0000-\u001F\u007F-\u009F]", "");
+        
+        // Ensure the filename is not empty after sanitization
+        if (sanitized.trim().isEmpty()) {
+            return "download";
+        }
+        
+        return sanitized;
     }
 }

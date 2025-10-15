@@ -25,6 +25,7 @@ package ca.openosp.openo.integration.mcedt.mailbox;
 
 import ca.ontario.health.edt.*;
 import com.opensymphony.xwork2.ActionSupport;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.cxf.helpers.FileUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -100,12 +101,11 @@ public class Upload2Action extends ActionSupport {
         ActionUtils.removeUploadResourceId(request);
         ActionUtils.removeUploadFileName(request);
         List<File> files = ActionUtils.getSuccessfulUploads(request);
-        OscarProperties props = OscarProperties.getInstance();
-        File sent = new File(props.getProperty("ONEDT_SENT", ""));
-        if (!sent.exists())
-            FileUtils.mkDir(sent);
 
         try {
+            // Get validated sent directory
+            File sent = getValidatedSentDirectory();
+            
             if (files != null && files.size() > 0) {
                 for (File file : files) {
                     ActionUtils.moveFileToDirectory(file, sent, false, true);
@@ -154,8 +154,10 @@ public class Upload2Action extends ActionSupport {
 
                 if (result.getResponse().get(0).getResult().getCode().equals("IEDTS0001")) {
                     ActionUtils.setUploadResourceId(request, result.getResponse().get(0).getResourceID());
-                    OscarProperties props = OscarProperties.getInstance();
-                    File file = new File(props.getProperty("ONEDT_OUTBOX", "") + this.getFileName());
+                    // Sanitize filename to prevent path traversal
+                    String sanitizedFileName = FilenameUtils.getName(this.getFileName());
+                    File outboxDir = getValidatedOutboxDirectory();
+                    File file = new File(outboxDir, sanitizedFileName);
                     ActionUtils.setSuccessfulUploads(request, file);
                 } else {
                     ActionUtils.setUploadResourceId(request, new BigInteger("-2"));
@@ -242,16 +244,34 @@ public class Upload2Action extends ActionSupport {
                 }
 
                 List<BigInteger> ids = new ArrayList<BigInteger>();
-                OscarProperties props = OscarProperties.getInstance();
-                File sent = new File(props.getProperty("ONEDT_SENT", ""));
-                if (!sent.exists())
-                    FileUtils.mkDir(sent);
+                
+                // Get validated directories
+                File sent = getValidatedSentDirectory();
+                File outboxDir = getValidatedOutboxDirectory();
+                String canonicalOutboxPath = outboxDir.getCanonicalPath();
+                
                 for (ResponseResult edtResponse : result.getResponse()) {
                     if (edtResponse.getResult().getCode().equals("IEDTS0001")) {
                         ids.add(edtResponse.getResourceID());
-                        File file = new File(props.getProperty("ONEDT_OUTBOX", "") + edtResponse.getDescription());
-                        ActionUtils.moveFileToDirectory(file, sent, false, true);
-                        successUploads.add(McedtMessageCreator.resourceResultToString(result));
+                        // Sanitize filename to prevent path traversal
+                        String sanitizedFileName = FilenameUtils.getName(edtResponse.getDescription());
+                        File file = new File(outboxDir, sanitizedFileName);
+                        
+                        // Validate canonical path before moving file
+                        try {
+                            String canonicalFilePath = file.getCanonicalPath();
+                            
+                            if (!canonicalFilePath.startsWith(canonicalOutboxPath + File.separator)) {
+                                logger.error("Attempted path traversal detected for file move: " + edtResponse.getDescription());
+                                continue; // Skip this file and continue with others
+                            }
+                            
+                            ActionUtils.moveFileToDirectory(file, sent, false, true);
+                            successUploads.add(McedtMessageCreator.resourceResultToString(result));
+                        } catch (IOException ex) {
+                            logger.error("Error validating file path for move: " + sanitizedFileName, ex);
+                            failUploads.add(edtResponse.getDescription() + ": Path validation error");
+                        }
                     } else {
                         edtResponse.setDescription(upload.getDescription());
                         failUploads.add(edtResponse.getDescription() + ": " + edtResponse.getResult().getMsg());
@@ -310,15 +330,37 @@ public class Upload2Action extends ActionSupport {
     public String deleteUpload() {
         try {
             List<String> fileNames = Arrays.asList(this.getFileName().trim().split(","));
-            OscarProperties props = OscarProperties.getInstance();
+            
+            // Get validated outbox directory
+            File outboxDir = getValidatedOutboxDirectory();
+            String canonicalOutboxPath = outboxDir.getCanonicalPath();
+            
             for (String fileName : fileNames) {
-                File file = new File(props.getProperty("ONEDT_OUTBOX", "") + fileName);
+                // Sanitize filename to prevent path traversal
+                String sanitizedFileName = FilenameUtils.getName(fileName);
+                File file = new File(outboxDir, sanitizedFileName);
+                
+                // Validate canonical path to ensure file is within the outbox directory
+                String canonicalFilePath = file.getCanonicalPath();
+                
+                if (!canonicalFilePath.startsWith(canonicalOutboxPath + File.separator)) {
+                    logger.error("Attempted path traversal detected for file deletion: " + fileName);
+                    throw new SecurityException("Invalid file path for deletion");
+                }
+                
                 file.delete();
             }
 
+        } catch (IOException e) {
+            logger.error("IO error while deleting file", e);
+            String errorMessage = McedtMessageCreator.exceptionToString(e);
+            addActionError(getText("uploadAction.upload.submit.failure", new String[]{errorMessage}));
+        } catch (SecurityException e) {
+            logger.error("Security exception while deleting file", e);
+            String errorMessage = McedtMessageCreator.exceptionToString(e);
+            addActionError(getText("uploadAction.upload.submit.failure", new String[]{errorMessage}));
         } catch (Exception e) {
             logger.error("Unable to Delete file", e);
-
             String errorMessage = McedtMessageCreator.exceptionToString(e);
             addActionError(getText("uploadAction.upload.submit.failure", new String[]{errorMessage}));
         }
@@ -326,25 +368,43 @@ public class Upload2Action extends ActionSupport {
     }
 
     public String addUpload() {
-        if (!ActionUtils.isOBECFile(this.getFileName()) && !ActionUtils.isOHIPFile(this.getFileName())) {
-            addActionError(getText("uploadAction.upload.add.failure", new String[]{this.getFileName() + " is not a supported file Name. Please upload only claim/OBEC files"}));
+        // Sanitize filename first to prevent path traversal
+        String sanitizedFileName = FilenameUtils.getName(this.getFileName());
+        
+        if (!ActionUtils.isOBECFile(sanitizedFileName) && !ActionUtils.isOHIPFile(sanitizedFileName)) {
+            addActionError(getText("uploadAction.upload.add.failure", new String[]{sanitizedFileName + " is not a supported file Name. Please upload only claim/OBEC files"}));
             return "failure";
         } else {
-            OscarProperties props = OscarProperties.getInstance();
-            File myFile = new File(props.getProperty("ONEDT_OUTBOX", "") + this.getFileName());
-            try (FileOutputStream outputStream = new FileOutputStream(myFile)) {
-                outputStream.write(Files.readAllBytes(this.getAddUploadFile().toPath()));
-                outputStream.close();
-                addActionMessage(getText("uploadAction.upload.add.success", new String[]{this.getFileName() + " is succesfully added to the uploads list!"}));
+            try {
+                // Get validated outbox directory
+                File outboxDir = getValidatedOutboxDirectory();
+                File myFile = new File(outboxDir, sanitizedFileName);
+                
+                // Validate canonical path to ensure file is within the outbox directory
+                String canonicalFilePath = myFile.getCanonicalPath();
+                String canonicalOutboxPath = outboxDir.getCanonicalPath();
+                
+                if (!canonicalFilePath.startsWith(canonicalOutboxPath + File.separator)) {
+                    logger.error("Attempted path traversal detected for file upload: " + this.getFileName());
+                    throw new SecurityException("Invalid file path for upload");
+                }
+                
+                try (FileOutputStream outputStream = new FileOutputStream(myFile)) {
+                    outputStream.write(Files.readAllBytes(this.getAddUploadFile().toPath()));
+                    addActionMessage(getText("uploadAction.upload.add.success", new String[]{sanitizedFileName + " is succesfully added to the uploads list!"}));
+                }
             } catch (IOException e) {
                 logger.error("An error has occured with the addUpload file at " + new Date(), e);
-
+                String errorMessage = McedtMessageCreator.exceptionToString(e);
+                addActionError(getText("uploadAction.upload.add.failure", new String[]{errorMessage}));
+                return "failure";
+            } catch (SecurityException e) {
+                logger.error("Security exception while adding upload file", e);
                 String errorMessage = McedtMessageCreator.exceptionToString(e);
                 addActionError(getText("uploadAction.upload.add.failure", new String[]{errorMessage}));
                 return "failure";
             } catch (Exception e) {
                 logger.error("Unable to Add file upload", e);
-
                 String errorMessage = McedtMessageCreator.exceptionToString(e);
                 addActionError(getText("uploadAction.upload.add.failure", new String[]{errorMessage}));
                 return "failure";
@@ -359,17 +419,35 @@ public class Upload2Action extends ActionSupport {
         UploadData result = new UploadData();
         result.setDescription(this.getDescription());
         result.setResourceType(this.getResourceType());
-        OscarProperties props = OscarProperties.getInstance();
-        File file = new File(props.getProperty("ONEDT_OUTBOX", "") + this.getFileName());
-        try (FileInputStream fis = new FileInputStream(file)) {
-            byte[] data = new byte[fis.available()];
-            fis.read(data);
-            fis.close();
-            result.setContent(data);
-        } catch (Exception e) {
-            logger.error("Unable to read upload file", e);
-
+        
+        // Sanitize filename to prevent path traversal
+        String sanitizedFileName = FilenameUtils.getName(this.getFileName());
+        
+        try {
+            // Get validated outbox directory
+            File outboxDir = getValidatedOutboxDirectory();
+            File file = new File(outboxDir, sanitizedFileName);
+            
+            // Validate canonical path to ensure file is within the outbox directory
+            String canonicalFilePath = file.getCanonicalPath();
+            String canonicalOutboxPath = outboxDir.getCanonicalPath();
+            
+            if (!canonicalFilePath.startsWith(canonicalOutboxPath + File.separator)) {
+                logger.error("Attempted path traversal detected for file: " + this.getFileName());
+                throw new SecurityException("Invalid file path");
+            }
+            
+            try (FileInputStream fis = new FileInputStream(file)) {
+                byte[] data = new byte[fis.available()];
+                fis.read(data);
+                result.setContent(data);
+            }
+        } catch (IOException e) {
+            logger.error("Unable to read upload file: " + sanitizedFileName, e);
             throw new RuntimeException("Unable to read upload file", e);
+        } catch (SecurityException e) {
+            logger.error("Security exception while processing file", e);
+            throw new RuntimeException("Security error processing file", e);
         }
         return result;
     }
@@ -379,23 +457,43 @@ public class Upload2Action extends ActionSupport {
         List<String> fileNames = Arrays.asList(this.getFileName().trim().split(","));
         List<String> resourceTypes = Arrays.asList(this.getResourceType().trim().split(","));
         if (fileNames.size() == resourceTypes.size()) {
-            for (int i = 0; i < fileNames.size(); i++) {
-                UploadData result = new UploadData();
-                result.setDescription(fileNames.get(i));
-                result.setResourceType(resourceTypes.get(i));
-                OscarProperties props = OscarProperties.getInstance();
-                File file = new File(props.getProperty("ONEDT_OUTBOX", "") + fileNames.get(i));
-                try (FileInputStream fis = new FileInputStream(file);) {
-                    byte[] data = new byte[fis.available()];
-                    fis.read(data);
-                    fis.close();
-                    result.setContent(data);
-                    results.add(result);
-                } catch (Exception e) {
-                    logger.error("Unable to read upload file", e);
-
-                    throw new RuntimeException("Unable to read upload file", e);
+            try {
+                // Get validated outbox directory
+                File outboxDir = getValidatedOutboxDirectory();
+                String canonicalOutboxPath = outboxDir.getCanonicalPath();
+                
+                for (int i = 0; i < fileNames.size(); i++) {
+                    // Sanitize filename to prevent path traversal
+                    String sanitizedFileName = FilenameUtils.getName(fileNames.get(i));
+                    
+                    // Construct file path safely
+                    File file = new File(outboxDir, sanitizedFileName);
+                    
+                    // Validate canonical path to ensure file is within the outbox directory
+                    String canonicalFilePath = file.getCanonicalPath();
+                    
+                    if (!canonicalFilePath.startsWith(canonicalOutboxPath + File.separator)) {
+                        logger.error("Attempted path traversal detected for file: " + fileNames.get(i));
+                        throw new SecurityException("Invalid file path");
+                    }
+                    
+                    UploadData result = new UploadData();
+                    result.setDescription(fileNames.get(i));
+                    result.setResourceType(resourceTypes.get(i));
+                    
+                    try (FileInputStream fis = new FileInputStream(file)) {
+                        byte[] data = new byte[fis.available()];
+                        fis.read(data);
+                        result.setContent(data);
+                        results.add(result);
+                    }
                 }
+            } catch (IOException e) {
+                logger.error("Unable to process upload files", e);
+                throw new RuntimeException("Unable to process upload files", e);
+            } catch (SecurityException e) {
+                logger.error("Security exception while processing files", e);
+                throw new RuntimeException("Security error processing files", e);
             }
         }
         return results;
@@ -463,5 +561,66 @@ public class Upload2Action extends ActionSupport {
     public void setAddUploadFileContentType(String addUploadFileContentType) {
         this.addUploadFileContentType = addUploadFileContentType;
         this.setResourceType(addUploadFileContentType); // set the resource type to the upload file content type
+    }
+    
+    /**
+     * Validates and returns the canonical path of the ONEDT_OUTBOX directory.
+     * This method ensures the configured path is valid and prevents path traversal attacks.
+     * 
+     * @return File object representing the validated outbox directory
+     * @throws IOException if canonical path cannot be determined
+     * @throws SecurityException if the path is invalid or potentially malicious
+     */
+    private File getValidatedOutboxDirectory() throws IOException {
+        return getValidatedDirectory("ONEDT_OUTBOX");
+    }
+    
+    /**
+     * Validates and returns the canonical path of the ONEDT_SENT directory.
+     * This method ensures the configured path is valid and prevents path traversal attacks.
+     * 
+     * @return File object representing the validated sent directory
+     * @throws IOException if canonical path cannot be determined
+     * @throws SecurityException if the path is invalid or potentially malicious
+     */
+    private File getValidatedSentDirectory() throws IOException {
+        return getValidatedDirectory("ONEDT_SENT");
+    }
+    
+    /**
+     * Validates and returns the canonical path of a configured directory.
+     * This method ensures the configured path is valid and prevents path traversal attacks.
+     * 
+     * @param propertyName The property name for the directory path
+     * @return File object representing the validated directory
+     * @throws IOException if canonical path cannot be determined
+     * @throws SecurityException if the path is invalid or potentially malicious
+     */
+    private File getValidatedDirectory(String propertyName) throws IOException {
+        OscarProperties props = OscarProperties.getInstance();
+        String dirPath = props.getProperty(propertyName, "");
+        
+        // Validate the directory path configuration
+        if (dirPath == null || dirPath.trim().isEmpty()) {
+            throw new SecurityException(propertyName + " path not configured");
+        }
+        
+        File dir = new File(dirPath);
+        
+        // Get canonical path to resolve any path traversal attempts in configuration
+        String canonicalPath = dir.getCanonicalPath();
+        File canonicalDir = new File(canonicalPath);
+        
+        // Ensure the directory exists and is actually a directory
+        if (!canonicalDir.exists()) {
+            // Try to create it if it doesn't exist
+            if (!canonicalDir.mkdirs()) {
+                throw new SecurityException("Unable to create " + propertyName + " directory: " + canonicalPath);
+            }
+        } else if (!canonicalDir.isDirectory()) {
+            throw new SecurityException(propertyName + " path is not a directory: " + canonicalPath);
+        }
+        
+        return canonicalDir;
     }
 }

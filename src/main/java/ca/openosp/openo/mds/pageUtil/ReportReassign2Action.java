@@ -28,8 +28,11 @@ package ca.openosp.openo.mds.pageUtil;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URI;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -47,6 +50,7 @@ import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
@@ -57,6 +61,15 @@ public class ReportReassign2Action extends ActionSupport {
 
     private final Logger logger = MiscUtils.getLogger();
     private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+
+    // Define a map of allowed Struts actions
+    private static final Map<String, String> ACTION_REDIRECTS = Map.of(
+        "oscarMDS/ReportReassign", "oscarMDS/ReportReassign.do",
+        "lab/CA/ALL/Forward", "lab/CA/ALL/Forward.do",
+        "lab/CA/BC/Forward", "lab/CA/BC/Forward.do",
+        "lab/CA/ON/Forward", "lab/CA/ON/Forward.do",
+        "oscarMDS/Forward", "oscarMDS/Forward.do"
+    );
 
     public ReportReassign2Action() {
     }
@@ -177,22 +190,47 @@ public class ReportReassign2Action extends ActionSupport {
 
             }
 
-            newURL = request.getRequestURI();
+            // Build safe redirect URL using context path to prevent open redirect vulnerability
+            String contextPath = request.getContextPath();
+            String currentAction = ActionContext.getContext().getName();
 
-            if (newURL.contains("labDisplay.jsp")) {
-                newURL = newURL + "?providerNo=" + providerNo + "&searchProviderNo=" + searchProviderNo + "&status=" + status + "&segmentID=" + flaggedLabsList.get(0);
-                // the segmentID is needed when being called from a lab display
-            } else {
-                newURL = newURL + "&providerNo=" + providerNo + "&searchProviderNo=" + searchProviderNo + "&status=" + status + "&segmentID=" + flaggedLabsList.get(0);
+            String relativePath = ACTION_REDIRECTS.get(currentAction);
+            
+            // Default to a safe page if the path is suspicious or empty
+            if (relativePath.isEmpty() || relativePath.contains("..") || !relativePath.startsWith("/")) {
+                logger.warn("Suspicious or invalid redirect path detected: '{}'. Sending error response.", relativePath);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid redirect path.");
+                return null;
             }
-            if (request.getParameter("lname") != null) {
-                newURL = newURL + "&lname=" + request.getParameter("lname");
+            
+            // Build the new URL with the context path to ensure it stays within the application
+            newURL = contextPath + relativePath + "?";
+            
+            // Build query string with proper null checks and encoding
+            StringBuilder queryParams = new StringBuilder();
+            queryParams.append("providerNo=").append(URLEncoder.encode(providerNo != null ? providerNo : "", "UTF-8"));
+            queryParams.append("&searchProviderNo=").append(URLEncoder.encode(searchProviderNo != null ? searchProviderNo : "", "UTF-8"));
+            queryParams.append("&status=").append(URLEncoder.encode(status != null ? status : "", "UTF-8"));
+            
+            // Add segmentID if flaggedLabsList is not empty
+            if (!flaggedLabsList.isEmpty() && flaggedLabsList.get(0).length > 0) {
+                queryParams.append("&segmentID=").append(URLEncoder.encode(flaggedLabsList.get(0)[0], "UTF-8"));
             }
-            if (request.getParameter("fname") != null) {
-                newURL = newURL + "&fname=" + request.getParameter("fname");
+            
+            newURL = newURL + queryParams.toString();
+            
+            // Add optional parameters with proper encoding
+            String lname = request.getParameter("lname");
+            if (lname != null) {
+                newURL = newURL + "&lname=" + URLEncoder.encode(lname, "UTF-8");
             }
-            if (request.getParameter("hnum") != null) {
-                newURL = newURL + "&hnum=" + request.getParameter("hnum");
+            String fname = request.getParameter("fname");
+            if (fname != null) {
+                newURL = newURL + "&fname=" + URLEncoder.encode(fname, "UTF-8");
+            }
+            String hnum = request.getParameter("hnum");
+            if (hnum != null) {
+                newURL = newURL + "&hnum=" + URLEncoder.encode(hnum, "UTF-8");
             }
         } catch (Exception e) {
             logger.error("exception in ReportReassign2Action", e);

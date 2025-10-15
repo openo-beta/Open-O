@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,6 +26,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import ca.openosp.openo.messenger.data.MsgMessageData;
@@ -56,6 +59,8 @@ import ca.openosp.openo.messenger.data.MsgProviderData;
  * SFTP Connector to interact with servers and return the server's reply/file data.
  */
 public class SFTPConnector {
+    private static final int GCM_IV_LENGTH = 12;  // 96 bits standard for GCM
+    private static final int GCM_TAG_LENGTH = 128; // 128 bits authentication tag
 
     private static org.apache.logging.log4j.Logger logger = MiscUtils.getLogger();
 
@@ -438,11 +443,91 @@ public class SFTPConnector {
 
         byte keyBytes[] = toHex(decryptionKey);
         SecretKeySpec key = new SecretKeySpec(keyBytes, "AES");
-        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding", "SunJCE");
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        byte[] decode = cipher.doFinal(fileInBytes);
+        
+        // Read configuration to determine if ECB fallback is allowed
+        boolean allowEcbFallback = true;
+        String allowEcbFallbackProp = OscarProperties.getInstance().getProperty("OMD_HRM_ALLOW_ECB_FALLBACK");
+        if (allowEcbFallbackProp != null) {
+            allowEcbFallback = Boolean.parseBoolean(allowEcbFallbackProp);
+        }
+
+        // First, try to decrypt using the secure GCM mode (for new files)
+        byte[] decode = null;
+        try {
+            decode = decryptWithGCM(fileInBytes, key);
+            logger.info("Successfully decrypted file using AES/GCM mode");
+        } catch (Exception gcmException) {
+            if (!allowEcbFallback) {
+                logger.error("GCM decryption failed and ECB fallback is disabled by configuration. " +
+                              "File cannot be decrypted. Set OMD_HRM_ALLOW_ECB_FALLBACK=true to enable legacy decryption.");
+                throw new Exception("Failed to decrypt file. GCM decryption failed and ECB fallback is disabled. " +
+                                    "GCM error: " + gcmException.getMessage());
+            }
+            // If GCM fails, the file might be encrypted with the legacy ECB mode
+            // Try ECB decryption for backward compatibility
+            logger.warn("GCM decryption failed, attempting legacy ECB decryption for backward compatibility. " +
+                          "Please consider re-encrypting this file with GCM mode for better security.");
+            try {
+                decode = decryptWithECB(fileInBytes, key);
+                logger.warn("SECURITY WARNING: File was decrypted using legacy ECB mode. ECB mode is insecure and should be migrated to GCM. " +
+                              "Set OMD_HRM_ALLOW_ECB_FALLBACK=false in properties to disable this fallback.");
+            } catch (Exception ecbException) {
+                // If ECB also fails, rethrow the original GCM exception for clarity
+                logger.error("Both GCM and ECB decryption failed. File cannot be decrypted.");
+                throw new Exception("Failed to decrypt file. GCM error: " + gcmException.getMessage() +
+                                    " ECB error: " + ecbException.getMessage());
+            }
+        }
 
         return new String(decode);
+    }
+    
+    /**
+     * Decrypts data using AES/GCM mode (secure mode)
+     * GCM provides authenticated encryption with built-in integrity checking
+     * 
+     * @param encryptedData The encrypted data with IV prepended
+     * @param key The AES secret key
+     * @return The decrypted data
+     * @throws Exception if decryption fails
+     */
+    private byte[] decryptWithGCM(byte[] encryptedData, SecretKeySpec key) throws Exception {
+        // GCM mode expects the IV to be prepended to the encrypted data
+        // Standard GCM uses a 12-byte (96-bit) IV
+        if (encryptedData.length < GCM_IV_LENGTH) {
+            throw new IllegalArgumentException("Encrypted data too short for GCM mode");
+        }
+        
+        // Extract IV and ciphertext
+        ByteBuffer byteBuffer = ByteBuffer.wrap(encryptedData);
+        byte[] iv = new byte[GCM_IV_LENGTH];
+        byteBuffer.get(iv);
+        byte[] cipherText = new byte[byteBuffer.remaining()];
+        byteBuffer.get(cipherText);
+        
+        // Initialize cipher with GCM mode
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+        GCMParameterSpec gcmSpec = new GCMParameterSpec(GCM_TAG_LENGTH, iv); // 128-bit authentication tag
+        cipher.init(Cipher.DECRYPT_MODE, key, gcmSpec);
+        
+        return cipher.doFinal(cipherText);
+    }
+    
+    /**
+     * Decrypts data using legacy AES/ECB mode (insecure, for backward compatibility only)
+     * This method should only be used for decrypting existing files that were encrypted with ECB mode.
+     * ECB mode is vulnerable to various attacks and should not be used for new encryptions.
+     * 
+     * @param encryptedData The encrypted data
+     * @param key The AES secret key
+     * @return The decrypted data
+     * @throws Exception if decryption fails
+     */
+    private byte[] decryptWithECB(byte[] encryptedData, SecretKeySpec key) throws Exception {
+        // Legacy ECB mode - insecure but needed for backward compatibility
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        return cipher.doFinal(encryptedData);
     }
 
     /**
@@ -796,43 +881,3 @@ public class SFTPConnector {
     }
 
 }
-/*
-class MyUserInfo implements UserInfo {
-
-	@Override
-	public String getPassphrase() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getPassword() {
-		return "password";
-	}
-
-	@Override
-	public boolean promptPassword(String message) {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean promptPassphrase(String message) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean promptYesNo(String message) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void showMessage(String message) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-}
-*/

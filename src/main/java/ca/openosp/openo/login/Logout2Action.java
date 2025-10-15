@@ -82,6 +82,10 @@ public class Logout2Action extends ActionSupport {
             for (Cookie cookie : cookies) {
                 cookie.setMaxAge(0);
                 cookie.setPath("/");
+                // Set secure flag to ensure cookie is only sent over HTTPS
+                cookie.setSecure(true);
+                // Set httpOnly flag to prevent client-side access via JavaScript
+                cookie.setHttpOnly(true);
                 response.addCookie(cookie);
             }
         }

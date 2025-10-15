@@ -116,6 +116,19 @@ public class ReportManager {
             if (!paramXML.equals("")) {
                 paramXML = UtilXML.escapeXML(paramXML); //escapes anomalies such as "date >= {mydate}" the '>' character
                 SAXBuilder parser = new SAXBuilder();
+                
+                // Security features to prevent XXE attacks
+                setFeatureSafely(parser, "http://apache.org/xml/features/disallow-doctype-decl", true);
+                setFeatureSafely(parser, "http://xml.org/sax/features/external-general-entities", false);
+                setFeatureSafely(parser, "http://xml.org/sax/features/external-parameter-entities", false);
+                setFeatureSafely(parser, "http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+                
+                try {
+                    parser.setExpandEntities(false);
+                } catch (Exception ex) {
+                    MiscUtils.getLogger().error("Could not disable entity expansion: " + ex.getMessage());
+                }
+                
                 Document doc = parser.build(new java.io.ByteArrayInputStream(paramXML.getBytes()));
                 Element root = doc.getRootElement();
 
@@ -223,6 +236,19 @@ public class ReportManager {
         if (xml == "") return "Error: Could not save the template file in the database.";
         try {
             SAXBuilder parser = new SAXBuilder();
+            
+            // Security features to prevent XXE attacks
+            setFeatureSafely(parser, "http://apache.org/xml/features/disallow-doctype-decl", true);
+            setFeatureSafely(parser, "http://xml.org/sax/features/external-general-entities", false);
+            setFeatureSafely(parser, "http://xml.org/sax/features/external-parameter-entities", false);
+            setFeatureSafely(parser, "http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            
+            try {
+                parser.setExpandEntities(false);
+            } catch (Exception ex) {
+                MiscUtils.getLogger().error("Could not disable entity expansion: " + ex.getMessage());
+            }
+            
             xml = UtilXML.escapeXML(xml); //escapes anomalies such as "date >= {mydate}" the '>' character
             //xml = UtilXML.escapeAllXML(xml, "<param-list>");  //escapes all markup in <report> tag, otherwise can't retrieve element.getText()
             Document doc = parser.build(new java.io.ByteArrayInputStream(xml.getBytes()));
@@ -276,6 +302,19 @@ public class ReportManager {
 
     public Document readXml(String xml) throws Exception {
         SAXBuilder parser = new SAXBuilder();
+        
+        // Security features to prevent XXE attacks
+        setFeatureSafely(parser, "http://apache.org/xml/features/disallow-doctype-decl", true);
+        setFeatureSafely(parser, "http://xml.org/sax/features/external-general-entities", false);
+        setFeatureSafely(parser, "http://xml.org/sax/features/external-parameter-entities", false);
+        setFeatureSafely(parser, "http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        
+        try {
+            parser.setExpandEntities(false);
+        } catch (Exception ex) {
+            MiscUtils.getLogger().error("Could not disable entity expansion: " + ex.getMessage());
+        }
+        
         xml = UtilXML.escapeXML(xml); //escapes anomalies such as "date >= {mydate}" the '>' character
         //xml  UtilXML.escapeAllXML(xml, "<param-list>");  //escapes all markup in <report> tag, otherwise can't retrieve element.getText()
         Document doc = parser.build(new java.io.ByteArrayInputStream(xml.getBytes()));
@@ -409,6 +448,14 @@ public class ReportManager {
         } catch (Exception e) {
             MiscUtils.getLogger().error("Error", e);
             return "Error: Error parsing file: " + e.getCause();
+        }
+    }
+    
+    private void setFeatureSafely(SAXBuilder parser, String feature, boolean value) {
+        try {
+            parser.setFeature(feature, value);
+        } catch (Exception ex) {
+            MiscUtils.getLogger().warn("Could not set feature " + feature + ": " + ex.getMessage());
         }
     }
 

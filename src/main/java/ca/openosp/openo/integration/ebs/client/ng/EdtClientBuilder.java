@@ -2,15 +2,12 @@ package ca.openosp.openo.integration.ebs.client.ng;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import javax.net.ssl.X509TrustManager;
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPFactory;
@@ -344,14 +341,18 @@ public class EdtClientBuilder {
 
     /**
      * Configures SSL/TLS parameters on the HTTPConduit.
+     * Uses proper certificate validation to prevent man-in-the-middle attacks (CWE-295).
+     * For environments requiring self-signed certificates, configure proper trust stores instead.
      */
     public static void configureSsl(HTTPConduit conduit) {
         TLSClientParameters tls = conduit.getTlsClientParameters();
         if (tls == null) {
             tls = new TLSClientParameters();
         }
-        tls.setDisableCNCheck(true);
-        tls.setTrustManagers(new X509TrustManager[]{new TrustAllManager()});
+        // Enable CN check for proper hostname verification
+        tls.setDisableCNCheck(false);
+        // Use default trust managers for proper certificate validation
+        // Do not set custom trust managers - let CXF use the default secure ones
         tls.setSecureSocketProtocol("TLS");
         conduit.setTlsClientParameters(tls);
     }
@@ -361,15 +362,6 @@ public class EdtClientBuilder {
      */
     public static void setClientKeystoreFilename(String filename) {
         clientKeystore = filename;
-    }
-
-    /**
-     * Trust manager implementation that accepts all certificates.
-     */
-    public static class TrustAllManager implements X509TrustManager {
-        @Override public X509Certificate[] getAcceptedIssuers() { return new X509Certificate[0]; }
-        @Override public void checkClientTrusted(X509Certificate[] chain, String authType) { /* no-op */ }
-        @Override public void checkServerTrusted(X509Certificate[] chain, String authType) { /* no-op */ }
     }
 
     /**

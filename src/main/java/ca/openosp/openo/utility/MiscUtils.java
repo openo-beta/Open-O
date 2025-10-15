@@ -49,7 +49,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ca.openosp.openo.utility.CxfClientUtils.TrustAllManager;
 
 /**
  * When using the shutdown hook...
@@ -230,20 +229,6 @@ public final class MiscUtils {
 
             return s;
         }
-    }
-
-    public static void setJvmDefaultSSLSocketFactoryAllowAllCertificates() throws NoSuchAlgorithmException, KeyManagementException {
-        TrustAllManager[] tam = new TrustAllManager[]{new TrustAllManager()};
-        SSLContext ctx = SSLContext.getInstance("TLS");
-        ctx.init((KeyManager[]) null, tam, new SecureRandom());
-        SSLSocketFactory sslSocketFactory = ctx.getSocketFactory();
-        HttpsURLConnection.setDefaultSSLSocketFactory(sslSocketFactory);
-        HostnameVerifier hostNameVerifier = new HostnameVerifier() {
-            public boolean verify(String host, SSLSession sslSession) {
-                return true;
-            }
-        };
-        HttpsURLConnection.setDefaultHostnameVerifier(hostNameVerifier);
     }
 
     public static boolean soundex(String s1, String s2) throws EncoderException {

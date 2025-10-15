@@ -289,9 +289,38 @@ public class RxUtil {
 
     public static boolean isMitte(String qStr) {
         boolean isMitte = false;
-        String[] durationUnits = {"[0-9]+\\s+(?i)days\\s", "[0-9]+\\s+(?i)weeks\\s", "[0-9]+\\s+(?i)months\\s", "[0-9]+\\s+(?i)day\\s", "[0-9]+\\s+(?i)week\\s", "[0-9]+\\s+(?i)month\\s", "[0-9]+\\s+(?i)d\\s", "[0-9]+\\s+(?i)w\\s", "[0-9]+\\s+(?i)m\\s", "[0-9]+\\s+(?i)mo\\s", "[0-9]+\\s+(?i)days$", "[0-9]+\\s+(?i)weeks$", "[0-9]+\\s+(?i)months$", "[0-9]+\\s+(?i)day$", "[0-9]+\\s+(?i)week$", "[0-9]+\\s+(?i)month$", "[0-9]+\\s+(?i)d$", "[0-9]+\\s+(?i)w$", "[0-9]+\\s+(?i)m$", "[0-9]+\\s+(?i)mo$",
-                "\\s[0-9]+(?i)days\\s", "\\s[0-9]+(?i)weeks\\s", "\\s[0-9]+(?i)months\\s", "\\s[0-9]+(?i)day\\s", "\\s[0-9]+(?i)week\\s", "\\s[0-9]+(?i)month\\s", "\\s[0-9]+(?i)d\\s", "\\s[0-9]+(?i)w\\s", "\\s[0-9]+(?i)m\\s", "\\s[0-9]+(?i)mo\\s", "\\s[0-9]+(?i)days$", "\\s[0-9]+(?i)weeks$", "\\s[0-9]+(?i)months$", "\\s[0-9]+(?i)day$", "\\s[0-9]+(?i)week$", "\\s[0-9]+(?i)month$", "\\s[0-9]+(?i)d$", "\\s[0-9]+(?i)w$", "\\s[0-9]+(?i)m$", "\\s[0-9]+(?i)mo$", "^[0-9]+(?i)days$", "^[0-9]+(?i)weeks$",
-                "^[0-9]+(?i)months$", "^[0-9]+(?i)day$", "^[0-9]+(?i)week$", "^[0-9]+(?i)month$", "^[0-9]+(?i)d$", "^[0-9]+(?i)w$", "^[0-9]+(?i)m$", "^[0-9]+(?i)mo$", "^[0-9]+\\s+(?i)days$", "^[0-9]+\\s+(?i)weeks$", "^[0-9]+\\s+(?i)months$", "^[0-9]+\\s+(?i)day$", "^[0-9]+\\s+(?i)week$", "^[0-9]+\\s+(?i)month$", "^[0-9]+\\s+(?i)d$", "^[0-9]+\\s+(?i)w$", "^[0-9]+\\s+(?i)m$", "^[0-9]+\\s+(?i)mo$"};
+        
+        // Input validation to prevent ReDoS attacks
+        if (qStr == null || qStr.length() > 1000) {
+            return false;
+        }
+        
+        // Use possessive quantifiers (++) to prevent backtracking and avoid ReDoS vulnerabilities
+        // Also limit digit matching to reasonable prescription duration values (1-9999)
+        String[] durationUnits = {
+                "[0-9]{1,4}++\\s++(?i)days\\s", "[0-9]{1,4}++\\s++(?i)weeks\\s", "[0-9]{1,4}++\\s++(?i)months\\s", 
+                "[0-9]{1,4}++\\s++(?i)day\\s", "[0-9]{1,4}++\\s++(?i)week\\s", "[0-9]{1,4}++\\s++(?i)month\\s", 
+                "[0-9]{1,4}++\\s++(?i)d\\s", "[0-9]{1,4}++\\s++(?i)w\\s", "[0-9]{1,4}++\\s++(?i)m\\s", 
+                "[0-9]{1,4}++\\s++(?i)mo\\s", "[0-9]{1,4}++\\s++(?i)days$", "[0-9]{1,4}++\\s++(?i)weeks$", 
+                "[0-9]{1,4}++\\s++(?i)months$", "[0-9]{1,4}++\\s++(?i)day$", "[0-9]{1,4}++\\s++(?i)week$", 
+                "[0-9]{1,4}++\\s++(?i)month$", "[0-9]{1,4}++\\s++(?i)d$", "[0-9]{1,4}++\\s++(?i)w$", 
+                "[0-9]{1,4}++\\s++(?i)m$", "[0-9]{1,4}++\\s++(?i)mo$",
+                "\\s[0-9]{1,4}++(?i)days\\s", "\\s[0-9]{1,4}++(?i)weeks\\s", "\\s[0-9]{1,4}++(?i)months\\s", 
+                "\\s[0-9]{1,4}++(?i)day\\s", "\\s[0-9]{1,4}++(?i)week\\s", "\\s[0-9]{1,4}++(?i)month\\s", 
+                "\\s[0-9]{1,4}++(?i)d\\s", "\\s[0-9]{1,4}++(?i)w\\s", "\\s[0-9]{1,4}++(?i)m\\s", 
+                "\\s[0-9]{1,4}++(?i)mo\\s", "\\s[0-9]{1,4}++(?i)days$", "\\s[0-9]{1,4}++(?i)weeks$", 
+                "\\s[0-9]{1,4}++(?i)months$", "\\s[0-9]{1,4}++(?i)day$", "\\s[0-9]{1,4}++(?i)week$", 
+                "\\s[0-9]{1,4}++(?i)month$", "\\s[0-9]{1,4}++(?i)d$", "\\s[0-9]{1,4}++(?i)w$", 
+                "\\s[0-9]{1,4}++(?i)m$", "\\s[0-9]{1,4}++(?i)mo$", 
+                "^[0-9]{1,4}++(?i)days$", "^[0-9]{1,4}++(?i)weeks$", "^[0-9]{1,4}++(?i)months$", 
+                "^[0-9]{1,4}++(?i)day$", "^[0-9]{1,4}++(?i)week$", "^[0-9]{1,4}++(?i)month$", 
+                "^[0-9]{1,4}++(?i)d$", "^[0-9]{1,4}++(?i)w$", "^[0-9]{1,4}++(?i)m$", 
+                "^[0-9]{1,4}++(?i)mo$", "^[0-9]{1,4}++\\s++(?i)days$", "^[0-9]{1,4}++\\s++(?i)weeks$", 
+                "^[0-9]{1,4}++\\s++(?i)months$", "^[0-9]{1,4}++\\s++(?i)day$", "^[0-9]{1,4}++\\s++(?i)week$", 
+                "^[0-9]{1,4}++\\s++(?i)month$", "^[0-9]{1,4}++\\s++(?i)d$", "^[0-9]{1,4}++\\s++(?i)w$", 
+                "^[0-9]{1,4}++\\s++(?i)m$", "^[0-9]{1,4}++\\s++(?i)mo$"
+        };
+        
         for (String s : durationUnits) {
             Pattern p = Pattern.compile(s);
             Matcher m = p.matcher(qStr);
@@ -310,14 +339,21 @@ public class RxUtil {
 
     public static String getDurationFromQuantityText(String qStr) {
         String retStr = "";
-        String[] durationUnits = {"[0-9]+\\s+(?i)days\\s", "[0-9]+\\s+(?i)weeks\\s", "[0-9]+\\s+(?i)months\\s", "[0-9]+\\s+(?i)day\\s", "[0-9]+\\s+(?i)week\\s", "[0-9]+\\s+(?i)month\\s", "[0-9]+\\s+(?i)d\\s", "[0-9]+\\s+(?i)w\\s", "[0-9]+\\s+(?i)m\\s", "[0-9]+\\s+(?i)mo\\s", "[0-9]+\\s+(?i)days$", "[0-9]+\\s+(?i)weeks$", "[0-9]+\\s+(?i)months$", "[0-9]+\\s+(?i)day$", "[0-9]+\\s+(?i)week$", "[0-9]+\\s+(?i)month$", "[0-9]+\\s+(?i)d$", "[0-9]+\\s+(?i)w$", "[0-9]+\\s+(?i)m$", "[0-9]+\\s+(?i)mo$",
-                "\\s[0-9]+(?i)days\\s", "\\s[0-9]+(?i)weeks\\s", "\\s[0-9]+(?i)months\\s", "\\s[0-9]+(?i)day\\s", "\\s[0-9]+(?i)week\\s", "\\s[0-9]+(?i)month\\s", "\\s[0-9]+(?i)d\\s", "\\s[0-9]+(?i)w\\s", "\\s[0-9]+(?i)m\\s", "\\s[0-9]+(?i)mo\\s", "\\s[0-9]+(?i)days$", "\\s[0-9]+(?i)weeks$", "\\s[0-9]+(?i)months$", "\\s[0-9]+(?i)day$", "\\s[0-9]+(?i)week$", "\\s[0-9]+(?i)month$", "\\s[0-9]+(?i)d$", "\\s[0-9]+(?i)w$", "\\s[0-9]+(?i)m$", "\\s[0-9]+(?i)mo$",};
+        // Protect against ReDoS by limiting input length and using bounded quantifiers
+        if (qStr == null || qStr.length() > 1000) {
+            return retStr;
+        }
+        
+        // Use bounded quantifiers {1,4} to limit digits to max 9999 (reasonable for medical durations)
+        // Also use possessive quantifiers ++ to prevent backtracking
+        String[] durationUnits = {"[0-9]{1,4}+\\s++(?i)days\\s", "[0-9]{1,4}+\\s++(?i)weeks\\s", "[0-9]{1,4}+\\s++(?i)months\\s", "[0-9]{1,4}+\\s++(?i)day\\s", "[0-9]{1,4}+\\s++(?i)week\\s", "[0-9]{1,4}+\\s++(?i)month\\s", "[0-9]{1,4}+\\s++(?i)d\\s", "[0-9]{1,4}+\\s++(?i)w\\s", "[0-9]{1,4}+\\s++(?i)m\\s", "[0-9]{1,4}+\\s++(?i)mo\\s", "[0-9]{1,4}+\\s++(?i)days$", "[0-9]{1,4}+\\s++(?i)weeks$", "[0-9]{1,4}+\\s++(?i)months$", "[0-9]{1,4}+\\s++(?i)day$", "[0-9]{1,4}+\\s++(?i)week$", "[0-9]{1,4}+\\s++(?i)month$", "[0-9]{1,4}+\\s++(?i)d$", "[0-9]{1,4}+\\s++(?i)w$", "[0-9]{1,4}+\\s++(?i)m$", "[0-9]{1,4}+\\s++(?i)mo$",
+                "\\s[0-9]{1,4}+(?i)days\\s", "\\s[0-9]{1,4}+(?i)weeks\\s", "\\s[0-9]{1,4}+(?i)months\\s", "\\s[0-9]{1,4}+(?i)day\\s", "\\s[0-9]{1,4}+(?i)week\\s", "\\s[0-9]{1,4}+(?i)month\\s", "\\s[0-9]{1,4}+(?i)d\\s", "\\s[0-9]{1,4}+(?i)w\\s", "\\s[0-9]{1,4}+(?i)m\\s", "\\s[0-9]{1,4}+(?i)mo\\s", "\\s[0-9]{1,4}+(?i)days$", "\\s[0-9]{1,4}+(?i)weeks$", "\\s[0-9]{1,4}+(?i)months$", "\\s[0-9]{1,4}+(?i)day$", "\\s[0-9]{1,4}+(?i)week$", "\\s[0-9]{1,4}+(?i)month$", "\\s[0-9]{1,4}+(?i)d$", "\\s[0-9]{1,4}+(?i)w$", "\\s[0-9]{1,4}+(?i)m$", "\\s[0-9]{1,4}+(?i)mo$",};
         for (String s : durationUnits) {
             Pattern p = Pattern.compile(s);
             Matcher m = p.matcher(qStr);
             if (m.find()) {
                 String foundStr = (qStr.substring(m.start(), m.end())).trim();
-                Pattern p2 = Pattern.compile("[0-9]+");
+                Pattern p2 = Pattern.compile("[0-9]{1,4}+");
                 Matcher m2 = p2.matcher(foundStr);
                 if (m2.find()) {
                     String duration = (foundStr.substring(m2.start(), m2.end())).trim();
@@ -331,14 +367,21 @@ public class RxUtil {
 
     public static String getDurationUnitFromQuantityText(String qStr) {
         String retStr = "";
-        String[] durationUnits = {"[0-9]+\\s+(?i)days\\s", "[0-9]+\\s+(?i)weeks\\s", "[0-9]+\\s+(?i)months\\s", "[0-9]+\\s+(?i)day\\s", "[0-9]+\\s+(?i)week\\s", "[0-9]+\\s+(?i)month\\s", "[0-9]+\\s+(?i)d\\s", "[0-9]+\\s+(?i)w\\s", "[0-9]+\\s+(?i)m\\s", "[0-9]+\\s+(?i)mo\\s", "[0-9]+\\s+(?i)days$", "[0-9]+\\s+(?i)weeks$", "[0-9]+\\s+(?i)months$", "[0-9]+\\s+(?i)day$", "[0-9]+\\s+(?i)week$", "[0-9]+\\s+(?i)month$", "[0-9]+\\s+(?i)d$", "[0-9]+\\s+(?i)w$", "[0-9]+\\s+(?i)m$", "[0-9]+\\s+(?i)mo$",
-                "\\s[0-9]+(?i)days\\s", "\\s[0-9]+(?i)weeks\\s", "\\s[0-9]+(?i)months\\s", "\\s[0-9]+(?i)day\\s", "\\s[0-9]+(?i)week\\s", "\\s[0-9]+(?i)month\\s", "\\s[0-9]+(?i)d\\s", "\\s[0-9]+(?i)w\\s", "\\s[0-9]+(?i)m\\s", "\\s[0-9]+(?i)mo\\s", "\\s[0-9]+(?i)days$", "\\s[0-9]+(?i)weeks$", "\\s[0-9]+(?i)months$", "\\s[0-9]+(?i)day$", "\\s[0-9]+(?i)week$", "\\s[0-9]+(?i)month$", "\\s[0-9]+(?i)d$", "\\s[0-9]+(?i)w$", "\\s[0-9]+(?i)m$", "\\s[0-9]+(?i)mo$",};
+        // Protect against ReDoS by limiting input length and using bounded quantifiers
+        if (qStr == null || qStr.length() > 1000) {
+            return retStr;
+        }
+        
+        // Use bounded quantifiers {1,4} to limit digits to max 9999 (reasonable for medical durations)
+        // Also use possessive quantifiers ++ to prevent backtracking
+        String[] durationUnits = {"[0-9]{1,4}+\\s++(?i)days\\s", "[0-9]{1,4}+\\s++(?i)weeks\\s", "[0-9]{1,4}+\\s++(?i)months\\s", "[0-9]{1,4}+\\s++(?i)day\\s", "[0-9]{1,4}+\\s++(?i)week\\s", "[0-9]{1,4}+\\s++(?i)month\\s", "[0-9]{1,4}+\\s++(?i)d\\s", "[0-9]{1,4}+\\s++(?i)w\\s", "[0-9]{1,4}+\\s++(?i)m\\s", "[0-9]{1,4}+\\s++(?i)mo\\s", "[0-9]{1,4}+\\s++(?i)days$", "[0-9]{1,4}+\\s++(?i)weeks$", "[0-9]{1,4}+\\s++(?i)months$", "[0-9]{1,4}+\\s++(?i)day$", "[0-9]{1,4}+\\s++(?i)week$", "[0-9]{1,4}+\\s++(?i)month$", "[0-9]{1,4}+\\s++(?i)d$", "[0-9]{1,4}+\\s++(?i)w$", "[0-9]{1,4}+\\s++(?i)m$", "[0-9]{1,4}+\\s++(?i)mo$",
+                "\\s[0-9]{1,4}+(?i)days\\s", "\\s[0-9]{1,4}+(?i)weeks\\s", "\\s[0-9]{1,4}+(?i)months\\s", "\\s[0-9]{1,4}+(?i)day\\s", "\\s[0-9]{1,4}+(?i)week\\s", "\\s[0-9]{1,4}+(?i)month\\s", "\\s[0-9]{1,4}+(?i)d\\s", "\\s[0-9]{1,4}+(?i)w\\s", "\\s[0-9]{1,4}+(?i)m\\s", "\\s[0-9]{1,4}+(?i)mo\\s", "\\s[0-9]{1,4}+(?i)days$", "\\s[0-9]{1,4}+(?i)weeks$", "\\s[0-9]{1,4}+(?i)months$", "\\s[0-9]{1,4}+(?i)day$", "\\s[0-9]{1,4}+(?i)week$", "\\s[0-9]{1,4}+(?i)month$", "\\s[0-9]{1,4}+(?i)d$", "\\s[0-9]{1,4}+(?i)w$", "\\s[0-9]{1,4}+(?i)m$", "\\s[0-9]{1,4}+(?i)mo$",};
         for (String s : durationUnits) {
             Pattern p = Pattern.compile(s);
             Matcher m = p.matcher(qStr);
             if (m.find()) {
                 String foundStr = (qStr.substring(m.start(), m.end())).trim();
-                Pattern p2 = Pattern.compile("[0-9]+");
+                Pattern p2 = Pattern.compile("[0-9]{1,4}+");
                 Matcher m2 = p2.matcher(foundStr);
                 if (m2.find()) {
                     String duration = (foundStr.substring(m2.start(), m2.end())).trim();
@@ -511,7 +554,8 @@ public class RxUtil {
         //do we have some policies/restrictions we want to run?
         List<String> policyViolations = RxInstructionPolicy.checkInstructions(instructions.trim());
 
-        String[] prns = {"\\s(?i)prn$", "^(?i)prn\\s+", "\\s+(?i)prn\\s+"};
+        // Use possessive quantifiers to prevent ReDoS
+        String[] prns = {"\\s(?i)prn$", "^(?i)prn\\s++", "\\s++(?i)prn\\s++"};
         for (String s : prns) {
             Pattern prnP = Pattern.compile(s);
             Matcher prnM = prnP.matcher(instructions);
@@ -526,8 +570,10 @@ public class RxUtil {
                 "\\s(?i)4x day$", "\\s(?i)3x daily$", "\\s(?i)4x daily$", "\\s(?i)daily\\s", "\\s(?i)daily$",// put at last because if frequency is 'twice daily', it will first be detected as 'daily'
         };
         String[] methods = {"(?i)Take", "(?i)Apply", "(?i)Rub well in"};
-        String[] durationUnits = {"\\s+(?i)days\\s", "\\s+(?i)weeks\\s", "\\s+(?i)months\\s", "\\s+(?i)day\\s", "\\s+(?i)week\\s", "\\s+(?i)month\\s", "\\s+(?i)d\\s", "\\s+(?i)w\\s", "\\s+(?i)m\\s", "\\s+(?i)mo\\s", "\\s+(?i)days$", "\\s+(?i)weeks$", "\\s+(?i)months$", "\\s+(?i)day$", "\\s+(?i)week$", "\\s+(?i)month$", "\\s+(?i)d$", "\\s+(?i)w$", "\\s+(?i)m$", "\\s+(?i)mo$"};
-        String[] durUnits2 = {"\\s[0-9]+(?i)days\\s", "\\s[0-9]+(?i)weeks\\s", "\\s[0-9]+(?i)months\\s", "\\s[0-9]+(?i)day\\s", "\\s[0-9]+(?i)week\\s", "\\s[0-9]+(?i)month\\s", "\\s[0-9]+(?i)d\\s", "\\s[0-9]+(?i)w\\s", "\\s[0-9]+(?i)m\\s", "\\s[0-9]+(?i)mo\\s", "\\s[0-9]+(?i)days$", "\\s[0-9]+(?i)weeks$", "\\s[0-9]+(?i)months$", "\\s[0-9]+(?i)day$", "\\s[0-9]+(?i)week$", "\\s[0-9]+(?i)month$", "\\s[0-9]+(?i)d$", "\\s[0-9]+(?i)w$", "\\s[0-9]+(?i)m$", "\\s[0-9]+(?i)mo$",};
+        // Use possessive quantifiers to prevent ReDoS
+        String[] durationUnits = {"\\s++(?i)days\\s", "\\s++(?i)weeks\\s", "\\s++(?i)months\\s", "\\s++(?i)day\\s", "\\s++(?i)week\\s", "\\s++(?i)month\\s", "\\s++(?i)d\\s", "\\s++(?i)w\\s", "\\s++(?i)m\\s", "\\s++(?i)mo\\s", "\\s++(?i)days$", "\\s++(?i)weeks$", "\\s++(?i)months$", "\\s++(?i)day$", "\\s++(?i)week$", "\\s++(?i)month$", "\\s++(?i)d$", "\\s++(?i)w$", "\\s++(?i)m$", "\\s++(?i)mo$"};
+        // Use bounded quantifiers {1,3} and possessive ++ to prevent ReDoS
+        String[] durUnits2 = {"\\s[0-9]{1,4}++(?i)days\\s", "\\s[0-9]{1,4}++(?i)weeks\\s", "\\s[0-9]{1,4}++(?i)months\\s", "\\s[0-9]{1,4}++(?i)day\\s", "\\s[0-9]{1,4}++(?i)week\\s", "\\s[0-9]{1,4}++(?i)month\\s", "\\s[0-9]{1,4}++(?i)d\\s", "\\s[0-9]{1,4}++(?i)w\\s", "\\s[0-9]{1,4}++(?i)m\\s", "\\s[0-9]{1,4}++(?i)mo\\s", "\\s[0-9]{1,4}++(?i)days$", "\\s[0-9]{1,4}++(?i)weeks$", "\\s[0-9]{1,4}++(?i)months$", "\\s[0-9]{1,4}++(?i)day$", "\\s[0-9]{1,4}++(?i)week$", "\\s[0-9]{1,4}++(?i)month$", "\\s[0-9]{1,4}++(?i)d$", "\\s[0-9]{1,4}++(?i)w$", "\\s[0-9]{1,4}++(?i)m$", "\\s[0-9]{1,4}++(?i)mo$",};
 
         for (String s : routes) {
             Pattern p = Pattern.compile(s);
@@ -578,10 +624,17 @@ public class RxUtil {
                 frequency = changeToStandardFrequencyCode(frequency);
                 String origFrequency = (instructions.substring(matcher.start(), matcher.end())).trim();
 
-                Pattern p2 = Pattern.compile("\\s*\\d*\\.*\\d+\\s+" + origFrequency); //allow to detect decimal number.
+                // Ensure proper escaping of user-controlled strings to prevent regex injection attacks
+                // Pattern.quote() escapes all regex metacharacters, making the string safe for use in regex
+                String escapedOrigFrequency = Pattern.quote(origFrequency);
+                String escapedFrequency = Pattern.quote(frequency);
+                
+                // Use possessive quantifiers to prevent ReDoS
+                Pattern p2 = Pattern.compile("\\s*+\\d{0,4}\\.*+\\d{1,4}++\\s++" + escapedOrigFrequency); //allow to detect decimal number.
                 Matcher m2 = p2.matcher(instructions);
 
-                Pattern p4 = Pattern.compile("\\s*\\d*\\.*\\d+-\\s*\\d*\\.*\\d+\\s+" + frequency); //use * after the first \s because "1 OD", 1 doesn't have a space in front.
+                // Use possessive quantifiers to prevent ReDoS
+                Pattern p4 = Pattern.compile("\\s*+\\d{0,3}\\.*+\\d{1,4}++-\\s*+\\d{0,4}\\.*+\\d{1,3}++\\s++" + escapedFrequency); //use * after the first \s because "1 OD", 1 doesn't have a space in front.
                 Matcher m4 = p4.matcher(instructions);
                 //     p("here11", instructions);
                 //since "\\s+[0-9]+-[0-9]+\\s+" is a case in "\\s+[0-9]+\\s+", check the latter regex first.
@@ -706,7 +759,8 @@ public class RxUtil {
                 durationUnitSpec = (instructionToCheck.substring(m.start(), m.end())).trim();
                 p("durationUnitSpec", durationUnitSpec);
                 //get the number before durationUnit
-                Pattern p1 = Pattern.compile("[0-9]+" + s);
+                // Use bounded quantifier and possessive to prevent ReDoS
+                Pattern p1 = Pattern.compile("[0-9]{1,4}++" + s);
                 Matcher m1 = p1.matcher(instructionToCheck);
                 if (m1.find()) {
                     p("" + m1.start(), "" + m.start());
@@ -733,7 +787,8 @@ public class RxUtil {
                     String str1 = instructionToCheck.substring(m.start(), m.end());
                     MiscUtils.getLogger().debug("str1=" + str1);
                     //get numUnit out
-                    Pattern p1 = Pattern.compile("[0-9]+");
+                    // Use bounded quantifier and possessive to prevent ReDoS
+                    Pattern p1 = Pattern.compile("[0-9]{1,4}++");
                     Matcher m1 = p1.matcher(str1);
                     if (m1.find()) {
                         duration = str1.substring(m1.start(), m1.end());
@@ -946,13 +1001,16 @@ public class RxUtil {
 		String amountMethod = null;
 		String amountFrequency = null;
 
-		Pattern p2 = Pattern.compile(Pattern.quote(method) + "\\s*\\d*\\.*\\d+\\s+");
+		// Use possessive quantifiers to prevent ReDoS
+		Pattern p2 = Pattern.compile(Pattern.quote(method) + "\\s*+\\d{0,4}\\.*+\\d{1,4}++\\s++");
 		Matcher m2 = p2.matcher(instructions);
 
-		Pattern pF1 = Pattern.compile(Pattern.quote(method) + "\\s*\\d*\\/*\\d+\\s+");
+		// Use possessive quantifiers to prevent ReDoS
+		Pattern pF1 = Pattern.compile(Pattern.quote(method) + "\\s*+\\d{0,4}\\/*+\\d{1,4}++\\s++");
 		Matcher mF1 = pF1.matcher(instructions);
 
-		Pattern p4 = Pattern.compile(Pattern.quote(method) + "\\s*\\d*\\.*\\d+-\\s*\\d*\\.*\\d+\\s+");
+		// Use possessive quantifiers to prevent ReDoS
+		Pattern p4 = Pattern.compile(Pattern.quote(method) + "\\s*+\\d{0,4}\\.*+\\d{1,4}++-\\s*+\\d{0,4}\\.*+\\d{1,4}++\\s++");
 		Matcher m4 = p4.matcher(instructions);
 
 		//since "\\s+[0-9]+-[0-9]+\\s+" is a case in "\\s+[0-9]+\\s+", check the latter regex first.
@@ -996,8 +1054,9 @@ public class RxUtil {
 			for (String word : zeroToTen) {
                 String safeMethod = Pattern.quote(method);
                 String safeWord = Pattern.quote(word);
-				String r1 = safeMethod + "\\s+" + safeWord + "\\s";
-				String r2 = safeMethod + "\\s+" + safeWord + "$";
+				// Use possessive quantifiers to prevent ReDoS
+				String r1 = safeMethod + "\\s++" + safeWord + "\\s";
+				String r2 = safeMethod + "\\s++" + safeWord + "$";
 				Pattern p5 = Pattern.compile(r1);
 				Matcher m5 = p5.matcher(instructions);
 				p("pattern word =" + r1);
@@ -1085,7 +1144,8 @@ public class RxUtil {
             special = special.replace(regex5, "");
         }
         MiscUtils.getLogger().debug("before trimming mitte=" + special);
-        String regex6 = "Mitte:\\s*[0-9]+\\s*\\w+";
+        // Use bounded quantifiers and possessive to prevent ReDoS
+        String regex6 = "Mitte:\\s*+[0-9]{1,5}++\\s*+\\w++";
         p = Pattern.compile(regex6);
         m = p.matcher(special);
         special = m.replaceAll("");

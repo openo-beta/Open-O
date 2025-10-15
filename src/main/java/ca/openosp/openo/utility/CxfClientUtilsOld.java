@@ -74,6 +74,7 @@ public class CxfClientUtilsOld {
     private static long connectionTimeout = Long.parseLong(OscarProperties.getInstance().getProperty("web_service_client.connection_timeout_ms"));
     private static long receiveTimeout = Long.parseLong(OscarProperties.getInstance().getProperty("web_service_client.received_timeout_ms"));
 
+
     public static class TrustAllManager implements X509TrustManager {
         @Override
         public X509Certificate[] getAcceptedIssuers() {
@@ -184,14 +185,25 @@ public class CxfClientUtilsOld {
         httpConduit.setClient(httpClientPolicy);
     }
 
+    /**
+     * Configures SSL with proper certificate validation.
+     * Previous implementation was vulnerable to man-in-the-middle attacks (CWE-295).
+     * For environments requiring self-signed certificates, configure proper trust stores instead.
+     */
     private static void configureSsl(HTTPConduit httpConduit) {
         TLSClientParameters tslClientParameters = httpConduit.getTlsClientParameters();
         if (tslClientParameters == null) tslClientParameters = new TLSClientParameters();
-        tslClientParameters.setDisableCNCheck(true);
-        TrustAllManager[] tam = {new TrustAllManager()};
-        tslClientParameters.setTrustManagers(tam);
-
+        
+        // Enable CN check for proper hostname verification
+        tslClientParameters.setDisableCNCheck(false);
+        
+        // Use default trust managers for proper certificate validation
+        // Do not set custom trust managers - let CXF use the default secure ones
+        
         String sslProtocol = ConfigXmlUtils.getPropertyString("misc", "ws_client_ssl_protocol");
+        if (sslProtocol == null || sslProtocol.isEmpty()) {
+            sslProtocol = "TLS"; // Use secure default
+        }
         tslClientParameters.setSecureSocketProtocol(sslProtocol);
 
         httpConduit.setTlsClientParameters(tslClientParameters);

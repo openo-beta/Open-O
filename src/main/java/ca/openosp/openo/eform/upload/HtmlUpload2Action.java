@@ -51,9 +51,35 @@ public class HtmlUpload2Action extends ActionSupport {
             throw new SecurityException("missing required sec object (_eform)");
         }
         try {
+            // Validate that the uploaded file exists and is accessible
+            if (formHtml == null || !formHtml.exists() || !formHtml.canRead()) {
+                MiscUtils.getLogger().error("Invalid or unreadable uploaded file");
+                return "fail";
+            }
+            
+            // Validate that the file is within the expected temporary upload directory
+            // by checking canonical path to prevent path traversal
+            String tempDir = System.getProperty("java.io.tmpdir");
+            File tempDirFile = new File(tempDir);
+            String canonicalTempDir = tempDirFile.getCanonicalPath();
+            String canonicalFilePath = formHtml.getCanonicalPath();
+            
+            if (!canonicalFilePath.startsWith(canonicalTempDir + File.separator)) {
+                MiscUtils.getLogger().error("Uploaded file is outside of expected temporary directory");
+                throw new SecurityException("Invalid file upload location");
+            }
+            
+            // Read the file content safely
             String formHtmlStr = new String(Files.readAllBytes(formHtml.toPath()));
             formHtmlStr = formHtmlStr.replaceAll("\\\\n", "\\\\\\\\n");
-            String fileName = formHtml.getName();
+            
+            // Sanitize the filename to prevent any path injection when saving
+            String fileName = MiscUtils.sanitizeFileName(formHtml.getName());
+            if (fileName == null || fileName.trim().isEmpty()) {
+                MiscUtils.getLogger().error("Invalid filename after sanitization");
+                return "fail";
+            }
+            
             EFormUtil.saveEForm(formName, subject, fileName, formHtmlStr, showLatestFormOnly, patientIndependent, roleType);
             request.setAttribute("status", "success");
             return SUCCESS;

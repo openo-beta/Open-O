@@ -55,8 +55,11 @@ import ca.openosp.openo.lab.ca.all.upload.HandlerClassFactory;
 import ca.openosp.openo.lab.ca.all.upload.handlers.MessageHandler;
 import ca.openosp.openo.lab.ca.all.util.Utilities;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -177,24 +180,60 @@ public class LabUpload2Action extends ActionSupport {
             // retrieve the servers private key
             PrivateKey key = getServerPrivate();
 
-            // Decrypt the secret key using the servers private key
-            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-            cipher.init(Cipher.DECRYPT_MODE, key);
-            byte[] newSecretKey = cipher.doFinal(Base64.decodeBase64(skey));
+            // Try OAEP first (for new data), fall back to PKCS1 (for legacy data)
+            byte[] newSecretKey;
+            try {
+                Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
+                cipher.init(Cipher.DECRYPT_MODE, key);
+                newSecretKey = cipher.doFinal(Base64.decodeBase64(skey));
+            } catch (BadPaddingException | IllegalBlockSizeException e) {
+                // Fall back to PKCS1 for legacy data
+                logger.warn("Falling back to PKCS1 padding for legacy data decryption");
+                Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+                cipher.init(Cipher.DECRYPT_MODE, key);
+                newSecretKey = cipher.doFinal(Base64.decodeBase64(skey));
+            }
 
             // Decrypt the message using the secret key
             SecretKeySpec skeySpec = new SecretKeySpec(newSecretKey, "AES");
-            Cipher msgCipher = Cipher.getInstance("AES");
-            msgCipher.init(Cipher.DECRYPT_MODE, skeySpec);
-
-            is = new CipherInputStream(is, msgCipher);
-
+            is = decryptAutoDetect(is, skeySpec);
+           
             // Return the decrypted message
             return (new BufferedInputStream(is));
 
         } catch (Exception e) {
             logger.error("Could not decrypt the message", e);
             return (null);
+        }
+    }
+
+    private static InputStream decryptAutoDetect(InputStream is, SecretKeySpec key) throws Exception {
+        // Mark stream for reset if possible
+        is.mark(20);
+        
+        // Check for version header in new files
+        byte[] header = new byte[4];
+        int read = is.read(header);
+        
+        if (read == 4 && "GCM1".equals(new String(header))) {
+            // New format with GCM
+            byte[] iv = new byte[12];
+            is.read(iv);
+            
+            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+            GCMParameterSpec spec = new GCMParameterSpec(128, iv);
+            cipher.init(Cipher.DECRYPT_MODE, key, spec);
+            
+            return new CipherInputStream(is, cipher);
+        } else {
+            // Legacy ECB format
+            is.reset(); // Go back to start
+            
+            logger.warn("Processing legacy ECB file");
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.DECRYPT_MODE, key);
+            
+            return new CipherInputStream(is, cipher);
         }
     }
 

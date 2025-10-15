@@ -52,9 +52,40 @@ public class UtilXML {
 
     public static Document newDocument() {
         try {
-            Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            
+            // Disable external entities to prevent XXE attacks
+            try {
+                factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            } catch (Exception e) {
+                MiscUtils.getLogger().warn("Could not set feature: disallow-doctype-decl", e);
+            }
+            try {
+                factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            } catch (Exception e) {
+                MiscUtils.getLogger().warn("Could not set feature: external-general-entities", e);
+            }
+            try {
+                factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            } catch (Exception e) {
+                MiscUtils.getLogger().warn("Could not set feature: external-parameter-entities", e);
+            }
+            try {
+                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            } catch (Exception e) {
+                MiscUtils.getLogger().warn("Could not set feature: load-external-dtd", e);
+            }
+            
+            // Disable XInclude
+            factory.setXIncludeAware(false);
+            
+            // Disable expansion of entity references
+            factory.setExpandEntityReferences(false);
+            
+            Document document = factory.newDocumentBuilder().newDocument();
             return document;
         } catch (Exception e) {
+            MiscUtils.getLogger().error("Error", e);   
             Document document1 = null;
             return document1;
         }
@@ -123,11 +154,26 @@ public class UtilXML {
     public static Document parseXML(String xmlInput) {
         Document document;
         try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            
+            // Disable external entities to prevent XXE attacks
+            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            
+            // Disable XInclude
+            factory.setXIncludeAware(false);
+            
+            // Disable expansion of entity references
+            factory.setExpandEntityReferences(false);
+            
             InputSource is = new InputSource(new StringReader(xmlInput));
-            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
+            Document doc = factory.newDocumentBuilder().parse(is);
             Document document1 = doc;
             return document1;
         } catch (Exception e) {
+            MiscUtils.getLogger().error("Error", e);   
             document = null;
         }
         return document;
@@ -135,8 +181,27 @@ public class UtilXML {
 
     public static Document parseXMLFile(String fileName)
             throws IOException, FileNotFoundException, Exception {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        
+        try {
+            // Disable external entities to prevent XXE attacks
+            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            
+            // Disable XInclude
+            factory.setXIncludeAware(false);
+            
+            // Disable expansion of entity references
+            factory.setExpandEntityReferences(false);
+
+        } catch (Exception e) {
+            MiscUtils.getLogger().error("Error", e);
+        }  
+        
         InputSource is = new InputSource(new FileReader(fileName));
-        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
+        Document doc = factory.newDocumentBuilder().parse(is);
         return doc;
     }
 
