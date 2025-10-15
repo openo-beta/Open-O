@@ -108,6 +108,32 @@
                 <artifactId>mina-core</artifactId>
                 <version>2.1.10</version>
             </dependency>
+
+            <!-- Transitive Hibernate/JPA dependencies -->
+            <!-- Hibernate core -->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>5.6.15.Final</version>
+            </dependency>
+            <!-- Hibernate commons annotations - transitive from hibernate-core -->
+            <dependency>
+                <groupId>org.hibernate.common</groupId>
+                <artifactId>hibernate-commons-annotations</artifactId>
+                <version>5.1.2.Final</version>
+            </dependency>
+            <!-- JPA API (javax namespace) - transitive from Hibernate 5.x -->
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>javax.persistence-api</artifactId>
+                <version>2.2</version>
+            </dependency>
+            <!-- JPA API (jakarta namespace) - transitive from jaxws-ri -->
+            <dependency>
+                <groupId>jakarta.persistence</groupId>
+                <artifactId>jakarta.persistence-api</artifactId>
+                <version>2.2.3</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

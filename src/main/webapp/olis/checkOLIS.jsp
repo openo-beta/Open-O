@@ -90,7 +90,7 @@
         Connection c = DbConnectionFilter.getThreadLocalDbConnection(); //select only
         try {
 
-            PreparedStatement ps_findConfiguredProviders = c.prepareStatement("select * from providers where practitionerNo != ''");
+            PreparedStatement ps_findConfiguredProviders = c.prepareStatement("select * from provider where practitionerNo != ''");
             PreparedStatement ps_prop = c.prepareStatement("select * from property where provider_no = ? and name = ?");
             ResultSet rs = ps_findConfiguredProviders.executeQuery();
 

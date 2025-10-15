@@ -238,7 +238,7 @@ function popupPage2(varpage) {
 
 <security:oscarSec roleName="<%=roleName$%>" objectName="_pref" rights="r">
 <li>  
-	<a href=# onClick ="popupPage2('<%=request.getContextPath()%>/providers/providerpreference.jsp?provider_no=<%=curUser_no%>');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>' OnMouseOver="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>' ; return true"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.pref"/></a>
+	<a href=# onClick ="popupPage2('<%=request.getContextPath()%>/provider/providerpreference.jsp?provider_no=<%=curUser_no%>');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>' OnMouseOver="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>' ; return true"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.pref"/></a>
 </li>
 </security:oscarSec>
 
