@@ -571,7 +571,7 @@
                                         fetch('<%=statusUrl%>', {
                                             method: 'POST',
                                             headers: {
-                                                'Content-Type': 'text/html'
+                                                'Accept': 'text/html'
                                             }
                                         })
                                         .then(function(response) {
