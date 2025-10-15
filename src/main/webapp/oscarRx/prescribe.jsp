@@ -233,7 +233,7 @@
                                                                                style="color:red;font-size:13pt;vertical-align:super;text-decoration:none"
                                                                                TITLE="Instruction Examples"><b>*</b></a>
     <a href="javascript:void(0);" tabindex="-1" onclick="displayInstructions('<%=Encode.forJavaScriptAttribute(rand)%>');"><img
-            src="<c:out value="${ctx}/images/icon_help_sml.gif"/>" border="0" TITLE="Instructions Field Reference"></a>
+            src="<%= request.getContextPath() %>/images/icon_help_sml.gif" border="0" TITLE="Instructions Field Reference" /></a>
     <span id="major_<%=Encode.forHtmlAttribute(rand)%>" style="display:none;background-color:red"></span>&nbsp;<span id="moderate_<%=Encode.forHtmlAttribute(rand)%>"
                                                                                             style="display:none;background-color:orange"></span>&nbsp;<span
         id='minor_<%=Encode.forHtmlAttribute(rand)%>' style="display:none;background-color:yellow;"></span>&nbsp;<span id='unknown_<%=Encode.forHtmlAttribute(rand)%>'

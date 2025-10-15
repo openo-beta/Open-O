@@ -1496,7 +1496,7 @@
 
         function displayInstructions(randomId) {
             var data = "randomId=" + randomId;
-            mb.show(randomId, 'displayInstructions', '600px');
+            mb.show(randomId, '<%= request.getContextPath() %>/oscarRx/displayInstructions', '600px');
 
         }
 
