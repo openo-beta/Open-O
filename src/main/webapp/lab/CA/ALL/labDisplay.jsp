@@ -77,7 +77,7 @@
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_lab" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../../../securityError.jsp?type=_lab");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_lab");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -1164,7 +1164,7 @@ request.setAttribute("missingTests", missingTests);
             </script>
         </c:if>
 
-    <form name="reassignForm_<%= Encode.forHtmlAttribute(segmentID) %>" method="post" action="Forward.do">
+    <form name="reassignForm_<%= Encode.forHtmlAttribute(segmentID) %>" method="post" action="<%= request.getContextPath() %>/lab/CA/ALL/Forward.do">
         <input type="hidden" name="flaggedLabs" value="<%= Encode.forHtmlAttribute(segmentID) %>"/>
         <input type="hidden" name="selectedProviders" value=""/>
         <input type="hidden" name="favorites" value=""/>

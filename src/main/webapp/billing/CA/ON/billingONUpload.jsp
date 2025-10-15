@@ -19,7 +19,7 @@
 
 --%>
 <%
-    if (session.getAttribute("user") == null) response.sendRedirect("../../../logout.jsp");
+    if (session.getAttribute("user") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
     OscarProperties props = OscarProperties.getInstance();
     session.setAttribute("homepath", props.getProperty("project_home", ""));
 %>

@@ -67,7 +67,7 @@
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_lab" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../../../securityError.jsp?type=_lab");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_lab");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -226,7 +226,7 @@
     }
 
     linkreq = function (rptId, reqId) {
-        var link = "../lab/LinkReq.jsp?table=hl7TextMessage&rptid=" + rptId + "&reqid=" + reqId + "<%=demographicID != null ? "&demographicNo=" + demographicID : ""%>";
+        var link = "<%= request.getContextPath() %>/lab/LinkReq.jsp?table=hl7TextMessage&rptid=" + rptId + "&reqid=" + reqId + "<%=demographicID != null ? "&demographicNo=" + demographicID : ""%>";
         window.open(link, "linkwin", "width=500, height=200");
     }
 
@@ -400,7 +400,7 @@
                                 <% } %>
                                 <input type="button" class="smallButton"
                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.index.btnForward"/>"
-                                       onClick="popupStart(300, 400, '../oscarMDS/SelectProviderAltView.jsp?doc_no=<%=segmentID%>&providerNo=<%=providerNo%>&searchProviderNo=<%=searchProviderNo%>', 'providerselect')">
+                                       onClick="popupStart(300, 400, '<%= request.getContextPath() %>/oscarMDS/SelectProviderAltView.jsp?doc_no=<%=segmentID%>&providerNo=<%=providerNo%>&searchProviderNo=<%=searchProviderNo%>', 'providerselect')">
                                 <input type="button" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnPrint"/> "
                                        onClick="printPDF('<%=segmentID%>')">
 

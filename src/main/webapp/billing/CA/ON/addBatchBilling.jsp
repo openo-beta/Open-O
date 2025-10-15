@@ -26,14 +26,14 @@
 
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%
-    if (session.getAttribute("user") == null) response.sendRedirect("../../logout.jsp");
+    if (session.getAttribute("user") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
 %>
 
 <%@ page import="java.util.*" %>
 <%@ page import="ca.openosp.openo.PMmodule.dao.ProviderDao, ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
 
-<%@include file="../../../casemgmt/taglibs.jsp" %>
+<%@include file="/casemgmt/taglibs.jsp" %>
 
 <%
     GregorianCalendar now = new GregorianCalendar();
