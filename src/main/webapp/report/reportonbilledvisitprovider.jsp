@@ -105,7 +105,7 @@
     Properties oldRoleProp = new Properties();
     Vector vec = new Vector();
     Vector oldRoleList = new Vector();
-    String query = "select u.*, p.first_name, p.last_name from secUserRole u, providers p ";
+    String query = "select u.*, p.first_name, p.last_name from secUserRole u, provider p ";
 
     query += "where u.provider_no=p.provider_no  order by p.first_name, p.last_name";
 
@@ -119,7 +119,7 @@
         oldRoleList.add(Misc.getString(rs, "provider_no"));
     }
 
-    query = "select * from providers order by first_name, last_name";
+    query = "select * from provider order by first_name, last_name";
     rs = dbObj.queryResults(query);
 
     while (rs.next()) {
