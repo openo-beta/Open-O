@@ -44,12 +44,12 @@
 <%@page import="ca.openosp.openo.commn.model.BillingONItem, ca.openosp.openo.commn.service.BillingONService" %>
 
 <%
-    if (session.getAttribute("userrole") == null) response.sendRedirect("../logout.jsp");
+    if (session.getAttribute("userrole") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 %>
 
 <security:oscarSec roleName="<%=roleName$%>" objectName="_tasks" rights="r" reverse="true">
-    <%response.sendRedirect("../noRights.html");%>
+    <%response.sendRedirect(request.getContextPath() + "/noRights.html");%>
 </security:oscarSec>
 
 
@@ -108,7 +108,7 @@
 
     if (isThisProviderOnly) {
         if (provider.getOhipNo().isEmpty())
-            response.sendRedirect("../../../noRights.html");
+            response.sendRedirect(request.getContextPath() + "/noRights.html");
 
         pList = new ArrayList<Provider>();
         pList.add(provider);
@@ -389,7 +389,7 @@
                 </td>
                 <% if (!isSameBill) {%>
                 <td style="text-align:center"><a href="#"
-                                                 onclick="popupPage(800,740,'../../../demographic/demographiccontrol.jsp?demographic_no=<%=demoNo%>&displaymode=edit&dboperation=search_detail');return false;"><%=demographicName%>
+                                                 onclick="popupPage(800,740,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=demoNo%>&displaymode=edit&dboperation=search_detail');return false;"><%=demographicName%>
                 </a></td>
                 <%} else {%>
                 <td></td>
@@ -575,7 +575,7 @@
                 <td style="text-align:center"><%=billingDateStr%>
                 </td>
                 <td style="text-align:center"><a href="#"
-                                                 onclick="popupPage(800,740,'../../../demographic/demographiccontrol.jsp?demographic_no=<%=demoNo%>&displaymode=edit&dboperation=search_detail');return false;"><%=demographicName%>
+                                                 onclick="popupPage(800,740,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=demoNo%>&displaymode=edit&dboperation=search_detail');return false;"><%=demographicName%>
                 </a></td>
                 <%
                     String dxCode = "";
