@@ -9,11 +9,11 @@
 */
 
 dojo.kwCompoundRequire({
-	common: [
-		"dojo.gfx.color",
-		"dojo.gfx.matrix",
-		"dojo.gfx.common"
-	]
+    common: [
+        "dojo.gfx.color",
+        "dojo.gfx.matrix",
+        "dojo.gfx.commons"
+    ]
 });
 
 // include a renderer conditionally

@@ -8,4 +8,4 @@
 		http://dojotoolkit.org/community/licensing.shtml
 */
 
-({"displayName":"इतली का लीरा","symbol":"₤"})
+({"displayName": "इतली का लीरा", "symbol": "₤"})

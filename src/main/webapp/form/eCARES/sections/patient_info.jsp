@@ -28,7 +28,7 @@
         <div>
             <span>Chart #:</span>
             <span class="font-bold" data-field-name="demographicNo">
-                <c:out value="${ param.demographicNo }" />
+                <c:out value="${ param.demographicNo }"/>
             </span>
         </div>
         <div class="ml-2">

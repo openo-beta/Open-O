@@ -13,38 +13,38 @@ dojo.provide("dojo.widget.RegexpTextbox");
 dojo.require("dojo.widget.ValidationTextbox");
 
 dojo.widget.defineWidget(
-	"dojo.widget.RegexpTextbox",
-	dojo.widget.ValidationTextbox,
-	{
-		/*
-		summary
-		  A subclass of ValidationTextbox.
-		  Over-rides isValid to test input based on a regular expression.
-		  Has a new property that can be specified as attributes in the markup. 
-		
-		regexp: String
-		       The regular expression string to use
-		flags: String
-		        Flags to pass to the regular expression (e.g. 'i', 'g', etc)
-		*/
+    "dojo.widget.RegexpTextbox",
+    dojo.widget.ValidationTextbox,
+    {
+        /*
+        summary
+          A subclass of ValidationTextbox.
+          Over-rides isValid to test input based on a regular expression.
+          Has a new property that can be specified as attributes in the markup.
 
-	    mixInProperties: function(localProperties, frag){
-	        // First initialize properties in super-class.
-	        dojo.widget.RegexpTextbox.superclass.mixInProperties.apply(this, arguments);
+        regexp: String
+               The regular expression string to use
+        flags: String
+                Flags to pass to the regular expression (e.g. 'i', 'g', etc)
+        */
 
-	        // Get properties from markup attibutes, and assign to flags object.
-	        if(localProperties.regexp){
-	            this.flags.regexp = localProperties.regexp;
-	        }
-	        if(localProperties.flags){
-	            this.flags.flags = localProperties.flags;
-	        }
-	    },
+        mixInProperties: function (localProperties, frag) {
+            // First initialize properties in super-class.
+            dojo.widget.RegexpTextbox.superclass.mixInProperties.apply(this, arguments);
 
-	    // Over-ride for integer validation
-	    isValid: function(){
-	        var regexp = new RegExp(this.flags.regexp, this.flags.flags);
-	        return regexp.test(this.textbox.value);
-	    }
-	}
+            // Get properties from markup attibutes, and assign to flags object.
+            if (localProperties.regexp) {
+                this.flags.regexp = localProperties.regexp;
+            }
+            if (localProperties.flags) {
+                this.flags.flags = localProperties.flags;
+            }
+        },
+
+        // Over-ride for integer validation
+        isValid: function () {
+            var regexp = new RegExp(this.flags.regexp, this.flags.flags);
+            return regexp.test(this.textbox.value);
+        }
+    }
 );

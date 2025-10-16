@@ -1,5 +1,5 @@
-<%@page import="org.oscarehr.util.WebUtils"%>
-<%@page import="org.oscarehr.util.WebUtils"%>
+<%@page import="ca.openosp.openo.utility.WebUtils"%>
+<%@page import="ca.openosp.openo.utility.WebUtils"%>
 <%@page import="org.apache.commons.lang.StringEscapeUtils"%>
 
 <%@ include file="/taglibs.jsp"%>
@@ -9,13 +9,13 @@
 <html>
 	<head>
 		<title>Program Management Module</title>
-	    <link rel="stylesheet" type="text/css" href='<html:rewrite page="/css/tigris.css" />' />
-	    <link rel="stylesheet" type="text/css" href='<html:rewrite page="/css/displaytag.css" />' />
-	    <link rel="stylesheet" type="text/css" href='<html:rewrite page="/jsCalendar/skins/aqua/theme.css" />' />
+	    <link rel="stylesheet" type="text/css" href='<%=request.getContextPath() %>/css/tigris.css' />
+	    <link rel="stylesheet" type="text/css" href='<%=request.getContextPath() %>/css/displaytag.css' />
+	    <link rel="stylesheet" type="text/css" href='<%=request.getContextPath() %>/jsCalendar/skins/aqua/theme.css' />
 
 		<link rel="stylesheet" type="text/css" media="all" href="<%=request.getContextPath()%>/share/calendar/calendar.css" title="win2k-cold-1" />
 		<script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/calendar.js"></script>
-		<script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/lang/<bean:message key="global.javascript.calendar"/>"></script>
+		<script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
 		<script type="text/javascript" src="<%=request.getContextPath()%>/share/calendar/calendar-setup.js"></script>
 		<script type="text/javascript" src="<%=request.getContextPath()%>/js/global.js"></script>
 		
@@ -46,7 +46,6 @@
 		<script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery.validate-1.19.5.min.js"></script>
 --%>
 
-		<script type="text/javascript" src="<%=request.getContextPath()%>/js/genericIntake.js"></script>
 	</head>
 	<body>
 		<div class="composite">

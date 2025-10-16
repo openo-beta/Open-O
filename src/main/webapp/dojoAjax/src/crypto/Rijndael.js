@@ -14,9 +14,9 @@ dojo.require("dojo.experimental");
 
 dojo.experimental("dojo.crypto.Rijndael");
 
-dojo.crypto.Rijndael = new function(){
-	this.encrypt=function(plaintext, key){
-	};
-	this.decrypt=function(ciphertext, key){
-	};
+dojo.crypto.Rijndael = new function () {
+    this.encrypt = function (plaintext, key) {
+    };
+    this.decrypt = function (ciphertext, key) {
+    };
 }();
