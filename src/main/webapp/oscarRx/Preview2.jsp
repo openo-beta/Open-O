@@ -303,7 +303,7 @@
             showPatientDOB = true;
         }
     %>
-    <form action="${pageContext.request.contextPath}/form/formname.do" method="post" styleId="preview2Form">
+    <form action="${pageContext.request.contextPath}/form/formname.do" method="post" id="preview2Form">
         <input type="hidden" name="demographic_no" value="<%=bean.getDemographicNo()%>"/>
         <table>
             <tr>
