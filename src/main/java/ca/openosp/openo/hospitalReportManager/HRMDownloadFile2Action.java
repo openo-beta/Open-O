@@ -25,7 +25,6 @@
 package ca.openosp.openo.hospitalReportManager;
 
 import com.opensymphony.xwork2.ActionSupport;
-import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
@@ -36,7 +35,6 @@ import ca.openosp.openo.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.util.List;
 
 public class HRMDownloadFile2Action extends ActionSupport {
@@ -113,13 +111,14 @@ public class HRMDownloadFile2Action extends ActionSupport {
             contentType = "text/html";
         }
 
-        File temp = File.createTempFile("HRMDownloadFile", report.getFileExtension());
-        temp.deleteOnExit();
-
-        FileUtils.writeByteArrayToFile(temp, data);
-
         response.setContentType(contentType);
-        response.setHeader("Content-disposition", "attachment; filename=" + fileName);
+        response.setContentLength(data.length);
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+
+        // Write the binary data directly to the response output stream
+        response.getOutputStream().write(data);
+        response.getOutputStream().flush();
+        response.getOutputStream().close();
 
         return NONE;
     }
