@@ -38,6 +38,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -113,9 +115,18 @@ public class HRMDownloadFile2Action extends ActionSupport {
         // Set both headers for compatibility
         response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"; filename*=UTF-8''" + encodedFileName);
 
-        try (ServletOutputStream out = response.getOutputStream()) {
-            out.write(data);
+        try (ServletOutputStream out = response.getOutputStream();
+            ByteArrayInputStream in = new ByteArrayInputStream(report.getBinaryContent())) {
+
+            byte[] buffer = new byte[8192]; // 8 KB buffer
+            int bytesRead;
+            while ((bytesRead = in.read(buffer)) != -1) {
+                out.write(buffer, bytesRead, bytesRead);
+            }
             out.flush();
+        } catch (IOException e) {
+            // Optional: add proper logging or rethrow if needed
+            throw new IOException("Error streaming HRM report: " + e.getMessage(), e);
         }
 
         return NONE;
