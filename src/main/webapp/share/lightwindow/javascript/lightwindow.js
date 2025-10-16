@@ -160,7 +160,7 @@ lightwindow.prototype = {
             overlay: {
                 opacity: 0.7,
                 image: '../share/lightwindow/images/black.png',
-                presetImage: '../share/lightwindow/images/black-70.png'
+                presetImage: '/oscar/share/lightwindow/images/black-70.png'
             },
             skin: {
                 main: '<div id="lightwindow_container" >' +
