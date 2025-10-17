@@ -64,6 +64,8 @@ public final class ImageRenderingServlet extends HttpServlet {
         local_client, hnr_client, integrator_client, signature_preview, signature_stored, clinic_logo
     }
 
+    private static String DEFAULT_CLINIC_LOGO_FILE = "src/main/resources/loginResource/openosp_logo.png";
+
     @Override
     public final void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
@@ -325,7 +327,7 @@ public final class ImageRenderingServlet extends HttpServlet {
         }
 
         try {
-            String filename = OscarProperties.getInstance().getProperty("CLINIC_LOGO_FILE");
+            String filename = OscarProperties.getInstance().getProperty("CLINIC_LOGO_FILE", DEFAULT_CLINIC_LOGO_FILE);
             if (filename != null) {
                 File f = new File(filename);
                 if (f != null && f.exists()) {
