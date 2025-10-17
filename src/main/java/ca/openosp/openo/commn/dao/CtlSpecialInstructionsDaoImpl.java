@@ -51,7 +51,6 @@ public class CtlSpecialInstructionsDaoImpl extends AbstractDaoImpl<CtlSpecialIns
         List<CtlSpecialInstructions> results = query.getResultList();
         return results;
     }
-	}
 
 	/**
 	 * Finds a list of descriptions from the CtlSpecialInstructions table that match a given query string.
@@ -71,5 +70,4 @@ public class CtlSpecialInstructionsDaoImpl extends AbstractDaoImpl<CtlSpecialIns
 
 		return typedQuery.getResultList();
 	}
-
 }
