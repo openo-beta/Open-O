@@ -83,6 +83,11 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     
     unused_count=0
     while IFS= read -r -d '' file; do
+        # Skip taglib include files themselves (they're meant to be included, not use tags)
+        if echo "$file" | grep -qE "${TAGLIB_INCLUDES}"; then
+            continue
+        fi
+        
         unused=()
         
         for prefix in "${!tags[@]}"; do
