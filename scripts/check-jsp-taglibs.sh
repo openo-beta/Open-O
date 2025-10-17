@@ -6,11 +6,11 @@ echo "Checking JSP files for missing JSTL taglib declarations..."
 echo
 
 declare -A tags=(
-    ["fmt"]="java.sun.com/jsp/jstl/fmt"
-    ["c"]="java.sun.com/jsp/jstl/core"
-    ["fn"]="java.sun.com/jsp/jstl/functions"
-    ["sql"]="java.sun.com/jsp/jstl/sql"
-    ["xml"]="java.sun.com/jsp/jstl/xml"
+    ["fmt"]="http://java.sun.com/jsp/jstl/fmt"
+    ["c"]="http://java.sun.com/jsp/jstl/core"
+    ["fn"]="http://java.sun.com/jsp/jstl/functions"
+    ["sql"]="http://java.sun.com/jsp/jstl/sql"
+    ["xml"]="http://java.sun.com/jsp/jstl/xml"
 )
 
 # Common taglib include file patterns
@@ -42,6 +42,10 @@ while IFS= read -r -d '' file; do
     if [ ${#missing[@]} -gt 0 ]; then
         echo "$file"
         echo "   Missing taglib(s): ${missing[*]}"
+        echo "   Declarations to add:"
+        for prefix in "${missing[@]}"; do
+            echo "      <%@ taglib uri=\"${tags[$prefix]}\" prefix=\"$prefix\" %>"
+        done
         echo
         ((found_issues++))
     fi
@@ -51,5 +55,5 @@ echo "---"
 if [ $found_issues -eq 0 ]; then
     echo "No issues found!"
 else
-    echo "Found $found_issues file(s) with missing taglib declarations"
+    echo "Found $found_issues file(s) with missing taglib declarations."
 fi
