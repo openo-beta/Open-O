@@ -29,7 +29,7 @@
         <!-- Slf4j Version -->
         <slf4j.version>2.0.17</slf4j.version>
         <!-- Hapi Fhir Version -->
-        <hapifhir.version>6.4.0</hapifhir.version>
+        <hapifhir.version>6.10.5</hapifhir.version>
         <!-- Apache CXF Version -->
         <cxf.version>3.5.11</cxf.version>
         <struts.devMode>false</struts.devMode>
@@ -1608,14 +1608,11 @@
                                     <format property="build.dateTime.value" pattern="yyyy-MM-dd hh:mm aa"/>
                                 </tstamp>
                                 <echo level="info" message="build time : ${build.dateTime.value}"/>
-                                <replace file="target/classes/oscar_mcmaster.properties" token="${build.dateTime}"
-                                         value="${build.dateTime.value}"/>
+                                <replace file="target/classes/oscar_mcmaster.properties" token="${build.dateTime}" value="${build.dateTime.value}"/>
                                 <property environment="env"/>
                                 <echo level="info" message="JOB_NAME - BUILD_NUMBER : ${env.JOB_NAME}-${env.BUILD_NUMBER}"/>
-                                <replace file="target/classes/oscar_mcmaster.properties" token="${build.JOB_NAME}"
-                                         value="${env.JOB_NAME}"/>
-                                <replace file="target/classes/oscar_mcmaster.properties" token="${build.BUILD_NUMBER}"
-                                         value="${env.BUILD_NUMBER}"/>
+                                <replace file="target/classes/oscar_mcmaster.properties" token="${build.JOB_NAME}" value="${env.JOB_NAME}"/>
+                                <replace file="target/classes/oscar_mcmaster.properties" token="${build.BUILD_NUMBER}" value="${env.BUILD_NUMBER}"/>
                             </target>
                         </configuration>
                     </execution>
