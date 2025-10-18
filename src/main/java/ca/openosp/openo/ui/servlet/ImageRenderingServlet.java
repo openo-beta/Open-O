@@ -64,7 +64,7 @@ public final class ImageRenderingServlet extends HttpServlet {
         local_client, hnr_client, integrator_client, signature_preview, signature_stored, clinic_logo
     }
 
-    private static String DEFAULT_CLINIC_LOGO_FILE = "src/main/resources/loginResource/openosp_logo.png";
+    private static final String DEFAULT_CLINIC_LOGO_FILE = "src/main/resources/loginResource/openosp_logo.png";
 
     @Override
     public final void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
