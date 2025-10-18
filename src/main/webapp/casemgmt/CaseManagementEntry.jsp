@@ -1,4 +1,5 @@
-<%@ page import="ca.openosp.openo.casemgmt.web.formbeans.CaseManagementEntryFormBean" %><%--
+
+<%--
 
 
     Copyright (c) 2005-2012. Centre for Research on Inner City Health, St. Michael's Hospital, Toronto. All Rights Reserved.
@@ -22,6 +23,7 @@
     Toronto, Ontario, Canada
 
 --%>
+
 
 
 <%-- Updated by Eugene Petruhin on 24 dec 2008 while fixing #2459538 --%>

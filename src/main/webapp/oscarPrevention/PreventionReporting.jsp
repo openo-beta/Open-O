@@ -590,10 +590,16 @@
                                 phoneCall.add(dis.demographicNo);
                                 setBill = true;
                             }
+                        }
 
-                            if (dis.state != null && dis.state.equals("Overdue")){
-                               overDueList.add(dis.demographicNo);
-                            }
+                        if (dis.state != null && dis.state.equals("Refused")) {
+                            refusedLetter.add(dis.demographicNo);
+                            setBill = true;
+                        }
+
+                        if (dis.state != null && dis.state.equals("Overdue")) {
+                            overDueList.add(dis.demographicNo);
+                        }
 
                             if( dis.state != null && dis.billStatus.equals("Y")) {
                               setBill = true;
@@ -606,7 +612,7 @@
                           </td>
                           <td><%=DemographicData.getDob(demo,"-")%></td>
 
-                          <%if (type == null ){ %>
+                          <%if (type == null) { %>
                           <td><%=demo.getAgeAsOf(asDate)%></td>
                           <td><%=Encode.forHtmlContent(h.get("sex"))%></td>
                           <td><%=Encode.forHtmlContent(h.get("lastName"))%></td>
@@ -622,17 +628,17 @@
                           <td bgcolor="<%=dis.color%>"><%=dis.lastDate%></td>
 
 
-                          <% }else {
-                              Demographic demoSDM = demoData.getSubstituteDecisionMaker(LoggedInInfo.getLoggedInInfoFromSession(request), dis.demographicNo.toString());%>
+                          <% } else {
+                              org.oscarehr.common.model.Demographic demoSDM = demoData.getSubstituteDecisionMaker(LoggedInInfo.getLoggedInInfoFromSession(request), dis.demographicNo.toString());%>
                           <td><%=demo.getAgeAsOf(asDate)%></td>
                           <td><%=Encode.forHtmlContent(h.get("sex"))%></td>
                           <td><%=Encode.forHtmlContent(h.get("lastName"))%></td>
                           <td><%=Encode.forHtmlContent(h.get("firstName"))%></td>
-                          <td><%=Encode.forHtmlContent(demo.getHin())+Encode.forHtmlContent(demo.getVer())%></td>
-                          <td><%=demoSDM==null?"":Encode.forHtmlContent(demoSDM.getLastName())%><%=demoSDM==null?"":","%> <%= demoSDM==null?"":Encode.forHtmlContent(demoSDM.getFirstName()) %>&nbsp;</td>
-                          <td><%=demoSDM==null?"":Encode.forHtmlContent(demoSDM.getPhone())%> &nbsp;</td>
-                          <td><%=demoSDM==null?"":Encode.forHtmlContent(demoSDM.getEmail())%> &nbsp;</td>
-                          <td><%=demoSDM==null?"":Encode.forHtmlContent(demoSDM.getAddress())%> <%=demoSDM==null?"":Encode.forHtmlContent(demoSDM.getCity())%> <%=demoSDM==null?"":Encode.forHtmlContent(demoSDM.getProvince())%> <%=demoSDM==null?"":Encode.forHtmlContent(demoSDM.getPostal())%> &nbsp;</td>
+                          <td><%=Encode.forHtmlContent(demo.getHin()) + Encode.forHtmlContent(demo.getVer())%></td>
+                          <td><%=demoSDM == null ? "" : Encode.forHtmlContent(demoSDM.getLastName())%><%=demoSDM == null ? "" : ","%> <%= demoSDM == null ? "" : Encode.forHtmlContent(demoSDM.getFirstName()) %>&nbsp;</td>
+                          <td><%=demoSDM == null ? "" : Encode.forHtmlContent(demoSDM.getPhone())%> &nbsp;</td>
+                          <td><%=demoSDM == null ? "" : Encode.forHtmlContent(demoSDM.getEmail())%> &nbsp;</td>
+                          <td><%=demoSDM == null ? "" :Encode.forHtmlContent(demoSDM.getAddress())%> <%=demoSDM == null ? "" : Encode.forHtmlContent(demoSDM.getCity())%> <%=demoSDM == null ? "" : Encode.forHtmlContent(demoSDM.getProvince())%> <%=demoSDM == null ? "" : Encode.forHtmlContent(demoSDM.getPostal())%>&nbsp;</td>
                           <td><oscar:nextAppt demographicNo="<%=demo.getDemographicNo().toString()%>"/></td>
                           <td bgcolor="<%=dis.color%>"><%=dis.state%></td>
                           <td bgcolor="<%=dis.color%>"><%=dis.numShots%></td>                          
@@ -651,14 +657,14 @@
                              <% } %>
                           </td>
                           <td bgcolor="<%=dis.color%>" id="nextSuggestedProcedure<%=i+1%>">
-                              <%if ( dis.nextSuggestedProcedure != null && dis.nextSuggestedProcedure.equals("P1")){ %>
+                              <%if (dis.nextSuggestedProcedure != null && dis.nextSuggestedProcedure.equals("P1")){ %>
                                  <a href="javascript: return false;" onclick="return completedProcedure('<%=i+1%>','<%=followUpType%>','<%=dis.nextSuggestedProcedure%>','<%=dis.demographicNo%>');"><%=dis.nextSuggestedProcedure%></a>                              
                               <%}else{%>
                                     <%=(dis.nextSuggestedProcedure != null)?dis.nextSuggestedProcedure:"&nbsp;"%>
                               <%}%>
                           </td>
                           <td bgcolor="<%=dis.color%>">		
-                          	<%if( !setBill ) {%>					                          
+                          	<%if(!setBill) {%>					                          
                           		<input type="checkbox"  id="selectnsp<%=i+1%>" name="nsp" value="<%=dis.demographicNo%>">
                           	<%} else { %>
                           		&nbsp;
@@ -681,7 +687,6 @@
 
                        </tr>
                       <%}%>
-                    <%}%>
                     	</tbody>
                     </table>
                     <table class="ele" style="width:80%;">
@@ -694,51 +699,6 @@
                     </form>
 
                   <%}%>
-                  <%--
-                  <% if ( overDueList.size() > 0 ) {
-                        String queryStr = getUrlParamList(overDueList, "demo");
-                        %>
-                        <a target="_blank" href="<%=request.getContextPath()%>/report/GenerateEnvelopes.do?<%=queryStr%>&amp;message=<%=java.net.URLEncoder.encode(request.getAttribute("prevType")+" is due","UTF-8")%>">Add Tickler for Overdue</a>
-                  <%}%>
-                  --%>
-
-                 <%-- if ( firstLetter.size() > 0 ) {
-                        String queryStr = getUrlParamList(firstLetter, "demo");
-                        %>
-                        <input type="checkbox" name="bill" <%=enabled%>
-                               value="<%=billCode + ";" + dis.demographicNo + ";" + demo.getProviderNo()%>">
-                        <%}%>
-                    </td>
-
-                </tr>
-                <%}%>
-                </tbody>
-            </table>
-            <table class="ele" style="width:80%;">
-                <tr>
-                    <td style="text-align:right;"><input type="button" value="Bill" onclick="return batchBill();"></td>
-
-                </tr>
-            </table>
-
-        </form>
-
-        <%}%>
-            <%--
-            <% if ( overDueList.size() > 0 ) {
-                  String queryStr = getUrlParamList(overDueList, "demo");
-                  %>
-                  <a target="_blank" href="<%= request.getContextPath() %>/report/GenerateEnvelopes.do?<%=queryStr%>&amp;message=<%=java.net.URLEncoder.encode(request.getAttribute("prevType")+" is due","UTF-8")%>">Add Tickler for Overdue</a>
-            <%}%>
-            --%>
-
-            <%-- if ( firstLetter.size() > 0 ) {
-                   String queryStr = getUrlParamList(firstLetter, "demo");
-                   %>
-               <a target="_blank" href="<%= request.getContextPath() %>/report/GenerateEnvelopes.do?<%=queryStr%>&message=<%=java.net.URLEncoder.encode("Letter 1 Reminder Letter sent for :"+request.getAttribute("prevType"),"UTF-8")%>">Generate First Envelopes</a>
-             <%}
-               --%>
-
 
         <% if (firstLetter.size() > 0) {
             String queryStr = getUrlParamList(firstLetter, "demo");
@@ -763,15 +723,6 @@
            href="<%= request.getContextPath() %>/report/GenerateLetters.jsp?<%=queryStr%>&amp;message=<%=java.net.URLEncoder.encode("Letter 1 Reminder Letter sent for :"+request.getAttribute("prevType"),"UTF-8")%>&amp;followupType=<%=followUpType%>&amp;followupValue=L1">Generate
             Refused Letter</a>
         <%}%>
-
-
-            <%--
-            <% if ( phoneCall.size() > 0 ) {
-                  String queryStr = getUrlParamList(phoneCall, "demo");
-                  %>
-                  <a target="_blank" href="<%= request.getContextPath() %>/report/GenerateSpreadsheet.do?<%=queryStr%>&message=<%=java.net.URLEncoder.encode("Phone call 1 made for : "+request.getAttribute("prevType"),"UTF-8")%>followupType=<%=followUpType%>&followupValue=P1">Generate Phone Call list</a>
-            <%}%>
-            --%>
 
     </div>
 
