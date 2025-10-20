@@ -5,7 +5,7 @@
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_report,_admin.reporting" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_report&type=_admin.reporting");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_report&type=_admin.reporting");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -29,7 +29,7 @@
 %>
 <%@ page
         import="java.util.*, java.sql.*, ca.openosp.*, java.text.*, ca.openosp.openo.db.*,java.net.*"
-        errorPage="../appointment/errorpage.jsp" %>
+        errorPage="/errorpage.jsp" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>

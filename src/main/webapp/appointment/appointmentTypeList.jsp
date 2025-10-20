@@ -24,7 +24,7 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@ include file="../admin/dbconnection.jsp" %>
+<%@ include file="/admin/dbconnection.jsp" %>
 <%--RJ 07/07/2006 --%>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -34,7 +34,7 @@
         sError = "Error: " + request.getParameter("err");
 %>
 
-<%@ page errorPage="../errorpage.jsp" %>
+<%@ page errorPage="/errorpage.jsp" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="ca.openosp.openo.util.*" %>

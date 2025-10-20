@@ -66,7 +66,7 @@
         import="ca.openosp.openo.messenger.docxfer.send.*,ca.openosp.openo.messenger.docxfer.util.*, ca.openosp.openo.encounter.data.*, ca.openosp.openo.encounter.pageUtil.EctSessionBean " %>
 <%@  page
         import=" java.util.*, org.w3c.dom.*, java.sql.*, ca.openosp.*, java.text.*, java.lang.*,java.net.*"
-        errorPage="../appointment/errorpage.jsp" %>
+        errorPage="/errorpage.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -77,7 +77,7 @@
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_msg" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_msg");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_msg");%>
 </security:oscarSec>
 <%
     if (!authed) {

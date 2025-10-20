@@ -52,7 +52,7 @@
 %>
 <%@ page
         import="java.util.*, java.sql.*, ca.openosp.*, java.text.*, java.lang.*,java.net.*"
-        errorPage="../appointment/errorpage.jsp" %>
+        errorPage="/errorpage.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <jsp:useBean id="scheduleRscheduleBean" class="ca.openosp.RscheduleBean" scope="session"/>
@@ -74,7 +74,7 @@
 <%
     String provider_name = URLDecoder.decode(request.getParameter("provider_name"));
     String provider_no = request.getParameter("provider_no");
-    if (provider_no == null || provider_no == "") response.sendRedirect("../logout.jsp");
+    if (provider_no == null || provider_no == "") response.sendRedirect(request.getContextPath() + "/logout.jsp");
 
     //to prepare calendar display
     GregorianCalendar now = new GregorianCalendar();

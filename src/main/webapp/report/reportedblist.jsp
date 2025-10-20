@@ -32,7 +32,7 @@
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_report,_admin.reporting" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_report&type=_admin.reporting");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_report&type=_admin.reporting");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -52,7 +52,7 @@
     if (request.getParameter("endDate") != null) endDate = request.getParameter("endDate");
 %>
 <%@ page import="java.util.*, java.sql.*, ca.openosp.*"
-         errorPage="../errorpage.jsp" %>
+         errorPage="/errorpage.jsp" %>
 
 <jsp:useBean id="providerNameBean" class="ca.openosp.Dict" scope="page"/>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>

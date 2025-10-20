@@ -29,6 +29,7 @@
     <%@page import="ca.openosp.OscarProperties"%>
     <%@page contentType="text/javascript"%>
     <%@page import="ca.openosp.openo.casemgmt.common.Colour"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
     var numNotes = 0;   //How many saved notes do we have?
     var ctx;        //url context
@@ -2826,6 +2827,14 @@ function updateCPPNote() {
         $("issueAutocomplete").value = "";
         $("newIssueId").value = "";
         //notifyIssueUpdate();
+
+        // Refresh the encounter window's "Unresolved Issues" navbar section
+        var demographicNo = $("demographicNo").value;
+
+        if (typeof loadDiv === 'function' && demographicNo) {
+            var reloadUrl = ctx + "/oscarEncounter/displayIssues.do?demographicNo=" + demographicNo + "&cmd=unresolvedIssues&reloadURL=" + encodeURIComponent(ctx + "/oscarEncounter/displayIssues.do");
+            loadDiv('unresolvedIssueslist', reloadUrl, 0);
+        }
     }
 
     function submitIssue(event) {
@@ -3466,6 +3475,18 @@ function autoSave(async) {
 
         if ($F("printRx") == "true")
             printInfo("imgPrintRx", "printRx");
+
+        // Clear date fields
+        if ($("printStartDate"))
+            $("printStartDate").value = "";
+        if ($("printEndDate"))
+            $("printEndDate").value = "";
+
+        // Uncheck radio buttons
+        if ($("printopDates"))
+            $("printopDates").checked = false;
+        if ($("printopAllNotes"))
+            $("printopAllNotes").checked = false;
 
         return false;
 

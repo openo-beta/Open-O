@@ -29,7 +29,7 @@
     String demographic_no = (String) session.getAttribute("demo_no");
 %>
 <%@ page import="java.util.*, java.sql.*, ca.openosp.*,java.net.*"
-         errorPage="../errorpage.jsp" %>
+         errorPage="/errorpage.jsp" %>
 
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.DemographicAccessoryDao" %>
@@ -165,12 +165,12 @@
                 if (strForm.toLowerCase().compareTo("form") == 0 && st.hasMoreTokens()) {
                     strTemplateURL = "template" + (new String(st.nextToken())).trim().toLowerCase() + ".jsp";
             %> <a href=#
-                  onClick="popupPage(600,800,'../provider/providercontrol.jsp?encounter_no=<%=e.getId()%>&dboperation=search_encountersingle&displaymodevariable=<%=strTemplateURL%>&displaymode=vary&bNewForm=0')"><%=e.getSubject() == null ? "No Subject" : e.getSubject().equals("") ? "No Subject" : e.getSubject()%>
+                  onClick="popupPage(600,800,'<%= request.getContextPath() %>/provider/providercontrol.jsp?encounter_no=<%=e.getId()%>&dboperation=search_encountersingle&displaymodevariable=<%=strTemplateURL%>&displaymode=vary&bNewForm=0')"><%=e.getSubject() == null ? "No Subject" : e.getSubject().equals("") ? "No Subject" : e.getSubject()%>
             </a></font><br>
                 <%
                 } else if (strForm.compareTo("") != 0) {
                 %> <a href=#
-                      onClick="popupPage(400,600,'../provider/providercontrol.jsp?encounter_no=<%=e.getId()%>&template=<%=strForm%>&dboperation=search_encountersingle&displaymode=encountersingle')"><%=e.getSubject() == null ? "No Subject" : e.getSubject().equals("") ? "No Subject" : e.getSubject()%>
+                      onClick="popupPage(400,600,'<%= request.getContextPath() %>/provider/providercontrol.jsp?encounter_no=<%=e.getId()%>&template=<%=strForm%>&dboperation=search_encountersingle&displaymode=encountersingle')"><%=e.getSubject() == null ? "No Subject" : e.getSubject().equals("") ? "No Subject" : e.getSubject()%>
             </a></font><br>
                 <%
                         }

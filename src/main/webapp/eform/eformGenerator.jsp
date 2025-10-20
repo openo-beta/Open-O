@@ -818,16 +818,14 @@ and other liscences (MIT, LGPL etc) as indicated
             textTop += " .DoNotPrint {\n\tdisplay:none;\n }\n .noborder {\n\tborder:0px;\n\tbackground: transparent;\n";
             textTop += "&lt;/style&gt;\n\n";
 
-
             if (<% if (OscarProperties.getInstance().isPropertyActive("eform_generator_indivica_print_enabled")) { %>(document.getElementById('includePdfPrintControl').checked) || <%}%> <% if (OscarProperties.getInstance().isPropertyActive("eform_generator_indivica_fax_enabled")) { %>(document.getElementById("includeFaxControl").checked) || <% } %> (document.getElementById('AddSignature').checked)) {
                 textTop += "&lt;!-- jQuery for greater functionality --&gt;\n"
                 // dependency on jquery up to version 2.2.1 for pdf and faxing for OSCAR Pro
                 // ensure that we check the integrety of the CDN's version
 
-                textTop += "&lt;script type=&quot;text/javascript&quot; src=&quot;../library/jquery/jquery-3.6.4.min.js&quot; &gt;&lt;/script&gt;\n";
+                textTop += "&lt;script type=&quot;text/javascript&quot; src=&quot;<%=request.getContextPath()%>/library/jquery/jquery-3.6.4.min.js&quot; &gt;&lt;/script&gt;\n";
                 // if unavailable reference the one in OSCAR
-                //textTop += "&lt;script&gt;\nwindow.jQuery || document.write('&lt;script src=&quot;../js/jquery-1.12.3.js&quot;&gt;&lt;\/script&gt;');\n\n"
-                textTop += "&lt;script&gt; window.jQuery || document.write('&lt;script src=&quot;../js/jquery-1.12.3.js&quot;&gt;&lt; &#92;/script&gt;') &lt;/script&gt;\n";
+                textTop += "&lt;script&gt; window.jQuery || document.write('&lt;script src=&quot;<%=request.getContextPath()%>/js/jquery-1.12.3.js&quot;&gt;&lt; &#92;/script&gt;') &lt;/script&gt;\n";
             }
 
 
@@ -1064,7 +1062,7 @@ and other liscences (MIT, LGPL etc) as indicated
                 textTop += "\tticklerToSend.priority = urgency;\n"
                 textTop += "\treturn $.ajax({\n"
                 textTop += "\t\ttype: 'POST',\n"
-                textTop += "\t\turl: '../ws/rs/tickler/add',\n"
+                textTop += "\t\turl: '<%= request.getContextPath() %>/ws/rs/tickler/add',\n"
                 textTop += "\t\tdataType:'json',\n"
                 textTop += "\t\tcontentType:'application/json',\n"
                 textTop += "\t\tdata: JSON.stringify(ticklerToSend)\n"
@@ -1166,7 +1164,7 @@ and other liscences (MIT, LGPL etc) as indicated
                 textTop += "var ImgArray = [];\n"
                 textTop += "&lt;/script&gt;\n\n"
 
-                textTop += "&lt;script src="<%= request.getContextPath() %>/eform/displayImage.do?imagefile=stamps.js"&gt;&lt;/script&gt;\n"
+                textTop += "&lt;script src=\"<%= request.getContextPath() %>/eform/displayImage.do?imagefile=stamps.js\"&gt;&lt;/script&gt;\n"
                 textTop += "&lt;script type=&quot;text/javascript&quot;&gt;\n"
                 textTop += "//autoloading signature images\n"
                 textTop += "ImgArray.push(\n\t&quot;anonymous|BNK.png&quot;"
@@ -1220,10 +1218,10 @@ and other liscences (MIT, LGPL etc) as indicated
 
             if (calendars) {
                 textTop += "\n&lt;!-- main calendar program --&gt;\n"
-                textTop += "&lt;script type=&quot;text/javascript&quot; src=&quot;../share/calendar/calendar.js&quot;&gt;&lt;/script&gt;\n"
-                textTop += "&lt;script type=&quot;text/javascript&quot; src=&quot;../share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>&quot;&gt;&lt;/script&gt;\n"
-                textTop += "&lt;script type=&quot;text/javascript&quot; src=&quot;../share/calendar/calendar-setup.js&quot;&gt;&lt;/script&gt;\n"
-                textTop += "&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;all&quot; href=&quot;../share/calendar/calendar.css&quot; title=&quot;win2k-cold-1&quot; /&gt;\n\n"
+                textTop += "&lt;script type=&quot;text/javascript&quot; src=&quot;<%=request.getContextPath()%>/share/calendar/calendar.js&quot;&gt;&lt;/script&gt;\n"
+                textTop += "&lt;script type=&quot;text/javascript&quot; src=&quot;<%=request.getContextPath()%>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>&quot;&gt;&lt;/script&gt;\n"
+                textTop += "&lt;script type=&quot;text/javascript&quot; src=&quot;<%=request.getContextPath()%>/share/calendar/calendar-setup.js&quot;&gt;&lt;/script&gt;\n"
+                textTop += "&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;all&quot; href=&quot;<%=request.getContextPath()%>/share/calendar/calendar.css&quot; title=&quot;win2k-cold-1&quot; /&gt;\n\n"
 
             }
 

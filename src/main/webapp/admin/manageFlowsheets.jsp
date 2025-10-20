@@ -32,7 +32,7 @@
 <security:oscarSec roleName="<%=roleName$%>"
                    objectName="_admin,_admin.misc" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_admin&type=_admin.misc");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_admin&type=_admin.misc");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -66,6 +66,9 @@
     }
 
 %>
+
+<fmt:setBundle basename="oscarResources"/>
+
 <html>
     <head>
         <script src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -175,7 +178,7 @@
 		<div class="panel-body">
 			<form enctype="multipart/form-data" method="POST" action="<%=request.getContextPath()%>/admin/manageFlowsheetsUpload.jsp">
         <input type="file" name="flowsheet_file">
-				<span title="<bean:message key="global.uploadWarningBody"/>" style="vertical-align:middle;cursor:pointer"><img alt="alert" src="<%=request.getContextPath()%>/images/icon_alertsml.gif"/></span>
+				<span title="<fmt:message key="global.uploadWarningBody"/>" style="vertical-align:middle;cursor:pointer"><img alt="alert" src="<%=request.getContextPath()%>/images/icon_alertsml.gif"/></span>
         <input type="submit" value="Upload" class="btn btn-primary">
     </form>
 		</div>

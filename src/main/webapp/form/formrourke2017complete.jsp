@@ -31,7 +31,7 @@
 %>
 <security:oscarSec roleName="<%=roleName2$%>" objectName="_form" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_form");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_form");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -709,7 +709,7 @@
 </head>
 <body onload="init()">
 
-<form styleId="frmP1" action="${pageContext.request.contextPath}/form/formname.do" method="post">
+<form id="frmP1" name="frmP1" action="${pageContext.request.contextPath}/form/formname.do" method="post">
     <div id="rourke2017-tabs">
         <ul id="tab-list">
             <li><a href="#tab-cp1">Page I</a></li>

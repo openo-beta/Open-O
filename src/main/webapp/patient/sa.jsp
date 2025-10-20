@@ -30,11 +30,11 @@
     String user_no = (String) session.getAttribute("user");
     String demographic_no = (String) session.getAttribute("demo_no");
 %>
-<%@ page import="java.util.*, java.sql.*, ca.openosp.*,java.net.*" errorPage="../errorpage.jsp" %>
+<%@ page import="java.util.*, java.sql.*, ca.openosp.*,java.net.*" errorPage="/errorpage.jsp" %>
 
 <jsp:useBean id="risks" class="ca.openosp.OBRisks_99_12" scope="page"/>
 
-<%@ include file="../admin/dbconnection.jsp" %>
+<%@ include file="/admin/dbconnection.jsp" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.DemographicAccessoryDao" %>
 <%@page import="ca.openosp.openo.commn.model.DemographicAccessory" %>
@@ -1422,7 +1422,7 @@
 </table>
 <%
     if (bNewList) {
-        out.println(risks.doStuff(new String("../webapps/" + oscarVariables.getProperty("project_home") + "/providers/obarrisks_99_12.xml")));
+        out.println(risks.doStuff(new String(application.getRealPath("/providers/obarrisks_99_12.xml"))));
     }
 %>
 </form>

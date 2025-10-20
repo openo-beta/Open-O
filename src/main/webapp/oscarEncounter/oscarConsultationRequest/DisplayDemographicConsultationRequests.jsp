@@ -32,7 +32,7 @@
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_con" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../../securityError.jsp?type=_con");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_con");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -66,7 +66,7 @@
         demoData = new DemographicData();
         demographic = demoData.getDemographic(LoggedInInfo.getLoggedInInfoFromSession(request), demo);
     } else
-        response.sendRedirect("../error.jsp");
+        request.getRequestDispatcher("/errorpage.jsp").forward(request, response);
 
     EctConsultationFormRequestUtil consultUtil;
     consultUtil = new EctConsultationFormRequestUtil();

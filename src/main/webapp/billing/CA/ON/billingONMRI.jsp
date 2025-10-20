@@ -36,7 +36,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
-<%@ include file="../../../admin/dbconnection.jsp" %>
+<%@ include file="/admin/dbconnection.jsp" %>
 
 
 <%@page import="ca.openosp.openo.commn.model.ProviderBillCenter" %>
@@ -252,7 +252,7 @@
 
             <div class="span4">
                 Select Provider<br>
-                <select name="provider" onchange="setBillingCenter(this.value);">
+                <select name="providers" onchange="setBillingCenter(this.value);">
                     <%
                         List providerStr;
 

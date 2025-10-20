@@ -40,7 +40,7 @@
 %>
 
 
-<%@ page import="java.util.*, java.sql.*, java.net.*, ca.openosp.*" errorPage="../appointment/errorpage.jsp" %>
+<%@ page import="java.util.*, java.sql.*, java.net.*, ca.openosp.*" errorPage="/errorpage.jsp" %>
 
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 
@@ -58,7 +58,7 @@
 
 
 <%
-    if (session.getValue("user") == null) response.sendRedirect("../logout.jsp");
+    if (session.getValue("user") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
     String curProvider_no = (String) session.getAttribute("user");
 
     java.util.Properties oscarVariables = OscarProperties.getInstance();

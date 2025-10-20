@@ -20,10 +20,10 @@
 --%>
 <%
     if (session.getAttribute("user") == null) {
-        response.sendRedirect("../logout.jsp");
+        response.sendRedirect(request.getContextPath() + "/logout.jsp");
     }
 %>
-<%@ page errorPage="../appointment/errorpage.jsp" import="java.util.*,java.sql.*" %>
+<%@ page errorPage="/errorpage.jsp" import="java.util.*,java.sql.*" %>
 <%@ page import="ca.openosp.openo.billing.ca.on.data.*" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.utility.MiscUtils" %>

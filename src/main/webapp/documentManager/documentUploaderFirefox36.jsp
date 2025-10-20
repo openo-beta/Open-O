@@ -15,7 +15,7 @@
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_edoc" rights="w" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_edoc");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_edoc");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -78,7 +78,7 @@
         <div class="file_upload_buttons fileupload-buttonbar ui-widget-header ui-corner-top">
             <form action="<%=context%>/documentManager/documentUpload.do?method=executeUpload" method="POST"
                   enctype="multipart/form-data">
-                <input type="hidden" id="provider" name="provider" value="<%=provider%>"/>
+                <input type="hidden" id="provider" name="providers" value="<%=provider%>"/>
                 <input type="hidden" name="queue" value="<%=queueId%>"/>
                 <input type="file" name="filedata" multiple>
                 <button type="submit">Upload</button>

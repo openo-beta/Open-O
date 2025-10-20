@@ -106,6 +106,7 @@
         keyword = Encode.forJava(request.getParameter("keyword"));
     }
     String orderBy = request.getParameter("orderby");
+
     String ptStatus = request.getParameter("ptstatus") == null ? "active" : request.getParameter("ptstatus");
     ;
 
@@ -378,7 +379,7 @@
                 <tr class="<%=toggleLine?"even":"odd"%>">
                     <td class="demoIdSearch">
                         <a title="Import" href="javascript:void(0)"
-                           onclick="popup(700,1027,'../appointment/copyRemoteDemographic.jsp?remoteFacilityId=<%=demographicTransfer.getIntegratorFacilityId()%>&demographic_no=<%=String.valueOf(demographicTransfer.getCaisiDemographicId())%>&originalPage=../demographic/demographiceditdemographic.jsp&provider_no=<%=curProvider_no%>')">Import</a>
+                           onclick="popup(700,1027,'<%= request.getContextPath() %>/appointment/copyRemoteDemographic.jsp?remoteFacilityId=<%=demographicTransfer.getIntegratorFacilityId()%>&demographic_no=<%=String.valueOf(demographicTransfer.getCaisiDemographicId())%>&originalPage=<%= request.getContextPath() %>/demographic/demographiceditdemographic.jsp&provider_no=<%=curProvider_no%>')">Import</a>
                     </td>
                     <td class="links">Remote</td>
                     <td class="name"><%=Encode.forHtml(Misc.toUpperLowerCase(demographicTransfer.getLastName()) + ", " + Misc.toUpperLowerCase(demographicTransfer.getFirstName()))%>
@@ -510,13 +511,13 @@
                 nLastPage = Integer.parseInt(strOffset) - Integer.parseInt(strLimit);
                 if (nLastPage >= 0) {
             %>
-            <a href="demographiccontrol.jsp?keyword=<%= URLEncoder.encode((keyword != null) ? keyword : "", "UTF-8") %>&search_mode=<%=searchMode%>&displaymode=<%=displayMode%>&dboperation=<%=dboperation%>&orderby=<%=orderBy%>&limit1=<%=nLastPage%>&limit2=<%=strLimit%>&ptStatus=<%=ptStatus%>&firstPageShowIntegratedResults=<%=firstPageShowIntegratedResults%><%=nLastPage==0 && firstPageShowIntegratedResults?"&includeIntegratedResults=true":""%>">
+            <a href="demographiccontrol.jsp?keyword=<%= URLEncoder.encode((keyword != null) ? keyword : "", "UTF-8") %>&search_mode=<%=searchMode%>&displaymode=<%=displayMode%>&dboperation=<%=dboperation%>&orderby=<%=orderBy%>&limit1=<%=nLastPage%>&limit2=<%=strLimit%>&ptstatus=<%=ptStatus%>&firstPageShowIntegratedResults=<%=firstPageShowIntegratedResults%><%=nLastPage==0 && firstPageShowIntegratedResults?"&includeIntegratedResults=true":""%>">
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearchresults.btnLastPage"/></a> <%
             }
             if (nItems >= Integer.parseInt(strLimit)) {
                 if (nLastPage >= 0) {
         %> | <% } %>
-            <a href="demographiccontrol.jsp?keyword=<%= URLEncoder.encode((keyword != null) ? keyword : "", "UTF-8") %>&search_mode=<%=searchMode%>&displaymode=<%=displayMode%>&dboperation=<%=dboperation%>&orderby=<%=orderBy%>&limit1=<%=nNextPage%>&limit2=<%=strLimit%>&ptStatus=<%=ptStatus%>&firstPageShowIntegratedResults=<%=firstPageShowIntegratedResults%>">
+            <a href="demographiccontrol.jsp?keyword=<%= URLEncoder.encode((keyword != null) ? keyword : "", "UTF-8") %>&search_mode=<%=searchMode%>&displaymode=<%=displayMode%>&dboperation=<%=dboperation%>&orderby=<%=orderBy%>&limit1=<%=nNextPage%>&limit2=<%=strLimit%>&ptstatus=<%=ptStatus%>&firstPageShowIntegratedResults=<%=firstPageShowIntegratedResults%>">
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearchresults.btnNextPage"/></a>
             <%
                 }

@@ -25,7 +25,7 @@
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_billing" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../../../securityError.jsp?type=_billing");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_billing");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -37,7 +37,7 @@
 <%
     //
     if (session.getAttribute("user") == null) {
-        response.sendRedirect("../logout.jsp");
+        response.sendRedirect(request.getContextPath() + "/logout.jsp");
     }
     String strLimit1 = "0";
     String strLimit2 = "20";
@@ -94,7 +94,7 @@
         }
     }
 %>
-<%@ page errorPage="../../../appointment/errorpage.jsp"
+<%@ page errorPage="/errorpage.jsp"
          import="java.util.*,java.sql.*,java.net.*" %>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="org.apache.commons.lang.WordUtils" %>
@@ -264,12 +264,12 @@
         <script language="JavaScript">
             <!--
             function last() {
-                document.nextform.action = "onSearch3rdBillAddr.jsp?param=<%=URLEncoder.encode(param,"UTF-8")%>&param2=<%=URLEncoder.encode(param2,"UTF-8")%>&keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>";
+                document.nextform.action = "<%= request.getContextPath() %>/billing/CA/BC/onSearch3rdBillAddr.jsp?param=<%=URLEncoder.encode(param,"UTF-8")%>&param2=<%=URLEncoder.encode(param2,"UTF-8")%>&keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>";
                 document.nextform.submit();
             }
 
             function next() {
-                document.nextform.action = "onSearch3rdBillAddr.jsp?param=<%=URLEncoder.encode(param,"UTF-8")%>&param2=<%=URLEncoder.encode(param2,"UTF-8")%>&keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>";
+                document.nextform.action = "<%= request.getContextPath() %>/billing/CA/BC/onSearch3rdBillAddr.jsp?param=<%=URLEncoder.encode(param,"UTF-8")%>&param2=<%=URLEncoder.encode(param2,"UTF-8")%>&keyword=<%=request.getParameter("keyword")%>&search_mode=<%=request.getParameter("search_mode")%>&orderby=<%=request.getParameter("orderby")%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>";
                 document.nextform.submit();
             }
 

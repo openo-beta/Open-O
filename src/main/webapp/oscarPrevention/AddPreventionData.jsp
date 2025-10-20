@@ -57,7 +57,7 @@
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_prevention" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_prevention");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_prevention");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -74,7 +74,7 @@
 
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
-    if (session.getValue("user") == null) response.sendRedirect("../logout.jsp");
+    if (session.getValue("user") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
     String demographic_no = request.getParameter("demographic_no");
     String snomedId = request.getParameter("snomedId");
     String id = request.getParameter("id");
@@ -797,6 +797,7 @@
                 <form action="${pageContext.request.contextPath}/oscarPrevention/AddPrevention.do" method="post" onsubmit="return handleFormSubmission()">
                     <input type="hidden" name="prevention" value="<%=prevention%>"/>
                     <input type="hidden" name="demographic_no" value="<%=demographic_no%>"/>
+                    <input type="hidden" name="providerNo" value="<%=provider%>"/>
                     <%if (snomedId != null) {%>
                     <input type="hidden" name="snomedId" value="<%=snomedId %>"/>
                     <%} %>
@@ -810,7 +811,7 @@
                             <textarea name="summary" readonly><%=summary%></textarea>
                             <%if (hasImportExtra) { %>
                             <a href="javascript:void(0);" title="Extra data from Import"
-                               onclick="window.open('../annotation/importExtra.jsp?display=<%=annotation_display %>&amp;table_id=<%=id %>&amp;demo=<%=demographic_no %>','anwin','width=400,height=250');">
+                               onclick="window.open('<%= request.getContextPath() %>/annotation/importExtra.jsp?display=<%=annotation_display %>&amp;table_id=<%=id %>&amp;demo=<%=demographic_no %>','anwin','width=400,height=250');">
                                 <img src="<%= request.getContextPath() %>/images/notes.gif" align="right" alt="Extra data from Import" height="16"
                                      width="13" border="0"> </a>
                             <%} %>

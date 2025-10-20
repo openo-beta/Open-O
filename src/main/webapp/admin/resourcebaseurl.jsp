@@ -24,7 +24,7 @@
 
 --%>
 <%@ page import="java.util.*, java.sql.*, ca.openosp.*, java.text.*, java.lang.*,java.net.*"
-         errorPage="../appointment/errorpage.jsp" %>
+         errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
@@ -39,7 +39,7 @@
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_admin" rights="w" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_admin");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_admin");%>
 </security:oscarSec>
 <%
     if (!authed) {

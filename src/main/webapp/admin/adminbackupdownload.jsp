@@ -59,7 +59,7 @@
     reverse="true">
   <%
     authed = false;
-    response.sendRedirect("../securityError.jsp?type=_admin&type=_admin.backup");
+    response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_admin&type=_admin.backup");
   %>
 </security:oscarSec>
 <%
@@ -110,7 +110,7 @@
               if (backuppath == null || backuppath.isEmpty()) {
                   request.setAttribute("errorMessage",
                     "backup_path missing in properties; please configure.");
-                  request.getRequestDispatcher("/error.jsp")
+                  request.getRequestDispatcher("/errorpage.jsp")
                          .forward(request, response);
                   return;
               }

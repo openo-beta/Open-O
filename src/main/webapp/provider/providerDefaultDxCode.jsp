@@ -39,13 +39,14 @@
     function rs(n, u, w, h, x) {
         args = "width=" + w + ",height=" + h + ",resizable=yes,scrollbars=yes,status=0,top=60,left=30";
         remote = window.open(u, n, args);
+        return remote;
     }
 
     function dxScriptAttach(name2) {
         ff = eval("document.forms[0].elements['" + name2 + "']");
         f0 = ff.value;
         f1 = escape("document.forms[0].elements[\'" + name2 + "\'].value");
-        awnd = rs('att', '../billing/CA/ON/billingDigSearch.jsp?name=' + f0 + '&search=&name2=' + f1, 600, 600, 1);
+        awnd = rs('att', '<%= request.getContextPath() %>/billing/CA/ON/billingDigSearch.jsp?name=' + f0 + '&search=&name2=' + f1, 600, 600, 1);
         awnd.focus();
     }
 </script>
@@ -91,7 +92,6 @@
         <tr>
             <td>Dx &nbsp;&nbsp;
                 <input type="text" name="dxCode" size="5" maxlength="5" ondblClick="dxScriptAttach('dxCode')"
-                       onchange="changeCodeDesc();"
                        value="<%=defaultDxCode%>"/>
                 <a href=# onclick="dxScriptAttach('dxCode');">Search</a>
             </td>

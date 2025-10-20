@@ -25,11 +25,11 @@
 --%>
 <!DOCTYPE html>
 <%
-    if (session.getAttribute("user") == null) response.sendRedirect("../logout.jsp");
+    if (session.getAttribute("user") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
 %>
 <%@ page
         import="java.util.*, java.sql.*, ca.openosp.*, java.text.*, java.lang.*"
-        errorPage="../appointment/errorpage.jsp" %>
+        errorPage="/errorpage.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 

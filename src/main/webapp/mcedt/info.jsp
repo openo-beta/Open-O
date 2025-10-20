@@ -23,7 +23,7 @@
     Ontario, Canada
 
 --%>
-<%@ page errorPage="error.jsp" %>
+<%@ page errorPage="/errorpage.jsp" %>
 
 <!DOCTYPE html>
 
@@ -40,7 +40,7 @@
             if (control) {
                 control.disabled = true;
             }
-            window.location.href = "mcedt.do";
+            window.location.href = "<%= request.getContextPath() %>/mcedt/mcedt.do";
             return false;
         }
     </script>

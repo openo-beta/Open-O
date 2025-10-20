@@ -63,7 +63,7 @@
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_msg" rights="w" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_msg");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_msg");%>
 </security:oscarSec>
 <%
     // Exit page processing if user is not authorized
@@ -79,6 +79,7 @@
 <%@ page import="ca.openosp.openo.messenger.pageUtil.MsgSessionBean" %>
 <%@ page import="ca.openosp.openo.messenger.docxfer.send.MsgSendDocument" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
 <c:if test="${empty sessionScope.msgSessionBean}">
@@ -126,7 +127,7 @@
     }
     
     // Redirect to demographic search page to select message recipients
-    response.sendRedirect("Transfer/DemographicSearch.jsp");
+    response.sendRedirect(request.getContextPath() + "/messenger/Transfer/DemographicSearch.jsp");
 %>
 <%
     // Debug output placeholder - originally used to display processed XML

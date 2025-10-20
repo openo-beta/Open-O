@@ -18,12 +18,12 @@
 
 --%>
 <%
-    if (session.getValue("user") == null) response.sendRedirect("../../../logout.jsp");
+    if (session.getValue("user") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
 %>
 
 <%@ page
         import="java.util.*, java.sql.*, ca.openosp.*, java.text.*, java.lang.*,java.net.*"
-        errorPage="../appointment/errorpage.jsp" %>
+        errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.DateInMonthTable" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

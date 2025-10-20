@@ -24,7 +24,7 @@
 
 --%>
 
-<%@ page errorPage="error.jsp" %>
+<%@ page errorPage="/errorpage.jsp" %>
 
 <!DOCTYPE html>
 
@@ -46,7 +46,7 @@
                 if (control) {
                     control.disabled = true;
                 }
-                window.location.href = "uploads.do";
+                window.location.href = "<%= request.getContextPath() %>/mcedt/uploads.do";
                 return false;
             }
 

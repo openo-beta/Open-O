@@ -30,7 +30,7 @@
 
 <%
     String user = (String) session.getAttribute("user");
-    if (session.getAttribute("userrole") == null) response.sendRedirect("../logout.jsp");
+    if (session.getAttribute("userrole") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
     String roleName = (String) session.getAttribute("userrole") + "," + user;
 
     ArrayList groups = EFormUtil.getEFormGroups();
@@ -58,7 +58,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.frmGroups"/></title>
 
         <style>

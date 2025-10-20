@@ -50,7 +50,7 @@
 %>
 <security:oscarSec roleName="<%=roleName2$%>" objectName="_allergy" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_allergy");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_allergy");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -80,6 +80,7 @@
 <%
     String annotation_display = CaseManagementNoteLink.DISP_ALLERGY;
     RxPatientData.Patient patient = (RxPatientData.Patient) session.getAttribute("Patient");
+    request.setAttribute("patient", patient);
     SecurityManager securityManager = new SecurityManager();
 %>
 <html>
@@ -91,7 +92,7 @@
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/allergies.css">
         <style type="text/css">
             .ajax-loader {
-                background: url(../images/ui-anim_basic_16x16.gif) center right no-repeat;
+                background: url(<%= request.getContextPath() %>/images/ui-anim_basic_16x16.gif) center right no-repeat;
             }
         </style>
         <script type="text/javascript">
@@ -150,10 +151,10 @@
                     $.fn.toggleSection = function (typecode) {
                         var imgsrc = document.getElementById(typecode + "_img").src;
                         if (imgsrc.indexOf('expander') != -1) {
-                            document.getElementById(typecode + "_img").src = '../images/collapser.png';
+                            document.getElementById(typecode + "_img").src = '<%= request.getContextPath() %>/images/collapser.png';
                             Effect.BlindDown(document.getElementById(typecode + "_content"), {duration: 0.1});
                         } else {
-                            document.getElementById(typecode + "_img").src = '../images/expander.png';
+                            document.getElementById(typecode + "_img").src = '<%= request.getContextPath() %>/images/expander.png';
                             Effect.BlindUp(document.getElementById(typecode + "_content"), {duration: 0.1});
                         }
                     }
@@ -164,10 +165,10 @@
                         var typecode = this.id.split("_")[0];
                         var imgsrc = document.getElementById(typecode + "_img").src;
                         if (imgsrc.indexOf('expander') != -1) {
-                            document.getElementById(typecode + "_img").src = '../images/collapser.png';
+                            document.getElementById(typecode + "_img").src = '<%= request.getContextPath() %>/images/collapser.png';
                             $("#" + typecode + "_content").show();
                         } else {
-                            document.getElementById(typecode + "_img").src = '../images/expander.png';
+                            document.getElementById(typecode + "_img").src = '<%= request.getContextPath() %>/images/expander.png';
                             $("#" + typecode + "_content").hide();
                         }
                     })
@@ -186,7 +187,7 @@
                     if (isEmpty()) {
                         $(".highLightButton").removeClass("highLightButton");
                         var form = $("#searchAllergy2");
-                        var url = "${ pageContext.servletContext.contextPath }" + form.attr('action');
+                        var url = form.attr('action');
                         var params = form.serializeArray();
                         var json = {};
                         $.each(params, function () {
@@ -371,12 +372,11 @@
             <td colspan="2">
                 <jsp:include page="TopLinks.jsp">
                     <jsp:param value="Allergies" name="title"/>
-                    <jsp:param value="${ patient.surname }, ${ patient.firstName }" name="patientName"/>
-                    <jsp:param value="${ patient.sex }" name="sex"/>
-                    <jsp:param value="${ patient.age }" name="age"/>
-                    <jsp:param value="${ patient.demographicNo }" name="demographicNo"/>
+                    <jsp:param value="${ patient.getSurname() }, ${ patient.getFirstName() }" name="patientName"/>
+                    <jsp:param value="${ patient.getSex() }" name="sex"/>
+                    <jsp:param value="${ patient.getAge() }" name="age"/>
+                    <jsp:param value="${ patient.getDemographicNo() }" name="demographicNo"/>
                     <jsp:param value="<%= roleName2$ %>" name="security"/>
-                    <jsp:param value='<%= (String)session.getAttribute("demographicNo") %>' name="demographicNo"/>
                 </jsp:include>
             </td>
         </tr>
@@ -406,11 +406,11 @@
                                 <tr>
                                     <td>
                                         <b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.nameText"/></b>
-                                        ${patient.surname}, ${patient.firstName}<br/>
+                                        ${patient.getSurname() }, ${patient.getFirstName() }<br/>
                                     </td>
                                     <td>&nbsp;</td>
                                     <td><b>Age:</b>
-                                        ${patient.age}<br/>
+                                        ${patient.getAge() }<br/>
                                     </td>
                                 </tr>
                             </table>
@@ -589,8 +589,8 @@
                                                         if (!allergy.isIntegratorResult()) {
                                                     %>
                                                     <a href="#" title="Annotation"
-                                                       onclick="window.open('../annotation/annotation.jsp?display=<%=annotation_display%>&table_id=<%=String.valueOf(allergy.getAllergyId())%>&demo=
-                                                           ${patient.demographicNo}','anwin','width=400,height=500');">
+                                                       onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=annotation_display%>&table_id=<%=String.valueOf(allergy.getAllergyId())%>&demo=
+                                                           ${patient.getDemographicNo() }','anwin','width=400,height=500');">
                                                         <% if (existingAnnots.size() > 0) {%>
                                                         <img src="<%= request.getContextPath() %>/images/filledNotes.gif" border="0"/>
                                                         <% } else { %>

@@ -32,7 +32,7 @@
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_admin.billing,_admin" rights="w" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../../../securityError.jsp?type=_admin&type=_admin.billing");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_admin&type=_admin.billing");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -41,7 +41,7 @@
 %>
 
 <%
-    if (session.getAttribute("user") == null) response.sendRedirect("../../../logout.jsp");
+    if (session.getAttribute("user") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
     String user_no = (String) session.getAttribute("user");
 %>
 
@@ -148,7 +148,7 @@
     <form action="${pageContext.request.contextPath}/billing/CA/BC/SimulateTeleplanFile.do"
                onsubmit="return checkSubmit();" class="form-inline">
         <label for="provider">Select provider</label>
-        <select id="provider" name="provider">
+        <select id="provider" name="providers">
             <option value="all">All Providers</option>
             <%
                 ProviderData pd = new ProviderData();

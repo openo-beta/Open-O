@@ -25,7 +25,7 @@
 --%>
 <!DOCTYPE html>
 
-<%@ page errorPage="error.jsp" %>
+<%@ page errorPage="/errorpage.jsp" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -65,7 +65,7 @@
         <script language="javascript">
 
             function createNew() {
-                window.location.href = "uploads.do";
+                window.location.href = "<%= request.getContextPath() %>/mcedt/uploads.do";
                 return false;
             }
 
@@ -89,7 +89,7 @@
                 if (control) {
                     control.disabled = true;
                 }
-                window.location.href = "update.do?resourceId=" + resourceId;
+                window.location.href = "<%= request.getContextPath() %>/mcedt/update.do?resourceId=" + resourceId;
                 return false;
             }
 
@@ -97,7 +97,7 @@
                 if (control) {
                     control.disabled = true;
                 }
-                window.location.href = "info.do?resourceId=" + resourceId;
+                window.location.href = "<%= request.getContextPath() %>/mcedt/info.do?resourceId=" + resourceId;
                 return false;
             }
 

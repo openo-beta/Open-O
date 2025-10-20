@@ -31,7 +31,7 @@
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_report,_admin.reporting" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_report&type=_admin.reporting");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_report&type=_admin.reporting");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -40,7 +40,7 @@
 %>
 
 <%@ page import="java.util.*, java.sql.*, ca.openosp.*,ca.openosp.openo.login.*, java.text.*, java.lang.*,java.net.*"
-         errorPage="../appointment/errorpage.jsp" %>
+         errorPage="/errorpage.jsp" %>
 
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.MyGroup" %>
@@ -63,8 +63,8 @@
     ProviderDataDao providerDataDao = SpringUtils.getBean(ProviderDataDao.class);
 
     String[][] dbQueries = new String[][]{
-            {"search_apptsheetall", "select a.appointment_no, a.appointment_date,a.name, a.provider_no, a.start_time, a.end_time, p.last_name, p.first_name from appointment a, providers p where (a.start_time='00:00:00' or a.start_time>='23:59:59' or a.end_time='00:00:00' or a.end_time>='23:59:59' or a.start_time > a.end_time) and a.appointment_date>=? and a.provider_no=p.provider_no and a.status != 'C' order by p.last_name, p.first_name, " + orderby},
-            {"search_apptsheetsingleall", "select a.appointment_no, a.appointment_date, a.name, a.provider_no,a.start_time,a.end_time,p.last_name,p.first_name from appointment a,providers p where (a.start_time='00:00:00' or a.start_time>='23:59:59' or a.end_time='00:00:00' or a.end_time>='23:59:59' or a.start_time > a.end_time) and a.appointment_date>=? and a.provider_no=? and a.status != 'C' and a.provider_no=p.provider_no order by " + orderby},
+            {"search_apptsheetall", "select a.appointment_no, a.appointment_date,a.name, a.provider_no, a.start_time, a.end_time, p.last_name, p.first_name from appointment a, provider p where (a.start_time='00:00:00' or a.start_time>='23:59:59' or a.end_time='00:00:00' or a.end_time>='23:59:59' or a.start_time > a.end_time) and a.appointment_date>=? and a.provider_no=p.provider_no and a.status != 'C' order by p.last_name, p.first_name, " + orderby},
+            {"search_apptsheetsingleall", "select a.appointment_no, a.appointment_date, a.name, a.provider_no,a.start_time,a.end_time,p.last_name,p.first_name from appointment a,provider p where (a.start_time='00:00:00' or a.start_time>='23:59:59' or a.end_time='00:00:00' or a.end_time>='23:59:59' or a.start_time > a.end_time) and a.appointment_date>=? and a.provider_no=? and a.status != 'C' and a.provider_no=p.provider_no order by " + orderby},
     };
 
     String[][] responseTargets = new String[][]{};
@@ -208,7 +208,7 @@
     %>
     <tr bgcolor="<%=bodd?"#EEEEFF":"white"%>">
         <td align="center"><a href=#
-                              onClick="popupPage(300,700,'../appointment/appointmentcontrol.jsp?displaymode=edit&dboperation=search&appointment_no=<%=rsdemo.getString("appointment_no")%>&provider_no=<%=curProvider_no%>&year=<%=MyDateFormat.getYearFromStandardDate(rsdemo.getString("appointment_date"))%>&month=<%=MyDateFormat.getMonthFromStandardDate(rsdemo.getString("appointment_date"))%>&day=<%=MyDateFormat.getDayFromStandardDate(rsdemo.getString("appointment_date"))%>&start_time=<%=rsdemo.getString("start_time")%>&demographic_no=');return false;">
+                              onClick="popupPage(300,700,'<%= request.getContextPath() %>/appointment/appointmentcontrol.jsp?displaymode=edit&dboperation=search&appointment_no=<%=rsdemo.getString("appointment_no")%>&provider_no=<%=curProvider_no%>&year=<%=MyDateFormat.getYearFromStandardDate(rsdemo.getString("appointment_date"))%>&month=<%=MyDateFormat.getMonthFromStandardDate(rsdemo.getString("appointment_date"))%>&day=<%=MyDateFormat.getDayFromStandardDate(rsdemo.getString("appointment_date"))%>&start_time=<%=rsdemo.getString("start_time")%>&demographic_no=');return false;">
             <%=rsdemo.getString("appointment_date")%>
         </a></td>
         <td align="center"><%=rsdemo.getString("start_time")%>

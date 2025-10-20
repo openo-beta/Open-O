@@ -32,7 +32,7 @@
 <security:oscarSec roleName="<%=roleName$%>" objectName="_report,_admin.reporting,_admin" rights="r"
                    reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../../../securityError.jsp?type=_report&type=_admin.reporting&type=_admin");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_report&type=_admin.reporting&type=_admin");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -45,7 +45,7 @@
 %>
 
 <%@ page import="java.util.*, java.sql.*, ca.openosp.openo.util.*,ca.openosp.*" errorPage="/errorpage.jsp" %>
-<%@ include file="../../../admin/dbconnection.jsp" %>
+<%@ include file="/admin/dbconnection.jsp" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.billing.CA.model.BillActivity" %>
 <%@page import="ca.openosp.openo.commn.model.Provider" %>
@@ -196,7 +196,7 @@
             <td width="220"><b><font face="Arial, Helvetica, sans-serif"
                                      size="2" color="#003366">Select provider </font></b></td>
             <td width="254"><b><font face="Arial, Helvetica, sans-serif"
-                                     size="2" color="#003366"> <select name="provider">
+                                     size="2" color="#003366"> <select name="providers">
                 <option value="all">All Providers</option>
                 <%
                     String proFirst = "";

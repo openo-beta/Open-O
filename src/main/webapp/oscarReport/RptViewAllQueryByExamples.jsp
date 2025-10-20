@@ -31,7 +31,7 @@
 %>
 <security:oscarSec roleName="<%=roleName$%>" objectName="_report,_admin.reporting" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect("../securityError.jsp?type=_report&type=_admin.reporting");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_report&type=_admin.reporting");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -57,10 +57,6 @@
             function set(text) {
                 document.forms[1].newQuery.value = text;
             };
-
-            function submitFavouriteForm() {
-                document.getElementById("favouriteForm").submit();
-            }
         </script>
 
     </head>
@@ -75,9 +71,9 @@
                     <form action="${pageContext.request.contextPath}/oscarReport/RptViewAllQueryByExamples.do" method="post">
                         <tr>
                             <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgAllQueriesExecutedFrom"/>:
-                                <input type="text" name="startDate" size="8"/>
+                                <input type="text" name="startDate" value="${startDate}" size="8"/>
                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgTo"/>
-                                <input type="text" name="endDate" size="8"/> <input type="submit"
+                                <input type="text" name="endDate" value="${endDate}" size="8"/> <input type="submit"
                                                                          value="Refresh"/></td>
                         </tr>
                     </form>
@@ -107,7 +103,7 @@
                                 <td>
                                     <input type="button"
                                         value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.RptByExample.MsgAddToFavorite"/>"
-                                         onclick="set('<c:out value="${escapedQuery}" escapeXml="true"/>'); submitFavouriteForm();" />
+                                        onclick="set('<c:out value="${escapedQuery}" escapeXml="true"/>'); submit();" />
                             </tr>
                         </c:forEach>
                     </form>

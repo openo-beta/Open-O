@@ -52,7 +52,9 @@ import ca.openosp.openo.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
+import java.io.File;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -200,6 +202,9 @@ public class AddEForm2Action extends ActionSupport {
         }
 
         EForm curForm = new EForm(fid, demographic_no, providerNo);
+        curForm.setContextPath(request.getContextPath());
+		curForm.setRealPath(request.getServletContext().getRealPath(File.separator));
+		curForm.setImagePath();
 
         //add eform_link value from session attribute
         ArrayList<String> openerNames = curForm.getOpenerNames();
@@ -217,7 +222,6 @@ public class AddEForm2Action extends ActionSupport {
         curForm.setValues(paramNames, paramValues);
         if (!openerNames.isEmpty()) curForm.setOpenerValues(openerNames, openerValues);
         if (eform_link != null) curForm.setEformLink(eform_link);
-        curForm.setImagePath();
         curForm.setAction();
         curForm.setNowDateTime();
 //TODO        if (!errors.isEmpty()) {
@@ -300,7 +304,6 @@ public class AddEForm2Action extends ActionSupport {
                 /*
                  * For now, this download code is added here and will be moved to the appropriate place after refactoring is done.
                  */
-                String path = request.getContextPath() + "/eform/efmshowform_data.jsp?fdid=" + fdid + "&parentAjaxId=eforms";
                 String fileName = generateFileName(loggedInInfo, Integer.parseInt(demographic_no));
                 String pdfBase64 = "";
                 try {
@@ -317,14 +320,12 @@ public class AddEForm2Action extends ActionSupport {
                 request.setAttribute("eFormPDFName", fileName);
                 request.setAttribute("isDownload", "true");
 
-                try {
-                    response.sendRedirect(path);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                return NONE;
+                request.setAttribute("fdid", fdid);
+                request.setAttribute("parentAjaxId", "eforms");
+
+                return "download";
             } else if (isEmailEForm) {
-                String path = "/email/emailComposeAction.do?method=prepareComposeEFormMailer";
+                String path = request.getContextPath() + "/email/emailComposeAction.do?method=prepareComposeEFormMailer";
                 addEmailAttachments(request, attachedEForms, attachedDocuments, attachedLabs, attachedHRMDocuments, attachedForms);
                 try {
                     response.sendRedirect(path);
@@ -380,7 +381,6 @@ public class AddEForm2Action extends ActionSupport {
                 /*
                  * For now, this download code is added here and will be moved to the appropriate place after refactoring is done.
                  */
-                String path = request.getContextPath() + "/eform/efmshowform_data.jsp?fdid=" + prev_fdid + "&parentAjaxId=eforms";
                 String fileName = generateFileName(loggedInInfo, Integer.parseInt(demographic_no));
                 String pdfBase64 = "";
                 try {
@@ -397,14 +397,12 @@ public class AddEForm2Action extends ActionSupport {
                 request.setAttribute("eFormPDFName", fileName);
                 request.setAttribute("isDownload", "true");
 
-                try {
-                    response.sendRedirect(path);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                return NONE;
+                request.setAttribute("fdid", prev_fdid);
+                request.setAttribute("parentAjaxId", "eforms");
+
+                return "download";
             } else if (isEmailEForm) {
-                String path = "/email/emailComposeAction.do?method=prepareComposeEFormMailer";
+                String path = request.getContextPath() + "/email/emailComposeAction.do?method=prepareComposeEFormMailer";
                 addEmailAttachments(request, attachedEForms, attachedDocuments, attachedLabs, attachedHRMDocuments, attachedForms);
                 try {
                     response.sendRedirect(path);
@@ -438,7 +436,6 @@ public class AddEForm2Action extends ActionSupport {
 		}
 
         String fdid = (String) request.getAttribute("fdid");
-        String path = request.getContextPath() + "/eform/efmshowform_data.jsp?fdid=" + fdid + "&parentAjaxId=eforms";
 
 		String pdfBase64;
 		try {
@@ -455,12 +452,10 @@ public class AddEForm2Action extends ActionSupport {
 		request.setAttribute("eFormPDFName", generateFileName(loggedInInfo, Integer.parseInt(demographic_no)));
 		request.setAttribute("isSuccess_Autoclose", "true");
 
-        try {
-            response.sendRedirect(path);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return NONE;
+        request.setAttribute("fdid", fdid);
+        request.setAttribute("parentAjaxId", "eforms");
+
+        return "close";
 	}
 	
 	private String generateFileName(LoggedInInfo loggedInInfo, int demographicNo) {

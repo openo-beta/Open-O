@@ -24,7 +24,7 @@
     
 --%>
 
-<%@ page errorPage="../error.jsp" %>
+<%@ page errorPage="/errorpage.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -104,7 +104,7 @@
 <c:set var="resultSize" value="${sessionScope.resultSize}"/>
 
 <form action="${pageContext.request.contextPath}/mcedt/download.do" method="post" id="formDownload">
-    <jsp:include page="../messages.jsp"/>
+    <jsp:include page="/mcedt/messages.jsp"/>
     <input id="methodDownload" name="method" type="hidden" value=""/>
     <div>
         <div>
