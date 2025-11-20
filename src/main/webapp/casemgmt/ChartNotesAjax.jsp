@@ -890,16 +890,16 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
         //savedId = 0;
 %>
 <div id="nc<%=offset%><%=savedId%>" class="note noteRounded encounter-note">
-    <input type="hidden" id="signed<%=savedId%>" value="false"/>
-    <input type="hidden" id="full<%=savedId%>" value="true"/>
-    <input type="hidden" id="bgColour<%=savedId%>" value="color:#000000;background-color:#CCCCFF;"/>
-    <input type="hidden" id="editWarn<%=savedId%>" value="false"/>
+    <input type="hidden" id="signed<%=savedId%>" value="false" />
+    <input type="hidden" id="full<%=savedId%>" value="true" />
+    <input type="hidden" id="bgColour<%=savedId%>" value="color:#000000;background-color:#CCCCFF;" />
+    <input type="hidden" id="editWarn<%=savedId%>" value="false" />
     <div id="n<%=savedId%>">
-        <textarea tabindex="7" cols="84" rows="10" class="txtArea boxsizingBorder" wrap="hard"
-                  style="line-height: 1.1em;" name="caseNote_note"
-                  id="caseNote_note<%=savedId%>"><%=cform.getCaseNote_note() %></textarea>
+            <textarea tabindex="7" cols="84" rows="10" class="txtArea boxsizingBorder" wrap="soft" 
+                style="line-height: 1.1em;" name="caseNote_note" 
+                id="caseNote_note<%=savedId%>"><%=cform.getCaseNote_note() %></textarea>
         <div class="sig" id="sig<%=savedId%>">
-            <%@ include file="noteIssueList.jsp" %>
+            <%@ include file="noteIssueList.jsp"%>
         </div> <!-- end of div sig<%=savedId%> -->
 
 
