@@ -154,7 +154,8 @@ public class EctFormData {
                     forms.add(frm);
                 }
             } else {
-                String sql = "SELECT form_no, demographic_no, form_date from " + table + " where demographic_no=? order by form_no desc";
+                // For "form" table, we use hardcoded table name since we already validated it equals "form"
+                String sql = "SELECT form_no, demographic_no, form_date from form where demographic_no=? order by form_no desc";
 
                 java.sql.PreparedStatement ps = c.prepareStatement(sql);
                 ps.setInt(1, Integer.parseInt(demoNo));
@@ -219,7 +220,8 @@ public class EctFormData {
                     forms.add(frm);
                 }
             } else {
-                String sql = "SELECT form_no, demographic_no, form_date from " + table + " where demographic_no=? order by form_no desc";
+                // For "form" table, we use hardcoded table name since we already validated it equals "form"
+                String sql = "SELECT form_no, demographic_no, form_date from form where demographic_no=? order by form_no desc";
 
                 java.sql.PreparedStatement ps = c.prepareStatement(sql);
                 ps.setInt(1, Integer.parseInt(demoNo));
