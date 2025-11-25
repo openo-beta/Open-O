@@ -104,7 +104,7 @@
 <%@page
         import="ca.openosp.openo.encounter.oscarMeasurements.*,ca.openosp.openo.dxresearch.bean.*,ca.openosp.openo.util.*" %>
 <%@page
-        import="ca.openosp.openo.eform.*, org.apache.commons.lang.StringEscapeUtils" %>
+        import="ca.openosp.openo.eform.*, org.apache.commons.text.StringEscapeUtils" %>
 
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 
@@ -139,8 +139,21 @@
         String strBeanName = "casemgmt_oscar_bean" + bean.getDemographicNo();
         session.setAttribute(strBeanName, bean);
         session.setAttribute("casemgmt_bean_flag", "true");
-        String hrefurl = request.getContextPath() + "/casemgmt/forward.jsp?action=view&demographicNo=" + bean.demographicNo + "&providerNo=" + bean.providerNo + "&providerName=" + URLEncoder.encode(bean.userName) + "&appointmentNo=" + request.getParameter("appointmentNo") + "&reason=" + URLEncoder.encode(request.getParameter("reason") == null ? "" : request.getParameter("reason")) + "&appointmentDate=" + request.getParameter("appointmentDate") + "&start_time=" + request.getParameter("startTime") + "&apptProvider=" + request.getParameter("apptProvider_no") + "&providerview=" + request.getParameter("providerview") +
-                "&msgType=" + request.getParameter("msgType") + "&OscarMsgTypeLink=" + request.getParameter("OscarMsgTypeLink") + "&noteId=" + request.getParameter("noteId") + (request.getParameter("noteId") != null ? "&forceNote=true" : "");
+        String hrefurl = request.getContextPath() + "/casemgmt/forward.jsp?action=view" +
+        "&demographicNo=" + bean.demographicNo +
+        "&providerNo=" + bean.providerNo +
+        "&providerName=" + URLEncoder.encode(bean.userName) +
+        "&appointmentNo=" + (bean.appointmentNo != null ? bean.appointmentNo : "") +
+        "&reason=" + URLEncoder.encode(bean.reason != null ? bean.reason : "") +
+        "&reasonCode=" + (bean.reasonCode != null ? bean.reasonCode : "") +
+        "&appointmentDate=" + (bean.appointmentDate != null ? bean.appointmentDate : "") +
+        "&start_time=" + (bean.startTime != null ? bean.startTime : "") +
+        "&apptProvider=" + (bean.curProviderNo != null ? bean.curProviderNo : "") +
+        "&providerview=" + (bean.curProviderNo != null ? bean.curProviderNo : "") +
+        "&msgType=" + request.getParameter("msgType") +
+        "&OscarMsgTypeLink=" + request.getParameter("OscarMsgTypeLink") +
+        "&noteId=" + request.getParameter("noteId") +
+        (request.getParameter("noteId") != null ? "&forceNote=true" : "");
 
         if (request.getParameter("noteBody") != null)
             hrefurl += "&noteBody=" + request.getParameter("noteBody");
@@ -304,7 +317,7 @@
            for(int j=0; j<bean.templateNames.size(); j++) {
               String encounterTmp = bean.templateNames.get(j);
               encounterTmp = StringUtils.maxLenString(encounterTmp, MaxLen, TruncLen, ellipses);
-              encounterTmp = StringEscapeUtils.escapeJavaScript(encounterTmp);
+              encounterTmp = StringEscapeUtils.escapeEcmaScript(encounterTmp);
             %>
             autoCompleted["<%=encounterTmp%>"] = "ajaxInsertTemplate('<%=encounterTmp%>')";
             autoCompList.push("<%=encounterTmp%>");

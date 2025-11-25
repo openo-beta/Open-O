@@ -31,7 +31,8 @@ import ca.openosp.openo.commn.model.*;
 import ca.openosp.openo.utility.*;
 import com.opensymphony.xwork2.ActionSupport;
 import ca.openosp.openo.model.security.LdapSecurity;
-import net.sf.json.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.jboss.aerogear.security.otp.Totp;
@@ -56,6 +57,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,18 +82,20 @@ public final class Login2Action extends ActionSupport {
     private static final Logger logger = MiscUtils.getLogger();
     private static final String LOG_PRE = "Login!@#$: ";
 
-    private ProviderManager providerManager = SpringUtils.getBean(ProviderManager.class);
-    private AppManager appManager = SpringUtils.getBean(AppManager.class);
-    private FacilityDao facilityDao = SpringUtils.getBean(FacilityDao.class);
-    private ProviderPreferenceDao providerPreferenceDao = SpringUtils.getBean(ProviderPreferenceDao.class);
-    private ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
-    private UserPropertyDAO propDao = SpringUtils.getBean(UserPropertyDAO.class);
-    private DSService dsService = SpringUtils.getBean(DSService.class);
-    private ServiceRequestTokenDao serviceRequestTokenDao = SpringUtils.getBean(ServiceRequestTokenDao.class);
-    private SecurityManager securityManager = SpringUtils.getBean(SecurityManager.class);
-    private SecurityDao securityDao = SpringUtils.getBean(SecurityDao.class);
-    private UserSessionManager userSessionManager = SpringUtils.getBean(UserSessionManager.class);
-    private MfaManager mfaManager = SpringUtils.getBean(MfaManager.class);
+    private final ProviderManager providerManager = SpringUtils.getBean(ProviderManager.class);
+    private final AppManager appManager = SpringUtils.getBean(AppManager.class);
+    private final FacilityDao facilityDao = SpringUtils.getBean(FacilityDao.class);
+    private final ProviderPreferenceDao providerPreferenceDao = SpringUtils.getBean(ProviderPreferenceDao.class);
+    private final ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
+    private final UserPropertyDAO propDao = SpringUtils.getBean(UserPropertyDAO.class);
+    private final DSService dsService = SpringUtils.getBean(DSService.class);
+    private final ServiceRequestTokenDao serviceRequestTokenDao = SpringUtils.getBean(ServiceRequestTokenDao.class);
+    private final SecurityManager securityManager = SpringUtils.getBean(SecurityManager.class);
+    private final SecurityDao securityDao = SpringUtils.getBean(SecurityDao.class);
+    private final UserSessionManager userSessionManager = SpringUtils.getBean(UserSessionManager.class);
+    private final MfaManager mfaManager = SpringUtils.getBean(MfaManager.class);
+    
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     public String execute() throws ServletException, IOException {
 
@@ -275,11 +280,11 @@ public final class Login2Action extends ActionSupport {
                 String newURL = "/loginfailed.jsp?errormsg=Oops! Your account is now locked due to incorrect password attempts!";
 
                 if (ajaxResponse) {
-                    JSONObject json = new JSONObject();
+                    ObjectNode json = objectMapper.createObjectNode();
                     json.put("success", false);
                     json.put("error", "Oops! Your account is now locked due to incorrect password attempts!");
                     response.setContentType("text/x-json");
-                    json.write(response.getWriter());
+                    response.getWriter().write(json.toString());
                     return null;
                 }
 
@@ -315,11 +320,11 @@ public final class Login2Action extends ActionSupport {
             }
 
             if (ajaxResponse) {
-                JSONObject json = new JSONObject();
+                ObjectNode json = objectMapper.createObjectNode();
                 json.put("success", false);
                 json.put("error", "Database connection error:" + e.getMessage() + ".");
                 response.setContentType("text/x-json");
-                json.write(response.getWriter());
+                response.getWriter().write(json.toString());
                 return null;
             }
 
@@ -584,11 +589,11 @@ public final class Login2Action extends ActionSupport {
             String newURL = "/loginfailed.jsp?errormsg=Your account is expired. Please contact your administrator.";
 
             if (ajaxResponse) {
-                JSONObject json = new JSONObject();
+                ObjectNode json = objectMapper.createObjectNode();
                 json.put("success", false);
                 json.put("error", "Your account is expired. Please contact your administrator.");
                 response.setContentType("text/x-json");
-                json.write(response.getWriter());
+                response.getWriter().write(json.toString());
                 return null;
             }
 
@@ -600,11 +605,11 @@ public final class Login2Action extends ActionSupport {
             cl.updateLoginList(ip, userName);
 
             if (ajaxResponse) {
-                JSONObject json = new JSONObject();
+                ObjectNode json = objectMapper.createObjectNode();
                 json.put("success", false);
                 response.setContentType("text/x-json");
                 json.put("error", "Invalid Credentials");
-                json.write(response.getWriter());
+                response.getWriter().write(json.toString());
                 return null;
             }
             return where;
@@ -623,12 +628,12 @@ public final class Login2Action extends ActionSupport {
         if (ajaxResponse) {
             logger.debug("rendering ajax response");
             Provider prov = providerDao.getProvider((String) request.getSession().getAttribute("user"));
-            JSONObject json = new JSONObject();
+            ObjectNode json = objectMapper.createObjectNode();
             json.put("success", true);
             json.put("providerName", Encode.forJavaScript(prov.getFormattedName()));
             json.put("providerNo", prov.getProviderNo());
             response.setContentType("text/x-json");
-            json.write(response.getWriter());
+            response.getWriter().write(json.toString());
             return null;
         }
 
@@ -653,12 +658,12 @@ public final class Login2Action extends ActionSupport {
         if (ajaxResponse) {
             logger.debug("rendering ajax response");
             Provider prov = providerDao.getProvider(providerNo);
-            JSONObject json = new JSONObject();
+            ObjectNode json = objectMapper.createObjectNode();
             json.put("success", true);
             json.put("providerName", Encode.forJavaScript(prov.getFormattedName()));
             json.put("providerNo", prov.getProviderNo());
             response.setContentType("text/x-json");
-            json.write(response.getWriter());
+            response.getWriter().write(json.toString());
             return null;
         }
         

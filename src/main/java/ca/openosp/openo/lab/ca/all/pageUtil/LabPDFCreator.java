@@ -47,14 +47,15 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.lowagie.text.*;
-import com.lowagie.text.Font;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.html.simpleparser.HTMLWorker;
-import com.lowagie.text.pdf.*;
+import com.itextpdf.text.*;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.html.simpleparser.HTMLWorker;
+import com.itextpdf.text.pdf.*;
 import com.lowagie.text.rtf.RtfWriter2;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.io.IOUtils;
 import ca.openosp.openo.commn.dao.Hl7TextMessageDao;
 import ca.openosp.openo.commn.model.Hl7TextMessage;
@@ -169,6 +170,9 @@ public class LabPDFCreator extends PdfPageEventHelper {
 
             document.close();
         } catch (com.lowagie.text.DocumentException e) {
+            // OpenRTF uses OpenPDF library which has a different DocumentException class
+            // Wrap it to maintain API consistency with iText-based PDF generation
+            MiscUtils.getLogger().error("Failed to import RTF document", e);
             throw new DocumentException(e);
         }
     }
@@ -234,7 +238,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
         cell.setPhrase(new Phrase("  "));
         table.addCell(cell);
         cell.setBorder(15);
-        cell.setBackgroundColor(new Color(210, 212, 255));
+        cell.setBackgroundColor(new BaseColor(210, 212, 255));
         if (handler.getMsgType().equals("CLS")) {
             cell.setPhrase(new Phrase("Legend:  A=Abnormal  L=Low  H=High  C=Critical", boldFont));
         } else {
@@ -388,7 +392,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
                 cell.setColspan(1);
                 cell.setBorder(Rectangle.BOX);
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                cell.setBackgroundColor(new Color(210, 212, 255));
+                cell.setBackgroundColor(new BaseColor(210, 212, 255));
                 cell.setPhrase(new Phrase("Test Name(s)", boldFont));
                 table.addCell(cell);
                 cell.setPhrase(new Phrase("Result", boldFont));
@@ -430,7 +434,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
                 cell.setColspan(1);
                 cell.setBorder(Rectangle.BOX);
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                cell.setBackgroundColor(new Color(210, 212, 255));
+                cell.setBackgroundColor(new BaseColor(210, 212, 255));
                 cell.setPhrase(new Phrase("Test Name(s)", boldFont));
                 table.addCell(cell);
                 cell.setPhrase(new Phrase("Result", boldFont));
@@ -489,7 +493,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
 
 					if (obxCount == 0 && (!orderRequestStatus.isEmpty() || obrCommentCount > 0)) {
 						cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-						cell.setBackgroundColor( Color.WHITE );
+						cell.setBackgroundColor( BaseColor.WHITE );
 						cell.setPhrase(new Phrase(handler.getOBRName(j), boldFont));
 						cell.setColspan(1);
 						table.addCell(cell);
@@ -516,8 +520,8 @@ public class LabPDFCreator extends PdfPageEventHelper {
 					if (handler.getOBXCommentCount(j, k) > 0) {
 						cell.setBorder( Rectangle.NO_BORDER );
 					}
-					cell.setBorderColor( Color.LIGHT_GRAY );
-					cell.setBackgroundColor( Color.WHITE );
+					cell.setBorderColor( BaseColor.LIGHT_GRAY );
+					cell.setBackgroundColor( BaseColor.WHITE );
 					
 					String obxName = handler.getOBXName(j, k);
 					
@@ -551,7 +555,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
 								} else {
 									cell.setColspan(7);
 								}
-								cell.setBorderColor(Color.BLACK);
+								cell.setBorderColor(BaseColor.BLACK);
 								table.setWidthPercentage(100);
 								table.addCell(cell);
 								if (handler.getMsgType().equals("ExcellerisON")) {
@@ -559,7 +563,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
 									cell.setColspan(7);
 									table.addCell(cell);
 								}
-								cell.setBorderColor( Color.LIGHT_GRAY );
+								cell.setBorderColor( BaseColor.LIGHT_GRAY );
 								cell.setColspan(1);
 								obrFlag = true;
 							}
@@ -570,7 +574,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
                             if (this.isReportData) {
                                 cell.setColspan(2);
                                 cell.setBorder(Rectangle.NO_BORDER);
-                                cell.setBorderColor(Color.WHITE);
+                                cell.setBorderColor(BaseColor.WHITE);
                                 cell.setPadding(0);
                                 cell.setPaddingLeft(10);
 
@@ -828,7 +832,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
 
                                     }
 
-                                    cell.setBorderColor(Color.LIGHT_GRAY);
+                                    cell.setBorderColor(BaseColor.LIGHT_GRAY);
                                     cell.setColspan(1);
                                 }
                                 cell.setColspan(1);
@@ -841,7 +845,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
                         ) {
 
                             cell.setBorder(Rectangle.NO_BORDER);
-                            cell.setBorderColor(Color.WHITE);
+                            cell.setBorderColor(BaseColor.WHITE);
                             cell.setPadding(0);
                             cell.setPaddingLeft(10);
                             cell.setColspan(7);
@@ -852,7 +856,7 @@ public class LabPDFCreator extends PdfPageEventHelper {
 
                             cell.setColspan(1);
                             cell.setBorder(Rectangle.BOTTOM);
-                            cell.setBorderColor(Color.LIGHT_GRAY);
+                            cell.setBorderColor(BaseColor.LIGHT_GRAY);
                             cell.setPadding(5);
                         }
                         if (handler.getMsgType().equals("PFHT") && !handler.getNteForOBX(j, k).equals("") && handler.getNteForOBX(j, k) != null) {
@@ -972,12 +976,12 @@ public class LabPDFCreator extends PdfPageEventHelper {
      *  getTextColor will return the the color corresponding to the abnormal
      *  status of the result.
      */
-    private Color getTextColor(MessageHandler handler, String abn) {
-        Color ret = Color.BLACK;
+    private BaseColor getTextColor(MessageHandler handler, String abn) {
+        BaseColor ret = BaseColor.BLACK;
         if (abn != null && (abn.equals("A") || abn.startsWith("H"))) {
-            ret = Color.RED;
+            ret = BaseColor.RED;
         } else if (abn != null && abn.startsWith("L")) {
-            ret = Color.BLUE;
+            ret = BaseColor.BLUE;
         }
 
         return ret;
@@ -1089,13 +1093,13 @@ public class LabPDFCreator extends PdfPageEventHelper {
         PdfPTable table = new PdfPTable(tableWidths);
         if (multiID != null && multiID.length > 1) {
             cell = new PdfPCell(new Phrase("Version: " + versionNum + " of " + multiID.length, boldFont));
-            cell.setBackgroundColor(new Color(210, 212, 255));
+            cell.setBackgroundColor(new BaseColor(210, 212, 255));
             cell.setPadding(3);
             cell.setColspan(2);
             table.addCell(cell);
         }
         cell = new PdfPCell(new Phrase("Detail Results: Patient Info", boldFont));
-        cell.setBackgroundColor(new Color(210, 212, 255));
+        cell.setBackgroundColor(new BaseColor(210, 212, 255));
         cell.setPadding(3);
         table.addCell(cell);
         cell.setPhrase(new Phrase("Results Info", boldFont));

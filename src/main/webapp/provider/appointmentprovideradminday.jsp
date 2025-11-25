@@ -46,8 +46,9 @@
 <%@page import="ca.openosp.openo.commn.model.ProviderPreference" %>
 <%@ page import="ca.openosp.openo.managers.*" %>
 <%@ page import="java.util.*,java.text.*,java.net.*,ca.openosp.*,ca.openosp.openo.util.*" %>
-<%@ page import="org.apache.commons.lang.*" %>
-<%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.apache.commons.lang3.*" %>
+<%@ page import="org.apache.commons.lang3.StringUtils" %>
+<%@ page import="org.apache.commons.text.WordUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.*" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.managers.*" %>
@@ -439,7 +440,7 @@
 
 <html>
     <head>
-        <title><%=WordUtils.capitalize(userlastname + ", " + org.apache.commons.lang.StringUtils.substring(userfirstname, 0, 1)) + "-"%><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.title"/></title>
+        <title><%=WordUtils.capitalize(userlastname + ", " + org.apache.commons.lang3.StringUtils.substring(userfirstname, 0, 1)) + "-"%><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.title"/></title>
         <script type="text/javascript" src="${pageContext.servletContext.contextPath}/js/global.js"></script>
 
         <link rel="stylesheet"
@@ -619,6 +620,21 @@
 
         List<Map<String, Object>> resultList = null;
 
+        //check if a maximum patient name length has ben configured for the user
+        //if so, use that maximum length in all scenarios
+        UserProperty uppatientNameLength = userPropertyDao.getProp(loggedInInfo1.getLoggedInProviderNo(), UserProperty.PATIENT_NAME_LENGTH);
+        int NameLength = 0;
+        if (uppatientNameLength != null && uppatientNameLength.getValue() != null) {
+            try {
+                NameLength = Integer.parseInt(uppatientNameLength.getValue());
+            } catch (NumberFormatException e) {
+                NameLength = 0;
+            }
+            if (NameLength > 0) {
+                len = lenLimitedS = lenLimitedL = NameLength;
+            }
+        }
+
         if (mygroupno != null && providerBean.get(mygroupno) != null) { //single appointed providers view
             numProvider = 1;
             curProvider_no = new String[numProvider];
@@ -682,20 +698,10 @@
                             len = 30;
                         }
                     }
-                    UserProperty uppatientNameLength = userPropertyDao.getProp(loggedInInfo1.getLoggedInProviderNo(), UserProperty.PATIENT_NAME_LENGTH);
-
-                    int NameLength = 0;
-
-                    if (uppatientNameLength != null && uppatientNameLength.getValue() != null) {
-                        try {
-                            NameLength = Integer.parseInt(uppatientNameLength.getValue());
-                        } catch (NumberFormatException e) {
-                            NameLength = 0;
-                        }
-
-                        if (NameLength > 0) {
-                            len = lenLimitedS = lenLimitedL = NameLength;
-                        }
+                    if (NameLength > 0) {
+                        //if a custom maximum patient name has been set (NameLength variable)
+                        //use that configured nameLength variable to override the length  
+                        len = lenLimitedS = lenLimitedL = NameLength;
                     }
                     curProvider_no = new String[numProvider];
                     curProviderName = new String[numProvider];
@@ -1654,7 +1660,7 @@
 
                                                     String useProgramLocation = OscarProperties.getInstance().getProperty("useProgramLocation");
                                                     String moduleNames = OscarProperties.getInstance().getProperty("ModuleNames");
-                                                    boolean caisiEnabled = moduleNames != null && org.apache.commons.lang.StringUtils.containsIgnoreCase(moduleNames, "Caisi");
+                                                    boolean caisiEnabled = moduleNames != null && org.apache.commons.lang3.StringUtils.containsIgnoreCase(moduleNames, "Caisi");
                                                     boolean locationEnabled = caisiEnabled && (useProgramLocation != null && useProgramLocation.equals("true"));
 
                                                     int length = locationEnabled ? 4 : 3;
@@ -2055,6 +2061,7 @@
                                                                 + curProvider_no[nProvider]
                                                                 + "&reason="
                                                                 + URLEncoder.encode(Encode.forHtmlContent(reason))
+                                                                + "&reasonCode=" + (appointment.getReasonCode() != null ? appointment.getReasonCode() : "")
                                                                 + "&encType="
                                                                 + URLEncoder.encode("face to face encounter with client", "UTF-8")
                                                                 + "&userName="

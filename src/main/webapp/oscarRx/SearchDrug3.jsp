@@ -27,7 +27,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
-<%@page import="org.apache.commons.lang.StringEscapeUtils" %>
+<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.utility.WebUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.DrugDao" %>
 <%@page import="ca.openosp.openo.commn.model.Drug" %>
@@ -904,7 +904,7 @@
                         <td valign="top" align="left">
                             <%if (securityManager.hasWriteAccess("_rx", roleName2$, true)) {%>
                             <form action="${pageContext.request.contextPath}/oscarRx/searchDrug.do" onsubmit="return checkEnterSendRx();"
-                                       style="display: inline; margin-bottom:0;" styleId="drugForm" name="drugForm" id="drugForm" method="post">
+                                       style="display: inline; margin-bottom:0;" id="drugForm" name="drugForm" method="post">
                                 <div id="interactingDrugErrorMsg" style="display:none"></div>
                                 <div id="rxText" style="float:left;"></div>
                                 <br style="clear:left;">
@@ -1206,7 +1206,7 @@
                                                 <tr>
                                                     <td><%=formatter.format(note.getCreate_date()) %>
                                                     </td>
-                                                    <td><%=StringEscapeUtils.escapeHtml(str)%>
+                                                    <td><%=StringEscapeUtils.escapeHtml4(str)%>
                                                     </td>
                                                 </tr>
                                                 <%

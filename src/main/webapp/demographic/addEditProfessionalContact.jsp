@@ -28,7 +28,7 @@
 <%@ include file="/taglibs.jsp" %>
 <%@ page import="java.util.Properties" %>
 <%@ page import="java.util.List, ca.openosp.openo.utility.SpringUtils" %>
-<%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.commn.dao.ContactSpecialtyDao" %>
 <%@ page import="ca.openosp.openo.commn.model.ContactSpecialty" %>
 
@@ -195,7 +195,7 @@
         </tr>
     </table>
 
-    <form action="<%= request.getContextPath() %>/demographic/Contact.do" styleId="addEditProfessionalForm">
+    <form action="<%= request.getContextPath() %>/demographic/Contact.do" id="addEditProfessionalForm">
 
         <c:if test="${ pcontact.id gt 0 }">
             <input type="hidden" name="pcontact.id" value="${ pcontact.id }"/>

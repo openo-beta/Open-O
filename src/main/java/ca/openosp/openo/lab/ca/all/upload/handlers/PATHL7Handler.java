@@ -48,6 +48,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.lab.ca.all.upload.MessageUploader;
 import ca.openosp.openo.lab.ca.all.upload.RouteReportResults;
 
@@ -73,7 +74,7 @@ public class PATHL7Handler implements MessageHandler {
             }
 
             // Base directory
-            String baseDir = "/some/safe/path/";
+            String baseDir = OscarProperties.getInstance().getDocumentDirectory();
             Path basePath = Paths.get(baseDir).toAbsolutePath().normalize();
             Path targetPath = basePath.resolve(fileName).normalize();
 
@@ -86,7 +87,11 @@ public class PATHL7Handler implements MessageHandler {
             docFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             docFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
             docFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            docFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
+            // Disable XInclude
             docFactory.setXIncludeAware(false);
+            // Disabled expansion of entity references
             docFactory.setExpandEntityReferences(false);
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             doc = docBuilder.parse(targetPath.toFile());

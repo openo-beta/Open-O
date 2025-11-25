@@ -44,19 +44,20 @@ import ca.openosp.openo.form.graphic.FrmPdfGraphic;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.util.ConcatPDF;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.Font;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.ColumnText;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfImportedPage;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfWriter;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfImportedPage;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfWriter;
 
 /**
  *
@@ -202,9 +203,10 @@ public class FrmPDFServlet extends HttpServlet {
         String suffix = (multiple > 0) ? String.valueOf(multiple) : "";
 
         PdfWriter writer = null;
+        PdfReader reader = null;
 
         try {
-            writer = PdfWriterFactory.newInstance(document, baosPDF, FontSettings.HELVETICA_6PT);
+            writer = PdfWriter.getInstance(document, baosPDF);
 
             String title = req.getParameter("__title" + suffix) != null ? req.getParameter("__title" + suffix) : "Unknown";
 
@@ -290,7 +292,7 @@ public class FrmPDFServlet extends HttpServlet {
             }
 
             if (req.getParameter("postProcessor" + suffix) != null) {
-                String className = "oscar.form.pdfservlet." + req.getParameter("postProcessor" + suffix);
+                String className = "ca.openosp.openo.form.pdfservlet." + req.getParameter("postProcessor" + suffix);
                 try {
                     FrmPDFPostValueProcessor pp = (FrmPDFPostValueProcessor) Class.forName(className).newInstance();
                     props = pp.process(props);
@@ -405,27 +407,22 @@ public class FrmPDFServlet extends HttpServlet {
             // create a reader for a certain document
             //String propFilename = "../../OscarDocument/" + getProjectName() + "/form/" + template;
             String propFilename = OscarProperties.getInstance().getProperty("pdfFORMDIR", "") + "/" + template;
-            PdfReader reader = null;
             float height;
             int n;
             try {
-                try {
-                    reader = new PdfReader(propFilename);
-                    log.info("Found template at " + propFilename);
-                } catch (Exception dex) {
-                    log.debug("change path to inside oscar from :" + propFilename);
-                    reader = new PdfReader("/oscar/form/prop/" + template);
-                    log.debug("Found template at /oscar/form/prop/" + template);
-                }
-
-                // retrieve the total number of pages
-                n = reader.getNumberOfPages();
-                // retrieve the size of the first page
-                Rectangle pSize = reader.getPageSize(1);
-                height = pSize.getHeight();
-            } finally {
-                reader.close();
+                reader = new PdfReader(propFilename);
+                log.info("Found template at " + propFilename);
+            } catch (Exception dex) {
+                log.debug("change path to inside oscar from :" + propFilename);
+                reader = new PdfReader("/oscar/form/prop/" + template);
+                log.debug("Found template at /oscar/form/prop/" + template);
             }
+
+            // retrieve the total number of pages
+            n = reader.getNumberOfPages();
+            // retrieve the size of the first page
+            Rectangle pSize = reader.getPageSize(1);
+            height = pSize.getHeight();
 
             PdfContentByte cb = writer.getDirectContent();
             ColumnText ct = new ColumnText(cb);
@@ -443,7 +440,7 @@ public class FrmPDFServlet extends HttpServlet {
                 BaseFont bf; // = normFont;
                 String encoding;
 
-                cb.setRGBColorStroke(0, 0, 255);
+                cb.setRGBColorStroke(0, 0, 1);
                 //cb.setFontAndSize(bf, 8);
                 // LEFT/CENTER/RIGHT, X, Y,
                 //cb.showTextAligned(PdfContentByte.ALIGN_LEFT, "Cathy
@@ -499,7 +496,7 @@ public class FrmPDFServlet extends HttpServlet {
                         if (cfgVal.length >= 9) {
                             Font font;
                             if (fontFlags == Font.BOLD) { // Hack to stop blue outline from bold text
-                                font = new Font(bf, Integer.parseInt(cfgVal[5].trim()), fontFlags, Color.black);
+                                font = new Font(bf, Integer.parseInt(cfgVal[5].trim()), fontFlags, BaseColor.BLACK);
                             } else {
                                 font = new Font(bf, Integer.parseInt(cfgVal[5].trim()), fontFlags);
                             }
@@ -534,7 +531,7 @@ public class FrmPDFServlet extends HttpServlet {
                             float ury = Float.parseFloat(cfgVal[3].trim());
 
                             Rectangle rec = new Rectangle(llx, lly, urx, ury);
-                            rec.setBackgroundColor(java.awt.Color.WHITE);
+                            rec.setBackgroundColor(BaseColor.WHITE);
                             cb.rectangle(rec);
 
                         } else if (tempName.toString().startsWith("__$line")) {
@@ -685,9 +682,9 @@ public class FrmPDFServlet extends HttpServlet {
                         cb.setLineWidth(1.5f);
 
                         if (k % 2 == 0) {
-                            cb.setRGBColorStrokeF(0f, 0f, 255f);
+                            cb.setRGBColorStrokeF(0f, 0f, 1f);
                         } else {
-                            cb.setRGBColorStrokeF(255f, 0f, 0f);
+                            cb.setRGBColorStrokeF(1f, 0f, 0f);
                         }
 
 
@@ -719,7 +716,7 @@ public class FrmPDFServlet extends HttpServlet {
 
 	                            //draw the pic
 	                            cb.setLineWidth(1.5f);
-	                            //cb.setRGBColorStrokeF(0f, 255f, 0f); //cb.circle(52f,
+	                            //cb.setRGBColorStrokeF(0f, 1f, 0f); //cb.circle(52f,
 	                            // height - 751f, 1f);//cb.circle(52f, height - 609f,
 	                            // 1f);
 	                            for (Enumeration e = gProp.propertyNames(); e.hasMoreElements();) {
@@ -744,9 +741,9 @@ public class FrmPDFServlet extends HttpServlet {
 	                            //draw the pic
 	                            cb.setLineWidth(1.5f);
 	                            if (k % 2 == 0) {
-	                                cb.setRGBColorStrokeF(0f, 0f, 255f);
+	                                cb.setRGBColorStrokeF(0f, 0f, 1f);
 	                            } else {
-	                                cb.setRGBColorStrokeF(255f, 0f, 0f);
+	                                cb.setRGBColorStrokeF(1f, 0f, 0f);
 	                            }
 	                            for (Enumeration e = gProp.propertyNames(); e.hasMoreElements();) {
 	                                tempName = new StringBuilder(e.nextElement().toString());
@@ -763,15 +760,33 @@ public class FrmPDFServlet extends HttpServlet {
                 } //end if there are properties to process
 
             }
-
         } catch (DocumentException dex) {
             baosPDF.reset();
             throw dex;
         } finally {
-            if (document.isOpen())
-                document.close();
-            if (writer != null)
-                writer.close();
+            if (document.isOpen()) {
+                try {
+                    document.close();
+                }
+                catch (Exception e) {
+                    log.error("Error closing PDF document", e);
+                }
+            }
+            if (writer != null) {
+                try {
+                    writer.close();
+                }
+                catch (Exception e) {
+                    log.error("Error closing PDF writer", e);
+                }
+            }   
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (Exception e) {
+                    log.error("Error closing PDF reader", e);
+                }
+            }
         }
 
         return baosPDF;

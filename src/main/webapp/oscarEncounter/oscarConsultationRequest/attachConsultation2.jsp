@@ -10,6 +10,7 @@
 --%>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
       String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
       boolean authed=true;
@@ -31,15 +32,13 @@ String userfirstname = (String) session.getAttribute("userfirstname");
 String userlastname = (String) session.getAttribute("userlastname");
 %>
 
-<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
-<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
 <jsp:useBean id="oscarVariables" class="java.util.Properties"
 	scope="page" />
 <%@ page
-	import="java.math.*, java.util.*, java.io.*, java.sql.*, oscar.*, oscar.util.*, java.net.*,oscar.MyDateFormat, oscar.oscarEncounter.oscarConsultationRequest.pageUtil.ConsultationAttachDocs"%>
+	import="java.math.*, java.util.*, java.io.*, java.sql.*, ca.openosp.openo.*, ca.openosp.openo.util.*, java.net.*,ca.openosp.MyDateFormat, ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.ConsultationAttachDocs"%>
 <%@ page import="ca.openosp.openo.lab.ca.on.*"%>
 <%@ page import="ca.openosp.openo.lab.ca.all.Hl7textResultsData"%>
-<%@ page import="org.apache.commons.lang.StringEscapeUtils"%>
+<%@ page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="ca.openosp.openo.utility.SessionConstants"%>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao"%>
@@ -84,15 +83,17 @@ boolean onIPad = http_user_agent.indexOf("iPad") >= 0;
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
    "http://www.w3.org/TR/html4/strict.dtd">
-<html:html lang="en">
+<html>
 <head>
 <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery_oscar_defaults.js"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery.colorbox-min.js"></script>
 	
-<title><bean:message
-	key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.title" /></title>
+<title>
+    <fmt:setBundle basename="oscarResources"/>
+    <fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDocPopup.title" />
+</title>
 
 <script type="text/javascript">
 //<!--   
@@ -200,7 +201,7 @@ function save() {
        window.opener.document.EctConsultationFormRequestForm.documents.value = saved; 
       
        if( list.childNodes.length == 0 )
-            paragraph.innerHTML = "<bean:message key="oscarEncounter.oscarConsultationRequest.AttachDoc.Empty"/>";
+            paragraph.innerHTML = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.AttachDoc.Empty"/>";
             
        ret = false;
     }    
@@ -315,7 +316,7 @@ function toggleSelectAll() {
                                 String onClick = "";
 
                                 if (curDoc.isPDF()) {
-                                    onClick = "javascript:previewPDF('" + curDoc.getDocId() + "','" + StringEscapeUtils.escapeJavaScript(url) + "');";
+                                    onClick = "javascript:previewPDF('" + curDoc.getDocId() + "','" + StringEscapeUtils.escapeEcmaScript(url) + "');";
                                 } else if (curDoc.isImage()) {
                                     onClick = "javascript:previewImage('" + url + "');";
                                 } else {

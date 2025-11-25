@@ -1402,7 +1402,6 @@ public class RxUtil {
             p("else2");
             if (rx.getBrandName() != null && rx.getBrandName().length() > 1) {
                 p("if2");
-                //String sql2 = "SELECT * FROM drugs WHERE BN='" + StringEscapeUtils.escapeSql(prescript.getBrandName()) + "' order by written_date desc"; //most recent is the first.
 
                 Drug drug = dao.findByBrandNameDemographicAndProvider(rx.getBrandName(), rx.getDemographicNo(), rx.getProviderNo());
 
@@ -1478,7 +1477,7 @@ public class RxUtil {
                 //get date discontinued
                 //get reason for discontinued
                 Date archivedDate = drug.getArchivedDate();
-                // String archDate = rs.getString("archived_date");
+                // String archDate = rs.getProperty("archived_date");
                 String archDate = RxUtil.DateToString(archivedDate);
                 String archReason = drug.getArchivedReason();
 

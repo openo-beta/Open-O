@@ -42,7 +42,7 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager;
 import ca.openosp.openo.PMmodule.caisi_integrator.IntegratorFallBackManager;
@@ -145,8 +145,8 @@ public class EctFormData {
             if (!table.equals("form")) {
                 String sql = "SELECT max(ID) ID, demographic_no, formCreated, date(formEdited) 'lastEdited', max(formEdited) 'frmEdited' FROM " + table + " WHERE demographic_no=? group by lastEdited";
 
-                PreparedStatement ps = c.prepareStatement(sql);
-                ps.setString(1, demoNo);
+                java.sql.PreparedStatement ps = c.prepareStatement(sql);
+                ps.setInt(1, Integer.parseInt(demoNo));
                 ResultSet rs = ps.executeQuery();
 
                 while (rs.next()) {
@@ -154,11 +154,10 @@ public class EctFormData {
                     forms.add(frm);
                 }
             } else {
-                // For "form" table, we use hardcoded table name since we already validated it equals "form"
-                String sql = "SELECT form_no, demographic_no, form_date from form where demographic_no=? order by form_no desc";
+                String sql = "SELECT form_no, demographic_no, form_date from " + table + " where demographic_no=? order by form_no desc";
 
-                PreparedStatement ps = c.prepareStatement(sql);
-                ps.setString(1, demoNo);
+                java.sql.PreparedStatement ps = c.prepareStatement(sql);
+                ps.setInt(1, Integer.parseInt(demoNo));
                 ResultSet rs = ps.executeQuery();
 
                 while (rs.next()) {
@@ -204,11 +203,11 @@ public class EctFormData {
         try {
             c = DbConnectionFilter.getThreadLocalDbConnection();
 
-            if (!table.equals("form")) { 
+            if (!table.equals("form")) {
                 String sql = "SELECT ID, demographic_no, formCreated, formEdited FROM " + table + " WHERE demographic_no=? ORDER BY ID DESC";
 
-                PreparedStatement ps = c.prepareStatement(sql);
-                ps.setString(1, demoNo);
+                java.sql.PreparedStatement ps = c.prepareStatement(sql);
+                ps.setInt(1, Integer.parseInt(demoNo));
                 ResultSet rs = ps.executeQuery();
 
                 while (rs.next()) {
@@ -220,11 +219,10 @@ public class EctFormData {
                     forms.add(frm);
                 }
             } else {
-                // For "form" table, we use hardcoded table name since we already validated it equals "form"
-                String sql = "SELECT form_no, demographic_no, form_date from form where demographic_no=? order by form_no desc";
+                String sql = "SELECT form_no, demographic_no, form_date from " + table + " where demographic_no=? order by form_no desc";
 
-                PreparedStatement ps = c.prepareStatement(sql);
-                ps.setString(1, demoNo);
+                java.sql.PreparedStatement ps = c.prepareStatement(sql);
+                ps.setInt(1, Integer.parseInt(demoNo));
                 ResultSet rs = ps.executeQuery();
 
                 while (rs.next()) {
