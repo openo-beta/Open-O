@@ -61,6 +61,9 @@ RUN npm install -g @anthropic-ai/claude-code @docusaurus/core @docusaurus/preset
 # Install Gemini CLI.
 RUN npm install -g @google/gemini-cli
 
+# Install cpencode CLI.
+RUN npm i -g opencode-ai@1.0.129
+
 # Install pipx and Aider AI coding assistant
 RUN apt-get update && apt-get install -y pipx && \
     pipx install aider-chat && \
