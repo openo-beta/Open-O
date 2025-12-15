@@ -31,6 +31,7 @@ import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -213,35 +214,19 @@ public class ReportReassign2Action extends ActionSupport {
             String contextPath = request.getContextPath();
             String currentAction = ActionContext.getContext().getName();
 
-            String relativePath = ACTION_REDIRECTS.get(currentAction);
-            
-            // Default to a safe page if the path is suspicious or empty
-            if (relativePath.isEmpty() || relativePath.contains("..") || !relativePath.startsWith("/")) {
-                logger.warn("Suspicious or invalid redirect path detected: '{}'. Sending error response.", relativePath);
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid redirect path.");
-                return null;
+            if (newURL.contains("labDisplay.jsp")) {
+                newURL = newURL + "?providerNo=" + providerNo + "&searchProviderNo=" + searchProviderNo + "&status=" + status;
+                // the segmentID is needed when being called from a lab display
+            } else {
+                newURL = newURL + "&providerNo=" + providerNo + "&searchProviderNo=" + searchProviderNo + "&status=" + status;
+            }
+
+            if (!flaggedLabsList.isEmpty()) {
+                newURL = newURL + "&segmentID=" + flaggedLabsList.get(0);
             }
             
-            // Build the new URL with the context path to ensure it stays within the application
-            newURL = contextPath + relativePath + "?";
-            
-            // Build query string with proper null checks and encoding
-            StringBuilder queryParams = new StringBuilder();
-            queryParams.append("providerNo=").append(URLEncoder.encode(providerNo != null ? providerNo : "", "UTF-8"));
-            queryParams.append("&searchProviderNo=").append(URLEncoder.encode(searchProviderNo != null ? searchProviderNo : "", "UTF-8"));
-            queryParams.append("&status=").append(URLEncoder.encode(status != null ? status : "", "UTF-8"));
-            
-            // Add segmentID if flaggedLabsList is not empty
-            if (!flaggedLabsList.isEmpty() && flaggedLabsList.get(0).length > 0) {
-                queryParams.append("&segmentID=").append(URLEncoder.encode(flaggedLabsList.get(0)[0], "UTF-8"));
-            }
-            
-            newURL = newURL + queryParams.toString();
-            
-            // Add optional parameters with proper encoding
-            String lname = request.getParameter("lname");
-            if (lname != null) {
-                newURL = newURL + "&lname=" + URLEncoder.encode(lname, "UTF-8");
+            if (request.getParameter("lname") != null) {
+                newURL = newURL + "&lname=" + request.getParameter("lname");
             }
             String fname = request.getParameter("fname");
             if (fname != null) {

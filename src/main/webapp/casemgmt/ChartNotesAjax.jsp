@@ -553,10 +553,8 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
                 {
                     if (!note.isReadOnly()) {
             %>
-            <div>
                 <a title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.edit.msgEdit"/>" id="edit<%=globalNoteId%>"
-                   href="javascript:void(0);" onclick="<%=editWarn?"noPrivs(event);":"editNote(event);"%> return false;"
-                   style="float: right; margin-right: 5px;">
+                   href="javascript:void(0);" onclick="<%=editUrl%> return false;" style="<%=bgColour%> order: 1; padding: 2px 5px;">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.edit.msgEdit"/>
                 </a>
             <%
@@ -895,7 +893,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
     <input type="hidden" id="bgColour<%=savedId%>" value="color:#000000;background-color:#CCCCFF;"/>
     <input type="hidden" id="editWarn<%=savedId%>" value="false"/>
     <div id="n<%=savedId%>">
-        <textarea tabindex="7" cols="84" rows="10" class="txtArea boxsizingBorder" wrap="hard"
+        <textarea tabindex="7" cols="84" rows="10" class="txtArea boxsizingBorder" wrap="soft"
                   style="line-height: 1.1em;" name="caseNote_note"
                   id="caseNote_note<%=savedId%>"><%=cform.getCaseNote_note() %></textarea>
         <div class="sig" id="sig<%=savedId%>">
