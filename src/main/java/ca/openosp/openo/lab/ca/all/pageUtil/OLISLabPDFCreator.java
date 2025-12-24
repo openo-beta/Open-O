@@ -39,6 +39,7 @@ import ca.openosp.openo.commn.dao.Hl7TextMessageDao;
 import ca.openosp.openo.commn.model.Hl7TextMessage;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
 import com.itextpdf.text.pdf.BaseFont;
@@ -139,23 +140,16 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
             
             String hl7Parsed = "";
             try {
-                // Get the temp directory and create File objects for canonical path validation
+                // Get the temp directory and create File objects for path validation
                 File tempDir = new File(System.getProperty("java.io.tmpdir"));
                 File targetFile = new File(tempDir, "olis_" + sanitizedUuid + ".response");
-                
-                // Validate that the canonical path is within the temp directory
-                String canonicalTempPath = tempDir.getCanonicalPath();
-                String canonicalFilePath = targetFile.getCanonicalPath();
-                
-                if (!canonicalFilePath.startsWith(canonicalTempPath + File.separator)) {
-                    logger.error("Attempted path traversal detected - file outside temp directory");
-                    request.setAttribute("result", "Error");
-                    return;
-                }
-                
+
+                // Validate that the file is within the temp directory using PathValidationUtils
+                File validatedTargetFile = PathValidationUtils.validateExistingPath(targetFile, tempDir);
+
                 // Now safe to check if file exists and read it
-                if (targetFile.exists() && targetFile.isFile()) {
-                    ArrayList<String> hl7Body = Utilities.separateMessages(canonicalFilePath);
+                if (validatedTargetFile.exists() && validatedTargetFile.isFile()) {
+                    ArrayList<String> hl7Body = Utilities.separateMessages(validatedTargetFile.getCanonicalPath());
                     for (String hl7Text : hl7Body) {
                         hl7Parsed += hl7Text.replace("\\E\\", "\\SLASHHACK\\").replace("µ", "\\MUHACK\\").replace("\\H\\", "\\.H\\").replace("\\N\\", "\\.N\\");
                     }

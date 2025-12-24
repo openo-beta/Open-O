@@ -32,6 +32,7 @@ import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.integration.mcedt.DelegateFactory;
 import ca.openosp.openo.integration.mcedt.McedtMessageCreator;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.OscarProperties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -256,18 +257,15 @@ public class Upload2Action extends ActionSupport {
                         // Sanitize filename to prevent path traversal
                         String sanitizedFileName = FilenameUtils.getName(edtResponse.getDescription());
                         File file = new File(outboxDir, sanitizedFileName);
-                        
-                        // Validate canonical path before moving file
+
+                        // Validate file path using PathValidationUtils
                         try {
-                            String canonicalFilePath = file.getCanonicalPath();
-                            
-                            if (!canonicalFilePath.startsWith(canonicalOutboxPath + File.separator)) {
-                                logger.error("Attempted path traversal detected for file move: " + edtResponse.getDescription());
-                                continue; // Skip this file and continue with others
-                            }
-                            
-                            ActionUtils.moveFileToDirectory(file, sent, false, true);
+                            File validatedFile = PathValidationUtils.validateExistingPath(file, outboxDir);
+                            ActionUtils.moveFileToDirectory(validatedFile, sent, false, true);
                             successUploads.add(McedtMessageCreator.resourceResultToString(result));
+                        } catch (SecurityException ex) {
+                            logger.error("Attempted path traversal detected for file move: " + edtResponse.getDescription());
+                            continue; // Skip this file and continue with others
                         } catch (IOException ex) {
                             logger.error("Error validating file path for move: " + sanitizedFileName, ex);
                             failUploads.add(edtResponse.getDescription() + ": Path validation error");
@@ -339,16 +337,10 @@ public class Upload2Action extends ActionSupport {
                 // Sanitize filename to prevent path traversal
                 String sanitizedFileName = FilenameUtils.getName(fileName);
                 File file = new File(outboxDir, sanitizedFileName);
-                
-                // Validate canonical path to ensure file is within the outbox directory
-                String canonicalFilePath = file.getCanonicalPath();
-                
-                if (!canonicalFilePath.startsWith(canonicalOutboxPath + File.separator)) {
-                    logger.error("Attempted path traversal detected for file deletion: " + fileName);
-                    throw new SecurityException("Invalid file path for deletion");
-                }
-                
-                file.delete();
+
+                // Validate file path using PathValidationUtils
+                File validatedFile = PathValidationUtils.validateExistingPath(file, outboxDir);
+                validatedFile.delete();
             }
 
         } catch (IOException e) {
@@ -379,18 +371,15 @@ public class Upload2Action extends ActionSupport {
                 // Get validated outbox directory
                 File outboxDir = getValidatedOutboxDirectory();
                 File myFile = new File(outboxDir, sanitizedFileName);
-                
-                // Validate canonical path to ensure file is within the outbox directory
-                String canonicalFilePath = myFile.getCanonicalPath();
-                String canonicalOutboxPath = outboxDir.getCanonicalPath();
-                
-                if (!canonicalFilePath.startsWith(canonicalOutboxPath + File.separator)) {
-                    logger.error("Attempted path traversal detected for file upload: " + this.getFileName());
-                    throw new SecurityException("Invalid file path for upload");
-                }
-                
-                try (FileOutputStream outputStream = new FileOutputStream(myFile)) {
-                    outputStream.write(Files.readAllBytes(this.getAddUploadFile().toPath()));
+
+                // Validate destination file path using PathValidationUtils
+                File validatedDestFile = PathValidationUtils.validatePath(sanitizedFileName, outboxDir);
+
+                try (FileOutputStream outputStream = new FileOutputStream(validatedDestFile)) {
+                    // Validate the uploaded file is from temp directory
+                    File uploadFile = this.getAddUploadFile();
+                    PathValidationUtils.validateUpload(uploadFile);
+                    outputStream.write(Files.readAllBytes(uploadFile.toPath()));
                     addActionMessage(getText("uploadAction.upload.add.success", new String[]{sanitizedFileName + " is succesfully added to the uploads list!"}));
                 }
             } catch (IOException e) {
@@ -427,17 +416,11 @@ public class Upload2Action extends ActionSupport {
             // Get validated outbox directory
             File outboxDir = getValidatedOutboxDirectory();
             File file = new File(outboxDir, sanitizedFileName);
-            
-            // Validate canonical path to ensure file is within the outbox directory
-            String canonicalFilePath = file.getCanonicalPath();
-            String canonicalOutboxPath = outboxDir.getCanonicalPath();
-            
-            if (!canonicalFilePath.startsWith(canonicalOutboxPath + File.separator)) {
-                logger.error("Attempted path traversal detected for file: " + this.getFileName());
-                throw new SecurityException("Invalid file path");
-            }
-            
-            try (FileInputStream fis = new FileInputStream(file)) {
+
+            // Validate file path using PathValidationUtils
+            File validatedFile = PathValidationUtils.validateExistingPath(file, outboxDir);
+
+            try (FileInputStream fis = new FileInputStream(validatedFile)) {
                 byte[] data = new byte[fis.available()];
                 fis.read(data);
                 result.setContent(data);
@@ -465,23 +448,18 @@ public class Upload2Action extends ActionSupport {
                 for (int i = 0; i < fileNames.size(); i++) {
                     // Sanitize filename to prevent path traversal
                     String sanitizedFileName = FilenameUtils.getName(fileNames.get(i));
-                    
+
                     // Construct file path safely
                     File file = new File(outboxDir, sanitizedFileName);
-                    
-                    // Validate canonical path to ensure file is within the outbox directory
-                    String canonicalFilePath = file.getCanonicalPath();
-                    
-                    if (!canonicalFilePath.startsWith(canonicalOutboxPath + File.separator)) {
-                        logger.error("Attempted path traversal detected for file: " + fileNames.get(i));
-                        throw new SecurityException("Invalid file path");
-                    }
-                    
+
+                    // Validate file path using PathValidationUtils
+                    File validatedFile = PathValidationUtils.validateExistingPath(file, outboxDir);
+
                     UploadData result = new UploadData();
                     result.setDescription(fileNames.get(i));
                     result.setResourceType(resourceTypes.get(i));
-                    
-                    try (FileInputStream fis = new FileInputStream(file)) {
+
+                    try (FileInputStream fis = new FileInputStream(validatedFile)) {
                         byte[] data = new byte[fis.available()];
                         fis.read(data);
                         result.setContent(data);

@@ -31,6 +31,7 @@ import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.eform.EFormUtil;
 
@@ -56,20 +57,11 @@ public class HtmlUpload2Action extends ActionSupport {
                 MiscUtils.getLogger().error("Invalid or unreadable uploaded file");
                 return "fail";
             }
-            
+
             // Validate that the file is within the expected temporary upload directory
-            // by checking canonical path to prevent path traversal
-            String tempDir = System.getProperty("java.io.tmpdir");
-            File tempDirFile = new File(tempDir);
-            String canonicalTempDir = tempDirFile.getCanonicalPath();
-            String canonicalFilePath = formHtml.getCanonicalPath();
-            
-            if (!canonicalFilePath.startsWith(canonicalTempDir + File.separator)) {
-                MiscUtils.getLogger().error("Uploaded file is outside of expected temporary directory");
-                throw new SecurityException("Invalid file upload location");
-            }
-            
-            // Read the file content safely
+            PathValidationUtils.validateUpload(formHtml);
+
+            // Read the file content safely after validation
             String formHtmlStr = new String(Files.readAllBytes(formHtml.toPath()));
             formHtmlStr = formHtmlStr.replaceAll("\\\\n", "\\\\\\\\n");
             
