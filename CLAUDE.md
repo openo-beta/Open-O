@@ -721,7 +721,10 @@ Claude Code is integrated into this repository with the following capabilities:
 - **Note**: @claude triggers are restricted to repository OWNER, MEMBER, or COLLABORATOR only. CONTRIBUTOR, FIRST_TIME_CONTRIBUTOR, and FIRST_TIMER are excluded for security.
 
 **Tool Permissions:**
-- GitHub CLI access (`gh pr`, `gh issue`, `gh label`, `gh run`, `gh repo view`, `gh api` for this repo with write methods blocked)
+- GitHub CLI access with tiered permissions:
+  - **Allowed**: `gh pr create/view/list/diff/checks`, `gh issue view/list/comment`, `gh run view/list/watch`, `gh repo view`
+  - **Requires confirmation**: `gh pr close`, `gh issue create/edit/close`, `gh label`, `gh run rerun`
+  - **Blocked**: `gh pr merge`, `gh repo create/delete/fork`, `gh secret`, `gh api` write methods
 - Git operations (status, branch, checkout, add, commit, push, pull, fetch, log, diff)
 - File read/write within the repository, subject to the following boundaries:
   - Scope: Only files inside the checked-out OpenO EMR repository workspace; no access to paths outside the repo.
@@ -738,6 +741,18 @@ Claude Code is integrated into this repository with the following capabilities:
 - Playwright MCP tools for UI testing
 - See `.claude/settings.json` for complete permission configuration
 
+**Three-Tier Permission Model:**
+The `.claude/settings.json` file defines three permission categories:
+- **ALLOW**: Commands execute immediately without user intervention (core workflow operations)
+- **ASK**: Commands require explicit user confirmation before execution (reversible but potentially disruptive operations)
+- **DENY**: Commands are blocked entirely and cannot be executed (destructive or dangerous operations)
+
+Commands in the ASK tier include:
+- `gh pr close`, `gh issue create/edit/close`, `gh label` - visible repository actions
+- `gh run rerun` - CI resource usage
+- `git reset --soft/--mixed` - recoverable history changes
+- `git stash drop` - potential data loss (single stash entry)
+
 **Safety Guardrails:**
 - **Repository scoped** - Operations run within the checked-out `openo-beta/Open-O` repository context
 - Branch protection rules prevent direct pushes to `develop`, `main`, `experimental`
@@ -747,7 +762,7 @@ Claude Code is integrated into this repository with the following capabilities:
   - Force push: `git push --force/-f`, `git push origin --force/-f`, `git push * --force/-f`, `git push --force-with-lease`, `git push origin --force-with-lease`, `git push origin * --force-with-lease`
   - History rewriting: `git commit --amend`, `git filter-branch`, `git filter-repo`, `git reflog expire`, `git gc --prune`
   - Hook bypass: `git commit --no-verify`, `git push --no-verify`
-  - Destructive git: `git rebase`, `git reset --hard/--soft/--mixed`, `git clean`
+  - Destructive git: `git rebase`, `git reset --hard`, `git clean` (note: `git reset --soft/--mixed` require confirmation, see ASK tier above)
   - System: `sudo`
 - GitHub API write methods blocked (`-X DELETE/POST/PUT/PATCH`, `--method DELETE/POST/PUT/PATCH`)
 - Repository management operations (`gh repo create/delete/fork`) are blocked
