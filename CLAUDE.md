@@ -758,6 +758,16 @@ Claude Code is integrated into this repository with the following capabilities:
 - Credential manipulation (`gh auth`) is blocked
 - PHI protection enforced via OWASP encoding, parameterized queries, and `SecurityInfoManager` (see Critical Security Requirements)
 
+**Enforcement Mechanism:**
+The safety guardrails above are enforced through Claude Code's permission system configured in `.claude/settings.json`:
+- **Deny rules take precedence** - Commands matching deny patterns are blocked before execution, regardless of allow rules
+- **Pattern matching** - Uses glob-style wildcards (`*`) to match command variations (e.g., `git push --force *` blocks `git push --force origin main`)
+- **Layered defense** - Multiple patterns cover flag ordering variations (e.g., `--force` before or after remote/branch)
+- **Case sensitivity** - Separate patterns for case variants (e.g., `rm -rf` and `rm -Rf` both blocked)
+- **No bypass via equals syntax** - Patterns like `--force-with-lease=*` block the `=refname` variant
+
+Note: These are client-side controls. Repository-level branch protection rules provide server-side enforcement for protected branches.
+
 ### Interacting with Claude
 
 **On Pull Requests:**
