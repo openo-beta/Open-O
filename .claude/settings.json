@@ -103,7 +103,9 @@
       "Bash(git pull *)",
       "Bash(git fetch *)",
       "Bash(git log *)",
-      "Bash(git diff *)"
+      "Bash(git diff *)",
+      "Bash(git push origin *)",
+      "Bash(git push -u origin *)"
     ],
     "deny": [
       "Write(path:.git/**)",
@@ -172,6 +174,7 @@
       "Bash(sudo *)",
       "Bash(git push origin --delete *)",
       "Bash(git push --force-with-lease *)",
+      "Bash(git push * --force-with-lease *)",
       "Bash(git push origin --force-with-lease *)",
       "Bash(git push origin * --force-with-lease *)",
       "Bash(git clean *)",
