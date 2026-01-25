@@ -56,7 +56,7 @@ import java.util.Date;
 public class EctDisplayPreferredForms2Action extends EctDisplayAction {
 
     private static Logger logger = MiscUtils.getLogger();
-    private static final String BGCOLOUR = "8B4513"; // Brown color to distinguish from Forms (gold) and eForms (green)
+    private static final String BGCOLOUR = "4B0082"; // Indigo color to distinguish from Forms (gold) and eForms (green)
     private String cmd = "preferredForms";
 
     @Override
@@ -104,7 +104,7 @@ public class EctDisplayPreferredForms2Action extends EctDisplayAction {
             if (!hasPreferredForms) {
                 NavBarDisplayDAO.Item item = NavBarDisplayDAO.Item();
                 item.setTitle("(none configured)");
-                item.setColour("gray");
+                item.setColour("808080");
                 item.setURL("return false;");
                 Dao.addItem(item);
                 return true;
@@ -202,7 +202,7 @@ public class EctDisplayPreferredForms2Action extends EctDisplayAction {
                             item.setTitle(strTitle);
                             item.setURL(url + "return false;");
                             item.setLinkTitle(fullTitle);
-                            item.setColour("gray"); // Gray color for new/unstarted forms
+                            item.setColour("808080"); // Gray color for new/unstarted forms
                             Dao.addItem(item);
                         }
                     }
@@ -239,7 +239,7 @@ public class EctDisplayPreferredForms2Action extends EctDisplayAction {
                     item.setTitle(strTitle);
                     item.setURL(url + "return false;");
                     item.setLinkTitle(eform.getFormName());
-                    item.setColour("gray"); // Gray for new eForms
+                    item.setColour("808080"); // Gray for new eForms
                     Dao.addItem(item);
                 }
             }

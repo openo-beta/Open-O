@@ -197,15 +197,6 @@
                         </tr>
 
                         <tr>
-                            <td>Preferred Forms</td>
-                            <td>
-                                <select name="<%=CppPreferencesUIBean.PREFERRED_FORMS_DSP%>">
-                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getPreferredFormsDisplay()) %>
-                                </select>
-                            </td>
-                        </tr>
-
-                        <tr>
                             <td>Documents</td>
                             <td>
                                 <select name="<%=CppPreferencesUIBean.DOCUMENTS_DSP%>">
@@ -246,6 +237,15 @@
                             <td>
                                 <select name="<%=CppPreferencesUIBean.HRM_DSP%>">
                                     <%=CppPreferencesUIBean.getDisplaySelect(bean.getHrmDisplay()) %>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Preferred Forms</td>
+                            <td>
+                                <select name="<%=CppPreferencesUIBean.PREFERRED_FORMS_DSP%>">
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getPreferredFormsDisplay()) %>
                                 </select>
                             </td>
                         </tr>
@@ -337,10 +337,28 @@
                         </tr>
 
                         <tr>
+                            <td>Decision Support Alerts</td>
+                            <td>
+                                <select name="<%=CppPreferencesUIBean.DECISION_SUPPORT_DSP%>">
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getDecisionSupportDisplay()) %>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
                             <td>Episodes</td>
                             <td>
                                 <select name="<%=CppPreferencesUIBean.EPISODES_DSP%>">
                                     <%=CppPreferencesUIBean.getDisplaySelect(bean.getEpisodesDisplay()) %>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Health Care Team</td>
+                            <td>
+                                <select name="<%=CppPreferencesUIBean.CONTACTS_DSP%>">
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getContactsDisplay()) %>
                                 </select>
                             </td>
                         </tr>

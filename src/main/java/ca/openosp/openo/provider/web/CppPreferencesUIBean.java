@@ -58,6 +58,8 @@ public class CppPreferencesUIBean {
     public static final String RESOLVED_ISSUES_DSP = "cpp.resolved_issues.display";
     public static final String EPISODES_DSP = "cpp.episodes.display";
     public static final String PREFERRED_FORMS_DSP = "cpp.preferred_forms.display";
+    public static final String DECISION_SUPPORT_DSP = "cpp.decision_support.display";
+    public static final String CONTACTS_DSP = "cpp.contacts.display";
 
     public static final String SOC_HX_START_DATE = "cpp.social_hx.start_date";
     public static final String SOC_HX_RES_DATE = "cpp.social_hx.res_date";
@@ -120,6 +122,8 @@ public class CppPreferencesUIBean {
     private String resolvedIssuesDisplay = "SHOW";
     private String episodesDisplay = "SHOW";
     private String preferredFormsDisplay = "SHOW";
+    private String decisionSupportDisplay = "SHOW";
+    private String contactsDisplay = "SHOW";
 
     private String socialHxStartDate = "";
     private String socialHxResDate = "";
@@ -178,6 +182,8 @@ public class CppPreferencesUIBean {
         map.put(RESOLVED_ISSUES_DSP, this.getResolvedIssuesDisplay());
         map.put(EPISODES_DSP, this.getEpisodesDisplay());
         map.put(PREFERRED_FORMS_DSP, this.getPreferredFormsDisplay());
+        map.put(DECISION_SUPPORT_DSP, this.getDecisionSupportDisplay());
+        map.put(CONTACTS_DSP, this.getContactsDisplay());
 
         map.put(SOC_HX_START_DATE, this.getSocialHxStartDate());
         map.put(SOC_HX_RES_DATE, this.getSocialHxResDate());
@@ -238,6 +244,10 @@ public class CppPreferencesUIBean {
         setEpisodesDisplay(map.get(EPISODES_DSP)[0]);
         if (map.get(PREFERRED_FORMS_DSP) != null)
             setPreferredFormsDisplay(map.get(PREFERRED_FORMS_DSP)[0]);
+        if (map.get(DECISION_SUPPORT_DSP) != null)
+            setDecisionSupportDisplay(map.get(DECISION_SUPPORT_DSP)[0]);
+        if (map.get(CONTACTS_DSP) != null)
+            setContactsDisplay(map.get(CONTACTS_DSP)[0]);
 
         if (map.get(SOC_HX_START_DATE) != null)
             setSocialHxStartDate(map.get(SOC_HX_START_DATE)[0]);
@@ -368,6 +378,10 @@ public class CppPreferencesUIBean {
             setEpisodesDisplay(map.get(EPISODES_DSP));
         if (map.get(PREFERRED_FORMS_DSP) != null)
             setPreferredFormsDisplay(map.get(PREFERRED_FORMS_DSP));
+        if (map.get(DECISION_SUPPORT_DSP) != null)
+            setDecisionSupportDisplay(map.get(DECISION_SUPPORT_DSP));
+        if (map.get(CONTACTS_DSP) != null)
+            setContactsDisplay(map.get(CONTACTS_DSP));
 
         if (map.get(SOC_HX_START_DATE) != null)
             setSocialHxStartDate(map.get(SOC_HX_START_DATE));
@@ -618,6 +632,22 @@ public class CppPreferencesUIBean {
 
     public void setPreferredFormsDisplay(String preferredFormsDisplay) {
         this.preferredFormsDisplay = preferredFormsDisplay;
+    }
+
+    public String getDecisionSupportDisplay() {
+        return decisionSupportDisplay;
+    }
+
+    public void setDecisionSupportDisplay(String decisionSupportDisplay) {
+        this.decisionSupportDisplay = decisionSupportDisplay;
+    }
+
+    public String getContactsDisplay() {
+        return contactsDisplay;
+    }
+
+    public void setContactsDisplay(String contactsDisplay) {
+        this.contactsDisplay = contactsDisplay;
     }
 
     public String getSocialHxStartDate() {

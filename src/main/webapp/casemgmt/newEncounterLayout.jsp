@@ -141,7 +141,8 @@
                 resolvedIssues: '<%=Colour.getInstance().resolvedIssues%>',
                 episode: '<%=Colour.getInstance().episode%>',
                 pregancies: '<%=Colour.getInstance().episode%>',
-                contacts: '<%=Colour.getInstance().contacts%>'
+                contacts: '<%=Colour.getInstance().contacts%>',
+                preferredForms: '<%=Colour.getInstance().preferredForms%>'
             };
         </script>
 

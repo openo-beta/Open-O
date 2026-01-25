@@ -55,6 +55,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import ca.openosp.OscarProperties;
+import ca.openosp.openo.provider.web.CppPreferencesUIBean;
 import ca.openosp.openo.util.OscarRoleObjectPrivilege;
 import ca.openosp.openo.util.StringUtils;
 
@@ -79,8 +80,17 @@ public class EctDisplayDecisionSupportAlerts2Action extends EctDisplayAction {
         a = OscarRoleObjectPrivilege.checkPrivilege(roleName, (Properties) v.get(0), (Vector) v.get(1));
         if (!a) {
             return true; //decisionSupportAlerts link won't show up on new CME screen.
-        } else {
+        }
 
+        // Check CPP preference - if hidden, don't show the section
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+        CppPreferencesUIBean cppPrefs = new CppPreferencesUIBean(providerNo);
+        cppPrefs.loadValues();
+        if (!"SHOW".equals(cppPrefs.getDecisionSupportDisplay())) {
+            return true; // Section is hidden by preference
+        }
+
+        {
             //set lefthand module heading and link
             String winName = "dsalert" + bean.demographicNo;
             String url = "popupPage(500,950,'" + winName + "','" + request.getContextPath() + "/oscarEncounter/decisionSupport/guidelineAction.do?method=list&provider_no=" + bean.providerNo + "&demographic_no=" + bean.demographicNo + "&parentAjaxId=" + cmd + "'); return false;";

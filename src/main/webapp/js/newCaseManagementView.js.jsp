@@ -508,7 +508,6 @@
         this.load = function () {
 
             var leftNavBar = [
-                ctx + "/oscarEncounter/displayPreferredForms.do?hC=" + Colour.preferredForms,
                 ctx + "/oscarEncounter/displayPrevention.do?hC=" + Colour.prevention,
                 ctx + "/oscarEncounter/displayTickler.do?hC=" + Colour.tickler,
                 ctx + "/oscarEncounter/displayDisease.do?hC=" + Colour.disease,
@@ -520,8 +519,9 @@
                 ctx + "/oscarEncounter/displayMeasurements.do?hC=" + Colour.measurements,
                 ctx + "/oscarEncounter/displayConsultation.do?hC=" + Colour.consultation,
                 ctx + "/oscarEncounter/displayHRM.do?hC=" + Colour.hrmDocuments,
+                ctx + "/oscarEncounter/displayPreferredForms.do?hC=" + Colour.preferredForms,
             ];
-            var leftNavBarTitles = ["preferredForms", "preventions", "tickler", "Dx", "forms", "eforms", "docs", "labs", "msgs", "measurements", "consultation", "HRM"];
+            var leftNavBarTitles = ["preventions", "tickler", "Dx", "forms", "eforms", "docs", "labs", "msgs", "measurements", "consultation", "HRM", "preferredForms"];
             var rightNavBar = [
                 ctx + "/oscarEncounter/displayAllergy.do?hC=" + Colour.allergy,
                 ctx + "/oscarEncounter/displayRx.do?hC=" + Colour.rx + "&numToDisplay=12",

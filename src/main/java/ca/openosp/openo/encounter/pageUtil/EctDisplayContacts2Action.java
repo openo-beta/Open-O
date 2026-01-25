@@ -40,6 +40,8 @@ import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.OscarProperties;
+import ca.openosp.openo.provider.web.CppPreferencesUIBean;
+import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.util.StringUtils;
 
 public class EctDisplayContacts2Action extends EctDisplayAction {
@@ -53,6 +55,14 @@ public class EctDisplayContacts2Action extends EctDisplayAction {
 
     public boolean getInfo(EctSessionBean bean, HttpServletRequest request, NavBarDisplayDAO Dao) {
         try {
+            // Check CPP preference - if hidden, don't show the section
+            LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+            String providerNo = loggedInInfo.getLoggedInProviderNo();
+            CppPreferencesUIBean cppPrefs = new CppPreferencesUIBean(providerNo);
+            cppPrefs.loadValues();
+            if (!"SHOW".equals(cppPrefs.getContactsDisplay())) {
+                return true; // Section is hidden by preference
+            }
 
             String healthCareTeamEnabled = OscarProperties.getInstance().getProperty("DEMOGRAPHIC_PATIENT_HEALTH_CARE_TEAM", "true").toString();
             //Set left hand module heading and link
