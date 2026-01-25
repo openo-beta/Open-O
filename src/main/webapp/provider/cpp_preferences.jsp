@@ -197,6 +197,15 @@
                         </tr>
 
                         <tr>
+                            <td>Preferred Forms</td>
+                            <td>
+                                <select name="<%=CppPreferencesUIBean.PREFERRED_FORMS_DSP%>">
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getPreferredFormsDisplay()) %>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
                             <td>Documents</td>
                             <td>
                                 <select name="<%=CppPreferencesUIBean.DOCUMENTS_DSP%>">

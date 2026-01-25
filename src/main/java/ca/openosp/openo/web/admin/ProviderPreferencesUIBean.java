@@ -179,6 +179,32 @@ public final class ProviderPreferencesUIBean {
             }
         }
 
+        // Get encounter forms for patient chart
+        String[] chartFormNames = request.getParameterValues("chartFormName");
+        Collection<String> chartFormNamesList = providerPreference.getChartForms();
+        chartFormNamesList.clear();
+        if (chartFormNames != null) {
+            for (String chartFormName : chartFormNames) {
+                chartFormNamesList.add(chartFormName);
+            }
+        }
+
+        // Get eForms for patient chart
+        String[] chartFormIds = request.getParameterValues("chartEformId");
+        Collection<ProviderPreference.EformLink> chartEFormsIdsList = providerPreference.getChartEForms();
+        chartEFormsIdsList.clear();
+        if (chartFormIds != null) {
+            for (String chartFormId : chartFormIds) {
+                Integer chartFormIdInteger = Integer.parseInt(chartFormId);
+                EForm eForm = eFormDao.find(chartFormIdInteger);
+                if (eForm != null) {
+                    chartEFormsIdsList.add(new ProviderPreference.EformLink(chartFormIdInteger, eForm.getFormName()));
+                } else {
+                    MiscUtils.getLogger().warn("EForm not found for chart preference id of:" + chartFormIdInteger);
+                }
+            }
+        }
+
         // external prescriber prefs
         providerPreference.setERxEnabled(WebUtils.isChecked(request, "erx_enable"));
 
@@ -238,6 +264,16 @@ public final class ProviderPreferencesUIBean {
     public static Collection<ProviderPreference.EformLink> getCheckedEFormIds(String providerNo) {
         ProviderPreference providerPreference = getProviderPreference(providerNo);
         return (providerPreference.getAppointmentScreenEForms());
+    }
+
+    public static Collection<String> getCheckedChartFormNames(String providerNo) {
+        ProviderPreference providerPreference = getProviderPreference(providerNo);
+        return (providerPreference.getChartForms());
+    }
+
+    public static Collection<ProviderPreference.EformLink> getCheckedChartEFormIds(String providerNo) {
+        ProviderPreference providerPreference = getProviderPreference(providerNo);
+        return (providerPreference.getChartEForms());
     }
 
     public static ProviderPreference getProviderPreferenceByProviderNo(String providerNo) {

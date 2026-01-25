@@ -192,6 +192,15 @@ public class ProviderPreference extends AbstractModel<String> implements Seriali
     @JoinTable(name = "ProviderPreferenceAppointmentScreenQuickLink", joinColumns = @JoinColumn(name = "providerNo"))
     private Collection<QuickLink> appointmentScreenQuickLinks = new HashSet<>();
 
+    @ElementCollection
+    @JoinTable(name = "ProviderPreferenceChartForm", joinColumns = @JoinColumn(name = "providerNo"))
+    @Column(name = "chartForm")
+    private Collection<String> chartForms = new HashSet<>();
+
+    @ElementCollection
+    @JoinTable(name = "ProviderPreferenceChartEForm", joinColumns = @JoinColumn(name = "providerNo"))
+    private Collection<EformLink> chartEForms = new HashSet<>();
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdated = new Date();
 
@@ -201,6 +210,8 @@ public class ProviderPreference extends AbstractModel<String> implements Seriali
         appointmentScreenForms.size();
         appointmentScreenEForms.size();
         appointmentScreenQuickLinks.size();
+        chartForms.size();
+        chartEForms.size();
     }
 
     @PreUpdate
@@ -351,6 +362,14 @@ public class ProviderPreference extends AbstractModel<String> implements Seriali
 
     public Collection<QuickLink> getAppointmentScreenQuickLinks() {
         return appointmentScreenQuickLinks;
+    }
+
+    public Collection<String> getChartForms() {
+        return chartForms;
+    }
+
+    public Collection<EformLink> getChartEForms() {
+        return chartEForms;
     }
 
     /**

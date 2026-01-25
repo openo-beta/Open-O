@@ -959,6 +959,7 @@
                 this.load = function () {
 
                     var leftNavbar = {
+                        preferredForms: "<c:out value="${ctx}"/>/oscarEncounter/displayPreferredForms.do?hC=8B4513",
                         preventions: "<c:out value="${ctx}"/>/oscarEncounter/displayPrevention.do?hC=009999",
                         tickler: "<c:out value="${ctx}"/>/oscarEncounter/displayTickler.do?hC=FF6600",
                         Dx: "<c:out value="${ctx}"/>/oscarEncounter/displayDisease.do?hC=5A5A5A",

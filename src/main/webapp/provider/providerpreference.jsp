@@ -358,6 +358,53 @@
             </tr>
             <tr>
                 <td class="preferenceLabel">
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.formsToDisplayOnChart"/>
+                </td>
+                <td class="preferenceValue">
+                    <div style="height:10em;border:solid grey 1px;overflow:auto;white-space:nowrap;width:45em">
+                        <%
+                            Collection<String> checkedChartFormNames = ProviderPreferencesUIBean.getCheckedChartFormNames(providerNo);
+                            for (EncounterForm chartForm : encounterForms) {
+                                String nameEscaped = StringEscapeUtils.escapeHtml4(chartForm.getFormName());
+                                String checkedString = (checkedChartFormNames.contains(chartForm.getFormName()) ? "checked=\"checked\"" : "");
+                        %>
+                        <input type="checkbox" name="chartFormName"
+                               value="<%=nameEscaped%>" <%=checkedString%> /> <%=nameEscaped%>
+                        <br/>
+                        <%
+                            }
+                        %>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="preferenceLabel">
+                    <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.eFormsToDisplayOnChart"/>
+                </td>
+                <td class="preferenceValue">
+                    <div style="height:10em;border:solid grey 1px;overflow:auto;white-space:nowrap;width:45em">
+                        <%
+                            Collection<ProviderPreference.EformLink> checkedChartEFormIds = ProviderPreferencesUIBean.getCheckedChartEFormIds(providerNo);
+                            for (EForm chartEform : eforms) {
+                                String chartEformCheckedString = "";
+                                for (ProviderPreference.EformLink eformLink : checkedChartEFormIds) {
+                                    if (chartEform.getId().equals(eformLink.getAppointmentScreenEForm())) {
+                                        chartEformCheckedString = "checked";
+                                        break;
+                                    }
+                                }
+                        %>
+                        <input type="checkbox" name="chartEformId"
+                               value="<%=chartEform.getId()%>" <%=chartEformCheckedString%> /> <%=StringEscapeUtils.escapeHtml4(chartEform.getFormName())%>
+                        <br/>
+                        <%
+                            }
+                        %>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="preferenceLabel">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.quickLinksToDisplayOnAppointmentScreen"/>
                 </td>
                 <td class="preferenceValue">

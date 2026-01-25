@@ -83,4 +83,5 @@ public class Colour {
     public String ticklerNotes = "FF6600";
     public String externalNotes = "005151";
     public String emailNotes = "345553";
+    public String preferredForms = "8B4513";
 }
