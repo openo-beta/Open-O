@@ -38,6 +38,12 @@ function newWindow(url, windowName) {
 
 
 function popup2(height, width, top, left, url, windowName) {
+   // Check if Open in Tabs preference is enabled
+   if (window.oscarOpenInTabs) {
+      // Open in a new tab instead of popup
+      return window.open(url, '_blank');
+   }
+
    // Check if the document is inside an iframe or not
    // In the new inbox, we are showing previews in an iframe, so this check is necessary
    let context = window;

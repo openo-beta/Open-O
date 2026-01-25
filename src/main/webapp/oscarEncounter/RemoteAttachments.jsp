@@ -59,27 +59,36 @@
 %>
 <html>
     <head>
+        <jsp:include page="/js/openInTabsInit.jsp" />
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.title"/></title>
         <script type="text/javascript" language=javascript>
             function popupViewAttach(vheight, vwidth, varpage) { //open a new popup window
                 var page = varpage;
-                windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-                var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.msgViewAtt"/>", windowprops);
-                if (popup != null) {
-                    if (popup.opener == null) {
-                        popup.opener = self;
+                if (window.oscarOpenInTabs) {
+                    window.open(varpage, '_blank');
+                } else {
+                    var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+                    var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.msgViewAtt"/>", windowprops);
+                    if (popup != null) {
+                        if (popup.opener == null) {
+                            popup.opener = self;
+                        }
                     }
                 }
             }
 
             function popupSendAttach(vheight, vwidth, varpage) { //open a new popup window
                 var page = varpage;
-                windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-                var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.msgSendAtt"/>", windowprops);
-                if (popup != null) {
-                    if (popup.opener == null) {
-                        popup.opener = self;
+                if (window.oscarOpenInTabs) {
+                    window.open(varpage, '_blank');
+                } else {
+                    var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+                    var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.RemoteAttachments.msgSendAtt"/>", windowprops);
+                    if (popup != null) {
+                        if (popup.opener == null) {
+                            popup.opener = self;
+                        }
                     }
                 }
             }

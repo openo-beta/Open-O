@@ -42,19 +42,28 @@
 
 <%@ page import="ca.openosp.openo.casemgmt.model.*" %>
 
+<jsp:include page="/js/openInTabsInit.jsp" />
 <script>
     function popupNotePage(varpage) {
         var page = "" + varpage;
-        windowprops = "height=800,width=800,location=no,"
-            + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=0,left=0";
-        window.open(page, "", windowprops);
+        if (window.oscarOpenInTabs) {
+            window.open(page, '_blank');
+        } else {
+            var windowprops = "height=800,width=800,location=no,"
+                + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=0,left=0";
+            window.open(page, "", windowprops);
+        }
     }
 
     function popupHistoryPage(varpage) {
         var page = "" + varpage;
-        windowprops = "location=no,"
-            + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=0,left=0";
-        window.open(page, "", windowprops);
+        if (window.oscarOpenInTabs) {
+            window.open(page, '_blank');
+        } else {
+            var windowprops = "location=no,"
+                + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=0,left=0";
+            window.open(page, "", windowprops);
+        }
     }
 
 </script>

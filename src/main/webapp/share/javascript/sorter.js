@@ -3,8 +3,14 @@ function popup(vheight, vwidth, varpage, windowname) {
         windowname = "helpwindow";
 
     var page = varpage;
-    windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes";
-    var win = window.open(varpage, windowname, windowprops);
+    if (window.oscarOpenInTabs) {
+        // Open in a new tab
+        window.open(varpage, '_blank');
+    } else {
+        // Open as popup
+        var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes";
+        var win = window.open(varpage, windowname, windowprops);
+    }
 }
 
 

@@ -133,17 +133,22 @@
 <head>
     <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.noteBrowser.title"/> - <oscar:nameage
             demographicNo="<%=demographicID%>"/></title>
+    <jsp:include page="/js/openInTabsInit.jsp" />
     <script type="text/javascript">
 
         function popup(vheight, vwidth, varpage) { //open a new popup window
             var page = "" + varpage;
-            windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-            var popup = window.open(page, "popup1", windowprops);
-            if (popup != null) {
-                if (popup.opener == null) {
-                    popup.opener = self;
+            if (window.oscarOpenInTabs) {
+                window.open(page, '_blank');
+            } else {
+                var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+                var popup = window.open(page, "popup1", windowprops);
+                if (popup != null) {
+                    if (popup.opener == null) {
+                        popup.opener = self;
+                    }
+                    popup.focus();
                 }
-                popup.focus();
             }
         }
 

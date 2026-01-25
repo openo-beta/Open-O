@@ -362,6 +362,24 @@
                                 </select>
                             </td>
                         </tr>
+
+                        <tr>
+                            <td>Research Bar</td>
+                            <td>
+                                <select name="<%=CppPreferencesUIBean.RESEARCH_DSP%>">
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getResearchDisplay()) %>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Tools Bar</td>
+                            <td>
+                                <select name="<%=CppPreferencesUIBean.TOOLS_DSP%>">
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getToolsDisplay()) %>
+                                </select>
+                            </td>
+                        </tr>
                     </table>
                     <input type="submit" value="Save Changes"/>
                 </form>

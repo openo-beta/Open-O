@@ -251,15 +251,19 @@ changePassword.moveTo(0,0);
 }
 function popupInboxManager(varpage, height = 700, width = 1215) {
 var page = "" + varpage;
-var windowname="apptProviderInbox";
-    windowprops = "height=" + height + ",width=" + width + ",location=no,"
-+ "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=10,left=0";
-var popup = window.open(page, windowname, windowprops);
-if (popup != null) {
-if (popup.opener == null) {
-popup.opener = self;
-}
-popup.focus();
+if (window.oscarOpenInTabs) {
+    window.open(page, '_blank');
+} else {
+    var windowname="apptProviderInbox";
+    var windowprops = "height=" + height + ",width=" + width + ",location=no,"
+        + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=10,left=0";
+    var popup = window.open(page, windowname, windowprops);
+    if (popup != null) {
+        if (popup.opener == null) {
+            popup.opener = self;
+        }
+        popup.focus();
+    }
 }
 }
 
@@ -278,37 +282,53 @@ windowname = typeof(windowname)!= 'undefined' ? windowname : 'apptProviderSearch
 vheight = typeof(vheight) != 'undefined' ? vheight : '700px';
 vwidth = typeof(vwidth) != 'undefined' ? vwidth : '1024px';
 var page = "" + varpage;
-windowprops = "height="+vheight+",width="+vwidth+",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
-var popup = window.open(page, windowname, windowprops);
-if (popup != null) {
-if (popup.opener == null) {
-popup.opener = self;
-}
-popup.focus();
+if (window.oscarOpenInTabs) {
+    window.open(page, '_blank');
+} else {
+    var windowprops = "height="+vheight+",width="+vwidth+",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
+    var popup = window.open(page, windowname, windowprops);
+    if (popup != null) {
+        if (popup.opener == null) {
+            popup.opener = self;
+        }
+        popup.focus();
+    }
 }
 }
 
 <!--messenger code block-->
 function popupOscarRx(vheight,vwidth,varpage) {
 var page = varpage;
-windowprops = "height="+vheight+",width="+vwidth+",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-var popup=window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarRx"/>_appt", windowprops);
-if (popup != null) {
-if (popup.opener == null) {
-popup.opener = self;
-}
-popup.focus();
+if (window.oscarOpenInTabs) {
+    // Open in a new tab
+    window.open(varpage, '_blank');
+} else {
+    // Open as popup
+    var windowprops = "height="+vheight+",width="+vwidth+",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+    var popup=window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarRx"/>_appt", windowprops);
+    if (popup != null) {
+        if (popup.opener == null) {
+            popup.opener = self;
+        }
+        popup.focus();
+    }
 }
 }
 
 function popupWithApptNo(vheight,vwidth,varpage,name,apptNo) {
 if (apptNo) storeApptNo(apptNo);
-if (name=='master')
-popup(vheight,vwidth,varpage,name);
-else if (name=='encounter')
-popup(vheight, vwidth, varpage, name);
-else
-popupOscarRx(vheight,vwidth,varpage);
+if (window.oscarOpenInTabs) {
+    // Open in tab for all types
+    window.open(varpage, '_blank');
+} else {
+    // Open as popup
+    if (name=='master')
+        popup(vheight,vwidth,varpage,name);
+    else if (name=='encounter')
+        popup(vheight, vwidth, varpage, name);
+    else
+        popupOscarRx(vheight,vwidth,varpage);
+}
 }
 
 

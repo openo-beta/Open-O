@@ -68,8 +68,12 @@
     var activeCCWindows = [];
 
     function openCCEHRWindow(url, demographicNo) {
-        var w = window.open(url, 'CC_EHR_' + demographicNo, 'width=800,height=650');
-        activeCCWindows.push(w);
+        if (window.oscarOpenInTabs) {
+            window.open(url, '_blank');
+        } else {
+            var w = window.open(url, 'CC_EHR_' + demographicNo, 'width=800,height=650');
+            activeCCWindows.push(w);
+        }
     }
 
     function checkLengthofObject(o) {
@@ -92,7 +96,14 @@
             varpage = ctx + varpage.substr(2);
         }
         var page = "" + varpage;
-        windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=600,screenY=200,top=0,left=0";
+
+        // Check if Open in Tabs preference is enabled
+        if (window.oscarOpenInTabs) {
+            window.open(page, '_blank');
+            return;
+        }
+
+        var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=600,screenY=200,top=0,left=0";
         //var popup =window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPageWindow"/>", windowprops);
         openWindows[name] = window.open(page, name, windowprops);
 
@@ -311,10 +322,14 @@
 
     function popperup(vheight, vwidth, varpage, pageName) { //open a new popup window
         var page = varpage;
-        windowprops = "height=" + vheight + ",width=" + vwidth + ",status=yes,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=100,left=100";
-        var popup = window.open(varpage, pageName, windowprops);
-        popup.pastewin = opener;
-        popup.focus();
+        if (window.oscarOpenInTabs) {
+            window.open(varpage, '_blank');
+        } else {
+            var windowprops = "height=" + vheight + ",width=" + vwidth + ",status=yes,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=100,left=100";
+            var popup = window.open(varpage, pageName, windowprops);
+            popup.pastewin = opener;
+            popup.focus();
+        }
     }
 
     var fullChart = "false";
@@ -928,7 +943,11 @@
         var atbname = document.getElementById('annotation_attrib').value;
         var data = $A(arguments);
         var addr = ctx + "/annotation/annotation.jsp?atbname=" + atbname + "&table_id=" + data[1] + "&display=" + data[2] + "&demo=" + data[3];
-        window.open(addr, "anwin", "width=400,height=500");
+        if (window.oscarOpenInTabs) {
+            window.open(addr, '_blank');
+        } else {
+            window.open(addr, "anwin", "width=400,height=500");
+        }
         Event.stop(data[0]);
     }
 
@@ -1696,7 +1715,11 @@ function updateCPPNote() {
     }
 
     function viewEmailByLogId(width, height, url) {
-        window.open(url, "_blank", "width=1100,height=1000");
+        if (window.oscarOpenInTabs) {
+            window.open(url, '_blank');
+        } else {
+            window.open(url, "_blank", "width=1100,height=1000");
+        }
     }
 
 //this func fires only if maximize button is clicked
@@ -3066,10 +3089,14 @@ function autoSave(async) {
 
     function showHistory(noteId, event) {
         Event.stop(event);
-        var rnd = Math.round(Math.random() * 1000);
-        win = "win" + rnd;
         var url = ctx + "/CaseManagementEntry.do?method=notehistory&noteId=" + noteId;
-        window.open(url, win, "scrollbars=yes, location=no, width=647, height=600", "");
+        if (window.oscarOpenInTabs) {
+            window.open(url, '_blank');
+        } else {
+            var rnd = Math.round(Math.random() * 1000);
+            var win = "win" + rnd;
+            window.open(url, win, "scrollbars=yes, location=no, width=647, height=600", "");
+        }
         return false;
     }
 
@@ -3077,10 +3104,14 @@ function autoSave(async) {
  *Pop up window for Showing all notes that have linked to an issue
  */
     function showIssueHistory(demoNo, issueIds) {
-        var rnd = Math.round(Math.random() * 1000);
-        win = "win" + rnd;
         var url = ctx + "/CaseManagementEntry.do?method=issuehistory&demographicNo=" + demoNo + "&issueIds=" + issueIds;
-        window.open(url, win, "scrollbars=yes, location=no, width=647, height=600", "");
+        if (window.oscarOpenInTabs) {
+            window.open(url, '_blank');
+        } else {
+            var rnd = Math.round(Math.random() * 1000);
+            var win = "win" + rnd;
+            window.open(url, win, "scrollbars=yes, location=no, width=647, height=600", "");
+        }
         return false;
     }
 

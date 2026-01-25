@@ -68,6 +68,7 @@
 <%@ page import="ca.openosp.openo.casemgmt.web.formbeans.CaseManagementEntryFormBean" %>
 <%@ page import="ca.openosp.openo.commn.model.*" %>
 <%@ page import="ca.openosp.openo.PMmodule.model.ProgramProvider" %>
+<%@ page import="ca.openosp.openo.provider.web.CppPreferencesUIBean" %>
 
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 
@@ -86,6 +87,10 @@
 %>
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+
+    CppPreferencesUIBean cppPreferences = new CppPreferencesUIBean(loggedInInfo.getLoggedInProviderNo());
+    cppPreferences.loadValues();
+    pageContext.setAttribute("cppPreferences", cppPreferences, PageContext.PAGE_SCOPE);
 
     String demoNo = request.getParameter("demographicNo");
     String privateConsentEnabledProperty = OscarProperties.getInstance().getProperty("privateConsentEnabled");
@@ -427,6 +432,7 @@
                     &nbsp;
                 </div>
             </fieldset>
+            <c:if test="${cppPreferences.researchDisplay == 'SHOW'}">
             <fieldset>
                 <legend>Research</legend>
 
@@ -452,7 +458,9 @@
                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnSearch"/>"
                        onClick="popupPage(600,800,'<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupSearchPageWindow"/>',$('channel').options[$('channel').selectedIndex].value+urlencode($F('keyword')) ); return false;"/>
             </fieldset>
+            </c:if>
 
+            <c:if test="${cppPreferences.toolsDisplay == 'SHOW'}">
             <fieldset>
                 <legend>Tools</legend>
 
@@ -500,6 +508,8 @@
                     %>
                 </select>
                 </security:oscarSec>
+            </fieldset>
+            </c:if>
 
         </div>
     </form>

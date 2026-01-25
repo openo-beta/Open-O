@@ -123,6 +123,7 @@
 <html>
     <script src="${pageContext.request.contextPath}/csrfguard"></script>
     <head>
+        <jsp:include page="/js/openInTabsInit.jsp" />
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/Oscar.js"/>"></script>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographicsearchresults.title"/></title>
@@ -199,29 +200,37 @@
 
             function popup(vheight, vwidth, varpage) {
                 var page = varpage;
-                windowprops = "height="
-                    + vheight
-                    + ",width="
-                    + vwidth
-                    + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-                var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarRx"/>_________________$tag________________________________demosearch", windowprops);
-                if (popup != null) {
-                    if (popup.opener == null) {
-                        popup.opener = self;
+                if (window.oscarOpenInTabs) {
+                    window.open(varpage, '_blank');
+                } else {
+                    var windowprops = "height="
+                        + vheight
+                        + ",width="
+                        + vwidth
+                        + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+                    var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarRx"/>_________________$tag________________________________demosearch", windowprops);
+                    if (popup != null) {
+                        if (popup.opener == null) {
+                            popup.opener = self;
+                        }
+                        popup.focus();
                     }
-                    popup.focus();
                 }
             }
 
             function popupEChart(vheight, vwidth, varpage) { //open a new popup window
                 var page = "" + varpage;
-                windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=20,left=20";
-                var popup = window.open(page, "encounter", windowprops);
-                if (popup != null) {
-                    if (popup.opener == null) {
-                        popup.opener = self;
+                if (window.oscarOpenInTabs) {
+                    window.open(page, '_blank');
+                } else {
+                    var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=20,left=20";
+                    var popup = window.open(page, "encounter", windowprops);
+                    if (popup != null) {
+                        if (popup.opener == null) {
+                            popup.opener = self;
+                        }
+                        popup.focus();
                     }
-                    popup.focus();
                 }
             }
         </SCRIPT>

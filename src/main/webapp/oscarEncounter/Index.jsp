@@ -172,6 +172,7 @@
 <%@ page import="ca.openosp.OscarProperties" %>
 <html>
     <head>
+        <jsp:include page="/js/openInTabsInit.jsp" />
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.title"/> - <oscar:nameage
                 demographicNo="<%=demoNo%>"/></title>
@@ -217,20 +218,28 @@
 
             function popUpImmunizations(vheight, vwidth, varpage) {
                 var page = varpage;
-                windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-                var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.immunizations"/>", windowprops);
+                if (window.oscarOpenInTabs) {
+                    window.open(varpage, '_blank');
+                } else {
+                    var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+                    var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.immunizations"/>", windowprops);
+                }
             }
 
             function popUpMeasurements(vheight, vwidth, varpage) { //open a new popup window
                 if (varpage != 'null') {
                     document.measurementGroupForm.measurementGroupSelect.options[0].selected = true;
                     var page = "<rewrite:reWrite jspPage="oscarMeasurements/SetupMeasurements.do"/>?groupName=" + varpage;
-                    windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=600,screenY=200,top=0,left=0";
-                    measurementWindows = window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPageWindow"/>", windowprops);
-                    if (measurementWindows != null) {
-                        if (measurementWindows.opener == null) {
-                            measurementWindows.opener = self;
-                            alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPageAlert"/>");
+                    if (window.oscarOpenInTabs) {
+                        window.open(page, '_blank');
+                    } else {
+                        var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=600,screenY=200,top=0,left=0";
+                        measurementWindows = window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPageWindow"/>", windowprops);
+                        if (measurementWindows != null) {
+                            if (measurementWindows.opener == null) {
+                                measurementWindows.opener = self;
+                                alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPageAlert"/>");
+                            }
                         }
                     }
                 }
@@ -242,12 +251,16 @@
                 if (varpage != 'null') {
                     document.insertTemplateForm.templateSelect.options[0].selected = true;
                     var page = "<rewrite:reWrite jspPage="InsertTemplate.do"/>?templateName=" + varpage;
-                    windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=600,screenY=200,top=0,left=0";
-                    var popup = window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPageWindow"/>", windowprops);
-                    if (popup != null) {
-                        if (popup.opener == null) {
-                            popup.opener = self;
-                            alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPageAlert"/>");
+                    if (window.oscarOpenInTabs) {
+                        window.open(page, '_blank');
+                    } else {
+                        var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=600,screenY=200,top=0,left=0";
+                        var popup = window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPageWindow"/>", windowprops);
+                        if (popup != null) {
+                            if (popup.opener == null) {
+                                popup.opener = self;
+                                alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPageAlert"/>");
+                            }
                         }
                     }
                 }
@@ -256,8 +269,12 @@
 
             function popupStart1(vheight, vwidth, varpage) {
                 var page = varpage;
-                windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-                var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.title"/>", windowprops);
+                if (window.oscarOpenInTabs) {
+                    window.open(varpage, '_blank');
+                } else {
+                    var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+                    var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.title"/>", windowprops);
+                }
             }
 
             function getAnotherEncounter(newAppointmentNo) {
@@ -299,9 +316,13 @@
 
             function popupPage2(varpage) {
                 var page = "" + varpage;
-                windowprops = "height=600,width=700,location=no,"
-                    + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=0,left=0";
-                window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPage2Window"/>", windowprops);
+                if (window.oscarOpenInTabs) {
+                    window.open(page, '_blank');
+                } else {
+                    var windowprops = "height=600,width=700,location=no,"
+                        + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=0,left=0";
+                    window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPage2Window"/>", windowprops);
+                }
             }
 
             function urlencode(str) {
@@ -329,11 +350,15 @@
 
             function popupStart(vheight, vwidth, varpage) {
                 var page = varpage;
-                windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-                var popup = window.open(varpage, "", windowprops);
-                if (popup != null) {
-                    if (popup.opener == null) {
-                        popup.opener = self;
+                if (window.oscarOpenInTabs) {
+                    window.open(varpage, '_blank');
+                } else {
+                    var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+                    var popup = window.open(varpage, "", windowprops);
+                    if (popup != null) {
+                        if (popup.opener == null) {
+                            popup.opener = self;
+                        }
                     }
                 }
             }
@@ -523,8 +548,12 @@
 
             function popupSearchPage(vheight, vwidth, varpage) { //open a new popup window
                 var page = "" + varpage;
-                windowprop = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
-                var popup = window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupSearchPageWindow"/>", windowprop);
+                if (window.oscarOpenInTabs) {
+                    window.open(page, '_blank');
+                } else {
+                    var windowprop = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
+                    var popup = window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupSearchPageWindow"/>", windowprop);
+                }
             }
 
 
@@ -583,10 +612,14 @@
             }
 
             function popupPageK(page) {
-                windowprops = "height=700,width=1024,location=no,"
-                    + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=0,left=0";
-                var popup = window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPageKWindow"/>", windowprops);
-                popup.focus();
+                if (window.oscarOpenInTabs) {
+                    window.open(page, '_blank');
+                } else {
+                    var windowprops = "height=700,width=1024,location=no,"
+                        + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=0,left=0";
+                    var popup = window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPageKWindow"/>", windowprops);
+                    popup.focus();
+                }
             }
 
             function selectBox(name) {
@@ -598,48 +631,62 @@
 
             function popupOscarRx(vheight, vwidth, varpage) {
                 var page = varpage;
-                windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-                var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarRx"/>", windowprops);
-                if (popup != null) {
-                    if (popup.opener == null) {
-                        popup.opener = self;
+                if (window.oscarOpenInTabs) {
+                    window.open(varpage, '_blank');
+                } else {
+                    var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+                    var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarRx"/>", windowprops);
+                    if (popup != null) {
+                        if (popup.opener == null) {
+                            popup.opener = self;
+                        }
                     }
+                    popup.focus();
                 }
-                popup.focus();
             }
 
             function popupOscarCon(vheight, vwidth, varpage) {
                 var page = varpage;
-                windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-                var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgOscarConsultation"/>", windowprops);
-                popup.focus();
+                if (window.oscarOpenInTabs) {
+                    window.open(varpage, '_blank');
+                } else {
+                    var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+                    var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgOscarConsultation"/>", windowprops);
+                    popup.focus();
+                }
             }
 
 
             function popupOscarComm(vheight, vwidth, varpage) {
                 var page = varpage;
-                windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-                var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarComm"/>", windowprops);
-                if (popup != null) {
-                    if (popup.opener == null) {
-                        popup.opener = self;
+                if (window.oscarOpenInTabs) {
+                    window.open(varpage, '_blank');
+                } else {
+                    var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+                    var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarComm"/>", windowprops);
+                    if (popup != null) {
+                        if (popup.opener == null) {
+                            popup.opener = self;
+                        }
                     }
+                    popup.focus();
                 }
-                popup.focus();
             }
 
             function popUpMsg(vheight, vwidth, msgPosition) {
-
-
                 var page = "<%=request.getContextPath()%>/messenger/ViewMessageByPosition.do?from=encounter&orderBy=!date&demographic_no=<%=demoNo%>&messagePosition=" + msgPosition;
-                windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-                var popup = window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarRx"/>", windowprops);
-                if (popup != null) {
-                    if (popup.opener == null) {
-                        popup.opener = self;
+                if (window.oscarOpenInTabs) {
+                    window.open(page, '_blank');
+                } else {
+                    var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+                    var popup = window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarRx"/>", windowprops);
+                    if (popup != null) {
+                        if (popup.opener == null) {
+                            popup.opener = self;
+                        }
                     }
+                    popup.focus();
                 }
-                popup.focus();
             }
 
             //function sign(){
@@ -719,10 +766,14 @@
             function popperup(vheight, vwidth, varpage, pageName) { //open a new popup window
                 hidepic('Layer1');
                 var page = varpage;
-                windowprops = "height=" + vheight + ",width=" + vwidth + ",status=yes,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=100,left=100";
-                var popup = window.open(varpage, pageName, windowprops);
-                popup.opener = self;
-                popup.focus();
+                if (window.oscarOpenInTabs) {
+                    window.open(varpage, '_blank');
+                } else {
+                    var windowprops = "height=" + vheight + ",width=" + vwidth + ",status=yes,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=100,left=100";
+                    var popup = window.open(varpage, pageName, windowprops);
+                    popup.opener = self;
+                    popup.focus();
+                }
             }
 
 

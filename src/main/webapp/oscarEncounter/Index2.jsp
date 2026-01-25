@@ -241,6 +241,7 @@
 <%@ page import="ca.openosp.OscarProperties" %>
 <html>
     <head>
+        <jsp:include page="/js/openInTabsInit.jsp" />
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.title"/> - <oscar:nameage
                 demographicNo="<%=demoNo%>"/></title>
@@ -408,8 +409,12 @@
 
             function popupStart1(vheight, vwidth, varpage) {
                 var page = varpage;
-                windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-                var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.title"/>", windowprops);
+                if (window.oscarOpenInTabs) {
+                    window.open(varpage, '_blank');
+                } else {
+                    var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+                    var popup = window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.title"/>", windowprops);
+                }
             }
 
             function getAnotherEncounter(newAppointmentNo) {
@@ -454,16 +459,19 @@
             function popupPage(vheight, vwidth, name, varpage) { //open a new popup window
                 var page = "" + varpage;
                 name = name.replace(/\s+/g, "_");
-                windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=600,screenY=200,top=0,left=0";
-                //var popup =window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPageWindow"/>", windowprops);
-                openWindows[name] = window.open(page, name, windowprops);
+                if (window.oscarOpenInTabs) {
+                    window.open(page, '_blank');
+                } else {
+                    var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=600,screenY=200,top=0,left=0";
+                    openWindows[name] = window.open(page, name, windowprops);
 
-                if (openWindows[name] != null) {
-                    if (openWindows[name].opener == null) {
-                        openWindows[name].opener = self;
-                        alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPageAlert"/>");
+                    if (openWindows[name] != null) {
+                        if (openWindows[name].opener == null) {
+                            openWindows[name].opener = self;
+                            alert("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPageAlert"/>");
+                        }
+                        openWindows[name].focus();
                     }
-                    openWindows[name].focus();
                 }
             }
 
@@ -492,11 +500,15 @@
 
             function popupStart(vheight, vwidth, varpage) {
                 var page = varpage;
-                windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-                var popup = window.open(varpage, "", windowprops);
-                if (popup != null) {
-                    if (popup.opener == null) {
-                        popup.opener = self;
+                if (window.oscarOpenInTabs) {
+                    window.open(varpage, '_blank');
+                } else {
+                    var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+                    var popup = window.open(varpage, "", windowprops);
+                    if (popup != null) {
+                        if (popup.opener == null) {
+                            popup.opener = self;
+                        }
                     }
                 }
             }

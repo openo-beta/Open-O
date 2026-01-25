@@ -83,9 +83,13 @@
 <script type="text/javascript" language=javascript>
     function popupPage(varpage) {
         var page = "" + varpage;
-        windowprops = "height=600,width=700,location=no,"
-            + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=0,left=0";
-        window.open(page, "", windowprops);
+        if (window.oscarOpenInTabs) {
+            window.open(page, '_blank');
+        } else {
+            var windowprops = "height=600,width=700,location=no,"
+                + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=0,left=0";
+            window.open(page, "", windowprops);
+        }
     }
 
     function onUnbilled(url) {
@@ -105,29 +109,35 @@
     }
 
     function popUpMsg(vheight, vwidth, msgPosition) {
-
-
         var page = "<%=session.getAttribute("casemgmt_oscar_baseurl")%>" + "/messenger/ViewMessageByPosition.do?from=encounter&orderBy=!date&demographic_no=<%=bean.demographicNo%>&messagePosition=" + msgPosition;
-        windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-        var popup = window.open(page, "", windowprops);
-        if (popup != null) {
-            if (popup.opener == null) {
-                popup.opener = self;
+        if (window.oscarOpenInTabs) {
+            window.open(page, '_blank');
+        } else {
+            var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+            var popup = window.open(page, "", windowprops);
+            if (popup != null) {
+                if (popup.opener == null) {
+                    popup.opener = self;
+                }
             }
+            popup.focus();
         }
-        popup.focus();
     }
 
     function popUpMeasurements(vheight, vwidth, name, varpage) { //open a new popup window
         if (varpage != 'null') {
             name.options[0].selected = true;
             var page = "<%=session.getAttribute("casemgmt_oscar_baseurl")%>" + "/oscarEncounter/oscarMeasurements/SetupMeasurements.do?groupName=" + varpage;
-            windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=600,screenY=200,top=0,left=0";
-            var popup = window.open(page, "", windowprops);
-            if (popup != null) {
-                if (popup.opener == null) {
-                    popup.opener = self;
-                    alert("hi this is a null for self!");
+            if (window.oscarOpenInTabs) {
+                window.open(page, '_blank');
+            } else {
+                var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=600,screenY=200,top=0,left=0";
+                var popup = window.open(page, "", windowprops);
+                if (popup != null) {
+                    if (popup.opener == null) {
+                        popup.opener = self;
+                        alert("hi this is a null for self!");
+                    }
                 }
             }
         }
@@ -135,8 +145,12 @@
 
     function popupSearchPage(vheight, vwidth, varpage) { //open a new popup window
         var page = "" + varpage;
-        windowprop = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
-        var popup = window.open(page, "", windowprop);
+        if (window.oscarOpenInTabs) {
+            window.open(page, '_blank');
+        } else {
+            var windowprop = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
+            var popup = window.open(page, "", windowprop);
+        }
     }
 
     function grabEnter(event) {

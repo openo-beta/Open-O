@@ -53,6 +53,7 @@
 
 <html>
 <head>
+    <jsp:include page="/js/openInTabsInit.jsp" />
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/oscarClientManagement/profilePicture.js"></script>
 </head>
 <body>
@@ -129,22 +130,30 @@
 
             function popupNotePage(varpage) {
                 var page = "" + varpage;
-                windowprops = "height=800,width=800,location=no,"
-                    + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
-                var popup = window.open(page, "editNote", windowprops);
-                if (popup != null) {
-                    if (popup.opener == null) {
-                        popup.opener = self;
+                if (window.oscarOpenInTabs) {
+                    window.open(page, '_blank');
+                } else {
+                    var windowprops = "height=800,width=800,location=no,"
+                        + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
+                    var popup = window.open(page, "editNote", windowprops);
+                    if (popup != null) {
+                        if (popup.opener == null) {
+                            popup.opener = self;
+                        }
+                        popup.focus();
                     }
-                    popup.focus();
                 }
             }
 
             function popupHistoryPage(varpage) {
                 var page = "" + varpage;
-                windowprops = "location=no,"
-                    + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=0,left=0";
-                window.open(page, "", windowprops);
+                if (window.oscarOpenInTabs) {
+                    window.open(page, '_blank');
+                } else {
+                    var windowprops = "location=no,"
+                        + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=0,left=0";
+                    window.open(page, "", windowprops);
+                }
             }
         </script>
 

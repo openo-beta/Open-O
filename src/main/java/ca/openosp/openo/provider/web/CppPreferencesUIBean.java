@@ -60,6 +60,8 @@ public class CppPreferencesUIBean {
     public static final String PREFERRED_FORMS_DSP = "cpp.preferred_forms.display";
     public static final String DECISION_SUPPORT_DSP = "cpp.decision_support.display";
     public static final String CONTACTS_DSP = "cpp.contacts.display";
+    public static final String RESEARCH_DSP = "cpp.research.display";
+    public static final String TOOLS_DSP = "cpp.tools.display";
 
     public static final String SOC_HX_START_DATE = "cpp.social_hx.start_date";
     public static final String SOC_HX_RES_DATE = "cpp.social_hx.res_date";
@@ -124,6 +126,8 @@ public class CppPreferencesUIBean {
     private String preferredFormsDisplay = "SHOW";
     private String decisionSupportDisplay = "SHOW";
     private String contactsDisplay = "SHOW";
+    private String researchDisplay = "SHOW";
+    private String toolsDisplay = "SHOW";
 
     private String socialHxStartDate = "";
     private String socialHxResDate = "";
@@ -184,6 +188,8 @@ public class CppPreferencesUIBean {
         map.put(PREFERRED_FORMS_DSP, this.getPreferredFormsDisplay());
         map.put(DECISION_SUPPORT_DSP, this.getDecisionSupportDisplay());
         map.put(CONTACTS_DSP, this.getContactsDisplay());
+        map.put(RESEARCH_DSP, this.getResearchDisplay());
+        map.put(TOOLS_DSP, this.getToolsDisplay());
 
         map.put(SOC_HX_START_DATE, this.getSocialHxStartDate());
         map.put(SOC_HX_RES_DATE, this.getSocialHxResDate());
@@ -248,6 +254,10 @@ public class CppPreferencesUIBean {
             setDecisionSupportDisplay(map.get(DECISION_SUPPORT_DSP)[0]);
         if (map.get(CONTACTS_DSP) != null)
             setContactsDisplay(map.get(CONTACTS_DSP)[0]);
+        if (map.get(RESEARCH_DSP) != null)
+            setResearchDisplay(map.get(RESEARCH_DSP)[0]);
+        if (map.get(TOOLS_DSP) != null)
+            setToolsDisplay(map.get(TOOLS_DSP)[0]);
 
         if (map.get(SOC_HX_START_DATE) != null)
             setSocialHxStartDate(map.get(SOC_HX_START_DATE)[0]);
@@ -382,6 +392,10 @@ public class CppPreferencesUIBean {
             setDecisionSupportDisplay(map.get(DECISION_SUPPORT_DSP));
         if (map.get(CONTACTS_DSP) != null)
             setContactsDisplay(map.get(CONTACTS_DSP));
+        if (map.get(RESEARCH_DSP) != null)
+            setResearchDisplay(map.get(RESEARCH_DSP));
+        if (map.get(TOOLS_DSP) != null)
+            setToolsDisplay(map.get(TOOLS_DSP));
 
         if (map.get(SOC_HX_START_DATE) != null)
             setSocialHxStartDate(map.get(SOC_HX_START_DATE));
@@ -864,6 +878,22 @@ public class CppPreferencesUIBean {
 
     public void setMedicationInstructions(String medicationInstructions) {
         this.medicationInstructions = medicationInstructions;
+    }
+
+    public String getResearchDisplay() {
+        return researchDisplay;
+    }
+
+    public void setResearchDisplay(String researchDisplay) {
+        this.researchDisplay = researchDisplay;
+    }
+
+    public String getToolsDisplay() {
+        return toolsDisplay;
+    }
+
+    public void setToolsDisplay(String toolsDisplay) {
+        this.toolsDisplay = toolsDisplay;
     }
 
     public static String getPositionSelect(String currentValue) {

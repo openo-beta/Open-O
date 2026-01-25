@@ -43,9 +43,13 @@ var encounterCol = "width: " + encWidth + "; height: " + enht;
 
 
 function popupTestPage(text) {
-    windowprops = "height=700,width=960,location=no,"
-        + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=50,left=50";
-    window.open(text, "apptProviderSearch", windowprops);
+    if (window.oscarOpenInTabs) {
+        window.open(text, '_blank');
+    } else {
+        var windowprops = "height=700,width=960,location=no,"
+            + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=50,left=50";
+        window.open(text, "apptProviderSearch", windowprops);
+    }
 }
 
 function num(value) {
