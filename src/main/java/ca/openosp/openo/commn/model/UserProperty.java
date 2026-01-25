@@ -171,6 +171,8 @@ public class UserProperty extends AbstractModel<Integer> implements Serializable
 
     public static final String SCHEDULE_WEEK_VIEW_WEEKENDS = "schedule.week_view_weekends";
 
+    /** Open in Tabs preference - matches OSCAR 19 property name */
+    public static final String OPEN_IN_TABS = "tab_view";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

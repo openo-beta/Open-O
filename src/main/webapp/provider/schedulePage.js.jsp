@@ -200,27 +200,37 @@ this.focus();
 }
 
 function popupPage(vheight,vwidth,varpage) {
+console.log("schedulePage.js.jsp popupPage called: oscarOpenInTabs=" + window.oscarOpenInTabs + ", page=" + varpage);
 var page = "" + varpage;
-windowprops = "height="+vheight+",width="+vwidth+",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
-var popup=window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.apptProvider"/>", windowprops);
-if (popup != null) {
-if (popup.opener == null) {
-popup.opener = self;
-}
-popup.focus();
+if (window.oscarOpenInTabs) {
+    console.log("Opening in TAB");
+    window.open(page, '_blank');
+} else {
+    console.log("Opening as POPUP");
+    var windowprops = "height="+vheight+",width="+vwidth+",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
+    var popup=window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.apptProvider"/>", windowprops);
+    if (popup != null) {
+        if (popup.opener == null) {
+            popup.opener = self;
+        }
+        popup.focus();
+    }
 }
 }
 
 function popUpEncounter(vheight,vwidth,varpage) {
 var page = "" + varpage;
-windowprops = "height="+vheight+",width="+vwidth+",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
-var popup=window.open(page, "Encounter", windowprops);
-
-if (popup != null) {
-if (popup.opener == null) {
-popup.opener = self;
-}
-popup.focus();
+if (window.oscarOpenInTabs) {
+    window.open(page, '_blank');
+} else {
+    var windowprops = "height="+vheight+",width="+vwidth+",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
+    var popup=window.open(page, "Encounter", windowprops);
+    if (popup != null) {
+        if (popup.opener == null) {
+            popup.opener = self;
+        }
+        popup.focus();
+    }
 }
 }
 

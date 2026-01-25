@@ -69,6 +69,7 @@
     <head>
         <c:set var="ctx" value="${pageContext.request.contextPath}"/>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <jsp:include page="/js/openInTabsInit.jsp" />
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.title"/></title>
         <script src="<%=request.getContextPath()%>/csrfguard" type="text/javascript"></script>
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
@@ -147,13 +148,22 @@
                 return checkin;
             }
 
-            function popupPage(vheight, vwidth, varpage) { //open a new popup window
+            function popupPage(vheight, vwidth, varpage) { //open a new popup window or tab
+                console.log("providerpreference.jsp popupPage called: oscarOpenInTabs=" + window.oscarOpenInTabs + ", page=" + varpage);
                 var page = "" + varpage;
-                windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=5,left=5";//360,680
-                var popup = window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.titlePopup"/>", windowprops);
-                if (popup != null) {
-                    if (popup.opener == null) {
-                        popup.opener = self;
+                if (window.oscarOpenInTabs) {
+                    // Open in a new tab
+                    console.log("Opening in TAB");
+                    window.open(page, '_blank');
+                } else {
+                    // Open as popup
+                    console.log("Opening as POPUP");
+                    var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=5,left=5";
+                    var popup = window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.titlePopup"/>", windowprops);
+                    if (popup != null) {
+                        if (popup.opener == null) {
+                            popup.opener = self;
+                        }
                     }
                 }
             }
@@ -732,6 +742,12 @@
                 <td align="center"><a href=#
                                       onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewEncounterWindowSize');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditDefaultEncounterWindowSize"/></a></td>
             </tr>
+            <oscar:oscarPropertiesCheck property="open_in_tabs" value="optional">
+            <tr>
+                <td align="center"><a href=#
+                                      onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewInTabs');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.openInTabs"/></a></td>
+            </tr>
+            </oscar:oscarPropertiesCheck>
             <tr>
                 <td align="center"><a href=#
                                       onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewQuickChartSize');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditDefaultQuickChartSize"/></a></td>

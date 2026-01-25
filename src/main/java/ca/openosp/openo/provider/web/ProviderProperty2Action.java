@@ -1857,6 +1857,61 @@ public class ProviderProperty2Action extends ActionSupport {
         return "complete";
     }
 
+    /**
+     * Displays the "Open in Tabs" preference setting page.
+     * Allows users to choose whether windows open in tabs or popups.
+     * Uses UserProperty.OPEN_IN_TABS ("tab_view") for OSCAR 19 compatibility.
+     *
+     * @return the result name for the JSP page
+     */
+    public String viewInTabs() {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+
+        UserProperty openInTabs = this.userPropertyDAO.getProp(providerNo, UserProperty.OPEN_IN_TABS);
+
+        if (openInTabs == null) {
+            openInTabs = new UserProperty();
+            openInTabs.setName(UserProperty.OPEN_IN_TABS);
+            openInTabs.setValue("false");
+        }
+
+        request.setAttribute("openInTabs", openInTabs);
+        request.setAttribute("method", "saveInTabs");
+
+        return "genInTabs";
+    }
+
+    /**
+     * Saves the "Open in Tabs" preference setting.
+     * Uses UserProperty.OPEN_IN_TABS ("tab_view") for OSCAR 19 compatibility.
+     *
+     * @return the result name for the JSP page
+     */
+    public String saveInTabs() {
+        String checkboxValue = request.getParameter("openInTabs.checked");
+
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+
+        UserProperty openInTabs = this.userPropertyDAO.getProp(providerNo, UserProperty.OPEN_IN_TABS);
+
+        if (openInTabs == null) {
+            openInTabs = new UserProperty();
+            openInTabs.setName(UserProperty.OPEN_IN_TABS);
+            openInTabs.setProviderNo(providerNo);
+        }
+
+        openInTabs.setValue("on".equals(checkboxValue) ? "true" : "false");
+        this.userPropertyDAO.saveProp(openInTabs);
+
+        request.setAttribute("openInTabs", openInTabs);
+        request.setAttribute("status", "saved");
+        request.setAttribute("method", "saveInTabs");
+
+        return "genInTabs";
+    }
+
     public String viewEncounterWindowSize() {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -2758,6 +2813,8 @@ public class ProviderProperty2Action extends ActionSupport {
         methodMap.put("saveLabRecallPrefs", this::saveLabRecallPrefs);
         methodMap.put("viewTicklerTaskAssignee", this::viewTicklerTaskAssignee);
         methodMap.put("saveTicklerTaskAssignee", this::saveTicklerTaskAssignee);
+        methodMap.put("viewInTabs", this::viewInTabs);
+        methodMap.put("saveInTabs", this::saveInTabs);
         methodMap.put("viewEncounterWindowSize", this::viewEncounterWindowSize);
         methodMap.put("saveEncounterWindowSize", this::saveEncounterWindowSize);
         methodMap.put("viewQuickChartSize", this::viewQuickChartSize);

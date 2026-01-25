@@ -95,10 +95,13 @@
     }
 
     function selectBox(name) {
-        to = name.options[name.selectedIndex].value;
+        var to = name.options[name.selectedIndex].value;
+        console.log("selectBox called, value: " + to);
         name.selectedIndex = 0;
-        if (to != "null")
+        if (to != "null" && to != "") {
+            console.log("Opening popup: " + to);
             popupPage(to);
+        }
     }
 
     function popUpMsg(vheight, vwidth, msgPosition) {
@@ -549,8 +552,19 @@
             <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
                 <tr>
                     <td>
-                        <a href="javascript:void(0)"
-                           onClick="popupPage('<%=bsurl%>/oscarEncounter/calculators.jsp?sex=<%=bean.patientSex%>&age=<%=pAge%>'); return false;">calculators</a><br>
+                        <select name="selectCalculators" class="ControlSelect"
+                                onChange="javascript:selectBox(this)"
+                                onMouseOver="javascript:window.status='Open calculator'; return true;">
+                            <option value="null" selected>-calculators-</option>
+                            <option value="<%=bsurl%>/oscarEncounter/calculators/CoronaryArteryDiseaseRiskPrediction.jsp?sex=<%=bean.patientSex%>&age=<%=pAge%>">Coronary Artery Disease Risk</option>
+                            <option value="<%=bsurl%>/oscarEncounter/calculators/riskcalc/index.html?sex=<%=bean.patientSex%>&age=<%=pAge%>">Framingham/UKPDS Risk</option>
+                            <option value="<%=bsurl%>/oscarEncounter/calculators/OsteoporoticFracture.jsp?sex=<%=bean.patientSex%>&age=<%=pAge%>">Osteoporotic Fracture</option>
+                            <option value="<%=bsurl%>/oscarEncounter/calculators/SimpleCalculator.jsp">Simple Calculator</option>
+                            <option value="<%=bsurl%>/oscarEncounter/calculators/GeneralCalculators.jsp">General Conversions</option>
+                            <option value="http://www.mcw.edu/calculators/body-mass-index.htm">Body Mass Index</option>
+                            <option value="http://cvrisk.mvm.ed.ac.uk/calculator/calc.asp">CV Risk</option>
+                            <option value="http://www.mcw.edu/calculators/pregnancydate.htm">Pregnancy Calculator</option>
+                        </select>
                     </td>
                 </tr>
 

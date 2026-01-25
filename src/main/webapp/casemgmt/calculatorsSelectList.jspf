@@ -20,52 +20,66 @@
 	}
 %>
 
+<script type="text/javascript">
+function openCalculator(selectElement) {
+	var selectedOption = selectElement.options[selectElement.selectedIndex];
+	var url = selectedOption.getAttribute('data-url');
+	var winName = selectedOption.getAttribute('data-winname') || 'Calculator';
+	var height = selectedOption.getAttribute('data-height') || 650;
+	var width = selectedOption.getAttribute('data-width') || 775;
 
-<select style="width:100px;">
-	<option><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Header.Calculators"/></option>
-	<option>----------------------</option>
+	if (url && url !== '') {
+		var windowProps = "height=" + height + ",width=" + width + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
+		window.open(url, winName, windowProps);
+	}
+	selectElement.selectedIndex = 0;
+}
+</script>
 
-	<option onclick="popperup(650,775,'https://bilitool.org/index.php','NeonatalBilirubin');">
+<select style="width:100px;" onchange="openCalculator(this);">
+	<option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Header.Calculators"/></option>
+
+	<option data-url="https://bilitool.org/index.php" data-winname="NeonatalBilirubin" data-height="650" data-width="775">
 		Neonatal Bilirubin
 	</option>
 
-	<option onclick="popperup(650,775,'https://thrombosiscanada.ca/tools/?calc=perioperativeAnticoagulantAlgorithm','Peri-operativeAnticoagulation');">
+	<option data-url="https://thrombosiscanada.ca/tools/?calc=perioperativeAnticoagulantAlgorithm" data-winname="Peri-operativeAnticoagulation" data-height="650" data-width="775">
 		Peri-operative Anticoagulation
 	</option>
 
-	<option onclick="popperup(650,775,'https://www.mdcalc.com/calc/2200/fibrosis-4-fib-4-index-liver-fibrosis','Fibrosis-4');">
+	<option data-url="https://www.mdcalc.com/calc/2200/fibrosis-4-fib-4-index-liver-fibrosis" data-winname="Fibrosis-4" data-height="650" data-width="775">
 		Fibrosis 4 (FIB-4)
 	</option>
 
-	<option onclick="popperup(650,775,'http://www.mcw.edu/calculators/body-mass-index.htm','BodyMassIndex');">
+	<option data-url="http://www.mcw.edu/calculators/body-mass-index.htm" data-winname="BodyMassIndex" data-height="650" data-width="775">
 		<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.bodyMass"/>
 	</option>
 
-	<option onclick="popperup(525,775,'<%= request.getContextPath() %>/oscarEncounter/calculators/CoronaryArteryDiseaseRiskPrediction.jsp?sex=<%=bean.patientSex%>&age=<%=pAge%>','CoronaryArteryDiseaseRisk');">
+	<option data-url="<%= request.getContextPath() %>/oscarEncounter/calculators/CoronaryArteryDiseaseRiskPrediction.jsp?sex=<%=bean.patientSex%>&age=<%=pAge%>" data-winname="CoronaryArteryDiseaseRisk" data-height="525" data-width="775">
 		<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.coronary"/>
 	</option>
 
-	<option onclick="popperup(525,775,'<%= request.getContextPath() %>/oscarEncounter/calculators/riskcalc/index.html?sex=<%=bean.patientSex%>&age=<%=pAge%>','Framingham');">
+	<option data-url="<%= request.getContextPath() %>/oscarEncounter/calculators/riskcalc/index.html?sex=<%=bean.patientSex%>&age=<%=pAge%>" data-winname="Framingham" data-height="525" data-width="775">
 		Framingham/UKPDS Risk Calculator
 	</option>
 
-	<option onclick="popperup(525,775,'http://cvrisk.mvm.ed.ac.uk/calculator/calc.asp','CVRisk');">
+	<option data-url="http://cvrisk.mvm.ed.ac.uk/calculator/calc.asp" data-winname="CVRisk" data-height="525" data-width="775">
 		CV Risk
 	</option>
 
-	<option onclick="popperup(525,775,'<%= request.getContextPath() %>/oscarEncounter/calculators/OsteoporoticFracture.jsp?sex=<%=bean.patientSex%>&age=<%=pAge%>','OsteoporoticFracture');">
+	<option data-url="<%= request.getContextPath() %>/oscarEncounter/calculators/OsteoporoticFracture.jsp?sex=<%=bean.patientSex%>&age=<%=pAge%>" data-winname="OsteoporoticFracture" data-height="525" data-width="775">
 		<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgOsteoporotic"/>
 	</option>
 
-	<option onclick="popperup(650,775,'http://www.mcw.edu/calculators/pregnancydate.htm','PregancyCalculator');">
+	<option data-url="http://www.mcw.edu/calculators/pregnancydate.htm" data-winname="PregancyCalculator" data-height="650" data-width="775">
 		<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.pregnancy"/>
 	</option>
 
-	<option onclick="popperup(400,500,'<%= request.getContextPath() %>/oscarEncounter/calculators/SimpleCalculator.jsp','SimpleCalc');">
+	<option data-url="<%= request.getContextPath() %>/oscarEncounter/calculators/SimpleCalculator.jsp" data-winname="SimpleCalc" data-height="400" data-width="500">
 		<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.simpleCalculator"/>
 	</option>
 
-	<option onclick="popperup(650,775,'<%= request.getContextPath() %>/oscarEncounter/calculators/GeneralCalculators.jsp','GeneralConversions'); ">
+	<option data-url="<%= request.getContextPath() %>/oscarEncounter/calculators/GeneralCalculators.jsp" data-winname="GeneralConversions" data-height="650" data-width="775">
 		<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.generalConversions"/>
 	</option>
 </select>

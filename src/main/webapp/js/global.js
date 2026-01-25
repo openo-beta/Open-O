@@ -1,3 +1,7 @@
+// Global setting for opening windows in tabs instead of popups
+// This can be set by including openInTabsInit.jsp or setting window.oscarOpenInTabs = true
+window.oscarOpenInTabs = window.oscarOpenInTabs || false;
+
 // setfocus to the current window
 function setfocus() {
     this.focus();
@@ -25,30 +29,42 @@ function setMinWidth(width) {
     currentWidth = document.documentElement.clientWidth;
 }
 
-// open a new popup window
+// open a new popup window (or tab if oscarOpenInTabs is enabled)
 function popupPage(vheight, vwidth, varpage) {
     var page = "" + varpage;
-    windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes";
-    var popup = window.open(page, "attachment", windowprops);
-    if (popup != null) {
-        if (popup.opener == null) {
-            popup.opener = self;
+    if (window.oscarOpenInTabs) {
+        // Open in a new tab
+        window.open(page, '_blank');
+    } else {
+        // Open as popup
+        var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes";
+        var popup = window.open(page, "attachment", windowprops);
+        if (popup != null) {
+            if (popup.opener == null) {
+                popup.opener = self;
+            }
         }
     }
 }
 
-//popup and focus
+//popup and focus (or tab if oscarOpenInTabs is enabled)
 //allow to specify pageTitle
 function popupFocusPage(vheight, vwidth, varpage, pageTitle) {
     var page = "" + varpage;
-    var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes," +
-        "screenX=50,screenY=50,top=0,left=0";
-    var popup = window.open(page, pageTitle, windowprops);
-    if (popup != null) {
-        if (popup.opener == null) {
-            popup.opener = self;
+    if (window.oscarOpenInTabs) {
+        // Open in a new tab
+        window.open(page, '_blank');
+    } else {
+        // Open as popup
+        var windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes," +
+            "screenX=50,screenY=50,top=0,left=0";
+        var popup = window.open(page, pageTitle, windowprops);
+        if (popup != null) {
+            if (popup.opener == null) {
+                popup.opener = self;
+            }
+            popup.focus();
         }
-        popup.focus();
     }
 }
 
