@@ -27,6 +27,11 @@
 package ca.openosp.openo.commn.model;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -53,10 +58,16 @@ public class ConsultationRequest extends AbstractModel<Integer> implements Seria
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = ProfessionalSpecialist.class, cascade = CascadeType.MERGE)
     @JoinColumn(name = "specId", referencedColumnName = "specId")
+    @NotFound(action = NotFoundAction.IGNORE)
+    @Fetch(FetchMode.SELECT)
+    @BatchSize(size = 25)
     private ProfessionalSpecialist professionalSpecialist;
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = DemographicContact.class)
     @JoinColumn(name = "demographicContactId", referencedColumnName = "id")
+    @NotFound(action = NotFoundAction.IGNORE)
+    @Fetch(FetchMode.SELECT)
+    @BatchSize(size = 25)
     private DemographicContact demographicContact;
 
     @Temporal(TemporalType.DATE)
@@ -103,6 +114,9 @@ public class ConsultationRequest extends AbstractModel<Integer> implements Seria
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = LookupListItem.class)
     @JoinColumn(name = "appointmentInstructions", referencedColumnName = "value", insertable = false, updatable = false)
+    @NotFound(action = NotFoundAction.IGNORE)
+    @Fetch(FetchMode.SELECT)
+    @BatchSize(size = 25)
     private LookupListItem lookupListItem;
 
     @Transient
