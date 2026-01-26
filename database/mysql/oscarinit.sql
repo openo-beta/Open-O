@@ -341,7 +341,15 @@ CREATE TABLE IF NOT EXISTS consultationRequests (
   `lastUpdateDate` datetime not null,
   fdid int(10),
   source varchar(50),
-  PRIMARY KEY  (requestId)
+  PRIMARY KEY  (requestId),
+  KEY `idx_consult_status_referaldate` (`status`, `referalDate`),
+  KEY `idx_consult_sendto_status_referaldate` (`sendTo`, `status`, `referalDate`),
+  KEY `idx_consult_providerno_status_referaldate` (`providerNo`, `status`, `referalDate`),
+  KEY `idx_consult_status_appointmentdate` (`status`, `appointmentDate`),
+  KEY `idx_consult_demographicno` (`demographicNo`),
+  KEY `idx_consult_serviceid` (`serviceId`),
+  KEY `idx_consult_specid` (`specId`),
+  KEY `idx_consult_lastupdatedate` (`lastUpdateDate`)
 ) ;
 
 CREATE TABLE consultationRequestsArchive (
