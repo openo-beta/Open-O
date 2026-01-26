@@ -357,6 +357,92 @@
     <link href="${pageContext.request.contextPath}/library/DataTables-1.10.12/media/css/jquery.dataTables.min.css"
           rel="stylesheet">
 
+    <style>
+        body {
+            font-family: Verdana, helvetica, sans-serif;
+            font-size: 14px;
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .reportHeader {
+            background-color: #428bca;
+            color: #d0d0d0;
+            padding: 10px 15px;
+            font-weight: normal;
+            font-size: 18px;
+            font-family: Verdana, helvetica, sans-serif;
+            margin-bottom: 15px;
+        }
+        .reportHeader td {
+            color: #d0d0d0;
+        }
+        .reportHeader a {
+            color: #d0d0d0;
+        }
+        .reportTable {
+            margin: 0 15px;
+        }
+        .reportTable tr:hover {
+            background-color: #FACC2E;
+        }
+        .reportTable td {
+            padding: 2px 2px;
+            vertical-align: middle;
+        }
+        .reportTable a {
+            color: #0066CC;
+            text-decoration: none;
+        }
+        .reportTable a:hover {
+            text-decoration: underline;
+        }
+        .reportTable input[type="text"],
+        .reportTable select {
+            padding: 1px 3px;
+            font-size: 13px;
+            margin: 0 2px;
+        }
+        .reportTable input[type="button"],
+        .reportTable input[type="submit"] {
+            font-size: 13px;
+            margin: 0 2px;
+        }
+        .reportTable .btn-primary,
+        input[type="submit"].btn-primary {
+            padding: 6px 12px;
+            background-color: #428bca;
+            border-color: #357ebd;
+            color: #d0d0d0;
+            border-radius: 0;
+        }
+        .reportTable .btn-default,
+        .reportTable .btn {
+            border-radius: 0;
+        }
+        .reportTable input[type="text"] {
+            width: 90px !important;
+            box-sizing: border-box;
+        }
+        .reportTable select {
+            width: auto;
+            max-width: 140px;
+        }
+        .sectionHeader {
+            background-color: #CCCCFF;
+            font-weight: bold;
+            padding: 8px;
+            margin: 15px 0 5px 0;
+        }
+        .well {
+            background-color: #fff;
+            border: none;
+        }
+        .btn-primary {
+            color: #d0d0d0;
+        }
+    </style>
+
     <script src="${pageContext.request.contextPath}/share/javascript/Oscar.js"></script>
     <script src="${pageContext.request.contextPath}/js/bootstrap.min.2.js"></script>
     <script src="${pageContext.request.contextPath}/library/jquery/jquery-3.6.4.min.js"></script>
@@ -403,28 +489,25 @@
 
 <body>
 
-
-<table style="width:100%">
-    <tr>
-        <td style="width:1%"></td>
-        <td style="width:80%; text-align:left;">
-            <H4><a style="color:black;"
-                   href="billingReportCenter.jsp">OSCARbilling</a></H4>
-        </td>
-        <td style="text-align:right;">
-            <i class=" icon-question-sign"></i>
-            <a href="javascript:void(0)"
-               onClick="popupPage(600,750,'<%=(OscarProperties.getInstance()).getProperty("HELP_SEARCH_URL")%>'+'OscarBilling+Billing')"><fmt:setBundle basename="oscarResources"/><fmt:message key="app.top1"/></a>
-            <i class=" icon-info-sign" style="margin-left:10px;"></i>
-            <a href="javascript:void(0)"
-               onClick="window.open('<%=request.getContextPath()%>/oscarEncounter/About.jsp','About OSCAR','scrollbars=1,resizable=1,width=800,height=600,left=0,top=0')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
-        </td>
-        <td style="width:1%"></td>
-    </tr>
-</table>
+<div class="reportHeader">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td align="left">
+                <a href="billingReportCenter.jsp">ONTARIO BILLING REPORT</a>
+            </td>
+            <td align="right">
+                <a href="javascript:void(0)"
+                   onClick="popupPage(600,750,'<%=(OscarProperties.getInstance()).getProperty("HELP_SEARCH_URL")%>'+'OscarBilling+Billing')"><fmt:setBundle basename="oscarResources"/><fmt:message key="app.top1"/></a>
+                &nbsp;|&nbsp;
+                <a href="javascript:void(0)"
+                   onClick="window.open('<%=request.getContextPath()%>/oscarEncounter/About.jsp','About OSCAR','scrollbars=1,resizable=1,width=800,height=600,left=0,top=0')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
+            </td>
+        </tr>
+    </table>
+</div>
 <div class="well">
     <form name="serviceform" method="post" action="billingONReport.jsp">
-        <table style="width:100%;">
+        <table style="width:100%;" class="reportTable">
 
             <tr class="form-inline">
                 <td>
@@ -545,7 +628,8 @@ end broken -->
                     </label>
                 </td>
                 <td style="text-align:right"><input type="submit" name="Submit" class="btn btn-primary"
-                                                    value="Create Report"></td>
+                                                    style="color: #d0d0d0; background-color: #428bca; background-image: none;"
+                                                    value="CREATE REPORT"></td>
             </tr>
             <tr>
                 <td colspan="2"><a href=#
@@ -587,12 +671,11 @@ end broken -->
 
 </div> <!-- well end -->
 
-<table style="width:100%">
+<table style="width:100%;" class="reportTable">
     <tr>
-        <td><a href=# onClick="javascript:history.go(-1);return false;" class="btn btn-link">
-            <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/></a></td>
-        <td style="text-align:right;"><a href="" onClick="self.close();" class="btn btn-link">
-            <fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnExit"/></a></td>
+        <td colspan='3' align="left"><input type="button" name="Button" class="btn btn-default"
+                                            value="Cancel"
+                                            onClick="window.close()"></td>
     </tr>
 </table>
 <script>

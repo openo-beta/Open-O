@@ -93,14 +93,54 @@
 %>
 <html>
 <head>
+    <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/encounterStyles.css">
     <title>Demographic Search</title>
+    <style type="text/css">
+        td.messengerButtonsA {
+            background-color: #003399;
+        }
+
+        td.messengerButtonsD {
+            background-color: #555599;
+        }
+
+        a.messengerButtons {
+            color: #ffffff;
+            font-size: 9pt;
+            text-decoration: none;
+        }
+
+        table.messButtonsA {
+            border-top: 2px solid #cfcfcf;
+            border-left: 2px solid #cfcfcf;
+            border-bottom: 2px solid #333333;
+            border-right: 2px solid #333333;
+        }
+
+        table.messButtonsD {
+            border-top: 2px solid #333333;
+            border-left: 2px solid #333333;
+            border-bottom: 2px solid #cfcfcf;
+            border-right: 2px solid #cfcfcf;
+        }
+
+        .searchInput {
+            padding: 4px 8px;
+            font-size: 12px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"], input[type="button"] {
+            padding: 4px 12px;
+            font-size: 12px;
+        }
+    </style>
 </head>
-<body
-        onload="<% if ( firstSearch) { %> document.forms[0].submit() <% } %>">
+<body class="BodyStyle" onload="<% if ( firstSearch) { %> document.forms[0].submit() <% } %>">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
-
 
 <script language="JavaScript">
     /**
@@ -137,38 +177,48 @@
         opener.document.forms[0].demographic_no.value = demographic_no;
         opener.document.forms[0].selectedDemo.value = keyword;
         opener.document.forms[0].keyword.value = "";
-        
+
         // Focus back to keyword field in parent window
         opener.document.forms[0].keyword.focus();
     }
 
 </script>
 
-<table BORDER="0" CELLPADDING="0" CELLSPACING="2" WIDTH="100%"
-       bgcolor="#CCCCFF">
-    <form method="post" name="titlesearch"
-          action="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp"
-          onsubmit="return checkTypeIn()">
-        <tr>
-            <td colspan="6" class="RowTop"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.msgSearch"/></b></td>
-        </tr>
-        <%
-            String keyword = request.getParameter("keyword");
+<table class="MainTable" id="scrollNumber1" name="encounterTable">
+    <tr class="MainTableTopRow">
+        <td class="MainTableTopRowLeftColumn">
+            <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.msgSearch"/></h2>
+        </td>
+        <td class="MainTableTopRowRightColumn">
+            <table class="TopStatusBar" style="width:100%">
+                <tr>
+                    <td>
+                        <div class="DivContentTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.msgSearch"/></div>
+                    </td>
+                    <td style="text-align:right">
+                        <a href="<%= request.getContextPath() %>/oscarEncounter/About.jsp" target="_new"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td class="MainTableLeftColumn">&nbsp;</td>
+        <td class="MainTableRightColumn">
+            <form method="post" name="titlesearch"
+                  action="<%= request.getContextPath() %>/demographic/demographiccontrol.jsp"
+                  onsubmit="return checkTypeIn()">
+                <table border="0" cellpadding="5" cellspacing="3" width="95%">
+                    <%
+                        String keyword = request.getParameter("keyword");
 
-            if (keyword == null) {
-                keyword = "";
-            }
-        %>
-        <tr>
-            <td>
-                <table bgcolor="white" width="100%">
+                        if (keyword == null) {
+                            keyword = "";
+                        }
+                    %>
                     <tr>
-                        <td width="10%" nowrap></td>
-                        <td nowrap></td>
-                        <td nowrap></td>
-                        <td valign="middle" rowspan="2" ALIGN="left"><input type="text"
-                                                                            NAME="keyword" VALUE="<%=keyword%>"
-                                                                            SIZE="17" MAXLENGTH="100">
+                        <td>
+                            <input type="text" NAME="keyword" VALUE="<%=keyword%>" SIZE="25" MAXLENGTH="100" class="searchInput">
                             <%
                                 String searchMode = request.getParameter("search_mode");
                                 if (searchMode == null || searchMode.isEmpty()) {
@@ -177,34 +227,67 @@
                             %>
                             <input type="hidden" name="outofdomain" value="">
                             <input type="hidden" name="search_mode" value="<%=searchMode%>">
-                            <INPUT TYPE="hidden" NAME="orderby" VALUE="last_name, first_name">
-                            <INPUT TYPE="hidden" NAME="dboperation" VALUE="search_titlename">
-                            <INPUT TYPE="hidden" NAME="limit1" VALUE="0"> <INPUT
-                                    TYPE="hidden" NAME="limit2" VALUE="10"> <INPUT
-                                    TYPE="hidden" NAME="displaymode" VALUE="Search"> <INPUT
-                                    TYPE="hidden" NAME="ptstatus" VALUE="active"> <INPUT
-                                    TYPE="hidden" NAME="fromMessenger" VALUE="true"> <INPUT
-                                    TYPE="SUBMIT"
-                                    VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.msgSearch"/>"
-                                    SIZE="17"
-                                    TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.tooltips.searchActive"/>">
-                            &nbsp;&nbsp;&nbsp; <INPUT TYPE="button" onclick="searchInactive();"
-                                                      TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.tooltips.searchInactive"/>"
-                                                      VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.Inactive"/>">
-                            <INPUT TYPE="button" onclick="searchAll();"
-                                   TITLE="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.tooltips.searchAll"/>"
-                                   VALUE="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.All"/>"></td>
-                    </tr>
-                    <tr bgcolor="white">
-                        <td nowrap></td>
-                        <td nowrap></td>
-                        <td nowrap></td>
+                            <input type="hidden" name="orderby" value="last_name, first_name">
+                            <input type="hidden" name="dboperation" value="search_titlename">
+                            <input type="hidden" name="limit1" value="0">
+                            <input type="hidden" name="limit2" value="10">
+                            <input type="hidden" name="displaymode" value="Search">
+                            <input type="hidden" name="ptstatus" value="active">
+                            <input type="hidden" name="fromMessenger" value="true">
+                        </td>
+                        <td>
+                            <table cellspacing="3">
+                                <tr>
+                                    <td>
+                                        <table class="messButtonsA" cellspacing="0" cellpadding="3">
+                                            <tr>
+                                                <td class="messengerButtonsA">
+                                                    <a href="javascript:document.titlesearch.submit();" class="messengerButtons"
+                                                       title="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.tooltips.searchActive"/>">
+                                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.msgSearch"/>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table class="messButtonsA" cellspacing="0" cellpadding="3">
+                                            <tr>
+                                                <td class="messengerButtonsA">
+                                                    <a href="javascript:searchInactive();" class="messengerButtons"
+                                                       title="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.tooltips.searchInactive"/>">
+                                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.Inactive"/>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table class="messButtonsA" cellspacing="0" cellpadding="3">
+                                            <tr>
+                                                <td class="messengerButtonsA">
+                                                    <a href="javascript:searchAll();" class="messengerButtons"
+                                                       title="<fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.zdemographicfulltitlesearch.tooltips.searchAll"/>">
+                                                        <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.search.All"/>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
                     </tr>
                 </table>
-            </td>
-        </tr>
-    </form>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td class="MainTableBottomRowLeftColumn"></td>
+        <td class="MainTableBottomRowRightColumn"></td>
+    </tr>
 </table>
+
 <script>
     // Auto-close window and write selection back to parent if demographic was selected
     if ("<%=demographic_no%>" != "null") {

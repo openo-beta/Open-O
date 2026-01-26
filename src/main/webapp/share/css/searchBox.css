@@ -39,3 +39,15 @@ form {
     margin: auto 15px;
 }
 
+.searchBox .btn-primary {
+    color: #d0d0d0;
+}
+
+.searchBox input[type="search"]::placeholder {
+    color: #d0d0d0;
+}
+
+.container > h2 {
+    font-size: 18px;
+}
+
