@@ -153,9 +153,9 @@
             function buildRoute() {
                 pickRoute = "";
                 <% for (int j=0; j<d_route.length; j++) { %>
-                if (document.forms.RxSearchDrugForm.route<%=j%>.checked) pickRoute += " " + document.forms.RxSearchDrugForm.route<%=j%>.value;
+                if (document.forms[0].route<%=j%>.checked) pickRoute += " " + document.forms[0].route<%=j%>.value;
                 <% } %>
-                document.forms.RxSearchDrugForm.searchRoute.value = pickRoute;
+                document.forms[0].searchRoute.value = pickRoute;
             }
 
             function processData() {
