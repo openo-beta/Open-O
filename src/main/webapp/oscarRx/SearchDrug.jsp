@@ -229,9 +229,9 @@
                 <oscar:oscarPropertiesCheck property="drugref_route_search" value="on">
                 <%for (int i = 0; i < d_route.length; i++)
                                     {%>
-                if (document.forms[2].route<%=i%>.checked) pickRoute += " " + document.forms[2].route<%=i%>.value;
+                if (document.forms.RxSearchDrugForm.route<%=i%>.checked) pickRoute += " " + document.forms.RxSearchDrugForm.route<%=i%>.value;
                 <%}%>
-                document.forms[2].searchRoute.value = pickRoute;
+                document.forms.RxSearchDrugForm.searchRoute.value = pickRoute;
                 </oscar:oscarPropertiesCheck>
             }
 
@@ -513,9 +513,9 @@
 
                                         <script language="javascript">
                                             function reprint(drug) {
-                                                document.forms[0].drugList.value = drug;
-                                                document.forms[0].method.value = "reprint";
-                                                document.forms[0].submit();
+                                                document.forms.rePrescribeForm.drugList.value = drug;
+                                                document.forms.rePrescribeForm.method.value = "reprint";
+                                                document.forms.rePrescribeForm.submit();
 
                                             }
 
@@ -536,9 +536,9 @@
                                                     if (s.length > 1) {
                                                         s = s.substring(0, s.length - 1);
 
-                                                        document.forms[0].drugList.value = s;
-                                                        document.forms[0].method.value = "represcribe";
-                                                        document.forms[0].submit();
+                                                        document.forms.rePrescribeForm.drugList.value = s;
+                                                        document.forms.rePrescribeForm.method.value = "represcribe";
+                                                        document.forms.rePrescribeForm.submit();
                                                     }
                                                 }
                                             }
@@ -559,18 +559,18 @@
                                                     if (s.length > 1) {
                                                         if (confirm('Are you sure you wish to delete the selected prescriptions?') == true) {
                                                             s = s.substring(0, s.length - 1);
-                                                            document.forms[1].drugList.value = s;
-                                                            document.forms[1].submit();
+                                                            document.forms.deleteRxForm.drugList.value = s;
+                                                            document.forms.deleteRxForm.submit();
                                                         }
                                                     }
                                                 }
                                             }
                                         </script>
-                                        <form action="${pageContext.request.contextPath}/oscarRx/rePrescribe.do" method="post">
+                                        <form name="rePrescribeForm" action="${pageContext.request.contextPath}/oscarRx/rePrescribe.do" method="post">
                                             <input type="hidden" name="drugList" id="drugList"/>
                                             <input type="hidden" name="method">
                                         </form> <br>
-                                        <form action="${pageContext.request.contextPath}/oscarRx/deleteRx.do" method="post">
+                                        <form name="deleteRxForm" action="${pageContext.request.contextPath}/oscarRx/deleteRx.do" method="post">
                                             <input type="hidden" name="drugList" id="drugList"/>
                                         </form></td>
                                 </tr>
@@ -584,7 +584,7 @@
                     </tr>
 
                     <tr>
-                        <td><form action="${pageContext.request.contextPath}/oscarRx/searchDrug.do" focus="searchString"
+                        <td><form name="RxSearchDrugForm" action="${pageContext.request.contextPath}/oscarRx/searchDrug.do" focus="searchString"
                                        onsubmit="return processData();" method="post">
                             <input type="hidden" name="demographicNo" id="demographicNo"
                                          value="<%=new Integer(patient.getDemographicNo()).toString()%>"/>
@@ -641,7 +641,7 @@
                                     }
 
                                 </script>
-                                <form action="${pageContext.request.contextPath}/oscarRx/stash.do" method="post">
+                                <form name="RxStashForm" action="${pageContext.request.contextPath}/oscarRx/stash.do" method="post">
                                     <input type="hidden" name="action" id="action"/>
                                     <input type="hidden" name="stashId" id="stashId"/>
                                 </form>

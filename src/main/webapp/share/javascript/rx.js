@@ -135,9 +135,9 @@ function ShowDrugInfo(GN) {
 
 
 function reprint(drug) {
-    document.forms[0].drugList.value = drug;
-    document.forms[0].method.value = "reprint";
-    document.forms[0].submit();
+    document.forms.rePrescribeForm.drugList.value = drug;
+    document.forms.rePrescribeForm.method.value = "reprint";
+    document.forms.rePrescribeForm.submit();
 
 }
 
@@ -157,9 +157,9 @@ function RePrescribe() {
         if (s.length > 1) {
             s = s.substring(0, s.length - 1);
 
-            document.forms[0].drugList.value = s;
-            document.forms[0].method.value = "represcribe";
-            document.forms[0].submit();
+            document.forms.rePrescribeForm.drugList.value = s;
+            document.forms.rePrescribeForm.method.value = "represcribe";
+            document.forms.rePrescribeForm.submit();
         }
     }
 }
@@ -180,8 +180,8 @@ function Delete() {
             if (confirm('Are you sure you wish to delete the selected prescriptions?') == true) {
                 s = s.substring(0, s.length - 1);
 
-                document.forms[1].drugList.value = s;
-                document.forms[1].submit();
+                document.forms.deleteRxForm.drugList.value = s;
+                document.forms.deleteRxForm.submit();
             }
         }
     }

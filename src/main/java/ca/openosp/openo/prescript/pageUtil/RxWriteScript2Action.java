@@ -71,6 +71,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -1240,9 +1241,29 @@ public final class RxWriteScript2Action extends ActionSupport {
             }
         }
         List<Integer> deletedIndex = new ArrayList<>(allIndex);
-        Collections.sort(deletedIndex, Collections.reverseOrder());
+
+        // Safety check: if form is missing most stash items, likely a rendering/race condition issue.
+        // Don't auto-delete items in this case to prevent data loss.
+        int stashSize = bean.getStashSize();
+        int formItemCount = existingIndex.size();
+        int deleteCount = deletedIndex.size();
+
+        if (stashSize > 0 && formItemCount == 0) {
+            logger.warn("updateSaveAllDrugs: Form submitted with 0 items but stash has {} items. " +
+                    "Skipping auto-delete to prevent data loss.", stashSize);
+            deletedIndex.clear();
+        } else if (deleteCount > 0 && formItemCount > 0 && deleteCount > formItemCount) {
+            logger.warn("updateSaveAllDrugs: Suspicious delete count. Stash size: {}, form items: {}, " +
+                    "items to delete: {}. Proceeding but this may indicate a bug.",
+                    stashSize, formItemCount, deleteCount);
+        }
+
+        // Sort descending so removing by index doesn't shift later indices.
+        deletedIndex.sort(Collections.reverseOrder());
         // remove closed Rx from stash
         for (Integer n : deletedIndex) {
+            logger.debug("updateSaveAllDrugs: Removing stash item at index {} (drug: {})",
+                    n, bean.getStashItem(n).getBrandName());
             bean.removeStashItem(n);
             if (bean.getStashIndex() >= bean.getStashSize()) {
                 bean.setStashIndex(bean.getStashSize() - 1);
