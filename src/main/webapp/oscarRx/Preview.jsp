@@ -80,8 +80,8 @@
                 //document.forms[0].submit.value="print";
                 //var ret = checkAllDates();
                 //if(ret==true) {
-                document.forms[0].action = "<%= request.getContextPath() %>/form/createpdf?__title=Rx&__cfgfile=" + cfgPage + "&__template=a6blank";
-                document.forms[0].target = "_blank";
+                document.forms.previewForm.action = "<%= request.getContextPath() %>/form/createpdf?__title=Rx&__cfgfile=" + cfgPage + "&__template=a6blank";
+                document.forms.previewForm.target = "_blank";
                 //}
                 return true;
             }
@@ -142,7 +142,7 @@
         String strUser = (String) session.getAttribute("user");
         ProviderData user = new ProviderData(strUser);
     %>
-    <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
+    <form name="previewForm" action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
         <table width="400px" height="500px" cellspacing=0 cellpadding=10
                border=2>
