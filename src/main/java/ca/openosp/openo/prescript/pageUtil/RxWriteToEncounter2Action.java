@@ -62,13 +62,28 @@ public class RxWriteToEncounter2Action extends ActionSupport {
 
     private RxSessionBean rxSessionBean = null;
 
+    /**
+     * Retrieves the RxSessionBean for the current patient from the session.
+     */
+    private RxSessionBean getRxSessionBean(HttpSession session) {
+        String demoNoParam = request.getParameter("demographicNo");
+        if (demoNoParam != null && !demoNoParam.isEmpty()) {
+            try {
+                int demoNo = Integer.parseInt(demoNoParam);
+                return RxSessionBean.getFromSession(session, demoNo);
+            } catch (NumberFormatException e) {
+                // Fall through to legacy approach
+            }
+        }
+        return (RxSessionBean) session.getAttribute("RxSessionBean");
+    }
 
     public String execute() throws IOException, ServletException {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         checkPrivilege(loggedInInfo, "w");
 
         HttpSession session = request.getSession();
-        rxSessionBean = (RxSessionBean) session.getAttribute("RxSessionBean");
+        rxSessionBean = getRxSessionBean(session);
         if (rxSessionBean == null) {
             response.sendRedirect("error.html");
             return null;

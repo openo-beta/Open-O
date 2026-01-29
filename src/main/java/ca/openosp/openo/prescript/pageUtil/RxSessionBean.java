@@ -34,11 +34,121 @@ import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.OscarProperties;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class RxSessionBean implements java.io.Serializable {
     private static final Logger logger = MiscUtils.getLogger();
+    private static final String SESSION_KEY_PREFIX = "RxSessionBean_";
+    private static final String LEGACY_SESSION_KEY = "RxSessionBean";
+
+    /**
+     * Gets the session key for a specific patient's RxSessionBean.
+     * Uses per-patient keying to allow multiple patients' Medications tabs
+     * to be open simultaneously without interfering with each other.
+     *
+     * @param demographicNo the patient's demographic number
+     * @return the session attribute key for this patient's RxSessionBean
+     */
+    public static String getSessionKey(int demographicNo) {
+        return SESSION_KEY_PREFIX + demographicNo;
+    }
+
+    /**
+     * Retrieves the RxSessionBean for a specific patient from the session.
+     * First checks for the per-patient key, then falls back to legacy key
+     * if the demographic matches.
+     *
+     * @param session the HTTP session
+     * @param demographicNo the patient's demographic number
+     * @return the RxSessionBean for this patient, or null if not found
+     */
+    public static RxSessionBean getFromSession(HttpSession session, int demographicNo) {
+        // First try per-patient key
+        RxSessionBean bean = (RxSessionBean) session.getAttribute(getSessionKey(demographicNo));
+        if (bean != null) {
+            return bean;
+        }
+        // Fall back to legacy key if demographic matches (for backward compatibility)
+        bean = (RxSessionBean) session.getAttribute(LEGACY_SESSION_KEY);
+        if (bean != null && bean.getDemographicNo() == demographicNo) {
+            // Migrate to new key
+            session.setAttribute(getSessionKey(demographicNo), bean);
+            return bean;
+        }
+        return null;
+    }
+
+    /**
+     * Retrieves the RxSessionBean for a specific patient from the request's session.
+     *
+     * @param request the HTTP request
+     * @param demographicNo the patient's demographic number
+     * @return the RxSessionBean for this patient, or null if not found
+     */
+    public static RxSessionBean getFromSession(HttpServletRequest request, int demographicNo) {
+        return getFromSession(request.getSession(), demographicNo);
+    }
+
+    /**
+     * Retrieves the RxSessionBean from the request, automatically determining the demographicNo
+     * from request parameters. Checks for "demographicNo" parameter first, then falls back
+     * to legacy session key.
+     *
+     * @param request the HTTP request
+     * @return the RxSessionBean, or null if not found
+     */
+    public static RxSessionBean getFromSession(HttpServletRequest request) {
+        String demoNoParam = request.getParameter("demographicNo");
+        if (demoNoParam != null && !demoNoParam.isEmpty()) {
+            try {
+                int demoNo = Integer.parseInt(demoNoParam);
+                return getFromSession(request.getSession(), demoNo);
+            } catch (NumberFormatException e) {
+                // Fall through to legacy approach
+            }
+        }
+        // Fallback to legacy key
+        return (RxSessionBean) request.getSession().getAttribute(LEGACY_SESSION_KEY);
+    }
+
+    /**
+     * Saves the RxSessionBean to the session using both per-patient key and legacy key.
+     * The per-patient key ensures multiple patients' data doesn't interfere.
+     * The legacy key maintains backward compatibility with JSPs that use
+     * ${sessionScope.RxSessionBean}.
+     *
+     * @param session the HTTP session
+     * @param bean the RxSessionBean to save
+     */
+    public static void saveToSession(HttpSession session, RxSessionBean bean) {
+        // Save with per-patient key (preserves data across multiple patient tabs)
+        session.setAttribute(getSessionKey(bean.getDemographicNo()), bean);
+        // Also save with legacy key for JSP backward compatibility
+        session.setAttribute(LEGACY_SESSION_KEY, bean);
+    }
+
+    /**
+     * Saves the RxSessionBean to the request's session using a per-patient key.
+     *
+     * @param request the HTTP request
+     * @param bean the RxSessionBean to save
+     */
+    public static void saveToSession(HttpServletRequest request, RxSessionBean bean) {
+        saveToSession(request.getSession(), bean);
+    }
+
+    /**
+     * Removes the RxSessionBean for a specific patient from the session.
+     *
+     * @param session the HTTP session
+     * @param demographicNo the patient's demographic number
+     */
+    public static void removeFromSession(HttpSession session, int demographicNo) {
+        session.removeAttribute(getSessionKey(demographicNo));
+    }
 
     private String providerNo = null;
     private int demographicNo = 0;
