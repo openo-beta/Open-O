@@ -226,6 +226,7 @@
 
   <script type="text/javascript">
     const ctx = '${ ctx }';
+    var currentDemographicNo = '<%=demoNo%>';
   </script>
   <script type="text/javascript" src="${ ctx }/library/jquery/jquery-3.6.4.min.js"></script>
   <script type="text/javascript" src="${ ctx }/library/jquery/jquery-ui-1.12.1.min.js"></script>
@@ -716,7 +717,7 @@
 
     //not used , represcribe a drug
     function represcribeOnLoad(drugId) {
-      let data = "method=saveReRxDrugIdToStash&drugId=" + encodeURIComponent(drugId) + "&rand=" + Math.floor(Math.random() * 10001);
+      let data = "method=saveReRxDrugIdToStash&drugId=" + encodeURIComponent(drugId) + "&rand=" + Math.floor(Math.random() * 10001) + "&demographicNo=" + currentDemographicNo;
       let url = ctx + "/oscarRx/rePrescribe2.do";
       new Ajax.Updater('rxText', url, {
         method: 'POST', parameters: data,
@@ -1659,7 +1660,7 @@
 
   function changeLt(element, drugId) {
     if (confirm('<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.Prescription.changeDrugLongTermConfirm"/>') === true) {
-      const data = "ltDrugId=" + encodeURIComponent(drugId) + "&isLongTerm=" + element.checked + "&rand=" + generateSecureRandomId();
+      const data = "ltDrugId=" + encodeURIComponent(drugId) + "&isLongTerm=" + element.checked + "&rand=" + generateSecureRandomId() + "&demographicNo=" + currentDemographicNo;
       const url = ctx + "/oscarRx/WriteScript.do?parameterValue=updateLongTermStatus";
       new Ajax.Request(url, {
         method: 'post',
@@ -1762,7 +1763,7 @@
   window.mb = mb; // exposed for iframe close buttons (parent.mb.hide())
 
   function displayMedHistory(randomId) {
-    let data = "randomId=" + randomId;
+    let data = "randomId=" + randomId + "&demographicNo=" + currentDemographicNo;
     new Ajax.Request(ctx + "/oscarRx/WriteScript.do?parameterValue=listPreviousInstructions",
       {
         method: 'post', parameters: data, asynchronous: false, onSuccess: function (transport) {
@@ -1788,7 +1789,7 @@
         data = "elementId=" + elementId + "&propertyValue=" + encodeURIComponent($(elementId).value);
       else
         data = "elementId=" + elementId + "&propertyValue=" + encodeURIComponent($(elementId).innerHTML);
-      data = data + "&rand=" + Math.floor(Math.random() * 10001);
+      data = data + "&rand=" + Math.floor(Math.random() * 10001) + "&demographicNo=" + currentDemographicNo;
       new Ajax.Request(url, {method: 'post', parameters: data});
     }
   }
@@ -1827,7 +1828,7 @@
     let randomId = elementId.split("_")[1];
     let url = ctx + "/oscarRx/WriteScript.do?parameterValue=updateSpecialInstruction";
     let data = "randomId=" + randomId + "&specialInstruction=" + encodeURIComponent($(elementId).value);
-    data = data + "&rand=" + Math.floor(Math.random() * 10001);
+    data = data + "&rand=" + Math.floor(Math.random() * 10001) + "&demographicNo=" + currentDemographicNo;
     new Ajax.Request(url, {method: 'post', parameters: data});
   }
 
@@ -1841,6 +1842,7 @@
     }
 
   }
+
 
   function updateMoreLess(elementId) {
     if ($(elementId).innerHTML == 'more')
@@ -1860,7 +1862,7 @@
       //call another function to bring up prescribe.jsp
       let url = ctx + "/oscarRx/WriteScript.do?parameterValue=normalDrugSetCustom";
       let customDrugName = $("drugName_" + randomId).getValue();
-      let data = "randomId=" + randomId + "&customDrugName=" + encodeURIComponent(customDrugName);
+      let data = "randomId=" + randomId + "&customDrugName=" + encodeURIComponent(customDrugName) + "&demographicNo=" + currentDemographicNo;
       new Ajax.Updater('rxText', url, {
         method: 'get',
         parameters: data,
@@ -1897,7 +1899,7 @@
 			 */
   function iterateStash() {
     let url = ctx + "/oscarRx/WriteScript.do";
-    let data = "parameterValue=iterateStash&rand=" + generateSecureRandomId();
+    let data = "parameterValue=iterateStash&rand=" + generateSecureRandomId() + "&demographicNo=" + currentDemographicNo;
     new Ajax.Updater('rxText', url, {
       method: 'POST', parameters: data, asynchronous: true,
       requestHeaders: {'Accept': 'application/json'},
@@ -2181,7 +2183,7 @@
       + '\n\nAre you sure you wish to use this feature?')) {
       let randomId = Math.round(Math.random() * 1000000);
       let url = ctx + "/oscarRx/WriteScript.do?parameterValue=newCustomNote";
-      let data = "randomId=" + randomId;
+      let data = "randomId=" + randomId + "&demographicNo=" + currentDemographicNo;
       new Ajax.Updater('rxText', url, {
         method: 'get',
         parameters: data,
@@ -2205,7 +2207,7 @@
       let randomId = Math.round(Math.random() * 1000000);
       let searchString = $("searchString").value;
       let url = ctx + "/oscarRx/WriteScript.do?parameterValue=newCustomDrug&name=" + encodeURIComponent(searchString);
-      let data = "randomId=" + randomId;
+      let data = "randomId=" + randomId + "&demographicNo=" + currentDemographicNo;
       new Ajax.Updater('rxText', url, {
         method: 'get', parameters: data, asynchronous: true, evalScripts: true,
         insertion: Insertion.Bottom, onComplete: function (transport) {
@@ -2223,7 +2225,7 @@
     let ar = elemId.split("_");
     let rand = ar[1];
     let url = ctx + "/oscarRx/WriteScript.do?parameterValue=saveCustomName";
-    let data = "customName=" + encodeURIComponent(element.value) + "&randomId=" + rand;
+    let data = "customName=" + encodeURIComponent(element.value) + "&randomId=" + rand + "&demographicNo=" + currentDemographicNo;
     let instruction = "instructions_" + rand;
     let quantity = "quantity_" + rand;
     let repeat = "repeats_" + rand;
@@ -2232,6 +2234,10 @@
 
       }
     });
+  }
+
+  function updateDeleteOnCloseRxBox() {
+    $('deleteOnCloseRxBox').value = 'true';
   }
 
   function popForm2(scriptId) {
@@ -2838,11 +2844,11 @@
       let ar = elementId.split("_");
       let drugId = ar[1];
       if (drugId != null && $(elementId).checked == true) {
-        let data = "reRxDrugId=" + encodeURIComponent(drugId) + "&action=addToReRxDrugIdList&rand=" + Math.floor(Math.random() * 10001);
+        let data = "reRxDrugId=" + encodeURIComponent(drugId) + "&action=addToReRxDrugIdList&rand=" + Math.floor(Math.random() * 10001) + "&demographicNo=" + currentDemographicNo;
         let url = ctx + "/oscarRx/WriteScript.do?parameterValue=updateReRxDrug";
         new Ajax.Request(url, {method: 'get', parameters: data});
       } else if (drugId != null) {
-        let data = "reRxDrugId=" + encodeURIComponent(drugId) + "&action=removeFromReRxDrugIdList&rand=" + Math.floor(Math.random() * 10001);
+        let data = "reRxDrugId=" + encodeURIComponent(drugId) + "&action=removeFromReRxDrugIdList&rand=" + Math.floor(Math.random() * 10001) + "&demographicNo=" + currentDemographicNo;
         let url = ctx + "/oscarRx/WriteScript.do?parameterValue=updateReRxDrug";
         new Ajax.Request(url, {method: 'get', parameters: data});
       }
@@ -2851,7 +2857,7 @@
 
     function removeReRxDrugId(drugId) {
       if (drugId != null) {
-        const data = "reRxDrugId=" + encodeURIComponent(drugId) + "&action=removeFromReRxDrugIdList&rand=" + Math.floor(Math.random() * 10001);
+        const data = "reRxDrugId=" + encodeURIComponent(drugId) + "&action=removeFromReRxDrugIdList&rand=" + Math.floor(Math.random() * 10001) + "&demographicNo=" + currentDemographicNo;
         const url = ctx + "/oscarRx/WriteScript.do?parameterValue=updateReRxDrug";
         new Ajax.Request(url, {method: 'get', parameters: data});
       }
@@ -2867,6 +2873,7 @@
       if (drugId != null && $("reRxCheckBox_" + drugId).checked === true) {
 
         let url = ctx + "/oscarRx/rePrescribe2.do?method=represcribeMultiple&rand=" + Math.floor(Math.random() * 10001);
+        let data = "demographicNo=" + currentDemographicNo;
         new Ajax.Updater('rxText', url, {
           method: 'get', parameters: data, asynchronous: false, evalScripts: true,
           insertion: Insertion.Bottom, onSuccess: function (transport) {
@@ -2874,11 +2881,11 @@
           }
         });
       } else if (drugId != null) {
-        let dataUpdateId = "reRxDrugId=" + encodeURIComponent(toArchive) + "&action=addToReRxDrugIdList&rand=" + Math.floor(Math.random() * 10001);
+        let dataUpdateId = "reRxDrugId=" + encodeURIComponent(toArchive) + "&action=addToReRxDrugIdList&rand=" + Math.floor(Math.random() * 10001) + "&demographicNo=" + currentDemographicNo;
         let urlUpdateId = ctx + "/oscarRx/WriteScript.do?parameterValue=updateReRxDrug";
         new Ajax.Request(urlUpdateId, {method: 'get', parameters: dataUpdateId});
 
-        let data = "drugId=" + encodeURIComponent(drugId);
+        let data = "drugId=" + encodeURIComponent(drugId) + "&demographicNo=" + currentDemographicNo;
         let url = ctx + "/oscarRx/rePrescribe2.do?method=represcribe2&rand=" + Math.floor(Math.random() * 10001);
         new Ajax.Updater('rxText', url, {
           method: 'get', parameters: data, evalScripts: true,
@@ -2886,6 +2893,7 @@
             // updateCurrentInteractions();
           }
         });
+
 
       }
     }
@@ -2955,7 +2963,7 @@
      * @param drugId The ID of the drug to re-prescribe.
      */
     function rePrescribe2(uiRefId, drugId) {
-      const data = "drugId=" + encodeURIComponent(drugId);
+      const data = "drugId=" + encodeURIComponent(drugId) + "&demographicNo=" + currentDemographicNo;
       const url = ctx + "/oscarRx/rePrescribe2.do?method=represcribe2&rand=" + uiRefId;
       new Ajax.Updater('rxText', url, {
         method: 'get', parameters: data, evalScripts: true,
@@ -2967,8 +2975,9 @@
 
     function rePrescribeMulti() {
       const url = ctx + "/oscarRx/rePrescribe2.do?method=represcribeMultiple&rand=" + Math.floor(Math.random() * 10001);
+      const data = "demographicNo=" + currentDemographicNo;
       new Ajax.Updater('rxText', url, {
-        method: 'get', asynchronous: false, evalScripts: true,
+        method: 'get', parameters: data, asynchronous: false, evalScripts: true,
         insertion: Insertion.Bottom, onSuccess: function (transport) {
           renderRxStage();
         }
@@ -2982,7 +2991,7 @@
      * @param drugId The ID of the drug to add.
      */
     function addDrugToReRxListInSession(uiRefId, drugId) {
-      const dataUpdateId = "reRxDrugId=" + encodeURIComponent(drugId) + "&action=addToReRxDrugIdList&rand=" + uiRefId;
+      const dataUpdateId = "reRxDrugId=" + encodeURIComponent(drugId) + "&action=addToReRxDrugIdList&rand=" + uiRefId + "&demographicNo=" + currentDemographicNo;
       const urlUpdateId = ctx + "/oscarRx/WriteScript.do?parameterValue=updateReRxDrug";
       new Ajax.Request(urlUpdateId, {method: 'get', parameters: dataUpdateId});
     }
@@ -3060,7 +3069,7 @@
       let elemId = element.id;
       let ar = elemId.split("_");
       let rand = ar[1];
-      let data = "parameterValue=updateDrug&randomId=" + rand + "&action=updateQty&quantity=" + encodeURIComponent(element.value);
+      let data = "parameterValue=updateDrug&randomId=" + rand + "&action=updateQty&quantity=" + encodeURIComponent(element.value) + "&demographicNo=" + currentDemographicNo;
       let url = ctx + "/oscarRx/WriteScript.do";
 
       let rxMethod = "rxMethod_" + rand;
@@ -3414,7 +3423,7 @@
           }
           %>
        setPharmacyId();
-      let data = Form.serialize($('drugForm'));
+      let data = Form.serialize($('drugForm')) + "&demographicNo=" + currentDemographicNo;
       let url = ctx + "/oscarRx/WriteScript.do?parameterValue=updateSaveAllDrugs&rand=" + Math.floor(Math.random() * 10001);
       new Ajax.Request(url,
         {
@@ -3455,7 +3464,7 @@
       }
       <%}%>
       setPharmacyId();
-      let data = Form.serialize($('drugForm'));
+      let data = Form.serialize($('drugForm')) + "&demographicNo=" + currentDemographicNo;
       let url = ctx + "/oscarRx/WriteScript.do?parameterValue=updateSaveAllDrugs&rand=" + Math.floor(Math.random() * 10001);
       new Ajax.Request(url,
         {

@@ -129,7 +129,7 @@ public final class RxDeleteRx2Action extends ActionSupport {
         checkPrivilege(request, PRIVILEGE_UPDATE);
 
         // Setup variables
-        RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
+        RxSessionBean bean = RxSessionBean.getFromSession(request);
         if (bean == null) {
             response.sendRedirect("error.html");
             return null;
@@ -200,7 +200,7 @@ public final class RxDeleteRx2Action extends ActionSupport {
         checkPrivilege(request, PRIVILEGE_UPDATE);
 
         // Setup variables
-        RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
+        RxSessionBean bean = RxSessionBean.getFromSession(request);
         if (bean == null) {
             response.sendRedirect("error.html");
             return null;
@@ -231,7 +231,7 @@ public final class RxDeleteRx2Action extends ActionSupport {
      */
     public String clearStash()
             throws IOException {
-        RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
+        RxSessionBean bean = RxSessionBean.getFromSession(request);
         if (bean == null) {
             response.sendRedirect("error.html");
             return null;
@@ -253,7 +253,7 @@ public final class RxDeleteRx2Action extends ActionSupport {
             throws IOException {
         checkPrivilege(request, PRIVILEGE_UPDATE);
 
-        RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
+        RxSessionBean bean = RxSessionBean.getFromSession(request);
         if (bean == null) {
             response.sendRedirect("error.html");
             return null;

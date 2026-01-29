@@ -172,27 +172,21 @@ public final class RxShowAllergy2Action extends ActionSupport {
         if (demo_no == null) {
             return "failure";
         }
-        // Setup bean
-        RxSessionBean bean;
+        // Setup bean - use per-patient session key to allow multiple patients' tabs
+        int demographicNoInt = Integer.parseInt(demo_no);
+        RxSessionBean bean = RxSessionBean.getFromSession(request, demographicNoInt);
 
-        if (request.getSession().getAttribute("RxSessionBean") != null) {
-            bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
-            if ((bean.getProviderNo() != user_no) || (bean.getDemographicNo() != Integer.parseInt(demo_no))) {
-                bean = new RxSessionBean();
-            }
-
-        } else {
+        if (bean == null) {
             bean = new RxSessionBean();
+            bean.setDemographicNo(demographicNoInt);
         }
 
-
         bean.setProviderNo(user_no);
-        bean.setDemographicNo(Integer.parseInt(demo_no));
         if (view != null) {
             bean.setView(view);
         }
 
-        request.getSession().setAttribute("RxSessionBean", bean);
+        RxSessionBean.saveToSession(request, bean);
 
         if (request.getParameter("method") != null && request.getParameter("method").equals("reorder")) {
             reorder(request);
@@ -232,7 +226,17 @@ public final class RxShowAllergy2Action extends ActionSupport {
         if (disabled.equals("false")) {
 
             ObjectMapper objectMapper = new ObjectMapper();
-            RxSessionBean rxSessionBean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
+            String demographicNoParam = request.getParameter("demographicNo");
+            if (demographicNoParam == null) {
+                MiscUtils.getLogger().error("getAllergyData called without demographicNo parameter");
+                return;
+            }
+            int demographicNo = Integer.parseInt(demographicNoParam);
+            RxSessionBean rxSessionBean = RxSessionBean.getFromSession(request, demographicNo);
+            if (rxSessionBean == null) {
+                MiscUtils.getLogger().error("No RxSessionBean found for demographicNo: " + demographicNo);
+                return;
+            }
             Allergy[] allergies = RxPatientData.getPatient(loggedInInfo, rxSessionBean.getDemographicNo()).getActiveAllergies();
 
             if (loggedInInfo.getCurrentFacility().isIntegratorEnabled()) {
