@@ -828,7 +828,7 @@
     <body topmargin="0" leftmargin="0" vlink="#0000FF"
           onload="javascript:pageLoad();">
 
-    <form action="${pageContext.request.contextPath}/oscarRx/writeScript.do" method="post" id="frm" name="RxWriteScriptForm">
+    <form action="${pageContext.request.contextPath}/oscarRx/writeScript.do" method="post" id="frm" name="frm">
 
     <input type="hidden" name="action" id="action"/>
 
@@ -1476,7 +1476,7 @@ Outside ProOhip: <%= thisForm.getOutsideProviderOhip() %><br>
                                     frm[0].submit();
                                 }
                             </script>
-                            <form name="RxStashForm" action="${pageContext.request.contextPath}/oscarRx/stash.do" method="post">
+                            <form action="${pageContext.request.contextPath}/oscarRx/stash.do" method="post">
                                 <input type="hidden" name="action" value="">
                                 <input type="hidden" name="stashId"/>
                             </form>

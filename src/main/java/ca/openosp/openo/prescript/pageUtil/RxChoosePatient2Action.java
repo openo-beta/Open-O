@@ -82,22 +82,13 @@ public final class RxChoosePatient2Action extends ActionSupport {
         user_no = (String) request.getSession().getAttribute("user");
         // p("user_no",user_no);
         // p("frm",frm.toString());
-        // Setup bean - preserve existing session bean if it's for the same patient
-        int demographicNoInt = Integer.parseInt(this.getDemographicNo());
-        RxSessionBean existingBean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
-        RxSessionBean bean;
+        // Setup bean
+        RxSessionBean bean = new RxSessionBean();
 
-        if (existingBean != null && existingBean.getDemographicNo() == demographicNoInt) {
-            // Reuse existing bean to preserve staged medications (stash)
-            bean = existingBean;
-            bean.setProviderNo(user_no);
-        } else {
-            // Different patient or no existing bean - create new
-            bean = new RxSessionBean();
-            bean.setProviderNo(user_no);
-            bean.setDemographicNo(demographicNoInt);
-            request.getSession().setAttribute("RxSessionBean", bean);
-        }
+        bean.setProviderNo(user_no);
+        bean.setDemographicNo(Integer.parseInt(this.getDemographicNo()));
+
+        request.getSession().setAttribute("RxSessionBean", bean);
 
         RxPatientData rx = null;
         RxPatientData.Patient patient = RxPatientData.getPatient(loggedInInfo, bean.getDemographicNo());
