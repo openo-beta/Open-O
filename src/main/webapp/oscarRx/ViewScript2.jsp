@@ -84,21 +84,20 @@
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.title"/></title>
 
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
-        <c:if test="${empty sessionScope.RxSessionBean}">
-            <c:redirect url="error.html"/>
-        </c:if>
-        <c:if test="${not empty sessionScope.RxSessionBean}">
-            <c:set var="bean" value="${sessionScope.RxSessionBean}" scope="page"/>
-            <c:if test="${bean.valid == false}">
-                <c:redirect url="error.html"/>
-            </c:if>
-        </c:if>
+        <%
+            // Get session bean using demographicNo parameter for per-patient isolation
+            RxSessionBean bean = RxSessionBean.getFromSession(request);
+            if (bean == null || !bean.isValid()) {
+                response.sendRedirect("error.html");
+                return;
+            }
+            pageContext.setAttribute("bean", bean);
+        %>
         <c:set var="ctx" value="${pageContext.request.contextPath}"/>
         <%!
             ProviderManager providerManager = SpringUtils.getBean(ProviderManager.class);
         %>
         <%
-            RxSessionBean bean = (RxSessionBean) pageContext.findAttribute("bean");
             Provider provider = providerManager.getProvider(bean.getProviderNo());
             String providerFax = provider.getWorkPhone();
             if (providerFax == null) {
@@ -236,6 +235,10 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
 
         <script type="text/javascript">
+            var currentDemographicNo = '<%=bean.getDemographicNo()%>';
+        </script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/oscarRx/js/rxSessionInterceptor.js"></script>
+        <script type="text/javascript">
             function resetStash() {
 
                 var url = ctx + "/oscarRx/deleteRx.do?parameterValue=clearStash";
@@ -255,7 +258,7 @@
                 var url = ctx + "/oscarRx/deleteRx.do?parameterValue=clearReRxDrugList";
                 var data = "";
                 new Ajax.Request(url, {
-                    method: 'post', parameters: data
+                    method: 'post'
                 });
             }
 
@@ -646,13 +649,14 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                     <div class="DivContentPadding">
 					<% if (bean.getStashSize() > 0) { %>
                                         <iframe id='preview' name='preview' width=420px height=890px
-							src="oscarRx/Preview2.jsp?scriptId=<%=bean.getStashItem(0).getScript_no()%>&rePrint=<%=reprint%>&pharmacyId=<%=request.getParameter("pharmacyId")%>"
+							src="oscarRx/Preview2.jsp?scriptId=<%=bean.getStashItem(0).getScript_no()%>&rePrint=<%=reprint%>&pharmacyId=<%=request.getParameter("pharmacyId")%>&demographicNo=<%=bean.getDemographicNo()%>"
 							align=center border=0 frameborder=0></iframe></div>
 					<% } %>
                                 </td>
 
                                 <td valign=top><form action="${pageContext.request.contextPath}/oscarRx/clearPending.do" method="post">
                                     <input type="hidden" name="action" id="action" value=""/>
+                                    <input type="hidden" name="demographicNo" value="<%=bean.getDemographicNo()%>"/>
                                     <div class="warning-note" id="faxWarningNote">
                                         <strong>Warning:</strong> faxing is disabled because no pharmacy fax number is
                                         available.</br></br>To enable faxing, close this window and select a pharmacy

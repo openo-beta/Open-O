@@ -228,6 +228,7 @@
     const ctx = '${ ctx }';
     var currentDemographicNo = '<%=demoNo%>';
   </script>
+  <script type="text/javascript" src="${ ctx }/oscarRx/js/rxSessionInterceptor.js"></script>
   <script type="text/javascript" src="${ ctx }/library/jquery/jquery-3.6.4.min.js"></script>
   <script type="text/javascript" src="${ ctx }/library/jquery/jquery-ui-1.12.1.min.js"></script>
   <script type="text/javascript" src="${pageContext.request.contextPath}/library/DataTables/DataTables-1.13.4/js/jquery.dataTables.js"></script>
