@@ -44,6 +44,68 @@ public class RxSessionBean implements java.io.Serializable {
     private static final String SESSION_KEY_PREFIX = "RxSessionBean_";
     private static final String LEGACY_SESSION_KEY = "RxSessionBean";
 
+    /** Default max age for stale session cleanup: 30 minutes */
+    private static final long DEFAULT_MAX_AGE_MS = 30 * 60 * 1000;
+
+    /** Timestamp of last access to this bean, used for stale session cleanup */
+    private long lastAccessTime = System.currentTimeMillis();
+
+    /**
+     * Updates the last access timestamp. Called when the bean is retrieved from session.
+     */
+    public void touch() {
+        this.lastAccessTime = System.currentTimeMillis();
+    }
+
+    /**
+     * Gets the last access time for this bean.
+     * @return timestamp in milliseconds
+     */
+    public long getLastAccessTime() {
+        return lastAccessTime;
+    }
+
+    /**
+     * Cleans up stale RxSessionBeans from the session that haven't been accessed
+     * within the specified time period. This prevents session bloat when users
+     * work with multiple patients.
+     *
+     * @param session the HTTP session
+     * @param maxAgeMs maximum age in milliseconds before a bean is considered stale
+     */
+    public static void cleanupStaleBeans(HttpSession session, long maxAgeMs) {
+        long now = System.currentTimeMillis();
+        List<String> keysToRemove = new ArrayList<>();
+
+        Enumeration<String> names = session.getAttributeNames();
+        while (names.hasMoreElements()) {
+            String name = names.nextElement();
+            if (name.startsWith(SESSION_KEY_PREFIX)) {
+                Object attr = session.getAttribute(name);
+                if (attr instanceof RxSessionBean) {
+                    RxSessionBean bean = (RxSessionBean) attr;
+                    if (now - bean.getLastAccessTime() > maxAgeMs) {
+                        keysToRemove.add(name);
+                    }
+                }
+            }
+        }
+
+        for (String key : keysToRemove) {
+            logger.debug("Cleaning up stale RxSessionBean: " + key);
+            session.removeAttribute(key);
+        }
+    }
+
+    /**
+     * Cleans up stale RxSessionBeans using the default max age (30 minutes).
+     *
+     * @param session the HTTP session
+     */
+    public static void cleanupStaleBeans(HttpSession session) {
+        cleanupStaleBeans(session, DEFAULT_MAX_AGE_MS);
+    }
+
     /**
      * Gets the session key for a specific patient's RxSessionBean.
      * Uses per-patient keying to allow multiple patients' Medications tabs
@@ -69,11 +131,13 @@ public class RxSessionBean implements java.io.Serializable {
         // First try per-patient key
         RxSessionBean bean = (RxSessionBean) session.getAttribute(getSessionKey(demographicNo));
         if (bean != null) {
+            bean.touch();
             return bean;
         }
         // Fall back to legacy key if demographic matches (for backward compatibility)
         bean = (RxSessionBean) session.getAttribute(LEGACY_SESSION_KEY);
         if (bean != null && bean.getDemographicNo() == demographicNo) {
+            bean.touch();
             // Migrate to new key
             session.setAttribute(getSessionKey(demographicNo), bean);
             return bean;
@@ -111,7 +175,11 @@ public class RxSessionBean implements java.io.Serializable {
             }
         }
         // Fallback to legacy key
-        return (RxSessionBean) request.getSession().getAttribute(LEGACY_SESSION_KEY);
+        RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute(LEGACY_SESSION_KEY);
+        if (bean != null) {
+            bean.touch();
+        }
+        return bean;
     }
 
     /**
@@ -124,6 +192,12 @@ public class RxSessionBean implements java.io.Serializable {
      * @param bean the RxSessionBean to save
      */
     public static void saveToSession(HttpSession session, RxSessionBean bean) {
+        // Clean up stale beans to prevent session bloat
+        cleanupStaleBeans(session);
+
+        // Update access time
+        bean.touch();
+
         // Save with per-patient key (preserves data across multiple patient tabs)
         session.setAttribute(getSessionKey(bean.getDemographicNo()), bean);
         // Also save with legacy key for JSP backward compatibility

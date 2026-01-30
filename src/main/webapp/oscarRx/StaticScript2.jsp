@@ -134,7 +134,9 @@
 
         <script language="javascript">
             var currentDemographicNo = '<%=currentDemographicNo%>';
-
+        </script>
+        <script type="text/javascript" src="<c:out value="${ctx}/oscarRx/js/rxSessionInterceptor.js"/>"></script>
+        <script language="javascript">
             function addFavorite2(drugId, brandName) {
                 var favoriteName = window.prompt('Please enter a name for the Favorite:', brandName);
 
@@ -153,11 +155,11 @@
 
             //represcribe a drug
             function reRxDrugSearch3(reRxDrugId) {
-                var dataUpdateId = "reRxDrugId=" + encodeURIComponent(reRxDrugId) + "&action=addToReRxDrugIdList&rand=" + Math.floor(Math.random() * 10001) + "&demographicNo=" + currentDemographicNo;
+                var dataUpdateId = "reRxDrugId=" + encodeURIComponent(reRxDrugId) + "&action=addToReRxDrugIdList&rand=" + Math.floor(Math.random() * 10001);
                 var urlUpdateId = "<c:out value="${ctx}"/>" + "/oscarRx/WriteScript.do?parameterValue=updateReRxDrug";
                 new Ajax.Request(urlUpdateId, {method: 'get', parameters: dataUpdateId});
 
-                var data = "drugId=" + encodeURIComponent(reRxDrugId) + "&demographicNo=" + currentDemographicNo;
+                var data = "drugId=" + encodeURIComponent(reRxDrugId);
                 var url = "<c:out value="${ctx}"/>" + "/oscarRx/rePrescribe2.do?method=saveReRxDrugIdToStash";
                 new Ajax.Request(url, {
                     method: 'post', parameters: data, asynchronous: false, onSuccess: function (transport) {
