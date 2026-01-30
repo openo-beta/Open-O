@@ -14,6 +14,17 @@
     <constant name="struts.multipart.maxSize" value="524288000" />
     <!-- Default package extending struts-default -->
 	<package name="default" namespace="/" extends="struts-default">
+
+        <!-- Interceptors for multi-patient session management -->
+        <interceptors>
+            <interceptor name="rxSession"
+                         class="ca.openosp.openo.prescript.pageUtil.RxSessionInterceptor"/>
+            <interceptor-stack name="rxStack">
+                <interceptor-ref name="rxSession"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+
         <action name="logout" class="ca.openosp.openo.login.Logout2Action">
             <result name="success">/index.jsp</result>
             <result name="logoutsso">/ssoLogin.do?method=ssoLogout</result>

@@ -113,14 +113,19 @@
         </style>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
 
-        <%
-            // Get session bean using demographicNo parameter for per-patient isolation
-            bean = RxSessionBean.getFromSession(request);
-            if (bean == null || !bean.isValid()) {
-                response.sendRedirect("error.html");
-                return;
-            }
-        %>
+        <c:if test="${empty RxSessionBean}">
+            <% response.sendRedirect("error.html"); %>
+        </c:if>
+        <c:if test="${not empty sessionScope.RxSessionBean}">
+            <%
+                // Directly access the RxSessionBean from the session
+                bean = (RxSessionBean) session.getAttribute("RxSessionBean");
+                if (bean != null && !bean.isValid()) {
+                    response.sendRedirect("error.html");
+                    return; // Ensure no further JSP processing
+                }
+            %>
+        </c:if>
 
             <%--<link rel="stylesheet" type="text/css" href="styles.css">--%>
             <%--<script type="text/javascript" language="Javascript">--%>

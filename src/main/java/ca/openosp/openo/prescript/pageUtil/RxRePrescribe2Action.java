@@ -86,7 +86,7 @@ public final class RxRePrescribe2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         checkPrivilege(loggedInInfo, PRIVILEGE_READ);
 
-        RxSessionBean sessionBeanRX = RxSessionBean.getFromSession(request);
+        RxSessionBean sessionBeanRX = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
         if (sessionBeanRX == null) {
             response.sendRedirect("error.html");
             return null;
@@ -131,7 +131,7 @@ public final class RxRePrescribe2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         checkPrivilege(loggedInInfo, PRIVILEGE_READ);
 
-        RxSessionBean sessionBeanRX = RxSessionBean.getFromSession(request);
+        RxSessionBean sessionBeanRX = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
         if (sessionBeanRX == null) {
             response.sendRedirect("error.html");
             return null;
@@ -171,7 +171,7 @@ public final class RxRePrescribe2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         checkPrivilege(loggedInInfo, PRIVILEGE_WRITE);
 
-        RxSessionBean beanRX = RxSessionBean.getFromSession(request);
+        RxSessionBean beanRX = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
         if (beanRX == null) {
             response.sendRedirect("error.html");
             return null;
@@ -239,7 +239,7 @@ public String saveDigitalSignature() throws IOException {
     
     // Retrieve and validate the prescription session bean
     RxSessionBean sessionBeanRX =
-        RxSessionBean.getFromSession(request);
+        (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
     if (sessionBeanRX == null) {
         response.sendRedirect("error.html");
         return null;
@@ -282,7 +282,7 @@ public String saveDigitalSignature() throws IOException {
         MiscUtils.getLogger().debug("================in saveReRxDrugIdToStash  of RxRePrescribe2Action.java=================");
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
-        RxSessionBean bean = RxSessionBean.getFromSession(request);
+        RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
         if (bean == null) {
             response.sendRedirect("error.html");
             return null;
@@ -343,7 +343,7 @@ public String saveDigitalSignature() throws IOException {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         checkPrivilege(loggedInInfo, PRIVILEGE_WRITE);
 
-        RxSessionBean beanRX = RxSessionBean.getFromSession(request);
+        RxSessionBean beanRX = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
         if (beanRX == null) {
             response.sendRedirect("error.html");
             return null;
@@ -410,7 +410,7 @@ public String saveDigitalSignature() throws IOException {
         checkPrivilege(loggedInInfo, PRIVILEGE_WRITE);
         CaseManagementManager caseManagementManager = SpringUtils.getBean(CaseManagementManager.class);
 
-        RxSessionBean beanRX = RxSessionBean.getFromSession(request);
+        RxSessionBean beanRX = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
         if (beanRX == null) {
             response.sendRedirect("error.html");
             return null;
@@ -441,7 +441,7 @@ public String saveDigitalSignature() throws IOException {
         }
 
 
-        RxSessionBean bean = RxSessionBean.getFromSession(request);
+        RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
 
         List<String> reRxDrugIdList = bean.getReRxDrugIdList();
 
@@ -498,7 +498,7 @@ public String saveDigitalSignature() throws IOException {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         checkPrivilege(loggedInInfo, PRIVILEGE_WRITE);
 
-        RxSessionBean bean = RxSessionBean.getFromSession(request);
+        RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
         if (bean == null) {
             response.sendRedirect("error.html");
             return null;

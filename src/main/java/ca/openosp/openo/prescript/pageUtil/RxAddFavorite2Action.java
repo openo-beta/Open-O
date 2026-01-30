@@ -51,6 +51,7 @@ public final class RxAddFavorite2Action extends ActionSupport {
 
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
+
     public String execute()
             throws IOException, ServletException {
 
@@ -62,7 +63,7 @@ public final class RxAddFavorite2Action extends ActionSupport {
             throw new RuntimeException("missing required sec object (_rx)");
         }
 
-        RxSessionBean bean = RxSessionBean.getFromSession(request);
+        RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
         if (bean == null) {
             response.sendRedirect("error.html");
             return null;
@@ -93,7 +94,7 @@ public final class RxAddFavorite2Action extends ActionSupport {
             throw new RuntimeException("missing required sec object (_rx)");
         }
 
-        RxSessionBean bean = RxSessionBean.getFromSession(request);
+        RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
         if (bean == null) {
             response.sendRedirect("error.html");
             return null;

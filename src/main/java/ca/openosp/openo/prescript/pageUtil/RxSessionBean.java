@@ -119,6 +119,42 @@ public class RxSessionBean implements java.io.Serializable {
     }
 
     /**
+     * Extracts demographicNo from request parameter.
+     * Used by RxSessionInterceptor to determine which patient's bean to load.
+     *
+     * @param request the HTTP request
+     * @return the demographicNo, or -1 if not found or invalid
+     */
+    public static int extractDemographicNo(HttpServletRequest request) {
+        String param = request.getParameter("demographicNo");
+        if (param == null || param.isEmpty()) {
+            return -1;
+        }
+        try {
+            return Integer.parseInt(param);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    /**
+     * Retrieves the RxSessionBean for a specific patient using only the per-patient key.
+     * This is a simpler lookup used by RxSessionInterceptor that doesn't fall back
+     * to the legacy key.
+     *
+     * @param session the HTTP session
+     * @param demographicNo the patient's demographic number
+     * @return the RxSessionBean for this patient, or null if not found
+     */
+    public static RxSessionBean getPerPatient(HttpSession session, int demographicNo) {
+        RxSessionBean bean = (RxSessionBean) session.getAttribute(getSessionKey(demographicNo));
+        if (bean != null) {
+            bean.touch();
+        }
+        return bean;
+    }
+
+    /**
      * Retrieves the RxSessionBean for a specific patient from the session.
      * First checks for the per-patient key, then falls back to legacy key
      * if the demographic matches.

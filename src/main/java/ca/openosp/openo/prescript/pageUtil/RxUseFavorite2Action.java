@@ -66,7 +66,8 @@ public final class RxUseFavorite2Action extends ActionSupport {
 
 
         // Setup variables
-        RxSessionBean bean = RxSessionBean.getFromSession(request);
+        RxSessionBean bean =
+                (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
         if (bean == null) {
             response.sendRedirect("error.html");
             return null;
@@ -105,7 +106,8 @@ public final class RxUseFavorite2Action extends ActionSupport {
         }
 
         // Setup variables
-        RxSessionBean bean = RxSessionBean.getFromSession(request);
+        RxSessionBean bean =
+                (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
         if (bean == null) {
             response.sendRedirect("error.html");
             return null;

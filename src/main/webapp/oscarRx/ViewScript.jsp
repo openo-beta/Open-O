@@ -313,8 +313,9 @@
                                     </div>
                                 </td>
 
-                                <td valign=top><form action="${pageContext.request.contextPath}/oscarRx/clearPending.do" method="post">
+                                <td valign=top><form name="RxClearPendingForm" action="${pageContext.request.contextPath}/oscarRx/clearPending.do" method="post">
                                     <input type="hidden" name="action" id="action" value=""/>
+                                    <input type="hidden" name="demographicNo" value="${bean.demographicNo}"/>
                                 </form>
                                     <script language=javascript>
                                         function clearPending(action) {

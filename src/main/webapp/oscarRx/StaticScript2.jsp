@@ -133,10 +133,7 @@
         <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/Oscar.js"/>"></script>
 
         <script language="javascript">
-            var currentDemographicNo = '<%=currentDemographicNo%>';
-        </script>
-        <script type="text/javascript" src="<c:out value="${ctx}/oscarRx/js/rxSessionInterceptor.js"/>"></script>
-        <script language="javascript">
+
             function addFavorite2(drugId, brandName) {
                 var favoriteName = window.prompt('Please enter a name for the Favorite:', brandName);
 
