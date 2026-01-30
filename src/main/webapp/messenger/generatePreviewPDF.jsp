@@ -407,15 +407,24 @@
                                         <%
                                             // Setup prescription session bean and patient data for drug profile generation
                                             // This ensures the prescription attachment has proper patient context
-                                            RxSessionBean Rxbean;
+                                            // Using per-patient session key to support multi-patient tabs
+                                            int demoNoInt = Integer.parseInt(demographic_no);
+                                            RxSessionBean Rxbean = RxSessionBean.getPerPatient(request.getSession(), demoNoInt);
 
-                                            if (request.getSession().getAttribute("RxSessionBean") != null) {
+                                            if (Rxbean == null) {
+                                                // Try legacy key as fallback
                                                 Rxbean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
-                                            } else {
-                                                Rxbean = new RxSessionBean();
+                                                if (Rxbean == null || Rxbean.getDemographicNo() != demoNoInt) {
+                                                    Rxbean = new RxSessionBean();
+                                                }
                                             }
 
-                                            request.getSession().setAttribute("RxSessionBean", Rxbean);
+                                            // Set provider and demographic context for prescription profile
+                                            Rxbean.setProviderNo((String) request.getSession().getAttribute("user"));
+                                            Rxbean.setDemographicNo(demoNoInt);
+
+                                            // Save with per-patient key for multi-tab support
+                                            RxSessionBean.saveToSession(request.getSession(), Rxbean);
 
                                             // Load patient data for prescription context
                                             RxPatientData.Patient patient = RxPatientData.getPatient(loggedInInfo, demographic_no);
@@ -423,10 +432,6 @@
                                             if (patient != null) {
                                                 request.getSession().setAttribute("Patient", patient);
                                             }
-
-                                            // Set provider and demographic context for prescription profile
-                                            Rxbean.setProviderNo((String) request.getSession().getAttribute("user"));
-                                            Rxbean.setDemographicNo(Integer.parseInt(demographic_no));
 
                                         %> <% currentURI = request.getContextPath() + "/oscarRx/PrintDrugProfile.jsp?demographic_no=" + demographic_no; %>
 

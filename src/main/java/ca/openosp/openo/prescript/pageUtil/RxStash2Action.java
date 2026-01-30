@@ -53,7 +53,7 @@ public final class RxStash2Action extends ActionSupport {
 
         // Setup variables
 
-        RxSessionBean bean = RxSessionBean.getFromSession(request);
+        RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
         // bean.setStashIndex(11);
         if (bean == null) {
             response.sendRedirect("error.html");
@@ -100,7 +100,7 @@ public final class RxStash2Action extends ActionSupport {
 
 
             // Setup variables
-            RxSessionBean bean = RxSessionBean.getFromSession(request);
+            RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
 
             if (bean == null) {
                 response.sendRedirect("error.html");
@@ -127,7 +127,7 @@ public final class RxStash2Action extends ActionSupport {
         MiscUtils.getLogger().debug("===========start in deletePrescribe ===========");
 
 
-        RxSessionBean bean = RxSessionBean.getFromSession(request);
+        RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
 
         if (bean == null) {
             response.sendRedirect("error.html");

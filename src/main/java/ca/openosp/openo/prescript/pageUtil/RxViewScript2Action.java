@@ -59,7 +59,8 @@ public final class RxViewScript2Action extends ActionSupport {
         // Setup variables
 
 
-        RxSessionBean bean = RxSessionBean.getFromSession(request);
+        RxSessionBean bean =
+                (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
         if (bean == null) {
             response.sendRedirect("error.html");
             return null;

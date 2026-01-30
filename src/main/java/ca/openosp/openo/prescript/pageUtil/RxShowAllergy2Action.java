@@ -172,9 +172,9 @@ public final class RxShowAllergy2Action extends ActionSupport {
         if (demo_no == null) {
             return "failure";
         }
-        // Setup bean - use per-patient session key to allow multiple patients' tabs
+        // Setup bean - use per-patient session key for multi-tab support
         int demographicNoInt = Integer.parseInt(demo_no);
-        RxSessionBean bean = RxSessionBean.getFromSession(request, demographicNoInt);
+        RxSessionBean bean = RxSessionBean.getPerPatient(request.getSession(), demographicNoInt);
 
         if (bean == null) {
             bean = new RxSessionBean();
@@ -186,7 +186,8 @@ public final class RxShowAllergy2Action extends ActionSupport {
             bean.setView(view);
         }
 
-        RxSessionBean.saveToSession(request, bean);
+        // Save with per-patient key for multi-tab support
+        RxSessionBean.saveToSession(request.getSession(), bean);
 
         if (request.getParameter("method") != null && request.getParameter("method").equals("reorder")) {
             reorder(request);
@@ -226,17 +227,7 @@ public final class RxShowAllergy2Action extends ActionSupport {
         if (disabled.equals("false")) {
 
             ObjectMapper objectMapper = new ObjectMapper();
-            String demographicNoParam = request.getParameter("demographicNo");
-            if (demographicNoParam == null) {
-                MiscUtils.getLogger().error("getAllergyData called without demographicNo parameter");
-                return;
-            }
-            int demographicNo = Integer.parseInt(demographicNoParam);
-            RxSessionBean rxSessionBean = RxSessionBean.getFromSession(request, demographicNo);
-            if (rxSessionBean == null) {
-                MiscUtils.getLogger().error("No RxSessionBean found for demographicNo: " + demographicNo);
-                return;
-            }
+            RxSessionBean rxSessionBean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
             Allergy[] allergies = RxPatientData.getPatient(loggedInInfo, rxSessionBean.getDemographicNo()).getActiveAllergies();
 
             if (loggedInInfo.getCurrentFacility().isIntegratorEnabled()) {

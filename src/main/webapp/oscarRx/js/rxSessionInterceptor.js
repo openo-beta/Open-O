@@ -41,8 +41,13 @@
         var OriginalRequest = Ajax.Request;
         Ajax.Request = function(url, options) {
             options = options || {};
+            // Handle 'parameters' option
             if (!hasDemographicNo(options.parameters)) {
                 options.parameters = addDemographicNo(options.parameters);
+            }
+            // Handle 'postBody' option (used by some AJAX calls with serialized form data)
+            if (options.postBody && !hasDemographicNo(options.postBody)) {
+                options.postBody = addDemographicNo(options.postBody);
             }
             return new OriginalRequest(url, options);
         };

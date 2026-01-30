@@ -47,7 +47,7 @@ public final class RxClearPending2Action extends ActionSupport {
 
         // Setup variables
 
-        RxSessionBean bean = RxSessionBean.getFromSession(request);
+        RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
         if (bean == null) {
             response.sendRedirect("error.html");
             return null;
@@ -57,8 +57,6 @@ public final class RxClearPending2Action extends ActionSupport {
         bean.clearStash();
 
         if (action.equals("close")) {
-            // Remove bean from session to prevent session bloat
-            RxSessionBean.removeFromSession(request.getSession(), bean.getDemographicNo());
             return "close";
         }
 
