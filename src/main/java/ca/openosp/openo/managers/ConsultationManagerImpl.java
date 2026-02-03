@@ -71,6 +71,7 @@ import ca.openosp.openo.consultations.ConsultationRequestSearchFilter;
 import ca.openosp.openo.consultations.ConsultationRequestSearchFilter.SORTDIR;
 import ca.openosp.openo.consultations.ConsultationResponseSearchFilter;
 import ca.openosp.openo.hospitalReportManager.HRMUtil;
+import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.PDFGenerationException;
@@ -690,20 +691,21 @@ public class ConsultationManagerImpl implements ConsultationManager {
     @Override
     public ArrayList<HashMap<String, ? extends Object>> getAttachedHRMDocuments(LoggedInInfo loggedInInfo, String demographicNo, String requestId) {
         List<ConsultDocs> attachedHRMDocuments = getAttachedDocumentsByType(loggedInInfo, Integer.parseInt(requestId), ConsultDocs.DOCTYPE_HRM);
-        //TODO: refactor HRMUtil so that it's possible to call a function, pass in a particular HRM ID, and return the same information for that HRM that listHRMDocuments does
-        //		once this is done, would be possible to simply iterate over attachedHRMDocuments
-        //		In the absence of the above refactoring, the following gets the full listHRMDocuments and then filters for only the items that are actually attached to the consult
-        ArrayList<HashMap<String, ? extends Object>> allHRMDocuments = HRMUtil.listHRMDocuments(loggedInInfo, "report_date", false, demographicNo, false);
-        ArrayList<HashMap<String, ? extends Object>> filteredHRMDocuments = new ArrayList<>(attachedHRMDocuments.size());
-        for (ConsultDocs attachedHRMDocument : attachedHRMDocuments) {
-            for (HashMap<String, ? extends Object> hrmDocument : allHRMDocuments) {
-                if (((Integer) hrmDocument.get("id")) == attachedHRMDocument.getDocumentNo()) {
-                    filteredHRMDocuments.add(hrmDocument);
+        ArrayList<HashMap<String, ? extends Object>> result = new ArrayList<>(attachedHRMDocuments.size());
+        for (ConsultDocs attachedDoc : attachedHRMDocuments) {
+            try {
+                HRMDocument hrmDoc = HRMUtil.getHRMDocumentById(loggedInInfo, attachedDoc.getDocumentNo());
+                if (hrmDoc != null) {
+                    HashMap<String, Object> map = new HashMap<>();
+                    map.put("id", hrmDoc.getId());
+                    map.put("name", hrmDoc.getDisplayName());
+                    result.add(map);
                 }
+            } catch (Exception e) {
+                MiscUtils.getLogger().warn("Failed to load HRM document " + attachedDoc.getDocumentNo() + " attached to consultation request " + requestId, e);
             }
         }
-        //return the subset of listHRMDocuments that is attached
-        return filteredHRMDocuments;
+        return result;
     }
 
     @Override
