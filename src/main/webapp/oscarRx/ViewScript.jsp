@@ -314,7 +314,7 @@
                                 <td width=440px>
                                     <div class="DivContentPadding">
                                         <iframe id=preview name=preview width=440px height=580px
-                                                data-rx-src="oscarRx/Preview.jsp?rePrint=<%=reprint%>"
+                                                src="oscarRx/Preview.jsp?rePrint=<%=reprint%>&demographicNo=<%=bean.getDemographicNo()%>"
                                                 align=center border=0 frameborder=0></iframe>
                                     </div>
                                 </td>

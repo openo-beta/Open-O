@@ -261,29 +261,22 @@
                 });
             }
 
-            /**
-             * Clears the stash synchronously and then closes the window.
-             * This ensures the server-side session is cleared before the browser tab closes.
-             */
             function resetStashAndClose() {
                 var url = "<c:out value="${ctx}"/>" + "/oscarRx/deleteRx.do?parameterValue=clearStash";
                 var url2 = "<c:out value="${ctx}"/>" + "/oscarRx/deleteRx.do?parameterValue=clearReRxDrugList";
 
-                // Use synchronous requests to ensure completion before window closes
                 new Ajax.Request(url, {
-                    method: 'post',
-                    asynchronous: false,
-                    parameters: ''
+                    method: 'post', parameters: '',
+                    onComplete: function() {
+                        new Ajax.Request(url2, {
+                            method: 'post', parameters: '',
+                            onComplete: function() {
+                                clearPending('close');
+                                parent.window.close();
+                            }
+                        });
+                    }
                 });
-                new Ajax.Request(url2, {
-                    method: 'post',
-                    asynchronous: false,
-                    parameters: ''
-                });
-
-                // Now safe to close
-                clearPending('close');
-                parent.window.close();
             }
 
             function onPrint2(method, scriptId) {
@@ -672,7 +665,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                     <div class="DivContentPadding">
 					<% if (bean.getStashSize() > 0) { %>
                                         <iframe id='preview' name='preview' width=420px height=890px
-							data-rx-src="oscarRx/Preview2.jsp?scriptId=<%=bean.getStashItem(0).getScript_no()%>&rePrint=<%=reprint%>&pharmacyId=<%=request.getParameter("pharmacyId")%>"
+							src="oscarRx/Preview2.jsp?scriptId=<%=bean.getStashItem(0).getScript_no()%>&rePrint=<%=reprint%>&pharmacyId=<%=request.getParameter("pharmacyId")%>&demographicNo=<%=bean.getDemographicNo()%>"
 							align=center border=0 frameborder=0></iframe></div>
 					<% } %>
                                 </td>

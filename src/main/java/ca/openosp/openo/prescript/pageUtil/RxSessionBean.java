@@ -44,148 +44,32 @@ public class RxSessionBean implements java.io.Serializable {
     private static final String SESSION_KEY_PREFIX = "RxSessionBean_";
     private static final String LEGACY_SESSION_KEY = "RxSessionBean";
 
-    /** Default max age for stale session cleanup: 30 minutes */
-    private static final long DEFAULT_MAX_AGE_MS = 30 * 60 * 1000;
-
-    /** Timestamp of last access to this bean, used for stale session cleanup */
-    private long lastAccessTime = System.currentTimeMillis();
-
-    /**
-     * Updates the last access timestamp. Called when the bean is retrieved from session.
-     */
-    public void touch() {
-        this.lastAccessTime = System.currentTimeMillis();
-    }
-
-    /**
-     * Gets the last access time for this bean.
-     * @return timestamp in milliseconds
-     */
-    public long getLastAccessTime() {
-        return lastAccessTime;
-    }
-
-    /**
-     * Cleans up stale RxSessionBeans from the session that haven't been accessed
-     * within the specified time period. This prevents session bloat when users
-     * work with multiple patients.
-     *
-     * @param session the HTTP session
-     * @param maxAgeMs maximum age in milliseconds before a bean is considered stale
-     */
-    public static void cleanupStaleBeans(HttpSession session, long maxAgeMs) {
-        long now = System.currentTimeMillis();
-        List<String> keysToRemove = new ArrayList<>();
-
-        try {
-            // Copy attribute names to avoid ConcurrentModificationException
-            List<String> attributeNames = new ArrayList<>();
-            Enumeration<String> names = session.getAttributeNames();
-            while (names.hasMoreElements()) {
-                attributeNames.add(names.nextElement());
-            }
-
-            for (String name : attributeNames) {
-                if (name.startsWith(SESSION_KEY_PREFIX)) {
-                    Object attr = session.getAttribute(name);
-                    if (attr instanceof RxSessionBean) {
-                        RxSessionBean bean = (RxSessionBean) attr;
-                        // Only cleanup if stale AND has no staged prescriptions
-                        if (now - bean.getLastAccessTime() > maxAgeMs && bean.getStashSize() == 0) {
-                            keysToRemove.add(name);
-                        }
-                    }
-                }
-            }
-
-            for (String key : keysToRemove) {
-                logger.debug("Cleaning up stale RxSessionBean: {}", key);
-                session.removeAttribute(key);
-            }
-        } catch (Exception e) {
-            // Don't let cleanup errors affect the application
-            logger.warn("Error during RxSessionBean cleanup: {}", e.getMessage());
-        }
-    }
-
-    /**
-     * Cleans up stale RxSessionBeans using the default max age (30 minutes).
-     *
-     * @param session the HTTP session
-     */
-    public static void cleanupStaleBeans(HttpSession session) {
-        cleanupStaleBeans(session, DEFAULT_MAX_AGE_MS);
-    }
-
     /**
      * Gets the session key for a specific patient's RxSessionBean.
-     * Uses per-patient keying to allow multiple patients' Medications tabs
-     * to be open simultaneously without interfering with each other.
      *
      * @param demographicNo the patient's demographic number
-     * @return the session attribute key for this patient's RxSessionBean
+     * @return String the session attribute key for this patient's RxSessionBean
      */
-    public static String getSessionKey(int demographicNo) {
+    static String getSessionKey(int demographicNo) {
         return SESSION_KEY_PREFIX + demographicNo;
     }
 
     /**
-     * Extracts demographicNo from request parameter.
-     * Used by RxSessionInterceptor to determine which patient's bean to load.
-     *
-     * @param request the HTTP request
-     * @return the demographicNo, or -1 if not found or invalid
-     */
-    public static int extractDemographicNo(HttpServletRequest request) {
-        String param = request.getParameter("demographicNo");
-        if (param == null || param.isEmpty()) {
-            return -1;
-        }
-        try {
-            return Integer.parseInt(param);
-        } catch (NumberFormatException e) {
-            return -1;
-        }
-    }
-
-    /**
-     * Retrieves the RxSessionBean for a specific patient using only the per-patient key.
-     * This is a simpler lookup used by RxSessionInterceptor that doesn't fall back
-     * to the legacy key.
-     *
-     * @param session the HTTP session
-     * @param demographicNo the patient's demographic number
-     * @return the RxSessionBean for this patient, or null if not found
-     */
-    public static RxSessionBean getPerPatient(HttpSession session, int demographicNo) {
-        RxSessionBean bean = (RxSessionBean) session.getAttribute(getSessionKey(demographicNo));
-        if (bean != null) {
-            bean.touch();
-        }
-        return bean;
-    }
-
-    /**
      * Retrieves the RxSessionBean for a specific patient from the session.
-     * First checks for the per-patient key, then falls back to legacy key
-     * if the demographic matches.
+     * Checks the per-patient key first, then falls back to the legacy key
+     * if the demographic matches (migrating it to the new key).
      *
      * @param session the HTTP session
-     * @param demographicNo the patient's demographic number
-     * @return the RxSessionBean for this patient, or null if not found
+     * @param demographicNo int the patient's demographic number
+     * @return RxSessionBean for this patient, or null if not found
      */
     public static RxSessionBean getFromSession(HttpSession session, int demographicNo) {
-        // First try per-patient key
         RxSessionBean bean = (RxSessionBean) session.getAttribute(getSessionKey(demographicNo));
         if (bean != null) {
-            bean.touch();
             return bean;
         }
-        // Fall back to legacy key if demographic matches (for backward compatibility)
         bean = (RxSessionBean) session.getAttribute(LEGACY_SESSION_KEY);
         if (bean != null && bean.getDemographicNo() == demographicNo) {
-            bean.touch();
-            // Migrate to new key
             session.setAttribute(getSessionKey(demographicNo), bean);
             return bean;
         }
@@ -196,82 +80,35 @@ public class RxSessionBean implements java.io.Serializable {
      * Retrieves the RxSessionBean for a specific patient from the request's session.
      *
      * @param request the HTTP request
-     * @param demographicNo the patient's demographic number
-     * @return the RxSessionBean for this patient, or null if not found
+     * @param demographicNo int the patient's demographic number
+     * @return RxSessionBean for this patient, or null if not found
      */
     public static RxSessionBean getFromSession(HttpServletRequest request, int demographicNo) {
         return getFromSession(request.getSession(), demographicNo);
     }
 
     /**
-     * Retrieves the RxSessionBean from the request, automatically determining the demographicNo
-     * from request parameters. Checks for "demographicNo" parameter first, then falls back
-     * to legacy session key.
-     *
-     * @param request the HTTP request
-     * @return the RxSessionBean, or null if not found
-     */
-    public static RxSessionBean getFromSession(HttpServletRequest request) {
-        String demoNoParam = request.getParameter("demographicNo");
-        if (demoNoParam != null && !demoNoParam.isEmpty()) {
-            try {
-                int demoNo = Integer.parseInt(demoNoParam);
-                return getFromSession(request.getSession(), demoNo);
-            } catch (NumberFormatException e) {
-                // Fall through to legacy approach
-            }
-        }
-        // Fallback to legacy key
-        RxSessionBean bean = (RxSessionBean) request.getSession().getAttribute(LEGACY_SESSION_KEY);
-        if (bean != null) {
-            bean.touch();
-        }
-        return bean;
-    }
-
-    /**
-     * Saves the RxSessionBean to the session using both per-patient key and legacy key.
-     * The per-patient key ensures multiple patients' data doesn't interfere.
-     * The legacy key maintains backward compatibility with JSPs that use
-     * ${sessionScope.RxSessionBean}.
-     * <p>
-     * Note: Both keys point to the same object instance, so no memory duplication occurs.
-     * The RxSessionFilter ensures the correct bean is swapped into the legacy key
-     * at the start of each request when switching between patients.
+     * Saves the RxSessionBean to the session using both the per-patient key
+     * and the legacy "RxSessionBean" key. Both keys reference the same object
+     * instance, so no memory duplication occurs. The RxSessionFilter swaps the
+     * correct bean into the legacy key at the start of each request.
      *
      * @param session the HTTP session
      * @param bean the RxSessionBean to save
      */
     public static void saveToSession(HttpSession session, RxSessionBean bean) {
-        // Update access time
-        bean.touch();
-
-        // Save with per-patient key (preserves data across multiple patient tabs)
         session.setAttribute(getSessionKey(bean.getDemographicNo()), bean);
-
-        // Also save with legacy key for JSP backward compatibility
-        // (same object reference, no memory duplication)
         session.setAttribute(LEGACY_SESSION_KEY, bean);
     }
 
     /**
-     * Saves the RxSessionBean to the request's session using a per-patient key.
+     * Saves the RxSessionBean to the request's session.
      *
      * @param request the HTTP request
      * @param bean the RxSessionBean to save
      */
     public static void saveToSession(HttpServletRequest request, RxSessionBean bean) {
         saveToSession(request.getSession(), bean);
-    }
-
-    /**
-     * Removes the RxSessionBean for a specific patient from the session.
-     *
-     * @param session the HTTP session
-     * @param demographicNo the patient's demographic number
-     */
-    public static void removeFromSession(HttpSession session, int demographicNo) {
-        session.removeAttribute(getSessionKey(demographicNo));
     }
 
     private String providerNo = null;
